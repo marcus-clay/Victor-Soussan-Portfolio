@@ -100,44 +100,38 @@ const Avatar: React.FC<{ filename: string; alt: string; className?: string }> = 
   // Ensure we just have the filename
   const cleanFilename = filename.split('/').pop() || filename;
 
-  // Exhaustive list of strategies for different environments
-  const strategies = [
-    `images/${cleanFilename}`,          // Standard relative (often works in dev)
-    `/images/${cleanFilename}`,         // Standard absolute (root of domain)
-    `public/images/${cleanFilename}`,   // Explicit folder relative
-    `/public/images/${cleanFilename}`,  // Explicit folder absolute
-    `./images/${cleanFilename}`,        // Dot relative
-    `./public/images/${cleanFilename}`  // Dot explicit relative
-  ];
+  // For Vite, public folder assets are served from root
+  const imagePath = `/images/${cleanFilename}`;
 
-  const [strategyIndex, setStrategyIndex] = useState(0);
   const [hasError, setHasError] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
-  // Reset if filename changes
   useEffect(() => {
-    setStrategyIndex(0);
-    setHasError(false);
-  }, [cleanFilename]);
+    console.log(`Avatar component for ${alt}: trying to load ${imagePath}`);
+  }, [alt, imagePath]);
 
-  const handleError = () => {
-    if (strategyIndex < strategies.length - 1) {
-      setStrategyIndex(prev => prev + 1);
-    } else {
-      setHasError(true);
-    }
+  const handleLoad = () => {
+    console.log(`✅ Image loaded successfully: ${imagePath}`);
+    setIsLoaded(true);
+  };
+
+  const handleError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    console.error(`❌ Image failed to load: ${imagePath}`, e);
+    setHasError(true);
   };
 
   return (
-    <div className={`relative overflow-hidden bg-gray-200 flex items-center justify-center ${className}`}>
+    <div className={`relative overflow-hidden flex items-center justify-center ${className}`}>
       {!hasError ? (
-        <img 
-          src={strategies[strategyIndex]} 
+        <img
+          src={imagePath}
           alt={alt}
-          className="w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover"
+          onLoad={handleLoad}
           onError={handleError}
         />
       ) : (
-        <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center text-gray-500 font-bold tracking-wider">
+        <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center text-gray-500 font-bold tracking-wider">
            {getInitials(alt)}
         </div>
       )}
@@ -314,7 +308,7 @@ const TESTIMONIALS: Testimonial[] = [
     role: "Founder of Toolkit",
     date: "14/11/2025",
     content: "Victor didn't just create mockups. We worked in workshops before the product even existed... He transformed business requirements into perfectly adapted user journeys. Victor is a great guy: curious, positive, ready to challenge to go further.",
-    image: "pierre-marie-nigay.jpg",
+    image: "pierre-marie-nigay.png",
     linkedin: "https://www.linkedin.com/in/pierremarienigay",
     category: "Clients"
   },
@@ -324,7 +318,7 @@ const TESTIMONIALS: Testimonial[] = [
     role: "CPO @UNOWHY",
     date: "24/06/2025",
     content: "Victor combines overflowing creativity with impressive rigor. He translates complex visions into clear, impactful user experiences. Always listening, curious, he constantly pushes thinking further.",
-    image: "charlotte-rifflet.jpg",
+    image: "charlotte-rifflet.png",
     linkedin: "https://www.linkedin.com/in/charlotterifflet",
     category: "Management"
   },
@@ -334,7 +328,7 @@ const TESTIMONIALS: Testimonial[] = [
     role: "Deployment Manager @FranceVAE",
     date: "28/06/2025",
     content: "Always proposing ideas that shake things up... you never settled for just thinking: you produced, tested, wireframed, prototyped. Your UX expertise is undeniable, but your experience made the difference.",
-    image: "boris-aime-bauderlique.jpg",
+    image: "boris-aime-bauderlique.png",
     linkedin: "https://www.linkedin.com/in/boris-aimé-bauderlique",
     category: "Product & Tech"
   },
@@ -344,7 +338,7 @@ const TESTIMONIALS: Testimonial[] = [
     role: "Product Manager @UNOWHY",
     date: "18/12/2024",
     content: "Victor is a true source of inspiration. I was lucky to work with him on several projects... he brought a pragmatic and professional approach. His leadership and ability to collaborate were essential.",
-    image: "achref-akkari.jpg",
+    image: "achref-akkari.png",
     linkedin: "https://www.linkedin.com/in/achref-akkari",
     category: "Product & Tech"
   },
@@ -354,7 +348,7 @@ const TESTIMONIALS: Testimonial[] = [
     role: "UX Researcher @UNOWHY",
     date: "12/12/2024",
     content: "As Product Lead in UI & Interaction Design, he played a central role in defining the product vision... I was struck by Victor's curiosity and his ability to share knowledge pedagogically. He was a real driver of progress.",
-    image: "justine-le-tellier.jpg",
+    image: "justine-le-tellier.png",
     linkedin: "https://www.linkedin.com/in/justine-le-tellier",
     category: "Design"
   },
@@ -364,7 +358,7 @@ const TESTIMONIALS: Testimonial[] = [
     role: "Marketing Director @UNOWHY",
     date: "09/12/2024",
     content: "I worked alongside Victor for 5 beautiful years. His expertise, 360 vision, and design talent enabled the creation and success of many projects... Victor is passionate and fascinating.",
-    image: "hortense-jan.jpg",
+    image: "hortense-jan.png",
     linkedin: "https://www.linkedin.com/in/hortense-jan",
     category: "Management"
   },
@@ -374,7 +368,7 @@ const TESTIMONIALS: Testimonial[] = [
     role: "Deputy CEO @UNOWHY",
     date: "08/12/2024",
     content: "Highly cultivated, curious, and creative, he always brings relevant ideas and original perspectives. Beyond his talent, Victor is particularly friendly, which makes collaborating with him even more enjoyable.",
-    image: "hubert-bloch.jpg",
+    image: "hubert-bloch.png",
     linkedin: "https://www.linkedin.com/in/hubert-bloch",
     category: "Management"
   },
@@ -384,7 +378,7 @@ const TESTIMONIALS: Testimonial[] = [
     role: "Product Designer",
     date: "30/09/2024",
     content: "Passionate and reliable... Lover of details... his feedback allowed me to reach a new level. He has the will to listen to his team, putting them in the best conditions.",
-    image: "johan-mbagna-gaby.jpg",
+    image: "johan-mbagna-gaby.png",
     linkedin: "https://www.linkedin.com/in/mbagna-johan-gaby",
     category: "Design"
   },
@@ -394,7 +388,7 @@ const TESTIMONIALS: Testimonial[] = [
     role: "Graphic Designer at Reflet Digital",
     date: "10/12/2020",
     content: "Beyond being a manager concerned with his team's well-being, he is passionate about details. Patient and pedagogical, he doesn't hesitate to give constructive advice... A mentor I appreciated working with.",
-    image: "safak-aktas.jpg",
+    image: "safak-aktas.png",
     linkedin: "https://www.linkedin.com/in/safak-aktas",
     category: "Design"
   },
@@ -404,7 +398,7 @@ const TESTIMONIALS: Testimonial[] = [
     role: "Head of Poker - FDJ",
     date: "29/06/2017",
     content: "Professional and rigorous, Victor knows how to translate business stakes into relevant implementations... Victor is very attentive to his collaborators and different trades, both technical and marketing.",
-    image: "frederic-rodriguez.jpg",
+    image: "frederic-rodriguez.png",
     linkedin: "https://www.linkedin.com/in/frederic-rodriguez",
     category: "Management"
   },
@@ -414,7 +408,7 @@ const TESTIMONIALS: Testimonial[] = [
     role: "Web Developer",
     date: "08/03/2017",
     content: "Accessible, attentive, and responsible... working with Victor is a pleasure as he adheres to collective intelligence principles and facilitates interactions between Design and Engineering.",
-    image: "remi-serougne.jpg",
+    image: "remi-serougne.png",
     linkedin: "https://www.linkedin.com/in/remi-serougne",
     category: "Product & Tech"
   },
@@ -424,7 +418,7 @@ const TESTIMONIALS: Testimonial[] = [
     role: "Senior UX",
     date: "22/04/2016",
     content: "He is a very capable designer who can do the legwork but also take a step back and advise on more strategic aspects... He's worked on mobile and web, and has a keen eye for interaction design. Highly recommended.",
-    image: "simon-white.jpg",
+    image: "simon-white.png",
     linkedin: "https://www.linkedin.com/in/simon-white",
     category: "Design"
   },
@@ -434,7 +428,7 @@ const TESTIMONIALS: Testimonial[] = [
     role: "Entrepreneur / Advisor",
     date: "12/04/2016",
     content: "He knows how to unite people around a project, allowing for total autonomy to see it through. It is very useful to discuss the medium-term service vision with him.",
-    image: "nicolas-moulin.jpg",
+    image: "nicolas-moulin.png",
     linkedin: "https://www.linkedin.com/in/nicolasmoulin",
     category: "Management"
   },
@@ -444,7 +438,7 @@ const TESTIMONIALS: Testimonial[] = [
     role: "Senior Presales",
     date: "30/10/2014",
     content: "His previous experiences as Art Director and Designer bring a critical sense and a new approach to our projects which allow us to improve user experience... Victor helped us a lot on the embedded PagesJaunes application.",
-    image: "francois-khoury.jpg",
+    image: "francois-khoury.png",
     linkedin: "https://www.linkedin.com/in/francoiskhoury",
     category: "Product & Tech"
   }
@@ -682,9 +676,9 @@ const App: React.FC = () => {
                <GlassCard className="p-8 h-full flex flex-col justify-between overflow-hidden relative">
                   <div>
                     <div className="flex flex-col md:flex-row items-center md:items-start space-y-6 md:space-y-0 md:space-x-8 mb-8">
-                      <Avatar 
-                        filename="victor-soussan.jpg" 
-                        alt="Victor Soussan" 
+                      <Avatar
+                        filename="victor-soussan.png"
+                        alt="Victor Soussan"
                         className="w-40 h-40 rounded-[2rem] shadow-lg border border-white/20"
                       />
                       <div className="text-center md:text-left pt-2 flex-1">
