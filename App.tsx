@@ -169,6 +169,35 @@ const Avatar: React.FC<{ filename: string; alt: string; className?: string }> = 
   );
 };
 
+// --- Lab Preview Data ---
+
+const LAB_PREVIEWS = {
+  apps: {
+    title: 'Condamine Apps', subtitle: '37+ Apps Deployed', color: 'blue',
+    highlights: ['37+ production-ready applications', 'Built using Bolt.new and Lovable AI', 'Real-world use cases from 2025'],
+    previews: ['Timeboxing App', 'Recipe Generator', 'Portfolio Analyzer', 'Dashboard Builder', 'AI Chat Interface', 'Todo List Pro', 'Weather Station', 'Calculator Plus'],
+    link: 'https://imaginative-youtiao-371d08.netlify.app'
+  },
+  learning: {
+    title: 'Condamine Learning', subtitle: 'Education & Training', color: 'amber',
+    highlights: ['Courses on AI-assisted design workflows', 'Workshops for Product Managers & Designers', 'From ideation to prototyping in hours'],
+    previews: ['AI for Designers', 'Prompt Engineering', 'No-Code Prototyping', 'Design Systems with AI'],
+    link: 'https://condamine-learning-a-5xzh.bolt.host'
+  },
+  agents: {
+    title: 'Agents & Prompts', subtitle: 'System Engineering', color: 'purple',
+    highlights: ['Custom GPTs optimized for design tasks', 'System prompts for product workflows', 'Agent configurations for automation'],
+    previews: ['Design Critique Agent', 'User Story Generator', 'Component Naming Agent', 'Accessibility Checker'],
+    link: 'https://victor-soussan.notion.site/Prompts-agents-database-VSO-155a519b0dea80ec9c99cdd229649c56'
+  },
+  art: {
+    title: 'AI Art Gallery', subtitle: 'Midjourney V6', color: 'pink',
+    highlights: ['Curated collection of AI-generated imagery', 'Exploring light, texture, and composition', 'Surreal and abstract visual experiments'],
+    previews: ['Light & Shadow', 'Architectural Dreams', 'Abstract Textures', 'Portrait Series'],
+    link: 'https://victor-soussan.notion.site/IA-Art-gallery-created-by-Victor-Soussan-2b8a519b0dea80b19385c8fe25dc9bb7'
+  }
+};
+
 // --- Localization Data ---
 
 const TRANSLATIONS = {
@@ -223,7 +252,7 @@ const TRANSLATIONS = {
       title: "Biography & Toolkit",
       subtitle: "Who I am, what I believe, and the tools I use.",
       role: "Product Design Lead • Mentor • Strategist",
-      exp: "10+ Years Experience",
+      exp: "15 Years Experience",
       loc: "Based in Paris",
       p1: "Passionate designer with experience in innovation, media groups and startups. I work at the intersection between product vision, strategy, interface design and content.",
       p2: "I am used to leading a team as well as being hands-on, with extensive knowledge in hardware, software and operating systems.",
@@ -790,7 +819,8 @@ const App: React.FC = () => {
   const [isBioOpen, setIsBioOpen] = useState(false);
   const [isTestimonialsOpen, setIsTestimonialsOpen] = useState(false);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
-  
+  const [selectedLabItem, setSelectedLabItem] = useState<string | null>(null);
+
   // Update selected project when language changes
   useEffect(() => {
     const currentId = selectedProject.id;
@@ -809,6 +839,7 @@ const App: React.FC = () => {
         setIsBioOpen(false);
         setIsTestimonialsOpen(false);
         setIsBookingOpen(false);
+        setSelectedLabItem(null);
       }
     };
     window.addEventListener('keydown', handleEsc);
@@ -817,12 +848,12 @@ const App: React.FC = () => {
 
   // Prevent body scroll when modals are open
   useEffect(() => {
-    if (selectedImage || isBioOpen || isTestimonialsOpen || isBookingOpen) {
+    if (selectedImage || isBioOpen || isTestimonialsOpen || isBookingOpen || selectedLabItem) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
     }
-  }, [selectedImage, isBioOpen, isTestimonialsOpen, isBookingOpen]);
+  }, [selectedImage, isBioOpen, isTestimonialsOpen, isBookingOpen, selectedLabItem]);
 
   // Scroll to section with offset for fixed header
   const scrollToSection = (id: string) => {
@@ -1107,7 +1138,7 @@ const App: React.FC = () => {
                           rel="noopener noreferrer" 
                           className="px-4 py-2.5 bg-white border border-gray-200 text-gray-700 rounded-full text-sm font-medium hover:bg-gray-50 transition-colors flex items-center"
                         >
-                          <Download size={16} className="mr-2"/> FR
+                          <Download size={16} className="mr-2"/> Résumé FR
                         </a>
                         <a 
                           href="https://docs.google.com/document/d/1YN-bE-x6Pmx2QMdYUm_q_uY4hafSb8mR/edit?usp=sharing&ouid=102321755574001298179&rtpof=true&sd=true" 
@@ -1115,7 +1146,7 @@ const App: React.FC = () => {
                           rel="noopener noreferrer"
                           className="px-4 py-2.5 bg-white border border-gray-200 text-gray-700 rounded-full text-sm font-medium hover:bg-gray-50 transition-colors flex items-center"
                         >
-                          <Download size={16} className="mr-2"/> EN
+                          <Download size={16} className="mr-2"/> Résumé EN
                         </a>
                      </div>
                   </div>
@@ -1329,11 +1360,9 @@ const App: React.FC = () => {
 
             <div className="grid md:grid-cols-2 gap-6">
                {/* Card 1: Condamine Apps */}
-               <a 
-                 href="https://imaginative-youtiao-371d08.netlify.app"
-                 target="_blank"
-                 rel="noopener noreferrer"
-                 className="group relative bg-[#151517] border border-white/5 hover:border-blue-500/50 p-8 rounded-3xl transition-all duration-300 hover:shadow-2xl hover:shadow-blue-900/10 flex flex-col overflow-hidden"
+               <div
+                 onClick={() => setSelectedLabItem('apps')}
+                 className="group relative bg-[#151517] border border-white/5 hover:border-blue-500/50 p-8 rounded-3xl transition-all duration-300 hover:shadow-2xl hover:shadow-blue-900/10 flex flex-col overflow-hidden cursor-pointer"
                >
                   <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <div className="mb-6 p-4 bg-blue-900/20 w-fit rounded-2xl text-blue-400 group-hover:scale-110 transition-transform duration-300">
@@ -1347,14 +1376,12 @@ const App: React.FC = () => {
                   <div className="flex items-center text-sm font-medium text-white group-hover:translate-x-1 transition-transform">
                      {content.lab.apps_cta} <ArrowUpRight size={16} className="ml-2"/>
                   </div>
-               </a>
+               </div>
 
                {/* Card 2: Condamine Learning (NEW) */}
-               <a 
-                 href="https://condamine-learning-a-5xzh.bolt.host"
-                 target="_blank"
-                 rel="noopener noreferrer"
-                 className="group relative bg-[#151517] border border-white/5 hover:border-amber-500/50 p-8 rounded-3xl transition-all duration-300 hover:shadow-2xl hover:shadow-amber-900/10 flex flex-col overflow-hidden"
+               <div
+                 onClick={() => setSelectedLabItem('learning')}
+                 className="group relative bg-[#151517] border border-white/5 hover:border-amber-500/50 p-8 rounded-3xl transition-all duration-300 hover:shadow-2xl hover:shadow-amber-900/10 flex flex-col overflow-hidden cursor-pointer"
                >
                   <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <div className="mb-6 p-4 bg-amber-900/20 w-fit rounded-2xl text-amber-400 group-hover:scale-110 transition-transform duration-300">
@@ -1368,14 +1395,12 @@ const App: React.FC = () => {
                   <div className="flex items-center text-sm font-medium text-white group-hover:translate-x-1 transition-transform">
                      {content.lab.learning_cta} <ArrowUpRight size={16} className="ml-2"/>
                   </div>
-               </a>
+               </div>
 
                {/* Card 3: Prompts DB */}
-               <a 
-                 href="https://victor-soussan.notion.site/Prompts-agents-database-VSO-155a519b0dea80ec9c99cdd229649c56"
-                 target="_blank"
-                 rel="noopener noreferrer"
-                 className="group relative bg-[#151517] border border-white/5 hover:border-purple-500/50 p-8 rounded-3xl transition-all duration-300 hover:shadow-2xl hover:shadow-purple-900/10 flex flex-col overflow-hidden"
+               <div
+                 onClick={() => setSelectedLabItem('agents')}
+                 className="group relative bg-[#151517] border border-white/5 hover:border-purple-500/50 p-8 rounded-3xl transition-all duration-300 hover:shadow-2xl hover:shadow-purple-900/10 flex flex-col overflow-hidden cursor-pointer"
                >
                   <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <div className="mb-6 p-4 bg-purple-900/20 w-fit rounded-2xl text-purple-400 group-hover:scale-110 transition-transform duration-300">
@@ -1389,14 +1414,12 @@ const App: React.FC = () => {
                   <div className="flex items-center text-sm font-medium text-white group-hover:translate-x-1 transition-transform">
                      {content.lab.agents_cta} <ArrowUpRight size={16} className="ml-2"/>
                   </div>
-               </a>
+               </div>
 
                {/* Card 4: Art Gallery */}
-               <a 
-                 href="https://victor-soussan.notion.site/IA-Art-gallery-created-by-Victor-Soussan-2b8a519b0dea80b19385c8fe25dc9bb7"
-                 target="_blank"
-                 rel="noopener noreferrer"
-                 className="group relative bg-[#151517] border border-white/5 hover:border-pink-500/50 p-8 rounded-3xl transition-all duration-300 hover:shadow-2xl hover:shadow-pink-900/10 flex flex-col overflow-hidden"
+               <div
+                 onClick={() => setSelectedLabItem('art')}
+                 className="group relative bg-[#151517] border border-white/5 hover:border-pink-500/50 p-8 rounded-3xl transition-all duration-300 hover:shadow-2xl hover:shadow-pink-900/10 flex flex-col overflow-hidden cursor-pointer"
                >
                   <div className="absolute inset-0 bg-gradient-to-br from-pink-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <div className="mb-6 p-4 bg-pink-900/20 w-fit rounded-2xl text-pink-400 group-hover:scale-110 transition-transform duration-300">
@@ -1410,7 +1433,7 @@ const App: React.FC = () => {
                   <div className="flex items-center text-sm font-medium text-white group-hover:translate-x-1 transition-transform">
                      {content.lab.art_cta} <ArrowUpRight size={16} className="ml-2"/>
                   </div>
-               </a>
+               </div>
             </div>
          </div>
       </section>
@@ -1581,20 +1604,20 @@ const App: React.FC = () => {
       {/* Booking Modal */}
       {isBookingOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8 animate-in fade-in duration-300">
-           <div 
+           <div
              className="absolute inset-0 bg-white/95 backdrop-blur-xl"
              onClick={() => setIsBookingOpen(false)}
            />
            <div className="relative w-full max-w-4xl h-[80vh] flex flex-col bg-white rounded-3xl overflow-hidden shadow-2xl border border-gray-200">
               <div className="absolute top-4 right-4 z-10">
-                 <button 
+                 <button
                    onClick={() => setIsBookingOpen(false)}
                    className="p-2 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors"
                  >
                     <X size={24} />
                  </button>
               </div>
-              <iframe 
+              <iframe
                 src="https://cal.com/victorsoussan/consulting-chat?user=victorsoussan&overlayCalendar=true&month=2025-12"
                 width="100%"
                 height="100%"
@@ -1604,6 +1627,111 @@ const App: React.FC = () => {
            </div>
         </div>
       )}
+
+      {/* Lab Modal */}
+      {selectedLabItem && LAB_PREVIEWS[selectedLabItem as keyof typeof LAB_PREVIEWS] && (() => {
+        const item = LAB_PREVIEWS[selectedLabItem as keyof typeof LAB_PREVIEWS];
+        const colorClasses = {
+          blue: {
+            badge: 'bg-blue-500/20 border-blue-500/30 text-blue-300',
+            bullet: 'bg-blue-500',
+            button: 'bg-blue-600 hover:bg-blue-700'
+          },
+          amber: {
+            badge: 'bg-amber-500/20 border-amber-500/30 text-amber-300',
+            bullet: 'bg-amber-500',
+            button: 'bg-amber-600 hover:bg-amber-700'
+          },
+          purple: {
+            badge: 'bg-purple-500/20 border-purple-500/30 text-purple-300',
+            bullet: 'bg-purple-500',
+            button: 'bg-purple-600 hover:bg-purple-700'
+          },
+          pink: {
+            badge: 'bg-pink-500/20 border-pink-500/30 text-pink-300',
+            bullet: 'bg-pink-500',
+            button: 'bg-pink-600 hover:bg-pink-700'
+          }
+        };
+        const colors = colorClasses[item.color as keyof typeof colorClasses];
+
+        return (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8">
+             <div
+               className="absolute inset-0 bg-black/80 backdrop-blur-md animate-in fade-in duration-300"
+               onClick={() => setSelectedLabItem(null)}
+             />
+             <div className={`
+               relative w-full max-w-5xl bg-gradient-to-br from-gray-900 to-black rounded-3xl overflow-hidden shadow-2xl border border-white/10
+               md:animate-in md:fade-in md:zoom-in-95 md:duration-300
+               animate-in slide-in-from-bottom duration-500
+             `}>
+                {/* Close button */}
+                <button
+                  onClick={() => setSelectedLabItem(null)}
+                  className="absolute top-4 right-4 z-10 p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors backdrop-blur-sm"
+                >
+                   <X size={24} className="text-white" />
+                </button>
+
+                <div className="p-8 md:p-12">
+                   {/* Header */}
+                   <div className="mb-8">
+                      <div className={`inline-flex items-center px-3 py-1 rounded-full border text-xs font-medium mb-4 ${colors.badge}`}>
+                         {item.subtitle}
+                      </div>
+                      <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+                         {item.title}
+                      </h2>
+                   </div>
+
+                   {/* Highlights */}
+                   <div className="mb-8">
+                      <h3 className="text-lg font-semibold text-gray-300 mb-4">Highlights</h3>
+                      <ul className="space-y-2">
+                         {item.highlights.map((highlight, idx) => (
+                            <li key={idx} className="flex items-start text-gray-400">
+                               <span className={`inline-block w-1.5 h-1.5 rounded-full mt-2 mr-3 flex-shrink-0 ${colors.bullet}`} />
+                               <span>{highlight}</span>
+                            </li>
+                         ))}
+                      </ul>
+                   </div>
+
+                   {/* Preview Grid */}
+                   <div className="mb-8">
+                      <h3 className="text-lg font-semibold text-gray-300 mb-4">Preview</h3>
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                         {item.previews.map((previewItem, idx) => (
+                            <div
+                               key={idx}
+                               className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-4 hover:bg-white/10 transition-all duration-300"
+                               style={{ animationDelay: `${idx * 50}ms` }}
+                            >
+                               <div className="text-sm text-gray-300 font-medium text-center">
+                                  {previewItem}
+                               </div>
+                            </div>
+                         ))}
+                      </div>
+                   </div>
+
+                   {/* CTA */}
+                   <div className="flex justify-center pt-4">
+                      <a
+                         href={item.link}
+                         target="_blank"
+                         rel="noopener noreferrer"
+                         className={`px-8 py-4 text-white rounded-full font-semibold text-lg transition-all duration-300 hover:scale-105 shadow-lg flex items-center ${colors.button}`}
+                      >
+                         Explore Full {item.title.split(' ')[1]} <ExternalLink size={20} className="ml-2" />
+                      </a>
+                   </div>
+                </div>
+             </div>
+          </div>
+        );
+      })()}
 
       {/* Contact Section */}
       <section id="contact" className="py-24 px-6 bg-[#1D1D1F] text-white">
