@@ -126,21 +126,42 @@ const getInitials = (name: string) => {
 
 const Avatar: React.FC<{ filename: string; alt: string; className?: string }> = ({ filename, alt, className = "" }) => {
   const cleanFilename = filename.split('/').pop() || filename;
-  const imagePath = `/images/${cleanFilename}`;
+  const strategies = [
+    `images/${cleanFilename}`,
+    `/images/${cleanFilename}`,
+    `public/images/${cleanFilename}`,
+    `/public/images/${cleanFilename}`,
+    `./images/${cleanFilename}`,
+    `./public/images/${cleanFilename}`
+  ];
 
+  const [strategyIndex, setStrategyIndex] = useState(0);
   const [hasError, setHasError] = useState(false);
 
+  useEffect(() => {
+    setStrategyIndex(0);
+    setHasError(false);
+  }, [cleanFilename]);
+
+  const handleError = () => {
+    if (strategyIndex < strategies.length - 1) {
+      setStrategyIndex(prev => prev + 1);
+    } else {
+      setHasError(true);
+    }
+  };
+
   return (
-    <div className={`relative overflow-hidden flex items-center justify-center ${className}`}>
+    <div className={`relative overflow-hidden bg-gray-200 flex items-center justify-center ${className}`}>
       {!hasError ? (
-        <img
-          src={imagePath}
+        <img 
+          src={strategies[strategyIndex]} 
           alt={alt}
-          className="absolute inset-0 w-full h-full object-cover"
-          onError={() => setHasError(true)}
+          className="w-full h-full object-cover"
+          onError={handleError}
         />
       ) : (
-        <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center text-gray-500 font-bold tracking-wider">
+        <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center text-gray-500 font-bold tracking-wider">
            {getInitials(alt)}
         </div>
       )}
@@ -271,104 +292,105 @@ const TRANSLATIONS = {
       contact: "Contact"
     },
     hero: {
-      availability: "Disponible pour missions dès Janv. '26",
-      title: "Design orienté vision,",
-      subtitle: "ancré dans le craft et le prototype.",
-      desc: "Avec 15 ans dans la tech et 10 en product design, je conçois des interfaces intuitives à fort impact pour le logiciel d'entreprise, l'éducation et les services publics.",
+      availability: "Disponible à partir de Janv. '26",
+      title: "Design produit pragmatique,",
+      subtitle: "interfaces robustes et scalables.",
+      desc: "15 ans d'expérience, dont 10 dans la Tech. Je conçois, prototype et livre des logiciels complexes (SaaS, Mobile, Hardware) en me concentrant sur la clarté, l'utilisabilité et la faisabilité technique.",
       cta_projects: "Voir les Études de Cas",
       cta_book: "Réserver une consultation"
     },
     services: {
       title: "Services",
-      subtitle: "De l'ambiguïté initiale à la forme claire, je vous aide à définir ce que doit être votre produit, sa logique, son apparence et l'expérience qu'il procure.",
+      subtitle: "Je transforme des problèmes business flous en écrans clairs et fonctionnels. Mon rôle est de réduire le risque produit par le design et le prototypage rapide.",
       execution: "Exécution & Craft",
-      utility: "Utilité Produit",
-      efficiency: "Efficacité Opérationnelle",
-      impact: "Impact Organisationnel",
+      utility: "Stratégie Produit",
+      efficiency: "Efficacité & Ops",
+      impact: "Leadership",
       items: {
         execution: [
-          "Cadrage UX, design UI, micro-interactions",
-          "Prototypage Hi-fi pour valider et vendre une vision",
-          "Développement MVP avec Bolt, Lovable, Figma",
-          "Workflows 'Make Fast' du concept à l'interface"
+          "Design d'interface (UI) propre et standardisé",
+          "Prototypage haute-fidelité (du concept au test utilisateur)",
+          "Développement MVP rapide (Bolt, Lovable, Figma)",
+          "Design mobile natif (iOS/Android) & Responsive Web"
         ],
         utility: [
-          "Construire de nouvelles capacités et fonctionnalités clés",
-          "Façonner la vision produit par le design d'interaction",
-          "Développer l'accessibilité et l'UX inclusive dès la base"
+          "Cadrage de fonctionnalités (0 to 1) et définition du scope",
+          "Clarification de la vision produit et des parcours clés",
+          "Accessibilité et respect des standards ergonomiques"
         ],
         efficiency: [
-          "Mise en place de Design Ops, systèmes et librairies",
-          "Amélioration du handoff design/dev et rituels",
-          "Réduire le travail répétitif via documentation et prototypes"
+          "Création et maintenance de Design Systems scalables",
+          "Documentation technique pour le handoff développeur",
+          "Optimisation des rituels de collaboration Tech/Produit"
         ],
         impact: [
-          "Aligner la stratégie produit avec les besoins utilisateurs",
-          "Façonner la culture d'équipe par la clarté et le coaching"
+          "Leadership d'équipe et recrutement de designers",
+          "Alignement des parties prenantes (C-Level, PM, Tech)",
+          "Mentorat et montée en compétence des juniors"
         ]
       }
     },
     bio: {
       title: "Biographie & Outils",
-      subtitle: "Qui je suis, mes convictions et mes outils.",
-      role: "Product Design Lead • Mentor • Stratège",
-      exp: "10+ Ans d'Expérience",
+      subtitle: "Mon parcours, mon approche et mes ressources.",
+      role: "Product Design Lead • Mentor • Strategist",
+      exp: "15 Ans d'Expérience",
       loc: "Basé à Paris",
-      p1: "Designer passionné avec de l'expérience dans l'innovation, les groupes médias et les startups. Je travaille à l'intersection entre vision produit, stratégie, design d'interface et contenu.",
-      p2: "J'ai l'habitude de diriger une équipe tout en restant opérationnel, avec une connaissance approfondie du hardware, du software et des systèmes d'exploitation.",
-      beliefs_title: "Mes convictions",
+      p1: "Je conçois des produits numériques depuis 15 ans. J'ai évolué de l'agence au produit, en passant par les grands groupes médias et les startups hardware. Je ne cherche pas à faire du 'beau', je cherche à faire du 'fonctionnel' et du 'viable'.",
+      p2: "Mon profil est hybride : je peux définir une roadmap avec un CEO, manager une équipe de designers, et ouvrir Figma pour produire des maquettes prêtes à coder. Je comprends les contraintes techniques et je parle le langage des développeurs.",
+      beliefs_title: "Ce en quoi je crois",
       beliefs: [
-        "Créer des produits numériques qui aident les clients, sans les surcharger.",
-        "La précision du craft, les patterns standards plutôt que l'UI fantaisiste.",
-        "Autonomiser les équipes avec des directives et du coaching."
+        "L'utilité avant l'effet 'wow'. Un produit doit d'abord marcher.",
+        "La vitesse d'itération. Prototyper vite permet d'échouer vite et d'apprendre.",
+        "Les standards. Réinventer la roue (ou un bouton) est souvent une perte de temps."
       ],
       toolkit_title: "Ma Boîte à Outils",
-      toolkit_desc: "Je crois que les designers seniors doivent transmettre. Voici les templates que j'utilise pour structurer les équipes et les workflows."
+      toolkit_desc: "Pas de secrets. Voici les templates et méthodes que j'utilise au quotidien pour structurer le chaos."
     },
     projects: {
       title: "Études de Cas",
-      subtitle: "Sélectionnez un projet pour explorer les missions, livrables et systèmes de design.",
-      missions: "Missions Clés",
-      system: "Design System",
-      deliverables: "Livrables Clés",
-      read_more: "Lire l'étude complète sur Notion"
+      subtitle: "Projets récents : du SaaS B2B complexe à l'application grand public.",
+      missions: "Mes responsabilités",
+      system: "Approche Système",
+      deliverables: "Ce que j'ai livré",
+      read_more: "Lire le détail sur Notion"
     },
     lab: {
-      tag: "Laboratoire R&D Virtuel",
+      tag: "R&D et Expérimentation",
       title: "Studio Condamine",
-      desc: "Au-delà de l'UI pixel-perfect, j'explore les frontières de l'IA générative. Mon studio dédié au prototypage rapide, au prompt engineering et à l'art synthétique.",
+      desc: "Mon espace personnel pour tester les limites de l'IA générative. J'y explore comment ces outils peuvent accélérer le design et le développement de produits.",
       apps_title: "Condamine Apps",
       apps_sub: "37+ Apps Déployées",
-      apps_desc: "Une archive vivante de prototypes web fonctionnels construits depuis 2025. Démontrant la vitesse du développement assisté par IA.",
-      apps_cta: "Visiter la Galerie d'Apps",
+      apps_desc: "Une galerie de prototypes fonctionnels (React/Web) générés par IA. La preuve par l'exemple qu'on peut passer de l'idée au produit en quelques heures.",
+      apps_cta: "Voir les Apps",
       learning_title: "Condamine Learning",
-      learning_sub: "Éducation & Formation",
-      learning_desc: "Maîtrisez la nouvelle stack. Cours, ateliers et ressources pour aider les designers et PMs à exploiter efficacement les outils IA.",
+      learning_sub: "Transmission",
+      learning_desc: "Formations et ressources pour aider les Designers et PMs à ne pas subir la vague IA, mais à la surfer.",
       learning_cta: "Explorer les Cours",
       agents_title: "Agents & Prompts",
-      agents_sub: "System Engineering",
-      agents_desc: "Ma bibliothèque Notion personnelle de GPTs personnalisés, prompts système et workflows d'agents optimisés pour le design.",
+      agents_sub: "Ingénierie Système",
+      agents_desc: "Ma base de données Notion de prompts et d'agents GPTs que j'ai configurés pour automatiser les tâches répétitives du design.",
       agents_cta: "Accéder à la Base",
       art_title: "Galerie d'Art IA",
       art_sub: "Midjourney V6",
-      art_desc: "Une collection d'imagerie synthétique, explorant la lumière, la texture et la composition surréaliste via modèles génératifs.",
+      art_desc: "Exploration purement visuelle. Composition, lumière et texture générées synthétiquement.",
       art_cta: "Voir la Galerie"
     },
     testimonials: {
       title: "Ils m'ont fait confiance",
-      subtitle: "Retours de clients, managers et membres d'équipe ayant témoigné de mon impact sur le produit et la culture.",
+      subtitle: "Ce que mes clients, managers et équipes disent de notre collaboration.",
       view_all: "Voir les 14 Recommandations",
       modal_title: "Toutes les Recommandations",
-      modal_sub: "avis vérifiés de collègues et partenaires",
+      modal_sub: "avis vérifiés (LinkedIn / PDF)",
       empty: "Aucune recommandation trouvée dans cette catégorie.",
       close: "Fermer"
     },
     contact: {
-      title: "Prêt à construire du solide ?",
-      subtitle: "Je suis actuellement ouvert aux missions freelance ou rôles de leadership. Discutons de comment élever votre produit.",
-      email: "Envoyer un Email",
-      book: "Réserver un chat de 30min",
-      linkedin: "Profil LinkedIn"
+      title: "Un projet complexe à lancer ?",
+      subtitle: "Je suis ouvert aux missions de Product Design (Freelance) ou rôles de Lead (CDI). Discutons concrètement de vos besoins.",
+      email: "M'écrire un email",
+      book: "Réserver 30min (Visio)",
+      linkedin: "Mon LinkedIn"
     }
   }
 };
@@ -379,51 +401,51 @@ const getResources = (lang: Language): Resource[] => {
   const isEn = lang === 'en';
   return [
     {
-      title: isEn ? "Checklist: Feature Design" : "Checklist: Design d'une fonctionnalité",
+      title: isEn ? "Checklist: Feature Design" : "Checklist : Design de fonctionnalité",
       type: "Notion",
-      desc: isEn ? "A granular checklist to ensure quality from kickoff to handoff." : "Une checklist granulaire pour assurer la qualité du lancement à la livraison.",
+      desc: isEn ? "A granular checklist to ensure quality from kickoff to handoff." : "Rien ne doit être oublié avant le dev : edge cases, états vides, erreurs, responsive.",
       link: "https://victor-soussan.notion.site/LONG-Checklist-Design-d-une-nouvelle-fonctionnalit-112a519b0dea8119b5ecc4084f3c0e53",
       icon: <CheckCircle2 size={20} className="text-green-600"/>
     },
     {
-      title: isEn ? "Process: UI Slicing" : "Process: Découpage UI (Slicing)",
+      title: isEn ? "Process: UI Slicing" : "Méthode : Découpage UI (Slicing)",
       type: "Notion",
-      desc: isEn ? "Methodology to break down interfaces into atomic components for devs." : "Méthodologie pour découper les interfaces en composants atomiques pour les devs.",
+      desc: isEn ? "Methodology to break down interfaces into atomic components for devs." : "Comment je découpe une interface en composants React/Atomic pour les développeurs.",
       link: "https://victor-soussan.notion.site/Process-D-couper-finement-une-UI-22ea519b0dea81158739d163fc196f0c",
       icon: <Layers size={20} className="text-blue-600"/>
     },
     {
-      title: isEn ? "Template: Design Scoping" : "Template: Cadrage de conception",
+      title: isEn ? "Template: Design Scoping" : "Template : Cadrage Design",
       type: "Notion",
-      desc: isEn ? "A framework to frame design problems, scope, and goals before starting UI." : "Un cadre pour définir les problèmes, le périmètre et les objectifs avant de commencer l'UI.",
+      desc: isEn ? "A framework to frame design problems, scope, and goals before starting UI." : "Le document que je remplis avant d'ouvrir Figma pour aligner tout le monde sur le 'Pourquoi'.",
       link: "https://victor-soussan.notion.site/Template-Id-ation-Cadrage-de-conception-22ea519b0dea810f9d50cf4eeb7f0c48",
       icon: <Target size={20} className="text-red-600"/>
     },
     {
-      title: isEn ? "Process: PO / Design Sync" : "Process: Synchro PO / Design",
+      title: isEn ? "Process: PO / Design Sync" : "Rituel : Synchro PO / Design",
       type: "Notion",
-      desc: isEn ? "Rituals and workflows to align Product Owners and Designers efficiently." : "Rituels et workflows pour aligner efficacement Product Owners et Designers.",
+      desc: isEn ? "Rituals and workflows to align Product Owners and Designers efficiently." : "Comment organiser la collaboration hebdomadaire pour éviter l'effet tunnel.",
       link: "https://victor-soussan.notion.site/Process-de-synchro-PO-Design-22ea519b0dea815690c0c5e178b61bf7",
       icon: <Users size={20} className="text-orange-600"/>
     },
     {
-      title: "Atelier: Design Teardown",
+      title: "Atelier : Design Teardown",
       type: "Notion",
-      desc: isEn ? "Workshop template for analyzing and critiquing existing interfaces collectively." : "Template d'atelier pour analyser et critiquer collectivement les interfaces existantes.",
+      desc: isEn ? "Workshop template for analyzing and critiquing existing interfaces collectively." : "Template pour auditer une interface existante en équipe et identifier les dettes UX.",
       link: "https://victor-soussan.notion.site/Template-Id-ation-Atelier-Design-Teardown-22ea519b0dea81b09215c004b04ef56d",
       icon: <ScrollText size={20} className="text-purple-600"/>
     },
     {
-      title: "Atelier: Design Studio",
+      title: "Atelier : Design Studio",
       type: "Notion",
-      desc: isEn ? "Facilitation guide for Crazy 8s and collaborative sketching sessions." : "Guide de facilitation pour Crazy 8s et sessions de croquis collaboratifs.",
+      desc: isEn ? "Facilitation guide for Crazy 8s and collaborative sketching sessions." : "Guide d'animation pour faire dessiner des solutions aux non-designers (Crazy 8s).",
       link: "https://victor-soussan.notion.site/Template-Id-ation-Atelier-Design-Studio-22ea519b0dea811ea219efa2ae2569a8",
       icon: <PenTool size={20} className="text-pink-600"/>
     },
     {
-      title: isEn ? "Figma: File Status" : "Figma: Status des maquettes",
+      title: isEn ? "Figma: File Status" : "Figma : Convention de nommage",
       type: "Notion",
-      desc: isEn ? "Naming conventions and status tags for keeping Figma files clean." : "Conventions de nommage et tags de statut pour garder les fichiers Figma propres.",
+      desc: isEn ? "Naming conventions and status tags for keeping Figma files clean." : "Comment je gère les statuts (WIP, Review, Dev Ready) pour qu'on s'y retrouve.",
       link: "https://victor-soussan.notion.site/Figma-Status-des-maquettes-et-prototypes-22ea519b0dea8121a1acd9e1fd59212f",
       icon: <Figma size={20} className="text-indigo-600"/>
     }
@@ -436,23 +458,25 @@ const getProjects = (lang: Language): Project[] => {
     {
       id: "toolkit",
       title: "Toolkit",
-      role: isEn ? "Founding Designer" : "Designer Fondateur",
+      role: isEn ? "Founding Designer" : "Founding Designer (Premier Designer)",
       period: "2023 – 2024",
-      summary: isEn ? "0-to-1 Product Design for a Construction Tech SaaS. From pitch deck to MVP." : "Product Design de 0 à 1 pour un SaaS Construction Tech. Du pitch deck au MVP.",
+      summary: isEn 
+        ? "0-to-1 Product Design for a Construction Tech SaaS. From pitch deck to MVP." 
+        : "Création d'un SaaS B2B pour le BTP, de zéro (0 to 1). J'ai traduit la vision des fondateurs en un produit commercialisable.",
       missions: isEn ? [
         "Defined the entire product architecture from scratch",
         "Worked directly with Founders (CEO/CTO) in Lean mode",
         "Designed Investor Pitch Decks & Marketing Assets",
         "Conducted field research with construction site managers"
       ] : [
-        "Définition de l'architecture produit complète depuis zéro",
-        "Travail en direct avec les fondateurs (CEO/CTO) en mode Lean",
-        "Design des Pitch Decks investisseurs & Assets Marketing",
-        "Recherche terrain avec des conducteurs de travaux"
+        "Architecture de l'information : structurer une app complexe pour le terrain",
+        "Prototypage rapide pour valider les hypothèses avec les conducteurs de travaux",
+        "Création de l'identité visuelle et des supports investisseurs (Pitch Deck)",
+        "Livraison des maquettes prêtes au développement (Dev Handoff)"
       ],
       system: {
-        title: isEn ? "Tailwind-ready UI Kit" : "UI Kit Tailwind-ready",
-        desc: isEn ? "Designed a lightweight, mobile-first system optimized for messy field conditions (high contrast, large touch targets) ready for rapid Tailwind integration." : "Conception d'un système léger, mobile-first optimisé pour les conditions de chantier (haut contraste, grandes zones tactiles) prêt pour l'intégration Tailwind."
+        title: isEn ? "Tailwind-ready UI Kit" : "UI Kit optimisé Tailwind",
+        desc: isEn ? "Designed a lightweight, mobile-first system optimized for messy field conditions (high contrast, large touch targets) ready for rapid Tailwind integration." : "J'ai conçu un système simple et robuste (Mobile First), avec de gros contrastes pour l'usage sur chantier, directement aligné sur les classes utilitaires Tailwind."
       },
       deliverables: isEn ? [
         "SaaS Platform (Web & Mobile)",
@@ -460,9 +484,9 @@ const getProjects = (lang: Language): Project[] => {
         "Admin & Billing Panels",
         "Brand Identity & Logo"
       ] : [
-        "Plateforme SaaS (Web & Mobile)",
-        "Modèle d'interaction Planning & Gantt",
-        "Panneaux Admin & Facturation",
+        "Plateforme SaaS complète (Web & Mobile)",
+        "Module de Gantt/Planning interactif",
+        "Back-office Admin & Facturation",
         "Identité de marque & Logo"
       ],
       icon: <Cpu size={24} />,
@@ -473,29 +497,29 @@ const getProjects = (lang: Language): Project[] => {
     {
       id: "sqool",
       title: "SQOOL Suite (UNOWHY)",
-      role: isEn ? "Product Lead & Manager" : "Product Lead & Manager",
+      role: isEn ? "Product Lead & Manager" : "Product Design Manager",
       period: "2018 – 2024",
-      summary: isEn ? "Leading the design transformation of a hardware company into a comprehensive EdTech SaaS ecosystem." : "Pilotage de la transformation design d'une entreprise hardware vers un écosystème SaaS EdTech complet.",
+      summary: isEn ? "Leading the design transformation of a hardware company into a comprehensive EdTech SaaS ecosystem." : "Passage d'une boite Hardware à un écosystème SaaS EdTech complet. J'ai structuré le pôle design et piloté la refonte logicielle.",
       missions: isEn ? [
         "Managed a team of 4 designers: hiring, annual reviews, career coaching",
         "Led design strategy workshops for 'Road to 2025' vision",
         "Structured Design Ops: Figma organization, templates, and rituals",
         "Bridged Product & Tech: Designed decks for C-Level & All-Hands demos"
       ] : [
-        "Management d'une équipe de 4 designers : recrutement, entretiens annuels, coaching",
-        "Animation d'ateliers de stratégie design pour la vision 'Road to 2025'",
-        "Structuration Design Ops : organisation Figma, templates et rituels",
-        "Pont Produit & Tech : Design de présentations C-Level & Démos"
+        "Recrutement et management d'une équipe de 4 Product Designers",
+        "Mise en place des Design Ops (Process, Figma, QA Design)",
+        "Pilotage de la stratégie UX pour la suite logicielle (Roadmap 2025)",
+        "Collaboration étroite avec 30+ développeurs et PMs"
       ],
       system: {
-        title: isEn ? "Multi-Brand Design System" : "Design System Multi-Marques",
-        desc: isEn ? "Built a centralized Figma system supporting 8+ apps (Web/Android/PC). Created shared libraries for icons, gestures, and device frames to speed up hand-offs." : "Construction d'un système Figma centralisé supportant 8+ apps (Web/Android/PC). Création de bibliothèques partagées pour icônes, gestes et frames pour accélérer les hand-offs."
+        title: isEn ? "Multi-Brand Design System" : "Design System Multi-Plateforme",
+        desc: isEn ? "Built a centralized Figma system supporting 8+ apps (Web/Android/PC). Created shared libraries for icons, gestures, and device frames to speed up hand-offs." : "Un système centralisé pour 8 applications (Web, Android, PC). J'ai standardisé les composants pour réduire la dette technique et accélérer les développements."
       },
       deliverables: [
-        "SQOOL Classe (Classroom mgmt)",
-        "SQOOL MDM (Fleet mgmt)",
-        "Zeroheight Documentation",
-        "Strategic PRDs & Vision Decks"
+        "SQOOL Classe (Gestion de classe)",
+        "SQOOL MDM (Gestion de flotte)",
+        "Documentation Zeroheight",
+        "Présentations Stratégiques (Comex)"
       ],
       icon: <Briefcase size={24} />,
       color: "blue",
@@ -506,21 +530,21 @@ const getProjects = (lang: Language): Project[] => {
       title: "Dailymotion Partner",
       role: isEn ? "Senior Product Designer" : "Senior Product Designer",
       period: "2017 – 2018",
-      summary: isEn ? "Redesigning the professional video management suite for tier-1 media partners (CBS, Bein Sports)." : "Refonte de la suite de gestion vidéo professionnelle pour les partenaires médias tier-1 (CBS, Bein Sports).",
+      summary: isEn ? "Redesigning the professional video management suite for tier-1 media partners (CBS, Bein Sports)." : "Refonte du back-office vidéo utilisé par les grands médias (CBS, Bein Sports). Un outil métier complexe à fort volume de données.",
       missions: isEn ? [
         "Led UX for high-volume upload & livestreaming dashboards",
         "Mentored junior designers on interaction specs",
         "Collaborated across Paris, NYC & Marseille teams",
         "Initiated the internal 'Pattern Library' for consistency"
       ] : [
-        "Lead UX pour les dashboards d'upload de masse & livestreaming",
-        "Mentorat de designers juniors sur les spécifications d'interaction",
-        "Collaboration entre les équipes Paris, NYC & Marseille",
-        "Initiation de la 'Pattern Library' interne pour la cohérence"
+        "Design des features critiques : Upload de masse, Livestreaming",
+        "Simplification de workflows complexes pour les éditeurs vidéo",
+        "Collaboration internationale (Paris, NYC, Marseille)",
+        "Mentorat des designers juniors sur l'UI et les specs"
       ],
       system: {
-        title: isEn ? "Storybook UI Kit" : "UI Kit Storybook",
-        desc: isEn ? "Created the first atomic component library in Sketch (pre-Figma) and collaborated with frontend to implement it in Storybook for global scalability." : "Création de la première bibliothèque de composants atomiques sous Sketch (pré-Figma) et collaboration avec le frontend pour l'implémenter dans Storybook."
+        title: isEn ? "Storybook UI Kit" : "Pattern Library (Sketch/Storybook)",
+        desc: isEn ? "Created the first atomic component library in Sketch (pre-Figma) and collaborated with frontend to implement it in Storybook for global scalability." : "Création de la première librairie de composants atomiques (à l'époque sous Sketch) pour aligner le design et le code (Storybook)."
       },
       deliverables: isEn ? [
         "Live Dashboard & Clipping Tool",
@@ -529,9 +553,9 @@ const getProjects = (lang: Language): Project[] => {
         "Partner Mobile App (iOS/Android)"
       ] : [
         "Dashboard Live & Outil de Clipping",
-        "Upload par lot & Éditeur de Métadonnées",
-        "Guidelines Motion",
-        "App Mobile Partenaire (iOS/Android)"
+        "Éditeur de métadonnées en masse",
+        "App Mobile Partenaire (iOS/Android)",
+        "Guidelines d'animation"
       ],
       icon: <Users size={24} />,
       color: "gray",
@@ -540,23 +564,23 @@ const getProjects = (lang: Language): Project[] => {
     {
       id: "pagesjaunes",
       title: "PagesJaunes",
-      role: isEn ? "Mobile UI Lead" : "Mobile UI Lead",
+      role: isEn ? "Mobile UI Lead" : "Lead UI Mobile",
       period: "2014 – 2017",
-      summary: isEn ? "Modernizing a legacy giant. Bringing mobile-first thinking to 22M+ users." : "Modernisation d'un géant historique. Apport de la pensée mobile-first à 22M+ utilisateurs.",
+      summary: isEn ? "Modernizing a legacy giant. Bringing mobile-first thinking to 22M+ users." : "Modernisation de l'application grand public (22 millions de téléchargements). Le défi : faire simple pour une audience très large.",
       missions: isEn ? [
         "Led UI for iOS & Android apps (22M downloads)",
         "Managed transition to Material Design standards",
         "Supervised Android Wear prototyping & Motion Design",
         "Coordinated cross-platform consistency with Engineering"
       ] : [
-        "Lead UI pour les apps iOS & Android (22M téléchargements)",
-        "Gestion de la transition vers les standards Material Design",
-        "Supervision du prototypage Android Wear & Motion Design",
-        "Coordination de la cohérence cross-platform avec l'ingénierie"
+        "Direction artistique des apps iOS & Android",
+        "Passage aux standards Material Design (Google)",
+        "Prototypage innovant (Android Wear, Motion Design)",
+        "Garant de la cohérence visuelle sur toutes les plateformes"
       ],
       system: {
         title: isEn ? "Cross-Platform Foundations" : "Fondations Cross-Platform",
-        desc: isEn ? "Established the first shared design language between iOS, Android, and Responsive Web to unify the brand experience across millions of daily interactions." : "Établissement du premier langage design partagé entre iOS, Android et Web Responsive pour unifier l'expérience de marque sur des millions d'interactions quotidiennes."
+        desc: isEn ? "Established the first shared design language between iOS, Android, and Responsive Web to unify the brand experience across millions of daily interactions." : "Définition d'un langage visuel commun entre iOS, Android et Web Mobile pour unifier l'expérience utilisateur sur tous les écrans."
       },
       deliverables: isEn ? [
         "Onboarding Redesign (iOS/Android)",
@@ -564,10 +588,10 @@ const getProjects = (lang: Language): Project[] => {
         "Android Wear Prototype",
         "User Retention Flows"
       ] : [
-        "Redesign Onboarding (iOS/Android)",
-        "UI Navigation & Recherche",
-        "Prototype Android Wear",
-        "Flux de Rétention Utilisateur"
+        "Refonte de l'Onboarding",
+        "UI de Recherche & Navigation",
+        "Expériences contextuelles (Wearables)",
+        "Optimisation des parcours de rétention"
       ],
       icon: <Smartphone size={24} />,
       color: "purple",
