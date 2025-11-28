@@ -126,42 +126,20 @@ const getInitials = (name: string) => {
 
 const Avatar: React.FC<{ filename: string; alt: string; className?: string }> = ({ filename, alt, className = "" }) => {
   const cleanFilename = filename.split('/').pop() || filename;
-  const strategies = [
-    `images/${cleanFilename}`,
-    `/images/${cleanFilename}`,
-    `public/images/${cleanFilename}`,
-    `/public/images/${cleanFilename}`,
-    `./images/${cleanFilename}`,
-    `./public/images/${cleanFilename}`
-  ];
-
-  const [strategyIndex, setStrategyIndex] = useState(0);
+  const imagePath = `/images/${cleanFilename}`;
   const [hasError, setHasError] = useState(false);
 
-  useEffect(() => {
-    setStrategyIndex(0);
-    setHasError(false);
-  }, [cleanFilename]);
-
-  const handleError = () => {
-    if (strategyIndex < strategies.length - 1) {
-      setStrategyIndex(prev => prev + 1);
-    } else {
-      setHasError(true);
-    }
-  };
-
   return (
-    <div className={`relative overflow-hidden bg-gray-200 flex items-center justify-center ${className}`}>
+    <div className={`relative overflow-hidden flex items-center justify-center ${className}`}>
       {!hasError ? (
-        <img 
-          src={strategies[strategyIndex]} 
+        <img
+          src={imagePath}
           alt={alt}
-          className="w-full h-full object-cover"
-          onError={handleError}
+          className="absolute inset-0 w-full h-full object-cover"
+          onError={() => setHasError(true)}
         />
       ) : (
-        <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center text-gray-500 font-bold tracking-wider">
+        <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center text-gray-500 font-bold tracking-wider">
            {getInitials(alt)}
         </div>
       )}
