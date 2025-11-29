@@ -1,13 +1,17 @@
 
 import React, { useState, useEffect } from 'react';
-import { 
-  ChevronRight, 
-  Layers, 
-  Users, 
-  Briefcase, 
-  Figma, 
-  PenTool, 
+import { motion, AnimatePresence } from 'framer-motion';
+import emailjs from '@emailjs/browser';
+import { EMAILJS_CONFIG } from './emailConfig';
+import {
+  ChevronRight,
+  Layers,
+  Users,
+  Briefcase,
+  Figma,
+  PenTool,
   ArrowUpRight,
+  ArrowUp,
   Mail,
   Linkedin,
   CheckCircle2,
@@ -30,8 +34,15 @@ import {
   Bot,
   Palette,
   Calendar,
-  GraduationCap
+  GraduationCap,
+  FileText,
+  Printer,
+  Copy,
+  Send,
+  Images,
+  Eye
 } from 'lucide-react';
+import { Rocket, Buildings, HandHeart } from '@phosphor-icons/react';
 
 // --- Types ---
 
@@ -190,11 +201,11 @@ const TRANSLATIONS = {
     },
     hero: {
       availability: "Available for new missions starting Jan '26",
-      title: "Vision-driven design,",
-      subtitle: "grounded in prototyping and craft.",
-      desc: "With 15 years in tech and 10 in product design, I build intuitive, high-impact interfaces for enterprise software, education, and public services.",
+      title: "Experienced designer for",
+      subtitle: "product teams and startups",
+      desc: "With 15 years in tech and 10 in product design, I build intuitive, high-impact interfaces for enterprise software, media, education, and public services.",
       cta_projects: "See Case Studies",
-      cta_book: "Book a Consultation"
+      cta_book: "Book a 30min Call"
     },
     services: {
       title: "Services",
@@ -213,6 +224,7 @@ const TRANSLATIONS = {
         utility: [
           "Build new product capabilities and core features",
           "Shape product vision through interaction-first design",
+          "Facilitate ideation & vision workshops with users and stakeholders",
           "Develop accessibility and inclusive UX from the ground up"
         ],
         efficiency: [
@@ -222,6 +234,7 @@ const TRANSLATIONS = {
         ],
         impact: [
           "Align product strategy with user needs via UX research",
+          "Run design workshops with teams to boost collaboration and creativity",
           "Shape team culture through clarity, coaching, and tools"
         ]
       }
@@ -232,16 +245,232 @@ const TRANSLATIONS = {
       role: "Product Design Lead • Mentor • Strategist",
       exp: "15 Years Experience",
       loc: "Based in Paris",
+      value_prop: "I help startups and product teams ship fast without compromising quality.",
+      bullets: [
+        "Shape your product strategy without drowning in docs",
+        "Create high-fidelity interactive prototypes to validate ideas",
+        "Collaborate directly with engineering teams to iterate swiftly",
+        "Build and nurture a design team that's set up for success"
+      ],
       p1: "Passionate designer with experience in innovation, media groups and startups. I work at the intersection between product vision, strategy, interface design and content.",
       p2: "I am used to leading a team as well as being hands-on, with extensive knowledge in hardware, software and operating systems.",
-      beliefs_title: "I believe in",
-      beliefs: [
-        "Creating digital products that help clients, not overwhelm or nag them.",
-        "Precision in craft, standard patterns over fancy UI, and valuable interactions.",
-        "Empowering teams with guidelines and coaching to navigate complexity."
-      ],
+      view_full_bio: "View Full Biography & Track Record",
+      modal_title: "Full Biography & Track Record",
+      modal_subtitle: "15 years building products, 10 years leading design",
+      close: "Close",
       toolkit_title: "My Resource Toolkit",
-      toolkit_desc: "I believe senior designers should give back. Here are templates I use to structure design teams and workflows."
+      toolkit_desc: "I believe senior designers should give back. Here are templates I use to structure design teams and workflows.",
+      journey_p1: "I started my career in <strong>2005 at Publicis Groupe</strong>, working on creative campaigns for luxury brands like Hermès, Leica, and Helena Rubinstein. This experience taught me the power of visual storytelling and attention to detail.",
+      journey_p2: "From <strong>2005 to 2014</strong>, I evolved from print to digital, working as an Art Director for Groupe Hommell Publications (managing a magazine with 300,000 monthly circulation) and as a freelance creative director for clients like L'Oréal, Orange, and Galeries Lafayette. During this period at <strong>Louis 21 agency</strong>, I designed EADS's internal social network for 10,000 managers and created mobile apps for major brands, discovering my passion for product design.",
+      journey_p3: "In <strong>2014</strong>, I joined <strong>PagesJaunes</strong> as a Product Designer, where I learned to design at scale. I redesigned their iOS and Android apps (<strong>22 million downloads, 300,000 daily users</strong>) and built their first cross-platform design system. I also grew into a leadership role, <strong>managing a team of 4 UI designers</strong>.",
+      journey_p4: "At <strong>Ogury (2016-2017)</strong> and <strong>Dailymotion (2017-2018)</strong>, I specialized in B2B SaaS products. At Dailymotion, I designed publisher tools serving <strong>8,000+ users and 50-100 premium publishers</strong> (CBS, ESPN, BBC), handling <strong>100,000+ videos per month</strong>. I created their first UI Kit with Storybook, establishing design-to-development workflows.",
+      journey_p5: "The most transformative chapter began in <strong>2018 at UNOWHY</strong>, where I spent 6 years (until Dec 2024). I started as a Senior Designer and grew into Product Lead, transforming SQOOL from a simple Android launcher into a <strong>5-application SaaS ecosystem serving 500,000+ students across 465 schools</strong> in Île-de-France.",
+      journey_p6: "Key achievements at UNOWHY included:",
+      journey_bullets: [
+        "Leading SQOOL Extend (virtual machines for education) from 0-to-1, deploying MVP in 5 schools",
+        "Delivering SQOOL Protect (parental control) in 3 months with interactive flows and demo video",
+        "<strong>Recruiting and managing a team of 5 designers</strong>, establishing design operations and processes",
+        "Creating a unified design system across 5 brands, reducing design time by 60%",
+        "Co-designing 2 executive strategy seminars that defined the company's 2027 roadmap"
+      ],
+      journey_p7: "In parallel, I designed for <strong>Toolkit.ac (2023-2024)</strong>, a construction management SaaS startup, as their first product designer, helping shape their V2 product serving 2,000 paying users.",
+      journey_p8: "From <strong>December 2024 to July 2025</strong>, I joined <strong>beta.gouv.fr</strong> to work on France VAE, a public service innovation. I designed the collective VAE MVP, conducted 10 user interviews, ran 2-day design thinking workshops, and restructured their product workflow with clear delivery cycles.",
+      journey_p9: "Since <strong>July 2025</strong>, I've been operating as a <strong>Principal Designer</strong>, helping startups and enterprises with 0-to-1 product design, UX optimization, and AI integration. I'm also deeply exploring generative AI—building custom GPTs, prototyping with Bolt and Claude, and <strong>deploying 37+ functional web apps</strong> through my Condamine Apps lab.",
+      journey_conclusion: "What drives me is turning complex problems into clear, testable products. Whether it's designing for 500,000 students, 8,000 B2B users, or helping a startup find product-market fit, I bring strategic vision grounded in hands-on execution, rapid prototyping, and a relentless focus on what actually works.",
+      tools_title: "Daily Drivers",
+      education_title: "Education & Certifications",
+      education_master_title: "Master in Communication & Multimedia",
+      education_master_school: "ISCOM Paris (2001-2005)",
+      education_ux_title: "UX/UI Design & Prototyping",
+      education_ux_school: "UXcel / Udemy (2021)",
+      timeline: {
+        "2026": [
+          "Launch <strong>AI training program</strong> for entrepreneurs, product teams, and designers",
+          "Continue experimentation on <strong>AI-assisted prototyping</strong> and industrialize this design approach",
+          "Goal: Deploy <strong>100+ applications</strong> with Condamine Apps"
+        ],
+        "2025": [
+          "Launched <strong>Condamine Apps</strong> – 37+ web apps prototyped and deployed",
+          "Joined <strong>beta.gouv.fr</strong> as Lead Product Designer for France VAE",
+          "Founded <strong>Victor Soussan Design</strong> as Principal Designer"
+        ],
+        "2024": [
+          "Designed <strong>Toolkit.ac V2</strong> (construction SaaS, 2,000+ users)",
+          "Shipped <strong>SQOOL Protect</strong> (parental control) in 3 months at UNOWHY",
+          "Completed 6-year journey at UNOWHY (500K+ users, 465 schools)"
+        ],
+        "2023": [
+          "Led <strong>SQOOL Extend</strong> (virtual machines for education) from 0-to-1",
+          "Joined <strong>Toolkit.ac</strong> as First Product Designer",
+          "Promoted to <strong>Product Lead</strong> at UNOWHY"
+        ],
+        "2022": [
+          "Ran <strong><a href=\"https://www.notion.so/victor-soussan/Exp-rimentation-IA-et-ChatGPT-2022-1aaa519b0dea8085afd5e56f8893ba91\" target=\"_blank\" rel=\"noopener noreferrer\" className=\"text-pink-600 hover:underline\">AI experimentation with ChatGPT</a></strong>",
+          "Launched <strong>Hi SQOOL</strong> brand with complete identity"
+        ],
+        "2020-2021": [
+          "Promoted to <strong>Design Lead</strong> at UNOWHY",
+          "Transformed SQOOL from Android launcher to <strong>5-app SaaS ecosystem</strong>",
+          "Recruited and built <strong>team of 5 designers</strong>"
+        ],
+        "2018-2019": [
+          "Joined <strong>UNOWHY</strong> as UX/UI Designer Senior",
+          "Designed solutions for <strong>465 Ile-de-France high schools (300,000 devices)</strong>"
+        ],
+        "2017-2018": [
+          "Senior Product Designer at <strong>Dailymotion</strong> (8K+ users, 50-100 premium publishers)",
+          "Created first <strong>UI Kit with Storybook</strong>, handling 100K+ videos/month"
+        ],
+        "2016-2017": [
+          "Product Designer at <strong>Ogury</strong> (ad-tech dashboards)"
+        ],
+        "2014-2016": [
+          "Lead UI/UX Designer at <strong>PagesJaunes</strong>",
+          "Redesigned iOS & Android apps (<strong>22M downloads, 300K daily users</strong>)",
+          "Built first <strong>cross-platform design system</strong>",
+          "Managed team of <strong>4 UI designers</strong>"
+        ],
+        "2010-2014": [
+          "Art Director at <strong>Groupe Hommell Publications</strong> (300K monthly circulation)",
+          "Freelance Creative Director for <strong>L'Oréal, Orange, Galeries Lafayette</strong>",
+          "Designed EADS internal social network at <strong>Louis 21</strong> (10K managers)",
+          "Created mobile apps for major brands"
+        ],
+        "2005-2010": [
+          "Started at <strong>Publicis Groupe</strong> (Hermès, Leica, Helena Rubinstein)",
+          "Art Director for luxury brand campaigns",
+          "Specialized in visual storytelling and premium design"
+        ]
+      }
+    },
+    resume: {
+      title: "Victor Soussan – Product Design Lead",
+      contact: "victorsoussan@gmail.com • +33 6 15 98 94 00 • Paris, France",
+      linkedin: "linkedin.com/in/victorsoussan",
+      portfolio: "https://victorsoussan-portfolio-2026.vercel.app",
+      summary_title: "Professional Summary",
+      summary: "Product Design Lead with 15 years in tech and 10 years leading design for enterprise software, education, media, and public services. Expert in 0-to-1 product design, design systems, team building, and AI-assisted prototyping. Track record of scaling products to 500K+ users and managing teams of 5+ designers.",
+      experience_title: "Professional Experience",
+      experience: [
+        {
+          period: "Jul 2025 – Present",
+          role: "Principal Designer (Freelance)",
+          company: "Independent Practice",
+          achievements: [
+            "Launched Condamine Apps – 37+ functional web apps prototyped and deployed",
+            "Exploring AI-assisted design workflows with custom GPTs and rapid prototyping tools",
+            "Advising startups on product strategy, UX optimization, and AI integration"
+          ]
+        },
+        {
+          period: "Dec 2024 – Jul 2025",
+          role: "Product Designer",
+          company: "beta.gouv.fr (France VAE)",
+          achievements: [
+            "Designed collective VAE MVP for public service innovation",
+            "Conducted 10 user interviews and ran 2-day design thinking workshops",
+            "Restructured product workflow with clear delivery cycles"
+          ]
+        },
+        {
+          period: "Jan 2018 – Dec 2024",
+          role: "Product Lead & Design Manager",
+          company: "UNOWHY (SQOOL Education Platform)",
+          achievements: [
+            "Scaled SQOOL from Android launcher to 5-app SaaS ecosystem serving 500K+ students across 465 schools",
+            "Co-led product design team with CPO, member of Executive Committee for 1 year (slide preparation, bi-monthly committee participation)",
+            "Led SQOOL Extend (virtual machines) from 0-to-1, deploying MVP in 5 schools",
+            "Delivered SQOOL Protect (parental control) in 3 months with interactive flows",
+            "Built and managed team of 5 designers, establishing design operations",
+            "Created unified design system across 5 brands, reducing design time by 60%",
+            "Co-designed 2 executive strategy seminars defining company's 2027 roadmap"
+          ]
+        },
+        {
+          period: "Feb 2023 – Dec 2024",
+          role: "Product Designer",
+          company: "Toolkit.ac (Construction SaaS)",
+          achievements: [
+            "First product designer for construction management startup",
+            "Shaped V2 product serving 2,000 paying users",
+            "Established design-to-development workflows"
+          ]
+        },
+        {
+          period: "Sep 2017 – Jan 2018",
+          role: "Senior Product Designer",
+          company: "Dailymotion",
+          achievements: [
+            "Designed publisher tools serving 8,000+ users and 50-100 premium publishers (CBS, ESPN, BBC)",
+            "Handled 100,000+ videos per month",
+            "Created first UI Kit with Storybook, establishing design-to-development workflows"
+          ]
+        },
+        {
+          period: "Sep 2016 – Sep 2017",
+          role: "Product Designer",
+          company: "Ogury (AdTech)",
+          achievements: [
+            "Specialized in B2B SaaS product design",
+            "Designed analytics and campaign management tools"
+          ]
+        },
+        {
+          period: "Jan 2014 – Sep 2016",
+          role: "Product Designer & Team Lead",
+          company: "PagesJaunes (Solocal Group)",
+          achievements: [
+            "Redesigned iOS and Android apps (22M downloads, 300K daily users)",
+            "Built first cross-platform design system",
+            "Managed team of 4 UI designers"
+          ]
+        },
+        {
+          period: "2010 – 2014",
+          role: "Art Director & Freelance Creative Director",
+          company: "Groupe Hommell Publications / Freelance",
+          achievements: [
+            "Art Director for magazine with 300K monthly circulation",
+            "Freelance Creative Director for L'Oréal, Orange, Galeries Lafayette",
+            "Designed EADS internal social network at Louis 21 (10K managers)"
+          ]
+        },
+        {
+          period: "2005 – 2010",
+          role: "Art Director",
+          company: "Publicis Groupe",
+          achievements: [
+            "Worked on creative campaigns for Hermès, Leica, Helena Rubinstein",
+            "Specialized in visual storytelling and premium design"
+          ]
+        }
+      ],
+      skills_title: "Core Skills",
+      skills: [
+        "Product Strategy & Vision",
+        "0-to-1 Product Design",
+        "Design Systems & Operations",
+        "Team Leadership (up to 5 designers)",
+        "UX Research & User Interviews",
+        "Hi-Fi Prototyping (Figma, Bolt, Lovable)",
+        "AI-Assisted Design Workflows",
+        "B2B SaaS & Enterprise Software",
+        "Design-Dev Collaboration"
+      ],
+      tools_title: "Tools & Technologies",
+      tools: "Figma, FigJam, Adobe Suite, Sketch, Notion, Slack, Linear, ChatGPT, Claude, Midjourney, Bolt, Lovable, Storybook, HTML/CSS",
+      education_title: "Education & Certifications",
+      education: [
+        "Master in Communication & Multimedia – ISCOM Paris (2001-2005)",
+        "UX/UI Design & Prototyping – UXcel / Udemy (2021)"
+      ],
+      languages_title: "Languages",
+      languages: "French (Native) • English (Fluent)",
+      download_btn: "Download PDF",
+      print_btn: "Print",
+      copy_btn: "Copy to Clipboard",
+      copied_message: "Copied to clipboard!",
+      switch_lang: "Switch to French"
     },
     projects: {
       title: "Case Studies",
@@ -282,7 +511,7 @@ const TRANSLATIONS = {
       close: "Close"
     },
     contact: {
-      title: "Ready to build something robust?",
+      title: "Have a project in mind and want to get a quote?",
       subtitle: "I am currently open to freelance missions or leadership roles. Let's discuss how we can elevate your product.",
       email: "Send an Email",
       book: "Book a 30min Chat",
@@ -294,17 +523,17 @@ const TRANSLATIONS = {
       services: "Services",
       bio: "Bio & Outils",
       projects: "Études de Cas",
-      lab: "Le Labo",
+      lab: "Lab",
       testimonials: "Recommandations",
       contact: "Contact"
     },
     hero: {
       availability: "Disponible à partir de Janv. '26",
-      title: "Design produit pragmatique,",
-      subtitle: "interfaces robustes et scalables.",
+      title: "Designer expérimenté pour",
+      subtitle: "équipes produit et startups",
       desc: "15 ans d'expérience, dont 10 dans la Tech. Je conçois, prototype et livre des logiciels complexes (SaaS, Mobile, Hardware) en me concentrant sur la clarté, l'utilisabilité et la faisabilité technique.",
       cta_projects: "Voir les Études de Cas",
-      cta_book: "Réserver une consultation"
+      cta_book: "Planifier un appel de 30min"
     },
     services: {
       title: "Services",
@@ -323,6 +552,7 @@ const TRANSLATIONS = {
         utility: [
           "Cadrage de fonctionnalités (0 to 1) et définition du scope",
           "Clarification de la vision produit et des parcours clés",
+          "Animation d'ateliers d'idéation & vision avec utilisateurs et clients",
           "Accessibilité et respect des standards ergonomiques"
         ],
         efficiency: [
@@ -332,6 +562,7 @@ const TRANSLATIONS = {
         ],
         impact: [
           "Leadership d'équipe et recrutement de designers",
+          "Animation d'ateliers design pour renforcer collaboration et créativité",
           "Alignement des parties prenantes (C-Level, PM, Tech)",
           "Mentorat et montée en compétence des juniors"
         ]
@@ -343,16 +574,232 @@ const TRANSLATIONS = {
       role: "Product Design Lead • Mentor • Strategist",
       exp: "15 Ans d'Expérience",
       loc: "Basé à Paris",
+      value_prop: "Je vous aide à livrer vite sans sacrifier la qualité.",
+      bullets: [
+        "Définir votre stratégie produit sans vous noyer dans la doc",
+        "Créer des prototypes haute-fidélité interactifs pour valider vos idées",
+        "Collaborer directement avec les équipes d'engineering pour itérer rapidement",
+        "Construire et accompagner une équipe design prête pour réussir"
+      ],
       p1: "Je conçois des produits numériques depuis 15 ans. J'ai évolué de l'agence au produit, en passant par les grands groupes médias et les startups hardware. Je ne cherche pas à faire du 'beau', je cherche à faire du 'fonctionnel' et du 'viable'.",
       p2: "Mon profil est hybride : je peux définir une roadmap avec un CEO, manager une équipe de designers, et ouvrir Figma pour produire des maquettes prêtes à coder. Je comprends les contraintes techniques et je parle le langage des développeurs.",
-      beliefs_title: "Ce en quoi je crois",
-      beliefs: [
-        "L'utilité avant l'effet 'wow'. Un produit doit d'abord marcher.",
-        "La vitesse d'itération. Prototyper vite permet d'échouer vite et d'apprendre.",
-        "Les standards. Réinventer la roue (ou un bouton) est souvent une perte de temps."
-      ],
+      view_full_bio: "Voir mon Parcours Complet",
+      modal_title: "Parcours Complet & Track Record",
+      modal_subtitle: "15 ans à construire des produits, 10 ans en design produit",
+      close: "Fermer",
       toolkit_title: "Ma Boîte à Outils",
-      toolkit_desc: "Pas de secrets. Voici les templates et méthodes que j'utilise au quotidien pour structurer le chaos."
+      toolkit_desc: "Templates et méthodes que j'utilise au quotidien pour structurer le design et les workflows de conception.",
+      journey_p1: "J'ai démarré ma carrière en <strong>2005 chez Publicis Groupe</strong>, où j'ai travaillé sur des campagnes créatives pour des marques de luxe comme Hermès, Leica et Helena Rubinstein. Cette expérience m'a appris la puissance du storytelling visuel et l'attention au détail.",
+      journey_p2: "De <strong>2005 à 2014</strong>, j'ai évolué de l'imprimé au digital, en tant que Directeur Artistique pour le Groupe Hommell Publications (direction d'un magazine à 300 000 exemplaires mensuels) et en freelance pour des clients comme L'Oréal, Orange et les Galeries Lafayette. Durant cette période chez <strong>l'agence Louis 21</strong>, j'ai conçu le réseau social interne d'EADS pour 10 000 managers et créé des applications mobiles pour de grandes marques, découvrant ainsi ma passion pour le design produit.",
+      journey_p3: "En <strong>2014</strong>, j'ai rejoint <strong>PagesJaunes</strong> en tant que Product Designer, où j'ai appris à designer à grande échelle. J'ai redessiné leurs applications iOS et Android (<strong>22 millions de téléchargements, 300 000 utilisateurs quotidiens</strong>) et construit leur premier design system cross-platform. J'y ai également évolué vers un rôle de leadership, <strong>en manageant une équipe de 4 UI designers</strong>.",
+      journey_p4: "Chez <strong>Ogury (2016-2017)</strong> et <strong>Dailymotion (2017-2018)</strong>, je me suis spécialisé dans les produits SaaS B2B. Chez Dailymotion, j'ai conçu des outils pour éditeurs servant <strong>8 000+ utilisateurs et 50-100 éditeurs premium</strong> (CBS, ESPN, BBC), gérant <strong>100 000+ vidéos par mois</strong>. J'ai créé leur premier UI Kit avec Storybook, établissant des workflows design-développement.",
+      journey_p5: "Le chapitre le plus transformateur a commencé en <strong>2018 chez UNOWHY</strong>, où j'ai passé 6 ans (jusqu'en déc. 2024). J'ai débuté comme Senior Designer et ai évolué vers un rôle de Product Lead, transformant SQOOL d'un simple launcher Android en un <strong>écosystème SaaS de 5 applications servant 500 000+ élèves dans 465 établissements</strong> en Île-de-France.",
+      journey_p6: "Réalisations clés chez UNOWHY :",
+      journey_bullets: [
+        "Direction de SQOOL Extend (machines virtuelles pour l'éducation) de 0 à 1, déploiement du MVP dans 5 écoles",
+        "Livraison de SQOOL Protect (contrôle parental) en 3 mois avec flows interactifs et vidéo de démo",
+        "<strong>Recrutement et management d'une équipe de 5 designers</strong>, mise en place des opérations et processus design",
+        "Création d'un design system unifié sur 5 marques, réduisant le temps de design de 60%",
+        "Co-conception de 2 séminaires stratégiques exécutifs définissant la roadmap 2027 de l'entreprise"
+      ],
+      journey_p7: "En parallèle, j'ai designé pour <strong>Toolkit.ac (2023-2024)</strong>, une startup SaaS de gestion de chantier, en tant que premier product designer, contribuant à façonner leur produit V2 servant 2 000 utilisateurs payants.",
+      journey_p8: "De <strong>décembre 2024 à juillet 2025</strong>, j'ai rejoint <strong>beta.gouv.fr</strong> pour travailler sur France VAE, une innovation de service public. J'ai designé le MVP VAE collectif, conduit 10 entretiens utilisateurs, animé des ateliers design thinking de 2 jours et restructuré leur workflow produit avec des cycles de livraison clairs.",
+      journey_p9: "Depuis <strong>juillet 2025</strong>, j'opère en tant que <strong>Principal Designer</strong>, aidant les startups et entreprises avec le design produit 0-to-1, l'optimisation UX et l'intégration IA. J'explore également en profondeur l'IA générative—création de GPTs personnalisés, prototypage avec Bolt et Claude, et <strong>déploiement de 37+ applications web fonctionnelles</strong> via mon lab Condamine Apps.",
+      journey_conclusion: "Ce qui me motive, c'est transformer des problèmes complexes en produits clairs et testables. Que ce soit designer pour 500 000 élèves, 8 000 utilisateurs B2B ou aider une startup à trouver son product-market fit, j'apporte une vision stratégique ancrée dans l'exécution concrète, le prototypage rapide et une focalisation sans relâche sur ce qui fonctionne réellement.",
+      tools_title: "Outils du Quotidien",
+      education_title: "Formation & Certifications",
+      education_master_title: "Master en Communication & Multimédia",
+      education_master_school: "ISCOM Paris (2001-2005)",
+      education_ux_title: "UX/UI Design & Prototypage",
+      education_ux_school: "Certification UXcel / Udemy (2021)",
+      timeline: {
+        "2026": [
+          "Lancement d'un <strong>programme de formation à l'IA générative</strong> pour entrepreneurs, équipes produits et designers",
+          "Poursuite de l'expérimentation sur le <strong>prototypage assisté par l'IA</strong> et industrialisation de ce mode de conception",
+          "Objectif : Déployer <strong>100+ applications</strong> avec Condamine Apps"
+        ],
+        "2025": [
+          "Lancement de <strong>Condamine Apps</strong> – 37+ applications web prototypées et déployées",
+          "Rejoint <strong>beta.gouv.fr</strong> en tant que Lead Product Designer pour France VAE",
+          "Création de <strong>Victor Soussan Design</strong> en tant que Principal Designer"
+        ],
+        "2024": [
+          "Design de <strong>Toolkit.ac V2</strong> (SaaS construction, 2 000+ utilisateurs)",
+          "Livraison de <strong>SQOOL Protect</strong> (contrôle parental) en 3 mois chez UNOWHY",
+          "Fin de 6 ans chez UNOWHY (500K+ utilisateurs, 465 établissements)"
+        ],
+        "2023": [
+          "Direction de <strong>SQOOL Extend</strong> (machines virtuelles éducatives) de 0 à 1",
+          "Rejoint <strong>Toolkit.ac</strong> en tant que Premier Product Designer",
+          "Promotion <strong>Product Lead</strong> chez UNOWHY"
+        ],
+        "2022": [
+          "Expérimentation <strong><a href=\"https://www.notion.so/victor-soussan/Exp-rimentation-IA-et-ChatGPT-2022-1aaa519b0dea8085afd5e56f8893ba91\" target=\"_blank\" rel=\"noopener noreferrer\" className=\"text-pink-600 hover:underline\">IA avec ChatGPT</a></strong>",
+          "Lancement de la marque <strong>Hi SQOOL</strong> avec identité complète"
+        ],
+        "2020-2021": [
+          "Promotion <strong>Design Lead</strong> chez UNOWHY",
+          "Transformation de SQOOL d'un launcher Android en <strong>écosystème SaaS de 5 apps</strong>",
+          "Recrutement et formation d'une <strong>équipe de 5 designers</strong>"
+        ],
+        "2018-2019": [
+          "Rejoint <strong>UNOWHY</strong> en tant qu'UX/UI Designer Senior",
+          "Conception de solutions pour <strong>465 lycées Ile-de-France (300 000 équipements)</strong>"
+        ],
+        "2017-2018": [
+          "Senior Product Designer chez <strong>Dailymotion</strong> (8K+ utilisateurs, 50-100 éditeurs premium)",
+          "Création du premier <strong>UI Kit avec Storybook</strong>, gérant 100K+ vidéos/mois"
+        ],
+        "2016-2017": [
+          "Product Designer chez <strong>Ogury</strong> (dashboards ad-tech)"
+        ],
+        "2014-2016": [
+          "Lead UI/UX Designer chez <strong>PagesJaunes</strong>",
+          "Refonte des apps iOS & Android (<strong>22M téléchargements, 300K utilisateurs/jour</strong>)",
+          "Construction du premier <strong>design system cross-platform</strong>",
+          "Management d'une équipe de <strong>4 UI designers</strong>"
+        ],
+        "2010-2014": [
+          "Directeur Artistique chez <strong>Groupe Hommell Publications</strong> (300K ex. mensuels)",
+          "Directeur de Création Freelance pour <strong>L'Oréal, Orange, Galeries Lafayette</strong>",
+          "Conception du réseau social interne EADS chez <strong>Louis 21</strong> (10K managers)",
+          "Création d'applications mobiles pour grandes marques"
+        ],
+        "2005-2010": [
+          "Débuts chez <strong>Publicis Groupe</strong> (Hermès, Leica, Helena Rubinstein)",
+          "Directeur Artistique pour campagnes marques de luxe",
+          "Spécialisation storytelling visuel et design premium"
+        ]
+      }
+    },
+    resume: {
+      title: "Victor Soussan – Lead Product Design",
+      contact: "victorsoussan@gmail.com • +33 6 15 98 94 00 • Paris, France",
+      linkedin: "linkedin.com/in/victorsoussan",
+      portfolio: "https://victorsoussan-portfolio-2026.vercel.app",
+      summary_title: "Résumé Professionnel",
+      summary: "Lead Product Design avec 15 ans d'expérience tech et 10 ans de leadership design pour logiciels d'entreprise, éducation, médias et services publics. Expert en design produit 0-to-1, design systems, construction d'équipes et prototypage assisté par IA. Bilan : produits à 500K+ utilisateurs et gestion d'équipes de 5+ designers.",
+      experience_title: "Expérience Professionnelle",
+      experience: [
+        {
+          period: "Juil 2025 – Présent",
+          role: "Principal Designer (Freelance)",
+          company: "Pratique Indépendante",
+          achievements: [
+            "Lancement de Condamine Apps – 37+ applications web fonctionnelles prototypées et déployées",
+            "Exploration des workflows de design assistés par IA avec GPTs personnalisés et outils de prototypage rapide",
+            "Conseil auprès de startups sur stratégie produit, optimisation UX et intégration IA"
+          ]
+        },
+        {
+          period: "Déc 2024 – Juil 2025",
+          role: "Product Designer",
+          company: "beta.gouv.fr (France VAE)",
+          achievements: [
+            "Conception du MVP VAE collective pour innovation service public",
+            "Réalisation de 10 entretiens utilisateurs et animation d'ateliers design thinking de 2 jours",
+            "Restructuration du workflow produit avec cycles de livraison clairs"
+          ]
+        },
+        {
+          period: "Jan 2018 – Déc 2024",
+          role: "Product Lead & Design Manager",
+          company: "UNOWHY (Plateforme SQOOL Éducation)",
+          achievements: [
+            "Transformation de SQOOL d'un launcher Android en écosystème SaaS de 5 apps pour 500K+ élèves dans 465 écoles",
+            "Co-leadership de l'équipe design produit avec la CPO, membre du Comité de Direction pendant 1 an (rédaction des slides, participation aux comités bi-mensuels)",
+            "Direction de SQOOL Extend (machines virtuelles) de 0-to-1, déploiement MVP dans 5 écoles",
+            "Livraison de SQOOL Protect (contrôle parental) en 3 mois avec flows interactifs",
+            "Construction et gestion d'une équipe de 5 designers, mise en place des opérations design",
+            "Création d'un design system unifié sur 5 marques, réduction du temps de design de 60%",
+            "Co-conception de 2 séminaires stratégiques direction définissant la roadmap 2027"
+          ]
+        },
+        {
+          period: "Fév 2023 – Déc 2024",
+          role: "Product Designer",
+          company: "Toolkit.ac (SaaS Construction)",
+          achievements: [
+            "Premier product designer pour startup de gestion de chantiers",
+            "Structuration du produit V2 servant 2 000 utilisateurs payants",
+            "Mise en place des workflows design-développement"
+          ]
+        },
+        {
+          period: "Sep 2017 – Jan 2018",
+          role: "Senior Product Designer",
+          company: "Dailymotion",
+          achievements: [
+            "Conception d'outils éditeurs pour 8 000+ utilisateurs et 50-100 éditeurs premium (CBS, ESPN, BBC)",
+            "Gestion de 100 000+ vidéos par mois",
+            "Création du premier UI Kit avec Storybook, mise en place des workflows design-développement"
+          ]
+        },
+        {
+          period: "Sep 2016 – Sep 2017",
+          role: "Product Designer",
+          company: "Ogury (AdTech)",
+          achievements: [
+            "Spécialisation en design produit B2B SaaS",
+            "Conception d'outils analytics et gestion de campagnes"
+          ]
+        },
+        {
+          period: "Jan 2014 – Sep 2016",
+          role: "Product Designer & Team Lead",
+          company: "PagesJaunes (Groupe Solocal)",
+          achievements: [
+            "Refonte des apps iOS et Android (22M téléchargements, 300K utilisateurs quotidiens)",
+            "Construction du premier design system cross-plateforme",
+            "Gestion d'une équipe de 4 UI designers"
+          ]
+        },
+        {
+          period: "2010 – 2014",
+          role: "Directeur Artistique & Directeur de Création Freelance",
+          company: "Groupe Hommell Publications / Freelance",
+          achievements: [
+            "Directeur Artistique pour magazine avec 300K ex. mensuels",
+            "Directeur de Création Freelance pour L'Oréal, Orange, Galeries Lafayette",
+            "Conception du réseau social interne EADS chez Louis 21 (10K managers)"
+          ]
+        },
+        {
+          period: "2005 – 2010",
+          role: "Directeur Artistique",
+          company: "Publicis Groupe",
+          achievements: [
+            "Campagnes créatives pour Hermès, Leica, Helena Rubinstein",
+            "Spécialisation storytelling visuel et design premium"
+          ]
+        }
+      ],
+      skills_title: "Compétences Clés",
+      skills: [
+        "Stratégie & Vision Produit",
+        "Design Produit 0-to-1",
+        "Design Systems & Opérations",
+        "Leadership d'Équipe (jusqu'à 5 designers)",
+        "Recherche UX & Entretiens Utilisateurs",
+        "Prototypage Hi-Fi (Figma, Bolt, Lovable)",
+        "Workflows Design Assistés par IA",
+        "SaaS B2B & Logiciels d'Entreprise",
+        "Collaboration Design-Dev"
+      ],
+      tools_title: "Outils & Technologies",
+      tools: "Figma, FigJam, Adobe Suite, Sketch, Notion, Slack, Linear, ChatGPT, Claude, Midjourney, Bolt, Lovable, Storybook, HTML/CSS",
+      education_title: "Formation & Certifications",
+      education: [
+        "Master Communication & Multimédia – ISCOM Paris (2001-2005)",
+        "UX/UI Design & Prototypage – UXcel / Udemy (2021)"
+      ],
+      languages_title: "Langues",
+      languages: "Français (Natif) • Anglais (Courant)",
+      download_btn: "Télécharger PDF",
+      print_btn: "Imprimer",
+      copy_btn: "Copier le texte",
+      copied_message: "Copié dans le presse-papier !",
+      switch_lang: "Passer en Anglais"
     },
     projects: {
       title: "Études de Cas",
@@ -395,9 +842,9 @@ const TRANSLATIONS = {
     contact: {
       title: "Un projet complexe à lancer ?",
       subtitle: "Je suis ouvert aux missions de Product Design (Freelance) ou rôles de Lead (CDI). Discutons concrètement de vos besoins.",
-      email: "M'écrire un email",
-      book: "Réserver 30min (Visio)",
-      linkedin: "Mon LinkedIn"
+      email: "Envoyer un email",
+      book: "Planifier un appel de 30min",
+      linkedin: "LinkedIn"
     }
   }
 };
@@ -795,9 +1242,34 @@ const App: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [isBioOpen, setIsBioOpen] = useState(false);
+  const [bioViewMode, setBioViewMode] = useState<'text' | 'timeline'>('text');
   const [isTestimonialsOpen, setIsTestimonialsOpen] = useState(false);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [selectedLabItem, setSelectedLabItem] = useState<string | null>(null);
+  const [isResumeOpen, setIsResumeOpen] = useState(false);
+  const [resumeLang, setResumeLang] = useState<'fr' | 'en'>('fr');
+  const [copiedResume, setCopiedResume] = useState(false);
+  const [copiedEmail, setCopiedEmail] = useState(false);
+  const [copiedPhone, setCopiedPhone] = useState(false);
+  const [activeSection, setActiveSection] = useState('services');
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
+  const [isHoveringLogo, setIsHoveringLogo] = useState(false);
+  const [isContactFormOpen, setIsContactFormOpen] = useState(false);
+  const [contactForm, setContactForm] = useState({
+    name: '',
+    company: '',
+    email: '',
+    message: '',
+    duration: '',
+    budget: '',
+    projectType: '' as 'startup' | 'established' | 'long-term' | '',
+    selectedServices: [] as string[]
+  });
+  const [isSendingEmail, setIsSendingEmail] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+  const [selectedServiceGallery, setSelectedServiceGallery] = useState<string | null>(null);
 
   // Update selected project when language changes
   useEffect(() => {
@@ -818,6 +1290,8 @@ const App: React.FC = () => {
         setIsTestimonialsOpen(false);
         setIsBookingOpen(false);
         setSelectedLabItem(null);
+        setIsContactFormOpen(false);
+        setShowTooltip(false);
       }
     };
     window.addEventListener('keydown', handleEsc);
@@ -826,12 +1300,55 @@ const App: React.FC = () => {
 
   // Prevent body scroll when modals are open
   useEffect(() => {
-    if (selectedImage || isBioOpen || isTestimonialsOpen || isBookingOpen || selectedLabItem) {
+    if (selectedImage || isBioOpen || isTestimonialsOpen || isBookingOpen || selectedLabItem || isContactFormOpen || selectedServiceGallery) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
     }
-  }, [selectedImage, isBioOpen, isTestimonialsOpen, isBookingOpen, selectedLabItem]);
+  }, [selectedImage, isBioOpen, isTestimonialsOpen, isBookingOpen, selectedLabItem, isContactFormOpen, selectedServiceGallery]);
+
+  // Detect scroll position
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Detect active section on scroll
+  useEffect(() => {
+    const sections = ['services', 'bio', 'projects', 'lab', 'testimonials', 'contact'];
+
+    const observerOptions = {
+      root: null,
+      rootMargin: '-50% 0px -50% 0px',
+      threshold: 0
+    };
+
+    const observerCallback = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id);
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+    sections.forEach((id) => {
+      const element = document.getElementById(id);
+      if (element) observer.observe(element);
+    });
+
+    return () => {
+      sections.forEach((id) => {
+        const element = document.getElementById(id);
+        if (element) observer.unobserve(element);
+      });
+    };
+  }, []);
 
   // Scroll to section with offset for fixed header
   const scrollToSection = (id: string) => {
@@ -868,13 +1385,55 @@ const App: React.FC = () => {
     }
   };
 
-  const filteredTestimonials = activeCategory === 'All' 
-    ? testimonials 
+  const filteredTestimonials = activeCategory === 'All'
+    ? testimonials
     : testimonials.filter(t => t.category === activeCategory);
 
-  const linkedTestimonial = selectedProject.testimonialId 
-    ? testimonials.find(t => t.id === selectedProject.testimonialId) 
+  const linkedTestimonial = selectedProject.testimonialId
+    ? testimonials.find(t => t.id === selectedProject.testimonialId)
     : null;
+
+  // Resume modal handlers
+  const handleDownloadResume = () => {
+    const url = resumeLang === 'fr'
+      ? 'https://docs.google.com/document/d/1DvCVcLllc-f7vD2sGni5sONVdyDY8hIG/edit?usp=sharing&ouid=102321755574001298179&rtpof=true&sd=true'
+      : 'https://docs.google.com/document/d/1EOTBgcnhxcbxk6dYIt1ZAMrd9WqCceUY/edit?usp=sharing&ouid=102321755574001298179&rtpof=true&sd=true';
+    window.open(url, '_blank');
+  };
+
+  const handleCopyResume = () => {
+    const resumeContent = TRANSLATIONS[resumeLang].resume;
+    let text = `${resumeContent.title}\n${resumeContent.contact}\n\n`;
+    text += `${resumeContent.summary_title}\n${resumeContent.summary}\n\n`;
+    text += `${resumeContent.experience_title}\n`;
+    resumeContent.experience.forEach(exp => {
+      text += `\n${exp.period} | ${exp.role}\n${exp.company}\n`;
+      exp.achievements.forEach(ach => text += `• ${ach}\n`);
+    });
+    text += `\n${resumeContent.skills_title}\n${resumeContent.skills.join(', ')}\n\n`;
+    text += `${resumeContent.tools_title}\n${resumeContent.tools}\n\n`;
+    text += `${resumeContent.education_title}\n${resumeContent.education.join('\n')}\n\n`;
+    text += `${resumeContent.languages_title}\n${resumeContent.languages}`;
+
+    navigator.clipboard.writeText(text).then(() => {
+      setCopiedResume(true);
+      setTimeout(() => setCopiedResume(false), 2000);
+    });
+  };
+
+  const handleCopyEmail = () => {
+    navigator.clipboard.writeText('victor.soussan@me.com').then(() => {
+      setCopiedEmail(true);
+      setTimeout(() => setCopiedEmail(false), 2000);
+    });
+  };
+
+  const handleCopyPhone = () => {
+    navigator.clipboard.writeText('+33 6 64 80 08 32').then(() => {
+      setCopiedPhone(true);
+      setTimeout(() => setCopiedPhone(false), 2000);
+    });
+  };
 
   return (
     <div className="min-h-screen font-sans bg-[#F5F5F7] text-[#1D1D1F]">
@@ -882,32 +1441,98 @@ const App: React.FC = () => {
       {/* Navigation */}
       <nav className="fixed top-0 w-full z-50 bg-[#F5F5F7]/80 backdrop-blur-md border-b border-white/50 transition-all duration-300">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div 
-            className="font-semibold text-lg tracking-tight cursor-pointer hover:opacity-70 transition-opacity"
+          {/* Logo/Section Name - Logo visible when not scrolled, section name when scrolled */}
+          <div
+            className="relative font-semibold text-lg tracking-tight cursor-pointer transition-all duration-300 group"
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            onMouseEnter={() => setIsHoveringLogo(true)}
+            onMouseLeave={() => setIsHoveringLogo(false)}
           >
-            Victor Soussan
+            {!isScrolled ? (
+              <span className="inline-block transition-opacity duration-300 opacity-100 group-hover:opacity-70">
+                Victor Soussan
+              </span>
+            ) : (
+              <div className="relative inline-flex items-center">
+                {/* Section name - visible by default, fades out on hover (desktop only) */}
+                <span className={`transition-all duration-300 ease-out ${isHoveringLogo ? 'md:opacity-0' : 'opacity-100'}`}>
+                  {[
+                    { id: 'services', label: content.nav.services },
+                    { id: 'bio', label: content.nav.bio },
+                    { id: 'projects', label: content.nav.projects },
+                    { id: 'lab', label: content.nav.lab },
+                    { id: 'testimonials', label: content.nav.testimonials },
+                    { id: 'contact', label: content.nav.contact }
+                  ].find(item => item.id === activeSection)?.label || 'Victor Soussan'}
+                </span>
+
+                {/* "Top" with arrow icon - hidden by default, fades in on hover (desktop only) */}
+                <div className={`hidden md:flex items-center gap-2 absolute left-0 top-0 transition-all duration-300 ease-out whitespace-nowrap ${isHoveringLogo ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+                  <ArrowUp size={18} className="flex-shrink-0" strokeWidth={2.5} />
+                  <span>Top</span>
+                </div>
+              </div>
+            )}
           </div>
-          
-          <div className="hidden md:flex items-center space-x-8 text-sm font-medium text-gray-600">
-            <button onClick={() => scrollToSection('services')} className="hover:text-black transition-colors">{content.nav.services}</button>
-            <button onClick={() => scrollToSection('bio')} className="hover:text-black transition-colors">{content.nav.bio}</button>
-            <button onClick={() => scrollToSection('projects')} className="hover:text-black transition-colors">{content.nav.projects}</button>
-            <button onClick={() => scrollToSection('lab')} className="hover:text-black transition-colors flex items-center"><FlaskConical size={14} className="mr-1.5"/>{content.nav.lab}</button>
-            <button onClick={() => scrollToSection('testimonials')} className="hover:text-black transition-colors">{content.nav.testimonials}</button>
-            <button onClick={() => scrollToSection('contact')} className="hover:text-black transition-colors">{content.nav.contact}</button>
-            
-            {/* Language Toggle */}
+
+          <div className="hidden md:flex items-center gap-2 text-sm font-medium">
+            {/* Navigation Items - All visible when at top, progressive disclosure when scrolled */}
+            {[
+              { id: 'services', label: content.nav.services },
+              { id: 'bio', label: content.nav.bio },
+              { id: 'projects', label: content.nav.projects },
+              { id: 'lab', label: content.nav.lab, icon: <FlaskConical size={14} className="mr-1.5"/> },
+              { id: 'testimonials', label: content.nav.testimonials },
+              { id: 'contact', label: content.nav.contact }
+            ].map((item) => {
+              const isActive = activeSection === item.id;
+
+              // When not scrolled: show all items as simple text
+              if (!isScrolled) {
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => scrollToSection(item.id)}
+                    className="px-3 py-2 text-gray-600 hover:text-black transition-all duration-300 flex items-center whitespace-nowrap"
+                  >
+                    {item.icon}
+                    {item.label}
+                  </button>
+                );
+              }
+
+              // When scrolled: hide active pill (shown in logo), show only inactive pills
+              if (isActive) {
+                return null;
+              }
+
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => scrollToSection(item.id)}
+                  className="px-4 py-2 rounded-full flex items-center whitespace-nowrap transition-all duration-300 ease-out text-gray-600 hover:text-black bg-white/30 backdrop-blur-sm border border-gray-200/30 opacity-60 hover:opacity-100 scale-100"
+                  style={{
+                    transitionProperty: 'opacity, background-color, color, transform, border-color',
+                    transitionDuration: '300ms'
+                  }}
+                >
+                  {item.icon}
+                  {item.label}
+                </button>
+              );
+            })}
+
+            {/* Language Toggle - Always visible */}
             <button
               onClick={() => setLang(lang === 'en' ? 'fr' : 'en')}
-              className="relative flex items-center bg-gray-200/50 hover:bg-gray-200 transition-colors rounded-full p-1 cursor-pointer"
+              className="relative flex items-center justify-center glass-effect rounded-full p-1 cursor-pointer btn-pill ml-2"
               aria-label="Switch Language"
             >
                <div
-                 className={`absolute inset-y-1 left-1 w-[calc(50%-4px)] bg-white rounded-full shadow-sm transition-all duration-300 ease-spring ${lang === 'fr' ? 'translate-x-[100%] ml-1' : ''}`}
+                 className={`absolute inset-y-1 left-1 w-[calc(50%-4px)] accent-blue rounded-full shadow-sm transition-all duration-300 ease-spring ${lang === 'fr' ? 'translate-x-[100%] ml-1' : ''}`}
                />
-               <span className={`relative z-10 px-2 py-0.5 text-[10px] font-bold transition-colors duration-300 ${lang === 'en' ? 'text-black' : 'text-gray-500'}`}>EN</span>
-               <span className={`relative z-10 px-2 py-0.5 text-[10px] font-bold transition-colors duration-300 ${lang === 'fr' ? 'text-black' : 'text-gray-500'}`}>FR</span>
+               <span className={`relative z-10 px-3 py-0.5 text-[10px] font-bold transition-colors duration-300 flex items-center justify-center ${lang === 'en' ? 'text-white' : 'text-gray-500'}`}>EN</span>
+               <span className={`relative z-10 px-3 py-0.5 text-[10px] font-bold transition-colors duration-300 flex items-center justify-center ${lang === 'fr' ? 'text-white' : 'text-gray-500'}`}>FR</span>
             </button>
           </div>
 
@@ -915,13 +1540,13 @@ const App: React.FC = () => {
              {/* Mobile Language Toggle */}
              <button
               onClick={() => setLang(lang === 'en' ? 'fr' : 'en')}
-              className="relative flex items-center bg-gray-200/50 rounded-full p-1 cursor-pointer"
+              className="relative flex items-center justify-center bg-gray-200/50 rounded-full p-1 cursor-pointer"
             >
                <div
                  className={`absolute inset-y-1 left-1 w-[calc(50%-4px)] bg-white rounded-full shadow-sm transition-all duration-300 ${lang === 'fr' ? 'translate-x-[100%] ml-1' : ''}`}
                />
-               <span className={`relative z-10 px-2 py-0.5 text-[10px] font-bold transition-colors duration-300 ${lang === 'en' ? 'text-black' : 'text-gray-500'}`}>EN</span>
-               <span className={`relative z-10 px-2 py-0.5 text-[10px] font-bold transition-colors duration-300 ${lang === 'fr' ? 'text-black' : 'text-gray-500'}`}>FR</span>
+               <span className={`relative z-10 px-3 py-0.5 text-[10px] font-bold transition-colors duration-300 flex items-center justify-center ${lang === 'en' ? 'text-black' : 'text-gray-500'}`}>EN</span>
+               <span className={`relative z-10 px-3 py-0.5 text-[10px] font-bold transition-colors duration-300 flex items-center justify-center ${lang === 'fr' ? 'text-black' : 'text-gray-500'}`}>FR</span>
             </button>
             <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="p-2">
               {isMenuOpen ? <X size={24} /> : <MenuIcon size={24} />}
@@ -930,13 +1555,13 @@ const App: React.FC = () => {
         </div>
 
         {isMenuOpen && (
-          <div className="md:hidden absolute top-16 left-0 w-full bg-[#F5F5F7] border-b border-gray-200 shadow-lg p-6 flex flex-col space-y-4">
-            <button onClick={() => scrollToSection('services')} className="text-left text-lg font-medium">{content.nav.services}</button>
-            <button onClick={() => scrollToSection('bio')} className="text-left text-lg font-medium">{content.nav.bio}</button>
-            <button onClick={() => scrollToSection('projects')} className="text-left text-lg font-medium">{content.nav.projects}</button>
-            <button onClick={() => scrollToSection('lab')} className="text-left text-lg font-medium flex items-center"><FlaskConical size={18} className="mr-2"/>{content.nav.lab}</button>
-            <button onClick={() => scrollToSection('testimonials')} className="text-left text-lg font-medium">{content.nav.testimonials}</button>
-            <button onClick={() => scrollToSection('contact')} className="text-left text-lg font-medium">{content.nav.contact}</button>
+          <div className="md:hidden absolute top-16 left-0 w-full bg-[#F5F5F7] border-b border-gray-200 shadow-lg p-6 flex flex-col space-y-3">
+            <button onClick={() => scrollToSection('services')} className="text-left text-base font-medium px-4 py-2.5 rounded-full glass-effect btn-pill hover:text-blue-600">{content.nav.services}</button>
+            <button onClick={() => scrollToSection('bio')} className="text-left text-base font-medium px-4 py-2.5 rounded-full glass-effect btn-pill hover:text-blue-600">{content.nav.bio}</button>
+            <button onClick={() => scrollToSection('projects')} className="text-left text-base font-medium px-4 py-2.5 rounded-full glass-effect btn-pill hover:text-blue-600">{content.nav.projects}</button>
+            <button onClick={() => scrollToSection('lab')} className="text-left text-base font-medium px-4 py-2.5 rounded-full glass-effect btn-pill hover:text-blue-600 flex items-center"><FlaskConical size={18} className="mr-2"/>{content.nav.lab}</button>
+            <button onClick={() => scrollToSection('testimonials')} className="text-left text-base font-medium px-4 py-2.5 rounded-full glass-effect btn-pill hover:text-blue-600">{content.nav.testimonials}</button>
+            <button onClick={() => scrollToSection('contact')} className="text-left text-base font-medium px-4 py-2.5 rounded-full glass-effect btn-pill hover:text-blue-600">{content.nav.contact}</button>
           </div>
         )}
       </nav>
@@ -947,12 +1572,77 @@ const App: React.FC = () => {
         <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-indigo-200/30 rounded-full blur-3xl translate-y-1/4 -translate-x-1/4 pointer-events-none" />
 
         <div className="relative max-w-4xl mx-auto text-center z-10">
-          <div className="inline-flex items-center space-x-2 px-3 py-1 bg-white/60 backdrop-blur border border-white/50 rounded-full mb-8 shadow-sm">
+          <div
+            className="inline-flex items-center space-x-2 px-3 py-1 bg-white/60 backdrop-blur border border-white/50 rounded-full mb-8 shadow-sm cursor-pointer hover:bg-white/80 transition-all duration-300 relative"
+            onMouseEnter={() => setShowTooltip(true)}
+            onMouseLeave={() => setShowTooltip(false)}
+          >
             <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
             <span className="text-xs font-medium text-gray-600">{content.hero.availability}</span>
+
+            {/* Tooltip */}
+            {showTooltip && (
+              <div
+                className="absolute top-full left-1/2 -translate-x-1/2 pt-3"
+                onMouseEnter={() => setShowTooltip(true)}
+                onMouseLeave={() => setShowTooltip(false)}
+              >
+                <motion.div
+                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                  transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                  className="w-[280px] bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-gray-200/50 p-5 z-50"
+                  style={{
+                    boxShadow: '0 20px 60px -15px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.05)'
+                  }}
+                >
+                  {/* Arrow */}
+                  <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white/95 backdrop-blur-xl rotate-45 border-l border-t border-gray-200/50" />
+
+                  <div className="relative">
+                    <h3 className="text-base font-semibold text-gray-900 mb-3 text-center">
+                      Need a Design Partner?
+                    </h3>
+
+                    <div className="space-y-2.5">
+                      {/* Contact Form Button */}
+                      <button
+                        className="flex items-center justify-center space-x-2 w-full px-5 py-3 bg-gray-900 hover:bg-black text-white rounded-2xl transition-all duration-200 shadow-lg shadow-gray-900/20 text-sm font-medium"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setShowTooltip(false);
+                          setIsContactFormOpen(true);
+                        }}
+                      >
+                        <Mail size={18} />
+                        <span>
+                          Shoot me a note
+                        </span>
+                      </button>
+
+                      {/* Book Call Button */}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setShowTooltip(false);
+                          setIsBookingOpen(true);
+                        }}
+                        className="flex items-center justify-center space-x-2 w-full px-5 py-3 bg-white hover:bg-gray-50 text-gray-900 rounded-2xl transition-all duration-200 border border-gray-200 text-sm font-medium"
+                      >
+                        <Calendar size={18} />
+                        <span>
+                          Book a 30min Chat
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
+            )}
           </div>
           
-          <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-[#1D1D1F] mb-6 leading-tight">
+          <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-[#1D1D1F] mb-6 leading-tight">
             {content.hero.title} <br className="hidden md:block" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
               {content.hero.subtitle}
@@ -962,17 +1652,17 @@ const App: React.FC = () => {
           <p className="text-xl md:text-2xl text-gray-500 max-w-3xl mx-auto leading-relaxed mb-10">
             {content.hero.desc}
           </p>
-          
+
           <div className="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-4">
-            <button 
+            <button
               onClick={() => scrollToSection('projects')}
-              className="px-8 py-4 bg-[#1D1D1F] text-white rounded-full font-medium text-lg hover:bg-black hover:scale-105 transition-all duration-300 shadow-lg flex items-center cursor-pointer relative z-20"
+              className="px-8 py-4 accent-blue text-white rounded-full font-medium text-lg btn-pill flex items-center cursor-pointer relative z-20"
             >
               {content.hero.cta_projects} <ChevronRight className="ml-2" size={20} />
             </button>
-            <button 
+            <button
                onClick={() => setIsBookingOpen(true)}
-               className="px-8 py-4 bg-white text-[#1D1D1F] border border-gray-200 rounded-full font-medium text-lg hover:bg-gray-50 transition-all duration-300 shadow-sm cursor-pointer relative z-20 flex items-center"
+               className="px-8 py-4 glass-effect text-[#1D1D1F] rounded-full font-medium text-lg btn-pill cursor-pointer relative z-20 flex items-center hover:text-blue-600"
             >
               <Calendar size={20} className="mr-2"/> {content.hero.cta_book}
             </button>
@@ -992,47 +1682,115 @@ const App: React.FC = () => {
           
           <div className="grid md:grid-cols-2 gap-6">
             {/* Hands-on Execution */}
-            <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300">
-               <div className="mb-6 p-4 bg-pink-50 w-fit rounded-2xl text-pink-600"><PenTool size={28}/></div>
-               <h3 className="text-xl font-bold mb-4">{content.services.execution}</h3>
-               <ul className="space-y-3 text-gray-600 text-sm leading-relaxed">
-                  {content.services.items.execution.map((item, i) => (
-                    <li key={i} className="flex items-start"><CheckCircle2 size={16} className="mr-2 mt-0.5 text-pink-400 flex-shrink-0"/> {item}</li>
-                  ))}
-               </ul>
+            <div
+              className="relative bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer group"
+              onClick={() => setSelectedServiceGallery('execution')}
+            >
+              <div className="mb-6 flex items-start justify-between">
+                <div className="p-4 bg-pink-50 w-fit rounded-2xl text-pink-600"><PenTool size={28}/></div>
+
+                {/* Pill button - permanent on mobile, appears on hover on desktop */}
+                <button
+                  className="flex items-center gap-2 px-3 py-1.5 bg-white hover:bg-gray-50 text-gray-700 border border-gray-200 text-xs font-medium rounded-full transition-all duration-200 md:opacity-0 md:group-hover:opacity-100"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedServiceGallery('execution');
+                  }}
+                >
+                  <Images size={14} />
+                  <span>View Examples</span>
+                </button>
+              </div>
+              <h3 className="text-xl font-bold mb-4">{content.services.execution}</h3>
+              <ul className="space-y-3 text-gray-600 text-sm leading-relaxed">
+                {content.services.items.execution.map((item, i) => (
+                  <li key={i} className="flex items-start"><CheckCircle2 size={16} className="mr-2 mt-0.5 text-pink-400 flex-shrink-0"/> {item}</li>
+                ))}
+              </ul>
             </div>
 
             {/* Product Utility */}
-            <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300">
-               <div className="mb-6 p-4 bg-blue-50 w-fit rounded-2xl text-blue-600"><Zap size={28}/></div>
-               <h3 className="text-xl font-bold mb-4">{content.services.utility}</h3>
-               <ul className="space-y-3 text-gray-600 text-sm leading-relaxed">
-                  {content.services.items.utility.map((item, i) => (
-                    <li key={i} className="flex items-start"><CheckCircle2 size={16} className="mr-2 mt-0.5 text-blue-400 flex-shrink-0"/> {item}</li>
-                  ))}
-               </ul>
+            <div
+              className="relative bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer group"
+              onClick={() => setSelectedServiceGallery('utility')}
+            >
+              <div className="mb-6 flex items-start justify-between">
+                <div className="p-4 bg-blue-50 w-fit rounded-2xl text-blue-600"><Zap size={28}/></div>
+
+                {/* Pill button - permanent on mobile, appears on hover on desktop */}
+                <button
+                  className="flex items-center gap-2 px-3 py-1.5 bg-white hover:bg-gray-50 text-gray-700 border border-gray-200 text-xs font-medium rounded-full transition-all duration-200 md:opacity-0 md:group-hover:opacity-100"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedServiceGallery('utility');
+                  }}
+                >
+                  <Images size={14} />
+                  <span>View Examples</span>
+                </button>
+              </div>
+              <h3 className="text-xl font-bold mb-4">{content.services.utility}</h3>
+              <ul className="space-y-3 text-gray-600 text-sm leading-relaxed">
+                {content.services.items.utility.map((item, i) => (
+                  <li key={i} className="flex items-start"><CheckCircle2 size={16} className="mr-2 mt-0.5 text-blue-400 flex-shrink-0"/> {item}</li>
+                ))}
+              </ul>
             </div>
 
             {/* Operational Efficiency */}
-            <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300">
-               <div className="mb-6 p-4 bg-orange-50 w-fit rounded-2xl text-orange-600"><Settings size={28}/></div>
-               <h3 className="text-xl font-bold mb-4">{content.services.efficiency}</h3>
-               <ul className="space-y-3 text-gray-600 text-sm leading-relaxed">
-                  {content.services.items.efficiency.map((item, i) => (
-                    <li key={i} className="flex items-start"><CheckCircle2 size={16} className="mr-2 mt-0.5 text-orange-400 flex-shrink-0"/> {item}</li>
-                  ))}
-               </ul>
+            <div
+              className="relative bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer group"
+              onClick={() => setSelectedServiceGallery('efficiency')}
+            >
+              <div className="mb-6 flex items-start justify-between">
+                <div className="p-4 bg-orange-50 w-fit rounded-2xl text-orange-600"><Settings size={28}/></div>
+
+                {/* Pill button - permanent on mobile, appears on hover on desktop */}
+                <button
+                  className="flex items-center gap-2 px-3 py-1.5 bg-white hover:bg-gray-50 text-gray-700 border border-gray-200 text-xs font-medium rounded-full transition-all duration-200 md:opacity-0 md:group-hover:opacity-100"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedServiceGallery('efficiency');
+                  }}
+                >
+                  <Images size={14} />
+                  <span>View Examples</span>
+                </button>
+              </div>
+              <h3 className="text-xl font-bold mb-4">{content.services.efficiency}</h3>
+              <ul className="space-y-3 text-gray-600 text-sm leading-relaxed">
+                {content.services.items.efficiency.map((item, i) => (
+                  <li key={i} className="flex items-start"><CheckCircle2 size={16} className="mr-2 mt-0.5 text-orange-400 flex-shrink-0"/> {item}</li>
+                ))}
+              </ul>
             </div>
 
             {/* Organizational Impact */}
-            <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300">
-               <div className="mb-6 p-4 bg-teal-50 w-fit rounded-2xl text-teal-600"><Users size={28}/></div>
-               <h3 className="text-xl font-bold mb-4">{content.services.impact}</h3>
-               <ul className="space-y-3 text-gray-600 text-sm leading-relaxed">
-                  {content.services.items.impact.map((item, i) => (
-                    <li key={i} className="flex items-start"><CheckCircle2 size={16} className="mr-2 mt-0.5 text-teal-400 flex-shrink-0"/> {item}</li>
-                  ))}
-               </ul>
+            <div
+              className="relative bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer group"
+              onClick={() => setSelectedServiceGallery('impact')}
+            >
+              <div className="mb-6 flex items-start justify-between">
+                <div className="p-4 bg-teal-50 w-fit rounded-2xl text-teal-600"><Users size={28}/></div>
+
+                {/* Pill button - permanent on mobile, appears on hover on desktop */}
+                <button
+                  className="flex items-center gap-2 px-3 py-1.5 bg-white hover:bg-gray-50 text-gray-700 border border-gray-200 text-xs font-medium rounded-full transition-all duration-200 md:opacity-0 md:group-hover:opacity-100"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedServiceGallery('impact');
+                  }}
+                >
+                  <Images size={14} />
+                  <span>View Examples</span>
+                </button>
+              </div>
+              <h3 className="text-xl font-bold mb-4">{content.services.impact}</h3>
+              <ul className="space-y-3 text-gray-600 text-sm leading-relaxed">
+                {content.services.items.impact.map((item, i) => (
+                  <li key={i} className="flex items-start"><CheckCircle2 size={16} className="mr-2 mt-0.5 text-teal-400 flex-shrink-0"/> {item}</li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>
@@ -1067,65 +1825,62 @@ const App: React.FC = () => {
                         </div>
                       </div>
                     </div>
-                    
+
                     <div className="space-y-6 text-gray-600 leading-relaxed text-[15px]">
-                      <p>{content.bio.p1}</p>
-                      <p>{content.bio.p2}</p>
-                      
-                      <div className="pt-6 border-t border-gray-100">
-                        <h4 className="text-gray-900 font-semibold mb-4 flex items-center">
-                          <Lightbulb size={18} className="mr-2 text-yellow-500"/> {content.bio.beliefs_title}
-                        </h4>
-                        <ul className="space-y-3 text-sm">
-                          {content.bio.beliefs.map((belief, i) => (
-                             <li key={i} className="flex items-start">
-                                <span className="mr-3 mt-1.5 w-1.5 h-1.5 bg-gray-400 rounded-full flex-shrink-0" />
-                                {belief}
-                             </li>
+                      <div className="bg-blue-50/50 p-6 rounded-2xl border border-blue-100">
+                        <p className="text-gray-900 font-semibold mb-4 text-base">{content.bio.value_prop}</p>
+                        <ul className="space-y-2.5">
+                          {content.bio.bullets.map((bullet, i) => (
+                            <li key={i} className="flex items-start text-sm">
+                              <CheckCircle2 size={16} className="mr-2.5 mt-0.5 text-blue-500 flex-shrink-0" />
+                              <span>{bullet}</span>
+                            </li>
                           ))}
                         </ul>
                       </div>
 
-                      <div className="pt-6 border-t border-gray-100">
-                         <h4 className="text-gray-900 font-semibold mb-3 text-xs uppercase tracking-wider text-opacity-70">Daily Drivers</h4>
-                         <div className="flex flex-wrap gap-2">
-                            {['Figma', 'Bolt', 'Lovable', 'ZeroHeight', 'Notion', 'Loom', 'Claude', 'Perplexity'].map(tool => (
-                              <span key={tool} className="px-3 py-1 bg-gray-50 text-gray-600 rounded-lg text-xs font-medium border border-gray-200">
-                                {tool}
-                              </span>
-                            ))}
-                         </div>
-                      </div>
+                      <p>{content.bio.p1}</p>
+                      <p>{content.bio.p2}</p>
                     </div>
                   </div>
 
                   <div className="flex flex-wrap gap-4 mt-8 pt-6 border-t border-gray-100">
-                     <a 
-                       href="https://linkedin.com/in/victorsoussan" 
-                       target="_blank" 
+                     <button
+                       onClick={() => setIsBioOpen(true)}
+                       className="px-5 py-2.5 accent-blue text-white rounded-full text-sm font-medium btn-pill flex items-center"
+                     >
+                       <FileText size={16} className="mr-2"/> {content.bio.view_full_bio}
+                     </button>
+
+                     <a
+                       href="https://linkedin.com/in/victorsoussan"
+                       target="_blank"
                        rel="noreferrer"
-                       className="px-5 py-2.5 bg-[#0077b5] text-white rounded-full text-sm font-medium hover:bg-[#006097] transition-colors flex items-center"
+                       className="px-5 py-2.5 rounded-full text-sm font-medium btn-pill flex items-center text-white"
+                       style={{background: 'linear-gradient(135deg, #0077b5 0%, #006097 100%)'}}
                      >
                        <Linkedin size={16} className="mr-2"/> LinkedIn
                      </a>
-                     
+
                      <div className="flex space-x-2">
-                        <a 
-                          href="https://drive.google.com/file/d/1LqbuLyNUTn0zEf--wk_MaTynO8mHlokc/view?usp=drive_link" 
-                          target="_blank"
-                          rel="noopener noreferrer" 
-                          className="px-4 py-2.5 bg-white border border-gray-200 text-gray-700 rounded-full text-sm font-medium hover:bg-gray-50 transition-colors flex items-center"
+                        <button
+                          onClick={() => {
+                            setResumeLang('fr');
+                            setIsResumeOpen(true);
+                          }}
+                          className="px-4 py-2.5 glass-effect text-gray-700 rounded-full text-sm font-medium btn-pill flex items-center hover:text-blue-600"
                         >
                           <Download size={16} className="mr-2"/> Résumé FR
-                        </a>
-                        <a 
-                          href="https://docs.google.com/document/d/1YN-bE-x6Pmx2QMdYUm_q_uY4hafSb8mR/edit?usp=sharing&ouid=102321755574001298179&rtpof=true&sd=true" 
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="px-4 py-2.5 bg-white border border-gray-200 text-gray-700 rounded-full text-sm font-medium hover:bg-gray-50 transition-colors flex items-center"
+                        </button>
+                        <button
+                          onClick={() => {
+                            setResumeLang('en');
+                            setIsResumeOpen(true);
+                          }}
+                          className="px-4 py-2.5 glass-effect text-gray-700 rounded-full text-sm font-medium btn-pill flex items-center hover:text-blue-600"
                         >
                           <Download size={16} className="mr-2"/> Résumé EN
-                        </a>
+                        </button>
                      </div>
                   </div>
                </GlassCard>
@@ -1479,14 +2234,267 @@ const App: React.FC = () => {
         </div>
       </section>
 
+      {/* Full Screen Bio Modal */}
+      <AnimatePresence>
+      {isBioOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8">
+           <motion.div
+             initial={{ opacity: 0 }}
+             animate={{ opacity: 1 }}
+             exit={{ opacity: 0 }}
+             transition={{ duration: 0.2 }}
+             className="absolute inset-0 bg-white/95 backdrop-blur-xl"
+             onClick={() => setIsBioOpen(false)}
+           />
+           <motion.div
+             initial={{ opacity: 0, scale: 0.95, y: 20 }}
+             animate={{ opacity: 1, scale: 1, y: 0 }}
+             exit={{ opacity: 0, scale: 0.95, y: 20 }}
+             transition={{
+               type: 'spring',
+               stiffness: 300,
+               damping: 25,
+               mass: 0.5
+             }}
+             className="relative w-full max-w-5xl h-full flex flex-col bg-white/50 rounded-3xl md:rounded-[40px] overflow-hidden shadow-2xl border border-gray-200/50"
+           >
+
+              {/* Modal Header */}
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-center py-6 px-8 border-b border-gray-200/50 bg-white/80 backdrop-blur-md z-10 gap-4">
+                 <div>
+                   <h2 className="text-2xl font-bold text-gray-900">{content.bio.modal_title}</h2>
+                   <p className="text-sm text-gray-500">{content.bio.modal_subtitle}</p>
+                 </div>
+
+                 <div className="flex items-center gap-4">
+                   {/* Toggle */}
+                   <div className="relative flex items-center bg-gray-100 rounded-full p-1">
+                     <motion.div
+                       className="absolute bg-blue-600 rounded-full shadow-md"
+                       initial={false}
+                       animate={{
+                         x: bioViewMode === 'text' ? 0 : '100%',
+                         width: bioViewMode === 'text' ? '50%' : '50%'
+                       }}
+                       transition={{
+                         type: 'spring',
+                         stiffness: 500,
+                         damping: 35,
+                         mass: 0.8
+                       }}
+                       style={{
+                         height: 'calc(100% - 8px)',
+                         top: '4px',
+                         left: '4px',
+                         right: '4px'
+                       }}
+                     />
+                     <button
+                       onClick={() => setBioViewMode('text')}
+                       className={`relative z-10 px-5 py-2.5 rounded-full text-sm font-semibold transition-colors duration-200 ${
+                         bioViewMode === 'text'
+                           ? 'text-white'
+                           : 'text-gray-600 hover:text-gray-900'
+                       }`}
+                       style={{ width: '50%' }}
+                     >
+                       {lang === 'fr' ? 'Texte' : 'Text'}
+                     </button>
+                     <button
+                       onClick={() => setBioViewMode('timeline')}
+                       className={`relative z-10 px-5 py-2.5 rounded-full text-sm font-semibold transition-colors duration-200 ${
+                         bioViewMode === 'timeline'
+                           ? 'text-white'
+                           : 'text-gray-600 hover:text-gray-900'
+                       }`}
+                       style={{ width: '50%' }}
+                     >
+                       Timeline
+                     </button>
+                   </div>
+
+                   <button
+                     onClick={() => setIsBioOpen(false)}
+                     className="hidden md:flex p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors"
+                   >
+                      <X size={24} />
+                   </button>
+                 </div>
+              </div>
+
+              {/* Modal Content */}
+              <div className="overflow-y-auto p-6 md:p-12 bg-[#F5F5F7]/50">
+                 <div className="max-w-4xl mx-auto">
+                    <AnimatePresence mode="wait">
+                    {/* TEXT VIEW */}
+                    {bioViewMode === 'text' && (
+                      <motion.div
+                        key="text"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        transition={{
+                          type: 'spring',
+                          stiffness: 400,
+                          damping: 30,
+                          mass: 0.8
+                        }}
+                        className="space-y-8"
+                      >
+                        {/* Personal Story */}
+                        <div className="bg-white p-8 md:p-10 rounded-3xl border border-gray-100 shadow-sm">
+                           <h3 className="text-2xl font-bold mb-6 text-gray-900">{content.bio.journey_title}</h3>
+                           <div className="prose prose-gray max-w-none space-y-6 text-gray-700 leading-relaxed">
+                              <p className="text-lg" dangerouslySetInnerHTML={{ __html: content.bio.journey_p1 }} />
+                              <p dangerouslySetInnerHTML={{ __html: content.bio.journey_p2 }} />
+                              <p dangerouslySetInnerHTML={{ __html: content.bio.journey_p3 }} />
+                              <p dangerouslySetInnerHTML={{ __html: content.bio.journey_p4 }} />
+                              <p dangerouslySetInnerHTML={{ __html: content.bio.journey_p5 }} />
+                              <p dangerouslySetInnerHTML={{ __html: content.bio.journey_p6 }} />
+                              <ul className="list-disc pl-6 space-y-2">
+                                 {content.bio.journey_bullets.map((bullet, i) => (
+                                    <li key={i} dangerouslySetInnerHTML={{ __html: bullet }} />
+                                 ))}
+                              </ul>
+                              <p dangerouslySetInnerHTML={{ __html: content.bio.journey_p7 }} />
+                              <p dangerouslySetInnerHTML={{ __html: content.bio.journey_p8 }} />
+                              <p dangerouslySetInnerHTML={{ __html: content.bio.journey_p9 }} />
+                              <p className="text-lg font-semibold text-gray-900 pt-4" dangerouslySetInnerHTML={{ __html: content.bio.journey_conclusion }} />
+                           </div>
+                        </div>
+
+                        {/* Tools & Stack */}
+                        <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
+                           <h3 className="text-xl font-bold mb-6 text-gray-900">{content.bio.tools_title}</h3>
+                           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                              {['Figma', 'Bolt', 'Lovable', 'ZeroHeight', 'Notion', 'Loom', 'Claude', 'Perplexity', 'Midjourney', 'ChatGPT', 'Protopie', 'Adobe CC'].map(tool => (
+                                <span key={tool} className="px-4 py-2.5 bg-gray-50 text-gray-700 rounded-xl text-sm font-medium border border-gray-200 text-center hover:border-blue-300 hover:bg-blue-50 transition-colors">
+                                  {tool}
+                                </span>
+                              ))}
+                           </div>
+                        </div>
+
+                        {/* Education */}
+                        <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
+                           <h3 className="text-xl font-bold mb-6 text-gray-900">{content.bio.education_title}</h3>
+                           <div className="space-y-4">
+                              <div className="flex items-start">
+                                 <GraduationCap size={20} className="mr-3 mt-1 text-blue-600 flex-shrink-0" />
+                                 <div>
+                                    <h4 className="font-bold text-gray-900">{content.bio.education_master_title}</h4>
+                                    <p className="text-gray-600 text-sm">{content.bio.education_master_school}</p>
+                                 </div>
+                              </div>
+                              <div className="flex items-start">
+                                 <BookOpen size={20} className="mr-3 mt-1 text-blue-600 flex-shrink-0" />
+                                 <div>
+                                    <h4 className="font-bold text-gray-900">{content.bio.education_ux_title}</h4>
+                                    <p className="text-gray-600 text-sm">{content.bio.education_ux_school}</p>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                      </motion.div>
+                    )}
+
+                    {/* TIMELINE VIEW */}
+                    {bioViewMode === 'timeline' && (
+                      <motion.div
+                        key="timeline"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        transition={{
+                          type: 'spring',
+                          stiffness: 400,
+                          damping: 30,
+                          mass: 0.8
+                        }}
+                        className="bg-white p-8 md:p-10 rounded-3xl border border-gray-100 shadow-sm"
+                      >
+                        <h3 className="text-2xl font-bold mb-8 text-gray-900">{content.bio.timeline_title}</h3>
+                        <div className="space-y-12">
+                          {['2026', '2025', '2024', '2023', '2022', '2020-2021', '2018-2019', '2017-2018', '2016-2017', '2014-2016', '2010-2014', '2005-2010']
+                            .filter(year => (content.bio.timeline as any)[year])
+                            .map((year, idx) => {
+                            const items = (content.bio.timeline as any)[year] as string[];
+                            const colors = [
+                              { border: 'border-blue-200', dot: 'bg-blue-500', text: 'text-blue-600' },
+                              { border: 'border-indigo-200', dot: 'bg-indigo-500', text: 'text-indigo-600' },
+                              { border: 'border-purple-200', dot: 'bg-purple-500', text: 'text-purple-600' },
+                              { border: 'border-pink-200', dot: 'bg-pink-500', text: 'text-pink-600' },
+                              { border: 'border-orange-200', dot: 'bg-orange-500', text: 'text-orange-600' },
+                              { border: 'border-teal-200', dot: 'bg-teal-500', text: 'text-teal-600' },
+                              { border: 'border-cyan-200', dot: 'bg-cyan-500', text: 'text-cyan-600' },
+                              { border: 'border-emerald-200', dot: 'bg-emerald-500', text: 'text-emerald-600' },
+                              { border: 'border-amber-200', dot: 'bg-amber-500', text: 'text-amber-600' },
+                              { border: 'border-slate-200', dot: 'bg-slate-500', text: 'text-slate-600' },
+                              { border: 'border-gray-300', dot: 'bg-gray-500', text: 'text-gray-600' },
+                            ];
+                            const colorSet = colors[idx % colors.length];
+                            const totalYears = ['2026', '2025', '2024', '2023', '2022', '2020-2021', '2018-2019', '2017-2018', '2016-2017', '2014-2016', '2010-2014', '2005-2010'].filter(y => (content.bio.timeline as any)[y]).length;
+                            return (
+                              <div key={year} className={`relative pl-8 ${idx < totalYears - 1 ? `border-l-2 ${colorSet.border}` : ''}`}>
+                                <div className={`absolute -left-[9px] top-0 w-4 h-4 ${colorSet.dot} rounded-full`}></div>
+                                <div className={`text-2xl font-bold ${colorSet.text} mb-4`}>{year}</div>
+                                <ul className="space-y-3 text-gray-700">
+                                  {items.map((item: string, i: number) => (
+                                    <li key={i} className="flex items-start">
+                                      <span className="mr-3 mt-1.5 w-1.5 h-1.5 bg-gray-400 rounded-full flex-shrink-0" />
+                                      <span dangerouslySetInnerHTML={{ __html: item }} />
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </motion.div>
+                    )}
+                    </AnimatePresence>
+
+                 </div>
+              </div>
+
+              {/* Mobile Close Button */}
+              <div className="md:hidden absolute bottom-6 left-0 w-full flex justify-center pointer-events-none">
+                 <button
+                   onClick={() => setIsBioOpen(false)}
+                   className="pointer-events-auto px-6 py-3 bg-black text-white rounded-full shadow-xl flex items-center font-medium"
+                 >
+                    <X size={18} className="mr-2"/> {content.bio.close}
+                 </button>
+              </div>
+           </motion.div>
+        </div>
+      )}
+      </AnimatePresence>
+
       {/* Full Screen Testimonials Modal */}
+      <AnimatePresence>
       {isTestimonialsOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8 animate-in fade-in duration-300">
-           <div 
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8">
+           <motion.div
+             initial={{ opacity: 0 }}
+             animate={{ opacity: 1 }}
+             exit={{ opacity: 0 }}
+             transition={{ duration: 0.2 }}
              className="absolute inset-0 bg-white/95 backdrop-blur-xl"
              onClick={() => setIsTestimonialsOpen(false)}
            />
-           <div className="relative w-full max-w-7xl h-full flex flex-col bg-white/50 rounded-3xl md:rounded-[40px] overflow-hidden shadow-2xl border border-gray-200/50">
+           <motion.div
+             initial={{ opacity: 0, scale: 0.95, y: 20 }}
+             animate={{ opacity: 1, scale: 1, y: 0 }}
+             exit={{ opacity: 0, scale: 0.95, y: 20 }}
+             transition={{
+               type: 'spring',
+               stiffness: 300,
+               damping: 25,
+               mass: 0.5
+             }}
+             className="relative w-full max-w-7xl h-full flex flex-col bg-white/50 rounded-3xl md:rounded-[40px] overflow-hidden shadow-2xl border border-gray-200/50"
+           >
               
               {/* Modal Header */}
               <div className="flex flex-col md:flex-row justify-between items-center py-6 px-8 border-b border-gray-200/50 bg-white/80 backdrop-blur-md z-10">
@@ -1575,38 +2583,524 @@ const App: React.FC = () => {
                     <X size={18} className="mr-2"/> {content.testimonials.close}
                  </button>
               </div>
-           </div>
+           </motion.div>
         </div>
       )}
+      </AnimatePresence>
 
       {/* Booking Modal */}
+      <AnimatePresence>
       {isBookingOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8 animate-in fade-in duration-300">
-           <div
-             className="absolute inset-0 bg-white/95 backdrop-blur-xl"
-             onClick={() => setIsBookingOpen(false)}
-           />
-           <div className="relative w-full max-w-4xl h-[80vh] flex flex-col bg-white rounded-3xl overflow-hidden shadow-2xl border border-gray-200">
-              <div className="absolute top-4 right-4 z-10">
+        <div className="fixed inset-0 z-[100]">
+           <motion.div
+             initial={{ opacity: 0 }}
+             animate={{ opacity: 1 }}
+             exit={{ opacity: 0 }}
+             transition={{ duration: 0.3 }}
+             className="absolute inset-0 bg-[#111111]"
+           >
+              {/* Close button */}
+              <div className="absolute top-6 right-6 z-20">
                  <button
                    onClick={() => setIsBookingOpen(false)}
-                   className="p-2 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors"
+                   className="p-2.5 bg-white/10 hover:bg-white/20 text-white rounded-full transition-all duration-200 backdrop-blur-sm border border-white/10"
+                   aria-label="Close booking modal"
                  >
                     <X size={24} />
                  </button>
               </div>
-              <iframe
-                src="https://cal.com/victorsoussan/consulting-chat?user=victorsoussan&overlayCalendar=true&month=2025-12"
-                width="100%"
-                height="100%"
-                frameBorder="0"
-                title="Book a consultation with Victor"
-              ></iframe>
-           </div>
+
+              {/* Cal.com iframe - full page */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 20 }}
+                transition={{ duration: 0.4, delay: 0.1 }}
+                className="w-full h-full"
+              >
+                <iframe
+                  src="https://cal.com/victorsoussan/consulting-chat?user=victorsoussan&overlayCalendar=true&month=2025-12"
+                  width="100%"
+                  height="100%"
+                  frameBorder="0"
+                  title="Book a consultation with Victor"
+                  className="w-full h-full"
+                ></iframe>
+              </motion.div>
+           </motion.div>
         </div>
       )}
+      </AnimatePresence>
+
+      {/* Contact Form Modal */}
+      <AnimatePresence>
+      {isContactFormOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8">
+           <motion.div
+             initial={{ opacity: 0 }}
+             animate={{ opacity: 1 }}
+             exit={{ opacity: 0 }}
+             transition={{ duration: 0.2 }}
+             className="absolute inset-0 bg-white/95 backdrop-blur-xl"
+             onClick={() => setIsContactFormOpen(false)}
+           />
+           <motion.div
+             initial={{ opacity: 0, scale: 0.95, y: 20 }}
+             animate={{ opacity: 1, scale: 1, y: 0 }}
+             exit={{ opacity: 0, scale: 0.95, y: 20 }}
+             transition={{
+               type: 'spring',
+               stiffness: 300,
+               damping: 25,
+               mass: 0.5
+             }}
+             className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto bg-white rounded-3xl shadow-2xl border border-gray-200"
+           >
+              <div className="sticky top-0 bg-white/95 backdrop-blur-xl border-b border-gray-100 p-6 z-10">
+                <button
+                  onClick={() => setIsContactFormOpen(false)}
+                  className="absolute top-6 right-6 p-2 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors"
+                >
+                  <X size={20} />
+                </button>
+
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1, duration: 0.3 }}
+                  className="flex items-center space-x-4"
+                >
+                  <div className="relative">
+                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 overflow-hidden border-2 border-white shadow-lg">
+                      <img
+                        src="/images/victor-soussan.png"
+                        alt="Victor Soussan"
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%23f3f4f6" width="100" height="100"/><text x="50" y="50" font-size="40" text-anchor="middle" dy=".3em" fill="%236b7280">VS</text></svg>';
+                        }}
+                      />
+                    </div>
+                    <div className="absolute bottom-0 right-0 w-4 h-4 bg-green-500 rounded-full border-2 border-white" />
+                  </div>
+                  <div className="flex-1">
+                    <h2 className="text-2xl font-bold text-gray-900">Let's Work Together</h2>
+                    <p className="text-sm text-gray-600">I typically respond within 24 hours</p>
+                  </div>
+                </motion.div>
+              </div>
+
+              <div className="p-8">
+
+              <form
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  setIsSendingEmail(true);
+
+                  try {
+                    // Check if EmailJS is configured
+                    const isEmailJSConfigured = EMAILJS_CONFIG.SERVICE_ID !== 'YOUR_SERVICE_ID'
+                      && EMAILJS_CONFIG.TEMPLATE_ID !== 'YOUR_TEMPLATE_ID'
+                      && EMAILJS_CONFIG.PUBLIC_KEY !== 'YOUR_PUBLIC_KEY';
+
+                    if (isEmailJSConfigured) {
+                      // Send email using EmailJS
+                      await emailjs.send(
+                        EMAILJS_CONFIG.SERVICE_ID,
+                        EMAILJS_CONFIG.TEMPLATE_ID,
+                        {
+                          from_name: contactForm.name,
+                          from_email: contactForm.email,
+                          company: contactForm.company || 'N/A',
+                          project_type: contactForm.projectType,
+                          selected_services: contactForm.selectedServices.join(', ') || 'None selected',
+                          duration: contactForm.duration || 'Not specified',
+                          budget: contactForm.budget || 'Not specified',
+                          message: contactForm.message,
+                          to_email: 'victorsoussan@gmail.com'
+                        },
+                        EMAILJS_CONFIG.PUBLIC_KEY
+                      );
+
+                      // Success
+                      setToastMessage('Message sent successfully! I\'ll get back to you soon.');
+                      setShowToast(true);
+                      setIsContactFormOpen(false);
+                      setContactForm({ name: '', company: '', email: '', message: '', duration: '', budget: '', projectType: '', selectedServices: [] });
+
+                      // Hide toast after 5 seconds
+                      setTimeout(() => setShowToast(false), 5000);
+                    } else {
+                      // Fallback to mailto if EmailJS is not configured
+                      const projectTypeLabels = {
+                        'startup': 'Startup / MVP',
+                        'established': 'Established Company',
+                        'long-term': 'Long-term Partnership'
+                      };
+
+                      const subject = `New Project Inquiry from ${contactForm.name}`;
+                      const body = `Name: ${contactForm.name}
+Company: ${contactForm.company || 'N/A'}
+Email: ${contactForm.email}
+Project Type: ${projectTypeLabels[contactForm.projectType as keyof typeof projectTypeLabels] || contactForm.projectType}
+Selected Services: ${contactForm.selectedServices.join(', ') || 'None selected'}
+
+Message:
+${contactForm.message}`;
+
+                      window.location.href = `mailto:victorsoussan@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+                      setToastMessage('Opening your email client...');
+                      setShowToast(true);
+                      setIsContactFormOpen(false);
+                      setContactForm({ name: '', company: '', email: '', message: '', duration: '', budget: '', projectType: '', selectedServices: [] });
+
+                      setTimeout(() => setShowToast(false), 3000);
+                    }
+                  } catch (error) {
+                    console.error('Failed to send email:', error);
+                    setToastMessage('Failed to send message. Please try again or email me directly at victorsoussan@gmail.com');
+                    setShowToast(true);
+                    setTimeout(() => setShowToast(false), 5000);
+                  } finally {
+                    setIsSendingEmail(false);
+                  }
+                }}
+                className="space-y-6"
+              >
+                {/* Project Type Selector */}
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.15, duration: 0.3 }}
+                >
+                  <label className="block text-sm font-medium text-gray-700 mb-3">
+                    What best describes your situation? *
+                  </label>
+                  <div className="grid md:grid-cols-3 gap-3">
+                    {[
+                      { id: 'startup', IconComponent: Rocket, label: 'Startup / MVP', desc: 'Early stage product' },
+                      { id: 'established', IconComponent: Buildings, label: 'Established Company', desc: 'Optimize & scale' },
+                      { id: 'long-term', IconComponent: HandHeart, label: 'Long-term Partnership', desc: '6+ months engagement' }
+                    ].map((type) => (
+                      <button
+                        key={type.id}
+                        type="button"
+                        onClick={() => setContactForm({ ...contactForm, projectType: type.id as any, selectedServices: [] })}
+                        className={`relative p-4 rounded-2xl border-2 transition-all duration-200 text-left ${
+                          contactForm.projectType === type.id
+                            ? 'border-gray-900 bg-gray-50 shadow-md'
+                            : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                        }`}
+                      >
+                        <div className="mb-2">
+                          <type.IconComponent size={32} weight="duotone" className="text-gray-900" />
+                        </div>
+                        <div className="font-medium text-gray-900 text-sm mb-1">{type.label}</div>
+                        <div className="text-xs text-gray-500">{type.desc}</div>
+                        {contactForm.projectType === type.id && (
+                          <div className="absolute top-3 right-3">
+                            <CheckCircle2 size={18} className="text-gray-900" />
+                          </div>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                </motion.div>
+
+                {/* Service Selection - Dynamic based on project type */}
+                {contactForm.projectType && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <label className="block text-sm font-medium text-gray-700 mb-3">
+                      What services are you interested in? (Select all that apply)
+                    </label>
+
+                    {/* Startup Services */}
+                    {contactForm.projectType === 'startup' && (
+                      <div className="grid md:grid-cols-2 gap-3">
+                        {[
+                          { id: 'mvp-kit', label: 'Starter Kit Produit', price: '6-8k €', desc: 'Proto, wireframes, UI kit' },
+                          { id: 'mvp-full', label: 'MVP Build Complete', price: '14-40k €', desc: '1-3 months, full product' },
+                          { id: 'branding', label: 'Initial Branding', price: 'Custom', desc: 'Logo, colors, identity' },
+                          { id: 'design-system', label: 'UI Kit & Design System', price: '8-15k €', desc: 'Components, guidelines' },
+                          { id: 'fractional-lead', label: 'Fractional Design Lead', price: '2.8k €/mo', desc: '2 days/week + team setup' }
+                        ].map((service) => (
+                          <button
+                            key={service.id}
+                            type="button"
+                            onClick={() => {
+                              const isSelected = contactForm.selectedServices.includes(service.id);
+                              setContactForm({
+                                ...contactForm,
+                                selectedServices: isSelected
+                                  ? contactForm.selectedServices.filter(s => s !== service.id)
+                                  : [...contactForm.selectedServices, service.id]
+                              });
+                            }}
+                            className={`relative p-4 rounded-xl border text-left transition-all duration-200 ${
+                              contactForm.selectedServices.includes(service.id)
+                                ? 'border-gray-900 bg-gray-50 shadow-sm'
+                                : 'border-gray-200 hover:border-gray-300'
+                            }`}
+                          >
+                            <div className="flex items-start justify-between mb-2">
+                              <div className="font-medium text-sm text-gray-900">{service.label}</div>
+                              {contactForm.selectedServices.includes(service.id) && (
+                                <CheckCircle2 size={16} className="text-gray-900 flex-shrink-0" />
+                              )}
+                            </div>
+                            <div className="text-xs text-gray-600 mb-1">{service.desc}</div>
+                            <div className="text-xs font-medium text-gray-900">{service.price}</div>
+                          </button>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Established Company Services */}
+                    {contactForm.projectType === 'established' && (
+                      <div className="grid md:grid-cols-2 gap-3">
+                        {[
+                          { id: 'conversion-opt', label: 'Conversion Optimization', price: '450-700 €/j', desc: 'Onboarding, checkout flows' },
+                          { id: 'fractional-lead', label: 'Fractional Design Lead', price: '2.8k €/mo', desc: 'Strategic guidance, 2d/week' },
+                          { id: 'design-system-adv', label: 'Design System Creation/Audit', price: '15-30k €', desc: 'Enterprise-grade system' },
+                          { id: 'product-strategy', label: 'Product Strategy Workshop', price: '3-5k €', desc: 'Vision, roadmap alignment' },
+                          { id: 'ux-audit', label: 'UX Audit & Recommendations', price: '450-700 €/j', desc: 'Full product analysis' }
+                        ].map((service) => (
+                          <button
+                            key={service.id}
+                            type="button"
+                            onClick={() => {
+                              const isSelected = contactForm.selectedServices.includes(service.id);
+                              setContactForm({
+                                ...contactForm,
+                                selectedServices: isSelected
+                                  ? contactForm.selectedServices.filter(s => s !== service.id)
+                                  : [...contactForm.selectedServices, service.id]
+                              });
+                            }}
+                            className={`relative p-4 rounded-xl border text-left transition-all duration-200 ${
+                              contactForm.selectedServices.includes(service.id)
+                                ? 'border-gray-900 bg-gray-50 shadow-sm'
+                                : 'border-gray-200 hover:border-gray-300'
+                            }`}
+                          >
+                            <div className="flex items-start justify-between mb-2">
+                              <div className="font-medium text-sm text-gray-900">{service.label}</div>
+                              {contactForm.selectedServices.includes(service.id) && (
+                                <CheckCircle2 size={16} className="text-gray-900 flex-shrink-0" />
+                              )}
+                            </div>
+                            <div className="text-xs text-gray-600 mb-1">{service.desc}</div>
+                            <div className="text-xs font-medium text-gray-900">{service.price}</div>
+                          </button>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Long-term Partnership */}
+                    {contactForm.projectType === 'long-term' && (
+                      <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-6 rounded-2xl border border-gray-200">
+                        <div className="flex items-start space-x-3 mb-4">
+                          <HandHeart size={40} weight="duotone" className="text-gray-900 flex-shrink-0" />
+                          <div>
+                            <h3 className="font-semibold text-gray-900 mb-1">Long-term Product Design Partnership</h3>
+                            <p className="text-sm text-gray-600">For missions of 6+ months, I offer hands-on product design and/or leadership:</p>
+                          </div>
+                        </div>
+
+                        {/* Two columns: Hands-on Design & Leadership */}
+                        <div className="grid md:grid-cols-2 gap-4 mb-4">
+                          {/* Hands-on Product Design */}
+                          <div>
+                            <h4 className="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-2">Hands-on Product Design</h4>
+                            <ul className="space-y-2 text-sm text-gray-700">
+                              <li className="flex items-start space-x-2">
+                                <CheckCircle2 size={16} className="text-green-600 flex-shrink-0 mt-0.5" />
+                                <span>User research & testing</span>
+                              </li>
+                              <li className="flex items-start space-x-2">
+                                <CheckCircle2 size={16} className="text-green-600 flex-shrink-0 mt-0.5" />
+                                <span>UX/UI design (Figma)</span>
+                              </li>
+                              <li className="flex items-start space-x-2">
+                                <CheckCircle2 size={16} className="text-green-600 flex-shrink-0 mt-0.5" />
+                                <span>Design system creation</span>
+                              </li>
+                              <li className="flex items-start space-x-2">
+                                <CheckCircle2 size={16} className="text-green-600 flex-shrink-0 mt-0.5" />
+                                <span>Prototypes & user flows</span>
+                              </li>
+                            </ul>
+                          </div>
+
+                          {/* Design Leadership */}
+                          <div>
+                            <h4 className="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-2">Design Leadership</h4>
+                            <ul className="space-y-2 text-sm text-gray-700">
+                              <li className="flex items-start space-x-2">
+                                <CheckCircle2 size={16} className="text-green-600 flex-shrink-0 mt-0.5" />
+                                <span>Product strategy & vision</span>
+                              </li>
+                              <li className="flex items-start space-x-2">
+                                <CheckCircle2 size={16} className="text-green-600 flex-shrink-0 mt-0.5" />
+                                <span>Team recruitment & mentorship</span>
+                              </li>
+                              <li className="flex items-start space-x-2">
+                                <CheckCircle2 size={16} className="text-green-600 flex-shrink-0 mt-0.5" />
+                                <span>Process & workflow setup</span>
+                              </li>
+                              <li className="flex items-start space-x-2">
+                                <CheckCircle2 size={16} className="text-green-600 flex-shrink-0 mt-0.5" />
+                                <span>Stakeholder alignment</span>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+
+                        <div className="mt-4 pt-4 border-t border-gray-200">
+                          <div className="text-xs text-gray-500 mb-1">Pricing</div>
+                          <div className="text-sm font-semibold text-gray-900">Custom pricing based on engagement level (part-time or full-time)</div>
+                        </div>
+                      </div>
+                    )}
+                  </motion.div>
+                )}
+
+                {/* Contact Details - Only show if project type selected */}
+                {contactForm.projectType && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.3 }}
+                    className="space-y-6"
+                  >
+                    {/* Name & Company */}
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Name *
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          value={contactForm.name}
+                          onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
+                          className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-gray-900 focus:ring-2 focus:ring-gray-900/10 outline-none transition-all"
+                          placeholder="John Doe"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Company
+                        </label>
+                        <input
+                          type="text"
+                          value={contactForm.company}
+                          onChange={(e) => setContactForm({ ...contactForm, company: e.target.value })}
+                          className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-gray-900 focus:ring-2 focus:ring-gray-900/10 outline-none transition-all"
+                          placeholder="Acme Inc."
+                        />
+                      </div>
+                    </div>
+
+                    {/* Email */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Email *
+                      </label>
+                      <input
+                        type="email"
+                        required
+                        value={contactForm.email}
+                        onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
+                        className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-gray-900 focus:ring-2 focus:ring-gray-900/10 outline-none transition-all"
+                        placeholder="john@example.com"
+                      />
+                    </div>
+
+                    {/* Message */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Tell me about your project *
+                      </label>
+                      <textarea
+                        required
+                        value={contactForm.message}
+                        onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
+                        rows={5}
+                        className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-gray-900 focus:ring-2 focus:ring-gray-900/10 outline-none transition-all resize-none"
+                        placeholder="Share your vision, challenges, timeline, or any specific questions..."
+                      />
+                    </div>
+
+                    {/* Helper text based on selection */}
+                    {contactForm.selectedServices.length > 0 && (
+                      <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
+                        <div className="flex items-start space-x-2">
+                          <Lightbulb size={18} className="text-blue-600 flex-shrink-0 mt-0.5" />
+                          <div className="text-sm text-blue-900">
+                            <span className="font-medium">Selected services:</span> {contactForm.selectedServices.join(', ')}. I'll prepare a detailed proposal based on your needs.
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </motion.div>
+                )}
+
+                {/* Submit Button - Only show if project type selected */}
+                {contactForm.projectType && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="flex items-center justify-end space-x-3 pt-4 border-t border-gray-100"
+                  >
+                    <button
+                      type="button"
+                      onClick={() => setIsContactFormOpen(false)}
+                      className="px-6 py-3 text-gray-700 hover:text-gray-900 font-medium transition-colors"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={isSendingEmail}
+                      className="px-8 py-3 bg-gradient-to-br from-gray-900 to-gray-800 hover:from-black hover:to-gray-900 text-white rounded-full font-medium transition-all duration-200 shadow-lg shadow-gray-900/20 flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {isSendingEmail ? (
+                        <>
+                          <motion.div
+                            animate={{ rotate: 360 }}
+                            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                            className="w-4 h-4 border-2 border-white border-t-transparent rounded-full"
+                          />
+                          <span>Sending...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Send size={18} />
+                          <span>Send Message</span>
+                        </>
+                      )}
+                    </button>
+                  </motion.div>
+                )}
+              </form>
+              </div>
+           </motion.div>
+        </div>
+      )}
+      </AnimatePresence>
 
       {/* Lab Modal */}
+      <AnimatePresence>
       {selectedLabItem && LAB_PREVIEWS[selectedLabItem as keyof typeof LAB_PREVIEWS] && (() => {
         const item = LAB_PREVIEWS[selectedLabItem as keyof typeof LAB_PREVIEWS];
         const colorClasses = {
@@ -1635,15 +3129,26 @@ const App: React.FC = () => {
 
         return (
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8">
-             <div
-               className="absolute inset-0 bg-black/80 backdrop-blur-md animate-in fade-in duration-300"
+             <motion.div
+               initial={{ opacity: 0 }}
+               animate={{ opacity: 1 }}
+               exit={{ opacity: 0 }}
+               transition={{ duration: 0.2 }}
+               className="absolute inset-0 bg-black/80 backdrop-blur-md"
                onClick={() => setSelectedLabItem(null)}
              />
-             <div className={`
-               relative w-full max-w-5xl bg-gradient-to-br from-gray-900 to-black rounded-3xl overflow-hidden shadow-2xl border border-white/10
-               md:animate-in md:fade-in md:zoom-in-95 md:duration-300
-               animate-in slide-in-from-bottom duration-500
-             `}>
+             <motion.div
+               initial={{ opacity: 0, scale: 0.95, y: 20 }}
+               animate={{ opacity: 1, scale: 1, y: 0 }}
+               exit={{ opacity: 0, scale: 0.95, y: 20 }}
+               transition={{
+                 type: 'spring',
+                 stiffness: 300,
+                 damping: 25,
+                 mass: 0.5
+               }}
+               className="relative w-full max-w-5xl bg-gradient-to-br from-gray-900 to-black rounded-3xl overflow-hidden shadow-2xl border border-white/10"
+             >
                 {/* Close button */}
                 <button
                   onClick={() => setSelectedLabItem(null)}
@@ -1706,10 +3211,264 @@ const App: React.FC = () => {
                       </a>
                    </div>
                 </div>
-             </div>
+             </motion.div>
           </div>
         );
       })()}
+      </AnimatePresence>
+
+      {/* Resume Modal */}
+      <AnimatePresence>
+      {isResumeOpen && (
+        <div className="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto">
+          {/* Backdrop */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            onClick={() => setIsResumeOpen(false)}
+            className="absolute inset-0 bg-black/20 backdrop-blur-sm no-print"
+          />
+
+          {/* Modal Content */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            transition={{
+              type: 'spring',
+              stiffness: 300,
+              damping: 25,
+              mass: 0.5
+            }}
+            className="relative w-full max-w-5xl my-8 mx-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="bg-white rounded-xl shadow-xl overflow-hidden border border-gray-200/50">
+              {/* Header with Actions - Hide on print */}
+              <div className="sticky top-0 z-10 bg-white/80 backdrop-blur-xl border-b border-gray-100 px-8 py-5 no-print">
+                <div className="flex items-center justify-between mb-5">
+                  <div>
+                    <h2 className="text-2xl font-semibold text-gray-900 tracking-tight">
+                      Résumé
+                    </h2>
+                    <p className="text-sm text-gray-500 mt-0.5">Product Design Lead</p>
+                  </div>
+                  <button
+                    onClick={() => setIsResumeOpen(false)}
+                    className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                  >
+                    <X size={20} className="text-gray-500" />
+                  </button>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex flex-wrap gap-2">
+                  {/* Language Toggle */}
+                  <div className="relative flex items-center bg-gray-100 rounded-lg p-1">
+                    <motion.div
+                      className="absolute bg-gray-900 rounded-md"
+                      initial={false}
+                      animate={{
+                        x: resumeLang === 'fr' ? 0 : '100%',
+                        width: '50%'
+                      }}
+                      transition={{
+                        type: 'spring',
+                        stiffness: 500,
+                        damping: 35,
+                        mass: 0.8
+                      }}
+                      style={{
+                        height: 'calc(100% - 4px)',
+                        top: '2px',
+                        left: '2px'
+                      }}
+                    />
+                    <button
+                      onClick={() => setResumeLang('fr')}
+                      className={`relative z-10 px-4 py-1.5 text-xs font-medium rounded-md transition-colors ${
+                        resumeLang === 'fr' ? 'text-white' : 'text-gray-600'
+                      }`}
+                    >
+                      FR
+                    </button>
+                    <button
+                      onClick={() => setResumeLang('en')}
+                      className={`relative z-10 px-4 py-1.5 text-xs font-medium rounded-md transition-colors ${
+                        resumeLang === 'en' ? 'text-white' : 'text-gray-600'
+                      }`}
+                    >
+                      EN
+                    </button>
+                  </div>
+
+                  {/* Download Button */}
+                  <button
+                    onClick={handleDownloadResume}
+                    className="px-4 py-1.5 accent-blue text-white rounded-full text-xs font-medium btn-pill flex items-center gap-1.5"
+                  >
+                    <Download size={14} />
+                    {TRANSLATIONS[resumeLang].resume.download_btn}
+                  </button>
+
+                  {/* Copy Button */}
+                  <button
+                    onClick={handleCopyResume}
+                    className="px-4 py-1.5 glass-effect text-gray-700 rounded-full text-xs font-medium btn-pill flex items-center gap-1.5"
+                  >
+                    <Copy size={14} />
+                    {copiedResume ? TRANSLATIONS[resumeLang].resume.copied_message : TRANSLATIONS[resumeLang].resume.copy_btn}
+                  </button>
+                </div>
+              </div>
+
+              {/* Resume Content - Printable */}
+              <div id="resume-print-content" className="px-12 py-10 max-h-[calc(100vh-200px)] overflow-y-auto bg-white">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={resumeLang}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    {/* Header */}
+                    <div className="mb-10">
+                      <h1 className="text-3xl font-semibold text-gray-900 tracking-tight mb-4">
+                        {TRANSLATIONS[resumeLang].resume.title}
+                      </h1>
+
+                      {/* Contact Info with Copy Buttons */}
+                      <div className="space-y-2 mb-4">
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={handleCopyEmail}
+                            className="px-3 py-1.5 glass-effect text-gray-700 rounded-full text-xs font-medium btn-pill flex items-center gap-2 hover:text-blue-600"
+                          >
+                            <Mail size={12} />
+                            victor.soussan@me.com
+                            <Copy size={10} className="opacity-50" />
+                          </button>
+                          {copiedEmail && (
+                            <span className="text-xs text-green-600 font-medium">Copié !</span>
+                          )}
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={handleCopyPhone}
+                            className="px-3 py-1.5 glass-effect text-gray-700 rounded-full text-xs font-medium btn-pill flex items-center gap-2 hover:text-blue-600"
+                          >
+                            <span>📱</span>
+                            +33 6 64 80 08 32
+                            <Copy size={10} className="opacity-50" />
+                          </button>
+                          {copiedPhone && (
+                            <span className="text-xs text-green-600 font-medium">Copié !</span>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="flex gap-4 text-xs">
+                        <a href={`https://${TRANSLATIONS[resumeLang].resume.linkedin}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-700 transition-colors underline">
+                          {TRANSLATIONS[resumeLang].resume.linkedin}
+                        </a>
+                        <span className="text-gray-300">•</span>
+                        <a href={`https://${TRANSLATIONS[resumeLang].resume.portfolio}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-700 transition-colors underline">
+                          {TRANSLATIONS[resumeLang].resume.portfolio}
+                        </a>
+                      </div>
+                    </div>
+
+                    {/* Professional Summary */}
+                    <section className="mb-10">
+                      <h2 className="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-3 pb-2 border-b border-gray-200">
+                        {TRANSLATIONS[resumeLang].resume.summary_title}
+                      </h2>
+                      <p className="text-sm text-gray-700 leading-relaxed">
+                        {TRANSLATIONS[resumeLang].resume.summary}
+                      </p>
+                    </section>
+
+                    {/* Professional Experience */}
+                    <section className="mb-10">
+                      <h2 className="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-4 pb-2 border-b border-gray-200">
+                        {TRANSLATIONS[resumeLang].resume.experience_title}
+                      </h2>
+                      <div className="space-y-6">
+                        {TRANSLATIONS[resumeLang].resume.experience.map((exp, idx) => (
+                          <div key={idx} className="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-1 before:w-1.5 before:h-1.5 before:bg-gray-400 before:rounded-full">
+                            <div className="flex justify-between items-start mb-2">
+                              <div>
+                                <h3 className="text-sm font-semibold text-gray-900">{exp.role}</h3>
+                                <p className="text-xs text-gray-600 mt-0.5">{exp.company}</p>
+                              </div>
+                              <span className="text-xs text-gray-500 whitespace-nowrap ml-4 font-medium">{exp.period}</span>
+                            </div>
+                            <ul className="space-y-1.5 mt-2">
+                              {exp.achievements.map((ach, i) => (
+                                <li key={i} className="text-xs text-gray-700 leading-relaxed pl-3 relative before:content-['–'] before:absolute before:left-0 before:text-gray-400">
+                                  {ach}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        ))}
+                      </div>
+                    </section>
+
+                    {/* Skills */}
+                    <section className="mb-10">
+                      <h2 className="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-3 pb-2 border-b border-gray-200">
+                        {TRANSLATIONS[resumeLang].resume.skills_title}
+                      </h2>
+                      <div className="flex flex-wrap gap-2">
+                        {TRANSLATIONS[resumeLang].resume.skills.map((skill, idx) => (
+                          <span key={idx} className="px-3 py-1 bg-gray-100 text-gray-700 rounded-md text-xs font-medium">
+                            {skill}
+                          </span>
+                        ))}
+                      </div>
+                    </section>
+
+                    {/* Tools */}
+                    <section className="mb-10">
+                      <h2 className="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-3 pb-2 border-b border-gray-200">
+                        {TRANSLATIONS[resumeLang].resume.tools_title}
+                      </h2>
+                      <p className="text-xs text-gray-700 leading-relaxed">{TRANSLATIONS[resumeLang].resume.tools}</p>
+                    </section>
+
+                    {/* Education */}
+                    <section className="mb-10">
+                      <h2 className="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-3 pb-2 border-b border-gray-200">
+                        {TRANSLATIONS[resumeLang].resume.education_title}
+                      </h2>
+                      <ul className="space-y-2">
+                        {TRANSLATIONS[resumeLang].resume.education.map((edu, idx) => (
+                          <li key={idx} className="text-xs text-gray-700 pl-3 relative before:content-['–'] before:absolute before:left-0 before:text-gray-400">
+                            {edu}
+                          </li>
+                        ))}
+                      </ul>
+                    </section>
+
+                    {/* Languages */}
+                    <section>
+                      <h2 className="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-3 pb-2 border-b border-gray-200">
+                        {TRANSLATIONS[resumeLang].resume.languages_title}
+                      </h2>
+                      <p className="text-xs text-gray-700">{TRANSLATIONS[resumeLang].resume.languages}</p>
+                    </section>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      )}
+      </AnimatePresence>
 
       {/* Contact Section */}
       <section id="contact" className="py-24 px-6 bg-[#1D1D1F] text-white">
@@ -1720,35 +3479,556 @@ const App: React.FC = () => {
           </p>
           
           <div className="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-6">
-             <a href="mailto:victorsoussan@gmail.com" className="px-8 py-4 bg-white text-black rounded-full font-medium text-lg hover:bg-gray-200 transition-colors flex items-center w-full md:w-auto justify-center">
-                <Mail className="mr-2" size={20} /> {content.contact.email}
-             </a>
-             <button 
+             {/* Shoot me a note button with copy email below */}
+             <div className="flex flex-col items-center space-y-2">
+               <button
+                 onClick={() => setIsContactFormOpen(true)}
+                 className="px-8 py-4 glass-effect text-black rounded-full font-medium text-lg btn-pill flex items-center w-full md:w-auto justify-center hover:text-blue-600"
+               >
+                 <Mail className="mr-2" size={20} /> Shoot me a note
+               </button>
+               <button
+                 onClick={(e) => {
+                   e.stopPropagation();
+                   navigator.clipboard.writeText('victorsoussan@gmail.com').then(() => {
+                     setCopiedEmail(true);
+                     setTimeout(() => setCopiedEmail(false), 2000);
+                   });
+                 }}
+                 className="flex items-center space-x-1.5 text-xs text-gray-400 hover:text-gray-200 transition-colors duration-200 px-3 py-1.5 rounded-full hover:bg-white/5"
+               >
+                 {copiedEmail ? (
+                   <>
+                     <CheckCircle2 size={12} className="text-green-400" />
+                     <span className="text-green-400">Email copied!</span>
+                   </>
+                 ) : (
+                   <>
+                     <Copy size={12} />
+                     <span>Copy email address</span>
+                   </>
+                 )}
+               </button>
+             </div>
+
+             <button
                onClick={() => setIsBookingOpen(true)}
-               className="px-8 py-4 bg-blue-600 text-white rounded-full font-medium text-lg hover:bg-blue-700 transition-colors flex items-center w-full md:w-auto justify-center"
+               className="px-8 py-4 accent-blue text-white rounded-full font-medium text-lg btn-pill flex items-center w-full md:w-auto justify-center"
              >
                 <Calendar className="mr-2" size={20} /> {content.contact.book}
              </button>
-             <a href="https://linkedin.com/in/victorsoussan/" target="_blank" rel="noreferrer" className="px-8 py-4 bg-transparent border border-white/30 text-white rounded-full font-medium text-lg hover:bg-white/10 transition-colors flex items-center w-full md:w-auto justify-center">
-                <Linkedin className="mr-2" size={20} /> {content.contact.linkedin}
-             </a>
           </div>
         </div>
       </section>
       
       {/* Footer */}
-      <footer className="bg-[#1D1D1F] text-gray-500 py-12 px-6 border-t border-gray-800">
-         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center">
-            <div className="mb-4 md:mb-0">
-               <span className="font-bold text-white">Victor Soussan</span>
-               <span className="mx-2">•</span>
-               <span>Senior Product Design Lead</span>
+      <footer className="bg-[#1D1D1F] text-gray-500 py-16 px-6 border-t border-gray-800">
+         <div className="max-w-6xl mx-auto">
+            {/* Navigation Links */}
+            <div className="flex flex-wrap justify-center gap-6 mb-8 pb-8 border-b border-gray-800">
+               <button
+                 onClick={() => scrollToSection('services')}
+                 className="text-sm text-gray-400 hover:text-white transition-colors duration-200"
+               >
+                 {content.nav.services}
+               </button>
+               <button
+                 onClick={() => scrollToSection('bio')}
+                 className="text-sm text-gray-400 hover:text-white transition-colors duration-200"
+               >
+                 {content.nav.bio}
+               </button>
+               <button
+                 onClick={() => scrollToSection('projects')}
+                 className="text-sm text-gray-400 hover:text-white transition-colors duration-200"
+               >
+                 {content.nav.projects}
+               </button>
+               <button
+                 onClick={() => scrollToSection('lab')}
+                 className="text-sm text-gray-400 hover:text-white transition-colors duration-200 flex items-center"
+               >
+                 <FlaskConical size={14} className="mr-1.5" />
+                 {content.nav.lab}
+               </button>
+               <button
+                 onClick={() => scrollToSection('testimonials')}
+                 className="text-sm text-gray-400 hover:text-white transition-colors duration-200"
+               >
+                 {content.nav.testimonials}
+               </button>
+               <button
+                 onClick={() => scrollToSection('contact')}
+                 className="text-sm text-gray-400 hover:text-white transition-colors duration-200"
+               >
+                 {content.nav.contact}
+               </button>
+               <a
+                 href="https://linkedin.com/in/victorsoussan/"
+                 target="_blank"
+                 rel="noreferrer"
+                 className="text-sm text-gray-400 hover:text-white transition-colors duration-200 flex items-center"
+               >
+                 <Linkedin size={14} className="mr-1.5" />
+                 LinkedIn
+               </a>
             </div>
-            <div className="text-sm">
-               © {new Date().getFullYear()} — Designed & Built with React & Tailwind
+
+            {/* Footer Info */}
+            <div className="flex flex-col md:flex-row justify-between items-center">
+               <div className="mb-4 md:mb-0">
+                  <span className="font-bold text-white">Victor Soussan</span>
+                  <span className="mx-2">•</span>
+                  <span>Senior Product Design Lead</span>
+               </div>
+               <div className="text-sm">
+                  © {new Date().getFullYear()} — Designed & Built with React & Tailwind
+               </div>
             </div>
          </div>
       </footer>
+
+      {/* Service Gallery Modal */}
+      <AnimatePresence>
+        {selectedServiceGallery && (
+          <div className="fixed inset-0 z-[100]">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="absolute inset-0 bg-white overflow-auto"
+            >
+              {/* Close button - fixed top right */}
+              <button
+                onClick={() => setSelectedServiceGallery(null)}
+                className="fixed top-6 right-6 z-30 p-3 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors shadow-lg"
+                aria-label="Close gallery"
+              >
+                <X size={24} />
+              </button>
+
+              {/* Header with Icon */}
+              <div className="sticky top-0 z-20 bg-white border-b border-gray-200 px-8 py-6">
+                <div className="max-w-7xl mx-auto flex items-center gap-4">
+                  {selectedServiceGallery === 'execution' && (
+                    <div className="p-4 bg-pink-50 rounded-2xl text-pink-600 flex-shrink-0">
+                      <PenTool size={32} />
+                    </div>
+                  )}
+                  {selectedServiceGallery === 'utility' && (
+                    <div className="p-4 bg-blue-50 rounded-2xl text-blue-600 flex-shrink-0">
+                      <Zap size={32} />
+                    </div>
+                  )}
+                  {selectedServiceGallery === 'efficiency' && (
+                    <div className="p-4 bg-orange-50 rounded-2xl text-orange-600 flex-shrink-0">
+                      <Settings size={32} />
+                    </div>
+                  )}
+                  {selectedServiceGallery === 'impact' && (
+                    <div className="p-4 bg-teal-50 rounded-2xl text-teal-600 flex-shrink-0">
+                      <Users size={32} />
+                    </div>
+                  )}
+                  <div>
+                    <h2 className="text-3xl font-bold text-gray-900">
+                      {selectedServiceGallery === 'execution' && content.services.execution}
+                      {selectedServiceGallery === 'utility' && content.services.utility}
+                      {selectedServiceGallery === 'efficiency' && content.services.efficiency}
+                      {selectedServiceGallery === 'impact' && content.services.impact}
+                    </h2>
+                    <p className="text-sm text-gray-500 mt-1">Examples & Deliverables</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Gallery Grid */}
+              <div className="px-8 py-12">
+                <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-6">
+                  {/* Hands-on Execution Gallery */}
+                  {selectedServiceGallery === 'execution' && (
+                    <>
+                      <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
+                        <img
+                          src="/images/bd-sketches/07 - Designing the Micro-Interaction - no legend.jpg"
+                          alt="Micro-interaction design"
+                          className="w-full h-auto object-cover"
+                        />
+                        <div className="p-4 bg-white">
+                          <p className="text-sm text-gray-700 font-medium">Designing micro-interactions</p>
+                        </div>
+                      </div>
+                      <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
+                        <img
+                          src="/images/bd-sketches/09 - Prototypage haute-fidélité et spécifications.jpg"
+                          alt="High-fidelity prototyping"
+                          className="w-full h-auto object-cover"
+                        />
+                        <div className="p-4 bg-white">
+                          <p className="text-sm text-gray-700 font-medium">Hi-fi prototyping & interaction specs</p>
+                        </div>
+                      </div>
+                      <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
+                        <img
+                          src="/images/bd-sketches/06b - Prototyping La Bulle.jpg"
+                          alt="Prototyping features"
+                          className="w-full h-auto object-cover"
+                        />
+                        <div className="p-4 bg-white">
+                          <p className="text-sm text-gray-700 font-medium">Feature prototyping & validation</p>
+                        </div>
+                      </div>
+                      <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
+                        <img
+                          src="/images/bd-sketches/16 - Des interactions fluides pour la gestion des médias (CRUD).jpg"
+                          alt="Fluid interactions"
+                          className="w-full h-auto object-cover"
+                        />
+                        <div className="p-4 bg-white">
+                          <p className="text-sm text-gray-700 font-medium">Fluid CRUD interactions for media management</p>
+                        </div>
+                      </div>
+                      <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
+                        <img
+                          src="/images/bd-sketches/micro interaction design on mobile.jpg"
+                          alt="Mobile micro-interactions"
+                          className="w-full h-auto object-cover"
+                        />
+                        <div className="p-4 bg-white">
+                          <p className="text-sm text-gray-700 font-medium">Mobile micro-interaction design</p>
+                        </div>
+                      </div>
+                      <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
+                        <img
+                          src="/images/bd-sketches/interaction and motion design with feedbacks.jpg"
+                          alt="Motion design"
+                          className="w-full h-auto object-cover"
+                        />
+                        <div className="p-4 bg-white">
+                          <p className="text-sm text-gray-700 font-medium">Interaction & motion design with feedback loops</p>
+                        </div>
+                      </div>
+                    </>
+                  )}
+
+                  {/* Product Utility Gallery */}
+                  {selectedServiceGallery === 'utility' && (
+                    <>
+                      <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
+                        <img
+                          src="/images/bd-sketches/03 - Deep user observation - empathy.jpg"
+                          alt="User observation"
+                          className="w-full h-auto object-cover"
+                        />
+                        <div className="p-4 bg-white">
+                          <p className="text-sm text-gray-700 font-medium">Deep user observation & empathy research</p>
+                        </div>
+                      </div>
+                      <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
+                        <img
+                          src="/images/bd-sketches/15d - research field observation with use of the product.jpg"
+                          alt="Field research"
+                          className="w-full h-auto object-cover"
+                        />
+                        <div className="p-4 bg-white">
+                          <p className="text-sm text-gray-700 font-medium">Field research & product usage observation</p>
+                        </div>
+                      </div>
+                      <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
+                        <img
+                          src="/images/bd-sketches/34 - User testing interviews.jpg"
+                          alt="User testing"
+                          className="w-full h-auto object-cover"
+                        />
+                        <div className="p-4 bg-white">
+                          <p className="text-sm text-gray-700 font-medium">User testing & interviews</p>
+                        </div>
+                      </div>
+                      <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
+                        <img
+                          src="/images/bd-sketches/11b - Design upstream strategy and roadmap.jpg"
+                          alt="Product strategy"
+                          className="w-full h-auto object-cover"
+                        />
+                        <div className="p-4 bg-white">
+                          <p className="text-sm text-gray-700 font-medium">Design strategy & product roadmap</p>
+                        </div>
+                      </div>
+                      <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
+                        <img
+                          src="/images/bd-sketches/design UX, product architecture, user flows.png"
+                          alt="UX architecture"
+                          className="w-full h-auto object-cover"
+                        />
+                        <div className="p-4 bg-white">
+                          <p className="text-sm text-gray-700 font-medium">UX design, product architecture & user flows</p>
+                        </div>
+                      </div>
+                      <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
+                        <img
+                          src="/images/bd-sketches/11 - Presenting Collaborative Study to CODIR - c-level alignment.jpg"
+                          alt="Executive presentation"
+                          className="w-full h-auto object-cover"
+                        />
+                        <div className="p-4 bg-white">
+                          <p className="text-sm text-gray-700 font-medium">Presenting research to C-level for alignment</p>
+                        </div>
+                      </div>
+                    </>
+                  )}
+
+                  {/* Operational Efficiency Gallery */}
+                  {selectedServiceGallery === 'efficiency' && (
+                    <>
+                      <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
+                        <img
+                          src="/images/bd-sketches/11 - Construction du UI Kit et du Design System.jpg"
+                          alt="Design system"
+                          className="w-full h-auto object-cover"
+                        />
+                        <div className="p-4 bg-white">
+                          <p className="text-sm text-gray-700 font-medium">Building UI Kit & Design System</p>
+                        </div>
+                      </div>
+                      <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
+                        <img
+                          src="/images/bd-sketches/10 - Synchronisations Design-Dev et Architecture des Composants.jpg"
+                          alt="Design-dev sync"
+                          className="w-full h-auto object-cover"
+                        />
+                        <div className="p-4 bg-white">
+                          <p className="text-sm text-gray-700 font-medium">Design-dev sync & component architecture</p>
+                        </div>
+                      </div>
+                      <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
+                        <img
+                          src="/images/bd-sketches/13b - Developer handoff.jpg"
+                          alt="Developer handoff"
+                          className="w-full h-auto object-cover"
+                        />
+                        <div className="p-4 bg-white">
+                          <p className="text-sm text-gray-700 font-medium">Developer handoff & specifications</p>
+                        </div>
+                      </div>
+                      <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
+                        <img
+                          src="/images/bd-sketches/12d - Figma file archi & libraries.jpg"
+                          alt="Figma architecture"
+                          className="w-full h-auto object-cover"
+                        />
+                        <div className="p-4 bg-white">
+                          <p className="text-sm text-gray-700 font-medium">Figma file architecture & libraries</p>
+                        </div>
+                      </div>
+                      <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
+                        <img
+                          src="/images/bd-sketches/35 - Process - Standardized product design brief template.jpg"
+                          alt="Design brief template"
+                          className="w-full h-auto object-cover"
+                        />
+                        <div className="p-4 bg-white">
+                          <p className="text-sm text-gray-700 font-medium">Standardized product design brief</p>
+                        </div>
+                      </div>
+                      <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
+                        <img
+                          src="/images/bd-sketches/36 - Governance and process-  Mapping technical contraints with engineers.jpg"
+                          alt="Technical governance"
+                          className="w-full h-auto object-cover"
+                        />
+                        <div className="p-4 bg-white">
+                          <p className="text-sm text-gray-700 font-medium">Governance & mapping technical constraints</p>
+                        </div>
+                      </div>
+                      <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
+                        <img
+                          src="/images/bd-sketches/13 - Du design à l'architecture — Penser comme un ingénieur produit.jpg"
+                          alt="Engineering mindset"
+                          className="w-full h-auto object-cover"
+                        />
+                        <div className="p-4 bg-white">
+                          <p className="text-sm text-gray-700 font-medium">From design to architecture — Product engineer mindset</p>
+                        </div>
+                      </div>
+                      <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
+                        <img
+                          src="/images/bd-sketches/19 - Boucles de feedback et amélioration continue.jpg"
+                          alt="Feedback loops"
+                          className="w-full h-auto object-cover"
+                        />
+                        <div className="p-4 bg-white">
+                          <p className="text-sm text-gray-700 font-medium">Feedback loops & continuous improvement</p>
+                        </div>
+                      </div>
+                    </>
+                  )}
+
+                  {/* Organizational Impact Gallery */}
+                  {selectedServiceGallery === 'impact' && (
+                    <>
+                      <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
+                        <img
+                          src="/images/bd-sketches/21 - Ideation Workshop for the Suite.jpg"
+                          alt="Ideation workshop"
+                          className="w-full h-auto object-cover"
+                        />
+                        <div className="p-4 bg-white">
+                          <p className="text-sm text-gray-700 font-medium">Ideation workshop facilitation</p>
+                        </div>
+                      </div>
+                      <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
+                        <img
+                          src="/images/bd-sketches/27 - Ateliers de co creation et sketching en equipe.jpg"
+                          alt="Co-creation workshop"
+                          className="w-full h-auto object-cover"
+                        />
+                        <div className="p-4 bg-white">
+                          <p className="text-sm text-gray-700 font-medium">Co-creation & team sketching workshops</p>
+                        </div>
+                      </div>
+                      <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
+                        <img
+                          src="/images/bd-sketches/24 - Design teams rituals.jpg"
+                          alt="Design team rituals"
+                          className="w-full h-auto object-cover"
+                        />
+                        <div className="p-4 bg-white">
+                          <p className="text-sm text-gray-700 font-medium">Design team rituals & ceremonies</p>
+                        </div>
+                      </div>
+                      <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
+                        <img
+                          src="/images/bd-sketches/25 - Weekly design critique.jpg"
+                          alt="Design critique"
+                          className="w-full h-auto object-cover"
+                        />
+                        <div className="p-4 bg-white">
+                          <p className="text-sm text-gray-700 font-medium">Weekly design critique sessions</p>
+                        </div>
+                      </div>
+                      <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
+                        <img
+                          src="/images/bd-sketches/22 - product Squad daily rituals.jpg"
+                          alt="Squad rituals"
+                          className="w-full h-auto object-cover"
+                        />
+                        <div className="p-4 bg-white">
+                          <p className="text-sm text-gray-700 font-medium">Product squad daily rituals</p>
+                        </div>
+                      </div>
+                      <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
+                        <img
+                          src="/images/bd-sketches/28 - remote UX workshops.jpg"
+                          alt="Remote workshops"
+                          className="w-full h-auto object-cover"
+                        />
+                        <div className="p-4 bg-white">
+                          <p className="text-sm text-gray-700 font-medium">Remote UX workshop facilitation</p>
+                        </div>
+                      </div>
+                      <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
+                        <img
+                          src="/images/bd-sketches/design mentoring.png"
+                          alt="Design mentoring"
+                          className="w-full h-auto object-cover"
+                        />
+                        <div className="p-4 bg-white">
+                          <p className="text-sm text-gray-700 font-medium">Design mentoring & coaching</p>
+                        </div>
+                      </div>
+                      <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
+                        <img
+                          src="/images/bd-sketches/12b - Brand Identity system -Unifying Color and Grid.jpg"
+                          alt="Brand identity"
+                          className="w-full h-auto object-cover"
+                        />
+                        <div className="p-4 bg-white">
+                          <p className="text-sm text-gray-700 font-medium">Brand identity system & visual language</p>
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+
+                {/* CTA */}
+                <div className="max-w-7xl mx-auto mt-12 pt-8 border-t border-gray-200 text-center">
+                  <p className="text-gray-600 mb-4">
+                    Want to see how I can help with your project?
+                  </p>
+                  <button
+                    onClick={() => {
+                      setSelectedServiceGallery(null);
+                      setIsContactFormOpen(true);
+                    }}
+                    className="px-6 py-3 bg-gray-900 hover:bg-black text-white rounded-full font-medium transition-colors duration-200"
+                  >
+                    Get in Touch
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Back to Top Button - Mobile only */}
+      <AnimatePresence>
+        {isScrolled && (
+          <motion.button
+            initial={{ opacity: 0, scale: 0.8, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8, y: 20 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="md:hidden fixed bottom-8 right-6 z-[90] p-4 bg-gray-900 hover:bg-black text-white rounded-full shadow-2xl transition-all duration-200 active:scale-95"
+            aria-label="Back to top"
+          >
+            <ArrowUp size={20} />
+          </motion.button>
+        )}
+      </AnimatePresence>
+
+      {/* Toast Notification */}
+      <AnimatePresence>
+        {showToast && (
+          <motion.div
+            initial={{ opacity: 0, y: 50, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.95 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+            className="fixed bottom-8 right-8 z-[200] max-w-md"
+          >
+            <div className="bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-200/50 p-4 flex items-start space-x-3">
+              <div className="flex-shrink-0">
+                {toastMessage.includes('success') ? (
+                  <div className="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center">
+                    <CheckCircle2 size={20} className="text-green-600" />
+                  </div>
+                ) : (
+                  <div className="w-10 h-10 rounded-full bg-red-500/10 flex items-center justify-center">
+                    <X size={20} className="text-red-600" />
+                  </div>
+                )}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-gray-900">
+                  {toastMessage.includes('success') ? 'Message Sent!' : 'Error'}
+                </p>
+                <p className="text-sm text-gray-600 mt-1">
+                  {toastMessage}
+                </p>
+              </div>
+              <button
+                onClick={() => setShowToast(false)}
+                className="flex-shrink-0 p-1 hover:bg-gray-100 rounded-lg transition-colors"
+              >
+                <X size={16} className="text-gray-500" />
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
     </div>
   );
