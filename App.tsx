@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import emailjs from '@emailjs/browser';
 import { EMAILJS_CONFIG } from './emailConfig';
+import jsPDF from 'jspdf';
 import {
   ChevronRight,
   Layers,
@@ -40,9 +41,15 @@ import {
   Copy,
   Send,
   Images,
-  Eye
+  Eye,
+  Upload,
+  CheckSquare,
+  Square,
+  Clock,
+  Check,
+  ArrowRight
 } from 'lucide-react';
-import { Rocket, Buildings, HandHeart } from '@phosphor-icons/react';
+import { Rocket, Buildings, HandHeart, ArrowsClockwise, ChatCircleDots, ChartLineUp } from '@phosphor-icons/react';
 
 // --- Types ---
 
@@ -478,7 +485,7 @@ const TRANSLATIONS = {
       missions: "Key Missions",
       system: "Design System",
       deliverables: "Key Deliverables",
-      read_more: "Read Full Case Study on Notion"
+      read_more: "Read the full case study"
     },
     lab: {
       tag: "Virtual R&D Laboratory",
@@ -515,7 +522,104 @@ const TRANSLATIONS = {
       subtitle: "I am currently open to freelance missions or leadership roles. Let's discuss how we can elevate your product.",
       email: "Send an Email",
       book: "Book a 30min Chat",
-      linkedin: "LinkedIn Profile"
+      linkedin: "LinkedIn Profile",
+      simple_form_title: "Send me a message",
+      simple_form_subtitle: "I typically respond within 24 hours",
+      simple_form_name: "Name",
+      simple_form_name_placeholder: "Your name",
+      simple_form_email: "Email",
+      simple_form_email_placeholder: "your.email@example.com",
+      simple_form_message: "Message",
+      simple_form_message_placeholder: "Tell me about your project...",
+      simple_form_budget: "Estimated budget",
+      simple_form_budget_placeholder: "Select a budget range",
+      simple_form_start_date: "Start date",
+      simple_form_end_date: "End date",
+      simple_form_copy_email: "Copy email",
+      simple_form_copy_intro: "I just want to send an email",
+      simple_form_submit: "Send",
+      simple_form_sending: "Sending...",
+      quote_button: "Request a quote",
+      quote_generator_title: "Get a Custom Quote",
+      quote_step_1_title: "What best describes your situation?",
+      quote_step_1_startup: "Startup / MVP",
+      quote_step_1_startup_desc: "Early stage product",
+      quote_step_1_established: "Established Company",
+      quote_step_1_established_desc: "Optimize & scale",
+      quote_step_1_longterm: "Long-term Partnership",
+      quote_step_1_longterm_desc: "6+ months engagement",
+      quote_step_2_title: "Do you have a project brief?",
+      quote_step_2_drag: "Drag & drop your brief here",
+      quote_step_2_or: "or",
+      quote_step_2_browse: "Browse files",
+      quote_step_2_formats: "PDF or DOCX (max 3MB)",
+      quote_step_2_skip: "Skip this step",
+      quote_step_3_title: "Which services do you need?",
+      quote_step_3_service_1: "UX framing & UI design",
+      quote_step_3_service_2: "Hi-fi prototyping & validation",
+      quote_step_3_service_3: "MVP build-out (Bolt, Lovable, Figma)",
+      quote_step_3_service_4: "Design system & UI Kit",
+      quote_step_3_service_5: "User research & testing",
+      quote_step_3_service_6: "Product strategy & roadmap",
+      quote_step_3_service_7: "Team coaching & mentoring",
+      quote_step_3_service_8: "Workshop facilitation",
+      quote_step_4_title: "Tell us about your project",
+      quote_step_4_need_label: "Do you have an idea of the need?",
+      quote_step_4_need_placeholder: "Example: We need a dashboard for B2B users...",
+      quote_step_4_desc_label: "Describe your project *",
+      quote_step_4_desc_placeholder: "Tell us about your goals, challenges, and what success looks like...",
+      quote_step_4_chars: "characters",
+      quote_step_4_min_chars: "Minimum 50 characters",
+      quote_step_5_title: "Budget & Timeline",
+      quote_step_5_budget_label: "Estimated budget",
+      quote_step_5_budget_placeholder: "Select a range",
+      quote_step_5_start_label: "Desired start date",
+      quote_step_5_end_label: "End date or duration",
+      quote_step_6_title: "Your contact details",
+      quote_step_6_name_label: "Name *",
+      quote_step_6_name_placeholder: "Your name",
+      quote_step_6_email_label: "Email *",
+      quote_step_6_email_placeholder: "your.email@example.com",
+      quote_step_6_company_label: "Company",
+      quote_step_6_company_placeholder: "Your company name",
+      quote_step_6_phone_label: "Phone",
+      quote_step_6_phone_placeholder: "+33 6 12 34 56 78",
+      quote_step_7_title: "Review your quote request",
+      quote_step_7_project_type: "Project Type",
+      quote_step_7_brief: "Brief Attached",
+      quote_step_7_services: "Services",
+      quote_step_7_project_details: "Project Details",
+      quote_step_7_need: "Need",
+      quote_step_7_description: "Description",
+      quote_step_7_budget_timeline: "Budget & Timeline",
+      quote_step_7_budget: "Budget",
+      quote_step_7_start: "Start Date",
+      quote_step_7_end: "End Date",
+      quote_step_7_contact: "Contact Information",
+      quote_step_7_edit: "Edit",
+      quote_step_7_preview: "Preview",
+      quote_step_7_download: "Download PDF",
+      quote_step_7_send: "Send to Victor",
+      quote_progress: "Step {current} of {total}",
+      quote_next: "Next",
+      quote_back: "Back",
+      quote_skip: "Skip",
+      quote_close: "Close",
+      quote_confirm_close: "Are you sure? Your progress will be saved as a draft.",
+      quote_success_title: "Quote request sent!",
+      quote_success_message: "We'll be in touch within 24 hours",
+      quote_success_new: "Start a new quote",
+      quote_continue_draft: "Continue previous quote?",
+      quote_continue_yes: "Continue",
+      quote_continue_no: "Start fresh",
+      quote_file_remove: "Remove file",
+      quote_validation_select_type: "Please select a project type",
+      quote_validation_select_service: "Please select at least one service",
+      quote_validation_min_chars: "Please write at least 50 characters",
+      quote_validation_required: "This field is required",
+      quote_validation_email: "Please enter a valid email",
+      quote_validation_file_size: "File size must be less than 3MB",
+      quote_validation_file_type: "Only PDF and DOCX files are allowed"
     }
   },
   fr: {
@@ -807,7 +911,7 @@ const TRANSLATIONS = {
       missions: "Mes responsabilités",
       system: "Approche Système",
       deliverables: "Ce que j'ai livré",
-      read_more: "Lire le détail sur Notion"
+      read_more: "Lire le case study complet"
     },
     lab: {
       tag: "R&D et Expérimentation",
@@ -844,7 +948,104 @@ const TRANSLATIONS = {
       subtitle: "Je suis ouvert aux missions de Product Design (Freelance) ou rôles de Lead (CDI). Discutons concrètement de vos besoins.",
       email: "Envoyer un email",
       book: "Planifier un appel de 30min",
-      linkedin: "LinkedIn"
+      linkedin: "LinkedIn",
+      simple_form_title: "Envoyez-moi un message",
+      simple_form_subtitle: "Je réponds généralement sous 24h",
+      simple_form_name: "Nom",
+      simple_form_name_placeholder: "Votre nom",
+      simple_form_email: "Email",
+      simple_form_email_placeholder: "votre.email@exemple.fr",
+      simple_form_message: "Message",
+      simple_form_message_placeholder: "Parlez-moi de votre projet...",
+      simple_form_budget: "Budget estimé",
+      simple_form_budget_placeholder: "Sélectionnez une fourchette",
+      simple_form_start_date: "Date de début",
+      simple_form_end_date: "Date de fin",
+      simple_form_copy_email: "Copier l'email",
+      simple_form_copy_intro: "Je souhaite simplement envoyer un email",
+      simple_form_submit: "Envoyer",
+      simple_form_sending: "Envoi en cours...",
+      quote_button: "Obtenir une estimation",
+      quote_generator_title: "Demander un Devis",
+      quote_step_1_title: "Quelle est votre situation ?",
+      quote_step_1_startup: "Startup / MVP",
+      quote_step_1_startup_desc: "Produit en phase early stage",
+      quote_step_1_established: "Entreprise Établie",
+      quote_step_1_established_desc: "Optimiser & scaler",
+      quote_step_1_longterm: "Partenariat Long Terme",
+      quote_step_1_longterm_desc: "Engagement 6+ mois",
+      quote_step_2_title: "Avez-vous un brief projet ?",
+      quote_step_2_drag: "Déposez votre brief ici",
+      quote_step_2_or: "ou",
+      quote_step_2_browse: "Parcourir",
+      quote_step_2_formats: "PDF ou DOCX (max 3Mo)",
+      quote_step_2_skip: "Passer cette étape",
+      quote_step_3_title: "De quels services avez-vous besoin ?",
+      quote_step_3_service_1: "Cadrage UX & Design UI",
+      quote_step_3_service_2: "Prototypage haute-fidélité & validation",
+      quote_step_3_service_3: "Build-out MVP (Bolt, Lovable, Figma)",
+      quote_step_3_service_4: "Design system & UI Kit",
+      quote_step_3_service_5: "Recherche & tests utilisateurs",
+      quote_step_3_service_6: "Stratégie produit & roadmap",
+      quote_step_3_service_7: "Coaching & mentoring d'équipe",
+      quote_step_3_service_8: "Animation d'ateliers",
+      quote_step_4_title: "Parlez-nous de votre projet",
+      quote_step_4_need_label: "Avez-vous une idée du besoin ?",
+      quote_step_4_need_placeholder: "Exemple : Nous avons besoin d'un dashboard pour nos utilisateurs B2B...",
+      quote_step_4_desc_label: "Décrivez votre projet *",
+      quote_step_4_desc_placeholder: "Parlez-nous de vos objectifs, défis, et à quoi ressemble le succès...",
+      quote_step_4_chars: "caractères",
+      quote_step_4_min_chars: "Minimum 50 caractères",
+      quote_step_5_title: "Budget & Planning",
+      quote_step_5_budget_label: "Budget estimé",
+      quote_step_5_budget_placeholder: "Sélectionnez une fourchette",
+      quote_step_5_start_label: "Date de début souhaitée",
+      quote_step_5_end_label: "Date de fin ou durée",
+      quote_step_6_title: "Vos coordonnées",
+      quote_step_6_name_label: "Nom *",
+      quote_step_6_name_placeholder: "Votre nom",
+      quote_step_6_email_label: "Email *",
+      quote_step_6_email_placeholder: "votre.email@exemple.fr",
+      quote_step_6_company_label: "Entreprise",
+      quote_step_6_company_placeholder: "Nom de votre entreprise",
+      quote_step_6_phone_label: "Téléphone",
+      quote_step_6_phone_placeholder: "+33 6 12 34 56 78",
+      quote_step_7_title: "Revue de votre demande",
+      quote_step_7_project_type: "Type de Projet",
+      quote_step_7_brief: "Brief Joint",
+      quote_step_7_services: "Services",
+      quote_step_7_project_details: "Détails du Projet",
+      quote_step_7_need: "Besoin",
+      quote_step_7_description: "Description",
+      quote_step_7_budget_timeline: "Budget & Planning",
+      quote_step_7_budget: "Budget",
+      quote_step_7_start: "Date de Début",
+      quote_step_7_end: "Date de Fin",
+      quote_step_7_contact: "Coordonnées",
+      quote_step_7_edit: "Modifier",
+      quote_step_7_preview: "Aperçu",
+      quote_step_7_download: "Télécharger PDF",
+      quote_step_7_send: "Envoyer à Victor",
+      quote_progress: "Étape {current} sur {total}",
+      quote_next: "Suivant",
+      quote_back: "Retour",
+      quote_skip: "Passer",
+      quote_close: "Fermer",
+      quote_confirm_close: "Êtes-vous sûr ? Votre progression sera sauvegardée.",
+      quote_success_title: "Demande envoyée !",
+      quote_success_message: "Nous vous recontacterons sous 24h",
+      quote_success_new: "Nouvelle demande",
+      quote_continue_draft: "Continuer le brouillon précédent ?",
+      quote_continue_yes: "Continuer",
+      quote_continue_no: "Recommencer",
+      quote_file_remove: "Supprimer le fichier",
+      quote_validation_select_type: "Veuillez sélectionner un type de projet",
+      quote_validation_select_service: "Veuillez sélectionner au moins un service",
+      quote_validation_min_chars: "Veuillez écrire au moins 50 caractères",
+      quote_validation_required: "Ce champ est requis",
+      quote_validation_email: "Veuillez entrer un email valide",
+      quote_validation_file_size: "La taille du fichier doit être inférieure à 3Mo",
+      quote_validation_file_type: "Seuls les fichiers PDF et DOCX sont autorisés"
     }
   }
 };
@@ -945,7 +1146,7 @@ const getProjects = (lang: Language): Project[] => {
       ],
       icon: <Cpu size={24} />,
       color: "indigo",
-      externalLink: "https://victor-soussan.notion.site/Toolkit-2b7a519b0dea80d9b40cc730ce4cfc4b",
+      externalLink: "https://victor-soussan.notion.site/ebd/2b7a519b0dea80d9b40cc730ce4cfc4b",
       testimonialId: "pierre-marie-nigay"
     },
     {
@@ -1013,7 +1214,7 @@ const getProjects = (lang: Language): Project[] => {
       ],
       icon: <Users size={24} />,
       color: "gray",
-      externalLink: "https://victor-soussan.notion.site/Dailymotion-Partner-s-web-platform-2b7a519b0dea80b99138d4b51a65620b"
+      externalLink: "https://victor-soussan.notion.site/ebd/2b7a519b0dea80b99138d4b51a65620b"
     },
     {
       id: "pagesjaunes",
@@ -1246,16 +1447,27 @@ const App: React.FC = () => {
   const [isTestimonialsOpen, setIsTestimonialsOpen] = useState(false);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [selectedLabItem, setSelectedLabItem] = useState<string | null>(null);
+  const [systemTheme, setSystemTheme] = useState<'light' | 'dark'>('light');
   const [isResumeOpen, setIsResumeOpen] = useState(false);
   const [resumeLang, setResumeLang] = useState<'fr' | 'en'>('fr');
   const [copiedResume, setCopiedResume] = useState(false);
   const [copiedEmail, setCopiedEmail] = useState(false);
   const [copiedPhone, setCopiedPhone] = useState(false);
+  const [iframeModalUrl, setIframeModalUrl] = useState<string | null>(null);
   const [activeSection, setActiveSection] = useState('services');
   const [isScrolled, setIsScrolled] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
   const [isHoveringLogo, setIsHoveringLogo] = useState(false);
+  const [isSimpleContactOpen, setIsSimpleContactOpen] = useState(false);
   const [isContactFormOpen, setIsContactFormOpen] = useState(false);
+  const [simpleContactForm, setSimpleContactForm] = useState({
+    name: '',
+    email: '',
+    message: '',
+    budget: '',
+    startDate: '',
+    endDate: ''
+  });
   const [contactForm, setContactForm] = useState({
     name: '',
     company: '',
@@ -1270,6 +1482,33 @@ const App: React.FC = () => {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [selectedServiceGallery, setSelectedServiceGallery] = useState<string | null>(null);
+
+  // Quote Generator State
+  const [isQuoteGeneratorOpen, setIsQuoteGeneratorOpen] = useState(false);
+  const [quoteStep, setQuoteStep] = useState(0);
+  const [quoteData, setQuoteData] = useState({
+    clientNeed: '' as 'new-product' | 'optimize-existing' | 'long-term' | 'other' | '',
+    projectStatus: '' as 'early-stage' | 'scale-complex' | 'long-term-mission' | '',
+    briefFile: null as File | null,
+    briefFileName: '',
+    briefFileSize: 0,
+    services: [] as string[],
+    needIdea: '',
+    projectDescription: '',
+    budget: '',
+    startDate: '',
+    endDate: '',
+    name: '',
+    email: '',
+    company: '',
+    phone: ''
+  });
+  const [quoteValidationErrors, setQuoteValidationErrors] = useState<{[key: string]: string}>({});
+  const [isQuoteSending, setIsQuoteSending] = useState(false);
+  const [quoteSuccess, setQuoteSuccess] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
 
   // Update selected project when language changes
   useEffect(() => {
@@ -1291,21 +1530,75 @@ const App: React.FC = () => {
         setIsBookingOpen(false);
         setSelectedLabItem(null);
         setIsContactFormOpen(false);
+        setIsSimpleContactOpen(false);
         setShowTooltip(false);
+
+        // Quote generator with confirmation
+        if (isQuoteGeneratorOpen && !quoteSuccess) {
+          const hasData = quoteData.projectType || quoteData.services.length > 0 ||
+                         quoteData.projectDescription || quoteData.name || quoteData.email;
+          if (hasData) {
+            if (window.confirm(content.contact.quote_confirm_close)) {
+              localStorage.setItem('quoteDraft', JSON.stringify({ quoteData, quoteStep }));
+              setIsQuoteGeneratorOpen(false);
+            }
+          } else {
+            setIsQuoteGeneratorOpen(false);
+          }
+        }
       }
     };
     window.addEventListener('keydown', handleEsc);
     return () => window.removeEventListener('keydown', handleEsc);
-  }, []);
+  }, [isQuoteGeneratorOpen, quoteSuccess, quoteData, quoteStep, content]);
+
+  // Autosave quote data to localStorage
+  useEffect(() => {
+    if (isQuoteGeneratorOpen && !quoteSuccess) {
+      const hasData = quoteData.projectType || quoteData.services.length > 0 ||
+                     quoteData.projectDescription || quoteData.name || quoteData.email;
+      if (hasData) {
+        localStorage.setItem('quoteDraft', JSON.stringify({ quoteData, quoteStep }));
+      }
+    }
+  }, [quoteData, quoteStep, isQuoteGeneratorOpen, quoteSuccess]);
+
+  // Pre-fill user data from localStorage when opening quote modal
+  useEffect(() => {
+    if (isQuoteGeneratorOpen && quoteStep === 0) {
+      const savedEmail = localStorage.getItem('user_email');
+      const savedName = localStorage.getItem('user_name');
+      if (savedEmail || savedName) {
+        setQuoteData(prev => ({
+          ...prev,
+          email: savedEmail || '',
+          name: savedName || ''
+        }));
+      }
+    }
+  }, [isQuoteGeneratorOpen]);
 
   // Prevent body scroll when modals are open
   useEffect(() => {
-    if (selectedImage || isBioOpen || isTestimonialsOpen || isBookingOpen || selectedLabItem || isContactFormOpen || selectedServiceGallery) {
+    if (selectedImage || isBioOpen || isTestimonialsOpen || isBookingOpen || selectedLabItem || isContactFormOpen || isSimpleContactOpen || selectedServiceGallery || isQuoteGeneratorOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
     }
-  }, [selectedImage, isBioOpen, isTestimonialsOpen, isBookingOpen, selectedLabItem, isContactFormOpen, selectedServiceGallery]);
+  }, [selectedImage, isBioOpen, isTestimonialsOpen, isBookingOpen, selectedLabItem, isContactFormOpen, isSimpleContactOpen, selectedServiceGallery]);
+
+  // Detect system theme (light/dark mode)
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    setSystemTheme(mediaQuery.matches ? 'dark' : 'light');
+
+    const handleChange = (e: MediaQueryListEvent) => {
+      setSystemTheme(e.matches ? 'dark' : 'light');
+    };
+
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
 
   // Detect scroll position
   useEffect(() => {
@@ -1612,7 +1905,7 @@ const App: React.FC = () => {
                         onClick={(e) => {
                           e.stopPropagation();
                           setShowTooltip(false);
-                          setIsContactFormOpen(true);
+                          setIsSimpleContactOpen(true);
                         }}
                       >
                         <Mail size={18} />
@@ -1660,12 +1953,20 @@ const App: React.FC = () => {
             >
               {content.hero.cta_projects} <ChevronRight className="ml-2" size={20} />
             </button>
-            <button
-               onClick={() => setIsBookingOpen(true)}
-               className="px-8 py-4 glass-effect text-[#1D1D1F] rounded-full font-medium text-lg btn-pill cursor-pointer relative z-20 flex items-center hover:text-blue-600"
-            >
-              <Calendar size={20} className="mr-2"/> {content.hero.cta_book}
-            </button>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <button
+                 onClick={() => setIsBookingOpen(true)}
+                 className="px-8 py-4 glass-effect text-[#1D1D1F] rounded-full font-medium text-lg btn-pill cursor-pointer relative z-20 flex items-center justify-center hover:text-blue-600"
+              >
+                <Calendar size={20} className="mr-2"/> {content.hero.cta_book}
+              </button>
+              <button
+                 onClick={() => setIsQuoteGeneratorOpen(true)}
+                 className="px-8 py-4 glass-effect text-[#1D1D1F] rounded-full font-medium text-lg btn-pill cursor-pointer relative z-20 flex items-center justify-center hover:text-blue-600"
+              >
+                <Quote size={20} className="mr-2"/> {content.contact.quote_button}
+              </button>
+            </div>
           </div>
         </div>
       </header>
@@ -1932,9 +2233,9 @@ const App: React.FC = () => {
           </div>
 
           <div className="flex flex-col md:flex-row gap-8 h-auto md:h-[750px]">
-            
+
             {/* Project List (Master) */}
-            <div className="w-full md:w-1/3 flex flex-col space-y-4 overflow-y-auto pr-2 no-scrollbar">
+            <div className="w-full md:w-1/3 flex flex-col space-y-4 overflow-y-scroll py-2 pl-2 pr-4 no-scrollbar">
               {projects.map((project) => (
                 <div
                   key={project.id}
@@ -1942,7 +2243,7 @@ const App: React.FC = () => {
                   className={`
                     cursor-pointer p-6 rounded-3xl border transition-all duration-300 group relative
                     ${selectedProject.id === project.id
-                      ? 'bg-[#1D1D1F] text-white shadow-xl scale-[1.02]'
+                      ? 'bg-[#1D1D1F] text-white shadow-2xl shadow-black/20 scale-[1.03]'
                       : 'bg-white border-gray-100 hover:border-gray-300 hover:bg-gray-50 text-gray-600'}
                   `}
                 >
@@ -2033,14 +2334,12 @@ const App: React.FC = () => {
                   </div>
 
                   {selectedProject.externalLink && (
-                    <a 
-                      href={selectedProject.externalLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <button
+                      onClick={() => setIframeModalUrl(selectedProject.externalLink!)}
                       className="inline-flex items-center px-5 py-3 bg-gray-900 text-white rounded-xl text-sm font-medium hover:bg-black transition-all hover:scale-[1.01] shadow-md"
                     >
-                      <BookOpen size={16} className="mr-2"/> {content.projects.read_more} <ExternalLink size={14} className="ml-2 opacity-70"/>
-                    </a>
+                      <BookOpen size={16} className="mr-2"/> {content.projects.read_more} <ArrowUpRight size={14} className="ml-2 opacity-70"/>
+                    </button>
                   )}
                 </div>
 
@@ -2591,42 +2890,391 @@ const App: React.FC = () => {
       {/* Booking Modal */}
       <AnimatePresence>
       {isBookingOpen && (
-        <div className="fixed inset-0 z-[100]">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8">
+           {/* Backdrop */}
            <motion.div
              initial={{ opacity: 0 }}
              animate={{ opacity: 1 }}
              exit={{ opacity: 0 }}
-             transition={{ duration: 0.3 }}
-             className="absolute inset-0 bg-[#111111]"
+             transition={{ duration: 0.2 }}
+             onClick={() => setIsBookingOpen(false)}
+             className={`absolute inset-0 ${
+               systemTheme === 'dark'
+                 ? 'bg-black/80 backdrop-blur-xl'
+                 : 'bg-white/95 backdrop-blur-xl'
+             }`}
+           />
+
+           {/* Modal content - same width as other modals */}
+           <motion.div
+             initial={{ opacity: 0, scale: 0.95, y: 20 }}
+             animate={{ opacity: 1, scale: 1, y: 0 }}
+             exit={{ opacity: 0, scale: 0.95, y: 20 }}
+             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+             className={`relative w-full max-w-4xl h-[85vh] rounded-3xl shadow-2xl overflow-hidden ${
+               systemTheme === 'dark'
+                 ? 'bg-[#1D1D1F] border border-gray-800'
+                 : 'bg-white border border-gray-200'
+             }`}
+             onClick={(e) => e.stopPropagation()}
            >
               {/* Close button */}
               <div className="absolute top-6 right-6 z-20">
                  <button
                    onClick={() => setIsBookingOpen(false)}
-                   className="p-2.5 bg-white/10 hover:bg-white/20 text-white rounded-full transition-all duration-200 backdrop-blur-sm border border-white/10"
+                   className={`p-2.5 rounded-full transition-all duration-200 backdrop-blur-sm ${
+                     systemTheme === 'dark'
+                       ? 'bg-white/10 hover:bg-white/20 text-white border border-white/10'
+                       : 'bg-gray-100 hover:bg-gray-200 text-gray-900 border border-gray-200'
+                   }`}
                    aria-label="Close booking modal"
                  >
                     <X size={24} />
                  </button>
               </div>
 
-              {/* Cal.com iframe - full page */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 20 }}
-                transition={{ duration: 0.4, delay: 0.1 }}
-                className="w-full h-full"
-              >
+              {/* Cal.com iframe - constrained */}
+              <div className="w-full h-full">
                 <iframe
-                  src="https://cal.com/victorsoussan/consulting-chat?user=victorsoussan&overlayCalendar=true&month=2025-12"
+                  src={`https://cal.com/victorsoussan/consulting-chat?user=victorsoussan&overlayCalendar=true&month=2025-12&theme=${systemTheme}`}
                   width="100%"
                   height="100%"
                   frameBorder="0"
                   title="Book a consultation with Victor"
-                  className="w-full h-full"
+                  className="w-full h-full rounded-3xl"
                 ></iframe>
+              </div>
+           </motion.div>
+        </div>
+      )}
+      </AnimatePresence>
+
+      {/* Simple Contact Form Modal */}
+      <AnimatePresence>
+      {isSimpleContactOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8">
+           <motion.div
+             initial={{ opacity: 0 }}
+             animate={{ opacity: 1 }}
+             exit={{ opacity: 0 }}
+             transition={{ duration: 0.2 }}
+             className={`absolute inset-0 ${
+               systemTheme === 'dark'
+                 ? 'bg-black/80 backdrop-blur-xl'
+                 : 'bg-white/95 backdrop-blur-xl'
+             }`}
+             onClick={() => setIsSimpleContactOpen(false)}
+           />
+           <motion.div
+             initial={{ opacity: 0, scale: 0.95, y: 20 }}
+             animate={{ opacity: 1, scale: 1, y: 0 }}
+             exit={{ opacity: 0, scale: 0.95, y: 20 }}
+             transition={{
+               type: 'spring',
+               stiffness: 300,
+               damping: 25,
+               mass: 0.5
+             }}
+             className={`relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl shadow-2xl ${
+               systemTheme === 'dark'
+                 ? 'bg-[#1D1D1F] border border-gray-800'
+                 : 'bg-white border border-gray-200'
+             }`}
+           >
+              <div className={`sticky top-0 backdrop-blur-xl border-b p-6 z-10 ${
+                systemTheme === 'dark'
+                  ? 'bg-[#1D1D1F]/95 border-gray-800'
+                  : 'bg-white/95 border-gray-100'
+              }`}>
+                <button
+                  onClick={() => setIsSimpleContactOpen(false)}
+                  className={`absolute top-6 right-6 p-2 rounded-full transition-colors ${
+                    systemTheme === 'dark'
+                      ? 'bg-gray-800 hover:bg-gray-700 text-white'
+                      : 'bg-gray-100 hover:bg-gray-200 text-gray-900'
+                  }`}
+                >
+                  <X size={20} />
+                </button>
+
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1, duration: 0.3 }}
+                  className="flex items-center space-x-4"
+                >
+                  <div className="relative">
+                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 overflow-hidden border-2 border-white shadow-lg">
+                      <img
+                        src="/images/victor-soussan.png"
+                        alt="Victor Soussan"
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%23f3f4f6" width="100" height="100"/><text x="50" y="50" font-size="40" text-anchor="middle" dy=".3em" fill="%236b7280">VS</text></svg>';
+                        }}
+                      />
+                    </div>
+                    <div className="absolute bottom-0 right-0 w-4 h-4 bg-green-500 rounded-full border-2 border-white" />
+                  </div>
+                  <div className="flex-1">
+                    <h2 className={`text-2xl font-bold ${systemTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                      {content.contact.simple_form_title}
+                    </h2>
+                    <p className={`text-sm ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                      {content.contact.simple_form_subtitle}
+                    </p>
+                  </div>
+                </motion.div>
+              </div>
+
+              <div className="p-8">
+              {/* Email Copy Option - Before Form */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1, duration: 0.3 }}
+                className={`mb-6 p-4 rounded-xl flex items-center justify-between ${
+                  systemTheme === 'dark'
+                    ? 'bg-gray-800/50 border border-gray-700'
+                    : 'bg-gray-50 border border-gray-200'
+                }`}
+              >
+                <span className={`text-sm ${systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
+                  {content.contact.simple_form_copy_intro}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    navigator.clipboard.writeText('victorsoussan@gmail.com').then(() => {
+                      setCopiedEmail(true);
+                      setTimeout(() => setCopiedEmail(false), 2000);
+                    });
+                  }}
+                  className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all text-sm font-medium ${
+                    systemTheme === 'dark'
+                      ? 'bg-gray-700 border border-gray-600 hover:bg-gray-600 text-gray-200'
+                      : 'bg-white border border-gray-300 hover:bg-gray-50 text-gray-700'
+                  }`}
+                >
+                  {copiedEmail ? (
+                    <>
+                      <CheckCircle2 size={16} className="text-green-600" />
+                      <span className="text-green-600">{content.contact.simple_form_copy_email}</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy size={16} />
+                      <span>{content.contact.simple_form_copy_email}</span>
+                    </>
+                  )}
+                </button>
               </motion.div>
+
+              <form
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  setIsSendingEmail(true);
+
+                  try {
+                    // Check if EmailJS is configured
+                    const isEmailJSConfigured = EMAILJS_CONFIG.SERVICE_ID !== 'YOUR_SERVICE_ID'
+                      && EMAILJS_CONFIG.TEMPLATE_ID !== 'YOUR_TEMPLATE_ID'
+                      && EMAILJS_CONFIG.PUBLIC_KEY !== 'YOUR_PUBLIC_KEY';
+
+                    if (isEmailJSConfigured) {
+                      // Send email using EmailJS
+                      await emailjs.send(
+                        EMAILJS_CONFIG.SERVICE_ID,
+                        EMAILJS_CONFIG.TEMPLATE_ID,
+                        {
+                          from_name: simpleContactForm.name,
+                          from_email: simpleContactForm.email,
+                          message: simpleContactForm.message,
+                          budget: simpleContactForm.budget || 'Not specified',
+                          start_date: simpleContactForm.startDate || 'Not specified',
+                          end_date: simpleContactForm.endDate || 'Not specified',
+                          to_email: 'victorsoussan@gmail.com'
+                        },
+                        EMAILJS_CONFIG.PUBLIC_KEY
+                      );
+
+                      // Success
+                      setToastMessage('Message sent successfully! I\'ll get back to you soon.');
+                      setShowToast(true);
+                      setIsSimpleContactOpen(false);
+                      setSimpleContactForm({ name: '', email: '', message: '', budget: '', startDate: '', endDate: '' });
+
+                      // Hide toast after 5 seconds
+                      setTimeout(() => setShowToast(false), 5000);
+                    } else {
+                      // Fallback to mailto if EmailJS is not configured
+                      const subject = `New Message from ${simpleContactForm.name}`;
+                      const body = `Name: ${simpleContactForm.name}
+Email: ${simpleContactForm.email}
+Budget: ${simpleContactForm.budget || 'Not specified'}
+Start Date: ${simpleContactForm.startDate || 'Not specified'}
+End Date: ${simpleContactForm.endDate || 'Not specified'}
+
+Message:
+${simpleContactForm.message}`;
+
+                      window.location.href = `mailto:victorsoussan@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+                      setToastMessage('Opening your email client...');
+                      setShowToast(true);
+                      setIsSimpleContactOpen(false);
+                      setSimpleContactForm({ name: '', email: '', message: '', budget: '', startDate: '', endDate: '' });
+
+                      setTimeout(() => setShowToast(false), 3000);
+                    }
+                  } catch (error) {
+                    console.error('Failed to send email:', error);
+                    setToastMessage('Failed to send message. Please try again or email me directly at victorsoussan@gmail.com');
+                    setShowToast(true);
+                    setTimeout(() => setShowToast(false), 5000);
+                  } finally {
+                    setIsSendingEmail(false);
+                  }
+                }}
+                className="space-y-6"
+              >
+                {/* Name Field */}
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.15, duration: 0.3 }}
+                >
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    {content.contact.simple_form_name} *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={simpleContactForm.name}
+                    onChange={(e) => setSimpleContactForm({ ...simpleContactForm, name: e.target.value })}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all"
+                    placeholder={content.contact.simple_form_name_placeholder}
+                  />
+                </motion.div>
+
+                {/* Email Field */}
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2, duration: 0.3 }}
+                >
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    {content.contact.simple_form_email} *
+                  </label>
+                  <input
+                    type="email"
+                    required
+                    value={simpleContactForm.email}
+                    onChange={(e) => setSimpleContactForm({ ...simpleContactForm, email: e.target.value })}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all"
+                    placeholder={content.contact.simple_form_email_placeholder}
+                  />
+                </motion.div>
+
+                {/* Budget Field */}
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.25, duration: 0.3 }}
+                >
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    {content.contact.simple_form_budget}
+                  </label>
+                  <select
+                    value={simpleContactForm.budget}
+                    onChange={(e) => setSimpleContactForm({ ...simpleContactForm, budget: e.target.value })}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all"
+                  >
+                    <option value="">{content.contact.simple_form_budget_placeholder}</option>
+                    <option value="< 5k€">{'< 5k€'}</option>
+                    <option value="5-10k€">5-10k€</option>
+                    <option value="10-25k€">10-25k€</option>
+                    <option value="25-50k€">25-50k€</option>
+                    <option value="> 50k€">{"> 50k€"}</option>
+                  </select>
+                </motion.div>
+
+                {/* Date Fields */}
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3, duration: 0.3 }}
+                  className="grid md:grid-cols-2 gap-4"
+                >
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      {content.contact.simple_form_start_date}
+                    </label>
+                    <input
+                      type="date"
+                      value={simpleContactForm.startDate}
+                      onChange={(e) => setSimpleContactForm({ ...simpleContactForm, startDate: e.target.value })}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      {content.contact.simple_form_end_date}
+                    </label>
+                    <input
+                      type="date"
+                      value={simpleContactForm.endDate}
+                      onChange={(e) => setSimpleContactForm({ ...simpleContactForm, endDate: e.target.value })}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all"
+                    />
+                  </div>
+                </motion.div>
+
+                {/* Message Field */}
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.35, duration: 0.3 }}
+                >
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    {content.contact.simple_form_message} *
+                  </label>
+                  <textarea
+                    required
+                    value={simpleContactForm.message}
+                    onChange={(e) => setSimpleContactForm({ ...simpleContactForm, message: e.target.value })}
+                    rows={5}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all resize-none"
+                    placeholder={content.contact.simple_form_message_placeholder}
+                  />
+                </motion.div>
+
+                {/* Submit Button */}
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.45, duration: 0.3 }}
+                >
+                  <button
+                    type="submit"
+                    disabled={isSendingEmail}
+                    className="w-full flex items-center justify-center space-x-2 px-8 py-4 bg-gray-900 hover:bg-black text-white rounded-xl font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isSendingEmail ? (
+                      <>
+                        <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent" />
+                        <span>{content.contact.simple_form_sending}</span>
+                      </>
+                    ) : (
+                      <>
+                        <Send size={18} />
+                        <span>{content.contact.simple_form_submit}</span>
+                      </>
+                    )}
+                  </button>
+                </motion.div>
+              </form>
+              </div>
            </motion.div>
         </div>
       )}
@@ -3478,45 +4126,54 @@ ${contactForm.message}`;
             {content.contact.subtitle}
           </p>
           
-          <div className="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-6">
-             {/* Shoot me a note button with copy email below */}
-             <div className="flex flex-col items-center space-y-2">
-               <button
-                 onClick={() => setIsContactFormOpen(true)}
-                 className="px-8 py-4 glass-effect text-black rounded-full font-medium text-lg btn-pill flex items-center w-full md:w-auto justify-center hover:text-blue-600"
-               >
-                 <Mail className="mr-2" size={20} /> Shoot me a note
-               </button>
-               <button
-                 onClick={(e) => {
-                   e.stopPropagation();
-                   navigator.clipboard.writeText('victorsoussan@gmail.com').then(() => {
-                     setCopiedEmail(true);
-                     setTimeout(() => setCopiedEmail(false), 2000);
-                   });
-                 }}
-                 className="flex items-center space-x-1.5 text-xs text-gray-400 hover:text-gray-200 transition-colors duration-200 px-3 py-1.5 rounded-full hover:bg-white/5"
-               >
-                 {copiedEmail ? (
-                   <>
-                     <CheckCircle2 size={12} className="text-green-400" />
-                     <span className="text-green-400">Email copied!</span>
-                   </>
-                 ) : (
-                   <>
-                     <Copy size={12} />
-                     <span>Copy email address</span>
-                   </>
-                 )}
-               </button>
-             </div>
+          {/* CTA Buttons - Aligned horizontally */}
+          <div className="flex flex-col md:flex-row justify-center items-stretch md:items-center gap-4 md:gap-6 mb-4">
+             <button
+               onClick={() => setIsSimpleContactOpen(true)}
+               className="px-8 py-4 bg-white/95 backdrop-blur-sm text-gray-900 rounded-full font-medium text-lg btn-pill flex items-center w-full md:w-auto justify-center hover:bg-white hover:scale-105 transition-all duration-200 shadow-lg shadow-white/10"
+             >
+               <Mail className="mr-2" size={20} /> Shoot me a note
+             </button>
 
              <button
                onClick={() => setIsBookingOpen(true)}
-               className="px-8 py-4 accent-blue text-white rounded-full font-medium text-lg btn-pill flex items-center w-full md:w-auto justify-center"
+               className="px-8 py-4 bg-gray-800 hover:bg-gray-700 text-white rounded-full font-medium text-lg btn-pill flex items-center w-full md:w-auto justify-center transition-all duration-200 border border-gray-700 hover:border-gray-600"
              >
                 <Calendar className="mr-2" size={20} /> {content.contact.book}
              </button>
+
+             <button
+               onClick={() => setIsQuoteGeneratorOpen(true)}
+               className="px-8 py-4 bg-white/95 backdrop-blur-sm text-gray-900 rounded-full font-medium text-lg btn-pill flex items-center w-full md:w-auto justify-center hover:bg-white hover:scale-105 transition-all duration-200 shadow-lg shadow-white/10"
+             >
+                <Quote className="mr-2" size={20} /> {content.contact.quote_button}
+             </button>
+          </div>
+
+          {/* Copy Email - Below buttons */}
+          <div className="flex justify-center">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                navigator.clipboard.writeText('victorsoussan@gmail.com').then(() => {
+                  setCopiedEmail(true);
+                  setTimeout(() => setCopiedEmail(false), 2000);
+                });
+              }}
+              className="flex items-center space-x-1.5 text-xs text-gray-400 hover:text-gray-200 transition-colors duration-200 px-3 py-1.5 rounded-full hover:bg-white/5"
+            >
+              {copiedEmail ? (
+                <>
+                  <CheckCircle2 size={12} className="text-green-400" />
+                  <span className="text-green-400">Email copied!</span>
+                </>
+              ) : (
+                <>
+                  <Copy size={12} />
+                  <span>Copy email address</span>
+                </>
+              )}
+            </button>
           </div>
         </div>
       </section>
@@ -3562,6 +4219,12 @@ ${contactForm.message}`;
                  className="text-sm text-gray-400 hover:text-white transition-colors duration-200"
                >
                  {content.nav.contact}
+               </button>
+               <button
+                 onClick={() => setIsQuoteGeneratorOpen(true)}
+                 className="text-sm text-gray-400 hover:text-white transition-colors duration-200 font-medium"
+               >
+                 {content.contact.quote_button}
                </button>
                <a
                  href="https://linkedin.com/in/victorsoussan/"
@@ -4027,6 +4690,1510 @@ ${contactForm.message}`;
               </button>
             </div>
           </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Quote Generator Modal */}
+      <AnimatePresence>
+        {isQuoteGeneratorOpen && (
+          <div className="fixed inset-0 z-[300] flex items-center justify-center p-4">
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className={`absolute inset-0 backdrop-blur-md ${
+                systemTheme === 'dark'
+                  ? 'bg-black/80'
+                  : 'bg-black/50'
+              }`}
+              onClick={() => {
+                const hasData = quoteData.clientNeed || quoteData.services.length > 0 ||
+                               quoteData.projectDescription || quoteData.name || quoteData.email;
+                if (hasData && !quoteSuccess && quoteStep > 0) {
+                  if (window.confirm(content.contact.quote_confirm_close)) {
+                    localStorage.setItem('quoteDraft', JSON.stringify({ quoteData, quoteStep }));
+                    setIsQuoteGeneratorOpen(false);
+                  }
+                } else {
+                  setIsQuoteGeneratorOpen(false);
+                }
+              }}
+            />
+
+            {/* Modal Content - Fixed height */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+              className="relative w-full max-w-4xl h-[85vh] flex flex-col bg-white/95 backdrop-blur-2xl rounded-3xl shadow-2xl shadow-blue-500/5 border border-gray-200/50"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Header - Fixed */}
+              {quoteStep > 0 && !quoteSuccess && (
+                <div className="flex-shrink-0 px-8 pt-6 pb-4 border-b border-gray-200">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center space-x-4">
+                      {/* Small Avatar */}
+                      <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-blue-500/20 shadow-lg">
+                        <img
+                          src="/images/victor-soussan.png"
+                          alt="Victor Soussan"
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+
+                      {/* Title & Step */}
+                      <div>
+                        <h2 className="text-xl font-bold text-gray-900">
+                          {lang === 'en' ? 'Project Estimate' : 'Estimation de Projet'}
+                        </h2>
+                        <p className="text-sm text-gray-600">
+                          {lang === 'en' ? `Step ${quoteStep} of 8` : `Étape ${quoteStep} sur 8`}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Close Button */}
+                    <button
+                      onClick={() => {
+                        const hasData = quoteData.clientNeed || quoteData.services.length > 0 ||
+                                       quoteData.projectDescription || quoteData.name || quoteData.email;
+                        if (hasData && !quoteSuccess && quoteStep > 0) {
+                          if (window.confirm(content.contact.quote_confirm_close)) {
+                            localStorage.setItem('quoteDraft', JSON.stringify({ quoteData, quoteStep }));
+                            setIsQuoteGeneratorOpen(false);
+                          }
+                        } else {
+                          setIsQuoteGeneratorOpen(false);
+                        }
+                      }}
+                      className="p-2.5 bg-gray-100 hover:bg-gray-200 rounded-full transition-all duration-200"
+                    >
+                      <X size={20} />
+                    </button>
+                  </div>
+
+                  {/* Step Indicators */}
+                  <div className="flex items-center justify-between">
+                    {[1, 2, 3, 4, 5, 6, 7, 8].map((step) => (
+                      <div key={step} className="flex items-center flex-1">
+                        <div className={`w-full h-1.5 rounded-full transition-all duration-300 ${
+                          step <= quoteStep ? 'bg-blue-600' : 'bg-gray-200'
+                        }`} />
+                        {step < 8 && <div className="w-2" />}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {quoteStep === 0 && !quoteSuccess && (
+                <div className="absolute top-6 right-6 z-20">
+                  <button
+                    onClick={() => setIsQuoteGeneratorOpen(false)}
+                    className="p-2.5 bg-gray-100/80 backdrop-blur-xl hover:bg-gray-200 rounded-full transition-all duration-200"
+                  >
+                    <X size={20} />
+                  </button>
+                </div>
+              )}
+
+              {/* Content Area - Scrollable with fixed height */}
+              <div className="flex-1 overflow-y-auto px-8 py-8 pb-24">
+                <AnimatePresence mode="wait">
+                  {/* Step 0: Welcome Screen */}
+                  {quoteStep === 0 && (
+                    <motion.div
+                      key="step0"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      transition={{ duration: 0.4 }}
+                      className="text-center py-12 px-8 max-w-3xl mx-auto"
+                    >
+                      {/* Portrait */}
+                      <motion.div
+                        initial={{ scale: 0.8, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ type: 'spring', stiffness: 200, delay: 0.1 }}
+                        className="mb-8 inline-block"
+                      >
+                        <div className="relative">
+                          <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-blue-500/20 shadow-2xl shadow-blue-500/10 mx-auto">
+                            <img
+                              src="/images/victor-soussan.png"
+                              alt="Victor Soussan"
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                          <div className="absolute bottom-0 right-0 w-6 h-6 bg-green-500 rounded-full border-4 border-white shadow-lg" />
+                        </div>
+                      </motion.div>
+
+                      {/* Title */}
+                      <motion.h1
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2 }}
+                        className="text-4xl font-bold text-gray-900 mb-4"
+                      >
+                        {lang === 'en' ? 'Get Your Project Estimate' : 'Obtenez votre Estimation'}
+                      </motion.h1>
+
+                      {/* Subtitle */}
+                      <motion.p
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3 }}
+                        className="text-xl text-gray-600 mb-10 leading-relaxed"
+                      >
+                        {lang === 'en'
+                          ? 'This quick questionnaire will help me understand your needs and provide a tailored response.'
+                          : 'Ce questionnaire rapide m\'aidera à comprendre vos besoins et à vous proposer une réponse calibrée.'}
+                      </motion.p>
+
+                      {/* Features */}
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.4 }}
+                        className="grid md:grid-cols-3 gap-6 mb-12"
+                      >
+                        <div className="p-6 bg-blue-50/50 backdrop-blur-xl rounded-2xl border border-blue-100 hover:shadow-lg hover:shadow-blue-500/10 transition-all duration-200">
+                          <Clock className="w-8 h-8 text-blue-600 mb-3 mx-auto" />
+                          <h3 className="font-semibold text-gray-900 mb-2">
+                            {lang === 'en' ? '5 minutes' : '5 minutes'}
+                          </h3>
+                          <p className="text-sm text-gray-600">
+                            {lang === 'en' ? 'Quick and easy' : 'Rapide et simple'}
+                          </p>
+                        </div>
+
+                        <div className="p-6 bg-blue-50/50 backdrop-blur-xl rounded-2xl border border-blue-100 hover:shadow-lg hover:shadow-blue-500/10 transition-all duration-200">
+                          <Target className="w-8 h-8 text-blue-600 mb-3 mx-auto" />
+                          <h3 className="font-semibold text-gray-900 mb-2">
+                            {lang === 'en' ? 'Tailored estimate' : 'Estimation sur-mesure'}
+                          </h3>
+                          <p className="text-sm text-gray-600">
+                            {lang === 'en' ? 'Based on your needs' : 'Selon vos besoins'}
+                          </p>
+                        </div>
+
+                        <div className="p-6 bg-blue-50/50 backdrop-blur-xl rounded-2xl border border-blue-100 hover:shadow-lg hover:shadow-blue-500/10 transition-all duration-200">
+                          <Zap className="w-8 h-8 text-blue-600 mb-3 mx-auto" />
+                          <h3 className="font-semibold text-gray-900 mb-2">
+                            {lang === 'en' ? 'Fast response' : 'Réponse rapide'}
+                          </h3>
+                          <p className="text-sm text-gray-600">
+                            {lang === 'en' ? 'Within 24 hours' : 'Sous 24 heures'}
+                          </p>
+                        </div>
+                      </motion.div>
+
+                      {/* CTA */}
+                      <motion.button
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.5, type: 'spring', stiffness: 200 }}
+                        whileHover={{ scale: 1.05, y: -2 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={() => setQuoteStep(1)}
+                        className="inline-flex items-center px-12 py-5 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-full font-semibold text-xl shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/50 transition-all duration-200"
+                      >
+                        {lang === 'en' ? 'Start Now' : 'Démarrer'}
+                        <ArrowRight className="ml-2" size={24} />
+                      </motion.button>
+                    </motion.div>
+                  )}
+
+                  {/* Step 1: Client Need */}
+                  {quoteStep === 1 && !quoteSuccess && (
+                    <motion.div
+                      key="step1"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      transition={{ duration: 0.3 }}
+                      className="space-y-6 max-w-3xl mx-auto"
+                    >
+                      <div className="text-center mb-6">
+                        <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                          {lang === 'en' ? 'What brings you here?' : 'Qu\'est-ce qui vous amène ?'}
+                        </h3>
+                        <p className="text-base text-gray-600">
+                          {lang === 'en' ? 'Select the option that best describes your need' : 'Sélectionnez l\'option qui décrit le mieux votre besoin'}
+                        </p>
+                      </div>
+
+                      <div className="space-y-3">
+                        {[
+                          {
+                            type: 'new-product' as const,
+                            icon: <Rocket size={32} weight="duotone" />,
+                            title: lang === 'en'
+                              ? 'I want to create a new app, service, or prototype a new product'
+                              : 'Je souhaite créer une nouvelle app, un nouveau service, prototyper un nouveau produit'
+                          },
+                          {
+                            type: 'optimize-existing' as const,
+                            icon: <ArrowsClockwise size={32} weight="duotone" />,
+                            title: lang === 'en'
+                              ? 'I need to optimize an existing product, refresh the UI, or simplify complex user journeys'
+                              : 'Je dois optimiser un produit existant, rafraîchir l\'UI, ou simplifier des parcours devenus trop complexes'
+                          },
+                          {
+                            type: 'long-term' as const,
+                            icon: <HandHeart size={32} weight="duotone" />,
+                            title: lang === 'en'
+                              ? 'I\'m looking for a long-term partnership'
+                              : 'Je recherche une mission long terme'
+                          },
+                          {
+                            type: 'other' as const,
+                            icon: <ChatCircleDots size={32} weight="duotone" />,
+                            title: lang === 'en'
+                              ? 'Other (I\'ll explain in the description)'
+                              : 'Autre (je préciserai dans la description)'
+                          }
+                        ].map((option) => (
+                          <motion.button
+                            key={option.type}
+                            onClick={() => {
+                              setQuoteData({ ...quoteData, clientNeed: option.type });
+                              setQuoteValidationErrors({ ...quoteValidationErrors, clientNeed: '' });
+                            }}
+                            whileHover={{ scale: 1.01, x: 4 }}
+                            whileTap={{ scale: 0.99 }}
+                            className={`w-full flex items-center space-x-4 p-5 border-2 rounded-2xl text-left transition-all duration-200 ${
+                              quoteData.clientNeed === option.type
+                                ? 'border-blue-500 bg-blue-50/70 shadow-lg shadow-blue-500/10'
+                                : 'border-gray-200 bg-white/50 hover:border-blue-300 hover:bg-blue-50/30'
+                            }`}
+                          >
+                            <div className={`flex-shrink-0 ${quoteData.clientNeed === option.type ? 'text-blue-600' : 'text-gray-400'}`}>
+                              {option.icon}
+                            </div>
+                            <span className="text-base font-medium text-gray-900 leading-relaxed">{option.title}</span>
+                          </motion.button>
+                        ))}
+                      </div>
+
+                      {quoteValidationErrors.clientNeed && (
+                        <motion.p
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="text-sm text-red-600 text-center font-medium"
+                        >
+                          {quoteValidationErrors.clientNeed}
+                        </motion.p>
+                      )}
+                    </motion.div>
+                  )}
+
+                  {/* Step 2: Project Status */}
+                  {quoteStep === 2 && !quoteSuccess && (
+                    <motion.div
+                      key="step2"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      transition={{ duration: 0.3 }}
+                      className="space-y-6 max-w-3xl mx-auto"
+                    >
+                      <div className="text-center mb-6">
+                        <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                          {lang === 'en' ? 'What is your situation?' : 'Quelle est votre situation ?'}
+                        </h3>
+                        <p className="text-base text-gray-600">
+                          {lang === 'en' ? 'This helps us understand where you are in your journey' : 'Cela nous aide à comprendre où vous en êtes dans votre parcours'}
+                        </p>
+                      </div>
+
+                      <div className="grid grid-cols-1 gap-4">
+                        {[
+                          {
+                            type: 'early-stage' as const,
+                            icon: <Rocket size={40} weight="duotone" />,
+                            title: lang === 'en' ? 'Early Stage Product' : 'Produit en phase de démarrage, early stage',
+                            desc: lang === 'en' ? 'MVP, startup, or new product launch' : 'MVP, startup, ou lancement de nouveau produit'
+                          },
+                          {
+                            type: 'scale-complex' as const,
+                            icon: <ChartLineUp size={40} weight="duotone" />,
+                            title: lang === 'en' ? 'Optimize & Scale' : 'Optimiser et scaler un produit complexe',
+                            desc: lang === 'en' ? 'Improve existing product, increase performance' : 'Améliorer un produit existant, augmenter les performances'
+                          },
+                          {
+                            type: 'long-term-mission' as const,
+                            icon: <HandHeart size={40} weight="duotone" />,
+                            title: lang === 'en' ? 'Long-term Mission' : 'Mission pour un engagement long terme',
+                            desc: lang === 'en' ? 'Ongoing partnership, 6+ months commitment' : 'Partenariat continu, engagement 6+ mois'
+                          }
+                        ].map((option) => (
+                          <motion.button
+                            key={option.type}
+                            onClick={() => {
+                              setQuoteData({ ...quoteData, projectStatus: option.type });
+                              setQuoteValidationErrors({ ...quoteValidationErrors, projectStatus: '' });
+                            }}
+                            whileHover={{ scale: 1.01, y: -2 }}
+                            whileTap={{ scale: 0.99 }}
+                            className={`p-6 border-2 rounded-2xl text-left transition-all duration-200 ${
+                              quoteData.projectStatus === option.type
+                                ? 'border-blue-500 bg-blue-50/70 shadow-lg shadow-blue-500/10'
+                                : 'border-gray-200 bg-white/50 hover:border-blue-300 hover:bg-blue-50/30'
+                            }`}
+                          >
+                            <div className="flex items-start space-x-4">
+                              <div className={`flex-shrink-0 ${quoteData.projectStatus === option.type ? 'text-blue-600' : 'text-gray-400'}`}>
+                                {option.icon}
+                              </div>
+                              <div className="flex-1">
+                                <h4 className="text-lg font-bold text-gray-900 mb-1">{option.title}</h4>
+                                <p className="text-sm text-gray-600">{option.desc}</p>
+                              </div>
+                            </div>
+                          </motion.button>
+                        ))}
+                      </div>
+
+                      {quoteValidationErrors.projectStatus && (
+                        <motion.p
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="text-sm text-red-600 text-center font-medium"
+                        >
+                          {quoteValidationErrors.projectStatus}
+                        </motion.p>
+                      )}
+                    </motion.div>
+                  )}
+
+                  {/* Step 3: Upload Brief (Optional) */}
+                  {quoteStep === 3 && !quoteSuccess && (
+                    <motion.div
+                      key="step3"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      transition={{ duration: 0.3 }}
+                      className="space-y-6 max-w-2xl mx-auto"
+                    >
+                      <div className="text-center mb-6">
+                        <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                          {lang === 'en' ? 'Share your project brief' : 'Partagez votre brief de projet'}
+                        </h3>
+                        <p className="text-base text-gray-600">
+                          {lang === 'en' ? 'Optional - Help us understand your project better' : 'Optionnel - Aidez-nous à mieux comprendre votre projet'}
+                        </p>
+                      </div>
+
+                      {/* Upload Zone */}
+                      <div
+                        className={`relative p-10 rounded-2xl border-2 border-dashed transition-all duration-200 text-center ${
+                          isDragging
+                            ? 'border-blue-500 bg-blue-50/70'
+                            : quoteData.briefFile
+                            ? 'border-green-400 bg-green-50/30'
+                            : 'border-gray-300 bg-gray-50/50 hover:border-blue-400'
+                        }`}
+                        onDragOver={(e) => {
+                          e.preventDefault();
+                          setIsDragging(true);
+                        }}
+                        onDragLeave={() => setIsDragging(false)}
+                        onDrop={(e) => {
+                          e.preventDefault();
+                          setIsDragging(false);
+                          const file = e.dataTransfer.files[0];
+                          if (file) {
+                            if (file.size > 3 * 1024 * 1024) {
+                              setQuoteValidationErrors({ ...quoteValidationErrors, briefFile: content.contact.quote_validation_file_size });
+                              return;
+                            }
+                            if (!file.name.match(/\.(pdf|docx)$/i)) {
+                              setQuoteValidationErrors({ ...quoteValidationErrors, briefFile: content.contact.quote_validation_file_type });
+                              return;
+                            }
+                            // Simulate upload progress
+                            setIsUploading(true);
+                            setUploadProgress(0);
+                            const interval = setInterval(() => {
+                              setUploadProgress(prev => {
+                                if (prev >= 100) {
+                                  clearInterval(interval);
+                                  setIsUploading(false);
+                                  setQuoteData({ ...quoteData, briefFile: file, briefFileName: file.name, briefFileSize: file.size });
+                                  setQuoteValidationErrors({ ...quoteValidationErrors, briefFile: '' });
+                                  return 100;
+                                }
+                                return prev + 10;
+                              });
+                            }, 100);
+                          }
+                        }}
+                      >
+                        {!quoteData.briefFile && !isUploading ? (
+                          <>
+                            <Upload className="w-12 h-12 text-blue-600 mx-auto mb-3" />
+                            <p className="text-lg font-semibold text-gray-900 mb-1">
+                              {lang === 'en' ? 'Drag & drop your file here' : 'Glissez-déposez votre fichier ici'}
+                            </p>
+                            <p className="text-sm text-gray-600 mb-5">
+                              {lang === 'en' ? 'or browse from your computer' : 'ou parcourez depuis votre ordinateur'}
+                            </p>
+                            <label className="inline-block">
+                              <input
+                                type="file"
+                                accept=".pdf,.docx"
+                                className="hidden"
+                                onChange={(e) => {
+                                  const file = e.target.files?.[0];
+                                  if (file) {
+                                    if (file.size > 3 * 1024 * 1024) {
+                                      setQuoteValidationErrors({ ...quoteValidationErrors, briefFile: content.contact.quote_validation_file_size });
+                                      return;
+                                    }
+                                    // Simulate upload progress (faster)
+                                    setIsUploading(true);
+                                    setUploadProgress(0);
+                                    const interval = setInterval(() => {
+                                      setUploadProgress(prev => {
+                                        if (prev >= 100) {
+                                          clearInterval(interval);
+                                          setIsUploading(false);
+                                          setQuoteData({ ...quoteData, briefFile: file, briefFileName: file.name, briefFileSize: file.size });
+                                          setQuoteValidationErrors({ ...quoteValidationErrors, briefFile: '' });
+                                          return 100;
+                                        }
+                                        return prev + 20;
+                                      });
+                                    }, 50);
+                                  }
+                                }}
+                              />
+                              <motion.span
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                                className="px-6 py-3 bg-white border-2 border-blue-500 text-blue-600 rounded-full font-semibold hover:bg-blue-50 transition-all cursor-pointer inline-block"
+                              >
+                                {lang === 'en' ? 'Browse Files' : 'Parcourir les fichiers'}
+                              </motion.span>
+                            </label>
+                            <p className="text-xs text-gray-500 mt-3">
+                              PDF or DOCX • Max 3MB
+                            </p>
+                          </>
+                        ) : isUploading ? (
+                          <div className="py-4">
+                            <div className="w-16 h-16 mx-auto mb-3 relative">
+                              <div className="w-full h-full rounded-full border-4 border-gray-200"></div>
+                              <div
+                                className="absolute top-0 left-0 w-full h-full rounded-full border-4 border-blue-600 border-t-transparent animate-spin"
+                                style={{ animationDuration: '0.8s' }}
+                              ></div>
+                            </div>
+                            <p className="text-base font-semibold text-gray-900">
+                              {lang === 'en' ? 'Uploading...' : 'Téléchargement...'}
+                            </p>
+                          </div>
+                        ) : (
+                          <div className="py-2">
+                            <div className="flex items-center justify-center space-x-3 mb-3">
+                              <div className="w-14 h-14 rounded-full bg-green-500 flex items-center justify-center flex-shrink-0">
+                                <Check className="w-7 h-7 text-white" />
+                              </div>
+                              <div className="text-left">
+                                <p className="text-base font-semibold text-gray-900">
+                                  {quoteData.briefFileName}
+                                </p>
+                                <p className="text-sm text-gray-600">
+                                  {(quoteData.briefFileSize / 1024).toFixed(1)} KB
+                                </p>
+                              </div>
+                            </div>
+                            <motion.button
+                              onClick={() => {
+                                setQuoteData({ ...quoteData, briefFile: null, briefFileName: '', briefFileSize: 0 });
+                                setUploadProgress(0);
+                              }}
+                              whileHover={{ scale: 1.02 }}
+                              whileTap={{ scale: 0.98 }}
+                              className="px-5 py-2 bg-red-50 text-red-600 rounded-full text-sm font-semibold hover:bg-red-100 transition-all"
+                            >
+                              {lang === 'en' ? 'Remove File' : 'Supprimer le fichier'}
+                            </motion.button>
+                          </div>
+                        )}
+                      </div>
+
+                      {quoteValidationErrors.briefFile && (
+                        <motion.p
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="text-sm text-red-600 text-center font-medium mt-4"
+                        >
+                          {quoteValidationErrors.briefFile}
+                        </motion.p>
+                      )}
+                    </motion.div>
+                  )}
+
+                  {/* Step 4: Services Selection */}
+                  {quoteStep === 4 && !quoteSuccess && (
+                    <motion.div
+                      key="step4"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      transition={{ duration: 0.3 }}
+                      className="space-y-6 max-w-3xl mx-auto"
+                    >
+                      <div className="text-center mb-6">
+                        <h3 className="text-2xl font-bold text-gray-900 mb-2">{content.contact.quote_step_3_title}</h3>
+                        <p className="text-base text-gray-600">
+                          {lang === 'en' ? 'Select all services that apply to your project' : 'Sélectionnez tous les services qui s\'appliquent à votre projet'}
+                        </p>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {[
+                          content.contact.quote_step_3_service_1,
+                          content.contact.quote_step_3_service_2,
+                          content.contact.quote_step_3_service_3,
+                          content.contact.quote_step_3_service_4,
+                          content.contact.quote_step_3_service_5,
+                          content.contact.quote_step_3_service_6,
+                          content.contact.quote_step_3_service_7,
+                          content.contact.quote_step_3_service_8
+                        ].map((service, idx) => (
+                          <motion.button
+                            key={idx}
+                            onClick={() => {
+                              const services = quoteData.services.includes(service)
+                                ? quoteData.services.filter(s => s !== service)
+                                : [...quoteData.services, service];
+                              setQuoteData({ ...quoteData, services });
+                              setQuoteValidationErrors({ ...quoteValidationErrors, services: '' });
+                            }}
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                            className={`flex items-center space-x-4 p-5 border-2 rounded-2xl text-left transition-all duration-200 ${
+                              quoteData.services.includes(service)
+                                ? 'border-blue-500 bg-blue-50/70 shadow-lg shadow-blue-500/20 ring-2 ring-blue-500/20'
+                                : 'border-gray-200 bg-white/50 hover:border-blue-400 hover:bg-blue-50/30 hover:shadow-lg'
+                            }`}
+                          >
+                            {quoteData.services.includes(service) ? (
+                              <CheckSquare size={28} className="text-blue-600 flex-shrink-0" />
+                            ) : (
+                              <Square size={28} className="text-gray-400 flex-shrink-0" />
+                            )}
+                            <span className="text-base font-semibold text-gray-900">{service}</span>
+                          </motion.button>
+                        ))}
+                      </div>
+
+                      {quoteValidationErrors.services && (
+                        <motion.p
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="text-sm text-red-600 text-center font-medium mt-4"
+                        >
+                          {quoteValidationErrors.services}
+                        </motion.p>
+                      )}
+                    </motion.div>
+                  )}
+
+                  {/* Step 5: Project Details */}
+                  {quoteStep === 5 && !quoteSuccess && (
+                    <motion.div
+                      key="step5"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      transition={{ duration: 0.3 }}
+                      className="space-y-6 max-w-3xl mx-auto"
+                    >
+                      <div className="text-center mb-6">
+                        <h3 className="text-2xl font-bold text-gray-900 mb-2">{content.contact.quote_step_4_title}</h3>
+                        <p className="text-base text-gray-600">
+                          {lang === 'en' ? 'Tell us more about your vision and goals' : 'Parlez-nous de votre vision et de vos objectifs'}
+                        </p>
+                      </div>
+
+                      <div>
+                        <label className="block text-base font-semibold text-gray-900 mb-3">
+                          {content.contact.quote_step_4_need_label}
+                        </label>
+                        <textarea
+                          value={quoteData.needIdea}
+                          onChange={(e) => setQuoteData({ ...quoteData, needIdea: e.target.value })}
+                          className="w-full px-5 py-4 text-base border-2 border-gray-300 rounded-2xl focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 transition-all duration-200 resize-none bg-white/50 backdrop-blur-xl"
+                          rows={4}
+                          placeholder={content.contact.quote_step_4_need_placeholder}
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-base font-semibold text-gray-900 mb-3">
+                          {content.contact.quote_step_4_desc_label}
+                        </label>
+                        <textarea
+                          value={quoteData.projectDescription}
+                          onChange={(e) => {
+                            setQuoteData({ ...quoteData, projectDescription: e.target.value });
+                            if (e.target.value.length >= 50) {
+                              setQuoteValidationErrors({ ...quoteValidationErrors, projectDescription: '' });
+                            }
+                          }}
+                          className="w-full px-5 py-4 text-base border-2 border-gray-300 rounded-2xl focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 transition-all duration-200 resize-none bg-white/50 backdrop-blur-xl"
+                          rows={6}
+                          placeholder={content.contact.quote_step_4_desc_placeholder}
+                        />
+                        <div className="flex items-center justify-between mt-3">
+                          <span className="text-sm text-gray-600 font-medium">
+                            {quoteData.projectDescription.length} {content.contact.quote_step_4_chars}
+                          </span>
+                          {quoteData.projectDescription.length < 50 && (
+                            <span className="text-sm text-gray-500">{content.contact.quote_step_4_min_chars}</span>
+                          )}
+                        </div>
+                        {quoteValidationErrors.projectDescription && (
+                          <motion.p
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="text-sm text-red-600 font-medium mt-2"
+                          >
+                            {quoteValidationErrors.projectDescription}
+                          </motion.p>
+                        )}
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {/* Step 6: Budget & Timeline */}
+                  {quoteStep === 6 && !quoteSuccess && (
+                    <motion.div
+                      key="step6"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      transition={{ duration: 0.3 }}
+                      className="space-y-6 max-w-3xl mx-auto"
+                    >
+                      <div className="text-center mb-6">
+                        <h3 className="text-2xl font-bold text-gray-900 mb-2">{content.contact.quote_step_5_title}</h3>
+                        <p className="text-base text-gray-600">
+                          {lang === 'en' ? 'Help us understand your budget and timeline expectations' : 'Aidez-nous à comprendre votre budget et vos délais'}
+                        </p>
+                      </div>
+
+                      <div>
+                        <label className="block text-base font-semibold text-gray-900 mb-3">
+                          {content.contact.quote_step_5_budget_label}
+                        </label>
+                        <select
+                          value={quoteData.budget}
+                          onChange={(e) => setQuoteData({ ...quoteData, budget: e.target.value })}
+                          className="w-full px-5 py-4 text-base border-2 border-gray-300 rounded-2xl focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 transition-all duration-200 bg-white/50 backdrop-blur-xl appearance-none cursor-pointer"
+                          style={{ backgroundImage: "url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e\")", backgroundPosition: 'right 1.5rem center', backgroundRepeat: 'no-repeat', backgroundSize: '1.5em 1.5em', paddingRight: '3rem' }}
+                        >
+                          <option value="">{content.contact.quote_step_5_budget_placeholder}</option>
+                          <option value="< 5k€">{'< 5k€'}</option>
+                          <option value="5-10k€">5-10k€</option>
+                          <option value="10-25k€">10-25k€</option>
+                          <option value="25-50k€">25-50k€</option>
+                          <option value="50-100k€">50-100k€</option>
+                          <option value="> 100k€">{"> 100k€"}</option>
+                        </select>
+                        {quoteData.clientNeed === 'new-product' && (
+                          <p className="text-sm text-gray-600 mt-2 flex items-center">
+                            <span className="mr-2">💡</span>
+                            {lang === 'en' ? 'Typical new product projects: 10-25k€' : 'Projets de nouveaux produits typiques : 10-25k€'}
+                          </p>
+                        )}
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                          <label className="block text-base font-semibold text-gray-900 mb-3">
+                            {content.contact.quote_step_5_start_label}
+                          </label>
+                          <input
+                            type="date"
+                            value={quoteData.startDate}
+                            onChange={(e) => setQuoteData({ ...quoteData, startDate: e.target.value })}
+                            className="w-full px-5 py-4 text-base border-2 border-gray-300 rounded-2xl focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 transition-all duration-200 bg-white/50 backdrop-blur-xl"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-base font-semibold text-gray-900 mb-3">
+                            {content.contact.quote_step_5_end_label}
+                          </label>
+                          <input
+                            type="date"
+                            value={quoteData.endDate}
+                            onChange={(e) => setQuoteData({ ...quoteData, endDate: e.target.value })}
+                            className="w-full px-5 py-4 text-base border-2 border-gray-300 rounded-2xl focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 transition-all duration-200 bg-white/50 backdrop-blur-xl"
+                          />
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {/* Step 7: Contact Information */}
+                  {quoteStep === 7 && !quoteSuccess && (
+                    <motion.div
+                      key="step7"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      transition={{ duration: 0.3 }}
+                      className="space-y-6 max-w-3xl mx-auto"
+                    >
+                      <div className="text-center mb-6">
+                        <h3 className="text-2xl font-bold text-gray-900 mb-2">{content.contact.quote_step_6_title}</h3>
+                        <p className="text-base text-gray-600">
+                          {lang === 'en' ? 'How can we reach you with your personalized estimate?' : 'Comment pouvons-nous vous joindre avec votre estimation personnalisée ?'}
+                        </p>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                          <label className="block text-base font-semibold text-gray-900 mb-3">
+                            {content.contact.quote_step_6_name_label}
+                          </label>
+                          <input
+                            type="text"
+                            value={quoteData.name}
+                            onChange={(e) => {
+                              setQuoteData({ ...quoteData, name: e.target.value });
+                              setQuoteValidationErrors({ ...quoteValidationErrors, name: '' });
+                              localStorage.setItem('user_name', e.target.value);
+                            }}
+                            className="w-full px-5 py-4 text-base border-2 border-gray-300 rounded-2xl focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 transition-all duration-200 bg-white/50 backdrop-blur-xl"
+                            placeholder={content.contact.quote_step_6_name_placeholder}
+                          />
+                          {quoteValidationErrors.name && (
+                            <motion.p
+                              initial={{ opacity: 0, y: -10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              className="text-sm text-red-600 font-medium mt-2"
+                            >
+                              {quoteValidationErrors.name}
+                            </motion.p>
+                          )}
+                        </div>
+
+                        <div>
+                          <label className="block text-base font-semibold text-gray-900 mb-3">
+                            {content.contact.quote_step_6_email_label}
+                          </label>
+                          <input
+                            type="email"
+                            value={quoteData.email}
+                            onChange={(e) => {
+                              setQuoteData({ ...quoteData, email: e.target.value });
+                              setQuoteValidationErrors({ ...quoteValidationErrors, email: '' });
+                              localStorage.setItem('user_email', e.target.value);
+                            }}
+                            className="w-full px-5 py-4 text-base border-2 border-gray-300 rounded-2xl focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 transition-all duration-200 bg-white/50 backdrop-blur-xl"
+                            placeholder={content.contact.quote_step_6_email_placeholder}
+                          />
+                          {quoteValidationErrors.email && (
+                            <motion.p
+                              initial={{ opacity: 0, y: -10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              className="text-sm text-red-600 font-medium mt-2"
+                            >
+                              {quoteValidationErrors.email}
+                            </motion.p>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                          <label className="block text-base font-semibold text-gray-900 mb-3">
+                            {content.contact.quote_step_6_company_label} <span className="text-gray-500 font-normal">({lang === 'en' ? 'Optional' : 'Optionnel'})</span>
+                          </label>
+                          <input
+                            type="text"
+                            value={quoteData.company}
+                            onChange={(e) => setQuoteData({ ...quoteData, company: e.target.value })}
+                            className="w-full px-5 py-4 text-base border-2 border-gray-300 rounded-2xl focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 transition-all duration-200 bg-white/50 backdrop-blur-xl"
+                            placeholder={content.contact.quote_step_6_company_placeholder}
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-base font-semibold text-gray-900 mb-3">
+                            {content.contact.quote_step_6_phone_label} <span className="text-gray-500 font-normal">({lang === 'en' ? 'Optional' : 'Optionnel'})</span>
+                          </label>
+                          <input
+                            type="tel"
+                            value={quoteData.phone}
+                            onChange={(e) => setQuoteData({ ...quoteData, phone: e.target.value })}
+                            className="w-full px-5 py-4 text-base border-2 border-gray-300 rounded-2xl focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 transition-all duration-200 bg-white/50 backdrop-blur-xl"
+                            placeholder={content.contact.quote_step_6_phone_placeholder}
+                          />
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {/* Step 8: Review & Send */}
+                  {quoteStep === 8 && !quoteSuccess && (
+                    <motion.div
+                      key="step8"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      transition={{ duration: 0.3 }}
+                      className="space-y-6 max-w-3xl mx-auto"
+                    >
+                      <div className="text-center mb-6">
+                        <h3 className="text-2xl font-bold text-gray-900 mb-2">{content.contact.quote_step_7_title}</h3>
+                        <p className="text-base text-gray-600">
+                          {lang === 'en' ? 'Review your information before sending' : 'Vérifiez vos informations avant d\'envoyer'}
+                        </p>
+                      </div>
+
+                      <div className="space-y-3">
+                        {/* Client Need */}
+                        <div className="p-5 bg-gradient-to-br from-blue-50/80 to-white rounded-2xl border border-blue-100/50 shadow-sm hover:shadow-md transition-all duration-200">
+                          <div className="flex items-center justify-between mb-2">
+                            <h4 className="text-base font-bold text-gray-900">
+                              {lang === 'en' ? 'Your Need' : 'Votre Besoin'}
+                            </h4>
+                            <button
+                              onClick={() => setQuoteStep(1)}
+                              className="text-sm text-blue-600 hover:text-blue-800 font-semibold transition-colors"
+                            >
+                              {content.contact.quote_step_7_edit}
+                            </button>
+                          </div>
+                          <p className="text-sm text-gray-700 leading-relaxed">
+                            {quoteData.clientNeed === 'new-product' && (lang === 'en'
+                              ? 'I want to create a new app, service, or prototype a new product'
+                              : 'Je souhaite créer une nouvelle app, un nouveau service, prototyper un nouveau produit')}
+                            {quoteData.clientNeed === 'optimize-existing' && (lang === 'en'
+                              ? 'I need to optimize an existing product, refresh the UI, or simplify user journeys'
+                              : 'Je dois optimiser un produit existant, rafraîchir l\'UI d\'une app, faire évoluer les parcours')}
+                            {quoteData.clientNeed === 'long-term' && (lang === 'en'
+                              ? 'Long-term mission'
+                              : 'Mission long terme')}
+                            {quoteData.clientNeed === 'other' && (lang === 'en'
+                              ? 'Other'
+                              : 'Autre')}
+                          </p>
+                        </div>
+
+                        {/* Project Status */}
+                        <div className="p-5 bg-gradient-to-br from-purple-50/80 to-white rounded-2xl border border-purple-100/50 shadow-sm hover:shadow-md transition-all duration-200">
+                          <div className="flex items-center justify-between mb-2">
+                            <h4 className="text-base font-bold text-gray-900">
+                              {lang === 'en' ? 'Project Status' : 'Statut du Projet'}
+                            </h4>
+                            <button
+                              onClick={() => setQuoteStep(2)}
+                              className="text-sm text-blue-600 hover:text-blue-800 font-semibold transition-colors"
+                            >
+                              {content.contact.quote_step_7_edit}
+                            </button>
+                          </div>
+                          <p className="text-sm text-gray-700 leading-relaxed">
+                            {quoteData.projectStatus === 'early-stage' && (lang === 'en'
+                              ? 'Early Stage Product - MVP, startup, or new product launch'
+                              : 'Produit en phase de démarrage, early stage - MVP, startup, ou lancement')}
+                            {quoteData.projectStatus === 'scale-complex' && (lang === 'en'
+                              ? 'Optimize & Scale Complex Product'
+                              : 'Optimiser et scaler un produit complexe')}
+                            {quoteData.projectStatus === 'long-term-mission' && (lang === 'en'
+                              ? 'Long-term Mission'
+                              : 'Mission pour un engagement long terme')}
+                          </p>
+                        </div>
+
+                        {/* Brief File */}
+                        {quoteData.briefFile && (
+                          <div className="p-5 bg-gradient-to-br from-green-50/80 to-white rounded-2xl border border-green-100/50 shadow-sm hover:shadow-md transition-all duration-200">
+                            <div className="flex items-center justify-between mb-2">
+                              <h4 className="text-base font-bold text-gray-900">{content.contact.quote_step_7_brief}</h4>
+                              <button
+                                onClick={() => setQuoteStep(3)}
+                                className="text-sm text-blue-600 hover:text-blue-800 font-semibold transition-colors"
+                              >
+                                {content.contact.quote_step_7_edit}
+                              </button>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <FileText size={18} className="text-green-600" />
+                              <p className="text-sm text-gray-700">{quoteData.briefFileName} <span className="text-gray-500">({(quoteData.briefFileSize / 1024).toFixed(1)} KB)</span></p>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Services */}
+                        <div className="p-5 bg-gradient-to-br from-amber-50/80 to-white rounded-2xl border border-amber-100/50 shadow-sm hover:shadow-md transition-all duration-200">
+                          <div className="flex items-center justify-between mb-3">
+                            <h4 className="text-base font-bold text-gray-900">{content.contact.quote_step_7_services}</h4>
+                            <button
+                              onClick={() => setQuoteStep(4)}
+                              className="text-sm text-blue-600 hover:text-blue-800 font-semibold transition-colors"
+                            >
+                              {content.contact.quote_step_7_edit}
+                            </button>
+                          </div>
+                          <div className="flex flex-wrap gap-2">
+                            {quoteData.services.map((service, idx) => (
+                              <span
+                                key={idx}
+                                className="px-3 py-1.5 bg-white border border-amber-200 rounded-full text-sm text-gray-700 font-medium shadow-sm"
+                              >
+                                {service}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Project Details */}
+                        <div className="p-5 bg-gradient-to-br from-indigo-50/80 to-white rounded-2xl border border-indigo-100/50 shadow-sm hover:shadow-md transition-all duration-200">
+                          <div className="flex items-center justify-between mb-3">
+                            <h4 className="text-base font-bold text-gray-900">{content.contact.quote_step_7_project_details}</h4>
+                            <button
+                              onClick={() => setQuoteStep(5)}
+                              className="text-sm text-blue-600 hover:text-blue-800 font-semibold transition-colors"
+                            >
+                              {content.contact.quote_step_7_edit}
+                            </button>
+                          </div>
+                          <div className="space-y-3">
+                            {quoteData.needIdea && (
+                              <div>
+                                <p className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">{content.contact.quote_step_7_need}:</p>
+                                <p className="text-sm text-gray-700 leading-relaxed">{quoteData.needIdea}</p>
+                              </div>
+                            )}
+                            <div>
+                              <p className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">{content.contact.quote_step_7_description}:</p>
+                              <p className="text-sm text-gray-700 leading-relaxed">{quoteData.projectDescription}</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Budget & Timeline */}
+                        {(quoteData.budget || quoteData.startDate || quoteData.endDate) && (
+                          <div className="p-5 bg-gradient-to-br from-rose-50/80 to-white rounded-2xl border border-rose-100/50 shadow-sm hover:shadow-md transition-all duration-200">
+                            <div className="flex items-center justify-between mb-3">
+                              <h4 className="text-base font-bold text-gray-900">{content.contact.quote_step_7_budget_timeline}</h4>
+                              <button
+                                onClick={() => setQuoteStep(6)}
+                                className="text-sm text-blue-600 hover:text-blue-800 font-semibold transition-colors"
+                              >
+                                {content.contact.quote_step_7_edit}
+                              </button>
+                            </div>
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                              {quoteData.budget && (
+                                <div className="p-3 bg-white rounded-xl border border-rose-100">
+                                  <p className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">{content.contact.quote_step_7_budget}</p>
+                                  <p className="text-sm font-semibold text-gray-900">{quoteData.budget}</p>
+                                </div>
+                              )}
+                              {quoteData.startDate && (
+                                <div className="p-3 bg-white rounded-xl border border-rose-100">
+                                  <p className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">{content.contact.quote_step_7_start}</p>
+                                  <p className="text-sm font-semibold text-gray-900">{quoteData.startDate}</p>
+                                </div>
+                              )}
+                              {quoteData.endDate && (
+                                <div className="p-3 bg-white rounded-xl border border-rose-100">
+                                  <p className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">{content.contact.quote_step_7_end}</p>
+                                  <p className="text-sm font-semibold text-gray-900">{quoteData.endDate}</p>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Contact Info */}
+                        <div className="p-5 bg-gradient-to-br from-teal-50/80 to-white rounded-2xl border border-teal-100/50 shadow-sm hover:shadow-md transition-all duration-200">
+                          <div className="flex items-center justify-between mb-3">
+                            <h4 className="text-base font-bold text-gray-900">{content.contact.quote_step_7_contact}</h4>
+                            <button
+                              onClick={() => setQuoteStep(7)}
+                              className="text-sm text-blue-600 hover:text-blue-800 font-semibold transition-colors"
+                            >
+                              {content.contact.quote_step_7_edit}
+                            </button>
+                          </div>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div className="p-3 bg-white rounded-xl border border-teal-100">
+                              <p className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">{lang === 'en' ? 'Name' : 'Nom'}</p>
+                              <p className="text-sm font-semibold text-gray-900">{quoteData.name}</p>
+                            </div>
+                            <div className="p-3 bg-white rounded-xl border border-teal-100">
+                              <p className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Email</p>
+                              <p className="text-sm font-semibold text-gray-900">{quoteData.email}</p>
+                            </div>
+                            {quoteData.company && (
+                              <div className="p-3 bg-white rounded-xl border border-teal-100">
+                                <p className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">{lang === 'en' ? 'Company' : 'Entreprise'}</p>
+                                <p className="text-sm font-semibold text-gray-900">{quoteData.company}</p>
+                              </div>
+                            )}
+                            {quoteData.phone && (
+                              <div className="p-3 bg-white rounded-xl border border-teal-100">
+                                <p className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">{lang === 'en' ? 'Phone' : 'Téléphone'}</p>
+                                <p className="text-sm font-semibold text-gray-900">{quoteData.phone}</p>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Action Buttons */}
+                      <div className="flex flex-col sm:flex-row gap-4 pt-6">
+                        <motion.button
+                          onClick={() => {
+                            // Generate Professional PDF with Linear/Apple Style
+                            const pdf = new jsPDF();
+                            const pageWidth = pdf.internal.pageSize.getWidth();
+                            const pageHeight = pdf.internal.pageSize.getHeight();
+                            let y = 25;
+
+                            // Colors - Linear/Apple style
+                            const colors = {
+                              black: [0, 0, 0] as const,
+                              gray900: [17, 24, 39] as const,
+                              gray700: [55, 65, 81] as const,
+                              gray500: [107, 114, 128] as const,
+                              gray300: [209, 213, 219] as const,
+                              gray100: [243, 244, 246] as const,
+                              blue: [59, 130, 246] as const,
+                              white: [255, 255, 255] as const
+                            };
+
+                            // Title
+                            pdf.setTextColor(...colors.black);
+                            pdf.setFontSize(28);
+                            pdf.setFont('helvetica', 'bold');
+                            pdf.text(lang === 'en' ? 'Project Estimate Request' : 'Demande d\'Estimation de Projet', 20, y);
+                            y += 8;
+
+                            // Date
+                            pdf.setFontSize(10);
+                            pdf.setFont('helvetica', 'normal');
+                            pdf.setTextColor(...colors.gray500);
+                            const requestDate = new Date().toLocaleDateString(lang === 'en' ? 'en-US' : 'fr-FR', {
+                              year: 'numeric',
+                              month: 'long',
+                              day: 'numeric'
+                            });
+                            pdf.text(requestDate, 20, y);
+                            y += 15;
+
+                            // Divider line
+                            pdf.setDrawColor(...colors.gray300);
+                            pdf.setLineWidth(0.5);
+                            pdf.line(20, y, pageWidth - 20, y);
+                            y += 15;
+
+                            // Contact Card - Victor's Information (Top Right)
+                            const cardX = pageWidth - 75;
+                            const cardY = 20;
+                            const cardWidth = 55;
+                            const cardHeight = 45;
+
+                            // Card background
+                            pdf.setFillColor(...colors.gray100);
+                            pdf.roundedRect(cardX, cardY, cardWidth, cardHeight, 2, 2, 'F');
+
+                            // Card border
+                            pdf.setDrawColor(...colors.gray300);
+                            pdf.setLineWidth(0.3);
+                            pdf.roundedRect(cardX, cardY, cardWidth, cardHeight, 2, 2, 'S');
+
+                            // Victor's info
+                            pdf.setFontSize(9);
+                            pdf.setFont('helvetica', 'bold');
+                            pdf.setTextColor(...colors.black);
+                            pdf.text('Victor Soussan', cardX + 3, cardY + 6);
+
+                            pdf.setFontSize(7);
+                            pdf.setFont('helvetica', 'normal');
+                            pdf.setTextColor(...colors.gray700);
+                            pdf.text('Senior Product Designer', cardX + 3, cardY + 10);
+
+                            pdf.setFontSize(7);
+                            pdf.setTextColor(...colors.gray500);
+                            pdf.text('victorsoussan.fr', cardX + 3, cardY + 16);
+                            pdf.text('victor@soussan.fr', cardX + 3, cardY + 20);
+                            pdf.text('linkedin.com/in/victor-soussan', cardX + 3, cardY + 24);
+
+                            // Blue accent line on card
+                            pdf.setFillColor(...colors.blue);
+                            pdf.rect(cardX, cardY, 2, cardHeight, 'F');
+
+                            // Main content sections
+                            // Section helper function
+                            const addSection = (title: string, content: string, isFirst = false) => {
+                              if (!isFirst) {
+                                y += 10;
+                                // Subtle divider
+                                pdf.setDrawColor(...colors.gray300);
+                                pdf.setLineWidth(0.3);
+                                pdf.line(20, y, pageWidth - 95, y);
+                                y += 10;
+                              }
+
+                              // Section title
+                              pdf.setFontSize(10);
+                              pdf.setFont('helvetica', 'bold');
+                              pdf.setTextColor(...colors.gray900);
+                              pdf.text(title, 20, y);
+                              y += 7;
+
+                              // Section content
+                              pdf.setFontSize(10);
+                              pdf.setFont('helvetica', 'normal');
+                              pdf.setTextColor(...colors.gray700);
+                              const lines = pdf.splitTextToSize(content, pageWidth - 100);
+                              pdf.text(lines, 20, y);
+                              y += lines.length * 5;
+                            };
+
+                            // Your Request
+                            const clientNeedText = quoteData.clientNeed === 'new-product'
+                              ? (lang === 'en' ? 'Create new app/service/prototype' : 'Créer nouvelle app/service/prototype')
+                              : quoteData.clientNeed === 'optimize-existing'
+                              ? (lang === 'en' ? 'Optimize existing product/refresh UI' : 'Optimiser produit existant/rafraîchir UI')
+                              : quoteData.clientNeed === 'long-term'
+                              ? (lang === 'en' ? 'Long-term mission' : 'Mission long terme')
+                              : (lang === 'en' ? 'Other' : 'Autre');
+                            addSection(lang === 'en' ? 'Your Request' : 'Votre Demande', clientNeedText, true);
+
+                            // Project Status
+                            const statusText = quoteData.projectStatus === 'early-stage'
+                              ? (lang === 'en' ? 'Early Stage Product (MVP/Startup)' : 'Produit early stage (MVP/Startup)')
+                              : quoteData.projectStatus === 'scale-complex'
+                              ? (lang === 'en' ? 'Optimize & Scale Complex Product' : 'Optimiser et scaler produit complexe')
+                              : (lang === 'en' ? 'Long-term Mission' : 'Mission long terme');
+                            addSection(lang === 'en' ? 'Project Status' : 'Statut du Projet', statusText);
+
+                            // Services
+                            if (quoteData.services.length > 0) {
+                              const servicesText = quoteData.services.join(', ');
+                              addSection(lang === 'en' ? 'Services Requested' : 'Services Demandés', servicesText);
+                            }
+
+                            // Project Details
+                            let projectDetails = '';
+                            if (quoteData.needIdea) {
+                              projectDetails += `${lang === 'en' ? 'Need/Idea' : 'Besoin/Idée'}: ${quoteData.needIdea}\n\n`;
+                            }
+                            projectDetails += quoteData.projectDescription;
+                            addSection(lang === 'en' ? 'Project Details' : 'Détails du Projet', projectDetails);
+
+                            // Budget & Timeline
+                            if (quoteData.budget || quoteData.startDate || quoteData.endDate) {
+                              let budgetText = '';
+                              if (quoteData.budget) budgetText += `${lang === 'en' ? 'Budget' : 'Budget'}: ${quoteData.budget}`;
+                              if (quoteData.startDate) budgetText += `\n${lang === 'en' ? 'Start' : 'Début'}: ${quoteData.startDate}`;
+                              if (quoteData.endDate) budgetText += `\n${lang === 'en' ? 'End' : 'Fin'}: ${quoteData.endDate}`;
+                              addSection(lang === 'en' ? 'Budget & Timeline' : 'Budget & Calendrier', budgetText);
+                            }
+
+                            // Client Contact
+                            let contactText = `${quoteData.name}\n${quoteData.email}`;
+                            if (quoteData.company) contactText += `\n${quoteData.company}`;
+                            if (quoteData.phone) contactText += `\n${quoteData.phone}`;
+                            if (quoteData.briefFile) contactText += `\n\n${lang === 'en' ? 'Brief File' : 'Fichier Brief'}: ${quoteData.briefFileName}`;
+                            addSection(lang === 'en' ? 'Client Contact' : 'Contact Client', contactText);
+
+                            // Footer
+                            pdf.setFontSize(8);
+                            pdf.setTextColor(...colors.gray500);
+                            pdf.text(`Generated on ${requestDate}`, 20, pageHeight - 10);
+
+                            pdf.save(`project-estimate-${quoteData.name.replace(/\s+/g, '-').toLowerCase()}.pdf`);
+                          }}
+                          whileHover={{ scale: 1.02, y: -2 }}
+                          whileTap={{ scale: 0.98 }}
+                          className="flex items-center justify-center space-x-2 px-8 py-4 border-2 border-blue-500 text-blue-600 rounded-full font-semibold hover:bg-blue-50 transition-all duration-200"
+                        >
+                          <Download size={20} />
+                          <span>{content.contact.quote_step_7_download}</span>
+                        </motion.button>
+
+                        <motion.button
+                          onClick={async () => {
+                            setIsQuoteSending(true);
+                            try {
+                              // Send via EmailJS
+                              const templateParams = {
+                                from_name: quoteData.name,
+                                from_email: quoteData.email,
+                                company: quoteData.company || 'N/A',
+                                phone: quoteData.phone || 'N/A',
+                                client_need: quoteData.clientNeed || 'N/A',
+                                project_status: quoteData.projectStatus || 'N/A',
+                                services: quoteData.services.join(', '),
+                                need_idea: quoteData.needIdea || 'N/A',
+                                project_description: quoteData.projectDescription,
+                                budget: quoteData.budget || 'N/A',
+                                start_date: quoteData.startDate || 'N/A',
+                                end_date: quoteData.endDate || 'N/A',
+                                brief_attached: quoteData.briefFile ? `Yes - ${quoteData.briefFileName}` : 'No',
+                                to_email: 'victorsoussan@gmail.com'
+                              };
+
+                              // Send email to Victor (quote request)
+                              await emailjs.send(
+                                EMAILJS_CONFIG.SERVICE_ID,
+                                EMAILJS_CONFIG.TEMPLATE_ID,
+                                templateParams,
+                                EMAILJS_CONFIG.PUBLIC_KEY
+                              );
+
+                              // Send confirmation email to client
+                              await emailjs.send(
+                                EMAILJS_CONFIG.SERVICE_ID,
+                                EMAILJS_CONFIG.CONFIRMATION_TEMPLATE_ID,
+                                templateParams,
+                                EMAILJS_CONFIG.PUBLIC_KEY
+                              );
+
+                              // Success
+                              setQuoteSuccess(true);
+                              localStorage.removeItem('quoteDraft');
+
+                              // Auto-close after 5 seconds
+                              setTimeout(() => {
+                                setIsQuoteGeneratorOpen(false);
+                                setQuoteSuccess(false);
+                                setQuoteStep(0);
+                                setQuoteData({
+                                  clientNeed: '',
+                                  projectStatus: '',
+                                  briefFile: null,
+                                  briefFileName: '',
+                                  briefFileSize: 0,
+                                  services: [],
+                                  needIdea: '',
+                                  projectDescription: '',
+                                  budget: '',
+                                  startDate: '',
+                                  endDate: '',
+                                  name: '',
+                                  email: '',
+                                  company: '',
+                                  phone: ''
+                                });
+                              }, 5000);
+                            } catch (error) {
+                              console.error('Failed to send quote:', error);
+                              setToastMessage('Failed to send quote. Please try again.');
+                              setShowToast(true);
+                              setTimeout(() => setShowToast(false), 5000);
+                            } finally {
+                              setIsQuoteSending(false);
+                            }
+                          }}
+                          disabled={isQuoteSending}
+                          whileHover={!isQuoteSending ? { scale: 1.02, y: -2 } : {}}
+                          whileTap={!isQuoteSending ? { scale: 0.98 } : {}}
+                          className="flex-1 flex items-center justify-center space-x-2 px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-full font-semibold shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/50 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          {isQuoteSending ? (
+                            <>
+                              <div className="w-5 h-5 border-3 border-white border-t-transparent rounded-full animate-spin" />
+                              <span>{content.contact.simple_form_sending}</span>
+                            </>
+                          ) : (
+                            <>
+                              <Send size={20} />
+                              <span>{content.contact.quote_step_7_send}</span>
+                            </>
+                          )}
+                        </motion.button>
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {/* Success State */}
+                  {quoteSuccess && (
+                    <motion.div
+                      key="success"
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      className="text-center py-12"
+                    >
+                      <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ type: 'spring', stiffness: 200, damping: 15 }}
+                        className="w-20 h-20 mx-auto mb-6 bg-green-500 rounded-full flex items-center justify-center"
+                      >
+                        <CheckCircle2 size={48} className="text-white" />
+                      </motion.div>
+                      <h3 className="text-3xl font-bold text-gray-900 mb-4">{content.contact.quote_success_title}</h3>
+                      <p className="text-lg text-gray-600 mb-8">{content.contact.quote_success_message}</p>
+                      <motion.button
+                        onClick={() => {
+                          setQuoteSuccess(false);
+                          setQuoteStep(0);
+                          setQuoteData({
+                            clientNeed: '',
+                            projectStatus: '',
+                            briefFile: null,
+                            briefFileName: '',
+                            briefFileSize: 0,
+                            services: [],
+                            needIdea: '',
+                            projectDescription: '',
+                            budget: '',
+                            startDate: '',
+                            endDate: '',
+                            name: '',
+                            email: '',
+                            company: '',
+                            phone: ''
+                          });
+                        }}
+                        whileHover={{ scale: 1.05, y: -2 }}
+                        whileTap={{ scale: 0.98 }}
+                        className="px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-full font-semibold shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/50 transition-all duration-200"
+                      >
+                        {content.contact.quote_success_new}
+                      </motion.button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* Footer Navigation - Fixed */}
+              {!quoteSuccess && quoteStep > 0 && (
+                <div className="flex-shrink-0 relative z-20 bg-white/95 backdrop-blur-xl border-t border-gray-200 px-8 py-5 flex items-center justify-between shadow-lg shadow-gray-900/5">
+                  {quoteStep > 1 ? (
+                    <motion.button
+                      onClick={() => setQuoteStep(quoteStep - 1)}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="flex items-center space-x-2 px-6 py-3 border-2 border-gray-200 text-gray-900 rounded-full font-semibold hover:border-blue-500 hover:bg-blue-50/50 transition-all duration-200"
+                      style={{ pointerEvents: 'auto', position: 'relative', zIndex: 20 }}
+                    >
+                      <ChevronRight size={18} className="rotate-180" />
+                      <span>{content.contact.quote_back}</span>
+                    </motion.button>
+                  ) : (
+                    <div />
+                  )}
+
+                  <div className="flex items-center space-x-3">
+                    {quoteStep === 3 && (
+                      <motion.button
+                        onClick={() => setQuoteStep(4)}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        className="px-6 py-3 text-gray-600 hover:text-blue-600 font-semibold transition-colors"
+                        style={{ pointerEvents: 'auto', position: 'relative', zIndex: 20 }}
+                      >
+                        {content.contact.quote_skip}
+                      </motion.button>
+                    )}
+
+                    {quoteStep < 8 ? (
+                      <motion.button
+                        onClick={() => {
+                          // Validation
+                          const errors: {[key: string]: string} = {};
+
+                          if (quoteStep === 1 && !quoteData.clientNeed) {
+                            errors.clientNeed = lang === 'en' ? 'Please select an option' : 'Veuillez sélectionner une option';
+                          }
+
+                          if (quoteStep === 2 && !quoteData.projectStatus) {
+                            errors.projectStatus = lang === 'en' ? 'Please select your situation' : 'Veuillez sélectionner votre situation';
+                          }
+
+                          if (quoteStep === 4 && quoteData.services.length === 0) {
+                            errors.services = content.contact.quote_validation_select_service;
+                          }
+
+                          if (quoteStep === 5 && quoteData.projectDescription.length < 50) {
+                            errors.projectDescription = content.contact.quote_validation_min_chars;
+                          }
+
+                          if (quoteStep === 7) {
+                            if (!quoteData.name) errors.name = content.contact.quote_validation_required;
+                            if (!quoteData.email) {
+                              errors.email = content.contact.quote_validation_required;
+                            } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(quoteData.email)) {
+                              errors.email = content.contact.quote_validation_email;
+                            }
+                          }
+
+                          if (Object.keys(errors).length > 0) {
+                            setQuoteValidationErrors(errors);
+                            return;
+                          }
+
+                          setQuoteValidationErrors({});
+                          setQuoteStep(quoteStep + 1);
+                        }}
+                        whileHover={{ scale: 1.02, y: -2 }}
+                        whileTap={{ scale: 0.98 }}
+                        className="flex items-center space-x-2 px-8 py-3.5 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-full font-semibold shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/40 transition-all duration-200"
+                        style={{ pointerEvents: 'auto', position: 'relative', zIndex: 20 }}
+                      >
+                        <span>{content.contact.quote_next}</span>
+                        <ChevronRight size={18} />
+                      </motion.button>
+                    ) : null}
+                  </div>
+                </div>
+              )}
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Full-Page Iframe Modal */}
+      <AnimatePresence>
+        {iframeModalUrl && (
+          <div className="fixed inset-0 z-[200]">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="absolute inset-0 bg-white"
+            >
+              {/* Close button - fixed top right */}
+              <button
+                onClick={() => setIframeModalUrl(null)}
+                className="fixed top-6 right-6 z-[210] p-3 bg-gray-900 hover:bg-black text-white rounded-full transition-colors shadow-lg"
+                aria-label="Close"
+              >
+                <X size={24} />
+              </button>
+
+              {/* Iframe container */}
+              <iframe
+                src={iframeModalUrl}
+                className="w-full h-full border-0"
+                title="Project Details"
+                allowFullScreen
+              />
+            </motion.div>
+          </div>
         )}
       </AnimatePresence>
 

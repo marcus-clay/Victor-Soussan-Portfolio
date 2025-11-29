@@ -47,6 +47,16 @@
       ::-webkit-scrollbar-thumb:hover {
         background: #9CA3AF;
       }
+
+      /* Hide scrollbar completely */
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+
       html {
         scroll-behavior: smooth;
       }

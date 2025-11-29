@@ -8,7 +8,8 @@
 
 export const EMAILJS_CONFIG = {
   SERVICE_ID: 'service_573dfvr', // Replace with your EmailJS Service ID
-  TEMPLATE_ID: 'template_e5b7dkr', // Replace with your EmailJS Template ID
+  TEMPLATE_ID: 'template_e5b7dkr', // Template ID for receiving quote requests (to Victor)
+  CONFIRMATION_TEMPLATE_ID: 'template_confirmation', // Template ID for client confirmation email (REPLACE THIS)
   PUBLIC_KEY: 'q0H5SPAjRJr7MGz4z' // Replace with your EmailJS Public Key
 };
 
