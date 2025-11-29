@@ -1936,13 +1936,13 @@ const App: React.FC = () => {
             {/* Project List (Master) */}
             <div className="w-full md:w-1/3 flex flex-col space-y-4 overflow-y-auto pr-2 no-scrollbar">
               {projects.map((project) => (
-                <div 
+                <div
                   key={project.id}
                   onClick={() => handleProjectClick(project)}
                   className={`
-                    cursor-pointer p-6 rounded-3xl border transition-all duration-300 group relative overflow-hidden
-                    ${selectedProject.id === project.id 
-                      ? 'bg-[#1D1D1F] text-white shadow-xl scale-[1.02]' 
+                    cursor-pointer p-6 rounded-3xl border transition-all duration-300 group relative
+                    ${selectedProject.id === project.id
+                      ? 'bg-[#1D1D1F] text-white shadow-xl scale-[1.02]'
                       : 'bg-white border-gray-100 hover:border-gray-300 hover:bg-gray-50 text-gray-600'}
                   `}
                 >
