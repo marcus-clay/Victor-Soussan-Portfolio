@@ -47,7 +47,11 @@ import {
   Square,
   Clock,
   Check,
-  ArrowRight
+  ArrowRight,
+  Sun,
+  Moon,
+  Monitor,
+  ChevronDown
 } from 'lucide-react';
 import { Rocket, Buildings, HandHeart, ArrowsClockwise, ChatCircleDots, ChartLineUp } from '@phosphor-icons/react';
 
@@ -93,6 +97,7 @@ interface Project {
   deliverables: string[];
   icon: React.ReactNode;
   color: 'blue' | 'gray' | 'indigo' | 'purple';
+  coverImage: string; // Landscape cover image filename
   externalLink?: string;
   testimonialId?: string;
 }
@@ -1146,6 +1151,7 @@ const getProjects = (lang: Language): Project[] => {
       ],
       icon: <Cpu size={24} />,
       color: "indigo",
+      coverImage: "cover-toolkit.jpg",
       externalLink: "https://victor-soussan.notion.site/ebd/2b7a519b0dea80d9b40cc730ce4cfc4b",
       testimonialId: "pierre-marie-nigay"
     },
@@ -1178,6 +1184,7 @@ const getProjects = (lang: Language): Project[] => {
       ],
       icon: <Briefcase size={24} />,
       color: "blue",
+      coverImage: "cover-sqool.jpg",
       testimonialId: "charlotte-rifflet"
     },
     {
@@ -1214,6 +1221,7 @@ const getProjects = (lang: Language): Project[] => {
       ],
       icon: <Users size={24} />,
       color: "gray",
+      coverImage: "cover-dailymotion.jpg",
       externalLink: "https://victor-soussan.notion.site/ebd/2b7a519b0dea80b99138d4b51a65620b"
     },
     {
@@ -1250,6 +1258,7 @@ const getProjects = (lang: Language): Project[] => {
       ],
       icon: <Smartphone size={24} />,
       color: "purple",
+      coverImage: "cover-pagesjaunes.jpg",
       testimonialId: "nicolas-moulin"
     }
   ];
@@ -1447,6 +1456,7 @@ const App: React.FC = () => {
   const [isTestimonialsOpen, setIsTestimonialsOpen] = useState(false);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [selectedLabItem, setSelectedLabItem] = useState<string | null>(null);
+  const [themeMode, setThemeMode] = useState<'system' | 'light' | 'dark'>('system');
   const [systemTheme, setSystemTheme] = useState<'light' | 'dark'>('light');
   const [isResumeOpen, setIsResumeOpen] = useState(false);
   const [resumeLang, setResumeLang] = useState<'fr' | 'en'>('fr');
@@ -1482,6 +1492,7 @@ const App: React.FC = () => {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [selectedServiceGallery, setSelectedServiceGallery] = useState<string | null>(null);
+  const [expandedService, setExpandedService] = useState<string | null>(null);
 
   // Quote Generator State
   const [isQuoteGeneratorOpen, setIsQuoteGeneratorOpen] = useState(false);
@@ -1590,15 +1601,26 @@ const App: React.FC = () => {
   // Detect system theme (light/dark mode)
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    setSystemTheme(mediaQuery.matches ? 'dark' : 'light');
+    const updateSystemTheme = () => {
+      const systemPreference = mediaQuery.matches ? 'dark' : 'light';
+      if (themeMode === 'system') {
+        setSystemTheme(systemPreference);
+      } else {
+        setSystemTheme(themeMode);
+      }
+    };
 
-    const handleChange = (e: MediaQueryListEvent) => {
-      setSystemTheme(e.matches ? 'dark' : 'light');
+    updateSystemTheme();
+
+    const handleChange = () => {
+      if (themeMode === 'system') {
+        setSystemTheme(mediaQuery.matches ? 'dark' : 'light');
+      }
     };
 
     mediaQuery.addEventListener('change', handleChange);
     return () => mediaQuery.removeEventListener('change', handleChange);
-  }, []);
+  }, [themeMode]);
 
   // Detect scroll position
   useEffect(() => {
@@ -1729,10 +1751,18 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen font-sans bg-[#F5F5F7] text-[#1D1D1F]">
+    <div className={`min-h-screen font-sans transition-colors duration-300 ${
+      systemTheme === 'dark'
+        ? 'bg-[#0a0a0a] text-white'
+        : 'bg-[#F5F5F7] text-[#1D1D1F]'
+    }`}>
       
       {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 bg-[#F5F5F7]/80 backdrop-blur-md border-b border-white/50 transition-all duration-300">
+      <nav className={`fixed top-0 w-full z-50 backdrop-blur-md transition-all duration-300 ${
+        systemTheme === 'dark'
+          ? 'bg-[#0a0a0a]/80 border-b border-white/10'
+          : 'bg-[#F5F5F7]/80 border-b border-white/50'
+      }`}>
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           {/* Logo/Section Name - Logo visible when not scrolled, section name when scrolled */}
           <div
@@ -1786,7 +1816,11 @@ const App: React.FC = () => {
                   <button
                     key={item.id}
                     onClick={() => scrollToSection(item.id)}
-                    className="px-3 py-2 text-gray-600 hover:text-black transition-all duration-300 flex items-center whitespace-nowrap"
+                    className={`px-3 py-2 transition-all duration-300 flex items-center whitespace-nowrap ${
+                      systemTheme === 'dark'
+                        ? 'text-gray-400 hover:text-white'
+                        : 'text-gray-600 hover:text-black'
+                    }`}
                   >
                     {item.icon}
                     {item.label}
@@ -1803,7 +1837,11 @@ const App: React.FC = () => {
                 <button
                   key={item.id}
                   onClick={() => scrollToSection(item.id)}
-                  className="px-4 py-2 rounded-full flex items-center whitespace-nowrap transition-all duration-300 ease-out text-gray-600 hover:text-black bg-white/30 backdrop-blur-sm border border-gray-200/30 opacity-60 hover:opacity-100 scale-100"
+                  className={`px-4 py-2 rounded-full flex items-center whitespace-nowrap transition-all duration-300 ease-out opacity-60 hover:opacity-100 scale-100 backdrop-blur-sm ${
+                    systemTheme === 'dark'
+                      ? 'text-gray-400 hover:text-white bg-white/10 border border-white/10'
+                      : 'text-gray-600 hover:text-black bg-white/30 border border-gray-200/30'
+                  }`}
                   style={{
                     transitionProperty: 'opacity, background-color, color, transform, border-color',
                     transitionDuration: '300ms'
@@ -1815,10 +1853,57 @@ const App: React.FC = () => {
               );
             })}
 
+            {/* Theme Toggle */}
+            <div className={`flex items-center rounded-full p-1 ml-2 ${
+              systemTheme === 'dark' ? 'bg-white/10' : 'glass-effect'
+            }`}>
+              <button
+                onClick={() => setThemeMode('light')}
+                className={`p-1.5 rounded-full transition-all duration-200 ${
+                  themeMode === 'light'
+                    ? 'bg-amber-500 text-white shadow-sm'
+                    : systemTheme === 'dark'
+                      ? 'text-gray-400 hover:text-white'
+                      : 'text-gray-500 hover:text-gray-900'
+                }`}
+                aria-label="Light mode"
+              >
+                <Sun size={14} />
+              </button>
+              <button
+                onClick={() => setThemeMode('system')}
+                className={`p-1.5 rounded-full transition-all duration-200 ${
+                  themeMode === 'system'
+                    ? 'bg-blue-500 text-white shadow-sm'
+                    : systemTheme === 'dark'
+                      ? 'text-gray-400 hover:text-white'
+                      : 'text-gray-500 hover:text-gray-900'
+                }`}
+                aria-label="System theme"
+              >
+                <Monitor size={14} />
+              </button>
+              <button
+                onClick={() => setThemeMode('dark')}
+                className={`p-1.5 rounded-full transition-all duration-200 ${
+                  themeMode === 'dark'
+                    ? 'bg-indigo-500 text-white shadow-sm'
+                    : systemTheme === 'dark'
+                      ? 'text-gray-400 hover:text-white'
+                      : 'text-gray-500 hover:text-gray-900'
+                }`}
+                aria-label="Dark mode"
+              >
+                <Moon size={14} />
+              </button>
+            </div>
+
             {/* Language Toggle - Always visible */}
             <button
               onClick={() => setLang(lang === 'en' ? 'fr' : 'en')}
-              className="relative flex items-center justify-center glass-effect rounded-full p-1 cursor-pointer btn-pill ml-2"
+              className={`relative flex items-center justify-center rounded-full p-1 cursor-pointer btn-pill ml-2 ${
+                systemTheme === 'dark' ? 'bg-white/10' : 'glass-effect'
+              }`}
               aria-label="Switch Language"
             >
                <div
@@ -1829,17 +1914,32 @@ const App: React.FC = () => {
             </button>
           </div>
 
-          <div className="md:hidden flex items-center space-x-4">
+          <div className="md:hidden flex items-center space-x-3">
+             {/* Mobile Theme Toggle */}
+             <button
+               onClick={() => setThemeMode(themeMode === 'light' ? 'dark' : themeMode === 'dark' ? 'system' : 'light')}
+               className={`p-2 rounded-full transition-all duration-200 ${
+                 systemTheme === 'dark' ? 'bg-white/10 text-white' : 'bg-gray-200/50 text-gray-700'
+               }`}
+               aria-label="Toggle theme"
+             >
+               {themeMode === 'light' ? <Sun size={18} /> : themeMode === 'dark' ? <Moon size={18} /> : <Monitor size={18} />}
+             </button>
+
              {/* Mobile Language Toggle */}
              <button
               onClick={() => setLang(lang === 'en' ? 'fr' : 'en')}
-              className="relative flex items-center justify-center bg-gray-200/50 rounded-full p-1 cursor-pointer"
+              className={`relative flex items-center justify-center rounded-full p-1 cursor-pointer ${
+                systemTheme === 'dark' ? 'bg-white/10' : 'bg-gray-200/50'
+              }`}
             >
                <div
-                 className={`absolute inset-y-1 left-1 w-[calc(50%-4px)] bg-white rounded-full shadow-sm transition-all duration-300 ${lang === 'fr' ? 'translate-x-[100%] ml-1' : ''}`}
+                 className={`absolute inset-y-1 left-1 w-[calc(50%-4px)] rounded-full shadow-sm transition-all duration-300 ${lang === 'fr' ? 'translate-x-[100%] ml-1' : ''} ${
+                   systemTheme === 'dark' ? 'bg-white/20' : 'bg-white'
+                 }`}
                />
-               <span className={`relative z-10 px-3 py-0.5 text-[10px] font-bold transition-colors duration-300 flex items-center justify-center ${lang === 'en' ? 'text-black' : 'text-gray-500'}`}>EN</span>
-               <span className={`relative z-10 px-3 py-0.5 text-[10px] font-bold transition-colors duration-300 flex items-center justify-center ${lang === 'fr' ? 'text-black' : 'text-gray-500'}`}>FR</span>
+               <span className={`relative z-10 px-3 py-0.5 text-[10px] font-bold transition-colors duration-300 flex items-center justify-center ${lang === 'en' ? (systemTheme === 'dark' ? 'text-white' : 'text-black') : 'text-gray-500'}`}>EN</span>
+               <span className={`relative z-10 px-3 py-0.5 text-[10px] font-bold transition-colors duration-300 flex items-center justify-center ${lang === 'fr' ? (systemTheme === 'dark' ? 'text-white' : 'text-black') : 'text-gray-500'}`}>FR</span>
             </button>
             <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="p-2">
               {isMenuOpen ? <X size={24} /> : <MenuIcon size={24} />}
@@ -1848,30 +1948,42 @@ const App: React.FC = () => {
         </div>
 
         {isMenuOpen && (
-          <div className="md:hidden absolute top-16 left-0 w-full bg-[#F5F5F7] border-b border-gray-200 shadow-lg p-6 flex flex-col space-y-3">
-            <button onClick={() => scrollToSection('services')} className="text-left text-base font-medium px-4 py-2.5 rounded-full glass-effect btn-pill hover:text-blue-600">{content.nav.services}</button>
-            <button onClick={() => scrollToSection('bio')} className="text-left text-base font-medium px-4 py-2.5 rounded-full glass-effect btn-pill hover:text-blue-600">{content.nav.bio}</button>
-            <button onClick={() => scrollToSection('projects')} className="text-left text-base font-medium px-4 py-2.5 rounded-full glass-effect btn-pill hover:text-blue-600">{content.nav.projects}</button>
-            <button onClick={() => scrollToSection('lab')} className="text-left text-base font-medium px-4 py-2.5 rounded-full glass-effect btn-pill hover:text-blue-600 flex items-center"><FlaskConical size={18} className="mr-2"/>{content.nav.lab}</button>
-            <button onClick={() => scrollToSection('testimonials')} className="text-left text-base font-medium px-4 py-2.5 rounded-full glass-effect btn-pill hover:text-blue-600">{content.nav.testimonials}</button>
-            <button onClick={() => scrollToSection('contact')} className="text-left text-base font-medium px-4 py-2.5 rounded-full glass-effect btn-pill hover:text-blue-600">{content.nav.contact}</button>
+          <div className={`md:hidden absolute top-16 left-0 w-full shadow-lg p-6 flex flex-col space-y-3 ${
+            systemTheme === 'dark'
+              ? 'bg-[#1D1D1F] border-b border-white/10'
+              : 'bg-[#F5F5F7] border-b border-gray-200'
+          }`}>
+            <button onClick={() => scrollToSection('services')} className={`text-left text-base font-medium px-4 py-2.5 rounded-full btn-pill ${systemTheme === 'dark' ? 'bg-white/10 hover:bg-white/20 text-white' : 'glass-effect hover:text-blue-600'}`}>{content.nav.services}</button>
+            <button onClick={() => scrollToSection('bio')} className={`text-left text-base font-medium px-4 py-2.5 rounded-full btn-pill ${systemTheme === 'dark' ? 'bg-white/10 hover:bg-white/20 text-white' : 'glass-effect hover:text-blue-600'}`}>{content.nav.bio}</button>
+            <button onClick={() => scrollToSection('projects')} className={`text-left text-base font-medium px-4 py-2.5 rounded-full btn-pill ${systemTheme === 'dark' ? 'bg-white/10 hover:bg-white/20 text-white' : 'glass-effect hover:text-blue-600'}`}>{content.nav.projects}</button>
+            <button onClick={() => scrollToSection('lab')} className={`text-left text-base font-medium px-4 py-2.5 rounded-full btn-pill flex items-center ${systemTheme === 'dark' ? 'bg-white/10 hover:bg-white/20 text-white' : 'glass-effect hover:text-blue-600'}`}><FlaskConical size={18} className="mr-2"/>{content.nav.lab}</button>
+            <button onClick={() => scrollToSection('testimonials')} className={`text-left text-base font-medium px-4 py-2.5 rounded-full btn-pill ${systemTheme === 'dark' ? 'bg-white/10 hover:bg-white/20 text-white' : 'glass-effect hover:text-blue-600'}`}>{content.nav.testimonials}</button>
+            <button onClick={() => scrollToSection('contact')} className={`text-left text-base font-medium px-4 py-2.5 rounded-full btn-pill ${systemTheme === 'dark' ? 'bg-white/10 hover:bg-white/20 text-white' : 'glass-effect hover:text-blue-600'}`}>{content.nav.contact}</button>
           </div>
         )}
       </nav>
 
       {/* Hero Section */}
-      <header className="relative pt-32 pb-20 px-6 overflow-hidden">
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-200/30 rounded-full blur-3xl -translate-y-1/4 translate-x-1/4 pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-indigo-200/30 rounded-full blur-3xl translate-y-1/4 -translate-x-1/4 pointer-events-none" />
+      <header className="relative pt-[154px] pb-[82px] md:pt-[170px] md:pb-[98px] px-6 overflow-hidden">
+        <div className={`absolute top-0 right-0 w-[600px] h-[600px] rounded-full blur-3xl -translate-y-1/4 translate-x-1/4 pointer-events-none ${
+          systemTheme === 'dark' ? 'bg-blue-500/10' : 'bg-blue-200/30'
+        }`} />
+        <div className={`absolute bottom-0 left-0 w-[500px] h-[500px] rounded-full blur-3xl translate-y-1/4 -translate-x-1/4 pointer-events-none ${
+          systemTheme === 'dark' ? 'bg-indigo-500/10' : 'bg-indigo-200/30'
+        }`} />
 
         <div className="relative max-w-4xl mx-auto text-center z-10">
           <div
-            className="inline-flex items-center space-x-2 px-3 py-1 bg-white/60 backdrop-blur border border-white/50 rounded-full mb-8 shadow-sm cursor-pointer hover:bg-white/80 transition-all duration-300 relative"
+            className={`inline-flex items-center space-x-2 px-3 py-1 backdrop-blur rounded-full mb-8 shadow-sm cursor-pointer transition-all duration-300 relative ${
+              systemTheme === 'dark'
+                ? 'bg-white/10 border border-white/20 hover:bg-white/20'
+                : 'bg-white/60 border border-white/50 hover:bg-white/80'
+            }`}
             onMouseEnter={() => setShowTooltip(true)}
             onMouseLeave={() => setShowTooltip(false)}
           >
             <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-            <span className="text-xs font-medium text-gray-600">{content.hero.availability}</span>
+            <span className={`text-xs font-medium ${systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>{content.hero.availability}</span>
 
             {/* Tooltip */}
             {showTooltip && (
@@ -1885,23 +1997,39 @@ const App: React.FC = () => {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 10, scale: 0.95 }}
                   transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                  className="w-[280px] bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-gray-200/50 p-5 z-50"
+                  className={`w-[280px] backdrop-blur-xl rounded-3xl shadow-2xl p-5 z-50 ${
+                    systemTheme === 'dark'
+                      ? 'bg-[#1D1D1F]/95 border border-white/10'
+                      : 'bg-white/95 border border-gray-200/50'
+                  }`}
                   style={{
-                    boxShadow: '0 20px 60px -15px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.05)'
+                    boxShadow: systemTheme === 'dark'
+                      ? '0 20px 60px -15px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05)'
+                      : '0 20px 60px -15px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.05)'
                   }}
                 >
                   {/* Arrow */}
-                  <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white/95 backdrop-blur-xl rotate-45 border-l border-t border-gray-200/50" />
+                  <div className={`absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 backdrop-blur-xl rotate-45 ${
+                    systemTheme === 'dark'
+                      ? 'bg-[#1D1D1F]/95 border-l border-t border-white/10'
+                      : 'bg-white/95 border-l border-t border-gray-200/50'
+                  }`} />
 
                   <div className="relative">
-                    <h3 className="text-base font-semibold text-gray-900 mb-3 text-center">
+                    <h3 className={`text-base font-semibold mb-3 text-center ${
+                      systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+                    }`}>
                       Need a Design Partner?
                     </h3>
 
                     <div className="space-y-2.5">
                       {/* Contact Form Button */}
                       <button
-                        className="flex items-center justify-center space-x-2 w-full px-5 py-3 bg-gray-900 hover:bg-black text-white rounded-2xl transition-all duration-200 shadow-lg shadow-gray-900/20 text-sm font-medium"
+                        className={`flex items-center justify-center space-x-2 w-full px-5 py-3 rounded-2xl transition-all duration-200 shadow-lg text-sm font-medium ${
+                          systemTheme === 'dark'
+                            ? 'bg-white hover:bg-gray-100 text-gray-900 shadow-white/10'
+                            : 'bg-gray-900 hover:bg-black text-white shadow-gray-900/20'
+                        }`}
                         onClick={(e) => {
                           e.stopPropagation();
                           setShowTooltip(false);
@@ -1921,7 +2049,11 @@ const App: React.FC = () => {
                           setShowTooltip(false);
                           setIsBookingOpen(true);
                         }}
-                        className="flex items-center justify-center space-x-2 w-full px-5 py-3 bg-white hover:bg-gray-50 text-gray-900 rounded-2xl transition-all duration-200 border border-gray-200 text-sm font-medium"
+                        className={`flex items-center justify-center space-x-2 w-full px-5 py-3 rounded-2xl transition-all duration-200 border text-sm font-medium ${
+                          systemTheme === 'dark'
+                            ? 'bg-white/10 hover:bg-white/20 text-white border-white/20'
+                            : 'bg-white hover:bg-gray-50 text-gray-900 border-gray-200'
+                        }`}
                       >
                         <Calendar size={18} />
                         <span>
@@ -1935,191 +2067,368 @@ const App: React.FC = () => {
             )}
           </div>
           
-          <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-[#1D1D1F] mb-6 leading-tight">
-            {content.hero.title} <br className="hidden md:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
+          <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-8 leading-[1.1]">
+            <span className={`whitespace-nowrap ${systemTheme === 'dark' ? 'text-white' : 'text-[#1D1D1F]'}`}>
+              {content.hero.title}
+            </span>
+            <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 whitespace-nowrap">
               {content.hero.subtitle}
             </span>
           </h1>
-          
-          <p className="text-xl md:text-2xl text-gray-500 max-w-3xl mx-auto leading-relaxed mb-10">
+
+          <p className={`text-xl md:text-2xl max-w-3xl mx-auto leading-relaxed mb-12 ${
+            systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-500'
+          }`}>
             {content.hero.desc}
           </p>
 
           <div className="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-4">
             <button
               onClick={() => scrollToSection('projects')}
-              className="px-8 py-4 accent-blue text-white rounded-full font-medium text-lg btn-pill flex items-center cursor-pointer relative z-20"
+              className="px-8 py-4 accent-blue text-white rounded-full font-medium text-lg btn-pill flex items-center cursor-pointer relative z-20 whitespace-nowrap"
             >
-              {content.hero.cta_projects} <ChevronRight className="ml-2" size={20} />
+              {content.hero.cta_projects} <ChevronRight className="ml-2 flex-shrink-0" size={20} />
             </button>
             <div className="flex flex-col sm:flex-row gap-4">
               <button
                  onClick={() => setIsBookingOpen(true)}
-                 className="px-8 py-4 glass-effect text-[#1D1D1F] rounded-full font-medium text-lg btn-pill cursor-pointer relative z-20 flex items-center justify-center hover:text-blue-600"
+                 className={`px-8 py-4 rounded-full font-medium text-lg btn-pill cursor-pointer relative z-20 flex items-center justify-center transition-colors whitespace-nowrap ${
+                   systemTheme === 'dark'
+                     ? 'bg-white/10 border border-white/20 text-white hover:bg-white/20'
+                     : 'glass-effect text-[#1D1D1F] hover:text-blue-600'
+                 }`}
               >
-                <Calendar size={20} className="mr-2"/> {content.hero.cta_book}
+                <Calendar size={20} className="mr-2 flex-shrink-0"/> {content.hero.cta_book}
               </button>
               <button
                  onClick={() => setIsQuoteGeneratorOpen(true)}
-                 className="px-8 py-4 glass-effect text-[#1D1D1F] rounded-full font-medium text-lg btn-pill cursor-pointer relative z-20 flex items-center justify-center hover:text-blue-600"
+                 className={`px-8 py-4 rounded-full font-medium text-lg btn-pill cursor-pointer relative z-20 flex items-center justify-center transition-colors whitespace-nowrap ${
+                   systemTheme === 'dark'
+                     ? 'bg-white/10 border border-white/20 text-white hover:bg-white/20'
+                     : 'glass-effect text-[#1D1D1F] hover:text-blue-600'
+                 }`}
               >
-                <Quote size={20} className="mr-2"/> {content.contact.quote_button}
+                <Quote size={20} className="mr-2 flex-shrink-0"/> {content.contact.quote_button}
               </button>
             </div>
           </div>
         </div>
       </header>
 
-      {/* Services Section */}
-      <section id="services" className="py-20 px-6 bg-[#F5F5F7]">
+      {/* Logo Carousel */}
+      <section className={`py-[54px] overflow-hidden ${
+        systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white'
+      }`}>
+        <div className="relative">
+          {/* Fade edges */}
+          <div className={`absolute left-0 top-0 bottom-0 w-32 z-10 pointer-events-none ${
+            systemTheme === 'dark'
+              ? 'bg-gradient-to-r from-[#0a0a0a] to-transparent'
+              : 'bg-gradient-to-r from-white to-transparent'
+          }`} />
+          <div className={`absolute right-0 top-0 bottom-0 w-32 z-10 pointer-events-none ${
+            systemTheme === 'dark'
+              ? 'bg-gradient-to-l from-[#0a0a0a] to-transparent'
+              : 'bg-gradient-to-l from-white to-transparent'
+          }`} />
+
+          <div className="logo-carousel-track flex hover:[animation-play-state:paused]">
+            {[...Array(2)].map((_, setIndex) => (
+              <div key={setIndex} className="flex shrink-0">
+                {[
+                  { src: '/logos/LOGO AIRBUS.svg', alt: 'Airbus' },
+                  { src: '/logos/LOGO ORANGE.svg', alt: 'Orange' },
+                  { src: '/logos/LOGO VINCI.svg', alt: 'Vinci' },
+                  { src: '/logos/LOGO DAILYMOTION-1.svg', alt: 'Dailymotion' },
+                  { src: '/logos/LOGO BOUYGUES IMMO.svg', alt: 'Bouygues Immobilier' },
+                  { src: '/logos/LOGO REGION ILE DE FRANCE.svg', alt: 'Région Île-de-France' },
+                  { src: '/logos/LOGO BETAGOUV.svg', alt: 'Beta.gouv' },
+                  { src: '/logos/LOGO OGURY.svg', alt: 'Ogury' },
+                  { src: '/logos/LOGO SOLOCAL.svg', alt: 'Solocal' },
+                  { src: '/logos/LOGO CELIO.svg', alt: 'Celio' },
+                  { src: '/logos/LOGO OPERA COMIQUE.svg', alt: 'Opéra Comique' },
+                  { src: '/logos/LOGO UNOWHY.svg', alt: 'Unowhy' },
+                  { src: '/logos/LOGO KYU.svg', alt: 'Kyu' },
+                  { src: '/logos/LOGO VERLINDE.svg', alt: 'Verlinde' },
+                  { src: '/logos/LOGO UPTRADE.svg', alt: 'Uptrade' },
+                ].map((logo, index) => (
+                  <div
+                    key={`${setIndex}-${index}`}
+                    className="flex items-center justify-center mx-10 md:mx-14"
+                  >
+                    <img
+                      src={logo.src}
+                      alt={logo.alt}
+                      className={`h-[100px] w-auto transition-all duration-500 ease-out ${
+                        systemTheme === 'dark'
+                          ? 'grayscale invert opacity-40 hover:grayscale-0 hover:invert-0 hover:opacity-100'
+                          : 'grayscale opacity-50 hover:grayscale-0 hover:opacity-100'
+                      }`}
+                    />
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <style>{`
+          .logo-carousel-track {
+            animation: scroll 40s linear infinite;
+          }
+          @keyframes scroll {
+            0% {
+              transform: translateX(0);
+            }
+            100% {
+              transform: translateX(-50%);
+            }
+          }
+        `}</style>
+      </section>
+
+      {/* Services Section - Accordion Style */}
+      <section id="services" className={`py-28 md:py-32 px-6 ${
+        systemTheme === 'dark' ? 'bg-[#111111]' : 'bg-[#F5F5F7]'
+      }`}>
         <div className="max-w-6xl mx-auto">
           <div className="mb-12 text-center md:text-left">
-             <h2 className="text-3xl font-bold mb-4">{content.services.title}</h2>
-             <p className="text-gray-500 text-lg max-w-2xl">
+             <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">{content.services.title}</h2>
+             <p className={`text-lg max-w-2xl ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
                {content.services.subtitle}
              </p>
           </div>
-          
-          <div className="grid md:grid-cols-2 gap-6">
-            {/* Hands-on Execution */}
-            <div
-              className="relative bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer group"
-              onClick={() => setSelectedServiceGallery('execution')}
-            >
-              <div className="mb-6 flex items-start justify-between">
-                <div className="p-4 bg-pink-50 w-fit rounded-2xl text-pink-600"><PenTool size={28}/></div>
 
-                {/* Pill button - permanent on mobile, appears on hover on desktop */}
-                <button
-                  className="flex items-center gap-2 px-3 py-1.5 bg-white hover:bg-gray-50 text-gray-700 border border-gray-200 text-xs font-medium rounded-full transition-all duration-200 md:opacity-0 md:group-hover:opacity-100"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setSelectedServiceGallery('execution');
-                  }}
+          <div className="space-y-4">
+            {/* Service Accordion Items */}
+            {[
+              {
+                id: 'execution',
+                icon: <PenTool size={24}/>,
+                title: content.services.execution,
+                items: content.services.items.execution,
+                color: 'pink' as const,
+                images: [
+                  { src: '/images/bd-sketches/07 - Designing the Micro-Interaction - no legend.jpg', caption: lang === 'en' ? 'Designing micro-interactions' : 'Conception de micro-interactions' },
+                  { src: '/images/bd-sketches/09 - Prototypage haute-fidélité et spécifications.jpg', caption: lang === 'en' ? 'Hi-fi prototyping & specs' : 'Prototypage haute-fidélité' },
+                  { src: '/images/bd-sketches/06b - Prototyping La Bulle.jpg', caption: lang === 'en' ? 'Feature prototyping' : 'Prototypage de fonctionnalités' }
+                ]
+              },
+              {
+                id: 'utility',
+                icon: <Zap size={24}/>,
+                title: content.services.utility,
+                items: content.services.items.utility,
+                color: 'blue' as const,
+                images: [
+                  { src: '/images/bd-sketches/03 - Deep user observation - empathy.jpg', caption: lang === 'en' ? 'User observation & empathy' : 'Observation utilisateur & empathie' },
+                  { src: '/images/bd-sketches/34 - User testing interviews.jpg', caption: lang === 'en' ? 'User testing & interviews' : 'Tests utilisateurs & interviews' },
+                  { src: '/images/bd-sketches/design UX, product architecture, user flows.png', caption: lang === 'en' ? 'UX & product architecture' : 'Architecture UX & produit' }
+                ]
+              },
+              {
+                id: 'efficiency',
+                icon: <Settings size={24}/>,
+                title: content.services.efficiency,
+                items: content.services.items.efficiency,
+                color: 'orange' as const,
+                images: [
+                  { src: '/images/bd-sketches/11 - Construction du UI Kit et du Design System.jpg', caption: lang === 'en' ? 'UI Kit & Design System' : 'UI Kit & Design System' },
+                  { src: '/images/bd-sketches/10 - Synchronisations Design-Dev et Architecture des Composants.jpg', caption: lang === 'en' ? 'Design-dev sync' : 'Sync Design-Dev' },
+                  { src: '/images/bd-sketches/13b - Developer handoff.jpg', caption: lang === 'en' ? 'Developer handoff' : 'Passation aux développeurs' }
+                ]
+              },
+              {
+                id: 'impact',
+                icon: <Users size={24}/>,
+                title: content.services.impact,
+                items: content.services.items.impact,
+                color: 'teal' as const,
+                images: [
+                  { src: '/images/bd-sketches/21 - Ideation Workshop for the Suite.jpg', caption: lang === 'en' ? 'Ideation workshops' : 'Ateliers d\'idéation' },
+                  { src: '/images/bd-sketches/27 - Ateliers de co creation et sketching en equipe.jpg', caption: lang === 'en' ? 'Co-creation workshops' : 'Ateliers de co-création' },
+                  { src: '/images/bd-sketches/24 - Design teams rituals.jpg', caption: lang === 'en' ? 'Team rituals' : 'Rituels d\'équipe' }
+                ]
+              }
+            ].map((service) => {
+              const isExpanded = expandedService === service.id;
+              const colorClasses = {
+                pink: {
+                  bg: systemTheme === 'dark' ? 'bg-pink-500/20' : 'bg-pink-50',
+                  text: systemTheme === 'dark' ? 'text-pink-400' : 'text-pink-600',
+                  check: 'text-pink-400'
+                },
+                blue: {
+                  bg: systemTheme === 'dark' ? 'bg-blue-500/20' : 'bg-blue-50',
+                  text: systemTheme === 'dark' ? 'text-blue-400' : 'text-blue-600',
+                  check: 'text-blue-400'
+                },
+                orange: {
+                  bg: systemTheme === 'dark' ? 'bg-orange-500/20' : 'bg-orange-50',
+                  text: systemTheme === 'dark' ? 'text-orange-400' : 'text-orange-600',
+                  check: 'text-orange-400'
+                },
+                teal: {
+                  bg: systemTheme === 'dark' ? 'bg-teal-500/20' : 'bg-teal-50',
+                  text: systemTheme === 'dark' ? 'text-teal-400' : 'text-teal-600',
+                  check: 'text-teal-400'
+                }
+              }[service.color];
+
+              const borderHoverColor = {
+                pink: 'hover:border-pink-500/50',
+                blue: 'hover:border-blue-500/50',
+                orange: 'hover:border-orange-500/50',
+                teal: 'hover:border-teal-500/50'
+              }[service.color];
+
+              const shadowHoverColor = {
+                pink: 'hover:shadow-pink-900/10',
+                blue: 'hover:shadow-blue-900/10',
+                orange: 'hover:shadow-orange-900/10',
+                teal: 'hover:shadow-teal-900/10'
+              }[service.color];
+
+              const gradientColor = {
+                pink: 'from-pink-500/5',
+                blue: 'from-blue-500/5',
+                orange: 'from-orange-500/5',
+                teal: 'from-teal-500/5'
+              }[service.color];
+
+              return (
+                <div
+                  key={service.id}
+                  className={`group relative rounded-3xl border overflow-hidden transition-all duration-300 cursor-pointer ${
+                    systemTheme === 'dark'
+                      ? `bg-[#1D1D1F] border-white/5 ${borderHoverColor}`
+                      : `bg-white border-gray-100 ${borderHoverColor}`
+                  } ${isExpanded ? 'shadow-xl' : `shadow-sm hover:shadow-2xl ${shadowHoverColor}`}`}
                 >
-                  <Images size={14} />
-                  <span>View Examples</span>
-                </button>
-              </div>
-              <h3 className="text-xl font-bold mb-4">{content.services.execution}</h3>
-              <ul className="space-y-3 text-gray-600 text-sm leading-relaxed">
-                {content.services.items.execution.map((item, i) => (
-                  <li key={i} className="flex items-start"><CheckCircle2 size={16} className="mr-2 mt-0.5 text-pink-400 flex-shrink-0"/> {item}</li>
-                ))}
-              </ul>
-            </div>
+                  {/* Gradient overlay on hover */}
+                  <div className={`absolute inset-0 bg-gradient-to-br ${gradientColor} to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none`}></div>
 
-            {/* Product Utility */}
-            <div
-              className="relative bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer group"
-              onClick={() => setSelectedServiceGallery('utility')}
-            >
-              <div className="mb-6 flex items-start justify-between">
-                <div className="p-4 bg-blue-50 w-fit rounded-2xl text-blue-600"><Zap size={28}/></div>
+                  {/* Accordion Header */}
+                  <button
+                    onClick={() => setExpandedService(isExpanded ? null : service.id)}
+                    className="relative z-10 w-full px-6 py-5 flex items-center justify-between cursor-pointer"
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className={`p-3 rounded-xl transition-transform duration-300 group-hover:scale-110 ${colorClasses.bg} ${colorClasses.text}`}>
+                        {service.icon}
+                      </div>
+                      <h3 className={`text-lg font-bold ${
+                        systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+                      }`}>{service.title}</h3>
+                    </div>
+                    <div className={`p-2 rounded-full transition-all duration-300 opacity-0 group-hover:opacity-100 ${
+                      systemTheme === 'dark'
+                        ? 'bg-white/10'
+                        : 'bg-gray-100'
+                    } ${isExpanded ? 'opacity-100' : ''}`}>
+                      <ChevronDown
+                        size={20}
+                        className={`transition-transform duration-300 ${
+                          isExpanded ? 'rotate-180' : ''
+                        } ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}
+                      />
+                    </div>
+                  </button>
 
-                {/* Pill button - permanent on mobile, appears on hover on desktop */}
-                <button
-                  className="flex items-center gap-2 px-3 py-1.5 bg-white hover:bg-gray-50 text-gray-700 border border-gray-200 text-xs font-medium rounded-full transition-all duration-200 md:opacity-0 md:group-hover:opacity-100"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setSelectedServiceGallery('utility');
-                  }}
-                >
-                  <Images size={14} />
-                  <span>View Examples</span>
-                </button>
-              </div>
-              <h3 className="text-xl font-bold mb-4">{content.services.utility}</h3>
-              <ul className="space-y-3 text-gray-600 text-sm leading-relaxed">
-                {content.services.items.utility.map((item, i) => (
-                  <li key={i} className="flex items-start"><CheckCircle2 size={16} className="mr-2 mt-0.5 text-blue-400 flex-shrink-0"/> {item}</li>
-                ))}
-              </ul>
-            </div>
+                  {/* Accordion Content */}
+                  <AnimatePresence>
+                    {isExpanded && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3, ease: 'easeInOut' }}
+                        className="overflow-hidden relative z-10"
+                      >
+                        <div className={`px-6 pb-6 border-t ${
+                          systemTheme === 'dark' ? 'border-white/10' : 'border-gray-100'
+                        }`}>
+                          {/* Bullet Points */}
+                          <ul className={`space-y-3 text-sm leading-relaxed pt-5 mb-6 ${
+                            systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                          }`}>
+                            {service.items.map((item, i) => (
+                              <li key={i} className="flex items-start">
+                                <CheckCircle2 size={16} className={`mr-2 mt-0.5 ${colorClasses.check} flex-shrink-0`}/>
+                                {item}
+                              </li>
+                            ))}
+                          </ul>
 
-            {/* Operational Efficiency */}
-            <div
-              className="relative bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer group"
-              onClick={() => setSelectedServiceGallery('efficiency')}
-            >
-              <div className="mb-6 flex items-start justify-between">
-                <div className="p-4 bg-orange-50 w-fit rounded-2xl text-orange-600"><Settings size={28}/></div>
-
-                {/* Pill button - permanent on mobile, appears on hover on desktop */}
-                <button
-                  className="flex items-center gap-2 px-3 py-1.5 bg-white hover:bg-gray-50 text-gray-700 border border-gray-200 text-xs font-medium rounded-full transition-all duration-200 md:opacity-0 md:group-hover:opacity-100"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setSelectedServiceGallery('efficiency');
-                  }}
-                >
-                  <Images size={14} />
-                  <span>View Examples</span>
-                </button>
-              </div>
-              <h3 className="text-xl font-bold mb-4">{content.services.efficiency}</h3>
-              <ul className="space-y-3 text-gray-600 text-sm leading-relaxed">
-                {content.services.items.efficiency.map((item, i) => (
-                  <li key={i} className="flex items-start"><CheckCircle2 size={16} className="mr-2 mt-0.5 text-orange-400 flex-shrink-0"/> {item}</li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Organizational Impact */}
-            <div
-              className="relative bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer group"
-              onClick={() => setSelectedServiceGallery('impact')}
-            >
-              <div className="mb-6 flex items-start justify-between">
-                <div className="p-4 bg-teal-50 w-fit rounded-2xl text-teal-600"><Users size={28}/></div>
-
-                {/* Pill button - permanent on mobile, appears on hover on desktop */}
-                <button
-                  className="flex items-center gap-2 px-3 py-1.5 bg-white hover:bg-gray-50 text-gray-700 border border-gray-200 text-xs font-medium rounded-full transition-all duration-200 md:opacity-0 md:group-hover:opacity-100"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setSelectedServiceGallery('impact');
-                  }}
-                >
-                  <Images size={14} />
-                  <span>View Examples</span>
-                </button>
-              </div>
-              <h3 className="text-xl font-bold mb-4">{content.services.impact}</h3>
-              <ul className="space-y-3 text-gray-600 text-sm leading-relaxed">
-                {content.services.items.impact.map((item, i) => (
-                  <li key={i} className="flex items-start"><CheckCircle2 size={16} className="mr-2 mt-0.5 text-teal-400 flex-shrink-0"/> {item}</li>
-                ))}
-              </ul>
-            </div>
+                          {/* Image Grid - 3 columns */}
+                          <div className="grid grid-cols-3 gap-3">
+                            {service.images.map((img, idx) => (
+                              <div
+                                key={idx}
+                                className={`rounded-xl overflow-hidden border ${
+                                  systemTheme === 'dark' ? 'border-white/10' : 'border-gray-100'
+                                }`}
+                              >
+                                <img
+                                  src={img.src}
+                                  alt={img.caption}
+                                  className="w-full aspect-[4/3] object-cover"
+                                />
+                                <p className={`text-xs p-2 text-center ${
+                                  systemTheme === 'dark'
+                                    ? 'bg-white/5 text-gray-400'
+                                    : 'bg-gray-50 text-gray-600'
+                                }`}>
+                                  {img.caption}
+                                </p>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
 
       {/* Biography & Toolkit Section */}
-      <section id="bio" className="py-20 px-6 relative bg-white">
+      <section id="bio" className={`py-28 md:py-32 px-6 relative ${
+        systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white'
+      }`}>
         <div className="max-w-6xl mx-auto">
           <div className="mb-12 text-center md:text-left">
-            <h2 className="text-3xl font-bold mb-4">{content.bio.title}</h2>
-            <p className="text-gray-500 text-lg">{content.bio.subtitle}</p>
+            <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">{content.bio.title}</h2>
+            <p className={`text-lg ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>{content.bio.subtitle}</p>
           </div>
 
           <div className="grid md:grid-cols-12 gap-8">
             
             {/* Left: Bio Card */}
             <div className="md:col-span-7">
-               <GlassCard className="p-8 h-full flex flex-col justify-between overflow-hidden relative">
+               <div className={`p-8 h-full flex flex-col justify-between overflow-hidden relative rounded-3xl border shadow-sm ${
+                 systemTheme === 'dark'
+                   ? 'bg-[#1D1D1F] border-white/10'
+                   : 'glass-effect border-white/50'
+               }`}>
                   <div>
                     <div className="flex flex-col md:flex-row items-center md:items-start space-y-6 md:space-y-0 md:space-x-8 mb-8">
-                      <Avatar 
-                        filename="victor-soussan.png" 
-                        alt="Victor Soussan" 
+                      <Avatar
+                        filename="victor-soussan.png"
+                        alt="Victor Soussan"
                         className="w-40 h-40 rounded-[2rem] shadow-lg border border-white/20"
                       />
                       <div className="text-center md:text-left pt-2 flex-1">
-                        <h3 className="text-3xl font-bold text-gray-900 mb-2">Victor Soussan</h3>
-                        <p className="text-gray-500 font-medium mb-4 text-lg">{content.bio.role}</p>
+                        <h3 className={`text-3xl font-bold mb-2 ${
+                          systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+                        }`}>Victor Soussan</h3>
+                        <p className={`font-medium mb-4 text-lg ${
+                          systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+                        }`}>{content.bio.role}</p>
                         <div className="flex flex-wrap gap-2 justify-center md:justify-start">
                           <Badge color="blue">{content.bio.exp}</Badge>
                           <Badge color="gray">{content.bio.loc}</Badge>
@@ -2127,9 +2436,17 @@ const App: React.FC = () => {
                       </div>
                     </div>
 
-                    <div className="space-y-6 text-gray-600 leading-relaxed text-[15px]">
-                      <div className="bg-blue-50/50 p-6 rounded-2xl border border-blue-100">
-                        <p className="text-gray-900 font-semibold mb-4 text-base">{content.bio.value_prop}</p>
+                    <div className={`space-y-6 leading-relaxed text-[15px] ${
+                      systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                    }`}>
+                      <div className={`p-6 rounded-2xl border ${
+                        systemTheme === 'dark'
+                          ? 'bg-blue-900/20 border-blue-500/20'
+                          : 'bg-blue-50/50 border-blue-100'
+                      }`}>
+                        <p className={`font-semibold mb-4 text-base ${
+                          systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+                        }`}>{content.bio.value_prop}</p>
                         <ul className="space-y-2.5">
                           {content.bio.bullets.map((bullet, i) => (
                             <li key={i} className="flex items-start text-sm">
@@ -2145,7 +2462,9 @@ const App: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="flex flex-wrap gap-4 mt-8 pt-6 border-t border-gray-100">
+                  <div className={`flex flex-wrap gap-4 mt-8 pt-6 border-t ${
+                    systemTheme === 'dark' ? 'border-white/10' : 'border-gray-100'
+                  }`}>
                      <button
                        onClick={() => setIsBioOpen(true)}
                        className="px-5 py-2.5 accent-blue text-white rounded-full text-sm font-medium btn-pill flex items-center"
@@ -2169,7 +2488,11 @@ const App: React.FC = () => {
                             setResumeLang('fr');
                             setIsResumeOpen(true);
                           }}
-                          className="px-4 py-2.5 glass-effect text-gray-700 rounded-full text-sm font-medium btn-pill flex items-center hover:text-blue-600"
+                          className={`px-4 py-2.5 rounded-full text-sm font-medium btn-pill flex items-center ${
+                            systemTheme === 'dark'
+                              ? 'bg-white/10 text-gray-300 hover:text-white hover:bg-white/20'
+                              : 'glass-effect text-gray-700 hover:text-blue-600'
+                          }`}
                         >
                           <Download size={16} className="mr-2"/> Résumé FR
                         </button>
@@ -2178,41 +2501,65 @@ const App: React.FC = () => {
                             setResumeLang('en');
                             setIsResumeOpen(true);
                           }}
-                          className="px-4 py-2.5 glass-effect text-gray-700 rounded-full text-sm font-medium btn-pill flex items-center hover:text-blue-600"
+                          className={`px-4 py-2.5 rounded-full text-sm font-medium btn-pill flex items-center ${
+                            systemTheme === 'dark'
+                              ? 'bg-white/10 text-gray-300 hover:text-white hover:bg-white/20'
+                              : 'glass-effect text-gray-700 hover:text-blue-600'
+                          }`}
                         >
                           <Download size={16} className="mr-2"/> Résumé EN
                         </button>
                      </div>
                   </div>
-               </GlassCard>
+               </div>
             </div>
 
             {/* Right: Toolkit Grid */}
             <div className="md:col-span-5 flex flex-col space-y-6">
-              <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm h-full flex flex-col">
-                 <div className="flex items-center mb-4 text-gray-900 font-bold">
-                   <BookOpen size={20} className="mr-2 text-blue-600"/> 
+              <div className={`p-6 rounded-3xl border shadow-sm h-full flex flex-col ${
+                systemTheme === 'dark'
+                  ? 'bg-[#1D1D1F] border-white/10'
+                  : 'bg-white border-gray-100'
+              }`}>
+                 <div className={`flex items-center mb-4 font-bold ${
+                   systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+                 }`}>
+                   <BookOpen size={20} className="mr-2 text-blue-600"/>
                    <h3>{content.bio.toolkit_title}</h3>
                  </div>
-                 <p className="text-sm text-gray-500 mb-6">
+                 <p className={`text-sm mb-6 ${
+                   systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+                 }`}>
                    {content.bio.toolkit_desc}
                  </p>
-                 
+
                  <div className="space-y-3 flex-1">
                     {resources.map((res, idx) => (
-                       <a 
-                         key={idx} 
-                         href={res.link} 
+                       <a
+                         key={idx}
+                         href={res.link}
                          target="_blank"
                          rel="noopener noreferrer"
-                         className="flex items-center p-3 rounded-xl bg-gray-50 hover:bg-blue-50 hover:text-blue-700 transition-colors group cursor-pointer border border-transparent hover:border-blue-100"
+                         className={`flex items-center p-3 rounded-xl transition-colors group cursor-pointer border ${
+                           systemTheme === 'dark'
+                             ? 'bg-white/5 hover:bg-blue-900/30 text-gray-300 hover:text-blue-400 border-white/5 hover:border-blue-500/30'
+                             : 'bg-gray-50 hover:bg-blue-50 hover:text-blue-700 border-transparent hover:border-blue-100'
+                         }`}
                        >
-                          <div className="mr-3 bg-white p-2 rounded-lg border border-gray-100 group-hover:border-blue-100 shadow-sm">
+                          <div className={`mr-3 p-2 rounded-lg border shadow-sm ${
+                            systemTheme === 'dark'
+                              ? 'bg-white/10 border-white/10 group-hover:border-blue-500/30'
+                              : 'bg-white border-gray-100 group-hover:border-blue-100'
+                          }`}>
                             {res.icon}
                           </div>
                           <div className="flex-1">
                              <div className="text-sm font-semibold">{res.title}</div>
-                             <div className="text-xs text-gray-400 group-hover:text-blue-400">{res.desc}</div>
+                             <div className={`text-xs ${
+                               systemTheme === 'dark'
+                                 ? 'text-gray-500 group-hover:text-blue-400'
+                                 : 'text-gray-400 group-hover:text-blue-400'
+                             }`}>{res.desc}</div>
                           </div>
                           <ArrowUpRight size={16} className="opacity-0 group-hover:opacity-100 transition-opacity text-blue-500"/>
                        </a>
@@ -2225,11 +2572,13 @@ const App: React.FC = () => {
       </section>
 
       {/* Interactive Case Studies Section */}
-      <section id="projects" className="py-20 px-6 bg-[#F5F5F7]">
+      <section id="projects" className={`py-28 md:py-32 px-6 ${
+        systemTheme === 'dark' ? 'bg-[#111111]' : 'bg-[#F5F5F7]'
+      }`}>
         <div className="max-w-6xl mx-auto">
           <div className="mb-12">
-            <h2 className="text-3xl font-bold mb-4">{content.projects.title}</h2>
-            <p className="text-gray-500 text-lg">{content.projects.subtitle}</p>
+            <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">{content.projects.title}</h2>
+            <p className={`text-lg ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>{content.projects.subtitle}</p>
           </div>
 
           <div className="flex flex-col md:flex-row gap-8 h-auto md:h-[750px]">
@@ -2243,26 +2592,48 @@ const App: React.FC = () => {
                   className={`
                     cursor-pointer p-6 rounded-3xl border transition-all duration-300 group relative
                     ${selectedProject.id === project.id
-                      ? 'bg-[#1D1D1F] text-white shadow-2xl shadow-black/20 scale-[1.03]'
-                      : 'bg-white border-gray-100 hover:border-gray-300 hover:bg-gray-50 text-gray-600'}
+                      ? 'bg-blue-600 text-white shadow-2xl shadow-blue-600/30 scale-[1.03] border-blue-500'
+                      : systemTheme === 'dark'
+                        ? 'bg-[#1D1D1F] border-white/10 hover:border-white/30 hover:bg-[#252527] text-gray-300'
+                        : 'bg-white border-gray-100 hover:border-gray-300 hover:bg-gray-50 text-gray-600'}
                   `}
                 >
                   <div className="flex justify-between items-start mb-2">
                     <div className={`
-                      p-2 rounded-xl mb-3 
-                      ${selectedProject.id === project.id ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-600'}
+                      p-2 rounded-xl mb-3
+                      ${selectedProject.id === project.id
+                        ? 'bg-white/20 text-white'
+                        : systemTheme === 'dark'
+                          ? 'bg-white/10 text-gray-300'
+                          : 'bg-gray-100 text-gray-600'}
                     `}>
                       {project.icon}
                     </div>
-                    {selectedProject.id === project.id && <ArrowUpRight size={20} className="opacity-50" />}
+                    {selectedProject.id === project.id && <ArrowUpRight size={20} className="opacity-70" />}
                   </div>
-                  <h3 className={`text-lg font-bold mb-1 ${selectedProject.id === project.id ? 'text-white' : 'text-gray-900'}`}>
+                  <h3 className={`text-lg font-bold mb-1 ${
+                    selectedProject.id === project.id
+                      ? 'text-white'
+                      : systemTheme === 'dark'
+                        ? 'text-white'
+                        : 'text-gray-900'
+                  }`}>
                     {project.title}
                   </h3>
-                  <p className={`text-sm ${selectedProject.id === project.id ? 'text-gray-400' : 'text-gray-500'}`}>
+                  <p className={`text-sm ${
+                    selectedProject.id === project.id
+                      ? 'text-blue-100'
+                      : systemTheme === 'dark'
+                        ? 'text-gray-400'
+                        : 'text-gray-500'
+                  }`}>
                     {project.period}
                   </p>
-                  <p className={`text-xs mt-2 font-medium ${selectedProject.id === project.id ? 'text-blue-300' : 'text-blue-600'}`}>
+                  <p className={`text-xs mt-2 font-medium ${
+                    selectedProject.id === project.id
+                      ? 'text-blue-100'
+                      : 'text-blue-500'
+                  }`}>
                     {project.role}
                   </p>
                 </div>
@@ -2271,34 +2642,52 @@ const App: React.FC = () => {
 
             {/* Project Details (Detail) */}
             <div id="project-details" className="w-full md:w-2/3 h-full">
-              <GlassCard className="h-full p-8 md:p-10 flex flex-col overflow-y-auto relative no-scrollbar">
-                {/* Header */}
-                <div className="border-b border-gray-100 pb-6 mb-6">
-                  <div className="flex items-center space-x-3 mb-4">
-                    <Badge color="indigo">{selectedProject.period}</Badge>
-                    <Badge color="gray">{selectedProject.role}</Badge>
-                  </div>
-                  <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                    {selectedProject.title}
-                  </h2>
-                  <p className="text-xl text-gray-500 leading-relaxed">
-                    {selectedProject.summary}
-                  </p>
+              <div className={`h-full p-0 flex flex-col overflow-y-auto relative no-scrollbar rounded-3xl border shadow-sm ${
+                systemTheme === 'dark'
+                  ? 'bg-[#1D1D1F] border-white/10'
+                  : 'bg-white/80 backdrop-blur-xl border-white/50'
+              }`}>
+                {/* Cover Image */}
+                <div className="relative w-full h-48 md:h-56 flex-shrink-0 overflow-hidden rounded-t-3xl">
+                  <img
+                    src={`/images/covers/${selectedProject.coverImage}`}
+                    alt={`${selectedProject.title} cover`}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
                 </div>
+
+                {/* Content */}
+                <div className="p-8 md:p-10 flex flex-col flex-1">
+                  {/* Header */}
+                  <div className={`border-b pb-6 mb-6 ${systemTheme === 'dark' ? 'border-white/10' : 'border-gray-100'}`}>
+                    <div className="flex items-center space-x-3 mb-4">
+                      <Badge color="indigo">{selectedProject.period}</Badge>
+                      <Badge color="gray">{selectedProject.role}</Badge>
+                    </div>
+                    <h2 className={`text-3xl md:text-4xl font-bold tracking-tight mb-4 ${
+                      systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+                    }`}>
+                      {selectedProject.title}
+                    </h2>
+                    <p className={`text-xl leading-relaxed ${systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-500'}`}>
+                      {selectedProject.summary}
+                    </p>
+                  </div>
 
                 {/* Content Grid */}
                 <div className="grid md:grid-cols-2 gap-8 mb-8">
-                  
+
                   {/* Missions */}
                   <div>
-                    <div className="flex items-center space-x-2 mb-4 text-gray-900 font-semibold">
-                      <Target size={20} className="text-blue-600" />
+                    <div className={`flex items-center space-x-2 mb-4 font-semibold ${systemTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                      <Target size={20} className="text-blue-500" />
                       <h3>{content.projects.missions}</h3>
                     </div>
                     <ul className="space-y-3">
                       {selectedProject.missions.map((m, i) => (
-                        <li key={i} className="flex items-start text-gray-600 text-sm leading-relaxed">
-                          <span className="mr-2 mt-1.5 w-1.5 h-1.5 bg-blue-400 rounded-full flex-shrink-0" />
+                        <li key={i} className={`flex items-start text-sm leading-relaxed ${systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
+                          <span className="mr-2 mt-1.5 w-1.5 h-1.5 bg-blue-500 rounded-full flex-shrink-0" />
                           {m}
                         </li>
                       ))}
@@ -2307,26 +2696,34 @@ const App: React.FC = () => {
 
                   {/* Design System */}
                   <div>
-                    <div className="flex items-center space-x-2 mb-4 text-gray-900 font-semibold">
-                      <Figma size={20} className="text-purple-600" />
+                    <div className={`flex items-center space-x-2 mb-4 font-semibold ${systemTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                      <Figma size={20} className="text-purple-500" />
                       <h3>{content.projects.system}</h3>
                     </div>
-                    <div className="bg-purple-50/50 p-4 rounded-2xl border border-purple-100">
-                      <h4 className="text-sm font-bold text-purple-900 mb-1">{selectedProject.system.title}</h4>
-                      <p className="text-sm text-gray-600 leading-relaxed">{selectedProject.system.desc}</p>
+                    <div className={`p-4 rounded-2xl border ${
+                      systemTheme === 'dark'
+                        ? 'bg-purple-500/10 border-purple-500/20'
+                        : 'bg-purple-50/50 border-purple-100'
+                    }`}>
+                      <h4 className={`text-sm font-bold mb-1 ${systemTheme === 'dark' ? 'text-purple-300' : 'text-purple-900'}`}>{selectedProject.system.title}</h4>
+                      <p className={`text-sm leading-relaxed ${systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>{selectedProject.system.desc}</p>
                     </div>
                   </div>
                 </div>
 
                 {/* Deliverables & External Link */}
                 <div className="mb-8">
-                  <div className="flex items-center space-x-2 mb-4 text-gray-900 font-semibold">
-                    <Box size={20} className="text-indigo-600" />
+                  <div className={`flex items-center space-x-2 mb-4 font-semibold ${systemTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                    <Box size={20} className="text-indigo-500" />
                     <h3>{content.projects.deliverables}</h3>
                   </div>
                   <div className="flex flex-wrap gap-3 mb-6">
                     {selectedProject.deliverables.map((d, i) => (
-                      <div key={i} className="px-4 py-2 bg-gray-50 border border-gray-100 rounded-xl text-sm text-gray-600 flex items-center">
+                      <div key={i} className={`px-4 py-2 rounded-xl text-sm flex items-center ${
+                        systemTheme === 'dark'
+                          ? 'bg-white/5 border border-white/10 text-gray-300'
+                          : 'bg-gray-50 border border-gray-100 text-gray-600'
+                      }`}>
                         <CheckCircle2 size={14} className="mr-2 text-green-500" />
                         {d}
                       </div>
@@ -2336,7 +2733,11 @@ const App: React.FC = () => {
                   {selectedProject.externalLink && (
                     <button
                       onClick={() => setIframeModalUrl(selectedProject.externalLink!)}
-                      className="inline-flex items-center px-5 py-3 bg-gray-900 text-white rounded-xl text-sm font-medium hover:bg-black transition-all hover:scale-[1.01] shadow-md"
+                      className={`inline-flex items-center px-5 py-3 rounded-xl text-sm font-medium transition-all hover:scale-[1.01] shadow-md ${
+                        systemTheme === 'dark'
+                          ? 'bg-white text-gray-900 hover:bg-gray-100'
+                          : 'bg-gray-900 text-white hover:bg-black'
+                      }`}
                     >
                       <BookOpen size={16} className="mr-2"/> {content.projects.read_more} <ArrowUpRight size={14} className="ml-2 opacity-70"/>
                     </button>
@@ -2345,18 +2746,34 @@ const App: React.FC = () => {
 
                 {/* Project Linked Testimonial */}
                 {linkedTestimonial && (
-                  <div className="mt-auto pt-8 border-t border-gray-100">
-                    <div className="bg-gradient-to-br from-blue-50/50 to-indigo-50/50 p-6 rounded-2xl border border-blue-100">
+                  <div className={`mt-auto pt-8 border-t ${
+                    systemTheme === 'dark' ? 'border-white/10' : 'border-gray-100'
+                  }`}>
+                    <div className={`p-6 rounded-2xl border ${
+                      systemTheme === 'dark'
+                        ? 'bg-blue-900/20 border-blue-500/20'
+                        : 'bg-gradient-to-br from-blue-50/50 to-indigo-50/50 border-blue-100'
+                    }`}>
                        <div className="flex items-center mb-4">
-                          <Avatar filename={linkedTestimonial.image} alt={linkedTestimonial.author} className="w-10 h-10 rounded-full mr-3 border border-white shadow-sm" />
+                          <Avatar filename={linkedTestimonial.image} alt={linkedTestimonial.author} className={`w-10 h-10 rounded-full mr-3 border shadow-sm ${
+                            systemTheme === 'dark' ? 'border-white/20' : 'border-white'
+                          }`} />
                           <div>
-                            <div className="text-sm font-bold text-gray-900">{linkedTestimonial.author}</div>
-                            <div className="text-xs text-gray-500">{linkedTestimonial.role}</div>
+                            <div className={`text-sm font-bold ${
+                              systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+                            }`}>{linkedTestimonial.author}</div>
+                            <div className={`text-xs ${
+                              systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+                            }`}>{linkedTestimonial.role}</div>
                           </div>
                        </div>
                        <div className="relative">
-                          <Quote size={16} className="text-blue-200 absolute -top-1 -left-1 transform -scale-x-100" />
-                          <p className="text-sm text-gray-700 italic relative z-10 pl-4">
+                          <Quote size={16} className={`absolute -top-1 -left-1 transform -scale-x-100 ${
+                            systemTheme === 'dark' ? 'text-blue-400/30' : 'text-blue-200'
+                          }`} />
+                          <p className={`text-sm italic relative z-10 pl-4 ${
+                            systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                          }`}>
                             "{linkedTestimonial.content}"
                           </p>
                        </div>
@@ -2364,7 +2781,8 @@ const App: React.FC = () => {
                   </div>
                 )}
 
-              </GlassCard>
+                </div>
+              </div>
             </div>
 
           </div>
@@ -2372,7 +2790,7 @@ const App: React.FC = () => {
       </section>
 
       {/* Condamine Studio Section */}
-      <section id="lab" className="py-24 px-6 bg-[#09090b] text-white relative overflow-hidden">
+      <section id="lab" className="py-28 md:py-32 px-6 bg-[#09090b] text-white relative overflow-hidden">
          {/* Atmospheric Glows */}
          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-600/10 rounded-full blur-[100px] pointer-events-none translate-x-1/2 -translate-y-1/2"></div>
          <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-blue-600/10 rounded-full blur-[100px] pointer-events-none -translate-x-1/2 translate-y-1/2"></div>
@@ -2383,7 +2801,7 @@ const App: React.FC = () => {
                 <div className="inline-flex items-center px-3 py-1 rounded-full bg-white/10 border border-white/10 text-xs font-medium text-blue-300 mb-4 backdrop-blur-md">
                    <FlaskConical size={14} className="mr-2"/> {content.lab.tag}
                 </div>
-                <h2 className="text-3xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-500">{content.lab.title}</h2>
+                <h2 className="text-4xl md:text-5xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-500">{content.lab.title}</h2>
                 <p className="text-gray-400 mt-4 text-lg max-w-xl">
                    {content.lab.desc}
                 </p>
@@ -2400,7 +2818,7 @@ const App: React.FC = () => {
                   <div className="mb-6 p-4 bg-blue-900/20 w-fit rounded-2xl text-blue-400 group-hover:scale-110 transition-transform duration-300">
                      <Smartphone size={32}/>
                   </div>
-                  <h3 className="text-2xl font-bold mb-2">{content.lab.apps_title}</h3>
+                  <h3 className="text-2xl font-bold tracking-tight mb-2">{content.lab.apps_title}</h3>
                   <div className="text-xs font-mono text-blue-400 mb-4">{content.lab.apps_sub}</div>
                   <p className="text-gray-400 text-sm leading-relaxed mb-6 flex-1">
                      {content.lab.apps_desc}
@@ -2419,7 +2837,7 @@ const App: React.FC = () => {
                   <div className="mb-6 p-4 bg-amber-900/20 w-fit rounded-2xl text-amber-400 group-hover:scale-110 transition-transform duration-300">
                      <GraduationCap size={32}/>
                   </div>
-                  <h3 className="text-2xl font-bold mb-2">{content.lab.learning_title}</h3>
+                  <h3 className="text-2xl font-bold tracking-tight mb-2">{content.lab.learning_title}</h3>
                   <div className="text-xs font-mono text-amber-400 mb-4">{content.lab.learning_sub}</div>
                   <p className="text-gray-400 text-sm leading-relaxed mb-6 flex-1">
                      {content.lab.learning_desc}
@@ -2438,7 +2856,7 @@ const App: React.FC = () => {
                   <div className="mb-6 p-4 bg-purple-900/20 w-fit rounded-2xl text-purple-400 group-hover:scale-110 transition-transform duration-300">
                      <Bot size={32}/>
                   </div>
-                  <h3 className="text-2xl font-bold mb-2">{content.lab.agents_title}</h3>
+                  <h3 className="text-2xl font-bold tracking-tight mb-2">{content.lab.agents_title}</h3>
                   <div className="text-xs font-mono text-purple-400 mb-4">{content.lab.agents_sub}</div>
                   <p className="text-gray-400 text-sm leading-relaxed mb-6 flex-1">
                      {content.lab.agents_desc}
@@ -2457,7 +2875,7 @@ const App: React.FC = () => {
                   <div className="mb-6 p-4 bg-pink-900/20 w-fit rounded-2xl text-pink-400 group-hover:scale-110 transition-transform duration-300">
                      <Palette size={32}/>
                   </div>
-                  <h3 className="text-2xl font-bold mb-2">{content.lab.art_title}</h3>
+                  <h3 className="text-2xl font-bold tracking-tight mb-2">{content.lab.art_title}</h3>
                   <div className="text-xs font-mono text-pink-400 mb-4">{content.lab.art_sub}</div>
                   <p className="text-gray-400 text-sm leading-relaxed mb-6 flex-1">
                      {content.lab.art_desc}
@@ -2471,11 +2889,15 @@ const App: React.FC = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section id="testimonials" className="py-24 px-6 bg-white border-t border-gray-100">
+      <section id="testimonials" className={`py-28 md:py-32 px-6 border-t ${
+        systemTheme === 'dark'
+          ? 'bg-[#0a0a0a] border-white/10'
+          : 'bg-white border-gray-100'
+      }`}>
         <div className="max-w-6xl mx-auto">
           <div className="mb-12 text-center">
-            <h2 className="text-3xl font-bold mb-4">{content.testimonials.title}</h2>
-            <p className="text-gray-500 text-lg max-w-2xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">{content.testimonials.title}</h2>
+            <p className={`text-lg max-w-2xl mx-auto ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
               {content.testimonials.subtitle}
             </p>
           </div>
@@ -2483,49 +2905,61 @@ const App: React.FC = () => {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
              {/* Preview: Top 3 curated testimonials */}
              {[testimonials[0], testimonials[1], testimonials[2]].map((t, i) => (
-                <div key={i} className="bg-[#F5F5F7] p-8 rounded-3xl border border-transparent hover:border-gray-200 transition-colors shadow-sm h-full flex flex-col justify-between">
+                <div key={i} className={`p-8 rounded-3xl border transition-colors shadow-sm h-full flex flex-col justify-between ${
+                  systemTheme === 'dark'
+                    ? 'bg-[#1D1D1F] border-white/10 hover:border-white/20'
+                    : 'bg-[#F5F5F7] border-transparent hover:border-gray-200'
+                }`}>
                    <div className="mb-6">
                       <div className="flex items-center mb-6">
-                        <Avatar filename={t.image} alt={t.author} className="w-14 h-14 rounded-full mr-4 border-2 border-white shadow-sm" />
+                        <Avatar filename={t.image} alt={t.author} className={`w-14 h-14 rounded-full mr-4 border-2 shadow-sm ${systemTheme === 'dark' ? 'border-gray-700' : 'border-white'}`} />
                         <div>
                            {t.linkedin ? (
-                             <a 
-                               href={t.linkedin} 
-                               target="_blank" 
-                               rel="noreferrer" 
-                               className="font-bold text-gray-900 leading-none hover:text-[#0077b5] transition-colors flex items-center group text-lg"
+                             <a
+                               href={t.linkedin}
+                               target="_blank"
+                               rel="noreferrer"
+                               className={`font-bold leading-none hover:text-[#0077b5] transition-colors flex items-center group text-lg ${systemTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}
                              >
                                {t.author}
                                <Linkedin size={16} className="ml-2 text-gray-400 group-hover:text-[#0077b5] transition-colors" />
                              </a>
                            ) : (
-                             <div className="font-bold text-gray-900 leading-none text-lg">{t.author}</div>
+                             <div className={`font-bold leading-none text-lg ${systemTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{t.author}</div>
                            )}
-                           <div className="text-xs font-medium text-gray-500 mt-1">{t.role}</div>
+                           <div className={`text-xs font-medium mt-1 ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>{t.role}</div>
                         </div>
                       </div>
                       <div className="relative">
-                        <Quote size={20} className="text-gray-300 absolute -top-2 -left-2 transform -scale-x-100" />
-                        <p className="text-gray-700 leading-relaxed text-[15px] pl-4 relative z-10">
+                        <Quote size={20} className={`absolute -top-2 -left-2 transform -scale-x-100 ${systemTheme === 'dark' ? 'text-gray-600' : 'text-gray-300'}`} />
+                        <p className={`leading-relaxed text-[15px] pl-4 relative z-10 ${systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
                           "{t.content.length > 180 ? t.content.substring(0, 180) + '...' : t.content}"
                         </p>
                       </div>
                    </div>
-                   
-                   <div className="flex justify-between items-center border-t border-gray-200/50 pt-4 mt-auto">
+
+                   <div className={`flex justify-between items-center border-t pt-4 mt-auto ${systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200/50'}`}>
                       <span className="text-xs text-gray-400 font-medium">{t.date}</span>
-                      <span className="px-2.5 py-1 bg-white rounded-md text-[10px] font-semibold text-gray-500 border border-gray-100 uppercase tracking-wide">
+                      <span className={`px-2.5 py-1 rounded-md text-[10px] font-semibold uppercase tracking-wide ${
+                        systemTheme === 'dark'
+                          ? 'bg-white/10 text-gray-400 border border-white/10'
+                          : 'bg-white text-gray-500 border border-gray-100'
+                      }`}>
                         {t.category}
                       </span>
                    </div>
                 </div>
              ))}
           </div>
-          
+
           <div className="mt-12 text-center">
-             <button 
+             <button
                onClick={() => setIsTestimonialsOpen(true)}
-               className="group px-8 py-3 bg-white border border-gray-200 text-gray-700 rounded-full font-medium hover:bg-gray-50 transition-colors inline-flex items-center shadow-sm hover:shadow-md"
+               className={`group px-8 py-3 border rounded-full font-medium transition-colors inline-flex items-center shadow-sm hover:shadow-md ${
+                 systemTheme === 'dark'
+                   ? 'bg-white/10 border-white/20 text-white hover:bg-white/20'
+                   : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'
+               }`}
              >
                {content.testimonials.view_all} <ArrowUpRight size={18} className="ml-2 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
              </button>
@@ -2542,7 +2976,9 @@ const App: React.FC = () => {
              animate={{ opacity: 1 }}
              exit={{ opacity: 0 }}
              transition={{ duration: 0.2 }}
-             className="absolute inset-0 bg-white/95 backdrop-blur-xl"
+             className={`absolute inset-0 backdrop-blur-xl ${
+               systemTheme === 'dark' ? 'bg-black/95' : 'bg-white/95'
+             }`}
              onClick={() => setIsBioOpen(false)}
            />
            <motion.div
@@ -2555,19 +2991,33 @@ const App: React.FC = () => {
                damping: 25,
                mass: 0.5
              }}
-             className="relative w-full max-w-5xl h-full flex flex-col bg-white/50 rounded-3xl md:rounded-[40px] overflow-hidden shadow-2xl border border-gray-200/50"
+             className={`relative w-full max-w-5xl h-full flex flex-col rounded-3xl md:rounded-[40px] overflow-hidden shadow-2xl border ${
+               systemTheme === 'dark'
+                 ? 'bg-[#1D1D1F]/90 border-white/10'
+                 : 'bg-white/50 border-gray-200/50'
+             }`}
            >
 
               {/* Modal Header */}
-              <div className="flex flex-col md:flex-row justify-between items-start md:items-center py-6 px-8 border-b border-gray-200/50 bg-white/80 backdrop-blur-md z-10 gap-4">
+              <div className={`flex flex-col md:flex-row justify-between items-start md:items-center py-6 px-8 border-b backdrop-blur-md z-10 gap-4 ${
+                systemTheme === 'dark'
+                  ? 'border-white/10 bg-[#1D1D1F]/80'
+                  : 'border-gray-200/50 bg-white/80'
+              }`}>
                  <div>
-                   <h2 className="text-2xl font-bold text-gray-900">{content.bio.modal_title}</h2>
-                   <p className="text-sm text-gray-500">{content.bio.modal_subtitle}</p>
+                   <h2 className={`text-2xl font-bold ${
+                     systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+                   }`}>{content.bio.modal_title}</h2>
+                   <p className={`text-sm ${
+                     systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+                   }`}>{content.bio.modal_subtitle}</p>
                  </div>
 
                  <div className="flex items-center gap-4">
                    {/* Toggle */}
-                   <div className="relative flex items-center bg-gray-100 rounded-full p-1">
+                   <div className={`relative flex items-center rounded-full p-1 ${
+                     systemTheme === 'dark' ? 'bg-white/10' : 'bg-gray-100'
+                   }`}>
                      <motion.div
                        className="absolute bg-blue-600 rounded-full shadow-md"
                        initial={false}
@@ -2593,7 +3043,9 @@ const App: React.FC = () => {
                        className={`relative z-10 px-5 py-2.5 rounded-full text-sm font-semibold transition-colors duration-200 ${
                          bioViewMode === 'text'
                            ? 'text-white'
-                           : 'text-gray-600 hover:text-gray-900'
+                           : systemTheme === 'dark'
+                             ? 'text-gray-400 hover:text-white'
+                             : 'text-gray-600 hover:text-gray-900'
                        }`}
                        style={{ width: '50%' }}
                      >
@@ -2604,7 +3056,9 @@ const App: React.FC = () => {
                        className={`relative z-10 px-5 py-2.5 rounded-full text-sm font-semibold transition-colors duration-200 ${
                          bioViewMode === 'timeline'
                            ? 'text-white'
-                           : 'text-gray-600 hover:text-gray-900'
+                           : systemTheme === 'dark'
+                             ? 'text-gray-400 hover:text-white'
+                             : 'text-gray-600 hover:text-gray-900'
                        }`}
                        style={{ width: '50%' }}
                      >
@@ -2614,7 +3068,11 @@ const App: React.FC = () => {
 
                    <button
                      onClick={() => setIsBioOpen(false)}
-                     className="hidden md:flex p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors"
+                     className={`hidden md:flex p-2 rounded-full transition-colors ${
+                       systemTheme === 'dark'
+                         ? 'bg-white/10 hover:bg-white/20 text-white'
+                         : 'bg-gray-100 hover:bg-gray-200'
+                     }`}
                    >
                       <X size={24} />
                    </button>
@@ -2622,7 +3080,9 @@ const App: React.FC = () => {
               </div>
 
               {/* Modal Content */}
-              <div className="overflow-y-auto p-6 md:p-12 bg-[#F5F5F7]/50">
+              <div className={`overflow-y-auto p-6 md:p-12 ${
+                systemTheme === 'dark' ? 'bg-[#111111]/50' : 'bg-[#F5F5F7]/50'
+              }`}>
                  <div className="max-w-4xl mx-auto">
                     <AnimatePresence mode="wait">
                     {/* TEXT VIEW */}
@@ -2641,9 +3101,17 @@ const App: React.FC = () => {
                         className="space-y-8"
                       >
                         {/* Personal Story */}
-                        <div className="bg-white p-8 md:p-10 rounded-3xl border border-gray-100 shadow-sm">
-                           <h3 className="text-2xl font-bold mb-6 text-gray-900">{content.bio.journey_title}</h3>
-                           <div className="prose prose-gray max-w-none space-y-6 text-gray-700 leading-relaxed">
+                        <div className={`p-8 md:p-10 rounded-3xl border shadow-sm ${
+                          systemTheme === 'dark'
+                            ? 'bg-[#1D1D1F] border-white/10'
+                            : 'bg-white border-gray-100'
+                        }`}>
+                           <h3 className={`text-2xl font-bold mb-6 ${
+                             systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+                           }`}>{content.bio.journey_title}</h3>
+                           <div className={`prose max-w-none space-y-6 leading-relaxed ${
+                             systemTheme === 'dark' ? 'text-gray-300 prose-invert' : 'text-gray-700 prose-gray'
+                           }`}>
                               <p className="text-lg" dangerouslySetInnerHTML={{ __html: content.bio.journey_p1 }} />
                               <p dangerouslySetInnerHTML={{ __html: content.bio.journey_p2 }} />
                               <p dangerouslySetInnerHTML={{ __html: content.bio.journey_p3 }} />
@@ -2658,16 +3126,28 @@ const App: React.FC = () => {
                               <p dangerouslySetInnerHTML={{ __html: content.bio.journey_p7 }} />
                               <p dangerouslySetInnerHTML={{ __html: content.bio.journey_p8 }} />
                               <p dangerouslySetInnerHTML={{ __html: content.bio.journey_p9 }} />
-                              <p className="text-lg font-semibold text-gray-900 pt-4" dangerouslySetInnerHTML={{ __html: content.bio.journey_conclusion }} />
+                              <p className={`text-lg font-semibold pt-4 ${
+                                systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+                              }`} dangerouslySetInnerHTML={{ __html: content.bio.journey_conclusion }} />
                            </div>
                         </div>
 
                         {/* Tools & Stack */}
-                        <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
-                           <h3 className="text-xl font-bold mb-6 text-gray-900">{content.bio.tools_title}</h3>
+                        <div className={`p-8 rounded-3xl border shadow-sm ${
+                          systemTheme === 'dark'
+                            ? 'bg-[#1D1D1F] border-white/10'
+                            : 'bg-white border-gray-100'
+                        }`}>
+                           <h3 className={`text-xl font-bold mb-6 ${
+                             systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+                           }`}>{content.bio.tools_title}</h3>
                            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                               {['Figma', 'Bolt', 'Lovable', 'ZeroHeight', 'Notion', 'Loom', 'Claude', 'Perplexity', 'Midjourney', 'ChatGPT', 'Protopie', 'Adobe CC'].map(tool => (
-                                <span key={tool} className="px-4 py-2.5 bg-gray-50 text-gray-700 rounded-xl text-sm font-medium border border-gray-200 text-center hover:border-blue-300 hover:bg-blue-50 transition-colors">
+                                <span key={tool} className={`px-4 py-2.5 rounded-xl text-sm font-medium border text-center transition-colors ${
+                                  systemTheme === 'dark'
+                                    ? 'bg-white/5 text-gray-300 border-white/10 hover:border-blue-500/50 hover:bg-blue-900/20'
+                                    : 'bg-gray-50 text-gray-700 border-gray-200 hover:border-blue-300 hover:bg-blue-50'
+                                }`}>
                                   {tool}
                                 </span>
                               ))}
@@ -2675,21 +3155,35 @@ const App: React.FC = () => {
                         </div>
 
                         {/* Education */}
-                        <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
-                           <h3 className="text-xl font-bold mb-6 text-gray-900">{content.bio.education_title}</h3>
+                        <div className={`p-8 rounded-3xl border shadow-sm ${
+                          systemTheme === 'dark'
+                            ? 'bg-[#1D1D1F] border-white/10'
+                            : 'bg-white border-gray-100'
+                        }`}>
+                           <h3 className={`text-xl font-bold mb-6 ${
+                             systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+                           }`}>{content.bio.education_title}</h3>
                            <div className="space-y-4">
                               <div className="flex items-start">
                                  <GraduationCap size={20} className="mr-3 mt-1 text-blue-600 flex-shrink-0" />
                                  <div>
-                                    <h4 className="font-bold text-gray-900">{content.bio.education_master_title}</h4>
-                                    <p className="text-gray-600 text-sm">{content.bio.education_master_school}</p>
+                                    <h4 className={`font-bold ${
+                                      systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+                                    }`}>{content.bio.education_master_title}</h4>
+                                    <p className={`text-sm ${
+                                      systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                                    }`}>{content.bio.education_master_school}</p>
                                  </div>
                               </div>
                               <div className="flex items-start">
                                  <BookOpen size={20} className="mr-3 mt-1 text-blue-600 flex-shrink-0" />
                                  <div>
-                                    <h4 className="font-bold text-gray-900">{content.bio.education_ux_title}</h4>
-                                    <p className="text-gray-600 text-sm">{content.bio.education_ux_school}</p>
+                                    <h4 className={`font-bold ${
+                                      systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+                                    }`}>{content.bio.education_ux_title}</h4>
+                                    <p className={`text-sm ${
+                                      systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                                    }`}>{content.bio.education_ux_school}</p>
                                  </div>
                               </div>
                            </div>
@@ -2710,26 +3204,32 @@ const App: React.FC = () => {
                           damping: 30,
                           mass: 0.8
                         }}
-                        className="bg-white p-8 md:p-10 rounded-3xl border border-gray-100 shadow-sm"
+                        className={`p-8 md:p-10 rounded-3xl border shadow-sm ${
+                          systemTheme === 'dark'
+                            ? 'bg-[#1D1D1F] border-white/10'
+                            : 'bg-white border-gray-100'
+                        }`}
                       >
-                        <h3 className="text-2xl font-bold mb-8 text-gray-900">{content.bio.timeline_title}</h3>
+                        <h3 className={`text-2xl font-bold mb-8 ${
+                          systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+                        }`}>{content.bio.timeline_title}</h3>
                         <div className="space-y-12">
                           {['2026', '2025', '2024', '2023', '2022', '2020-2021', '2018-2019', '2017-2018', '2016-2017', '2014-2016', '2010-2014', '2005-2010']
                             .filter(year => (content.bio.timeline as any)[year])
                             .map((year, idx) => {
                             const items = (content.bio.timeline as any)[year] as string[];
                             const colors = [
-                              { border: 'border-blue-200', dot: 'bg-blue-500', text: 'text-blue-600' },
-                              { border: 'border-indigo-200', dot: 'bg-indigo-500', text: 'text-indigo-600' },
-                              { border: 'border-purple-200', dot: 'bg-purple-500', text: 'text-purple-600' },
-                              { border: 'border-pink-200', dot: 'bg-pink-500', text: 'text-pink-600' },
-                              { border: 'border-orange-200', dot: 'bg-orange-500', text: 'text-orange-600' },
-                              { border: 'border-teal-200', dot: 'bg-teal-500', text: 'text-teal-600' },
-                              { border: 'border-cyan-200', dot: 'bg-cyan-500', text: 'text-cyan-600' },
-                              { border: 'border-emerald-200', dot: 'bg-emerald-500', text: 'text-emerald-600' },
-                              { border: 'border-amber-200', dot: 'bg-amber-500', text: 'text-amber-600' },
-                              { border: 'border-slate-200', dot: 'bg-slate-500', text: 'text-slate-600' },
-                              { border: 'border-gray-300', dot: 'bg-gray-500', text: 'text-gray-600' },
+                              { border: systemTheme === 'dark' ? 'border-blue-500/30' : 'border-blue-200', dot: 'bg-blue-500', text: 'text-blue-500' },
+                              { border: systemTheme === 'dark' ? 'border-indigo-500/30' : 'border-indigo-200', dot: 'bg-indigo-500', text: 'text-indigo-500' },
+                              { border: systemTheme === 'dark' ? 'border-purple-500/30' : 'border-purple-200', dot: 'bg-purple-500', text: 'text-purple-500' },
+                              { border: systemTheme === 'dark' ? 'border-pink-500/30' : 'border-pink-200', dot: 'bg-pink-500', text: 'text-pink-500' },
+                              { border: systemTheme === 'dark' ? 'border-orange-500/30' : 'border-orange-200', dot: 'bg-orange-500', text: 'text-orange-500' },
+                              { border: systemTheme === 'dark' ? 'border-teal-500/30' : 'border-teal-200', dot: 'bg-teal-500', text: 'text-teal-500' },
+                              { border: systemTheme === 'dark' ? 'border-cyan-500/30' : 'border-cyan-200', dot: 'bg-cyan-500', text: 'text-cyan-500' },
+                              { border: systemTheme === 'dark' ? 'border-emerald-500/30' : 'border-emerald-200', dot: 'bg-emerald-500', text: 'text-emerald-500' },
+                              { border: systemTheme === 'dark' ? 'border-amber-500/30' : 'border-amber-200', dot: 'bg-amber-500', text: 'text-amber-500' },
+                              { border: systemTheme === 'dark' ? 'border-slate-500/30' : 'border-slate-200', dot: 'bg-slate-500', text: 'text-slate-500' },
+                              { border: systemTheme === 'dark' ? 'border-gray-500/30' : 'border-gray-300', dot: 'bg-gray-500', text: 'text-gray-500' },
                             ];
                             const colorSet = colors[idx % colors.length];
                             const totalYears = ['2026', '2025', '2024', '2023', '2022', '2020-2021', '2018-2019', '2017-2018', '2016-2017', '2014-2016', '2010-2014', '2005-2010'].filter(y => (content.bio.timeline as any)[y]).length;
@@ -2737,10 +3237,14 @@ const App: React.FC = () => {
                               <div key={year} className={`relative pl-8 ${idx < totalYears - 1 ? `border-l-2 ${colorSet.border}` : ''}`}>
                                 <div className={`absolute -left-[9px] top-0 w-4 h-4 ${colorSet.dot} rounded-full`}></div>
                                 <div className={`text-2xl font-bold ${colorSet.text} mb-4`}>{year}</div>
-                                <ul className="space-y-3 text-gray-700">
+                                <ul className={`space-y-3 ${
+                                  systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                                }`}>
                                   {items.map((item: string, i: number) => (
                                     <li key={i} className="flex items-start">
-                                      <span className="mr-3 mt-1.5 w-1.5 h-1.5 bg-gray-400 rounded-full flex-shrink-0" />
+                                      <span className={`mr-3 mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0 ${
+                                        systemTheme === 'dark' ? 'bg-gray-500' : 'bg-gray-400'
+                                      }`} />
                                       <span dangerouslySetInnerHTML={{ __html: item }} />
                                     </li>
                                   ))}
@@ -2760,7 +3264,11 @@ const App: React.FC = () => {
               <div className="md:hidden absolute bottom-6 left-0 w-full flex justify-center pointer-events-none">
                  <button
                    onClick={() => setIsBioOpen(false)}
-                   className="pointer-events-auto px-6 py-3 bg-black text-white rounded-full shadow-xl flex items-center font-medium"
+                   className={`pointer-events-auto px-6 py-3 rounded-full shadow-xl flex items-center font-medium ${
+                     systemTheme === 'dark'
+                       ? 'bg-white text-black'
+                       : 'bg-black text-white'
+                   }`}
                  >
                     <X size={18} className="mr-2"/> {content.bio.close}
                  </button>
@@ -2779,7 +3287,9 @@ const App: React.FC = () => {
              animate={{ opacity: 1 }}
              exit={{ opacity: 0 }}
              transition={{ duration: 0.2 }}
-             className="absolute inset-0 bg-white/95 backdrop-blur-xl"
+             className={`absolute inset-0 backdrop-blur-xl ${
+               systemTheme === 'dark' ? 'bg-black/95' : 'bg-white/95'
+             }`}
              onClick={() => setIsTestimonialsOpen(false)}
            />
            <motion.div
@@ -2792,27 +3302,45 @@ const App: React.FC = () => {
                damping: 25,
                mass: 0.5
              }}
-             className="relative w-full max-w-7xl h-full flex flex-col bg-white/50 rounded-3xl md:rounded-[40px] overflow-hidden shadow-2xl border border-gray-200/50"
+             className={`relative w-full max-w-7xl h-full flex flex-col rounded-3xl md:rounded-[40px] overflow-hidden shadow-2xl border ${
+               systemTheme === 'dark'
+                 ? 'bg-[#1D1D1F]/90 border-white/10'
+                 : 'bg-white/50 border-gray-200/50'
+             }`}
            >
-              
+
               {/* Modal Header */}
-              <div className="flex flex-col md:flex-row justify-between items-center py-6 px-8 border-b border-gray-200/50 bg-white/80 backdrop-blur-md z-10">
+              <div className={`flex flex-col md:flex-row justify-between items-center py-6 px-8 border-b backdrop-blur-md z-10 ${
+                systemTheme === 'dark'
+                  ? 'border-white/10 bg-[#1D1D1F]/80'
+                  : 'border-gray-200/50 bg-white/80'
+              }`}>
                  <div className="mb-4 md:mb-0 text-center md:text-left">
-                   <h2 className="text-2xl font-bold text-gray-900">{content.testimonials.modal_title}</h2>
-                   <p className="text-sm text-gray-500">{testimonials.length} {content.testimonials.modal_sub}</p>
+                   <h2 className={`text-2xl font-bold ${
+                     systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+                   }`}>{content.testimonials.modal_title}</h2>
+                   <p className={`text-sm ${
+                     systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+                   }`}>{testimonials.length} {content.testimonials.modal_sub}</p>
                  </div>
 
                  {/* Filters */}
-                 <div className="flex space-x-2 p-1 bg-gray-100 rounded-full overflow-x-auto max-w-full no-scrollbar">
+                 <div className={`flex space-x-2 p-1 rounded-full overflow-x-auto max-w-full no-scrollbar ${
+                   systemTheme === 'dark' ? 'bg-white/10' : 'bg-gray-100'
+                 }`}>
                     {(['All', 'Management', 'Design', 'Product & Tech', 'Clients'] as Category[]).map(cat => (
                       <button
                         key={cat}
                         onClick={() => setActiveCategory(cat)}
                         className={`
                           px-4 py-2 rounded-full text-xs font-semibold transition-all whitespace-nowrap
-                          ${activeCategory === cat 
-                            ? 'bg-white text-gray-900 shadow-sm ring-1 ring-black/5' 
-                            : 'text-gray-500 hover:text-gray-900 hover:bg-gray-200/50'}
+                          ${activeCategory === cat
+                            ? systemTheme === 'dark'
+                              ? 'bg-white/20 text-white shadow-sm'
+                              : 'bg-white text-gray-900 shadow-sm ring-1 ring-black/5'
+                            : systemTheme === 'dark'
+                              ? 'text-gray-400 hover:text-white hover:bg-white/10'
+                              : 'text-gray-500 hover:text-gray-900 hover:bg-gray-200/50'}
                         `}
                       >
                         {cat}
@@ -2820,64 +3348,100 @@ const App: React.FC = () => {
                     ))}
                  </div>
 
-                 <button 
-                   onClick={() => setIsTestimonialsOpen(false)} 
-                   className="hidden md:flex p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors ml-6"
+                 <button
+                   onClick={() => setIsTestimonialsOpen(false)}
+                   className={`hidden md:flex p-2 rounded-full transition-colors ml-6 ${
+                     systemTheme === 'dark'
+                       ? 'bg-white/10 hover:bg-white/20 text-white'
+                       : 'bg-gray-100 hover:bg-gray-200'
+                   }`}
                  >
                     <X size={24} />
                  </button>
               </div>
 
               {/* Modal Content */}
-              <div className="overflow-y-auto p-6 md:p-8 grid md:grid-cols-2 lg:grid-cols-3 gap-6 bg-[#F5F5F7]/50">
+              <div className={`overflow-y-auto p-6 md:p-8 grid md:grid-cols-2 lg:grid-cols-3 gap-6 ${
+                systemTheme === 'dark' ? 'bg-[#111111]/50' : 'bg-[#F5F5F7]/50'
+              }`}>
                  {filteredTestimonials.map((t, i) => (
-                    <div key={i} className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-all h-fit break-inside-avoid flex flex-col">
+                    <div key={i} className={`p-8 rounded-3xl border shadow-sm hover:shadow-md transition-all h-fit break-inside-avoid flex flex-col ${
+                      systemTheme === 'dark'
+                        ? 'bg-[#1D1D1F] border-white/10'
+                        : 'bg-white border-gray-100'
+                    }`}>
                        <div className="flex items-center mb-6">
-                          <Avatar filename={t.image} alt={t.author} className="w-14 h-14 rounded-full mr-4 border-2 border-white shadow-sm" />
+                          <Avatar filename={t.image} alt={t.author} className={`w-14 h-14 rounded-full mr-4 border-2 shadow-sm ${
+                            systemTheme === 'dark' ? 'border-white/20' : 'border-white'
+                          }`} />
                           <div>
                              {t.linkedin ? (
-                               <a 
-                                 href={t.linkedin} 
-                                 target="_blank" 
-                                 rel="noreferrer" 
-                                 className="font-bold text-gray-900 leading-none hover:text-[#0077b5] transition-colors flex items-center group text-lg"
+                               <a
+                                 href={t.linkedin}
+                                 target="_blank"
+                                 rel="noreferrer"
+                                 className={`font-bold leading-none hover:text-[#0077b5] transition-colors flex items-center group text-lg ${
+                                   systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+                                 }`}
                                >
                                  {t.author}
                                  <Linkedin size={16} className="ml-2 text-gray-400 group-hover:text-[#0077b5] transition-colors" />
                                </a>
                              ) : (
-                               <div className="font-bold text-gray-900 leading-none text-lg">{t.author}</div>
+                               <div className={`font-bold leading-none text-lg ${
+                                 systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+                               }`}>{t.author}</div>
                              )}
-                             <div className="text-xs text-blue-600 font-medium bg-blue-50 px-2 py-0.5 rounded-full w-fit mt-1">{t.role}</div>
+                             <div className={`text-xs font-medium px-2 py-0.5 rounded-full w-fit mt-1 ${
+                               systemTheme === 'dark'
+                                 ? 'text-blue-400 bg-blue-500/20'
+                                 : 'text-blue-600 bg-blue-50'
+                             }`}>{t.role}</div>
                           </div>
                        </div>
-                       
+
                        <div className="relative mb-6">
-                          <Quote size={24} className="text-gray-100 absolute -top-4 -left-2 transform -scale-x-100" />
-                          <p className="text-gray-700 leading-relaxed text-[15px] relative z-10 pt-2">
+                          <Quote size={24} className={`absolute -top-4 -left-2 transform -scale-x-100 ${
+                            systemTheme === 'dark' ? 'text-white/10' : 'text-gray-100'
+                          }`} />
+                          <p className={`leading-relaxed text-[15px] relative z-10 pt-2 ${
+                            systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                          }`}>
                             "{t.content}"
                           </p>
                        </div>
 
-                       <div className="border-t border-gray-50 pt-4 mt-auto flex justify-between items-center">
-                          <span className="text-xs font-medium text-gray-400">{t.date}</span>
-                          <span className="text-[10px] uppercase tracking-wider text-gray-400 font-bold bg-gray-50 px-2 py-1 rounded">{t.category}</span>
+                       <div className={`border-t pt-4 mt-auto flex justify-between items-center ${
+                         systemTheme === 'dark' ? 'border-white/10' : 'border-gray-50'
+                       }`}>
+                          <span className={`text-xs font-medium ${
+                            systemTheme === 'dark' ? 'text-gray-500' : 'text-gray-400'
+                          }`}>{t.date}</span>
+                          <span className={`text-[10px] uppercase tracking-wider font-bold px-2 py-1 rounded ${
+                            systemTheme === 'dark'
+                              ? 'text-gray-400 bg-white/5'
+                              : 'text-gray-400 bg-gray-50'
+                          }`}>{t.category}</span>
                        </div>
                     </div>
                  ))}
-                 
+
                  {filteredTestimonials.length === 0 && (
                    <div className="col-span-full text-center py-20 text-gray-400">
                      {content.testimonials.empty}
                    </div>
                  )}
               </div>
-              
+
               {/* Mobile Close Button */}
               <div className="md:hidden absolute bottom-6 left-0 w-full flex justify-center pointer-events-none">
-                 <button 
+                 <button
                    onClick={() => setIsTestimonialsOpen(false)}
-                   className="pointer-events-auto px-6 py-3 bg-black text-white rounded-full shadow-xl flex items-center font-medium"
+                   className={`pointer-events-auto px-6 py-3 rounded-full shadow-xl flex items-center font-medium ${
+                     systemTheme === 'dark'
+                       ? 'bg-white text-black'
+                       : 'bg-black text-white'
+                   }`}
                  >
                     <X size={18} className="mr-2"/> {content.testimonials.close}
                  </button>
@@ -3811,7 +4375,7 @@ ${contactForm.message}`;
                       <div className={`inline-flex items-center px-3 py-1 rounded-full border text-xs font-medium mb-4 ${colors.badge}`}>
                          {item.subtitle}
                       </div>
-                      <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+                      <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-4">
                          {item.title}
                       </h2>
                    </div>
@@ -4119,9 +4683,9 @@ ${contactForm.message}`;
       </AnimatePresence>
 
       {/* Contact Section */}
-      <section id="contact" className="py-24 px-6 bg-[#1D1D1F] text-white">
+      <section id="contact" className="py-28 md:py-32 px-6 bg-[#1D1D1F] text-white">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-8">{content.contact.title}</h2>
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-8">{content.contact.title}</h2>
           <p className="text-gray-400 text-xl mb-12 max-w-2xl mx-auto">
             {content.contact.subtitle}
           </p>
@@ -4727,12 +5291,18 @@ ${contactForm.message}`;
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-              className="relative w-full max-w-4xl h-[85vh] flex flex-col bg-white/95 backdrop-blur-2xl rounded-3xl shadow-2xl shadow-blue-500/5 border border-gray-200/50"
+              className={`relative w-full max-w-4xl h-[85vh] flex flex-col backdrop-blur-2xl rounded-3xl shadow-2xl shadow-blue-500/5 border ${
+                systemTheme === 'dark'
+                  ? 'bg-[#1D1D1F]/95 border-white/10'
+                  : 'bg-white/95 border-gray-200/50'
+              }`}
               onClick={(e) => e.stopPropagation()}
             >
               {/* Header - Fixed */}
               {quoteStep > 0 && !quoteSuccess && (
-                <div className="flex-shrink-0 px-8 pt-6 pb-4 border-b border-gray-200">
+                <div className={`flex-shrink-0 px-8 pt-6 pb-4 border-b ${
+                  systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
+                }`}>
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center space-x-4">
                       {/* Small Avatar */}
@@ -4746,10 +5316,14 @@ ${contactForm.message}`;
 
                       {/* Title & Step */}
                       <div>
-                        <h2 className="text-xl font-bold text-gray-900">
+                        <h2 className={`text-xl font-bold ${
+                          systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+                        }`}>
                           {lang === 'en' ? 'Project Estimate' : 'Estimation de Projet'}
                         </h2>
-                        <p className="text-sm text-gray-600">
+                        <p className={`text-sm ${
+                          systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                        }`}>
                           {lang === 'en' ? `Step ${quoteStep} of 8` : `Étape ${quoteStep} sur 8`}
                         </p>
                       </div>
@@ -4769,7 +5343,11 @@ ${contactForm.message}`;
                           setIsQuoteGeneratorOpen(false);
                         }
                       }}
-                      className="p-2.5 bg-gray-100 hover:bg-gray-200 rounded-full transition-all duration-200"
+                      className={`p-2.5 rounded-full transition-all duration-200 ${
+                        systemTheme === 'dark'
+                          ? 'bg-white/10 hover:bg-white/20 text-white'
+                          : 'bg-gray-100 hover:bg-gray-200'
+                      }`}
                     >
                       <X size={20} />
                     </button>
@@ -4780,7 +5358,7 @@ ${contactForm.message}`;
                     {[1, 2, 3, 4, 5, 6, 7, 8].map((step) => (
                       <div key={step} className="flex items-center flex-1">
                         <div className={`w-full h-1.5 rounded-full transition-all duration-300 ${
-                          step <= quoteStep ? 'bg-blue-600' : 'bg-gray-200'
+                          step <= quoteStep ? 'bg-blue-600' : systemTheme === 'dark' ? 'bg-white/20' : 'bg-gray-200'
                         }`} />
                         {step < 8 && <div className="w-2" />}
                       </div>
@@ -4793,7 +5371,11 @@ ${contactForm.message}`;
                 <div className="absolute top-6 right-6 z-20">
                   <button
                     onClick={() => setIsQuoteGeneratorOpen(false)}
-                    className="p-2.5 bg-gray-100/80 backdrop-blur-xl hover:bg-gray-200 rounded-full transition-all duration-200"
+                    className={`p-2.5 backdrop-blur-xl rounded-full transition-all duration-200 ${
+                      systemTheme === 'dark'
+                        ? 'bg-white/10 hover:bg-white/20 text-white'
+                        : 'bg-gray-100/80 hover:bg-gray-200'
+                    }`}
                   >
                     <X size={20} />
                   </button>
@@ -4837,7 +5419,9 @@ ${contactForm.message}`;
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.2 }}
-                        className="text-4xl font-bold text-gray-900 mb-4"
+                        className={`text-4xl font-bold mb-4 ${
+                          systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+                        }`}
                       >
                         {lang === 'en' ? 'Get Your Project Estimate' : 'Obtenez votre Estimation'}
                       </motion.h1>
@@ -4847,7 +5431,9 @@ ${contactForm.message}`;
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.3 }}
-                        className="text-xl text-gray-600 mb-10 leading-relaxed"
+                        className={`text-xl mb-10 leading-relaxed ${
+                          systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                        }`}
                       >
                         {lang === 'en'
                           ? 'This quick questionnaire will help me understand your needs and provide a tailored response.'
@@ -4861,32 +5447,56 @@ ${contactForm.message}`;
                         transition={{ delay: 0.4 }}
                         className="grid md:grid-cols-3 gap-6 mb-12"
                       >
-                        <div className="p-6 bg-blue-50/50 backdrop-blur-xl rounded-2xl border border-blue-100 hover:shadow-lg hover:shadow-blue-500/10 transition-all duration-200">
+                        <div className={`p-6 backdrop-blur-xl rounded-2xl border hover:shadow-lg hover:shadow-blue-500/10 transition-all duration-200 ${
+                          systemTheme === 'dark'
+                            ? 'bg-blue-900/20 border-blue-500/20'
+                            : 'bg-blue-50/50 border-blue-100'
+                        }`}>
                           <Clock className="w-8 h-8 text-blue-600 mb-3 mx-auto" />
-                          <h3 className="font-semibold text-gray-900 mb-2">
+                          <h3 className={`font-semibold mb-2 ${
+                            systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+                          }`}>
                             {lang === 'en' ? '5 minutes' : '5 minutes'}
                           </h3>
-                          <p className="text-sm text-gray-600">
+                          <p className={`text-sm ${
+                            systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                          }`}>
                             {lang === 'en' ? 'Quick and easy' : 'Rapide et simple'}
                           </p>
                         </div>
 
-                        <div className="p-6 bg-blue-50/50 backdrop-blur-xl rounded-2xl border border-blue-100 hover:shadow-lg hover:shadow-blue-500/10 transition-all duration-200">
+                        <div className={`p-6 backdrop-blur-xl rounded-2xl border hover:shadow-lg hover:shadow-blue-500/10 transition-all duration-200 ${
+                          systemTheme === 'dark'
+                            ? 'bg-blue-900/20 border-blue-500/20'
+                            : 'bg-blue-50/50 border-blue-100'
+                        }`}>
                           <Target className="w-8 h-8 text-blue-600 mb-3 mx-auto" />
-                          <h3 className="font-semibold text-gray-900 mb-2">
+                          <h3 className={`font-semibold mb-2 ${
+                            systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+                          }`}>
                             {lang === 'en' ? 'Tailored estimate' : 'Estimation sur-mesure'}
                           </h3>
-                          <p className="text-sm text-gray-600">
+                          <p className={`text-sm ${
+                            systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                          }`}>
                             {lang === 'en' ? 'Based on your needs' : 'Selon vos besoins'}
                           </p>
                         </div>
 
-                        <div className="p-6 bg-blue-50/50 backdrop-blur-xl rounded-2xl border border-blue-100 hover:shadow-lg hover:shadow-blue-500/10 transition-all duration-200">
+                        <div className={`p-6 backdrop-blur-xl rounded-2xl border hover:shadow-lg hover:shadow-blue-500/10 transition-all duration-200 ${
+                          systemTheme === 'dark'
+                            ? 'bg-blue-900/20 border-blue-500/20'
+                            : 'bg-blue-50/50 border-blue-100'
+                        }`}>
                           <Zap className="w-8 h-8 text-blue-600 mb-3 mx-auto" />
-                          <h3 className="font-semibold text-gray-900 mb-2">
+                          <h3 className={`font-semibold mb-2 ${
+                            systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+                          }`}>
                             {lang === 'en' ? 'Fast response' : 'Réponse rapide'}
                           </h3>
-                          <p className="text-sm text-gray-600">
+                          <p className={`text-sm ${
+                            systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                          }`}>
                             {lang === 'en' ? 'Within 24 hours' : 'Sous 24 heures'}
                           </p>
                         </div>
@@ -4919,10 +5529,14 @@ ${contactForm.message}`;
                       className="space-y-6 max-w-3xl mx-auto"
                     >
                       <div className="text-center mb-6">
-                        <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                        <h3 className={`text-2xl font-bold mb-2 ${
+                          systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+                        }`}>
                           {lang === 'en' ? 'What brings you here?' : 'Qu\'est-ce qui vous amène ?'}
                         </h3>
-                        <p className="text-base text-gray-600">
+                        <p className={`text-base ${
+                          systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                        }`}>
                           {lang === 'en' ? 'Select the option that best describes your need' : 'Sélectionnez l\'option qui décrit le mieux votre besoin'}
                         </p>
                       </div>
@@ -4969,13 +5583,17 @@ ${contactForm.message}`;
                             className={`w-full flex items-center space-x-4 p-5 border-2 rounded-2xl text-left transition-all duration-200 ${
                               quoteData.clientNeed === option.type
                                 ? 'border-blue-500 bg-blue-50/70 shadow-lg shadow-blue-500/10'
-                                : 'border-gray-200 bg-white/50 hover:border-blue-300 hover:bg-blue-50/30'
+                                : systemTheme === 'dark'
+                                  ? 'border-white/10 bg-white/5 hover:border-blue-500/50 hover:bg-blue-900/20'
+                                  : 'border-gray-200 bg-white/50 hover:border-blue-300 hover:bg-blue-50/30'
                             }`}
                           >
-                            <div className={`flex-shrink-0 ${quoteData.clientNeed === option.type ? 'text-blue-600' : 'text-gray-400'}`}>
+                            <div className={`flex-shrink-0 ${quoteData.clientNeed === option.type ? 'text-blue-600' : systemTheme === 'dark' ? 'text-gray-500' : 'text-gray-400'}`}>
                               {option.icon}
                             </div>
-                            <span className="text-base font-medium text-gray-900 leading-relaxed">{option.title}</span>
+                            <span className={`text-base font-medium leading-relaxed ${
+                              systemTheme === 'dark' ? 'text-gray-200' : 'text-gray-900'
+                            }`}>{option.title}</span>
                           </motion.button>
                         ))}
                       </div>
