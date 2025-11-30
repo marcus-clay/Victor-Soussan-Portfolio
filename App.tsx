@@ -3821,16 +3821,16 @@ ${simpleContactForm.message}`;
                   <button
                     type="submit"
                     disabled={isSendingEmail}
-                    className="w-full flex items-center justify-center space-x-2 px-8 py-4 bg-gray-900 hover:bg-black text-white rounded-xl font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full flex items-center justify-center space-x-2 px-5 py-2.5 accent-blue text-white rounded-full font-medium text-sm btn-pill transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isSendingEmail ? (
                       <>
-                        <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent" />
+                        <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent" />
                         <span>{content.contact.simple_form_sending}</span>
                       </>
                     ) : (
                       <>
-                        <Send size={18} />
+                        <Send size={16} />
                         <span>{content.contact.simple_form_submit}</span>
                       </>
                     )}
