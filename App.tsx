@@ -205,7 +205,7 @@ const TRANSLATIONS = {
   en: {
     nav: {
       services: "Services",
-      bio: "Bio & Toolkit",
+      bio: "About",
       projects: "Case Studies",
       lab: "The Lab",
       testimonials: "Testimonials",
@@ -252,7 +252,7 @@ const TRANSLATIONS = {
       }
     },
     bio: {
-      title: "Biography & Toolkit",
+      title: "About",
       subtitle: "Who I am, what I believe, and the tools I use.",
       role: "Product Design Lead • Mentor • Strategist",
       exp: "15 Years Experience",
@@ -266,8 +266,8 @@ const TRANSLATIONS = {
       ],
       p1: "Passionate designer with experience in innovation, media groups and startups. I work at the intersection between product vision, strategy, interface design and content.",
       p2: "I am used to leading a team as well as being hands-on, with extensive knowledge in hardware, software and operating systems.",
-      view_full_bio: "View Full Biography & Track Record",
-      modal_title: "Full Biography & Track Record",
+      view_full_bio: "View Biography & Track Record",
+      modal_title: "Biography & Track Record",
       modal_subtitle: "15 years building products, 10 years leading design",
       close: "Close",
       toolkit_title: "My Resource Toolkit",
@@ -630,7 +630,7 @@ const TRANSLATIONS = {
   fr: {
     nav: {
       services: "Services",
-      bio: "Bio & Outils",
+      bio: "A propos",
       projects: "Études de Cas",
       lab: "Lab",
       testimonials: "Recommandations",
@@ -1151,7 +1151,7 @@ const getProjects = (lang: Language): Project[] => {
       ],
       icon: <Cpu size={24} />,
       color: "indigo",
-      coverImage: "cover-toolkit.jpg",
+      coverImage: "thumbnail-toolkit.webp",
       externalLink: "https://victor-soussan.notion.site/ebd/2b7a519b0dea80d9b40cc730ce4cfc4b",
       testimonialId: "pierre-marie-nigay"
     },
@@ -1184,7 +1184,7 @@ const getProjects = (lang: Language): Project[] => {
       ],
       icon: <Briefcase size={24} />,
       color: "blue",
-      coverImage: "cover-sqool.jpg",
+      coverImage: "thumbnail-sqool-suite.webp",
       testimonialId: "charlotte-rifflet"
     },
     {
@@ -1221,7 +1221,7 @@ const getProjects = (lang: Language): Project[] => {
       ],
       icon: <Users size={24} />,
       color: "gray",
-      coverImage: "cover-dailymotion.jpg",
+      coverImage: "thumbnail-dailymotion-web-platform.webp",
       externalLink: "https://victor-soussan.notion.site/ebd/2b7a519b0dea80b99138d4b51a65620b"
     },
     {
@@ -1258,7 +1258,7 @@ const getProjects = (lang: Language): Project[] => {
       ],
       icon: <Smartphone size={24} />,
       color: "purple",
-      coverImage: "cover-pagesjaunes.jpg",
+      coverImage: "thumbnail-pagesjaunes.webp",
       testimonialId: "nicolas-moulin"
     }
   ];
@@ -2090,28 +2090,16 @@ const App: React.FC = () => {
             >
               {content.hero.cta_projects} <ChevronRight className="ml-2 flex-shrink-0" size={20} />
             </button>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <button
-                 onClick={() => setIsBookingOpen(true)}
-                 className={`px-8 py-4 rounded-full font-medium text-lg btn-pill cursor-pointer relative z-20 flex items-center justify-center transition-colors whitespace-nowrap ${
-                   systemTheme === 'dark'
-                     ? 'bg-white/10 border border-white/20 text-white hover:bg-white/20'
-                     : 'glass-effect text-[#1D1D1F] hover:text-blue-600'
-                 }`}
-              >
-                <Calendar size={20} className="mr-2 flex-shrink-0"/> {content.hero.cta_book}
-              </button>
-              <button
-                 onClick={() => setIsQuoteGeneratorOpen(true)}
-                 className={`px-8 py-4 rounded-full font-medium text-lg btn-pill cursor-pointer relative z-20 flex items-center justify-center transition-colors whitespace-nowrap ${
-                   systemTheme === 'dark'
-                     ? 'bg-white/10 border border-white/20 text-white hover:bg-white/20'
-                     : 'glass-effect text-[#1D1D1F] hover:text-blue-600'
-                 }`}
-              >
-                <Quote size={20} className="mr-2 flex-shrink-0"/> {content.contact.quote_button}
-              </button>
-            </div>
+            <button
+               onClick={() => setIsBookingOpen(true)}
+               className={`px-8 py-4 rounded-full font-medium text-lg btn-pill cursor-pointer relative z-20 flex items-center justify-center transition-colors whitespace-nowrap ${
+                 systemTheme === 'dark'
+                   ? 'bg-white/10 border border-white/20 text-white hover:bg-white/20'
+                   : 'glass-effect text-[#1D1D1F] hover:text-blue-600'
+               }`}
+            >
+              <Calendar size={20} className="mr-2 flex-shrink-0"/> {content.hero.cta_book}
+            </button>
           </div>
         </div>
       </header>
@@ -2184,6 +2172,25 @@ const App: React.FC = () => {
             100% {
               transform: translateX(-50%);
             }
+          }
+          .thin-scrollbar::-webkit-scrollbar {
+            width: 4px;
+          }
+          .thin-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+          }
+          .thin-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+          }
+          .thin-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 0, 0, 0.3);
+          }
+          .dark .thin-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+          }
+          .dark .thin-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
           }
         `}</style>
       </section>
@@ -2590,71 +2597,77 @@ const App: React.FC = () => {
                   key={project.id}
                   onClick={() => handleProjectClick(project)}
                   className={`
-                    cursor-pointer p-6 rounded-3xl border transition-all duration-300 group relative
+                    cursor-pointer p-6 pb-10 rounded-3xl border transition-all duration-300 group relative overflow-hidden
                     ${selectedProject.id === project.id
-                      ? 'bg-blue-600 text-white shadow-2xl shadow-blue-600/30 scale-[1.03] border-blue-500'
+                      ? systemTheme === 'dark'
+                        ? 'bg-blue-500/10 border-blue-500/50 shadow-2xl shadow-blue-500/20 scale-[1.03]'
+                        : 'bg-blue-50 border-blue-400 shadow-2xl shadow-blue-500/20 scale-[1.03]'
                       : systemTheme === 'dark'
-                        ? 'bg-[#1D1D1F] border-white/10 hover:border-white/30 hover:bg-[#252527] text-gray-300'
-                        : 'bg-white border-gray-100 hover:border-gray-300 hover:bg-gray-50 text-gray-600'}
+                        ? 'bg-[#1D1D1F] border-white/5 hover:border-blue-500/30 hover:shadow-xl hover:shadow-blue-900/10'
+                        : 'bg-white border-gray-100 hover:border-blue-300 hover:shadow-xl hover:shadow-blue-100'}
                   `}
                 >
-                  <div className="flex justify-between items-start mb-2">
-                    <div className={`
-                      p-2 rounded-xl mb-3
-                      ${selectedProject.id === project.id
-                        ? 'bg-white/20 text-white'
-                        : systemTheme === 'dark'
-                          ? 'bg-white/10 text-gray-300'
-                          : 'bg-gray-100 text-gray-600'}
-                    `}>
-                      {project.icon}
+                  {/* Gradient overlay on hover/active */}
+                  <div className={`absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent transition-opacity duration-500 pointer-events-none ${
+                    selectedProject.id === project.id ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+                  }`}></div>
+
+                  <div className="relative z-10">
+                    <div className="flex justify-between items-start mb-2">
+                      <div className={`
+                        p-2 rounded-xl mb-3 transition-all duration-300
+                        ${selectedProject.id === project.id
+                          ? systemTheme === 'dark'
+                            ? 'bg-blue-500/20 text-blue-400'
+                            : 'bg-blue-100 text-blue-600'
+                          : systemTheme === 'dark'
+                            ? 'bg-white/10 text-gray-300 group-hover:scale-110'
+                            : 'bg-gray-100 text-gray-600 group-hover:scale-110'}
+                      `}>
+                        {project.icon}
+                      </div>
+                      {selectedProject.id === project.id && <ArrowUpRight size={20} className={systemTheme === 'dark' ? 'text-blue-400' : 'text-blue-600'} />}
                     </div>
-                    {selectedProject.id === project.id && <ArrowUpRight size={20} className="opacity-70" />}
+                    <h3 className={`text-lg font-bold mb-1 ${
+                      systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+                    }`}>
+                      {project.title}
+                    </h3>
+                    <p className={`text-sm ${
+                      systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+                    }`}>
+                      {project.period}
+                    </p>
+                    <p className={`text-xs mt-2 mb-4 font-medium ${
+                      selectedProject.id === project.id
+                        ? systemTheme === 'dark' ? 'text-blue-400' : 'text-blue-600'
+                        : 'text-blue-500'
+                    }`}>
+                      {project.role}
+                    </p>
                   </div>
-                  <h3 className={`text-lg font-bold mb-1 ${
-                    selectedProject.id === project.id
-                      ? 'text-white'
-                      : systemTheme === 'dark'
-                        ? 'text-white'
-                        : 'text-gray-900'
-                  }`}>
-                    {project.title}
-                  </h3>
-                  <p className={`text-sm ${
-                    selectedProject.id === project.id
-                      ? 'text-blue-100'
-                      : systemTheme === 'dark'
-                        ? 'text-gray-400'
-                        : 'text-gray-500'
-                  }`}>
-                    {project.period}
-                  </p>
-                  <p className={`text-xs mt-2 font-medium ${
-                    selectedProject.id === project.id
-                      ? 'text-blue-100'
-                      : 'text-blue-500'
-                  }`}>
-                    {project.role}
-                  </p>
                 </div>
               ))}
             </div>
 
             {/* Project Details (Detail) */}
             <div id="project-details" className="w-full md:w-2/3 h-full">
-              <div className={`h-full p-0 flex flex-col overflow-y-auto relative no-scrollbar rounded-3xl border shadow-sm ${
+              <div className={`h-full p-0 flex flex-col overflow-y-auto relative rounded-3xl border shadow-sm thin-scrollbar ${
                 systemTheme === 'dark'
                   ? 'bg-[#1D1D1F] border-white/10'
                   : 'bg-white/80 backdrop-blur-xl border-white/50'
               }`}>
                 {/* Cover Image */}
-                <div className="relative w-full h-48 md:h-56 flex-shrink-0 overflow-hidden rounded-t-3xl">
-                  <img
-                    src={`/images/covers/${selectedProject.coverImage}`}
-                    alt={`${selectedProject.title} cover`}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                <div className="p-4 md:p-6">
+                  <div className={`relative w-full overflow-hidden rounded-2xl ${
+                    systemTheme === 'dark' ? 'bg-[#111111]' : 'bg-gray-100'
+                  }`}>
+                    <img
+                      src={`/images/${selectedProject.coverImage}`}
+                      alt={`${selectedProject.title} cover`}
+                      className="w-full h-auto object-contain"
+                    />
+                  </div>
                 </div>
 
                 {/* Content */}
@@ -3738,29 +3751,6 @@ ${simpleContactForm.message}`;
                     className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all"
                     placeholder={content.contact.simple_form_email_placeholder}
                   />
-                </motion.div>
-
-                {/* Budget Field */}
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.25, duration: 0.3 }}
-                >
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    {content.contact.simple_form_budget}
-                  </label>
-                  <select
-                    value={simpleContactForm.budget}
-                    onChange={(e) => setSimpleContactForm({ ...simpleContactForm, budget: e.target.value })}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all"
-                  >
-                    <option value="">{content.contact.simple_form_budget_placeholder}</option>
-                    <option value="< 5k€">{'< 5k€'}</option>
-                    <option value="5-10k€">5-10k€</option>
-                    <option value="10-25k€">10-25k€</option>
-                    <option value="25-50k€">25-50k€</option>
-                    <option value="> 50k€">{"> 50k€"}</option>
-                  </select>
                 </motion.div>
 
                 {/* Date Fields */}
@@ -5993,7 +5983,7 @@ ${contactForm.message}`;
                     </motion.div>
                   )}
 
-                  {/* Step 6: Budget & Timeline */}
+                  {/* Step 6: Timeline */}
                   {quoteStep === 6 && !quoteSuccess && (
                     <motion.div
                       key="step6"
@@ -6004,36 +5994,10 @@ ${contactForm.message}`;
                       className="space-y-6 max-w-3xl mx-auto"
                     >
                       <div className="text-center mb-6">
-                        <h3 className="text-2xl font-bold text-gray-900 mb-2">{content.contact.quote_step_5_title}</h3>
+                        <h3 className="text-2xl font-bold text-gray-900 mb-2">{lang === 'en' ? 'Timeline' : 'Planning'}</h3>
                         <p className="text-base text-gray-600">
-                          {lang === 'en' ? 'Help us understand your budget and timeline expectations' : 'Aidez-nous à comprendre votre budget et vos délais'}
+                          {lang === 'en' ? 'Help us understand your timeline expectations' : 'Aidez-nous à comprendre vos délais'}
                         </p>
-                      </div>
-
-                      <div>
-                        <label className="block text-base font-semibold text-gray-900 mb-3">
-                          {content.contact.quote_step_5_budget_label}
-                        </label>
-                        <select
-                          value={quoteData.budget}
-                          onChange={(e) => setQuoteData({ ...quoteData, budget: e.target.value })}
-                          className="w-full px-5 py-4 text-base border-2 border-gray-300 rounded-2xl focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 transition-all duration-200 bg-white/50 backdrop-blur-xl appearance-none cursor-pointer"
-                          style={{ backgroundImage: "url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e\")", backgroundPosition: 'right 1.5rem center', backgroundRepeat: 'no-repeat', backgroundSize: '1.5em 1.5em', paddingRight: '3rem' }}
-                        >
-                          <option value="">{content.contact.quote_step_5_budget_placeholder}</option>
-                          <option value="< 5k€">{'< 5k€'}</option>
-                          <option value="5-10k€">5-10k€</option>
-                          <option value="10-25k€">10-25k€</option>
-                          <option value="25-50k€">25-50k€</option>
-                          <option value="50-100k€">50-100k€</option>
-                          <option value="> 100k€">{"> 100k€"}</option>
-                        </select>
-                        {quoteData.clientNeed === 'new-product' && (
-                          <p className="text-sm text-gray-600 mt-2 flex items-center">
-                            <span className="mr-2">💡</span>
-                            {lang === 'en' ? 'Typical new product projects: 10-25k€' : 'Projets de nouveaux produits typiques : 10-25k€'}
-                          </p>
-                        )}
                       </div>
 
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
