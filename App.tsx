@@ -206,7 +206,7 @@ const TRANSLATIONS = {
     nav: {
       services: "Services",
       bio: "About",
-      projects: "Case Studies",
+      projects: "Work",
       lab: "The Lab",
       testimonials: "Testimonials",
       contact: "Contact"
@@ -216,7 +216,7 @@ const TRANSLATIONS = {
       title: "Experienced designer for",
       subtitle: "product teams and startups",
       desc: "With 15 years in tech and 10 in product design, I build intuitive, high-impact interfaces for enterprise software, media, education, and public services.",
-      cta_projects: "See Case Studies",
+      cta_projects: "Case Studies",
       cta_book: "Book a 30min Call"
     },
     services: {
@@ -1449,6 +1449,7 @@ const App: React.FC = () => {
   const testimonials = getTestimonials(lang);
 
   const [selectedProject, setSelectedProject] = useState(projects[0]);
+  const projectDetailRef = useRef<HTMLDivElement>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [isBioOpen, setIsBioOpen] = useState(false);
@@ -1547,7 +1548,7 @@ const App: React.FC = () => {
 
         // Quote generator with confirmation
         if (isQuoteGeneratorOpen && !quoteSuccess) {
-          const hasData = quoteData.projectType || quoteData.services.length > 0 ||
+          const hasData = quoteData.clientNeed || quoteData.services.length > 0 ||
                          quoteData.projectDescription || quoteData.name || quoteData.email;
           if (hasData) {
             if (window.confirm(content.contact.quote_confirm_close)) {
@@ -1567,7 +1568,7 @@ const App: React.FC = () => {
   // Autosave quote data to localStorage
   useEffect(() => {
     if (isQuoteGeneratorOpen && !quoteSuccess) {
-      const hasData = quoteData.projectType || quoteData.services.length > 0 ||
+      const hasData = quoteData.clientNeed || quoteData.services.length > 0 ||
                      quoteData.projectDescription || quoteData.name || quoteData.email;
       if (hasData) {
         localStorage.setItem('quoteDraft', JSON.stringify({ quoteData, quoteStep }));
@@ -1686,6 +1687,8 @@ const App: React.FC = () => {
 
   const handleProjectClick = (project: Project) => {
     setSelectedProject(project);
+    // Scroll detail panel to top
+    projectDetailRef.current?.scrollTo({ top: 0 });
     if (window.innerWidth < 768) {
       setTimeout(() => {
         const detailsElement = document.getElementById('project-details');
@@ -1954,11 +1957,11 @@ const App: React.FC = () => {
               ? 'bg-[#1D1D1F] border-b border-white/10'
               : 'bg-[#F5F5F7] border-b border-gray-200'
           }`}>
+            <button onClick={() => scrollToSection('projects')} className={`text-left text-base font-medium px-4 py-2.5 rounded-full btn-pill ${systemTheme === 'dark' ? 'bg-white/10 hover:bg-white/20 text-white' : 'glass-effect hover:text-blue-600'}`}>{content.nav.projects}</button>
             <button onClick={() => scrollToSection('services')} className={`text-left text-base font-medium px-4 py-2.5 rounded-full btn-pill ${systemTheme === 'dark' ? 'bg-white/10 hover:bg-white/20 text-white' : 'glass-effect hover:text-blue-600'}`}>{content.nav.services}</button>
             <button onClick={() => scrollToSection('bio')} className={`text-left text-base font-medium px-4 py-2.5 rounded-full btn-pill ${systemTheme === 'dark' ? 'bg-white/10 hover:bg-white/20 text-white' : 'glass-effect hover:text-blue-600'}`}>{content.nav.bio}</button>
-            <button onClick={() => scrollToSection('projects')} className={`text-left text-base font-medium px-4 py-2.5 rounded-full btn-pill ${systemTheme === 'dark' ? 'bg-white/10 hover:bg-white/20 text-white' : 'glass-effect hover:text-blue-600'}`}>{content.nav.projects}</button>
-            <button onClick={() => scrollToSection('lab')} className={`text-left text-base font-medium px-4 py-2.5 rounded-full btn-pill flex items-center ${systemTheme === 'dark' ? 'bg-white/10 hover:bg-white/20 text-white' : 'glass-effect hover:text-blue-600'}`}><FlaskConical size={18} className="mr-2"/>{content.nav.lab}</button>
             <button onClick={() => scrollToSection('testimonials')} className={`text-left text-base font-medium px-4 py-2.5 rounded-full btn-pill ${systemTheme === 'dark' ? 'bg-white/10 hover:bg-white/20 text-white' : 'glass-effect hover:text-blue-600'}`}>{content.nav.testimonials}</button>
+            <button onClick={() => scrollToSection('lab')} className={`text-left text-base font-medium px-4 py-2.5 rounded-full btn-pill flex items-center ${systemTheme === 'dark' ? 'bg-white/10 hover:bg-white/20 text-white' : 'glass-effect hover:text-blue-600'}`}><FlaskConical size={18} className="mr-2"/>{content.nav.lab}</button>
             <button onClick={() => scrollToSection('contact')} className={`text-left text-base font-medium px-4 py-2.5 rounded-full btn-pill ${systemTheme === 'dark' ? 'bg-white/10 hover:bg-white/20 text-white' : 'glass-effect hover:text-blue-600'}`}>{content.nav.contact}</button>
           </div>
         )}
@@ -2106,21 +2109,22 @@ const App: React.FC = () => {
       </header>
 
       {/* Logo Carousel */}
-      <section className={`py-[54px] overflow-hidden ${
-        systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white'
+      <section className={`py-6 ${
+        systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-[#F5F5F7]'
       }`}>
-        <div className="relative">
-          {/* Fade edges */}
-          <div className={`absolute left-0 top-0 bottom-0 w-32 z-10 pointer-events-none ${
-            systemTheme === 'dark'
-              ? 'bg-gradient-to-r from-[#0a0a0a] to-transparent'
-              : 'bg-gradient-to-r from-white to-transparent'
-          }`} />
-          <div className={`absolute right-0 top-0 bottom-0 w-32 z-10 pointer-events-none ${
-            systemTheme === 'dark'
-              ? 'bg-gradient-to-l from-[#0a0a0a] to-transparent'
-              : 'bg-gradient-to-l from-white to-transparent'
-          }`} />
+        <div className="max-w-6xl mx-auto px-4 md:px-6">
+          <div className="relative overflow-hidden">
+            {/* Fade edges */}
+            <div className={`absolute left-0 top-0 bottom-0 w-32 z-10 pointer-events-none ${
+              systemTheme === 'dark'
+                ? 'bg-gradient-to-r from-[#0a0a0a] to-transparent'
+                : 'bg-gradient-to-r from-[#F5F5F7] to-transparent'
+            }`} />
+            <div className={`absolute right-0 top-0 bottom-0 w-32 z-10 pointer-events-none ${
+              systemTheme === 'dark'
+                ? 'bg-gradient-to-l from-[#0a0a0a] to-transparent'
+                : 'bg-gradient-to-l from-[#F5F5F7] to-transparent'
+            }`} />
 
           <div className="logo-carousel-track flex hover:[animation-play-state:paused]">
             {[...Array(2)].map((_, setIndex) => (
@@ -2144,7 +2148,7 @@ const App: React.FC = () => {
                 ].map((logo, index) => (
                   <div
                     key={`${setIndex}-${index}`}
-                    className="flex items-center justify-center mx-10 md:mx-14"
+                    className="flex items-center justify-center mx-2 md:mx-3"
                   >
                     <img
                       src={logo.src}
@@ -2152,7 +2156,7 @@ const App: React.FC = () => {
                       className={`h-[60px] sm:h-[80px] md:h-[100px] w-auto transition-all duration-500 ease-out ${
                         systemTheme === 'dark'
                           ? 'brightness-0 invert opacity-60 hover:opacity-100'
-                          : 'grayscale brightness-[0.6] opacity-60 hover:grayscale-0 hover:brightness-100 hover:opacity-100'
+                          : 'grayscale opacity-80 hover:grayscale-0 hover:opacity-100'
                       }`}
                     />
                   </div>
@@ -2160,11 +2164,12 @@ const App: React.FC = () => {
               </div>
             ))}
           </div>
+          </div>
         </div>
 
         <style>{`
           .logo-carousel-track {
-            animation: scroll 40s linear infinite;
+            animation: scroll 30s linear infinite;
           }
           @keyframes scroll {
             0% {
@@ -2196,9 +2201,235 @@ const App: React.FC = () => {
         `}</style>
       </section>
 
+      {/* Interactive Case Studies Section */}
+      <section id="projects" className={`py-16 md:py-32 px-4 md:px-6 ${
+        systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-[#F5F5F7]'
+      }`}>
+        <div className="max-w-6xl mx-auto">
+          <div className="mb-8 md:mb-12">
+            <h2 className="text-xl sm:text-2xl md:text-4xl font-bold tracking-tight mb-4 md:mb-6">{content.projects.title}</h2>
+            <p className={`text-sm sm:text-base md:text-lg ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>{content.projects.subtitle}</p>
+          </div>
+
+          <div className="flex flex-col md:flex-row gap-6 md:gap-8 h-auto md:h-[750px]">
+
+            {/* Project List (Master) */}
+            <div className="w-full md:w-1/3 flex flex-col space-y-4 overflow-y-scroll py-2 pl-2 pr-4 no-scrollbar">
+              {projects.map((project) => (
+                <div
+                  key={project.id}
+                  onClick={() => handleProjectClick(project)}
+                  className={`
+                    cursor-pointer p-6 pb-10 rounded-3xl border transition-all duration-300 group relative overflow-hidden
+                    ${selectedProject.id === project.id
+                      ? systemTheme === 'dark'
+                        ? 'bg-blue-500/10 border-blue-500/50 shadow-2xl shadow-blue-500/20 scale-[1.03]'
+                        : 'bg-blue-50 border-blue-400 shadow-2xl shadow-blue-500/20 scale-[1.03]'
+                      : systemTheme === 'dark'
+                        ? 'bg-[#1D1D1F] border-white/5 hover:border-blue-500/30 hover:shadow-xl hover:shadow-blue-900/10'
+                        : 'bg-white border-gray-100 hover:border-blue-300 hover:shadow-xl hover:shadow-blue-100'}
+                  `}
+                >
+                  {/* Gradient overlay on hover/active */}
+                  <div className={`absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent transition-opacity duration-500 pointer-events-none ${
+                    selectedProject.id === project.id ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+                  }`}></div>
+
+                  <div className="relative z-10">
+                    <div className="flex justify-between items-start mb-2">
+                      <div className={`
+                        p-2 rounded-xl mb-3 transition-all duration-300
+                        ${selectedProject.id === project.id
+                          ? systemTheme === 'dark'
+                            ? 'bg-blue-500/20 text-blue-400'
+                            : 'bg-blue-100 text-blue-600'
+                          : systemTheme === 'dark'
+                            ? 'bg-white/10 text-gray-300 group-hover:scale-110'
+                            : 'bg-gray-100 text-gray-600 group-hover:scale-110'}
+                      `}>
+                        {project.icon}
+                      </div>
+                      {selectedProject.id === project.id && <ArrowUpRight size={20} className={systemTheme === 'dark' ? 'text-blue-400' : 'text-blue-600'} />}
+                    </div>
+                    <h3 className={`text-lg font-bold mb-1 ${
+                      systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+                    }`}>
+                      {project.title}
+                    </h3>
+                    <p className={`text-sm ${
+                      systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+                    }`}>
+                      {project.period}
+                    </p>
+                    <p className={`text-xs mt-2 mb-4 font-medium ${
+                      selectedProject.id === project.id
+                        ? systemTheme === 'dark' ? 'text-blue-400' : 'text-blue-600'
+                        : 'text-blue-500'
+                    }`}>
+                      {project.role}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Project Details (Detail) */}
+            <div id="project-details" className="w-full md:w-2/3 h-full">
+              <div
+                ref={projectDetailRef}
+                className={`h-full p-0 flex flex-col overflow-y-auto relative rounded-3xl border shadow-sm thin-scrollbar ${
+                systemTheme === 'dark'
+                  ? 'bg-[#1D1D1F] border-white/10'
+                  : 'bg-white/80 backdrop-blur-xl border-white/50'
+              }`}>
+                {/* Cover Image */}
+                <div className="p-4 md:p-6">
+                  <div className={`relative w-full overflow-hidden rounded-2xl ${
+                    systemTheme === 'dark' ? 'bg-[#111111]' : 'bg-gray-100'
+                  }`}>
+                    <img
+                      src={`/images/${selectedProject.coverImage}`}
+                      alt={`${selectedProject.title} cover`}
+                      className="w-full h-auto object-contain"
+                    />
+                  </div>
+                </div>
+
+                {/* Content */}
+                <div className="p-8 md:p-10 flex flex-col flex-1">
+                  {/* Header */}
+                  <div className={`border-b pb-6 mb-6 ${systemTheme === 'dark' ? 'border-white/10' : 'border-gray-100'}`}>
+                    <div className="flex items-center space-x-3 mb-4">
+                      <Badge color="indigo">{selectedProject.period}</Badge>
+                      <Badge color="gray">{selectedProject.role}</Badge>
+                    </div>
+                    <h2 className={`text-3xl md:text-4xl font-bold tracking-tight mb-4 ${
+                      systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+                    }`}>
+                      {selectedProject.title}
+                    </h2>
+                    <p className={`text-xl leading-relaxed ${systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-500'}`}>
+                      {selectedProject.summary}
+                    </p>
+                  </div>
+
+                {/* Content Grid */}
+                <div className="grid md:grid-cols-2 gap-8 mb-8">
+
+                  {/* Missions */}
+                  <div>
+                    <div className={`flex items-center space-x-2 mb-4 font-semibold ${systemTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                      <Target size={20} className="text-blue-500" />
+                      <h3>{content.projects.missions}</h3>
+                    </div>
+                    <ul className="space-y-3">
+                      {selectedProject.missions.map((m, i) => (
+                        <li key={i} className={`flex items-start text-sm leading-relaxed ${systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
+                          <span className="mr-2 mt-1.5 w-1.5 h-1.5 bg-blue-500 rounded-full flex-shrink-0" />
+                          {m}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Design System */}
+                  <div>
+                    <div className={`flex items-center space-x-2 mb-4 font-semibold ${systemTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                      <Figma size={20} className="text-purple-500" />
+                      <h3>{content.projects.system}</h3>
+                    </div>
+                    <div className={`p-4 rounded-2xl border ${
+                      systemTheme === 'dark'
+                        ? 'bg-purple-500/10 border-purple-500/20'
+                        : 'bg-purple-50/50 border-purple-100'
+                    }`}>
+                      <h4 className={`text-sm font-bold mb-1 ${systemTheme === 'dark' ? 'text-purple-300' : 'text-purple-900'}`}>{selectedProject.system.title}</h4>
+                      <p className={`text-sm leading-relaxed ${systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>{selectedProject.system.desc}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Deliverables & External Link */}
+                <div className="mb-8">
+                  <div className={`flex items-center space-x-2 mb-4 font-semibold ${systemTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                    <Box size={20} className="text-indigo-500" />
+                    <h3>{content.projects.deliverables}</h3>
+                  </div>
+                  <div className="flex flex-wrap gap-3 mb-6">
+                    {selectedProject.deliverables.map((d, i) => (
+                      <div key={i} className={`px-4 py-2 rounded-xl text-sm flex items-center ${
+                        systemTheme === 'dark'
+                          ? 'bg-white/5 border border-white/10 text-gray-300'
+                          : 'bg-gray-50 border border-gray-100 text-gray-600'
+                      }`}>
+                        <CheckCircle2 size={14} className="mr-2 text-green-500" />
+                        {d}
+                      </div>
+                    ))}
+                  </div>
+
+                  {selectedProject.externalLink && (
+                    <button
+                      onClick={() => setIframeModalUrl(selectedProject.externalLink!)}
+                      className={`inline-flex items-center px-5 py-3 rounded-xl text-sm font-medium transition-all hover:scale-[1.01] shadow-md ${
+                        systemTheme === 'dark'
+                          ? 'bg-white text-gray-900 hover:bg-gray-100'
+                          : 'bg-gray-900 text-white hover:bg-black'
+                      }`}
+                    >
+                      <BookOpen size={16} className="mr-2"/> {content.projects.read_more} <ArrowUpRight size={14} className="ml-2 opacity-70"/>
+                    </button>
+                  )}
+                </div>
+
+                {/* Project Linked Testimonial */}
+                {linkedTestimonial && (
+                  <div className={`mt-auto pt-8 border-t ${
+                    systemTheme === 'dark' ? 'border-white/10' : 'border-gray-100'
+                  }`}>
+                    <div className={`p-6 rounded-2xl border ${
+                      systemTheme === 'dark'
+                        ? 'bg-blue-900/20 border-blue-500/20'
+                        : 'bg-gradient-to-br from-blue-50/50 to-indigo-50/50 border-blue-100'
+                    }`}>
+                       <div className="flex items-center mb-4">
+                          <Avatar filename={linkedTestimonial.image} alt={linkedTestimonial.author} className={`w-10 h-10 rounded-full mr-3 border shadow-sm ${
+                            systemTheme === 'dark' ? 'border-white/20' : 'border-white'
+                          }`} />
+                          <div>
+                            <div className={`text-sm font-bold ${
+                              systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+                            }`}>{linkedTestimonial.author}</div>
+                            <div className={`text-xs ${
+                              systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+                            }`}>{linkedTestimonial.role}</div>
+                          </div>
+                       </div>
+                       <div className="relative">
+                          <Quote size={16} className={`absolute -top-1 -left-1 transform -scale-x-100 ${
+                            systemTheme === 'dark' ? 'text-blue-400/30' : 'text-blue-200'
+                          }`} />
+                          <p className={`text-sm italic relative z-10 pl-4 ${
+                            systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                          }`}>
+                            "{linkedTestimonial.content}"
+                          </p>
+                       </div>
+                    </div>
+                  </div>
+                )}
+
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
       {/* Services Section - Accordion Style */}
       <section id="services" className={`py-16 md:py-32 px-4 md:px-6 ${
-        systemTheme === 'dark' ? 'bg-[#111111]' : 'bg-[#F5F5F7]'
+        systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-[#F5F5F7]'
       }`}>
         <div className="max-w-6xl mx-auto">
           <div className="mb-8 md:mb-12 text-center md:text-left">
@@ -2579,226 +2810,81 @@ const App: React.FC = () => {
         </div>
       </section>
 
-      {/* Interactive Case Studies Section */}
-      <section id="projects" className={`py-16 md:py-32 px-4 md:px-6 ${
-        systemTheme === 'dark' ? 'bg-[#111111]' : 'bg-[#F5F5F7]'
+      {/* Testimonials Section */}
+      <section id="testimonials" className={`py-16 md:py-32 px-4 md:px-6 border-t ${
+        systemTheme === 'dark'
+          ? 'bg-[#0a0a0a] border-white/10'
+          : 'bg-white border-gray-100'
       }`}>
         <div className="max-w-6xl mx-auto">
-          <div className="mb-8 md:mb-12">
-            <h2 className="text-xl sm:text-2xl md:text-4xl font-bold tracking-tight mb-4 md:mb-6">{content.projects.title}</h2>
-            <p className={`text-sm sm:text-base md:text-lg ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>{content.projects.subtitle}</p>
+          <div className="mb-8 md:mb-12 text-center">
+            <h2 className="text-xl sm:text-2xl md:text-4xl font-bold tracking-tight mb-4 md:mb-6">{content.testimonials.title}</h2>
+            <p className={`text-sm sm:text-base md:text-lg max-w-2xl mx-auto ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
+              {content.testimonials.subtitle}
+            </p>
           </div>
 
-          <div className="flex flex-col md:flex-row gap-6 md:gap-8 h-auto md:h-[750px]">
-
-            {/* Project List (Master) */}
-            <div className="w-full md:w-1/3 flex flex-col space-y-4 overflow-y-scroll py-2 pl-2 pr-4 no-scrollbar">
-              {projects.map((project) => (
-                <div
-                  key={project.id}
-                  onClick={() => handleProjectClick(project)}
-                  className={`
-                    cursor-pointer p-6 pb-10 rounded-3xl border transition-all duration-300 group relative overflow-hidden
-                    ${selectedProject.id === project.id
-                      ? systemTheme === 'dark'
-                        ? 'bg-blue-500/10 border-blue-500/50 shadow-2xl shadow-blue-500/20 scale-[1.03]'
-                        : 'bg-blue-50 border-blue-400 shadow-2xl shadow-blue-500/20 scale-[1.03]'
-                      : systemTheme === 'dark'
-                        ? 'bg-[#1D1D1F] border-white/5 hover:border-blue-500/30 hover:shadow-xl hover:shadow-blue-900/10'
-                        : 'bg-white border-gray-100 hover:border-blue-300 hover:shadow-xl hover:shadow-blue-100'}
-                  `}
-                >
-                  {/* Gradient overlay on hover/active */}
-                  <div className={`absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent transition-opacity duration-500 pointer-events-none ${
-                    selectedProject.id === project.id ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
-                  }`}></div>
-
-                  <div className="relative z-10">
-                    <div className="flex justify-between items-start mb-2">
-                      <div className={`
-                        p-2 rounded-xl mb-3 transition-all duration-300
-                        ${selectedProject.id === project.id
-                          ? systemTheme === 'dark'
-                            ? 'bg-blue-500/20 text-blue-400'
-                            : 'bg-blue-100 text-blue-600'
-                          : systemTheme === 'dark'
-                            ? 'bg-white/10 text-gray-300 group-hover:scale-110'
-                            : 'bg-gray-100 text-gray-600 group-hover:scale-110'}
-                      `}>
-                        {project.icon}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+             {/* Preview: Top 3 curated testimonials */}
+             {[testimonials[0], testimonials[1], testimonials[2]].map((t, i) => (
+                <div key={i} className={`p-5 md:p-8 rounded-2xl md:rounded-3xl border transition-colors shadow-sm h-full flex flex-col justify-between ${
+                  systemTheme === 'dark'
+                    ? 'bg-[#1D1D1F] border-white/10 hover:border-white/20'
+                    : 'bg-[#F5F5F7] border-transparent hover:border-gray-200'
+                }`}>
+                   <div className="mb-6">
+                      <div className="flex items-center mb-6">
+                        <Avatar filename={t.image} alt={t.author} className={`w-14 h-14 rounded-full mr-4 border-2 shadow-sm ${systemTheme === 'dark' ? 'border-gray-700' : 'border-white'}`} />
+                        <div>
+                           {t.linkedin ? (
+                             <a
+                               href={t.linkedin}
+                               target="_blank"
+                               rel="noreferrer"
+                               className={`font-bold leading-none hover:text-[#0077b5] transition-colors flex items-center group text-lg ${systemTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}
+                             >
+                               {t.author}
+                               <Linkedin size={16} className="ml-2 text-gray-400 group-hover:text-[#0077b5] transition-colors" />
+                             </a>
+                           ) : (
+                             <div className={`font-bold leading-none text-lg ${systemTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{t.author}</div>
+                           )}
+                           <div className={`text-xs font-medium mt-1 ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>{t.role}</div>
+                        </div>
                       </div>
-                      {selectedProject.id === project.id && <ArrowUpRight size={20} className={systemTheme === 'dark' ? 'text-blue-400' : 'text-blue-600'} />}
-                    </div>
-                    <h3 className={`text-lg font-bold mb-1 ${
-                      systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                    }`}>
-                      {project.title}
-                    </h3>
-                    <p className={`text-sm ${
-                      systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                    }`}>
-                      {project.period}
-                    </p>
-                    <p className={`text-xs mt-2 mb-4 font-medium ${
-                      selectedProject.id === project.id
-                        ? systemTheme === 'dark' ? 'text-blue-400' : 'text-blue-600'
-                        : 'text-blue-500'
-                    }`}>
-                      {project.role}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
+                      <div className="relative">
+                        <Quote size={20} className={`absolute -top-2 -left-2 transform -scale-x-100 ${systemTheme === 'dark' ? 'text-gray-600' : 'text-gray-300'}`} />
+                        <p className={`leading-relaxed text-[15px] pl-4 relative z-10 ${systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
+                          "{t.content.length > 180 ? t.content.substring(0, 180) + '...' : t.content}"
+                        </p>
+                      </div>
+                   </div>
 
-            {/* Project Details (Detail) */}
-            <div id="project-details" className="w-full md:w-2/3 h-full">
-              <div className={`h-full p-0 flex flex-col overflow-y-auto relative rounded-3xl border shadow-sm thin-scrollbar ${
-                systemTheme === 'dark'
-                  ? 'bg-[#1D1D1F] border-white/10'
-                  : 'bg-white/80 backdrop-blur-xl border-white/50'
-              }`}>
-                {/* Cover Image */}
-                <div className="p-4 md:p-6">
-                  <div className={`relative w-full overflow-hidden rounded-2xl ${
-                    systemTheme === 'dark' ? 'bg-[#111111]' : 'bg-gray-100'
-                  }`}>
-                    <img
-                      src={`/images/${selectedProject.coverImage}`}
-                      alt={`${selectedProject.title} cover`}
-                      className="w-full h-auto object-contain"
-                    />
-                  </div>
-                </div>
-
-                {/* Content */}
-                <div className="p-8 md:p-10 flex flex-col flex-1">
-                  {/* Header */}
-                  <div className={`border-b pb-6 mb-6 ${systemTheme === 'dark' ? 'border-white/10' : 'border-gray-100'}`}>
-                    <div className="flex items-center space-x-3 mb-4">
-                      <Badge color="indigo">{selectedProject.period}</Badge>
-                      <Badge color="gray">{selectedProject.role}</Badge>
-                    </div>
-                    <h2 className={`text-3xl md:text-4xl font-bold tracking-tight mb-4 ${
-                      systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                    }`}>
-                      {selectedProject.title}
-                    </h2>
-                    <p className={`text-xl leading-relaxed ${systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-500'}`}>
-                      {selectedProject.summary}
-                    </p>
-                  </div>
-
-                {/* Content Grid */}
-                <div className="grid md:grid-cols-2 gap-8 mb-8">
-
-                  {/* Missions */}
-                  <div>
-                    <div className={`flex items-center space-x-2 mb-4 font-semibold ${systemTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                      <Target size={20} className="text-blue-500" />
-                      <h3>{content.projects.missions}</h3>
-                    </div>
-                    <ul className="space-y-3">
-                      {selectedProject.missions.map((m, i) => (
-                        <li key={i} className={`flex items-start text-sm leading-relaxed ${systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
-                          <span className="mr-2 mt-1.5 w-1.5 h-1.5 bg-blue-500 rounded-full flex-shrink-0" />
-                          {m}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* Design System */}
-                  <div>
-                    <div className={`flex items-center space-x-2 mb-4 font-semibold ${systemTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                      <Figma size={20} className="text-purple-500" />
-                      <h3>{content.projects.system}</h3>
-                    </div>
-                    <div className={`p-4 rounded-2xl border ${
-                      systemTheme === 'dark'
-                        ? 'bg-purple-500/10 border-purple-500/20'
-                        : 'bg-purple-50/50 border-purple-100'
-                    }`}>
-                      <h4 className={`text-sm font-bold mb-1 ${systemTheme === 'dark' ? 'text-purple-300' : 'text-purple-900'}`}>{selectedProject.system.title}</h4>
-                      <p className={`text-sm leading-relaxed ${systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>{selectedProject.system.desc}</p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Deliverables & External Link */}
-                <div className="mb-8">
-                  <div className={`flex items-center space-x-2 mb-4 font-semibold ${systemTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                    <Box size={20} className="text-indigo-500" />
-                    <h3>{content.projects.deliverables}</h3>
-                  </div>
-                  <div className="flex flex-wrap gap-3 mb-6">
-                    {selectedProject.deliverables.map((d, i) => (
-                      <div key={i} className={`px-4 py-2 rounded-xl text-sm flex items-center ${
+                   <div className={`flex justify-between items-center border-t pt-4 mt-auto ${systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200/50'}`}>
+                      <span className="text-xs text-gray-400 font-medium">{t.date}</span>
+                      <span className={`px-2.5 py-1 rounded-md text-[10px] font-semibold uppercase tracking-wide ${
                         systemTheme === 'dark'
-                          ? 'bg-white/5 border border-white/10 text-gray-300'
-                          : 'bg-gray-50 border border-gray-100 text-gray-600'
+                          ? 'bg-white/10 text-gray-400 border border-white/10'
+                          : 'bg-white text-gray-500 border border-gray-100'
                       }`}>
-                        <CheckCircle2 size={14} className="mr-2 text-green-500" />
-                        {d}
-                      </div>
-                    ))}
-                  </div>
-
-                  {selectedProject.externalLink && (
-                    <button
-                      onClick={() => setIframeModalUrl(selectedProject.externalLink!)}
-                      className={`inline-flex items-center px-5 py-3 rounded-xl text-sm font-medium transition-all hover:scale-[1.01] shadow-md ${
-                        systemTheme === 'dark'
-                          ? 'bg-white text-gray-900 hover:bg-gray-100'
-                          : 'bg-gray-900 text-white hover:bg-black'
-                      }`}
-                    >
-                      <BookOpen size={16} className="mr-2"/> {content.projects.read_more} <ArrowUpRight size={14} className="ml-2 opacity-70"/>
-                    </button>
-                  )}
+                        {t.category}
+                      </span>
+                   </div>
                 </div>
+             ))}
+          </div>
 
-                {/* Project Linked Testimonial */}
-                {linkedTestimonial && (
-                  <div className={`mt-auto pt-8 border-t ${
-                    systemTheme === 'dark' ? 'border-white/10' : 'border-gray-100'
-                  }`}>
-                    <div className={`p-6 rounded-2xl border ${
-                      systemTheme === 'dark'
-                        ? 'bg-blue-900/20 border-blue-500/20'
-                        : 'bg-gradient-to-br from-blue-50/50 to-indigo-50/50 border-blue-100'
-                    }`}>
-                       <div className="flex items-center mb-4">
-                          <Avatar filename={linkedTestimonial.image} alt={linkedTestimonial.author} className={`w-10 h-10 rounded-full mr-3 border shadow-sm ${
-                            systemTheme === 'dark' ? 'border-white/20' : 'border-white'
-                          }`} />
-                          <div>
-                            <div className={`text-sm font-bold ${
-                              systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                            }`}>{linkedTestimonial.author}</div>
-                            <div className={`text-xs ${
-                              systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                            }`}>{linkedTestimonial.role}</div>
-                          </div>
-                       </div>
-                       <div className="relative">
-                          <Quote size={16} className={`absolute -top-1 -left-1 transform -scale-x-100 ${
-                            systemTheme === 'dark' ? 'text-blue-400/30' : 'text-blue-200'
-                          }`} />
-                          <p className={`text-sm italic relative z-10 pl-4 ${
-                            systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-700'
-                          }`}>
-                            "{linkedTestimonial.content}"
-                          </p>
-                       </div>
-                    </div>
-                  </div>
-                )}
-
-                </div>
-              </div>
-            </div>
-
+          <div className="mt-12 text-center">
+             <button
+               onClick={() => setIsTestimonialsOpen(true)}
+               className={`group px-8 py-3 border rounded-full font-medium transition-colors inline-flex items-center shadow-sm hover:shadow-md ${
+                 systemTheme === 'dark'
+                   ? 'bg-white/10 border-white/20 text-white hover:bg-white/20'
+                   : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'
+               }`}
+             >
+               {content.testimonials.view_all} <ArrowUpRight size={18} className="ml-2 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+             </button>
           </div>
         </div>
       </section>
@@ -2900,85 +2986,6 @@ const App: React.FC = () => {
                </div>
             </div>
          </div>
-      </section>
-
-      {/* Testimonials Section */}
-      <section id="testimonials" className={`py-16 md:py-32 px-4 md:px-6 border-t ${
-        systemTheme === 'dark'
-          ? 'bg-[#0a0a0a] border-white/10'
-          : 'bg-white border-gray-100'
-      }`}>
-        <div className="max-w-6xl mx-auto">
-          <div className="mb-8 md:mb-12 text-center">
-            <h2 className="text-xl sm:text-2xl md:text-4xl font-bold tracking-tight mb-4 md:mb-6">{content.testimonials.title}</h2>
-            <p className={`text-sm sm:text-base md:text-lg max-w-2xl mx-auto ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
-              {content.testimonials.subtitle}
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-             {/* Preview: Top 3 curated testimonials */}
-             {[testimonials[0], testimonials[1], testimonials[2]].map((t, i) => (
-                <div key={i} className={`p-5 md:p-8 rounded-2xl md:rounded-3xl border transition-colors shadow-sm h-full flex flex-col justify-between ${
-                  systemTheme === 'dark'
-                    ? 'bg-[#1D1D1F] border-white/10 hover:border-white/20'
-                    : 'bg-[#F5F5F7] border-transparent hover:border-gray-200'
-                }`}>
-                   <div className="mb-6">
-                      <div className="flex items-center mb-6">
-                        <Avatar filename={t.image} alt={t.author} className={`w-14 h-14 rounded-full mr-4 border-2 shadow-sm ${systemTheme === 'dark' ? 'border-gray-700' : 'border-white'}`} />
-                        <div>
-                           {t.linkedin ? (
-                             <a
-                               href={t.linkedin}
-                               target="_blank"
-                               rel="noreferrer"
-                               className={`font-bold leading-none hover:text-[#0077b5] transition-colors flex items-center group text-lg ${systemTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}
-                             >
-                               {t.author}
-                               <Linkedin size={16} className="ml-2 text-gray-400 group-hover:text-[#0077b5] transition-colors" />
-                             </a>
-                           ) : (
-                             <div className={`font-bold leading-none text-lg ${systemTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{t.author}</div>
-                           )}
-                           <div className={`text-xs font-medium mt-1 ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>{t.role}</div>
-                        </div>
-                      </div>
-                      <div className="relative">
-                        <Quote size={20} className={`absolute -top-2 -left-2 transform -scale-x-100 ${systemTheme === 'dark' ? 'text-gray-600' : 'text-gray-300'}`} />
-                        <p className={`leading-relaxed text-[15px] pl-4 relative z-10 ${systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
-                          "{t.content.length > 180 ? t.content.substring(0, 180) + '...' : t.content}"
-                        </p>
-                      </div>
-                   </div>
-
-                   <div className={`flex justify-between items-center border-t pt-4 mt-auto ${systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200/50'}`}>
-                      <span className="text-xs text-gray-400 font-medium">{t.date}</span>
-                      <span className={`px-2.5 py-1 rounded-md text-[10px] font-semibold uppercase tracking-wide ${
-                        systemTheme === 'dark'
-                          ? 'bg-white/10 text-gray-400 border border-white/10'
-                          : 'bg-white text-gray-500 border border-gray-100'
-                      }`}>
-                        {t.category}
-                      </span>
-                   </div>
-                </div>
-             ))}
-          </div>
-
-          <div className="mt-12 text-center">
-             <button
-               onClick={() => setIsTestimonialsOpen(true)}
-               className={`group px-8 py-3 border rounded-full font-medium transition-colors inline-flex items-center shadow-sm hover:shadow-md ${
-                 systemTheme === 'dark'
-                   ? 'bg-white/10 border-white/20 text-white hover:bg-white/20'
-                   : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'
-               }`}
-             >
-               {content.testimonials.view_all} <ArrowUpRight size={18} className="ml-2 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-             </button>
-          </div>
-        </div>
       </section>
 
       {/* Full Screen Bio Modal */}
