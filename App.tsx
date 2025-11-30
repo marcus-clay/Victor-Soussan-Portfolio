@@ -2149,7 +2149,7 @@ const App: React.FC = () => {
                     <img
                       src={logo.src}
                       alt={logo.alt}
-                      className={`h-[100px] w-auto transition-all duration-500 ease-out ${
+                      className={`h-[60px] sm:h-[80px] md:h-[100px] w-auto transition-all duration-500 ease-out ${
                         systemTheme === 'dark'
                           ? 'brightness-0 invert opacity-60 hover:opacity-100'
                           : 'grayscale brightness-[0.6] opacity-60 hover:grayscale-0 hover:brightness-100 hover:opacity-100'
