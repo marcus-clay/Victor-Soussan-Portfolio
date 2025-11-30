@@ -485,7 +485,7 @@ const TRANSLATIONS = {
       switch_lang: "Switch to French"
     },
     projects: {
-      title: "Case Studies",
+      title: "Work",
       subtitle: "Select a project to explore missions, deliverables, and design systems.",
       missions: "Key Missions",
       system: "Design System",
