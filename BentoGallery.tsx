@@ -729,4 +729,110 @@ export const DAILYMOTION_GALLERY_ITEMS: GalleryItem[] = [
   },
 ];
 
+// Connect Gallery Items
+export const CONNECT_GALLERY_ITEMS: GalleryItem[] = [
+  {
+    src: '/images/connect/thumbnail_connect-scaled.webp',
+    caption: 'Connect Overview',
+    captionDesc: 'Web-based dashboard concept for classroom orchestration',
+    type: 'image',
+  },
+  {
+    src: '/images/connect/connect_dashboard_home_dark_full_smartphone-scaled.webp',
+    caption: 'Dashboard Home (Dark)',
+    captionDesc: 'Main dashboard interface with quick actions and class status',
+    type: 'image',
+  },
+  {
+    src: '/images/connect/connect_dashboard_home_light_full-scaled.webp',
+    caption: 'Dashboard Home (Light)',
+    captionDesc: 'Light theme variant for different lighting conditions',
+    type: 'image',
+  },
+  {
+    src: '/images/connect/connect_dashboard_applications_full-scaled.webp',
+    caption: 'Applications Dashboard',
+    captionDesc: 'App catalog for browsing and deploying applications',
+    type: 'image',
+  },
+  {
+    src: '/videos/connect/connect-loading-user-authent-app-launch-study.mp4',
+    caption: 'Connection & Auth Flow',
+    captionDesc: 'User authentication and app launching choreography',
+    type: 'video',
+  },
+  {
+    src: '/videos/connect/connect-dashboard-prototype_complet_4k.mp4',
+    caption: 'Dashboard Prototype',
+    captionDesc: 'Full interaction walkthrough demonstrating modular capabilities',
+    type: 'video',
+  },
+  {
+    src: '/images/connect/connect_tech_architecture-1-scaled.webp',
+    caption: 'Technical Architecture',
+    captionDesc: 'System overview showing web dashboard integration',
+    type: 'image',
+  },
+  {
+    src: '/images/connect/connect_specifications_implem_01-scaled.webp',
+    caption: 'Implementation Specs',
+    captionDesc: 'Detailed specifications for developer handoff',
+    type: 'image',
+  },
+  {
+    src: '/images/connect/connect_specifications_content_02-scaled.webp',
+    caption: 'Content Specifications',
+    captionDesc: 'Content strategy documentation for interface elements',
+    type: 'image',
+  },
+  {
+    src: '/videos/connect/connect-specs-app-loading-choregraphy.mp4',
+    caption: 'App Loading Choreography',
+    captionDesc: 'Animation specifications for smooth transitions',
+    type: 'video',
+  },
+  {
+    src: '/images/connect/connect_bulle_ui_wireframes_concept-scaled.webp',
+    caption: 'La Bulle - Wireframes',
+    captionDesc: 'Early exploration of the bubble interaction model',
+    type: 'image',
+  },
+  {
+    src: '/images/connect/connect_bulle_ui_focus-scaled.webp',
+    caption: 'La Bulle - UI Focus',
+    captionDesc: 'Detailed view of the bubble expanded state',
+    type: 'image',
+  },
+  {
+    src: '/images/connect/connect_bulle_icons-1-scaled.webp',
+    caption: 'La Bulle - Icons',
+    captionDesc: 'Custom icon set for the contextual menu',
+    type: 'image',
+  },
+  {
+    src: '/images/connect/connect_bulle_behaviour_square_01-scaled.webp',
+    caption: 'La Bulle - Behavior (1)',
+    captionDesc: 'Animation states and interaction patterns',
+    type: 'image',
+  },
+  {
+    src: '/images/connect/connect_bulle_behaviour_square_02-scaled.webp',
+    caption: 'La Bulle - Behavior (2)',
+    captionDesc: 'Edge cases and system integration specs',
+    type: 'image',
+  },
+  {
+    src: '/videos/connect/interaction-bulle-connect.mp4',
+    caption: 'La Bulle - Interaction Demo',
+    captionDesc: 'Motion prototype of bubble opening animation',
+    type: 'video',
+  },
+  {
+    src: '/videos/connect/Video-demo-bulle-interactions-02.mp4',
+    caption: 'La Bulle - Full Demo',
+    captionDesc: 'Complete demonstration of bubble capabilities',
+    type: 'video',
+  },
+];
+
 export default BentoGallery;

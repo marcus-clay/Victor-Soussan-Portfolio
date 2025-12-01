@@ -61,7 +61,8 @@ import {
 import { Rocket, Buildings, HandHeart, ArrowsClockwise, ChatCircleDots, ChartLineUp, Envelope, Phone, LinkedinLogo, Globe } from '@phosphor-icons/react';
 import ToolkitPage from './ToolkitPage';
 import DailymotionPage from './DailymotionPage';
-import { BentoGallery, TOOLKIT_GALLERY_ITEMS, DAILYMOTION_GALLERY_ITEMS } from './BentoGallery';
+import ConnectPage from './ConnectPage';
+import { BentoGallery, TOOLKIT_GALLERY_ITEMS, DAILYMOTION_GALLERY_ITEMS, CONNECT_GALLERY_ITEMS } from './BentoGallery';
 
 // --- Types ---
 
@@ -1232,6 +1233,42 @@ const getProjects = (lang: Language): Project[] => {
       externalLink: "https://victor-soussan.notion.site/ebd/2b7a519b0dea80b99138d4b51a65620b"
     },
     {
+      id: "connect",
+      title: "SQOOL Connect",
+      role: isEn ? "Product Design Lead" : "Product Design Lead",
+      period: "2020 – 2021",
+      summary: isEn ? "Designing a web-based dashboard concept and persistent interaction prototype for classroom orchestration." : "Conception d'un dashboard web et d'un prototype d'interaction persistante pour l'orchestration de classe.",
+      missions: isEn ? [
+        "Led the design of a proof-of-concept dashboard platform",
+        "Co-authored the project vision and interaction model",
+        "Created motion prototypes and interaction specifications",
+        "Collaborated daily with React developer on prototype"
+      ] : [
+        "Direction du design d'une plateforme dashboard proof-of-concept",
+        "Co-auteur de la vision projet et du modèle d'interaction",
+        "Création de prototypes motion et spécifications d'interaction",
+        "Collaboration quotidienne avec le développeur React"
+      ],
+      system: {
+        title: isEn ? "Modular Dashboard System" : "Système Dashboard Modulaire",
+        desc: isEn ? "Designed a modular web-based interface replacing the legacy Android launcher, with quick actions, app catalog, and persistent contextual UI ('La Bulle')." : "Conception d'une interface web modulaire remplaçant le launcher Android legacy, avec actions rapides, catalogue d'apps et UI contextuelle persistante ('La Bulle')."
+      },
+      deliverables: isEn ? [
+        "Web Dashboard Prototype",
+        "La Bulle - Persistent UI Module",
+        "Technical Architecture Specs",
+        "Motion & Interaction Guidelines"
+      ] : [
+        "Prototype Dashboard Web",
+        "La Bulle - Module UI Persistant",
+        "Spécifications Architecture Technique",
+        "Guidelines Motion & Interaction"
+      ],
+      icon: <Layers size={24} />,
+      color: "purple",
+      coverImage: "thumbnail_connect-scaled.webp"
+    },
+    {
       id: "sqool",
       title: "SQOOL Suite (UNOWHY)",
       role: isEn ? "Product Lead UI & Manager" : "Product Design Manager",
@@ -1513,7 +1550,8 @@ const App: React.FC = () => {
   const [iframeModalUrl, setIframeModalUrl] = useState<string | null>(null);
   const [isToolkitPageOpen, setIsToolkitPageOpen] = useState(false);
   const [isDailymotionPageOpen, setIsDailymotionPageOpen] = useState(false);
-  const [galleryProject, setGalleryProject] = useState<'toolkit' | 'dailymotion' | null>(null);
+  const [isConnectPageOpen, setIsConnectPageOpen] = useState(false);
+  const [galleryProject, setGalleryProject] = useState<'toolkit' | 'dailymotion' | 'connect' | null>(null);
   const [activeSection, setActiveSection] = useState('services');
   const [isScrolled, setIsScrolled] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
@@ -2345,6 +2383,8 @@ const App: React.FC = () => {
                       setIsToolkitPageOpen(true);
                     } else if (project.id === 'dailymotion') {
                       setIsDailymotionPageOpen(true);
+                    } else if (project.id === 'connect') {
+                      setIsConnectPageOpen(true);
                     } else if (project.externalLink) {
                       setIframeModalUrl(project.externalLink);
                     }
@@ -7061,12 +7101,30 @@ ${contactForm.message}`;
         )}
       </AnimatePresence>
 
+      {/* Connect Case Study Page */}
+      <AnimatePresence>
+        {isConnectPageOpen && (
+          <ConnectPage
+            onClose={() => setIsConnectPageOpen(false)}
+            systemTheme={systemTheme}
+            onToggleTheme={() => {
+              setThemeMode(prev => prev === 'dark' ? 'light' : 'dark');
+            }}
+            onOpenGallery={() => {
+              setIsConnectPageOpen(false);
+              setGalleryProject('connect');
+            }}
+            lang={lang}
+          />
+        )}
+      </AnimatePresence>
+
       {/* Bento Gallery Modal */}
       <BentoGallery
         isOpen={galleryProject !== null}
         onClose={() => setGalleryProject(null)}
-        title={galleryProject === 'toolkit' ? 'Toolkit' : 'Dailymotion'}
-        items={galleryProject === 'toolkit' ? TOOLKIT_GALLERY_ITEMS : DAILYMOTION_GALLERY_ITEMS}
+        title={galleryProject === 'toolkit' ? 'Toolkit' : galleryProject === 'dailymotion' ? 'Dailymotion' : 'Connect'}
+        items={galleryProject === 'toolkit' ? TOOLKIT_GALLERY_ITEMS : galleryProject === 'dailymotion' ? DAILYMOTION_GALLERY_ITEMS : CONNECT_GALLERY_ITEMS}
         systemTheme={systemTheme}
         lang={lang}
         hasCaseStudy={true}
@@ -7077,6 +7135,9 @@ ${contactForm.message}`;
           } else if (galleryProject === 'dailymotion') {
             setGalleryProject(null);
             setIsDailymotionPageOpen(true);
+          } else if (galleryProject === 'connect') {
+            setGalleryProject(null);
+            setIsConnectPageOpen(true);
           }
         }}
       />
