@@ -102,6 +102,73 @@
         background: #1a1a1a;
       }
 
+      /* Accessibility Modes */
+
+      /* Normal mode - default */
+      .accessibility-normal {
+        /* Default styles - no changes needed */
+      }
+
+      /* High Contrast mode */
+      .accessibility-contrast {
+        --text-contrast: 1.2;
+      }
+
+      .accessibility-contrast * {
+        font-weight: 500 !important;
+      }
+
+      .accessibility-contrast p,
+      .accessibility-contrast span,
+      .accessibility-contrast h1,
+      .accessibility-contrast h2,
+      .accessibility-contrast h3,
+      .accessibility-contrast h4,
+      .accessibility-contrast h5,
+      .accessibility-contrast h6 {
+        text-shadow: 0 0 0.5px currentColor;
+      }
+
+      .accessibility-contrast .text-gray-400 {
+        color: #6b7280 !important;
+      }
+
+      .accessibility-contrast .text-gray-500 {
+        color: #374151 !important;
+      }
+
+      .accessibility-contrast .text-gray-600 {
+        color: #1f2937 !important;
+      }
+
+      /* Dyslexic-friendly mode */
+      .accessibility-dyslexic {
+        font-family: 'OpenDyslexic', 'Comic Sans MS', 'Arial', sans-serif !important;
+        letter-spacing: 0.05em;
+        word-spacing: 0.1em;
+        line-height: 1.8 !important;
+      }
+
+      .accessibility-dyslexic * {
+        font-family: inherit !important;
+        letter-spacing: inherit;
+        word-spacing: inherit;
+      }
+
+      .accessibility-dyslexic p,
+      .accessibility-dyslexic span,
+      .accessibility-dyslexic li,
+      .accessibility-dyslexic td,
+      .accessibility-dyslexic div {
+        line-height: 1.8 !important;
+      }
+
+      .accessibility-dyslexic h1,
+      .accessibility-dyslexic h2,
+      .accessibility-dyslexic h3 {
+        letter-spacing: 0.08em;
+      }
+
       /* Print styles for resume */
       @media print {
         @page {

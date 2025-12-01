@@ -51,15 +51,22 @@ import {
   Sun,
   Moon,
   Monitor,
-  ChevronDown
+  ChevronDown,
+  Type,
+  Contrast,
+  Accessibility,
+  PanelRightClose,
+  PanelRightOpen
 } from 'lucide-react';
 import { Rocket, Buildings, HandHeart, ArrowsClockwise, ChatCircleDots, ChartLineUp, Envelope, Phone, LinkedinLogo, Globe } from '@phosphor-icons/react';
 import ToolkitPage from './ToolkitPage';
 import DailymotionPage from './DailymotionPage';
+import { BentoGallery, TOOLKIT_GALLERY_ITEMS, DAILYMOTION_GALLERY_ITEMS } from './BentoGallery';
 
 // --- Types ---
 
 type Language = 'en' | 'fr';
+type AccessibilityMode = 'normal' | 'contrast' | 'dyslexic';
 
 interface GlassCardProps {
   children?: React.ReactNode;
@@ -219,7 +226,10 @@ const TRANSLATIONS = {
       subtitle: "product teams and startups",
       desc: "With 15 years in tech and 10 in product design, I build intuitive, high-impact interfaces for enterprise software, media, education, and public services.",
       cta_projects: "Case Studies",
-      cta_book: "Book a 30min Call"
+      cta_book: "Book a 30min Call",
+      tooltip_title: "Need a Design Partner?",
+      tooltip_email: "Shoot me a note",
+      tooltip_book: "Book a 30min Chat"
     },
     services: {
       title: "Services",
@@ -627,6 +637,18 @@ const TRANSLATIONS = {
       quote_validation_email: "Please enter a valid email",
       quote_validation_file_size: "File size must be less than 3MB",
       quote_validation_file_type: "Only PDF and DOCX files are allowed"
+    },
+    settings: {
+      title: "Settings",
+      language: "Language",
+      theme: "Theme",
+      light: "Light",
+      dark: "Dark",
+      system: "System",
+      accessibility: "Accessibility",
+      normal: "Normal",
+      contrast: "High Contrast",
+      dyslexic: "Dyslexic-friendly"
     }
   },
   fr: {
@@ -644,7 +666,10 @@ const TRANSLATIONS = {
       subtitle: "équipes produit et startups",
       desc: "15 ans d'expérience, dont 10 dans la Tech. Je conçois, prototype et livre des logiciels complexes (SaaS, Mobile, Hardware) en me concentrant sur la clarté, l'utilisabilité et la faisabilité technique.",
       cta_projects: "Voir les Études de Cas",
-      cta_book: "Planifier un appel de 30min"
+      cta_book: "Planifier un appel de 30min",
+      tooltip_title: "Besoin d'un designer ou d'un lead pour votre équipe ?",
+      tooltip_email: "Envoyer un message",
+      tooltip_book: "Planifier un appel de 30min"
     },
     services: {
       title: "Services",
@@ -1053,6 +1078,18 @@ const TRANSLATIONS = {
       quote_validation_email: "Veuillez entrer un email valide",
       quote_validation_file_size: "La taille du fichier doit être inférieure à 3Mo",
       quote_validation_file_type: "Seuls les fichiers PDF et DOCX sont autorisés"
+    },
+    settings: {
+      title: "Paramètres",
+      language: "Langue",
+      theme: "Thème",
+      light: "Clair",
+      dark: "Sombre",
+      system: "Système",
+      accessibility: "Accessibilité",
+      normal: "Normal",
+      contrast: "Contraste élevé",
+      dyslexic: "Mode dyslexique"
     }
   }
 };
@@ -1444,7 +1481,7 @@ const getTestimonials = (lang: Language): Testimonial[] => {
 // --- Main App Component ---
 
 const App: React.FC = () => {
-  const [lang, setLang] = useState<Language>('en');
+  const [lang, setLang] = useState<Language>('fr');
   const content = TRANSLATIONS[lang];
   const resources = getResources(lang);
   const projects = getProjects(lang);
@@ -1460,6 +1497,12 @@ const App: React.FC = () => {
   const [selectedLabItem, setSelectedLabItem] = useState<string | null>(null);
   const [themeMode, setThemeMode] = useState<'system' | 'light' | 'dark'>('light');
   const [systemTheme, setSystemTheme] = useState<'light' | 'dark'>('light');
+  const [accessibilityMode, setAccessibilityMode] = useState<AccessibilityMode>('normal');
+  const [isSettingsPanelOpen, setIsSettingsPanelOpen] = useState(() => {
+    // Open by default on first visit
+    const hasVisited = localStorage.getItem('hasVisitedSettings');
+    return !hasVisited;
+  });
   const [isResumeOpen, setIsResumeOpen] = useState(false);
   const [resumeLang, setResumeLang] = useState<'fr' | 'en'>('fr');
   const [copiedResume, setCopiedResume] = useState(false);
@@ -1470,6 +1513,7 @@ const App: React.FC = () => {
   const [iframeModalUrl, setIframeModalUrl] = useState<string | null>(null);
   const [isToolkitPageOpen, setIsToolkitPageOpen] = useState(false);
   const [isDailymotionPageOpen, setIsDailymotionPageOpen] = useState(false);
+  const [galleryProject, setGalleryProject] = useState<'toolkit' | 'dailymotion' | null>(null);
   const [activeSection, setActiveSection] = useState('services');
   const [isScrolled, setIsScrolled] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
@@ -1621,6 +1665,19 @@ const App: React.FC = () => {
     return () => mediaQuery.removeEventListener('change', handleChange);
   }, [themeMode]);
 
+  // Apply accessibility mode classes to body
+  useEffect(() => {
+    document.body.classList.remove('accessibility-normal', 'accessibility-contrast', 'accessibility-dyslexic');
+    document.body.classList.add(`accessibility-${accessibilityMode}`);
+  }, [accessibilityMode]);
+
+  // Mark settings as visited when panel closes
+  useEffect(() => {
+    if (!isSettingsPanelOpen) {
+      localStorage.setItem('hasVisitedSettings', 'true');
+    }
+  }, [isSettingsPanelOpen]);
+
   // Detect scroll position
   useEffect(() => {
     const handleScroll = () => {
@@ -1748,7 +1805,227 @@ const App: React.FC = () => {
         ? 'bg-[#0a0a0a] text-white'
         : 'bg-[#F9F9F9] text-[#1D1D1F]'
     }`}>
-      
+
+      {/* Floating Settings Panel - Liquid Glass Apple Style */}
+      <div className="fixed top-20 right-4 z-[60]">
+        <AnimatePresence mode="wait">
+          {isSettingsPanelOpen ? (
+            <motion.div
+              key="settings-panel"
+              initial={{ opacity: 0, x: 20, scale: 0.95 }}
+              animate={{ opacity: 1, x: 0, scale: 1 }}
+              exit={{ opacity: 0, x: 20, scale: 0.95 }}
+              transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
+              className={`w-56 rounded-2xl shadow-2xl overflow-hidden ${
+                systemTheme === 'dark'
+                  ? 'bg-black/40 backdrop-blur-2xl border border-white/20'
+                  : 'bg-white/70 backdrop-blur-2xl border border-white/50 shadow-[0_8px_32px_rgba(0,0,0,0.12)]'
+              }`}
+            >
+              {/* Panel Header */}
+              <div className={`flex items-center justify-between px-3 py-2 border-b ${
+                systemTheme === 'dark' ? 'border-white/10' : 'border-black/5'
+              }`}>
+                <div className="flex items-center gap-1.5">
+                  <Settings size={14} className={systemTheme === 'dark' ? 'text-white/60' : 'text-black/40'} />
+                  <span className={`text-xs font-medium ${systemTheme === 'dark' ? 'text-white/80' : 'text-black/70'}`}>
+                    {content.settings.title}
+                  </span>
+                </div>
+                <button
+                  onClick={() => setIsSettingsPanelOpen(false)}
+                  className={`p-1 rounded-md transition-colors ${
+                    systemTheme === 'dark'
+                      ? 'hover:bg-white/10 text-white/50'
+                      : 'hover:bg-black/5 text-black/40'
+                  }`}
+                >
+                  <PanelRightClose size={14} />
+                </button>
+              </div>
+
+              {/* Panel Content */}
+              <div className="p-3 space-y-3">
+                {/* Language Switcher - Pill Toggle */}
+                <div>
+                  <label className={`text-[10px] font-medium uppercase tracking-wider mb-1.5 block ${
+                    systemTheme === 'dark' ? 'text-white/40' : 'text-black/40'
+                  }`}>
+                    {content.settings.language}
+                  </label>
+                  <div className={`relative flex rounded-full p-0.5 ${
+                    systemTheme === 'dark' ? 'bg-white/10' : 'bg-black/[0.06]'
+                  }`}>
+                    {/* Sliding Pill Indicator */}
+                    <motion.div
+                      className={`absolute top-0.5 bottom-0.5 rounded-full ${
+                        systemTheme === 'dark' ? 'bg-white/20' : 'bg-white shadow-sm'
+                      }`}
+                      initial={false}
+                      animate={{
+                        left: lang === 'en' ? '2px' : '50%',
+                        width: 'calc(50% - 4px)'
+                      }}
+                      transition={{ type: 'spring', stiffness: 500, damping: 35 }}
+                    />
+                    <button
+                      onClick={() => setLang('en')}
+                      className={`flex-1 py-1.5 px-2 rounded-full text-[11px] font-medium transition-colors relative z-10 ${
+                        lang === 'en'
+                          ? systemTheme === 'dark' ? 'text-white' : 'text-black/80'
+                          : systemTheme === 'dark' ? 'text-white/50' : 'text-black/40'
+                      }`}
+                    >
+                      EN
+                    </button>
+                    <button
+                      onClick={() => setLang('fr')}
+                      className={`flex-1 py-1.5 px-2 rounded-full text-[11px] font-medium transition-colors relative z-10 ${
+                        lang === 'fr'
+                          ? systemTheme === 'dark' ? 'text-white' : 'text-black/80'
+                          : systemTheme === 'dark' ? 'text-white/50' : 'text-black/40'
+                      }`}
+                    >
+                      FR
+                    </button>
+                  </div>
+                </div>
+
+                {/* Theme Switcher - Pill Toggle */}
+                <div>
+                  <label className={`text-[10px] font-medium uppercase tracking-wider mb-1.5 block ${
+                    systemTheme === 'dark' ? 'text-white/40' : 'text-black/40'
+                  }`}>
+                    {content.settings.theme}
+                  </label>
+                  <div className={`relative flex rounded-full p-0.5 ${
+                    systemTheme === 'dark' ? 'bg-white/10' : 'bg-black/[0.06]'
+                  }`}>
+                    {/* Sliding Pill Indicator */}
+                    <motion.div
+                      className={`absolute top-0.5 bottom-0.5 rounded-full ${
+                        systemTheme === 'dark' ? 'bg-white/20' : 'bg-white shadow-sm'
+                      }`}
+                      initial={false}
+                      animate={{
+                        left: themeMode === 'light' ? '2px' : themeMode === 'system' ? '33.33%' : '66.66%',
+                        width: 'calc(33.33% - 3px)'
+                      }}
+                      transition={{ type: 'spring', stiffness: 500, damping: 35 }}
+                    />
+                    <button
+                      onClick={() => setThemeMode('light')}
+                      className={`flex-1 py-1.5 px-1 rounded-full text-[11px] font-medium transition-colors relative z-10 flex items-center justify-center ${
+                        themeMode === 'light'
+                          ? systemTheme === 'dark' ? 'text-white' : 'text-amber-600'
+                          : systemTheme === 'dark' ? 'text-white/50' : 'text-black/40'
+                      }`}
+                    >
+                      <Sun size={12} />
+                    </button>
+                    <button
+                      onClick={() => setThemeMode('system')}
+                      className={`flex-1 py-1.5 px-1 rounded-full text-[11px] font-medium transition-colors relative z-10 flex items-center justify-center ${
+                        themeMode === 'system'
+                          ? systemTheme === 'dark' ? 'text-white' : 'text-blue-600'
+                          : systemTheme === 'dark' ? 'text-white/50' : 'text-black/40'
+                      }`}
+                    >
+                      <Monitor size={12} />
+                    </button>
+                    <button
+                      onClick={() => setThemeMode('dark')}
+                      className={`flex-1 py-1.5 px-1 rounded-full text-[11px] font-medium transition-colors relative z-10 flex items-center justify-center ${
+                        themeMode === 'dark'
+                          ? systemTheme === 'dark' ? 'text-white' : 'text-indigo-600'
+                          : systemTheme === 'dark' ? 'text-white/50' : 'text-black/40'
+                      }`}
+                    >
+                      <Moon size={12} />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Accessibility Mode - Pill Toggle */}
+                <div>
+                  <label className={`text-[10px] font-medium uppercase tracking-wider mb-1.5 block ${
+                    systemTheme === 'dark' ? 'text-white/40' : 'text-black/40'
+                  }`}>
+                    {content.settings.accessibility}
+                  </label>
+                  <div className={`relative flex rounded-full p-0.5 ${
+                    systemTheme === 'dark' ? 'bg-white/10' : 'bg-black/[0.06]'
+                  }`}>
+                    {/* Sliding Pill Indicator */}
+                    <motion.div
+                      className={`absolute top-0.5 bottom-0.5 rounded-full ${
+                        systemTheme === 'dark' ? 'bg-white/20' : 'bg-white shadow-sm'
+                      }`}
+                      initial={false}
+                      animate={{
+                        left: accessibilityMode === 'normal' ? '2px' : accessibilityMode === 'contrast' ? '33.33%' : '66.66%',
+                        width: 'calc(33.33% - 3px)'
+                      }}
+                      transition={{ type: 'spring', stiffness: 500, damping: 35 }}
+                    />
+                    <button
+                      onClick={() => setAccessibilityMode('normal')}
+                      className={`flex-1 py-1.5 px-1 rounded-full text-[11px] font-medium transition-colors relative z-10 flex items-center justify-center gap-1 ${
+                        accessibilityMode === 'normal'
+                          ? systemTheme === 'dark' ? 'text-white' : 'text-black/80'
+                          : systemTheme === 'dark' ? 'text-white/50' : 'text-black/40'
+                      }`}
+                      title={content.settings.normal}
+                    >
+                      <Eye size={11} />
+                    </button>
+                    <button
+                      onClick={() => setAccessibilityMode('contrast')}
+                      className={`flex-1 py-1.5 px-1 rounded-full text-[11px] font-medium transition-colors relative z-10 flex items-center justify-center gap-1 ${
+                        accessibilityMode === 'contrast'
+                          ? systemTheme === 'dark' ? 'text-white' : 'text-black/80'
+                          : systemTheme === 'dark' ? 'text-white/50' : 'text-black/40'
+                      }`}
+                      title={content.settings.contrast}
+                    >
+                      <Contrast size={11} />
+                    </button>
+                    <button
+                      onClick={() => setAccessibilityMode('dyslexic')}
+                      className={`flex-1 py-1.5 px-1 rounded-full text-[11px] font-medium transition-colors relative z-10 flex items-center justify-center gap-1 ${
+                        accessibilityMode === 'dyslexic'
+                          ? systemTheme === 'dark' ? 'text-white' : 'text-black/80'
+                          : systemTheme === 'dark' ? 'text-white/50' : 'text-black/40'
+                      }`}
+                      title={content.settings.dyslexic}
+                    >
+                      <Type size={11} />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          ) : (
+            <motion.button
+              key="settings-button"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => setIsSettingsPanelOpen(true)}
+              className={`p-2 rounded-full transition-all hover:scale-105 ${
+                systemTheme === 'dark'
+                  ? 'bg-black/40 backdrop-blur-xl border border-white/20 text-white/70 hover:bg-black/50 shadow-lg'
+                  : 'bg-white/70 backdrop-blur-xl border border-white/50 text-black/50 hover:bg-white/80 shadow-[0_4px_16px_rgba(0,0,0,0.1)]'
+              }`}
+              aria-label={content.settings.title}
+            >
+              <Settings size={16} />
+            </motion.button>
+          )}
+        </AnimatePresence>
+      </div>
+
       {/* Navigation */}
       <nav className={`fixed top-0 w-full z-50 backdrop-blur-md transition-all duration-300 ${
         systemTheme === 'dark'
@@ -1844,95 +2121,9 @@ const App: React.FC = () => {
                 </button>
               );
             })}
-
-            {/* Theme Toggle */}
-            <div className={`flex items-center rounded-full p-1 ml-2 ${
-              systemTheme === 'dark' ? 'bg-white/10' : 'glass-effect'
-            }`}>
-              <button
-                onClick={() => setThemeMode('light')}
-                className={`p-1.5 rounded-full transition-all duration-200 ${
-                  themeMode === 'light'
-                    ? 'bg-amber-500 text-white shadow-sm'
-                    : systemTheme === 'dark'
-                      ? 'text-gray-400 hover:text-white'
-                      : 'text-gray-500 hover:text-gray-900'
-                }`}
-                aria-label="Light mode"
-              >
-                <Sun size={14} />
-              </button>
-              <button
-                onClick={() => setThemeMode('system')}
-                className={`p-1.5 rounded-full transition-all duration-200 ${
-                  themeMode === 'system'
-                    ? 'bg-blue-600 text-white shadow-sm'
-                    : systemTheme === 'dark'
-                      ? 'text-gray-400 hover:text-white'
-                      : 'text-gray-500 hover:text-gray-900'
-                }`}
-                aria-label="System theme"
-              >
-                <Monitor size={14} />
-              </button>
-              <button
-                onClick={() => setThemeMode('dark')}
-                className={`p-1.5 rounded-full transition-all duration-200 ${
-                  themeMode === 'dark'
-                    ? 'bg-indigo-500 text-white shadow-sm'
-                    : systemTheme === 'dark'
-                      ? 'text-gray-400 hover:text-white'
-                      : 'text-gray-500 hover:text-gray-900'
-                }`}
-                aria-label="Dark mode"
-              >
-                <Moon size={14} />
-              </button>
-            </div>
-
-            {/* Language Toggle - Always visible */}
-            <button
-              onClick={() => setLang(lang === 'en' ? 'fr' : 'en')}
-              className={`relative flex items-center justify-center rounded-full p-1 cursor-pointer btn-pill ml-2 ${
-                systemTheme === 'dark' ? 'bg-white/10' : 'glass-effect'
-              }`}
-              aria-label="Switch Language"
-            >
-               <div
-                 className={`absolute inset-y-1 left-1 w-[calc(50%-4px)] accent-blue rounded-full shadow-sm transition-all duration-300 ease-spring ${lang === 'fr' ? 'translate-x-[100%] ml-1' : ''}`}
-               />
-               <span className={`relative z-10 px-3 py-0.5 text-[10px] font-bold transition-colors duration-300 flex items-center justify-center ${lang === 'en' ? 'text-white' : 'text-gray-500'}`}>EN</span>
-               <span className={`relative z-10 px-3 py-0.5 text-[10px] font-bold transition-colors duration-300 flex items-center justify-center ${lang === 'fr' ? 'text-white' : 'text-gray-500'}`}>FR</span>
-            </button>
           </div>
 
           <div className="md:hidden flex items-center space-x-3">
-             {/* Mobile Theme Toggle */}
-             <button
-               onClick={() => setThemeMode(themeMode === 'light' ? 'dark' : themeMode === 'dark' ? 'system' : 'light')}
-               className={`p-2 rounded-full transition-all duration-200 ${
-                 systemTheme === 'dark' ? 'bg-white/10 text-white' : 'bg-gray-200/50 text-gray-700'
-               }`}
-               aria-label="Toggle theme"
-             >
-               {themeMode === 'light' ? <Sun size={18} /> : themeMode === 'dark' ? <Moon size={18} /> : <Monitor size={18} />}
-             </button>
-
-             {/* Mobile Language Toggle */}
-             <button
-              onClick={() => setLang(lang === 'en' ? 'fr' : 'en')}
-              className={`relative flex items-center justify-center rounded-full p-1 cursor-pointer ${
-                systemTheme === 'dark' ? 'bg-white/10' : 'bg-gray-200/50'
-              }`}
-            >
-               <div
-                 className={`absolute inset-y-1 left-1 w-[calc(50%-4px)] rounded-full shadow-sm transition-all duration-300 ${lang === 'fr' ? 'translate-x-[100%] ml-1' : ''} ${
-                   systemTheme === 'dark' ? 'bg-white/20' : 'bg-white'
-                 }`}
-               />
-               <span className={`relative z-10 px-3 py-0.5 text-[10px] font-bold transition-colors duration-300 flex items-center justify-center ${lang === 'en' ? (systemTheme === 'dark' ? 'text-white' : 'text-black') : 'text-gray-500'}`}>EN</span>
-               <span className={`relative z-10 px-3 py-0.5 text-[10px] font-bold transition-colors duration-300 flex items-center justify-center ${lang === 'fr' ? (systemTheme === 'dark' ? 'text-white' : 'text-black') : 'text-gray-500'}`}>FR</span>
-            </button>
             <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="p-2">
               {isMenuOpen ? <X size={24} /> : <MenuIcon size={24} />}
             </button>
@@ -2011,7 +2202,7 @@ const App: React.FC = () => {
                     <h3 className={`text-base font-semibold mb-3 text-center ${
                       systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                     }`}>
-                      Need a Design Partner?
+                      {content.hero.tooltip_title}
                     </h3>
 
                     <div className="space-y-2.5">
@@ -2030,7 +2221,7 @@ const App: React.FC = () => {
                       >
                         <Mail size={18} />
                         <span>
-                          Shoot me a note
+                          {content.hero.tooltip_email}
                         </span>
                       </button>
 
@@ -2049,7 +2240,7 @@ const App: React.FC = () => {
                       >
                         <Calendar size={18} />
                         <span>
-                          Book a 30min Chat
+                          {content.hero.tooltip_book}
                         </span>
                       </button>
                     </div>
@@ -2299,16 +2490,35 @@ const App: React.FC = () => {
                       </div>
 
                       {/* Bottom: CTA */}
-                      <div className={`pt-4 mt-4 border-t flex items-center justify-end ${systemTheme === 'dark' ? 'border-white/5' : 'border-gray-100'}`}>
+                      <div className={`pt-4 mt-4 border-t flex items-center justify-end gap-2 ${systemTheme === 'dark' ? 'border-white/5' : 'border-gray-100'}`}>
                         {(project.id === 'toolkit' || project.id === 'dailymotion') ? (
-                          <div className={`inline-flex items-center text-xs font-medium px-4 py-2 rounded-full backdrop-blur-xl transition-colors duration-300 ${
-                            systemTheme === 'dark'
-                              ? 'bg-white/10 text-gray-200 border border-white/20 group-hover:bg-white group-hover:text-black group-hover:border-white'
-                              : 'bg-gray-100/80 text-gray-700 border border-gray-200/50 group-hover:bg-gray-900 group-hover:text-white group-hover:border-gray-900'
-                          }`}>
-                            <span className="mr-1.5">{content.projects.read_more}</span>
-                            <ChevronRight size={14} />
-                          </div>
+                          <>
+                            {/* Gallery Button */}
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setGalleryProject(project.id as 'toolkit' | 'dailymotion');
+                              }}
+                              className={`inline-flex items-center text-xs font-medium px-3 py-2 rounded-full transition-colors duration-200 ${
+                                systemTheme === 'dark'
+                                  ? 'bg-white/5 text-gray-400 border border-white/10 hover:bg-white/10 hover:text-gray-200'
+                                  : 'bg-gray-50 text-gray-500 border border-gray-200 hover:bg-gray-100 hover:text-gray-700'
+                              }`}
+                              title={lang === 'en' ? 'View gallery' : 'Voir la galerie'}
+                            >
+                              <Images size={14} className="mr-1.5" />
+                              <span className="hidden sm:inline">{lang === 'en' ? 'Gallery' : 'Galerie'}</span>
+                            </button>
+                            {/* Case Study Button */}
+                            <div className={`inline-flex items-center text-xs font-medium px-4 py-2 rounded-full backdrop-blur-xl transition-colors duration-300 ${
+                              systemTheme === 'dark'
+                                ? 'bg-white/10 text-gray-200 border border-white/20 group-hover:bg-white group-hover:text-black group-hover:border-white'
+                                : 'bg-gray-100/80 text-gray-700 border border-gray-200/50 group-hover:bg-gray-900 group-hover:text-white group-hover:border-gray-900'
+                            }`}>
+                              <span className="mr-1.5">{content.projects.read_more}</span>
+                              <ChevronRight size={14} />
+                            </div>
+                          </>
                         ) : (
                           <span className={`inline-flex items-center text-xs font-medium px-3 py-1.5 rounded-full ${
                             systemTheme === 'dark'
@@ -6824,6 +7034,11 @@ ${contactForm.message}`;
             onToggleTheme={() => {
               setThemeMode(prev => prev === 'dark' ? 'light' : 'dark');
             }}
+            onOpenGallery={() => {
+              setIsToolkitPageOpen(false);
+              setGalleryProject('toolkit');
+            }}
+            lang={lang}
           />
         )}
       </AnimatePresence>
@@ -6837,9 +7052,24 @@ ${contactForm.message}`;
             onToggleTheme={() => {
               setThemeMode(prev => prev === 'dark' ? 'light' : 'dark');
             }}
+            onOpenGallery={() => {
+              setIsDailymotionPageOpen(false);
+              setGalleryProject('dailymotion');
+            }}
+            lang={lang}
           />
         )}
       </AnimatePresence>
+
+      {/* Bento Gallery Modal */}
+      <BentoGallery
+        isOpen={galleryProject !== null}
+        onClose={() => setGalleryProject(null)}
+        title={galleryProject === 'toolkit' ? 'Toolkit' : 'Dailymotion'}
+        items={galleryProject === 'toolkit' ? TOOLKIT_GALLERY_ITEMS : DAILYMOTION_GALLERY_ITEMS}
+        systemTheme={systemTheme}
+        lang={lang}
+      />
 
     </div>
   );

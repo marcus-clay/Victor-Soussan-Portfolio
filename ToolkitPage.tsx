@@ -4,13 +4,10 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform, PanInfo } from 'framer-motion';
 import {
-  ArrowLeft,
   ExternalLink,
   Calendar,
   Briefcase,
   Layers,
-  Sun,
-  Moon,
   Rocket,
   Quote,
   ChevronRight,
@@ -23,7 +20,447 @@ interface ToolkitPageProps {
   onClose: () => void;
   systemTheme: 'light' | 'dark';
   onToggleTheme: () => void;
+  onOpenGallery?: () => void;
+  lang?: 'en' | 'fr';
 }
+
+// Translations for Toolkit Case Study
+const TOOLKIT_TRANSLATIONS = {
+  en: {
+    caseStudy: 'Case Study',
+    visitToolkit: 'Visit Toolkit',
+    projectGallery: 'Project Gallery',
+    contactVictor: 'Contact Victor for a similar project',
+    clickToZoom: 'Click image to zoom',
+    clickToExitZoom: 'Click to exit zoom',
+    meta: {
+      type: 'Product Design',
+      scope: 'Web, App, Branding',
+      phase: 'Zero to One',
+      period: '2023-2025',
+    },
+    nav: {
+      top: 'Top',
+      intro: 'Intro',
+      overview: 'Overview',
+      context: 'Context',
+      phase1: 'Phase 1',
+      phase2: 'Phase 2',
+      phase3: 'Phase 3',
+      designSystem: 'Design System',
+      impact: 'Impact',
+    },
+    hero: {
+      tags: 'Product Design, web, app, branding',
+      zeroToOne: 'Zero to one',
+      title: 'Designing construction management software that works',
+      subtitle: 'From Prototype to 2,000 Customers',
+      description: 'Toolkit needed product design to secure funding and reach market fit in construction tech. Over 12 months, I led end-to-end design in a lean CEO-Dev-Designer team with continuous user validation. We shipped three major releases: funding prototype (3 months), feature-rich V2 (5 months), and mobile-optimized V3 (4 months). The product reached 2,000 paying customers within 24 months, secured enterprise adoption at launch, and raised Series A funding in November 2025.',
+    },
+    testimonial: {
+      quote: 'Victor worked with Toolkit as our UX/UI designer from the earliest stages. We ran discovery workshops together before even building the product, allowing him to deeply understand the construction industry. He transformed complex business requirements into perfectly adapted user flows, exactly what a startup like ours needed. Thanks to his experience, Victor also established foundational systems (UI kit, interaction patterns) that saved us considerable development time down the line.',
+      author: 'Pierre-Marie Nigay',
+      role: 'Founder @ Toolkit',
+    },
+    overview: {
+      title: 'Overview',
+      introTitle: 'Introduction',
+      introP1: 'Construction software is overwhelming. Legacy tools pack every feature into dense interfaces, forcing users through complex workflows to complete basic tasks. Site managers juggle multiple projects, field workers need quick status updates, and office teams require detailed planning. One interface cannot serve all needs equally.',
+      introP2: 'Toolkit approached this differently. Rather than building another feature-complete solution, we focused on core workflows that construction teams use daily: planning tasks across zones, tracking progress, managing documents, coordinating teams. The challenge was delivering sophistication without complexity.',
+      roleTitle: 'My role',
+      roleDesc: 'I joined as sole designer in a three-person team. The CEO brought domain expertise from years researching construction workflows. The lead developer built the technical foundation. My role: transform business requirements into a scalable product that users would actually adopt. No design team, no researchers, no product managers. Just tight collaboration, continuous validation, and rapid iteration.',
+      projectTitle: 'Project and impact',
+      projectP1: 'Over 12 months, we evolved from funding prototype to platform maturity. Each phase added sophistication while maintaining simplicity. Progressive disclosure hid complexity until needed. Context-aware interfaces adapted to user tasks. Batch operations reduced repetitive actions. Visual hierarchy prevented information overload at scale.',
+      projectP2: 'The approach worked. Enterprise customers deployed at launch. Users managing 15+ construction sites adopted the platform. The product reached 2,000 paying customers in 24 months and secured Series A funding. This case study shows how we got there.',
+    },
+    context: {
+      title: 'Context and approach',
+      intro: 'Three phases from funding prototype to platform maturity. Phase 1 secured initial funding with core features. Phase 2 added sophisticated interactions and multi-project support. Phase 3 achieved mobile optimization and design system scalability. Result: 2,000 customers, enterprise adoption, Series A funding within 24 months.',
+      coreChallenge: 'Core Design Challenge',
+      coreChallengeDesc: 'Planning interface showing the fundamental tension: construction projects contain 50-100+ tasks across multiple zones and timelines.',
+      research: 'Research process',
+      researchDesc: 'Lean validation in a three-person team. Microsoft Clarity provided behavioral analytics. CEO conducted 5-7 user calls weekly.',
+      foundation: 'Foundation',
+      foundationDesc: 'MVP scope securing initial funding. Core infrastructure: passwordless auth, dual sidebar navigation, project workflows.',
+      creationWorkflow: 'Product Creation Workflow',
+      creationWorkflowDesc: 'Four-step process from project basics to team launch. Progressive disclosure design: setup steps prominent during creation, automatically collapse once project active.',
+      interactionPrinciples: 'Core Interaction Principles',
+      interactionPrinciplesDesc: 'Design principles preventing feature bloat. Progressive disclosure, context awareness, batch efficiency, visual hierarchy.',
+    },
+    phase1: {
+      title: 'Phase 1 - Foundation',
+      firstTimeExp: '1st time experience',
+      passwordlessAuth: 'Passwordless authentication',
+      passwordlessAuthDesc: 'Magic link login eliminates password friction for field workers sharing devices.',
+      emptyState: 'Empty state',
+      emptyStateDesc: 'Greeting new users with primary sidebar navigation introduced.',
+      formPattern: 'Form design pattern',
+      formPatternDesc: 'Mobile-first approach used across all the application.',
+      chantierV1: 'Chantier Detail v1',
+      chantierV1Desc: 'Early desktop layout establishing dual sidebar architecture.',
+      chantierV2: 'Chantier Detail v2',
+      chantierV2Desc: 'Removed the metadata informations to the edit view. We only kept contact information display at 1st sight.',
+      showHideNav: 'Show and Hide navigation',
+      showHideNavDesc: 'Secondary sidebar collapsing and expanding on demand. Setup sections (zones, companies, task libraries) prominent during project creation, collapsing once project active. Operations sections (planning, documents, observations) surfacing as primary navigation. Progressive disclosure: complexity hidden until relevant, interface adapting to project lifecycle stage.',
+      navShowHide: 'Navigation show/hide',
+      navShowHideDesc: 'Secondary sidebar collapsing and expanding on demand.',
+      tasks: 'Tasks',
+      taskCreation: 'Task creation',
+      taskCreationDesc: 'Assisted task creation for quick addition and task setting for each phase of the project.',
+      sequences: 'Sequences',
+      taskSequences: 'Tasks sequences',
+      taskSequencesDesc: 'Templating is part of Toolkit DNA. The construction planner can set and save task sequences in a library to speed up site planning.',
+      planning: 'Planning',
+      planningV1: 'Planning v1',
+      planningV1Desc: 'First planning canvas with colorful task card aesthetic. High visual weight worked well with 10-15 tasks but became overwhelming at 50-100+ tasks.',
+      taskComponentV1: 'Task component v1',
+      taskComponentV1Desc: 'Multiple sizes and variations for different display contexts.',
+      taskComponentV2: 'Task component v2',
+      taskComponentV2Desc: 'Refined system with four interaction states. Height reduced, colors desaturated, contrast improved.',
+      planningV2: 'Planning v2',
+      planningV2Desc: 'Planning canvas evolution with refined visual system. Multiple zones and 50+ tasks visible simultaneously without overwhelming interface.',
+      multiSelect: 'Multi-select',
+      multiSelectDesc: 'Rectangle drag enabling batch operations across zones and timeline.',
+      contextMenu: 'Context menu',
+      contextMenuDesc: 'Adapting to selected task with prioritized actions.',
+      adaptiveZoom: 'Adaptive zoom',
+      adaptiveZoomDesc: 'View controls toggling between day, week, month scales.',
+      expandLayout: 'Expand layout on planning view',
+      expandLayoutDesc: 'To enhance ease of use on the planning we implemented a way to expand the layout to focus on task management, without getting confusion with navigation panel.',
+      expandLayoutCaption: 'Expand layout',
+      expandLayoutCaptionDesc: 'Zoom in and out on the planning canvas for better focus.',
+    },
+    phase2: {
+      title: 'Phase 2 - Feature expansion',
+      intro: 'With the foundation validated, Phase 2 focused on expanding capabilities while maintaining simplicity. We introduced a dynamic menu system that adapts to user context, reducing cognitive load and streamlining workflows. The challenge was adding power features without cluttering the interface.',
+      dynamicMenu: 'Dynamic menu system',
+      dynamicMenuDesc: 'The dynamic menu adapts to the current task context. When editing a task, relevant actions surface immediately. When viewing activity logs, filtering options take priority. This context-awareness reduces navigation steps and keeps users focused on their current workflow.',
+      dynamicIsland: 'Dynamic island menu',
+      dynamicIslandDesc: 'Contextual task modification with quick actions and status updates.',
+      taskManipulation: 'Task manipulation in planning',
+      taskManipulationDesc: 'Edit duration and task information on the fly directly from the planning canvas.',
+      taskManipulationCaption: 'Task manipulation',
+      taskManipulationCaptionDesc: 'Edit duration and task information on the fly.',
+      batchEdition: 'Batch edition',
+      batchEditionDesc: 'Select a zone or multiple tasks on the canvas, apply parameters in 20 seconds. Users managing 50-100+ tasks need efficient ways to apply changes across groups.',
+      batchEditionCaption: 'Batch edition',
+      batchEditionCaptionDesc: 'Select a zone or multiple tasks on the canvas, apply parameters in 20 seconds.',
+      interfaceSystem: 'Interface system',
+      interfaceSystemDesc: 'Component architecture for the dynamic menu, ensuring consistency across different contexts.',
+      activitySection: 'Activity section behavior',
+      activitySectionDesc: 'Task detail view with dynamic menu showing activity log and contextual actions.',
+    },
+    phase3: {
+      title: 'Phase 3 - Platform maturity',
+      intro: 'Phase 3 brought platform maturity with the project hub and mobile evolution. Enterprise customers needed to manage multiple construction sites from a single dashboard. Field workers needed mobile access that matched the desktop experience. We delivered both without compromising either.',
+      projectHub: 'Project hub',
+      projectHubDesc: "The project hub provides a bird's-eye view of all construction sites. Managers can quickly assess progress, identify bottlenecks, and drill into specific projects. Visual indicators surface urgent items without requiring deep navigation.",
+      projectHubV3: 'Project hub v3',
+      projectHubV3Desc: 'Multi-site dashboard with progress indicators, quick actions, and filtering capabilities.',
+      mobileEvolution: 'Mobile evolution',
+      mobileEvolutionDesc: 'Construction happens on-site, often in challenging conditions. The mobile experience needed to be robust, fast, and usable with gloves. We redesigned the navigation system for touch-first interaction while maintaining feature parity with desktop.',
+      mobileNav: 'Mobile navigation evolution',
+      mobileNavDesc: 'Touch-optimized menu system with gesture support and thumb-friendly action zones.',
+    },
+    designSystem: {
+      title: 'Design system foundation',
+      intro: 'A three-person team cannot afford to redesign components for every feature. We built a design system that scaled with the product: reusable components, consistent patterns, and a shared visual language. This foundation enabled rapid iteration while maintaining quality.',
+      ds: 'Design system',
+      dsDesc: 'Component library with tokens, patterns, and usage guidelines for consistent implementation.',
+      iconSystem: 'Icon system',
+      iconSystemDesc: 'Custom icon set for files and folders, optimized for construction document management.',
+    },
+    impact: {
+      title: 'Impact',
+      intro: 'The design approach delivered measurable business results. By focusing on core workflows and progressive complexity, we created a product that both enterprise customers and small teams could adopt quickly. The numbers tell the story.',
+      projectImpact: 'Project impact',
+      projectImpactDesc: 'Key metrics and milestones achieved over the 12-month product development cycle.',
+      customers: '2,000+',
+      customersDesc: 'Paying customers within 24 months of launch',
+      seriesA: 'Series A',
+      seriesADesc: 'Funding secured in November 2025',
+      enterprise: 'Enterprise',
+      enterpriseDesc: 'Customers managing 15+ sites adopted at launch',
+    },
+    metaLabels: {
+      type: 'Type',
+      scope: 'Scope',
+      period: 'Period',
+      phase: 'Phase',
+    },
+    captions: {
+      passwordlessAuth: 'Passwordless authentication',
+      passwordlessAuthDesc: 'Magic link login eliminates password friction for field workers sharing devices.',
+      emptyState: 'Empty state',
+      emptyStateDesc: 'Greeting new users with primary sidebar navigation introduced.',
+      formPattern: 'Form design pattern',
+      formPatternDesc: 'Mobile-first approach used across all the application.',
+      chantierV1: 'Chantier Detail v1',
+      chantierV1Desc: 'Early desktop layout establishing dual sidebar architecture.',
+      chantierV2: 'Chantier Detail v2',
+      chantierV2Desc: 'Removed the metadata informations to the edit view. We only kept contact information display at 1st sight.',
+      navShowHide: 'Navigation show/hide',
+      navShowHideDesc: 'Secondary sidebar collapsing and expanding on demand.',
+      taskCreation: 'Task creation',
+      taskCreationDesc: 'Assisted task creation for quick addition and task setting for each phase of the project.',
+      taskSequences: 'Tasks sequences',
+      taskSequencesDesc: 'Templating is part of Toolkit DNA. The construction planner can set and save task sequences in a library to speed up site planning.',
+      planningV1: 'Planning v1',
+      planningV1Desc: 'First planning canvas with colorful task card aesthetic. High visual weight worked well with 10-15 tasks but became overwhelming at 50-100+ tasks.',
+      taskComponentV1: 'Task component v1',
+      taskComponentV1Desc: 'Multiple sizes and variations for different display contexts.',
+      taskComponentV2: 'Task component v2',
+      taskComponentV2Desc: 'Refined system with four interaction states. Height reduced, colors desaturated, contrast improved.',
+      planningV2: 'Planning v2',
+      planningV2Desc: 'Planning canvas evolution with refined visual system. Multiple zones and 50+ tasks visible simultaneously without overwhelming interface.',
+      multiSelect: 'Multi-select',
+      multiSelectDesc: 'Rectangle drag enabling batch operations across zones and timeline.',
+      contextMenu: 'Context menu',
+      contextMenuDesc: 'Adapting to selected task with prioritized actions.',
+      adaptiveZoom: 'Adaptive zoom',
+      adaptiveZoomDesc: 'View controls toggling between day, week, month scales.',
+      expandLayout: 'Expand layout',
+      expandLayoutDesc: 'Zoom in and out on the planning canvas for better focus.',
+      dynamicIsland: 'Dynamic island menu',
+      dynamicIslandDesc: 'Contextual task modification with quick actions and status updates.',
+      taskManipulation: 'Task manipulation',
+      taskManipulationDesc: 'Edit duration and task information on the fly.',
+      batchEdition: 'Batch edition',
+      batchEditionDesc: 'Select a zone or multiple tasks on the canvas, apply parameters in 20 seconds.',
+      interfaceSystem: 'Interface system',
+      interfaceSystemDesc: 'Component architecture for the dynamic menu, ensuring consistency across different contexts.',
+      activitySection: 'Activity section behavior',
+      activitySectionDesc: 'Task detail view with dynamic menu showing activity log and contextual actions.',
+      projectHubV3: 'Project hub v3',
+      projectHubV3Desc: 'Multi-site dashboard with progress indicators, quick actions, and filtering capabilities.',
+      mobileNav: 'Mobile navigation evolution',
+      mobileNavDesc: 'Touch-optimized menu system with gesture support and thumb-friendly action zones.',
+      designSystem: 'Design system',
+      designSystemDesc: 'Component library with tokens, patterns, and usage guidelines.',
+      iconSystem: 'Icon system',
+      iconSystemDesc: 'Custom icon set for files and folders.',
+      projectImpact: 'Project impact',
+      projectImpactDesc: 'Key metrics and milestones achieved.',
+    },
+  },
+  fr: {
+    caseStudy: 'Étude de cas',
+    visitToolkit: 'Visiter Toolkit',
+    projectGallery: 'Galerie du projet',
+    contactVictor: 'Contacter Victor pour un projet similaire',
+    clickToZoom: 'Cliquer pour agrandir',
+    clickToExitZoom: 'Cliquer pour fermer',
+    meta: {
+      type: 'Design Produit',
+      scope: 'Web, App, Branding',
+      phase: 'De zéro à un',
+      period: '2023-2025',
+    },
+    nav: {
+      top: 'Haut',
+      intro: 'Intro',
+      overview: 'Vue d\'ensemble',
+      context: 'Contexte',
+      phase1: 'Phase 1',
+      phase2: 'Phase 2',
+      phase3: 'Phase 3',
+      designSystem: 'Design System',
+      impact: 'Impact',
+    },
+    hero: {
+      tags: 'Design Produit, web, app, branding',
+      zeroToOne: 'De zéro à un',
+      title: 'Concevoir un logiciel de gestion de chantier qui fonctionne vraiment',
+      subtitle: 'Du Prototype à 2 000 Clients',
+      description: 'Toolkit avait besoin de design produit pour lever des fonds et atteindre le product-market fit dans la construction tech. Pendant 12 mois, j\'ai mené le design de bout en bout dans une équipe légère CEO-Dev-Designer avec validation continue auprès des utilisateurs. Nous avons livré trois versions majeures : prototype de financement (3 mois), V2 riche en fonctionnalités (5 mois) et V3 optimisée mobile (4 mois). Le produit a atteint 2 000 clients payants en 24 mois, sécurisé l\'adoption entreprise dès le lancement et levé une Série A en novembre 2025.',
+    },
+    testimonial: {
+      quote: 'Victor a travaillé avec Toolkit en tant que designer UX/UI dès les premières étapes. Nous avons mené ensemble des ateliers de découverte avant même de construire le produit, ce qui lui a permis de comprendre en profondeur l\'industrie du bâtiment. Il a transformé des exigences métier complexes en parcours utilisateurs parfaitement adaptés, exactement ce dont une startup comme la nôtre avait besoin. Grâce à son expérience, Victor a aussi mis en place des systèmes fondamentaux (UI kit, patterns d\'interaction) qui nous ont fait gagner un temps de développement considérable par la suite.',
+      author: 'Pierre-Marie Nigay',
+      role: 'Fondateur @ Toolkit',
+    },
+    overview: {
+      title: 'Vue d\'ensemble',
+      introTitle: 'Introduction',
+      introP1: 'Les logiciels de construction sont écrasants. Les outils historiques empilent toutes les fonctionnalités dans des interfaces denses, forçant les utilisateurs à traverser des workflows complexes pour accomplir des tâches basiques. Les conducteurs de travaux jonglent entre plusieurs projets, les ouvriers sur site ont besoin de mises à jour rapides, et les équipes bureau demandent une planification détaillée. Une seule interface ne peut pas servir tous ces besoins de manière égale.',
+      introP2: 'Toolkit a abordé le problème différemment. Plutôt que de construire une énième solution complète, nous nous sommes concentrés sur les workflows essentiels que les équipes de construction utilisent quotidiennement : planifier les tâches par zones, suivre l\'avancement, gérer les documents, coordonner les équipes. Le défi était d\'offrir de la sophistication sans complexité.',
+      roleTitle: 'Mon rôle',
+      roleDesc: 'J\'ai rejoint l\'équipe comme seul designer dans un trio. Le CEO apportait l\'expertise métier acquise en années de recherche sur les workflows du bâtiment. Le lead développeur construisait les fondations techniques. Mon rôle : transformer les exigences business en un produit scalable que les utilisateurs adopteraient vraiment. Pas d\'équipe design, pas de researchers, pas de product managers. Juste une collaboration serrée, une validation continue et des itérations rapides.',
+      projectTitle: 'Projet et impact',
+      projectP1: 'Sur 12 mois, nous sommes passés du prototype de financement à la maturité plateforme. Chaque phase ajoutait de la sophistication tout en maintenant la simplicité. La révélation progressive cachait la complexité jusqu\'au moment opportun. Les interfaces context-aware s\'adaptaient aux tâches utilisateur. Les opérations par lot réduisaient les actions répétitives. La hiérarchie visuelle prévenait la surcharge d\'information à grande échelle.',
+      projectP2: 'L\'approche a fonctionné. Les clients entreprise ont déployé dès le lancement. Les utilisateurs gérant plus de 15 chantiers ont adopté la plateforme. Le produit a atteint 2 000 clients payants en 24 mois et sécurisé une levée Série A. Cette étude de cas montre comment nous y sommes arrivés.',
+    },
+    context: {
+      title: 'Contexte et approche',
+      intro: 'Trois phases, du prototype de financement à la maturité plateforme. La Phase 1 a sécurisé le financement initial avec les fonctionnalités core. La Phase 2 a ajouté des interactions sophistiquées et le support multi-projets. La Phase 3 a atteint l\'optimisation mobile et la scalabilité du design system. Résultat : 2 000 clients, adoption entreprise, Série A en moins de 24 mois.',
+      coreChallenge: 'Défi design central',
+      coreChallengeDesc: 'Interface de planification montrant la tension fondamentale : les projets de construction contiennent 50-100+ tâches réparties sur plusieurs zones et timelines.',
+      research: 'Processus de recherche',
+      researchDesc: 'Validation lean dans une équipe de trois. Microsoft Clarity fournissait l\'analytics comportemental. Le CEO menait 5-7 appels utilisateurs par semaine.',
+      foundation: 'Fondation',
+      foundationDesc: 'Scope MVP sécurisant le financement initial. Infrastructure core : auth sans mot de passe, navigation double sidebar, workflows projet.',
+      creationWorkflow: 'Workflow de création projet',
+      creationWorkflowDesc: 'Processus en quatre étapes, des bases du projet au lancement de l\'équipe. Design en révélation progressive : étapes de setup visibles pendant la création, se réduisant automatiquement une fois le projet actif.',
+      interactionPrinciples: 'Principes d\'interaction core',
+      interactionPrinciplesDesc: 'Principes de design évitant la surcharge fonctionnelle. Révélation progressive, conscience du contexte, efficacité par lot, hiérarchie visuelle.',
+    },
+    phase1: {
+      title: 'Phase 1 - Fondation',
+      firstTimeExp: 'Première expérience',
+      passwordlessAuth: 'Authentification sans mot de passe',
+      passwordlessAuthDesc: 'La connexion par magic link élimine la friction des mots de passe pour les ouvriers sur site qui partagent les appareils.',
+      emptyState: 'État vide',
+      emptyStateDesc: 'Accueil des nouveaux utilisateurs avec introduction de la navigation sidebar principale.',
+      formPattern: 'Pattern de formulaire',
+      formPatternDesc: 'Approche mobile-first utilisée dans toute l\'application.',
+      chantierV1: 'Détail Chantier v1',
+      chantierV1Desc: 'Layout desktop initial établissant l\'architecture double sidebar.',
+      chantierV2: 'Détail Chantier v2',
+      chantierV2Desc: 'Suppression des métadonnées vers la vue d\'édition. Seules les informations de contact restent visibles au premier coup d\'œil.',
+      showHideNav: 'Navigation afficher/masquer',
+      showHideNavDesc: 'Sidebar secondaire se réduisant et s\'étendant à la demande. Sections de setup (zones, entreprises, bibliothèques de tâches) visibles pendant la création du projet, se réduisant une fois le projet actif. Sections opérations (planning, documents, observations) apparaissant comme navigation principale. Révélation progressive : complexité cachée jusqu\'au moment pertinent, interface s\'adaptant au cycle de vie du projet.',
+      navShowHide: 'Navigation afficher/masquer',
+      navShowHideDesc: 'Sidebar secondaire se réduisant et s\'étendant à la demande.',
+      tasks: 'Tâches',
+      taskCreation: 'Création de tâches',
+      taskCreationDesc: 'Création de tâches assistée pour ajout rapide et paramétrage de chaque phase du projet.',
+      sequences: 'Séquences',
+      taskSequences: 'Séquences de tâches',
+      taskSequencesDesc: 'Le templating fait partie de l\'ADN de Toolkit. Le planificateur peut définir et sauvegarder des séquences de tâches dans une bibliothèque pour accélérer la planification de chantier.',
+      planning: 'Planning',
+      planningV1: 'Planning v1',
+      planningV1Desc: 'Premier canvas de planning avec une esthétique de cartes colorées. Le poids visuel élevé fonctionnait bien avec 10-15 tâches mais devenait écrasant au-delà de 50-100+ tâches.',
+      taskComponentV1: 'Composant tâche v1',
+      taskComponentV1Desc: 'Tailles et variations multiples pour différents contextes d\'affichage.',
+      taskComponentV2: 'Composant tâche v2',
+      taskComponentV2Desc: 'Système raffiné avec quatre états d\'interaction. Hauteur réduite, couleurs désaturées, contraste amélioré.',
+      planningV2: 'Planning v2',
+      planningV2Desc: 'Évolution du canvas de planning avec système visuel raffiné. Zones multiples et 50+ tâches visibles simultanément sans surcharger l\'interface.',
+      multiSelect: 'Multi-sélection',
+      multiSelectDesc: 'Glissement rectangulaire permettant des opérations par lot sur les zones et la timeline.',
+      contextMenu: 'Menu contextuel',
+      contextMenuDesc: 'S\'adaptant à la tâche sélectionnée avec actions priorisées.',
+      adaptiveZoom: 'Zoom adaptatif',
+      adaptiveZoomDesc: 'Contrôles de vue basculant entre échelles jour, semaine, mois.',
+      expandLayout: 'Extension du layout sur la vue planning',
+      expandLayoutDesc: 'Pour améliorer la facilité d\'utilisation sur le planning, nous avons implémenté un moyen d\'étendre le layout pour se concentrer sur la gestion des tâches, sans confusion avec le panneau de navigation.',
+      expandLayoutCaption: 'Extension du layout',
+      expandLayoutCaptionDesc: 'Zoom avant et arrière sur le canvas de planning pour une meilleure concentration.',
+    },
+    phase2: {
+      title: 'Phase 2 - Expansion fonctionnelle',
+      intro: 'La fondation validée, la Phase 2 s\'est concentrée sur l\'expansion des capacités tout en maintenant la simplicité. Nous avons introduit un système de menu dynamique qui s\'adapte au contexte utilisateur, réduisant la charge cognitive et fluidifiant les workflows. Le défi était d\'ajouter des fonctionnalités puissantes sans encombrer l\'interface.',
+      dynamicMenu: 'Système de menu dynamique',
+      dynamicMenuDesc: 'Le menu dynamique s\'adapte au contexte de la tâche courante. En éditant une tâche, les actions pertinentes apparaissent immédiatement. En consultant les logs d\'activité, les options de filtrage prennent la priorité. Cette conscience du contexte réduit les étapes de navigation et garde les utilisateurs concentrés sur leur workflow actuel.',
+      dynamicIsland: 'Menu île dynamique',
+      dynamicIslandDesc: 'Modification de tâche contextuelle avec actions rapides et mises à jour de statut.',
+      taskManipulation: 'Manipulation de tâches dans le planning',
+      taskManipulationDesc: 'Modifier la durée et les informations de tâche à la volée directement depuis le canvas de planning.',
+      taskManipulationCaption: 'Manipulation de tâches',
+      taskManipulationCaptionDesc: 'Modifier la durée et les informations de tâche à la volée.',
+      batchEdition: 'Édition par lot',
+      batchEditionDesc: 'Sélectionner une zone ou plusieurs tâches sur le canvas, appliquer des paramètres en 20 secondes. Les utilisateurs gérant 50-100+ tâches ont besoin de moyens efficaces pour appliquer des changements sur des groupes.',
+      batchEditionCaption: 'Édition par lot',
+      batchEditionCaptionDesc: 'Sélectionner une zone ou plusieurs tâches sur le canvas, appliquer des paramètres en 20 secondes.',
+      interfaceSystem: 'Système d\'interface',
+      interfaceSystemDesc: 'Architecture de composants pour le menu dynamique, assurant la cohérence à travers différents contextes.',
+      activitySection: 'Comportement section activité',
+      activitySectionDesc: 'Vue détail tâche avec menu dynamique montrant le log d\'activité et les actions contextuelles.',
+    },
+    phase3: {
+      title: 'Phase 3 - Maturité plateforme',
+      intro: 'La Phase 3 a apporté la maturité plateforme avec le hub projet et l\'évolution mobile. Les clients entreprise avaient besoin de gérer plusieurs chantiers depuis un dashboard unique. Les ouvriers sur site avaient besoin d\'un accès mobile équivalent à l\'expérience desktop. Nous avons livré les deux sans compromis.',
+      projectHub: 'Hub projet',
+      projectHubDesc: 'Le hub projet offre une vue d\'ensemble de tous les chantiers. Les managers peuvent rapidement évaluer l\'avancement, identifier les blocages et explorer des projets spécifiques. Les indicateurs visuels font remonter les éléments urgents sans nécessiter une navigation profonde.',
+      projectHubV3: 'Hub projet v3',
+      projectHubV3Desc: 'Dashboard multi-sites avec indicateurs de progression, actions rapides et capacités de filtrage.',
+      mobileEvolution: 'Évolution mobile',
+      mobileEvolutionDesc: 'La construction se passe sur site, souvent dans des conditions difficiles. L\'expérience mobile devait être robuste, rapide et utilisable avec des gants. Nous avons reconçu le système de navigation pour une interaction tactile-first tout en maintenant la parité fonctionnelle avec le desktop.',
+      mobileNav: 'Évolution navigation mobile',
+      mobileNavDesc: 'Système de menu optimisé tactile avec support des gestes et zones d\'action accessibles au pouce.',
+    },
+    designSystem: {
+      title: 'Fondation design system',
+      intro: 'Une équipe de trois personnes ne peut pas se permettre de redesigner des composants pour chaque fonctionnalité. Nous avons construit un design system qui scale avec le produit : composants réutilisables, patterns cohérents et langage visuel partagé. Cette fondation a permis une itération rapide tout en maintenant la qualité.',
+      ds: 'Design system',
+      dsDesc: 'Bibliothèque de composants avec tokens, patterns et guidelines d\'usage pour une implémentation cohérente.',
+      iconSystem: 'Système d\'icônes',
+      iconSystemDesc: 'Set d\'icônes personnalisé pour fichiers et dossiers, optimisé pour la gestion documentaire du bâtiment.',
+    },
+    impact: {
+      title: 'Impact',
+      intro: 'L\'approche design a livré des résultats business mesurables. En nous concentrant sur les workflows core et la complexité progressive, nous avons créé un produit que les clients entreprise comme les petites équipes pouvaient adopter rapidement. Les chiffres parlent d\'eux-mêmes.',
+      projectImpact: 'Impact projet',
+      projectImpactDesc: 'Métriques clés et jalons atteints sur le cycle de développement produit de 12 mois.',
+      customers: '2 000+',
+      customersDesc: 'Clients payants en 24 mois après le lancement',
+      seriesA: 'Série A',
+      seriesADesc: 'Financement sécurisé en novembre 2025',
+      enterprise: 'Entreprise',
+      enterpriseDesc: 'Clients gérant plus de 15 chantiers ont adopté dès le lancement',
+    },
+    metaLabels: {
+      type: 'Type',
+      scope: 'Périmètre',
+      period: 'Période',
+      phase: 'Phase',
+    },
+    captions: {
+      passwordlessAuth: 'Authentification sans mot de passe',
+      passwordlessAuthDesc: 'La connexion par magic link élimine la friction des mots de passe pour les ouvriers sur site.',
+      emptyState: 'État vide',
+      emptyStateDesc: 'Accueil des nouveaux utilisateurs avec navigation sidebar principale.',
+      formPattern: 'Pattern de formulaire',
+      formPatternDesc: 'Approche mobile-first utilisée dans toute l\'application.',
+      chantierV1: 'Détail Chantier v1',
+      chantierV1Desc: 'Layout desktop initial établissant l\'architecture double sidebar.',
+      chantierV2: 'Détail Chantier v2',
+      chantierV2Desc: 'Métadonnées déplacées vers la vue d\'édition. Seuls les contacts restent visibles.',
+      navShowHide: 'Navigation afficher/masquer',
+      navShowHideDesc: 'Sidebar secondaire se réduisant et s\'étendant à la demande.',
+      taskCreation: 'Création de tâches',
+      taskCreationDesc: 'Création assistée pour ajout rapide et paramétrage de chaque phase.',
+      taskSequences: 'Séquences de tâches',
+      taskSequencesDesc: 'Le templating fait partie de l\'ADN de Toolkit. Le planificateur peut sauvegarder des séquences.',
+      planningV1: 'Planning v1',
+      planningV1Desc: 'Premier canvas avec esthétique de cartes colorées. Le poids visuel fonctionnait avec 10-15 tâches mais devenait écrasant à 50-100+ tâches.',
+      taskComponentV1: 'Composant tâche v1',
+      taskComponentV1Desc: 'Tailles et variations multiples pour différents contextes.',
+      taskComponentV2: 'Composant tâche v2',
+      taskComponentV2Desc: 'Système raffiné avec quatre états. Hauteur réduite, couleurs désaturées.',
+      planningV2: 'Planning v2',
+      planningV2Desc: 'Évolution du canvas avec système visuel raffiné. Zones multiples et 50+ tâches visibles simultanément sans surcharger l\'interface.',
+      multiSelect: 'Multi-sélection',
+      multiSelectDesc: 'Glissement rectangulaire pour opérations par lot sur zones et timeline.',
+      contextMenu: 'Menu contextuel',
+      contextMenuDesc: 'S\'adaptant à la tâche sélectionnée avec actions priorisées.',
+      adaptiveZoom: 'Zoom adaptatif',
+      adaptiveZoomDesc: 'Contrôles basculant entre échelles jour, semaine, mois.',
+      expandLayout: 'Extension du layout',
+      expandLayoutDesc: 'Zoom avant et arrière sur le canvas pour meilleure concentration.',
+      dynamicIsland: 'Menu île dynamique',
+      dynamicIslandDesc: 'Modification de tâche contextuelle avec actions rapides.',
+      taskManipulation: 'Manipulation de tâches',
+      taskManipulationDesc: 'Modifier durée et informations à la volée.',
+      batchEdition: 'Édition par lot',
+      batchEditionDesc: 'Sélectionner zone ou tâches, appliquer paramètres en 20 secondes.',
+      interfaceSystem: 'Système d\'interface',
+      interfaceSystemDesc: 'Architecture de composants pour le menu dynamique, assurant la cohérence dans tous les contextes.',
+      activitySection: 'Section activité',
+      activitySectionDesc: 'Vue détail tâche avec menu dynamique, log d\'activité et actions contextuelles.',
+      projectHubV3: 'Hub projet v3',
+      projectHubV3Desc: 'Dashboard multi-sites avec indicateurs de progression et filtres.',
+      mobileNav: 'Navigation mobile',
+      mobileNavDesc: 'Système de menu tactile avec support des gestes et zones d\'action accessibles au pouce.',
+      designSystem: 'Design system',
+      designSystemDesc: 'Bibliothèque de composants avec tokens et guidelines.',
+      iconSystem: 'Système d\'icônes',
+      iconSystemDesc: 'Set d\'icônes personnalisé pour fichiers et dossiers.',
+      projectImpact: 'Impact projet',
+      projectImpactDesc: 'Métriques clés et jalons atteints.',
+    },
+  },
+};
 
 // Navigation sections configuration
 const sections = [
@@ -107,8 +544,11 @@ const slideVariants = {
 export const ToolkitPage: React.FC<ToolkitPageProps> = ({
   onClose,
   systemTheme,
-  onToggleTheme
+  onToggleTheme,
+  onOpenGallery,
+  lang = 'en'
 }) => {
+  const t = TOOLKIT_TRANSLATIONS[lang];
   const [activeSection, setActiveSection] = useState('hero');
   const [isMobileNavExpanded, setIsMobileNavExpanded] = useState(false);
   const [showNav, setShowNav] = useState(false);
@@ -265,12 +705,12 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
             }`}
           >
             {/* Collapsed state - shows current section */}
-            <div className="mx-auto px-4 md:px-6" style={{ maxWidth: '1480px' }}>
+            <div className="max-w-6xl mx-auto px-4 md:px-6">
               <button
                 onClick={() => setIsMobileNavExpanded(!isMobileNavExpanded)}
                 className="w-full py-4 flex items-center justify-between"
               >
-              <div className="flex items-center gap-2 ml-10">
+              <div className="flex items-center gap-2">
                 <div className={`w-2 h-2 rounded-full bg-blue-600`} />
                 <span
                   className={`text-sm font-medium ${
@@ -301,7 +741,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   transition={{ duration: 0.2 }}
                   className="overflow-hidden"
                 >
-                  <div className={`pb-3 space-y-1 border-t ml-10 ${
+                  <div className={`pb-3 space-y-1 border-t ${
                     systemTheme === 'dark' ? 'border-white/5' : 'border-gray-100'
                   }`}>
                     {sections.map((section) => {
@@ -361,8 +801,51 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
             : 'bg-white/80 border-gray-200'
         }`}
       >
-        <div className="mx-auto px-4 md:px-6 py-4 flex items-center justify-between" style={{ maxWidth: '1480px' }}>
-          <div className="flex items-center space-x-4">
+        <div className="max-w-6xl mx-auto px-4 md:px-6 py-4 flex items-center justify-between">
+          {/* Left - Title */}
+          <div className="flex-1">
+            <h1
+              className={`text-lg md:text-xl font-bold ${
+                systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+              }`}
+            >
+              Toolkit
+            </h1>
+          </div>
+
+          {/* Center - Toggle Switch */}
+          {onOpenGallery && (
+            <div className="flex-1 flex justify-center">
+              <div
+                className={`inline-flex rounded-full p-1 ${
+                  systemTheme === 'dark' ? 'bg-white/10' : 'bg-gray-100'
+                }`}
+              >
+                <button
+                  className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                    systemTheme === 'dark'
+                      ? 'bg-white text-gray-900'
+                      : 'bg-white text-gray-900 shadow-sm'
+                  }`}
+                >
+                  {t.caseStudy}
+                </button>
+                <button
+                  onClick={onOpenGallery}
+                  className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                    systemTheme === 'dark'
+                      ? 'text-gray-400 hover:text-white'
+                      : 'text-gray-500 hover:text-gray-900'
+                  }`}
+                >
+                  {t.projectGallery}
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Right - Close button only */}
+          <div className="flex-1 flex justify-end">
             <button
               onClick={onClose}
               className={`p-2 rounded-full transition-colors ${
@@ -371,53 +854,8 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   : 'hover:bg-gray-100 text-gray-600'
               }`}
             >
-              <ArrowLeft size={24} />
+              <X size={24} />
             </button>
-            <div>
-              <h1
-                className={`text-lg md:text-xl font-bold ${
-                  systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                }`}
-              >
-                Toolkit
-              </h1>
-              <p
-                className={`text-sm ${
-                  systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                }`}
-              >
-                Case Study
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-center space-x-2">
-            {/* Theme toggle */}
-            <button
-              onClick={onToggleTheme}
-              className={`p-2 rounded-full transition-colors ${
-                systemTheme === 'dark'
-                  ? 'hover:bg-white/10 text-gray-300'
-                  : 'hover:bg-gray-100 text-gray-600'
-              }`}
-            >
-              {systemTheme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
-            </button>
-
-            {/* External link */}
-            <a
-              href="https://toolkit-app.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`p-2 rounded-full transition-colors ${
-                systemTheme === 'dark'
-                  ? 'hover:bg-white/10 text-gray-300'
-                  : 'hover:bg-gray-100 text-gray-600'
-              }`}
-              title="Visit Toolkit"
-            >
-              <ExternalLink size={20} />
-            </a>
           </div>
         </div>
       </header>
@@ -619,7 +1057,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
       </AnimatePresence>
 
       {/* Main Content */}
-      <div className="mx-auto px-4 md:px-6 py-12 md:py-16" style={{ maxWidth: '960px' }}>
+      <div className="max-w-6xl mx-auto px-4 md:px-6 py-12 md:py-16">
             {/* Hero Section - Title + Logo + Testimonial */}
             <section id="hero" className="mb-16 md:mb-24">
           <div className="grid md:grid-cols-5 gap-8 items-start">
@@ -628,19 +1066,19 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
               {/* Meta tags */}
               <div className="flex flex-wrap gap-2 mb-4">
                 <span className={`text-sm ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
-                  Product Design, web, app, branding
+                  {t.hero.tags}
                 </span>
                 <span className={`text-sm ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
                   -
                 </span>
                 <span className={`text-sm ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
-                  Zero to one
+                  {t.hero.zeroToOne}
                 </span>
                 <span className={`text-sm ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
                   -
                 </span>
                 <span className={`text-sm ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
-                  2023-2025
+                  {t.meta.period}
                 </span>
               </div>
 
@@ -650,7 +1088,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                 }`}
               >
-                Designing construction management software that works
+                {t.hero.title}
               </h1>
 
               {/* Subtitle */}
@@ -659,17 +1097,32 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-700'
                 }`}
               >
-                From Prototype to 2,000 Customers
+                {t.hero.subtitle}
               </h2>
 
               {/* Description */}
               <p
-                className={`text-base leading-relaxed ${
+                className={`text-base leading-relaxed mb-6 ${
                   systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
                 }`}
               >
-                Toolkit needed product design to secure funding and reach market fit in construction tech. Over 12 months, I led end-to-end design in a lean CEO-Dev-Designer team with continuous user validation. We shipped three major releases: funding prototype (3 months), feature-rich V2 (5 months), and mobile-optimized V3 (4 months). The product reached 2,000 paying customers within 24 months, secured enterprise adoption at launch, and raised Series A funding in November 2025.
+                {t.hero.description}
               </p>
+
+              {/* Visit Website Button */}
+              <a
+                href="https://toolkit-app.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                  systemTheme === 'dark'
+                    ? 'bg-white/10 hover:bg-white/20 text-white'
+                    : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                }`}
+              >
+                <ExternalLink size={16} className="mr-2" />
+                {t.visitToolkit}
+              </a>
             </div>
 
             {/* Right Column - Logo + Testimonial */}
@@ -693,12 +1146,12 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                     systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
                   }`}
                 >
-                  Victor worked with Toolkit as our UX/UI designer from the earliest stages. We ran discovery workshops together before even building the product, allowing him to deeply understand the construction industry. He transformed complex business requirements into perfectly adapted user flows, exactly what a startup like ours needed. Thanks to his experience, Victor also established foundational systems (UI kit, interaction patterns) that saved us considerable development time down the line.
+                  {t.testimonial.quote}
                 </p>
                 <div className="flex items-center space-x-3">
                   <img
                     src="/images/pierre-marie-nigay.png"
-                    alt="Pierre-Marie Nigay"
+                    alt={t.testimonial.author}
                     className="w-10 h-10 rounded-full object-cover"
                   />
                   <div>
@@ -707,14 +1160,14 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                         systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                       }`}
                     >
-                      Pierre-Marie Nigay
+                      {t.testimonial.author}
                     </p>
                     <p
                       className={`text-xs ${
                         systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
                       }`}
                     >
-                      Founder @ Toolkit
+                      {t.testimonial.role}
                     </p>
                   </div>
                 </div>
@@ -746,7 +1199,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
               systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
             }`}
           >
-            Overview
+            {t.overview.title}
           </h1>
           <hr
             className={`mb-8 ${
@@ -762,21 +1215,21 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                 }`}
               >
-                Introduction
+                {t.overview.introTitle}
               </h2>
               <p
                 className={`text-sm leading-relaxed mb-4 ${
                   systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
                 }`}
               >
-                Construction software is overwhelming. Legacy tools pack every feature into dense interfaces, forcing users through complex workflows to complete basic tasks. Site managers juggle multiple projects, field workers need quick status updates, and office teams require detailed planning. One interface cannot serve all needs equally.
+                {t.overview.introP1}
               </p>
               <p
                 className={`text-sm leading-relaxed ${
                   systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
                 }`}
               >
-                Toolkit approached this differently. Rather than building another feature-complete solution, we focused on core workflows that construction teams use daily: planning tasks across zones, tracking progress, managing documents, coordinating teams. The challenge was delivering sophistication without complexity.
+                {t.overview.introP2}
               </p>
             </div>
 
@@ -787,14 +1240,14 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                 }`}
               >
-                My role
+                {t.overview.roleTitle}
               </h2>
               <p
                 className={`text-sm leading-relaxed ${
                   systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
                 }`}
               >
-                I joined as sole designer in a three-person team. The CEO brought domain expertise from years researching construction workflows. The lead developer built the technical foundation. My role: transform business requirements into a scalable product that users would actually adopt. No design team, no researchers, no product managers. Just tight collaboration, continuous validation, and rapid iteration.
+                {t.overview.roleDesc}
               </p>
             </div>
 
@@ -805,21 +1258,21 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                 }`}
               >
-                Project and impact
+                {t.overview.projectTitle}
               </h2>
               <p
                 className={`text-sm leading-relaxed mb-4 ${
                   systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
                 }`}
               >
-                Over 12 months, we evolved from funding prototype to platform maturity. Each phase added sophistication while maintaining simplicity. Progressive disclosure hid complexity until needed. Context-aware interfaces adapted to user tasks. Batch operations reduced repetitive actions. Visual hierarchy prevented information overload at scale.
+                {t.overview.projectP1}
               </p>
               <p
                 className={`text-sm leading-relaxed ${
                   systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
                 }`}
               >
-                The approach worked. Enterprise customers deployed at launch. Users managing 15+ construction sites adopted the platform. The product reached 2,000 paying customers in 24 months and secured Series A funding. This case study shows how we got there.
+                {t.overview.projectP2}
               </p>
             </div>
           </div>
@@ -832,7 +1285,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
               systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
             }`}
           >
-            Context and approach
+            {t.context.title}
           </h1>
 
           <p
@@ -840,7 +1293,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
               systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
             }`}
           >
-            Three phases from funding prototype to platform maturity. Phase 1 secured initial funding with core features. Phase 2 added sophisticated interactions and multi-project support. Phase 3 achieved mobile optimization and design system scalability. Result: 2,000 customers, enterprise adoption, Series A funding within 24 months.
+            {t.context.intro}
           </p>
 
           <figure className="mb-12">
@@ -878,7 +1331,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
                 }`}
               >
-                <strong>Core Design Challenge</strong> - Planning interface showing the fundamental tension: construction projects contain 50-100+ tasks across multiple zones and timelines.
+                <strong>{t.context.coreChallenge}</strong> - {t.context.coreChallengeDesc}
               </figcaption>
             </figure>
 
@@ -900,7 +1353,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
                 }`}
               >
-                <strong>Research process</strong> - Lean validation in a three-person team. Microsoft Clarity provided behavioral analytics. CEO conducted 5-7 user calls weekly.
+                <strong>{t.context.research}</strong> - {t.context.researchDesc}
               </figcaption>
             </figure>
 
@@ -922,7 +1375,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
                 }`}
               >
-                <strong>Foundation</strong> - MVP scope securing initial funding. Core infrastructure: passwordless auth, dual sidebar navigation, project workflows.
+                <strong>{t.context.foundation}</strong> - {t.context.foundationDesc}
               </figcaption>
             </figure>
           </div>
@@ -947,7 +1400,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
                 }`}
               >
-                <strong>Product Creation Workflow</strong> - Four-step process from project basics to team launch. Progressive disclosure design: setup steps prominent during creation, automatically collapse once project active.
+                <strong>{t.context.creationWorkflow}</strong> - {t.context.creationWorkflowDesc}
               </figcaption>
             </figure>
 
@@ -969,7 +1422,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
                 }`}
               >
-                <strong>Core Interaction Principles</strong> - Design principles preventing feature bloat. Progressive disclosure, context awareness, batch efficiency, visual hierarchy.
+                <strong>{t.context.interactionPrinciples}</strong> - {t.context.interactionPrinciplesDesc}
               </figcaption>
             </figure>
           </div>
@@ -989,7 +1442,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
               systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
             }`}
           >
-            Phase 1 - Foundation
+            {t.phase1.title}
           </h1>
 
           {/* 1st Time Experience */}
@@ -998,7 +1451,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
               systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
             }`}
           >
-            1st time experience
+            {t.phase1.firstTimeExp}
           </h2>
 
           {/* Authentication & Empty State */}
@@ -1021,7 +1474,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
                 }`}
               >
-                <strong>Passwordless authentication</strong> - Magic link login eliminates password friction for field workers sharing devices.
+                <strong>{t.captions.passwordlessAuth}</strong> - {t.captions.passwordlessAuthDesc}
               </figcaption>
             </figure>
 
@@ -1034,7 +1487,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
               >
                 <img
                   src="/images/toolkit/desktop_-_chantier_-_create_-_empty.svg"
-                  alt="Empty state"
+                  alt={t.captions.emptyState}
                   className="w-full h-auto"
                 />
               </div>
@@ -1043,7 +1496,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
                 }`}
               >
-                <strong>Empty state</strong> - Greeting new users with primary sidebar navigation introduced.
+                <strong>{t.captions.emptyState}</strong> - {t.captions.emptyStateDesc}
               </figcaption>
             </figure>
           </div>
@@ -1068,7 +1521,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
                 }`}
               >
-                <strong>Form design pattern</strong> - Mobile-first approach used across all the application.
+                <strong>{t.captions.formPattern}</strong> - {t.captions.formPatternDesc}
               </figcaption>
             </figure>
 
@@ -1090,7 +1543,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
                 }`}
               >
-                <strong>Chantier Detail v1</strong> - Early desktop layout establishing dual sidebar architecture.
+                <strong>{t.captions.chantierV1}</strong> - {t.captions.chantierV1Desc}
               </figcaption>
             </figure>
           </div>
@@ -1114,7 +1567,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                 systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
               }`}
             >
-              <strong>Chantier Detail v2</strong> - Removed the metadata informations to the edit view. We only kept contact information display at 1st sight.
+              <strong>{t.captions.chantierV2}</strong> - {t.captions.chantierV2Desc}
             </figcaption>
           </figure>
 
@@ -1155,7 +1608,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                 systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
               }`}
             >
-              <strong>Navigation show/hide</strong> - Secondary sidebar collapsing and expanding on demand.
+              <strong>{t.captions.navShowHide}</strong> - {t.captions.navShowHideDesc}
             </figcaption>
           </figure>
 
@@ -1193,7 +1646,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                 systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
               }`}
             >
-              <strong>Task creation</strong> - Assisted task creation for quick addition and task setting for each phase of the project.
+              <strong>{t.captions.taskCreation}</strong> - {t.captions.taskCreationDesc}
             </figcaption>
           </figure>
 
@@ -1224,7 +1677,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                 systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
               }`}
             >
-              <strong>Tasks sequences</strong> - Templating is part of Toolkit DNA. The construction planner can set and save task sequences in a library to speed up site planning.
+              <strong>{t.captions.taskSequences}</strong> - {t.captions.taskSequencesDesc}
             </figcaption>
           </figure>
 
@@ -1262,7 +1715,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                 systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
               }`}
             >
-              <strong>Planning v1</strong> - First planning canvas with colorful task card aesthetic. High visual weight worked well with 10-15 tasks but became overwhelming at 50-100+ tasks.
+              <strong>{t.captions.planningV1}</strong> - {t.captions.planningV1Desc}
             </figcaption>
           </figure>
 
@@ -1286,7 +1739,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
                 }`}
               >
-                <strong>Task component v1</strong> - Multiple sizes and variations for different display contexts.
+                <strong>{t.captions.taskComponentV1}</strong> - {t.captions.taskComponentV1Desc}
               </figcaption>
             </figure>
 
@@ -1308,7 +1761,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
                 }`}
               >
-                <strong>Task component v2</strong> - Refined system with four interaction states. Height reduced, colors desaturated, contrast improved.
+                <strong>{t.captions.taskComponentV2}</strong> - {t.captions.taskComponentV2Desc}
               </figcaption>
             </figure>
           </div>
@@ -1332,7 +1785,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                 systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
               }`}
             >
-              <strong>Planning v2</strong> - Planning canvas evolution with refined visual system. Multiple zones and 50+ tasks visible simultaneously without overwhelming interface.
+              <strong>{t.captions.planningV2}</strong> - {t.captions.planningV2Desc}
             </figcaption>
           </figure>
 
@@ -1356,7 +1809,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
                 }`}
               >
-                <strong>Multi-select</strong> - Rectangle drag enabling batch operations across zones and timeline.
+                <strong>{t.captions.multiSelect}</strong> - {t.captions.multiSelectDesc}
               </figcaption>
             </figure>
 
@@ -1378,7 +1831,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
                 }`}
               >
-                <strong>Context menu</strong> - Adapting to selected task with prioritized actions.
+                <strong>{t.captions.contextMenu}</strong> - {t.captions.contextMenuDesc}
               </figcaption>
             </figure>
 
@@ -1400,7 +1853,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
                 }`}
               >
-                <strong>Adaptive zoom</strong> - View controls toggling between day, week, month scales.
+                <strong>{t.captions.adaptiveZoom}</strong> - {t.captions.adaptiveZoomDesc}
               </figcaption>
             </figure>
           </div>
@@ -1441,7 +1894,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                 systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
               }`}
             >
-              <strong>Expand layout</strong> - Zoom in and out on the planning canvas for better focus.
+              <strong>{t.captions.expandLayout}</strong> - {t.captions.expandLayoutDesc}
             </figcaption>
           </figure>
         </section>
@@ -1460,14 +1913,14 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
               systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
             }`}
           >
-            Phase 2 - Feature expansion
+            {t.phase2.title}
           </h1>
           <p
             className={`text-base leading-relaxed mb-8 ${
               systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
             }`}
           >
-            With the foundation validated, Phase 2 focused on expanding capabilities while maintaining simplicity. We introduced a dynamic menu system that adapts to user context, reducing cognitive load and streamlining workflows. The challenge was adding power features without cluttering the interface.
+            {t.phase2.intro}
           </p>
 
           {/* Dynamic Menu */}
@@ -1476,7 +1929,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
               systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
             }`}
           >
-            Dynamic menu system
+            {t.phase2.dynamicMenu}
           </h2>
 
           <p
@@ -1484,7 +1937,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
               systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
             }`}
           >
-            The dynamic menu adapts to the current task context. When editing a task, relevant actions surface immediately. When viewing activity logs, filtering options take priority. This context-awareness reduces navigation steps and keeps users focused on their current workflow.
+            {t.phase2.dynamicMenuDesc}
           </p>
 
           <figure className="mb-12">
@@ -1505,7 +1958,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                 systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
               }`}
             >
-              <strong>Dynamic island menu</strong> - Contextual task modification with quick actions and status updates.
+              <strong>{t.captions.dynamicIsland}</strong> - {t.captions.dynamicIslandDesc}
             </figcaption>
           </figure>
 
@@ -1546,7 +1999,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                 systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
               }`}
             >
-              <strong>Task manipulation</strong> - Edit duration and task information on the fly.
+              <strong>{t.captions.taskManipulation}</strong> - {t.captions.taskManipulationDesc}
             </figcaption>
           </figure>
 
@@ -1587,7 +2040,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                 systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
               }`}
             >
-              <strong>Batch edition</strong> - Select a zone or multiple tasks on the canvas, apply parameters in 20 seconds.
+              <strong>{t.captions.batchEdition}</strong> - {t.captions.batchEditionDesc}
             </figcaption>
           </figure>
 
@@ -1609,7 +2062,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                 systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
               }`}
             >
-              <strong>Interface system</strong> - Component architecture for the dynamic menu, ensuring consistency across different contexts.
+              <strong>{t.captions.interfaceSystem}</strong> - {t.captions.interfaceSystemDesc}
             </figcaption>
           </figure>
 
@@ -1631,7 +2084,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                 systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
               }`}
             >
-              <strong>Activity section behavior</strong> - Task detail view with dynamic menu showing activity log and contextual actions.
+              <strong>{t.captions.activitySection}</strong> - {t.captions.activitySectionDesc}
             </figcaption>
           </figure>
         </section>
@@ -1650,14 +2103,14 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
               systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
             }`}
           >
-            Phase 3 - Platform maturity
+            {t.phase3.title}
           </h1>
           <p
             className={`text-base leading-relaxed mb-8 ${
               systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
             }`}
           >
-            Phase 3 brought platform maturity with the project hub and mobile evolution. Enterprise customers needed to manage multiple construction sites from a single dashboard. Field workers needed mobile access that matched the desktop experience. We delivered both without compromising either.
+            {t.phase3.intro}
           </p>
 
           {/* Project Hub */}
@@ -1666,7 +2119,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
               systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
             }`}
           >
-            Project hub
+            {t.phase3.projectHub}
           </h2>
 
           <p
@@ -1674,7 +2127,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
               systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
             }`}
           >
-            The project hub provides a bird's-eye view of all construction sites. Managers can quickly assess progress, identify bottlenecks, and drill into specific projects. Visual indicators surface urgent items without requiring deep navigation.
+            {t.phase3.projectHubDesc}
           </p>
 
           <figure className="mb-12">
@@ -1695,7 +2148,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                 systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
               }`}
             >
-              <strong>Project hub v3</strong> - Multi-site dashboard with progress indicators, quick actions, and filtering capabilities.
+              <strong>{t.captions.projectHubV3}</strong> - {t.captions.projectHubV3Desc}
             </figcaption>
           </figure>
 
@@ -1734,7 +2187,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                 systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
               }`}
             >
-              <strong>Mobile navigation evolution</strong> - Touch-optimized menu system with gesture support and thumb-friendly action zones.
+              <strong>{t.captions.mobileNav}</strong> - {t.captions.mobileNavDesc}
             </figcaption>
           </figure>
         </section>
@@ -1753,14 +2206,14 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
               systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
             }`}
           >
-            Design system foundation
+            {t.designSystem.title}
           </h1>
           <p
             className={`text-base leading-relaxed mb-8 ${
               systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
             }`}
           >
-            A three-person team cannot afford to redesign components for every feature. We built a design system that scaled with the product: reusable components, consistent patterns, and a shared visual language. This foundation enabled rapid iteration while maintaining quality.
+            {t.designSystem.intro}
           </p>
 
           <figure className="mb-12">
@@ -1781,7 +2234,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                 systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
               }`}
             >
-              <strong>Design system</strong> - Component library with tokens, patterns, and usage guidelines for consistent implementation.
+              <strong>{t.designSystem.ds}</strong> - {t.designSystem.dsDesc}
             </figcaption>
           </figure>
 
@@ -1803,7 +2256,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                 systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
               }`}
             >
-              <strong>Icon system</strong> - Custom icon set for files and folders, optimized for construction document management.
+              <strong>{t.designSystem.iconSystem}</strong> - {t.designSystem.iconSystemDesc}
             </figcaption>
           </figure>
         </section>
@@ -1822,14 +2275,14 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
               systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
             }`}
           >
-            Impact
+            {t.impact.title}
           </h1>
           <p
             className={`text-base leading-relaxed mb-8 ${
               systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
             }`}
           >
-            The design approach delivered measurable business results. By focusing on core workflows and progressive complexity, we created a product that both enterprise customers and small teams could adopt quickly. The numbers tell the story.
+            {t.impact.intro}
           </p>
 
           <figure className="mb-12">
@@ -1850,7 +2303,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                 systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
               }`}
             >
-              <strong>Project impact</strong> - Key metrics and milestones achieved over the 12-month product development cycle.
+              <strong>{t.impact.projectImpact}</strong> - {t.impact.projectImpactDesc}
             </figcaption>
           </figure>
 
@@ -1868,14 +2321,14 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                 }`}
               >
-                2,000+
+                {t.impact.customers}
               </p>
               <p
                 className={`text-sm ${
                   systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
                 }`}
               >
-                Paying customers within 24 months of launch
+                {t.impact.customersDesc}
               </p>
             </div>
 
@@ -1891,14 +2344,14 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                 }`}
               >
-                Series A
+                {t.impact.seriesA}
               </p>
               <p
                 className={`text-sm ${
                   systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
                 }`}
               >
-                Funding secured in November 2025
+                {t.impact.seriesADesc}
               </p>
             </div>
 
@@ -1914,14 +2367,14 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                 }`}
               >
-                Enterprise
+                {t.impact.enterprise}
               </p>
               <p
                 className={`text-sm ${
                   systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
                 }`}
               >
-                Customers managing 15+ sites adopted at launch
+                {t.impact.enterpriseDesc}
               </p>
             </div>
           </div>

@@ -4,21 +4,316 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform, PanInfo } from 'framer-motion';
 import {
-  ArrowLeft,
-  ExternalLink,
-  Sun,
-  Moon,
   ChevronRight,
   ChevronLeft,
   ChevronDown,
-  X
+  X,
+  ExternalLink
 } from 'lucide-react';
 
 interface DailymotionPageProps {
   onClose: () => void;
   systemTheme: 'light' | 'dark';
   onToggleTheme: () => void;
+  onOpenGallery?: () => void;
+  lang?: 'en' | 'fr';
 }
+
+// Translations for Dailymotion Case Study
+const DAILYMOTION_TRANSLATIONS = {
+  en: {
+    caseStudy: 'Case Study',
+    visitDailymotion: 'Visit Dailymotion',
+    projectGallery: 'Project Gallery',
+    contactVictor: 'Contact Victor for a similar project',
+    clickToZoom: 'Click to zoom',
+    clickToExitZoom: 'Click to exit zoom',
+    meta: {
+      type: 'Product Design',
+      scope: 'Platform Redesign',
+      period: '2019-2021',
+      company: 'Dailymotion',
+    },
+    nav: {
+      top: 'Top',
+      intro: 'Intro',
+      overview: 'Overview',
+      modules: 'Key Modules',
+      upload: 'Upload & Management',
+      live: 'Live Console',
+      player: 'Player Manager',
+      designSystem: 'Design System',
+    },
+    hero: {
+      role: 'Senior Product Designer',
+      scope: 'Media Management, Design System',
+      period: '2017-2018',
+      title: 'Empowering Dailymotion\'s Video Partners to Manage, Publish and Go Live with Confidence',
+      subtitle: 'Improved media management tools for video publishers',
+      description: 'Between 2017 and 2018, I was responsible for the UX and UI of Dailymotion\'s partner tool ecosystem. These web and mobile tools empowered over 30,000 content partners, including broadcasters and media publishers like France TV, CBS, and beIN Sports, to upload, edit, and livestream videos to their audiences.',
+    },
+    overview: {
+      title: 'Overview',
+      introTitle: 'Introduction',
+      introDesc: 'Dailymotion was undergoing a major strategic pivot, shifting from general consumer content to repositioning itself as a premium platform for media partners. While high-profile partners were onboard, the existing platform tools were outdated, clunky, and inconsistent, hindering professional use. Thousands of videos were uploaded daily, managed from a legacy backend.',
+      roleTitle: 'Role and scope',
+      roleDesc: 'As Senior Product Designer for the Partner Business Unit, my role was to co-lead the full redesign. Rebuild the experience into a real control center for media operators.',
+      goalsTitle: 'Strategic goals',
+      goals: [
+        'Rework the media manager experience upload, edition and distribution',
+        'Design a new Live Dashboard for video broadcasts',
+        'Rethink player and widget managers',
+        'Establish a scalable design infrastructure',
+      ],
+    },
+    modules: {
+      title: 'Key Modules',
+      intro: 'The Partner Space was reorganized around three primary workflows that partners use daily. Each module was designed to work independently while sharing common patterns from the design system.',
+      upload: {
+        title: 'Upload & Management',
+        desc: 'Redesigned upload to publication experience with batch processing and inline editing.',
+      },
+      live: {
+        title: 'Live Console',
+        desc: 'Real-time monitoring interface for live video streams with clear status indicators.',
+      },
+      player: {
+        title: 'Player Manager',
+        desc: 'Visual customization tools for embed players and playback behaviors.',
+      },
+    },
+    upload: {
+      title: 'Upload & Video Management',
+      intro: 'Video upload is the most frequent action in Partner Space. The redesign focused on reducing friction, supporting batch operations, and providing clear feedback throughout the process.',
+      batchUpload: 'Batch upload interface',
+      batchUploadDesc: 'Supports parallel uploads with real-time feedback. Editors can edit metadata, geoblocking, and scheduling while encoding runs.',
+      interactions: 'Key interactions',
+      interactionsDesc: 'Smooth microinteractions provide immediate feedback for actions like cancellation, thumbnail updates, and subtitle uploads.',
+      videoManager: 'Video library',
+      videoManagerDesc: 'Displays bulk media management with status indicators and batch actions. Each video card shows privacy state, timestamp, view count, and duration overlay.',
+      embedShare: 'Share & embed',
+      embedShareDesc: 'Expanded share modal reveals full embed customization options with auto-generated iframe code that updates dynamically.',
+    },
+    live: {
+      title: 'Live Streaming Console',
+      intro: 'Live streaming requires confidence. Broadcasters need to know their stream is working, viewers are watching, and technical issues are visible. The redesigned console provides at-a-glance status with detailed metrics on demand.',
+      countdown: 'Pre-broadcast countdown',
+      countdownDesc: 'Displays scheduled start time with OFF AIR badge. The persistent Share button enables promotional distribution before stream begins.',
+      dashboard: 'Live dashboard',
+      dashboardDesc: 'Monitors active broadcasts with real-time technical metrics and viewer count. The preview pane displays current stream frame with persistent LIVE badge.',
+    },
+    player: {
+      title: 'Player Manager',
+      intro: 'Partners embed Dailymotion players across their websites. The Player Manager lets them customize appearance and behavior without code, while providing copy-ready embed snippets.',
+      configurator: 'Player template configurator',
+      configuratorDesc: 'Define appearance, assign content, retrieve embed code - all in one place.',
+    },
+    designSystem: {
+      title: 'Design System',
+      intro: 'A design system was essential to maintain consistency across modules developed by different teams. The system defined tokens, components, and patterns used throughout Partner Space.',
+      styles: 'Styles foundation',
+      stylesDesc: 'Color, typography, and spacing tokens ensure visual coherence across the product suite.',
+      components: 'Component library',
+      componentsDesc: 'Reusable UI components with variants and states for scalable development.',
+    },
+    metaLabels: {
+      type: 'Type',
+      scope: 'Scope',
+      period: 'Period',
+      company: 'Company',
+    },
+    captions: {
+      videoManagement: 'Video Management Workflows',
+      videoManagementDesc: 'Redesigned the full video management experience, from upload to publication. Introduced batch processing, inline editing, and contextual sharing actions.',
+      liveDashboard: 'Live Dashboard',
+      liveDashboardDesc: 'Designed the creation and monitoring interface for live video streams, ensuring real-time stats and clarity in a complex, high-pressure environment.',
+      playerManager: 'Player Manager',
+      playerManagerDesc: 'Redesigned the visual customization tools for embed players, allowing partners to define player themes and manage playback behaviors.',
+      batchUpload: 'Batch upload',
+      batchUploadDesc: 'Parallel uploads with real-time feedback. Editors can edit metadata, geoblocking, and scheduling while encoding runs. Reduces clip preparation time by 50%.',
+      cancelUpload: 'Cancel Upload',
+      cancelUploadDesc: 'Smooth cancellation flow with visual feedback.',
+      thumbnailUpdate: 'Thumbnail update',
+      thumbnailUpdateDesc: 'Upload an image and update video preview thumbnail instantly.',
+      addSubtitles: 'Add subtitles',
+      addSubtitlesDesc: 'Streamlined subtitle upload workflow.',
+      videoLibrary: 'Video library',
+      videoLibraryDesc: 'Bulk media management with status indicators and batch actions. Each video card shows privacy state, timestamp, view count, and duration overlay. Multi-select checkboxes enable batch operations on hundreds of videos.',
+      embedCode: 'Embed code',
+      embedCodeDesc: 'Input copy interaction and user feedback.',
+      timePicker: 'Time picker',
+      timePickerDesc: '12/24H switch interaction.',
+      passwordProtection: 'Password protection',
+      passwordProtectionDesc: 'Secure video access workflow.',
+      geoblocking: 'Geoblocking',
+      geoblockingDesc: 'Allow/Block video broadcasts in certain locations.',
+      shareModal: 'Share modal',
+      shareModalDesc: 'Full embed customization options with auto-generated iframe code that updates dynamically. Progressive disclosure keeps simple sharing lightweight while offering technical control.',
+      keyboardMapping: 'Keyboard mapping',
+      keyboardMappingDesc: 'Share modal specifications.',
+      startTimeInput: 'Start time input',
+      startTimeInputDesc: 'Keyboard input specifications.',
+      addToPlaylist: 'Add to playlist',
+      addToPlaylistDesc: 'Streamlined playlist management flow.',
+      preBroadcast: 'Pre-broadcast countdown',
+      preBroadcastDesc: 'Displays scheduled start time with OFF AIR badge. The persistent Share button enables promotional distribution before stream begins.',
+      liveMonitor: 'Live dashboard',
+      liveMonitorDesc: 'Monitors active broadcasts with real-time technical metrics and viewer count. The preview pane displays current stream frame with persistent LIVE badge and elapsed time. The right panel surfaces critical encoding parameters enabling technical operators to diagnose stream quality issues during high-pressure live events.',
+      playerConfigurator: 'Player template configurator',
+      playerConfiguratorDesc: 'Define appearance, assign content, retrieve embed code. Speed and control for editors managing dozens of templates.',
+      uiKitStyles: 'UI Kit - Styles',
+      uiKitStylesDesc: 'Foundation for coherent product suite across all partner tools.',
+      uiKitComponents: 'UI Kit - Components',
+      uiKitComponentsDesc: 'Scalable component library for consistent development.',
+    },
+  },
+  fr: {
+    caseStudy: 'Étude de cas',
+    visitDailymotion: 'Visiter Dailymotion',
+    projectGallery: 'Galerie du projet',
+    contactVictor: 'Contacter Victor pour un projet similaire',
+    clickToZoom: 'Cliquer pour agrandir',
+    clickToExitZoom: 'Cliquer pour fermer',
+    meta: {
+      type: 'Design Produit',
+      scope: 'Refonte Plateforme',
+      period: '2019-2021',
+      company: 'Dailymotion',
+    },
+    nav: {
+      top: 'Haut',
+      intro: 'Intro',
+      overview: 'Vue d\'ensemble',
+      modules: 'Modules clés',
+      upload: 'Upload & Gestion',
+      live: 'Console Live',
+      player: 'Gestionnaire Player',
+      designSystem: 'Design System',
+    },
+    hero: {
+      role: 'Senior Product Designer',
+      scope: 'Gestion Média, Design System',
+      period: '2017-2018',
+      title: 'Permettre aux partenaires vidéo de Dailymotion de gérer, publier et diffuser en live en toute confiance',
+      subtitle: 'Outils de gestion média améliorés pour les éditeurs vidéo',
+      description: 'Entre 2017 et 2018, j\'étais responsable de l\'UX et UI de l\'écosystème d\'outils partenaires de Dailymotion. Ces outils web et mobile ont permis à plus de 30 000 partenaires de contenu, incluant des diffuseurs et éditeurs médias comme France TV, CBS et beIN Sports, d\'uploader, éditer et diffuser des vidéos en live à leurs audiences.',
+    },
+    overview: {
+      title: 'Vue d\'ensemble',
+      introTitle: 'Introduction',
+      introDesc: 'Dailymotion était en plein pivot stratégique majeur, passant du contenu grand public à un repositionnement comme plateforme premium pour les partenaires médias. Bien que des partenaires de renom soient déjà à bord, les outils de la plateforme existante étaient obsolètes, peu ergonomiques et incohérents, freinant l\'usage professionnel. Des milliers de vidéos étaient uploadées quotidiennement, gérées depuis un backend legacy.',
+      roleTitle: 'Rôle et périmètre',
+      roleDesc: 'En tant que Senior Product Designer pour la Business Unit Partner, mon rôle était de co-piloter la refonte complète. Reconstruire l\'expérience en un véritable centre de contrôle pour les opérateurs médias.',
+      goalsTitle: 'Objectifs stratégiques',
+      goals: [
+        'Repenser l\'expérience du gestionnaire média : upload, édition et distribution',
+        'Concevoir un nouveau Dashboard Live pour les diffusions vidéo',
+        'Repenser les gestionnaires de player et de widgets',
+        'Établir une infrastructure design scalable',
+      ],
+    },
+    modules: {
+      title: 'Modules clés',
+      intro: 'Le Partner Space a été réorganisé autour de trois workflows principaux que les partenaires utilisent quotidiennement. Chaque module a été conçu pour fonctionner indépendamment tout en partageant des patterns communs du design system.',
+      upload: {
+        title: 'Upload & Gestion',
+        desc: 'Expérience d\'upload vers publication repensée avec traitement par lot et édition inline.',
+      },
+      live: {
+        title: 'Console Live',
+        desc: 'Interface de monitoring temps réel pour les streams vidéo live avec indicateurs de statut clairs.',
+      },
+      player: {
+        title: 'Gestionnaire Player',
+        desc: 'Outils de personnalisation visuelle pour les players embed et les comportements de lecture.',
+      },
+    },
+    upload: {
+      title: 'Upload & Gestion Vidéo',
+      intro: 'L\'upload vidéo est l\'action la plus fréquente dans Partner Space. La refonte s\'est concentrée sur la réduction des frictions, le support des opérations par lot, et la fourniture d\'un feedback clair tout au long du processus.',
+      batchUpload: 'Interface d\'upload par lot',
+      batchUploadDesc: 'Supporte les uploads parallèles avec feedback en temps réel. Les éditeurs peuvent modifier les métadonnées, le geoblocking et la programmation pendant l\'encodage.',
+      interactions: 'Interactions clés',
+      interactionsDesc: 'Des microinteractions fluides fournissent un retour immédiat pour des actions comme l\'annulation, les mises à jour de vignettes et les uploads de sous-titres.',
+      videoManager: 'Bibliothèque vidéo',
+      videoManagerDesc: 'Affiche la gestion de médias en masse avec indicateurs de statut et actions par lot. Chaque carte vidéo montre l\'état de confidentialité, l\'horodatage, le nombre de vues et la durée.',
+      embedShare: 'Partage & embed',
+      embedShareDesc: 'Le modal de partage étendu révèle les options complètes de personnalisation de l\'embed avec un code iframe auto-généré qui se met à jour dynamiquement.',
+    },
+    live: {
+      title: 'Console de Streaming Live',
+      intro: 'Le streaming live demande de la confiance. Les diffuseurs ont besoin de savoir que leur stream fonctionne, que les viewers regardent, et que les problèmes techniques sont visibles. La console repensée fournit un statut d\'un coup d\'œil avec des métriques détaillées à la demande.',
+      countdown: 'Compte à rebours pré-diffusion',
+      countdownDesc: 'Affiche l\'heure de démarrage programmée avec un badge OFF AIR. Le bouton Partager persistant permet la distribution promotionnelle avant le début du stream.',
+      dashboard: 'Dashboard live',
+      dashboardDesc: 'Surveille les diffusions actives avec des métriques techniques en temps réel et le nombre de viewers. Le panneau de prévisualisation affiche l\'image actuelle du stream avec un badge LIVE persistant.',
+    },
+    player: {
+      title: 'Gestionnaire de Player',
+      intro: 'Les partenaires intègrent les players Dailymotion sur leurs sites web. Le Gestionnaire de Player leur permet de personnaliser l\'apparence et le comportement sans code, tout en fournissant des snippets d\'embed prêts à copier.',
+      configurator: 'Configurateur de template player',
+      configuratorDesc: 'Définir l\'apparence, assigner le contenu, récupérer le code embed - tout en un seul endroit.',
+    },
+    designSystem: {
+      title: 'Design System',
+      intro: 'Un design system était essentiel pour maintenir la cohérence entre les modules développés par différentes équipes. Le système définissait les tokens, composants et patterns utilisés dans tout le Partner Space.',
+      styles: 'Fondation des styles',
+      stylesDesc: 'Les tokens de couleur, typographie et espacement assurent la cohérence visuelle à travers la suite produit.',
+      components: 'Bibliothèque de composants',
+      componentsDesc: 'Composants UI réutilisables avec variantes et états pour un développement scalable.',
+    },
+    metaLabels: {
+      type: 'Type',
+      scope: 'Périmètre',
+      period: 'Période',
+      company: 'Entreprise',
+    },
+    captions: {
+      videoManagement: 'Workflows de gestion vidéo',
+      videoManagementDesc: 'Refonte complète de l\'expérience de gestion vidéo, de l\'upload à la publication. Introduction du traitement par lot, de l\'édition inline et des actions de partage contextuelles.',
+      liveDashboard: 'Dashboard Live',
+      liveDashboardDesc: 'Conception de l\'interface de création et monitoring pour les streams vidéo live, assurant des stats en temps réel et de la clarté dans un environnement complexe et sous pression.',
+      playerManager: 'Gestionnaire de Player',
+      playerManagerDesc: 'Refonte des outils de personnalisation visuelle pour les players embed, permettant aux partenaires de définir des thèmes et gérer les comportements de lecture.',
+      batchUpload: 'Upload par lot',
+      batchUploadDesc: 'Uploads parallèles avec feedback en temps réel. Les éditeurs peuvent modifier les métadonnées, le geoblocking et la programmation pendant l\'encodage. Réduit le temps de préparation de 50%.',
+      cancelUpload: 'Annuler l\'upload',
+      cancelUploadDesc: 'Flux d\'annulation fluide avec retour visuel.',
+      thumbnailUpdate: 'Mise à jour vignette',
+      thumbnailUpdateDesc: 'Uploader une image et mettre à jour la vignette de prévisualisation instantanément.',
+      addSubtitles: 'Ajouter des sous-titres',
+      addSubtitlesDesc: 'Workflow d\'upload de sous-titres simplifié.',
+      videoLibrary: 'Bibliothèque vidéo',
+      videoLibraryDesc: 'Gestion média en masse avec indicateurs de statut et actions par lot. Chaque carte vidéo affiche l\'état de confidentialité, l\'horodatage, le nombre de vues et la durée. Les cases multi-sélection permettent des opérations par lot sur des centaines de vidéos.',
+      embedCode: 'Code embed',
+      embedCodeDesc: 'Interaction de copie et retour utilisateur.',
+      timePicker: 'Sélecteur d\'heure',
+      timePickerDesc: 'Interaction de switch 12/24H.',
+      passwordProtection: 'Protection par mot de passe',
+      passwordProtectionDesc: 'Workflow d\'accès vidéo sécurisé.',
+      geoblocking: 'Geoblocking',
+      geoblockingDesc: 'Autoriser/Bloquer les diffusions vidéo dans certaines zones.',
+      shareModal: 'Modal de partage',
+      shareModalDesc: 'Options complètes de personnalisation embed avec code iframe auto-généré qui se met à jour dynamiquement. La divulgation progressive garde le partage simple léger tout en offrant un contrôle technique.',
+      keyboardMapping: 'Mapping clavier',
+      keyboardMappingDesc: 'Spécifications du modal de partage.',
+      startTimeInput: 'Input heure de début',
+      startTimeInputDesc: 'Spécifications de saisie clavier.',
+      addToPlaylist: 'Ajouter à la playlist',
+      addToPlaylistDesc: 'Flux de gestion de playlist simplifié.',
+      preBroadcast: 'Compte à rebours pré-diffusion',
+      preBroadcastDesc: 'Affiche l\'heure de démarrage programmée avec un badge OFF AIR. Le bouton Partager persistant permet la distribution promotionnelle avant le début du stream.',
+      liveMonitor: 'Dashboard live',
+      liveMonitorDesc: 'Surveille les diffusions actives avec des métriques techniques en temps réel et le nombre de viewers. Le panneau de prévisualisation affiche l\'image actuelle du stream avec badge LIVE persistant et temps écoulé. Le panneau droit expose les paramètres d\'encodage critiques permettant aux opérateurs techniques de diagnostiquer les problèmes de qualité de stream pendant les événements live sous pression.',
+      playerConfigurator: 'Configurateur de template player',
+      playerConfiguratorDesc: 'Définir l\'apparence, assigner le contenu, récupérer le code embed. Rapidité et contrôle pour les éditeurs gérant des dizaines de templates.',
+      uiKitStyles: 'UI Kit - Styles',
+      uiKitStylesDesc: 'Fondation pour une suite produit cohérente à travers tous les outils partenaires.',
+      uiKitComponents: 'UI Kit - Composants',
+      uiKitComponentsDesc: 'Bibliothèque de composants scalable pour un développement cohérent.',
+    },
+  },
+};
 
 // Navigation sections configuration
 const sections = [
@@ -89,8 +384,11 @@ const slideVariants = {
 export const DailymotionPage: React.FC<DailymotionPageProps> = ({
   onClose,
   systemTheme,
-  onToggleTheme
+  onToggleTheme,
+  onOpenGallery,
+  lang = 'en'
 }) => {
+  const t = DAILYMOTION_TRANSLATIONS[lang];
   const [activeSection, setActiveSection] = useState('hero');
   const [isMobileNavExpanded, setIsMobileNavExpanded] = useState(false);
   const [showNav, setShowNav] = useState(false);
@@ -232,12 +530,12 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
             }`}
           >
             {/* Collapsed state - shows current section */}
-            <div className="mx-auto px-4 md:px-6" style={{ maxWidth: '1480px' }}>
+            <div className="max-w-6xl mx-auto px-4 md:px-6">
               <button
                 onClick={() => setIsMobileNavExpanded(!isMobileNavExpanded)}
                 className="w-full py-4 flex items-center justify-between"
               >
-              <div className="flex items-center gap-2 ml-10">
+              <div className="flex items-center gap-2">
                 <div className={`w-2 h-2 rounded-full bg-blue-600`} />
                 <span
                   className={`text-sm font-medium ${
@@ -268,7 +566,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                   transition={{ duration: 0.2 }}
                   className="overflow-hidden"
                 >
-                  <div className={`pb-3 space-y-1 border-t ml-10 ${
+                  <div className={`pb-3 space-y-1 border-t ${
                     systemTheme === 'dark' ? 'border-white/5' : 'border-gray-100'
                   }`}>
                     {sections.map((section) => {
@@ -328,8 +626,51 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
             : 'bg-white/80 border-gray-200'
         }`}
       >
-        <div className="mx-auto px-4 md:px-6 py-4 flex items-center justify-between" style={{ maxWidth: '1480px' }}>
-          <div className="flex items-center space-x-4">
+        <div className="max-w-6xl mx-auto px-4 md:px-6 py-4 flex items-center justify-between">
+          {/* Left - Title */}
+          <div className="flex-1">
+            <h1
+              className={`text-lg md:text-xl font-bold ${
+                systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+              }`}
+            >
+              Dailymotion
+            </h1>
+          </div>
+
+          {/* Center - Toggle Switch */}
+          {onOpenGallery && (
+            <div className="flex-1 flex justify-center">
+              <div
+                className={`inline-flex rounded-full p-1 ${
+                  systemTheme === 'dark' ? 'bg-white/10' : 'bg-gray-100'
+                }`}
+              >
+                <button
+                  className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                    systemTheme === 'dark'
+                      ? 'bg-white text-gray-900'
+                      : 'bg-white text-gray-900 shadow-sm'
+                  }`}
+                >
+                  {t.caseStudy}
+                </button>
+                <button
+                  onClick={onOpenGallery}
+                  className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                    systemTheme === 'dark'
+                      ? 'text-gray-400 hover:text-white'
+                      : 'text-gray-500 hover:text-gray-900'
+                  }`}
+                >
+                  {t.projectGallery}
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Right - Close button only */}
+          <div className="flex-1 flex justify-end">
             <button
               onClick={onClose}
               className={`p-2 rounded-full transition-colors ${
@@ -338,53 +679,8 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                   : 'hover:bg-gray-100 text-gray-600'
               }`}
             >
-              <ArrowLeft size={24} />
+              <X size={24} />
             </button>
-            <div>
-              <h1
-                className={`text-lg md:text-xl font-bold ${
-                  systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                }`}
-              >
-                Dailymotion
-              </h1>
-              <p
-                className={`text-sm ${
-                  systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                }`}
-              >
-                Case Study
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-center space-x-2">
-            {/* Theme toggle */}
-            <button
-              onClick={onToggleTheme}
-              className={`p-2 rounded-full transition-colors ${
-                systemTheme === 'dark'
-                  ? 'hover:bg-white/10 text-gray-300'
-                  : 'hover:bg-gray-100 text-gray-600'
-              }`}
-            >
-              {systemTheme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
-            </button>
-
-            {/* External link */}
-            <a
-              href="https://www.dailymotion.com/partner"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`p-2 rounded-full transition-colors ${
-                systemTheme === 'dark'
-                  ? 'hover:bg-white/10 text-gray-300'
-                  : 'hover:bg-gray-100 text-gray-600'
-              }`}
-              title="Visit Dailymotion Partner"
-            >
-              <ExternalLink size={20} />
-            </a>
           </div>
         </div>
       </header>
@@ -586,7 +882,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
       </AnimatePresence>
 
       {/* Content */}
-      <div className="mx-auto px-4 md:px-6 py-12 md:py-16" style={{ maxWidth: '960px' }}>
+      <div className="max-w-6xl mx-auto px-4 md:px-6 py-12 md:py-16">
         <div>
           {/* Main Content */}
           <main className="w-full">
@@ -596,19 +892,19 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                 {/* Meta tags */}
                 <div className="flex flex-wrap gap-2 mb-4">
                   <span className={`text-sm ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
-                    Senior Product Designer
+                    {t.hero.role}
                   </span>
                   <span className={`text-sm ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
                     -
                   </span>
                   <span className={`text-sm ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
-                    Media Management, Design System
+                    {t.hero.scope}
                   </span>
                   <span className={`text-sm ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
                     -
                   </span>
                   <span className={`text-sm ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
-                    2017-2018
+                    {t.hero.period}
                   </span>
                 </div>
 
@@ -618,7 +914,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                     systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                   }`}
                 >
-                  Empowering Dailymotion's Video Partners to Manage, Publish and Go Live with Confidence
+                  {t.hero.title}
                 </h1>
 
                 {/* Subtitle */}
@@ -627,17 +923,32 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                     systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-700'
                   }`}
                 >
-                  Improved media management tools for video publishers
+                  {t.hero.subtitle}
                 </h2>
 
                 {/* Description */}
                 <p
-                  className={`text-base leading-relaxed ${
+                  className={`text-base leading-relaxed mb-6 ${
                     systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
                   }`}
                 >
-                  Between 2017 and 2018, I was responsible for the UX and UI of Dailymotion's partner tool ecosystem. These web and mobile tools empowered over 30,000 content partners, including broadcasters and media publishers like France TV, CBS, and beIN Sports, to upload, edit, and livestream videos to their audiences.
+                  {t.hero.description}
                 </p>
+
+                {/* Visit Website Button */}
+                <a
+                  href="https://www.dailymotion.com/partner"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                    systemTheme === 'dark'
+                      ? 'bg-white/10 hover:bg-white/20 text-white'
+                      : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                  }`}
+                >
+                  <ExternalLink size={16} className="mr-2" />
+                  {t.visitDailymotion}
+                </a>
               </div>
             </section>
 
@@ -664,7 +975,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                   systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                 }`}
               >
-                Overview
+                {t.overview.title}
               </h1>
               <hr
                 className={`mb-8 ${
@@ -680,14 +991,14 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                       systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                     }`}
                   >
-                    Introduction
+                    {t.overview.introTitle}
                   </h2>
                   <p
                     className={`text-sm leading-relaxed ${
                       systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
                     }`}
                   >
-                    Dailymotion was undergoing a major strategic pivot, shifting from general consumer content to repositioning itself as a premium platform for media partners. While high-profile partners were onboard, the existing platform tools were outdated, clunky, and inconsistent, hindering professional use. Thousands of videos were uploaded daily, managed from a legacy backend.
+                    {t.overview.introDesc}
                   </p>
                 </div>
 
@@ -698,14 +1009,14 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                       systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                     }`}
                   >
-                    Role and scope
+                    {t.overview.roleTitle}
                   </h2>
                   <p
                     className={`text-sm leading-relaxed ${
                       systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
                     }`}
                   >
-                    As Senior Product Designer for the Partner Business Unit, my role was to co-lead the full redesign. Rebuild the experience into a real control center for media operators.
+                    {t.overview.roleDesc}
                   </p>
                 </div>
 
@@ -716,17 +1027,16 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                       systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                     }`}
                   >
-                    Strategic goals
+                    {t.overview.goalsTitle}
                   </h2>
                   <ul
                     className={`text-sm leading-relaxed space-y-2 ${
                       systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
                     }`}
                   >
-                    <li>- Rework the media manager experience upload, edition and distribution</li>
-                    <li>- Design a new Live Dashboard for video broadcasts</li>
-                    <li>- Rethink player and widget managers</li>
-                    <li>- Establish a scalable design infrastructure</li>
+                    {t.overview.goals.map((goal, idx) => (
+                      <li key={idx}>- {goal}</li>
+                    ))}
                   </ul>
                 </div>
               </div>
@@ -762,7 +1072,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                       systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
                     }`}
                   >
-                    <strong>Video Management Workflows</strong> - Redesigned the full video management experience, from upload to publication. Introduced batch processing, inline editing, and contextual sharing actions.
+                    <strong>{t.captions.videoManagement}</strong> - {t.captions.videoManagementDesc}
                   </figcaption>
                 </figure>
 
@@ -785,7 +1095,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                       systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
                     }`}
                   >
-                    <strong>Live Dashboard</strong> - Designed the creation and monitoring interface for live video streams, ensuring real-time stats and clarity in a complex, high-pressure environment.
+                    <strong>{t.captions.liveDashboard}</strong> - {t.captions.liveDashboardDesc}
                   </figcaption>
                 </figure>
 
@@ -808,7 +1118,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                       systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
                     }`}
                   >
-                    <strong>Player Manager</strong> - Redesigned the visual customization tools for embed players, allowing partners to define player themes and manage playback behaviors.
+                    <strong>{t.captions.playerManager}</strong> - {t.captions.playerManagerDesc}
                   </figcaption>
                 </figure>
               </div>
@@ -875,7 +1185,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                       systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
                     }`}
                   >
-                    <strong>Batch upload</strong> - Parallel uploads with real-time feedback. Editors can edit metadata, geoblocking, and scheduling while encoding runs. Reduces clip preparation time by 50%.
+                    <strong>{t.captions.batchUpload}</strong> - {t.captions.batchUploadDesc}
                   </figcaption>
                 </figure>
 
@@ -900,7 +1210,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                       systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
                     }`}
                   >
-                    <strong>Cancel Upload</strong> - Smooth cancellation flow with visual feedback.
+                    <strong>{t.captions.cancelUpload}</strong> - {t.captions.cancelUploadDesc}
                   </figcaption>
                 </figure>
               </div>
@@ -927,7 +1237,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                       systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
                     }`}
                   >
-                    <strong>Thumbnail update</strong> - Upload an image and update video preview thumbnail instantly.
+                    <strong>{t.captions.thumbnailUpdate}</strong> - {t.captions.thumbnailUpdateDesc}
                   </figcaption>
                 </figure>
 
@@ -952,7 +1262,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                       systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
                     }`}
                   >
-                    <strong>Add subtitles</strong> - Streamlined subtitle upload workflow.
+                    <strong>{t.captions.addSubtitles}</strong> - {t.captions.addSubtitlesDesc}
                   </figcaption>
                 </figure>
               </div>
@@ -992,7 +1302,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                     systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
                   }`}
                 >
-                  <strong>Video library</strong> - Bulk media management with status indicators and batch actions. Each video card shows privacy state, timestamp, view count, and duration overlay. Multi-select checkboxes enable batch operations on hundreds of videos.
+                  <strong>{t.captions.videoLibrary}</strong> - {t.captions.videoLibraryDesc}
                 </figcaption>
               </figure>
 
@@ -1019,7 +1329,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                       systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
                     }`}
                   >
-                    <strong>Embed code</strong> - Input copy interaction and user feedback.
+                    <strong>{t.captions.embedCode}</strong> - {t.captions.embedCodeDesc}
                   </figcaption>
                 </figure>
 
@@ -1044,7 +1354,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                       systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
                     }`}
                   >
-                    <strong>Time picker</strong> - 12/24H switch interaction.
+                    <strong>{t.captions.timePicker}</strong> - {t.captions.timePickerDesc}
                   </figcaption>
                 </figure>
               </div>
@@ -1071,7 +1381,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                       systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
                     }`}
                   >
-                    <strong>Password protection</strong> - Secure video access workflow.
+                    <strong>{t.captions.passwordProtection}</strong> - {t.captions.passwordProtectionDesc}
                   </figcaption>
                 </figure>
 
@@ -1096,7 +1406,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                       systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
                     }`}
                   >
-                    <strong>Geoblocking</strong> - Allow/Block video broadcasts in certain locations.
+                    <strong>{t.captions.geoblocking}</strong> - {t.captions.geoblockingDesc}
                   </figcaption>
                 </figure>
               </div>
@@ -1120,7 +1430,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                     systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
                   }`}
                 >
-                  <strong>Share modal</strong> - Full embed customization options with auto-generated iframe code that updates dynamically. Progressive disclosure keeps simple sharing lightweight while offering technical control.
+                  <strong>{t.captions.shareModal}</strong> - {t.captions.shareModalDesc}
                 </figcaption>
               </figure>
 
@@ -1144,7 +1454,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                       systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
                     }`}
                   >
-                    <strong>Keyboard mapping</strong> - Share modal specifications.
+                    <strong>{t.captions.keyboardMapping}</strong> - {t.captions.keyboardMappingDesc}
                   </figcaption>
                 </figure>
 
@@ -1166,7 +1476,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                       systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
                     }`}
                   >
-                    <strong>Start time input</strong> - Keyboard input specifications.
+                    <strong>{t.captions.startTimeInput}</strong> - {t.captions.startTimeInputDesc}
                   </figcaption>
                 </figure>
               </div>
@@ -1190,7 +1500,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                     systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
                   }`}
                 >
-                  <strong>Add to playlist</strong> - Streamlined playlist management flow.
+                  <strong>{t.captions.addToPlaylist}</strong> - {t.captions.addToPlaylistDesc}
                 </figcaption>
               </figure>
             </section>
@@ -1247,7 +1557,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                     systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
                   }`}
                 >
-                  <strong>Pre-broadcast countdown</strong> - Displays scheduled start time with OFF AIR badge. The persistent Share button enables promotional distribution before stream begins.
+                  <strong>{t.captions.preBroadcast}</strong> - {t.captions.preBroadcastDesc}
                 </figcaption>
               </figure>
 
@@ -1270,7 +1580,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                     systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
                   }`}
                 >
-                  <strong>Live dashboard</strong> - Monitors active broadcasts with real-time technical metrics and viewer count. The preview pane displays current stream frame with persistent LIVE badge and elapsed time. The right panel surfaces critical encoding parameters enabling technical operators to diagnose stream quality issues during high-pressure live events.
+                  <strong>{t.captions.liveMonitor}</strong> - {t.captions.liveMonitorDesc}
                 </figcaption>
               </figure>
             </section>
@@ -1327,7 +1637,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                     systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
                   }`}
                 >
-                  <strong>Player template configurator</strong> - Define appearance, assign content, retrieve embed code. Speed and control for editors managing dozens of templates.
+                  <strong>{t.captions.playerConfigurator}</strong> - {t.captions.playerConfiguratorDesc}
                 </figcaption>
               </figure>
             </section>
@@ -1376,7 +1686,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                       systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
                     }`}
                   >
-                    <strong>UI Kit - Styles</strong> - Foundation for coherent product suite across all partner tools.
+                    <strong>{t.captions.uiKitStyles}</strong> - {t.captions.uiKitStylesDesc}
                   </figcaption>
                 </figure>
 
@@ -1398,7 +1708,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                       systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
                     }`}
                   >
-                    <strong>UI Kit - Components</strong> - Scalable component library for consistent development.
+                    <strong>{t.captions.uiKitComponents}</strong> - {t.captions.uiKitComponentsDesc}
                   </figcaption>
                 </figure>
               </div>
