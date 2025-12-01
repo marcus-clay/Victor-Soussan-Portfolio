@@ -11,8 +11,10 @@ import {
   Briefcase,
   Layers,
   Sun,
-  Moon
+  Moon,
+  Rocket
 } from 'lucide-react';
+import { ArrowsClockwise } from '@phosphor-icons/react';
 import { fetchNotionPageWithCache, NotionPage, NOTION_PAGES, clearPageCache } from './notionService';
 import NotionRenderer from './NotionRenderer';
 
@@ -265,7 +267,12 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   systemTheme === 'dark' ? 'bg-orange-500/20' : 'bg-orange-50'
                 }`}
               >
-                <span className="text-lg">🚀</span>
+                <Rocket
+                  size={20}
+                  className={
+                    systemTheme === 'dark' ? 'text-orange-400' : 'text-orange-600'
+                  }
+                />
               </div>
               <div>
                 <p
@@ -347,7 +354,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                 systemTheme === 'dark' ? 'text-gray-500' : 'text-gray-400'
               }`}
             >
-              ✨ Synced from Notion • Click refresh to update
+              Synced from Notion - Click refresh to update
             </p>
           </div>
         )}

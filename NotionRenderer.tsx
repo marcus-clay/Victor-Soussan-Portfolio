@@ -3,7 +3,7 @@
 
 import React from 'react';
 import { NotionBlock, RichText, extractPlainText } from './notionService';
-import { Quote } from 'lucide-react';
+import { Quote, Info, AlertCircle, Lightbulb, CheckCircle } from 'lucide-react';
 
 interface NotionRendererProps {
   blocks: NotionBlock[];
@@ -268,17 +268,12 @@ const BlockRenderer: React.FC<BlockRendererProps> = ({ block, systemTheme }) => 
           }`}
         >
           <div className="flex items-start">
-            {block.callout?.icon?.emoji && (
-              <span className="text-2xl mr-3">{block.callout.icon.emoji}</span>
-            )}
-            {!block.callout?.icon && (
-              <Quote
-                size={20}
-                className={`mr-3 mt-1 flex-shrink-0 ${
-                  systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                }`}
-              />
-            )}
+            <Info
+              size={20}
+              className={`mr-3 mt-1 flex-shrink-0 ${
+                systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+              }`}
+            />
             <div className="flex-1">
               <RichTextRenderer
                 richText={block.callout?.rich_text}
