@@ -22,6 +22,7 @@ interface DailymotionPageProps {
 
 // Navigation sections configuration
 const sections = [
+  { id: 'top', label: 'Top', shortLabel: '' },
   { id: 'hero', label: 'Intro', shortLabel: '' },
   { id: 'overview', label: 'Overview', shortLabel: 'OV' },
   { id: 'modules', label: 'Key Modules', shortLabel: 'KM' },
@@ -136,12 +137,16 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
     return () => container.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Scroll to section with proper offset for header + mobile nav
+  // Scroll to section with proper offset for header + sticky mini-nav
   const scrollToSection = (sectionId: string) => {
+    if (sectionId === 'top') {
+      containerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
     const element = document.getElementById(sectionId);
     if (element && containerRef.current) {
-      const isMobile = window.innerWidth < 768;
-      const headerOffset = isMobile ? 73 + 48 + 16 : 73 + 24;
+      // Header height (73px) + sticky mini-nav height (~56px with py-4) + padding (24px)
+      const headerOffset = 73 + 56 + 24;
       const elementPosition = element.offsetTop - headerOffset;
       containerRef.current.scrollTo({
         top: elementPosition,
@@ -212,7 +217,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
         systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white'
       }`}
     >
-      {/* Mobile Navigation - Sticky under header */}
+      {/* Sticky Mini-Nav - All screen sizes */}
       <AnimatePresence>
         {showNav && (
           <motion.div
@@ -220,19 +225,20 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className={`fixed top-[73px] left-0 right-0 z-30 md:hidden border-b ${
+            className={`fixed top-[73px] left-0 right-0 z-30 border-b ${
               systemTheme === 'dark'
                 ? 'bg-[#0a0a0a]/95 backdrop-blur-xl border-white/10'
                 : 'bg-white/95 backdrop-blur-xl border-gray-200'
             }`}
           >
             {/* Collapsed state - shows current section */}
-            <button
-              onClick={() => setIsMobileNavExpanded(!isMobileNavExpanded)}
-              className="w-full px-4 py-3 flex items-center justify-between"
-            >
-              <div className="flex items-center gap-2">
-                <div className={`w-2 h-2 rounded-full bg-blue-500`} />
+            <div className="mx-auto px-4 md:px-6" style={{ maxWidth: '1480px' }}>
+              <button
+                onClick={() => setIsMobileNavExpanded(!isMobileNavExpanded)}
+                className="w-full py-4 flex items-center justify-between"
+              >
+              <div className="flex items-center gap-2 ml-10">
+                <div className={`w-2 h-2 rounded-full bg-blue-600`} />
                 <span
                   className={`text-sm font-medium ${
                     systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
@@ -262,10 +268,10 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                   transition={{ duration: 0.2 }}
                   className="overflow-hidden"
                 >
-                  <div className={`px-4 pb-3 space-y-1 border-t ${
+                  <div className={`pb-3 space-y-1 border-t ml-10 ${
                     systemTheme === 'dark' ? 'border-white/5' : 'border-gray-100'
                   }`}>
-                    {sections.slice(1).map((section) => {
+                    {sections.map((section) => {
                       const isActive = activeSection === section.id;
                       const currentIndex = sections.findIndex(s => s.id === activeSection);
                       const sectionIndex = sections.findIndex(s => s.id === section.id);
@@ -281,7 +287,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                           className={`w-full text-left py-2 px-3 rounded-lg flex items-center gap-3 transition-colors ${
                             isActive
                               ? systemTheme === 'dark'
-                                ? 'bg-blue-500/10 text-blue-400'
+                                ? 'bg-blue-600/10 text-blue-400'
                                 : 'bg-blue-50 text-blue-600'
                               : systemTheme === 'dark'
                                 ? 'text-gray-400 hover:bg-white/5'
@@ -291,7 +297,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                           <div
                             className={`w-1.5 h-1.5 rounded-full ${
                               isActive
-                                ? 'bg-blue-500'
+                                ? 'bg-blue-600'
                                 : isPast
                                   ? systemTheme === 'dark'
                                     ? 'bg-gray-500'
@@ -309,6 +315,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                 </motion.div>
               )}
             </AnimatePresence>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -579,12 +586,12 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
       </AnimatePresence>
 
       {/* Content */}
-      <div className="mx-auto px-4 md:px-6 py-8 md:py-12" style={{ maxWidth: '1480px' }}>
-        <div className="flex gap-8">
+      <div className="mx-auto px-4 md:px-6 py-12 md:py-16" style={{ maxWidth: '960px' }}>
+        <div>
           {/* Main Content */}
-          <main className="flex-1" style={{ maxWidth: '1192px' }}>
+          <main className="w-full">
             {/* Hero Section */}
-            <section id="hero" className="mb-12">
+            <section id="hero" className="mb-16 md:mb-24">
               <div className="md:col-span-3">
                 {/* Meta tags */}
                 <div className="flex flex-wrap gap-2 mb-4">
@@ -635,7 +642,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
             </section>
 
             {/* Hero Image */}
-            <figure className="mb-16">
+            <figure className="mb-16 md:mb-24">
               <div
                 onClick={() => openLightbox('/images/dailymotion/thumbnail_dailymotion_-_web_platform2x.png')}
                 className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
@@ -651,7 +658,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
             </figure>
 
             {/* Overview Section */}
-            <section id="overview" className="mb-16">
+            <section id="overview" className="mb-16 md:mb-24">
               <h1
                 className={`text-2xl md:text-3xl font-bold mb-2 ${
                   systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
@@ -726,7 +733,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
             </section>
 
             {/* Key Product Modules Section */}
-            <section id="modules" className="mb-16">
+            <section id="modules" className="mb-16 md:mb-24">
               <h1
                 className={`text-2xl md:text-3xl font-bold mb-8 ${
                   systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
@@ -815,7 +822,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
             />
 
             {/* Video Upload and Management Workflows Section */}
-            <section id="upload" className="mb-16">
+            <section id="upload" className="mb-16 md:mb-24">
               <h1
                 className={`text-2xl md:text-3xl font-bold mb-6 ${
                   systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
@@ -1196,7 +1203,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
             />
 
             {/* Live Management Console Section */}
-            <section id="live" className="mb-16">
+            <section id="live" className="mb-16 md:mb-24">
               <h1
                 className={`text-2xl md:text-3xl font-bold mb-6 ${
                   systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
@@ -1276,7 +1283,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
             />
 
             {/* Player Manager Section */}
-            <section id="player" className="mb-16">
+            <section id="player" className="mb-16 md:mb-24">
               <h1
                 className={`text-2xl md:text-3xl font-bold mb-6 ${
                   systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
@@ -1333,7 +1340,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
             />
 
             {/* Design System Section */}
-            <section id="design-system" className="mb-16">
+            <section id="design-system" className="mb-16 md:mb-24">
               <h1
                 className={`text-2xl md:text-3xl font-bold mb-6 ${
                   systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
@@ -1397,67 +1404,6 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
               </div>
             </section>
           </main>
-
-          {/* Desktop Table of Contents */}
-          <aside className="hidden lg:block w-64 flex-shrink-0">
-            <div className="sticky top-24">
-              <nav
-                className={`p-4 rounded-2xl border ${
-                  systemTheme === 'dark'
-                    ? 'bg-white/5 border-white/10'
-                    : 'bg-gray-50 border-gray-200'
-                }`}
-              >
-                <h3
-                  className={`text-sm font-semibold mb-4 ${
-                    systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                  }`}
-                >
-                  On this page
-                </h3>
-                <ul className="space-y-2">
-                  {sections.slice(1).map((section) => {
-                    const isActive = activeSection === section.id;
-                    const currentIndex = sections.findIndex(s => s.id === activeSection);
-                    const sectionIndex = sections.findIndex(s => s.id === section.id);
-                    const isPast = sectionIndex < currentIndex;
-
-                    return (
-                      <li key={section.id}>
-                        <button
-                          onClick={() => scrollToSection(section.id)}
-                          className={`w-full text-left text-sm py-1.5 px-3 rounded-lg transition-colors flex items-center gap-2 ${
-                            isActive
-                              ? systemTheme === 'dark'
-                                ? 'bg-blue-500/10 text-blue-400 font-medium'
-                                : 'bg-blue-50 text-blue-600 font-medium'
-                              : systemTheme === 'dark'
-                                ? 'text-gray-400 hover:text-white hover:bg-white/5'
-                                : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-                          }`}
-                        >
-                          <div
-                            className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${
-                              isActive
-                                ? 'bg-blue-500'
-                                : isPast
-                                  ? systemTheme === 'dark'
-                                    ? 'bg-gray-500'
-                                    : 'bg-gray-400'
-                                  : systemTheme === 'dark'
-                                    ? 'bg-gray-700'
-                                    : 'bg-gray-300'
-                            }`}
-                          />
-                          {section.label}
-                        </button>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </nav>
-            </div>
-          </aside>
         </div>
       </div>
     </motion.div>

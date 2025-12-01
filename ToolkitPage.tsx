@@ -27,6 +27,7 @@ interface ToolkitPageProps {
 
 // Navigation sections configuration
 const sections = [
+  { id: 'top', label: 'Top', shortLabel: '' },
   { id: 'hero', label: 'Intro', shortLabel: '' },
   { id: 'overview', label: 'Overview', shortLabel: 'OV' },
   { id: 'context', label: 'Context', shortLabel: 'CT' },
@@ -163,13 +164,16 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
     return () => container.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Scroll to section with proper offset for header + mobile nav
+  // Scroll to section with proper offset for header + sticky mini-nav
   const scrollToSection = (sectionId: string) => {
+    if (sectionId === 'top') {
+      containerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
     const element = document.getElementById(sectionId);
     if (element && containerRef.current) {
-      // Header height (73px) + mobile nav height (48px on mobile) + padding (16px)
-      const isMobile = window.innerWidth < 768;
-      const headerOffset = isMobile ? 73 + 48 + 16 : 73 + 24;
+      // Header height (73px) + sticky mini-nav height (~56px with py-4) + padding (24px)
+      const headerOffset = 73 + 56 + 24;
       const elementPosition = element.offsetTop - headerOffset;
       containerRef.current.scrollTo({
         top: elementPosition,
@@ -254,19 +258,20 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className={`fixed top-[73px] left-0 right-0 z-30 md:hidden border-b ${
+            className={`fixed top-[73px] left-0 right-0 z-30 border-b ${
               systemTheme === 'dark'
                 ? 'bg-[#0a0a0a]/95 backdrop-blur-xl border-white/10'
                 : 'bg-white/95 backdrop-blur-xl border-gray-200'
             }`}
           >
             {/* Collapsed state - shows current section */}
-            <button
-              onClick={() => setIsMobileNavExpanded(!isMobileNavExpanded)}
-              className="w-full px-4 py-3 flex items-center justify-between"
-            >
-              <div className="flex items-center gap-2">
-                <div className={`w-2 h-2 rounded-full bg-blue-500`} />
+            <div className="mx-auto px-4 md:px-6" style={{ maxWidth: '1480px' }}>
+              <button
+                onClick={() => setIsMobileNavExpanded(!isMobileNavExpanded)}
+                className="w-full py-4 flex items-center justify-between"
+              >
+              <div className="flex items-center gap-2 ml-10">
+                <div className={`w-2 h-2 rounded-full bg-blue-600`} />
                 <span
                   className={`text-sm font-medium ${
                     systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
@@ -296,10 +301,10 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   transition={{ duration: 0.2 }}
                   className="overflow-hidden"
                 >
-                  <div className={`px-4 pb-3 space-y-1 border-t ${
+                  <div className={`pb-3 space-y-1 border-t ml-10 ${
                     systemTheme === 'dark' ? 'border-white/5' : 'border-gray-100'
                   }`}>
-                    {sections.slice(1).map((section) => {
+                    {sections.map((section) => {
                       const isActive = activeSection === section.id;
                       const currentIndex = sections.findIndex(s => s.id === activeSection);
                       const sectionIndex = sections.findIndex(s => s.id === section.id);
@@ -315,7 +320,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                           className={`w-full text-left py-2 px-3 rounded-lg flex items-center gap-3 transition-colors ${
                             isActive
                               ? systemTheme === 'dark'
-                                ? 'bg-blue-500/10 text-blue-400'
+                                ? 'bg-blue-600/10 text-blue-400'
                                 : 'bg-blue-50 text-blue-600'
                               : systemTheme === 'dark'
                                 ? 'text-gray-400 hover:bg-white/5'
@@ -325,7 +330,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                           <div
                             className={`w-1.5 h-1.5 rounded-full ${
                               isActive
-                                ? 'bg-blue-500'
+                                ? 'bg-blue-600'
                                 : isPast
                                   ? systemTheme === 'dark'
                                     ? 'bg-gray-500'
@@ -343,6 +348,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                 </motion.div>
               )}
             </AnimatePresence>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -612,13 +618,10 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
         )}
       </AnimatePresence>
 
-      {/* Content with Desktop TOC */}
-      <div className="mx-auto px-4 md:px-6 py-8 md:py-12" style={{ maxWidth: '1480px' }}>
-        <div className="flex gap-8">
-          {/* Main Content */}
-          <main className="flex-1" style={{ maxWidth: '1192px' }}>
+      {/* Main Content */}
+      <div className="mx-auto px-4 md:px-6 py-12 md:py-16" style={{ maxWidth: '960px' }}>
             {/* Hero Section - Title + Logo + Testimonial */}
-            <section id="hero" className="mb-12">
+            <section id="hero" className="mb-16 md:mb-24">
           <div className="grid md:grid-cols-5 gap-8 items-start">
             {/* Left Column - Title and Description */}
             <div className="md:col-span-3">
@@ -737,7 +740,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
         </figure>
 
         {/* Overview Section */}
-        <section id="overview" className="mb-16">
+        <section id="overview" className="mb-16 md:mb-24">
           <h1
             className={`text-2xl md:text-3xl font-bold mb-2 ${
               systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
@@ -823,7 +826,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
         </section>
 
         {/* Context and Approach Section */}
-        <section id="context" className="mb-16">
+        <section id="context" className="mb-16 md:mb-24">
           <h1
             className={`text-2xl md:text-3xl font-bold mb-6 ${
               systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
@@ -980,7 +983,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
         />
 
         {/* Phase 1 - Foundation */}
-        <section id="phase1" className="mb-16">
+        <section id="phase1" className="mb-16 md:mb-24">
           <h1
             className={`text-2xl md:text-3xl font-bold mb-8 ${
               systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
@@ -1451,7 +1454,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
         />
 
         {/* Phase 2 - Feature expansion */}
-        <section id="phase2" className="mb-16">
+        <section id="phase2" className="mb-16 md:mb-24">
           <h1
             className={`text-2xl md:text-3xl font-bold mb-4 ${
               systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
@@ -1641,7 +1644,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
         />
 
         {/* Phase 3 - Platform maturity */}
-        <section id="phase3" className="mb-16">
+        <section id="phase3" className="mb-16 md:mb-24">
           <h1
             className={`text-2xl md:text-3xl font-bold mb-4 ${
               systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
@@ -1744,7 +1747,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
         />
 
         {/* Design System Foundation */}
-        <section id="design-system" className="mb-16">
+        <section id="design-system" className="mb-16 md:mb-24">
           <h1
             className={`text-2xl md:text-3xl font-bold mb-4 ${
               systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
@@ -1813,7 +1816,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
         />
 
         {/* Impact */}
-        <section id="impact" className="mb-16">
+        <section id="impact" className="mb-16 md:mb-24">
           <h1
             className={`text-2xl md:text-3xl font-bold mb-4 ${
               systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
@@ -1936,7 +1939,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
             <div className="flex items-center space-x-3">
               <div
                 className={`p-2 rounded-xl ${
-                  systemTheme === 'dark' ? 'bg-blue-500/20' : 'bg-blue-50'
+                  systemTheme === 'dark' ? 'bg-blue-600/20' : 'bg-blue-50'
                 }`}
               >
                 <Layers
@@ -2061,83 +2064,6 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
 
         {/* Bottom spacing for mobile nav */}
         <div className="h-20 md:h-0" />
-          </main>
-
-          {/* Desktop Table of Contents - Sticky Card */}
-          <aside className="hidden lg:block w-64 flex-shrink-0">
-            <div
-              ref={tocRef}
-              className={`sticky top-24 p-5 rounded-2xl border shadow-sm ${
-                systemTheme === 'dark'
-                  ? 'bg-[#1D1D1F] border-white/10'
-                  : 'bg-white border-gray-200 shadow-gray-100'
-              }`}
-            >
-              <p
-                className={`text-xs font-semibold uppercase tracking-wider mb-4 ${
-                  systemTheme === 'dark' ? 'text-gray-500' : 'text-gray-400'
-                }`}
-              >
-                Table of Contents
-              </p>
-              <nav className="space-y-1">
-                {sections.slice(1).map((section) => {
-                  const isActive = activeSection === section.id;
-                  const currentIndex = sections.findIndex(s => s.id === activeSection);
-                  const sectionIndex = sections.findIndex(s => s.id === section.id);
-                  const isPast = sectionIndex < currentIndex;
-
-                  return (
-                    <button
-                      key={section.id}
-                      onClick={() => scrollToSection(section.id)}
-                      className={`w-full text-left py-2 px-3 rounded-lg flex items-center gap-3 transition-all duration-200 group ${
-                        isActive
-                          ? systemTheme === 'dark'
-                            ? 'bg-blue-500/10'
-                            : 'bg-blue-50'
-                          : 'hover:bg-opacity-50'
-                      } ${
-                        systemTheme === 'dark'
-                          ? 'hover:bg-white/5'
-                          : 'hover:bg-gray-50'
-                      }`}
-                    >
-                      <div
-                        className={`w-1.5 h-1.5 rounded-full transition-colors duration-200 ${
-                          isActive
-                            ? 'bg-blue-500'
-                            : isPast
-                              ? systemTheme === 'dark'
-                                ? 'bg-gray-500'
-                                : 'bg-gray-400'
-                              : systemTheme === 'dark'
-                                ? 'bg-gray-700 group-hover:bg-gray-600'
-                                : 'bg-gray-300 group-hover:bg-gray-400'
-                        }`}
-                      />
-                      <span
-                        className={`text-sm font-medium transition-colors duration-200 ${
-                          isActive
-                            ? 'text-blue-500'
-                            : isPast
-                              ? systemTheme === 'dark'
-                                ? 'text-gray-300'
-                                : 'text-gray-700'
-                              : systemTheme === 'dark'
-                                ? 'text-gray-500 group-hover:text-gray-400'
-                                : 'text-gray-400 group-hover:text-gray-600'
-                        }`}
-                      >
-                        {section.label}
-                      </span>
-                    </button>
-                  );
-                })}
-              </nav>
-            </div>
-          </aside>
-        </div>
       </div>
     </motion.div>
   );

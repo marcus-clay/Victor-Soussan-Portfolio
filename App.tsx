@@ -1158,38 +1158,6 @@ const getProjects = (lang: Language): Project[] => {
       testimonialId: "pierre-marie-nigay"
     },
     {
-      id: "sqool",
-      title: "SQOOL Suite (UNOWHY)",
-      role: isEn ? "Product Lead & Manager" : "Product Design Manager",
-      period: "2018 – 2024",
-      summary: isEn ? "Leading the design transformation of a hardware company into a comprehensive EdTech SaaS ecosystem." : "Passage d'une boite Hardware à un écosystème SaaS EdTech complet. J'ai structuré le pôle design et piloté la refonte logicielle.",
-      missions: isEn ? [
-        "Managed a team of 4 designers: hiring, annual reviews, career coaching",
-        "Led design strategy workshops for 'Road to 2025' vision",
-        "Structured Design Ops: Figma organization, templates, and rituals",
-        "Bridged Product & Tech: Designed decks for C-Level & All-Hands demos"
-      ] : [
-        "Recrutement et management d'une équipe de 4 Product Designers",
-        "Mise en place des Design Ops (Process, Figma, QA Design)",
-        "Pilotage de la stratégie UX pour la suite logicielle (Roadmap 2025)",
-        "Collaboration étroite avec 30+ développeurs et PMs"
-      ],
-      system: {
-        title: isEn ? "Multi-Brand Design System" : "Design System Multi-Plateforme",
-        desc: isEn ? "Built a centralized Figma system supporting 8+ apps (Web/Android/PC). Created shared libraries for icons, gestures, and device frames to speed up hand-offs." : "Un système centralisé pour 8 applications (Web, Android, PC). J'ai standardisé les composants pour réduire la dette technique et accélérer les développements."
-      },
-      deliverables: [
-        "SQOOL Classe (Gestion de classe)",
-        "SQOOL MDM (Gestion de flotte)",
-        "Documentation Zeroheight",
-        "Présentations Stratégiques (Comex)"
-      ],
-      icon: <Briefcase size={24} />,
-      color: "blue",
-      coverImage: "thumbnail-sqool-suite.webp",
-      testimonialId: "charlotte-rifflet"
-    },
-    {
       id: "dailymotion",
       title: "Dailymotion Partner",
       role: isEn ? "Senior Product Designer" : "Senior Product Designer",
@@ -1225,6 +1193,38 @@ const getProjects = (lang: Language): Project[] => {
       color: "gray",
       coverImage: "thumbnail-dailymotion-web-platform.webp",
       externalLink: "https://victor-soussan.notion.site/ebd/2b7a519b0dea80b99138d4b51a65620b"
+    },
+    {
+      id: "sqool",
+      title: "SQOOL Suite (UNOWHY)",
+      role: isEn ? "Product Lead UI & Manager" : "Product Design Manager",
+      period: "2018 – 2024",
+      summary: isEn ? "Leading the design transformation of a hardware company into a comprehensive EdTech SaaS ecosystem." : "Passage d'une boite Hardware à un écosystème SaaS EdTech complet. J'ai structuré le pôle design et piloté la refonte logicielle.",
+      missions: isEn ? [
+        "Managed a team of 4 designers: hiring, annual reviews, career coaching",
+        "Led design strategy workshops for 'Road to 2025' vision",
+        "Structured Design Ops: Figma organization, templates, and rituals",
+        "Bridged Product & Tech: Designed decks for C-Level & All-Hands demos"
+      ] : [
+        "Recrutement et management d'une équipe de 4 Product Designers",
+        "Mise en place des Design Ops (Process, Figma, QA Design)",
+        "Pilotage de la stratégie UX pour la suite logicielle (Roadmap 2025)",
+        "Collaboration étroite avec 30+ développeurs et PMs"
+      ],
+      system: {
+        title: isEn ? "Multi-Brand Design System" : "Design System Multi-Plateforme",
+        desc: isEn ? "Built a centralized Figma system supporting 8+ apps (Web/Android/PC). Created shared libraries for icons, gestures, and device frames to speed up hand-offs." : "Un système centralisé pour 8 applications (Web, Android, PC). J'ai standardisé les composants pour réduire la dette technique et accélérer les développements."
+      },
+      deliverables: [
+        "SQOOL Classe (Gestion de classe)",
+        "SQOOL MDM (Gestion de flotte)",
+        "Documentation Zeroheight",
+        "Présentations Stratégiques (Comex)"
+      ],
+      icon: <Briefcase size={24} />,
+      color: "blue",
+      coverImage: "thumbnail-sqool-suite.webp",
+      testimonialId: "charlotte-rifflet"
     },
     {
       id: "pagesjaunes",
@@ -1450,8 +1450,6 @@ const App: React.FC = () => {
   const projects = getProjects(lang);
   const testimonials = getTestimonials(lang);
 
-  const [selectedProject, setSelectedProject] = useState(projects[0]);
-  const projectDetailRef = useRef<HTMLDivElement>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [isBioOpen, setIsBioOpen] = useState(false);
@@ -1528,13 +1526,6 @@ const App: React.FC = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
-
-  // Update selected project when language changes
-  useEffect(() => {
-    const currentId = selectedProject.id;
-    const newProject = projects.find(p => p.id === currentId) || projects[0];
-    setSelectedProject(newProject);
-  }, [lang]);
 
   // Testimonial Filters
   const [activeCategory, setActiveCategory] = useState<Category>('All');
@@ -1691,32 +1682,9 @@ const App: React.FC = () => {
     }
   };
 
-  const handleProjectClick = (project: Project) => {
-    setSelectedProject(project);
-    // Scroll detail panel to top
-    projectDetailRef.current?.scrollTo({ top: 0 });
-    if (window.innerWidth < 768) {
-      setTimeout(() => {
-        const detailsElement = document.getElementById('project-details');
-        if (detailsElement) {
-          const offset = 100;
-          const bodyRect = document.body.getBoundingClientRect().top;
-          const elementRect = detailsElement.getBoundingClientRect().top;
-          const elementPosition = elementRect - bodyRect;
-          const offsetPosition = elementPosition - offset;
-          window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-        }
-      }, 100);
-    }
-  };
-
   const filteredTestimonials = activeCategory === 'All'
     ? testimonials
     : testimonials.filter(t => t.category === activeCategory);
-
-  const linkedTestimonial = selectedProject.testimonialId
-    ? testimonials.find(t => t.id === selectedProject.testimonialId)
-    : null;
 
   // Resume modal handlers
   const handleDownloadResume = () => {
@@ -1778,14 +1746,14 @@ const App: React.FC = () => {
     <div className={`min-h-screen font-sans transition-colors duration-300 ${
       systemTheme === 'dark'
         ? 'bg-[#0a0a0a] text-white'
-        : 'bg-[#F5F5F7] text-[#1D1D1F]'
+        : 'bg-[#F9F9F9] text-[#1D1D1F]'
     }`}>
       
       {/* Navigation */}
       <nav className={`fixed top-0 w-full z-50 backdrop-blur-md transition-all duration-300 ${
         systemTheme === 'dark'
           ? 'bg-[#0a0a0a]/80 border-b border-white/10'
-          : 'bg-[#F5F5F7]/80 border-b border-white/50'
+          : 'bg-[#F9F9F9]/80 border-b border-white/50'
       }`}>
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           {/* Logo/Section Name - Logo visible when not scrolled, section name when scrolled */}
@@ -1898,7 +1866,7 @@ const App: React.FC = () => {
                 onClick={() => setThemeMode('system')}
                 className={`p-1.5 rounded-full transition-all duration-200 ${
                   themeMode === 'system'
-                    ? 'bg-blue-500 text-white shadow-sm'
+                    ? 'bg-blue-600 text-white shadow-sm'
                     : systemTheme === 'dark'
                       ? 'text-gray-400 hover:text-white'
                       : 'text-gray-500 hover:text-gray-900'
@@ -1975,7 +1943,7 @@ const App: React.FC = () => {
           <div className={`md:hidden absolute top-16 left-0 w-full shadow-lg p-6 flex flex-col space-y-3 ${
             systemTheme === 'dark'
               ? 'bg-[#1D1D1F] border-b border-white/10'
-              : 'bg-[#F5F5F7] border-b border-gray-200'
+              : 'bg-[#F9F9F9] border-b border-gray-200'
           }`}>
             <button onClick={() => scrollToSection('projects')} className={`text-left text-base font-medium px-4 py-2.5 rounded-full btn-pill ${systemTheme === 'dark' ? 'bg-white/10 hover:bg-white/20 text-white' : 'glass-effect hover:text-blue-600'}`}>{content.nav.projects}</button>
             <button onClick={() => scrollToSection('bio')} className={`text-left text-base font-medium px-4 py-2.5 rounded-full btn-pill ${systemTheme === 'dark' ? 'bg-white/10 hover:bg-white/20 text-white' : 'glass-effect hover:text-blue-600'}`}>{content.nav.bio}</button>
@@ -1990,7 +1958,7 @@ const App: React.FC = () => {
       {/* Hero Section */}
       <header className="relative pt-[154px] pb-[82px] md:pt-[170px] md:pb-[98px] px-6 overflow-hidden">
         <div className={`absolute top-0 right-0 w-[600px] h-[600px] rounded-full blur-3xl -translate-y-1/4 translate-x-1/4 pointer-events-none ${
-          systemTheme === 'dark' ? 'bg-blue-500/10' : 'bg-blue-200/30'
+          systemTheme === 'dark' ? 'bg-blue-600/10' : 'bg-blue-200/30'
         }`} />
         <div className={`absolute bottom-0 left-0 w-[500px] h-[500px] rounded-full blur-3xl translate-y-1/4 -translate-x-1/4 pointer-events-none ${
           systemTheme === 'dark' ? 'bg-indigo-500/10' : 'bg-indigo-200/30'
@@ -2116,7 +2084,7 @@ const App: React.FC = () => {
             </button>
             <button
                onClick={() => setIsBookingOpen(true)}
-               className={`px-5 py-2.5 sm:px-6 sm:py-3 rounded-full font-medium text-sm sm:text-base btn-pill cursor-pointer relative z-20 flex items-center justify-center transition-colors whitespace-nowrap ${
+               className={`px-5 py-2.5 sm:px-6 sm:py-3 rounded-full font-medium text-sm sm:text-base btn-pill cursor-pointer relative z-20 flex items-center justify-center whitespace-nowrap ${
                  systemTheme === 'dark'
                    ? 'bg-white/10 border border-white/20 text-white hover:bg-white/20'
                    : 'glass-effect text-[#1D1D1F] hover:text-blue-600'
@@ -2162,236 +2130,200 @@ const App: React.FC = () => {
         }
       `}</style>
 
-      {/* Interactive Case Studies Section */}
-      <section id="projects" className={`py-16 md:py-32 px-4 md:px-6 ${
-        systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-[#F5F5F7]'
+      {/* Case Studies Section - Landscape Banners */}
+      <section id="projects" className={`pt-8 pb-16 md:pt-16 md:pb-32 px-4 md:px-6 ${
+        systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-[#F9F9F9]'
       }`}>
         <div className="max-w-6xl mx-auto">
-          <div className="mb-8 md:mb-12 text-center">
-            <h2 className="text-xl sm:text-2xl md:text-4xl font-bold tracking-tight mb-4 md:mb-6">{content.projects.title}</h2>
-            <p className={`text-sm sm:text-base md:text-lg max-w-2xl mx-auto ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>{content.projects.subtitle}</p>
-          </div>
-
-          <div className="flex flex-col md:flex-row gap-6 md:gap-8 h-auto md:h-[750px]">
-
-            {/* Project List (Master) */}
-            <div className="w-full md:w-1/3 flex flex-col space-y-4 overflow-y-scroll py-2 pl-2 pr-4 no-scrollbar">
-              {projects.map((project) => (
-                <div
+          {/* Stacked Landscape Cards */}
+          <div className="flex flex-col gap-6 md:gap-8">
+            {projects.map((project, index) => (
+                <motion.div
                   key={project.id}
-                  onClick={() => handleProjectClick(project)}
-                  className={`
-                    cursor-pointer p-6 pb-10 rounded-3xl border transition-all duration-300 group relative overflow-hidden
-                    ${selectedProject.id === project.id
-                      ? systemTheme === 'dark'
-                        ? 'bg-blue-500/10 border-blue-500/50 shadow-2xl shadow-blue-500/20 scale-[1.03]'
-                        : 'bg-blue-50 border-blue-400 shadow-2xl shadow-blue-500/20 scale-[1.03]'
-                      : systemTheme === 'dark'
-                        ? 'bg-[#1D1D1F] border-white/5 hover:border-blue-500/30 hover:shadow-xl hover:shadow-blue-900/10'
-                        : 'bg-white border-gray-100 hover:border-blue-300 hover:shadow-xl hover:shadow-blue-100'}
-                  `}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  whileHover={{
+                    y: -8,
+                    scale: 1.01,
+                    transition: { duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }
+                  }}
+                  transition={{ duration: 0.6, delay: index * 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
+                  onClick={() => {
+                    if (project.id === 'toolkit') {
+                      setIsToolkitPageOpen(true);
+                    } else if (project.id === 'dailymotion') {
+                      setIsDailymotionPageOpen(true);
+                    } else if (project.externalLink) {
+                      setIframeModalUrl(project.externalLink);
+                    }
+                  }}
+                  className={`group cursor-pointer rounded-2xl md:rounded-3xl border overflow-hidden ${
+                    systemTheme === 'dark'
+                      ? 'bg-[#1D1D1F] border-white/5 hover:border-white/15 hover:shadow-2xl hover:shadow-black/40'
+                      : 'bg-white border-gray-100 hover:border-gray-200 hover:shadow-2xl hover:shadow-gray-300/50'
+                  }`}
                 >
-                  {/* Gradient overlay on hover/active */}
-                  <div className={`absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent transition-opacity duration-500 pointer-events-none ${
-                    selectedProject.id === project.id ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
-                  }`}></div>
-
-                  <div className="relative z-10">
-                    <div className="flex justify-between items-start mb-2">
-                      <div className={`
-                        p-2 rounded-xl mb-3 transition-all duration-300
-                        ${selectedProject.id === project.id
-                          ? systemTheme === 'dark'
-                            ? 'bg-blue-500/20 text-blue-400'
-                            : 'bg-blue-100 text-blue-600'
-                          : systemTheme === 'dark'
-                            ? 'bg-white/10 text-gray-300 group-hover:scale-110'
-                            : 'bg-gray-100 text-gray-600 group-hover:scale-110'}
-                      `}>
-                        {project.icon}
+                  <div className="flex flex-col md:flex-row">
+                    {/* Image Section - Left on desktop */}
+                    <div className={`relative w-full md:w-[55%] overflow-hidden ${
+                      systemTheme === 'dark' ? 'bg-[#111111]' : 'bg-gray-50'
+                    }`}>
+                      {/* Status Badge - Top left */}
+                      <div className="absolute top-4 left-4 md:top-6 md:left-6 z-20">
+                        <span className={`inline-flex items-center text-xs font-medium px-3 py-1.5 rounded-full backdrop-blur-md ${
+                          systemTheme === 'dark'
+                            ? 'bg-black/40 text-white border border-white/10'
+                            : 'bg-white/70 text-gray-700 border border-gray-200/50'
+                        }`}>
+                          <span className="w-2 h-2 rounded-full bg-green-500 mr-2" />
+                          SHIPPED
+                        </span>
                       </div>
-                      {selectedProject.id === project.id && <ArrowUpRight size={20} className={systemTheme === 'dark' ? 'text-blue-400' : 'text-blue-600'} />}
-                    </div>
-                    <h3 className={`text-lg font-bold mb-1 ${
-                      systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                    }`}>
-                      {project.title}
-                    </h3>
-                    <p className={`text-sm ${
-                      systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                    }`}>
-                      {project.period}
-                    </p>
-                    <p className={`text-xs mt-2 mb-4 font-medium ${
-                      selectedProject.id === project.id
-                        ? systemTheme === 'dark' ? 'text-blue-400' : 'text-blue-600'
-                        : 'text-blue-500'
-                    }`}>
-                      {project.role}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
 
-            {/* Project Details (Detail) */}
-            <div id="project-details" className="w-full md:w-2/3 h-full">
-              <div
-                ref={projectDetailRef}
-                className={`h-full p-0 flex flex-col overflow-y-auto relative rounded-3xl border shadow-sm thin-scrollbar ${
-                systemTheme === 'dark'
-                  ? 'bg-[#1D1D1F] border-white/10'
-                  : 'bg-white/80 backdrop-blur-xl border-white/50'
-              }`}>
-                {/* Cover Image */}
-                <div className="p-4 md:p-6">
-                  <div className={`relative w-full overflow-hidden rounded-2xl ${
-                    systemTheme === 'dark' ? 'bg-[#111111]' : 'bg-gray-100'
-                  }`}>
-                    <img
-                      src={`/images/${selectedProject.coverImage}`}
-                      alt={`${selectedProject.title} cover`}
-                      className="w-full h-auto object-contain"
-                    />
-                  </div>
-                </div>
-
-                {/* Content */}
-                <div className="p-8 md:p-10 flex flex-col flex-1">
-                  {/* Header */}
-                  <div className={`border-b pb-6 mb-6 ${systemTheme === 'dark' ? 'border-white/10' : 'border-gray-100'}`}>
-                    <div className="flex items-center space-x-3 mb-4">
-                      <Badge color="indigo">{selectedProject.period}</Badge>
-                      <Badge color="gray">{selectedProject.role}</Badge>
-                    </div>
-                    <h2 className={`text-3xl md:text-4xl font-bold tracking-tight mb-4 ${
-                      systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                    }`}>
-                      {selectedProject.title}
-                    </h2>
-                    <p className={`text-xl leading-relaxed ${systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-500'}`}>
-                      {selectedProject.summary}
-                    </p>
-                  </div>
-
-                {/* Content Grid */}
-                <div className="grid md:grid-cols-2 gap-8 mb-8">
-
-                  {/* Missions */}
-                  <div>
-                    <div className={`flex items-center space-x-2 mb-4 font-semibold ${systemTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                      <Target size={20} className="text-blue-500" />
-                      <h3>{content.projects.missions}</h3>
-                    </div>
-                    <ul className="space-y-3">
-                      {selectedProject.missions.map((m, i) => (
-                        <li key={i} className={`flex items-start text-sm leading-relaxed ${systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
-                          <span className="mr-2 mt-1.5 w-1.5 h-1.5 bg-blue-500 rounded-full flex-shrink-0" />
-                          {m}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* Design System */}
-                  <div>
-                    <div className={`flex items-center space-x-2 mb-4 font-semibold ${systemTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                      <Figma size={20} className="text-purple-500" />
-                      <h3>{content.projects.system}</h3>
-                    </div>
-                    <div className={`p-4 rounded-2xl border ${
-                      systemTheme === 'dark'
-                        ? 'bg-purple-500/10 border-purple-500/20'
-                        : 'bg-purple-50/50 border-purple-100'
-                    }`}>
-                      <h4 className={`text-sm font-bold mb-1 ${systemTheme === 'dark' ? 'text-purple-300' : 'text-purple-900'}`}>{selectedProject.system.title}</h4>
-                      <p className={`text-sm leading-relaxed ${systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>{selectedProject.system.desc}</p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Deliverables & External Link */}
-                <div className="mb-8">
-                  <div className={`flex items-center space-x-2 mb-4 font-semibold ${systemTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                    <Box size={20} className="text-indigo-500" />
-                    <h3>{content.projects.deliverables}</h3>
-                  </div>
-                  <div className="flex flex-wrap gap-3 mb-6">
-                    {selectedProject.deliverables.map((d, i) => (
-                      <div key={i} className={`px-4 py-2 rounded-xl text-sm flex items-center ${
+                      {/* Subtle gradient overlay */}
+                      <div className={`absolute inset-0 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none ${
                         systemTheme === 'dark'
-                          ? 'bg-white/5 border border-white/10 text-gray-300'
-                          : 'bg-gray-50 border border-gray-100 text-gray-600'
-                      }`}>
-                        <CheckCircle2 size={14} className="mr-2 text-green-500" />
-                        {d}
+                          ? 'bg-gradient-to-r from-transparent via-transparent to-blue-600/5'
+                          : 'bg-gradient-to-r from-transparent via-transparent to-blue-600/5'
+                      }`} />
+
+                      <div className="aspect-[16/10] md:aspect-auto md:h-full p-4 md:p-6">
+                        <img
+                          src={`/images/${project.coverImage}`}
+                          alt={`${project.title} preview`}
+                          className="w-full h-full object-contain rounded-xl md:rounded-2xl transition-transform duration-700 ease-out group-hover:scale-[1.02]"
+                        />
                       </div>
-                    ))}
-                  </div>
+                    </div>
 
-                  {selectedProject.externalLink && (
-                    <button
-                      onClick={() => {
-                        if (selectedProject.id === 'toolkit') {
-                          setIsToolkitPageOpen(true);
-                        } else if (selectedProject.id === 'dailymotion') {
-                          setIsDailymotionPageOpen(true);
-                        } else {
-                          setIframeModalUrl(selectedProject.externalLink!);
-                        }
-                      }}
-                      className={`inline-flex items-center px-5 py-3 rounded-xl text-sm font-medium transition-all hover:scale-[1.01] shadow-md ${
-                        systemTheme === 'dark'
-                          ? 'bg-white text-gray-900 hover:bg-gray-100'
-                          : 'bg-gray-900 text-white hover:bg-black'
-                      }`}
-                    >
-                      <BookOpen size={16} className="mr-2"/> {content.projects.read_more} <ArrowUpRight size={14} className="ml-2 opacity-70"/>
-                    </button>
-                  )}
-                </div>
-
-                {/* Project Linked Testimonial */}
-                {linkedTestimonial && (
-                  <div className={`mt-auto pt-8 border-t ${
-                    systemTheme === 'dark' ? 'border-white/10' : 'border-gray-100'
-                  }`}>
-                    <div className={`p-6 rounded-2xl border ${
-                      systemTheme === 'dark'
-                        ? 'bg-blue-900/20 border-blue-500/20'
-                        : 'bg-gradient-to-br from-blue-50/50 to-indigo-50/50 border-blue-100'
-                    }`}>
-                       <div className="flex items-center mb-4">
-                          <Avatar filename={linkedTestimonial.image} alt={linkedTestimonial.author} className={`w-10 h-10 rounded-full mr-3 border shadow-sm ${
-                            systemTheme === 'dark' ? 'border-white/20' : 'border-white'
-                          }`} />
-                          <div>
-                            <div className={`text-sm font-bold ${
-                              systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                            }`}>{linkedTestimonial.author}</div>
-                            <div className={`text-xs ${
-                              systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                            }`}>{linkedTestimonial.role}</div>
-                          </div>
-                       </div>
-                       <div className="relative">
-                          <Quote size={16} className={`absolute -top-1 -left-1 transform -scale-x-100 ${
-                            systemTheme === 'dark' ? 'text-blue-400/30' : 'text-blue-200'
-                          }`} />
-                          <p className={`text-sm italic relative z-10 pl-4 ${
-                            systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                    {/* Content Section - Right on desktop */}
+                    <div className="w-full md:w-[45%] p-6 md:p-8 flex flex-col justify-between">
+                      {/* Top: Meta & Title */}
+                      <div>
+                        {/* Meta badges */}
+                        <div className="flex flex-wrap items-center gap-2 mb-3">
+                          <span className={`text-xs font-medium px-3 py-1 rounded-full ${
+                            systemTheme === 'dark'
+                              ? 'bg-white/10 text-gray-300'
+                              : 'bg-gray-100 text-gray-600'
                           }`}>
-                            "{linkedTestimonial.content}"
-                          </p>
-                       </div>
+                            {project.period}
+                          </span>
+                          <span className={`text-xs font-medium px-3 py-1 rounded-full ${
+                            systemTheme === 'dark'
+                              ? 'bg-blue-600/10 text-blue-400'
+                              : 'bg-blue-50 text-blue-600'
+                          }`}>
+                            {project.role}
+                          </span>
+                        </div>
+
+                        {/* Title */}
+                        <div className="mb-3">
+                          <h3 className={`text-xl md:text-2xl font-bold tracking-tight ${
+                            systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+                          }`}>
+                            {project.title}
+                          </h3>
+                        </div>
+
+                        {/* Summary */}
+                        <p className={`text-sm leading-relaxed mb-4 ${
+                          systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                        }`}>
+                          {project.summary}
+                        </p>
+
+                        {/* Key Missions - Styled list */}
+                        <div className="mb-6">
+                          <div className="flex items-center gap-2 mb-2">
+                            <Target size={14} className={systemTheme === 'dark' ? 'text-blue-400' : 'text-blue-600'} />
+                            <p className={`text-xs font-semibold uppercase tracking-wider ${
+                              systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                            }`}>
+                              {content.projects.missions}
+                            </p>
+                          </div>
+                          <ul className="space-y-1.5">
+                            {project.missions.slice(0, 2).map((m, i) => (
+                              <li key={i} className={`text-xs flex items-start ${
+                                systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                              }`}>
+                                <span className={`w-1.5 h-1.5 rounded-full mt-1.5 mr-2 flex-shrink-0 ${
+                                  systemTheme === 'dark' ? 'bg-blue-400' : 'bg-blue-600'
+                                }`} />
+                                <span className="line-clamp-1">{m}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+
+                        {/* Key deliverables - tags with checkbox */}
+                        <div className="mb-4">
+                          <div className="flex items-center gap-2 mb-2">
+                            <Box size={14} className={systemTheme === 'dark' ? 'text-blue-400' : 'text-blue-600'} />
+                            <p className={`text-xs font-semibold uppercase tracking-wider ${
+                              systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                            }`}>
+                              {content.projects.deliverables}
+                            </p>
+                          </div>
+                          <div className="flex flex-wrap gap-1.5">
+                            {project.deliverables.slice(0, 4).map((d, i) => (
+                              <span
+                                key={i}
+                                className={`text-xs px-2 py-1 rounded-md flex items-center border ${
+                                  systemTheme === 'dark'
+                                    ? 'text-gray-300 border-white/5 bg-white/5'
+                                    : 'text-gray-600 border-gray-100 bg-gray-50/30'
+                                }`}
+                              >
+                                <CheckCircle2 size={12} className={`mr-1.5 flex-shrink-0 ${
+                                  systemTheme === 'dark' ? 'text-emerald-400' : 'text-emerald-500'
+                                }`} />
+                                {d}
+                              </span>
+                            ))}
+                            {project.deliverables.length > 4 && (
+                              <span className={`text-xs px-2 py-1 rounded-md border ${
+                                systemTheme === 'dark'
+                                  ? 'text-gray-500 border-white/5 bg-white/5'
+                                  : 'text-gray-400 border-gray-100 bg-gray-50/30'
+                              }`}>
+                                +{project.deliverables.length - 4}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Bottom: CTA */}
+                      <div className={`pt-4 mt-4 border-t flex items-center justify-end ${systemTheme === 'dark' ? 'border-white/5' : 'border-gray-100'}`}>
+                        {(project.id === 'toolkit' || project.id === 'dailymotion') ? (
+                          <div className={`inline-flex items-center text-xs font-medium px-4 py-2 rounded-full backdrop-blur-xl transition-colors duration-300 ${
+                            systemTheme === 'dark'
+                              ? 'bg-white/10 text-gray-200 border border-white/20 group-hover:bg-white group-hover:text-black group-hover:border-white'
+                              : 'bg-gray-100/80 text-gray-700 border border-gray-200/50 group-hover:bg-gray-900 group-hover:text-white group-hover:border-gray-900'
+                          }`}>
+                            <span className="mr-1.5">{content.projects.read_more}</span>
+                            <ChevronRight size={14} />
+                          </div>
+                        ) : (
+                          <span className={`inline-flex items-center text-xs font-medium px-3 py-1.5 rounded-full ${
+                            systemTheme === 'dark'
+                              ? 'bg-orange-500/10 text-orange-400 border border-orange-500/20'
+                              : 'bg-orange-50 text-orange-600 border border-orange-100'
+                          }`}>
+                            <span className="w-1.5 h-1.5 rounded-full bg-orange-500 mr-2 animate-pulse" />
+                            {lang === 'en' ? 'Coming Soon' : 'Bientôt'}
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </div>
-                )}
-
-                </div>
-              </div>
-            </div>
-
+                </motion.div>
+            ))}
           </div>
         </div>
       </section>
@@ -2446,7 +2378,7 @@ const App: React.FC = () => {
                       {/* Value proposition block */}
                       <div className={`p-5 rounded-2xl border ${
                         systemTheme === 'dark'
-                          ? 'bg-blue-900/20 border-blue-500/20'
+                          ? 'bg-blue-900/20 border-blue-600/20'
                           : 'bg-blue-50/50 border-blue-100'
                       }`}>
                         <p className={`font-semibold mb-3 text-base ${
@@ -2455,7 +2387,7 @@ const App: React.FC = () => {
                         <ul className="space-y-2">
                           {content.bio.bullets.map((bullet, i) => (
                             <li key={i} className="flex items-start text-sm">
-                              <CheckCircle2 size={16} className="mr-2.5 mt-0.5 text-blue-500 flex-shrink-0" />
+                              <CheckCircle2 size={16} className="mr-2.5 mt-0.5 text-blue-600 flex-shrink-0" />
                               <span>{bullet}</span>
                             </li>
                           ))}
@@ -2544,13 +2476,13 @@ const App: React.FC = () => {
                          rel="noopener noreferrer"
                          className={`flex items-center p-3 rounded-xl transition-colors group cursor-pointer border ${
                            systemTheme === 'dark'
-                             ? 'bg-white/5 hover:bg-blue-900/30 text-gray-300 hover:text-blue-400 border-white/5 hover:border-blue-500/30'
+                             ? 'bg-white/5 hover:bg-blue-900/30 text-gray-300 hover:text-blue-400 border-white/5 hover:border-blue-600/30'
                              : 'bg-gray-50 hover:bg-blue-50 hover:text-blue-700 border-transparent hover:border-blue-100'
                          }`}
                        >
                           <div className={`mr-3 p-2 rounded-lg border shadow-sm ${
                             systemTheme === 'dark'
-                              ? 'bg-white/10 border-white/10 group-hover:border-blue-500/30'
+                              ? 'bg-white/10 border-white/10 group-hover:border-blue-600/30'
                               : 'bg-white border-gray-100 group-hover:border-blue-100'
                           }`}>
                             {res.icon}
@@ -2563,7 +2495,7 @@ const App: React.FC = () => {
                                  : 'text-gray-400 group-hover:text-blue-400'
                              }`}>{res.desc}</div>
                           </div>
-                          <ArrowUpRight size={16} className="opacity-0 group-hover:opacity-100 transition-opacity text-blue-500"/>
+                          <ArrowUpRight size={16} className="opacity-0 group-hover:opacity-100 transition-opacity text-blue-600"/>
                        </a>
                     ))}
                  </div>
@@ -2575,7 +2507,7 @@ const App: React.FC = () => {
 
       {/* Services Section - Accordion Style */}
       <section id="services" className={`py-16 md:py-32 px-4 md:px-6 ${
-        systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-[#F5F5F7]'
+        systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-[#F9F9F9]'
       }`}>
         <div className="max-w-6xl mx-auto">
           <div className="mb-8 md:mb-12 text-center">
@@ -2645,7 +2577,7 @@ const App: React.FC = () => {
                   check: 'text-pink-400'
                 },
                 blue: {
-                  bg: systemTheme === 'dark' ? 'bg-blue-500/20' : 'bg-blue-50',
+                  bg: systemTheme === 'dark' ? 'bg-blue-600/20' : 'bg-blue-50',
                   text: systemTheme === 'dark' ? 'text-blue-400' : 'text-blue-600',
                   check: 'text-blue-400'
                 },
@@ -2663,7 +2595,7 @@ const App: React.FC = () => {
 
               const borderHoverColor = {
                 pink: 'hover:border-pink-500/50',
-                blue: 'hover:border-blue-500/50',
+                blue: 'hover:border-blue-600/50',
                 orange: 'hover:border-orange-500/50',
                 teal: 'hover:border-teal-500/50'
               }[service.color];
@@ -2677,7 +2609,7 @@ const App: React.FC = () => {
 
               const gradientColor = {
                 pink: 'from-pink-500/5',
-                blue: 'from-blue-500/5',
+                blue: 'from-blue-600/5',
                 orange: 'from-orange-500/5',
                 teal: 'from-teal-500/5'
               }[service.color];
@@ -2785,7 +2717,7 @@ const App: React.FC = () => {
       <section id="clients" className={`py-16 md:py-24 px-4 md:px-6 border-t ${
         systemTheme === 'dark'
           ? 'bg-[#0a0a0a] border-white/10'
-          : 'bg-[#F5F5F7] border-gray-100'
+          : 'bg-[#F9F9F9] border-gray-100'
       }`}>
         <div className="max-w-6xl mx-auto">
           <div className="mb-8 md:mb-12 text-center">
@@ -2804,12 +2736,12 @@ const App: React.FC = () => {
             <div className={`absolute left-0 top-0 bottom-0 w-32 z-10 pointer-events-none ${
               systemTheme === 'dark'
                 ? 'bg-gradient-to-r from-[#0a0a0a] to-transparent'
-                : 'bg-gradient-to-r from-[#F5F5F7] to-transparent'
+                : 'bg-gradient-to-r from-[#F9F9F9] to-transparent'
             }`} />
             <div className={`absolute right-0 top-0 bottom-0 w-32 z-10 pointer-events-none ${
               systemTheme === 'dark'
                 ? 'bg-gradient-to-l from-[#0a0a0a] to-transparent'
-                : 'bg-gradient-to-l from-[#F5F5F7] to-transparent'
+                : 'bg-gradient-to-l from-[#F9F9F9] to-transparent'
             }`} />
 
             <div className="logo-carousel-track flex hover:[animation-play-state:paused]">
@@ -2874,7 +2806,7 @@ const App: React.FC = () => {
                 <div key={i} className={`p-5 md:p-8 rounded-2xl md:rounded-3xl border transition-colors shadow-sm h-full flex flex-col justify-between ${
                   systemTheme === 'dark'
                     ? 'bg-[#1D1D1F] border-white/10 hover:border-white/20'
-                    : 'bg-[#F5F5F7] border-transparent hover:border-gray-200'
+                    : 'bg-[#F9F9F9] border-transparent hover:border-gray-200'
                 }`}>
                    <div className="mb-6">
                       <div className="flex items-center mb-6">
@@ -2954,9 +2886,9 @@ const App: React.FC = () => {
                {/* Card 1: Condamine Apps */}
                <div
                  onClick={() => setSelectedLabItem('apps')}
-                 className="group relative bg-[#151517] border border-white/5 hover:border-blue-500/50 p-5 md:p-8 rounded-2xl md:rounded-3xl transition-all duration-300 hover:shadow-2xl hover:shadow-blue-900/10 flex flex-col overflow-hidden cursor-pointer"
+                 className="group relative bg-[#151517] border border-white/5 hover:border-blue-600/50 p-5 md:p-8 rounded-2xl md:rounded-3xl transition-all duration-300 hover:shadow-2xl hover:shadow-blue-900/10 flex flex-col overflow-hidden cursor-pointer"
                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-600/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <div className="mb-6 p-4 bg-blue-900/20 w-fit rounded-2xl text-blue-400 group-hover:scale-110 transition-transform duration-300">
                      <Smartphone size={32}/>
                   </div>
@@ -3039,7 +2971,7 @@ const App: React.FC = () => {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
           className={`fixed inset-0 z-[100] flex flex-col ${
-            systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-[#F5F5F7]'
+            systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-[#F9F9F9]'
           }`}
         >
 
@@ -3047,7 +2979,7 @@ const App: React.FC = () => {
               <div className={`sticky top-0 z-20 flex items-center py-4 px-6 md:px-12 border-b ${
                 systemTheme === 'dark'
                   ? 'border-white/10 bg-[#0a0a0a]/95 backdrop-blur-md'
-                  : 'border-gray-200 bg-[#F5F5F7]/95 backdrop-blur-md'
+                  : 'border-gray-200 bg-[#F9F9F9]/95 backdrop-blur-md'
               }`}>
                  {/* Title - Left */}
                  <div className="flex-1">
@@ -3133,7 +3065,7 @@ const App: React.FC = () => {
               <div
                 ref={bioContentRef}
                 className={`flex-1 overflow-y-auto px-6 md:px-12 py-8 md:py-12 ${
-                systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-[#F5F5F7]'
+                systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-[#F9F9F9]'
               }`}>
                  <div className="max-w-4xl mx-auto">
                     <AnimatePresence mode="wait">
@@ -3197,7 +3129,7 @@ const App: React.FC = () => {
                               {['Figma', 'Bolt', 'Lovable', 'ZeroHeight', 'Notion', 'Loom', 'Claude', 'Perplexity', 'Midjourney', 'ChatGPT', 'Protopie', 'Adobe CC'].map(tool => (
                                 <span key={tool} className={`px-4 py-2.5 rounded-xl text-sm font-medium border text-center transition-colors ${
                                   systemTheme === 'dark'
-                                    ? 'bg-white/5 text-gray-300 border-white/10 hover:border-blue-500/50 hover:bg-blue-900/20'
+                                    ? 'bg-white/5 text-gray-300 border-white/10 hover:border-blue-600/50 hover:bg-blue-900/20'
                                     : 'bg-gray-50 text-gray-700 border-gray-200 hover:border-blue-300 hover:bg-blue-50'
                                 }`}>
                                   {tool}
@@ -3268,13 +3200,13 @@ const App: React.FC = () => {
                                    rel="noopener noreferrer"
                                    className={`flex items-center p-4 rounded-xl transition-colors group cursor-pointer border ${
                                      systemTheme === 'dark'
-                                       ? 'bg-white/5 hover:bg-blue-900/30 text-gray-300 hover:text-blue-400 border-white/5 hover:border-blue-500/30'
+                                       ? 'bg-white/5 hover:bg-blue-900/30 text-gray-300 hover:text-blue-400 border-white/5 hover:border-blue-600/30'
                                        : 'bg-gray-50 hover:bg-blue-50 hover:text-blue-700 border-transparent hover:border-blue-100'
                                    }`}
                                  >
                                     <div className={`mr-4 p-2.5 rounded-lg border shadow-sm ${
                                       systemTheme === 'dark'
-                                        ? 'bg-white/10 border-white/10 group-hover:border-blue-500/30'
+                                        ? 'bg-white/10 border-white/10 group-hover:border-blue-600/30'
                                         : 'bg-white border-gray-100 group-hover:border-blue-100'
                                     }`}>
                                       {res.icon}
@@ -3287,7 +3219,7 @@ const App: React.FC = () => {
                                            : 'text-gray-400 group-hover:text-blue-400'
                                        }`}>{res.desc}</div>
                                     </div>
-                                    <ArrowUpRight size={16} className="opacity-0 group-hover:opacity-100 transition-opacity text-blue-500"/>
+                                    <ArrowUpRight size={16} className="opacity-0 group-hover:opacity-100 transition-opacity text-blue-600"/>
                                  </a>
                               ))}
                            </div>
@@ -3323,7 +3255,7 @@ const App: React.FC = () => {
                             .map((year, idx) => {
                             const items = (content.bio.timeline as any)[year] as string[];
                             const colors = [
-                              { border: systemTheme === 'dark' ? 'border-blue-500/30' : 'border-blue-200', dot: 'bg-blue-500', text: 'text-blue-500' },
+                              { border: systemTheme === 'dark' ? 'border-blue-600/30' : 'border-blue-200', dot: 'bg-blue-600', text: 'text-blue-600' },
                               { border: systemTheme === 'dark' ? 'border-indigo-500/30' : 'border-indigo-200', dot: 'bg-indigo-500', text: 'text-indigo-500' },
                               { border: systemTheme === 'dark' ? 'border-purple-500/30' : 'border-purple-200', dot: 'bg-purple-500', text: 'text-purple-500' },
                               { border: systemTheme === 'dark' ? 'border-pink-500/30' : 'border-pink-200', dot: 'bg-pink-500', text: 'text-pink-500' },
@@ -3452,7 +3384,7 @@ const App: React.FC = () => {
 
               {/* Modal Content */}
               <div className={`overflow-y-auto p-6 md:p-8 grid md:grid-cols-2 lg:grid-cols-3 gap-6 ${
-                systemTheme === 'dark' ? 'bg-[#111111]/50' : 'bg-[#F5F5F7]/50'
+                systemTheme === 'dark' ? 'bg-[#111111]/50' : 'bg-[#F9F9F9]/50'
               }`}>
                  {filteredTestimonials.map((t, i) => (
                     <div key={i} className={`p-8 rounded-3xl border shadow-sm hover:shadow-md transition-all h-fit break-inside-avoid flex flex-col ${
@@ -3484,7 +3416,7 @@ const App: React.FC = () => {
                              )}
                              <div className={`text-xs font-medium px-2 py-0.5 rounded-full w-fit mt-1 ${
                                systemTheme === 'dark'
-                                 ? 'text-blue-400 bg-blue-500/20'
+                                 ? 'text-blue-400 bg-blue-600/20'
                                  : 'text-blue-600 bg-blue-50'
                              }`}>{t.role}</div>
                           </div>
@@ -4384,8 +4316,8 @@ ${contactForm.message}`;
         const item = LAB_PREVIEWS[selectedLabItem as keyof typeof LAB_PREVIEWS];
         const colorClasses = {
           blue: {
-            badge: 'bg-blue-500/20 border-blue-500/30 text-blue-300',
-            bullet: 'bg-blue-500',
+            badge: 'bg-blue-600/20 border-blue-600/30 text-blue-300',
+            bullet: 'bg-blue-600',
             button: 'bg-blue-600 hover:bg-blue-700'
           },
           amber: {
@@ -5385,7 +5317,7 @@ ${contactForm.message}`;
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-              className={`relative w-full max-w-4xl h-[85vh] flex flex-col backdrop-blur-2xl rounded-3xl shadow-2xl shadow-blue-500/5 border ${
+              className={`relative w-full max-w-4xl h-[85vh] flex flex-col backdrop-blur-2xl rounded-3xl shadow-2xl shadow-blue-600/5 border ${
                 systemTheme === 'dark'
                   ? 'bg-[#1D1D1F]/95 border-white/10'
                   : 'bg-white/95 border-gray-200/50'
@@ -5400,7 +5332,7 @@ ${contactForm.message}`;
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center space-x-4">
                       {/* Small Avatar */}
-                      <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-blue-500/20 shadow-lg">
+                      <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-blue-600/20 shadow-lg">
                         <img
                           src="/images/victor-soussan.png"
                           alt="Victor Soussan"
@@ -5497,7 +5429,7 @@ ${contactForm.message}`;
                         className="mb-8 inline-block"
                       >
                         <div className="relative">
-                          <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-blue-500/20 shadow-2xl shadow-blue-500/10 mx-auto">
+                          <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-blue-600/20 shadow-2xl shadow-blue-600/10 mx-auto">
                             <img
                               src="/images/victor-soussan.png"
                               alt="Victor Soussan"
@@ -5541,9 +5473,9 @@ ${contactForm.message}`;
                         transition={{ delay: 0.4 }}
                         className="grid md:grid-cols-3 gap-6 mb-12"
                       >
-                        <div className={`p-6 backdrop-blur-xl rounded-2xl border hover:shadow-lg hover:shadow-blue-500/10 transition-all duration-200 ${
+                        <div className={`p-6 backdrop-blur-xl rounded-2xl border hover:shadow-lg hover:shadow-blue-600/10 transition-all duration-200 ${
                           systemTheme === 'dark'
-                            ? 'bg-blue-900/20 border-blue-500/20'
+                            ? 'bg-blue-900/20 border-blue-600/20'
                             : 'bg-blue-50/50 border-blue-100'
                         }`}>
                           <Clock className="w-8 h-8 text-blue-600 mb-3 mx-auto" />
@@ -5559,9 +5491,9 @@ ${contactForm.message}`;
                           </p>
                         </div>
 
-                        <div className={`p-6 backdrop-blur-xl rounded-2xl border hover:shadow-lg hover:shadow-blue-500/10 transition-all duration-200 ${
+                        <div className={`p-6 backdrop-blur-xl rounded-2xl border hover:shadow-lg hover:shadow-blue-600/10 transition-all duration-200 ${
                           systemTheme === 'dark'
-                            ? 'bg-blue-900/20 border-blue-500/20'
+                            ? 'bg-blue-900/20 border-blue-600/20'
                             : 'bg-blue-50/50 border-blue-100'
                         }`}>
                           <Target className="w-8 h-8 text-blue-600 mb-3 mx-auto" />
@@ -5577,9 +5509,9 @@ ${contactForm.message}`;
                           </p>
                         </div>
 
-                        <div className={`p-6 backdrop-blur-xl rounded-2xl border hover:shadow-lg hover:shadow-blue-500/10 transition-all duration-200 ${
+                        <div className={`p-6 backdrop-blur-xl rounded-2xl border hover:shadow-lg hover:shadow-blue-600/10 transition-all duration-200 ${
                           systemTheme === 'dark'
-                            ? 'bg-blue-900/20 border-blue-500/20'
+                            ? 'bg-blue-900/20 border-blue-600/20'
                             : 'bg-blue-50/50 border-blue-100'
                         }`}>
                           <Zap className="w-8 h-8 text-blue-600 mb-3 mx-auto" />
@@ -5604,7 +5536,7 @@ ${contactForm.message}`;
                         whileHover={{ scale: 1.05, y: -2 }}
                         whileTap={{ scale: 0.98 }}
                         onClick={() => setQuoteStep(1)}
-                        className="inline-flex items-center px-12 py-5 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-full font-semibold text-xl shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/50 transition-all duration-200"
+                        className="inline-flex items-center px-12 py-5 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-full font-semibold text-xl shadow-lg shadow-blue-600/30 hover:shadow-xl hover:shadow-blue-600/50 transition-all duration-200"
                       >
                         {lang === 'en' ? 'Start Now' : 'Démarrer'}
                         <ArrowRight className="ml-2" size={24} />
@@ -5676,9 +5608,9 @@ ${contactForm.message}`;
                             whileTap={{ scale: 0.99 }}
                             className={`w-full flex items-center space-x-4 p-5 border-2 rounded-2xl text-left transition-all duration-200 ${
                               quoteData.clientNeed === option.type
-                                ? 'border-blue-500 bg-blue-50/70 shadow-lg shadow-blue-500/10'
+                                ? 'border-blue-600 bg-blue-50/70 shadow-lg shadow-blue-600/10'
                                 : systemTheme === 'dark'
-                                  ? 'border-white/10 bg-white/5 hover:border-blue-500/50 hover:bg-blue-900/20'
+                                  ? 'border-white/10 bg-white/5 hover:border-blue-600/50 hover:bg-blue-900/20'
                                   : 'border-gray-200 bg-white/50 hover:border-blue-300 hover:bg-blue-50/30'
                             }`}
                           >
@@ -5754,7 +5686,7 @@ ${contactForm.message}`;
                             whileTap={{ scale: 0.99 }}
                             className={`p-6 border-2 rounded-2xl text-left transition-all duration-200 ${
                               quoteData.projectStatus === option.type
-                                ? 'border-blue-500 bg-blue-50/70 shadow-lg shadow-blue-500/10'
+                                ? 'border-blue-600 bg-blue-50/70 shadow-lg shadow-blue-600/10'
                                 : 'border-gray-200 bg-white/50 hover:border-blue-300 hover:bg-blue-50/30'
                             }`}
                           >
@@ -5806,7 +5738,7 @@ ${contactForm.message}`;
                       <div
                         className={`relative p-10 rounded-2xl border-2 border-dashed transition-all duration-200 text-center ${
                           isDragging
-                            ? 'border-blue-500 bg-blue-50/70'
+                            ? 'border-blue-600 bg-blue-50/70'
                             : quoteData.briefFile
                             ? 'border-green-400 bg-green-50/30'
                             : 'border-gray-300 bg-gray-50/50 hover:border-blue-400'
@@ -5889,7 +5821,7 @@ ${contactForm.message}`;
                               <motion.span
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.98 }}
-                                className="px-5 py-2.5 bg-white border-2 border-blue-500 text-blue-600 rounded-full font-medium text-sm hover:bg-blue-50 transition-all cursor-pointer inline-block btn-pill"
+                                className="px-5 py-2.5 bg-white border-2 border-blue-600 text-blue-600 rounded-full font-medium text-sm hover:bg-blue-50 transition-all cursor-pointer inline-block btn-pill"
                               >
                                 {lang === 'en' ? 'Browse Files' : 'Parcourir les fichiers'}
                               </motion.span>
@@ -5994,7 +5926,7 @@ ${contactForm.message}`;
                             whileTap={{ scale: 0.98 }}
                             className={`flex items-center space-x-4 p-5 border-2 rounded-2xl text-left transition-all duration-200 ${
                               quoteData.services.includes(service)
-                                ? 'border-blue-500 bg-blue-50/70 shadow-lg shadow-blue-500/20 ring-2 ring-blue-500/20'
+                                ? 'border-blue-600 bg-blue-50/70 shadow-lg shadow-blue-600/20 ring-2 ring-blue-600/20'
                                 : 'border-gray-200 bg-white/50 hover:border-blue-400 hover:bg-blue-50/30 hover:shadow-lg'
                             }`}
                           >
@@ -6044,7 +5976,7 @@ ${contactForm.message}`;
                         <textarea
                           value={quoteData.needIdea}
                           onChange={(e) => setQuoteData({ ...quoteData, needIdea: e.target.value })}
-                          className="w-full px-5 py-4 text-base border-2 border-gray-300 rounded-2xl focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 transition-all duration-200 resize-none bg-white/50 backdrop-blur-xl"
+                          className="w-full px-5 py-4 text-base border-2 border-gray-300 rounded-2xl focus:border-blue-600 focus:ring-4 focus:ring-blue-600/20 transition-all duration-200 resize-none bg-white/50 backdrop-blur-xl"
                           rows={4}
                           placeholder={content.contact.quote_step_4_need_placeholder}
                         />
@@ -6062,7 +5994,7 @@ ${contactForm.message}`;
                               setQuoteValidationErrors({ ...quoteValidationErrors, projectDescription: '' });
                             }
                           }}
-                          className="w-full px-5 py-4 text-base border-2 border-gray-300 rounded-2xl focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 transition-all duration-200 resize-none bg-white/50 backdrop-blur-xl"
+                          className="w-full px-5 py-4 text-base border-2 border-gray-300 rounded-2xl focus:border-blue-600 focus:ring-4 focus:ring-blue-600/20 transition-all duration-200 resize-none bg-white/50 backdrop-blur-xl"
                           rows={6}
                           placeholder={content.contact.quote_step_4_desc_placeholder}
                         />
@@ -6113,7 +6045,7 @@ ${contactForm.message}`;
                             type="date"
                             value={quoteData.startDate}
                             onChange={(e) => setQuoteData({ ...quoteData, startDate: e.target.value })}
-                            className="w-full px-5 py-4 text-base border-2 border-gray-300 rounded-2xl focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 transition-all duration-200 bg-white/50 backdrop-blur-xl"
+                            className="w-full px-5 py-4 text-base border-2 border-gray-300 rounded-2xl focus:border-blue-600 focus:ring-4 focus:ring-blue-600/20 transition-all duration-200 bg-white/50 backdrop-blur-xl"
                           />
                         </div>
 
@@ -6125,7 +6057,7 @@ ${contactForm.message}`;
                             type="date"
                             value={quoteData.endDate}
                             onChange={(e) => setQuoteData({ ...quoteData, endDate: e.target.value })}
-                            className="w-full px-5 py-4 text-base border-2 border-gray-300 rounded-2xl focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 transition-all duration-200 bg-white/50 backdrop-blur-xl"
+                            className="w-full px-5 py-4 text-base border-2 border-gray-300 rounded-2xl focus:border-blue-600 focus:ring-4 focus:ring-blue-600/20 transition-all duration-200 bg-white/50 backdrop-blur-xl"
                           />
                         </div>
                       </div>
@@ -6162,7 +6094,7 @@ ${contactForm.message}`;
                               setQuoteValidationErrors({ ...quoteValidationErrors, name: '' });
                               localStorage.setItem('user_name', e.target.value);
                             }}
-                            className="w-full px-5 py-4 text-base border-2 border-gray-300 rounded-2xl focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 transition-all duration-200 bg-white/50 backdrop-blur-xl"
+                            className="w-full px-5 py-4 text-base border-2 border-gray-300 rounded-2xl focus:border-blue-600 focus:ring-4 focus:ring-blue-600/20 transition-all duration-200 bg-white/50 backdrop-blur-xl"
                             placeholder={content.contact.quote_step_6_name_placeholder}
                           />
                           {quoteValidationErrors.name && (
@@ -6188,7 +6120,7 @@ ${contactForm.message}`;
                               setQuoteValidationErrors({ ...quoteValidationErrors, email: '' });
                               localStorage.setItem('user_email', e.target.value);
                             }}
-                            className="w-full px-5 py-4 text-base border-2 border-gray-300 rounded-2xl focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 transition-all duration-200 bg-white/50 backdrop-blur-xl"
+                            className="w-full px-5 py-4 text-base border-2 border-gray-300 rounded-2xl focus:border-blue-600 focus:ring-4 focus:ring-blue-600/20 transition-all duration-200 bg-white/50 backdrop-blur-xl"
                             placeholder={content.contact.quote_step_6_email_placeholder}
                           />
                           {quoteValidationErrors.email && (
@@ -6212,7 +6144,7 @@ ${contactForm.message}`;
                             type="text"
                             value={quoteData.company}
                             onChange={(e) => setQuoteData({ ...quoteData, company: e.target.value })}
-                            className="w-full px-5 py-4 text-base border-2 border-gray-300 rounded-2xl focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 transition-all duration-200 bg-white/50 backdrop-blur-xl"
+                            className="w-full px-5 py-4 text-base border-2 border-gray-300 rounded-2xl focus:border-blue-600 focus:ring-4 focus:ring-blue-600/20 transition-all duration-200 bg-white/50 backdrop-blur-xl"
                             placeholder={content.contact.quote_step_6_company_placeholder}
                           />
                         </div>
@@ -6225,7 +6157,7 @@ ${contactForm.message}`;
                             type="tel"
                             value={quoteData.phone}
                             onChange={(e) => setQuoteData({ ...quoteData, phone: e.target.value })}
-                            className="w-full px-5 py-4 text-base border-2 border-gray-300 rounded-2xl focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 transition-all duration-200 bg-white/50 backdrop-blur-xl"
+                            className="w-full px-5 py-4 text-base border-2 border-gray-300 rounded-2xl focus:border-blue-600 focus:ring-4 focus:ring-blue-600/20 transition-all duration-200 bg-white/50 backdrop-blur-xl"
                             placeholder={content.contact.quote_step_6_phone_placeholder}
                           />
                         </div>
@@ -6612,7 +6544,7 @@ ${contactForm.message}`;
                           }}
                           whileHover={{ scale: 1.02, y: -2 }}
                           whileTap={{ scale: 0.98 }}
-                          className="flex items-center justify-center space-x-2 px-5 py-2.5 border-2 border-blue-500 text-blue-600 rounded-full font-medium text-sm hover:bg-blue-50 transition-all duration-200 btn-pill"
+                          className="flex items-center justify-center space-x-2 px-5 py-2.5 border-2 border-blue-600 text-blue-600 rounded-full font-medium text-sm hover:bg-blue-50 transition-all duration-200 btn-pill"
                         >
                           <Download size={16} />
                           <span>{content.contact.quote_step_7_download}</span>
@@ -6695,7 +6627,7 @@ ${contactForm.message}`;
                           disabled={isQuoteSending}
                           whileHover={!isQuoteSending ? { scale: 1.02, y: -2 } : {}}
                           whileTap={!isQuoteSending ? { scale: 0.98 } : {}}
-                          className="flex-1 flex items-center justify-center space-x-2 px-5 py-2.5 accent-blue text-white rounded-full font-medium text-sm btn-pill shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/50 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                          className="flex-1 flex items-center justify-center space-x-2 px-5 py-2.5 accent-blue text-white rounded-full font-medium text-sm btn-pill shadow-lg shadow-blue-600/30 hover:shadow-xl hover:shadow-blue-600/50 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                           {isQuoteSending ? (
                             <>
@@ -6755,7 +6687,7 @@ ${contactForm.message}`;
                         }}
                         whileHover={{ scale: 1.05, y: -2 }}
                         whileTap={{ scale: 0.98 }}
-                        className="px-5 py-2.5 accent-blue text-white rounded-full font-medium text-sm btn-pill shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/50 transition-all duration-200"
+                        className="px-5 py-2.5 accent-blue text-white rounded-full font-medium text-sm btn-pill shadow-lg shadow-blue-600/30 hover:shadow-xl hover:shadow-blue-600/50 transition-all duration-200"
                       >
                         {content.contact.quote_success_new}
                       </motion.button>
@@ -6772,7 +6704,7 @@ ${contactForm.message}`;
                       onClick={() => setQuoteStep(quoteStep - 1)}
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      className="flex items-center space-x-2 px-5 py-2.5 border-2 border-gray-200 text-gray-900 rounded-full font-medium text-sm btn-pill hover:border-blue-500 hover:bg-blue-50/50 transition-all duration-200"
+                      className="flex items-center space-x-2 px-5 py-2.5 border-2 border-gray-200 text-gray-900 rounded-full font-medium text-sm btn-pill hover:border-blue-600 hover:bg-blue-50/50 transition-all duration-200"
                       style={{ pointerEvents: 'auto', position: 'relative', zIndex: 20 }}
                     >
                       <ChevronRight size={16} className="rotate-180" />
@@ -6836,7 +6768,7 @@ ${contactForm.message}`;
                         }}
                         whileHover={{ scale: 1.02, y: -2 }}
                         whileTap={{ scale: 0.98 }}
-                        className="flex items-center space-x-2 px-8 py-3.5 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-full font-semibold shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/40 transition-all duration-200"
+                        className="flex items-center space-x-2 px-8 py-3.5 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-full font-semibold shadow-lg shadow-blue-600/25 hover:shadow-xl hover:shadow-blue-600/40 transition-all duration-200"
                         style={{ pointerEvents: 'auto', position: 'relative', zIndex: 20 }}
                       >
                         <span>{content.contact.quote_next}</span>
