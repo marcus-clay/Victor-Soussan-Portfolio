@@ -55,6 +55,7 @@ import {
 } from 'lucide-react';
 import { Rocket, Buildings, HandHeart, ArrowsClockwise, ChatCircleDots, ChartLineUp, Envelope, Phone, LinkedinLogo, Globe } from '@phosphor-icons/react';
 import ToolkitPage from './ToolkitPage';
+import DailymotionPage from './DailymotionPage';
 
 // --- Types ---
 
@@ -515,7 +516,7 @@ const TRANSLATIONS = {
       art_cta: "View Gallery"
     },
     testimonials: {
-      title: "Trusted By",
+      title: "In their words",
       subtitle: "Feedback from clients, managers, and team members who have witnessed my impact on product and culture.",
       view_all: "View All 14 Recommendations",
       modal_title: "All Recommendations",
@@ -941,7 +942,7 @@ const TRANSLATIONS = {
       art_cta: "Voir la Galerie"
     },
     testimonials: {
-      title: "Ils m'ont fait confiance",
+      title: "Témoignages",
       subtitle: "Ce que mes clients, managers et équipes disent de notre collaboration.",
       view_all: "Voir les 14 Recommandations",
       modal_title: "Toutes les Recommandations",
@@ -1470,6 +1471,7 @@ const App: React.FC = () => {
   const [copiedPortfolio, setCopiedPortfolio] = useState(false);
   const [iframeModalUrl, setIframeModalUrl] = useState<string | null>(null);
   const [isToolkitPageOpen, setIsToolkitPageOpen] = useState(false);
+  const [isDailymotionPageOpen, setIsDailymotionPageOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('services');
   const [isScrolled, setIsScrolled] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
@@ -1823,11 +1825,11 @@ const App: React.FC = () => {
           <div className="hidden md:flex items-center gap-2 text-sm font-medium">
             {/* Navigation Items - All visible when at top, progressive disclosure when scrolled */}
             {[
-              { id: 'services', label: content.nav.services },
-              { id: 'bio', label: content.nav.bio },
               { id: 'projects', label: content.nav.projects },
-              { id: 'lab', label: content.nav.lab, icon: <FlaskConical size={14} className="mr-1.5"/> },
+              { id: 'bio', label: content.nav.bio },
+              { id: 'services', label: content.nav.services },
               { id: 'testimonials', label: content.nav.testimonials },
+              { id: 'lab', label: content.nav.lab, icon: <FlaskConical size={14} className="mr-1.5"/> },
               { id: 'contact', label: content.nav.contact }
             ].map((item) => {
               const isActive = activeSection === item.id;
@@ -1976,8 +1978,8 @@ const App: React.FC = () => {
               : 'bg-[#F5F5F7] border-b border-gray-200'
           }`}>
             <button onClick={() => scrollToSection('projects')} className={`text-left text-base font-medium px-4 py-2.5 rounded-full btn-pill ${systemTheme === 'dark' ? 'bg-white/10 hover:bg-white/20 text-white' : 'glass-effect hover:text-blue-600'}`}>{content.nav.projects}</button>
-            <button onClick={() => scrollToSection('services')} className={`text-left text-base font-medium px-4 py-2.5 rounded-full btn-pill ${systemTheme === 'dark' ? 'bg-white/10 hover:bg-white/20 text-white' : 'glass-effect hover:text-blue-600'}`}>{content.nav.services}</button>
             <button onClick={() => scrollToSection('bio')} className={`text-left text-base font-medium px-4 py-2.5 rounded-full btn-pill ${systemTheme === 'dark' ? 'bg-white/10 hover:bg-white/20 text-white' : 'glass-effect hover:text-blue-600'}`}>{content.nav.bio}</button>
+            <button onClick={() => scrollToSection('services')} className={`text-left text-base font-medium px-4 py-2.5 rounded-full btn-pill ${systemTheme === 'dark' ? 'bg-white/10 hover:bg-white/20 text-white' : 'glass-effect hover:text-blue-600'}`}>{content.nav.services}</button>
             <button onClick={() => scrollToSection('testimonials')} className={`text-left text-base font-medium px-4 py-2.5 rounded-full btn-pill ${systemTheme === 'dark' ? 'bg-white/10 hover:bg-white/20 text-white' : 'glass-effect hover:text-blue-600'}`}>{content.nav.testimonials}</button>
             <button onClick={() => scrollToSection('lab')} className={`text-left text-base font-medium px-4 py-2.5 rounded-full btn-pill flex items-center ${systemTheme === 'dark' ? 'bg-white/10 hover:bg-white/20 text-white' : 'glass-effect hover:text-blue-600'}`}><FlaskConical size={18} className="mr-2"/>{content.nav.lab}</button>
             <button onClick={() => scrollToSection('contact')} className={`text-left text-base font-medium px-4 py-2.5 rounded-full btn-pill ${systemTheme === 'dark' ? 'bg-white/10 hover:bg-white/20 text-white' : 'glass-effect hover:text-blue-600'}`}>{content.nav.contact}</button>
@@ -2126,107 +2128,48 @@ const App: React.FC = () => {
         </div>
       </header>
 
-      {/* Logo Carousel */}
-      <section className={`py-6 ${
-        systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-[#F5F5F7]'
-      }`}>
-        <div className="max-w-6xl mx-auto px-4 md:px-6">
-          <div className="relative overflow-hidden">
-            {/* Fade edges */}
-            <div className={`absolute left-0 top-0 bottom-0 w-32 z-10 pointer-events-none ${
-              systemTheme === 'dark'
-                ? 'bg-gradient-to-r from-[#0a0a0a] to-transparent'
-                : 'bg-gradient-to-r from-[#F5F5F7] to-transparent'
-            }`} />
-            <div className={`absolute right-0 top-0 bottom-0 w-32 z-10 pointer-events-none ${
-              systemTheme === 'dark'
-                ? 'bg-gradient-to-l from-[#0a0a0a] to-transparent'
-                : 'bg-gradient-to-l from-[#F5F5F7] to-transparent'
-            }`} />
-
-          <div className="logo-carousel-track flex hover:[animation-play-state:paused]">
-            {[...Array(2)].map((_, setIndex) => (
-              <div key={setIndex} className="flex shrink-0">
-                {[
-                  { src: '/logos/LOGO AIRBUS.svg', alt: 'Airbus' },
-                  { src: '/logos/LOGO ORANGE.svg', alt: 'Orange' },
-                  { src: '/logos/LOGO VINCI.svg', alt: 'Vinci' },
-                  { src: '/logos/LOGO DAILYMOTION-1.svg', alt: 'Dailymotion' },
-                  { src: '/logos/LOGO BOUYGUES IMMO.svg', alt: 'Bouygues Immobilier' },
-                  { src: '/logos/LOGO REGION ILE DE FRANCE.svg', alt: 'Région Île-de-France' },
-                  { src: '/logos/LOGO BETAGOUV.svg', alt: 'Beta.gouv' },
-                  { src: '/logos/LOGO OGURY.svg', alt: 'Ogury' },
-                  { src: '/logos/LOGO SOLOCAL.svg', alt: 'Solocal' },
-                  { src: '/logos/LOGO CELIO.svg', alt: 'Celio' },
-                  { src: '/logos/LOGO OPERA COMIQUE.svg', alt: 'Opéra Comique' },
-                  { src: '/logos/LOGO UNOWHY.svg', alt: 'Unowhy' },
-                  { src: '/logos/LOGO KYU.svg', alt: 'Kyu' },
-                  { src: '/logos/LOGO VERLINDE.svg', alt: 'Verlinde' },
-                  { src: '/logos/LOGO UPTRADE.svg', alt: 'Uptrade' },
-                ].map((logo, index) => (
-                  <div
-                    key={`${setIndex}-${index}`}
-                    className="flex items-center justify-center mx-2 md:mx-3"
-                  >
-                    <img
-                      src={logo.src}
-                      alt={logo.alt}
-                      className={`h-[60px] sm:h-[80px] md:h-[100px] w-auto transition-all duration-500 ease-out ${
-                        systemTheme === 'dark'
-                          ? 'brightness-0 invert opacity-60 hover:opacity-100'
-                          : 'grayscale opacity-80 hover:grayscale-0 hover:opacity-100'
-                      }`}
-                    />
-                  </div>
-                ))}
-              </div>
-            ))}
-          </div>
-          </div>
-        </div>
-
-        <style>{`
-          .logo-carousel-track {
-            animation: scroll 30s linear infinite;
+      {/* Global Styles */}
+      <style>{`
+        .logo-carousel-track {
+          animation: scroll 30s linear infinite;
+        }
+        @keyframes scroll {
+          0% {
+            transform: translateX(0);
           }
-          @keyframes scroll {
-            0% {
-              transform: translateX(0);
-            }
-            100% {
-              transform: translateX(-50%);
-            }
+          100% {
+            transform: translateX(-50%);
           }
-          .thin-scrollbar::-webkit-scrollbar {
-            width: 4px;
-          }
-          .thin-scrollbar::-webkit-scrollbar-track {
-            background: transparent;
-          }
-          .thin-scrollbar::-webkit-scrollbar-thumb {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 4px;
-          }
-          .thin-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: rgba(0, 0, 0, 0.3);
-          }
-          .dark .thin-scrollbar::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.2);
-          }
-          .dark .thin-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.3);
-          }
-        `}</style>
-      </section>
+        }
+        .thin-scrollbar::-webkit-scrollbar {
+          width: 4px;
+        }
+        .thin-scrollbar::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .thin-scrollbar::-webkit-scrollbar-thumb {
+          background: rgba(0, 0, 0, 0.2);
+          border-radius: 4px;
+        }
+        .thin-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: rgba(0, 0, 0, 0.3);
+        }
+        .dark .thin-scrollbar::-webkit-scrollbar-thumb {
+          background: rgba(255, 255, 255, 0.2);
+        }
+        .dark .thin-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: rgba(255, 255, 255, 0.3);
+        }
+      `}</style>
 
       {/* Interactive Case Studies Section */}
       <section id="projects" className={`py-16 md:py-32 px-4 md:px-6 ${
         systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-[#F5F5F7]'
       }`}>
         <div className="max-w-6xl mx-auto">
-          <div className="mb-8 md:mb-12">
+          <div className="mb-8 md:mb-12 text-center">
             <h2 className="text-xl sm:text-2xl md:text-4xl font-bold tracking-tight mb-4 md:mb-6">{content.projects.title}</h2>
-            <p className={`text-sm sm:text-base md:text-lg ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>{content.projects.subtitle}</p>
+            <p className={`text-sm sm:text-base md:text-lg max-w-2xl mx-auto ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>{content.projects.subtitle}</p>
           </div>
 
           <div className="flex flex-col md:flex-row gap-6 md:gap-8 h-auto md:h-[750px]">
@@ -2391,6 +2334,8 @@ const App: React.FC = () => {
                       onClick={() => {
                         if (selectedProject.id === 'toolkit') {
                           setIsToolkitPageOpen(true);
+                        } else if (selectedProject.id === 'dailymotion') {
+                          setIsDailymotionPageOpen(true);
                         } else {
                           setIframeModalUrl(selectedProject.externalLink!);
                         }
@@ -2456,9 +2401,9 @@ const App: React.FC = () => {
         systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white'
       }`}>
         <div className="max-w-6xl mx-auto">
-          <div className="mb-8 md:mb-12 text-center md:text-left">
+          <div className="mb-8 md:mb-12 text-center">
             <h2 className="text-xl sm:text-2xl md:text-4xl font-bold tracking-tight mb-4 md:mb-6">{content.bio.title}</h2>
-            <p className={`text-sm sm:text-base md:text-lg ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>{content.bio.subtitle}</p>
+            <p className={`text-sm sm:text-base md:text-lg max-w-2xl mx-auto ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>{content.bio.subtitle}</p>
           </div>
 
           <div className="grid md:grid-cols-12 gap-6 md:gap-8">
@@ -2633,9 +2578,9 @@ const App: React.FC = () => {
         systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-[#F5F5F7]'
       }`}>
         <div className="max-w-6xl mx-auto">
-          <div className="mb-8 md:mb-12 text-center md:text-left">
+          <div className="mb-8 md:mb-12 text-center">
              <h2 className="text-xl sm:text-2xl md:text-4xl font-bold tracking-tight mb-4 md:mb-6">{content.services.title}</h2>
-             <p className={`text-sm sm:text-base md:text-lg max-w-2xl ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
+             <p className={`text-sm sm:text-base md:text-lg max-w-2xl mx-auto ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
                {content.services.subtitle}
              </p>
           </div>
@@ -2836,6 +2781,79 @@ const App: React.FC = () => {
         </div>
       </section>
 
+      {/* Clients Section */}
+      <section id="clients" className={`py-16 md:py-24 px-4 md:px-6 border-t ${
+        systemTheme === 'dark'
+          ? 'bg-[#0a0a0a] border-white/10'
+          : 'bg-[#F5F5F7] border-gray-100'
+      }`}>
+        <div className="max-w-6xl mx-auto">
+          <div className="mb-8 md:mb-12 text-center">
+            <h2 className="text-xl sm:text-2xl md:text-4xl font-bold tracking-tight mb-4 md:mb-6">
+              {lang === 'en' ? 'Trusted by leading companies' : 'Des entreprises qui me font confiance'}
+            </h2>
+            <p className={`text-sm sm:text-base md:text-lg max-w-2xl mx-auto ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
+              {lang === 'en'
+                ? 'From startups to Fortune 500 companies, I help teams build products that matter.'
+                : 'Des startups aux grands groupes, j\'accompagne les équipes dans la création de produits qui comptent.'}
+            </p>
+          </div>
+
+          <div className="relative overflow-hidden">
+            {/* Fade edges */}
+            <div className={`absolute left-0 top-0 bottom-0 w-32 z-10 pointer-events-none ${
+              systemTheme === 'dark'
+                ? 'bg-gradient-to-r from-[#0a0a0a] to-transparent'
+                : 'bg-gradient-to-r from-[#F5F5F7] to-transparent'
+            }`} />
+            <div className={`absolute right-0 top-0 bottom-0 w-32 z-10 pointer-events-none ${
+              systemTheme === 'dark'
+                ? 'bg-gradient-to-l from-[#0a0a0a] to-transparent'
+                : 'bg-gradient-to-l from-[#F5F5F7] to-transparent'
+            }`} />
+
+            <div className="logo-carousel-track flex hover:[animation-play-state:paused]">
+              {[...Array(2)].map((_, setIndex) => (
+                <div key={setIndex} className="flex shrink-0">
+                  {[
+                    { src: '/logos/LOGO AIRBUS.svg', alt: 'Airbus' },
+                    { src: '/logos/LOGO ORANGE.svg', alt: 'Orange' },
+                    { src: '/logos/LOGO VINCI.svg', alt: 'Vinci' },
+                    { src: '/logos/LOGO DAILYMOTION-1.svg', alt: 'Dailymotion' },
+                    { src: '/logos/LOGO BOUYGUES IMMO.svg', alt: 'Bouygues Immobilier' },
+                    { src: '/logos/LOGO REGION ILE DE FRANCE.svg', alt: 'Région Île-de-France' },
+                    { src: '/logos/LOGO BETAGOUV.svg', alt: 'Beta.gouv' },
+                    { src: '/logos/LOGO OGURY.svg', alt: 'Ogury' },
+                    { src: '/logos/LOGO SOLOCAL.svg', alt: 'Solocal' },
+                    { src: '/logos/LOGO CELIO.svg', alt: 'Celio' },
+                    { src: '/logos/LOGO OPERA COMIQUE.svg', alt: 'Opéra Comique' },
+                    { src: '/logos/LOGO UNOWHY.svg', alt: 'Unowhy' },
+                    { src: '/logos/LOGO KYU.svg', alt: 'Kyu' },
+                    { src: '/logos/LOGO VERLINDE.svg', alt: 'Verlinde' },
+                    { src: '/logos/LOGO UPTRADE.svg', alt: 'Uptrade' },
+                  ].map((logo, index) => (
+                    <div
+                      key={`${setIndex}-${index}`}
+                      className="flex items-center justify-center mx-2 md:mx-3"
+                    >
+                      <img
+                        src={logo.src}
+                        alt={logo.alt}
+                        className={`h-[60px] sm:h-[80px] md:h-[100px] w-auto transition-all duration-500 ease-out ${
+                          systemTheme === 'dark'
+                            ? 'brightness-0 invert opacity-60 hover:opacity-100'
+                            : 'grayscale opacity-80 hover:grayscale-0 hover:opacity-100'
+                        }`}
+                      />
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Testimonials Section */}
       <section id="testimonials" className={`py-16 md:py-32 px-4 md:px-6 border-t ${
         systemTheme === 'dark'
@@ -2922,16 +2940,14 @@ const App: React.FC = () => {
          <div className="absolute bottom-0 left-0 w-[250px] md:w-[400px] h-[250px] md:h-[400px] bg-blue-600/10 rounded-full blur-[100px] pointer-events-none -translate-x-1/2 translate-y-1/2"></div>
 
          <div className="max-w-6xl mx-auto relative z-10">
-            <div className="mb-8 md:mb-12 flex flex-col md:flex-row items-start md:items-end justify-between">
-              <div>
-                <div className="inline-flex items-center px-3 py-1 rounded-full bg-white/10 border border-white/10 text-xs font-medium text-blue-300 mb-3 md:mb-4 backdrop-blur-md">
-                   <FlaskConical size={14} className="mr-2"/> {content.lab.tag}
-                </div>
-                <h2 className="text-xl sm:text-2xl md:text-4xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-500">{content.lab.title}</h2>
-                <p className="text-gray-400 mt-3 md:mt-4 text-sm sm:text-base md:text-lg max-w-xl">
-                   {content.lab.desc}
-                </p>
+            <div className="mb-8 md:mb-12 text-center">
+              <div className="inline-flex items-center px-3 py-1 rounded-full bg-white/10 border border-white/10 text-xs font-medium text-blue-300 mb-3 md:mb-4 backdrop-blur-md">
+                 <FlaskConical size={14} className="mr-2"/> {content.lab.tag}
               </div>
+              <h2 className="text-xl sm:text-2xl md:text-4xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-500">{content.lab.title}</h2>
+              <p className="text-gray-400 mt-3 md:mt-4 text-sm sm:text-base md:text-lg max-w-2xl mx-auto">
+                 {content.lab.desc}
+              </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
@@ -6872,6 +6888,19 @@ ${contactForm.message}`;
         {isToolkitPageOpen && (
           <ToolkitPage
             onClose={() => setIsToolkitPageOpen(false)}
+            systemTheme={systemTheme}
+            onToggleTheme={() => {
+              setThemeMode(prev => prev === 'dark' ? 'light' : 'dark');
+            }}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Dailymotion Case Study Page */}
+      <AnimatePresence>
+        {isDailymotionPageOpen && (
+          <DailymotionPage
+            onClose={() => setIsDailymotionPageOpen(false)}
             systemTheme={systemTheme}
             onToggleTheme={() => {
               setThemeMode(prev => prev === 'dark' ? 'light' : 'dark');
