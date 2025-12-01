@@ -20,6 +20,8 @@ interface BentoGalleryProps {
   items: GalleryItem[];
   systemTheme: 'light' | 'dark';
   lang?: 'en' | 'fr';
+  hasCaseStudy?: boolean; // Whether this project has a case study view
+  onOpenCaseStudy?: () => void; // Callback to switch to case study view
 }
 
 const TRANSLATIONS = {
@@ -28,12 +30,16 @@ const TRANSLATIONS = {
     items: 'items',
     clickToZoom: 'Click to zoom',
     close: 'Close',
+    caseStudy: 'Case Study',
+    gallery: 'Gallery',
   },
   fr: {
     snapshots: 'Aperçus du projet',
     items: 'éléments',
     clickToZoom: 'Cliquer pour agrandir',
     close: 'Fermer',
+    caseStudy: 'Étude de cas',
+    gallery: 'Galerie',
   },
 };
 
@@ -44,6 +50,8 @@ export const BentoGallery: React.FC<BentoGalleryProps> = ({
   items,
   systemTheme,
   lang = 'en',
+  hasCaseStudy = false,
+  onOpenCaseStudy,
 }) => {
   const t = TRANSLATIONS[lang];
   const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -172,7 +180,8 @@ export const BentoGallery: React.FC<BentoGalleryProps> = ({
             }`}
           >
             <div className="max-w-6xl mx-auto px-4 md:px-6 py-4 flex items-center justify-between">
-              <div>
+              {/* Left - Title */}
+              <div className="flex-1">
                 <h1
                   className={`text-lg md:text-xl font-bold ${
                     systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
@@ -180,25 +189,66 @@ export const BentoGallery: React.FC<BentoGalleryProps> = ({
                 >
                   {title}
                 </h1>
-                <p
-                  className={`text-sm ${
-                    systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                  }`}
-                >
-                  {t.snapshots} - {items.length} {t.items}
-                </p>
               </div>
-              <button
-                onClick={onClose}
-                className={`p-2 rounded-full transition-colors ${
-                  systemTheme === 'dark'
-                    ? 'hover:bg-white/10 text-gray-300'
-                    : 'hover:bg-gray-100 text-gray-600'
-                }`}
-                aria-label={t.close}
-              >
-                <X size={24} />
-              </button>
+
+              {/* Center - Toggle Switch (only if has case study) */}
+              {hasCaseStudy && onOpenCaseStudy ? (
+                <div className="flex-1 flex justify-center">
+                  <div
+                    className={`inline-flex rounded-full p-1 ${
+                      systemTheme === 'dark' ? 'bg-white/10' : 'bg-gray-100'
+                    }`}
+                  >
+                    <button
+                      onClick={onOpenCaseStudy}
+                      className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                        systemTheme === 'dark'
+                          ? 'text-gray-400 hover:text-white'
+                          : 'text-gray-500 hover:text-gray-900'
+                      }`}
+                    >
+                      {t.caseStudy}
+                    </button>
+                    <button
+                      className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                        systemTheme === 'dark'
+                          ? 'bg-white text-gray-900'
+                          : 'bg-white text-gray-900 shadow-sm'
+                      }`}
+                    >
+                      {t.gallery}
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                /* Gallery only - show static label in center */
+                <div className="flex-1 flex justify-center">
+                  <span
+                    className={`px-3 py-1.5 rounded-full text-sm font-medium ${
+                      systemTheme === 'dark'
+                        ? 'bg-white/10 text-white'
+                        : 'bg-gray-100 text-gray-900'
+                    }`}
+                  >
+                    {t.gallery}
+                  </span>
+                </div>
+              )}
+
+              {/* Right - Close button */}
+              <div className="flex-1 flex justify-end">
+                <button
+                  onClick={onClose}
+                  className={`p-2 rounded-full transition-colors ${
+                    systemTheme === 'dark'
+                      ? 'hover:bg-white/10 text-gray-300'
+                      : 'hover:bg-gray-100 text-gray-600'
+                  }`}
+                  aria-label={t.close}
+                >
+                  <X size={24} />
+                </button>
+              </div>
             </div>
           </header>
 

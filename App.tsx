@@ -7069,6 +7069,16 @@ ${contactForm.message}`;
         items={galleryProject === 'toolkit' ? TOOLKIT_GALLERY_ITEMS : DAILYMOTION_GALLERY_ITEMS}
         systemTheme={systemTheme}
         lang={lang}
+        hasCaseStudy={true}
+        onOpenCaseStudy={() => {
+          if (galleryProject === 'toolkit') {
+            setGalleryProject(null);
+            setIsToolkitPageOpen(true);
+          } else if (galleryProject === 'dailymotion') {
+            setGalleryProject(null);
+            setIsDailymotionPageOpen(true);
+          }
+        }}
       />
 
     </div>
