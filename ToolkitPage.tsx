@@ -1,11 +1,10 @@
-// Toolkit Case Study Page - Syncs with Notion
+// Toolkit Case Study Page - Static content with instant loading
 // Displays the Toolkit project case study with portfolio styling
 
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React from 'react';
+import { motion } from 'framer-motion';
 import {
   ArrowLeft,
-  RefreshCw,
   ExternalLink,
   Calendar,
   Briefcase,
@@ -14,9 +13,6 @@ import {
   Moon,
   Rocket
 } from 'lucide-react';
-import { ArrowsClockwise } from '@phosphor-icons/react';
-import { fetchNotionPageWithCache, NotionPage, NOTION_PAGES, clearPageCache } from './notionService';
-import NotionRenderer from './NotionRenderer';
 
 interface ToolkitPageProps {
   onClose: () => void;
@@ -29,34 +25,6 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
   systemTheme,
   onToggleTheme
 }) => {
-  const [page, setPage] = useState<NotionPage | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [refreshing, setRefreshing] = useState(false);
-
-  const loadPage = async (forceRefresh = false) => {
-    try {
-      if (forceRefresh) {
-        clearPageCache(NOTION_PAGES.TOOLKIT);
-        setRefreshing(true);
-      }
-      setError(null);
-
-      const pageData = await fetchNotionPageWithCache(NOTION_PAGES.TOOLKIT);
-      setPage(pageData);
-    } catch (err) {
-      setError('Failed to load page. Please try again.');
-      console.error(err);
-    } finally {
-      setLoading(false);
-      setRefreshing(false);
-    }
-  };
-
-  useEffect(() => {
-    loadPage();
-  }, []);
-
   // Project metadata
   const projectMeta = {
     type: 'Product Design',
@@ -100,7 +68,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                 }`}
               >
-                {page?.title || 'Toolkit'}
+                Toolkit
               </h1>
               <p
                 className={`text-sm ${
@@ -113,20 +81,6 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
           </div>
 
           <div className="flex items-center space-x-2">
-            {/* Refresh button */}
-            <button
-              onClick={() => loadPage(true)}
-              disabled={refreshing}
-              className={`p-2 rounded-full transition-colors ${
-                systemTheme === 'dark'
-                  ? 'hover:bg-white/10 text-gray-300'
-                  : 'hover:bg-gray-100 text-gray-600'
-              } ${refreshing ? 'animate-spin' : ''}`}
-              title="Refresh from Notion"
-            >
-              <RefreshCw size={20} />
-            </button>
-
             {/* Theme toggle */}
             <button
               onClick={onToggleTheme}
@@ -139,9 +93,9 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
               {systemTheme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
             </button>
 
-            {/* External link to Notion */}
+            {/* External link */}
             <a
-              href={`https://victor-soussan.notion.site/Toolkit-${NOTION_PAGES.TOOLKIT}`}
+              href="https://toolkit-app.com"
               target="_blank"
               rel="noopener noreferrer"
               className={`p-2 rounded-full transition-colors ${
@@ -149,7 +103,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   ? 'hover:bg-white/10 text-gray-300'
                   : 'hover:bg-gray-100 text-gray-600'
               }`}
-              title="View in Notion"
+              title="Visit Toolkit"
             >
               <ExternalLink size={20} />
             </a>
@@ -294,70 +248,160 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
           </div>
         </div>
 
-        {/* Loading State */}
-        {loading && (
-          <div className="flex flex-col items-center justify-center py-20">
-            <div
-              className={`w-8 h-8 border-2 border-t-transparent rounded-full animate-spin ${
-                systemTheme === 'dark' ? 'border-blue-400' : 'border-blue-600'
-              }`}
-            />
-            <p
-              className={`mt-4 ${
-                systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-              }`}
-            >
-              Loading from Notion...
-            </p>
-          </div>
-        )}
-
-        {/* Error State */}
-        {error && (
+        {/* Hero Image */}
+        <figure className="mb-12">
           <div
-            className={`p-6 rounded-2xl border text-center ${
-              systemTheme === 'dark'
-                ? 'bg-red-900/20 border-red-500/30'
-                : 'bg-red-50 border-red-200'
-            }`}
-          >
-            <p
-              className={
-                systemTheme === 'dark' ? 'text-red-400' : 'text-red-600'
-              }
-            >
-              {error}
-            </p>
-            <button
-              onClick={() => loadPage(true)}
-              className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-full text-sm font-medium hover:bg-blue-700 transition-colors"
-            >
-              Try Again
-            </button>
-          </div>
-        )}
-
-        {/* Page Content */}
-        {!loading && !error && page && (
-          <NotionRenderer blocks={page.blocks} systemTheme={systemTheme} />
-        )}
-
-        {/* Sync indicator */}
-        {!loading && page && (
-          <div
-            className={`mt-12 pt-6 border-t text-center ${
+            className={`rounded-2xl overflow-hidden border ${
               systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
             }`}
           >
-            <p
-              className={`text-xs ${
-                systemTheme === 'dark' ? 'text-gray-500' : 'text-gray-400'
+            <img
+              src="/images/toolkit/hero.webp"
+              alt="Toolkit App Overview"
+              className="w-full h-auto"
+            />
+          </div>
+        </figure>
+
+        {/* Context and Approach Section */}
+        <section className="mb-16">
+          <h1
+            className={`text-2xl md:text-3xl font-bold mb-6 ${
+              systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+            }`}
+          >
+            Context and approach
+          </h1>
+
+          <figure className="mb-8">
+            <div
+              className={`rounded-2xl overflow-hidden border ${
+                systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
               }`}
             >
-              Synced from Notion - Click refresh to update
-            </p>
-          </div>
-        )}
+              <img
+                src="/images/toolkit/product-evolution.svg"
+                alt="Product Evolution - 12 months roadmap"
+                className="w-full h-auto"
+              />
+            </div>
+          </figure>
+        </section>
+
+        {/* Divider */}
+        <hr
+          className={`my-12 ${
+            systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
+          }`}
+        />
+
+        {/* Phase 1 - Foundation */}
+        <section className="mb-16">
+          <h1
+            className={`text-2xl md:text-3xl font-bold mb-8 ${
+              systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+            }`}
+          >
+            Phase 1 - Foundation
+          </h1>
+
+          {/* 1st Time Experience */}
+          <h2
+            className={`text-xl md:text-2xl font-bold mb-6 ${
+              systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+            }`}
+          >
+            1st time experience
+          </h2>
+
+          <figure className="mb-8">
+            <div
+              className={`rounded-2xl overflow-hidden border ${
+                systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
+              }`}
+            >
+              <img
+                src="/images/toolkit/chantier-detail.svg"
+                alt="Chantier Detail v2"
+                className="w-full h-auto"
+              />
+            </div>
+            <figcaption
+              className={`mt-3 text-sm ${
+                systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+              }`}
+            >
+              <strong>Chantier Detail v2</strong> - Removed the metadata informations to the edit view. We only kept contact information display at 1st sight.
+            </figcaption>
+          </figure>
+
+          {/* Divider */}
+          <hr
+            className={`my-12 ${
+              systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
+            }`}
+          />
+
+          {/* Tasks */}
+          <h2
+            className={`text-xl md:text-2xl font-bold mb-6 ${
+              systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+            }`}
+          >
+            Tasks
+          </h2>
+
+          <figure className="mb-8">
+            <div
+              className={`rounded-2xl overflow-hidden border ${
+                systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
+              }`}
+            >
+              <img
+                src="/images/toolkit/tasks-list.svg"
+                alt="Task creation interface"
+                className="w-full h-auto"
+              />
+            </div>
+            <figcaption
+              className={`mt-3 text-sm ${
+                systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+              }`}
+            >
+              <strong>Task creation</strong> - Assisted task creation for quick addition and task setting for each phase of the project
+            </figcaption>
+          </figure>
+
+          {/* Sequences */}
+          <h2
+            className={`text-xl md:text-2xl font-bold mb-6 ${
+              systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+            }`}
+          >
+            Sequences
+          </h2>
+
+          <figure className="mb-8">
+            <div
+              className={`rounded-2xl overflow-hidden border ${
+                systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
+              }`}
+            >
+              <img
+                src="/images/toolkit/tasks-sequence.svg"
+                alt="Tasks sequences interface"
+                className="w-full h-auto"
+              />
+            </div>
+            <figcaption
+              className={`mt-3 text-sm ${
+                systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+              }`}
+            >
+              <strong>Tasks sequences</strong> - Templating is part of Toolkit DNA. So as to speed up the process of site planning, the construction planner can set and save task sequences in a library. When working on the planning canvas, the library helps you set the projects blocks in seconds.
+            </figcaption>
+          </figure>
+        </section>
       </main>
     </motion.div>
   );
