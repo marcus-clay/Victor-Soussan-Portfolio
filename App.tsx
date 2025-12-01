@@ -53,7 +53,8 @@ import {
   Monitor,
   ChevronDown
 } from 'lucide-react';
-import { Rocket, Buildings, HandHeart, ArrowsClockwise, ChatCircleDots, ChartLineUp } from '@phosphor-icons/react';
+import { Rocket, Buildings, HandHeart, ArrowsClockwise, ChatCircleDots, ChartLineUp, Envelope, Phone, LinkedinLogo, Globe } from '@phosphor-icons/react';
+import ToolkitPage from './ToolkitPage';
 
 // --- Types ---
 
@@ -678,7 +679,7 @@ const TRANSLATIONS = {
       }
     },
     bio: {
-      title: "Biographie & Outils",
+      title: "À Propos",
       subtitle: "Mon parcours, mon approche et mes ressources.",
       role: "Product Design Lead • Mentor • Strategist",
       exp: "15 Ans d'Expérience",
@@ -693,7 +694,7 @@ const TRANSLATIONS = {
       p1: "Je conçois des produits numériques depuis 15 ans. J'ai évolué de l'agence au produit, en passant par les grands groupes médias et les startups hardware. Je ne cherche pas à faire du 'beau', je cherche à faire du 'fonctionnel' et du 'viable'.",
       p2: "Mon profil est hybride : je peux définir une roadmap avec un CEO, manager une équipe de designers, et ouvrir Figma pour produire des maquettes prêtes à coder. Je comprends les contraintes techniques et je parle le langage des développeurs.",
       view_full_bio: "Voir mon Parcours Complet",
-      modal_title: "Parcours Complet & Track Record",
+      modal_title: "Biographie et Parcours",
       modal_subtitle: "15 ans à construire des produits, 10 ans en design produit",
       close: "Fermer",
       toolkit_title: "Ma Boîte à Outils",
@@ -1465,7 +1466,10 @@ const App: React.FC = () => {
   const [copiedResume, setCopiedResume] = useState(false);
   const [copiedEmail, setCopiedEmail] = useState(false);
   const [copiedPhone, setCopiedPhone] = useState(false);
+  const [copiedLinkedin, setCopiedLinkedin] = useState(false);
+  const [copiedPortfolio, setCopiedPortfolio] = useState(false);
   const [iframeModalUrl, setIframeModalUrl] = useState<string | null>(null);
+  const [isToolkitPageOpen, setIsToolkitPageOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('services');
   const [isScrolled, setIsScrolled] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
@@ -1741,16 +1745,30 @@ const App: React.FC = () => {
   };
 
   const handleCopyEmail = () => {
-    navigator.clipboard.writeText('victor.soussan@me.com').then(() => {
+    navigator.clipboard.writeText('victorsoussan@gmail.com').then(() => {
       setCopiedEmail(true);
       setTimeout(() => setCopiedEmail(false), 2000);
     });
   };
 
   const handleCopyPhone = () => {
-    navigator.clipboard.writeText('+33 6 64 80 08 32').then(() => {
+    navigator.clipboard.writeText('+33 6 15 98 94 00').then(() => {
       setCopiedPhone(true);
       setTimeout(() => setCopiedPhone(false), 2000);
+    });
+  };
+
+  const handleCopyLinkedin = () => {
+    navigator.clipboard.writeText('https://linkedin.com/in/victorsoussan').then(() => {
+      setCopiedLinkedin(true);
+      setTimeout(() => setCopiedLinkedin(false), 2000);
+    });
+  };
+
+  const handleCopyPortfolio = () => {
+    navigator.clipboard.writeText('https://victorsoussan.com').then(() => {
+      setCopiedPortfolio(true);
+      setTimeout(() => setCopiedPortfolio(false), 2000);
     });
   };
 
@@ -2370,7 +2388,13 @@ const App: React.FC = () => {
 
                   {selectedProject.externalLink && (
                     <button
-                      onClick={() => setIframeModalUrl(selectedProject.externalLink!)}
+                      onClick={() => {
+                        if (selectedProject.id === 'toolkit') {
+                          setIsToolkitPageOpen(true);
+                        } else {
+                          setIframeModalUrl(selectedProject.externalLink!);
+                        }
+                      }}
                       className={`inline-flex items-center px-5 py-3 rounded-xl text-sm font-medium transition-all hover:scale-[1.01] shadow-md ${
                         systemTheme === 'dark'
                           ? 'bg-white text-gray-900 hover:bg-gray-100'
@@ -2423,6 +2447,183 @@ const App: React.FC = () => {
               </div>
             </div>
 
+          </div>
+        </div>
+      </section>
+
+      {/* Biography & Toolkit Section */}
+      <section id="bio" className={`py-16 md:py-32 px-4 md:px-6 relative ${
+        systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white'
+      }`}>
+        <div className="max-w-6xl mx-auto">
+          <div className="mb-8 md:mb-12 text-center md:text-left">
+            <h2 className="text-xl sm:text-2xl md:text-4xl font-bold tracking-tight mb-4 md:mb-6">{content.bio.title}</h2>
+            <p className={`text-sm sm:text-base md:text-lg ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>{content.bio.subtitle}</p>
+          </div>
+
+          <div className="grid md:grid-cols-12 gap-6 md:gap-8">
+
+            {/* Left: Bio Card */}
+            <div className="md:col-span-7">
+               <div className={`p-5 md:p-8 h-full flex flex-col justify-between overflow-hidden relative rounded-2xl md:rounded-3xl border shadow-sm ${
+                 systemTheme === 'dark'
+                   ? 'bg-[#1D1D1F] border-white/10'
+                   : 'glass-effect border-white/50'
+               }`}>
+                  <div>
+                    <div className="flex flex-col md:flex-row items-center md:items-start space-y-4 md:space-y-0 md:space-x-8 mb-6 md:mb-8">
+                      <Avatar
+                        filename="victor-soussan.png"
+                        alt="Victor Soussan"
+                        className="w-28 h-28 md:w-40 md:h-40 rounded-2xl md:rounded-[2rem] shadow-lg border border-white/20"
+                      />
+                      <div className="text-center md:text-left pt-2 flex-1">
+                        <h3 className={`text-2xl md:text-3xl font-bold mb-2 ${
+                          systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+                        }`}>Victor Soussan</h3>
+                        <p className={`font-medium mb-3 md:mb-4 text-sm md:text-lg ${
+                          systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+                        }`}>{content.bio.role}</p>
+                        <div className="flex flex-wrap gap-2 justify-center md:justify-start">
+                          <Badge color="blue">{content.bio.exp}</Badge>
+                          <Badge color="gray">{content.bio.loc}</Badge>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className={`space-y-5 leading-relaxed text-[15px] ${
+                      systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                    }`}>
+                      {/* Intro paragraphs first */}
+                      <p>{content.bio.p1}</p>
+                      <p>{content.bio.p2}</p>
+
+                      {/* Value proposition block */}
+                      <div className={`p-5 rounded-2xl border ${
+                        systemTheme === 'dark'
+                          ? 'bg-blue-900/20 border-blue-500/20'
+                          : 'bg-blue-50/50 border-blue-100'
+                      }`}>
+                        <p className={`font-semibold mb-3 text-base ${
+                          systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+                        }`}>{content.bio.value_prop}</p>
+                        <ul className="space-y-2">
+                          {content.bio.bullets.map((bullet, i) => (
+                            <li key={i} className="flex items-start text-sm">
+                              <CheckCircle2 size={16} className="mr-2.5 mt-0.5 text-blue-500 flex-shrink-0" />
+                              <span>{bullet}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className={`flex flex-wrap gap-4 mt-8 pt-6 border-t ${
+                    systemTheme === 'dark' ? 'border-white/10' : 'border-gray-100'
+                  }`}>
+                     <button
+                       onClick={() => setIsBioOpen(true)}
+                       className="px-5 py-2.5 accent-blue text-white rounded-full text-sm font-medium btn-pill flex items-center"
+                     >
+                       <FileText size={16} className="mr-2"/> {content.bio.view_full_bio}
+                     </button>
+
+                     <a
+                       href="https://linkedin.com/in/victorsoussan"
+                       target="_blank"
+                       rel="noreferrer"
+                       className="px-5 py-2.5 rounded-full text-sm font-medium btn-pill flex items-center text-white"
+                       style={{background: 'linear-gradient(135deg, #0077b5 0%, #006097 100%)'}}
+                     >
+                       <Linkedin size={16} className="mr-2"/> LinkedIn
+                     </a>
+
+                     <div className="flex space-x-2">
+                        <button
+                          onClick={() => {
+                            setResumeLang('fr');
+                            setIsResumeOpen(true);
+                          }}
+                          className={`px-4 py-2.5 rounded-full text-sm font-medium btn-pill flex items-center ${
+                            systemTheme === 'dark'
+                              ? 'bg-white/10 text-gray-300 hover:text-white hover:bg-white/20'
+                              : 'glass-effect text-gray-700 hover:text-blue-600'
+                          }`}
+                        >
+                          <Download size={16} className="mr-2"/> Résumé FR
+                        </button>
+                        <button
+                          onClick={() => {
+                            setResumeLang('en');
+                            setIsResumeOpen(true);
+                          }}
+                          className={`px-4 py-2.5 rounded-full text-sm font-medium btn-pill flex items-center ${
+                            systemTheme === 'dark'
+                              ? 'bg-white/10 text-gray-300 hover:text-white hover:bg-white/20'
+                              : 'glass-effect text-gray-700 hover:text-blue-600'
+                          }`}
+                        >
+                          <Download size={16} className="mr-2"/> Résumé EN
+                        </button>
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+            {/* Right: Toolkit Grid */}
+            <div className="md:col-span-5 flex flex-col space-y-6">
+              <div className={`p-6 rounded-3xl border shadow-sm h-full flex flex-col ${
+                systemTheme === 'dark'
+                  ? 'bg-[#1D1D1F] border-white/10'
+                  : 'bg-white border-gray-100'
+              }`}>
+                 <div className={`flex items-center mb-4 font-bold ${
+                   systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+                 }`}>
+                   <BookOpen size={20} className="mr-2 text-blue-600"/>
+                   <h3>{content.bio.toolkit_title}</h3>
+                 </div>
+                 <p className={`text-sm mb-6 ${
+                   systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+                 }`}>
+                   {content.bio.toolkit_desc}
+                 </p>
+
+                 <div className="space-y-3 flex-1">
+                    {resources.map((res, idx) => (
+                       <a
+                         key={idx}
+                         href={res.link}
+                         target="_blank"
+                         rel="noopener noreferrer"
+                         className={`flex items-center p-3 rounded-xl transition-colors group cursor-pointer border ${
+                           systemTheme === 'dark'
+                             ? 'bg-white/5 hover:bg-blue-900/30 text-gray-300 hover:text-blue-400 border-white/5 hover:border-blue-500/30'
+                             : 'bg-gray-50 hover:bg-blue-50 hover:text-blue-700 border-transparent hover:border-blue-100'
+                         }`}
+                       >
+                          <div className={`mr-3 p-2 rounded-lg border shadow-sm ${
+                            systemTheme === 'dark'
+                              ? 'bg-white/10 border-white/10 group-hover:border-blue-500/30'
+                              : 'bg-white border-gray-100 group-hover:border-blue-100'
+                          }`}>
+                            {res.icon}
+                          </div>
+                          <div className="flex-1">
+                             <div className="text-sm font-semibold">{res.title}</div>
+                             <div className={`text-xs ${
+                               systemTheme === 'dark'
+                                 ? 'text-gray-500 group-hover:text-blue-400'
+                                 : 'text-gray-400 group-hover:text-blue-400'
+                             }`}>{res.desc}</div>
+                          </div>
+                          <ArrowUpRight size={16} className="opacity-0 group-hover:opacity-100 transition-opacity text-blue-500"/>
+                       </a>
+                    ))}
+                 </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -2635,181 +2836,6 @@ const App: React.FC = () => {
         </div>
       </section>
 
-      {/* Biography & Toolkit Section */}
-      <section id="bio" className={`py-16 md:py-32 px-4 md:px-6 relative ${
-        systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white'
-      }`}>
-        <div className="max-w-6xl mx-auto">
-          <div className="mb-8 md:mb-12 text-center md:text-left">
-            <h2 className="text-xl sm:text-2xl md:text-4xl font-bold tracking-tight mb-4 md:mb-6">{content.bio.title}</h2>
-            <p className={`text-sm sm:text-base md:text-lg ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>{content.bio.subtitle}</p>
-          </div>
-
-          <div className="grid md:grid-cols-12 gap-6 md:gap-8">
-
-            {/* Left: Bio Card */}
-            <div className="md:col-span-7">
-               <div className={`p-5 md:p-8 h-full flex flex-col justify-between overflow-hidden relative rounded-2xl md:rounded-3xl border shadow-sm ${
-                 systemTheme === 'dark'
-                   ? 'bg-[#1D1D1F] border-white/10'
-                   : 'glass-effect border-white/50'
-               }`}>
-                  <div>
-                    <div className="flex flex-col md:flex-row items-center md:items-start space-y-4 md:space-y-0 md:space-x-8 mb-6 md:mb-8">
-                      <Avatar
-                        filename="victor-soussan.png"
-                        alt="Victor Soussan"
-                        className="w-28 h-28 md:w-40 md:h-40 rounded-2xl md:rounded-[2rem] shadow-lg border border-white/20"
-                      />
-                      <div className="text-center md:text-left pt-2 flex-1">
-                        <h3 className={`text-2xl md:text-3xl font-bold mb-2 ${
-                          systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                        }`}>Victor Soussan</h3>
-                        <p className={`font-medium mb-3 md:mb-4 text-sm md:text-lg ${
-                          systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                        }`}>{content.bio.role}</p>
-                        <div className="flex flex-wrap gap-2 justify-center md:justify-start">
-                          <Badge color="blue">{content.bio.exp}</Badge>
-                          <Badge color="gray">{content.bio.loc}</Badge>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className={`space-y-6 leading-relaxed text-[15px] ${
-                      systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
-                    }`}>
-                      <div className={`p-6 rounded-2xl border ${
-                        systemTheme === 'dark'
-                          ? 'bg-blue-900/20 border-blue-500/20'
-                          : 'bg-blue-50/50 border-blue-100'
-                      }`}>
-                        <p className={`font-semibold mb-4 text-base ${
-                          systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                        }`}>{content.bio.value_prop}</p>
-                        <ul className="space-y-2.5">
-                          {content.bio.bullets.map((bullet, i) => (
-                            <li key={i} className="flex items-start text-sm">
-                              <CheckCircle2 size={16} className="mr-2.5 mt-0.5 text-blue-500 flex-shrink-0" />
-                              <span>{bullet}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      <p>{content.bio.p1}</p>
-                      <p>{content.bio.p2}</p>
-                    </div>
-                  </div>
-
-                  <div className={`flex flex-wrap gap-4 mt-8 pt-6 border-t ${
-                    systemTheme === 'dark' ? 'border-white/10' : 'border-gray-100'
-                  }`}>
-                     <button
-                       onClick={() => setIsBioOpen(true)}
-                       className="px-5 py-2.5 accent-blue text-white rounded-full text-sm font-medium btn-pill flex items-center"
-                     >
-                       <FileText size={16} className="mr-2"/> {content.bio.view_full_bio}
-                     </button>
-
-                     <a
-                       href="https://linkedin.com/in/victorsoussan"
-                       target="_blank"
-                       rel="noreferrer"
-                       className="px-5 py-2.5 rounded-full text-sm font-medium btn-pill flex items-center text-white"
-                       style={{background: 'linear-gradient(135deg, #0077b5 0%, #006097 100%)'}}
-                     >
-                       <Linkedin size={16} className="mr-2"/> LinkedIn
-                     </a>
-
-                     <div className="flex space-x-2">
-                        <button
-                          onClick={() => {
-                            setResumeLang('fr');
-                            setIsResumeOpen(true);
-                          }}
-                          className={`px-4 py-2.5 rounded-full text-sm font-medium btn-pill flex items-center ${
-                            systemTheme === 'dark'
-                              ? 'bg-white/10 text-gray-300 hover:text-white hover:bg-white/20'
-                              : 'glass-effect text-gray-700 hover:text-blue-600'
-                          }`}
-                        >
-                          <Download size={16} className="mr-2"/> Résumé FR
-                        </button>
-                        <button
-                          onClick={() => {
-                            setResumeLang('en');
-                            setIsResumeOpen(true);
-                          }}
-                          className={`px-4 py-2.5 rounded-full text-sm font-medium btn-pill flex items-center ${
-                            systemTheme === 'dark'
-                              ? 'bg-white/10 text-gray-300 hover:text-white hover:bg-white/20'
-                              : 'glass-effect text-gray-700 hover:text-blue-600'
-                          }`}
-                        >
-                          <Download size={16} className="mr-2"/> Résumé EN
-                        </button>
-                     </div>
-                  </div>
-               </div>
-            </div>
-
-            {/* Right: Toolkit Grid */}
-            <div className="md:col-span-5 flex flex-col space-y-6">
-              <div className={`p-6 rounded-3xl border shadow-sm h-full flex flex-col ${
-                systemTheme === 'dark'
-                  ? 'bg-[#1D1D1F] border-white/10'
-                  : 'bg-white border-gray-100'
-              }`}>
-                 <div className={`flex items-center mb-4 font-bold ${
-                   systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                 }`}>
-                   <BookOpen size={20} className="mr-2 text-blue-600"/>
-                   <h3>{content.bio.toolkit_title}</h3>
-                 </div>
-                 <p className={`text-sm mb-6 ${
-                   systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                 }`}>
-                   {content.bio.toolkit_desc}
-                 </p>
-
-                 <div className="space-y-3 flex-1">
-                    {resources.map((res, idx) => (
-                       <a
-                         key={idx}
-                         href={res.link}
-                         target="_blank"
-                         rel="noopener noreferrer"
-                         className={`flex items-center p-3 rounded-xl transition-colors group cursor-pointer border ${
-                           systemTheme === 'dark'
-                             ? 'bg-white/5 hover:bg-blue-900/30 text-gray-300 hover:text-blue-400 border-white/5 hover:border-blue-500/30'
-                             : 'bg-gray-50 hover:bg-blue-50 hover:text-blue-700 border-transparent hover:border-blue-100'
-                         }`}
-                       >
-                          <div className={`mr-3 p-2 rounded-lg border shadow-sm ${
-                            systemTheme === 'dark'
-                              ? 'bg-white/10 border-white/10 group-hover:border-blue-500/30'
-                              : 'bg-white border-gray-100 group-hover:border-blue-100'
-                          }`}>
-                            {res.icon}
-                          </div>
-                          <div className="flex-1">
-                             <div className="text-sm font-semibold">{res.title}</div>
-                             <div className={`text-xs ${
-                               systemTheme === 'dark'
-                                 ? 'text-gray-500 group-hover:text-blue-400'
-                                 : 'text-gray-400 group-hover:text-blue-400'
-                             }`}>{res.desc}</div>
-                          </div>
-                          <ArrowUpRight size={16} className="opacity-0 group-hover:opacity-100 transition-opacity text-blue-500"/>
-                       </a>
-                    ))}
-                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Testimonials Section */}
       <section id="testimonials" className={`py-16 md:py-32 px-4 md:px-6 border-t ${
         systemTheme === 'dark'
@@ -2988,114 +3014,95 @@ const App: React.FC = () => {
          </div>
       </section>
 
-      {/* Full Screen Bio Modal */}
+      {/* Full Screen Bio Modal - True Full Page */}
       <AnimatePresence>
       {isBioOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8">
-           <motion.div
-             initial={{ opacity: 0 }}
-             animate={{ opacity: 1 }}
-             exit={{ opacity: 0 }}
-             transition={{ duration: 0.2 }}
-             className={`absolute inset-0 backdrop-blur-xl ${
-               systemTheme === 'dark' ? 'bg-black/95' : 'bg-white/95'
-             }`}
-             onClick={() => setIsBioOpen(false)}
-           />
-           <motion.div
-             initial={{ opacity: 0, scale: 0.95, y: 20 }}
-             animate={{ opacity: 1, scale: 1, y: 0 }}
-             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-             transition={{
-               type: 'spring',
-               stiffness: 300,
-               damping: 25,
-               mass: 0.5
-             }}
-             className={`relative w-full max-w-5xl h-full flex flex-col rounded-3xl md:rounded-[40px] overflow-hidden shadow-2xl border ${
-               systemTheme === 'dark'
-                 ? 'bg-[#1D1D1F]/90 border-white/10'
-                 : 'bg-white/50 border-gray-200/50'
-             }`}
-           >
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          className={`fixed inset-0 z-[100] flex flex-col ${
+            systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-[#F5F5F7]'
+          }`}
+        >
 
-              {/* Modal Header */}
-              <div className={`flex flex-col md:flex-row justify-between items-start md:items-center py-6 px-8 border-b backdrop-blur-md z-10 gap-4 ${
+              {/* Full-Page Header */}
+              <div className={`sticky top-0 z-20 flex items-center py-4 px-6 md:px-12 border-b ${
                 systemTheme === 'dark'
-                  ? 'border-white/10 bg-[#1D1D1F]/80'
-                  : 'border-gray-200/50 bg-white/80'
+                  ? 'border-white/10 bg-[#0a0a0a]/95 backdrop-blur-md'
+                  : 'border-gray-200 bg-[#F5F5F7]/95 backdrop-blur-md'
               }`}>
-                 <div>
-                   <h2 className={`text-2xl font-bold ${
+                 {/* Title - Left */}
+                 <div className="flex-1">
+                   <h2 className={`text-xl md:text-2xl font-bold ${
                      systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                    }`}>{content.bio.modal_title}</h2>
-                   <p className={`text-sm ${
-                     systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                   }`}>{content.bio.modal_subtitle}</p>
                  </div>
 
-                 <div className="flex items-center gap-4">
-                   {/* Toggle */}
-                   <div className={`relative flex items-center rounded-full p-1 ${
-                     systemTheme === 'dark' ? 'bg-white/10' : 'bg-gray-100'
-                   }`}>
-                     <motion.div
-                       className="absolute bg-blue-600 rounded-full shadow-md"
-                       initial={false}
-                       animate={{
-                         x: bioViewMode === 'text' ? 0 : '100%',
-                         width: bioViewMode === 'text' ? '50%' : '50%'
-                       }}
-                       transition={{
-                         type: 'spring',
-                         stiffness: 500,
-                         damping: 35,
-                         mass: 0.8
-                       }}
-                       style={{
-                         height: 'calc(100% - 8px)',
-                         top: '4px',
-                         left: '4px',
-                         right: '4px'
-                       }}
-                     />
-                     <button
-                       onClick={() => {
-                        setBioViewMode('text');
-                        bioContentRef.current?.scrollTo({ top: 0 });
-                      }}
-                       className={`relative z-10 px-5 py-2.5 rounded-full text-sm font-semibold transition-colors duration-200 ${
-                         bioViewMode === 'text'
-                           ? 'text-white'
-                           : systemTheme === 'dark'
-                             ? 'text-gray-400 hover:text-white'
-                             : 'text-gray-600 hover:text-gray-900'
-                       }`}
-                       style={{ width: '50%' }}
-                     >
-                       {lang === 'fr' ? 'Texte' : 'Text'}
-                     </button>
-                     <button
-                       onClick={() => {
-                        setBioViewMode('timeline');
-                        bioContentRef.current?.scrollTo({ top: 0 });
-                      }}
-                       className={`relative z-10 px-5 py-2.5 rounded-full text-sm font-semibold transition-colors duration-200 ${
-                         bioViewMode === 'timeline'
-                           ? 'text-white'
-                           : systemTheme === 'dark'
-                             ? 'text-gray-400 hover:text-white'
-                             : 'text-gray-600 hover:text-gray-900'
-                       }`}
-                       style={{ width: '50%' }}
-                     >
-                       Timeline
-                     </button>
-                   </div>
+                 {/* Toggle - Center */}
+                 <div className={`relative flex items-center rounded-full p-1 ${
+                   systemTheme === 'dark' ? 'bg-white/10' : 'bg-gray-100'
+                 }`}>
+                   <motion.div
+                     className="absolute bg-blue-600 rounded-full shadow-md"
+                     initial={false}
+                     animate={{
+                       x: bioViewMode === 'text' ? 0 : '100%',
+                       width: bioViewMode === 'text' ? '50%' : '50%'
+                     }}
+                     transition={{
+                       type: 'spring',
+                       stiffness: 500,
+                       damping: 35,
+                       mass: 0.8
+                     }}
+                     style={{
+                       height: 'calc(100% - 8px)',
+                       top: '4px',
+                       left: '4px',
+                       right: '4px'
+                     }}
+                   />
+                   <button
+                     onClick={() => {
+                      setBioViewMode('text');
+                      bioContentRef.current?.scrollTo({ top: 0 });
+                    }}
+                     className={`relative z-10 px-4 py-2 rounded-full text-sm font-semibold transition-colors duration-200 ${
+                       bioViewMode === 'text'
+                         ? 'text-white'
+                         : systemTheme === 'dark'
+                           ? 'text-gray-400 hover:text-white'
+                           : 'text-gray-600 hover:text-gray-900'
+                     }`}
+                     style={{ width: '50%' }}
+                   >
+                     {lang === 'fr' ? 'Texte' : 'Text'}
+                   </button>
+                   <button
+                     onClick={() => {
+                      setBioViewMode('timeline');
+                      bioContentRef.current?.scrollTo({ top: 0 });
+                    }}
+                     className={`relative z-10 px-4 py-2 rounded-full text-sm font-semibold transition-colors duration-200 ${
+                       bioViewMode === 'timeline'
+                         ? 'text-white'
+                         : systemTheme === 'dark'
+                           ? 'text-gray-400 hover:text-white'
+                           : 'text-gray-600 hover:text-gray-900'
+                     }`}
+                     style={{ width: '50%' }}
+                   >
+                     Timeline
+                   </button>
+                 </div>
 
+                 {/* Close Button - Right */}
+                 <div className="flex-1 flex justify-end">
                    <button
                      onClick={() => setIsBioOpen(false)}
-                     className={`hidden md:flex p-2 rounded-full transition-colors ${
+                     className={`p-2 rounded-full transition-colors ${
                        systemTheme === 'dark'
                          ? 'bg-white/10 hover:bg-white/20 text-white'
                          : 'bg-gray-100 hover:bg-gray-200'
@@ -3106,11 +3113,11 @@ const App: React.FC = () => {
                  </div>
               </div>
 
-              {/* Modal Content */}
+              {/* Modal Content - Full Page Scrollable */}
               <div
                 ref={bioContentRef}
-                className={`overflow-y-auto p-6 md:p-12 ${
-                systemTheme === 'dark' ? 'bg-[#111111]/50' : 'bg-[#F5F5F7]/50'
+                className={`flex-1 overflow-y-auto px-6 md:px-12 py-8 md:py-12 ${
+                systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-[#F5F5F7]'
               }`}>
                  <div className="max-w-4xl mx-auto">
                     <AnimatePresence mode="wait">
@@ -3217,6 +3224,58 @@ const App: React.FC = () => {
                               </div>
                            </div>
                         </div>
+
+                        {/* Resource Toolkit - Integrated into Biography */}
+                        <div className={`p-8 rounded-3xl border shadow-sm ${
+                          systemTheme === 'dark'
+                            ? 'bg-[#1D1D1F] border-white/10'
+                            : 'bg-white border-gray-100'
+                        }`}>
+                           <div className={`flex items-center mb-6 ${
+                             systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+                           }`}>
+                             <BookOpen size={24} className="mr-3 text-blue-600"/>
+                             <h3 className="text-xl font-bold">{content.bio.toolkit_title}</h3>
+                           </div>
+                           <p className={`text-sm mb-6 ${
+                             systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+                           }`}>
+                             {content.bio.toolkit_desc}
+                           </p>
+
+                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                              {resources.map((res, idx) => (
+                                 <a
+                                   key={idx}
+                                   href={res.link}
+                                   target="_blank"
+                                   rel="noopener noreferrer"
+                                   className={`flex items-center p-4 rounded-xl transition-colors group cursor-pointer border ${
+                                     systemTheme === 'dark'
+                                       ? 'bg-white/5 hover:bg-blue-900/30 text-gray-300 hover:text-blue-400 border-white/5 hover:border-blue-500/30'
+                                       : 'bg-gray-50 hover:bg-blue-50 hover:text-blue-700 border-transparent hover:border-blue-100'
+                                   }`}
+                                 >
+                                    <div className={`mr-4 p-2.5 rounded-lg border shadow-sm ${
+                                      systemTheme === 'dark'
+                                        ? 'bg-white/10 border-white/10 group-hover:border-blue-500/30'
+                                        : 'bg-white border-gray-100 group-hover:border-blue-100'
+                                    }`}>
+                                      {res.icon}
+                                    </div>
+                                    <div className="flex-1">
+                                       <div className="text-sm font-semibold">{res.title}</div>
+                                       <div className={`text-xs ${
+                                         systemTheme === 'dark'
+                                           ? 'text-gray-500 group-hover:text-blue-400'
+                                           : 'text-gray-400 group-hover:text-blue-400'
+                                       }`}>{res.desc}</div>
+                                    </div>
+                                    <ArrowUpRight size={16} className="opacity-0 group-hover:opacity-100 transition-opacity text-blue-500"/>
+                                 </a>
+                              ))}
+                           </div>
+                        </div>
                       </motion.div>
                     )}
 
@@ -3289,21 +3348,7 @@ const App: React.FC = () => {
                  </div>
               </div>
 
-              {/* Mobile Close Button */}
-              <div className="md:hidden absolute bottom-6 left-0 w-full flex justify-center pointer-events-none">
-                 <button
-                   onClick={() => setIsBioOpen(false)}
-                   className={`pointer-events-auto px-5 py-2.5 rounded-full shadow-xl flex items-center font-medium text-sm ${
-                     systemTheme === 'dark'
-                       ? 'bg-white text-black'
-                       : 'bg-black text-white'
-                   }`}
-                 >
-                    <X size={16} className="mr-2"/> {content.bio.close}
-                 </button>
-              </div>
-           </motion.div>
-        </div>
+        </motion.div>
       )}
       </AnimatePresence>
 
@@ -4559,43 +4604,70 @@ ${contactForm.message}`;
                       </h1>
 
                       {/* Contact Info with Copy Buttons */}
-                      <div className="space-y-2 mb-4">
-                        <div className="flex items-center gap-2">
-                          <button
-                            onClick={handleCopyEmail}
-                            className="px-3 py-1.5 glass-effect text-gray-700 rounded-full text-xs font-medium btn-pill flex items-center gap-2 hover:text-blue-600"
-                          >
-                            <Mail size={12} />
-                            victor.soussan@me.com
-                            <Copy size={10} className="opacity-50" />
-                          </button>
-                          {copiedEmail && (
-                            <span className="text-xs text-green-600 font-medium">Copié !</span>
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {/* Email */}
+                        <button
+                          onClick={handleCopyEmail}
+                          className="px-3 py-1.5 glass-effect text-gray-700 rounded-full text-xs font-medium btn-pill flex items-center gap-2 hover:text-blue-600"
+                        >
+                          <Envelope size={14} weight="bold" />
+                          {copiedEmail ? (
+                            <span className="text-green-600">{resumeLang === 'fr' ? 'Copié !' : 'Copied!'}</span>
+                          ) : (
+                            <>
+                              victorsoussan@gmail.com
+                              <Copy size={10} className="opacity-50" />
+                            </>
                           )}
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <button
-                            onClick={handleCopyPhone}
-                            className="px-3 py-1.5 glass-effect text-gray-700 rounded-full text-xs font-medium btn-pill flex items-center gap-2 hover:text-blue-600"
-                          >
-                            <span>📱</span>
-                            +33 6 64 80 08 32
-                            <Copy size={10} className="opacity-50" />
-                          </button>
-                          {copiedPhone && (
-                            <span className="text-xs text-green-600 font-medium">Copié !</span>
-                          )}
-                        </div>
-                      </div>
+                        </button>
 
-                      <div className="flex gap-4 text-xs">
-                        <a href={`https://${TRANSLATIONS[resumeLang].resume.linkedin}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-700 transition-colors underline">
-                          {TRANSLATIONS[resumeLang].resume.linkedin}
-                        </a>
-                        <span className="text-gray-300">•</span>
-                        <a href={`https://${TRANSLATIONS[resumeLang].resume.portfolio}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-700 transition-colors underline">
-                          {TRANSLATIONS[resumeLang].resume.portfolio}
-                        </a>
+                        {/* Phone */}
+                        <button
+                          onClick={handleCopyPhone}
+                          className="px-3 py-1.5 glass-effect text-gray-700 rounded-full text-xs font-medium btn-pill flex items-center gap-2 hover:text-blue-600"
+                        >
+                          <Phone size={14} weight="bold" />
+                          {copiedPhone ? (
+                            <span className="text-green-600">{resumeLang === 'fr' ? 'Copié !' : 'Copied!'}</span>
+                          ) : (
+                            <>
+                              +33 6 15 98 94 00
+                              <Copy size={10} className="opacity-50" />
+                            </>
+                          )}
+                        </button>
+
+                        {/* LinkedIn */}
+                        <button
+                          onClick={handleCopyLinkedin}
+                          className="px-3 py-1.5 glass-effect text-gray-700 rounded-full text-xs font-medium btn-pill flex items-center gap-2 hover:text-blue-600"
+                        >
+                          <LinkedinLogo size={14} weight="bold" />
+                          {copiedLinkedin ? (
+                            <span className="text-green-600">{resumeLang === 'fr' ? 'Copié !' : 'Copied!'}</span>
+                          ) : (
+                            <>
+                              LinkedIn
+                              <Copy size={10} className="opacity-50" />
+                            </>
+                          )}
+                        </button>
+
+                        {/* Portfolio */}
+                        <button
+                          onClick={handleCopyPortfolio}
+                          className="px-3 py-1.5 glass-effect text-gray-700 rounded-full text-xs font-medium btn-pill flex items-center gap-2 hover:text-blue-600"
+                        >
+                          <Globe size={14} weight="bold" />
+                          {copiedPortfolio ? (
+                            <span className="text-green-600">{resumeLang === 'fr' ? 'Copié !' : 'Copied!'}</span>
+                          ) : (
+                            <>
+                              Portfolio
+                              <Copy size={10} className="opacity-50" />
+                            </>
+                          )}
+                        </button>
                       </div>
                     </div>
 
@@ -6792,6 +6864,19 @@ ${contactForm.message}`;
               />
             </motion.div>
           </div>
+        )}
+      </AnimatePresence>
+
+      {/* Toolkit Case Study Page */}
+      <AnimatePresence>
+        {isToolkitPageOpen && (
+          <ToolkitPage
+            onClose={() => setIsToolkitPageOpen(false)}
+            systemTheme={systemTheme}
+            onToggleTheme={() => {
+              setThemeMode(prev => prev === 'dark' ? 'light' : 'dark');
+            }}
+          />
         )}
       </AnimatePresence>
 
