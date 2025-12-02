@@ -1852,7 +1852,8 @@ const App: React.FC = () => {
         : 'bg-[#F9F9F9] text-[#1D1D1F]'
     }`}>
 
-      {/* Floating Settings Panel - Liquid Glass Apple Style */}
+      {/* Floating Settings Panel - Liquid Glass Apple Style - Hidden in gallery mode */}
+      {openProject?.viewMode !== 'gallery' && (
       <div className="fixed top-20 right-4 z-[60]">
         <AnimatePresence mode="wait">
           {isSettingsPanelOpen ? (
@@ -2071,6 +2072,7 @@ const App: React.FC = () => {
           )}
         </AnimatePresence>
       </div>
+      )}
 
       {/* Navigation */}
       <nav className={`fixed top-0 w-full z-50 backdrop-blur-md transition-all duration-300 ${

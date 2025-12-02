@@ -772,9 +772,9 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
         viewMode === 'gallery' ? 'bg-black' : (systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white')
       }`}
     >
-      {/* Mobile Navigation - Sticky under header */}
+      {/* Mobile Navigation - Sticky under header - Hidden in gallery mode */}
       <AnimatePresence>
-        {showNav && (
+        {showNav && viewMode !== 'gallery' && (
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}

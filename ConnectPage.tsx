@@ -487,9 +487,9 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
         viewMode === 'gallery' ? 'bg-black' : (systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white')
       }`}
     >
-      {/* Sticky Mini-Nav - All screen sizes */}
+      {/* Sticky Mini-Nav - All screen sizes - Hidden in gallery mode */}
       <AnimatePresence>
-        {showNav && (
+        {showNav && viewMode !== 'gallery' && (
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
