@@ -531,15 +531,18 @@ const TRANSLATIONS = {
       subtitle: "Feedback from clients, managers, and team members who have witnessed my impact on product and culture.",
       view_all: "View All 14 Recommendations",
       modal_title: "All Recommendations",
-      modal_sub: "verified reviews from colleagues and partners",
+      modal_sub: "verified reviews",
       empty: "No testimonials found in this category.",
       close: "Close"
     },
     contact: {
-      title: "Have a project in mind and want to get a quote?",
+      title: "Need a design partner?",
       subtitle: "I am currently open to freelance missions or leadership roles. Let's discuss how we can elevate your product.",
       email: "Send an Email",
       book: "Book a 30min Chat",
+      shoot_note: "Shoot me a note",
+      copy_email: "Copy email address",
+      email_copied: "Email copied!",
       linkedin: "LinkedIn Profile",
       simple_form_title: "Send me a message",
       simple_form_subtitle: "I typically respond within 24 hours",
@@ -977,10 +980,13 @@ const TRANSLATIONS = {
       close: "Fermer"
     },
     contact: {
-      title: "Un projet complexe à lancer ?",
+      title: "Vous recherchez un designer rapide et expérimenté ?",
       subtitle: "Je suis ouvert aux missions de Product Design (Freelance) ou rôles de Lead (CDI). Discutons concrètement de vos besoins.",
       email: "Envoyer un email",
       book: "Planifier un appel de 30min",
+      shoot_note: "Envoyer un message",
+      copy_email: "Copier l'adresse email",
+      email_copied: "Email copié !",
       linkedin: "LinkedIn",
       simple_form_title: "Envoyez-moi un message",
       simple_form_subtitle: "Je réponds généralement sous 24h",
@@ -3548,173 +3554,196 @@ const App: React.FC = () => {
       {/* Full Screen Testimonials Modal */}
       <AnimatePresence>
       {isTestimonialsOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8">
-           <motion.div
-             initial={{ opacity: 0 }}
-             animate={{ opacity: 1 }}
-             exit={{ opacity: 0 }}
-             transition={{ duration: 0.2 }}
-             className={`absolute inset-0 backdrop-blur-xl ${
-               systemTheme === 'dark' ? 'bg-black/95' : 'bg-white/95'
-             }`}
-             onClick={() => setIsTestimonialsOpen(false)}
-           />
-           <motion.div
-             initial={{ opacity: 0, scale: 0.95, y: 20 }}
-             animate={{ opacity: 1, scale: 1, y: 0 }}
-             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-             transition={{
-               type: 'spring',
-               stiffness: 300,
-               damping: 25,
-               mass: 0.5
-             }}
-             className={`relative w-full max-w-7xl h-full flex flex-col rounded-3xl md:rounded-[40px] overflow-hidden shadow-2xl border ${
-               systemTheme === 'dark'
-                 ? 'bg-[#1D1D1F]/90 border-white/10'
-                 : 'bg-white/50 border-gray-200/50'
-             }`}
-           >
-
-              {/* Modal Header */}
-              <div className={`flex flex-col md:flex-row justify-between items-center py-6 px-8 border-b backdrop-blur-md z-10 ${
-                systemTheme === 'dark'
-                  ? 'border-white/10 bg-[#1D1D1F]/80'
-                  : 'border-gray-200/50 bg-white/80'
-              }`}>
-                 <div className="mb-4 md:mb-0 text-center md:text-left">
-                   <h2 className={`text-2xl font-bold ${
-                     systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                   }`}>{content.testimonials.modal_title}</h2>
-                   <p className={`text-sm ${
-                     systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                   }`}>{testimonials.length} {content.testimonials.modal_sub}</p>
-                 </div>
-
-                 {/* Filters */}
-                 <div className={`flex space-x-2 p-1 rounded-full overflow-x-auto max-w-full no-scrollbar ${
-                   systemTheme === 'dark' ? 'bg-white/10' : 'bg-gray-100'
-                 }`}>
-                    {(['All', 'Management', 'Design', 'Product & Tech', 'Clients'] as Category[]).map(cat => (
-                      <button
-                        key={cat}
-                        onClick={() => setActiveCategory(cat)}
-                        className={`
-                          px-4 py-2 rounded-full text-xs font-semibold transition-all whitespace-nowrap
-                          ${activeCategory === cat
-                            ? systemTheme === 'dark'
-                              ? 'bg-white/20 text-white shadow-sm'
-                              : 'bg-white text-gray-900 shadow-sm ring-1 ring-black/5'
-                            : systemTheme === 'dark'
-                              ? 'text-gray-400 hover:text-white hover:bg-white/10'
-                              : 'text-gray-500 hover:text-gray-900 hover:bg-gray-200/50'}
-                        `}
-                      >
-                        {cat}
-                      </button>
-                    ))}
-                 </div>
-
-                 <button
-                   onClick={() => setIsTestimonialsOpen(false)}
-                   className={`hidden md:flex p-2 rounded-full transition-colors ml-6 ${
-                     systemTheme === 'dark'
-                       ? 'bg-white/10 hover:bg-white/20 text-white'
-                       : 'bg-gray-100 hover:bg-gray-200'
-                   }`}
-                 >
-                    <X size={24} />
-                 </button>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          className={`fixed inset-0 z-[100] overflow-y-auto ${
+            systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white'
+          }`}
+        >
+          {/* Sticky Header - Same style as other modals */}
+          <header
+            className={`sticky top-0 z-40 backdrop-blur-xl border-b ${
+              systemTheme === 'dark'
+                ? 'bg-[#0a0a0a]/80 border-white/10'
+                : 'bg-white/80 border-gray-200'
+            }`}
+          >
+            <div className="max-w-6xl mx-auto px-4 md:px-6 py-4 flex items-center justify-between">
+              {/* Left - Title */}
+              <div className="flex-1">
+                <h1
+                  className={`text-lg md:text-xl font-bold ${
+                    systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+                  }`}
+                >
+                  {content.testimonials.modal_title}
+                </h1>
+                <p className={`text-sm ${
+                  systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+                }`}>
+                  {testimonials.length} {content.testimonials.modal_sub}
+                </p>
               </div>
 
-              {/* Modal Content */}
-              <div className={`overflow-y-auto p-6 md:p-8 grid md:grid-cols-2 lg:grid-cols-3 gap-6 ${
-                systemTheme === 'dark' ? 'bg-[#111111]/50' : 'bg-[#F9F9F9]/50'
-              }`}>
-                 {filteredTestimonials.map((t, i) => (
-                    <div key={i} className={`p-8 rounded-3xl border shadow-sm hover:shadow-md transition-all h-fit break-inside-avoid flex flex-col ${
+              {/* Center - Filters */}
+              <div className="flex-1 flex justify-center">
+                <div className={`flex space-x-1 p-1 rounded-full overflow-x-auto max-w-full no-scrollbar ${
+                  systemTheme === 'dark' ? 'bg-white/10' : 'bg-gray-100'
+                }`}>
+                  {(['All', 'Management', 'Design', 'Product & Tech', 'Clients'] as Category[]).map(cat => (
+                    <button
+                      key={cat}
+                      onClick={() => setActiveCategory(cat)}
+                      className={`
+                        px-3 md:px-4 py-2 rounded-full text-xs font-semibold transition-all whitespace-nowrap
+                        ${activeCategory === cat
+                          ? 'bg-blue-600 text-white shadow-sm'
+                          : systemTheme === 'dark'
+                            ? 'text-gray-400 hover:text-white hover:bg-white/10'
+                            : 'text-gray-500 hover:text-gray-900 hover:bg-gray-200/50'}
+                      `}
+                    >
+                      {cat}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Right - Close button */}
+              <div className="flex-1 flex justify-end">
+                <button
+                  onClick={() => setIsTestimonialsOpen(false)}
+                  className={`p-2 rounded-full ${
+                    systemTheme === 'dark'
+                      ? 'text-gray-300 hover:bg-white/10'
+                      : 'text-gray-600 hover:bg-gray-100'
+                  }`}
+                >
+                  <X size={24} />
+                </button>
+              </div>
+            </div>
+          </header>
+
+          {/* Modal Content - Grid of testimonials */}
+          <div className={`px-4 md:px-6 py-8 md:py-12 ${
+            systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-gray-50/50'
+          }`}>
+            <div className="max-w-6xl mx-auto">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredTestimonials.map((t, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: i * 0.05 }}
+                    className={`p-8 rounded-3xl border shadow-sm hover:shadow-md transition-all h-fit break-inside-avoid flex flex-col ${
                       systemTheme === 'dark'
                         ? 'bg-[#1D1D1F] border-white/10'
                         : 'bg-white border-gray-100'
-                    }`}>
-                       <div className="flex items-center mb-6">
-                          <Avatar filename={t.image} alt={t.author} className={`w-14 h-14 rounded-full mr-4 border-2 shadow-sm ${
-                            systemTheme === 'dark' ? 'border-white/20' : 'border-white'
-                          }`} />
-                          <div>
-                             {t.linkedin ? (
-                               <a
-                                 href={t.linkedin}
-                                 target="_blank"
-                                 rel="noreferrer"
-                                 className={`font-bold leading-none hover:text-[#0077b5] transition-colors flex items-center group text-lg ${
-                                   systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                                 }`}
-                               >
-                                 {t.author}
-                                 <Linkedin size={16} className="ml-2 text-gray-400 group-hover:text-[#0077b5] transition-colors" />
-                               </a>
-                             ) : (
-                               <div className={`font-bold leading-none text-lg ${
-                                 systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                               }`}>{t.author}</div>
-                             )}
-                             <div className={`text-xs font-medium px-2 py-0.5 rounded-full w-fit mt-1 ${
-                               systemTheme === 'dark'
-                                 ? 'text-blue-400 bg-blue-600/20'
-                                 : 'text-blue-600 bg-blue-50'
-                             }`}>{t.role}</div>
-                          </div>
-                       </div>
-
-                       <div className="relative mb-6">
-                          <Quote size={24} className={`absolute -top-4 -left-2 transform -scale-x-100 ${
-                            systemTheme === 'dark' ? 'text-white/10' : 'text-gray-100'
-                          }`} />
-                          <p className={`leading-relaxed text-[15px] relative z-10 pt-2 ${
-                            systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-700'
-                          }`}>
-                            "{t.content}"
-                          </p>
-                       </div>
-
-                       <div className={`border-t pt-4 mt-auto flex justify-between items-center ${
-                         systemTheme === 'dark' ? 'border-white/10' : 'border-gray-50'
-                       }`}>
-                          <span className={`text-xs font-medium ${
-                            systemTheme === 'dark' ? 'text-gray-500' : 'text-gray-400'
-                          }`}>{t.date}</span>
-                          <span className={`text-[10px] uppercase tracking-wider font-bold px-2 py-1 rounded ${
-                            systemTheme === 'dark'
-                              ? 'text-gray-400 bg-white/5'
-                              : 'text-gray-400 bg-gray-50'
-                          }`}>{t.category}</span>
-                       </div>
+                    }`}
+                  >
+                    <div className="flex items-center mb-6">
+                      <Avatar filename={t.image} alt={t.author} className={`w-14 h-14 rounded-full mr-4 border-2 shadow-sm ${
+                        systemTheme === 'dark' ? 'border-white/20' : 'border-white'
+                      }`} />
+                      <div>
+                        {t.linkedin ? (
+                          <a
+                            href={t.linkedin}
+                            target="_blank"
+                            rel="noreferrer"
+                            className={`font-bold leading-none hover:text-[#0077b5] transition-colors flex items-center group text-lg ${
+                              systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+                            }`}
+                          >
+                            {t.author}
+                            <Linkedin size={16} className="ml-2 text-gray-400 group-hover:text-[#0077b5] transition-colors" />
+                          </a>
+                        ) : (
+                          <div className={`font-bold leading-none text-lg ${
+                            systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+                          }`}>{t.author}</div>
+                        )}
+                        <div className={`text-xs font-medium px-2 py-0.5 rounded-full w-fit mt-1 ${
+                          systemTheme === 'dark'
+                            ? 'text-blue-400 bg-blue-600/20'
+                            : 'text-blue-600 bg-blue-50'
+                        }`}>{t.role}</div>
+                      </div>
                     </div>
-                 ))}
 
-                 {filteredTestimonials.length === 0 && (
-                   <div className="col-span-full text-center py-20 text-gray-400">
-                     {content.testimonials.empty}
-                   </div>
-                 )}
-              </div>
+                    <div className="relative mb-6">
+                      <Quote size={24} className={`absolute -top-4 -left-2 transform -scale-x-100 ${
+                        systemTheme === 'dark' ? 'text-white/10' : 'text-gray-100'
+                      }`} />
+                      <p className={`leading-relaxed text-[15px] relative z-10 pt-2 ${
+                        systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                      }`}>
+                        "{t.content}"
+                      </p>
+                    </div>
 
-              {/* Mobile Close Button */}
-              <div className="md:hidden absolute bottom-6 left-0 w-full flex justify-center pointer-events-none">
-                 <button
-                   onClick={() => setIsTestimonialsOpen(false)}
-                   className={`pointer-events-auto px-5 py-2.5 rounded-full shadow-xl flex items-center font-medium text-sm ${
-                     systemTheme === 'dark'
-                       ? 'bg-white text-black'
-                       : 'bg-black text-white'
-                   }`}
-                 >
-                    <X size={16} className="mr-2"/> {content.testimonials.close}
-                 </button>
+                    <div className={`border-t pt-4 mt-auto flex justify-between items-center ${
+                      systemTheme === 'dark' ? 'border-white/10' : 'border-gray-50'
+                    }`}>
+                      <span className={`text-xs font-medium ${
+                        systemTheme === 'dark' ? 'text-gray-500' : 'text-gray-400'
+                      }`}>{t.date}</span>
+                      <span className={`text-[10px] uppercase tracking-wider font-bold px-2 py-1 rounded ${
+                        systemTheme === 'dark'
+                          ? 'text-gray-400 bg-white/5'
+                          : 'text-gray-400 bg-gray-50'
+                      }`}>{t.category}</span>
+                    </div>
+                  </motion.div>
+                ))}
+
+                {filteredTestimonials.length === 0 && (
+                  <div className="col-span-full text-center py-20 text-gray-400">
+                    {content.testimonials.empty}
+                  </div>
+                )}
               </div>
-           </motion.div>
-        </div>
+            </div>
+          </div>
+
+          {/* Footer with CTA buttons */}
+          <div className={`sticky bottom-0 z-40 border-t backdrop-blur-xl ${
+            systemTheme === 'dark'
+              ? 'bg-[#0a0a0a]/80 border-white/10'
+              : 'bg-white/80 border-gray-200'
+          }`}>
+            <div className="max-w-6xl mx-auto px-4 md:px-6 py-4 flex flex-col sm:flex-row items-center justify-center gap-3">
+              <a
+                href="https://linkedin.com/in/victorsoussan/"
+                target="_blank"
+                rel="noreferrer"
+                className={`px-5 py-2.5 rounded-full font-medium text-sm flex items-center justify-center w-full sm:w-auto transition-all duration-200 ${
+                  systemTheme === 'dark'
+                    ? 'bg-white/10 hover:bg-white/20 text-white'
+                    : 'bg-gray-100 hover:bg-gray-200 text-gray-900'
+                }`}
+              >
+                <Linkedin size={16} className="mr-2" />
+                {content.contact.linkedin}
+              </a>
+              <button
+                onClick={() => {
+                  setIsTestimonialsOpen(false);
+                  setIsBookingOpen(true);
+                }}
+                className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-medium text-sm flex items-center justify-center w-full sm:w-auto transition-all duration-200 shadow-lg shadow-blue-600/20 hover:scale-105"
+              >
+                <Calendar size={16} className="mr-2" />
+                {content.contact.book}
+              </button>
+            </div>
+          </div>
+        </motion.div>
       )}
       </AnimatePresence>
 
@@ -4967,7 +4996,7 @@ ${contactForm.message}`;
                onClick={() => setIsSimpleContactOpen(true)}
                className="px-5 py-2.5 sm:px-6 sm:py-3 bg-white/95 backdrop-blur-sm text-gray-900 rounded-full font-medium text-sm sm:text-base btn-pill flex items-center w-full sm:w-auto justify-center hover:bg-white hover:scale-105 transition-all duration-200 shadow-lg shadow-white/10"
              >
-               <Mail className="mr-2" size={16} /> Shoot me a note
+               <Mail className="mr-2" size={16} /> {content.contact.shoot_note}
              </button>
 
              <button
@@ -5000,12 +5029,12 @@ ${contactForm.message}`;
               {copiedEmail ? (
                 <>
                   <CheckCircle2 size={12} className="text-green-400" />
-                  <span className="text-green-400">Email copied!</span>
+                  <span className="text-green-400">{content.contact.email_copied}</span>
                 </>
               ) : (
                 <>
                   <Copy size={12} />
-                  <span>Copy email address</span>
+                  <span>{content.contact.copy_email}</span>
                 </>
               )}
             </button>
@@ -5016,13 +5045,13 @@ ${contactForm.message}`;
       {/* Footer */}
       <footer className="bg-[#1D1D1F] text-gray-500 py-16 px-6 border-t border-gray-800">
          <div className="max-w-6xl mx-auto">
-            {/* Navigation Links */}
+            {/* Navigation Links - Order matches page structure */}
             <div className="flex flex-wrap justify-center gap-6 mb-8 pb-8 border-b border-gray-800">
                <button
-                 onClick={() => scrollToSection('services')}
+                 onClick={() => scrollToSection('projects')}
                  className="text-sm text-gray-400 hover:text-white transition-colors duration-200"
                >
-                 {content.nav.services}
+                 {content.nav.projects}
                </button>
                <button
                  onClick={() => scrollToSection('bio')}
@@ -5031,10 +5060,16 @@ ${contactForm.message}`;
                  {content.nav.bio}
                </button>
                <button
-                 onClick={() => scrollToSection('projects')}
+                 onClick={() => scrollToSection('services')}
                  className="text-sm text-gray-400 hover:text-white transition-colors duration-200"
                >
-                 {content.nav.projects}
+                 {content.nav.services}
+               </button>
+               <button
+                 onClick={() => scrollToSection('testimonials')}
+                 className="text-sm text-gray-400 hover:text-white transition-colors duration-200"
+               >
+                 {content.nav.testimonials}
                </button>
                <button
                  onClick={() => scrollToSection('lab')}
@@ -5042,12 +5077,6 @@ ${contactForm.message}`;
                >
                  <FlaskConical size={14} className="mr-1.5" />
                  {content.nav.lab}
-               </button>
-               <button
-                 onClick={() => scrollToSection('testimonials')}
-                 className="text-sm text-gray-400 hover:text-white transition-colors duration-200"
-               >
-                 {content.nav.testimonials}
                </button>
                <button
                  onClick={() => scrollToSection('contact')}
