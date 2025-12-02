@@ -2,7 +2,7 @@
 // Displays the Toolkit project case study with portfolio styling
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { motion, AnimatePresence, useMotionValue, useTransform, PanInfo } from 'framer-motion';
+import { motion, AnimatePresence, useMotionValue, useTransform, useSpring, PanInfo } from 'framer-motion';
 import {
   ExternalLink,
   Calendar,
@@ -13,15 +13,19 @@ import {
   ChevronRight,
   ChevronLeft,
   ChevronDown,
-  X
+  X,
+  Play
 } from 'lucide-react';
+import { GalleryItem } from './BentoGallery';
 
 interface ToolkitPageProps {
   onClose: () => void;
   systemTheme: 'light' | 'dark';
   onToggleTheme: () => void;
-  onOpenGallery?: () => void;
+  viewMode: 'caseStudy' | 'gallery';
+  onViewModeChange: (mode: 'caseStudy' | 'gallery') => void;
   lang?: 'en' | 'fr';
+  galleryItems: GalleryItem[];
 }
 
 // Translations for Toolkit Case Study
@@ -30,6 +34,7 @@ const TOOLKIT_TRANSLATIONS = {
     caseStudy: 'Case Study',
     visitToolkit: 'Visit Toolkit',
     projectGallery: 'Project Gallery',
+    gallery: 'Gallery',
     contactVictor: 'Contact Victor for a similar project',
     clickToZoom: 'Click image to zoom',
     clickToExitZoom: 'Click to exit zoom',
@@ -247,6 +252,7 @@ const TOOLKIT_TRANSLATIONS = {
     caseStudy: 'Étude de cas',
     visitToolkit: 'Visiter Toolkit',
     projectGallery: 'Galerie du projet',
+    gallery: 'Galerie',
     contactVictor: 'Contacter Victor pour un projet similaire',
     clickToZoom: 'Cliquer pour agrandir',
     clickToExitZoom: 'Cliquer pour fermer',
@@ -541,12 +547,87 @@ const slideVariants = {
   }),
 };
 
+// Gallery Card component with Apple TV-style 3D tilt effect
+interface GalleryCardProps {
+  item: GalleryItem;
+  index: number;
+  onClick: () => void;
+}
+
+const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick }) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [8, -8]), { stiffness: 300, damping: 30 });
+  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-8, 8]), { stiffness: 300, damping: 30 });
+  const glowX = useSpring(useTransform(x, [-0.5, 0.5], [0, 100]), { stiffness: 300, damping: 30 });
+  const glowY = useSpring(useTransform(y, [-0.5, 0.5], [0, 100]), { stiffness: 300, damping: 30 });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    x.set((e.clientX - centerX) / rect.width);
+    y.set((e.clientY - centerY) / rect.height);
+  };
+
+  const handleMouseLeave = () => { x.set(0); y.set(0); };
+
+  const isVideo = item.type === 'video' || item.src.match(/\.(mp4|webm|mov)$/i);
+
+  return (
+    <motion.figure
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, delay: index * 0.03 }}
+      className="group cursor-pointer break-inside-avoid mb-8 md:mb-10"
+      onClick={onClick}
+      style={{ perspective: 1000 }}
+    >
+      <motion.div
+        ref={cardRef}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
+        className="relative rounded-2xl overflow-hidden transition-shadow duration-300 ease-out shadow-lg shadow-black/30 group-hover:shadow-2xl group-hover:shadow-blue-500/20"
+      >
+        <motion.div
+          className="absolute inset-0 z-10 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          style={{ background: `radial-gradient(circle at ${glowX}% ${glowY}%, rgba(255,255,255,0.15) 0%, transparent 50%)` }}
+        />
+        <div className="absolute inset-0 z-10 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"
+          style={{ boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.1), inset 0 -1px 1px rgba(0,0,0,0.2)' }}
+        />
+        {isVideo ? (
+          <div className="relative">
+            <video src={item.src} className="w-full h-auto block" muted playsInline preload="metadata" />
+            <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/30 transition-colors">
+              <div className="w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-md transition-transform duration-300 group-hover:scale-110 bg-white/20">
+                <Play size={28} className="text-white ml-1" fill="white" />
+              </div>
+            </div>
+          </div>
+        ) : (
+          <img src={item.src} alt={item.caption} className="w-full h-auto block" loading="lazy" />
+        )}
+      </motion.div>
+      <figcaption className="mt-4 text-sm text-gray-400">
+        <strong className="text-gray-200">{item.caption}</strong>
+        {item.captionDesc && <span className="hidden sm:inline"> — {item.captionDesc}</span>}
+      </figcaption>
+    </motion.figure>
+  );
+};
+
 export const ToolkitPage: React.FC<ToolkitPageProps> = ({
   onClose,
   systemTheme,
   onToggleTheme,
-  onOpenGallery,
-  lang = 'en'
+  viewMode,
+  onViewModeChange,
+  lang = 'en',
+  galleryItems
 }) => {
   const t = TOOLKIT_TRANSLATIONS[lang];
   const [activeSection, setActiveSection] = useState('hero');
@@ -686,8 +767,9 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
       className={`fixed inset-0 z-50 overflow-y-auto ${
-        systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white'
+        viewMode === 'gallery' ? 'bg-black' : (systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white')
       }`}
     >
       {/* Mobile Navigation - Sticky under header */}
@@ -793,12 +875,12 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
         )}
       </AnimatePresence>
 
-      {/* Header */}
+      {/* Header - Theme changes instantly with page */}
       <header
         className={`sticky top-0 z-40 backdrop-blur-xl border-b ${
-          systemTheme === 'dark'
-            ? 'bg-[#0a0a0a]/80 border-white/10'
-            : 'bg-white/80 border-gray-200'
+          viewMode === 'gallery'
+            ? 'bg-black/80 border-white/10'
+            : (systemTheme === 'dark' ? 'bg-[#0a0a0a]/80 border-white/10' : 'bg-white/80 border-gray-200')
         }`}
       >
         <div className="max-w-6xl mx-auto px-4 md:px-6 py-4 flex items-center justify-between">
@@ -806,52 +888,65 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
           <div className="flex-1">
             <h1
               className={`text-lg md:text-xl font-bold ${
-                systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+                viewMode === 'gallery' ? 'text-white' : (systemTheme === 'dark' ? 'text-white' : 'text-gray-900')
               }`}
             >
               Toolkit
             </h1>
           </div>
 
-          {/* Center - Toggle Switch */}
-          {onOpenGallery && (
-            <div className="flex-1 flex justify-center">
-              <div
-                className={`inline-flex rounded-full p-1 ${
-                  systemTheme === 'dark' ? 'bg-white/10' : 'bg-gray-100'
-                }`}
+          {/* Center - Toggle Switch with animated pill */}
+          <div className="flex-1 flex justify-center">
+            <div
+              className={`relative flex items-center gap-1 rounded-full p-1 ${
+                viewMode === 'gallery' ? 'bg-white/10' : (systemTheme === 'dark' ? 'bg-white/10' : 'bg-gray-100')
+              }`}
+            >
+              <button
+                onClick={() => onViewModeChange('caseStudy')}
+                className="relative z-10 px-5 py-2 rounded-full text-sm font-semibold transition-colors duration-200 whitespace-nowrap"
               >
-                <button
-                  className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                    systemTheme === 'dark'
-                      ? 'bg-white text-gray-900'
-                      : 'bg-white text-gray-900 shadow-sm'
-                  }`}
-                >
+                {viewMode === 'caseStudy' && (
+                  <motion.div
+                    layoutId="toolkit-toggle-pill"
+                    className="absolute inset-0 bg-blue-600 rounded-full shadow-md"
+                    transition={{ type: 'spring', stiffness: 500, damping: 35, mass: 0.8 }}
+                  />
+                )}
+                <span className={`relative z-10 ${
+                  viewMode === 'caseStudy' ? 'text-white' : (viewMode === 'gallery' ? 'text-gray-400 hover:text-white' : (systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'))
+                }`}>
                   {t.caseStudy}
-                </button>
-                <button
-                  onClick={onOpenGallery}
-                  className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                    systemTheme === 'dark'
-                      ? 'text-gray-400 hover:text-white'
-                      : 'text-gray-500 hover:text-gray-900'
-                  }`}
-                >
-                  {t.projectGallery}
-                </button>
-              </div>
+                </span>
+              </button>
+              <button
+                onClick={() => onViewModeChange('gallery')}
+                className="relative z-10 px-5 py-2 rounded-full text-sm font-semibold transition-colors duration-200 whitespace-nowrap"
+              >
+                {viewMode === 'gallery' && (
+                  <motion.div
+                    layoutId="toolkit-toggle-pill"
+                    className="absolute inset-0 bg-blue-600 rounded-full shadow-md"
+                    transition={{ type: 'spring', stiffness: 500, damping: 35, mass: 0.8 }}
+                  />
+                )}
+                <span className={`relative z-10 ${
+                  viewMode === 'gallery' ? 'text-white' : (systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900')
+                }`}>
+                  {t.gallery}
+                </span>
+              </button>
             </div>
-          )}
+          </div>
 
           {/* Right - Close button only */}
           <div className="flex-1 flex justify-end">
             <button
               onClick={onClose}
-              className={`p-2 rounded-full transition-colors ${
-                systemTheme === 'dark'
-                  ? 'hover:bg-white/10 text-gray-300'
-                  : 'hover:bg-gray-100 text-gray-600'
+              className={`p-2 rounded-full ${
+                viewMode === 'gallery'
+                  ? 'text-gray-300 hover:bg-white/10'
+                  : (systemTheme === 'dark' ? 'text-gray-300 hover:bg-white/10' : 'text-gray-600 hover:bg-gray-100')
               }`}
             >
               <X size={24} />
@@ -1056,7 +1151,38 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
         )}
       </AnimatePresence>
 
-      {/* Main Content */}
+      {/* Content - Switch between Case Study and Gallery */}
+      <AnimatePresence mode="wait">
+        {viewMode === 'gallery' ? (
+          /* Gallery View */
+          <motion.div
+            key="gallery"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="w-full px-6 md:px-10 lg:px-12 py-8 md:py-12"
+          >
+            <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 md:gap-8">
+              {galleryItems.map((item, index) => (
+                <GalleryCard
+                  key={index}
+                  item={item}
+                  index={index}
+                  onClick={() => openLightbox(item.src)}
+                />
+              ))}
+            </div>
+          </motion.div>
+        ) : (
+          /* Case Study View */
+          <motion.div
+            key="caseStudy"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
       <div className="max-w-6xl mx-auto px-4 md:px-6 py-12 md:py-16">
             {/* Hero Section - Title + Logo + Testimonial */}
             <section id="hero" className="mb-16 md:mb-24">
@@ -2518,6 +2644,9 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
         {/* Bottom spacing for mobile nav */}
         <div className="h-20 md:h-0" />
       </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 };

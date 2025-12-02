@@ -1,9 +1,36 @@
 // BentoGallery - Full-page modal gallery for case study snapshots
-// Displays images and videos in a 3-column bento grid with lightbox support
+// Displays images and videos in a 3-column masonry grid with parallax and auto-scroll
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence, PanInfo } from 'framer-motion';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { motion, AnimatePresence, PanInfo, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight, Play } from 'lucide-react';
+
+// Apple-style spring transition
+const springTransition = {
+  type: 'spring' as const,
+  stiffness: 300,
+  damping: 30,
+  mass: 1,
+};
+
+// Slide transition for carousel
+const slideVariants = {
+  enter: (direction: number) => ({
+    x: direction > 0 ? '100%' : '-100%',
+    opacity: 0,
+    scale: 0.95,
+  }),
+  center: {
+    x: 0,
+    opacity: 1,
+    scale: 1,
+  },
+  exit: (direction: number) => ({
+    x: direction < 0 ? '100%' : '-100%',
+    opacity: 0,
+    scale: 0.95,
+  }),
+};
 
 export interface GalleryItem {
   src: string;
@@ -28,7 +55,8 @@ const TRANSLATIONS = {
   en: {
     snapshots: 'Project Snapshots',
     items: 'items',
-    clickToZoom: 'Click to zoom',
+    clickToZoom: 'Click image to zoom',
+    clickToExitZoom: 'Click to exit zoom',
     close: 'Close',
     caseStudy: 'Case Study',
     gallery: 'Gallery',
@@ -37,10 +65,131 @@ const TRANSLATIONS = {
     snapshots: 'Aperçus du projet',
     items: 'éléments',
     clickToZoom: 'Cliquer pour agrandir',
+    clickToExitZoom: 'Cliquer pour fermer',
     close: 'Fermer',
     caseStudy: 'Étude de cas',
     gallery: 'Galerie',
   },
+};
+
+// Individual Gallery Card with Apple TV-style 3D tilt effect
+interface GalleryCardProps {
+  item: GalleryItem;
+  index: number;
+  isVideo: (src: string) => boolean;
+  onClick: () => void;
+}
+
+const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, isVideo, onClick }) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  // Motion values for 3D tilt effect
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  // Spring smoothing for natural feel
+  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [8, -8]), { stiffness: 300, damping: 30 });
+  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-8, 8]), { stiffness: 300, damping: 30 });
+
+  // Glow position
+  const glowX = useSpring(useTransform(x, [-0.5, 0.5], [0, 100]), { stiffness: 300, damping: 30 });
+  const glowY = useSpring(useTransform(y, [-0.5, 0.5], [0, 100]), { stiffness: 300, damping: 30 });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    const mouseX = (e.clientX - centerX) / rect.width;
+    const mouseY = (e.clientY - centerY) / rect.height;
+    x.set(mouseX);
+    y.set(mouseY);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  return (
+    <motion.figure
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, delay: index * 0.03 }}
+      className="group cursor-pointer break-inside-avoid mb-8 md:mb-10"
+      onClick={onClick}
+      style={{ perspective: 1000 }}
+    >
+      {/* Container with Apple TV 3D tilt effect */}
+      <motion.div
+        ref={cardRef}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        style={{
+          rotateX,
+          rotateY,
+          transformStyle: 'preserve-3d',
+        }}
+        className="relative rounded-2xl overflow-hidden transition-shadow duration-300 ease-out shadow-lg shadow-black/30 group-hover:shadow-2xl group-hover:shadow-blue-500/20"
+      >
+        {/* Glow overlay - Apple TV style */}
+        <motion.div
+          className="absolute inset-0 z-10 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          style={{
+            background: `radial-gradient(circle at ${glowX}% ${glowY}%, rgba(255,255,255,0.15) 0%, transparent 50%)`,
+          }}
+        />
+
+        {/* Shine effect on edges */}
+        <div className="absolute inset-0 z-10 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"
+          style={{
+            boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.1), inset 0 -1px 1px rgba(0,0,0,0.2)',
+          }}
+        />
+
+        {item.type === 'video' || isVideo(item.src) ? (
+          <div className="relative">
+            <video
+              src={item.src}
+              className="w-full h-auto block"
+              muted
+              playsInline
+              preload="metadata"
+            />
+            {/* Play icon overlay */}
+            <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/30 transition-colors">
+              <div className="w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-md transition-transform duration-300 group-hover:scale-110 bg-white/20">
+                <Play
+                  size={28}
+                  className="text-white ml-1"
+                  fill="white"
+                />
+              </div>
+            </div>
+          </div>
+        ) : (
+          <img
+            src={item.src}
+            alt={item.caption}
+            className="w-full h-auto block"
+            loading="lazy"
+          />
+        )}
+      </motion.div>
+
+      {/* Caption - Always dark theme */}
+      <figcaption className="mt-4 text-sm text-gray-400">
+        <strong className="text-gray-200">
+          {item.caption}
+        </strong>
+        {item.captionDesc && (
+          <span className="hidden sm:inline">
+            {' '}— {item.captionDesc}
+          </span>
+        )}
+      </figcaption>
+    </motion.figure>
+  );
 };
 
 export const BentoGallery: React.FC<BentoGalleryProps> = ({
@@ -59,35 +208,38 @@ export const BentoGallery: React.FC<BentoGalleryProps> = ({
   const [lightboxZoomed, setLightboxZoomed] = useState(false);
   const [[page, direction], setPage] = useState([0, 0]);
 
+  // Motion values for parallax effect in lightbox
+  const dragX = useMotionValue(0);
+  const parallaxX = useTransform(dragX, [-300, 0, 300], [30, 0, -30]);
+
   // Lightbox navigation
   const paginate = useCallback((newDirection: number) => {
     const newIndex = lightboxIndex + newDirection;
     if (newIndex >= 0 && newIndex < items.length) {
       setLightboxIndex(newIndex);
-      setPage([page + newDirection, newDirection]);
+      setPage([newIndex, newDirection]);
       setLightboxZoomed(false);
     }
-  }, [lightboxIndex, items.length, page]);
+  }, [lightboxIndex, items.length]);
 
   // Open lightbox at specific index
   const openLightbox = (index: number) => {
     setLightboxIndex(index);
-    setPage([index, 0]); // direction 0 = open from center
-    setLightboxOpen(true);
+    setPage([index, 0]);
     setLightboxZoomed(false);
+    setLightboxOpen(true);
   };
 
   // Close lightbox
   const closeLightbox = () => {
-    setPage([page, 0]); // direction 0 = close to center
     setLightboxOpen(false);
     setLightboxZoomed(false);
   };
 
   // Keyboard navigation
   useEffect(() => {
-    if (!lightboxOpen) return;
     const handleKeyDown = (e: KeyboardEvent) => {
+      if (!lightboxOpen) return;
       if (e.key === 'Escape') closeLightbox();
       if (e.key === 'ArrowRight') paginate(1);
       if (e.key === 'ArrowLeft') paginate(-1);
@@ -128,6 +280,7 @@ export const BentoGallery: React.FC<BentoGalleryProps> = ({
     } else if (info.offset.x > swipeThreshold || info.velocity.x > swipeVelocity) {
       if (lightboxIndex > 0) paginate(-1);
     }
+    dragX.set(0);
   };
 
   // Check if item is video
@@ -138,83 +291,69 @@ export const BentoGallery: React.FC<BentoGalleryProps> = ({
   // Get current item
   const currentItem = items[lightboxIndex];
 
-  // Lightbox animation variants
-  // When direction is 0 (initial open), animate from center with scale
-  // When direction is non-zero (swiping), animate from left/right
-  const lightboxVariants = {
-    enter: (direction: number) => ({
-      x: direction === 0 ? 0 : direction > 0 ? 300 : -300,
-      opacity: 0,
-      scale: direction === 0 ? 0.9 : 0.95,
-    }),
-    center: {
-      x: 0,
-      opacity: 1,
-      scale: 1,
-    },
-    exit: (direction: number) => ({
-      x: direction === 0 ? 0 : direction < 0 ? 300 : -300,
-      opacity: 0,
-      scale: direction === 0 ? 0.9 : 0.95,
-    }),
-  };
-
   return (
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
-          className={`fixed inset-0 z-[100] overflow-y-auto ${
-            systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white'
-          }`}
+          initial={{ opacity: 0, backgroundColor: 'rgba(255,255,255,1)' }}
+          animate={{ opacity: 1, backgroundColor: 'rgba(0,0,0,1)' }}
+          exit={{ opacity: 0, backgroundColor: 'rgba(255,255,255,1)' }}
+          transition={{
+            opacity: { duration: 0.3 },
+            backgroundColor: { duration: 0.5, ease: 'easeInOut' }
+          }}
+          className="fixed inset-0 z-[100] overflow-y-auto"
         >
-          {/* Header */}
-          <header
-            className={`sticky top-0 z-50 backdrop-blur-xl border-b ${
-              systemTheme === 'dark'
-                ? 'bg-[#0a0a0a]/80 border-white/10'
-                : 'bg-white/80 border-gray-200'
-            }`}
+          {/* Header - Always dark in gallery mode */}
+          <motion.header
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.1 }}
+            className="sticky top-0 z-50 backdrop-blur-xl border-b bg-black/80 border-white/10"
           >
             <div className="max-w-6xl mx-auto px-4 md:px-6 py-4 flex items-center justify-between">
               {/* Left - Title */}
               <div className="flex-1">
-                <h1
-                  className={`text-lg md:text-xl font-bold ${
-                    systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                  }`}
-                >
+                <h1 className="text-lg md:text-xl font-bold text-white">
                   {title}
                 </h1>
               </div>
 
-              {/* Center - Toggle Switch (only if has case study) */}
+              {/* Center - Toggle Switch with animated pill (same style as Texte/Timeline) */}
               {hasCaseStudy && onOpenCaseStudy ? (
                 <div className="flex-1 flex justify-center">
-                  <div
-                    className={`inline-flex rounded-full p-1 ${
-                      systemTheme === 'dark' ? 'bg-white/10' : 'bg-gray-100'
-                    }`}
-                  >
+                  <div className="relative flex items-center rounded-full p-1 bg-white/10">
+                    {/* Animated background pill */}
+                    <motion.div
+                      className="absolute bg-blue-600 rounded-full shadow-md"
+                      initial={false}
+                      animate={{
+                        x: '100%',
+                        width: '50%'
+                      }}
+                      transition={{
+                        type: 'spring',
+                        stiffness: 500,
+                        damping: 35,
+                        mass: 0.8
+                      }}
+                      style={{
+                        height: 'calc(100% - 8px)',
+                        top: '4px',
+                        left: '4px',
+                        right: '4px'
+                      }}
+                    />
                     <button
                       onClick={onOpenCaseStudy}
-                      className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                        systemTheme === 'dark'
-                          ? 'text-gray-400 hover:text-white'
-                          : 'text-gray-500 hover:text-gray-900'
-                      }`}
+                      className="relative z-10 px-4 py-2 rounded-full text-sm font-semibold transition-colors duration-200 text-gray-400 hover:text-white whitespace-nowrap"
+                      style={{ width: '50%' }}
                     >
                       {t.caseStudy}
                     </button>
                     <button
-                      className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                        systemTheme === 'dark'
-                          ? 'bg-white text-gray-900'
-                          : 'bg-white text-gray-900 shadow-sm'
-                      }`}
+                      className="relative z-10 px-4 py-2 rounded-full text-sm font-semibold transition-colors duration-200 text-white whitespace-nowrap"
+                      style={{ width: '50%' }}
                     >
                       {t.gallery}
                     </button>
@@ -223,13 +362,7 @@ export const BentoGallery: React.FC<BentoGalleryProps> = ({
               ) : (
                 /* Gallery only - show static label in center */
                 <div className="flex-1 flex justify-center">
-                  <span
-                    className={`px-3 py-1.5 rounded-full text-sm font-medium ${
-                      systemTheme === 'dark'
-                        ? 'bg-white/10 text-white'
-                        : 'bg-gray-100 text-gray-900'
-                    }`}
-                  >
+                  <span className="px-3 py-1.5 rounded-full text-sm font-medium bg-white/10 text-white">
                     {t.gallery}
                   </span>
                 </div>
@@ -239,100 +372,37 @@ export const BentoGallery: React.FC<BentoGalleryProps> = ({
               <div className="flex-1 flex justify-end">
                 <button
                   onClick={onClose}
-                  className={`p-2 rounded-full transition-colors ${
-                    systemTheme === 'dark'
-                      ? 'hover:bg-white/10 text-gray-300'
-                      : 'hover:bg-gray-100 text-gray-600'
-                  }`}
+                  className="p-2 rounded-full transition-colors bg-white/10 hover:bg-white/20 text-white"
                   aria-label={t.close}
                 >
                   <X size={24} />
                 </button>
               </div>
             </div>
-          </header>
+          </motion.header>
 
-          {/* Bento Grid */}
-          <div className="max-w-6xl mx-auto px-4 md:px-6 py-8">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {items.map((item, index) => (
-                <motion.figure
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: index * 0.05 }}
-                  className={`group cursor-pointer ${
-                    item.span === 'wide' ? 'sm:col-span-2' : ''
-                  } ${item.span === 'tall' ? 'sm:row-span-2' : ''}`}
-                  onClick={() => openLightbox(index)}
-                >
-                  <div
-                    className={`relative rounded-xl overflow-hidden border transition-all duration-300 group-hover:scale-[1.02] group-hover:shadow-lg ${
-                      systemTheme === 'dark'
-                        ? 'border-white/10 group-hover:border-white/20'
-                        : 'border-gray-200 group-hover:border-gray-300'
-                    }`}
-                  >
-                    {item.type === 'video' || isVideo(item.src) ? (
-                      <div className="relative aspect-video">
-                        <video
-                          src={item.src}
-                          className="w-full h-full object-cover"
-                          muted
-                          playsInline
-                          preload="metadata"
-                        />
-                        {/* Play icon overlay */}
-                        <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/30 transition-colors">
-                          <div
-                            className={`w-12 h-12 rounded-full flex items-center justify-center ${
-                              systemTheme === 'dark'
-                                ? 'bg-white/20 backdrop-blur-sm'
-                                : 'bg-black/30 backdrop-blur-sm'
-                            }`}
-                          >
-                            <Play
-                              size={24}
-                              className="text-white ml-1"
-                              fill="white"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="aspect-video">
-                        <img
-                          src={item.src}
-                          alt={item.caption}
-                          className="w-full h-full object-cover"
-                          loading="lazy"
-                        />
-                      </div>
-                    )}
-                  </div>
-                  <figcaption
-                    className={`mt-2 text-sm ${
-                      systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                    }`}
-                  >
-                    <strong
-                      className={
-                        systemTheme === 'dark' ? 'text-gray-200' : 'text-gray-700'
-                      }
-                    >
-                      {item.caption}
-                    </strong>
-                    {item.captionDesc && (
-                      <span className="hidden sm:inline">
-                        {' '}
-                        - {item.captionDesc}
-                      </span>
-                    )}
-                  </figcaption>
-                </motion.figure>
-              ))}
+          {/* Full-width Masonry Grid with staggered card animation */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4, delay: 0.2 }}
+            className="overflow-y-auto"
+          >
+            <div className="w-full px-6 md:px-10 lg:px-12 py-8 md:py-12">
+              {/* CSS Masonry Grid - 3 columns fluid */}
+              <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 md:gap-8">
+                {items.map((item, index) => (
+                  <GalleryCard
+                    key={index}
+                    item={item}
+                    index={index}
+                    isVideo={isVideo}
+                    onClick={() => openLightbox(index)}
+                  />
+                ))}
+              </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Lightbox Modal */}
           <AnimatePresence>
@@ -341,107 +411,197 @@ export const BentoGallery: React.FC<BentoGalleryProps> = ({
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="fixed inset-0 z-[200] flex items-center justify-center bg-black/95"
+                transition={{ duration: 0.2 }}
+                className="fixed inset-0 z-[200] bg-black/95 backdrop-blur-xl flex items-center justify-center"
                 onClick={closeLightbox}
               >
                 {/* Close button */}
-                <button
+                <motion.button
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={springTransition}
                   onClick={closeLightbox}
-                  className="absolute top-4 right-4 z-[210] p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+                  className="absolute top-4 right-4 md:top-6 md:right-6 z-[210] p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
                   aria-label={t.close}
                 >
                   <X size={24} />
-                </button>
+                </motion.button>
 
                 {/* Navigation arrows */}
                 {lightboxIndex > 0 && (
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      paginate(-1);
-                    }}
-                    className="absolute left-4 z-[210] p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+                  <motion.button
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    transition={springTransition}
+                    onClick={(e) => { e.stopPropagation(); paginate(-1); }}
+                    className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-[210] p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
                     aria-label="Previous"
                   >
                     <ChevronLeft size={28} />
-                  </button>
+                  </motion.button>
                 )}
+
                 {lightboxIndex < items.length - 1 && (
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      paginate(1);
-                    }}
-                    className="absolute right-4 z-[210] p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+                  <motion.button
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 20 }}
+                    transition={springTransition}
+                    onClick={(e) => { e.stopPropagation(); paginate(1); }}
+                    className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-[210] p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
                     aria-label="Next"
                   >
                     <ChevronRight size={28} />
-                  </button>
+                  </motion.button>
                 )}
 
-                {/* Image/Video container */}
-                <motion.div
-                  key={page}
-                  custom={direction}
-                  variants={lightboxVariants}
-                  initial="enter"
-                  animate="center"
-                  exit="exit"
-                  transition={{ duration: 0.3, ease: 'easeInOut' }}
-                  drag="x"
-                  dragConstraints={{ left: 0, right: 0 }}
-                  dragElastic={0.2}
-                  onDragEnd={handleDragEnd}
-                  whileDrag={{ cursor: 'grabbing' }}
-                  className={`relative max-w-[90vw] max-h-[85vh] cursor-grab active:cursor-grabbing ${
-                    lightboxZoomed ? 'cursor-zoom-out' : ''
-                  }`}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    if (currentItem.type !== 'video' && !isVideo(currentItem.src)) {
-                      setLightboxZoomed(!lightboxZoomed);
-                    }
-                  }}
-                >
-                  {currentItem.type === 'video' || isVideo(currentItem.src) ? (
-                    <video
-                      src={currentItem.src}
-                      className="max-w-full max-h-[85vh] rounded-lg"
-                      controls
-                      autoPlay
-                      playsInline
-                      onClick={(e) => e.stopPropagation()}
-                    />
-                  ) : (
-                    <img
-                      src={currentItem.src}
-                      alt={currentItem.caption}
-                      className={`max-h-[85vh] rounded-lg transition-transform duration-300 ${
-                        lightboxZoomed
-                          ? 'scale-150 cursor-zoom-out'
-                          : 'scale-100 cursor-zoom-in'
-                      }`}
-                      style={{
-                        maxWidth: lightboxZoomed ? 'none' : '90vw',
+                {/* Image container with carousel */}
+                <div className="relative w-full h-full flex items-center justify-center overflow-hidden px-4 md:px-20 py-20">
+                  <AnimatePresence initial={false} custom={direction} mode="popLayout">
+                    <motion.div
+                      key={page}
+                      custom={direction}
+                      variants={slideVariants}
+                      initial="enter"
+                      animate="center"
+                      exit="exit"
+                      transition={{
+                        x: { type: 'spring', stiffness: 350, damping: 35 },
+                        opacity: { duration: 0.2 },
+                        scale: { type: 'spring', stiffness: 350, damping: 35 },
                       }}
-                    />
-                  )}
-                </motion.div>
+                      drag={lightboxZoomed ? false : "x"}
+                      dragConstraints={{ left: 0, right: 0 }}
+                      dragElastic={0.2}
+                      onDrag={(_, info) => dragX.set(info.offset.x)}
+                      onDragEnd={handleDragEnd}
+                      onClick={(e) => e.stopPropagation()}
+                      className={`absolute w-full h-full ${
+                        lightboxZoomed
+                          ? 'overflow-y-auto overflow-x-hidden cursor-grab active:cursor-grabbing'
+                          : 'flex flex-col items-center justify-center cursor-grab active:cursor-grabbing'
+                      }`}
+                      style={lightboxZoomed ? { scrollBehavior: 'smooth' } : {}}
+                    >
+                      {lightboxZoomed ? (
+                        /* Zoomed mode - Full scrollable container */
+                        <div
+                          className="min-h-full w-full flex flex-col items-center py-16 px-4"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setLightboxZoomed(false);
+                          }}
+                        >
+                          <motion.img
+                            src={currentItem.src}
+                            alt={currentItem.caption}
+                            className="w-[95vw] md:w-[90vw] h-auto rounded-2xl shadow-2xl cursor-zoom-out"
+                            initial={{ scale: 0.95, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            transition={springTransition}
+                            draggable={false}
+                          />
+                          {/* Caption at the bottom of zoomed image */}
+                          <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 0.2 }}
+                            className="mt-8 mb-8 px-4 text-center max-w-3xl"
+                          >
+                            <p className="text-white/80 text-sm md:text-base leading-relaxed">
+                              {currentItem.caption}
+                              {currentItem.captionDesc && ` — ${currentItem.captionDesc}`}
+                            </p>
+                            <p className="text-white/40 text-xs mt-2">
+                              {t.clickToExitZoom}
+                            </p>
+                          </motion.div>
+                        </div>
+                      ) : (
+                        /* Normal mode - Centered with constraints */
+                        <>
+                          <motion.div
+                            style={{ x: parallaxX }}
+                            className="relative max-w-[90vw] max-h-[70vh] md:max-w-[80vw] md:max-h-[75vh]"
+                            onClick={(e) => {
+                              if (currentItem.type !== 'video' && !isVideo(currentItem.src)) {
+                                e.stopPropagation();
+                                setLightboxZoomed(true);
+                              }
+                            }}
+                          >
+                            {currentItem.type === 'video' || isVideo(currentItem.src) ? (
+                              <motion.video
+                                src={currentItem.src}
+                                className="max-w-full max-h-[70vh] md:max-h-[75vh] object-contain rounded-2xl shadow-2xl"
+                                initial={{ scale: 0.8, opacity: 0 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                transition={springTransition}
+                                autoPlay
+                                loop
+                                muted
+                                playsInline
+                                controls
+                              />
+                            ) : (
+                              <motion.img
+                                src={currentItem.src}
+                                alt={currentItem.caption}
+                                className="max-w-full max-h-[70vh] md:max-h-[75vh] object-contain cursor-zoom-in rounded-2xl shadow-2xl"
+                                initial={{ scale: 0.8, opacity: 0 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                transition={springTransition}
+                                draggable={false}
+                              />
+                            )}
+                          </motion.div>
 
-                {/* Caption */}
-                <div className="absolute bottom-4 left-0 right-0 text-center">
-                  <p className="text-white/90 text-sm font-medium mb-1">
-                    {currentItem.caption}
-                  </p>
-                  {currentItem.captionDesc && (
-                    <p className="text-white/60 text-xs max-w-xl mx-auto px-4">
-                      {currentItem.captionDesc}
-                    </p>
-                  )}
-                  <p className="text-white/40 text-xs mt-2">
-                    {lightboxIndex + 1} / {items.length}
-                  </p>
+                          {/* Caption */}
+                          <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.1, ...springTransition }}
+                            className="mt-6 px-4 text-center max-w-3xl"
+                          >
+                            <p className="text-white/80 text-sm md:text-base leading-relaxed">
+                              {currentItem.caption}
+                              {currentItem.captionDesc && ` — ${currentItem.captionDesc}`}
+                            </p>
+                            <p className="text-white/40 text-xs mt-2">
+                              {lightboxIndex + 1} / {items.length}
+                              {currentItem.type !== 'video' && !isVideo(currentItem.src) && ` • ${t.clickToZoom}`}
+                            </p>
+                          </motion.div>
+                        </>
+                      )}
+                    </motion.div>
+                  </AnimatePresence>
                 </div>
+
+                {/* Image dots indicator */}
+                {!lightboxZoomed && (
+                  <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center space-x-2">
+                    {items.map((_, idx) => (
+                      <button
+                        key={idx}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          const dir = idx > lightboxIndex ? 1 : -1;
+                          setLightboxIndex(idx);
+                          setPage([idx, dir]);
+                          setLightboxZoomed(false);
+                        }}
+                        className={`w-2 h-2 rounded-full transition-all duration-200 ${
+                          idx === lightboxIndex
+                            ? 'bg-white w-4'
+                            : 'bg-white/30 hover:bg-white/50'
+                        }`}
+                      />
+                    ))}
+                  </div>
+                )}
               </motion.div>
             )}
           </AnimatePresence>
@@ -732,10 +892,11 @@ export const DAILYMOTION_GALLERY_ITEMS: GalleryItem[] = [
 // Connect Gallery Items
 export const CONNECT_GALLERY_ITEMS: GalleryItem[] = [
   {
-    src: '/images/connect/thumbnail_connect-scaled.webp',
+    src: '/images/connect/connect_overview.webp',
     caption: 'Connect Overview',
     captionDesc: 'Web-based dashboard concept for classroom orchestration',
     type: 'image',
+    span: 'wide',
   },
   {
     src: '/images/connect/connect_dashboard_home_dark_full_smartphone-scaled.webp',

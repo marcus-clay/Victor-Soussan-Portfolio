@@ -2,21 +2,24 @@
 // Displays the SQOOL Connect project case study with portfolio styling
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { motion, AnimatePresence, useMotionValue, useTransform, PanInfo } from 'framer-motion';
+import { motion, AnimatePresence, useMotionValue, useTransform, useSpring, PanInfo } from 'framer-motion';
 import {
   ChevronRight,
   ChevronLeft,
   ChevronDown,
   X,
-  ExternalLink
+  Play
 } from 'lucide-react';
+import { GalleryItem } from './BentoGallery';
 
 interface ConnectPageProps {
   onClose: () => void;
   systemTheme: 'light' | 'dark';
   onToggleTheme: () => void;
-  onOpenGallery?: () => void;
+  viewMode: 'caseStudy' | 'gallery';
+  onViewModeChange: (mode: 'caseStudy' | 'gallery') => void;
   lang?: 'en' | 'fr';
+  galleryItems: GalleryItem[];
 }
 
 // Translations for Connect Case Study
@@ -24,6 +27,7 @@ const CONNECT_TRANSLATIONS = {
   en: {
     caseStudy: 'Case Study',
     projectGallery: 'Project Gallery',
+    gallery: 'Gallery',
     contactVictor: 'Contact Victor for a similar project',
     clickToZoom: 'Click to zoom',
     clickToExitZoom: 'Click to exit zoom',
@@ -128,6 +132,7 @@ const CONNECT_TRANSLATIONS = {
   fr: {
     caseStudy: 'Étude de cas',
     projectGallery: 'Galerie du projet',
+    gallery: 'Galerie',
     contactVictor: 'Contacter Victor pour un projet similaire',
     clickToZoom: 'Cliquer pour agrandir',
     clickToExitZoom: 'Cliquer pour fermer',
@@ -240,57 +245,135 @@ const sections = [
   { id: 'bulle', label: 'La Bulle', shortLabel: 'LB' },
 ];
 
-// All images for lightbox navigation
-const allImages = [
-  '/images/connect/thumbnail_connect-scaled.webp',
-  '/images/connect/connect_dashboard_home_dark_full_smartphone-scaled.webp',
-  '/images/connect/connect_dashboard_home_light_full-scaled.webp',
-  '/images/connect/connect_dashboard_applications_full-scaled.webp',
-  '/videos/connect/connect-loading-user-authent-app-launch-study.mp4',
-  '/videos/connect/connect-dashboard-prototype_complet_4k.mp4',
-  '/images/connect/connect_tech_architecture-1-scaled.webp',
-  '/images/connect/connect_specifications_implem_01-scaled.webp',
-  '/images/connect/connect_specifications_content_02-scaled.webp',
-  '/videos/connect/connect-specs-app-loading-choregraphy.mp4',
-  '/images/connect/connect_bulle_ui_wireframes_concept-scaled.webp',
-  '/images/connect/connect_bulle_ui_focus-scaled.webp',
-  '/images/connect/connect_bulle_icons-1-scaled.webp',
-  '/images/connect/connect_bulle_behaviour_square_01-scaled.webp',
-  '/images/connect/connect_bulle_behaviour_square_02-scaled.webp',
-  '/videos/connect/interaction-bulle-connect.mp4',
-  '/videos/connect/Video-demo-bulle-interactions-02.mp4',
-];
+// Apple-style spring transition
+const springTransition = {
+  type: 'spring' as const,
+  stiffness: 300,
+  damping: 30,
+  mass: 1,
+};
 
-// Swipe variants for lightbox
-const swipeConfidenceThreshold = 10000;
-const swipePower = (offset: number, velocity: number) => Math.abs(offset) * velocity;
-
-const variants = {
+// Slide transition for carousel
+const slideVariants = {
   enter: (direction: number) => ({
-    x: direction > 0 ? 300 : -300,
+    x: direction > 0 ? '100%' : '-100%',
     opacity: 0,
     scale: 0.95,
   }),
   center: {
-    zIndex: 1,
     x: 0,
     opacity: 1,
     scale: 1,
   },
   exit: (direction: number) => ({
-    zIndex: 0,
-    x: direction < 0 ? 300 : -300,
+    x: direction < 0 ? '100%' : '-100%',
     opacity: 0,
     scale: 0.95,
   }),
+};
+
+// All images for lightbox navigation with captions
+const allImages: { src: string; caption: string; type: 'image' | 'video' }[] = [
+  { src: '/images/connect/thumbnail_connect.webp', caption: 'Connect Overview - Web-based dashboard concept for classroom orchestration', type: 'image' },
+  { src: '/images/connect/connect_dashboard_home_dark_full_smartphone-scaled.webp', caption: 'Dashboard Home (Dark) - Main dashboard interface with quick actions and class status', type: 'image' },
+  { src: '/images/connect/connect_dashboard_home_light_full-scaled.webp', caption: 'Dashboard Home (Light) - Light theme variant for different lighting conditions', type: 'image' },
+  { src: '/images/connect/connect_dashboard_applications_full-scaled.webp', caption: 'Applications Dashboard - App catalog for browsing and deploying applications', type: 'image' },
+  { src: '/videos/connect/connect-loading-user-authent-app-launch-study.mp4', caption: 'Connection & Auth Flow - User authentication and app launching choreography', type: 'video' },
+  { src: '/videos/connect/connect-dashboard-prototype_complet_4k.mp4', caption: 'Dashboard Prototype - Full interaction walkthrough demonstrating modular capabilities', type: 'video' },
+  { src: '/images/connect/connect_tech_architecture-1-scaled.webp', caption: 'Technical Architecture - System overview showing web dashboard integration', type: 'image' },
+  { src: '/images/connect/connect_specifications_implem_01-scaled.webp', caption: 'Implementation Specs - Detailed specifications for developer handoff', type: 'image' },
+  { src: '/images/connect/connect_specifications_content_02-scaled.webp', caption: 'Content Specifications - Content strategy documentation for interface elements', type: 'image' },
+  { src: '/videos/connect/connect-specs-app-loading-choregraphy.mp4', caption: 'App Loading Choreography - Animation specifications for smooth transitions', type: 'video' },
+  { src: '/images/connect/connect_bulle_ui_wireframes_concept-scaled.webp', caption: 'La Bulle - Wireframes - Early exploration of the bubble interaction model', type: 'image' },
+  { src: '/images/connect/connect_bulle_ui_focus-scaled.webp', caption: 'La Bulle - UI Focus - Detailed view of the bubble expanded state', type: 'image' },
+  { src: '/images/connect/connect_bulle_icons-1-scaled.webp', caption: 'La Bulle - Icons - Custom icon set for the contextual menu', type: 'image' },
+  { src: '/images/connect/connect_bulle_behaviour_square_01-scaled.webp', caption: 'La Bulle - Behavior (1) - Animation states and interaction patterns', type: 'image' },
+  { src: '/images/connect/connect_bulle_behaviour_square_02-scaled.webp', caption: 'La Bulle - Behavior (2) - Edge cases and system integration specs', type: 'image' },
+  { src: '/videos/connect/interaction-bulle-connect.mp4', caption: 'La Bulle - Interaction Demo - Motion prototype of bubble opening animation', type: 'video' },
+  { src: '/videos/connect/Video-demo-bulle-interactions-02.mp4', caption: 'La Bulle - Full Demo - Complete demonstration of bubble capabilities', type: 'video' },
+];
+
+// Gallery Card component with Apple TV-style 3D tilt effect
+interface GalleryCardProps {
+  item: GalleryItem;
+  index: number;
+  onClick: () => void;
+}
+
+const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick }) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [8, -8]), { stiffness: 300, damping: 30 });
+  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-8, 8]), { stiffness: 300, damping: 30 });
+  const glowX = useSpring(useTransform(x, [-0.5, 0.5], [0, 100]), { stiffness: 300, damping: 30 });
+  const glowY = useSpring(useTransform(y, [-0.5, 0.5], [0, 100]), { stiffness: 300, damping: 30 });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    x.set((e.clientX - centerX) / rect.width);
+    y.set((e.clientY - centerY) / rect.height);
+  };
+
+  const handleMouseLeave = () => { x.set(0); y.set(0); };
+
+  const isVideo = item.type === 'video' || item.src.match(/\.(mp4|webm|mov)$/i);
+
+  return (
+    <motion.figure
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, delay: index * 0.03 }}
+      className="group cursor-pointer break-inside-avoid mb-8 md:mb-10"
+      onClick={onClick}
+      style={{ perspective: 1000 }}
+    >
+      <motion.div
+        ref={cardRef}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
+        className="relative rounded-2xl overflow-hidden transition-shadow duration-300 ease-out shadow-lg shadow-black/30 group-hover:shadow-2xl group-hover:shadow-blue-500/20"
+      >
+        <motion.div
+          className="absolute inset-0 z-10 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          style={{ background: `radial-gradient(circle at ${glowX}% ${glowY}%, rgba(255,255,255,0.15) 0%, transparent 50%)` }}
+        />
+        <div className="absolute inset-0 z-10 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"
+          style={{ boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.1), inset 0 -1px 1px rgba(0,0,0,0.2)' }}
+        />
+        {isVideo ? (
+          <div className="relative">
+            <video src={item.src} className="w-full h-auto block" muted playsInline preload="metadata" />
+            <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/30 transition-colors">
+              <div className="w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-md transition-transform duration-300 group-hover:scale-110 bg-white/20">
+                <Play size={28} className="text-white ml-1" fill="white" />
+              </div>
+            </div>
+          </div>
+        ) : (
+          <img src={item.src} alt={item.caption} className="w-full h-auto block" loading="lazy" />
+        )}
+      </motion.div>
+      <figcaption className="mt-4 text-sm text-gray-400">
+        <strong className="text-gray-200">{item.caption}</strong>
+        {item.captionDesc && <span className="hidden sm:inline"> — {item.captionDesc}</span>}
+      </figcaption>
+    </motion.figure>
+  );
 };
 
 export const ConnectPage: React.FC<ConnectPageProps> = ({
   onClose,
   systemTheme,
   onToggleTheme,
-  onOpenGallery,
-  lang = 'en'
+  viewMode,
+  onViewModeChange,
+  lang = 'en',
+  galleryItems
 }) => {
   const t = CONNECT_TRANSLATIONS[lang];
   const [activeSection, setActiveSection] = useState('hero');
@@ -301,6 +384,10 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
   const [lightboxZoomed, setLightboxZoomed] = useState(false);
   const [[page, direction], setPage] = useState([0, 0]);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // Motion values for parallax effect
+  const dragX = useMotionValue(0);
+  const parallaxX = useTransform(dragX, [-300, 0, 300], [30, 0, -30]);
 
   // Track scroll position to show/hide mini-nav
   useEffect(() => {
@@ -336,15 +423,22 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
     }
   };
 
-  // Lightbox functions
-  const openLightbox = (src: string) => {
-    const index = allImages.indexOf(src);
+  // Open lightbox with specific image
+  const openLightbox = (imageSrc: string) => {
+    const index = allImages.findIndex(img => img.src === imageSrc);
     if (index !== -1) {
       setLightboxIndex(index);
       setPage([index, 0]);
-      setLightboxOpen(true);
       setLightboxZoomed(false);
+      setLightboxOpen(true);
+      document.body.style.overflow = 'hidden';
     }
+  };
+
+  // Close lightbox
+  const closeLightbox = () => {
+    setLightboxOpen(false);
+    document.body.style.overflow = '';
   };
 
   const paginate = useCallback((newDirection: number) => {
@@ -358,9 +452,9 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
 
   // Keyboard navigation for lightbox
   useEffect(() => {
-    if (!lightboxOpen) return;
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setLightboxOpen(false);
+      if (!lightboxOpen) return;
+      if (e.key === 'Escape') closeLightbox();
       if (e.key === 'ArrowRight') paginate(1);
       if (e.key === 'ArrowLeft') paginate(-1);
     };
@@ -378,10 +472,9 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
     } else if (info.offset.x > swipeThreshold || info.velocity.x > swipeVelocity) {
       if (lightboxIndex > 0) paginate(-1);
     }
+    dragX.set(0);
   };
 
-  // Check if current lightbox item is video
-  const isVideo = (src: string) => src.endsWith('.mp4');
 
   return (
     <motion.div
@@ -389,8 +482,9 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
       className={`fixed inset-0 z-50 overflow-y-auto ${
-        systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white'
+        viewMode === 'gallery' ? 'bg-black' : (systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white')
       }`}
     >
       {/* Sticky Mini-Nav - All screen sizes */}
@@ -493,12 +587,12 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
         )}
       </AnimatePresence>
 
-      {/* Header */}
+      {/* Header - Theme changes instantly with page */}
       <header
         className={`sticky top-0 z-40 backdrop-blur-xl border-b ${
-          systemTheme === 'dark'
-            ? 'bg-[#0a0a0a]/80 border-white/10'
-            : 'bg-white/80 border-gray-200'
+          viewMode === 'gallery'
+            ? 'bg-black/80 border-white/10'
+            : (systemTheme === 'dark' ? 'bg-[#0a0a0a]/80 border-white/10' : 'bg-white/80 border-gray-200')
         }`}
       >
         <div className="max-w-6xl mx-auto px-4 md:px-6 py-4 flex items-center justify-between">
@@ -506,52 +600,65 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
           <div className="flex-1">
             <h1
               className={`text-lg md:text-xl font-bold ${
-                systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+                viewMode === 'gallery' ? 'text-white' : (systemTheme === 'dark' ? 'text-white' : 'text-gray-900')
               }`}
             >
               SQOOL Connect
             </h1>
           </div>
 
-          {/* Center - Toggle Switch */}
-          {onOpenGallery && (
-            <div className="flex-1 flex justify-center">
-              <div
-                className={`inline-flex rounded-full p-1 ${
-                  systemTheme === 'dark' ? 'bg-white/10' : 'bg-gray-100'
-                }`}
+          {/* Center - Toggle Switch with animated pill */}
+          <div className="flex-1 flex justify-center">
+            <div
+              className={`relative flex items-center gap-1 rounded-full p-1 ${
+                viewMode === 'gallery' ? 'bg-white/10' : (systemTheme === 'dark' ? 'bg-white/10' : 'bg-gray-100')
+              }`}
+            >
+              <button
+                onClick={() => onViewModeChange('caseStudy')}
+                className="relative z-10 px-5 py-2 rounded-full text-sm font-semibold transition-colors duration-200 whitespace-nowrap"
               >
-                <button
-                  className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                    systemTheme === 'dark'
-                      ? 'bg-white text-gray-900'
-                      : 'bg-white text-gray-900 shadow-sm'
-                  }`}
-                >
+                {viewMode === 'caseStudy' && (
+                  <motion.div
+                    layoutId="connect-toggle-pill"
+                    className="absolute inset-0 bg-blue-600 rounded-full shadow-md"
+                    transition={{ type: 'spring', stiffness: 500, damping: 35, mass: 0.8 }}
+                  />
+                )}
+                <span className={`relative z-10 ${
+                  viewMode === 'caseStudy' ? 'text-white' : (viewMode === 'gallery' ? 'text-gray-400 hover:text-white' : (systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'))
+                }`}>
                   {t.caseStudy}
-                </button>
-                <button
-                  onClick={onOpenGallery}
-                  className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                    systemTheme === 'dark'
-                      ? 'text-gray-400 hover:text-white'
-                      : 'text-gray-500 hover:text-gray-900'
-                  }`}
-                >
-                  {t.projectGallery}
-                </button>
-              </div>
+                </span>
+              </button>
+              <button
+                onClick={() => onViewModeChange('gallery')}
+                className="relative z-10 px-5 py-2 rounded-full text-sm font-semibold transition-colors duration-200 whitespace-nowrap"
+              >
+                {viewMode === 'gallery' && (
+                  <motion.div
+                    layoutId="connect-toggle-pill"
+                    className="absolute inset-0 bg-blue-600 rounded-full shadow-md"
+                    transition={{ type: 'spring', stiffness: 500, damping: 35, mass: 0.8 }}
+                  />
+                )}
+                <span className={`relative z-10 ${
+                  viewMode === 'gallery' ? 'text-white' : (systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900')
+                }`}>
+                  {t.gallery}
+                </span>
+              </button>
             </div>
-          )}
+          </div>
 
           {/* Right - Close button only */}
           <div className="flex-1 flex justify-end">
             <button
               onClick={onClose}
-              className={`p-2 rounded-full transition-colors ${
-                systemTheme === 'dark'
-                  ? 'hover:bg-white/10 text-gray-300'
-                  : 'hover:bg-gray-100 text-gray-600'
+              className={`p-2 rounded-full ${
+                viewMode === 'gallery'
+                  ? 'text-gray-300 hover:bg-white/10'
+                  : (systemTheme === 'dark' ? 'text-gray-300 hover:bg-white/10' : 'text-gray-600 hover:bg-gray-100')
               }`}
             >
               <X size={24} />
@@ -567,100 +674,188 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[60] bg-black/95 flex items-center justify-center"
-            onClick={() => !lightboxZoomed && setLightboxOpen(false)}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl flex items-center justify-center"
+            onClick={closeLightbox}
           >
             {/* Close button */}
-            <button
-              onClick={() => setLightboxOpen(false)}
-              className="absolute top-4 right-4 z-10 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+            <motion.button
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              transition={springTransition}
+              onClick={closeLightbox}
+              className="absolute top-4 right-4 md:top-6 md:right-6 z-10 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
             >
               <X size={24} />
-            </button>
+            </motion.button>
 
             {/* Navigation arrows */}
             {lightboxIndex > 0 && (
-              <button
+              <motion.button
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={springTransition}
                 onClick={(e) => { e.stopPropagation(); paginate(-1); }}
-                className="absolute left-4 z-10 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+                className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
               >
-                <ChevronLeft size={24} />
-              </button>
+                <ChevronLeft size={28} />
+              </motion.button>
             )}
+
             {lightboxIndex < allImages.length - 1 && (
-              <button
+              <motion.button
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 20 }}
+                transition={springTransition}
                 onClick={(e) => { e.stopPropagation(); paginate(1); }}
-                className="absolute right-4 z-10 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+                className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
               >
-                <ChevronRight size={24} />
-              </button>
+                <ChevronRight size={28} />
+              </motion.button>
             )}
 
-            {/* Image/Video with swipe */}
-            <motion.div
-              key={page}
-              custom={direction}
-              variants={variants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{
-                x: { type: "spring", stiffness: 300, damping: 30 },
-                opacity: { duration: 0.2 }
-              }}
-              drag={!lightboxZoomed ? "x" : false}
-              dragConstraints={{ left: 0, right: 0 }}
-              dragElastic={1}
-              onDragEnd={handleDragEnd}
-              onClick={(e) => e.stopPropagation()}
-              className={`relative max-w-[90vw] max-h-[85vh] ${lightboxZoomed ? 'cursor-zoom-out' : 'cursor-zoom-in'}`}
-            >
-              {isVideo(allImages[lightboxIndex]) ? (
-                <video
-                  src={allImages[lightboxIndex]}
-                  controls
-                  autoPlay
-                  className="max-w-full max-h-[85vh] rounded-lg"
+            {/* Image container with carousel */}
+            <div className="relative w-full h-full flex items-center justify-center overflow-hidden px-4 md:px-20 py-20">
+              <AnimatePresence initial={false} custom={direction} mode="popLayout">
+                <motion.div
+                  key={page}
+                  custom={direction}
+                  variants={slideVariants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={{
+                    x: { type: 'spring', stiffness: 350, damping: 35 },
+                    opacity: { duration: 0.2 },
+                    scale: { type: 'spring', stiffness: 350, damping: 35 },
+                  }}
+                  drag={lightboxZoomed ? false : "x"}
+                  dragConstraints={{ left: 0, right: 0 }}
+                  dragElastic={0.2}
+                  onDrag={(_, info) => dragX.set(info.offset.x)}
+                  onDragEnd={handleDragEnd}
                   onClick={(e) => e.stopPropagation()}
-                />
-              ) : (
-                <img
-                  src={allImages[lightboxIndex]}
-                  alt=""
-                  onClick={() => setLightboxZoomed(!lightboxZoomed)}
-                  className={`rounded-lg transition-transform duration-300 ${
+                  className={`absolute w-full h-full ${
                     lightboxZoomed
-                      ? 'max-w-none max-h-none scale-150'
-                      : 'max-w-full max-h-[85vh] object-contain'
+                      ? 'overflow-y-auto overflow-x-hidden cursor-grab active:cursor-grabbing'
+                      : 'flex flex-col items-center justify-center cursor-grab active:cursor-grabbing'
                   }`}
-                  draggable={false}
-                />
-              )}
-            </motion.div>
+                  style={lightboxZoomed ? { scrollBehavior: 'smooth' } : {}}
+                >
+                  {lightboxZoomed ? (
+                    /* Zoomed mode - Full scrollable container */
+                    <div
+                      className="min-h-full w-full flex flex-col items-center py-16 px-4"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setLightboxZoomed(false);
+                      }}
+                    >
+                      <motion.img
+                        src={allImages[lightboxIndex].src}
+                        alt={allImages[lightboxIndex].caption}
+                        className="w-[95vw] md:w-[90vw] h-auto rounded-lg shadow-2xl cursor-zoom-out"
+                        initial={{ scale: 0.95, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={springTransition}
+                        draggable={false}
+                      />
+                      {/* Caption at the bottom of zoomed image */}
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.2 }}
+                        className="mt-8 mb-8 px-4 text-center max-w-3xl"
+                      >
+                        <p className="text-white/80 text-sm md:text-base leading-relaxed">
+                          {allImages[lightboxIndex].caption}
+                        </p>
+                        <p className="text-white/40 text-xs mt-2">
+                          {t.clickToExitZoom}
+                        </p>
+                      </motion.div>
+                    </div>
+                  ) : (
+                    /* Normal mode - Centered with constraints */
+                    <>
+                      <motion.div
+                        style={{ x: parallaxX }}
+                        className="relative max-w-[90vw] max-h-[70vh] md:max-w-[80vw] md:max-h-[75vh]"
+                        onClick={(e) => {
+                          if (allImages[lightboxIndex].type === 'image') {
+                            e.stopPropagation();
+                            setLightboxZoomed(true);
+                          }
+                        }}
+                      >
+                        {allImages[lightboxIndex].type === 'video' ? (
+                          <motion.video
+                            src={allImages[lightboxIndex].src}
+                            className="max-w-full max-h-[70vh] md:max-h-[75vh] object-contain rounded-lg shadow-2xl"
+                            initial={{ scale: 0.8, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            transition={springTransition}
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                            controls
+                          />
+                        ) : (
+                          <motion.img
+                            src={allImages[lightboxIndex].src}
+                            alt={allImages[lightboxIndex].caption}
+                            className="max-w-full max-h-[70vh] md:max-h-[75vh] object-contain cursor-zoom-in rounded-lg shadow-2xl"
+                            initial={{ scale: 0.8, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            transition={springTransition}
+                            draggable={false}
+                          />
+                        )}
+                      </motion.div>
 
-            {/* Thumbnail strip */}
-            {allImages.length > 1 && (
-              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 p-2 rounded-lg bg-black/50 max-w-[90vw] overflow-x-auto">
-                {allImages.map((src, idx) => (
+                      {/* Caption */}
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.1, ...springTransition }}
+                        className="mt-6 px-4 text-center max-w-3xl"
+                      >
+                        <p className="text-white/80 text-sm md:text-base leading-relaxed">
+                          {allImages[lightboxIndex].caption}
+                        </p>
+                        <p className="text-white/40 text-xs mt-2">
+                          {lightboxIndex + 1} / {allImages.length} • {t.clickToZoom}
+                        </p>
+                      </motion.div>
+                    </>
+                  )}
+                </motion.div>
+              </AnimatePresence>
+            </div>
+
+            {/* Image dots indicator */}
+            {!lightboxZoomed && (
+              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center space-x-2">
+                {allImages.map((_, idx) => (
                   <button
                     key={idx}
                     onClick={(e) => {
                       e.stopPropagation();
+                      const dir = idx > lightboxIndex ? 1 : -1;
                       setLightboxIndex(idx);
-                      setPage([idx, idx > lightboxIndex ? 1 : -1]);
+                      setPage([idx, dir]);
+                      setLightboxZoomed(false);
                     }}
-                    className={`flex-shrink-0 w-12 h-12 rounded overflow-hidden border-2 transition-colors ${
-                      idx === lightboxIndex ? 'border-white' : 'border-transparent opacity-50 hover:opacity-100'
+                    className={`w-2 h-2 rounded-full transition-all duration-200 ${
+                      idx === lightboxIndex
+                        ? 'bg-white w-4'
+                        : 'bg-white/30 hover:bg-white/50'
                     }`}
-                  >
-                    {isVideo(src) ? (
-                      <div className="w-full h-full bg-gray-700 flex items-center justify-center">
-                        <ChevronRight size={16} className="text-white" />
-                      </div>
-                    ) : (
-                      <img src={src} alt="" className="w-full h-full object-cover" />
-                    )}
-                  </button>
+                  />
                 ))}
               </div>
             )}
@@ -668,7 +863,38 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
         )}
       </AnimatePresence>
 
-      {/* Content */}
+      {/* Content - Switch between Case Study and Gallery */}
+      <AnimatePresence mode="wait">
+        {viewMode === 'gallery' ? (
+          /* Gallery View */
+          <motion.div
+            key="gallery"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="w-full px-6 md:px-10 lg:px-12 py-8 md:py-12"
+          >
+            <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 md:gap-8">
+              {galleryItems.map((item, index) => (
+                <GalleryCard
+                  key={index}
+                  item={item}
+                  index={index}
+                  onClick={() => openLightbox(item.src)}
+                />
+              ))}
+            </div>
+          </motion.div>
+        ) : (
+          /* Case Study View */
+          <motion.div
+            key="caseStudy"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
       <div className="max-w-6xl mx-auto px-4 md:px-6 py-12 md:py-16">
         <div>
           {/* Main Content */}
@@ -727,13 +953,13 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
             {/* Hero Image */}
             <figure className="mb-16 md:mb-24">
               <div
-                onClick={() => openLightbox('/images/connect/thumbnail_connect-scaled.webp')}
+                onClick={() => openLightbox('/images/connect/thumbnail_connect.webp')}
                 className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
                   systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
                 }`}
               >
                 <img
-                  src="/images/connect/thumbnail_connect-scaled.webp"
+                  src="/images/connect/thumbnail_connect.webp"
                   alt="SQOOL Connect Overview"
                   className="w-full h-auto"
                 />
@@ -1262,6 +1488,9 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
           </main>
         </div>
       </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 };

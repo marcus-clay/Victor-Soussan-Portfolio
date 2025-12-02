@@ -1266,7 +1266,8 @@ const getProjects = (lang: Language): Project[] => {
       ],
       icon: <Layers size={24} />,
       color: "purple",
-      coverImage: "thumbnail_connect-scaled.webp"
+      coverImage: "thumbnail-connect.webp",
+      status: "concept"
     },
     {
       id: "sqool",
@@ -1330,11 +1331,11 @@ const getProjects = (lang: Language): Project[] => {
         "Refonte de l'Onboarding",
         "UI de Recherche & Navigation",
         "Expériences contextuelles (Wearables)",
-        "Optimisation des parcours de rétention"
+        "Optimisation de l'expérience de cartographie et itinéraires"
       ],
       icon: <Smartphone size={24} />,
       color: "purple",
-      coverImage: "thumbnail-pagesjaunes.webp",
+      coverImage: "thumbnail-pagesjaunes-multidevices.webp",
       testimonialId: "nicolas-moulin"
     }
   ];
@@ -1548,10 +1549,11 @@ const App: React.FC = () => {
   const [copiedLinkedin, setCopiedLinkedin] = useState(false);
   const [copiedPortfolio, setCopiedPortfolio] = useState(false);
   const [iframeModalUrl, setIframeModalUrl] = useState<string | null>(null);
-  const [isToolkitPageOpen, setIsToolkitPageOpen] = useState(false);
-  const [isDailymotionPageOpen, setIsDailymotionPageOpen] = useState(false);
-  const [isConnectPageOpen, setIsConnectPageOpen] = useState(false);
-  const [galleryProject, setGalleryProject] = useState<'toolkit' | 'dailymotion' | 'connect' | null>(null);
+  // Unified project modal state: which project is open and which view mode
+  const [openProject, setOpenProject] = useState<{
+    project: 'toolkit' | 'dailymotion' | 'connect';
+    viewMode: 'caseStudy' | 'gallery';
+  } | null>(null);
   const [activeSection, setActiveSection] = useState('services');
   const [isScrolled, setIsScrolled] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
@@ -2372,27 +2374,18 @@ const App: React.FC = () => {
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-50px" }}
-                  whileHover={{
-                    y: -8,
-                    scale: 1.01,
-                    transition: { duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }
-                  }}
                   transition={{ duration: 0.6, delay: index * 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
                   onClick={() => {
-                    if (project.id === 'toolkit') {
-                      setIsToolkitPageOpen(true);
-                    } else if (project.id === 'dailymotion') {
-                      setIsDailymotionPageOpen(true);
-                    } else if (project.id === 'connect') {
-                      setIsConnectPageOpen(true);
+                    if (project.id === 'toolkit' || project.id === 'dailymotion' || project.id === 'connect') {
+                      setOpenProject({ project: project.id, viewMode: 'caseStudy' });
                     } else if (project.externalLink) {
                       setIframeModalUrl(project.externalLink);
                     }
                   }}
                   className={`group cursor-pointer rounded-2xl md:rounded-3xl border overflow-hidden ${
                     systemTheme === 'dark'
-                      ? 'bg-[#1D1D1F] border-white/5 hover:border-white/15 hover:shadow-2xl hover:shadow-black/40'
-                      : 'bg-white border-gray-100 hover:border-gray-200 hover:shadow-2xl hover:shadow-gray-300/50'
+                      ? 'bg-[#1D1D1F] border-white/5 hover:border-white/15'
+                      : 'bg-white border-gray-200'
                   }`}
                 >
                   <div className="flex flex-col md:flex-row">
@@ -2407,8 +2400,10 @@ const App: React.FC = () => {
                             ? 'bg-black/40 text-white border border-white/10'
                             : 'bg-white/70 text-gray-700 border border-gray-200/50'
                         }`}>
-                          <span className="w-2 h-2 rounded-full bg-green-500 mr-2" />
-                          SHIPPED
+                          <span className={`w-2 h-2 rounded-full mr-2 ${
+                            project.status === 'concept' ? 'bg-violet-500' : 'bg-green-500'
+                          }`} />
+                          {project.status === 'concept' ? 'CONCEPT' : 'SHIPPED'}
                         </span>
                       </div>
 
@@ -2423,7 +2418,7 @@ const App: React.FC = () => {
                         <img
                           src={`/images/${project.coverImage}`}
                           alt={`${project.title} preview`}
-                          className="w-full h-full object-contain rounded-xl md:rounded-2xl transition-transform duration-700 ease-out group-hover:scale-[1.02]"
+                          className="w-full h-full object-contain rounded-xl md:rounded-2xl transition-transform duration-500 ease-out group-hover:scale-[1.05]"
                         />
                       </div>
                     </div>
@@ -2531,32 +2526,32 @@ const App: React.FC = () => {
 
                       {/* Bottom: CTA */}
                       <div className={`pt-4 mt-4 border-t flex items-center justify-end gap-2 ${systemTheme === 'dark' ? 'border-white/5' : 'border-gray-100'}`}>
-                        {(project.id === 'toolkit' || project.id === 'dailymotion') ? (
+                        {(project.id === 'toolkit' || project.id === 'dailymotion' || project.id === 'connect') ? (
                           <>
                             {/* Gallery Button */}
                             <button
                               onClick={(e) => {
                                 e.stopPropagation();
-                                setGalleryProject(project.id as 'toolkit' | 'dailymotion');
+                                setOpenProject({ project: project.id as 'toolkit' | 'dailymotion' | 'connect', viewMode: 'gallery' });
                               }}
-                              className={`inline-flex items-center text-xs font-medium px-3 py-2 rounded-full transition-colors duration-200 ${
+                              className={`inline-flex items-center text-sm font-medium px-5 py-2.5 rounded-full transition-colors duration-200 ${
                                 systemTheme === 'dark'
                                   ? 'bg-white/5 text-gray-400 border border-white/10 hover:bg-white/10 hover:text-gray-200'
                                   : 'bg-gray-50 text-gray-500 border border-gray-200 hover:bg-gray-100 hover:text-gray-700'
                               }`}
                               title={lang === 'en' ? 'View gallery' : 'Voir la galerie'}
                             >
-                              <Images size={14} className="mr-1.5" />
-                              <span className="hidden sm:inline">{lang === 'en' ? 'Gallery' : 'Galerie'}</span>
+                              <Images size={16} className="mr-2" />
+                              {lang === 'en' ? 'Gallery' : 'Galerie'}
                             </button>
                             {/* Case Study Button */}
-                            <div className={`inline-flex items-center text-xs font-medium px-4 py-2 rounded-full backdrop-blur-xl transition-colors duration-300 ${
+                            <div className={`inline-flex items-center text-sm font-medium px-5 py-2.5 rounded-full backdrop-blur-xl transition-colors duration-300 ${
                               systemTheme === 'dark'
                                 ? 'bg-white/10 text-gray-200 border border-white/20 group-hover:bg-white group-hover:text-black group-hover:border-white'
                                 : 'bg-gray-100/80 text-gray-700 border border-gray-200/50 group-hover:bg-gray-900 group-hover:text-white group-hover:border-gray-900'
                             }`}>
-                              <span className="mr-1.5">{content.projects.read_more}</span>
-                              <ChevronRight size={14} />
+                              <span className="mr-2">Case Study</span>
+                              <ChevronRight size={16} />
                             </div>
                           </>
                         ) : (
@@ -7065,82 +7060,56 @@ ${contactForm.message}`;
         )}
       </AnimatePresence>
 
-      {/* Toolkit Case Study Page */}
+      {/* Unified Project Modal - Toolkit */}
       <AnimatePresence>
-        {isToolkitPageOpen && (
+        {openProject?.project === 'toolkit' && (
           <ToolkitPage
-            onClose={() => setIsToolkitPageOpen(false)}
+            onClose={() => setOpenProject(null)}
             systemTheme={systemTheme}
             onToggleTheme={() => {
               setThemeMode(prev => prev === 'dark' ? 'light' : 'dark');
             }}
-            onOpenGallery={() => {
-              setIsToolkitPageOpen(false);
-              setGalleryProject('toolkit');
-            }}
+            viewMode={openProject.viewMode}
+            onViewModeChange={(mode) => setOpenProject({ project: 'toolkit', viewMode: mode })}
             lang={lang}
+            galleryItems={TOOLKIT_GALLERY_ITEMS}
           />
         )}
       </AnimatePresence>
 
-      {/* Dailymotion Case Study Page */}
+      {/* Unified Project Modal - Dailymotion */}
       <AnimatePresence>
-        {isDailymotionPageOpen && (
+        {openProject?.project === 'dailymotion' && (
           <DailymotionPage
-            onClose={() => setIsDailymotionPageOpen(false)}
+            onClose={() => setOpenProject(null)}
             systemTheme={systemTheme}
             onToggleTheme={() => {
               setThemeMode(prev => prev === 'dark' ? 'light' : 'dark');
             }}
-            onOpenGallery={() => {
-              setIsDailymotionPageOpen(false);
-              setGalleryProject('dailymotion');
-            }}
+            viewMode={openProject.viewMode}
+            onViewModeChange={(mode) => setOpenProject({ project: 'dailymotion', viewMode: mode })}
             lang={lang}
+            galleryItems={DAILYMOTION_GALLERY_ITEMS}
           />
         )}
       </AnimatePresence>
 
-      {/* Connect Case Study Page */}
+      {/* Unified Project Modal - Connect */}
       <AnimatePresence>
-        {isConnectPageOpen && (
+        {openProject?.project === 'connect' && (
           <ConnectPage
-            onClose={() => setIsConnectPageOpen(false)}
+            onClose={() => setOpenProject(null)}
             systemTheme={systemTheme}
             onToggleTheme={() => {
               setThemeMode(prev => prev === 'dark' ? 'light' : 'dark');
             }}
-            onOpenGallery={() => {
-              setIsConnectPageOpen(false);
-              setGalleryProject('connect');
-            }}
+            viewMode={openProject.viewMode}
+            onViewModeChange={(mode) => setOpenProject({ project: 'connect', viewMode: mode })}
             lang={lang}
+            galleryItems={CONNECT_GALLERY_ITEMS}
           />
         )}
       </AnimatePresence>
-
-      {/* Bento Gallery Modal */}
-      <BentoGallery
-        isOpen={galleryProject !== null}
-        onClose={() => setGalleryProject(null)}
-        title={galleryProject === 'toolkit' ? 'Toolkit' : galleryProject === 'dailymotion' ? 'Dailymotion' : 'Connect'}
-        items={galleryProject === 'toolkit' ? TOOLKIT_GALLERY_ITEMS : galleryProject === 'dailymotion' ? DAILYMOTION_GALLERY_ITEMS : CONNECT_GALLERY_ITEMS}
-        systemTheme={systemTheme}
-        lang={lang}
-        hasCaseStudy={true}
-        onOpenCaseStudy={() => {
-          if (galleryProject === 'toolkit') {
-            setGalleryProject(null);
-            setIsToolkitPageOpen(true);
-          } else if (galleryProject === 'dailymotion') {
-            setGalleryProject(null);
-            setIsDailymotionPageOpen(true);
-          } else if (galleryProject === 'connect') {
-            setGalleryProject(null);
-            setIsConnectPageOpen(true);
-          }
-        }}
-      />
 
     </div>
   );
