@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform, PanInfo } from 'framer-motion';
 import jsPDF from 'jspdf';
 import {
@@ -941,7 +941,10 @@ const ClickableImage = ({
 }) => (
   <motion.div
     className={`relative overflow-hidden cursor-pointer group ${className}`}
-    onClick={onClick}
+    onClick={(e) => {
+      e.stopPropagation(); // Prevent navigation when clicking image
+      onClick?.();
+    }}
     whileHover={{ scale: 1.02 }}
     transition={{ duration: 0.2 }}
   >
@@ -1243,7 +1246,8 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
             {pillarVideo ? (
               <motion.div
                 className="group relative flex-1 w-full lg:w-[60%] max-h-[40vh] sm:max-h-[50vh] lg:max-h-[60vh] rounded-xl sm:rounded-2xl shadow-xl overflow-hidden cursor-pointer"
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent navigation when clicking video
                   const currentTime = pillarVideoRef.current?.currentTime || 0;
                   openVideoLightbox(pillarVideo, currentTime);
                 }}
@@ -1378,26 +1382,26 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -50 }}
                   transition={{ duration: 0.3 }}
-                  className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-6 items-stretch"
+                  className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-8 items-stretch"
                 >
                   {currentTestimonials?.map((testimonial, idx) => (
                     <motion.div
                       key={`${testimonialsPage}-${idx}`}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.3, delay: idx * 0.1 }}
-                      className="flex flex-col p-4 sm:p-5 bg-white rounded-xl sm:rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all max-h-[45vh] sm:max-h-none overflow-y-auto"
+                      initial={testimonialsPage === 0 ? { opacity: 0 } : false}
+                      animate={{ opacity: 1 }}
+                      transition={testimonialsPage === 0 ? { duration: 0.4, delay: idx * 0.1 } : { duration: 0 }}
+                      className="flex flex-col p-5 sm:p-6 pb-6 sm:pb-8 bg-white rounded-xl sm:rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all h-[240px] sm:h-[320px] overflow-hidden"
                     >
                       {/* Author info with avatar */}
-                      <div className="flex items-center mb-3 sm:mb-4">
+                      <div className="flex items-center mb-4 sm:mb-5">
                         {testimonial.image ? (
                           <img
                             src={`/images/${testimonial.image}`}
                             alt={testimonial.author}
-                            className="w-8 h-8 sm:w-10 sm:h-10 rounded-full mr-2 sm:mr-3 border-2 border-white shadow-sm object-cover"
+                            className="w-10 h-10 sm:w-12 sm:h-12 rounded-full mr-3 sm:mr-4 border-2 border-white shadow-sm object-cover"
                           />
                         ) : (
-                          <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full mr-2 sm:mr-3 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center text-gray-500 font-bold text-[10px] sm:text-xs">
+                          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full mr-3 sm:mr-4 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center text-gray-500 font-bold text-xs sm:text-sm">
                             {testimonial.author.split(' ').map(n => n[0]).join('')}
                           </div>
                         )}
@@ -1408,15 +1412,15 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
                               target="_blank"
                               rel="noreferrer"
                               onClick={(e) => e.stopPropagation()}
-                              className="font-semibold text-gray-900 hover:text-[#0077b5] transition-colors flex items-center group text-xs sm:text-sm"
+                              className="font-semibold text-gray-900 hover:text-[#0077b5] transition-colors flex items-center group text-sm sm:text-base"
                             >
                               {testimonial.author}
-                              <Linkedin size={10} className="sm:w-3 sm:h-3 ml-1 text-gray-400 group-hover:text-[#0077b5] transition-colors" />
+                              <Linkedin size={12} className="sm:w-4 sm:h-4 ml-1.5 text-gray-400 group-hover:text-[#0077b5] transition-colors" />
                             </a>
                           ) : (
-                            <div className="font-semibold text-gray-900 text-xs sm:text-sm">{testimonial.author}</div>
+                            <div className="font-semibold text-gray-900 text-sm sm:text-base">{testimonial.author}</div>
                           )}
-                          <div className="text-[9px] sm:text-[10px] font-medium text-blue-600 bg-blue-50 px-1.5 sm:px-2 py-0.5 rounded-full w-fit mt-0.5">
+                          <div className="text-[10px] sm:text-xs font-medium text-blue-600 bg-blue-50 px-2 sm:px-2.5 py-0.5 rounded-full w-fit mt-1">
                             {testimonial.role}
                           </div>
                         </div>
@@ -1424,8 +1428,8 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
 
                       {/* Quote */}
                       <div className="relative flex-1">
-                        <div className="text-xl sm:text-2xl text-gray-200 absolute -top-1 -left-1">"</div>
-                        <p className="text-gray-600 text-xs sm:text-[13px] leading-relaxed pl-3 pt-1">
+                        <div className="text-2xl sm:text-3xl text-gray-200 absolute -top-1 -left-1">"</div>
+                        <p className="text-gray-600 text-sm sm:text-base leading-relaxed pl-4 pt-2">
                           {testimonial.quote}
                         </p>
                       </div>
