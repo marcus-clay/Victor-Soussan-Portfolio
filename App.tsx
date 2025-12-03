@@ -1365,7 +1365,7 @@ const getTestimonials = (lang: Language): Testimonial[] => {
         ? "Victor didn't just create mockups. We worked in workshops before the product even existed... He transformed business requirements into perfectly adapted user journeys. Victor is a great guy: curious, positive, ready to challenge to go further."
         : "Victor ne s’est pas contenté de faire des maquettes. Nous avons travaillé en ateliers avant même la création du produit... Il a transformé les besoins métiers en parcours utilisateurs parfaitement adaptés. Victor est un super gars : curieux, positif, prêt à challenger pour aller toujours plus loin.",
       image: "pierre-marie-nigay.png",
-      linkedin: "https://www.linkedin.com/in/pierremarienigay",
+      linkedin: "https://www.linkedin.com/in/pnigay/",
       category: "Clients"
     },
     {
@@ -1377,7 +1377,7 @@ const getTestimonials = (lang: Language): Testimonial[] => {
         ? "Victor combines overflowing creativity with impressive rigor. He translates complex visions into clear, impactful user experiences. Always listening, curious, he constantly pushes thinking further."
         : "Victor allie une créativité débordante à une rigueur de travail impressionnante. Il sait traduire des visions complexes en expériences utilisateur claires et percutantes. Toujours à l’écoute, curieux, il pousse constamment les réflexions plus loin.",
       image: "charlotte-rifflet.png",
-      linkedin: "https://www.linkedin.com/in/charlotterifflet",
+      linkedin: "https://www.linkedin.com/in/charlotterifflet/",
       category: "Management"
     },
     {
@@ -1389,7 +1389,7 @@ const getTestimonials = (lang: Language): Testimonial[] => {
         ? "Always proposing ideas that shake things up... you never settled for just thinking: you produced, tested, wireframed, prototyped. Your UX expertise is undeniable, but your experience made the difference."
         : "Toujours en train de proposer des idées qui bousculent... tu ne t’es jamais contenté de rester dans la réflexion : tu as produit, testé, maquetté, prototypé. Ton expertise UX est indéniable, mais c’est ton expérience qui a vraiment fait la différence.",
       image: "boris-aime-bauderlique.png",
-      linkedin: "https://www.linkedin.com/in/boris-aimé-bauderlique",
+      linkedin: "https://www.linkedin.com/in/borisaimebauderlique",
       category: "Product & Tech"
     },
     {
@@ -1425,7 +1425,7 @@ const getTestimonials = (lang: Language): Testimonial[] => {
         ? "I worked alongside Victor for 5 beautiful years. His expertise, 360 vision, and design talent enabled the creation and success of many projects... Victor is passionate and fascinating."
         : "J’ai travaillé aux côtés de Victor pendant 5 belles années. Son expertise, sa vision 360 et son talent de designer ont permis la création et la réussite de nombreux projets... Victor est passionné et passionnant.",
       image: "hortense-jan.png",
-      linkedin: "https://www.linkedin.com/in/hortense-jan",
+      linkedin: "https://www.linkedin.com/in/hortensejan",
       category: "Management"
     },
     {
@@ -1437,7 +1437,7 @@ const getTestimonials = (lang: Language): Testimonial[] => {
         ? "Highly cultivated, curious, and creative, he always brings relevant ideas and original perspectives. Beyond his talent, Victor is particularly friendly, which makes collaborating with him even more enjoyable."
         : "Très cultivé, curieux et créatif, il apporte toujours des idées pertinentes et des perspectives originales. En plus de son talent, Victor est quelqu’un de particulièrement sympathique, ce qui rend la collaboration avec lui d’autant plus agréable.",
       image: "hubert-bloch.png",
-      linkedin: "https://www.linkedin.com/in/hubert-bloch",
+      linkedin: "https://fr.linkedin.com/in/hubertbloch",
       category: "Management"
     },
     {
@@ -1449,7 +1449,7 @@ const getTestimonials = (lang: Language): Testimonial[] => {
         ? "Passionate and reliable... Lover of details... his feedback allowed me to reach a new level. He has the will to listen to his team, putting them in the best conditions."
         : "Passionné et fiable... Amoureux des détails... ses retours m'ont permis d'atteindre un nouveau palier. Il a la volonté d'être à l'écoute de son équipe, de les mettre dans les meilleures conditions.",
       image: "johan-mbagna-gaby.png",
-      linkedin: "https://www.linkedin.com/in/mbagna-johan-gaby",
+      linkedin: "https://fr.linkedin.com/in/mbagnajohan",
       category: "Design"
     },
     {
@@ -1461,7 +1461,7 @@ const getTestimonials = (lang: Language): Testimonial[] => {
         ? "Beyond being a manager concerned with his team's well-being, he is passionate about details. Patient and pedagogical, he doesn't hesitate to give constructive advice... A mentor I appreciated working with."
         : "En plus d'être un manager soucieux du bien-être de son équipe, c'est un passionné qui a le souci du détail. Patient et pédagogue, il n'hésite pas à donner des conseils constructifs... Un mentor avec lequel j'ai apprécié travailler.",
       image: "safak-aktas.png",
-      linkedin: "https://www.linkedin.com/in/safak-aktas",
+      linkedin: "https://www.linkedin.com/in/safak-aktas/",
       category: "Design"
     },
     {
@@ -1473,7 +1473,7 @@ const getTestimonials = (lang: Language): Testimonial[] => {
         ? "Professional and rigorous, Victor knows how to translate business stakes into relevant implementations... Victor is very attentive to his collaborators and different trades, both technical and marketing."
         : "Professionnel et rigoureux, Victor sait traduire les enjeux business dans des réalisations pertinentes... Victor est très à l'écoute de ses collaborateurs et des différents métiers, à la fois technique ou marketing.",
       image: "frederic-rodriguez.png",
-      linkedin: "https://www.linkedin.com/in/frederic-rodriguez",
+      linkedin: "https://www.linkedin.com/in/frederic-rodriguez-71061255/",
       category: "Management"
     },
     {
@@ -1485,7 +1485,7 @@ const getTestimonials = (lang: Language): Testimonial[] => {
         ? "Accessible, attentive, and responsible... working with Victor is a pleasure as he adheres to collective intelligence principles and facilitates interactions between Design and Engineering."
         : "Accessible, à l'écoute et responsable... travailler avec Victor est un plaisir car il adhère aux principes de l'intelligence collective et facilite les interactions entre l'équipe Design et la maîtrise d'œuvre.",
       image: "remi-serougne.png",
-      linkedin: "https://www.linkedin.com/in/remi-serougne",
+      linkedin: "https://www.linkedin.com/in/remi-serougne-7314b940/",
       category: "Product & Tech"
     },
     {
@@ -1497,7 +1497,7 @@ const getTestimonials = (lang: Language): Testimonial[] => {
         ? "He is a very capable designer who can do the legwork but also take a step back and advise on more strategic aspects... He's worked on mobile and web, and has a keen eye for interaction design. Highly recommended."
         : "Victor is passionate about UX... He is a very capable designer who can do the legwork but also take a step back... He's worked on mobile and web, and has a keen eye for interaction design. Highly recommended.",
       image: "simon-white.png",
-      linkedin: "https://www.linkedin.com/in/simon-white",
+      linkedin: "https://www.linkedin.com/in/fruey/",
       category: "Design"
     },
     {
@@ -1509,7 +1509,7 @@ const getTestimonials = (lang: Language): Testimonial[] => {
         ? "He knows how to unite people around a project, allowing for total autonomy to see it through. It is very useful to discuss the medium-term service vision with him."
         : "Il sait fédérer les gens autour d'un projet et qu'on peut par conséquent lui laisser une autonomie totale pour le mener à bien. Il est très utile de discuter avec lui lorsqu'il s'agit d'aborder la vision moyen terme.",
       image: "nicolas-moulin.png",
-      linkedin: "https://www.linkedin.com/in/nicolasmoulin",
+      linkedin: "https://www.linkedin.com/in/moulinnicolas",
       category: "Management"
     },
     {
@@ -1521,7 +1521,7 @@ const getTestimonials = (lang: Language): Testimonial[] => {
         ? "His previous experiences as Art Director and Designer bring a critical sense and a new approach to our projects which allow us to improve user experience... Victor helped us a lot on the embedded PagesJaunes application."
         : "Ses expériences précédentes de DA et Designer apportent un sens critique et une nouvelle approche... Victor nous a beaucoup aidé sur l'application embarquée PagesJaunes que nous avons conçue ensemble.",
       image: "francois-khoury.png",
-      linkedin: "https://www.linkedin.com/in/francoiskhoury",
+      linkedin: "https://www.linkedin.com/in/francoisk",
       category: "Product & Tech"
     }
   ];
