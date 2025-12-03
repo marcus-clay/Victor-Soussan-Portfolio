@@ -465,19 +465,25 @@ const SLIDES = {
       headline: 'What they say',
       testimonials: [
         {
-          quote: 'Victor has a rare ability to turn complex problems into elegant solutions.',
-          author: 'Alexis Jamet',
-          role: 'CPO @ UNOWHY',
+          quote: 'Victor didn\'t just create mockups. He transformed business requirements into perfectly adapted user journeys. Victor is a great guy: curious, positive, ready to challenge to go further.',
+          author: 'Pierre-Marie Nigay',
+          role: 'Founder of Toolkit',
+          image: 'pierre-marie-nigay.png',
+          linkedin: 'https://www.linkedin.com/in/pierremarienigay',
         },
         {
-          quote: 'His design systems thinking transformed how our team works.',
-          author: 'Thomas Piron',
-          role: 'CTO @ Dailymotion',
+          quote: 'Victor combines overflowing creativity with impressive rigor. He translates complex visions into clear, impactful user experiences. Always listening, curious, he constantly pushes thinking further.',
+          author: 'Charlotte Rifflet',
+          role: 'CPO @UNOWHY',
+          image: 'charlotte-rifflet.png',
+          linkedin: 'https://www.linkedin.com/in/charlotterifflet',
         },
         {
-          quote: 'A true team player who elevates everyone around him.',
-          author: 'Sophie Martin',
-          role: 'Product Director',
+          quote: 'As Product Lead in UI & Interaction Design, he played a central role in defining the product vision... I was struck by Victor\'s curiosity and his ability to share knowledge pedagogically.',
+          author: 'Justine Le Tellier',
+          role: 'UX Researcher @UNOWHY',
+          image: 'justine-le-tellier.png',
+          linkedin: 'https://www.linkedin.com/in/justine-le-tellier',
         },
       ],
     },
@@ -627,19 +633,25 @@ const SLIDES = {
       headline: 'Ce qu\'ils disent',
       testimonials: [
         {
-          quote: 'Victor a cette capacité rare de transformer des problèmes complexes en solutions élégantes.',
-          author: 'Alexis Jamet',
-          role: 'CPO @ UNOWHY',
+          quote: 'Victor ne s\'est pas contenté de faire des maquettes. Il a transformé les besoins métiers en parcours utilisateurs parfaitement adaptés. Victor est un super gars : curieux, positif, prêt à challenger pour aller toujours plus loin.',
+          author: 'Pierre-Marie Nigay',
+          role: 'Fondateur de Toolkit',
+          image: 'pierre-marie-nigay.png',
+          linkedin: 'https://www.linkedin.com/in/pierremarienigay',
         },
         {
-          quote: 'Sa pensée design systems a transformé notre façon de travailler en équipe.',
-          author: 'Thomas Piron',
-          role: 'CTO @ Dailymotion',
+          quote: 'Victor allie une créativité débordante à une rigueur de travail impressionnante. Il sait traduire des visions complexes en expériences utilisateur claires et percutantes. Toujours à l\'écoute, curieux, il pousse constamment les réflexions plus loin.',
+          author: 'Charlotte Rifflet',
+          role: 'CPO @UNOWHY',
+          image: 'charlotte-rifflet.png',
+          linkedin: 'https://www.linkedin.com/in/charlotterifflet',
         },
         {
-          quote: 'Un vrai team player qui élève tout le monde autour de lui.',
-          author: 'Sophie Martin',
-          role: 'Product Director',
+          quote: 'En tant que Product Lead en UI & Interaction Design, il a joué un rôle central dans la définition de la vision produit... J\'ai été très marquée par la curiosité de Victor et sa capacité à partager son savoir avec pédagogie.',
+          author: 'Justine Le Tellier',
+          role: 'UX Researcher @UNOWHY',
+          image: 'justine-le-tellier.png',
+          linkedin: 'https://www.linkedin.com/in/justine-le-tellier',
         },
       ],
     },
@@ -1025,7 +1037,7 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
         );
 
       case 'testimonials':
-        const testimonialsList = slide.testimonials as { quote: string; author: string; role: string }[];
+        const testimonialsList = slide.testimonials as { quote: string; author: string; role: string; image?: string; linkedin?: string }[];
         return (
           <div className="flex flex-col items-center justify-center h-full px-6 md:px-12 lg:px-20">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-12 tracking-tight text-center">
@@ -1033,19 +1045,54 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl w-full">
               {testimonialsList?.map((testimonial, idx) => (
-                <div
+                <motion.div
                   key={idx}
-                  className="flex flex-col p-6 bg-gray-50 rounded-2xl border border-gray-100"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: idx * 0.1 }}
+                  className="flex flex-col p-6 bg-white rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-all"
                 >
-                  <div className="text-4xl text-gray-300 mb-4">"</div>
-                  <p className="text-gray-700 text-lg leading-relaxed flex-1 mb-6">
-                    {testimonial.quote}
-                  </p>
-                  <div className="mt-auto">
-                    <p className="font-semibold text-gray-900">{testimonial.author}</p>
-                    <p className="text-sm text-gray-500">{testimonial.role}</p>
+                  {/* Author info with avatar */}
+                  <div className="flex items-center mb-5">
+                    {testimonial.image ? (
+                      <img
+                        src={`/images/${testimonial.image}`}
+                        alt={testimonial.author}
+                        className="w-12 h-12 rounded-full mr-3 border-2 border-white shadow-sm object-cover"
+                      />
+                    ) : (
+                      <div className="w-12 h-12 rounded-full mr-3 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center text-gray-500 font-bold text-sm">
+                        {testimonial.author.split(' ').map(n => n[0]).join('')}
+                      </div>
+                    )}
+                    <div>
+                      {testimonial.linkedin ? (
+                        <a
+                          href={testimonial.linkedin}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="font-bold text-gray-900 hover:text-[#0077b5] transition-colors flex items-center group"
+                        >
+                          {testimonial.author}
+                          <Linkedin size={14} className="ml-1.5 text-gray-400 group-hover:text-[#0077b5] transition-colors" />
+                        </a>
+                      ) : (
+                        <div className="font-bold text-gray-900">{testimonial.author}</div>
+                      )}
+                      <div className="text-xs font-medium text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full w-fit mt-1">
+                        {testimonial.role}
+                      </div>
+                    </div>
                   </div>
-                </div>
+
+                  {/* Quote */}
+                  <div className="relative flex-1">
+                    <div className="text-3xl text-gray-200 absolute -top-1 -left-1">"</div>
+                    <p className="text-gray-600 text-[15px] leading-relaxed pl-4 pt-2">
+                      {testimonial.quote}
+                    </p>
+                  </div>
+                </motion.div>
               ))}
             </div>
           </div>
@@ -1053,15 +1100,15 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
 
       case 'contact':
         return (
-          <div className="flex flex-col h-full px-6 md:px-12 lg:px-20 py-8 max-w-4xl mx-auto">
+          <div className="flex flex-col items-center justify-center h-full px-6 md:px-12 lg:px-20 py-8">
             {/* Zone 1: Title + Primary buttons */}
-            <div className="flex-shrink-0">
+            <div className="text-center mb-8">
               <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8 tracking-tight">
                 {slide.headline}
               </h2>
 
               {/* Primary action buttons */}
-              <div className="flex flex-wrap gap-4 mb-8">
+              <div className="flex flex-wrap justify-center gap-4 mb-8">
                 {onBookCall && (
                   <button
                     onClick={onBookCall}
@@ -1084,7 +1131,7 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
             </div>
 
             {/* Zone 2: Contact info card */}
-            <div className="flex-shrink-0 mb-8">
+            <div className="mb-8">
               <div className="p-6 rounded-2xl border border-gray-200 bg-gray-50/50 space-y-4 max-w-md">
                 {/* Email */}
                 <div className="flex items-center justify-between gap-4">
@@ -1169,8 +1216,8 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
               </div>
             </div>
 
-            {/* Zone 3: Download deck - centered at bottom */}
-            <div className="flex-1 flex items-end justify-center pb-4">
+            {/* Zone 3: Download deck */}
+            <div className="mt-4">
               <button
                 onClick={() => generateExecutivePDF(lang, setIsGeneratingPDF)}
                 disabled={isGeneratingPDF}
