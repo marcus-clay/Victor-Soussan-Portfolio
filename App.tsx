@@ -1583,8 +1583,10 @@ const App: React.FC = () => {
     message: '',
     budget: '',
     startDate: '',
-    endDate: ''
+    endDate: '',
+    website: '' // Honeypot field - should remain empty for real users
   });
+  const [lastSubmitTime, setLastSubmitTime] = useState(0); // Rate limiting
   const [contactForm, setContactForm] = useState({
     name: '',
     company: '',
@@ -4041,7 +4043,28 @@ const App: React.FC = () => {
               <form
                 onSubmit={async (e) => {
                   e.preventDefault();
+
+                  // Anti-spam: Honeypot check - bots fill hidden fields
+                  if (simpleContactForm.website) {
+                    console.log('Spam detected: honeypot field filled');
+                    setToastMessage('Message sent successfully!');
+                    setShowToast(true);
+                    setIsSimpleContactOpen(false);
+                    setTimeout(() => setShowToast(false), 3000);
+                    return;
+                  }
+
+                  // Anti-spam: Rate limiting - prevent rapid submissions (30 seconds)
+                  const now = Date.now();
+                  if (now - lastSubmitTime < 30000) {
+                    setToastMessage('Please wait a moment before sending another message.');
+                    setShowToast(true);
+                    setTimeout(() => setShowToast(false), 3000);
+                    return;
+                  }
+
                   setIsSendingEmail(true);
+                  setLastSubmitTime(now);
 
                   try {
                     // Check if EmailJS is configured
@@ -4070,7 +4093,7 @@ const App: React.FC = () => {
                       setToastMessage('Message sent successfully! I\'ll get back to you soon.');
                       setShowToast(true);
                       setIsSimpleContactOpen(false);
-                      setSimpleContactForm({ name: '', email: '', message: '', budget: '', startDate: '', endDate: '' });
+                      setSimpleContactForm({ name: '', email: '', message: '', budget: '', startDate: '', endDate: '', website: '' });
 
                       // Hide toast after 5 seconds
                       setTimeout(() => setShowToast(false), 5000);
@@ -4091,7 +4114,7 @@ ${simpleContactForm.message}`;
                       setToastMessage('Opening your email client...');
                       setShowToast(true);
                       setIsSimpleContactOpen(false);
-                      setSimpleContactForm({ name: '', email: '', message: '', budget: '', startDate: '', endDate: '' });
+                      setSimpleContactForm({ name: '', email: '', message: '', budget: '', startDate: '', endDate: '', website: '' });
 
                       setTimeout(() => setShowToast(false), 3000);
                     }
@@ -4106,6 +4129,20 @@ ${simpleContactForm.message}`;
                 }}
                 className="space-y-6"
               >
+                {/* Honeypot field - hidden from users, bots will fill it */}
+                <div className="absolute opacity-0 pointer-events-none h-0 overflow-hidden" aria-hidden="true">
+                  <label htmlFor="website">Website</label>
+                  <input
+                    type="text"
+                    id="website"
+                    name="website"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={simpleContactForm.website}
+                    onChange={(e) => setSimpleContactForm({ ...simpleContactForm, website: e.target.value })}
+                  />
+                </div>
+
                 {/* Name Field */}
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
