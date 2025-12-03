@@ -1,0 +1,36 @@
+
+## Design Timeline: UNOWHY (2019–2024)
+
+### 2019
+- Hi-SQOOL project launched (auth system, session platform, cloud file manager)
+- UX/UI for high school audience (Île-de-France)
+- First real-time teacher-student distribution flows
+
+### 2020
+- Product Design Lead role initiated
+- "Connect" prototype and design sprint
+- Early dashboard layouts, API integration, new design language concepts
+
+### 2021
+- "La Bulle" concept UI explorations (persistent animated launcher)
+- Connect demonstrator tested internally
+- Brand system concept phase (logo proposals, color studies, grid rules)
+- PRDs drafted with Head of Product
+
+### 2022
+- Shift to modular app strategy: SQOOL Apps Suite
+- Start of SQOOL Classe, Partage, MDM, Applications
+- Created first Figma design system libraries
+- Notion knowledge base initiated
+
+### 2023
+- SQOOL Extend workshops with Weytop + first PRD
+- SQOOL Protect prototype (mobile)
+- Full brand identity system finalised
+- Product design rituals (briefs, weekly syncs, design QA)
+
+### 2024
+- Cloud PC UX flows shipped
+- Release of SQOOL Protect
+- Visual + editorial system maintained by design team
+- Team rituals scaled, doc templates applied to 5+ new apps

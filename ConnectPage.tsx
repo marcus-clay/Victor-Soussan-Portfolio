@@ -126,7 +126,39 @@ const CONNECT_TRANSLATIONS = {
     },
     captions: {
       thumbnail: 'Connect overview',
-      thumbnailDesc: 'An experimental interface meant to replace a legacy launcher.',
+      thumbnailDesc: 'Web-based dashboard concept for classroom orchestration.',
+      homeDark: 'Dashboard home (dark mode)',
+      homeDarkDesc: 'Main dashboard interface with quick actions and class status.',
+      homeLight: 'Dashboard home (light mode)',
+      homeLightDesc: 'Light theme variant for different lighting conditions.',
+      applications: 'Applications dashboard',
+      applicationsDesc: 'App catalog for browsing and deploying applications.',
+      loadingAuth: 'Connection & auth flow',
+      loadingAuthDesc: 'User authentication and app launching choreography.',
+      prototype: 'Dashboard prototype',
+      prototypeDesc: 'Full interaction walkthrough demonstrating modular capabilities.',
+      techArch: 'Technical architecture',
+      techArchDesc: 'System overview showing web dashboard integration.',
+      specsImplem: 'Implementation specs',
+      specsImplDesc: 'Detailed specifications for developer handoff.',
+      specsContent: 'Content specifications',
+      specsContentDesc: 'Content strategy documentation for interface elements.',
+      appLoading: 'App loading choreography',
+      appLoadingDesc: 'Animation specifications for smooth transitions.',
+      wireframes: 'La Bulle - Wireframes',
+      wireframesDesc: 'Early exploration of the bubble interaction model.',
+      uiFocus: 'La Bulle - UI Focus',
+      uiFocusDesc: 'Detailed view of the bubble expanded state.',
+      icons: 'La Bulle - Icons',
+      iconsDesc: 'Custom icon set for the contextual menu.',
+      behaviour1: 'La Bulle - Behavior (1)',
+      behaviour1Desc: 'Animation states and interaction patterns.',
+      behaviour2: 'La Bulle - Behavior (2)',
+      behaviour2Desc: 'Edge cases and system integration specs.',
+      interactionDemo: 'La Bulle - Interaction demo',
+      interactionDemoDesc: 'Motion prototype of bubble opening animation.',
+      bulleDemo: 'La Bulle - Full demo',
+      bulleDemoDesc: 'Complete demonstration of bubble capabilities.',
     },
   },
   fr: {
@@ -231,7 +263,39 @@ const CONNECT_TRANSLATIONS = {
     },
     captions: {
       thumbnail: 'Vue d\'ensemble Connect',
-      thumbnailDesc: 'Une interface expérimentale destinée à remplacer un launcher obsolète.',
+      thumbnailDesc: 'Concept de dashboard web pour l\'orchestration de classe.',
+      homeDark: 'Dashboard accueil (mode sombre)',
+      homeDarkDesc: 'Interface dashboard principale avec actions rapides et statut de classe.',
+      homeLight: 'Dashboard accueil (mode clair)',
+      homeLightDesc: 'Variante thème clair pour différentes conditions d\'éclairage.',
+      applications: 'Dashboard applications',
+      applicationsDesc: 'Catalogue d\'apps pour parcourir et déployer des applications.',
+      loadingAuth: 'Flux connexion & auth',
+      loadingAuthDesc: 'Authentification utilisateur et chorégraphie de lancement d\'app.',
+      prototype: 'Prototype dashboard',
+      prototypeDesc: 'Walkthrough d\'interaction complet démontrant les capacités modulaires.',
+      techArch: 'Architecture technique',
+      techArchDesc: 'Vue d\'ensemble système montrant l\'intégration du dashboard web.',
+      specsImplem: 'Specs d\'implémentation',
+      specsImplDesc: 'Spécifications détaillées pour le handoff développeur.',
+      specsContent: 'Spécifications de contenu',
+      specsContentDesc: 'Documentation stratégie de contenu pour les éléments d\'interface.',
+      appLoading: 'Chorégraphie de chargement d\'app',
+      appLoadingDesc: 'Spécifications d\'animation pour des transitions fluides.',
+      wireframes: 'La Bulle - Wireframes',
+      wireframesDesc: 'Exploration initiale du modèle d\'interaction de la bulle.',
+      uiFocus: 'La Bulle - Focus UI',
+      uiFocusDesc: 'Vue détaillée de l\'état étendu de la bulle.',
+      icons: 'La Bulle - Icônes',
+      iconsDesc: 'Set d\'icônes personnalisé pour le menu contextuel.',
+      behaviour1: 'La Bulle - Comportement (1)',
+      behaviour1Desc: 'États d\'animation et patterns d\'interaction.',
+      behaviour2: 'La Bulle - Comportement (2)',
+      behaviour2Desc: 'Cas limites et spécifications d\'intégration système.',
+      interactionDemo: 'La Bulle - Démo d\'interaction',
+      interactionDemoDesc: 'Prototype motion de l\'animation d\'ouverture de la bulle.',
+      bulleDemo: 'La Bulle - Démo complète',
+      bulleDemoDesc: 'Démonstration complète des capacités de la bulle.',
     },
   },
 };
@@ -272,25 +336,26 @@ const slideVariants = {
   }),
 };
 
-// All images for lightbox navigation with captions
-const allImages: { src: string; caption: string; type: 'image' | 'video' }[] = [
-  { src: '/images/connect/thumbnail_connect.webp', caption: 'Connect Overview - Web-based dashboard concept for classroom orchestration', type: 'image' },
-  { src: '/images/connect/connect_dashboard_home_dark_full_smartphone-scaled.webp', caption: 'Dashboard Home (Dark) - Main dashboard interface with quick actions and class status', type: 'image' },
-  { src: '/images/connect/connect_dashboard_home_light_full-scaled.webp', caption: 'Dashboard Home (Light) - Light theme variant for different lighting conditions', type: 'image' },
-  { src: '/images/connect/connect_dashboard_applications_full-scaled.webp', caption: 'Applications Dashboard - App catalog for browsing and deploying applications', type: 'image' },
-  { src: '/videos/connect/connect-loading-user-authent-app-launch-study.mp4', caption: 'Connection & Auth Flow - User authentication and app launching choreography', type: 'video' },
-  { src: '/videos/connect/connect-dashboard-prototype_complet_4k.mp4', caption: 'Dashboard Prototype - Full interaction walkthrough demonstrating modular capabilities', type: 'video' },
-  { src: '/images/connect/connect_tech_architecture-1-scaled.webp', caption: 'Technical Architecture - System overview showing web dashboard integration', type: 'image' },
-  { src: '/images/connect/connect_specifications_implem_01-scaled.webp', caption: 'Implementation Specs - Detailed specifications for developer handoff', type: 'image' },
-  { src: '/images/connect/connect_specifications_content_02-scaled.webp', caption: 'Content Specifications - Content strategy documentation for interface elements', type: 'image' },
-  { src: '/videos/connect/connect-specs-app-loading-choregraphy.mp4', caption: 'App Loading Choreography - Animation specifications for smooth transitions', type: 'video' },
-  { src: '/images/connect/connect_bulle_ui_wireframes_concept-scaled.webp', caption: 'La Bulle - Wireframes - Early exploration of the bubble interaction model', type: 'image' },
-  { src: '/images/connect/connect_bulle_ui_focus-scaled.webp', caption: 'La Bulle - UI Focus - Detailed view of the bubble expanded state', type: 'image' },
-  { src: '/images/connect/connect_bulle_icons-1-scaled.webp', caption: 'La Bulle - Icons - Custom icon set for the contextual menu', type: 'image' },
-  { src: '/images/connect/connect_bulle_behaviour_square_01-scaled.webp', caption: 'La Bulle - Behavior (1) - Animation states and interaction patterns', type: 'image' },
-  { src: '/images/connect/connect_bulle_behaviour_square_02-scaled.webp', caption: 'La Bulle - Behavior (2) - Edge cases and system integration specs', type: 'image' },
-  { src: '/videos/connect/interaction-bulle-connect.mp4', caption: 'La Bulle - Interaction Demo - Motion prototype of bubble opening animation', type: 'video' },
-  { src: '/videos/connect/Video-demo-bulle-interactions-02.mp4', caption: 'La Bulle - Full Demo - Complete demonstration of bubble capabilities', type: 'video' },
+// All images for lightbox navigation with caption keys
+type MediaItem = { src: string; captionKey: string; type: 'image' | 'video' };
+const allImagesData: MediaItem[] = [
+  { src: '/images/connect/connect_overview.webp', captionKey: 'thumbnail', type: 'image' },
+  { src: '/images/connect/connect_dashboard_home_dark_full_smartphone-scaled.webp', captionKey: 'homeDark', type: 'image' },
+  { src: '/images/connect/connect_dashboard_home_light_full-scaled.webp', captionKey: 'homeLight', type: 'image' },
+  { src: '/images/connect/connect_dashboard_applications_full-scaled.webp', captionKey: 'applications', type: 'image' },
+  { src: '/videos/connect/connect-loading-user-authent-app-launch-study.mp4', captionKey: 'loadingAuth', type: 'video' },
+  { src: '/videos/connect/connect-dashboard-prototype_complet_4k.mp4', captionKey: 'prototype', type: 'video' },
+  { src: '/images/connect/connect_tech_architecture-1-scaled.webp', captionKey: 'techArch', type: 'image' },
+  { src: '/images/connect/connect_specifications_implem_01-scaled.webp', captionKey: 'specsImplem', type: 'image' },
+  { src: '/images/connect/connect_specifications_content_02-scaled.webp', captionKey: 'specsContent', type: 'image' },
+  { src: '/videos/connect/connect-specs-app-loading-choregraphy.mp4', captionKey: 'appLoading', type: 'video' },
+  { src: '/images/connect/connect_bulle_ui_wireframes_concept-scaled.webp', captionKey: 'wireframes', type: 'image' },
+  { src: '/images/connect/connect_bulle_ui_focus-scaled.webp', captionKey: 'uiFocus', type: 'image' },
+  { src: '/images/connect/connect_bulle_icons-1-scaled.webp', captionKey: 'icons', type: 'image' },
+  { src: '/images/connect/connect_bulle_behaviour_square_01-scaled.webp', captionKey: 'behaviour1', type: 'image' },
+  { src: '/images/connect/connect_bulle_behaviour_square_02-scaled.webp', captionKey: 'behaviour2', type: 'image' },
+  { src: '/videos/connect/interaction-bulle-connect.mp4', captionKey: 'interactionDemo', type: 'video' },
+  { src: '/videos/connect/Video-demo-bulle-interactions-02.mp4', captionKey: 'bulleDemo', type: 'video' },
 ];
 
 // Gallery Card component with Apple TV-style 3D tilt effect
@@ -376,6 +441,14 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
   galleryItems
 }) => {
   const t = CONNECT_TRANSLATIONS[lang];
+
+  // Build allImages with translated captions
+  const allImages = allImagesData.map(item => ({
+    src: item.src,
+    type: item.type,
+    caption: `${t.captions[item.captionKey as keyof typeof t.captions]} - ${t.captions[`${item.captionKey}Desc` as keyof typeof t.captions] || ''}`
+  }));
+
   const [activeSection, setActiveSection] = useState('hero');
   const [isMobileNavExpanded, setIsMobileNavExpanded] = useState(false);
   const [showNav, setShowNav] = useState(false);
@@ -953,13 +1026,13 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
             {/* Hero Image */}
             <figure className="mb-16 md:mb-24">
               <div
-                onClick={() => openLightbox('/images/connect/thumbnail_connect.webp')}
+                onClick={() => openLightbox('/images/connect/connect_overview.webp')}
                 className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
                   systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
                 }`}
               >
                 <img
-                  src="/images/connect/thumbnail_connect.webp"
+                  src="/images/connect/connect_overview.webp"
                   alt="SQOOL Connect Overview"
                   className="w-full h-auto"
                 />

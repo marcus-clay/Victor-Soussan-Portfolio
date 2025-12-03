@@ -9,7 +9,11 @@ import {
   ChevronDown,
   X,
   ExternalLink,
-  Play
+  Play,
+  Calendar,
+  Briefcase,
+  Layers,
+  Building2
 } from 'lucide-react';
 import { GalleryItem } from './BentoGallery';
 
@@ -36,7 +40,7 @@ const DAILYMOTION_TRANSLATIONS = {
     meta: {
       type: 'Product Design',
       scope: 'Platform Redesign',
-      period: '2019-2021',
+      period: '2017-2018',
       company: 'Dailymotion',
     },
     nav: {
@@ -73,6 +77,7 @@ const DAILYMOTION_TRANSLATIONS = {
     },
     modules: {
       title: 'Key Modules',
+      deliveredTitle: 'Key product modules delivered',
       intro: 'The Partner Space was reorganized around three primary workflows that partners use daily. Each module was designed to work independently while sharing common patterns from the design system.',
       upload: {
         title: 'Upload & Management',
@@ -89,19 +94,26 @@ const DAILYMOTION_TRANSLATIONS = {
     },
     upload: {
       title: 'Upload & Video Management',
-      intro: 'Video upload is the most frequent action in Partner Space. The redesign focused on reducing friction, supporting batch operations, and providing clear feedback throughout the process.',
+      sectionTitle: 'Video Upload and Management Workflows',
+      question: 'How can a media platform help publishers process, manage, and monetize thousands of videos daily?',
+      intro: 'Managing large volumes of video required more than an upload button. Dailymotion\'s media partners worked with industrial-scale workflows, multiple encodes, metadata rules, ad configuration, and distribution timelines that all had to stay in sync. The objective was to design a system that made these operations fast, traceable, and intuitive. The new Upload flow introduced parallel processing with real-time progress and error visibility. Editors could queue files, edit titles or geoblocking while encoding ran, and publish once all checks passed.',
+      uploadSubtitle: 'Upload',
       batchUpload: 'Batch upload interface',
       batchUploadDesc: 'Supports parallel uploads with real-time feedback. Editors can edit metadata, geoblocking, and scheduling while encoding runs.',
       interactions: 'Key interactions',
       interactionsDesc: 'Smooth microinteractions provide immediate feedback for actions like cancellation, thumbnail updates, and subtitle uploads.',
       videoManager: 'Video library',
       videoManagerDesc: 'Displays bulk media management with status indicators and batch actions. Each video card shows privacy state, timestamp, view count, and duration overlay.',
+      videoLibraryTitle: 'Video Library',
+      videoLibraryIntro: 'In the Video Library, hierarchy and motion replaced heavy controls. Hover actions surfaced only when needed, reducing clutter while keeping all operations one click away. The interface supported continuous publishing, users could act while data refreshed in the background, cutting idle time between uploads.',
       embedShare: 'Share & embed',
       embedShareDesc: 'Expanded share modal reveals full embed customization options with auto-generated iframe code that updates dynamically.',
     },
     live: {
       title: 'Live Streaming Console',
-      intro: 'Live streaming requires confidence. Broadcasters need to know their stream is working, viewers are watching, and technical issues are visible. The redesigned console provides at-a-glance status with detailed metrics on demand.',
+      sectionTitle: 'Live Management Console',
+      question: 'How can a live platform compete with Twitch and Facebook while giving professionals real control?',
+      intro: 'Going live brought a different kind of complexity. Operators needed to monitor performance and react instantly to encoding or audience shifts. The goal was to design a calm control surface that worked under pressure. The Live Manager structured all actions around three panels, Control, Information, and Record, matching the mental model of a live broadcast. Status changes and transitions were central: Ready > On Air > Recording > Completed. Each transition was animated with clear visual feedback to confirm that a command had been received. Metrics such as bitrate, viewers, or latency updated in place without motion noise.',
       countdown: 'Pre-broadcast countdown',
       countdownDesc: 'Displays scheduled start time with OFF AIR badge. The persistent Share button enables promotional distribution before stream begins.',
       dashboard: 'Live dashboard',
@@ -109,17 +121,31 @@ const DAILYMOTION_TRANSLATIONS = {
     },
     player: {
       title: 'Player Manager',
-      intro: 'Partners embed Dailymotion players across their websites. The Player Manager lets them customize appearance and behavior without code, while providing copy-ready embed snippets.',
+      question: 'How do you turn player configuration into a task anyone can complete in minutes?',
+      intro: 'Once uploaded and streamed, videos needed consistent playback across partner sites. The Player Manager solved this by giving non-technical users the ability to create and configure their own players. The interface focused on progressive disclosure. Users started from a simple list and expanded into detailed tabs only when required. Creating a player triggered a guided flow: define appearance, assign content, then retrieve the embed code. Subtle transitions kept context between steps, avoiding modal interruptions.',
       configurator: 'Player template configurator',
       configuratorDesc: 'Define appearance, assign content, retrieve embed code - all in one place.',
     },
     designSystem: {
       title: 'Design System',
-      intro: 'A design system was essential to maintain consistency across modules developed by different teams. The system defined tokens, components, and patterns used throughout Partner Space.',
+      sectionTitle: 'Building a Scalable UI Kit',
+      intro: 'To ensure coherence across the growing product suite, I led the creation of a new Design System and Component Library.',
       styles: 'Styles foundation',
       stylesDesc: 'Color, typography, and spacing tokens ensure visual coherence across the product suite.',
       components: 'Component library',
       componentsDesc: 'Reusable UI components with variants and states for scalable development.',
+    },
+    impact: {
+      title: 'Impact',
+      intro: 'The design approach delivered measurable business results. By focusing on core workflows and progressive complexity, we created tools that media partners could adopt quickly.',
+      partners: '30,000+',
+      partnersDesc: 'Content partners served worldwide',
+      videos: '10K+',
+      videosDesc: 'Videos uploaded daily through the platform',
+      reduction: '-50%',
+      reductionDesc: 'Upload preparation time reduction',
+      components: '120+',
+      componentsDesc: 'UI components shipped in design system',
     },
     metaLabels: {
       type: 'Type',
@@ -128,6 +154,8 @@ const DAILYMOTION_TRANSLATIONS = {
       company: 'Company',
     },
     captions: {
+      hero: 'Dailymotion Partner Platform',
+      heroDesc: 'Web-based dashboard for video partners to manage, publish and go live with confidence.',
       videoManagement: 'Video Management Workflows',
       videoManagementDesc: 'Redesigned the full video management experience, from upload to publication. Introduced batch processing, inline editing, and contextual sharing actions.',
       liveDashboard: 'Live Dashboard',
@@ -220,6 +248,7 @@ const DAILYMOTION_TRANSLATIONS = {
     },
     modules: {
       title: 'Modules clés',
+      deliveredTitle: 'Modules produit clés livrés',
       intro: 'Le Partner Space a été réorganisé autour de trois workflows principaux que les partenaires utilisent quotidiennement. Chaque module a été conçu pour fonctionner indépendamment tout en partageant des patterns communs du design system.',
       upload: {
         title: 'Upload & Gestion',
@@ -236,19 +265,26 @@ const DAILYMOTION_TRANSLATIONS = {
     },
     upload: {
       title: 'Upload & Gestion Vidéo',
-      intro: 'L\'upload vidéo est l\'action la plus fréquente dans Partner Space. La refonte s\'est concentrée sur la réduction des frictions, le support des opérations par lot, et la fourniture d\'un feedback clair tout au long du processus.',
+      sectionTitle: 'Workflows d\'Upload et de Gestion Vidéo',
+      question: 'Comment une plateforme média peut-elle aider les éditeurs à traiter, gérer et monétiser des milliers de vidéos quotidiennement ?',
+      intro: 'Gérer de gros volumes de vidéos nécessitait plus qu\'un simple bouton d\'upload. Les partenaires médias de Dailymotion travaillaient avec des workflows à l\'échelle industrielle : encodages multiples, règles de métadonnées, configuration publicitaire et calendriers de distribution devaient tous rester synchronisés. L\'objectif était de concevoir un système rendant ces opérations rapides, traçables et intuitives. Le nouveau flux d\'Upload a introduit le traitement parallèle avec une visibilité en temps réel de la progression et des erreurs. Les éditeurs pouvaient mettre des fichiers en file d\'attente, modifier les titres ou le geoblocking pendant l\'encodage, et publier une fois toutes les vérifications passées.',
+      uploadSubtitle: 'Upload',
       batchUpload: 'Interface d\'upload par lot',
       batchUploadDesc: 'Supporte les uploads parallèles avec feedback en temps réel. Les éditeurs peuvent modifier les métadonnées, le geoblocking et la programmation pendant l\'encodage.',
       interactions: 'Interactions clés',
       interactionsDesc: 'Des microinteractions fluides fournissent un retour immédiat pour des actions comme l\'annulation, les mises à jour de vignettes et les uploads de sous-titres.',
       videoManager: 'Bibliothèque vidéo',
       videoManagerDesc: 'Affiche la gestion de médias en masse avec indicateurs de statut et actions par lot. Chaque carte vidéo montre l\'état de confidentialité, l\'horodatage, le nombre de vues et la durée.',
+      videoLibraryTitle: 'Bibliothèque Vidéo',
+      videoLibraryIntro: 'Dans la Bibliothèque Vidéo, la hiérarchie et le mouvement ont remplacé les contrôles lourds. Les actions au survol n\'apparaissaient que lorsque nécessaire, réduisant l\'encombrement tout en gardant toutes les opérations à un clic. L\'interface supportait la publication continue : les utilisateurs pouvaient agir pendant que les données se rafraîchissaient en arrière-plan, réduisant le temps mort entre les uploads.',
       embedShare: 'Partage & embed',
       embedShareDesc: 'Le modal de partage étendu révèle les options complètes de personnalisation de l\'embed avec un code iframe auto-généré qui se met à jour dynamiquement.',
     },
     live: {
       title: 'Console de Streaming Live',
-      intro: 'Le streaming live demande de la confiance. Les diffuseurs ont besoin de savoir que leur stream fonctionne, que les viewers regardent, et que les problèmes techniques sont visibles. La console repensée fournit un statut d\'un coup d\'œil avec des métriques détaillées à la demande.',
+      sectionTitle: 'Console de Gestion Live',
+      question: 'Comment une plateforme live peut-elle concurrencer Twitch et Facebook tout en donnant aux professionnels un véritable contrôle ?',
+      intro: 'Passer en live apportait une complexité différente. Les opérateurs devaient surveiller les performances et réagir instantanément aux changements d\'encodage ou d\'audience. L\'objectif était de concevoir une surface de contrôle sereine fonctionnant sous pression. Le Live Manager a structuré toutes les actions autour de trois panneaux : Contrôle, Information et Enregistrement, correspondant au modèle mental d\'une diffusion live. Les changements et transitions de statut étaient centraux : Prêt > À l\'antenne > Enregistrement > Terminé. Chaque transition était animée avec un retour visuel clair pour confirmer qu\'une commande avait été reçue. Les métriques comme le débit, les viewers ou la latence se mettaient à jour sur place sans bruit de mouvement.',
       countdown: 'Compte à rebours pré-diffusion',
       countdownDesc: 'Affiche l\'heure de démarrage programmée avec un badge OFF AIR. Le bouton Partager persistant permet la distribution promotionnelle avant le début du stream.',
       dashboard: 'Dashboard live',
@@ -256,17 +292,31 @@ const DAILYMOTION_TRANSLATIONS = {
     },
     player: {
       title: 'Gestionnaire de Player',
-      intro: 'Les partenaires intègrent les players Dailymotion sur leurs sites web. Le Gestionnaire de Player leur permet de personnaliser l\'apparence et le comportement sans code, tout en fournissant des snippets d\'embed prêts à copier.',
+      question: 'Comment transformer la configuration d\'un player en une tâche que n\'importe qui peut accomplir en quelques minutes ?',
+      intro: 'Une fois uploadées et diffusées, les vidéos avaient besoin d\'une lecture cohérente sur les sites partenaires. Le Gestionnaire de Player a résolu ce problème en donnant aux utilisateurs non techniques la possibilité de créer et configurer leurs propres players. L\'interface s\'est concentrée sur la divulgation progressive. Les utilisateurs partaient d\'une liste simple et développaient des onglets détaillés uniquement si nécessaire. La création d\'un player déclenchait un flux guidé : définir l\'apparence, assigner le contenu, puis récupérer le code embed. Des transitions subtiles maintenaient le contexte entre les étapes, évitant les interruptions modales.',
       configurator: 'Configurateur de template player',
       configuratorDesc: 'Définir l\'apparence, assigner le contenu, récupérer le code embed - tout en un seul endroit.',
     },
     designSystem: {
       title: 'Design System',
-      intro: 'Un design system était essentiel pour maintenir la cohérence entre les modules développés par différentes équipes. Le système définissait les tokens, composants et patterns utilisés dans tout le Partner Space.',
+      sectionTitle: 'Construire un UI Kit Scalable',
+      intro: 'Pour assurer la cohérence à travers la suite produit grandissante, j\'ai dirigé la création d\'un nouveau Design System et d\'une Bibliothèque de Composants.',
       styles: 'Fondation des styles',
       stylesDesc: 'Les tokens de couleur, typographie et espacement assurent la cohérence visuelle à travers la suite produit.',
       components: 'Bibliothèque de composants',
       componentsDesc: 'Composants UI réutilisables avec variantes et états pour un développement scalable.',
+    },
+    impact: {
+      title: 'Impact',
+      intro: 'L\'approche design a produit des résultats mesurables. En se concentrant sur les workflows essentiels et la complexité progressive, nous avons créé des outils que les partenaires médias ont pu adopter rapidement.',
+      partners: '30 000+',
+      partnersDesc: 'Partenaires de contenu dans le monde',
+      videos: '10K+',
+      videosDesc: 'Vidéos uploadées quotidiennement sur la plateforme',
+      reduction: '-50%',
+      reductionDesc: 'Réduction du temps de préparation upload',
+      components: '120+',
+      componentsDesc: 'Composants UI livrés dans le design system',
     },
     metaLabels: {
       type: 'Type',
@@ -275,6 +325,8 @@ const DAILYMOTION_TRANSLATIONS = {
       company: 'Entreprise',
     },
     captions: {
+      hero: 'Plateforme Partenaires Dailymotion',
+      heroDesc: 'Dashboard web permettant aux partenaires vidéo de gérer, publier et diffuser en live en toute confiance.',
       videoManagement: 'Workflows de gestion vidéo',
       videoManagementDesc: 'Refonte complète de l\'expérience de gestion vidéo, de l\'upload à la publication. Introduction du traitement par lot, de l\'édition inline et des actions de partage contextuelles.',
       liveDashboard: 'Dashboard Live',
@@ -334,30 +386,30 @@ const sections = [
 ];
 
 // All media (images + videos) for lightbox navigation
-type MediaItem = { src: string; caption: string; type: 'image' | 'video' };
-const allImages: MediaItem[] = [
-  { src: '/images/dailymotion/thumbnail_dailymotion_-_web_platform2x.png', caption: 'Dailymotion Partner Platform Hero', type: 'image' },
-  { src: '/images/dailymotion/dailymotion_focus_upload_2x.webp', caption: 'Video Management Workflows - Redesigned upload to publication experience with batch processing and inline editing.', type: 'image' },
-  { src: '/images/dailymotion/dailymotion_focus_livestream_2x.webp', caption: 'Live Dashboard - Real-time monitoring interface for live video streams with clear status indicators.', type: 'image' },
-  { src: '/images/dailymotion/dailymotion_focus_player_template_2x.webp', caption: 'Player Manager - Visual customization tools for embed players and playback behaviors.', type: 'image' },
-  { src: '/images/dailymotion/dailymotion_-_upload2x.png', caption: 'Batch upload interface supports parallel uploads with real-time feedback. Editors can edit metadata, geoblocking, and scheduling while encoding runs.', type: 'image' },
-  { src: '/videos/dailymotion/video_-_cancel_upload.mp4', caption: 'Cancel Upload interaction - Smooth cancellation flow with visual feedback.', type: 'video' },
-  { src: '/videos/dailymotion/video_2025-11-10_02.26.48.mp4', caption: 'Upload an image and update video preview thumbnail instantly.', type: 'video' },
-  { src: '/videos/dailymotion/video_add_subtitle.mp4', caption: 'Add subtitles - Streamlined subtitle upload workflow.', type: 'video' },
-  { src: '/images/dailymotion/dailymotion_-_video_manager.svg', caption: 'Video library displays bulk media management with status indicators and batch actions. Each video card shows privacy state, timestamp, view count, and duration overlay.', type: 'image' },
-  { src: '/videos/dailymotion/Dailymotion_-_video_manager_-_Embed_code_TOP_v6.mp4', caption: 'Embed code - Input copy interaction and user feedback.', type: 'video' },
-  { src: '/videos/dailymotion/switch_12-24.mp4', caption: 'Time picker 12/24H switch interaction.', type: 'video' },
-  { src: '/videos/dailymotion/dailymotion_video_manager_-_set_password.mp4', caption: 'Set password protection - Secure video access workflow.', type: 'video' },
-  { src: '/videos/dailymotion/Geoblocking.mp4', caption: 'Geoblocking - Allow/Block a video to be broadcasted in certain locations.', type: 'video' },
-  { src: '/images/dailymotion/dailymotion_-_share_expanded2x.png', caption: 'Expanded share modal reveals full embed customization options with auto-generated iframe code that updates dynamically.', type: 'image' },
-  { src: '/images/dailymotion/Share_-_keyboard_input2x.png', caption: 'Share modal keyboard mapping specifications.', type: 'image' },
-  { src: '/images/dailymotion/image.png', caption: 'Start time keyboard input specifications.', type: 'image' },
-  { src: '/images/dailymotion/dailymotion_-_add_to_playlist_-_spec2x.png', caption: 'Add video to playlist flow - Streamlined playlist management.', type: 'image' },
-  { src: '/images/dailymotion/dailymotion_-_live_-_countdown2x.png', caption: 'Pre-broadcast countdown displays scheduled start time with OFF AIR badge. The persistent Share button enables promotional distribution before stream begins.', type: 'image' },
-  { src: '/images/dailymotion/dailymotion_-_livestream2x.png', caption: 'Live dashboard monitors active broadcasts with real-time technical metrics and viewer count. The preview pane displays current stream frame with persistent LIVE badge.', type: 'image' },
-  { src: '/images/dailymotion/dailymotion_-_create_player2x.png', caption: 'Player template configurator - Define appearance, assign content, retrieve embed code.', type: 'image' },
-  { src: '/images/dailymotion/design_system_-_Styles2x.png', caption: "Dailymotion's Partner Space UI Kit - Styles foundation for coherent product suite.", type: 'image' },
-  { src: '/images/dailymotion/design_system_-_component_library2x.png', caption: "Dailymotion's Partner Space UI Kit - Component library for scalable development.", type: 'image' },
+type MediaItem = { src: string; captionKey: string; type: 'image' | 'video' };
+const allImagesData: MediaItem[] = [
+  { src: '/images/dailymotion/thumbnail_dailymotion_-_web_platform2x.png', captionKey: 'hero', type: 'image' },
+  { src: '/images/dailymotion/dailymotion_focus_upload_2x.webp', captionKey: 'videoManagement', type: 'image' },
+  { src: '/images/dailymotion/dailymotion_focus_livestream_2x.webp', captionKey: 'liveDashboard', type: 'image' },
+  { src: '/images/dailymotion/dailymotion_focus_player_template_2x.webp', captionKey: 'playerManager', type: 'image' },
+  { src: '/images/dailymotion/dailymotion_-_upload2x.png', captionKey: 'batchUpload', type: 'image' },
+  { src: '/videos/dailymotion/video_-_cancel_upload.mp4', captionKey: 'cancelUpload', type: 'video' },
+  { src: '/videos/dailymotion/video_2025-11-10_02.26.48.mp4', captionKey: 'thumbnailUpdate', type: 'video' },
+  { src: '/videos/dailymotion/video_add_subtitle.mp4', captionKey: 'addSubtitles', type: 'video' },
+  { src: '/images/dailymotion/dailymotion_-_video_manager.svg', captionKey: 'videoLibrary', type: 'image' },
+  { src: '/videos/dailymotion/Dailymotion_-_video_manager_-_Embed_code_TOP_v6.mp4', captionKey: 'embedCode', type: 'video' },
+  { src: '/videos/dailymotion/switch_12-24.mp4', captionKey: 'timePicker', type: 'video' },
+  { src: '/videos/dailymotion/dailymotion_video_manager_-_set_password.mp4', captionKey: 'passwordProtection', type: 'video' },
+  { src: '/videos/dailymotion/Geoblocking.mp4', captionKey: 'geoblocking', type: 'video' },
+  { src: '/images/dailymotion/dailymotion_-_share_expanded2x.png', captionKey: 'shareModal', type: 'image' },
+  { src: '/images/dailymotion/Share_-_keyboard_input2x.png', captionKey: 'keyboardMapping', type: 'image' },
+  { src: '/images/dailymotion/image.png', captionKey: 'startTimeInput', type: 'image' },
+  { src: '/images/dailymotion/dailymotion_-_add_to_playlist_-_spec2x.png', captionKey: 'addToPlaylist', type: 'image' },
+  { src: '/images/dailymotion/dailymotion_-_live_-_countdown2x.png', captionKey: 'preBroadcast', type: 'image' },
+  { src: '/images/dailymotion/dailymotion_-_livestream2x.png', captionKey: 'liveMonitor', type: 'image' },
+  { src: '/images/dailymotion/dailymotion_-_create_player2x.png', captionKey: 'playerConfigurator', type: 'image' },
+  { src: '/images/dailymotion/design_system_-_Styles2x.png', captionKey: 'uiKitStyles', type: 'image' },
+  { src: '/images/dailymotion/design_system_-_component_library2x.png', captionKey: 'uiKitComponents', type: 'image' },
 ];
 
 // Apple-style spring transition
@@ -470,6 +522,14 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
   galleryItems
 }) => {
   const t = DAILYMOTION_TRANSLATIONS[lang];
+
+  // Build allImages with translated captions
+  const allImages = allImagesData.map(item => ({
+    src: item.src,
+    type: item.type,
+    caption: `${t.captions[item.captionKey as keyof typeof t.captions]} - ${t.captions[`${item.captionKey}Desc` as keyof typeof t.captions] || ''}`
+  }));
+
   const [activeSection, setActiveSection] = useState('hero');
   const [isMobileNavExpanded, setIsMobileNavExpanded] = useState(false);
   const [showNav, setShowNav] = useState(false);
@@ -1078,6 +1138,101 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
               </div>
             </section>
 
+            {/* Project Meta Card - Synthesis */}
+            <div
+              className={`p-6 rounded-3xl border mb-12 ${
+                systemTheme === 'dark'
+                  ? 'bg-[#1D1D1F] border-white/10'
+                  : 'bg-gray-50 border-gray-200'
+              }`}
+            >
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="flex items-center space-x-3">
+                  <div
+                    className={`p-2 rounded-xl ${
+                      systemTheme === 'dark' ? 'bg-blue-600/20' : 'bg-blue-50'
+                    }`}
+                  >
+                    <Layers
+                      size={20}
+                      className={systemTheme === 'dark' ? 'text-blue-400' : 'text-blue-600'}
+                    />
+                  </div>
+                  <div>
+                    <p className={`text-xs ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
+                      Type
+                    </p>
+                    <p className={`text-sm font-medium ${systemTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                      {t.meta.type}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center space-x-3">
+                  <div
+                    className={`p-2 rounded-xl ${
+                      systemTheme === 'dark' ? 'bg-purple-500/20' : 'bg-purple-50'
+                    }`}
+                  >
+                    <Briefcase
+                      size={20}
+                      className={systemTheme === 'dark' ? 'text-purple-400' : 'text-purple-600'}
+                    />
+                  </div>
+                  <div>
+                    <p className={`text-xs ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
+                      Scope
+                    </p>
+                    <p className={`text-sm font-medium ${systemTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                      {t.meta.scope}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center space-x-3">
+                  <div
+                    className={`p-2 rounded-xl ${
+                      systemTheme === 'dark' ? 'bg-green-500/20' : 'bg-green-50'
+                    }`}
+                  >
+                    <Calendar
+                      size={20}
+                      className={systemTheme === 'dark' ? 'text-green-400' : 'text-green-600'}
+                    />
+                  </div>
+                  <div>
+                    <p className={`text-xs ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
+                      Period
+                    </p>
+                    <p className={`text-sm font-medium ${systemTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                      {t.meta.period}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center space-x-3">
+                  <div
+                    className={`p-2 rounded-xl ${
+                      systemTheme === 'dark' ? 'bg-orange-500/20' : 'bg-orange-50'
+                    }`}
+                  >
+                    <Building2
+                      size={20}
+                      className={systemTheme === 'dark' ? 'text-orange-400' : 'text-orange-600'}
+                    />
+                  </div>
+                  <div>
+                    <p className={`text-xs ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
+                      Company
+                    </p>
+                    <p className={`text-sm font-medium ${systemTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                      {t.meta.company}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             {/* Hero Image */}
             <figure className="mb-16 md:mb-24">
               <div
@@ -1175,7 +1330,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                   systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                 }`}
               >
-                Key product modules delivered
+                {t.modules.deliveredTitle}
               </h1>
 
               <div className="grid md:grid-cols-3 gap-6 mb-8">
@@ -1264,7 +1419,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                   systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                 }`}
               >
-                Video Upload and Management Workflows
+                {t.upload.sectionTitle}
               </h1>
 
               <h2
@@ -1272,7 +1427,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                   systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                 }`}
               >
-                How can a media platform help publishers process, manage, and monetize thousands of videos daily?
+                {t.upload.question}
               </h2>
 
               <p
@@ -1280,7 +1435,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                   systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
                 }`}
               >
-                Managing large volumes of video required more than an upload button. Dailymotion's media partners worked with industrial-scale workflows, multiple encodes, metadata rules, ad configuration, and distribution timelines that all had to stay in sync. The objective was to design a system that made these operations fast, traceable, and intuitive. The new Upload flow introduced parallel processing with real-time progress and error visibility. Editors could queue files, edit titles or geoblocking while encoding ran, and publish once all checks passed.
+                {t.upload.intro}
               </p>
 
               {/* Upload Section */}
@@ -1289,7 +1444,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                   systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                 }`}
               >
-                Upload
+                {t.upload.uploadSubtitle}
               </h3>
 
               <div className="grid md:grid-cols-2 gap-6 mb-8">
@@ -1399,7 +1554,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                   systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                 }`}
               >
-                Video Library
+                {t.upload.videoLibraryTitle}
               </h3>
 
               <p
@@ -1407,7 +1562,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                   systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
                 }`}
               >
-                In the Video Library, hierarchy and motion replaced heavy controls. Hover actions surfaced only when needed, reducing clutter while keeping all operations one click away. The interface supported continuous publishing, users could act while data refreshed in the background, cutting idle time between uploads.
+                {t.upload.videoLibraryIntro}
               </p>
 
               <figure className="mb-8">
@@ -1645,7 +1800,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                   systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                 }`}
               >
-                Live Management Console
+                {t.live.sectionTitle}
               </h1>
 
               <h2
@@ -1653,7 +1808,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                   systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                 }`}
               >
-                How can a live platform compete with Twitch and Facebook while giving professionals real control?
+                {t.live.question}
               </h2>
 
               <p
@@ -1661,7 +1816,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                   systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
                 }`}
               >
-                Going live brought a different kind of complexity. Operators needed to monitor performance and react instantly to encoding or audience shifts. The goal was to design a calm control surface that worked under pressure. The Live Manager structured all actions around three panels, Control, Information, and Record, matching the mental model of a live broadcast. Status changes and transitions were central: Ready {'>'} On Air {'>'} Recording {'>'} Completed. Each transition was animated with clear visual feedback to confirm that a command had been received. Metrics such as bitrate, viewers, or latency updated in place without motion noise.
+                {t.live.intro}
               </p>
 
               {/* Live countdown */}
@@ -1725,7 +1880,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                   systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                 }`}
               >
-                Player Manager
+                {t.player.title}
               </h1>
 
               <h2
@@ -1733,7 +1888,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                   systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                 }`}
               >
-                How do you turn player configuration into a task anyone can complete in minutes?
+                {t.player.question}
               </h2>
 
               <p
@@ -1741,7 +1896,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                   systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
                 }`}
               >
-                Once uploaded and streamed, videos needed consistent playback across partner sites. The Player Manager solved this by giving non-technical users the ability to create and configure their own players. The interface focused on progressive disclosure. Users started from a simple list and expanded into detailed tabs only when required. Creating a player triggered a guided flow: define appearance, assign content, then retrieve the embed code. Subtle transitions kept context between steps, avoiding modal interruptions.
+                {t.player.intro}
               </p>
 
               {/* Player configurator */}
@@ -1782,7 +1937,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                   systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                 }`}
               >
-                Building a Scalable UI Kit
+                {t.designSystem.sectionTitle}
               </h1>
 
               <p
@@ -1790,7 +1945,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                   systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
                 }`}
               >
-                To ensure coherence across the growing product suite, I led the creation of a new Design System and Component Library.
+                {t.designSystem.intro}
               </p>
 
               <div className="grid md:grid-cols-2 gap-6 mb-8">
@@ -1839,6 +1994,127 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                 </figure>
               </div>
             </section>
+
+            {/* Divider */}
+            <hr
+              className={`my-12 ${
+                systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
+              }`}
+            />
+
+            {/* Impact Section - Toolkit style */}
+            <section id="impact" className="mb-16 md:mb-24">
+              <h1
+                className={`text-2xl md:text-3xl font-bold mb-4 ${
+                  systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+                }`}
+              >
+                {t.impact.title}
+              </h1>
+              <p
+                className={`text-base leading-relaxed mb-8 ${
+                  systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                }`}
+              >
+                {t.impact.intro}
+              </p>
+
+              {/* Key Results */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div
+                  className={`p-6 rounded-2xl border ${
+                    systemTheme === 'dark'
+                      ? 'bg-[#1D1D1F] border-white/10'
+                      : 'bg-gray-50 border-gray-200'
+                  }`}
+                >
+                  <p
+                    className={`text-3xl font-bold mb-2 ${
+                      systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+                    }`}
+                  >
+                    {t.impact.partners}
+                  </p>
+                  <p
+                    className={`text-sm ${
+                      systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+                    }`}
+                  >
+                    {t.impact.partnersDesc}
+                  </p>
+                </div>
+
+                <div
+                  className={`p-6 rounded-2xl border ${
+                    systemTheme === 'dark'
+                      ? 'bg-[#1D1D1F] border-white/10'
+                      : 'bg-gray-50 border-gray-200'
+                  }`}
+                >
+                  <p
+                    className={`text-3xl font-bold mb-2 ${
+                      systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+                    }`}
+                  >
+                    {t.impact.videos}
+                  </p>
+                  <p
+                    className={`text-sm ${
+                      systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+                    }`}
+                  >
+                    {t.impact.videosDesc}
+                  </p>
+                </div>
+
+                <div
+                  className={`p-6 rounded-2xl border ${
+                    systemTheme === 'dark'
+                      ? 'bg-[#1D1D1F] border-white/10'
+                      : 'bg-gray-50 border-gray-200'
+                  }`}
+                >
+                  <p
+                    className={`text-3xl font-bold mb-2 ${
+                      systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+                    }`}
+                  >
+                    {t.impact.reduction}
+                  </p>
+                  <p
+                    className={`text-sm ${
+                      systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+                    }`}
+                  >
+                    {t.impact.reductionDesc}
+                  </p>
+                </div>
+
+                <div
+                  className={`p-6 rounded-2xl border ${
+                    systemTheme === 'dark'
+                      ? 'bg-[#1D1D1F] border-white/10'
+                      : 'bg-gray-50 border-gray-200'
+                  }`}
+                >
+                  <p
+                    className={`text-3xl font-bold mb-2 ${
+                      systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+                    }`}
+                  >
+                    {t.impact.components}
+                  </p>
+                  <p
+                    className={`text-sm ${
+                      systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+                    }`}
+                  >
+                    {t.impact.componentsDesc}
+                  </p>
+                </div>
+              </div>
+            </section>
+
           </main>
         </div>
       </div>

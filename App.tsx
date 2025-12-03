@@ -62,7 +62,10 @@ import { Rocket, Buildings, HandHeart, ArrowsClockwise, ChatCircleDots, ChartLin
 import ToolkitPage from './ToolkitPage';
 import DailymotionPage from './DailymotionPage';
 import ConnectPage from './ConnectPage';
-import { BentoGallery, TOOLKIT_GALLERY_ITEMS, DAILYMOTION_GALLERY_ITEMS, CONNECT_GALLERY_ITEMS } from './BentoGallery';
+import SqoolPage from './SqoolPage';
+import ExecutivePage from './ExecutivePage';
+import IframeModal from './IframeModal';
+import { BentoGallery, getToolkitGalleryItems, getDailymotionGalleryItems, getConnectGalleryItems, getSqoolGalleryItems } from './BentoGallery';
 
 // --- Types ---
 
@@ -226,7 +229,7 @@ const TRANSLATIONS = {
       title: "Experienced designer for",
       subtitle: "product teams and startups",
       desc: "With 15 years in tech and 10 in product design, I build intuitive, high-impact interfaces for enterprise software, media, education, and public services.",
-      cta_projects: "Case Studies",
+      cta_projects: "My 1-min Presentation",
       cta_book: "Book a 30min Call",
       tooltip_title: "Need a Design Partner?",
       tooltip_email: "Shoot me a note",
@@ -280,6 +283,7 @@ const TRANSLATIONS = {
       p1: "Passionate designer with experience in innovation, media groups and startups. I work at the intersection between product vision, strategy, interface design and content.",
       p2: "I am used to leading a team as well as being hands-on, with extensive knowledge in hardware, software and operating systems.",
       view_full_bio: "View Biography & Track Record",
+      view_executive: "1-min Presentation",
       modal_title: "Biography & Track Record",
       modal_subtitle: "15 years building products, 10 years leading design",
       close: "Close",
@@ -669,7 +673,7 @@ const TRANSLATIONS = {
       title: "Designer expérimenté pour",
       subtitle: "équipes produit et startups",
       desc: "15 ans d'expérience, dont 10 dans la Tech. Je conçois, prototype et livre des logiciels complexes (SaaS, Mobile, Hardware) en me concentrant sur la clarté, l'utilisabilité et la faisabilité technique.",
-      cta_projects: "Voir les Études de Cas",
+      cta_projects: "Ma présentation en 1-min",
       cta_book: "Planifier un appel de 30min",
       tooltip_title: "Besoin d'un designer ou d'un lead pour votre équipe ?",
       tooltip_email: "Envoyer un message",
@@ -724,6 +728,7 @@ const TRANSLATIONS = {
       p1: "Je conçois des produits numériques depuis 15 ans. J'ai évolué de l'agence au produit, en passant par les grands groupes médias et les startups hardware. Je ne cherche pas à faire du 'beau', je cherche à faire du 'fonctionnel' et du 'viable'.",
       p2: "Mon profil est hybride : je peux définir une roadmap avec un CEO, manager une équipe de designers, et ouvrir Figma pour produire des maquettes prêtes à coder. Je comprends les contraintes techniques et je parle le langage des développeurs.",
       view_full_bio: "Voir mon Parcours Complet",
+      view_executive: "Présentation en 1-min",
       modal_title: "Biographie et Parcours",
       modal_subtitle: "15 ans à construire des produits, 10 ans en design produit",
       close: "Fermer",
@@ -746,7 +751,7 @@ const TRANSLATIONS = {
       journey_p8: "De <strong>décembre 2024 à juillet 2025</strong>, j'ai rejoint <strong>beta.gouv.fr</strong> pour travailler sur France VAE, une innovation de service public. J'ai designé le MVP VAE collectif, conduit 10 entretiens utilisateurs, animé des ateliers design thinking de 2 jours et restructuré leur workflow produit avec des cycles de livraison clairs.",
       journey_p9: "Depuis <strong>juillet 2025</strong>, j'opère en tant que <strong>Principal Designer</strong>, aidant les startups et entreprises avec le design produit 0-to-1, l'optimisation UX et l'intégration IA. J'explore également en profondeur l'IA générative—création de GPTs personnalisés, prototypage avec Bolt et Claude, et <strong>déploiement de 37+ applications web fonctionnelles</strong> via mon lab Condamine Apps.",
       journey_conclusion: "Ce qui me motive, c'est transformer des problèmes complexes en produits clairs et testables. Que ce soit designer pour 500 000 élèves, 8 000 utilisateurs B2B ou aider une startup à trouver son product-market fit, j'apporte une vision stratégique ancrée dans l'exécution concrète, le prototypage rapide et une focalisation sans relâche sur ce qui fonctionne réellement.",
-      tools_title: "Outils du Quotidien",
+      tools_title: "Outils",
       education_title: "Formation & Certifications",
       education_master_title: "Master en Communication & Multimédia",
       education_master_school: "ISCOM Paris (2001-2005)",
@@ -1539,6 +1544,8 @@ const App: React.FC = () => {
   const [isTestimonialsOpen, setIsTestimonialsOpen] = useState(false);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [selectedLabItem, setSelectedLabItem] = useState<string | null>(null);
+  const [isExecutiveOpen, setIsExecutiveOpen] = useState(false);
+  const [showExecutiveFarewell, setShowExecutiveFarewell] = useState(false);
   const [themeMode, setThemeMode] = useState<'system' | 'light' | 'dark'>('light');
   const [systemTheme, setSystemTheme] = useState<'light' | 'dark'>('light');
   const [accessibilityMode, setAccessibilityMode] = useState<AccessibilityMode>('normal');
@@ -1557,7 +1564,7 @@ const App: React.FC = () => {
   const [iframeModalUrl, setIframeModalUrl] = useState<string | null>(null);
   // Unified project modal state: which project is open and which view mode
   const [openProject, setOpenProject] = useState<{
-    project: 'toolkit' | 'dailymotion' | 'connect';
+    project: 'toolkit' | 'dailymotion' | 'connect' | 'sqool';
     viewMode: 'caseStudy' | 'gallery';
   } | null>(null);
   const [activeSection, setActiveSection] = useState('services');
@@ -1680,12 +1687,20 @@ const App: React.FC = () => {
 
   // Prevent body scroll when modals are open
   useEffect(() => {
-    if (selectedImage || isBioOpen || isTestimonialsOpen || isBookingOpen || selectedLabItem || isContactFormOpen || isSimpleContactOpen || selectedServiceGallery || isQuoteGeneratorOpen) {
+    if (selectedImage || isBioOpen || isTestimonialsOpen || isBookingOpen || selectedLabItem || isContactFormOpen || isSimpleContactOpen || selectedServiceGallery || isQuoteGeneratorOpen || isExecutiveOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
     }
-  }, [selectedImage, isBioOpen, isTestimonialsOpen, isBookingOpen, selectedLabItem, isContactFormOpen, isSimpleContactOpen, selectedServiceGallery]);
+  }, [selectedImage, isBioOpen, isTestimonialsOpen, isBookingOpen, selectedLabItem, isContactFormOpen, isSimpleContactOpen, selectedServiceGallery, isExecutiveOpen]);
+
+  // Check URL parameters to open presentation directly
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('presentation') === '1' || urlParams.get('deck') === '1') {
+      setIsExecutiveOpen(true);
+    }
+  }, []);
 
   // Detect system theme (light/dark mode)
   useEffect(() => {
@@ -2316,7 +2331,7 @@ const App: React.FC = () => {
 
           <div className="flex flex-col sm:flex-row justify-center items-center space-y-3 sm:space-y-0 sm:space-x-4">
             <button
-              onClick={() => scrollToSection('projects')}
+              onClick={() => setIsExecutiveOpen(true)}
               className="px-5 py-2.5 sm:px-6 sm:py-3 rounded-full font-medium text-sm sm:text-base btn-pill flex items-center cursor-pointer relative z-20 whitespace-nowrap accent-blue text-white"
             >
               {content.hero.cta_projects} <ChevronRight className="ml-2 flex-shrink-0" size={16} />
@@ -2384,7 +2399,7 @@ const App: React.FC = () => {
                   viewport={{ once: true, margin: "-50px" }}
                   transition={{ duration: 0.6, delay: index * 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
                   onClick={() => {
-                    if (project.id === 'toolkit' || project.id === 'dailymotion' || project.id === 'connect') {
+                    if (project.id === 'toolkit' || project.id === 'dailymotion' || project.id === 'connect' || project.id === 'sqool') {
                       setOpenProject({ project: project.id, viewMode: 'caseStudy' });
                     } else if (project.externalLink) {
                       setIframeModalUrl(project.externalLink);
@@ -2534,13 +2549,13 @@ const App: React.FC = () => {
 
                       {/* Bottom: CTA */}
                       <div className={`pt-4 mt-4 border-t flex items-center justify-end gap-2 ${systemTheme === 'dark' ? 'border-white/5' : 'border-gray-100'}`}>
-                        {(project.id === 'toolkit' || project.id === 'dailymotion' || project.id === 'connect') ? (
+                        {(project.id === 'toolkit' || project.id === 'dailymotion' || project.id === 'connect' || project.id === 'sqool') ? (
                           <>
                             {/* Gallery Button */}
                             <button
                               onClick={(e) => {
                                 e.stopPropagation();
-                                setOpenProject({ project: project.id as 'toolkit' | 'dailymotion' | 'connect', viewMode: 'gallery' });
+                                setOpenProject({ project: project.id as 'toolkit' | 'dailymotion' | 'connect' | 'sqool', viewMode: 'gallery' });
                               }}
                               className={`inline-flex items-center text-sm font-medium px-5 py-2.5 rounded-full transition-colors duration-200 ${
                                 systemTheme === 'dark'
@@ -3001,19 +3016,20 @@ const App: React.FC = () => {
               {[...Array(2)].map((_, setIndex) => (
                 <div key={setIndex} className="flex shrink-0">
                   {[
+                    { src: '/logos/LOGO UNOWHY.svg', alt: 'Unowhy' },
+                    { src: '/logos/LOGO BETAGOUV.svg', alt: 'Beta.gouv' },
+                    { src: '/logos/LOGO TOOLKIT.svg', alt: 'Toolkit' },
+                    { src: '/logos/LOGO KYU.svg', alt: 'Kyu' },
                     { src: '/logos/LOGO AIRBUS.svg', alt: 'Airbus' },
                     { src: '/logos/LOGO ORANGE.svg', alt: 'Orange' },
                     { src: '/logos/LOGO VINCI.svg', alt: 'Vinci' },
                     { src: '/logos/LOGO DAILYMOTION-1.svg', alt: 'Dailymotion' },
                     { src: '/logos/LOGO BOUYGUES IMMO.svg', alt: 'Bouygues Immobilier' },
                     { src: '/logos/LOGO REGION ILE DE FRANCE.svg', alt: 'Région Île-de-France' },
-                    { src: '/logos/LOGO BETAGOUV.svg', alt: 'Beta.gouv' },
                     { src: '/logos/LOGO OGURY.svg', alt: 'Ogury' },
                     { src: '/logos/LOGO SOLOCAL.svg', alt: 'Solocal' },
                     { src: '/logos/LOGO CELIO.svg', alt: 'Celio' },
                     { src: '/logos/LOGO OPERA COMIQUE.svg', alt: 'Opéra Comique' },
-                    { src: '/logos/LOGO UNOWHY.svg', alt: 'Unowhy' },
-                    { src: '/logos/LOGO KYU.svg', alt: 'Kyu' },
                     { src: '/logos/LOGO VERLINDE.svg', alt: 'Verlinde' },
                     { src: '/logos/LOGO UPTRADE.svg', alt: 'Uptrade' },
                   ].map((logo, index) => (
@@ -3137,8 +3153,10 @@ const App: React.FC = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                {/* Card 1: Condamine Apps */}
-               <div
-                 onClick={() => setSelectedLabItem('apps')}
+               <a
+                 href={LAB_PREVIEWS.apps.link}
+                 target="_blank"
+                 rel="noopener noreferrer"
                  className="group relative bg-[#151517] border border-white/5 hover:border-blue-600/50 p-5 md:p-8 rounded-2xl md:rounded-3xl transition-all duration-300 hover:shadow-2xl hover:shadow-blue-900/10 flex flex-col overflow-hidden cursor-pointer"
                >
                   <div className="absolute inset-0 bg-gradient-to-br from-blue-600/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
@@ -3153,11 +3171,13 @@ const App: React.FC = () => {
                   <div className="flex items-center text-sm font-medium text-white group-hover:translate-x-1 transition-transform">
                      {content.lab.apps_cta} <ArrowUpRight size={16} className="ml-2"/>
                   </div>
-               </div>
+               </a>
 
                {/* Card 2: Condamine Learning (NEW) */}
-               <div
-                 onClick={() => setSelectedLabItem('learning')}
+               <a
+                 href={LAB_PREVIEWS.learning.link}
+                 target="_blank"
+                 rel="noopener noreferrer"
                  className="group relative bg-[#151517] border border-white/5 hover:border-amber-500/50 p-5 md:p-8 rounded-2xl md:rounded-3xl transition-all duration-300 hover:shadow-2xl hover:shadow-amber-900/10 flex flex-col overflow-hidden cursor-pointer"
                >
                   <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
@@ -3172,11 +3192,13 @@ const App: React.FC = () => {
                   <div className="flex items-center text-sm font-medium text-white group-hover:translate-x-1 transition-transform">
                      {content.lab.learning_cta} <ArrowUpRight size={16} className="ml-2"/>
                   </div>
-               </div>
+               </a>
 
                {/* Card 3: Prompts DB */}
-               <div
-                 onClick={() => setSelectedLabItem('agents')}
+               <a
+                 href={LAB_PREVIEWS.agents.link}
+                 target="_blank"
+                 rel="noopener noreferrer"
                  className="group relative bg-[#151517] border border-white/5 hover:border-purple-500/50 p-5 md:p-8 rounded-2xl md:rounded-3xl transition-all duration-300 hover:shadow-2xl hover:shadow-purple-900/10 flex flex-col overflow-hidden cursor-pointer"
                >
                   <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
@@ -3191,11 +3213,13 @@ const App: React.FC = () => {
                   <div className="flex items-center text-sm font-medium text-white group-hover:translate-x-1 transition-transform">
                      {content.lab.agents_cta} <ArrowUpRight size={16} className="ml-2"/>
                   </div>
-               </div>
+               </a>
 
                {/* Card 4: Art Gallery */}
-               <div
-                 onClick={() => setSelectedLabItem('art')}
+               <a
+                 href={LAB_PREVIEWS.art.link}
+                 target="_blank"
+                 rel="noopener noreferrer"
                  className="group relative bg-[#151517] border border-white/5 hover:border-pink-500/50 p-5 md:p-8 rounded-2xl md:rounded-3xl transition-all duration-300 hover:shadow-2xl hover:shadow-pink-900/10 flex flex-col overflow-hidden cursor-pointer"
                >
                   <div className="absolute inset-0 bg-gradient-to-br from-pink-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
@@ -3210,7 +3234,7 @@ const App: React.FC = () => {
                   <div className="flex items-center text-sm font-medium text-white group-hover:translate-x-1 transition-transform">
                      {content.lab.art_cta} <ArrowUpRight size={16} className="ml-2"/>
                   </div>
-               </div>
+               </a>
             </div>
          </div>
       </section>
@@ -3369,7 +3393,7 @@ const App: React.FC = () => {
                            </div>
                         </div>
 
-                        {/* Tools & Stack */}
+                        {/* Tools & Stack - iOS App Store Style */}
                         <div className={`p-8 rounded-3xl border shadow-sm ${
                           systemTheme === 'dark'
                             ? 'bg-[#1D1D1F] border-white/10'
@@ -3378,15 +3402,89 @@ const App: React.FC = () => {
                            <h3 className={`text-xl font-bold mb-6 ${
                              systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                            }`}>{content.bio.tools_title}</h3>
-                           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                              {['Figma', 'Bolt', 'Lovable', 'ZeroHeight', 'Notion', 'Loom', 'Claude', 'Perplexity', 'Midjourney', 'ChatGPT', 'Protopie', 'Adobe CC'].map(tool => (
-                                <span key={tool} className={`px-4 py-2.5 rounded-xl text-sm font-medium border text-center transition-colors ${
-                                  systemTheme === 'dark'
-                                    ? 'bg-white/5 text-gray-300 border-white/10 hover:border-blue-600/50 hover:bg-blue-900/20'
-                                    : 'bg-gray-50 text-gray-700 border-gray-200 hover:border-blue-300 hover:bg-blue-50'
-                                }`}>
-                                  {tool}
-                                </span>
+                           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                              {[
+                                { name: 'Figma', color: 'bg-[#1E1E1E]', iconColor: '#F24E1E' },
+                                { name: 'Notion', color: 'bg-white', iconColor: '#000000' },
+                                { name: 'Linear', color: 'bg-[#5E6AD2]', iconColor: '#FFFFFF' },
+                                { name: 'GSlides', color: 'bg-[#FBBC04]', iconColor: '#FFFFFF' },
+                                { name: 'Claude', color: 'bg-[#D4A27F]', iconColor: '#FFFFFF' },
+                                { name: 'Gemini', color: 'bg-gradient-to-br from-[#4285F4] via-[#9B72CB] to-[#D96570]', iconColor: '#FFFFFF' },
+                                { name: 'Midjourney', color: 'bg-[#0B0B0B]', iconColor: '#FFFFFF' },
+                                { name: 'ScreenStudio', color: 'bg-gradient-to-br from-[#7C3AED] to-[#4F46E5]', iconColor: '#FFFFFF' },
+                              ].map(tool => (
+                                <div
+                                  key={tool.name}
+                                  className={`flex items-center gap-3 p-3 rounded-2xl border transition-all duration-200 hover:scale-[1.02] cursor-default ${
+                                    systemTheme === 'dark'
+                                      ? 'bg-white/5 border-white/10 hover:border-white/20 hover:bg-white/10'
+                                      : 'bg-gray-50 border-gray-200 hover:border-gray-300 hover:bg-white hover:shadow-md'
+                                  }`}
+                                >
+                                  {/* App Icon - iOS Style with SVG */}
+                                  <div className={`w-10 h-10 rounded-xl ${tool.color} flex items-center justify-center shadow-sm overflow-hidden flex-shrink-0 border ${systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'}`}>
+                                    {tool.name === 'Figma' && (
+                                      <svg width="20" height="20" viewBox="0 0 38 57" fill="none">
+                                        <path d="M19 28.5C19 23.2533 23.2533 19 28.5 19C33.7467 19 38 23.2533 38 28.5C38 33.7467 33.7467 38 28.5 38C23.2533 38 19 33.7467 19 28.5Z" fill="#1ABCFE"/>
+                                        <path d="M0 47.5C0 42.2533 4.25329 38 9.5 38H19V47.5C19 52.7467 14.7467 57 9.5 57C4.25329 57 0 52.7467 0 47.5Z" fill="#0ACF83"/>
+                                        <path d="M19 0V19H28.5C33.7467 19 38 14.7467 38 9.5C38 4.25329 33.7467 0 28.5 0H19Z" fill="#FF7262"/>
+                                        <path d="M0 9.5C0 14.7467 4.25329 19 9.5 19H19V0H9.5C4.25329 0 0 4.25329 0 9.5Z" fill="#F24E1E"/>
+                                        <path d="M0 28.5C0 33.7467 4.25329 38 9.5 38H19V19H9.5C4.25329 19 0 23.2533 0 28.5Z" fill="#A259FF"/>
+                                      </svg>
+                                    )}
+                                    {tool.name === 'Notion' && (
+                                      <svg width="18" height="18" viewBox="0 0 100 100" fill="none">
+                                        <path d="M6.017 4.313l55.333 -4.087c6.797 -0.583 8.543 -0.19 12.817 2.917l17.663 12.443c2.913 2.14 3.883 2.723 3.883 5.053v68.243c0 4.277 -1.553 6.807 -6.99 7.193L24.467 99.967c-4.08 0.193 -6.023 -0.39 -8.16 -3.113L3.3 79.94c-2.333 -3.113 -3.3 -5.443 -3.3 -8.167V11.113c0 -3.497 1.553 -6.413 6.017 -6.8z" fill="#fff"/>
+                                        <path fillRule="evenodd" clipRule="evenodd" d="M61.35 0.227l-55.333 4.087C1.553 4.7 0 7.617 0 11.113v60.66c0 2.723 0.967 5.053 3.3 8.167l13.007 16.913c2.137 2.723 4.08 3.307 8.16 3.113l64.257 -3.89c5.433 -0.387 6.99 -2.917 6.99 -7.193V20.64c0 -2.21 -0.873 -2.847 -3.443 -4.733L74.167 3.143c-4.273 -3.107 -6.02 -3.5 -12.817 -2.917zM25.92 19.523c-5.247 0.353 -6.437 0.433 -9.417 -1.99L8.927 11.507c-0.77 -0.78 -0.383 -1.753 1.557 -1.947l53.193 -3.887c4.467 -0.39 6.793 1.167 8.54 2.527l9.123 6.61c0.39 0.197 1.36 1.36 0.193 1.36l-54.933 3.307 -0.68 0.047zM19.803 88.3V30.367c0 -2.53 0.777 -3.697 3.103 -3.893L86 22.78c2.14 -0.193 3.107 1.167 3.107 3.693v57.547c0 2.53 -0.39 4.67 -3.883 4.863l-60.377 3.5c-3.493 0.193 -5.043 -0.97 -5.043 -4.083zm59.6 -54.827c0.387 1.75 0 3.5 -1.75 3.7l-2.91 0.577v42.773c-2.527 1.36 -4.853 2.137 -6.797 2.137 -3.107 0 -3.883 -0.973 -6.21 -3.887l-19.03 -29.94v28.967l6.02 1.363s0 3.5 -4.857 3.5l-13.39 0.777c-0.39 -0.78 0 -2.723 1.357 -3.11l3.497 -0.97v-38.3L30.48 40.667c-0.39 -1.75 0.58 -4.277 3.3 -4.473l14.367 -0.967 19.8 30.327v-26.83l-5.047 -0.58c-0.39 -2.143 1.163 -3.7 3.103 -3.89l13.4 -0.78z" fill="#000"/>
+                                      </svg>
+                                    )}
+                                    {tool.name === 'Linear' && (
+                                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                                        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25z" fill="#fff"/>
+                                        <path d="M20.71 7.04a.996.996 0 0 0 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" fill="#fff"/>
+                                      </svg>
+                                    )}
+                                    {tool.name === 'GSlides' && (
+                                      <svg width="18" height="18" viewBox="0 0 48 48" fill="none">
+                                        <path d="M37 45H11c-2.209 0-4-1.791-4-4V7c0-2.209 1.791-4 4-4h18l12 12v26c0 2.209-1.791 4-4 4z" fill="#FFC107"/>
+                                        <path d="M29 3L29 15 41 15z" fill="#FFECB3"/>
+                                        <path d="M15 23H33V35H15z" fill="#FFECB3"/>
+                                        <path d="M15 27H33V31H15z" fill="#FFC107"/>
+                                      </svg>
+                                    )}
+                                    {tool.name === 'Claude' && (
+                                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                                        <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2z" fill="#fff"/>
+                                        <path d="M16.5 8.5c-.828 0-1.5.672-1.5 1.5s.672 1.5 1.5 1.5 1.5-.672 1.5-1.5-.672-1.5-1.5-1.5zm-9 0C6.672 8.5 6 9.172 6 10s.672 1.5 1.5 1.5S9 10.828 9 10s-.672-1.5-1.5-1.5zm4.5 9c-2.33 0-4.304-1.458-5.084-3.5h10.168c-.78 2.042-2.754 3.5-5.084 3.5z" fill="#D4A27F"/>
+                                      </svg>
+                                    )}
+                                    {tool.name === 'Gemini' && (
+                                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" fill="#fff"/>
+                                        <path d="M12 6l-4 6h8l-4-6zm0 12l4-6H8l4 6z" fill="#fff"/>
+                                      </svg>
+                                    )}
+                                    {tool.name === 'Midjourney' && (
+                                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" fill="#FFFFFF"/>
+                                        <path d="M8 8h8v2H8V8zm0 3h8v2H8v-2zm0 3h5v2H8v-2z" fill="#0B0B0B"/>
+                                      </svg>
+                                    )}
+                                    {tool.name === 'ScreenStudio' && (
+                                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                                        <rect x="3" y="4" width="18" height="12" rx="2" fill="#fff"/>
+                                        <circle cx="12" cy="10" r="3" fill="#7C3AED"/>
+                                        <path d="M8 20h8" stroke="#fff" strokeWidth="2" strokeLinecap="round"/>
+                                      </svg>
+                                    )}
+                                  </div>
+                                  {/* App Name */}
+                                  <span className={`text-sm font-medium ${
+                                    systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+                                  }`}>
+                                    {tool.name}
+                                  </span>
+                                </div>
                               ))}
                            </div>
                         </div>
@@ -3752,14 +3850,17 @@ const App: React.FC = () => {
       {/* Booking Modal */}
       <AnimatePresence>
       {isBookingOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8">
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 md:p-8">
            {/* Backdrop */}
            <motion.div
              initial={{ opacity: 0 }}
              animate={{ opacity: 1 }}
              exit={{ opacity: 0 }}
              transition={{ duration: 0.2 }}
-             onClick={() => setIsBookingOpen(false)}
+             onClick={() => {
+               setIsBookingOpen(false);
+               if (isExecutiveOpen) setShowExecutiveFarewell(true);
+             }}
              className={`absolute inset-0 ${
                systemTheme === 'dark'
                  ? 'bg-black/80 backdrop-blur-xl'
@@ -3783,7 +3884,10 @@ const App: React.FC = () => {
               {/* Close button */}
               <div className="absolute top-6 right-6 z-20">
                  <button
-                   onClick={() => setIsBookingOpen(false)}
+                   onClick={() => {
+                     setIsBookingOpen(false);
+                     if (isExecutiveOpen) setShowExecutiveFarewell(true);
+                   }}
                    className={`p-2.5 rounded-full transition-all duration-200 backdrop-blur-sm ${
                      systemTheme === 'dark'
                        ? 'bg-white/10 hover:bg-white/20 text-white border border-white/10'
@@ -3814,7 +3918,7 @@ const App: React.FC = () => {
       {/* Simple Contact Form Modal */}
       <AnimatePresence>
       {isSimpleContactOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8">
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 md:p-8">
            <motion.div
              initial={{ opacity: 0 }}
              animate={{ opacity: 1 }}
@@ -3825,7 +3929,10 @@ const App: React.FC = () => {
                  ? 'bg-black/80 backdrop-blur-xl'
                  : 'bg-white/95 backdrop-blur-xl'
              }`}
-             onClick={() => setIsSimpleContactOpen(false)}
+             onClick={() => {
+               setIsSimpleContactOpen(false);
+               if (isExecutiveOpen) setShowExecutiveFarewell(true);
+             }}
            />
            <motion.div
              initial={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -3849,7 +3956,10 @@ const App: React.FC = () => {
                   : 'bg-white/95 border-gray-100'
               }`}>
                 <button
-                  onClick={() => setIsSimpleContactOpen(false)}
+                  onClick={() => {
+                    setIsSimpleContactOpen(false);
+                    if (isExecutiveOpen) setShowExecutiveFarewell(true);
+                  }}
                   className={`absolute top-6 right-6 p-2 rounded-full transition-colors ${
                     systemTheme === 'dark'
                       ? 'bg-gray-800 hover:bg-gray-700 text-white'
@@ -4586,128 +4696,27 @@ ${contactForm.message}`;
       )}
       </AnimatePresence>
 
-      {/* Lab Modal */}
+      {/* Lab Modal - Full screen iframe */}
       <AnimatePresence>
-      {selectedLabItem && LAB_PREVIEWS[selectedLabItem as keyof typeof LAB_PREVIEWS] && (() => {
-        const item = LAB_PREVIEWS[selectedLabItem as keyof typeof LAB_PREVIEWS];
-        const colorClasses = {
-          blue: {
-            badge: 'bg-blue-600/20 border-blue-600/30 text-blue-300',
-            bullet: 'bg-blue-600',
-            button: 'bg-blue-600 hover:bg-blue-700'
-          },
-          amber: {
-            badge: 'bg-amber-500/20 border-amber-500/30 text-amber-300',
-            bullet: 'bg-amber-500',
-            button: 'bg-amber-600 hover:bg-amber-700'
-          },
-          purple: {
-            badge: 'bg-purple-500/20 border-purple-500/30 text-purple-300',
-            bullet: 'bg-purple-500',
-            button: 'bg-purple-600 hover:bg-purple-700'
-          },
-          pink: {
-            badge: 'bg-pink-500/20 border-pink-500/30 text-pink-300',
-            bullet: 'bg-pink-500',
-            button: 'bg-pink-600 hover:bg-pink-700'
-          }
-        };
-        const colors = colorClasses[item.color as keyof typeof colorClasses];
-
-        return (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8">
-             <motion.div
-               initial={{ opacity: 0 }}
-               animate={{ opacity: 1 }}
-               exit={{ opacity: 0 }}
-               transition={{ duration: 0.2 }}
-               className="absolute inset-0 bg-black/80 backdrop-blur-md"
-               onClick={() => setSelectedLabItem(null)}
-             />
-             <motion.div
-               initial={{ opacity: 0, scale: 0.95, y: 20 }}
-               animate={{ opacity: 1, scale: 1, y: 0 }}
-               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-               transition={{
-                 type: 'spring',
-                 stiffness: 300,
-                 damping: 25,
-                 mass: 0.5
-               }}
-               className="relative w-full max-w-5xl bg-gradient-to-br from-gray-900 to-black rounded-3xl overflow-hidden shadow-2xl border border-white/10"
-             >
-                {/* Close button */}
-                <button
-                  onClick={() => setSelectedLabItem(null)}
-                  className="absolute top-4 right-4 z-10 p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors backdrop-blur-sm"
-                >
-                   <X size={24} className="text-white" />
-                </button>
-
-                <div className="p-8 md:p-12">
-                   {/* Header */}
-                   <div className="mb-8">
-                      <div className={`inline-flex items-center px-3 py-1 rounded-full border text-xs font-medium mb-4 ${colors.badge}`}>
-                         {item.subtitle}
-                      </div>
-                      <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-4">
-                         {item.title}
-                      </h2>
-                   </div>
-
-                   {/* Highlights */}
-                   <div className="mb-8">
-                      <h3 className="text-lg font-semibold text-gray-300 mb-4">Highlights</h3>
-                      <ul className="space-y-2">
-                         {item.highlights.map((highlight, idx) => (
-                            <li key={idx} className="flex items-start text-gray-400">
-                               <span className={`inline-block w-1.5 h-1.5 rounded-full mt-2 mr-3 flex-shrink-0 ${colors.bullet}`} />
-                               <span>{highlight}</span>
-                            </li>
-                         ))}
-                      </ul>
-                   </div>
-
-                   {/* Preview Grid */}
-                   <div className="mb-8">
-                      <h3 className="text-lg font-semibold text-gray-300 mb-4">Preview</h3>
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                         {item.previews.map((previewItem, idx) => (
-                            <div
-                               key={idx}
-                               className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-4 hover:bg-white/10 transition-all duration-300"
-                               style={{ animationDelay: `${idx * 50}ms` }}
-                            >
-                               <div className="text-sm text-gray-300 font-medium text-center">
-                                  {previewItem}
-                               </div>
-                            </div>
-                         ))}
-                      </div>
-                   </div>
-
-                   {/* CTA */}
-                   <div className="flex justify-center pt-4">
-                      <a
-                         href={item.link}
-                         target="_blank"
-                         rel="noopener noreferrer"
-                         className={`px-8 py-4 text-white rounded-full font-semibold text-lg transition-all duration-300 hover:scale-105 shadow-lg flex items-center ${colors.button}`}
-                      >
-                         Explore Full {item.title.split(' ')[1]} <ExternalLink size={20} className="ml-2" />
-                      </a>
-                   </div>
-                </div>
-             </motion.div>
-          </div>
-        );
-      })()}
+        {selectedLabItem && LAB_PREVIEWS[selectedLabItem as keyof typeof LAB_PREVIEWS] && (
+          <IframeModal
+            key={selectedLabItem}
+            onClose={() => setSelectedLabItem(null)}
+            systemTheme={systemTheme}
+            title={LAB_PREVIEWS[selectedLabItem as keyof typeof LAB_PREVIEWS].title}
+            url={LAB_PREVIEWS[selectedLabItem as keyof typeof LAB_PREVIEWS].link}
+            lang={language}
+            subtitle={LAB_PREVIEWS[selectedLabItem as keyof typeof LAB_PREVIEWS].subtitle}
+            description={LAB_PREVIEWS[selectedLabItem as keyof typeof LAB_PREVIEWS].highlights.join(' • ')}
+            color={LAB_PREVIEWS[selectedLabItem as keyof typeof LAB_PREVIEWS].color as 'blue' | 'amber' | 'purple' | 'pink'}
+          />
+        )}
       </AnimatePresence>
 
       {/* Resume Modal */}
       <AnimatePresence>
       {isResumeOpen && (
-        <div className="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto">
+        <div className="fixed inset-0 z-[200] flex items-start justify-center overflow-y-auto">
           {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
@@ -5101,6 +5110,13 @@ ${contactForm.message}`;
                  <Linkedin size={14} className="mr-1.5" />
                  LinkedIn
                </a>
+               <button
+                 onClick={() => setIsExecutiveOpen(true)}
+                 className="text-sm text-gray-400 hover:text-white transition-colors duration-200 flex items-center"
+               >
+                 <Briefcase size={14} className="mr-1.5" />
+                 {content.bio.view_executive}
+               </button>
             </div>
 
             {/* Footer Info */}
@@ -7103,7 +7119,7 @@ ${contactForm.message}`;
             viewMode={openProject.viewMode}
             onViewModeChange={(mode) => setOpenProject({ project: 'toolkit', viewMode: mode })}
             lang={lang}
-            galleryItems={TOOLKIT_GALLERY_ITEMS}
+            galleryItems={getToolkitGalleryItems(lang)}
           />
         )}
       </AnimatePresence>
@@ -7120,7 +7136,7 @@ ${contactForm.message}`;
             viewMode={openProject.viewMode}
             onViewModeChange={(mode) => setOpenProject({ project: 'dailymotion', viewMode: mode })}
             lang={lang}
-            galleryItems={DAILYMOTION_GALLERY_ITEMS}
+            galleryItems={getDailymotionGalleryItems(lang)}
           />
         )}
       </AnimatePresence>
@@ -7137,7 +7153,44 @@ ${contactForm.message}`;
             viewMode={openProject.viewMode}
             onViewModeChange={(mode) => setOpenProject({ project: 'connect', viewMode: mode })}
             lang={lang}
-            galleryItems={CONNECT_GALLERY_ITEMS}
+            galleryItems={getConnectGalleryItems(lang)}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Unified Project Modal - SQOOL */}
+      <AnimatePresence>
+        {openProject?.project === 'sqool' && (
+          <SqoolPage
+            onClose={() => setOpenProject(null)}
+            systemTheme={systemTheme}
+            onToggleTheme={() => {
+              setThemeMode(prev => prev === 'dark' ? 'light' : 'dark');
+            }}
+            viewMode={openProject.viewMode}
+            onViewModeChange={(mode) => setOpenProject({ project: 'sqool', viewMode: mode })}
+            lang={lang}
+            galleryItems={getSqoolGalleryItems(lang)}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Executive Profile Modal */}
+      <AnimatePresence>
+        {isExecutiveOpen && (
+          <ExecutivePage
+            language={lang}
+            onClose={() => {
+              setIsExecutiveOpen(false);
+              setShowExecutiveFarewell(false);
+            }}
+            onBookCall={() => setIsBookingOpen(true)}
+            onContact={() => setIsSimpleContactOpen(true)}
+            onOpenResume={(resumeLanguage) => {
+              setResumeLang(resumeLanguage);
+              setIsResumeOpen(true);
+            }}
+            showFarewell={showExecutiveFarewell}
           />
         )}
       </AnimatePresence>

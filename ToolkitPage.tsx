@@ -194,6 +194,22 @@ const TOOLKIT_TRANSLATIONS = {
       phase: 'Phase',
     },
     captions: {
+      hero: 'Toolkit App',
+      heroDesc: 'Construction management software that works.',
+      overview: 'Toolkit App Overview',
+      overviewDesc: 'Platform maturity with web and mobile interfaces.',
+      productEvolution: 'Product Evolution',
+      productEvolutionDesc: '12 months roadmap showing the journey from prototype to platform maturity.',
+      coreChallenge: 'Core Design Challenge',
+      coreChallengeDesc: 'Planning interface showing the fundamental tension: 50-100+ tasks across zones and timelines.',
+      research: 'Research process',
+      researchDesc: 'Lean validation in a three-person team with continuous user feedback.',
+      foundation: 'Product Foundation',
+      foundationDesc: 'MVP scope securing initial funding with core infrastructure.',
+      creationWorkflow: 'Project creation workflow',
+      creationWorkflowDesc: 'Four-step process from project basics to team launch.',
+      interactionPrinciples: 'Core interaction principles',
+      interactionPrinciplesDesc: 'Design principles preventing feature bloat as product expanded.',
       passwordlessAuth: 'Passwordless authentication',
       passwordlessAuthDesc: 'Magic link login eliminates password friction for field workers sharing devices.',
       emptyState: 'Empty state',
@@ -412,6 +428,22 @@ const TOOLKIT_TRANSLATIONS = {
       phase: 'Phase',
     },
     captions: {
+      hero: 'Toolkit App',
+      heroDesc: 'Logiciel de gestion de chantier qui fonctionne vraiment.',
+      overview: 'Vue d\'ensemble Toolkit',
+      overviewDesc: 'Maturité plateforme avec interfaces web et mobile.',
+      productEvolution: 'Évolution produit',
+      productEvolutionDesc: 'Roadmap 12 mois montrant le parcours du prototype à la maturité plateforme.',
+      coreChallenge: 'Défi design central',
+      coreChallengeDesc: 'Interface de planification montrant la tension fondamentale : 50-100+ tâches sur zones et timelines.',
+      research: 'Processus de recherche',
+      researchDesc: 'Validation lean dans une équipe de trois avec feedback utilisateur continu.',
+      foundation: 'Fondation produit',
+      foundationDesc: 'Scope MVP sécurisant le financement initial avec infrastructure core.',
+      creationWorkflow: 'Workflow de création projet',
+      creationWorkflowDesc: 'Processus en quatre étapes des bases du projet au lancement de l\'équipe.',
+      interactionPrinciples: 'Principes d\'interaction core',
+      interactionPrinciplesDesc: 'Principes de design évitant la surcharge fonctionnelle à mesure que le produit grandit.',
       passwordlessAuth: 'Authentification sans mot de passe',
       passwordlessAuthDesc: 'La connexion par magic link élimine la friction des mots de passe pour les ouvriers sur site.',
       emptyState: 'État vide',
@@ -482,42 +514,42 @@ const sections = [
 ];
 
 // All media (images + videos) for lightbox navigation
-type MediaItem = { src: string; caption: string; type: 'image' | 'video' };
-const allImages: MediaItem[] = [
-  { src: '/images/toolkit/hero.webp', caption: 'Toolkit App Hero', type: 'image' },
-  { src: '/images/toolkit/toolkit_app_v3.webp', caption: 'Toolkit App Overview', type: 'image' },
-  { src: '/images/toolkit/Diagram_00_-_Product_Evolution___12_months.svg', caption: 'Product Evolution - 12 months roadmap showing the journey from prototype to platform maturity.', type: 'image' },
-  { src: '/images/toolkit/Diagram_01_-_Problem.svg', caption: 'Core Design Challenge - Planning interface showing the fundamental tension: construction projects contain 50-100+ tasks across multiple zones and timelines.', type: 'image' },
-  { src: '/images/toolkit/Diagram_02_-_Research.svg', caption: 'Research and continuous learnings process - Lean validation in a three-person team.', type: 'image' },
-  { src: '/images/toolkit/Diagram_03_-_Foundation.svg', caption: 'Product Foundation - MVP scope securing initial funding.', type: 'image' },
-  { src: '/images/toolkit/Diagram_04_-_Project_creation_workflow.svg', caption: 'Four-step process from project basics to team launch.', type: 'image' },
-  { src: '/images/toolkit/Diagram_05_-_Core_interaction_principles.svg', caption: 'Design principles preventing feature bloat as product expanded.', type: 'image' },
-  { src: '/images/toolkit/authentication_-_magic_link.svg', caption: 'Passwordless authentication via magic link.', type: 'image' },
-  { src: '/images/toolkit/desktop_-_chantier_-_create_-_empty.svg', caption: 'Empty state greeting new users.', type: 'image' },
-  { src: '/images/toolkit/desktop_-_chantier_-_create_-_modal.svg', caption: 'Form design pattern used across all the application.', type: 'image' },
-  { src: '/images/toolkit/desktop_-_chantier_-_details_-_v1.svg', caption: 'Chantier Detail v1 - Early desktop layout establishing dual sidebar architecture.', type: 'image' },
-  { src: '/images/toolkit/desktop_-_chantier_-_details_-_v2.svg', caption: 'Chantier Detail v2 - Removed the metadata informations to the edit view.', type: 'image' },
-  { src: '/videos/toolkit/video_-_navigation_-_show_hide.mp4', caption: 'Navigation show/hide - Secondary sidebar collapsing and expanding on demand.', type: 'video' },
-  { src: '/images/toolkit/daktop_-_site_setup_-_tasks_list.svg', caption: 'Task creation - Assisted task creation for quick addition and task setting.', type: 'image' },
-  { src: '/images/toolkit/daktop_-_site_setup_-_tasks_sequence.svg', caption: 'Tasks sequences - Templating is part of Toolkit DNA.', type: 'image' },
-  { src: '/images/toolkit/planning_-_v1.svg', caption: 'Planning v1 - First planning canvas with colorful task card aesthetic.', type: 'image' },
-  { src: '/images/toolkit/Component_Task_v1.svg', caption: 'Multiple sizes and variations for Task component.', type: 'image' },
-  { src: '/images/toolkit/Component_Task_v2.svg', caption: 'Refined component system addressing scalability.', type: 'image' },
-  { src: '/images/toolkit/planning_-_v2.svg', caption: 'Planning v2 - Planning canvas evolution with refined visual system.', type: 'image' },
-  { src: '/images/toolkit/planning_-_mouse_-_selection_rectangle.svg', caption: 'Multi-select via rectangle drag enabling batch operations.', type: 'image' },
-  { src: '/images/toolkit/planning_-_mouse_-_right_click.svg', caption: 'Context-aware menu adapting to selected task.', type: 'image' },
-  { src: '/images/toolkit/planning_-_selection_tache_dynamic_menu.svg', caption: 'Planning canvas with adaptive zoom interface.', type: 'image' },
-  { src: '/videos/toolkit/video_-_planning_-_zoom_dezoom.mp4', caption: 'Expand layout - Zoom in and out on the planning canvas for better focus.', type: 'video' },
-  { src: '/images/toolkit/dynamic_island_menu_-_modifier_tache.svg', caption: 'Task editing modal overlaying planning canvas.', type: 'image' },
-  { src: '/videos/toolkit/video_-_task_manipulation.mp4', caption: 'Task manipulation - Edit duration and task information on the fly.', type: 'video' },
-  { src: '/videos/toolkit/video_-_batch_edition.mp4', caption: 'Batch edition - Select a zone or multiple tasks on the canvas, apply parameters in 20 seconds.', type: 'video' },
-  { src: '/images/toolkit/dynamic_menu_-_components_and_interface_system.svg', caption: 'Adaptive menu system showing five transformation states.', type: 'image' },
-  { src: '/images/toolkit/cars_detail_tache_-_dynamic_menu_-_comportement_section_activite.svg', caption: 'Task detail card showing activity log evolution.', type: 'image' },
-  { src: '/images/toolkit/desktop_-_chantier_-_index_-_v3.svg', caption: 'Multi-project hub replacing dashboard in V3.', type: 'image' },
-  { src: '/images/toolkit/evolution_mobile_menu.svg', caption: 'Mobile bottom navigation transformation.', type: 'image' },
-  { src: '/images/toolkit/Design_system.svg', caption: 'Scalable design system components and patterns.', type: 'image' },
-  { src: '/images/toolkit/system_-_icons_-_files_and_folders.svg', caption: 'Document type icon library for construction workflows.', type: 'image' },
-  { src: '/images/toolkit/Diagram_06_-_Impact.svg', caption: 'Six qualitative impact dimensions plus business outcomes.', type: 'image' },
+type MediaItem = { src: string; captionKey: string; type: 'image' | 'video' };
+const allImagesData: MediaItem[] = [
+  { src: '/images/toolkit/hero.webp', captionKey: 'hero', type: 'image' },
+  { src: '/images/toolkit/toolkit_app_v3.webp', captionKey: 'overview', type: 'image' },
+  { src: '/images/toolkit/Diagram_00_-_Product_Evolution___12_months.svg', captionKey: 'productEvolution', type: 'image' },
+  { src: '/images/toolkit/Diagram_01_-_Problem.svg', captionKey: 'coreChallenge', type: 'image' },
+  { src: '/images/toolkit/Diagram_02_-_Research.svg', captionKey: 'research', type: 'image' },
+  { src: '/images/toolkit/Diagram_03_-_Foundation.svg', captionKey: 'foundation', type: 'image' },
+  { src: '/images/toolkit/Diagram_04_-_Project_creation_workflow.svg', captionKey: 'creationWorkflow', type: 'image' },
+  { src: '/images/toolkit/Diagram_05_-_Core_interaction_principles.svg', captionKey: 'interactionPrinciples', type: 'image' },
+  { src: '/images/toolkit/authentication_-_magic_link.svg', captionKey: 'passwordlessAuth', type: 'image' },
+  { src: '/images/toolkit/desktop_-_chantier_-_create_-_empty.svg', captionKey: 'emptyState', type: 'image' },
+  { src: '/images/toolkit/desktop_-_chantier_-_create_-_modal.svg', captionKey: 'formPattern', type: 'image' },
+  { src: '/images/toolkit/desktop_-_chantier_-_details_-_v1.svg', captionKey: 'chantierV1', type: 'image' },
+  { src: '/images/toolkit/desktop_-_chantier_-_details_-_v2.svg', captionKey: 'chantierV2', type: 'image' },
+  { src: '/videos/toolkit/video_-_navigation_-_show_hide.mp4', captionKey: 'navShowHide', type: 'video' },
+  { src: '/images/toolkit/daktop_-_site_setup_-_tasks_list.svg', captionKey: 'taskCreation', type: 'image' },
+  { src: '/images/toolkit/daktop_-_site_setup_-_tasks_sequence.svg', captionKey: 'taskSequences', type: 'image' },
+  { src: '/images/toolkit/planning_-_v1.svg', captionKey: 'planningV1', type: 'image' },
+  { src: '/images/toolkit/Component_Task_v1.svg', captionKey: 'taskComponentV1', type: 'image' },
+  { src: '/images/toolkit/Component_Task_v2.svg', captionKey: 'taskComponentV2', type: 'image' },
+  { src: '/images/toolkit/planning_-_v2.svg', captionKey: 'planningV2', type: 'image' },
+  { src: '/images/toolkit/planning_-_mouse_-_selection_rectangle.svg', captionKey: 'multiSelect', type: 'image' },
+  { src: '/images/toolkit/planning_-_mouse_-_right_click.svg', captionKey: 'contextMenu', type: 'image' },
+  { src: '/images/toolkit/planning_-_selection_tache_dynamic_menu.svg', captionKey: 'adaptiveZoom', type: 'image' },
+  { src: '/videos/toolkit/video_-_planning_-_zoom_dezoom.mp4', captionKey: 'expandLayout', type: 'video' },
+  { src: '/images/toolkit/dynamic_island_menu_-_modifier_tache.svg', captionKey: 'dynamicIsland', type: 'image' },
+  { src: '/videos/toolkit/video_-_task_manipulation.mp4', captionKey: 'taskManipulation', type: 'video' },
+  { src: '/videos/toolkit/video_-_batch_edition.mp4', captionKey: 'batchEdition', type: 'video' },
+  { src: '/images/toolkit/dynamic_menu_-_components_and_interface_system.svg', captionKey: 'interfaceSystem', type: 'image' },
+  { src: '/images/toolkit/cars_detail_tache_-_dynamic_menu_-_comportement_section_activite.svg', captionKey: 'activitySection', type: 'image' },
+  { src: '/images/toolkit/desktop_-_chantier_-_index_-_v3.svg', captionKey: 'projectHubV3', type: 'image' },
+  { src: '/images/toolkit/evolution_mobile_menu.svg', captionKey: 'mobileNav', type: 'image' },
+  { src: '/images/toolkit/Design_system.svg', captionKey: 'designSystem', type: 'image' },
+  { src: '/images/toolkit/system_-_icons_-_files_and_folders.svg', captionKey: 'iconSystem', type: 'image' },
+  { src: '/images/toolkit/Diagram_06_-_Impact.svg', captionKey: 'projectImpact', type: 'image' },
 ];
 
 // Apple-style spring transition
@@ -630,6 +662,14 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
   galleryItems
 }) => {
   const t = TOOLKIT_TRANSLATIONS[lang];
+
+  // Build allImages with translated captions
+  const allImages = allImagesData.map(item => ({
+    src: item.src,
+    type: item.type,
+    caption: `${t.captions[item.captionKey as keyof typeof t.captions]} - ${t.captions[`${item.captionKey}Desc` as keyof typeof t.captions] || ''}`
+  }));
+
   const [activeSection, setActiveSection] = useState('hero');
   const [isMobileNavExpanded, setIsMobileNavExpanded] = useState(false);
   const [showNav, setShowNav] = useState(false);
@@ -1301,6 +1341,101 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
             </div>
           </div>
         </section>
+
+        {/* Project Meta Card - Synthesis */}
+        <div
+          className={`p-6 rounded-3xl border mb-12 ${
+            systemTheme === 'dark'
+              ? 'bg-[#1D1D1F] border-white/10'
+              : 'bg-gray-50 border-gray-200'
+          }`}
+        >
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="flex items-center space-x-3">
+              <div
+                className={`p-2 rounded-xl ${
+                  systemTheme === 'dark' ? 'bg-blue-600/20' : 'bg-blue-50'
+                }`}
+              >
+                <Layers
+                  size={20}
+                  className={systemTheme === 'dark' ? 'text-blue-400' : 'text-blue-600'}
+                />
+              </div>
+              <div>
+                <p className={`text-xs ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
+                  Type
+                </p>
+                <p className={`text-sm font-medium ${systemTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                  {projectMeta.type}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center space-x-3">
+              <div
+                className={`p-2 rounded-xl ${
+                  systemTheme === 'dark' ? 'bg-purple-500/20' : 'bg-purple-50'
+                }`}
+              >
+                <Briefcase
+                  size={20}
+                  className={systemTheme === 'dark' ? 'text-purple-400' : 'text-purple-600'}
+                />
+              </div>
+              <div>
+                <p className={`text-xs ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
+                  Scope
+                </p>
+                <p className={`text-sm font-medium ${systemTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                  {projectMeta.scope}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center space-x-3">
+              <div
+                className={`p-2 rounded-xl ${
+                  systemTheme === 'dark' ? 'bg-green-500/20' : 'bg-green-50'
+                }`}
+              >
+                <Calendar
+                  size={20}
+                  className={systemTheme === 'dark' ? 'text-green-400' : 'text-green-600'}
+                />
+              </div>
+              <div>
+                <p className={`text-xs ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
+                  Period
+                </p>
+                <p className={`text-sm font-medium ${systemTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                  {projectMeta.period}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center space-x-3">
+              <div
+                className={`p-2 rounded-xl ${
+                  systemTheme === 'dark' ? 'bg-orange-500/20' : 'bg-orange-50'
+                }`}
+              >
+                <Rocket
+                  size={20}
+                  className={systemTheme === 'dark' ? 'text-orange-400' : 'text-orange-600'}
+                />
+              </div>
+              <div>
+                <p className={`text-xs ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
+                  Phase
+                </p>
+                <p className={`text-sm font-medium ${systemTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                  {projectMeta.phase}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
 
         {/* Hero Image */}
         <figure className="mb-16">
@@ -2505,141 +2640,6 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
             </div>
           </div>
         </section>
-
-        {/* Project Meta Card - Bottom */}
-        <div
-          className={`p-6 rounded-3xl border mt-12 ${
-            systemTheme === 'dark'
-              ? 'bg-[#1D1D1F] border-white/10'
-              : 'bg-gray-50 border-gray-200'
-          }`}
-        >
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="flex items-center space-x-3">
-              <div
-                className={`p-2 rounded-xl ${
-                  systemTheme === 'dark' ? 'bg-blue-600/20' : 'bg-blue-50'
-                }`}
-              >
-                <Layers
-                  size={20}
-                  className={
-                    systemTheme === 'dark' ? 'text-blue-400' : 'text-blue-600'
-                  }
-                />
-              </div>
-              <div>
-                <p
-                  className={`text-xs ${
-                    systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                  }`}
-                >
-                  Type
-                </p>
-                <p
-                  className={`text-sm font-medium ${
-                    systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                  }`}
-                >
-                  {projectMeta.type}
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-center space-x-3">
-              <div
-                className={`p-2 rounded-xl ${
-                  systemTheme === 'dark' ? 'bg-purple-500/20' : 'bg-purple-50'
-                }`}
-              >
-                <Briefcase
-                  size={20}
-                  className={
-                    systemTheme === 'dark' ? 'text-purple-400' : 'text-purple-600'
-                  }
-                />
-              </div>
-              <div>
-                <p
-                  className={`text-xs ${
-                    systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                  }`}
-                >
-                  Scope
-                </p>
-                <p
-                  className={`text-sm font-medium ${
-                    systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                  }`}
-                >
-                  {projectMeta.scope}
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-center space-x-3">
-              <div
-                className={`p-2 rounded-xl ${
-                  systemTheme === 'dark' ? 'bg-green-500/20' : 'bg-green-50'
-                }`}
-              >
-                <Calendar
-                  size={20}
-                  className={
-                    systemTheme === 'dark' ? 'text-green-400' : 'text-green-600'
-                  }
-                />
-              </div>
-              <div>
-                <p
-                  className={`text-xs ${
-                    systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                  }`}
-                >
-                  Period
-                </p>
-                <p
-                  className={`text-sm font-medium ${
-                    systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                  }`}
-                >
-                  {projectMeta.period}
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-center space-x-3">
-              <div
-                className={`p-2 rounded-xl ${
-                  systemTheme === 'dark' ? 'bg-orange-500/20' : 'bg-orange-50'
-                }`}
-              >
-                <Rocket
-                  size={20}
-                  className={
-                    systemTheme === 'dark' ? 'text-orange-400' : 'text-orange-600'
-                  }
-                />
-              </div>
-              <div>
-                <p
-                  className={`text-xs ${
-                    systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                  }`}
-                >
-                  Phase
-                </p>
-                <p
-                  className={`text-sm font-medium ${
-                    systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                  }`}
-                >
-                  {projectMeta.phase}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
 
         {/* Bottom spacing for mobile nav */}
         <div className="h-20 md:h-0" />
