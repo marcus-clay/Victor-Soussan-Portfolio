@@ -1720,9 +1720,16 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
                 className="w-28 h-28 sm:w-40 sm:h-40 rounded-full object-cover mb-6 sm:mb-10 border-4 border-gray-100 shadow-xl"
               />
             )}
-            <h2 className="text-3xl sm:text-5xl md:text-7xl font-bold text-gray-900 tracking-tight">
+            <h2 className="text-3xl sm:text-5xl md:text-7xl font-bold text-gray-900 tracking-tight mb-8 sm:mb-12">
               {slide.headline}
             </h2>
+            <button
+              onClick={onClose}
+              className="flex items-center justify-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 bg-gray-900 text-white rounded-full text-sm sm:text-lg font-medium hover:bg-gray-800 transition-colors shadow-lg"
+            >
+              {lang === 'fr' ? 'Continuer sur le site' : 'Continue to website'}
+              <ChevronRight size={18} className="sm:w-5 sm:h-5" />
+            </button>
           </div>
         );
 
