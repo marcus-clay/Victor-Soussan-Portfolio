@@ -1697,7 +1697,9 @@ const App: React.FC = () => {
   // Check URL parameters to open presentation directly
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('presentation') === '1' || urlParams.get('deck') === '1') {
+    const presentationParam = urlParams.get('presentation');
+    const deckParam = urlParams.get('deck');
+    if (presentationParam === '1' || deckParam === '1') {
       setIsExecutiveOpen(true);
     }
   }, []);
