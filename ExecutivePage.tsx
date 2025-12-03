@@ -1034,6 +1034,12 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
 
   // Handle swipe/tap navigation on main slides (story-like)
   const handleSlideDragEnd = (_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    // Don't navigate if lightbox is open
+    if (lightboxOpen || videoLightboxOpen) {
+      slideDragX.set(0);
+      return;
+    }
+
     const swipeThreshold = 50;
     const swipeVelocity = 300;
 
@@ -1047,6 +1053,11 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
 
   // Handle tap navigation (tap left/right sides of screen)
   const handleTapNavigation = (e: React.MouseEvent | React.TouchEvent) => {
+    // Don't navigate if lightbox is open
+    if (lightboxOpen || videoLightboxOpen) {
+      return;
+    }
+
     // Don't navigate if clicking on interactive elements
     const target = e.target as HTMLElement;
     if (target.closest('button') || target.closest('a') || target.closest('video') || target.closest('input')) {
@@ -1407,7 +1418,7 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
                       {/* Quote */}
                       <div className="relative flex-1">
                         <div className="text-xl sm:text-2xl text-gray-200 absolute -top-1 -left-1">"</div>
-                        <p className="text-gray-600 text-xs sm:text-[13px] leading-relaxed pl-3 pt-1 line-clamp-4 sm:line-clamp-4">
+                        <p className="text-gray-600 text-xs sm:text-[13px] leading-relaxed pl-3 pt-1">
                           {testimonial.quote}
                         </p>
                       </div>
