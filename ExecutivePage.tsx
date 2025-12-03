@@ -462,7 +462,7 @@ const SLIDES = {
     // 12. Testimonials
     {
       type: 'testimonials',
-      headline: 'What they say',
+      headline: 'Testimonials',
       testimonials: [
         {
           quote: 'Victor didn\'t just create mockups. He transformed business requirements into perfectly adapted user journeys. Victor is a great guy: curious, positive, ready to challenge to go further.',
@@ -479,11 +479,88 @@ const SLIDES = {
           linkedin: 'https://www.linkedin.com/in/charlotterifflet',
         },
         {
-          quote: 'As Product Lead in UI & Interaction Design, he played a central role in defining the product vision... I was struck by Victor\'s curiosity and his ability to share knowledge pedagogically.',
+          quote: 'Always proposing ideas that shake things up... you never settled for just thinking: you produced, tested, wireframed, prototyped. Your UX expertise is undeniable.',
+          author: 'Boris Aimé-Bauderlique',
+          role: 'Deployment Manager @FranceVAE',
+          image: 'boris-aime-bauderlique.png',
+          linkedin: 'https://www.linkedin.com/in/boris-aimé-bauderlique',
+        },
+        {
+          quote: 'Victor is a true source of inspiration. I was lucky to work with him on several projects... he brought a pragmatic and professional approach.',
+          author: 'Achref Akkari',
+          role: 'Product Manager @UNOWHY',
+          image: 'achref-akkari.png',
+          linkedin: 'https://www.linkedin.com/in/achref-akkari',
+        },
+        {
+          quote: 'As Product Lead in UI & Interaction Design, he played a central role in defining the product vision... I was struck by Victor\'s curiosity.',
           author: 'Justine Le Tellier',
           role: 'UX Researcher @UNOWHY',
           image: 'justine-le-tellier.png',
           linkedin: 'https://www.linkedin.com/in/justine-le-tellier',
+        },
+        {
+          quote: 'I worked alongside Victor for 5 beautiful years. His expertise, 360 vision, and design talent enabled the creation and success of many projects.',
+          author: 'Hortense Jan',
+          role: 'Marketing Director @UNOWHY',
+          image: 'hortense-jan.png',
+          linkedin: 'https://www.linkedin.com/in/hortense-jan',
+        },
+        {
+          quote: 'Highly cultivated, curious, and creative, he always brings relevant ideas and original perspectives. Victor is particularly friendly.',
+          author: 'Hubert Bloch',
+          role: 'Deputy CEO @UNOWHY',
+          image: 'hubert-bloch.png',
+          linkedin: 'https://www.linkedin.com/in/hubert-bloch',
+        },
+        {
+          quote: 'Passionate and reliable... Lover of details... his feedback allowed me to reach a new level. He has the will to listen to his team.',
+          author: 'Mbagna Johan Gaby',
+          role: 'Product Designer',
+          image: 'johan-mbagna-gaby.png',
+          linkedin: 'https://www.linkedin.com/in/mbagna-johan-gaby',
+        },
+        {
+          quote: 'Beyond being a manager concerned with his team\'s well-being, he is passionate about details. Patient and pedagogical... A mentor I appreciated working with.',
+          author: 'Şafak Aktaş',
+          role: 'Graphic Designer at Reflet Digital',
+          image: 'safak-aktas.png',
+          linkedin: 'https://www.linkedin.com/in/safak-aktas',
+        },
+        {
+          quote: 'Professional and rigorous, Victor knows how to translate business stakes into relevant implementations... Victor is very attentive to his collaborators.',
+          author: 'Frederic Rodriguez',
+          role: 'Head of Poker - FDJ',
+          image: 'frederic-rodriguez.png',
+          linkedin: 'https://www.linkedin.com/in/frederic-rodriguez',
+        },
+        {
+          quote: 'Accessible, attentive, and responsible... working with Victor is a pleasure as he adheres to collective intelligence principles.',
+          author: 'Rémi Serougne',
+          role: 'Web Developer',
+          image: 'remi-serougne.png',
+          linkedin: 'https://www.linkedin.com/in/remi-serougne',
+        },
+        {
+          quote: 'He is a very capable designer who can do the legwork but also take a step back... He\'s worked on mobile and web, and has a keen eye for interaction design. Highly recommended.',
+          author: 'Simon White',
+          role: 'Senior UX',
+          image: 'simon-white.png',
+          linkedin: 'https://www.linkedin.com/in/simon-white',
+        },
+        {
+          quote: 'He knows how to unite people around a project, allowing for total autonomy to see it through.',
+          author: 'Nicolas Moulin',
+          role: 'Entrepreneur / Advisor',
+          image: 'nicolas-moulin.png',
+          linkedin: 'https://www.linkedin.com/in/nicolasmoulin',
+        },
+        {
+          quote: 'His previous experiences as Art Director and Designer bring a critical sense and a new approach... Victor helped us a lot on the embedded PagesJaunes application.',
+          author: 'François Khoury',
+          role: 'Senior Presales',
+          image: 'francois-khoury.png',
+          linkedin: 'https://www.linkedin.com/in/francoiskhoury',
         },
       ],
     },
@@ -630,7 +707,7 @@ const SLIDES = {
     // 12. Testimonials
     {
       type: 'testimonials',
-      headline: 'Ce qu\'ils disent',
+      headline: 'Témoignages',
       testimonials: [
         {
           quote: 'Victor ne s\'est pas contenté de faire des maquettes. Il a transformé les besoins métiers en parcours utilisateurs parfaitement adaptés. Victor est un super gars : curieux, positif, prêt à challenger pour aller toujours plus loin.',
@@ -647,11 +724,88 @@ const SLIDES = {
           linkedin: 'https://www.linkedin.com/in/charlotterifflet',
         },
         {
-          quote: 'En tant que Product Lead en UI & Interaction Design, il a joué un rôle central dans la définition de la vision produit... J\'ai été très marquée par la curiosité de Victor et sa capacité à partager son savoir avec pédagogie.',
+          quote: 'Toujours en train de proposer des idées qui bousculent... tu ne t\'es jamais contenté de rester dans la réflexion : tu as produit, testé, maquetté, prototypé. Ton expertise UX est indéniable.',
+          author: 'Boris Aimé-Bauderlique',
+          role: 'Chargé de déploiement @FranceVAE',
+          image: 'boris-aime-bauderlique.png',
+          linkedin: 'https://www.linkedin.com/in/boris-aimé-bauderlique',
+        },
+        {
+          quote: 'Victor est une véritable source d\'inspiration. J\'ai eu la chance de travailler avec lui sur plusieurs projets... il a su apporter une approche pragmatique et professionnelle.',
+          author: 'Achref Akkari',
+          role: 'Product Manager @UNOWHY',
+          image: 'achref-akkari.png',
+          linkedin: 'https://www.linkedin.com/in/achref-akkari',
+        },
+        {
+          quote: 'En tant que Product Lead en UI & Interaction Design, il a joué un rôle central dans la définition de la vision produit... J\'ai été très marquée par la curiosité de Victor.',
           author: 'Justine Le Tellier',
           role: 'UX Researcher @UNOWHY',
           image: 'justine-le-tellier.png',
           linkedin: 'https://www.linkedin.com/in/justine-le-tellier',
+        },
+        {
+          quote: 'J\'ai travaillé aux côtés de Victor pendant 5 belles années. Son expertise, sa vision 360 et son talent de designer ont permis la création et la réussite de nombreux projets.',
+          author: 'Hortense Jan',
+          role: 'Directrice Marketing @UNOWHY',
+          image: 'hortense-jan.png',
+          linkedin: 'https://www.linkedin.com/in/hortense-jan',
+        },
+        {
+          quote: 'Très cultivé, curieux et créatif, il apporte toujours des idées pertinentes et des perspectives originales. Victor est quelqu\'un de particulièrement sympathique.',
+          author: 'Hubert Bloch',
+          role: 'Directeur Général Adjoint @UNOWHY',
+          image: 'hubert-bloch.png',
+          linkedin: 'https://www.linkedin.com/in/hubert-bloch',
+        },
+        {
+          quote: 'Passionné et fiable... Amoureux des détails... ses retours m\'ont permis d\'atteindre un nouveau palier. Il a la volonté d\'être à l\'écoute de son équipe.',
+          author: 'Mbagna Johan Gaby',
+          role: 'Product Designer',
+          image: 'johan-mbagna-gaby.png',
+          linkedin: 'https://www.linkedin.com/in/mbagna-johan-gaby',
+        },
+        {
+          quote: 'En plus d\'être un manager soucieux du bien-être de son équipe, c\'est un passionné qui a le souci du détail. Patient et pédagogue... Un mentor avec lequel j\'ai apprécié travailler.',
+          author: 'Şafak Aktaş',
+          role: 'Graphiste chez Reflet Digital',
+          image: 'safak-aktas.png',
+          linkedin: 'https://www.linkedin.com/in/safak-aktas',
+        },
+        {
+          quote: 'Professionnel et rigoureux, Victor sait traduire les enjeux business dans des réalisations pertinentes... Victor est très à l\'écoute de ses collaborateurs.',
+          author: 'Frederic Rodriguez',
+          role: 'Head of Poker - FDJ',
+          image: 'frederic-rodriguez.png',
+          linkedin: 'https://www.linkedin.com/in/frederic-rodriguez',
+        },
+        {
+          quote: 'Accessible, à l\'écoute et responsable... travailler avec Victor est un plaisir car il adhère aux principes de l\'intelligence collective.',
+          author: 'Rémi Serougne',
+          role: 'Développeur Web',
+          image: 'remi-serougne.png',
+          linkedin: 'https://www.linkedin.com/in/remi-serougne',
+        },
+        {
+          quote: 'He is a very capable designer who can do the legwork but also take a step back... He\'s worked on mobile and web, and has a keen eye for interaction design. Highly recommended.',
+          author: 'Simon White',
+          role: 'Senior UX',
+          image: 'simon-white.png',
+          linkedin: 'https://www.linkedin.com/in/simon-white',
+        },
+        {
+          quote: 'Il sait fédérer les gens autour d\'un projet et qu\'on peut par conséquent lui laisser une autonomie totale pour le mener à bien.',
+          author: 'Nicolas Moulin',
+          role: 'Entrepreneur / Advisor',
+          image: 'nicolas-moulin.png',
+          linkedin: 'https://www.linkedin.com/in/nicolasmoulin',
+        },
+        {
+          quote: 'Ses expériences précédentes de DA et Designer apportent un sens critique et une nouvelle approche... Victor nous a beaucoup aidé sur l\'application embarquée PagesJaunes.',
+          author: 'François Khoury',
+          role: 'Senior Presales',
+          image: 'francois-khoury.png',
+          linkedin: 'https://www.linkedin.com/in/francoiskhoury',
         },
       ],
     },
@@ -734,6 +888,7 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
   const [videoLightboxSrc, setVideoLightboxSrc] = useState<string | null>(null);
   const [copiedField, setCopiedField] = useState<string | null>(null);
   const [[page, direction], setPage] = useState([0, 0]);
+  const [testimonialsPage, setTestimonialsPage] = useState(0);
   const slides = SLIDES[lang];
 
   // Copy to clipboard helper
@@ -771,6 +926,11 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
       }
     }
   }, [showFarewell, slides]);
+
+  // Reset testimonials carousel when changing slides or language
+  useEffect(() => {
+    setTestimonialsPage(0);
+  }, [currentSlide, lang]);
 
   const slide = visibleSlides[currentSlide];
 
@@ -1038,62 +1198,120 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
 
       case 'testimonials':
         const testimonialsList = slide.testimonials as { quote: string; author: string; role: string; image?: string; linkedin?: string }[];
+        const testimonialsPerPage = 3;
+        const totalTestimonialsPages = Math.ceil(testimonialsList.length / testimonialsPerPage);
+        const currentTestimonials = testimonialsList.slice(
+          testimonialsPage * testimonialsPerPage,
+          (testimonialsPage + 1) * testimonialsPerPage
+        );
         return (
           <div className="flex flex-col items-center justify-center h-full px-6 md:px-12 lg:px-20">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-12 tracking-tight text-center">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8 tracking-tight text-center">
               {slide.headline}
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl w-full">
-              {testimonialsList?.map((testimonial, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: idx * 0.1 }}
-                  className="flex flex-col p-6 bg-white rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-all"
-                >
-                  {/* Author info with avatar */}
-                  <div className="flex items-center mb-5">
-                    {testimonial.image ? (
-                      <img
-                        src={`/images/${testimonial.image}`}
-                        alt={testimonial.author}
-                        className="w-12 h-12 rounded-full mr-3 border-2 border-white shadow-sm object-cover"
-                      />
-                    ) : (
-                      <div className="w-12 h-12 rounded-full mr-3 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center text-gray-500 font-bold text-sm">
-                        {testimonial.author.split(' ').map(n => n[0]).join('')}
-                      </div>
-                    )}
-                    <div>
-                      {testimonial.linkedin ? (
-                        <a
-                          href={testimonial.linkedin}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="font-bold text-gray-900 hover:text-[#0077b5] transition-colors flex items-center group"
-                        >
-                          {testimonial.author}
-                          <Linkedin size={14} className="ml-1.5 text-gray-400 group-hover:text-[#0077b5] transition-colors" />
-                        </a>
-                      ) : (
-                        <div className="font-bold text-gray-900">{testimonial.author}</div>
-                      )}
-                      <div className="text-xs font-medium text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full w-fit mt-1">
-                        {testimonial.role}
-                      </div>
-                    </div>
-                  </div>
 
-                  {/* Quote */}
-                  <div className="relative flex-1">
-                    <div className="text-3xl text-gray-200 absolute -top-1 -left-1">"</div>
-                    <p className="text-gray-600 text-[15px] leading-relaxed pl-4 pt-2">
-                      {testimonial.quote}
-                    </p>
-                  </div>
+            {/* Carousel container */}
+            <div className="relative w-full max-w-6xl">
+              {/* Navigation arrows */}
+              {testimonialsPage > 0 && (
+                <button
+                  onClick={() => setTestimonialsPage(p => p - 1)}
+                  className="absolute -left-4 md:-left-12 top-1/2 -translate-y-1/2 z-10 p-2 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-gray-50 transition-colors"
+                >
+                  <ChevronLeft size={20} className="text-gray-600" />
+                </button>
+              )}
+              {testimonialsPage < totalTestimonialsPages - 1 && (
+                <button
+                  onClick={() => setTestimonialsPage(p => p + 1)}
+                  className="absolute -right-4 md:-right-12 top-1/2 -translate-y-1/2 z-10 p-2 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-gray-50 transition-colors"
+                >
+                  <ChevronRight size={20} className="text-gray-600" />
+                </button>
+              )}
+
+              {/* Testimonials grid with animation */}
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={testimonialsPage}
+                  initial={{ opacity: 0, x: 50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -50 }}
+                  transition={{ duration: 0.3 }}
+                  className="grid grid-cols-1 md:grid-cols-3 gap-6"
+                >
+                  {currentTestimonials?.map((testimonial, idx) => (
+                    <motion.div
+                      key={`${testimonialsPage}-${idx}`}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3, delay: idx * 0.1 }}
+                      className="flex flex-col p-5 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all"
+                    >
+                      {/* Author info with avatar */}
+                      <div className="flex items-center mb-4">
+                        {testimonial.image ? (
+                          <img
+                            src={`/images/${testimonial.image}`}
+                            alt={testimonial.author}
+                            className="w-10 h-10 rounded-full mr-3 border-2 border-white shadow-sm object-cover"
+                          />
+                        ) : (
+                          <div className="w-10 h-10 rounded-full mr-3 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center text-gray-500 font-bold text-xs">
+                            {testimonial.author.split(' ').map(n => n[0]).join('')}
+                          </div>
+                        )}
+                        <div>
+                          {testimonial.linkedin ? (
+                            <a
+                              href={testimonial.linkedin}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="font-semibold text-gray-900 hover:text-[#0077b5] transition-colors flex items-center group text-sm"
+                            >
+                              {testimonial.author}
+                              <Linkedin size={12} className="ml-1 text-gray-400 group-hover:text-[#0077b5] transition-colors" />
+                            </a>
+                          ) : (
+                            <div className="font-semibold text-gray-900 text-sm">{testimonial.author}</div>
+                          )}
+                          <div className="text-[10px] font-medium text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full w-fit mt-0.5">
+                            {testimonial.role}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Quote */}
+                      <div className="relative flex-1">
+                        <div className="text-2xl text-gray-200 absolute -top-1 -left-1">"</div>
+                        <p className="text-gray-600 text-[13px] leading-relaxed pl-3 pt-1 line-clamp-4">
+                          {testimonial.quote}
+                        </p>
+                      </div>
+                    </motion.div>
+                  ))}
                 </motion.div>
+              </AnimatePresence>
+            </div>
+
+            {/* Pagination dots */}
+            <div className="flex items-center gap-2 mt-6">
+              {Array.from({ length: totalTestimonialsPages }).map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setTestimonialsPage(idx)}
+                  className={`w-2 h-2 rounded-full transition-all ${
+                    idx === testimonialsPage
+                      ? 'bg-gray-800 w-6'
+                      : 'bg-gray-300 hover:bg-gray-400'
+                  }`}
+                />
               ))}
+            </div>
+
+            {/* Counter */}
+            <div className="text-xs text-gray-400 mt-2">
+              {testimonialsPage + 1} / {totalTestimonialsPages}
             </div>
           </div>
         );
