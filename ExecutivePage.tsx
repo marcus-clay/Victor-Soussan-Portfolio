@@ -8,10 +8,7 @@ import {
   Mail,
   Linkedin,
   Phone,
-  Calendar,
-  MessageCircle,
   Download,
-  FileText,
   Copy,
   Check,
   Video,
@@ -306,6 +303,89 @@ const generateExecutivePDF = async (lang: 'en' | 'fr', setGenerating?: (v: boole
           addCenteredText(item, infoY, 14, gray500);
           infoY += 14;
         });
+        break;
+      }
+
+      case 'testimonials': {
+        addCenteredText(slide.headline || '', 25, 24, black, 'bold');
+        const testimonials = slide.testimonials as Array<{ quote: string; author: string; role: string }>;
+
+        // Layout: 3 columns, 2 rows = 6 testimonials per page
+        const colWidth = (contentWidth - 10) / 3;
+        const rowHeight = 75;
+        const startY = 45;
+
+        // Show first 6 testimonials on main page
+        const firstPageTestimonials = testimonials.slice(0, 6);
+        firstPageTestimonials.forEach((testimonial, idx) => {
+          const col = idx % 3;
+          const row = Math.floor(idx / 3);
+          const x = margin + col * (colWidth + 5);
+          const y = startY + row * rowHeight;
+
+          // Quote (truncated)
+          const shortQuote = testimonial.quote.length > 120
+            ? testimonial.quote.substring(0, 117) + '...'
+            : testimonial.quote;
+          pdf.setFontSize(8);
+          pdf.setTextColor(...gray500);
+          pdf.setFont('helvetica', 'italic');
+          const quoteLines = pdf.splitTextToSize(`"${shortQuote}"`, colWidth - 5);
+          pdf.text(quoteLines.slice(0, 4), x, y);
+
+          // Author
+          pdf.setFontSize(9);
+          pdf.setTextColor(...black);
+          pdf.setFont('helvetica', 'bold');
+          pdf.text(testimonial.author, x, y + 35);
+
+          // Role
+          pdf.setFontSize(7);
+          pdf.setTextColor(...gray400);
+          pdf.setFont('helvetica', 'normal');
+          pdf.text(testimonial.role, x, y + 41);
+        });
+
+        // If more than 6 testimonials, add additional pages
+        const remainingTestimonials = testimonials.slice(6);
+        let pageOffset = 0;
+        while (pageOffset < remainingTestimonials.length) {
+          pdf.addPage();
+          addSlideNumber(index, total);
+          addCenteredText(slide.headline || '', 25, 24, black, 'bold');
+
+          const pageTestimonials = remainingTestimonials.slice(pageOffset, pageOffset + 6);
+          pageTestimonials.forEach((testimonial, idx) => {
+            const col = idx % 3;
+            const row = Math.floor(idx / 3);
+            const x = margin + col * (colWidth + 5);
+            const y = startY + row * rowHeight;
+
+            // Quote (truncated)
+            const shortQuote = testimonial.quote.length > 120
+              ? testimonial.quote.substring(0, 117) + '...'
+              : testimonial.quote;
+            pdf.setFontSize(8);
+            pdf.setTextColor(...gray500);
+            pdf.setFont('helvetica', 'italic');
+            const quoteLines = pdf.splitTextToSize(`"${shortQuote}"`, colWidth - 5);
+            pdf.text(quoteLines.slice(0, 4), x, y);
+
+            // Author
+            pdf.setFontSize(9);
+            pdf.setTextColor(...black);
+            pdf.setFont('helvetica', 'bold');
+            pdf.text(testimonial.author, x, y + 35);
+
+            // Role
+            pdf.setFontSize(7);
+            pdf.setTextColor(...gray400);
+            pdf.setFont('helvetica', 'normal');
+            pdf.text(testimonial.role, x, y + 41);
+          });
+
+          pageOffset += 6;
+        }
         break;
       }
 
@@ -889,7 +969,11 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
   const [copiedField, setCopiedField] = useState<string | null>(null);
   const [[page, direction], setPage] = useState([0, 0]);
   const [testimonialsPage, setTestimonialsPage] = useState(0);
+  const [slideDirection, setSlideDirection] = useState(0);
   const slides = SLIDES[lang];
+
+  // Motion values for swipe navigation on main slides
+  const slideDragX = useMotionValue(0);
 
   // Copy to clipboard helper
   const copyToClipboard = async (text: string, field: string) => {
@@ -936,15 +1020,51 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
 
   const goNext = useCallback(() => {
     if (currentSlide < totalSlides - 1) {
+      setSlideDirection(1);
       setCurrentSlide(prev => prev + 1);
     }
   }, [currentSlide, totalSlides]);
 
   const goPrev = useCallback(() => {
     if (currentSlide > 0) {
+      setSlideDirection(-1);
       setCurrentSlide(prev => prev - 1);
     }
   }, [currentSlide]);
+
+  // Handle swipe/tap navigation on main slides (story-like)
+  const handleSlideDragEnd = (_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const swipeThreshold = 50;
+    const swipeVelocity = 300;
+
+    if (info.offset.x < -swipeThreshold || info.velocity.x < -swipeVelocity) {
+      goNext();
+    } else if (info.offset.x > swipeThreshold || info.velocity.x > swipeVelocity) {
+      goPrev();
+    }
+    slideDragX.set(0);
+  };
+
+  // Handle tap navigation (tap left/right sides of screen)
+  const handleTapNavigation = (e: React.MouseEvent | React.TouchEvent) => {
+    // Don't navigate if clicking on interactive elements
+    const target = e.target as HTMLElement;
+    if (target.closest('button') || target.closest('a') || target.closest('video') || target.closest('input')) {
+      return;
+    }
+
+    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    const clientX = 'touches' in e ? e.touches[0]?.clientX || 0 : e.clientX;
+    const x = clientX - rect.left;
+    const width = rect.width;
+
+    // Tap left third = prev, tap right third = next
+    if (x < width * 0.3) {
+      goPrev();
+    } else if (x > width * 0.7) {
+      goNext();
+    }
+  };
 
   // Open lightbox with specific image
   const openLightbox = (imageSrc: string) => {
@@ -1036,18 +1156,18 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
     switch (slide.type) {
       case 'title':
         return (
-          <div className="flex flex-col items-center justify-center h-full text-center px-8">
+          <div className="flex flex-col items-center justify-center h-full text-center px-4 sm:px-8">
             {slide.visual && (
               <img
                 src={slide.visual}
                 alt=""
-                className="w-32 h-32 rounded-full object-cover mb-8 border-4 border-gray-100"
+                className="w-24 h-24 sm:w-32 sm:h-32 rounded-full object-cover mb-6 sm:mb-8 border-4 border-gray-100"
               />
             )}
-            <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-4 tracking-tight">
+            <h1 className="text-3xl sm:text-5xl md:text-7xl font-bold text-gray-900 mb-3 sm:mb-4 tracking-tight">
               {slide.headline}
             </h1>
-            <p className="text-xl md:text-2xl text-gray-500 font-light">
+            <p className="text-base sm:text-xl md:text-2xl text-gray-500 font-light">
               {slide.subline}
             </p>
           </div>
@@ -1069,19 +1189,19 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
 
       case 'metric':
         return (
-          <div className="flex flex-col lg:flex-row items-center justify-center h-full gap-8 lg:gap-16 px-6 md:px-12 lg:px-20">
-            <div className="flex-shrink-0 lg:w-[35%]">
-              <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-4 tracking-tight">
+          <div className="flex flex-col lg:flex-row items-center justify-center h-full gap-4 sm:gap-8 lg:gap-16 px-4 sm:px-6 md:px-12 lg:px-20 py-4 sm:py-0">
+            <div className="flex-shrink-0 lg:w-[35%] text-center lg:text-left">
+              <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-2 sm:mb-4 tracking-tight">
                 {slide.headline}
               </h2>
-              <p className="text-lg md:text-xl text-gray-500 font-light">
+              <p className="text-sm sm:text-lg md:text-xl text-gray-500 font-light">
                 {slide.subline}
               </p>
             </div>
             {slide.visual && (
               <ClickableImage
                 src={slide.visual}
-                className="flex-1 w-full lg:w-[60%] max-h-[60vh] rounded-2xl shadow-xl"
+                className="flex-1 w-full lg:w-[60%] max-h-[40vh] sm:max-h-[50vh] lg:max-h-[60vh] rounded-xl sm:rounded-2xl shadow-xl"
                 onClick={() => openLightbox(slide.visual!)}
               />
             )}
@@ -1092,15 +1212,15 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
         const pillarItems = slide.items as string[];
         const pillarVideo = slide.video as string | undefined;
         return (
-          <div className="flex flex-col lg:flex-row items-center justify-center h-full gap-8 lg:gap-16 px-6 md:px-12 lg:px-20">
-            <div className="flex-shrink-0 lg:w-[35%]">
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 tracking-tight">
+          <div className="flex flex-col lg:flex-row items-center justify-center h-full gap-4 sm:gap-8 lg:gap-16 px-4 sm:px-6 md:px-12 lg:px-20 py-4 sm:py-0">
+            <div className="flex-shrink-0 lg:w-[35%] text-center lg:text-left">
+              <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-3 sm:mb-6 tracking-tight">
                 {slide.headline}
               </h2>
-              <ul className="space-y-3">
+              <ul className="space-y-2 sm:space-y-3 text-left">
                 {pillarItems?.map((item, idx) => (
-                  <li key={idx} className="flex items-center gap-3 text-base md:text-lg text-gray-700">
-                    <span className="w-2 h-2 rounded-full bg-gray-900 flex-shrink-0" />
+                  <li key={idx} className="flex items-start gap-2 sm:gap-3 text-sm sm:text-base md:text-lg text-gray-700">
+                    <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-gray-900 flex-shrink-0 mt-1.5 sm:mt-2" />
                     {item}
                   </li>
                 ))}
@@ -1108,7 +1228,7 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
             </div>
             {pillarVideo ? (
               <motion.div
-                className="group relative flex-1 w-full lg:w-[60%] max-h-[60vh] rounded-2xl shadow-xl overflow-hidden cursor-pointer"
+                className="group relative flex-1 w-full lg:w-[60%] max-h-[40vh] sm:max-h-[50vh] lg:max-h-[60vh] rounded-xl sm:rounded-2xl shadow-xl overflow-hidden cursor-pointer"
                 onClick={() => openVideoLightbox(pillarVideo)}
                 whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.3 }}
@@ -1123,8 +1243,8 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
                 />
                 {/* Hover overlay with expand icon */}
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center">
-                  <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-4 rounded-full bg-white/90 backdrop-blur-sm shadow-lg">
-                    <svg className="w-8 h-8 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-3 sm:p-4 rounded-full bg-white/90 backdrop-blur-sm shadow-lg">
+                    <svg className="w-6 h-6 sm:w-8 sm:h-8 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
                     </svg>
                   </div>
@@ -1133,7 +1253,7 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
             ) : slide.visual && (
               <ClickableImage
                 src={slide.visual}
-                className="flex-1 w-full lg:w-[60%] max-h-[60vh] rounded-2xl shadow-xl"
+                className="flex-1 w-full lg:w-[60%] max-h-[40vh] sm:max-h-[50vh] lg:max-h-[60vh] rounded-xl sm:rounded-2xl shadow-xl"
                 onClick={() => openLightbox(slide.visual!)}
               />
             )}
@@ -1182,13 +1302,13 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
       case 'info':
         const infoItems = slide.items as string[];
         return (
-          <div className="flex flex-col items-center justify-center h-full px-8 max-w-3xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-12 tracking-tight text-center">
+          <div className="flex flex-col items-center justify-center h-full px-4 sm:px-8 max-w-3xl mx-auto">
+            <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-6 sm:mb-12 tracking-tight text-center">
               {slide.headline}
             </h2>
-            <ul className="space-y-4 text-center">
+            <ul className="space-y-3 sm:space-y-4 text-center">
               {infoItems?.map((item, idx) => (
-                <li key={idx} className="text-xl md:text-2xl text-gray-600">
+                <li key={idx} className="text-base sm:text-xl md:text-2xl text-gray-600">
                   {item}
                 </li>
               ))}
@@ -1198,15 +1318,17 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
 
       case 'testimonials':
         const testimonialsList = slide.testimonials as { quote: string; author: string; role: string; image?: string; linkedin?: string }[];
-        const testimonialsPerPage = 3;
+        // Show 1 testimonial per page on mobile, 3 on larger screens
+        const isMobileView = typeof window !== 'undefined' && window.innerWidth < 640;
+        const testimonialsPerPage = isMobileView ? 1 : 3;
         const totalTestimonialsPages = Math.ceil(testimonialsList.length / testimonialsPerPage);
         const currentTestimonials = testimonialsList.slice(
           testimonialsPage * testimonialsPerPage,
           (testimonialsPage + 1) * testimonialsPerPage
         );
         return (
-          <div className="flex flex-col items-center justify-center h-full px-6 md:px-12 lg:px-20">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8 tracking-tight text-center">
+          <div className="flex flex-col items-center justify-center h-full px-4 sm:px-6 md:px-12 lg:px-20 py-4 sm:py-0">
+            <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 sm:mb-8 tracking-tight text-center">
               {slide.headline}
             </h2>
 
@@ -1215,18 +1337,18 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
               {/* Navigation arrows */}
               {testimonialsPage > 0 && (
                 <button
-                  onClick={() => setTestimonialsPage(p => p - 1)}
-                  className="absolute -left-4 md:-left-12 top-1/2 -translate-y-1/2 z-10 p-2 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-gray-50 transition-colors"
+                  onClick={(e) => { e.stopPropagation(); setTestimonialsPage(p => p - 1); }}
+                  className="absolute -left-2 sm:-left-4 md:-left-12 top-1/2 -translate-y-1/2 z-10 p-1.5 sm:p-2 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-gray-50 transition-colors"
                 >
-                  <ChevronLeft size={20} className="text-gray-600" />
+                  <ChevronLeft size={16} className="sm:w-5 sm:h-5 text-gray-600" />
                 </button>
               )}
               {testimonialsPage < totalTestimonialsPages - 1 && (
                 <button
-                  onClick={() => setTestimonialsPage(p => p + 1)}
-                  className="absolute -right-4 md:-right-12 top-1/2 -translate-y-1/2 z-10 p-2 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-gray-50 transition-colors"
+                  onClick={(e) => { e.stopPropagation(); setTestimonialsPage(p => p + 1); }}
+                  className="absolute -right-2 sm:-right-4 md:-right-12 top-1/2 -translate-y-1/2 z-10 p-1.5 sm:p-2 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-gray-50 transition-colors"
                 >
-                  <ChevronRight size={20} className="text-gray-600" />
+                  <ChevronRight size={16} className="sm:w-5 sm:h-5 text-gray-600" />
                 </button>
               )}
 
@@ -1238,7 +1360,7 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -50 }}
                   transition={{ duration: 0.3 }}
-                  className="grid grid-cols-1 md:grid-cols-3 gap-6"
+                  className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-6"
                 >
                   {currentTestimonials?.map((testimonial, idx) => (
                     <motion.div
@@ -1246,18 +1368,18 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.3, delay: idx * 0.1 }}
-                      className="flex flex-col p-5 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all"
+                      className="flex flex-col p-4 sm:p-5 bg-white rounded-xl sm:rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all"
                     >
                       {/* Author info with avatar */}
-                      <div className="flex items-center mb-4">
+                      <div className="flex items-center mb-3 sm:mb-4">
                         {testimonial.image ? (
                           <img
                             src={`/images/${testimonial.image}`}
                             alt={testimonial.author}
-                            className="w-10 h-10 rounded-full mr-3 border-2 border-white shadow-sm object-cover"
+                            className="w-8 h-8 sm:w-10 sm:h-10 rounded-full mr-2 sm:mr-3 border-2 border-white shadow-sm object-cover"
                           />
                         ) : (
-                          <div className="w-10 h-10 rounded-full mr-3 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center text-gray-500 font-bold text-xs">
+                          <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full mr-2 sm:mr-3 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center text-gray-500 font-bold text-[10px] sm:text-xs">
                             {testimonial.author.split(' ').map(n => n[0]).join('')}
                           </div>
                         )}
@@ -1267,15 +1389,16 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
                               href={testimonial.linkedin}
                               target="_blank"
                               rel="noreferrer"
-                              className="font-semibold text-gray-900 hover:text-[#0077b5] transition-colors flex items-center group text-sm"
+                              onClick={(e) => e.stopPropagation()}
+                              className="font-semibold text-gray-900 hover:text-[#0077b5] transition-colors flex items-center group text-xs sm:text-sm"
                             >
                               {testimonial.author}
-                              <Linkedin size={12} className="ml-1 text-gray-400 group-hover:text-[#0077b5] transition-colors" />
+                              <Linkedin size={10} className="sm:w-3 sm:h-3 ml-1 text-gray-400 group-hover:text-[#0077b5] transition-colors" />
                             </a>
                           ) : (
-                            <div className="font-semibold text-gray-900 text-sm">{testimonial.author}</div>
+                            <div className="font-semibold text-gray-900 text-xs sm:text-sm">{testimonial.author}</div>
                           )}
-                          <div className="text-[10px] font-medium text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full w-fit mt-0.5">
+                          <div className="text-[9px] sm:text-[10px] font-medium text-blue-600 bg-blue-50 px-1.5 sm:px-2 py-0.5 rounded-full w-fit mt-0.5">
                             {testimonial.role}
                           </div>
                         </div>
@@ -1283,8 +1406,8 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
 
                       {/* Quote */}
                       <div className="relative flex-1">
-                        <div className="text-2xl text-gray-200 absolute -top-1 -left-1">"</div>
-                        <p className="text-gray-600 text-[13px] leading-relaxed pl-3 pt-1 line-clamp-4">
+                        <div className="text-xl sm:text-2xl text-gray-200 absolute -top-1 -left-1">"</div>
+                        <p className="text-gray-600 text-xs sm:text-[13px] leading-relaxed pl-3 pt-1 line-clamp-4 sm:line-clamp-4">
                           {testimonial.quote}
                         </p>
                       </div>
@@ -1295,14 +1418,14 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
             </div>
 
             {/* Pagination dots */}
-            <div className="flex items-center gap-2 mt-6">
+            <div className="flex items-center gap-1.5 sm:gap-2 mt-4 sm:mt-6">
               {Array.from({ length: totalTestimonialsPages }).map((_, idx) => (
                 <button
                   key={idx}
-                  onClick={() => setTestimonialsPage(idx)}
-                  className={`w-2 h-2 rounded-full transition-all ${
+                  onClick={(e) => { e.stopPropagation(); setTestimonialsPage(idx); }}
+                  className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full transition-all ${
                     idx === testimonialsPage
-                      ? 'bg-gray-800 w-6'
+                      ? 'bg-gray-800 w-4 sm:w-6'
                       : 'bg-gray-300 hover:bg-gray-400'
                   }`}
                 />
@@ -1310,7 +1433,7 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
             </div>
 
             {/* Counter */}
-            <div className="text-xs text-gray-400 mt-2">
+            <div className="text-[10px] sm:text-xs text-gray-400 mt-1.5 sm:mt-2">
               {testimonialsPage + 1} / {totalTestimonialsPages}
             </div>
           </div>
@@ -1318,30 +1441,30 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
 
       case 'contact':
         return (
-          <div className="flex flex-col items-center justify-center h-full px-6 md:px-12 lg:px-20 py-8">
+          <div className="flex flex-col items-center justify-center h-full px-4 sm:px-6 md:px-12 lg:px-20">
             {/* Zone 1: Title + Primary buttons */}
-            <div className="text-center mb-8">
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8 tracking-tight">
+            <div className="text-center mb-4 sm:mb-6">
+              <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 sm:mb-6 tracking-tight">
                 {slide.headline}
               </h2>
 
               {/* Primary action buttons */}
-              <div className="flex flex-wrap justify-center gap-4 mb-8">
+              <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 mb-4 sm:mb-8">
                 {onBookCall && (
                   <button
-                    onClick={onBookCall}
-                    className="flex items-center justify-center gap-3 px-8 py-4 bg-gray-900 text-white rounded-full text-lg font-medium hover:bg-gray-800 transition-colors shadow-lg"
+                    onClick={(e) => { e.stopPropagation(); onBookCall(); }}
+                    className="flex items-center justify-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 bg-gray-900 text-white rounded-full text-sm sm:text-lg font-medium hover:bg-gray-800 transition-colors shadow-lg"
                   >
-                    <Video size={20} />
+                    <Video size={18} className="sm:w-5 sm:h-5" />
                     {lang === 'fr' ? 'En visio' : 'Video call'}
                   </button>
                 )}
                 {onContact && (
                   <button
-                    onClick={onContact}
-                    className="flex items-center justify-center gap-3 px-8 py-4 bg-white text-gray-900 rounded-full text-lg font-medium border-2 border-gray-200 hover:border-gray-300 hover:bg-gray-50 transition-colors"
+                    onClick={(e) => { e.stopPropagation(); onContact(); }}
+                    className="flex items-center justify-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 bg-white text-gray-900 rounded-full text-sm sm:text-lg font-medium border-2 border-gray-200 hover:border-gray-300 hover:bg-gray-50 transition-colors"
                   >
-                    <Mail size={20} />
+                    <Mail size={18} className="sm:w-5 sm:h-5" />
                     {lang === 'fr' ? 'Par écrit' : 'By email'}
                   </button>
                 )}
@@ -1349,72 +1472,75 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
             </div>
 
             {/* Zone 2: Contact info card */}
-            <div className="mb-8">
-              <div className="p-6 rounded-2xl border border-gray-200 bg-gray-50/50 space-y-4 max-w-md">
+            <div className="mb-4 sm:mb-8 w-full max-w-md">
+              <div className="p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-gray-200 bg-gray-50/50 space-y-3 sm:space-y-4">
                 {/* Email */}
-                <div className="flex items-center justify-between gap-4">
+                <div className="flex items-center justify-between gap-2 sm:gap-4">
                   <a
                     href={`mailto:${slide.email}`}
-                    className="flex items-center gap-3 text-gray-700 hover:text-gray-900 transition-colors"
+                    onClick={(e) => e.stopPropagation()}
+                    className="flex items-center gap-2 sm:gap-3 text-gray-700 hover:text-gray-900 transition-colors min-w-0"
                   >
-                    <Mail size={18} className="text-gray-400" />
-                    <span className="text-sm">{slide.email}</span>
+                    <Mail size={16} className="sm:w-[18px] sm:h-[18px] text-gray-400 flex-shrink-0" />
+                    <span className="text-xs sm:text-sm truncate">{slide.email}</span>
                   </a>
                   <button
-                    onClick={() => copyToClipboard(slide.email || '', 'email')}
-                    className="p-2 rounded-lg hover:bg-gray-200 transition-colors"
+                    onClick={(e) => { e.stopPropagation(); copyToClipboard(slide.email || '', 'email'); }}
+                    className="p-1.5 sm:p-2 rounded-lg hover:bg-gray-200 transition-colors flex-shrink-0"
                     title={lang === 'fr' ? 'Copier' : 'Copy'}
                   >
                     {copiedField === 'email' ? (
-                      <Check size={16} className="text-green-600" />
+                      <Check size={14} className="sm:w-4 sm:h-4 text-green-600" />
                     ) : (
-                      <Copy size={16} className="text-gray-400" />
+                      <Copy size={14} className="sm:w-4 sm:h-4 text-gray-400" />
                     )}
                   </button>
                 </div>
 
                 {/* LinkedIn */}
-                <div className="flex items-center justify-between gap-4">
+                <div className="flex items-center justify-between gap-2 sm:gap-4">
                   <a
                     href={`https://${slide.linkedin}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-3 text-gray-700 hover:text-gray-900 transition-colors"
+                    onClick={(e) => e.stopPropagation()}
+                    className="flex items-center gap-2 sm:gap-3 text-gray-700 hover:text-gray-900 transition-colors min-w-0"
                   >
-                    <Linkedin size={18} className="text-gray-400" />
-                    <span className="text-sm">{slide.linkedin}</span>
+                    <Linkedin size={16} className="sm:w-[18px] sm:h-[18px] text-gray-400 flex-shrink-0" />
+                    <span className="text-xs sm:text-sm truncate">{slide.linkedin}</span>
                   </a>
                   <button
-                    onClick={() => copyToClipboard(`https://${slide.linkedin}`, 'linkedin')}
-                    className="p-2 rounded-lg hover:bg-gray-200 transition-colors"
+                    onClick={(e) => { e.stopPropagation(); copyToClipboard(`https://${slide.linkedin}`, 'linkedin'); }}
+                    className="p-1.5 sm:p-2 rounded-lg hover:bg-gray-200 transition-colors flex-shrink-0"
                     title={lang === 'fr' ? 'Copier' : 'Copy'}
                   >
                     {copiedField === 'linkedin' ? (
-                      <Check size={16} className="text-green-600" />
+                      <Check size={14} className="sm:w-4 sm:h-4 text-green-600" />
                     ) : (
-                      <Copy size={16} className="text-gray-400" />
+                      <Copy size={14} className="sm:w-4 sm:h-4 text-gray-400" />
                     )}
                   </button>
                 </div>
 
                 {/* Phone */}
-                <div className="flex items-center justify-between gap-4">
+                <div className="flex items-center justify-between gap-2 sm:gap-4">
                   <a
                     href={`tel:${slide.phone?.replace(/\s/g, '')}`}
-                    className="flex items-center gap-3 text-gray-700 hover:text-gray-900 transition-colors"
+                    onClick={(e) => e.stopPropagation()}
+                    className="flex items-center gap-2 sm:gap-3 text-gray-700 hover:text-gray-900 transition-colors min-w-0"
                   >
-                    <Phone size={18} className="text-gray-400" />
-                    <span className="text-sm">{slide.phone}</span>
+                    <Phone size={16} className="sm:w-[18px] sm:h-[18px] text-gray-400 flex-shrink-0" />
+                    <span className="text-xs sm:text-sm">{slide.phone}</span>
                   </a>
                   <button
-                    onClick={() => copyToClipboard(slide.phone || '', 'phone')}
-                    className="p-2 rounded-lg hover:bg-gray-200 transition-colors"
+                    onClick={(e) => { e.stopPropagation(); copyToClipboard(slide.phone || '', 'phone'); }}
+                    className="p-1.5 sm:p-2 rounded-lg hover:bg-gray-200 transition-colors flex-shrink-0"
                     title={lang === 'fr' ? 'Copier' : 'Copy'}
                   >
                     {copiedField === 'phone' ? (
-                      <Check size={16} className="text-green-600" />
+                      <Check size={14} className="sm:w-4 sm:h-4 text-green-600" />
                     ) : (
-                      <Copy size={16} className="text-gray-400" />
+                      <Copy size={14} className="sm:w-4 sm:h-4 text-gray-400" />
                     )}
                   </button>
                 </div>
@@ -1423,11 +1549,11 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
                 {onOpenResume && (
                   <div className="pt-2 border-t border-gray-200">
                     <button
-                      onClick={() => onOpenResume(lang)}
-                      className="flex items-center gap-3 text-gray-700 hover:text-gray-900 transition-colors w-full"
+                      onClick={(e) => { e.stopPropagation(); onOpenResume(lang); }}
+                      className="flex items-center gap-2 sm:gap-3 text-gray-700 hover:text-gray-900 transition-colors w-full"
                     >
-                      <Download size={18} className="text-gray-400" />
-                      <span className="text-sm">{lang === 'fr' ? 'Télécharger mon CV' : 'Download my resume'}</span>
+                      <Download size={16} className="sm:w-[18px] sm:h-[18px] text-gray-400" />
+                      <span className="text-xs sm:text-sm">{lang === 'fr' ? 'Télécharger mon CV' : 'Download my resume'}</span>
                     </button>
                   </div>
                 )}
@@ -1435,23 +1561,23 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
             </div>
 
             {/* Zone 3: Download deck */}
-            <div className="mt-4">
+            <div className="mt-2 sm:mt-4">
               <button
-                onClick={() => generateExecutivePDF(lang, setIsGeneratingPDF)}
+                onClick={(e) => { e.stopPropagation(); generateExecutivePDF(lang, setIsGeneratingPDF); }}
                 disabled={isGeneratingPDF}
-                className={`inline-flex items-center gap-2 px-5 py-2.5 text-sm border rounded-full transition-colors ${
+                className={`inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 text-xs sm:text-sm border rounded-full transition-colors ${
                   isGeneratingPDF
                     ? 'text-gray-300 border-gray-200 cursor-wait'
                     : 'text-gray-400 hover:text-gray-600 border-gray-200 hover:border-gray-300'
                 }`}
               >
                 {isGeneratingPDF ? (
-                  <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <svg className="animate-spin h-3 w-3 sm:h-4 sm:w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
                 ) : (
-                  <Download size={14} />
+                  <Download size={12} className="sm:w-[14px] sm:h-[14px]" />
                 )}
                 {isGeneratingPDF
                   ? (lang === 'fr' ? 'Génération...' : 'Generating...')
@@ -1476,12 +1602,12 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
 
       case 'bigword':
         return (
-          <div className="flex flex-col items-center justify-center h-full text-center px-8">
-            <h2 className="text-[8rem] md:text-[12rem] lg:text-[16rem] font-black text-gray-900 tracking-tighter leading-none">
+          <div className="flex flex-col items-center justify-center h-full text-center px-4 sm:px-8">
+            <h2 className="text-[4rem] sm:text-[8rem] md:text-[12rem] lg:text-[16rem] font-black text-gray-900 tracking-tighter leading-none">
               {slide.headline}
             </h2>
             {slide.subline && (
-              <p className="text-2xl md:text-4xl text-gray-400 font-light mt-4 tracking-wide">
+              <p className="text-lg sm:text-2xl md:text-4xl text-gray-400 font-light mt-2 sm:mt-4 tracking-wide">
                 {slide.subline}
               </p>
             )}
@@ -1491,21 +1617,21 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
       case 'timeline':
         const timelineItems = slide.items as Array<{ year: string; company: string; desc: string }>;
         return (
-          <div className="flex flex-col items-center justify-center h-full px-6 md:px-12 max-w-4xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-10 tracking-tight text-center">
+          <div className="flex flex-col items-center justify-start sm:justify-center h-full px-4 sm:px-6 md:px-12 max-w-4xl mx-auto py-4 sm:py-0">
+            <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 sm:mb-10 tracking-tight text-center">
               {slide.headline}
             </h2>
-            <div className="w-full space-y-4">
+            <div className="w-full space-y-2 sm:space-y-4">
               {timelineItems?.map((item, idx) => (
-                <div key={idx} className="flex items-start gap-6 group">
-                  <span className="text-lg font-mono text-gray-400 w-16 flex-shrink-0 pt-1">
+                <div key={idx} className="flex items-start gap-3 sm:gap-6 group">
+                  <span className="text-xs sm:text-lg font-mono text-gray-400 w-10 sm:w-16 flex-shrink-0 pt-0.5 sm:pt-1">
                     {item.year}
                   </span>
-                  <div className="flex-1 pb-4 border-b border-gray-100 group-last:border-0">
-                    <span className="text-xl md:text-2xl font-semibold text-gray-900">
+                  <div className="flex-1 pb-2 sm:pb-4 border-b border-gray-100 group-last:border-0">
+                    <span className="text-sm sm:text-xl md:text-2xl font-semibold text-gray-900">
                       {item.company}
                     </span>
-                    <p className="text-base md:text-lg text-gray-500 mt-1">
+                    <p className="text-xs sm:text-base md:text-lg text-gray-500 mt-0.5 sm:mt-1">
                       {item.desc}
                     </p>
                   </div>
@@ -1522,16 +1648,16 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
         // Check if this is the AI Product Builder slide (condamine apps have white backgrounds)
         const isCondamineApps = bentoVisuals?.[0]?.includes('condamine apps');
         return (
-          <div className="flex flex-col lg:flex-row items-center justify-center h-full gap-8 lg:gap-12 px-6 md:px-12 lg:px-20">
+          <div className="flex flex-col lg:flex-row items-center justify-center h-full gap-4 sm:gap-8 lg:gap-12 px-4 sm:px-6 md:px-12 lg:px-20 py-4 sm:py-0">
             {/* Left: Title + items */}
-            <div className="flex-shrink-0 lg:w-[30%]">
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 tracking-tight">
+            <div className="flex-shrink-0 lg:w-[30%] text-center lg:text-left">
+              <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-3 sm:mb-6 tracking-tight">
                 {slide.headline}
               </h2>
-              <ul className="space-y-3">
+              <ul className="space-y-2 sm:space-y-3 text-left">
                 {bentoItems?.map((item, idx) => (
-                  <li key={idx} className="flex items-start gap-3 text-base md:text-lg text-gray-600">
-                    <span className="w-2 h-2 rounded-full bg-gray-400 mt-2 flex-shrink-0" />
+                  <li key={idx} className="flex items-start gap-2 sm:gap-3 text-xs sm:text-base md:text-lg text-gray-600">
+                    <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-gray-400 mt-1 sm:mt-2 flex-shrink-0" />
                     {item}
                   </li>
                 ))}
@@ -1542,38 +1668,38 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
                   href={bentoButton.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 mt-6 px-6 py-3 rounded-full text-sm font-medium text-gray-700
+                  className="inline-flex items-center gap-2 mt-4 sm:mt-6 px-4 sm:px-6 py-2 sm:py-3 rounded-full text-xs sm:text-sm font-medium text-gray-700
                     bg-white/60 backdrop-blur-xl border border-white/40
                     shadow-[0_2px_20px_-4px_rgba(0,0,0,0.1),inset_0_1px_2px_rgba(255,255,255,0.9)]
                     hover:bg-white/80 hover:shadow-[0_4px_24px_-4px_rgba(0,0,0,0.15),inset_0_1px_2px_rgba(255,255,255,0.9)]
                     transition-all duration-300"
                 >
                   {bentoButton.label}
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                   </svg>
                 </a>
               )}
             </div>
             {/* Right: 1 large + 2 small bento layout */}
-            <div className="flex-1 w-full lg:w-[65%] max-h-[70vh]">
-              <div className="flex flex-col gap-3 h-full">
+            <div className="flex-1 w-full lg:w-[65%] max-h-[45vh] sm:max-h-[60vh] lg:max-h-[70vh]">
+              <div className="flex flex-col gap-2 sm:gap-3 h-full">
                 {/* Large image on top */}
                 {bentoVisuals?.[0] && (
                   <ClickableImage
                     src={bentoVisuals[0]}
-                    className="flex-[2] rounded-xl"
+                    className="flex-[2] rounded-lg sm:rounded-xl"
                     onClick={() => openLightbox(bentoVisuals[0])}
                     hasWhiteBg={isCondamineApps}
                   />
                 )}
                 {/* 2 smaller images below */}
-                <div className="flex-1 grid grid-cols-2 gap-3">
+                <div className="flex-1 grid grid-cols-2 gap-2 sm:gap-3">
                   {bentoVisuals?.slice(1, 3).map((src, idx) => (
                     <ClickableImage
                       key={idx}
                       src={src}
-                      className="rounded-xl h-full"
+                      className="rounded-lg sm:rounded-xl h-full"
                       onClick={() => openLightbox(src)}
                       hasWhiteBg={isCondamineApps}
                     />
@@ -1586,15 +1712,15 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
 
       case 'farewell':
         return (
-          <div className="flex flex-col items-center justify-center h-full text-center px-8">
+          <div className="flex flex-col items-center justify-center h-full text-center px-4 sm:px-8">
             {slide.visual && (
               <img
                 src={slide.visual}
                 alt=""
-                className="w-40 h-40 rounded-full object-cover mb-10 border-4 border-gray-100 shadow-xl"
+                className="w-28 h-28 sm:w-40 sm:h-40 rounded-full object-cover mb-6 sm:mb-10 border-4 border-gray-100 shadow-xl"
               />
             )}
-            <h2 className="text-5xl md:text-7xl font-bold text-gray-900 tracking-tight">
+            <h2 className="text-3xl sm:text-5xl md:text-7xl font-bold text-gray-900 tracking-tight">
               {slide.headline}
             </h2>
           </div>
@@ -1619,21 +1745,25 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
       className="fixed inset-0 z-[100] bg-white"
     >
       {/* Header */}
-      <header className="absolute top-0 left-0 right-0 z-50 px-4 md:px-6 py-4 flex items-center justify-between border-b border-gray-100">
-        {/* Left: Title */}
-        <span className="text-sm text-gray-500 font-medium">
-          {lang === 'fr' ? 'Présentation en 1-min' : '1-min Presentation'}
+      <header className="absolute top-0 left-0 right-0 z-50 px-3 sm:px-4 md:px-6 py-2 sm:py-4 flex items-center justify-between border-b border-gray-100 bg-white/95 backdrop-blur-sm">
+        {/* Left: Title (hidden on mobile) */}
+        <span className="text-xs sm:text-sm text-gray-500 font-medium hidden sm:block">
+          {lang === 'fr' ? 'Présentation 1-min' : '1-min Presentation'}
+        </span>
+        {/* Mobile: Just show slide counter on left */}
+        <span className="text-xs text-gray-400 font-mono sm:hidden">
+          {currentSlide + 1}/{totalSlides}
         </span>
 
-        {/* Center: Slide counter + Language toggle */}
-        <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-4">
-          <span className="text-sm text-gray-400 font-mono">
+        {/* Center: Slide counter (desktop) + Language toggle */}
+        <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2 sm:gap-4">
+          <span className="text-xs sm:text-sm text-gray-400 font-mono hidden sm:block">
             {currentSlide + 1} / {totalSlides}
           </span>
-          <div className="flex items-center bg-gray-100 rounded-full p-1">
+          <div className="flex items-center bg-gray-100 rounded-full p-0.5 sm:p-1">
             <button
               onClick={() => setLang('en')}
-              className={`px-3 py-1 text-xs font-medium rounded-full transition-all ${
+              className={`px-2 sm:px-3 py-0.5 sm:py-1 text-[10px] sm:text-xs font-medium rounded-full transition-all ${
                 lang === 'en' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'
               }`}
             >
@@ -1641,7 +1771,7 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
             </button>
             <button
               onClick={() => setLang('fr')}
-              className={`px-3 py-1 text-xs font-medium rounded-full transition-all ${
+              className={`px-2 sm:px-3 py-0.5 sm:py-1 text-[10px] sm:text-xs font-medium rounded-full transition-all ${
                 lang === 'fr' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'
               }`}
             >
@@ -1653,23 +1783,31 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
         {/* Right: Close button */}
         <button
           onClick={onClose}
-          className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+          className="p-1.5 sm:p-2 rounded-full hover:bg-gray-100 transition-colors"
           aria-label="Close"
         >
-          <X size={20} className="text-gray-500" />
+          <X size={18} className="sm:w-5 sm:h-5 text-gray-500" />
         </button>
       </header>
 
-      {/* Main content */}
-      <main className="h-full pt-16 pb-20">
-        <AnimatePresence mode="wait">
+      {/* Main content - swipe/tap enabled for story-like navigation */}
+      <main
+        className="h-full pt-14 sm:pt-16 pb-16 sm:pb-20 overflow-y-auto overflow-x-hidden"
+        onClick={handleTapNavigation}
+      >
+        <AnimatePresence mode="wait" custom={slideDirection}>
           <motion.div
             key={currentSlide}
-            initial={{ opacity: 0, x: 50 }}
+            custom={slideDirection}
+            initial={{ opacity: 0, x: slideDirection >= 0 ? 100 : -100 }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -50 }}
+            exit={{ opacity: 0, x: slideDirection >= 0 ? -100 : 100 }}
             transition={{ duration: 0.3, ease: 'easeInOut' }}
             className="h-full"
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.15}
+            onDragEnd={handleSlideDragEnd}
           >
             {renderSlideContent()}
           </motion.div>
@@ -1677,31 +1815,31 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
       </main>
 
       {/* Navigation */}
-      <footer className="absolute bottom-0 left-0 right-0 px-6 py-4 flex items-center justify-between">
+      <footer className="absolute bottom-0 left-0 right-0 px-3 sm:px-6 py-2 sm:py-4 flex items-center justify-between bg-white/95 backdrop-blur-sm border-t border-gray-100 sm:border-0 sm:bg-transparent">
         {/* Prev button */}
         <button
           onClick={goPrev}
           disabled={currentSlide === 0}
-          className={`p-3 rounded-full transition-colors ${
+          className={`p-2 sm:p-3 rounded-full transition-colors ${
             currentSlide === 0
               ? 'text-gray-300 cursor-not-allowed'
               : 'text-gray-600 hover:bg-gray-100'
           }`}
           aria-label="Previous slide"
         >
-          <ChevronLeft size={28} />
+          <ChevronLeft size={24} className="sm:w-7 sm:h-7" />
         </button>
 
-        {/* Progress dots */}
-        <div className="flex items-center gap-2">
+        {/* Progress dots - simplified on mobile */}
+        <div className="flex items-center gap-1 sm:gap-2 max-w-[60%] sm:max-w-none overflow-hidden">
           {visibleSlides.map((_, idx) => (
             <button
               key={idx}
               onClick={() => setCurrentSlide(idx)}
-              className={`w-2 h-2 rounded-full transition-all ${
+              className={`h-1.5 sm:h-2 rounded-full transition-all flex-shrink-0 ${
                 idx === currentSlide
-                  ? 'bg-gray-900 w-6'
-                  : 'bg-gray-300 hover:bg-gray-400'
+                  ? 'bg-gray-900 w-4 sm:w-6'
+                  : 'bg-gray-300 hover:bg-gray-400 w-1.5 sm:w-2'
               }`}
               aria-label={`Go to slide ${idx + 1}`}
             />
@@ -1712,20 +1850,21 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
         <button
           onClick={goNext}
           disabled={currentSlide === totalSlides - 1}
-          className={`p-3 rounded-full transition-colors ${
+          className={`p-2 sm:p-3 rounded-full transition-colors ${
             currentSlide === totalSlides - 1
               ? 'text-gray-300 cursor-not-allowed'
               : 'text-gray-600 hover:bg-gray-100'
           }`}
           aria-label="Next slide"
         >
-          <ChevronRight size={28} />
+          <ChevronRight size={24} className="sm:w-7 sm:h-7" />
         </button>
       </footer>
 
-      {/* Keyboard hint */}
-      <div className="absolute bottom-20 left-1/2 -translate-x-1/2 text-xs text-gray-400">
-        {lang === 'fr' ? 'Flèches ← → pour naviguer' : '← → arrows to navigate'}
+      {/* Keyboard/swipe hint - different text for mobile */}
+      <div className="absolute bottom-14 sm:bottom-20 left-1/2 -translate-x-1/2 text-[10px] sm:text-xs text-gray-400 whitespace-nowrap">
+        <span className="hidden sm:inline">{lang === 'fr' ? 'Flèches ← → pour naviguer' : '← → arrows to navigate'}</span>
+        <span className="sm:hidden">{lang === 'fr' ? 'Swipez ou tapez pour naviguer' : 'Swipe or tap to navigate'}</span>
       </div>
 
       {/* Lightbox Modal */}
