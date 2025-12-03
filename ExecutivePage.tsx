@@ -1378,7 +1378,7 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -50 }}
                   transition={{ duration: 0.3 }}
-                  className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-6"
+                  className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-6 items-stretch"
                 >
                   {currentTestimonials?.map((testimonial, idx) => (
                     <motion.div
@@ -1386,7 +1386,7 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.3, delay: idx * 0.1 }}
-                      className="flex flex-col p-4 sm:p-5 bg-white rounded-xl sm:rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all"
+                      className="flex flex-col p-4 sm:p-5 bg-white rounded-xl sm:rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all max-h-[45vh] sm:max-h-none overflow-y-auto"
                     >
                       {/* Author info with avatar */}
                       <div className="flex items-center mb-3 sm:mb-4">
