@@ -1560,8 +1560,8 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
               </div>
             </div>
 
-            {/* Zone 3: Download deck */}
-            <div className="mt-2 sm:mt-4">
+            {/* Zone 3: Download deck + Continue to site */}
+            <div className="mt-2 sm:mt-4 flex flex-col sm:flex-row items-center gap-3">
               <button
                 onClick={(e) => { e.stopPropagation(); generateExecutivePDF(lang, setIsGeneratingPDF); }}
                 disabled={isGeneratingPDF}
@@ -1583,6 +1583,13 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
                   ? (lang === 'fr' ? 'Génération...' : 'Generating...')
                   : (lang === 'fr' ? 'Télécharger ce deck' : 'Download this deck')
                 }
+              </button>
+              <button
+                onClick={onClose}
+                className="inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 text-xs sm:text-sm text-gray-400 hover:text-gray-600 border border-gray-200 hover:border-gray-300 rounded-full transition-colors"
+              >
+                {lang === 'fr' ? 'Continuer sur le site' : 'Continue to website'}
+                <ChevronRight size={12} className="sm:w-[14px] sm:h-[14px]" />
               </button>
             </div>
           </div>
