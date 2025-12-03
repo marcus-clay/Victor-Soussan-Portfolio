@@ -660,7 +660,7 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
         )}
       </AnimatePresence>
 
-      {/* Header - Theme changes instantly with page */}
+      {/* Header - iOS-inspired responsive design */}
       <header
         className={`sticky top-0 z-40 backdrop-blur-xl border-b ${
           viewMode === 'gallery'
@@ -668,28 +668,29 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
             : (systemTheme === 'dark' ? 'bg-[#0a0a0a]/80 border-white/10' : 'bg-white/80 border-gray-200')
         }`}
       >
-        <div className="max-w-6xl mx-auto px-4 md:px-6 py-4 flex items-center justify-between">
-          {/* Left - Title */}
-          <div className="flex-1">
+        <div className="max-w-6xl mx-auto px-3 sm:px-4 md:px-6 py-3 sm:py-4 flex items-center justify-between gap-2 sm:gap-4">
+          {/* Left - Title (truncates on mobile) */}
+          <div className="flex-shrink-0 min-w-0 max-w-[30%] sm:max-w-none sm:flex-1">
             <h1
-              className={`text-lg md:text-xl font-bold ${
+              className={`text-base sm:text-lg md:text-xl font-bold truncate ${
                 viewMode === 'gallery' ? 'text-white' : (systemTheme === 'dark' ? 'text-white' : 'text-gray-900')
               }`}
             >
-              SQOOL Connect
+              <span className="hidden sm:inline">SQOOL Connect</span>
+              <span className="sm:hidden">Connect</span>
             </h1>
           </div>
 
-          {/* Center - Toggle Switch with animated pill */}
-          <div className="flex-1 flex justify-center">
+          {/* Center - Toggle Switch with animated pill (compact on mobile) */}
+          <div className="flex-1 flex justify-center min-w-0">
             <div
-              className={`relative flex items-center gap-1 rounded-full p-1 ${
+              className={`relative flex items-center gap-0.5 sm:gap-1 rounded-full p-0.5 sm:p-1 ${
                 viewMode === 'gallery' ? 'bg-white/10' : (systemTheme === 'dark' ? 'bg-white/10' : 'bg-gray-100')
               }`}
             >
               <button
                 onClick={() => onViewModeChange('caseStudy')}
-                className="relative z-10 px-5 py-2 rounded-full text-sm font-semibold transition-colors duration-200 whitespace-nowrap"
+                className="relative z-10 px-2.5 sm:px-5 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 whitespace-nowrap"
               >
                 {viewMode === 'caseStudy' && (
                   <motion.div
@@ -701,12 +702,13 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
                 <span className={`relative z-10 ${
                   viewMode === 'caseStudy' ? 'text-white' : (viewMode === 'gallery' ? 'text-gray-400 hover:text-white' : (systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'))
                 }`}>
-                  {t.caseStudy}
+                  <span className="hidden sm:inline">{t.caseStudy}</span>
+                  <span className="sm:hidden">Étude</span>
                 </span>
               </button>
               <button
                 onClick={() => onViewModeChange('gallery')}
-                className="relative z-10 px-5 py-2 rounded-full text-sm font-semibold transition-colors duration-200 whitespace-nowrap"
+                className="relative z-10 px-2.5 sm:px-5 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 whitespace-nowrap"
               >
                 {viewMode === 'gallery' && (
                   <motion.div
@@ -718,23 +720,25 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
                 <span className={`relative z-10 ${
                   viewMode === 'gallery' ? 'text-white' : (systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900')
                 }`}>
-                  {t.gallery}
+                  <span className="hidden sm:inline">{t.gallery}</span>
+                  <span className="sm:hidden">Galerie</span>
                 </span>
               </button>
             </div>
           </div>
 
-          {/* Right - Close button only */}
-          <div className="flex-1 flex justify-end">
+          {/* Right - Close button (fixed size) */}
+          <div className="flex-shrink-0">
             <button
               onClick={onClose}
-              className={`p-2 rounded-full ${
+              className={`p-1.5 sm:p-2 rounded-full ${
                 viewMode === 'gallery'
                   ? 'text-gray-300 hover:bg-white/10'
                   : (systemTheme === 'dark' ? 'text-gray-300 hover:bg-white/10' : 'text-gray-600 hover:bg-gray-100')
               }`}
             >
-              <X size={24} />
+              <X size={20} className="sm:hidden" />
+              <X size={24} className="hidden sm:block" />
             </button>
           </div>
         </div>

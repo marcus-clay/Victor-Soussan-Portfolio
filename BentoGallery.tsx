@@ -304,25 +304,25 @@ export const BentoGallery: React.FC<BentoGalleryProps> = ({
           }}
           className="fixed inset-0 z-[100] overflow-y-auto"
         >
-          {/* Header - Always dark in gallery mode */}
+          {/* Header - iOS-inspired responsive design */}
           <motion.header
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.1 }}
             className="sticky top-0 z-50 backdrop-blur-xl border-b bg-black/80 border-white/10"
           >
-            <div className="max-w-6xl mx-auto px-4 md:px-6 py-4 flex items-center justify-between">
-              {/* Left - Title */}
-              <div className="flex-1">
-                <h1 className="text-lg md:text-xl font-bold text-white">
+            <div className="max-w-6xl mx-auto px-3 sm:px-4 md:px-6 py-3 sm:py-4 flex items-center justify-between gap-2 sm:gap-4">
+              {/* Left - Title (truncates on mobile) */}
+              <div className="flex-shrink-0 min-w-0 max-w-[30%] sm:max-w-none sm:flex-1">
+                <h1 className="text-base sm:text-lg md:text-xl font-bold text-white truncate">
                   {title}
                 </h1>
               </div>
 
-              {/* Center - Toggle Switch with animated pill (same style as Texte/Timeline) */}
+              {/* Center - Toggle Switch with animated pill (compact on mobile) */}
               {hasCaseStudy && onOpenCaseStudy ? (
-                <div className="flex-1 flex justify-center">
-                  <div className="relative flex items-center rounded-full p-1 bg-white/10">
+                <div className="flex-1 flex justify-center min-w-0">
+                  <div className="relative flex items-center rounded-full p-0.5 sm:p-1 bg-white/10">
                     {/* Animated background pill */}
                     <motion.div
                       className="absolute bg-blue-600 rounded-full shadow-md"
@@ -338,44 +338,47 @@ export const BentoGallery: React.FC<BentoGalleryProps> = ({
                         mass: 0.8
                       }}
                       style={{
-                        height: 'calc(100% - 8px)',
-                        top: '4px',
-                        left: '4px',
-                        right: '4px'
+                        height: 'calc(100% - 4px)',
+                        top: '2px',
+                        left: '2px',
+                        right: '2px'
                       }}
                     />
                     <button
                       onClick={onOpenCaseStudy}
-                      className="relative z-10 px-4 py-2 rounded-full text-sm font-semibold transition-colors duration-200 text-gray-400 hover:text-white whitespace-nowrap"
+                      className="relative z-10 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 text-gray-400 hover:text-white whitespace-nowrap"
                       style={{ width: '50%' }}
                     >
-                      {t.caseStudy}
+                      <span className="hidden sm:inline">{t.caseStudy}</span>
+                      <span className="sm:hidden">Étude</span>
                     </button>
                     <button
-                      className="relative z-10 px-4 py-2 rounded-full text-sm font-semibold transition-colors duration-200 text-white whitespace-nowrap"
+                      className="relative z-10 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 text-white whitespace-nowrap"
                       style={{ width: '50%' }}
                     >
-                      {t.gallery}
+                      <span className="hidden sm:inline">{t.gallery}</span>
+                      <span className="sm:hidden">Galerie</span>
                     </button>
                   </div>
                 </div>
               ) : (
                 /* Gallery only - show static label in center */
-                <div className="flex-1 flex justify-center">
-                  <span className="px-3 py-1.5 rounded-full text-sm font-medium bg-white/10 text-white">
+                <div className="flex-1 flex justify-center min-w-0">
+                  <span className="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm font-medium bg-white/10 text-white">
                     {t.gallery}
                   </span>
                 </div>
               )}
 
-              {/* Right - Close button */}
-              <div className="flex-1 flex justify-end">
+              {/* Right - Close button (fixed size) */}
+              <div className="flex-shrink-0">
                 <button
                   onClick={onClose}
-                  className="p-2 rounded-full transition-colors bg-white/10 hover:bg-white/20 text-white"
+                  className="p-1.5 sm:p-2 rounded-full transition-colors bg-white/10 hover:bg-white/20 text-white"
                   aria-label={t.close}
                 >
-                  <X size={24} />
+                  <X size={20} className="sm:hidden" />
+                  <X size={24} className="hidden sm:block" />
                 </button>
               </div>
             </div>
