@@ -2136,7 +2136,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
                         {allImages[lightboxIndex].type === 'video' ? (
                           <motion.video
                             src={allImages[lightboxIndex].src}
-                            className="max-w-full max-h-[70vh] md:max-h-[75vh] object-contain rounded-lg shadow-2xl"
+                            className="max-w-full max-h-[70vh] md:max-h-[75vh] object-contain rounded-2xl shadow-2xl"
                             initial={{ scale: 0.8, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
                             transition={springTransition}

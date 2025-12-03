@@ -966,6 +966,8 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
   const [lightboxZoomed, setLightboxZoomed] = useState(false);
   const [videoLightboxOpen, setVideoLightboxOpen] = useState(false);
   const [videoLightboxSrc, setVideoLightboxSrc] = useState<string | null>(null);
+  const [videoStartTime, setVideoStartTime] = useState<number>(0);
+  const pillarVideoRef = useRef<HTMLVideoElement>(null);
   const [copiedField, setCopiedField] = useState<string | null>(null);
   const [[page, direction], setPage] = useState([0, 0]);
   const [testimonialsPage, setTestimonialsPage] = useState(0);
@@ -1095,9 +1097,10 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
     document.body.style.overflow = '';
   };
 
-  // Open video lightbox
-  const openVideoLightbox = (videoSrc: string) => {
+  // Open video lightbox with optional start time
+  const openVideoLightbox = (videoSrc: string, startTime: number = 0) => {
     setVideoLightboxSrc(videoSrc);
+    setVideoStartTime(startTime);
     setVideoLightboxOpen(true);
     document.body.style.overflow = 'hidden';
   };
@@ -1240,11 +1243,15 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
             {pillarVideo ? (
               <motion.div
                 className="group relative flex-1 w-full lg:w-[60%] max-h-[40vh] sm:max-h-[50vh] lg:max-h-[60vh] rounded-xl sm:rounded-2xl shadow-xl overflow-hidden cursor-pointer"
-                onClick={() => openVideoLightbox(pillarVideo)}
+                onClick={() => {
+                  const currentTime = pillarVideoRef.current?.currentTime || 0;
+                  openVideoLightbox(pillarVideo, currentTime);
+                }}
                 whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.3 }}
               >
                 <video
+                  ref={pillarVideoRef}
                   src={pillarVideo}
                   className="w-full h-full object-cover"
                   autoPlay
@@ -2069,6 +2076,12 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
                 muted
                 playsInline
                 controls
+                onLoadedMetadata={(e) => {
+                  const video = e.target as HTMLVideoElement;
+                  if (videoStartTime > 0) {
+                    video.currentTime = videoStartTime;
+                  }
+                }}
               />
             </motion.div>
 
