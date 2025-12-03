@@ -1544,7 +1544,11 @@ const App: React.FC = () => {
   const [isTestimonialsOpen, setIsTestimonialsOpen] = useState(false);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [selectedLabItem, setSelectedLabItem] = useState<string | null>(null);
-  const [isExecutiveOpen, setIsExecutiveOpen] = useState(false);
+  const [isExecutiveOpen, setIsExecutiveOpen] = useState(() => {
+    // Check URL parameters to open presentation directly
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('presentation') === '1' || urlParams.get('deck') === '1';
+  });
   const [showExecutiveFarewell, setShowExecutiveFarewell] = useState(false);
   const [themeMode, setThemeMode] = useState<'system' | 'light' | 'dark'>('light');
   const [systemTheme, setSystemTheme] = useState<'light' | 'dark'>('light');
@@ -1693,16 +1697,6 @@ const App: React.FC = () => {
       document.body.style.overflow = 'unset';
     }
   }, [selectedImage, isBioOpen, isTestimonialsOpen, isBookingOpen, selectedLabItem, isContactFormOpen, isSimpleContactOpen, selectedServiceGallery, isExecutiveOpen]);
-
-  // Check URL parameters to open presentation directly
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const presentationParam = urlParams.get('presentation');
-    const deckParam = urlParams.get('deck');
-    if (presentationParam === '1' || deckParam === '1') {
-      setIsExecutiveOpen(true);
-    }
-  }, []);
 
   // Detect system theme (light/dark mode)
   useEffect(() => {
