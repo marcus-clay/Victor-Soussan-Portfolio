@@ -587,6 +587,7 @@ const allImagesData: MediaItem[] = [
   { src: '/videos/connect/connect-dashboard-prototype_complet_4k.mp4', captionKey: 'connect', type: 'video' },
   { src: '/videos/connect/Video-demo-bulle-interactions-02.mp4', captionKey: 'bulle', type: 'video' },
   { src: '/images/sqool/sqool_brand.webp', captionKey: 'brand', type: 'image' },
+  { src: '/images/sqool/thumbnail_suite_sqool_blue.webp', captionKey: 'suiteSqool', type: 'image' },
   // Brand System Visuals
   { src: '/images/sqool/systeme de marque/visuels_systeme_de_marque_01_2x.webp', captionKey: 'brandVisual01', type: 'image' },
   { src: '/images/sqool/systeme de marque/visuels_systeme_de_marque_02_2x.webp', captionKey: 'brandVisual02', type: 'image' },
@@ -1596,6 +1597,18 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
                 <p className={`text-base leading-relaxed mb-6 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
                   {t.phase2.brand.p2}
                 </p>
+
+                {/* Suite SQOOL Blue Thumbnail */}
+                <div
+                  className="mb-6 rounded-2xl overflow-hidden cursor-pointer transition-transform hover:scale-[1.01]"
+                  onClick={() => openLightbox('/images/sqool/thumbnail_suite_sqool_blue.webp')}
+                >
+                  <img
+                    src="/images/sqool/thumbnail_suite_sqool_blue.webp"
+                    alt="Suite SQOOL"
+                    className="w-full h-auto object-cover"
+                  />
+                </div>
 
                 {/* Brand System Horizontal Carousel - Apple Style */}
                 <div className="relative -mx-4 md:-mx-6">
