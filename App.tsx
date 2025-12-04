@@ -2397,7 +2397,7 @@ const App: React.FC = () => {
                   viewport={{ once: true, margin: "-50px" }}
                   transition={{ duration: 0.6, delay: index * 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
                   onClick={() => {
-                    if (project.id === 'toolkit' || project.id === 'dailymotion' || project.id === 'connect' || project.id === 'sqool') {
+                    if (project.id === 'toolkit' || project.id === 'dailymotion' || project.id === 'connect') {
                       setOpenProject({ project: project.id, viewMode: 'caseStudy' });
                     } else if (project.externalLink) {
                       setIframeModalUrl(project.externalLink);
@@ -2547,13 +2547,13 @@ const App: React.FC = () => {
 
                       {/* Bottom: CTA */}
                       <div className={`pt-4 mt-4 border-t flex items-center justify-end gap-2 ${systemTheme === 'dark' ? 'border-white/5' : 'border-gray-100'}`}>
-                        {(project.id === 'toolkit' || project.id === 'dailymotion' || project.id === 'connect' || project.id === 'sqool') ? (
+                        {(project.id === 'toolkit' || project.id === 'dailymotion' || project.id === 'connect') ? (
                           <>
                             {/* Gallery Button */}
                             <button
                               onClick={(e) => {
                                 e.stopPropagation();
-                                setOpenProject({ project: project.id as 'toolkit' | 'dailymotion' | 'connect' | 'sqool', viewMode: 'gallery' });
+                                setOpenProject({ project: project.id as 'toolkit' | 'dailymotion' | 'connect', viewMode: 'gallery' });
                               }}
                               className={`inline-flex items-center text-sm font-medium px-5 py-2.5 rounded-full transition-colors duration-200 ${
                                 systemTheme === 'dark'
