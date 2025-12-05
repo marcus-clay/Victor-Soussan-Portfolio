@@ -311,9 +311,9 @@ export const BentoGallery: React.FC<BentoGalleryProps> = ({
             transition={{ duration: 0.4, delay: 0.1 }}
             className="sticky top-0 z-50 backdrop-blur-xl border-b bg-black/80 border-white/10"
           >
-            <div className="max-w-6xl mx-auto px-3 sm:px-4 md:px-6 py-3 sm:py-4 flex items-center justify-between gap-2 sm:gap-4">
-              {/* Left - Title (truncates on mobile) */}
-              <div className="flex-shrink-0 min-w-0 max-w-[30%] sm:max-w-none sm:flex-1">
+            <div className="max-w-6xl mx-auto px-3 sm:px-4 md:px-6 py-3 sm:py-4 flex items-center gap-2 sm:gap-4">
+              {/* Left - Title (truncates on mobile, fixed width on desktop for centering) */}
+              <div className="flex-shrink-0 min-w-0 max-w-[30%] sm:max-w-none sm:w-32 md:w-40">
                 <h1 className="text-base sm:text-lg md:text-xl font-bold text-white truncate">
                   {title}
                 </h1>
@@ -321,7 +321,7 @@ export const BentoGallery: React.FC<BentoGalleryProps> = ({
 
               {/* Center - Toggle Switch with animated pill (compact on mobile) */}
               {hasCaseStudy && onOpenCaseStudy ? (
-                <div className="flex-1 flex justify-center min-w-0">
+                <div className="flex-1 flex justify-center">
                   <div className="relative flex items-center rounded-full p-0.5 sm:p-1 bg-white/10">
                     {/* Animated background pill */}
                     <motion.div
@@ -363,15 +363,15 @@ export const BentoGallery: React.FC<BentoGalleryProps> = ({
                 </div>
               ) : (
                 /* Gallery only - show static label in center */
-                <div className="flex-1 flex justify-center min-w-0">
+                <div className="flex-1 flex justify-center">
                   <span className="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm font-medium bg-white/10 text-white">
                     {t.gallery}
                   </span>
                 </div>
               )}
 
-              {/* Right - Close button (fixed size) */}
-              <div className="flex-shrink-0">
+              {/* Right - Close button (fixed width matching title for centering) */}
+              <div className="flex-shrink-0 sm:w-32 md:w-40 flex justify-end">
                 <button
                   onClick={onClose}
                   className="p-1.5 sm:p-2 rounded-full transition-colors bg-white/10 hover:bg-white/20 text-white"

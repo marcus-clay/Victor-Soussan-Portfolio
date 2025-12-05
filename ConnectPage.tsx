@@ -668,9 +668,9 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
             : (systemTheme === 'dark' ? 'bg-[#0a0a0a]/80 border-white/10' : 'bg-white/80 border-gray-200')
         }`}
       >
-        <div className="max-w-6xl mx-auto px-3 sm:px-4 md:px-6 py-3 sm:py-4 flex items-center justify-between gap-2 sm:gap-4">
-          {/* Left - Title (truncates on mobile) */}
-          <div className="flex-shrink-0 min-w-0 max-w-[30%] sm:max-w-none sm:flex-1">
+        <div className="max-w-6xl mx-auto px-3 sm:px-4 md:px-6 py-3 sm:py-4 flex items-center gap-2 sm:gap-4">
+          {/* Left - Title (truncates on mobile, fixed width on desktop for centering) */}
+          <div className="flex-shrink-0 min-w-0 max-w-[30%] sm:max-w-none sm:w-32 md:w-40">
             <h1
               className={`text-base sm:text-lg md:text-xl font-bold truncate ${
                 viewMode === 'gallery' ? 'text-white' : (systemTheme === 'dark' ? 'text-white' : 'text-gray-900')
@@ -682,7 +682,7 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
           </div>
 
           {/* Center - Toggle Switch with animated pill (compact on mobile) */}
-          <div className="flex-1 flex justify-center min-w-0">
+          <div className="flex-1 flex justify-center">
             <div
               className={`relative flex items-center gap-0.5 sm:gap-1 rounded-full p-0.5 sm:p-1 ${
                 viewMode === 'gallery' ? 'bg-white/10' : (systemTheme === 'dark' ? 'bg-white/10' : 'bg-gray-100')
@@ -727,8 +727,8 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
             </div>
           </div>
 
-          {/* Right - Close button (fixed size) */}
-          <div className="flex-shrink-0">
+          {/* Right - Close button (fixed width matching title for centering) */}
+          <div className="flex-shrink-0 sm:w-32 md:w-40 flex justify-end">
             <button
               onClick={onClose}
               className={`p-1.5 sm:p-2 rounded-full ${
