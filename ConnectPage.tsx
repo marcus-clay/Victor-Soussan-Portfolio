@@ -11,6 +11,7 @@ import {
   Play
 } from 'lucide-react';
 import { GalleryItem } from './BentoGallery';
+import ConnectExecutive from './src/components/ConnectExecutive';
 
 interface ConnectPageProps {
   onClose: () => void;
@@ -453,6 +454,7 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
   const [isMobileNavExpanded, setIsMobileNavExpanded] = useState(false);
   const [showNav, setShowNav] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [caseStudyMode, setCaseStudyMode] = useState<'executive' | 'full'>('executive');
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [lightboxZoomed, setLightboxZoomed] = useState(false);
   const [[page, direction], setPage] = useState([0, 0]);
@@ -461,6 +463,14 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
   // Motion values for parallax effect
   const dragX = useMotionValue(0);
   const parallaxX = useTransform(dragX, [-300, 0, 300], [30, 0, -30]);
+
+  // Scroll to top when mode changes
+  useEffect(() => {
+    const container = containerRef.current;
+    if (container) {
+      container.scrollTo({ top: 0, behavior: 'instant' });
+    }
+  }, [caseStudyMode, viewMode]);
 
   // Track scroll position to show/hide mini-nav
   useEffect(() => {
@@ -560,9 +570,9 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
         viewMode === 'gallery' ? 'bg-black' : (systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white')
       }`}
     >
-      {/* Sticky Mini-Nav - All screen sizes - Hidden in gallery mode */}
+      {/* Sticky Mini-Nav - All screen sizes - Hidden in gallery mode and executive mode */}
       <AnimatePresence>
-        {showNav && viewMode !== 'gallery' && (
+        {showNav && viewMode !== 'gallery' && caseStudyMode !== 'executive' && (
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -688,11 +698,12 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
                 viewMode === 'gallery' ? 'bg-white/10' : (systemTheme === 'dark' ? 'bg-white/10' : 'bg-gray-100')
               }`}
             >
+              {/* Executive button */}
               <button
-                onClick={() => onViewModeChange('caseStudy')}
-                className="relative z-10 px-2.5 sm:px-5 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 whitespace-nowrap"
+                onClick={() => { onViewModeChange('caseStudy'); setCaseStudyMode('executive'); }}
+                className="relative z-10 px-2 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 whitespace-nowrap"
               >
-                {viewMode === 'caseStudy' && (
+                {viewMode === 'caseStudy' && caseStudyMode === 'executive' && (
                   <motion.div
                     layoutId="connect-toggle-pill"
                     className="absolute inset-0 bg-blue-600 rounded-full shadow-md"
@@ -700,15 +711,39 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
                   />
                 )}
                 <span className={`relative z-10 ${
-                  viewMode === 'caseStudy' ? 'text-white' : (viewMode === 'gallery' ? 'text-gray-400 hover:text-white' : (systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'))
+                  viewMode === 'caseStudy' && caseStudyMode === 'executive'
+                    ? 'text-white'
+                    : (viewMode === 'gallery' ? 'text-gray-400 hover:text-white' : (systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'))
                 }`}>
-                  <span className="hidden sm:inline">{t.caseStudy}</span>
-                  <span className="sm:hidden">Étude</span>
+                  <span className="hidden sm:inline">{lang === 'fr' ? 'En bref' : 'At a glance'}</span>
+                  <span className="sm:hidden">{lang === 'fr' ? 'Bref' : 'Brief'}</span>
                 </span>
               </button>
+              {/* Full case study button */}
+              <button
+                onClick={() => { onViewModeChange('caseStudy'); setCaseStudyMode('full'); }}
+                className="relative z-10 px-2 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 whitespace-nowrap"
+              >
+                {viewMode === 'caseStudy' && caseStudyMode === 'full' && (
+                  <motion.div
+                    layoutId="connect-toggle-pill"
+                    className="absolute inset-0 bg-blue-600 rounded-full shadow-md"
+                    transition={{ type: 'spring', stiffness: 500, damping: 35, mass: 0.8 }}
+                  />
+                )}
+                <span className={`relative z-10 ${
+                  viewMode === 'caseStudy' && caseStudyMode === 'full'
+                    ? 'text-white'
+                    : (viewMode === 'gallery' ? 'text-gray-400 hover:text-white' : (systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'))
+                }`}>
+                  <span className="hidden sm:inline">Full</span>
+                  <span className="sm:hidden">Complet</span>
+                </span>
+              </button>
+              {/* Gallery button */}
               <button
                 onClick={() => onViewModeChange('gallery')}
-                className="relative z-10 px-2.5 sm:px-5 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 whitespace-nowrap"
+                className="relative z-10 px-2 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 whitespace-nowrap"
               >
                 {viewMode === 'gallery' && (
                   <motion.div
@@ -963,8 +998,24 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
               ))}
             </div>
           </motion.div>
+        ) : caseStudyMode === 'executive' ? (
+          /* Executive Summary View */
+          <motion.div
+            key="executive"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <ConnectExecutive
+              systemTheme={systemTheme}
+              lang={lang}
+              onImageClick={openLightbox}
+              onViewFull={() => setCaseStudyMode('full')}
+            />
+          </motion.div>
         ) : (
-          /* Case Study View */
+          /* Full Case Study View */
           <motion.div
             key="caseStudy"
             initial={{ opacity: 0 }}

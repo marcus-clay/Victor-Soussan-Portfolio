@@ -546,6 +546,14 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
   const dragX = useMotionValue(0);
   const parallaxX = useTransform(dragX, [-300, 0, 300], [30, 0, -30]);
 
+  // Scroll to top when mode changes
+  useEffect(() => {
+    const container = containerRef.current;
+    if (container) {
+      container.scrollTo({ top: 0, behavior: 'instant' });
+    }
+  }, [caseStudyMode, viewMode]);
+
   // Track scroll position and update active section
   useEffect(() => {
     const container = containerRef.current;

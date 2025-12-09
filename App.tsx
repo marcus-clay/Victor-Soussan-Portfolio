@@ -2403,10 +2403,10 @@ const App: React.FC = () => {
                       setIframeModalUrl(project.externalLink);
                     }
                   }}
-                  className={`group cursor-pointer rounded-2xl md:rounded-3xl border overflow-hidden ${
+                  className={`group cursor-pointer rounded-2xl md:rounded-3xl border overflow-hidden transition-all duration-300 hover:scale-[1.01] ${
                     systemTheme === 'dark'
-                      ? 'bg-[#1D1D1F] border-white/5 hover:border-white/15'
-                      : 'bg-white border-gray-200'
+                      ? 'bg-[#1D1D1F] border-white/5 hover:border-white/15 hover:shadow-[0_25px_50px_rgba(0,0,0,0.4)]'
+                      : 'bg-white border-gray-200 hover:shadow-[0_25px_50px_rgba(0,0,0,0.04)]'
                   }`}
                 >
                   <div className="flex flex-col md:flex-row">
@@ -2439,8 +2439,11 @@ const App: React.FC = () => {
                         <img
                           src={`/images/${project.coverImage}`}
                           alt={`${project.title} preview`}
-                          className="w-full h-full object-contain rounded-xl md:rounded-2xl transition-transform duration-500 ease-out group-hover:scale-[1.05]"
-                          style={{ transform: project.id !== 'toolkit' ? 'scale(1.2)' : 'scale(1)' }}
+                          className={`w-full h-full object-contain rounded-xl md:rounded-2xl transition-transform duration-500 ease-out ${
+                            project.id !== 'toolkit'
+                              ? 'scale-[1.2] group-hover:scale-[1.26]'
+                              : 'scale-100 group-hover:scale-105'
+                          }`}
                         />
                       </div>
                     </div>
