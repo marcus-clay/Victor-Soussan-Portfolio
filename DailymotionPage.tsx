@@ -16,6 +16,8 @@ import {
   Building2
 } from 'lucide-react';
 import { GalleryItem } from './BentoGallery';
+import EnhancedLightbox from './src/components/EnhancedLightbox';
+import DailymotionExecutive from './src/components/DailymotionExecutive';
 
 interface DailymotionPageProps {
   onClose: () => void;
@@ -537,6 +539,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [lightboxZoomed, setLightboxZoomed] = useState(false);
   const [[page, direction], setPage] = useState([0, 0]);
+  const [caseStudyMode, setCaseStudyMode] = useState<'executive' | 'full'>('executive');
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Motion values for parallax effect
@@ -657,9 +660,9 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
         viewMode === 'gallery' ? 'bg-black' : (systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white')
       }`}
     >
-      {/* Sticky Mini-Nav - All screen sizes - Hidden in gallery mode */}
+      {/* Sticky Mini-Nav - All screen sizes - Hidden in gallery mode and executive mode */}
       <AnimatePresence>
-        {showNav && viewMode !== 'gallery' && (
+        {showNav && viewMode !== 'gallery' && caseStudyMode !== 'executive' && (
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -787,11 +790,12 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                 viewMode === 'gallery' ? 'bg-white/10' : (systemTheme === 'dark' ? 'bg-white/10' : 'bg-gray-100')
               }`}
             >
+              {/* Executive button */}
               <button
-                onClick={() => onViewModeChange('caseStudy')}
-                className="relative z-10 px-2.5 sm:px-5 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 whitespace-nowrap"
+                onClick={() => { onViewModeChange('caseStudy'); setCaseStudyMode('executive'); }}
+                className="relative z-10 px-2 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 whitespace-nowrap"
               >
-                {viewMode === 'caseStudy' && (
+                {viewMode === 'caseStudy' && caseStudyMode === 'executive' && (
                   <motion.div
                     layoutId="dailymotion-toggle-pill"
                     className="absolute inset-0 bg-blue-600 rounded-full shadow-md"
@@ -799,15 +803,39 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                   />
                 )}
                 <span className={`relative z-10 ${
-                  viewMode === 'caseStudy' ? 'text-white' : (viewMode === 'gallery' ? 'text-gray-400 hover:text-white' : (systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'))
+                  viewMode === 'caseStudy' && caseStudyMode === 'executive'
+                    ? 'text-white'
+                    : (viewMode === 'gallery' ? 'text-gray-400 hover:text-white' : (systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'))
                 }`}>
-                  <span className="hidden sm:inline">{t.caseStudy}</span>
-                  <span className="sm:hidden">Étude</span>
+                  <span className="hidden sm:inline">{lang === 'fr' ? 'En bref' : 'At a glance'}</span>
+                  <span className="sm:hidden">{lang === 'fr' ? 'Bref' : 'Brief'}</span>
                 </span>
               </button>
+              {/* Full case study button */}
+              <button
+                onClick={() => { onViewModeChange('caseStudy'); setCaseStudyMode('full'); }}
+                className="relative z-10 px-2 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 whitespace-nowrap"
+              >
+                {viewMode === 'caseStudy' && caseStudyMode === 'full' && (
+                  <motion.div
+                    layoutId="dailymotion-toggle-pill"
+                    className="absolute inset-0 bg-blue-600 rounded-full shadow-md"
+                    transition={{ type: 'spring', stiffness: 500, damping: 35, mass: 0.8 }}
+                  />
+                )}
+                <span className={`relative z-10 ${
+                  viewMode === 'caseStudy' && caseStudyMode === 'full'
+                    ? 'text-white'
+                    : (viewMode === 'gallery' ? 'text-gray-400 hover:text-white' : (systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'))
+                }`}>
+                  <span className="hidden sm:inline">Full</span>
+                  <span className="sm:hidden">Complet</span>
+                </span>
+              </button>
+              {/* Gallery button */}
               <button
                 onClick={() => onViewModeChange('gallery')}
-                className="relative z-10 px-2.5 sm:px-5 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 whitespace-nowrap"
+                className="relative z-10 px-2 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 whitespace-nowrap"
               >
                 {viewMode === 'gallery' && (
                   <motion.div
@@ -843,201 +871,22 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
         </div>
       </header>
 
-      {/* Lightbox Modal */}
-      <AnimatePresence>
-        {lightboxOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl flex items-center justify-center"
-            onClick={closeLightbox}
-          >
-            {/* Close button */}
-            <motion.button
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              transition={springTransition}
-              onClick={closeLightbox}
-              className="absolute top-4 right-4 md:top-6 md:right-6 z-10 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
-            >
-              <X size={24} />
-            </motion.button>
-
-            {/* Navigation arrows */}
-            {lightboxIndex > 0 && (
-              <motion.button
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={springTransition}
-                onClick={(e) => { e.stopPropagation(); paginate(-1); }}
-                className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
-              >
-                <ChevronLeft size={28} />
-              </motion.button>
-            )}
-
-            {lightboxIndex < allImages.length - 1 && (
-              <motion.button
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 20 }}
-                transition={springTransition}
-                onClick={(e) => { e.stopPropagation(); paginate(1); }}
-                className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
-              >
-                <ChevronRight size={28} />
-              </motion.button>
-            )}
-
-            {/* Image container with carousel */}
-            <div className="relative w-full h-full flex items-center justify-center overflow-hidden px-4 md:px-20 py-20">
-              <AnimatePresence initial={false} custom={direction} mode="popLayout">
-                <motion.div
-                  key={page}
-                  custom={direction}
-                  variants={slideVariants}
-                  initial="enter"
-                  animate="center"
-                  exit="exit"
-                  transition={{
-                    x: { type: 'spring', stiffness: 350, damping: 35 },
-                    opacity: { duration: 0.2 },
-                    scale: { type: 'spring', stiffness: 350, damping: 35 },
-                  }}
-                  drag={lightboxZoomed ? false : "x"}
-                  dragConstraints={{ left: 0, right: 0 }}
-                  dragElastic={0.2}
-                  onDrag={(_, info) => dragX.set(info.offset.x)}
-                  onDragEnd={handleDragEnd}
-                  onClick={(e) => e.stopPropagation()}
-                  className={`absolute w-full h-full ${
-                    lightboxZoomed
-                      ? 'overflow-y-auto overflow-x-hidden cursor-grab active:cursor-grabbing'
-                      : 'flex flex-col items-center justify-center cursor-grab active:cursor-grabbing'
-                  }`}
-                  style={lightboxZoomed ? { scrollBehavior: 'smooth' } : {}}
-                >
-                  {lightboxZoomed ? (
-                    /* Zoomed mode - Full scrollable container */
-                    <div
-                      className="min-h-full w-full flex flex-col items-center py-16 px-4"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setLightboxZoomed(false);
-                      }}
-                    >
-                      <motion.img
-                        src={allImages[lightboxIndex].src}
-                        alt={allImages[lightboxIndex].caption}
-                        className="w-[95vw] md:w-[90vw] h-auto rounded-lg shadow-2xl cursor-zoom-out"
-                        initial={{ scale: 0.95, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        transition={springTransition}
-                        draggable={false}
-                      />
-                      {/* Caption at the bottom of zoomed image */}
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.2 }}
-                        className="mt-8 mb-8 px-4 text-center max-w-3xl"
-                      >
-                        <p className="text-white/80 text-sm md:text-base leading-relaxed">
-                          {allImages[lightboxIndex].caption}
-                        </p>
-                        <p className="text-white/40 text-xs mt-2">
-                          {t.clickToExitZoom}
-                        </p>
-                      </motion.div>
-                    </div>
-                  ) : (
-                    /* Normal mode - Centered with constraints */
-                    <>
-                      <motion.div
-                        style={{ x: parallaxX }}
-                        className="relative max-w-[90vw] max-h-[70vh] md:max-w-[80vw] md:max-h-[75vh]"
-                        onClick={(e) => {
-                          if (allImages[lightboxIndex].type === 'image') {
-                            e.stopPropagation();
-                            setLightboxZoomed(true);
-                          }
-                        }}
-                      >
-                        {allImages[lightboxIndex].type === 'video' ? (
-                          <motion.video
-                            src={allImages[lightboxIndex].src}
-                            className="max-w-full max-h-[70vh] md:max-h-[75vh] object-contain rounded-2xl shadow-2xl"
-                            initial={{ scale: 0.8, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            transition={springTransition}
-                            autoPlay
-                            loop
-                            muted
-                            playsInline
-                            controls
-                          />
-                        ) : (
-                          <motion.img
-                            src={allImages[lightboxIndex].src}
-                            alt={allImages[lightboxIndex].caption}
-                            className="max-w-full max-h-[70vh] md:max-h-[75vh] object-contain cursor-zoom-in rounded-lg shadow-2xl"
-                            initial={{ scale: 0.8, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            transition={springTransition}
-                            draggable={false}
-                          />
-                        )}
-                      </motion.div>
-
-                      {/* Caption */}
-                      <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.1, ...springTransition }}
-                        className="mt-6 px-4 text-center max-w-3xl"
-                      >
-                        <p className="text-white/80 text-sm md:text-base leading-relaxed">
-                          {allImages[lightboxIndex].caption}
-                        </p>
-                        <p className="text-white/40 text-xs mt-2">
-                          {lightboxIndex + 1} / {allImages.length} {allImages[lightboxIndex].type === 'image' && `• ${t.clickToZoom}`}
-                        </p>
-                      </motion.div>
-                    </>
-                  )}
-                </motion.div>
-              </AnimatePresence>
-            </div>
-
-            {/* Image dots indicator */}
-            {!lightboxZoomed && (
-              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center space-x-2">
-                {allImages.map((_, idx) => (
-                  <button
-                    key={idx}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      const dir = idx > lightboxIndex ? 1 : -1;
-                      setLightboxIndex(idx);
-                      setPage([idx, dir]);
-                      setLightboxZoomed(false);
-                    }}
-                    className={`w-2 h-2 rounded-full transition-all duration-200 ${
-                      idx === lightboxIndex
-                        ? 'bg-white w-4'
-                        : 'bg-white/30 hover:bg-white/50'
-                    }`}
-                  />
-                ))}
-              </div>
-            )}
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Enhanced Lightbox with mobile gestures */}
+      <EnhancedLightbox
+        isOpen={lightboxOpen}
+        onClose={closeLightbox}
+        images={allImages.map(img => ({
+          src: img.src,
+          caption: img.caption,
+          type: img.type as 'image' | 'video'
+        }))}
+        currentIndex={lightboxIndex}
+        onIndexChange={(idx) => {
+          setLightboxIndex(idx);
+          setPage([idx, idx > lightboxIndex ? 1 : -1]);
+        }}
+        lang={lang}
+      />
 
       {/* Content - Switch between Case Study and Gallery */}
       <AnimatePresence mode="wait">
@@ -1062,8 +911,24 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
               ))}
             </div>
           </motion.div>
+        ) : caseStudyMode === 'executive' ? (
+          /* Executive Summary View */
+          <motion.div
+            key="executive"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <DailymotionExecutive
+              systemTheme={systemTheme}
+              lang={lang}
+              onImageClick={openLightbox}
+              onViewFull={() => setCaseStudyMode('full')}
+            />
+          </motion.div>
         ) : (
-          /* Case Study View */
+          /* Full Case Study View */
           <motion.div
             key="caseStudy"
             initial={{ opacity: 0 }}
@@ -1077,6 +942,15 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
           <main className="w-full">
             {/* Hero Section */}
             <section id="hero" className="mb-16 md:mb-24">
+              {/* Logo */}
+              <img
+                src={systemTheme === 'dark'
+                  ? '/images/dailymotion/logo_dailymotion_wordmark_white_safezone.png'
+                  : '/images/dailymotion/logo_dailymotion_wordmark_black_safezone.png'
+                }
+                alt="Dailymotion"
+                className="h-12 w-auto mb-8"
+              />
               <div className="md:col-span-3">
                 {/* Meta tags */}
                 <div className="flex flex-wrap gap-2 mb-4">

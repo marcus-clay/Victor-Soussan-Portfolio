@@ -2440,6 +2440,7 @@ const App: React.FC = () => {
                           src={`/images/${project.coverImage}`}
                           alt={`${project.title} preview`}
                           className="w-full h-full object-contain rounded-xl md:rounded-2xl transition-transform duration-500 ease-out group-hover:scale-[1.05]"
+                          style={{ transform: project.id !== 'toolkit' ? 'scale(1.2)' : 'scale(1)' }}
                         />
                       </div>
                     </div>
