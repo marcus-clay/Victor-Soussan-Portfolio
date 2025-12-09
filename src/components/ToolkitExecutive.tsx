@@ -228,8 +228,8 @@ const TRANSLATIONS = {
     },
     scope: {
       eyebrow: 'Périmètre',
-      title: 'J\'ai designé\ntoute l\'application',
-      intro: 'De l\'authentification au planning, chaque écran et interaction.',
+      title: '6 domaines clés livrés en 12 mois',
+      intro: 'Tout pour simplifier le quotidien des opérateurs sur les chantiers.',
       areas: [
         {
           id: 'prototype',
