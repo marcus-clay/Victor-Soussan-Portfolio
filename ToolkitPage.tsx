@@ -830,7 +830,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className={`fixed top-[53px] sm:top-[65px] left-0 right-0 z-30 border-b ${
+            className={`fixed top-[53px] sm:top-[72px] left-0 right-0 z-30 border-b ${
               systemTheme === 'dark'
                 ? 'bg-[#0a0a0a]/95 backdrop-blur-xl border-white/10'
                 : 'bg-white/95 backdrop-blur-xl border-gray-200'
