@@ -2616,9 +2616,13 @@ const App: React.FC = () => {
           <div className="flex flex-col sm:flex-row justify-center items-center space-y-3 sm:space-y-0 sm:space-x-4">
             <button
               onClick={() => setIsExecutiveOpen(true)}
-              className="px-8 py-4 sm:px-10 sm:py-5 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-semibold text-lg sm:text-xl btn-pill flex items-center cursor-pointer relative z-20 whitespace-nowrap hover:scale-105 transition-all duration-200 shadow-lg shadow-blue-600/30"
+              className={`px-6 py-3 sm:px-8 sm:py-4 rounded-full font-semibold text-base sm:text-lg btn-pill flex items-center cursor-pointer relative z-20 whitespace-nowrap hover:scale-105 transition-all duration-200 backdrop-blur-xl ${
+                systemTheme === 'dark'
+                  ? 'bg-white/15 text-white border border-white/20 hover:bg-white/25 hover:border-white/30 shadow-lg'
+                  : 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-600/30'
+              }`}
             >
-              {content.hero.cta_projects} <ChevronRight className="ml-3 flex-shrink-0" size={22} />
+              {content.hero.cta_projects} <ChevronRight className="ml-2 flex-shrink-0" size={20} />
             </button>
             <button
                onClick={() => setIsBookingOpen(true)}
@@ -4576,16 +4580,16 @@ ${simpleContactForm.message}`;
                   <button
                     type="submit"
                     disabled={isSendingEmail}
-                    className="w-full flex items-center justify-center space-x-2 px-5 py-2.5 accent-blue text-white rounded-full font-medium text-sm btn-pill transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full flex items-center justify-center space-x-3 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-semibold text-lg btn-pill transition-all hover:scale-105 duration-200 shadow-lg shadow-blue-600/30 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                   >
                     {isSendingEmail ? (
                       <>
-                        <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent" />
+                        <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent" />
                         <span>{content.contact.simple_form_sending}</span>
                       </>
                     ) : (
                       <>
-                        <Send size={16} />
+                        <Send size={20} />
                         <span>{content.contact.simple_form_submit}</span>
                       </>
                     )}
