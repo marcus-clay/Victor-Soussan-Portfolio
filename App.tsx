@@ -2616,13 +2616,13 @@ const App: React.FC = () => {
           <div className="flex flex-col sm:flex-row justify-center items-center space-y-3 sm:space-y-0 sm:space-x-4">
             <button
               onClick={() => setIsExecutiveOpen(true)}
-              className={`px-6 py-3 sm:px-8 sm:py-4 rounded-full font-semibold text-base sm:text-lg btn-pill flex items-center cursor-pointer relative z-20 whitespace-nowrap hover:scale-105 transition-all duration-200 backdrop-blur-xl ${
+              className={`px-5 py-2.5 sm:px-6 sm:py-3 rounded-full font-medium text-sm sm:text-base btn-pill flex items-center cursor-pointer relative z-20 whitespace-nowrap transition-all duration-200 backdrop-blur-xl ${
                 systemTheme === 'dark'
-                  ? 'bg-white/15 text-white border border-white/20 hover:bg-white/25 hover:border-white/30 shadow-lg'
-                  : 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-600/30'
+                  ? 'bg-white/15 text-white border border-white/20 hover:bg-white/25 hover:border-white/30'
+                  : 'bg-black/80 text-white border border-white/10 hover:bg-black/90 hover:border-white/20'
               }`}
             >
-              {content.hero.cta_projects} <ChevronRight className="ml-2 flex-shrink-0" size={20} />
+              {content.hero.cta_projects} <ChevronRight className="ml-2 flex-shrink-0" size={16} />
             </button>
             <button
                onClick={() => setIsBookingOpen(true)}
