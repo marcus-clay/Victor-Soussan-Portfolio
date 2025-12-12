@@ -1224,7 +1224,7 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
                 className="w-24 h-24 sm:w-32 sm:h-32 rounded-full object-cover mb-6 sm:mb-8 border-4 border-gray-100"
               />
             )}
-            <h1 className="text-3xl sm:text-5xl md:text-7xl font-bold text-gray-900 mb-3 sm:mb-4 tracking-tight">
+            <h1 className="text-3xl sm:text-5xl md:text-7xl font-bold text-gray-900 mb-3 sm:mb-4 tracking-[-0.02em]">
               {slide.headline}
             </h1>
             <p className="text-base sm:text-xl md:text-2xl text-gray-500 font-light">

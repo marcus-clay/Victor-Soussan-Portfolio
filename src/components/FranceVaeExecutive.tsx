@@ -770,7 +770,7 @@ const FranceVaeExecutive: React.FC<FranceVaeExecutiveProps> = ({
           </FadeInSection>
 
           <FadeInSection delay={0.1}>
-            <h1 className={`mt-6 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.1] tracking-tight whitespace-pre-line ${
+            <h1 className={`mt-6 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.1] tracking-[-0.02em] whitespace-pre-line ${
               isDark ? 'text-white' : 'text-gray-900'
             }`}>
               {t.hero.title}

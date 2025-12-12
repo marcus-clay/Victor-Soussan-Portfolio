@@ -686,10 +686,10 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
             <div className="max-w-6xl mx-auto px-4 md:px-6">
               <button
                 onClick={() => setIsMobileNavExpanded(!isMobileNavExpanded)}
-                className="w-full py-4 flex items-center justify-between"
+                className="w-full h-12 flex items-center justify-between"
               >
               <div className="flex items-center gap-2">
-                <div className={`w-2 h-2 rounded-full bg-blue-600`} />
+                <div className={`w-2 h-2 rounded-full bg-blue-500`} />
                 <span
                   className={`text-sm font-medium ${
                     systemTheme === 'dark' ? 'text-white' : 'text-gray-900'

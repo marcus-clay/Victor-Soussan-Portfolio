@@ -2018,13 +2018,13 @@ const App: React.FC = () => {
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           {/* Logo/Section Name - Logo visible when not scrolled, section name when scrolled */}
           <div
-            className="relative font-semibold text-lg tracking-tight cursor-pointer transition-all duration-300 group"
+            className={`relative font-semibold text-lg tracking-[-0.02em] cursor-pointer transition-all duration-300 group ${isScrolled ? 'min-w-[100px]' : ''}`}
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             onMouseEnter={() => setIsHoveringLogo(true)}
             onMouseLeave={() => setIsHoveringLogo(false)}
           >
             {!isScrolled ? (
-              <span className="inline-block transition-opacity duration-300 opacity-100 group-hover:opacity-70">
+              <span className="inline-block transition-opacity duration-300 opacity-100 group-hover:opacity-70 whitespace-nowrap">
                 Victor Soussan
               </span>
             ) : (
@@ -2042,9 +2042,17 @@ const App: React.FC = () => {
                 </span>
 
                 {/* "Top" with arrow icon - hidden by default, fades in on hover (desktop only) */}
-                <div className={`hidden md:flex items-center gap-2 absolute left-0 top-0 transition-all duration-300 ease-out whitespace-nowrap ${isHoveringLogo ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
-                  <ArrowUp size={18} className="flex-shrink-0" strokeWidth={2.5} />
-                  <span>Top</span>
+                <div className={`hidden md:flex items-center gap-1.5 absolute left-0 top-1/2 -translate-y-1/2 transition-all duration-300 ease-out whitespace-nowrap px-3 py-1.5 rounded-full border ${
+                  isHoveringLogo
+                    ? 'opacity-100'
+                    : 'opacity-0 pointer-events-none'
+                } ${
+                  systemTheme === 'dark'
+                    ? 'border-white/30 bg-white/5'
+                    : 'border-gray-300 bg-gray-100/50'
+                }`}>
+                  <ArrowUp size={16} className="flex-shrink-0" strokeWidth={2.5} />
+                  <span className="text-sm">Top</span>
                 </div>
               </div>
             )}
@@ -2116,13 +2124,13 @@ const App: React.FC = () => {
               {lang === 'en' ? 'FR' : 'EN'}
             </button>
 
-            {/* Contact Button - Secondary style, small */}
+            {/* Contact Button - Liquid glass style (dark on light, white on dark) */}
             <button
               onClick={() => scrollToSection('contact')}
-              className={`px-4 py-1.5 text-sm font-medium rounded-full transition-all border ${
+              className={`px-4 py-1.5 text-sm font-medium rounded-full transition-all backdrop-blur-xl shadow-lg ${
                 systemTheme === 'dark'
-                  ? 'border-white/20 text-white/80 hover:bg-white/10 hover:border-white/30'
-                  : 'border-gray-300 text-gray-700 hover:bg-gray-100 hover:border-gray-400'
+                  ? 'bg-white/15 text-white border border-white/20 hover:bg-white/25 hover:border-white/30'
+                  : 'bg-black/80 text-white border border-white/10 hover:bg-black/90 hover:border-white/20'
               }`}
             >
               {content.nav.contact}
@@ -2261,7 +2269,7 @@ const App: React.FC = () => {
                           >
                             <Icon size={20} strokeWidth={isActive ? 2.5 : 2} />
                           </motion.div>
-                          <span className={`text-[16px] tracking-tight ${
+                          <span className={`text-[16px] tracking-[-0.02em] ${
                             isActive
                               ? systemTheme === 'dark' ? 'text-white font-semibold' : 'text-gray-900 font-semibold'
                               : systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
@@ -2586,7 +2594,7 @@ const App: React.FC = () => {
           </div>
 
           {/* Main Tagline - Frame. Design. Ship. */}
-          <h1 className={`text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-tight mb-4 md:mb-6 leading-[1.05] whitespace-nowrap ${
+          <h1 className={`text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-[-0.03em] mb-4 md:mb-6 leading-[1.05] whitespace-nowrap ${
             systemTheme === 'dark' ? 'text-white' : 'text-[#1D1D1F]'
           }`}>
             {content.hero.tagline}
@@ -2608,9 +2616,9 @@ const App: React.FC = () => {
           <div className="flex flex-col sm:flex-row justify-center items-center space-y-3 sm:space-y-0 sm:space-x-4">
             <button
               onClick={() => setIsExecutiveOpen(true)}
-              className="px-5 py-2.5 sm:px-6 sm:py-3 rounded-full font-medium text-sm sm:text-base btn-pill flex items-center cursor-pointer relative z-20 whitespace-nowrap accent-blue text-white"
+              className="px-8 py-4 sm:px-10 sm:py-5 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-semibold text-lg sm:text-xl btn-pill flex items-center cursor-pointer relative z-20 whitespace-nowrap hover:scale-105 transition-all duration-200 shadow-lg shadow-blue-600/30"
             >
-              {content.hero.cta_projects} <ChevronRight className="ml-2 flex-shrink-0" size={16} />
+              {content.hero.cta_projects} <ChevronRight className="ml-3 flex-shrink-0" size={22} />
             </button>
             <button
                onClick={() => setIsBookingOpen(true)}
@@ -2740,7 +2748,7 @@ const App: React.FC = () => {
                           <span className={`w-1 h-1 rounded-full ${
                             systemTheme === 'dark' ? 'bg-gray-600' : 'bg-gray-300'
                           }`} />
-                          <h3 className={`text-base font-bold tracking-tight ${
+                          <h3 className={`text-base font-bold tracking-[-0.02em] ${
                             systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                           }`}>
                             {project.title}
@@ -2767,7 +2775,7 @@ const App: React.FC = () => {
 
                         {/* Desktop: Title */}
                         <div className="hidden md:block mb-3">
-                          <h3 className={`text-xl md:text-2xl font-bold tracking-tight ${
+                          <h3 className={`text-xl md:text-2xl font-bold tracking-[-0.02em] ${
                             systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                           }`}>
                             {project.title}
@@ -2924,7 +2932,7 @@ const App: React.FC = () => {
       }`}>
         <div className="max-w-6xl mx-auto">
           <div className="mb-8 md:mb-12 text-center">
-            <h2 className="text-xl sm:text-2xl md:text-4xl font-bold tracking-tight mb-4 md:mb-6">{content.bio.title}</h2>
+            <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold tracking-[-0.02em] mb-4 md:mb-6">{content.bio.title}</h2>
             <p className={`text-sm sm:text-base md:text-lg max-w-2xl mx-auto ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>{content.bio.subtitle}</p>
           </div>
 
@@ -3102,7 +3110,7 @@ const App: React.FC = () => {
       }`}>
         <div className="max-w-6xl mx-auto">
           <div className="mb-8 md:mb-12 text-center">
-             <h2 className="text-xl sm:text-2xl md:text-4xl font-bold tracking-tight mb-4 md:mb-6">{content.services.title}</h2>
+             <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold tracking-[-0.02em] mb-4 md:mb-6">{content.services.title}</h2>
              <p className={`text-sm sm:text-base md:text-lg max-w-2xl mx-auto ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
                {content.services.subtitle}
              </p>
@@ -3312,7 +3320,7 @@ const App: React.FC = () => {
       }`}>
         <div className="max-w-6xl mx-auto">
           <div className="mb-8 md:mb-12 text-center">
-            <h2 className="text-xl sm:text-2xl md:text-4xl font-bold tracking-tight mb-4 md:mb-6">
+            <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold tracking-[-0.02em] mb-4 md:mb-6">
               {lang === 'en' ? 'Trusted by leading companies' : 'Des entreprises qui me font confiance'}
             </h2>
             <p className={`text-sm sm:text-base md:text-lg max-w-2xl mx-auto ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
@@ -3386,7 +3394,7 @@ const App: React.FC = () => {
       }`}>
         <div className="max-w-6xl mx-auto">
           <div className="mb-8 md:mb-12 text-center">
-            <h2 className="text-xl sm:text-2xl md:text-4xl font-bold tracking-tight mb-4 md:mb-6">{content.testimonials.title}</h2>
+            <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold tracking-[-0.02em] mb-4 md:mb-6">{content.testimonials.title}</h2>
             <p className={`text-sm sm:text-base md:text-lg max-w-2xl mx-auto ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
               {content.testimonials.subtitle}
             </p>
@@ -3468,7 +3476,7 @@ const App: React.FC = () => {
               <div className="inline-flex items-center px-3 py-1 rounded-full bg-white/10 border border-white/10 text-xs font-medium text-blue-300 mb-3 md:mb-4 backdrop-blur-md">
                  <FlaskConical size={14} className="mr-2"/> {content.lab.tag}
               </div>
-              <h2 className="text-xl sm:text-2xl md:text-4xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-500">{content.lab.title}</h2>
+              <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold tracking-[-0.02em] bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-500">{content.lab.title}</h2>
               <p className="text-gray-400 mt-3 md:mt-4 text-sm sm:text-base md:text-lg max-w-2xl mx-auto">
                  {content.lab.desc}
               </p>
@@ -3486,7 +3494,7 @@ const App: React.FC = () => {
                   <div className="mb-6 p-4 bg-blue-900/20 w-fit rounded-2xl text-blue-400 group-hover:scale-110 transition-transform duration-300">
                      <Smartphone size={32}/>
                   </div>
-                  <h3 className="text-2xl font-bold tracking-tight mb-2">{content.lab.apps_title}</h3>
+                  <h3 className="text-2xl font-bold tracking-[-0.02em] mb-2">{content.lab.apps_title}</h3>
                   <div className="text-xs font-mono text-blue-400 mb-4">{content.lab.apps_sub}</div>
                   <p className="text-gray-400 text-sm leading-relaxed mb-6 flex-1">
                      {content.lab.apps_desc}
@@ -3507,7 +3515,7 @@ const App: React.FC = () => {
                   <div className="mb-6 p-4 bg-amber-900/20 w-fit rounded-2xl text-amber-400 group-hover:scale-110 transition-transform duration-300">
                      <GraduationCap size={32}/>
                   </div>
-                  <h3 className="text-2xl font-bold tracking-tight mb-2">{content.lab.learning_title}</h3>
+                  <h3 className="text-2xl font-bold tracking-[-0.02em] mb-2">{content.lab.learning_title}</h3>
                   <div className="text-xs font-mono text-amber-400 mb-4">{content.lab.learning_sub}</div>
                   <p className="text-gray-400 text-sm leading-relaxed mb-6 flex-1">
                      {content.lab.learning_desc}
@@ -3528,7 +3536,7 @@ const App: React.FC = () => {
                   <div className="mb-6 p-4 bg-purple-900/20 w-fit rounded-2xl text-purple-400 group-hover:scale-110 transition-transform duration-300">
                      <Bot size={32}/>
                   </div>
-                  <h3 className="text-2xl font-bold tracking-tight mb-2">{content.lab.agents_title}</h3>
+                  <h3 className="text-2xl font-bold tracking-[-0.02em] mb-2">{content.lab.agents_title}</h3>
                   <div className="text-xs font-mono text-purple-400 mb-4">{content.lab.agents_sub}</div>
                   <p className="text-gray-400 text-sm leading-relaxed mb-6 flex-1">
                      {content.lab.agents_desc}
@@ -3549,7 +3557,7 @@ const App: React.FC = () => {
                   <div className="mb-6 p-4 bg-pink-900/20 w-fit rounded-2xl text-pink-400 group-hover:scale-110 transition-transform duration-300">
                      <Palette size={32}/>
                   </div>
-                  <h3 className="text-2xl font-bold tracking-tight mb-2">{content.lab.art_title}</h3>
+                  <h3 className="text-2xl font-bold tracking-[-0.02em] mb-2">{content.lab.art_title}</h3>
                   <div className="text-xs font-mono text-pink-400 mb-4">{content.lab.art_sub}</div>
                   <p className="text-gray-400 text-sm leading-relaxed mb-6 flex-1">
                      {content.lab.art_desc}
@@ -5111,7 +5119,7 @@ ${contactForm.message}`;
               <div className="sticky top-0 z-10 bg-white/80 backdrop-blur-xl border-b border-gray-100 px-8 py-5 no-print">
                 <div className="flex items-center justify-between mb-5">
                   <div>
-                    <h2 className="text-2xl font-semibold text-gray-900 tracking-tight">
+                    <h2 className="text-2xl font-semibold text-gray-900 tracking-[-0.02em]">
                       Résumé
                     </h2>
                     <p className="text-sm text-gray-500 mt-0.5">Product Design Lead</p>
@@ -5197,7 +5205,7 @@ ${contactForm.message}`;
                   >
                     {/* Header */}
                     <div className="mb-10">
-                      <h1 className="text-3xl font-semibold text-gray-900 tracking-tight mb-4">
+                      <h1 className="text-3xl font-semibold text-gray-900 tracking-[-0.02em] mb-4">
                         {TRANSLATIONS[resumeLang].resume.title}
                       </h1>
 
@@ -5371,7 +5379,7 @@ ${contactForm.message}`;
             />
           </div>
 
-          <h2 className="text-xl sm:text-2xl md:text-4xl font-bold tracking-tight mb-5 md:mb-8">{content.contact.title}</h2>
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold tracking-[-0.02em] mb-5 md:mb-8">{content.contact.title}</h2>
           <p className="text-gray-400 text-sm sm:text-base md:text-xl mb-8 md:mb-12 max-w-2xl mx-auto">
             {content.contact.subtitle}
           </p>
