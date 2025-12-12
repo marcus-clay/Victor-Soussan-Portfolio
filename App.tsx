@@ -4580,7 +4580,7 @@ ${simpleContactForm.message}`;
                   <button
                     type="submit"
                     disabled={isSendingEmail}
-                    className="w-full flex items-center justify-center space-x-3 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-semibold text-lg btn-pill transition-all hover:scale-105 duration-200 shadow-lg shadow-blue-600/30 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                    className="w-full flex items-center justify-center space-x-3 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-semibold text-lg btn-pill transition-colors duration-200 shadow-lg shadow-blue-600/30 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isSendingEmail ? (
                       <>
