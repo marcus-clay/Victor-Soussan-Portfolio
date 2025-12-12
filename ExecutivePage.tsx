@@ -449,13 +449,14 @@ const SLIDES = {
       headline: '15 years',
       subline: 'In tech. 10 in product design. Specialized in rapid conceptualization and AI-assisted prototyping.',
       visual: '/images/sqool/hero_ecosystem_sqool.webp',
+      caption: 'SQOOL Suite deployed in 465 high schools across Île-de-France',
     },
     // 4. Scale
     {
       type: 'metric',
-      headline: '500K+',
-      subline: 'Students using SQOOL. Deployed across 465 French public schools.',
-      visual: '/images/sqool/image-unowhy-region-iledefrance-distribution-rentree.jpg',
+      headline: '22M+',
+      subline: 'Downloads for PagesJaunes mobile apps in 2016. Award-winning smartphone & tablet experience.',
+      visual: '/images/thumbnail_pagesjaunes_sp_tablette.webp',
     },
     // 5. Career Timeline - Uses CareerCarousel component with careerData
     {
@@ -703,13 +704,14 @@ const SLIDES = {
       headline: '15 ans',
       subline: 'Dans la tech. 10 en product design. Spécialisé en conceptualisation rapide et prototypage assisté par IA.',
       visual: '/images/sqool/hero_ecosystem_sqool.webp',
+      caption: 'Suite SQOOL déployée dans 465 lycées d\'Île-de-France',
     },
     // 4. Scale
     {
       type: 'metric',
-      headline: '500K+',
-      subline: 'Élèves utilisent SQOOL. Déployé dans 465 écoles publiques françaises.',
-      visual: '/images/sqool/image-unowhy-region-iledefrance-distribution-rentree.jpg',
+      headline: '22M+',
+      subline: 'Téléchargements des apps mobiles PagesJaunes en 2016. Expérience smartphone & tablette primée.',
+      visual: '/images/thumbnail_pagesjaunes_sp_tablette.webp',
     },
     // 5. Career Timeline - Uses CareerCarousel component with careerData
     {
