@@ -163,8 +163,11 @@ const getInitials = (name: string) => {
     .toUpperCase();
 };
 
-const Avatar: React.FC<{ filename: string; alt: string; className?: string }> = ({ filename, alt, className = "" }) => {
-  const cleanFilename = filename.split('/').pop() || filename;
+const Avatar: React.FC<{ filename: string; alt: string; className?: string; isDark?: boolean }> = ({ filename, alt, className = "", isDark = false }) => {
+  // For Victor's portrait, use dark version when in dark mode
+  const isVictorPortrait = filename.includes('victor-soussan');
+  const actualFilename = isVictorPortrait && isDark ? 'victor_soussan_dark.webp' : filename;
+  const cleanFilename = actualFilename.split('/').pop() || actualFilename;
   const imagePath = `/images/${cleanFilename}`;
   const [hasError, setHasError] = useState(false);
 
@@ -2940,6 +2943,7 @@ const App: React.FC = () => {
                         filename="victor-soussan.png"
                         alt="Victor Soussan"
                         className="w-28 h-28 md:w-40 md:h-40 rounded-2xl md:rounded-[2rem] shadow-lg border border-white/20"
+                        isDark={systemTheme === 'dark'}
                       />
                       <div className="text-center md:text-left pt-2 flex-1">
                         <h3 className={`text-2xl md:text-3xl font-bold mb-2 ${
@@ -4298,7 +4302,7 @@ const App: React.FC = () => {
                   <div className="relative">
                     <div className="w-16 h-16 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 overflow-hidden border-2 border-white shadow-lg">
                       <img
-                        src="/images/victor-soussan.png"
+                        src={systemTheme === 'dark' ? '/images/victor_soussan_dark.webp' : '/images/victor-soussan.png'}
                         alt="Victor Soussan"
                         className="w-full h-full object-cover"
                         onError={(e) => {
@@ -4627,7 +4631,7 @@ ${simpleContactForm.message}`;
                   <div className="relative">
                     <div className="w-16 h-16 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 overflow-hidden border-2 border-white shadow-lg">
                       <img
-                        src="/images/victor-soussan.png"
+                        src={systemTheme === 'dark' ? '/images/victor_soussan_dark.webp' : '/images/victor-soussan.png'}
                         alt="Victor Soussan"
                         className="w-full h-full object-cover"
                         onError={(e) => {
@@ -5363,6 +5367,7 @@ ${contactForm.message}`;
               filename="victor-soussan.png"
               alt="Victor Soussan"
               className="w-28 h-28 md:w-40 md:h-40 rounded-2xl md:rounded-[2rem] mx-auto shadow-lg border border-white/20"
+              isDark={true}
             />
           </div>
 
@@ -5966,7 +5971,7 @@ ${contactForm.message}`;
                       {/* Small Avatar */}
                       <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-blue-600/20 shadow-lg">
                         <img
-                          src="/images/victor-soussan.png"
+                          src={systemTheme === 'dark' ? '/images/victor_soussan_dark.webp' : '/images/victor-soussan.png'}
                           alt="Victor Soussan"
                           className="w-full h-full object-cover"
                         />
@@ -6063,7 +6068,7 @@ ${contactForm.message}`;
                         <div className="relative">
                           <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-blue-600/20 shadow-2xl shadow-blue-600/10 mx-auto">
                             <img
-                              src="/images/victor-soussan.png"
+                              src={systemTheme === 'dark' ? '/images/victor_soussan_dark.webp' : '/images/victor-soussan.png'}
                               alt="Victor Soussan"
                               className="w-full h-full object-cover"
                             />
@@ -7559,6 +7564,7 @@ ${contactForm.message}`;
                 setIsResumeOpen(true);
               }}
               showFarewell={showExecutiveFarewell}
+              systemTheme={systemTheme}
             />
           </Suspense>
         )}

@@ -946,7 +946,13 @@ interface ExecutivePageProps {
   onContact?: () => void;
   onOpenResume?: (lang: 'fr' | 'en') => void;
   showFarewell?: boolean;
+  systemTheme?: 'light' | 'dark';
 }
+
+// Helper to get portrait image based on theme
+const getPortraitImage = (isDark: boolean) => {
+  return isDark ? '/images/victor_soussan_dark.webp' : '/images/victor-soussan.png';
+};
 
 // Clickable image component with hover effect and iPadOS-style border
 const ClickableImage = ({
@@ -983,8 +989,10 @@ const ClickableImage = ({
   </motion.div>
 );
 
-export default function ExecutivePage({ language = 'fr', onClose, onBookCall, onContact, onOpenResume, showFarewell }: ExecutivePageProps) {
+export default function ExecutivePage({ language = 'fr', onClose, onBookCall, onContact, onOpenResume, showFarewell, systemTheme = 'light' }: ExecutivePageProps) {
   const [lang, setLang] = useState<'en' | 'fr'>(language);
+  const isDark = systemTheme === 'dark';
+  const portraitImage = getPortraitImage(isDark);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -1209,7 +1217,7 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
           <div className="flex flex-col items-center justify-center h-full text-center px-4 sm:px-8">
             {slide.visual && (
               <img
-                src={slide.visual}
+                src={portraitImage}
                 alt=""
                 className="w-24 h-24 sm:w-32 sm:h-32 rounded-full object-cover mb-6 sm:mb-8 border-4 border-gray-100"
               />
@@ -1775,7 +1783,7 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
           <div className="flex flex-col items-center justify-center h-full text-center px-4 sm:px-8">
             {slide.visual && (
               <img
-                src={slide.visual}
+                src={portraitImage}
                 alt=""
                 className="w-28 h-28 sm:w-40 sm:h-40 rounded-full object-cover mb-6 sm:mb-10 border-4 border-gray-100 shadow-xl"
               />
