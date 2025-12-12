@@ -1743,7 +1743,7 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
                     <div className="rounded-lg sm:rounded-xl overflow-hidden border border-gray-200 cursor-pointer hover:shadow-lg transition-shadow">
                       <ClickableImage
                         src={bentoVisuals[0]}
-                        className="w-full h-auto"
+                        className="w-full h-auto max-h-[35vh] sm:max-h-[40vh] object-cover"
                         onClick={() => openLightbox(bentoVisuals[0])}
                         hasWhiteBg={isCondamineApps}
                       />
