@@ -1,0 +1,215 @@
+# Test plateforme VAE : projets pilotes VIVE 3 et VAE
+
+> Date : 29 avril 2025, 14:35
+
+> Durée : 00:50:55
+
+
+## Résumé succinct :
+
+Test de la plateforme VAE avec des projets pilotes (VIVE 3 et VAE inversée) pour 160 candidats afin d'améliorer l'inscription, le suivi et le pilotage.
+
+
+## Retranscription :
+
+Vincent Berger : Cette recherche de testeurs pour la vae collective, ça peut nous intéresser.  Là c'est un projet vraiment plus parcours classique, c'est-à-dire parcours vae, pas du tout de vae inversée, on a 60 candidats.  Au total, avec un démarrage assez progressif puisqu'on va avoir plusieurs groupes mais qui ne vont pas démarrer en même temps.  
+
+Victor : Oui, c'est ça.  Il y a trois cohortes en 2025 et quatre en 2026, c'est ça ?  
+
+Vincent Berger : C'est ça, oui.  Et ensuite, lorsqu'on a rapproché, je me suis dit qu'on a un deuxième projet sur lequel il va falloir qu'on aille sur France VE, c'est le projet VE inversé.  Ce n'est pas nous le porteur de projet, nous on est sur la partie accompagnement VE, c'est Domus Ville le porteur de projet.  Et en fait on est nous dans le projet structure accompagnateur de parcours VE.  Au départ on avait imaginé, puisque l'été dernier j'avais posé la question, je ne sais plus qui chez France VE m'avait répondu en disant que la VE inversée ne passait pas par la plateforme.  Et finalement, en échangeant avec Olivier la dernière fois, il disait si on peut.  Et d'ailleurs, pour gérer la phase de faisabilité, c'est beaucoup plus simple.  Et donc, je me dis qu'effectivement, dans le cadre de ce projet de VRC, nous, on va avoir besoin d'inscrire massivement les candidats sur le portail France VE pour limiter l'effet.  Que les personnes s'inscrivent une à une et que certaines oublient de le faire.  Et on aura besoin après d'ailleurs de suivre la progression et de virer les démarches.  Demande de recevabilité plus après derrière dépôt du poste de validation en fin de parcours.  
+
+Victor : D'accord.  Est-ce que vous pourriez s'il vous plaît reclarifier ce qu'on entend par une veuve inversée ?  
+
+Vincent Berger : La vae inversée, c'est le deuxième volet des projets expérimentaux autour de la vae qui ont eu lieu suite à la loi de 2022.  On est vraiment sur un dispositif expérimental.  Si vous voulez, la vae inversée, l'expérience n'est vraiment plus du tout un prérequis.  C'est des actions de vae adossées à la signature d'un contrat de professionnalisation.  Ça veut dire que les personnes sont embauchées.  Sur un poste, elles peuvent n'avoir aucune expérience du métier.  Elles vont acquérir de l'expérience et en même temps, on va venir valoriser par la vae et différentes actions de formation cette expérience pour les donner à la diplomation.  Donc là, on est associé à ce projet sur la partie accompagnement vae.  Et dans le parcours de VAE inversé qu'ils ont, les candidats vont faire par exemple une trentaine de situations en formation en solution de travail, en AFEST, en plus de l'AESI.  Donc ils ont un contrat qui débute en fonction d'être soignants, ils ont des actions de renforcement des compétences en interne, et nous on vient faire de l'accompagnement VAE pour les amener à la diplomation après l'AR.  
+
+Victor : D'accord.  
+
+Vincent Berger : C'est un dispositif qui est un peu particulier par rapport à la vae et ça fait partie vraiment des dispositifs expérimentaux puisqu'il y avait 5000 places de parcours de vae inversée financées avec des barèmes fixés par la DGEFP.  Pour pouvoir faire de la vae inversée, il fallait répondre à un appel à projet, soumettre à la DGEFP et la DGEFP valide.  Donc nous, on a fait ça avec Domus Vie et on avait eux être soignants principalement.  
+
+Victor : Ok, merci, c'est plus clair.  
+
+Vincent Berger : Mais voilà, le besoin finalement est le même, c'est-à-dire qu'on va avoir besoin de gérer un gros groupe qui va arriver, qui va s'inscrire presque tous au même moment sur la plateforme et il va falloir qu'on gère toute la demande de recevabilité.  plus après l'ère le dossier de validation.  
+
+Victor : D'accord.  Ok, j'en ai encore un.  Ok, pour vous en dire plus nous là où on en est, on est en train de mettre en production les éléments liés à la vae collective.  Pour l'instant c'est encore un processus assez manuel, on a des badges et des informations relatives à l'entreprise qui sont affichées sur le tableau de bord du candidat.  Mais après toutes les opérations liées au remplissage des démarches, Les liens liés à l'envoi du dossier de faisabilité, liés à la communication entre l'AAP et le candidat sont les mêmes.  Pour l'instant, on n'est pas encore sur une expérience de gestion de masse telle qu'on voudrait qu'elle soit.  Les fonctionnalités liées à la vae collective commencent à être disponibles.  Ça veut dire que ça permet, concrètement, quand on est sur la plateforme et qu'on est un AAP qui gère des candidats, de distinguer ceux qui appartiennent à un projet de vae collective des candidatures qui sont sur des vae individuelles.  Ça veut dire que...  
+
+Vincent Berger : En fait, là, pour les distinguer, ça sera une inscription qui serait faite par un employeur ou par un porteur de projet.  
+
+Victor : L'inscription, telle qu'elle est faite, ça fait partie des points que je vais aborder avec l'équipe dans cette mise en oeuvre.  Pour l'instant, on n'a pas d'espace dédié à l'employeur ni au commanditaire.  Et on est plus dans une démarche manuelle de pouvoir renseigner les informations, paramétrer les comptes, donner accès à des liens d'inscription et tout ça.  Mais du coup, est-ce qu'on choisit de... Créer des liens d'inscription individuels pour chaque candidat que vous ensuite, ou commanditaire, transmettez à la personne pour qu'elle se connecte à la plateforme, qu'elle s'inscrive et donc ensuite qu'elle arrive sur son espace.  Ça c'est sur quoi on est parti pour l'instant.  On est parti sur générer un lien d'inscription avec un ID du projet de vae collective auquel la personne est rattachée.  
+
+Vincent Berger : D'accord.  En fait, le commanditaire qui voudrait lancer un projet de collectif, il s'adresserait à un AAP, il créerait l'espace qui générerait ce lien, cet ID, qu'il le retransmettrait à l'employeur ou qu'il l'enverrait directement au candidat.  pour vraiment avoir une identification spécifique, je relève de ce projet-là.  
+
+Victor : Exactement.  Tout en sachant que le parcours et les flows utilisateurs seraient les mêmes.  
+
+Vincent Berger : Après, oui, je pense que de toute façon, au niveau des candidatures, finalement, on va rester sur le même besoin, c'est-à-dire étape par étape du parcours.  Qu'est-ce que je dois saisir ?  Qu'est-ce que je dois importer ?  Et puis, ça nous renseigne.  Ça nous donne un peu une timeline, c'est-à-dire... Si je vois que cette fonctionnalité est bloquée, ça veut dire que l'étape d'avant n'est pas satisfaite.  Ce qui est intéressant pour l'AAP, je trouve, c'est de bien pouvoir réfléchir ses candidats et surtout leur simplifier le process d'inscription.  Qu'ils n'aient pas à aller chercher manuellement.  On a eu le cas sur des vae collectives où les candidats ne se sont pas inscrits sur la bonne structure AAP.  Ah oui.  On s'en rend compte à posteriori parce que quand on fait un reporting projet avec le commanditaire, telle personne n'est pas inscrite.  Le commanditaire va voir son salarié.  Si je suis inscrit sur France 2, quelle structure AP vous avez choisi ?  C'est à la marge, mais c'est le genre d'accueil qui peut arriver.  L'autre problématique vraiment, et ça c'est un vrai point bloquant, c'est que quand on a un calendrier qui est fixé sur le parcours, il y a des échéances sur lesquelles on ne le maîtrise pas.  L'échéance qu'on ne va pas maîtriser, par exemple, c'est la recevabilité.  C'est-à-dire qu'on va la maîtriser partiellement parce qu'on sait que si on dépose à telle date, globalement on se dit que deux mois après on est censé avoir une notification, un avis de recevabilité.  Donc nous, par exemple, ce qu'on fait, c'est que moi, l'indication que j'ai donnée, c'est qu'on ne démarque pas, on ne programme pas une session d'accompagnement trois mois, à minima, trois mois après la demande de recevabilité.  Sauf que, ça c'est dans les faits, ve collective qu'on a fait avec une soixantaine de candidats, on avait déterminé des périodes avec des dates de démarrage qui étaient bien fixées trois mois après.  Sauf que dans le lot, on a des candidats qui ne sont pas inscrits dans les temps ou qui n'ont pas pris une plage d'entretien de faisabilité dans les temps.  Ce qui fait que ces candidats-là, malheureusement, n'ont pu que déposer leur dossier de faisabilité après les autres.  Et donc, ces candidats, ils n'ont pas pu démarrer en même temps que le reste du groupe.  Donc, en fait, on a besoin, je pense, dans le cadre d'une vae collective, de maîtriser le calendrier et la timeline, c'est-à-dire que Les candidats, il faut qu'ils soient tous inscrits au même moment.  Il faut que les dossiers de faisabilité, on puisse avoir des périodes.  Et il y a un élément qui va donner un peu le tempo, c'est déjà l'inscription.  Si l'inscription, on ne verrouille pas, on ne sécurise pas suffisamment cet aspect, c'est compliqué.  L'élément qui serait encore plus facilitant d'après moi, ce serait que ce soit que l'AAP et l'employeur... Et l'accès à cet espace-là et que l'employeur puisse lui-même à partir de tableaux Excel, je ne sais pas, de modèles téléchargeables tout près, importer une liste de collaborateurs dans la plateforme.  
+
+Victor : Oui.  Clairement.  
+
+Vincent Berger : Ça, ce serait vraiment top.  Oui.  Je donne l'exemple.  nous, par exemple, j'ai travaillé moi un peu dans le digital learning.  Quand... Quand on est sur une plateforme et qu'on a besoin de faire des imports massifs d'utilisateurs, souvent les éditeurs, en fait, ils donnent un template à télécharger avec des champs de colonnes qui sont automatiquement reconnus par la plateforme.  Et ensuite, il y a juste une étape, alors ça ne met pas tout dans le marbre, mais une étape derrière juste de vérifier qu'on a bien toutes les informations, qu'elles sont bien saisies.  On valide, ça importe les utilisateurs directement dans la plateforme et à ce moment-là, Nous, ça déclenchait, sur la plateforme qu'on avait, ça déclenchait l'envoi d'un mail automatique pour que la personne puisse accéder à sa candidature.  Enfin, à son, pardon, à sa candidature.  J'exprime un peu, mais à son espace.  
+
+Victor : Oui, à son espace.  Donc ça, c'était un système d'import.  C'était une technologie qui était... C'était quoi ?  C'était spécifique à la plateforme de LMS que vous utilisiez ?  Ou c'était un importeur de CSV ?  C'est-à-dire que tu importes un CSV et ensuite après il y a une moulinette et ça vient ensuite mapper les champs et les données ?  
+
+Vincent Berger : Je pense que oui.  En fait, toutes les plateformes ont ces fonctionnalités-là.  Après, chaque plateforme apporte le compte pour le coup à son tableau CSV en fait.  Ok.  Avec des champs déjà bien identifiés et c'est sûr que si on fait péter une colonne ou on en rajoute une avec un intitulé qui est différent de ce qu'est capable de reconnaître la plateforme, ça ne marche pas.  
+
+Victor : Ok mais néanmoins c'est un pas en avant sur le fait d'envoyer en masse des informations sur la plateforme parce qu'effectivement nous on n'en est pas encore là.  mais c'est vraiment ce type d'expérience là qu'on souhaite pousser pour que à terme même l'étape d'un port manuel de mon csv sur un uploader.  L'idée c'est que toute l'initialisation, on sait que c'est un processus qui est complexe et c'est vrai que derrière ça peut être un très gros gain si on peut On travaillait à interconnecter les systèmes d'information entre eux pour transmettre l'information.  Il y avait en plus la question du NIR et de l'identification par les numéros de sécu.  C'est un gros sujet au sommet.  
+
+Vincent Berger : Avec les données, l'acquis, les compagnies.  
+
+Victor : C'est ça, c'est un gros gros sujet.  Je note quand même dans l'histoire de l'import sur plateforme avec CSV.  
+
+Vincent Berger : Et après, le point de vigilance que je mets par rapport à la... Il y a une connexion à l'idée.  Alors ça, je trouve que c'est génial pour le coup, parce que là, clairement, on répond à une problématique et à un risque d'erreur qui était majeur, qui était celui de mal identifier ou de ne pas arriver à rechercher, à localiser.  Typiquement, on avait fait un guide d'inscription qu'on remettait pour dire, par exemple, que Croix Rouge Compétence, ça s'écrivait de telle manière, en fait... Passé un temps, il fallait qu'on le saisisse en majuscule pour nous identifier.  Vous voyez, c'était un peu... Et ça donnait les étapes par étapes.  Là, c'est vrai que s'il y a un lien de connexion qui est généré, la personne a juste à cliquer dessus.  Par contre, point de silence, c'est l'impact de créer toutes ces candidatures-là pour l'AAP.  Puisque c'est l'AAP, de ce que je comprends, qui va devoir gérer finalement la création de ces individuels, de ces candidatures.  
+
+Victor : Je ne veux pas faire de bêtises.  J'aimerais bien vous le confirmer.  Il faut que je vous confirme ça parce que nous, on avait aussi l'optique de potentiellement pour.  Aider dans la mise en oeuvre des premières vae collectives de prendre une partie et que ce soit des personnes de nos admins en interne qui le fassent.  Mais je ne vais pas vous dire de bêtises.  
+
+Vincent Berger : Après, là, on est plus sur une adaptation par rapport à un test, en fait, pour faciliter le test.  Après, honnêtement... Si vous voulez vraiment avoir valeur de presse, je pense qu'il ne faut même pas tomber dans ce schéma-là, c'est-à-dire qu'il faut pousser la démarche jusqu'au bout.  Moi, très clairement, si l'AAP met une demi-journée à saisir 100 candidatures manuellement, je pense que son retour va être celui que ce n'est pas pratique.  Mais pour le coup, c'est ce qui va être riche d'enseignement aussi.  
+
+Victor : C'est ça, c'est-à-dire, ok, étape 1, maintenant, au bout de l'effort, on a sécurisé les liens avec l'ID de la bonne vae collective, donc quelque part, on est moins inquiet par la suite de se dire, mince, en fait, est-ce qu'ils sont sur la bonne plateforme ou quoi, donc c'est correct.  
+
+Vincent Berger : Et après, voir quelles sont les informations, parce que dans le cadre des vae collectives, par exemple, un commande du cadre qui amène 100 vae AS, On ne va pas faire un groupe.  Nous, on fait une collective individuelle.  On ne va pas forcément faire 100 candidats.  Typiquement, si je prends le projet de VE inversé, on a des candidats qui sont partout en France.  On a créé des groupes, nous, en fonction des échéances de jury et de diplômes potentiels.  Ça veut dire que, par exemple, on a regroupé des candidats qui vont être en Hauts-de-France parce qu'on sait qu'en Hauts-de-France, Les jurys VAE, ils ont lieu de telle période et sur telle période.  Là où sur d'autres régions, on a des jurys tous les deux mois.  Et donc en fait, pour ne pas avoir dans un groupe un avancement à une vitesse et un avancement à une autre, on a essayé de regrouper par échéance de jurys pour se dire que ce même groupe suit le même calendrier.  Donc ça veut dire que nous, les candidats, on les a bien identifiés groupe par groupe.  Groupe 1, groupe 2, groupe 3, groupe 4... Et donc peut-être, je ne sais pas si ça c'est possible en termes de développement, c'est que quels sont les champs d'identification de groupe qu'on doit remplir pour vraiment optimiser l'identification des candidats sur l'espace de la vae collective.  
+
+Victor : Ok.  
+
+Vincent Berger : Après ça fait un peu ma liste au personnel, je suis désolé mais...  
+
+Victor : Non mais moi je suis là pour ça, enfin vraiment le but c'est... Clairement qu'on remonte tous les besoins, tous les problèmes, tous les endroits fastidieux, les work around parce que c'est comme ça qu'on va construire le projet.  Quand vous parlez des groupes, est-ce qu'on peut assimiler ça à des cohortes ?  
+
+Vincent Berger : Oui, voilà, c'est ça, oui, une cohorte.  Oui, avec pareil, peut-être avoir la main sur un niveau de granularité en fait.  Je parle d'une cohorte parce que j'ai une cohorte 200 puis une autre qui suivra dans six mois sur un même projet de la vae collective avec le commentaire.  Et est-ce qu'au sein de cette cohorte, j'ai 5, 6, 7, 8 groupes sur lesquels j'ai besoin d'identifier le candidat ?  En fait, ça fait vraiment penser à... Est-ce qu'on avait besoin de saisir comme information sur un LMS ?  Pour se dire que le commanditaire a besoin d'un extrait, qu'il veut savoir l'état d'avancement de tel ou tel groupe, il faut qu'avec des filtres, je puisse savoir mon groupe 1, j'ai tant de candidats, j'ai ce candidat qui est en abandon, j'en ai un autre qui a déposé son livret, il y en a un autre qui ne l'a pas déposé.  Et de savoir à la fin, groupe 1, tout le monde a déposé, groupe 2, 50%.  
+
+Victor : C'est le... En fait, je vais vous montrer parce que... Donc, en gros, je vais vous montrer l'interface, ce qu'on met en prod là.  Donc, la première version.  Et après, je vais vous montrer la partie, la vae collective, la vision cible pour le commanditaire.  Et comme ça, vous verrez.  Hop !  Je partage mon écran, ça sera dans Figma.  Est-ce que vous voyez ?  
+
+Vincent Berger : Oui, oui, carrément.  Ça marche.  
+
+Victor : Donc là on a décomposé ça en vraiment des parcours fonctionnels, des boucles quoi.  Donc on a la première connexion, donc en tant que candidat je me connecte pour la première fois sur mon espace après avoir suivi l'inscription via le lien de la vae collective.  Plusieurs diplômes sont disponibles et plusieurs AAP sont disponibles.  Donc là on est dans le scénario où ça passe par un email.  On pourrait aussi se dire, l'AAP fait une réunion avec le groupe un lundi matin et transmet le lien avec le code pour que le candidat rentre sur son compte.  Donc là il reçoit un email, il va cliquer sur je commence mon parcours et ensuite il arrive sur son tableau de bord.  C'est un tableau de bord qu'on avait aussi mis en prod la semaine dernière.  Tout est neuf et en gros le candidat arrive sur sa page de candidature, il voit le nom du projet de vee Le nom de la cohorte auquel il est rattaché et ensuite après il a donc les différentes démarches à poursuivre pour compléter sa candidature et également poursuivre son parcours.  Donc là où il est en interaction avec l'AAP qui reçoit, qui envoie son dossier et qui reçoit le dossier et tout.  
+
+Vincent Berger : Est-ce que c'est prévu qu'il y ait un élément visuel qui lui fait dire que cette étape-là est complétée ?  Ou les autres sont verrouillés?  tant que je n'ai pas fini de compléter ?  Comme c'est le cas actuellement, c'est-à-dire qu'une étape est grisée quand celle d'avant n'est pas complétée.  
+
+Victor : Je vais quand même le rajouter.  
+
+Vincent Berger : Nous, vraiment très clairement, on a des candidats qui sont en très grande difficulté avec les outils numériques.  Ils acquièrent finalement petit à petit les compétences au fur et à mesure qu'ils progressent parce qu'ils sont un peu obligés.  Mais au démarrage, il y en a, c'est très, très compliqué.  
+
+Victor : Pour répondre à ça, on a plusieurs endroits.  Le premier, ça va être dans ce bandeau-là, où le candidat a une messagerie qui l'informe à toutes les étapes, une bannière avec des informations à toutes les étapes.  Et il a aussi dans mes prochaines actions l'information qu'il a une étape à confirmer.  Donc c'est là-dedans.  Et donc là, en gros, il va compléter son profil.  Donc il complète ses informations de profil, ses informations de contact.  Après il va choisir un diplôme.  Donc ça c'est si le diplôme n'a pas été sélectionné en amont.  Et il va renseigner ses objectifs, renseigner ses expériences.  Et voilà.  Ensuite il y a un seul diplôme.  Donc s'il a un seul diplôme et que dans le cadre de la vae collective il n'y a qu'un seul choix de diplôme, on lui renseigne ici et on l'informe que c'est complété.  Pour vous dire aussi en termes de dynamisme autour du service, on a l'ambition, alors pour l'instant on n'aura pas toutes ces informations là, elles seront pas vraiment connectées au tout début lors de la sortie là, mais c'est dans les semaines qui viennent.  L'idée c'est donc qu'on ait de manière dynamique les prochaines actions relatives au parcours du candidat qui soient mises en exergue ici.  Également les informations liées à ses prochains rendez-vous, les prochains rendez-vous qu'il peut avoir avec son AAP par exemple.  
+
+Vincent Berger : Et après, je vois mon contact entreprise.  Est-ce que lorsqu'il y a l'AAP, est-ce qu'on peut imaginer un système formulaire de contact pour vraiment centraliser la prise de contact ou à la limite, comme vous, un petit chatbot ?  Est-ce que c'est le contact entreprise ?  
+
+Victor : C'est vrai, alors que dans le cadre d'un parcours accompagné, sachant qu'on va être dans les parcours accompagnés, on devrait aussi avoir le contact AP.  Je suis d'accord avec vous.  
+
+Vincent Berger : Et souvent, après, d'ailleurs, on devient facilement leur interlocuteur prioritaire.  
+
+Victor : Oui, bien sûr.  Mais sachant que là, c'est aussi parce que le compagnateur n'a pas été choisi.  
+
+Vincent Berger : Ah oui, d'accord, ok.  
+
+Victor : C'est simplement son RH, Bertrand Dufour, mais il n'a pas été choisi.  Par contre, après, effectivement, il y a le choix de l'accompagnateur qui est à faire.  Et voilà, donc encore une fois, c'est dans le cas où dans le... Là, on part de la vae individuelle et on l'a transposée dans un contexte collectif, mais on n'a pas encore fléché précisément l'accompagnateur choisi.  Et ensuite, qu'est-ce que je peux te montrer d'autre ?  Un diplôme est disponible, un AAP est disponible.  Donc là, c'est le cas où tu as un diplôme qui est précisé, un accompagnateur qui est précisé.  Donc là... On l'a bien ici, mon accompagnateur, mon contact entreprise.  Ce qui paraissait assez logique mais ce n'était pas présent parce que là c'est les maquettes pour qu'on design tous les cas.  Et après le dernier cas ici, plusieurs diplômes sont disponibles et un AAP est disponible.  Et donc tu choisis le diplôme parmi les diplômes disponibles.  
+
+Vincent Berger : Qui sont en agile qu'à nous, sur un projet un peu collective.  
+
+Victor : D'accord.  Et après, pour te montrer du côté de l'espace AAP, tu es connecté en tant qu'AAP sur ton espace France VAE et tu vois Jonathan Dupuis qui est intégré dans un process de vae collective avec le nom du commanditaire, le nom de la cohorte.  Voilà.  Oui.  
+
+Vincent Berger : Passé un temps, je sais qu'il y avait des couleurs « Financiel droit commun », « Financement France VAE » sur les petits onglets.  Je trouvais que c'était assez visuel.  Ça facilitait l'identification.  Est-ce qu'on peut imaginer la même chose ?  Je vois bien que la vignette est différente puisqu'on rajoute une ligne.  
+
+Victor : En fait, ça nous a pas mal occupé ce sujet-là, des badges et des indicateurs d'alerte dernièrement.  Pourquoi ?  Parce qu'en fait, on a... À la fois des informations liées à la catégorisation, comme ça, sur site, finance à droit commun via le collectif, et des informations colorées liées au statut, donc à compléter où il y a un problème ou caduque.  Et en fait, on a pris le parti de considérer que tout ce qui était catégorisation, c'était plutôt d'une couleur neutre.  Et n'informer qu'avec de la couleur lorsque c'est un statut qui change la caractéristique de la candidature.  
+
+Vincent Berger : Oui, c'est vrai que maintenant il y a cette donnée-là qui est conçue aussi.  Et après, tu infiltres du coup sur le côté les vae collectives ?  Oui.  
+
+Victor : Alors là, c'est une maquette statique, mais... Si tu l'actives, tu vois les projets de vae collective qui te sont rattachés.  Donc, par rapport à ton contexte à toi, tu auras au maximum deux vae collective en cours.  
+
+Vincent Berger : Le truc que je vois, c'est comment je différencie, je distingue vraiment les deux projets indépendamment l'un de l'autre, sachant que là, Je vois bien effectivement le nom du commanditaire, le nom du projet de vae collective, mais si c'est que cet aspect, comment je filtre en fait ?  Je le note.  
+
+Victor : Parce  
+
+Vincent Berger : que là, typiquement, nous, si je prends toutes les vae qui vont se passer en région qui sont des vae collectives, Potentiellement, sur mon espace AAP, vu qu'on est pour l'instant structure AAP nationale, je vais retrouver une dizaine de projets en parallèle avec des employeurs différents, des natures de projets qui vont être différentes.  
+
+Victor : Pour toi, tu vas en avoir 10, c'est ça ?  
+
+Vincent Berger : Là, typiquement, avec le projet intégrant celui sur lequel on a identifié un groupe pilote, J'en ai à minima 5.  Alors pas de même échelle, c'est des projets des fois d'une dizaine de candidatures en région.  Mais ça reste de la vae collective quand même.  
+
+Victor : Oui bien sûr.  Et au-delà du filtre, voir les vae collectives, effectivement tu as besoin d'informations complémentaires.  Je suis assez...  
+
+Vincent Berger : Oui, de pouvoir vraiment filtrer, de se dire je veux isoler que les candidats qui sont sur le projet vae inversé.  Ou que le projet Vive 3 par exemple.  
+
+Victor : Ok.  Donc ça, je trouve du contexte, ça on a commencé à se parler du... Le projet vae collective, à la mi-mars, à la fin mars, on a designé notre MVP et en fait on l'a sorti en trois semaines.  Pour te dire qu'on a vraiment beaucoup carburé parce que pour nous c'était très stratégique de pouvoir le sortir et de pouvoir commencer à l'activer.  Merci pour tous tes retours parce que c'est super important et ça va vraiment nous aider.  Je voulais te montrer à présent ce qu'on a prévu.  C'est très schématique encore, mais tu vois l'espace commanditaire et le type de données qu'on pourrait remonter.  
+
+Vincent Berger : Génial !  
+
+Victor : Donc tu vois là on est beaucoup plus dans un cadre de la gestion à haut niveau et du pilotage, un vrai suivi très granulaire et tout.  Là où aujourd'hui nous on n'est pas encore très bien disant, tu l'as vu dans les interfaces en couleur, mais c'est le démarrage mais la cible.  Donc l'étude et finalement la co-construction qu'on souhaite mener c'est vraiment sur ça à terme.  Donc c'est dire en gros, t'arrives, t'as un vrai... Un vrai espace pour toi dans lequel tu vas trouver un tableau de bord, tes projets de vae collective, tes cohortes, tes candidats, accéder à des rapports, pouvoir aussi avoir des paramètres.  Donc en gros tu pourrais voir le nombre de projets de vae collective qui sont actifs, le nombre de cohortes actives, les candidats suivis.  Après, comme tu le disais tout à l'heure, tu vois le statut des veuilles collectives, la progression, tu vois des candidats, c'est-à-dire sur mes 30 candidats, j'en ai... J'en ai 16 qui ont terminé par exemple.  Ensuite, voir au niveau des vae collectives le nombre de cohortes, le nombre de candidats en tout, leur statut, si on peut aller dans cette finesse-là de savoir où on en est.  Ce niveau-là, après les cohortes.  Avec à nouveau l'idée de la progression, enfin vraiment une vision centralisée de tout mon projet.  
+
+Vincent Berger : C'est à dire vraiment un logiciel de gestion de la formation, enfin de gestion de la veuille.  
+
+Victor : Si le projet est monté pour le commanditaire on pourrait s'imaginer que c'est aussi une version AAP et pourquoi pas une version certificateur mais qu'on aille dans ce niveau de pilotage.  
+
+Vincent Berger : Clairement, si le commanditaire a accès à ça, c'est vraiment un gain de temps aussi pour l'AAP.  
+
+Victor : Clairement.  Et en plus, après, ce qu'on n'a pas là mais qu'on s'était dit la dernière fois dans le call, c'était... À la fois aussi la base documentaire de tous les documents, la partie communication aussi.  Tu sais, on peut communiquer sur les mêmes cohortes.  Pourquoi pas aussi identifier tous les candidats, toutes les fiches candidats.  Pourquoi pas positionner un calendrier, les documents, les coordonnées.  Tu vois le suivi, la projection des résultats, les contacts.  C'est encore dans le placard, c'est vraiment une vision cible.  et avant de construire la cathédrale on veut vraiment prendre les retours tout de suite et puis y aller petit à petit et ensuite avoir des échanges là-dessus.  et puis qu'on le démonte et le remonte et qu'on le complète.  C'est cher, c'est cher.  
+
+Vincent Berger : Parce que de toute façon, la meilleure des solutions, c'est celle qui répond à un besoin.  
+
+Victor : C'est ça, parce que monter des dashboards et tout, c'est très facile à faire et on pourrait complètement imaginer plein de choses.  Maintenant, derrière, si ça nous coûte un mois de développement sur dix personnes et qu'au final, les utilisateurs, ça ne les intéresse pas, ce n'est pas top.  D'autant plus qu'on est attendu parce qu'il y a vous qui montez vos projets.  Qui est relié aux entreprises, qui compte sur vous aussi.  
+
+Vincent Berger : Je pense que très clairement,  
+
+Victor : on  
+
+Vincent Berger : le voit, même si on a informé, et on n'a pas fait de pub sur la petite éveille, parce que pour nous, on n'a pas encore très clairement défini le modèle organisationnel qu'il faut qu'on ait, ne serait-ce que par rapport à mon compte formation et tout ça.  On a quand même des demandes en région.  Je pense que sur l'effet vae collective, on aura encore des demandes.  Une fois on avait été sollicité par un groupe où ils envisageaient 250 candidatures à l'échelle nationale.  Donc potentiellement on aura de la demande à ce sujet là.  
+
+Victor : Et sur ce groupe dont tu parles avec les 200 candidatures, c'était dans le cadre d'une discussion ou ça a été formalisé ?  
+
+Vincent Berger : Non, c'était dans le cadre d'une discussion.  Finalement c'est arrivé au moment où il y a eu toutes les problématiques en juin et tout ça.  et donc en fait ça a mis fin aux échanges, ça a refroidi un peu le truc.  Bon après il y avait aussi l'effet que les parcours étaient intégralement financés aussi à l'époque.  Mais malgré ça, on a ce projet VE vif 3 où on a 60 candidatures.  On a un autre employeur où on a un groupe de 20 AES et un groupe de 10 AES.  On a des projets plus locaux en région sous de la VE en présentiel sur des groupes de 15.  On a le projet VE inversé.  On est quand même très... C'est pour ça qu'on voulait aussi s'investir et contribuer à ces tests parce que je pense qu'on a l'expérience et puis surtout nous on y voit un intérêt derrière.  Et puis qu'on croit aux dispositifs France VE.  
+
+Victor : Moi aussi j'y crois.  L'équipe est très mobilisée par rapport à 2024 auxquels tu faisais référence.  Les chargés de déploiement font beaucoup plus de webinaires, il y a beaucoup de coms pour accompagner au changement, notamment des certificateurs qui sont un peu parfois paumés ou qui ont eux-mêmes des dysfonctionnements organisationnels.  Donc pour mettre en oeuvre ça sur la plateforme c'est parfois très compliqué, très long.  On sait qu'il y a un vrai enjeu là-dessus.  En tout cas, la ministre est très partante pour pousser à ce que ça marche.  Donc nous, on est chaud.  
+
+Vincent Berger : C'est top.  Et puis la démarche projet, je trouve qu'elle est sympa en plus.  Ça vous permet vraiment de voir que vous êtes en fonctionnement agile en fait, c'est-à-dire que vous mettez rapidement en test, en prototype, vous apprenez.  
+
+Victor : C'est ça, on met en test, on essaye à la fois d'aller sur de la vision simple comme je te l'ai montré et en même temps d'être très pragmatique en disant si on peut sortir le plus vite possible, qu'est-ce qu'on peut mettre en production et le tester et puis parfois se casser un peu les dents et Et puis corriger et améliorer.  On a une équipe de support aussi qui est très réactive, donc ils nous remontent beaucoup de problèmes qui sont rencontrés.  On a pas mal de sujets liés à parfois de la communication qui est un peu ralentie, et donc en fait l'une des deux ou des trois parties n'a pas l'information, donc en fait ça crée un flux de... Un tas de tickets qui remontent parce que un email automatique n'est pas arrivé dans le temps pour te permettre de te connecter ?  Par rapport à l'interopérabilité, nous avons un énorme tableau de suivi qu'on a été obligé de développer pour notre activité.  Les commanditaires en ont un.  
+
+Vincent Berger : Peut-être gérer en interne sur la plateforme, ça serait top.  
+
+Victor : Pour l'instant, ce n'est pas encore géré, il y a des repérabilités.  C'est un sujet en cours.  
+
+Vincent Berger : Dans un deuxième temps, mais déjà, il a solutionné la problématique du candidat.  Si on envoie, on dit aux personnes, inscrivez-vous, on ne maîtrise pas le fait qu'ils s'inscrivent, qu'ils aient les bonnes infos.  On a déjà tout démâché le travail, c'est bien.  
+
+Victor : Bien sûr, parce que comme tu le dis, l'intention de faire la vae collective ne vient pas du candidat.  Elle vient du commanditaire qui lui a un budget pour mettre en place un projet.  Et donc, c'est ça aussi l'enjeu.  Est-ce qu'on peut juste récapituler, s'il te plaît, Vincent, les deux ou les trois projets que tu as énoncés ?  Comme ça, je ne dis pas de bêtises.  On a la vae collective et de soignants, groupe, vie, trois.  Là, on a 60 candidatures.  
+
+Vincent Berger : Oui.  Il y a la vee inversée.  Pareil, vee aide-soignant, mais pareil, volume de 100 candidatures au total sur ce groupe-là.  Après, on a des projets beaucoup plus régionaux, très spécifiques à un employeur.  Ce n'est pas de cette envergure-là.  
+
+Victor : Ok.  Et ça, on n'en parle pas tout de suite, ça viendra plus tard.  
+
+Vincent Berger : Je ne suis pas sûr qu'il y ait ce niveau d'avancement sur ces projets.  Autant le projet VIVE 3, je le vois bien, effectivement, groupe test, puis vraiment le test sera intéressant.  Sur les autres, on est vraiment plus sur de la demande isolée, réponse à un besoin immédiat.  
+
+Victor : D'accord.  Et si on devait commencer VIVE 3 ?  Si on devait se dire qu'on commence à créer les comptes, à paramétrer le projet ?  
+
+Vincent Berger : VIVE 3, je crois que le démarrage était prévu sur...  
+
+Victor : Attends, je vais regarder...  
+
+Vincent Berger : Les étapes de positionnement courent en mai-juin.  Donc positionnement c'est vraiment cette phase d'entretien de faisabilité.  L'idée en fait sur les trois premiers groupes qui doivent démarrer, c'est de pouvoir anticiper toute la phase de positionnement et limite de pouvoir déposer le dossier de faisabilité pendant la période estivale.  Comme ça, ça permet de débuter l'accompagnement en septembre.  
+
+Victor : On voyait le dossier de faisabilité pendant l'été.  
+
+Vincent Berger : Sur l'été, pour avoir les deux mois en fait, où en gros, nous, c'est pas possible souvent sur les établissements médico-sociaux de faire quelque chose en termes de formation sur ces mois, parce qu'ils ont une telle fonction RH sur les mois d'été que... L'idée c'était de clôturer toute la phase d'entretien de faisabilité en juin ou début juillet pour pouvoir envoyer en recevabilité et démarrer les accompagnements à partir de septembre.  
+
+Victor : Ok, très bien.  Et pareil, maintenant, si on passe un petit peu au crible VM inversé.  
+
+Vincent Berger : Maintenant, on se reste sur les mêmes enjeux en termes de temporalité.  C'est-à-dire que nous, on va débuter tout ce qui est positionnement pour en juin.  Par contre, le dossier de faisabilité, il est possible qu'on l'envoie un petit peu.  Ce qui est particulier dans la VMA versée, c'est qu'en fait, finalement, on peut démarrer sans même avoir de recevabilité.  Donc là, par exemple, on a expérimenté... Bon, après, on a mis... On est un peu revenu en arrière sur ce groupe-là, mais sur le groupe pilote qu'on avait lancé dans le cadre de ce projet de VMA versée, en gros, là, ils ont déjà fait la moitié des séances d'accompagnement à la réélection du livret 2.  Et on envisageait de faire la demande de recevabilité que maintenant.  
+
+Victor : D'accord, donc tu disais possibilité de démarrer l'accompagnement sans recevabilité.  
+
+Vincent Berger : Mais là, on va être plus sur ce groupe-là, on se concentre plus sur un dépôt de recevabilité, globalement juillet, septembre.  Je pense qu'ils auront déjà suffisamment avancé.  En fait, le problème qu'il y a, c'est qu'on ne pouvait pas non plus déclencher la... Déclencher la demande de recevabilité trop tôt parce qu'en fait les candidats n'ont aucune expérience professionnelle.  Comme on avait prévu de passer par l'ASP et que l'ASP nous demande toujours de pouvoir justifier des expériences et compagnie, on avait planifié la recevabilité au cours du parcours.  en fait.  Est-ce qu'il y a des questions?  ?  Non, pas de pouvoir tester.  Tu m'étonnes.  Je suis convaincu que quand on est surtout sur des interfaces comme ça, où il y a du développement, des choses comme ça, il n'y a que les tests qui peuvent après derrière... Finaliser, driver la version finale.  
+
+Victor : C'est ça, sinon on se retrouve comme il y a 15 ans avec 6 mois de conception de plateforme avec des spécifications et en fait on se perd là-dedans et ça n'a satisfait personne, ni nous ni les utilisateurs alors que là on a quand même possibilité d'activer tout ce projet avec quelques fonctionnalités qu'on a adaptées.  mais en tout cas ça permet de servir ce besoin.  donc Après ça va être intéressant de voir que vous nous remontiez à l'usage concrètement, les endroits où il y a des trous dans la raquette et qu'on les priorise et on les met à jour.  
+
+Vincent Berger : Et la recette, comment vous prévoyez ?  Vous avez un guide de recette ?  Comment ça se passe ?  Ça va être une recette libre sous forme d'un entretien comme ça ?  
+
+Victor : Je parle de recettes fonctionnelles ?  
+
+Vincent Berger : Par exemple, quand on va tester, pour faire les retours, est-ce qu'il y a un document type ?  
+
+Victor : Oui, on peut imaginer, tout à fait, faire un document type.  
+
+Vincent Berger : Fonctionnalité, retour, ce qui fonctionne, ce qui ne fonctionne pas, le temps passé, peut-être le nombre de clics, je ne sais pas si ça peut être une indication ou pas.  
+
+Victor : Oui, le temps passé.  Après, ça dépend de comment on fait le... Comment on fait ce processus-là ?  Est-ce que c'est via un formulaire où vous nous remontez 10 questions et vous nous remontez les informations ?  Est-ce qu'on se revoit, on se reparle et c'est plutôt qualitatif et on prend des notes ?  Je pense que les deux valent le coup.  Après, il y a le contact auprès du support aussi avec qui on est très lié.  Ils nous remontent pas mal de données là-dessus.  Et après nous, la recette en interne, on l'a fait systématiquement au moment où on va mettre en prod.  Et aussi après, on essaie d'identifier les cas, les edge cases et tous les cas à la marge, mais qui peuvent être super pénibles.  Donc voilà, mais je vais noter ça, recette au retour de l'expérimentation.  Merci beaucoup pour ton temps et pour tous tes retours.  J'ai bien pris en note les Les informations liées au AT2 de vae collective et inversée, je prends ça en compte et je reboucle avec l'équipe.  Je verrai éventuellement s'il faut refaire un projet un peu plus concret en intégrant Mélanie Bard qui est une des responsables de déploiement là-dessus.  
+
+Vincent Berger : Avec plaisir, à votre disposition.  Ça m'intéresse énormément de pouvoir travailler avec eux.  Avec toute l'équipe sur ce projet là.  
+
+Victor : Super, merci beaucoup.  
+
+Vincent Berger : Merci, bonne soirée.  A bientôt, au revoir.  

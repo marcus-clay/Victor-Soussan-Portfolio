@@ -1,0 +1,489 @@
+# VAE Test : Entretien Candidate - Mélanie Chevreux
+
+> Date : 04 juin 2025, 14:31
+> 
+> Durée : 01:00:58
+
+## Résumé succinct :
+
+Test utilisateur plateforme VAE : retours sur l'interface, affichage des prix, étapes du parcours et suggestions d'amélioration.
+
+## Retranscription :
+
+Speaker1: J'avais un doute, je commençais à aller sur Google, du coup j'ai mince sur le bon lien.
+
+Speaker0: Vous voyez, on s'est aperçu au dernier moment qu'on ne vous avait pas communiqué ce lien-là, parce qu'en fait, effectivement, ce lien, ça nous permet d'avoir accès à un enregistrement et on a un compte dessus, donc c'est plus facile. Ok, très bien. Parfait. Super. En tout cas, merci d'accepter de faire cet entretien avec nous. Ouais.
+
+Speaker1: Je veux voir ce que je me rappelle, parce que moi, ça fait un petit moment que je l'ai faite.
+
+Speaker0: Ah merde. Ah putain.
+
+Speaker2: Merde.
+
+Speaker0: Il est revenu.
+
+Speaker1: J'ai eu un petit bug, pardon. C'est pas intéressant ce que je dis.
+
+Speaker0: Ça suffit.
+
+Speaker1: Ok. Non, je disais, j'espère que… Je vais voir si je peux aider, mais ça fait un petit moment que je l'ai faite.
+
+Speaker2: D'accord.
+
+Speaker1: Ça date un peu, alors voir ce que je m'en rappelle. Mais on va voir.
+
+Speaker0: Bon, écoutez, oui, de toute façon, toutes les informations sont intéressantes. C'est vrai que nous, le premier besoin, c'était de vous faire interagir sur le nouveau tableau de bord qu'on a mis en place sur France VAE. Et ensuite, après, avoir un échange un petit peu plus large sur vous, votre expérience de votre parcours en VAE. Et puis, comprendre aussi quelles pourraient être vos attentes dans le cadre de la passation des différentes étapes. Et voilà. Donc, on se présente. On est avec Louise dans l'équipe UX et Design de France VAE, dans laquelle Swazik travaille également. Oui. Voilà, et donc aujourd'hui, concrètement, on a une petite heure à passer ensemble. On fera d'abord un petit tour sur le tableau de bord, dans lequel vous aurez l'occasion de pouvoir partager vos impressions. Ensuite, après, on fera une série d'actions pour simuler les étapes du parcours. On ira jusqu'à la fin et ensuite, après, on prendra un temps pour échanger et prendre vos retours à vous. Donc dans les rôles, moi je serai la personne qui va animer, et Louise sera votre certificatrice et votre accompagnatrice.
+
+Speaker2: Je vais jouer les deux rôles pour pouvoir faire avancer la candidature, et que l'on puisse découvrir sur le tableau de bord les différentes étapes par lesquelles vous êtes sûrement passés, mais il y a peut-être des choses qui ont évolué effectivement entre… un accompagnement sur un papier CERFA et ce qu'on propose maintenant sur l'interface. Ça va être intéressant aussi de se confronter à ces évolutions, même si c'est un peu lointain pour le parcours.
+
+Speaker0: Avant de rentrer dans le difficile sujet, on voulait faire une étape logistique pour vérifier qu'on a tous les paramètres qui sont bons. Est-ce que déjà la visio, on vient de vérifier, c'est bon, ça marche ? Vous nous entendez bien, vous nous voyez bien ? Parfait, oui.
+
+Speaker1: Très bien, oui.
+
+Speaker0: On va tester le partage d'écran, savoir en gros si le partage fonctionne, parce qu'en fait, durant le test, on va vous demander de partager votre écran pour qu'on puisse observer votre parcours. Ok. Ma souris.
+
+Speaker2: Moi, c'est pas une souris. Je n'ai pas une très bonne connexion Internet, donc je vais couper ma caméra. Je ne veux pas être avec vous, mais je vais être sûre de pouvoir suivre. et assumer mes deux grands rôles de narratrice et de certificatrice pendant tout le test. Donc, je vais couper ma caméra. Et peut-être avant aussi qu'on commence, comme le disait Victor, on est allé sur ce lien de visio pour pouvoir enregistrer la session. Est-ce que c'est quelque chose qui est OK pour vous ? On va faire la vidéo pour votre info pendant trois mois à des fins d'analyse pour le test. Mais après, on ne les conserve pas.
+
+Speaker1: OK, super.
+
+Speaker2: Je coupe la caméra et je lance l'enregistrement.
+
+Speaker1: Ok. Top. Alors. Je vais juste mettre un aller-en-tour derrière. Voilà. Parce qu'il y a peut-être ma collègue qui va rentrer tout à l'heure, on va déposer avec elle notre travail, là. d'accord d'accord d'accord.
+
+Speaker0: alors Même partager n'importe quelle fenêtre, juste qu'on voit si…
+
+Speaker1: Ah, ça a commencé ?
+
+Speaker0: C'est juste pour tester les conditions, se dire si on se mettait à partager avant de rentrer dans le sujet, que ça fonctionne. Alors, je vais juste ouvrir une fenêtre. Du coup, elle est partie. Ouais, hypothèse vérifiée.
+
+Speaker1: Je voulais faire un truc. bien, j'ai tout fermé. Mais ça va fonctionner. Par exemple, là j'ai… C'est bon là ?
+
+Speaker0: Ouais, très bien. Parfait, c'est bon, ça veut dire qu'on est prêts à partir alors.
+
+Speaker1: Ok, du coup je stocke mon partage d'écran.
+
+Speaker0: Yes. Ok. Ok.
+
+Speaker2: Je ne sais pas du coup si vous avez accès aux éléments qui ont été envoyés dans le chat, comme vous êtes partis, vous êtes revenus. Ah si, c'est bon.
+
+Speaker1: Si c'est bon. Ok, Rewa.
+
+Speaker0: Voilà, c'est pour que dans quelques minutes, quand on se mettra sur la plateforme et qu'on commencera les étapes, vous ayez tout en main. Pour vous expliquer, il y a le lien d'accès à la plateforme, les identifiants en imaginant que vous êtes la candidate qui va faire son parcours. Également, un document d'exemple que je vous envoie, c'est juste un PDF qui est vide, mais c'est pour vous permettre d'avoir un document à disposition léger quand vous aurez à importer un document dans le cadre de votre parcours. C'est plus pour avoir de la matière sans vous prendre la tête, vous. D'accord, donc c'est bon, vous avez bien… Je le télécharge. Voilà, vous le téléchargez, puis comme ça, quand vous aurez… C'est bon, je peux l'écouter. Ok, bon, bah super. Alors, avant de rentrer dans le vif du sujet, d'abord, si on peut prendre quelques minutes pour savoir déjà, pour échanger un petit peu avec vous, savoir donc qu'est-ce que vous faites aujourd'hui, si vous pouvez vous présenter un petit peu à nous, et puis voilà, savoir quand est-ce que vous avez terminé, sur quoi portez votre diplôme, vers où ça vous a mené ?
+
+Speaker1: En gros, j'ai passé un BTS SP3S en 2022, je crois, 2021, je ne sais même plus. Je pense que c'est après le Covid, 2021-2022. Juste pour valoriser mes compétences, je travaille dans un CLIC actuellement, un centre local d'information et de coordination, en tant qu'assistante géontologique. Et du coup, avec ma responsable à l'époque, on a fait la demande pour au moins valoriser mes compétences. J'ai obtenu ce diplôme-là, j'ai fait l'accompagnement en plus. J'ai pris l'accompagnement complice. Voilà, du coup, aujourd'hui, je travaille toujours au CLIC. Et là, actuellement, je suis en licence. D'accord. Grâce à la VAE, je suis passée sans licence. C'est un problème de faire une licence aujourd'hui.
+
+Speaker2: d'accord et vous faites la licence en formation initiale pas en VAE ?
+
+Speaker1: non en formation initiale je le fais par visio. je le fais en même temps que mon travail des jours où je suis en cours. du coup pas par VAE.
+
+Speaker2: ok ça marche merci.
+
+Speaker0: Et auparavant, avant de faire cette VAE, vous étiez étudiante, vous travailliez déjà ?
+
+Speaker1: Je travaillais déjà, j'ai eu un bac, j'ai un BEP, j'ai un bac, j'ai un diplôme secrétaire médical. Entre le bac et le diplôme secrétaire médical, j'ai travaillé, j'ai repris un an d'études. Ensuite, j'ai travaillé, je suis arrivée au Cliquet en 2019. D'accord. Moi, j'ai toujours travaillé même quand j'ai passé ma VAE, donc je travaille même quand.
+
+Speaker0: Ok. Très bien. Je vous propose qu'on démarre les activités pratiques.
+
+Speaker1: Ok, ça marche.
+
+Speaker0: Donc là, si vous pouvez lancer, accéder à la plateforme et rentrer les identifiants.
+
+Speaker1: C'est bon, je suis dessus.
+
+Speaker0: Ok, super. Donc vous vous trouvez sur le nouveau tableau de bord qu'on a publié sur la plateforme France VAE il y a quelques semaines. Et tout d'abord, avant de cliquer, je vous invite à commencer par une exploration libre de l'interface que vous voyez. Regarder les zones, essayer d'identifier les parties. Et ensuite, après, on fera quelques scénarios guidés avec des étapes.
+
+Speaker1: Ok. OK. Bon, à peu près. Et du coup, il n'y a rien.
+
+Speaker0: Après, par rapport à ce que vous avez pu voir déjà dans l'interface, est-ce que c'est quelque chose qui est familier pour vous par rapport aux termes, par rapport aux notions qui sont présentées, aux documents ? Est-ce que c'est quelque chose qui est familier ?
+
+Speaker1: Ça me reparle un peu. Après, c'est de me rappeler comment était fait l'ancien. Je sais que c'était pas pour fou. C'était assez petit. Je me rappelle, c'était vraiment tout condensé. C'était vraiment sur le côté… De souvenir, là, ça fait plus clair, quoi. Clairement, ça va être plus simple. Même avec les logos, là, ça fait pas mal, les icônes, pour se repérer. Le fait qu'il y ait un code couleur aussi, qui rappelle, là, ça a complété, là, c'est fait, ça fait pas mal aussi. Visuellement, ça parle, les prochains rendez-vous. J'avais pas souvenir d'avoir ça sur mon ancien. J'avais pas souvenir d'avoir ça du tout, même.
+
+Speaker2: Euh…
+
+Speaker1: D'accord.
+
+Speaker0: Très bien. Je vous propose qu'on démarre les quelques scénarios. Vous allez renseigner les différentes tuiles du tableau de bord. Comme si vous étiez dans des étapes de votre parcours de VAE. Par exemple, allez voir du côté du diplôme visé.
+
+Speaker1: Alors, ça n'ouvre pas. Ça n'ouvre pas, je clique, ça n'ouvre pas. Le diplôme n'ouvre pas, mais pourquoi ? C'est déjà complété, non ? Ça, ce qui vient sur le site de l'ANCP, tout ça, c'est l'un de ça, en fait. Oui.
+
+Speaker0: C'est des informations qu'on récupère et qu'on restitue ici dans les pages de détails du diplôme.
+
+Speaker1: Ok, ça c'est top. Parce qu'en fait, entre-temps, j'ai fait aussi un bien de compétences. Oui. Et je travaillais beaucoup pour garder mes diplômes que je voulais faire sur ce site-là et je trouvais ça pas mal en fait. Être en lien, d'être sûr de ce qu'on fait, c'est un bon diplôme, c'est reconnu, je trouve ça pas mal qu'il soit mis directement là.
+
+Speaker0: Ce que vous exprimez, c'est que le fait qu'il y ait la mention RNCP, pour vous, c'est un indicateur de qualité ?
+
+Speaker1: Complètement. On est sûr que c'est reconnu et ça peut permettre de retrouver directement. Par exemple, pour ma licence, quand je la cherchais, j'ai vu quelle université la faisait. Pour moi, c'était sûr que ce n'était pas un truc bidon. Ce n'est pas une formation bidon. C'est l'indicateur qui a été carrément…
+
+Speaker0: D'accord.
+
+Speaker1: Prérequis. OK. Combien je fais dans son diplôme ? Là, c'est jury, présence à distance. Et le diplôme visé, on ne peut pas le changer. Du coup, une fois qu'on l'a créé, on ne peut pas le changer, du coup, celui-ci.
+
+Speaker0: Alors, si, dans l'interface, c'est possible de le changer ?
+
+Speaker1: Mais pas ici.
+
+Speaker0: Normalement, si vous pouvez le faire ici. Il n'est pas forcément accessible au premier coup d'œil, mais effectivement, vous pouvez le changer.
+
+Speaker1: Changer de diplôme. C'est ça ? OK. Je sais le mien. On va voir.
+
+Speaker0: Alors, il se peut qu'ils n'apparaissent pas. On est dans une démarche d'intégration progressive des diplômes, en fait. Notre objectif final, c'est d'avoir tous les diplômes de tous les certificateurs intégrés à la plateforme, au catalogue pour… pour permettre à tous les candidats d'y accéder. Aujourd'hui, on est vraiment dans une phase intermédiaire, donc on en a une bonne partie qui ne sont pas encore intégrées. Mais par exemple, les diplômes du social ou les diplômes d'aide-soignants, on les a intégrés. Je vois bien. Mais si on met juste licence ?
+
+Speaker1: Moi, ça ne marche pas, c'est peut-être normal.
+
+Speaker0: Je pense que… Non, c'est peut-être que la recherche ne le remonte pas ou qu'il ne l'est pas référencé.
+
+Speaker1: En même temps, il n'y en a que 12 disponibles, alors…
+
+Speaker2: On est sur un environnement de test, c'est pour ça que vous n'avez pas accès à tous les diplômes. Et puis, on ne va pas changer de diplôme pour ce test-là, parce que sinon, ça ne va pas être relié aux bonnes AP derrière. Vous n'allez pas me trouver. Mais voilà, c'est parce que c'est un peu les conditions de test, mais normalement, effectivement, avec des mots-clés, si le diplôme est disponible sur la plateforme, vous pouvez le trouver sans souci. Et comme disait Victor, on intègre au fur et à mesure des diplômes, l'objectif étant évidemment d'emmagasiner tout le RNCP. Au final, ce sera ça l'objectif, de permettre de faire la VAE sur tous les diplômes où c'est possible de faire une VAE en France.
+
+Speaker0: Donc, on imagine que votre diplôme, vous l'avez choisi. Ensuite, après, vous avez la modalité de parcours. Vous pouvez regarder. Après, c'est vrai qu'on va vous demander de ne pas enregistrer, de ne pas changer la modalité. Comme ça, ça nous permet de faire le test. Donc, on va imaginer aujourd'hui que vous êtes avec un accompagnateur. Ok, je ne touche à rien.
+
+Speaker1: On l'a refaisé. Ok. Ok. Et le fait de… Parce que là, je vois que du coup, ça a un coût d'être avec un compagnateur ou en autonomie, c'est pas le même prix. Moi, je me dis, après, logiquement, je pense qu'avant qu'on fasse un devis de souvenir, j'avais mon devis, moi. Mais le fait que la personne fasse directement, après, peut-être, je sais pas, est-ce qu'il y aurait le prix qui va s'afficher à un moment ? Il faut être obligé de cliquer pour savoir s'il y a un prix derrière. Ça, je vais dire.
+
+Speaker2: Oui, je pense avoir compris. Ce que vous voulez dire, c'est que ce serait intéressant qu'on puisse avoir le prix pour guider l'utilisateur dans le choix de faire en accompagnement ou en autonomie.
+
+Speaker1: Je clique là, je me dis, bon, et là, il y a quelque chose qui s'affiche. On a un cadré à côté. Si en autonomie, ça vous coûtera tant, si on le fait avec un commetteur, ça vous coûtera tant.
+
+Speaker2: Oui. Vous, c'est un critère. Désolée, il y a un petit décalage. Si je coupe la parole, j'en suis désolée, c'est parce que je ne capte pas bien Internet. Et vous, pour vous, l'aspect économique, ce serait un critère dans le choix d'un modèle d'accompagnement ?
+
+Speaker1: Il y a des personnes, la plupart se financent tout seuls quand même. Oui. Moi, je sais que j'étais financée par mon employeur, mais c'était un critère quand même. On a 15 000 clics pour trouver combien ça nous coûte. Autant l'aborder directement, comme ça, on peut avoir un tableau comparateur.
+
+Speaker0: Après c'est vrai que pour rien vous cacher c'est assez c'est relativement complexe pour nous d'arriver à restituer des échelles de chiffrer parce qu'en fait chaque accompagnateur est structuré différemment à une offre qui est aussi est différente selon si c'est un petit accompagnateur, un grand groupe. par rapport à où il est situé, dans quelle région. Par contre, c'est des informations que vous pouvez avoir en prenant contact avec lui. après, quand vous l'aurez identifié, choisi. Vous pouvez tout à fait faire l'échange sur recevoir un devis, comprendre les différentes… les différentes parties de l'offre et voir ensuite comment le financer. Parce que c'est une des missions de l'accompagnateur, c'est vraiment aussi de vous aider à identifier vos sources de financement et à construire votre dossier financier. Donc il y a ça. Et pour nous, du fait d'avoir une multitude d'acteurs différents qu'on vient connecter sur la plateforme, c'est encore irréaliste de pouvoir tout de suite dire Pour tel accompagnateur, ça va vous coûter entre 8 000 et 50 000 euros. Enfin, j'exagère, mais… Oui. Ou 100 euros, si…
+
+Speaker1: J'essaie de voir mon dossier de formation quand je l'avais fait. Oui. Je vais vous présenter un peu de mon attestation, ce qu'on me demandait à l'époque.
+
+Speaker0: D'accord.
+
+Speaker1: J'essaie de voir comment c'était… Comment ça se passe… Parce que moi, je sais que j'avais eu… La convention a été signée, du coup, j'avais le prix que ça me coûtait. Mais je sais que j'avais eu quelque chose à vendre. Pour moi, c'est un critère important.
+
+Speaker0: Je comprends le fait que ce soit un indicateur pour vous, pour vous positionner, savoir si c'est quelque chose que vous pouvez faire tout de suite, pas tout de suite, et d'aller aussi voir comment vous pouvez mobiliser différentes sources de financement. C'est sûr qu'on lit entre les lignes, on vous comprend aussi.
+
+Speaker1: Après, je ne sais pas si tout dépend de l'accompagnement, tout dépend de plein de choses, mais il y a aussi les possibilités de financement qui existent. Parce que moi, j'avais un document, par exemple, à l'étape d'un accompagnement qui explique comment ça va se passer, toutes les étapes que j'ai. Et derrière, j'avais le… Après ça, c'est par rapport au diplôme que j'avais visé. C'est un peu un… C'est un devis, c'est carrément un devis. Je dis ça, mais c'est un devis, mais… qui me disaient clairement les frais que ça me coûtait.
+
+Speaker0: Et l'accompagnement que je choisis, c'est en fait aussi. Ok. Après, ça fonctionne encore comme ça ? C'est-à-dire, quand vous allez vous rapprocher d'un accompagnateur qui est localisé, proche de chez vous, qui a une modalité présentielle ou distancielle qui va vous convenir, ensuite, après, vous rentrez en contact avec eux et ils sont assez réactifs et tout de suite, ils font un premier rendez-vous et vous allez voir, vous allez… construire votre proposition de financement avec eux.
+
+Speaker1: Ok.
+
+Speaker0: Je vous propose qu'on continue d'avancer parce qu'on est encore à plusieurs étapes. Donc, on imagine que là, vous n'êtes pas de souci. Il n'y a pas de problème. Donc, vous êtes accompagné. Donc, à présent, vous allez pouvoir définir vos objectifs.
+
+Speaker1: Et du coup, là, je peux choisir ce que je veux, là, ou pas ?
+
+Speaker0: Vous pouvez choisir ce que vous voulez.
+
+Speaker1: Je ne sais pas déjà ce que je veux dans mon diplôme. Alors, par exemple, là, moi, je ne sais plus ce que je fais comme diplôme. Moi, je voudrais, ce serait bien de redire, en fait, peut-être un titre, quelque part par là, je ne sais pas, ou qui redit le titre qu'on souhaite, le diplôme qu'on souhaite.
+
+Speaker0: OK.
+
+Speaker1: Bon, c'est un petit don, parce que là, moi, je ne sais plus ce que je fais, mais par principe, le but de cette formation-là, c'est pourquoi, en fait. OK. Peut-être remettre le titre, je ne sais pas, moi, je ne penserais pas mal, ou quelque part, je ne sais pas, ou par là, ou là.
+
+Speaker0: On prend tout, on note.
+
+Speaker1: Juste ça, par rapport à ce que j'avais fait avant. En gros, c'était simple. Très bien. Ça ne bouge pas, c'est chez ça.
+
+Speaker0: Là, vous avez défini les objectifs. Il est remis là.
+
+Speaker1: C'est ça qui n'est pas mal. Il est remis là. Je peux le mettre ailleurs aussi.
+
+Speaker0: D'accord.
+
+Speaker1: Ça, c'est bien ça. Je suis contente.
+
+Speaker0: Super, donc là ensuite vous allez pouvoir renseigner vos expériences professionnelles.
+
+Speaker1: Bon, je mets comme ça, vite fait, il saute. Ah non, ah oui, ok. C'est bien du début. Ah, expérience professionnelle, c'est pas diplôme, non ? Ok.
+
+Speaker0: Et après, si vous souhaitez en rajouter une, vous pouvez. Ou vous restez là-dessus.
+
+Speaker1: On est quand même obligé de décrire son nom. En minimum, oui.
+
+Speaker2: Après, vous pouvez vraiment mettre… Mettez juste un mot, c'est vraiment juste pour le test, pour voir un peu comment ça se comporte sur la interface.
+
+Speaker0: Très bien.
+
+Speaker1: Et le fait que…
+
+Speaker2: Je sais que des fois, je ne sais plus si c'était comme ça, d'insérer le CLE directement… Alors ça, c'est une pratique qui ne se fait plus parce qu'en fait, ces éléments-là, ils vont être envoyés après au certificateur. dans le cadre du dossier de faisabilité. Il y a eu une grande réforme, en tout cas sur la VAE, et ne plus transmettre le CV, c'est un des éléments clés pour des raisons, je pense, de discrimination au départ. En tout cas, ce sont des pratiques qui sont plus censées se faire. Vous, vous aviez transmis votre CV à votre accompagnateur ou votre accompagnatrice ? Vous ne savez plus ? Non, mais ne vous inquiétez pas, ce n'est pas très grave. Mais en tout cas, je sais que… Après, nous, on n'est pas des spécialistes du décret de la VAE, puisqu'on travaille sur les interfaces en particulier. Mais je sais que mes collègues m'avaient dit que ça ne se faisait plus, en tout cas, dans l'époque, de mettre un CV lié à la compagnie.
+
+Speaker1: Moi, j'ai dû faire une attestation de l'employeur où j'avais décrit mon activité. en tant que ce que je faisais actuellement, mais vraiment bien décrit avec une attestation d'employeur signée. Et les pièces, ils m'ont dit que c'était OK, je l'avais. Envoi de confirmation, inscription. Est-ce que j'ai dû mettre mon CV ?
+
+Speaker2: Bonne question.
+
+Speaker1: Parce qu'en fait, c'est bien, mais ça peut être long de tout remplir. Je parlais d'une nana qui a 40 ans, qui a fait plein d'expériences. Tout remplir, ça peut être hyper long. En fait, c'est ça, je pense. C'est pour ça que je dis ça, c'est un côté rapidité, mais c'est à chaque fois d'en remplir un et tout ça, ça peut être long.
+
+Speaker0: Oui.
+
+Speaker1: C'est juste ça, en fait. On dit entre une honnête qui a 20 ans, qui a 25 ans, qui a la fête de ta vie, ça passe. Une honnête qui a 40 ans, qui souhaite vraiment en faire une et essaie de remettre toutes ses expériences après. C'est carré, je pense, mais ça peut être un peu long à chaque fois de faire ça, de faire ça. Oui, tout à fait. C'est juste ça, en fait. Et alors là, après, c'est peut-être moi. Je ne trouve ça pas très clair de date de début. Du coup, je pense du travail et combien de temps ça a duré. Oui. OK.
+
+Speaker2: Vous mettriez quoi, vous ?
+
+Speaker1: Date de début, date de fin.
+
+Speaker2: OK. Très bien.
+
+Speaker1: Merci. À un moment, j'étais là, j'ai dit date de début, OK. C'est juste la date de début, date de fin ou…. Après, c'est un côté pratique. Je dis que ça peut être long pour certaines personnes. Et moi, je vois bien qu'on a des profils qui remplissent tout. Même moi, quand j'ai commencé pour ma licence, j'ai dû expliquer tout ce que j'avais fait. C'était hyper long. Mais bon, après, il n'y a pas le choix aussi.
+
+Speaker0: Effectivement, de choisir l'accompagnateur. Donc là, on a deux accompagnateurs prévus pour le test. On a France 3 VE accompagnateur physique et France 3 VE accompagnateur à distance.
+
+Speaker1: C'est 3 comme le chiffre 3, c'est ça ?
+
+Speaker0: Non, France VE. Ah, c'est moi qui vous ai dit France 3, je pourrais me l'excuser.
+
+Speaker1: Non, il n'y a pas de… Pourquoi pas ? Physique ou en distance, ok ? Celui que vous voulez.
+
+Speaker0: Voilà, celui que vous voulez.
+
+Speaker1: Ouais, physique.
+
+Speaker0: Très bien, vous allez maintenant pouvoir vérifier les informations et envoyer votre candidature qui sera donc réceptionnée par notre accompagnatrice. Ok.
+
+Speaker1: Et là, imaginons, je me suis trompée et tout, je suis obligée de revenir avant et on ne peut pas modifier directement là ?
+
+Speaker0: Non.
+
+Speaker1: Et ça, ce n'était pas possible. Par exemple, là, je me dis, si vous faites des objectifs, je ne vais pas mettre ça, ou je suis trompée, je vais dire ça. Avoir un crayon pour modifier directement ici, ce ne serait pas mal. Parce que là, ça fait un clic en arrière, il faut le retourner là. C'était où déjà ? Après, moi, je travaille dans la géontologie, du coup, ils ne sont pas allés avec le PC. Il y a des sites qui font ça, je sais qu'on peut remodifier directement. Avant de valider, envoyer. Par exemple, quand on refait notre passeport ou un truc dans le genre, je crois qu'on peut modifier directement. Au moins avoir un crayon ou dire modifier mes informations ou avoir un petit crayon. On ne reprend vraiment que cette partie-là. On est en arrière et refaire. Ça me fait faire ça, il faut que j'aille là, il faut que j'aille là. Ensuite, il faut que j'aille là. C'est beaucoup plus. On n'est pas envoyé, on est content.
+
+Speaker0: On voit qu'on a une erreur, c'est juste ça. D'accord. C'est bien noté, le fait de modifier à la volée à cette étape-là, avant d'envoyer. Là, vous avez envoyé votre candidature. L'accompagnatrice va recevoir votre candidature de son côté.
+
+Speaker2: Je vais traiter la candidature. Je l'ai bien reçue.
+
+Speaker0: Et donc là, Louise va étudier votre dossier et elle va ensuite vous proposer une date de rendez-vous pédagogique.
+
+Speaker2: OK.
+
+Speaker1: Là, on en va dans le gâteau. Comment je peux savoir quel jour je l'ai envoyé ?
+
+Speaker0: Est-ce que si vous rentrez dedans, vous avez…
+
+Speaker1: Non, je viens de regarder, c'est pour ça.
+
+Speaker0: OK.
+
+Speaker1: Dans le jour que je peux l'envoyer, du coup, j'imagine par objectif que je l'ai envoyé. De souvenir, dans mon ancien, l'ancienne version, c'était bon, c'était pas très beau, mais je crois qu'il y avait une part de progression qui disait à peu près les étapes qui étaient faites après la date, je sais plus, qui montrait toutes les étapes que j'avais faites et j'avais une part de progression. Après, je l'ai pu s'utiliser vraiment quand j'étais sur mon livret 2. D'accord. Est-ce qu'avant une date, tu savais qu'on a toujours envoyé le…
+
+Speaker0: Pour vous informer, à l'envoi de la candidature que vous venez de faire, vous allez recevoir un e-mail qui vient statuer l'heure et le jour de l'envoi de votre candidature. L'accompagnatrice a également reçu un e-mail informant qu'une nouvelle candidate… Elle l'a choisi et l'invite à envoyer sa candidature et l'invite à réfléchir à une prochaine date de rendez-vous. Aujourd'hui, toute la partie de messagerie se passe dans les emails. On est à l'étude sur l'enrichissement du système d'information pour clarifier les dates. toute la première étape ça va être de passer les informations au niveau des dans la zone de droite dans la partie des rendez-vous pour vous informer de ce qui se passe. mais en tout cas quand vous avez fait des actions fortes comme ça l'envoi de votre candidature ou bien les étapes d'envoi de vos dossiers par la suite tout ça ce sera. vous recevez un email de confirmation.
+
+Speaker1: est-ce qu'on reçoit une copie de la candidature envoyée ?
+
+Speaker2: nous ? non Non, parce que comme vous pouvez la consulter directement sur votre espèce, pour l'instant, on n'a pas cette possibilité-là. Vous, vous aimeriez pouvoir recevoir une copie de la candidature par mail ?
+
+Speaker1: Oui, une copie en PDF. Par exemple, tous mes documents, je les enregistre en PDF dans un dossier. D'accord. Je me dis, c'est de me connecter sur le site. Surtout qu'en plus, là, je ne sais pas quand je l'ai envoyé. Finalement, j'oublie. Je l'ai fait il y a deux semaines. Vous voyez quand déjà est-ce que je l'ai fait. Je n'ai pas fait une erreur. Moi, je travaille beaucoup avec la trajectoire. Je ne sais pas si vous connaissez comme logiciel. C'est une plateforme pour s'inscrire en EHPAD, etc. On passe par là. En tant que professionnels, nous, on a même les usagers. Quand ils se connaissent sur leur dossier, ils ont un historique de tout ce qui a été fait. À quelle heure, qui a fait quoi et tout. Pour moi aujourd'hui, j'ai énormément en tant que professionnelle, savoir qui s'est connecté au dossier, quelle action a été faite. C'est pas mal. Ça tout bête, un historique de tout ce qui a été fait, qui a consulté le dossier, qui a fait quoi. Oui, d'accord.
+
+Speaker2: Et qu'est-ce que vous pensez de pouvoir télécharger le résumé de la candidature directement sur l'espace ?
+
+Speaker1: Ou directement dessus, carrément. Au pire, c'est ça. Télécharger après. Une fois qu'on a envoyé, on a un bouton qui fait télécharger maintenant ce que vous avez envoyé. C'est pas mal. D'accord. Alors… Ok.
+
+Speaker2: C'est hyper intéressant. On note tous ces retours-là. Moi, de mon côté, je vous ai proposé un rendez-vous pédagogique. Je suis en train de faire le parcours. Normalement, vous pouvez rafraîchir la page. Si vous rafraîchissez votre page, c'est parce qu'on est dessus tout le temps, mais il faut imaginer que vous n'êtes pas tout le temps sur votre espace candidat et que vous avez aussi reçu un mail pour vous informer que vous avez un rendez-vous pédagogique. Je suis désolée, je ne sais pas pourquoi ça n'a pas marché, pourtant j'ai bien envoyé. Alors attendez, je recommence. Comme je ne capte pas très bien internet, je pense que c'est lié à ça, si vous rafraîchissez l'espèce. C'est bon ? Ok, super. Du coup, c'est à tout. Je recommence ce que j'ai fait. Je me dépêche. Qu'est-ce que vous en pensez, du coup, que les événements soient marqués de cette manière-là ? Ça, c'est clair, c'est bien.
+
+Speaker1: Après… rendez-vous, ok. Est-ce qu'il n'y a pas l'horaire normal ?
+
+Speaker2: Effectivement, l'horaire n'est pas mentionné.
+
+Speaker1: Notez un horaire, je pense qu'on sera bien.
+
+Speaker2: Rappelez l'horaire, ouais.
+
+Speaker1: Rappelez l'horaire et après, bon après je pense que c'est vu avec la personne, c'est téléphonique, c'est vu avec, mais on ne peut pas rajouter en présent. en visio, s'il y a un visio, le lien qui emmène. Je ne sais pas. Tu as demandé beaucoup de choses.
+
+Speaker2: Non, mais c'est d'être plus précis en tout cas sur les informations qui sont délivrées aux candidats.
+
+Speaker1: On est d'accord que c'est la personne qui est là, qui fait le rendez-vous. Pas forcément. Moi, je n'avais pas la même personne à chaque fois, mais rendez-vous, quand j'y pense. Le nom de la personne, peut-être. Le rendez-vous, je pense que ce n'est pas déconnant. Moi, je sais que j'avais plusieurs personnes différentes. Après, j'avais… Mais j'ai vu d'autres gens avant aussi.
+
+Speaker2: D'accord. Et là, vous avez mes contacts. Vous avez vu, vous avez des éléments dans cette partie-là. Qu'est-ce que vous pensez de ces éléments-là par rapport à ce que vous venez de dire, le fait que vous avez envie d'avoir le nom d'une personne ?
+
+Speaker1: C'est clair. On a tout. On a l'adresse mail, on a l'adresse postale, le numéro de téléphone. Oui. C'est une vraie adresse mail ou pas ? Si on clique directement dessus, ça nous ouvre pour envoyer un mail, par exemple ? Avant qu'il y ait une messagerie dedans ? Il n'y a pas de messagerie ? Il n'y a pas de messagerie, non. Ok. Faire un lien… Bon, après, c'était tout… Je ne sais pas, attends. Mais faire un lien, comme ça, on clique directement dessus, ça ouvre notre boîte ou cook ou peu importe. On peut demander un mail.
+
+Speaker0: Ok. Ça peut être bien.
+
+Speaker1: Après, ça, sinon, c'est pas mal. Après, par logique, on imagine que c'est le rendez-vous, ça va ensemble, mais non, ça, c'est bien, c'est clair au moins. On l'a toujours devisé, je trouve ça pas mal.
+
+Speaker0: Ok. Je vous… On rafraîchit la page ?
+
+Speaker2: Ouais, je vous ai renvoyé le parcours et du coup, je vous laisse le découvrir.
+
+Speaker0: Vous allez visualiser votre parcours, vous allez pouvoir le consulter et le valider. Ok. Très bien. Donc là, le parcours est envoyé. À ce moment-là, votre accompagnatrice va acter du parcours validé, va renseigner vos informations et va compléter le dossier de faisabilité qu'elle va ensuite vous transmettre.
+
+Speaker2: Oui. C'est évidemment une étape que vous construisez avec l'accompagnateur ou l'accompagnatrice. Nous, aujourd'hui, chez France VAE, la main, quand on est accompagné, dans un parcours accompagné, la main est à l'AP, c'est lui qui remplit les éléments constitutifs du dossier de faisabilité. Est-ce que le dossier de faisabilité, c'est un terme qui vous parle ? Est-ce que vous savez à quoi ça renvoie, si vous vous souvenez ?
+
+Speaker1: Ce n'est pas le livret 1, ça ?
+
+Speaker2: Oui, tout à fait. Ça peut être appelé le livret 1, oui. Et vous, c'était le terme qui était employé avec votre accompagnateur ?
+
+Speaker1: C'était le livret 1 et le livret 2, oui, c'était ça.
+
+Speaker2: Ok, ça marche. Eh bien, moi, de mon côté, je remplis les éléments. Et ça va mettre…
+
+Speaker1: Comment ? C'est plus le nom qu'on donne. Du coup, maintenant, on ne dit plus le livret 1 ni le livret 2, c'est pour ça.
+
+Speaker2: C'est pour ça, oui.
+
+Speaker0: De manière réglementaire, on a un enjeu de pouvoir utiliser des termes différents. En l'occurrence, faisabilité et validation. C'est vrai que dans tous les échanges qu'on peut avoir avec des candidats ou avec des accompagnateurs, c'est des questions qu'on soumet parce qu'on sait que c'est des termes qui sont très fréquemment utilisés et qu'on veut s'assurer que c'est bien compris.
+
+Speaker2: Tout à fait.
+
+Speaker1: Après, je me dis, pourquoi pas au pire, entre parenthèses, mettre en dessous de ces faisabilités, entre parenthèses, enseignement, livret 1. Ce serait que beaucoup de personnes, je pense, ceux qui connaissent la VAE, on parle beaucoup de livret 1, livret 2. Moi, j'ai toujours parlé de ça, même plus jeune, après avoir parlé de la VAE, je pense que je comprends ce que c'est un livret 1, un livret 2. Pourquoi pas mettre ça, je ne sais pas, mais après, c'est… Enseignement livré 1, enseignement, je ne sais pas. Il y a des gens qui restent souvent sur les anciens noms. On est tous sur les anciens noms. Il y en a qui ont trop l'emploi aujourd'hui. Après, je ne sais pas.
+
+Speaker0: OK.
+
+Speaker2: Je vous ai renvoyé le dossier de faisabilité et on a pris un petit peu plus de temps que prévu. Moi, je ne pourrais pas rester au-delà des 15 minutes qui restent malheureusement. Donc, je ne sais pas si vous avez la possibilité, Mélanie, qu'on reporte pour la fin du parcours, qu'on s'arrête à la fin du dossier de faisabilité éventuellement et que la fin du dossier, sur le dossier de validation et la fin du parcours… du candidat, on puisse le faire à un autre moment. Ça durera moins longtemps, du coup. Désolée, j'ai un train et je ne peux vraiment pas le looker.
+
+Speaker1: Il n'y a pas de souci. Je regarde sur mon agenda quand je peux prendre du temps. Ça marche. On cale un moment maintenant ou plus tard ?
+
+Speaker0: Regardons maintenant.
+
+Speaker1: Comme ça, on… On peut refaire pour mercredi prochain, pareil.
+
+Speaker2: Moi, au début d'après-midi, ça peut être possible.
+
+Speaker1: Ce serait vraiment après le travail. C'est vraiment après les heures de travail. Quels sont vos horaires ? Le mercredi, je suis née à 4h30. Après, je regarde les autres jours. Sinon, après, je suis née à 5h30. après je peux faire vendredi le vendredi 13 là je suis née à 12h30. du coup je peux être dispo. je peux être dispo ok sur le temps du jour même à 13h comme je suis née à 12h30. dans tous les cas je reste au travail parce que je travaille mon mémoire. alors je reste au boulot. du coup j'ai accès à la collection. j'ai tout. je peux être dispo en un temps. le 13 le 13 juin.
+
+Speaker2: Est-ce que toi, ça t'irait, Victor ?
+
+Speaker0: Non, le 13 juin, j'ai déjà un rendez-vous prévu à cette heure-là, à partir de midi.
+
+Speaker2: OK.
+
+Speaker1: Après, dans l'après-midi, on peut décaler un peu l'horaire.
+
+Speaker0: Écoutez, à quelle heure, qu'est-ce qui pourrait vous convenir, le vendredi après-midi ?
+
+Speaker1: En vrai, moi, je travaille toute la journée, mon mémoire. Je travaille toute l'après-midi, du coup, je serai au bureau. Souvent, je pars vers 5h, 5h30, 4h30, mais après, je peux être là à 2h, 2h30, 3h.
+
+Speaker0: Ok, si on vous prend un créneau 30 minutes, vous avez un peu de flexibilité dans l'après-midi ?
+
+Speaker1: Ça me fera une pause, c'est pas mal. Ça me fera une pause dans mon mémoire.
+
+Speaker2: Merci beaucoup.
+
+Speaker0: Oui, merci Mélanie.
+
+Speaker1: Il n'y a pas de souci, mais le vendredi 13, c'est possible, je peux le marquer, on peut dire quelle heure à peu près ?
+
+Speaker0: Est-ce que 14h30, 15h ? Moi, je suis flexible le vendredi.
+
+Speaker1: Je vais marquer 14h30 et on m'envoie un mail et je vois le mail et je serai à l'attention.
+
+Speaker0: Très bien. Je vous envoie un créneau avec le lien de la visio. C'est bon pour toi, Louise, aussi ?
+
+Speaker2: Oui, il n'y a pas de souci. Vraiment, merci beaucoup.
+
+Speaker1: Non, mais il n'y a pas de souci. Après, je sais bien prendre du temps, mais après, c'est important.
+
+Speaker2: Moi, je trouve ça très intéressant qu'on puisse détailler tout ce que vous nous avez dit et qu'on ne soit pas coupé, qu'on n'accélère pas les choses et qu'on prenne le temps sur un autre moment. Là, vous étiez sur le dossier de faisabilité, donc le livre est un que je vous ai envoyé en tant qu'AAP.
+
+Speaker0: Surtout qu'entre parenthèses, vous avez des retours très intéressants pour nous.
+
+Speaker1: C'est chouette.
+
+Speaker0: C'est vraiment précieux que vous nous apportez. C'est bien ce que je disais à soi. Je ne suis pas sûre d'aider.
+
+Speaker1: Après, j'aime bien. Je trouve ça intéressant quand même de voir à peu près les choses. Moi, j'aime bien le côté couleur. Je trouve que c'est bien les codes. Couleur, c'est parfait.
+
+Speaker2: C'est bien, moi.
+
+Speaker1: ça c'est les blocs de compétence super profil groupe. si tu télécharges regarde juste en dessous prestation qui est top.
+
+Speaker2: Alors, l'attestation sur l'honneur, en fait, ça vous remplace si vous avez rempli un dossier de faisabilité en PDF. Vous aviez une partie du dossier de faisabilité avec un petit texte qui donnait accès à votre accompagnateur au résultat de votre recevabilité, de votre jury, etc. Et puis aussi, vous deviez signer votre dossier de faisabilité. C'était un peu le récapitulatif de votre profil professionnelle. Et du coup, là, comme tout était matérialisé, on a cette attestation sur l'honneur qui remplace en fait, on va dire, un document officiel pour la signature.
+
+Speaker1: Je dois rechercher, je ne retrouve pas.
+
+Speaker2: Vous me souvenez s'il y avait eu…
+
+Speaker1: Ah, c'est bien, j'ai lu, j'ai accepté que j'avais la pièce.
+
+Speaker2: C'est gentil.
+
+Speaker1: Là, c'est vrai, je prends le test. Je prends le fichier test, du coup.
+
+Speaker0: Oui, tout à fait.
+
+Speaker2: Oui, vous pouvez faire ça. Je l'ai déjà mis, mais…
+
+Speaker1: Je le remets dessus. J'ai téléchargé la testation.
+
+Speaker2: Ça marche. On en voit.
+
+Speaker1: La testation est là, c'est cool. Je peux même la pré-remplir dessus, c'est pas mal. Ça marche. J'ai lu la testation. Là, ça, c'est chouette. En fait, c'est quand même marqué, c'est dit, c'est bien. Voilà. Et je ne l'ai pas envoyé encore.
+
+Speaker0: Là, vous l'avez bien transmis et envoyé à votre AAP. Et là, ce qui se passe, c'est que c'est votre accompagnateur qui se cherche de l'envoyer au certificateur.
+
+Speaker1: D'accord.
+
+Speaker2: Est-ce que ça, vous l'aviez compris justement ? Est-ce que vous sauriez dire pourquoi ?
+
+Speaker1: Elle me dit qu'en temps là, je sais que je n'ai pas accès. Du coup, c'est bloqué. Ok, je n'ai pas encore accès à y aller. Là, j'ai encore accès. Moi, je vois ça, je me dis que c'est à moi de l'envoyer au certificataire. Là, je ne sais plus comment je fais. C'est plus ça, c'est savoir qui l'envoie.
+
+Speaker2: Ok, et vous pensez que c'est le message qu'il y a sur la tuile dossier de faisabilité qui vous induit en erreur ?
+
+Speaker1: C'est clair ce qu'on dit, c'est clair. Moi je descends là, et là je vais, ah, il y a un truc que je paye dessus, c'est quoi ? Ah, est-ce que c'est à moi de l'envoyer ou pas ? Là, je peux me poser la question. D'accord. Même principe, votre accompagnateur va l'envoyer au modificateur. Oui. Par le accompagnateur. Quelque chose qui m'empêche d'y aller, d'y accéder, comme ici. Là, je sais que ça parle d'y aller. Maintenant, il est fait, le dossier. Attention, je n'ai plus à changer, comme il est fait. On est d'accord ?
+
+Speaker2: Là, vous n'avez plus accès, effectivement, à la modification. Alors ?
+
+Speaker1: Peut-être soit pareil, le fermer pour être sûr que ce n'est pas à nous de le faire. Et là, on peut télécharger le dossier. C'est pas mal ça. Là, on télécharge. Oui. Pareil de l'autre côté, ce qu'on a envoyé pour le télécharger en PDF, en fait, même principe.
+
+Speaker2: Oui, c'est pour ça que je vous interrogeais tout à l'heure sur la candidature. Parce qu'effectivement, on a ce comportement-là de pouvoir télécharger le dossier de faisabilité.
+
+Speaker1: Mais maintenant, c'est juste ça, se poser des questions. Et là aussi, je vois un petit « i ». c'est un i comme information, on est d'accord ? Oui. Moi, j'ai tendance à cliquer dessus pour savoir il y a quoi derrière. Il n'y a rien, en fait. Il est un logo. En fait, j'aurais tendance à cliquer dessus, en fait. Bon, là, c'est le tutoriel, mais à me dire, ah, il y a un petit i, ça veut dire quelque chose. Vous le mettez là. Et là, expliquez avec une phrase. Votre accompagnateur va envoyer le dossier. Le petit i, ça peut être ça aussi, sinon. Faire à côté, sur le côté, le prochain rendez-vous, les prochaines actions. Comme je disais, moi, de souvenir sur mon ancien, il y avait vraiment une barre de progression qui marquait les prochaines actions, qu'est-ce qu'il y a en cours. Ou sinon, ici, une barre de progression du premier coup d'œil à voir, en cours, c'est-à-dire ce qui va se passer, ça, ça va se passer, c'est en cours, en fait. C'est-à-dire ce qui est en cours. Une barre de progression qui peut être du premier coup d'œil, j'en suis là, mon dossier, la personne va se connaître dix fois le matin pour savoir où est son dossier, hop, je me connais, je ne vais pas aller quinze fois voir si ça a été fait ou pas. C'est un côté visuel, le côté voir. On a deux minutes pour regarder. J'en suis où ? Ah, j'en suis là. Ça t'a envoyé ou pas ? L'historique, ça peut être aussi que la compétenteur met un historique. Si on va dessus, attends, c'est bon, il a lu mon dossier, il l'a regardé, c'est bon. Ou met une encoche, vue, fait.
+
+Speaker2: Est-ce que vous vous souvenez si vous alliez souvent sur votre espace candidat?
+
+Speaker1: Alors au début, je n'avais pas compris au début, je n'avais pas instinctivement. À la fin, j'y allais et c'est là que ça m'amusait plutôt que de remplir chaque chose. Je remplissais tout, je mettais tous les documents qu'il fallait. Du coup, j'avais peur aussi s'il manquait un document que je ne sois pas prise ou autre. Mais vers la fin, je n'y allais plus trop. Mais au début, pour bien sûr, tous mes livrets, tout ça, j'y allais bien. au début, mais… C'était fait par onglets, pas des onglets, c'était plutôt par un volet déroulant. On cliquait, ça ouvrait, on cliquait, ça ouvrait un autre volet.
+
+Speaker0: Est-ce que vous nous décrivez ? C'était sur France VE ? Non. Vous ne passiez pas par France VE pour faire votre parcours ?
+
+Speaker1: Je ne sais pas si ça parle, c'est la DAVA qui m'a validé mon…
+
+Speaker0: D'accord, parce que oui, effectivement, les DAVA sont des interlocuteurs qu'on a, ils font partie des structures qui accompagnent, donc ils ont aussi leur dispositif, leur plateforme, donc…
+
+Speaker1: C'est pour ça. J'en ai parlé avec ma collègue qui a fait aussi une VAE, mais elle l'a fait toute seule, sans être accompagnée. Elle n'avait pas de site, elle n'avait rien. Je lui ai dit que je n'avais rien et tout. Du coup, je ne sais pas. Du coup, je me suis posé la question de savoir si pour avoir accès au site, il faut vraiment avoir un accompagnement ou pas.
+
+Speaker0: Aujourd'hui, nous, la vocation de cette plateforme, de ce service, c'est vraiment d'être le point central pour tout ce qui va concerner la VAE. Notre objectif, c'est vraiment de centraliser et de faire que chaque citoyen passe par cette plateforme pour faire son parcours en Et également de pouvoir centraliser les systèmes d'information des DAVA, des accompagnateurs, des certificateurs, pour qu'en fait les informations transitent le mieux possible. Et ça me fait rebondir sur ce que vous disiez sur effectivement toute la notion d'historique, de savoir en temps réel qui a consulté, est-ce que telle personne a vu, pas vu, a fait une action à mon encontre, sur mon dossier. C'est des sujets sur lesquels on a aussi beaucoup d'ambition. En revanche, la problématique qu'on a, c'est que chaque structure a son système d'information. Et donc, aujourd'hui, on a encore beaucoup de mal à les faire communiquer entre elles. Et quand une donnée est saisie à un endroit pour qu'un organisme externe récupère la donnée, souvent, ça ne communique pas encore très très bien. Mais c'est vrai que pour nous, c'est capital de permettre d'avoir… le suivi du dossier, le fait de pouvoir notifier toutes les actions, toutes les informations au même endroit et d'avoir du temps réel pour faciliter la vie. Mais en tout cas, on a bien noté, c'est super intéressant ce que vous nous dites sur la notion d'historique et aussi la notion de visualiser mon parcours en étapes.
+
+Speaker1: Non, je ne vais pas dire quelque chose de très intéressant. Je parle des mots. Ça me fait beaucoup parler sur la plateforme via trajectoire qui n'est pas forcément hyper bien non plus. Il y a des défauts, c'est comme tout. Mais je sais qu'en tant que professionnel, je pense que même l'usager s'y retrouve bien à savoir qui a fait quoi. C'est hyper important. Nous, on a des dossiers conçus depuis des années. Savoir qui l'a créé, c'est hyper important pour nous. À quelle heure il s'est connecté l'usager quand il nous appelle, est-ce qu'il n'arrive pas à se connecter ? C'est top. Je ne pourrais pas en repasser, je le sais.
+
+Speaker0: Est-ce que vous pourriez répéter, s'il vous plaît, le nom du service dont vous parlez ?
+
+Speaker1: C'est Diatrajectoire.
+
+Speaker0: Diatrajectoire.
+
+Speaker1: Attendez, je vais vous le mettre dans le chat. C'est les plateformes de… C'est l'ARS qui porte ça. Au fait, c'est pour créer tous les dossiers d'enseignement en structure. C'est national depuis 2018, mais… Je vais mettre le lien. Merci beaucoup. Il y a encore du taf aussi. Ce n'est pas nickel, mais ils sont quand même bien sur certains trucs. Je mets juste le lien comme ça.
+
+Speaker2: Oui, bien sûr.
+
+Speaker1: Du coup, ensuite, après qu'on s'est envoyé, on commence à livrer de nouveau.
+
+Speaker2: Oui, vous pouvez rafraîchir votre espace. Et puis, je pense qu'après, on va s'arrêter là, justement, pour le parcours, pour se laisser la partie dossier de validation et jury. Qu'est-ce que vous remarquez, là, justement ?
+
+Speaker1: Ça a changé. On a une notification qui est là.
+
+Speaker2: Après… Qu'est-ce que vous en pensez ?
+
+Speaker1: Parce que là, je l'ai rafraîchi, du coup, peut-être mettre ça plus gros. Lui, il prend beaucoup de place, il est mignon, mais il prend beaucoup de place par rapport à l'info qu'il a mis à côté. En fait, je me dis que c'est soit rafraîchir ou soit mettre un 1 comme notification, une cloche, une alerte. Je retiens une nouvelle alerte, le dossier a été envoyé, c'est bon, hop, c'est fait. Après, je repars sur ma barre de progression. Mais il faut que ce soit plus visible, plus en gras, plus gros. Il prend beaucoup de place. Là, je l'ai vu parce que j'ai lu. Mais peut-être qu'une personne, on peut vite y passer. Je ne comprends pas. À part si je vais dessus, il y a la date là. OK, top. Il y a la date, c'est bien là.
+
+Speaker2: On a bien noté qu'il manquait des dates. Pour que vous ayez une idée.
+
+Speaker1: Je trouve ça hyper important, les dates. C'est marrant parce que pour chaque personne, ça permet aussi de bien calculer le parcours et tout. Même pour l'employeur, si un employeur finance, il aide à financer, ça permet de savoir où on est aussi.
+
+Speaker2: Oui, tout à fait.
+
+Speaker1: Je trouve ça chouette. Par exemple, moi, c'est une association, on a un conseil d'administration, je pense qu'ils sont contents de savoir à telle date, elle a fait ça, pour le budget, tout ça, pour plein de choses, c'est en cours.
+
+Speaker0: D'accord. Écoutez, on arrive au terme du temps qui nous est imparti aujourd'hui. Donc effectivement, en récapitulatif, on a échangé sur votre expérience. On a pu consulter l'interface, faire une grosse partie du parcours. Et effectivement, nous restera la prochaine fois la partie sur le dossier de validation qui sera la dernière étape de la VAE. Donc voilà, on se voit donc vendredi, vendredi dans 10 jours.
+
+Speaker2: Oui, ça va le 13. Oui, on repartira sur la même candidature, donc on verra les éléments.
+
+Speaker0: Ça nous permettra d'être un peu plus en mode réel sur le temps qui aurait pu passer et de se reconnecter à nouveau. Peut-être que ça vous donnera d'autres impressions ?
+
+Speaker2: Il nous restera 30 minutes, mais ça nous permettra aussi de creuser sur certains aspects. On va avoir un bout du parcours qui est plus petit. Ça va être vraiment la fin du parcours candidat. N'hésitez pas, si entre ces deux temps de test, il y a des choses qui vous reviennent, on pourra faire 5 minutes de débrief avant de reprendre directement sur le dossier de validation, le livret 2.
+
+Speaker0: Pour information, j'ai calé 45 minutes pour vendredi 13, donc ce n'est pas forcément pour aller tout au bout, mais c'est pour éventuellement se laisser un petit peu le temps d'échanger aussi, donc ça nous permettra de le faire. En tout cas, merci beaucoup pour votre temps.
+
+Speaker2: Merci Mélanie, c'était super. tous vos retours, très précis. C'était chouette.
+
+Speaker1: Merci et bonne…
+
+Speaker2: À vendredi 13, j'espère que ça ne nous portera pas malheur.
+
+Speaker0: Bonne soirée. Au revoir.
+
+Speaker1: Au revoir.

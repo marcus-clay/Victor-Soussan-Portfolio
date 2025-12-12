@@ -1,9 +1,7 @@
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import emailjs from '@emailjs/browser';
 import { EMAILJS_CONFIG } from './emailConfig';
-import jsPDF from 'jspdf';
 import {
   ChevronRight,
   Layers,
@@ -28,7 +26,6 @@ import {
   Zap,
   Settings,
   Lightbulb,
-  ExternalLink,
   Quote,
   User,
   FlaskConical,
@@ -37,11 +34,9 @@ import {
   Calendar,
   GraduationCap,
   FileText,
-  Printer,
   Copy,
   Send,
   Images,
-  Eye,
   Upload,
   CheckSquare,
   Square,
@@ -52,20 +47,28 @@ import {
   Moon,
   Monitor,
   ChevronDown,
-  Type,
-  Contrast,
-  Accessibility,
-  PanelRightClose,
-  PanelRightOpen
+  Home,
+  MessageCircle,
+  FolderOpen
 } from 'lucide-react';
 import { Rocket, Buildings, HandHeart, ArrowsClockwise, ChatCircleDots, ChartLineUp, Envelope, Phone, LinkedinLogo, Globe } from '@phosphor-icons/react';
-import ToolkitPage from './ToolkitPage';
-import DailymotionPage from './DailymotionPage';
-import ConnectPage from './ConnectPage';
-import SqoolPage from './SqoolPage';
-import ExecutivePage from './ExecutivePage';
-import IframeModal from './IframeModal';
-import { BentoGallery, getToolkitGalleryItems, getDailymotionGalleryItems, getConnectGalleryItems, getSqoolGalleryItems } from './BentoGallery';
+
+// Lazy load heavy page components for code splitting
+const ToolkitPage = lazy(() => import('./ToolkitPage'));
+const DailymotionPage = lazy(() => import('./DailymotionPage'));
+const ConnectPage = lazy(() => import('./ConnectPage'));
+const SqoolPage = lazy(() => import('./SqoolPage'));
+const FranceVaePage = lazy(() => import('./FranceVaePage'));
+const ExecutivePage = lazy(() => import('./ExecutivePage'));
+const WorkPage = lazy(() => import('./WorkPage'));
+const IframeModal = lazy(() => import('./IframeModal'));
+
+// Loading spinner component for lazy loaded pages
+const PageLoader = () => (
+  <div className="fixed inset-0 flex items-center justify-center bg-inherit">
+    <div className="w-8 h-8 border-2 border-current border-t-transparent rounded-full animate-spin opacity-50" />
+  </div>
+);
 
 // --- Types ---
 
@@ -226,9 +229,10 @@ const TRANSLATIONS = {
     },
     hero: {
       availability: "Available for new missions starting Jan '26",
+      tagline: "Frame. Design. Ship.",
       title: "Experienced designer for",
       subtitle: "product teams and startups",
-      desc: "With 15 years in tech and 10 in product design, I build intuitive, high-impact interfaces for enterprise software, media, education, and public services.",
+      desc: "15 years in tech, 10 in product design. I turn ambiguous requirements into functional prototypes, fast. Enterprise software, media, education, public services. AI-augmented workflows.",
       cta_projects: "My 1-min Presentation",
       cta_book: "Book a 30min Call",
       tooltip_title: "Need a Design Partner?",
@@ -507,7 +511,8 @@ const TRANSLATIONS = {
       missions: "Key Missions",
       system: "Design System",
       deliverables: "Key Deliverables",
-      read_more: "Read the full case study"
+      read_more: "Read the full case study",
+      view_all: "View All Projects"
     },
     lab: {
       tag: "Virtual R&D Laboratory",
@@ -543,7 +548,7 @@ const TRANSLATIONS = {
       title: "Need a design partner?",
       subtitle: "I am currently open to freelance missions or leadership roles. Let's discuss how we can elevate your product.",
       email: "Send an Email",
-      book: "Book a 30min Chat",
+      book: "Book a 30min Call",
       shoot_note: "Shoot me a note",
       copy_email: "Copy email address",
       email_copied: "Email copied!",
@@ -670,9 +675,10 @@ const TRANSLATIONS = {
     },
     hero: {
       availability: "Disponible à partir de Janv. '26",
+      tagline: "Frame. Design. Ship.",
       title: "Designer expérimenté pour",
       subtitle: "équipes produit et startups",
-      desc: "15 ans d'expérience, dont 10 dans la Tech. Je conçois, prototype et livre des logiciels complexes (SaaS, Mobile, Hardware) en me concentrant sur la clarté, l'utilisabilité et la faisabilité technique.",
+      desc: "15 ans dans la tech, 10 en design produit. Je transforme des besoins flous en prototypes fonctionnels, vite. Logiciels entreprise, médias, éducation, services publics. Workflows augmentés par l'IA.",
       cta_projects: "Ma présentation en 1-min",
       cta_book: "Planifier un appel de 30min",
       tooltip_title: "Besoin d'un designer ou d'un lead pour votre équipe ?",
@@ -952,7 +958,8 @@ const TRANSLATIONS = {
       missions: "Mes responsabilités",
       system: "Approche Système",
       deliverables: "Ce que j'ai livré",
-      read_more: "Lire le case study complet"
+      read_more: "Lire le case study complet",
+      view_all: "Voir tous les projets"
     },
     lab: {
       tag: "R&D et Expérimentation",
@@ -988,7 +995,7 @@ const TRANSLATIONS = {
       title: "Vous recherchez un designer rapide et expérimenté ?",
       subtitle: "Je suis ouvert aux missions de Product Design (Freelance) ou rôles de Lead (CDI). Discutons concrètement de vos besoins.",
       email: "Envoyer un email",
-      book: "Planifier un appel de 30min",
+      book: "Réserver un appel de 30min",
       shoot_note: "Envoyer un message",
       copy_email: "Copier l'adresse email",
       email_copied: "Email copié !",
@@ -1166,6 +1173,44 @@ const getResources = (lang: Language): Resource[] => {
 const getProjects = (lang: Language): Project[] => {
   const isEn = lang === 'en';
   return [
+    {
+      id: "france-vae",
+      title: "France VAE",
+      role: isEn ? "Lead Product Designer" : "Lead Product Designer",
+      period: "2024 – 2025",
+      summary: isEn
+        ? "6-month mission structuring product ops for a national public service scaling to 100K+ candidates."
+        : "Mission de 6 mois pour structurer les ops produit d'un service public national servant 100K+ candidats.",
+      missions: isEn ? [
+        "Co-designed prioritization matrix with Lead PM",
+        "Led 10 user interviews for dashboard launch",
+        "Organized 2-day design thinking workshop with field actors",
+        "Restructured Figma architecture & delivery process"
+      ] : [
+        "Co-conception matrice de priorisation avec Lead PM",
+        "10 entretiens utilisateurs pour lancement dashboard",
+        "Organisation atelier design thinking 2 jours avec AAP",
+        "Restructuration architecture Figma & process delivery"
+      ],
+      system: {
+        title: isEn ? "Season-based Workflow" : "Workflow en Saisons",
+        desc: isEn ? "Implemented 1-month seasons with 3 delivery cycles, cross-team prioritization matrix, and weekly discovery rituals." : "Mise en place de saisons d'1 mois avec 3 cycles de livraison, matrice de priorisation cross-équipe et rituels discovery hebdo."
+      },
+      deliverables: isEn ? [
+        "VAE Collective MVP & Employer Journey",
+        "Promotional Video (Screencast)",
+        "User Research Protocol & Synthesis",
+        "Design Ops & Figma Architecture"
+      ] : [
+        "MVP VAE Collective & Parcours Employeur",
+        "Vidéo Promotionnelle (Screencast)",
+        "Protocole Recherche & Synthèses",
+        "Design Ops & Architecture Figma"
+      ],
+      icon: <FileText size={24} />,
+      color: "blue",
+      coverImage: "/francevae/thumbnail_france_vae.webp"
+    },
     {
       id: "toolkit",
       title: "Toolkit",
@@ -1530,18 +1575,21 @@ const getTestimonials = (lang: Language): Testimonial[] => {
 // --- Main App Component ---
 
 const App: React.FC = () => {
-  const [lang, setLang] = useState<Language>('fr');
+  const [lang, setLang] = useState<Language>('en');
   const content = TRANSLATIONS[lang];
   const resources = getResources(lang);
   const projects = getProjects(lang);
   const testimonials = getTestimonials(lang);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMobileTabMenuOpen, setIsMobileTabMenuOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [isBioOpen, setIsBioOpen] = useState(false);
   const [bioViewMode, setBioViewMode] = useState<'text' | 'timeline'>('text');
   const bioContentRef = useRef<HTMLDivElement>(null);
   const [isTestimonialsOpen, setIsTestimonialsOpen] = useState(false);
+  const [isWorkOpen, setIsWorkOpen] = useState(false);
+  const [openedFromIndex, setOpenedFromIndex] = useState(false);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [selectedLabItem, setSelectedLabItem] = useState<string | null>(null);
   const [isExecutiveOpen, setIsExecutiveOpen] = useState(() => {
@@ -1553,11 +1601,6 @@ const App: React.FC = () => {
   const [themeMode, setThemeMode] = useState<'system' | 'light' | 'dark'>('light');
   const [systemTheme, setSystemTheme] = useState<'light' | 'dark'>('light');
   const [accessibilityMode, setAccessibilityMode] = useState<AccessibilityMode>('normal');
-  const [isSettingsPanelOpen, setIsSettingsPanelOpen] = useState(() => {
-    // Open by default on first visit
-    const hasVisited = localStorage.getItem('hasVisitedSettings');
-    return !hasVisited;
-  });
   const [isResumeOpen, setIsResumeOpen] = useState(false);
   const [resumeLang, setResumeLang] = useState<'fr' | 'en'>('fr');
   const [copiedResume, setCopiedResume] = useState(false);
@@ -1568,10 +1611,21 @@ const App: React.FC = () => {
   const [iframeModalUrl, setIframeModalUrl] = useState<string | null>(null);
   // Unified project modal state: which project is open and which view mode
   const [openProject, setOpenProject] = useState<{
-    project: 'toolkit' | 'dailymotion' | 'connect' | 'sqool';
-    viewMode: 'caseStudy' | 'gallery';
-  } | null>(null);
-  const [activeSection, setActiveSection] = useState('services');
+    project: 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'france-vae';
+    viewMode: 'caseStudy' | 'gallery' | 'executive';
+  } | null>(() => {
+    // Parse URL on initial load
+    const path = window.location.pathname;
+    const projectMatch = path.match(/^\/projects?\/(toolkit|dailymotion|connect|sqool|france-vae)(?:\/(case-study|gallery|executive))?$/);
+    if (projectMatch) {
+      const projectId = projectMatch[1] as 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'france-vae';
+      const viewParam = projectMatch[2];
+      const viewMode = viewParam === 'gallery' ? 'gallery' : viewParam === 'executive' ? 'executive' : 'caseStudy';
+      return { project: projectId, viewMode };
+    }
+    return null;
+  });
+  const [activeSection, setActiveSection] = useState<string | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
   const [isHoveringLogo, setIsHoveringLogo] = useState(false);
@@ -1640,6 +1694,7 @@ const App: React.FC = () => {
         setSelectedImage(null);
         setIsBioOpen(false);
         setIsTestimonialsOpen(false);
+        setIsWorkOpen(false);
         setIsBookingOpen(false);
         setSelectedLabItem(null);
         setIsContactFormOpen(false);
@@ -1730,12 +1785,6 @@ const App: React.FC = () => {
     document.body.classList.add(`accessibility-${accessibilityMode}`);
   }, [accessibilityMode]);
 
-  // Mark settings as visited when panel closes
-  useEffect(() => {
-    if (!isSettingsPanelOpen) {
-      localStorage.setItem('hasVisitedSettings', 'true');
-    }
-  }, [isSettingsPanelOpen]);
 
   // Detect scroll position
   useEffect(() => {
@@ -1748,18 +1797,21 @@ const App: React.FC = () => {
   }, []);
 
   // Detect active section on scroll
+  // Track active section with scroll detection for hero
   useEffect(() => {
     const sections = ['services', 'bio', 'projects', 'lab', 'testimonials', 'contact'];
+    let currentSection: string | null = null;
 
     const observerOptions = {
       root: null,
-      rootMargin: '-50% 0px -50% 0px',
+      rootMargin: '-40% 0px -40% 0px',
       threshold: 0
     };
 
     const observerCallback = (entries: IntersectionObserverEntry[]) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
+          currentSection = entry.target.id;
           setActiveSection(entry.target.id);
         }
       });
@@ -1772,12 +1824,78 @@ const App: React.FC = () => {
       if (element) observer.observe(element);
     });
 
+    // Scroll listener to detect when at top of page (hero section)
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const heroHeight = window.innerHeight * 0.5; // Roughly top half of viewport
+
+      if (scrollY < heroHeight) {
+        // We're in the hero section
+        if (currentSection !== null) {
+          currentSection = null;
+          setActiveSection(null);
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    // Initial check
+    handleScroll();
+
     return () => {
       sections.forEach((id) => {
         const element = document.getElementById(id);
         if (element) observer.unobserve(element);
       });
+      window.removeEventListener('scroll', handleScroll);
     };
+  }, []);
+
+  // URL helpers for project routing
+  const getProjectUrl = (projectId: string, viewMode: 'caseStudy' | 'gallery' | 'executive') => {
+    const viewPath = viewMode === 'gallery' ? '/gallery' : viewMode === 'executive' ? '/executive' : '';
+    return `/project/${projectId}${viewPath}`;
+  };
+
+  // Open project with URL update
+  const openProjectWithUrl = (
+    projectId: 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'france-vae',
+    viewMode: 'caseStudy' | 'gallery' | 'executive',
+    pushHistory = true
+  ) => {
+    setOpenProject({ project: projectId, viewMode });
+    if (pushHistory) {
+      const url = getProjectUrl(projectId, viewMode);
+      window.history.pushState({ project: projectId, viewMode }, '', url);
+    }
+  };
+
+  // Handle project close - return to Index if opened from there
+  const handleProjectClose = () => {
+    setOpenProject(null);
+    // Reset URL to home
+    window.history.pushState({}, '', '/');
+    if (openedFromIndex) {
+      setIsWorkOpen(true);
+      setOpenedFromIndex(false);
+    }
+  };
+
+  // Handle browser back/forward buttons
+  useEffect(() => {
+    const handlePopState = (event: PopStateEvent) => {
+      if (event.state?.project) {
+        setOpenProject({
+          project: event.state.project,
+          viewMode: event.state.viewMode || 'caseStudy'
+        });
+      } else {
+        setOpenProject(null);
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
   // Scroll to section with offset for fixed header
@@ -1865,225 +1983,26 @@ const App: React.FC = () => {
         : 'bg-[#F9F9F9] text-[#1D1D1F]'
     }`}>
 
-      {/* Floating Settings Panel - Liquid Glass Apple Style - Hidden in gallery mode */}
-      {openProject?.viewMode !== 'gallery' && (
-      <div className="fixed top-20 right-4 z-[60]">
-        <AnimatePresence mode="wait">
-          {isSettingsPanelOpen ? (
-            <motion.div
-              key="settings-panel"
-              initial={{ opacity: 0, x: 20, scale: 0.95 }}
-              animate={{ opacity: 1, x: 0, scale: 1 }}
-              exit={{ opacity: 0, x: 20, scale: 0.95 }}
-              transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
-              className={`w-56 rounded-2xl shadow-2xl overflow-hidden ${
-                systemTheme === 'dark'
-                  ? 'bg-black/40 backdrop-blur-2xl border border-white/20'
-                  : 'bg-white/70 backdrop-blur-2xl border border-white/50 shadow-[0_8px_32px_rgba(0,0,0,0.12)]'
-              }`}
-            >
-              {/* Panel Header */}
-              <div className={`flex items-center justify-between px-3 py-2 border-b ${
-                systemTheme === 'dark' ? 'border-white/10' : 'border-black/5'
-              }`}>
-                <div className="flex items-center gap-1.5">
-                  <Settings size={14} className={systemTheme === 'dark' ? 'text-white/60' : 'text-black/40'} />
-                  <span className={`text-xs font-medium ${systemTheme === 'dark' ? 'text-white/80' : 'text-black/70'}`}>
-                    {content.settings.title}
-                  </span>
-                </div>
-                <button
-                  onClick={() => setIsSettingsPanelOpen(false)}
-                  className={`p-1 rounded-md transition-colors ${
-                    systemTheme === 'dark'
-                      ? 'hover:bg-white/10 text-white/50'
-                      : 'hover:bg-black/5 text-black/40'
-                  }`}
-                >
-                  <PanelRightClose size={14} />
-                </button>
-              </div>
-
-              {/* Panel Content */}
-              <div className="p-3 space-y-3">
-                {/* Language Switcher - Pill Toggle */}
-                <div>
-                  <label className={`text-[10px] font-medium uppercase tracking-wider mb-1.5 block ${
-                    systemTheme === 'dark' ? 'text-white/40' : 'text-black/40'
-                  }`}>
-                    {content.settings.language}
-                  </label>
-                  <div className={`relative flex rounded-full p-0.5 ${
-                    systemTheme === 'dark' ? 'bg-white/10' : 'bg-black/[0.06]'
-                  }`}>
-                    {/* Sliding Pill Indicator */}
-                    <motion.div
-                      className={`absolute top-0.5 bottom-0.5 rounded-full ${
-                        systemTheme === 'dark' ? 'bg-white/20' : 'bg-white shadow-sm'
-                      }`}
-                      initial={false}
-                      animate={{
-                        left: lang === 'en' ? '2px' : '50%',
-                        width: 'calc(50% - 4px)'
-                      }}
-                      transition={{ type: 'spring', stiffness: 500, damping: 35 }}
-                    />
-                    <button
-                      onClick={() => setLang('en')}
-                      className={`flex-1 py-1.5 px-2 rounded-full text-[11px] font-medium transition-colors relative z-10 ${
-                        lang === 'en'
-                          ? systemTheme === 'dark' ? 'text-white' : 'text-black/80'
-                          : systemTheme === 'dark' ? 'text-white/50' : 'text-black/40'
-                      }`}
-                    >
-                      EN
-                    </button>
-                    <button
-                      onClick={() => setLang('fr')}
-                      className={`flex-1 py-1.5 px-2 rounded-full text-[11px] font-medium transition-colors relative z-10 ${
-                        lang === 'fr'
-                          ? systemTheme === 'dark' ? 'text-white' : 'text-black/80'
-                          : systemTheme === 'dark' ? 'text-white/50' : 'text-black/40'
-                      }`}
-                    >
-                      FR
-                    </button>
-                  </div>
-                </div>
-
-                {/* Theme Switcher - Pill Toggle */}
-                <div>
-                  <label className={`text-[10px] font-medium uppercase tracking-wider mb-1.5 block ${
-                    systemTheme === 'dark' ? 'text-white/40' : 'text-black/40'
-                  }`}>
-                    {content.settings.theme}
-                  </label>
-                  <div className={`relative flex rounded-full p-0.5 ${
-                    systemTheme === 'dark' ? 'bg-white/10' : 'bg-black/[0.06]'
-                  }`}>
-                    {/* Sliding Pill Indicator */}
-                    <motion.div
-                      className={`absolute top-0.5 bottom-0.5 rounded-full ${
-                        systemTheme === 'dark' ? 'bg-white/20' : 'bg-white shadow-sm'
-                      }`}
-                      initial={false}
-                      animate={{
-                        left: themeMode === 'light' ? '2px' : themeMode === 'system' ? '33.33%' : '66.66%',
-                        width: 'calc(33.33% - 3px)'
-                      }}
-                      transition={{ type: 'spring', stiffness: 500, damping: 35 }}
-                    />
-                    <button
-                      onClick={() => setThemeMode('light')}
-                      className={`flex-1 py-1.5 px-1 rounded-full text-[11px] font-medium transition-colors relative z-10 flex items-center justify-center ${
-                        themeMode === 'light'
-                          ? systemTheme === 'dark' ? 'text-white' : 'text-amber-600'
-                          : systemTheme === 'dark' ? 'text-white/50' : 'text-black/40'
-                      }`}
-                    >
-                      <Sun size={12} />
-                    </button>
-                    <button
-                      onClick={() => setThemeMode('system')}
-                      className={`flex-1 py-1.5 px-1 rounded-full text-[11px] font-medium transition-colors relative z-10 flex items-center justify-center ${
-                        themeMode === 'system'
-                          ? systemTheme === 'dark' ? 'text-white' : 'text-blue-600'
-                          : systemTheme === 'dark' ? 'text-white/50' : 'text-black/40'
-                      }`}
-                    >
-                      <Monitor size={12} />
-                    </button>
-                    <button
-                      onClick={() => setThemeMode('dark')}
-                      className={`flex-1 py-1.5 px-1 rounded-full text-[11px] font-medium transition-colors relative z-10 flex items-center justify-center ${
-                        themeMode === 'dark'
-                          ? systemTheme === 'dark' ? 'text-white' : 'text-indigo-600'
-                          : systemTheme === 'dark' ? 'text-white/50' : 'text-black/40'
-                      }`}
-                    >
-                      <Moon size={12} />
-                    </button>
-                  </div>
-                </div>
-
-                {/* Accessibility Mode - Pill Toggle */}
-                <div>
-                  <label className={`text-[10px] font-medium uppercase tracking-wider mb-1.5 block ${
-                    systemTheme === 'dark' ? 'text-white/40' : 'text-black/40'
-                  }`}>
-                    {content.settings.accessibility}
-                  </label>
-                  <div className={`relative flex rounded-full p-0.5 ${
-                    systemTheme === 'dark' ? 'bg-white/10' : 'bg-black/[0.06]'
-                  }`}>
-                    {/* Sliding Pill Indicator */}
-                    <motion.div
-                      className={`absolute top-0.5 bottom-0.5 rounded-full ${
-                        systemTheme === 'dark' ? 'bg-white/20' : 'bg-white shadow-sm'
-                      }`}
-                      initial={false}
-                      animate={{
-                        left: accessibilityMode === 'normal' ? '2px' : accessibilityMode === 'contrast' ? '33.33%' : '66.66%',
-                        width: 'calc(33.33% - 3px)'
-                      }}
-                      transition={{ type: 'spring', stiffness: 500, damping: 35 }}
-                    />
-                    <button
-                      onClick={() => setAccessibilityMode('normal')}
-                      className={`flex-1 py-1.5 px-1 rounded-full text-[11px] font-medium transition-colors relative z-10 flex items-center justify-center gap-1 ${
-                        accessibilityMode === 'normal'
-                          ? systemTheme === 'dark' ? 'text-white' : 'text-black/80'
-                          : systemTheme === 'dark' ? 'text-white/50' : 'text-black/40'
-                      }`}
-                      title={content.settings.normal}
-                    >
-                      <Eye size={11} />
-                    </button>
-                    <button
-                      onClick={() => setAccessibilityMode('contrast')}
-                      className={`flex-1 py-1.5 px-1 rounded-full text-[11px] font-medium transition-colors relative z-10 flex items-center justify-center gap-1 ${
-                        accessibilityMode === 'contrast'
-                          ? systemTheme === 'dark' ? 'text-white' : 'text-black/80'
-                          : systemTheme === 'dark' ? 'text-white/50' : 'text-black/40'
-                      }`}
-                      title={content.settings.contrast}
-                    >
-                      <Contrast size={11} />
-                    </button>
-                    <button
-                      onClick={() => setAccessibilityMode('dyslexic')}
-                      className={`flex-1 py-1.5 px-1 rounded-full text-[11px] font-medium transition-colors relative z-10 flex items-center justify-center gap-1 ${
-                        accessibilityMode === 'dyslexic'
-                          ? systemTheme === 'dark' ? 'text-white' : 'text-black/80'
-                          : systemTheme === 'dark' ? 'text-white/50' : 'text-black/40'
-                      }`}
-                      title={content.settings.dyslexic}
-                    >
-                      <Type size={11} />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          ) : (
-            <motion.button
-              key="settings-button"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              transition={{ duration: 0.2 }}
-              onClick={() => setIsSettingsPanelOpen(true)}
-              className={`p-2 rounded-full transition-all hover:scale-105 ${
-                systemTheme === 'dark'
-                  ? 'bg-black/40 backdrop-blur-xl border border-white/20 text-white/70 hover:bg-black/50 shadow-lg'
-                  : 'bg-white/70 backdrop-blur-xl border border-white/50 text-black/50 hover:bg-white/80 shadow-[0_4px_16px_rgba(0,0,0,0.1)]'
-              }`}
-              aria-label={content.settings.title}
-            >
-              <Settings size={16} />
-            </motion.button>
-          )}
-        </AnimatePresence>
+      {/* Theme Toggle Button - Fixed at top right corner - Hidden when modals/lightboxes are open */}
+      {!openProject && !isExecutiveOpen && !isWorkOpen && !selectedImage && !isBioOpen && !isTestimonialsOpen && !isBookingOpen && !selectedLabItem && !isContactFormOpen && !isSimpleContactOpen && !selectedServiceGallery && !isResumeOpen && !isQuoteGeneratorOpen && !iframeModalUrl && (
+      <div className="hidden md:block fixed top-4 right-4 z-[60]">
+        <button
+          onClick={() => {
+            // Cycle through: light -> dark -> system -> light
+            if (themeMode === 'light') setThemeMode('dark');
+            else if (themeMode === 'dark') setThemeMode('system');
+            else setThemeMode('light');
+          }}
+          className={`p-2.5 rounded-full transition-all hover:scale-105 ${
+            systemTheme === 'dark'
+              ? 'bg-black/40 backdrop-blur-xl border border-white/20 text-white/70 hover:bg-black/50 shadow-lg'
+              : 'bg-white/70 backdrop-blur-xl border border-white/50 text-black/50 hover:bg-white/80 shadow-[0_4px_16px_rgba(0,0,0,0.1)]'
+          }`}
+          aria-label={`Theme: ${themeMode}`}
+          title={themeMode === 'light' ? 'Light mode' : themeMode === 'dark' ? 'Dark mode' : 'System mode'}
+        >
+          {themeMode === 'light' ? <Sun size={16} /> : themeMode === 'dark' ? <Moon size={16} /> : <Monitor size={16} />}
+        </button>
       </div>
       )}
 
@@ -2135,8 +2054,7 @@ const App: React.FC = () => {
               { id: 'bio', label: content.nav.bio },
               { id: 'services', label: content.nav.services },
               { id: 'testimonials', label: content.nav.testimonials },
-              { id: 'lab', label: content.nav.lab, icon: <FlaskConical size={14} className="mr-1.5"/> },
-              { id: 'contact', label: content.nav.contact }
+              { id: 'lab', label: content.nav.lab, icon: <FlaskConical size={14} className="mr-1.5"/> }
             ].map((item) => {
               const isActive = activeSection === item.id;
 
@@ -2182,30 +2100,383 @@ const App: React.FC = () => {
                 </button>
               );
             })}
-          </div>
 
-          <div className="md:hidden flex items-center space-x-3">
-            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="p-2">
-              {isMenuOpen ? <X size={24} /> : <MenuIcon size={24} />}
+            {/* Language Switch */}
+            <button
+              onClick={() => setLang(lang === 'en' ? 'fr' : 'en')}
+              className={`px-3 py-1.5 text-xs font-medium rounded-full transition-all ${
+                systemTheme === 'dark'
+                  ? 'text-gray-400 hover:text-white hover:bg-white/10'
+                  : 'text-gray-500 hover:text-black hover:bg-black/5'
+              }`}
+            >
+              {lang === 'en' ? 'FR' : 'EN'}
+            </button>
+
+            {/* Contact Button - Secondary style, small */}
+            <button
+              onClick={() => scrollToSection('contact')}
+              className={`px-4 py-1.5 text-sm font-medium rounded-full transition-all border ${
+                systemTheme === 'dark'
+                  ? 'border-white/20 text-white/80 hover:bg-white/10 hover:border-white/30'
+                  : 'border-gray-300 text-gray-700 hover:bg-gray-100 hover:border-gray-400'
+              }`}
+            >
+              {content.nav.contact}
             </button>
           </div>
-        </div>
 
-        {isMenuOpen && (
-          <div className={`md:hidden absolute top-16 left-0 w-full shadow-lg p-6 flex flex-col space-y-3 ${
-            systemTheme === 'dark'
-              ? 'bg-[#1D1D1F] border-b border-white/10'
-              : 'bg-[#F9F9F9] border-b border-gray-200'
-          }`}>
-            <button onClick={() => scrollToSection('projects')} className={`text-left text-base font-medium px-4 py-2.5 rounded-full btn-pill ${systemTheme === 'dark' ? 'bg-white/10 hover:bg-white/20 text-white' : 'glass-effect hover:text-blue-600'}`}>{content.nav.projects}</button>
-            <button onClick={() => scrollToSection('bio')} className={`text-left text-base font-medium px-4 py-2.5 rounded-full btn-pill ${systemTheme === 'dark' ? 'bg-white/10 hover:bg-white/20 text-white' : 'glass-effect hover:text-blue-600'}`}>{content.nav.bio}</button>
-            <button onClick={() => scrollToSection('services')} className={`text-left text-base font-medium px-4 py-2.5 rounded-full btn-pill ${systemTheme === 'dark' ? 'bg-white/10 hover:bg-white/20 text-white' : 'glass-effect hover:text-blue-600'}`}>{content.nav.services}</button>
-            <button onClick={() => scrollToSection('testimonials')} className={`text-left text-base font-medium px-4 py-2.5 rounded-full btn-pill ${systemTheme === 'dark' ? 'bg-white/10 hover:bg-white/20 text-white' : 'glass-effect hover:text-blue-600'}`}>{content.nav.testimonials}</button>
-            <button onClick={() => scrollToSection('lab')} className={`text-left text-base font-medium px-4 py-2.5 rounded-full btn-pill flex items-center ${systemTheme === 'dark' ? 'bg-white/10 hover:bg-white/20 text-white' : 'glass-effect hover:text-blue-600'}`}><FlaskConical size={18} className="mr-2"/>{content.nav.lab}</button>
-            <button onClick={() => scrollToSection('contact')} className={`text-left text-base font-medium px-4 py-2.5 rounded-full btn-pill ${systemTheme === 'dark' ? 'bg-white/10 hover:bg-white/20 text-white' : 'glass-effect hover:text-blue-600'}`}>{content.nav.contact}</button>
-          </div>
-        )}
+          {/* Mobile: Hide hamburger, we use bottom tab bar instead */}
+          <div className="md:hidden" />
+        </div>
       </nav>
+
+      {/* Floating Liquid Glass Menu - Mobile only */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 pointer-events-none">
+        {/* Expanded Menu - Liquid Glass Bottom Sheet */}
+        <AnimatePresence>
+          {isMobileTabMenuOpen && (
+            <>
+              {/* Backdrop with blur */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="fixed inset-0 bg-black/40 backdrop-blur-md pointer-events-auto"
+                onClick={() => {
+                  // Haptic feedback
+                  if (navigator.vibrate) navigator.vibrate(10);
+                  // Play close sound
+                  const audio = new Audio('/sounds/menu-close.wav');
+                  audio.volume = 0.3;
+                  audio.play().catch(() => {});
+                  setIsMobileTabMenuOpen(false);
+                }}
+              />
+              {/* Liquid Glass Bottom Sheet */}
+              <motion.div
+                initial={{ y: '100%', scale: 0.95 }}
+                animate={{ y: 0, scale: 1 }}
+                exit={{ y: '100%', scale: 0.95 }}
+                transition={{
+                  type: 'spring',
+                  stiffness: 400,
+                  damping: 35,
+                  mass: 0.8,
+                }}
+                className="fixed bottom-6 left-4 right-4 rounded-[32px] overflow-hidden pointer-events-auto"
+                style={{
+                  background: systemTheme === 'dark'
+                    ? 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.05) 100%)'
+                    : 'linear-gradient(135deg, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0.65) 100%)',
+                  backdropFilter: 'blur(40px) saturate(180%)',
+                  WebkitBackdropFilter: 'blur(40px) saturate(180%)',
+                  boxShadow: systemTheme === 'dark'
+                    ? '0 25px 50px -12px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1), inset 0 1px 1px rgba(255,255,255,0.15)'
+                    : '0 25px 50px -12px rgba(0,0,0,0.25), 0 0 0 1px rgba(255,255,255,0.5), inset 0 1px 1px rgba(255,255,255,0.8)',
+                  marginBottom: 'env(safe-area-inset-bottom, 0px)',
+                }}
+              >
+                {/* Liquid highlight effect at top */}
+                <div
+                  className="absolute top-0 left-0 right-0 h-px"
+                  style={{
+                    background: systemTheme === 'dark'
+                      ? 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%)'
+                      : 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.9) 50%, transparent 100%)'
+                  }}
+                />
+
+                {/* Handle bar with glow */}
+                <div className="flex justify-center pt-3 pb-1">
+                  <motion.div
+                    className={`w-10 h-1 rounded-full ${
+                      systemTheme === 'dark' ? 'bg-white/30' : 'bg-black/15'
+                    }`}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
+                  />
+                </div>
+
+                {/* Navigation items */}
+                <div className="px-3 pb-2">
+                  <div className={`rounded-2xl overflow-hidden ${
+                    systemTheme === 'dark'
+                      ? 'bg-white/5'
+                      : 'bg-black/[0.03]'
+                  }`}>
+                    {[
+                      { id: 'home', label: lang === 'en' ? 'Home' : 'Accueil', icon: Home, action: () => { window.scrollTo({ top: 0, behavior: 'smooth' }); setActiveSection(null); } },
+                      { id: 'projects', label: content.nav.projects, icon: FolderOpen, action: () => scrollToSection('projects') },
+                      { id: 'bio', label: content.nav.bio, icon: User, action: () => scrollToSection('bio') },
+                      { id: 'services', label: content.nav.services, icon: Layers, action: () => scrollToSection('services') },
+                      { id: 'testimonials', label: content.nav.testimonials, icon: MessageCircle, action: () => scrollToSection('testimonials') },
+                      { id: 'lab', label: content.nav.lab, icon: FlaskConical, action: () => scrollToSection('lab') },
+                      { id: 'contact', label: content.nav.contact, icon: Mail, action: () => scrollToSection('contact') },
+                    ].map((item, index, arr) => {
+                      const isActive = activeSection === item.id || (item.id === 'home' && activeSection === null);
+                      const Icon = item.icon;
+                      return (
+                        <motion.button
+                          key={item.id}
+                          onClick={() => {
+                            // Haptic feedback
+                            if (navigator.vibrate) navigator.vibrate(15);
+                            // Play tap sound
+                            const audio = new Audio('/sounds/tap.wav');
+                            audio.volume = 0.25;
+                            audio.play().catch(() => {});
+                            item.action();
+                            // Delay closing for visual feedback
+                            setTimeout(() => {
+                              const closeAudio = new Audio('/sounds/menu-close.wav');
+                              closeAudio.volume = 0.2;
+                              closeAudio.play().catch(() => {});
+                              setIsMobileTabMenuOpen(false);
+                            }, 100);
+                          }}
+                          whileTap={{ scale: 0.97, backgroundColor: systemTheme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)' }}
+                          className={`w-full flex items-center gap-4 px-4 py-3.5 transition-all ${
+                            index < arr.length - 1
+                              ? systemTheme === 'dark'
+                                ? 'border-b border-white/5'
+                                : 'border-b border-black/[0.03]'
+                              : ''
+                          }`}
+                        >
+                          <motion.div
+                            className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all ${
+                              isActive
+                                ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/30'
+                                : systemTheme === 'dark'
+                                  ? 'bg-white/10 text-gray-400'
+                                  : 'bg-black/5 text-gray-500'
+                            }`}
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.9 }}
+                          >
+                            <Icon size={20} strokeWidth={isActive ? 2.5 : 2} />
+                          </motion.div>
+                          <span className={`text-[16px] tracking-tight ${
+                            isActive
+                              ? systemTheme === 'dark' ? 'text-white font-semibold' : 'text-gray-900 font-semibold'
+                              : systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                          }`}>{item.label}</span>
+                          {isActive && (
+                            <motion.div
+                              initial={{ scale: 0 }}
+                              animate={{ scale: 1 }}
+                              className="ml-auto w-2 h-2 rounded-full bg-blue-500"
+                            />
+                          )}
+                        </motion.button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Language & Theme row */}
+                <div className="px-3 pb-4 pt-1">
+                  <div className={`flex items-center gap-2 rounded-2xl p-1.5 ${
+                    systemTheme === 'dark' ? 'bg-white/5' : 'bg-black/[0.03]'
+                  }`}>
+                    {/* Language Switch */}
+                    <motion.button
+                      onClick={() => {
+                        if (navigator.vibrate) navigator.vibrate(15);
+                        const audio = new Audio('/sounds/tap.wav');
+                        audio.volume = 0.25;
+                        audio.play().catch(() => {});
+                        setLang(lang === 'en' ? 'fr' : 'en');
+                      }}
+                      whileTap={{ scale: 0.95 }}
+                      className={`flex-1 flex items-center justify-center gap-2 py-3.5 rounded-xl transition-all ${
+                        systemTheme === 'dark'
+                          ? 'text-white bg-white/10 hover:bg-white/15'
+                          : 'text-gray-800 bg-white/60 hover:bg-white/80 shadow-sm'
+                      }`}
+                    >
+                      <Globe size={18} strokeWidth={2} />
+                      <span className="text-[14px] font-medium">{lang === 'en' ? 'FR' : 'EN'}</span>
+                    </motion.button>
+                    {/* Theme Toggle */}
+                    <motion.button
+                      onClick={() => {
+                        if (navigator.vibrate) navigator.vibrate(15);
+                        const audio = new Audio('/sounds/tap.wav');
+                        audio.volume = 0.25;
+                        audio.play().catch(() => {});
+                        if (themeMode === 'light') setThemeMode('dark');
+                        else if (themeMode === 'dark') setThemeMode('system');
+                        else setThemeMode('light');
+                      }}
+                      whileTap={{ scale: 0.95 }}
+                      className={`flex-1 flex items-center justify-center gap-2 py-3.5 rounded-xl transition-all ${
+                        systemTheme === 'dark'
+                          ? 'text-white bg-white/10 hover:bg-white/15'
+                          : 'text-gray-800 bg-white/60 hover:bg-white/80 shadow-sm'
+                      }`}
+                    >
+                      {themeMode === 'light' ? <Sun size={18} strokeWidth={2} /> : themeMode === 'dark' ? <Moon size={18} strokeWidth={2} /> : <Monitor size={18} strokeWidth={2} />}
+                      <span className="text-[14px] font-medium">
+                        {themeMode === 'light' ? (lang === 'en' ? 'Light' : 'Clair') : themeMode === 'dark' ? (lang === 'en' ? 'Dark' : 'Sombre') : 'Auto'}
+                      </span>
+                    </motion.button>
+                  </div>
+                </div>
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
+
+        {/* Floating Pill Tab Bar - Liquid Glass style */}
+        <motion.div
+          className="flex items-center justify-center px-4 pb-6 pointer-events-auto"
+          style={{ paddingBottom: 'max(24px, calc(env(safe-area-inset-bottom, 0px) + 16px))' }}
+          initial={false}
+          animate={{ y: isMobileTabMenuOpen ? 100 : 0, opacity: isMobileTabMenuOpen ? 0 : 1 }}
+          transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+        >
+          <motion.div
+            className="flex items-center gap-1 rounded-[28px] p-1.5"
+            style={{
+              background: systemTheme === 'dark'
+                ? 'linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.08) 100%)'
+                : 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.7) 100%)',
+              backdropFilter: 'blur(40px) saturate(180%)',
+              WebkitBackdropFilter: 'blur(40px) saturate(180%)',
+              boxShadow: systemTheme === 'dark'
+                ? '0 20px 40px -10px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1), inset 0 1px 1px rgba(255,255,255,0.2)'
+                : '0 20px 40px -10px rgba(0,0,0,0.15), 0 0 0 1px rgba(255,255,255,0.6), inset 0 1px 1px rgba(255,255,255,0.9)',
+            }}
+            whileHover={{ scale: 1.02 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+          >
+            {/* Home */}
+            <motion.button
+              onClick={() => {
+                if (navigator.vibrate) navigator.vibrate(15);
+                const audio = new Audio('/sounds/tap.wav');
+                audio.volume = 0.25;
+                audio.play().catch(() => {});
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                setActiveSection(null);
+              }}
+              whileTap={{ scale: 0.85 }}
+              className={`flex items-center justify-center w-14 h-12 rounded-[22px] transition-all ${
+                activeSection === null
+                  ? systemTheme === 'dark'
+                    ? 'bg-white/20 text-white shadow-lg'
+                    : 'bg-white text-gray-900 shadow-md'
+                  : systemTheme === 'dark'
+                    ? 'text-gray-400 hover:text-white hover:bg-white/10'
+                    : 'text-gray-400 hover:text-gray-700 hover:bg-black/5'
+              }`}
+            >
+              <Home size={22} strokeWidth={activeSection === null ? 2.5 : 2} />
+            </motion.button>
+
+            {/* Projects */}
+            <motion.button
+              onClick={() => {
+                if (navigator.vibrate) navigator.vibrate(15);
+                const audio = new Audio('/sounds/tap.wav');
+                audio.volume = 0.25;
+                audio.play().catch(() => {});
+                scrollToSection('projects');
+              }}
+              whileTap={{ scale: 0.85 }}
+              className={`flex items-center justify-center w-14 h-12 rounded-[22px] transition-all ${
+                activeSection === 'projects'
+                  ? systemTheme === 'dark'
+                    ? 'bg-white/20 text-white shadow-lg'
+                    : 'bg-white text-gray-900 shadow-md'
+                  : systemTheme === 'dark'
+                    ? 'text-gray-400 hover:text-white hover:bg-white/10'
+                    : 'text-gray-400 hover:text-gray-700 hover:bg-black/5'
+              }`}
+            >
+              <FolderOpen size={22} strokeWidth={activeSection === 'projects' ? 2.5 : 2} />
+            </motion.button>
+
+            {/* Bio/About */}
+            <motion.button
+              onClick={() => {
+                if (navigator.vibrate) navigator.vibrate(15);
+                const audio = new Audio('/sounds/tap.wav');
+                audio.volume = 0.25;
+                audio.play().catch(() => {});
+                scrollToSection('bio');
+              }}
+              whileTap={{ scale: 0.85 }}
+              className={`flex items-center justify-center w-14 h-12 rounded-[22px] transition-all ${
+                activeSection === 'bio'
+                  ? systemTheme === 'dark'
+                    ? 'bg-white/20 text-white shadow-lg'
+                    : 'bg-white text-gray-900 shadow-md'
+                  : systemTheme === 'dark'
+                    ? 'text-gray-400 hover:text-white hover:bg-white/10'
+                    : 'text-gray-400 hover:text-gray-700 hover:bg-black/5'
+              }`}
+            >
+              <User size={22} strokeWidth={activeSection === 'bio' ? 2.5 : 2} />
+            </motion.button>
+
+            {/* Divider */}
+            <div className={`w-px h-8 mx-1 ${systemTheme === 'dark' ? 'bg-white/10' : 'bg-black/10'}`} />
+
+            {/* Menu Toggle - Special styling */}
+            <motion.button
+              onClick={() => {
+                if (navigator.vibrate) navigator.vibrate(20);
+                const audio = new Audio(isMobileTabMenuOpen ? '/sounds/menu-close.wav' : '/sounds/menu-open.wav');
+                audio.volume = 0.3;
+                audio.play().catch(() => {});
+                setIsMobileTabMenuOpen(!isMobileTabMenuOpen);
+              }}
+              whileTap={{ scale: 0.85 }}
+              animate={{
+                rotate: isMobileTabMenuOpen ? 180 : 0,
+                backgroundColor: isMobileTabMenuOpen
+                  ? (systemTheme === 'dark' ? 'rgba(59, 130, 246, 0.8)' : 'rgba(59, 130, 246, 1)')
+                  : 'transparent'
+              }}
+              transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+              className={`flex items-center justify-center w-14 h-12 rounded-[22px] transition-colors ${
+                isMobileTabMenuOpen
+                  ? 'text-white shadow-lg shadow-blue-500/30'
+                  : systemTheme === 'dark'
+                    ? 'text-gray-400 hover:text-white hover:bg-white/10'
+                    : 'text-gray-400 hover:text-gray-700 hover:bg-black/5'
+              }`}
+            >
+              {isMobileTabMenuOpen ? <X size={22} strokeWidth={2.5} /> : <MenuIcon size={22} strokeWidth={2} />}
+            </motion.button>
+
+            {/* Contact - Accent button */}
+            <motion.button
+              onClick={() => {
+                if (navigator.vibrate) navigator.vibrate(15);
+                const audio = new Audio('/sounds/tap.wav');
+                audio.volume = 0.25;
+                audio.play().catch(() => {});
+                scrollToSection('contact');
+              }}
+              whileTap={{ scale: 0.85 }}
+              className={`flex items-center justify-center w-14 h-12 rounded-[22px] transition-all ${
+                activeSection === 'contact'
+                  ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/40'
+                  : systemTheme === 'dark'
+                    ? 'bg-blue-500/20 text-blue-400 hover:bg-blue-500/30'
+                    : 'bg-blue-500/10 text-blue-500 hover:bg-blue-500/20'
+              }`}
+            >
+              <Mail size={22} strokeWidth={activeSection === 'contact' ? 2.5 : 2} />
+            </motion.button>
+          </motion.div>
+        </motion.div>
+      </div>
 
       {/* Hero Section */}
       <header className="relative pt-[154px] pb-[82px] md:pt-[170px] md:pb-[98px] px-6 overflow-hidden">
@@ -2310,19 +2581,23 @@ const App: React.FC = () => {
               </div>
             )}
           </div>
-          
-          <h1 className="text-2xl sm:text-3xl md:text-6xl font-bold tracking-tight mb-6 md:mb-8 leading-[1.15]">
-            <span className={`${systemTheme === 'dark' ? 'text-white' : 'text-[#1D1D1F]'}`}>
-              {content.hero.title}
-            </span>
-            <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
-              {content.hero.subtitle}
-            </span>
+
+          {/* Main Tagline - Frame. Design. Ship. */}
+          <h1 className={`text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-tight mb-4 md:mb-6 leading-[1.05] whitespace-nowrap ${
+            systemTheme === 'dark' ? 'text-white' : 'text-[#1D1D1F]'
+          }`}>
+            {content.hero.tagline}
           </h1>
 
-          <p className={`text-base sm:text-lg md:text-2xl max-w-3xl mx-auto leading-relaxed mb-8 md:mb-12 ${
-            systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-500'
+          {/* Subtitle */}
+          <p className={`text-base sm:text-lg md:text-xl font-medium mb-3 md:mb-4 ${
+            systemTheme === 'dark' ? 'text-white' : 'text-[#1D1D1F]'
+          }`}>
+            {content.hero.title} <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">{content.hero.subtitle}</span>
+          </p>
+
+          <p className={`text-sm sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-8 md:mb-12 ${
+            systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
           }`}>
             {content.hero.desc}
           </p>
@@ -2387,9 +2662,9 @@ const App: React.FC = () => {
         systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-[#F9F9F9]'
       }`}>
         <div className="max-w-6xl mx-auto">
-          {/* Stacked Landscape Cards */}
+          {/* Stacked Landscape Cards - Show only first 3 projects */}
           <div className="flex flex-col gap-6 md:gap-8">
-            {projects.map((project, index) => (
+            {projects.slice(0, 3).map((project, index) => (
                 <motion.div
                   key={project.id}
                   initial={{ opacity: 0, y: 30 }}
@@ -2397,8 +2672,8 @@ const App: React.FC = () => {
                   viewport={{ once: true, margin: "-50px" }}
                   transition={{ duration: 0.6, delay: index * 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
                   onClick={() => {
-                    if (project.id === 'toolkit' || project.id === 'dailymotion' || project.id === 'connect') {
-                      setOpenProject({ project: project.id, viewMode: 'caseStudy' });
+                    if (project.id === 'toolkit' || project.id === 'dailymotion' || project.id === 'connect' || project.id === 'sqool' || project.id === 'france-vae') {
+                      openProjectWithUrl(project.id, 'caseStudy');
                     } else if (project.externalLink) {
                       setIframeModalUrl(project.externalLink);
                     }
@@ -2410,12 +2685,12 @@ const App: React.FC = () => {
                   }`}
                 >
                   <div className="flex flex-col md:flex-row">
-                    {/* Image Section - Left on desktop */}
+                    {/* Image Section - Left on desktop, full width on mobile */}
                     <div className={`relative w-full md:w-[55%] overflow-hidden ${
                       systemTheme === 'dark' ? 'bg-[#111111]' : 'bg-gray-50'
                     }`}>
-                      {/* Status Badge - Top left */}
-                      <div className="absolute top-4 left-4 md:top-6 md:left-6 z-20">
+                      {/* Status Badge - Top left - Hidden on mobile for condensed view */}
+                      <div className="absolute top-4 left-4 md:top-6 md:left-6 z-20 hidden md:block">
                         <span className={`inline-flex items-center text-xs font-medium px-3 py-1.5 rounded-full backdrop-blur-md ${
                           systemTheme === 'dark'
                             ? 'bg-black/40 text-white border border-white/10'
@@ -2435,25 +2710,42 @@ const App: React.FC = () => {
                           : 'bg-gradient-to-r from-transparent via-transparent to-blue-600/5'
                       }`} />
 
-                      <div className="aspect-[16/10] md:aspect-auto md:h-full p-4 md:p-6">
+                      <div className="aspect-[16/9] md:aspect-auto md:h-full p-3 md:p-6">
                         <img
-                          src={`/images/${project.coverImage}`}
+                          src={project.coverImage.startsWith('/') ? project.coverImage : `/images/${project.coverImage}`}
                           alt={`${project.title} preview`}
-                          className={`w-full h-full object-contain rounded-xl md:rounded-2xl transition-transform duration-500 ease-out ${
+                          className={`w-full h-full object-cover md:object-contain rounded-xl md:rounded-2xl transition-transform duration-500 ease-out ${
                             project.id !== 'toolkit'
-                              ? 'scale-[1.2] group-hover:scale-[1.26]'
+                              ? 'md:scale-[1.2] md:group-hover:scale-[1.26]'
                               : 'scale-100 group-hover:scale-105'
                           }`}
                         />
                       </div>
                     </div>
 
-                    {/* Content Section - Right on desktop */}
-                    <div className="w-full md:w-[45%] p-6 md:p-8 flex flex-col justify-between">
+                    {/* Content Section - Right on desktop, condensed on mobile */}
+                    <div className="w-full md:w-[45%] p-4 md:p-8 flex flex-col justify-between">
                       {/* Top: Meta & Title */}
                       <div>
-                        {/* Meta badges */}
-                        <div className="flex flex-wrap items-center gap-2 mb-3">
+                        {/* Mobile: Year + Title inline, Desktop: Full badges */}
+                        <div className="flex md:hidden items-center gap-2 mb-2">
+                          <span className={`text-xs font-medium ${
+                            systemTheme === 'dark' ? 'text-gray-500' : 'text-gray-400'
+                          }`}>
+                            {project.period.split(' – ')[0]}
+                          </span>
+                          <span className={`w-1 h-1 rounded-full ${
+                            systemTheme === 'dark' ? 'bg-gray-600' : 'bg-gray-300'
+                          }`} />
+                          <h3 className={`text-base font-bold tracking-tight ${
+                            systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+                          }`}>
+                            {project.title}
+                          </h3>
+                        </div>
+
+                        {/* Desktop: Full meta badges */}
+                        <div className="hidden md:flex flex-wrap items-center gap-2 mb-3">
                           <span className={`text-xs font-medium px-3 py-1 rounded-full ${
                             systemTheme === 'dark'
                               ? 'bg-white/10 text-gray-300'
@@ -2470,8 +2762,8 @@ const App: React.FC = () => {
                           </span>
                         </div>
 
-                        {/* Title */}
-                        <div className="mb-3">
+                        {/* Desktop: Title */}
+                        <div className="hidden md:block mb-3">
                           <h3 className={`text-xl md:text-2xl font-bold tracking-tight ${
                             systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                           }`}>
@@ -2479,15 +2771,15 @@ const App: React.FC = () => {
                           </h3>
                         </div>
 
-                        {/* Summary */}
-                        <p className={`text-sm leading-relaxed mb-4 ${
+                        {/* Summary - Shorter on mobile */}
+                        <p className={`text-sm leading-relaxed mb-3 md:mb-4 line-clamp-2 md:line-clamp-none ${
                           systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'
                         }`}>
                           {project.summary}
                         </p>
 
-                        {/* Key Missions - Styled list */}
-                        <div className="mb-6">
+                        {/* Key Missions - Hidden on mobile */}
+                        <div className="hidden md:block mb-6">
                           <div className="flex items-center gap-2 mb-2">
                             <Target size={14} className={systemTheme === 'dark' ? 'text-blue-400' : 'text-blue-600'} />
                             <p className={`text-xs font-semibold uppercase tracking-wider ${
@@ -2510,8 +2802,8 @@ const App: React.FC = () => {
                           </ul>
                         </div>
 
-                        {/* Key deliverables - tags with checkbox */}
-                        <div className="mb-4">
+                        {/* Key deliverables - Hidden on mobile */}
+                        <div className="hidden md:block mb-4">
                           <div className="flex items-center gap-2 mb-2">
                             <Box size={14} className={systemTheme === 'dark' ? 'text-blue-400' : 'text-blue-600'} />
                             <p className={`text-xs font-semibold uppercase tracking-wider ${
@@ -2549,15 +2841,26 @@ const App: React.FC = () => {
                         </div>
                       </div>
 
-                      {/* Bottom: CTA */}
-                      <div className={`pt-4 mt-4 border-t flex items-center justify-end gap-2 ${systemTheme === 'dark' ? 'border-white/5' : 'border-gray-100'}`}>
-                        {(project.id === 'toolkit' || project.id === 'dailymotion' || project.id === 'connect') ? (
-                          <>
+                      {/* Bottom: CTA - Simplified on mobile */}
+                      <div className={`pt-3 md:pt-4 mt-auto md:mt-4 border-t flex items-center justify-between md:justify-end gap-2 ${systemTheme === 'dark' ? 'border-white/5' : 'border-gray-100'}`}>
+                        {/* Mobile: Simple arrow indicator */}
+                        <span className={`md:hidden text-xs font-medium ${
+                          systemTheme === 'dark' ? 'text-gray-500' : 'text-gray-400'
+                        }`}>
+                          {lang === 'en' ? 'View case study' : 'Voir le case study'}
+                        </span>
+                        <ChevronRight size={18} className={`md:hidden ${
+                          systemTheme === 'dark' ? 'text-gray-500' : 'text-gray-400'
+                        }`} />
+
+                        {/* Desktop: Full buttons */}
+                        {(project.id === 'toolkit' || project.id === 'dailymotion' || project.id === 'connect' || project.id === 'sqool' || project.id === 'france-vae') ? (
+                          <div className="hidden md:flex items-center gap-2">
                             {/* Gallery Button */}
                             <button
                               onClick={(e) => {
                                 e.stopPropagation();
-                                setOpenProject({ project: project.id as 'toolkit' | 'dailymotion' | 'connect', viewMode: 'gallery' });
+                                openProjectWithUrl(project.id as 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'france-vae', 'gallery');
                               }}
                               className={`inline-flex items-center text-sm font-medium px-5 py-2.5 rounded-full transition-colors duration-200 ${
                                 systemTheme === 'dark'
@@ -2578,9 +2881,9 @@ const App: React.FC = () => {
                               <span className="mr-2">Case Study</span>
                               <ChevronRight size={16} />
                             </div>
-                          </>
+                          </div>
                         ) : (
-                          <span className={`inline-flex items-center text-xs font-medium px-3 py-1.5 rounded-full ${
+                          <span className={`hidden md:inline-flex items-center text-xs font-medium px-3 py-1.5 rounded-full ${
                             systemTheme === 'dark'
                               ? 'bg-orange-500/10 text-orange-400 border border-orange-500/20'
                               : 'bg-orange-50 text-orange-600 border border-orange-100'
@@ -2594,6 +2897,20 @@ const App: React.FC = () => {
                   </div>
                 </motion.div>
             ))}
+          </div>
+
+          {/* View All Projects Button */}
+          <div className="mt-12 text-center">
+            <button
+              onClick={() => setIsWorkOpen(true)}
+              className={`group px-8 py-3 border rounded-full font-medium transition-colors inline-flex items-center shadow-sm hover:shadow-md ${
+                systemTheme === 'dark'
+                  ? 'bg-white/10 border-white/20 text-white hover:bg-white/20'
+                  : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'
+              }`}
+            >
+              {content.projects.view_all} <ArrowUpRight size={18} className="ml-2 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+            </button>
           </div>
         </div>
       </section>
@@ -3673,26 +3990,41 @@ const App: React.FC = () => {
                 : 'bg-white/80 border-gray-200'
             }`}
           >
-            <div className="max-w-6xl mx-auto px-4 md:px-6 py-4 flex items-center justify-between">
-              {/* Left - Title */}
-              <div className="flex-1">
-                <h1
-                  className={`text-lg md:text-xl font-bold ${
-                    systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+            <div className="max-w-6xl mx-auto px-4 md:px-6 py-4">
+              {/* Top row - Title and Close button */}
+              <div className="flex items-center justify-between">
+                {/* Left - Title */}
+                <div>
+                  <h1
+                    className={`text-lg md:text-xl font-bold ${
+                      systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+                    }`}
+                  >
+                    {content.testimonials.modal_title}
+                  </h1>
+                  <p className={`text-sm ${
+                    systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+                  }`}>
+                    {testimonials.length} {content.testimonials.modal_sub}
+                  </p>
+                </div>
+
+                {/* Right - Close button */}
+                <button
+                  onClick={() => setIsTestimonialsOpen(false)}
+                  className={`p-2 rounded-full ${
+                    systemTheme === 'dark'
+                      ? 'text-gray-300 hover:bg-white/10'
+                      : 'text-gray-600 hover:bg-gray-100'
                   }`}
                 >
-                  {content.testimonials.modal_title}
-                </h1>
-                <p className={`text-sm ${
-                  systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                }`}>
-                  {testimonials.length} {content.testimonials.modal_sub}
-                </p>
+                  <X size={24} />
+                </button>
               </div>
 
-              {/* Center - Filters */}
-              <div className="flex-1 flex justify-center">
-                <div className={`flex space-x-1 p-1 rounded-full overflow-x-auto max-w-full no-scrollbar ${
+              {/* Bottom row - Filters (scrollable on mobile) */}
+              <div className="mt-4 -mx-4 px-4 md:mx-0 md:px-0">
+                <div className={`flex space-x-1 p-1 rounded-full overflow-x-auto no-scrollbar ${
                   systemTheme === 'dark' ? 'bg-white/10' : 'bg-gray-100'
                 }`}>
                   {(['All', 'Management', 'Design', 'Product & Tech', 'Clients'] as Category[]).map(cat => (
@@ -3700,7 +4032,7 @@ const App: React.FC = () => {
                       key={cat}
                       onClick={() => setActiveCategory(cat)}
                       className={`
-                        px-3 md:px-4 py-2 rounded-full text-xs font-semibold transition-all whitespace-nowrap
+                        px-3 md:px-4 py-2 rounded-full text-xs font-semibold transition-all whitespace-nowrap flex-shrink-0
                         ${activeCategory === cat
                           ? 'bg-blue-600 text-white shadow-sm'
                           : systemTheme === 'dark'
@@ -3712,20 +4044,6 @@ const App: React.FC = () => {
                     </button>
                   ))}
                 </div>
-              </div>
-
-              {/* Right - Close button */}
-              <div className="flex-1 flex justify-end">
-                <button
-                  onClick={() => setIsTestimonialsOpen(false)}
-                  className={`p-2 rounded-full ${
-                    systemTheme === 'dark'
-                      ? 'text-gray-300 hover:bg-white/10'
-                      : 'text-gray-600 hover:bg-gray-100'
-                  }`}
-                >
-                  <X size={24} />
-                </button>
               </div>
             </div>
           </header>
@@ -4077,6 +4395,8 @@ const App: React.FC = () => {
                       && EMAILJS_CONFIG.PUBLIC_KEY !== 'YOUR_PUBLIC_KEY';
 
                     if (isEmailJSConfigured) {
+                      // Dynamic import emailjs for code splitting
+                      const emailjs = await import('@emailjs/browser');
                       // Send email using EmailJS
                       await emailjs.send(
                         EMAILJS_CONFIG.SERVICE_ID,
@@ -4338,6 +4658,8 @@ ${simpleContactForm.message}`;
                       && EMAILJS_CONFIG.PUBLIC_KEY !== 'YOUR_PUBLIC_KEY';
 
                     if (isEmailJSConfigured) {
+                      // Dynamic import emailjs for code splitting
+                      const emailjs = await import('@emailjs/browser');
                       // Send email using EmailJS
                       await emailjs.send(
                         EMAILJS_CONFIG.SERVICE_ID,
@@ -4736,17 +5058,19 @@ ${contactForm.message}`;
       {/* Lab Modal - Full screen iframe */}
       <AnimatePresence>
         {selectedLabItem && LAB_PREVIEWS[selectedLabItem as keyof typeof LAB_PREVIEWS] && (
-          <IframeModal
-            key={selectedLabItem}
-            onClose={() => setSelectedLabItem(null)}
-            systemTheme={systemTheme}
-            title={LAB_PREVIEWS[selectedLabItem as keyof typeof LAB_PREVIEWS].title}
-            url={LAB_PREVIEWS[selectedLabItem as keyof typeof LAB_PREVIEWS].link}
-            lang={language}
-            subtitle={LAB_PREVIEWS[selectedLabItem as keyof typeof LAB_PREVIEWS].subtitle}
-            description={LAB_PREVIEWS[selectedLabItem as keyof typeof LAB_PREVIEWS].highlights.join(' • ')}
-            color={LAB_PREVIEWS[selectedLabItem as keyof typeof LAB_PREVIEWS].color as 'blue' | 'amber' | 'purple' | 'pink'}
-          />
+          <Suspense fallback={<PageLoader />}>
+            <IframeModal
+              key={selectedLabItem}
+              onClose={() => setSelectedLabItem(null)}
+              systemTheme={systemTheme}
+              title={LAB_PREVIEWS[selectedLabItem as keyof typeof LAB_PREVIEWS].title}
+              url={LAB_PREVIEWS[selectedLabItem as keyof typeof LAB_PREVIEWS].link}
+              lang={lang}
+              subtitle={LAB_PREVIEWS[selectedLabItem as keyof typeof LAB_PREVIEWS].subtitle}
+              description={LAB_PREVIEWS[selectedLabItem as keyof typeof LAB_PREVIEWS].highlights.join(' • ')}
+              color={LAB_PREVIEWS[selectedLabItem as keyof typeof LAB_PREVIEWS].color as 'blue' | 'amber' | 'purple' | 'pink'}
+            />
+          </Suspense>
         )}
       </AnimatePresence>
 
@@ -5031,35 +5355,30 @@ ${contactForm.message}`;
       </AnimatePresence>
 
       {/* Contact Section */}
-      <section id="contact" className="py-16 md:py-32 px-4 md:px-6 bg-[#1D1D1F] text-white">
+      <section id="contact" className="py-20 pb-32 md:py-40 md:pb-40 px-4 md:px-6 bg-[#1D1D1F] text-white">
         <div className="max-w-4xl mx-auto text-center">
+          {/* Portrait Photo - Same style as About section */}
+          <div className="mb-8">
+            <Avatar
+              filename="victor-soussan.png"
+              alt="Victor Soussan"
+              className="w-28 h-28 md:w-40 md:h-40 rounded-2xl md:rounded-[2rem] mx-auto shadow-lg border border-white/20"
+            />
+          </div>
+
           <h2 className="text-xl sm:text-2xl md:text-4xl font-bold tracking-tight mb-5 md:mb-8">{content.contact.title}</h2>
           <p className="text-gray-400 text-sm sm:text-base md:text-xl mb-8 md:mb-12 max-w-2xl mx-auto">
             {content.contact.subtitle}
           </p>
 
-          {/* CTA Buttons - Aligned horizontally */}
-          <div className="flex flex-col sm:flex-row justify-center items-stretch sm:items-center gap-3 md:gap-6 mb-4">
-             <button
-               onClick={() => setIsSimpleContactOpen(true)}
-               className="px-5 py-2.5 sm:px-6 sm:py-3 bg-white/95 backdrop-blur-sm text-gray-900 rounded-full font-medium text-sm sm:text-base btn-pill flex items-center w-full sm:w-auto justify-center hover:bg-white hover:scale-105 transition-all duration-200 shadow-lg shadow-white/10"
-             >
-               <Mail className="mr-2" size={16} /> {content.contact.shoot_note}
-             </button>
-
-             <button
-               onClick={() => setIsBookingOpen(true)}
-               className="px-5 py-2.5 sm:px-6 sm:py-3 bg-gray-800 hover:bg-gray-700 text-white rounded-full font-medium text-sm sm:text-base btn-pill flex items-center w-full sm:w-auto justify-center transition-all duration-200 border border-gray-700 hover:border-gray-600"
-             >
-                <Calendar className="mr-2" size={16} /> {content.contact.book}
-             </button>
-
-             <button
-               onClick={() => setIsQuoteGeneratorOpen(true)}
-               className="px-5 py-2.5 sm:px-6 sm:py-3 bg-white/95 backdrop-blur-sm text-gray-900 rounded-full font-medium text-sm sm:text-base btn-pill flex items-center w-full sm:w-auto justify-center hover:bg-white hover:scale-105 transition-all duration-200 shadow-lg shadow-white/10"
-             >
-                <Quote className="mr-2" size={16} /> {content.contact.quote_button}
-             </button>
+          {/* Main CTA - Shoot me a note */}
+          <div className="mb-4">
+            <button
+              onClick={() => setIsSimpleContactOpen(true)}
+              className="px-8 py-4 sm:px-10 sm:py-5 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-semibold text-lg sm:text-xl btn-pill flex items-center justify-center mx-auto hover:scale-105 transition-all duration-200 shadow-lg shadow-blue-600/30"
+            >
+              <Mail className="mr-3" size={22} /> {content.contact.shoot_note}
+            </button>
           </div>
 
           {/* Copy Email - Below buttons */}
@@ -5554,22 +5873,6 @@ ${contactForm.message}`;
         )}
       </AnimatePresence>
 
-      {/* Back to Top Button - Mobile only */}
-      <AnimatePresence>
-        {isScrolled && (
-          <motion.button
-            initial={{ opacity: 0, scale: 0.8, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.8, y: 20 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="md:hidden fixed bottom-8 right-6 z-[90] p-4 bg-gray-900 hover:bg-black text-white rounded-full shadow-2xl transition-all duration-200 active:scale-95"
-            aria-label="Back to top"
-          >
-            <ArrowUp size={20} />
-          </motion.button>
-        )}
-      </AnimatePresence>
 
       {/* Toast Notification */}
       <AnimatePresence>
@@ -6708,7 +7011,9 @@ ${contactForm.message}`;
                       {/* Action Buttons */}
                       <div className="flex flex-col sm:flex-row gap-4 pt-6">
                         <motion.button
-                          onClick={() => {
+                          onClick={async () => {
+                            // Dynamic import jsPDF for code splitting
+                            const { default: jsPDF } = await import('jspdf');
                             // Generate Professional PDF with Linear/Apple Style
                             const pdf = new jsPDF();
                             const pageWidth = pdf.internal.pageSize.getWidth();
@@ -6900,6 +7205,9 @@ ${contactForm.message}`;
                                 brief_attached: quoteData.briefFile ? `Yes - ${quoteData.briefFileName}` : 'No',
                                 to_email: 'victorsoussan@gmail.com'
                               };
+
+                              // Dynamic import emailjs for code splitting
+                              const emailjs = await import('@emailjs/browser');
 
                               // Send email to Victor (quote request)
                               await emailjs.send(
@@ -7147,88 +7455,132 @@ ${contactForm.message}`;
       {/* Unified Project Modal - Toolkit */}
       <AnimatePresence>
         {openProject?.project === 'toolkit' && (
-          <ToolkitPage
-            onClose={() => setOpenProject(null)}
-            systemTheme={systemTheme}
-            onToggleTheme={() => {
-              setThemeMode(prev => prev === 'dark' ? 'light' : 'dark');
-            }}
-            viewMode={openProject.viewMode}
-            onViewModeChange={(mode) => setOpenProject({ project: 'toolkit', viewMode: mode })}
-            lang={lang}
-            galleryItems={getToolkitGalleryItems(lang)}
-          />
+          <Suspense fallback={<PageLoader />}>
+            <ToolkitPage
+              onClose={handleProjectClose}
+              systemTheme={systemTheme}
+              onToggleTheme={() => {
+                setThemeMode(prev => prev === 'dark' ? 'light' : 'dark');
+              }}
+              viewMode={openProject.viewMode}
+              onViewModeChange={(mode) => openProjectWithUrl('toolkit', mode)}
+              lang={lang}
+            />
+          </Suspense>
         )}
       </AnimatePresence>
 
       {/* Unified Project Modal - Dailymotion */}
       <AnimatePresence>
         {openProject?.project === 'dailymotion' && (
-          <DailymotionPage
-            onClose={() => setOpenProject(null)}
-            systemTheme={systemTheme}
-            onToggleTheme={() => {
-              setThemeMode(prev => prev === 'dark' ? 'light' : 'dark');
-            }}
-            viewMode={openProject.viewMode}
-            onViewModeChange={(mode) => setOpenProject({ project: 'dailymotion', viewMode: mode })}
-            lang={lang}
-            galleryItems={getDailymotionGalleryItems(lang)}
-          />
+          <Suspense fallback={<PageLoader />}>
+            <DailymotionPage
+              onClose={handleProjectClose}
+              systemTheme={systemTheme}
+              onToggleTheme={() => {
+                setThemeMode(prev => prev === 'dark' ? 'light' : 'dark');
+              }}
+              viewMode={openProject.viewMode}
+              onViewModeChange={(mode) => openProjectWithUrl('dailymotion', mode)}
+              lang={lang}
+            />
+          </Suspense>
         )}
       </AnimatePresence>
 
       {/* Unified Project Modal - Connect */}
       <AnimatePresence>
         {openProject?.project === 'connect' && (
-          <ConnectPage
-            onClose={() => setOpenProject(null)}
-            systemTheme={systemTheme}
-            onToggleTheme={() => {
-              setThemeMode(prev => prev === 'dark' ? 'light' : 'dark');
-            }}
-            viewMode={openProject.viewMode}
-            onViewModeChange={(mode) => setOpenProject({ project: 'connect', viewMode: mode })}
-            lang={lang}
-            galleryItems={getConnectGalleryItems(lang)}
-          />
+          <Suspense fallback={<PageLoader />}>
+            <ConnectPage
+              onClose={handleProjectClose}
+              systemTheme={systemTheme}
+              onToggleTheme={() => {
+                setThemeMode(prev => prev === 'dark' ? 'light' : 'dark');
+              }}
+              viewMode={openProject.viewMode}
+              onViewModeChange={(mode) => openProjectWithUrl('connect', mode)}
+              lang={lang}
+            />
+          </Suspense>
         )}
       </AnimatePresence>
 
       {/* Unified Project Modal - SQOOL */}
       <AnimatePresence>
         {openProject?.project === 'sqool' && (
-          <SqoolPage
-            onClose={() => setOpenProject(null)}
-            systemTheme={systemTheme}
-            onToggleTheme={() => {
-              setThemeMode(prev => prev === 'dark' ? 'light' : 'dark');
-            }}
-            viewMode={openProject.viewMode}
-            onViewModeChange={(mode) => setOpenProject({ project: 'sqool', viewMode: mode })}
-            lang={lang}
-            galleryItems={getSqoolGalleryItems(lang)}
-          />
+          <Suspense fallback={<PageLoader />}>
+            <SqoolPage
+              onClose={handleProjectClose}
+              systemTheme={systemTheme}
+              onToggleTheme={() => {
+                setThemeMode(prev => prev === 'dark' ? 'light' : 'dark');
+              }}
+              viewMode={openProject.viewMode}
+              onViewModeChange={(mode) => openProjectWithUrl('sqool', mode)}
+              lang={lang}
+            />
+          </Suspense>
+        )}
+      </AnimatePresence>
+
+      {/* Unified Project Modal - France VAE */}
+      <AnimatePresence>
+        {openProject?.project === 'france-vae' && (
+          <Suspense fallback={<PageLoader />}>
+            <FranceVaePage
+              onClose={handleProjectClose}
+              systemTheme={systemTheme}
+              onToggleTheme={() => {
+                setThemeMode(prev => prev === 'dark' ? 'light' : 'dark');
+              }}
+              viewMode={openProject.viewMode}
+              onViewModeChange={(mode) => openProjectWithUrl('france-vae', mode)}
+              lang={lang}
+            />
+          </Suspense>
         )}
       </AnimatePresence>
 
       {/* Executive Profile Modal */}
       <AnimatePresence>
         {isExecutiveOpen && (
-          <ExecutivePage
-            language={lang}
-            onClose={() => {
-              setIsExecutiveOpen(false);
-              setShowExecutiveFarewell(false);
-            }}
-            onBookCall={() => setIsBookingOpen(true)}
-            onContact={() => setIsSimpleContactOpen(true)}
-            onOpenResume={(resumeLanguage) => {
-              setResumeLang(resumeLanguage);
-              setIsResumeOpen(true);
-            }}
-            showFarewell={showExecutiveFarewell}
-          />
+          <Suspense fallback={<PageLoader />}>
+            <ExecutivePage
+              language={lang}
+              onClose={() => {
+                setIsExecutiveOpen(false);
+                setShowExecutiveFarewell(false);
+              }}
+              onBookCall={() => setIsBookingOpen(true)}
+              onContact={() => setIsSimpleContactOpen(true)}
+              onOpenResume={(resumeLanguage) => {
+                setResumeLang(resumeLanguage);
+                setIsResumeOpen(true);
+              }}
+              showFarewell={showExecutiveFarewell}
+            />
+          </Suspense>
+        )}
+      </AnimatePresence>
+
+      {/* Work Page Modal - All Projects */}
+      <AnimatePresence>
+        {isWorkOpen && (
+          <Suspense fallback={<PageLoader />}>
+            <WorkPage
+              systemTheme={systemTheme}
+              lang={lang}
+              onProjectClick={(projectId) => {
+                setIsWorkOpen(false);
+                setOpenedFromIndex(true);
+                if (projectId === 'toolkit' || projectId === 'dailymotion' || projectId === 'connect' || projectId === 'sqool' || projectId === 'france-vae') {
+                  openProjectWithUrl(projectId, 'caseStudy');
+                }
+              }}
+              onBack={() => setIsWorkOpen(false)}
+            />
+          </Suspense>
         )}
       </AnimatePresence>
 

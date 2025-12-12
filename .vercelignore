@@ -1,0 +1,19 @@
+# Ignore dist folder - Vercel builds from source
+dist
+
+# Ignore large video files that exceed 100MB limit (originals kept locally, compressed versions deployed)
+public/francevae/VAE Collective/vae collective - video parcours - creation cohorte - HD.mp4
+public/francevae/VAE Collective/vae collective - creer une cohorte - parcours v2.mp4
+public/francevae/VAE Collective/Presentations
+public/francevae/vae collective - creer une cohorte - parcours v2.mp4
+public/francevae/20250701 - Video ministre - VAE Collective 1m18.mp4
+public/francevae/20250701 - Video ministre - revision Audrey P.mp4
+# Original large videos - use compressed versions instead
+public/videos/connect/Video-demo-bulle-interactions-02.mp4
+public/videos/connect/connect-dashboard-prototype_complet_4k.mp4
+
+# Ignore git folder
+.git
+
+# Ignore node_modules
+node_modules

@@ -1,0 +1,48 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2818
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 PRD pour Bolt (Product Requirements Document)\
+1. Contexte et objectifs\
+Contexte:\uc0\u8232 France VAE d\'e9veloppe une nouvelle fonctionnalit\'e9 pour r\'e9pondre aux besoins des entreprises souhaitant mettre en place des d\'e9marches de VAE collective. Cette landing page sera le point d\'92entr\'e9e principal pour les entreprises dans l\'92\'e9cosyst\'e8me France VAE.\
+Objectifs:\
+	\'95	Informer les entreprises sur le dispositif de VAE collective\
+	\'95	Valoriser les b\'e9n\'e9fices d\'92une d\'e9marche VAE pour l\'92organisation\
+	\'95	G\'e9n\'e9rer des leads qualifi\'e9s via un formulaire de contact\
+	\'95	Encourager la cr\'e9ation de comptes entreprise\
+	\'95	Atteindre un taux de conversion de 5% minimum (formulaire rempli ou compte cr\'e9\'e9)\
+2. Personas cibles\
+Responsable RH / Formation (persona principal):\
+	\'95	Besoins: D\'e9velopper les comp\'e9tences internes, fid\'e9liser les talents, optimiser le budget formation\
+	\'95	Motivations: R\'e9soudre des probl\'e9matiques RH (turnover, difficult\'e9 de recrutement), valoriser le capital humain\
+	\'95	Freins: Complexit\'e9 administrative per\'e7ue, incertitude sur le ROI, inqui\'e9tude sur la mobilisation des \'e9quipes\
+Dirigeant de PME/ETI:\
+	\'95	Besoins: Professionnaliser les \'e9quipes, am\'e9liorer la performance, r\'e9pondre aux exigences du march\'e9\
+	\'95	Motivations: Consolider la position de l\'92entreprise, d\'e9velopper l\'92attractivit\'e9 employeur\
+	\'95	Freins: Temps \'e0 investir, m\'e9connaissance du dispositif, crainte de perturbation de l\'92activit\'e9\
+3. User stories\
+	\'95	En tant que responsable RH, je veux comprendre les b\'e9n\'e9fices concrets de la VAE collective afin d\'92\'e9valuer la pertinence pour mon entreprise\
+	\'95	En tant que dirigeant, je veux visualiser simplement le processus de mise en \'9cuvre afin d\'92estimer l\'92investissement n\'e9cessaire\
+	\'95	En tant que responsable formation, je veux conna\'eetre les certifications disponibles afin de pr\'e9parer mon projet\
+	\'95	En tant qu\'92entreprise int\'e9ress\'e9e, je veux pouvoir facilement prendre contact avec un conseiller afin d\'92\'eatre accompagn\'e9 dans ma d\'e9marche\
+4. Sp\'e9cifications fonctionnelles\
+Navigation:\
+	\'95	Accessible depuis le menu principal, \'e0 c\'f4t\'e9 de \'93Professionnels\'94\
+	\'95	Menu d\'e9roulant permettant d\'92acc\'e9der aux diff\'e9rentes sections de la page\
+Fonctionnalit\'e9s cl\'e9s:\
+	\'95	Formulaire de contact pour planifier un appel (stockage des donn\'e9es dans le CRM)\
+	\'95	Cr\'e9ation de compte entreprise avec redirection vers le formulaire d\'92inscription\
+	\'95	Affichage dynamique des FAQ (syst\'e8me d\'92accord\'e9on)\
+	\'95	Compteur de certifications disponibles (mis \'e0 jour automatiquement)\
+	\'95	Calculateur simplifi\'e9 du ROI d\'92une d\'e9marche VAE collective (optionnel)\
+Int\'e9grations:\
+	\'95	Connexion avec le syst\'e8me d\'92authentification pour la cr\'e9ation de compte\
+	\'95	Connexion avec l\'92outil de gestion des rendez-vous pour la planification des appels\
+	\'95	Connexion avec la base de donn\'e9es des certifications pour l\'92affichage du compteur\
+5. Wireframe et contenus\
+Livrables attendus:\
+	\'95	Int\'e9gration HTML/CSS/JS responsive conforme \'e0 la charte graphique France VAE\
+	\'95	Adaptation mobile et tablette}

@@ -1068,7 +1068,7 @@ const ToolkitExecutive: React.FC<ToolkitExecutiveProps> = ({
           </FadeInSection>
 
           <FadeInSection delay={0.1}>
-            <h2 className={`mt-4 text-3xl sm:text-4xl md:text-5xl font-bold leading-tight whitespace-pre-line ${
+            <h2 className={`mt-4 text-3xl sm:text-4xl md:text-5xl font-bold leading-tight tracking-tight whitespace-pre-line ${
               isDark ? 'text-white' : 'text-gray-900'
             }`}>
               {t.role.title}
@@ -1109,7 +1109,7 @@ const ToolkitExecutive: React.FC<ToolkitExecutiveProps> = ({
           </FadeInSection>
 
           <FadeInSection delay={0.1}>
-            <h2 className={`mt-4 text-3xl sm:text-4xl md:text-5xl font-bold leading-tight whitespace-pre-line ${
+            <h2 className={`mt-4 text-3xl sm:text-4xl md:text-5xl font-bold leading-tight tracking-tight whitespace-pre-line ${
               isDark ? 'text-white' : 'text-gray-900'
             }`}>
               {t.scope.title}
@@ -1142,7 +1142,7 @@ const ToolkitExecutive: React.FC<ToolkitExecutiveProps> = ({
           </FadeInSection>
 
           <FadeInSection delay={0.1}>
-            <h2 className={`mt-4 text-3xl sm:text-4xl md:text-5xl font-bold leading-tight whitespace-pre-line ${
+            <h2 className={`mt-4 text-3xl sm:text-4xl md:text-5xl font-bold leading-tight tracking-tight whitespace-pre-line ${
               isDark ? 'text-white' : 'text-gray-900'
             }`}>
               {t.journey.title}
@@ -1169,7 +1169,7 @@ const ToolkitExecutive: React.FC<ToolkitExecutiveProps> = ({
           </FadeInSection>
 
           <FadeInSection delay={0.1}>
-            <h2 className={`mt-4 text-3xl sm:text-4xl md:text-5xl font-bold leading-tight whitespace-pre-line ${
+            <h2 className={`mt-4 text-3xl sm:text-4xl md:text-5xl font-bold leading-tight tracking-tight whitespace-pre-line ${
               isDark ? 'text-white' : 'text-gray-900'
             }`}>
               {t.highlights.title}
@@ -1200,7 +1200,7 @@ const ToolkitExecutive: React.FC<ToolkitExecutiveProps> = ({
           </FadeInSection>
 
           <FadeInSection delay={0.1}>
-            <h2 className={`mt-4 text-3xl sm:text-4xl md:text-5xl font-bold leading-tight whitespace-pre-line ${
+            <h2 className={`mt-4 text-3xl sm:text-4xl md:text-5xl font-bold leading-tight tracking-tight whitespace-pre-line ${
               isDark ? 'text-white' : 'text-gray-900'
             }`}>
               {t.outcome.title}

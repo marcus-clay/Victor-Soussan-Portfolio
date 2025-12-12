@@ -15,17 +15,17 @@ import {
   Layers,
   Users
 } from 'lucide-react';
-import { GalleryItem } from './BentoGallery';
+import { GalleryItem, getSqoolGalleryItems } from './BentoGallery';
 import { SqoolTimeline } from './SqoolTimeline';
+import SqoolExecutive from './src/components/SqoolExecutive';
 
 interface SqoolPageProps {
   onClose: () => void;
   systemTheme: 'light' | 'dark';
   onToggleTheme: () => void;
-  viewMode: 'caseStudy' | 'gallery';
-  onViewModeChange: (mode: 'caseStudy' | 'gallery') => void;
+  viewMode: 'caseStudy' | 'gallery' | 'executive';
+  onViewModeChange: (mode: 'caseStudy' | 'gallery' | 'executive') => void;
   lang?: 'en' | 'fr';
-  galleryItems: GalleryItem[];
 }
 
 // Translations - Clear, jargon-free language
@@ -584,8 +584,8 @@ const allImagesData: MediaItem[] = [
   { src: '/images/sqool/sqool_legacy_manager_teacher.webp', captionKey: 'legacyManager', type: 'image' },
   { src: '/images/sqool/sqool_legacy_mdm.webp', captionKey: 'legacyMdm', type: 'image' },
   { src: '/images/sqool/hi sqool/004 003-hp-scroll-2x.png', captionKey: 'hisqool', type: 'image' },
-  { src: '/videos/connect/connect-dashboard-prototype_complet_4k.mp4', captionKey: 'connect', type: 'video' },
-  { src: '/videos/connect/Video-demo-bulle-interactions-02.mp4', captionKey: 'bulle', type: 'video' },
+  { src: '/videos/connect/connect-dashboard-prototype-compressed.mp4', captionKey: 'connect', type: 'video' },
+  { src: '/videos/connect/Video-demo-bulle-interactions-compressed.mp4', captionKey: 'bulle', type: 'video' },
   { src: '/images/sqool/sqool_brand.webp', captionKey: 'brand', type: 'image' },
   { src: '/images/sqool/thumbnail_suite_sqool_blue.webp', captionKey: 'suiteSqool', type: 'image' },
   // Brand System Visuals
@@ -736,10 +736,11 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
   systemTheme,
   viewMode,
   onViewModeChange,
-  lang = 'en',
-  galleryItems
+  lang = 'en'
 }) => {
   const t = SQOOL_TRANSLATIONS[lang];
+  // Load gallery items directly in the component
+  const galleryItems = getSqoolGalleryItems(lang);
 
   const allImages = allImagesData.map(item => ({
     src: item.src,
@@ -750,6 +751,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
   const [activeSection, setActiveSection] = useState('hero');
   const [showNav, setShowNav] = useState(false);
   const [isMobileNavExpanded, setIsMobileNavExpanded] = useState(false);
+  const [caseStudyMode, setCaseStudyMode] = useState<'executive' | 'full'>('executive');
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [lightboxZoomed, setLightboxZoomed] = useState(false);
@@ -909,9 +911,9 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
         viewMode === 'gallery' ? 'bg-black' : (isDark ? 'bg-[#0a0a0a]' : 'bg-white')
       }`}
     >
-      {/* Sticky Mini-Nav TOC - Hidden in gallery mode */}
+      {/* Sticky Mini-Nav TOC - Hidden in gallery mode and executive mode */}
       <AnimatePresence>
-        {showNav && viewMode !== 'gallery' && (
+        {showNav && viewMode !== 'gallery' && caseStudyMode !== 'executive' && (
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -1006,11 +1008,12 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
             <div className={`relative flex items-center gap-0.5 sm:gap-1 rounded-full p-0.5 sm:p-1 ${
               viewMode === 'gallery' ? 'bg-white/10' : (isDark ? 'bg-white/10' : 'bg-gray-100')
             }`}>
+              {/* Executive button (En bref) */}
               <button
-                onClick={() => onViewModeChange('caseStudy')}
-                className="relative z-10 px-2.5 sm:px-5 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 whitespace-nowrap"
+                onClick={() => { onViewModeChange('caseStudy'); setCaseStudyMode('executive'); }}
+                className="relative z-10 px-2 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 whitespace-nowrap"
               >
-                {viewMode === 'caseStudy' && (
+                {viewMode === 'caseStudy' && caseStudyMode === 'executive' && (
                   <motion.div
                     layoutId="sqool-toggle-pill"
                     className="absolute inset-0 bg-blue-600 rounded-full shadow-md"
@@ -1018,15 +1021,39 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
                   />
                 )}
                 <span className={`relative z-10 ${
-                  viewMode === 'caseStudy' ? 'text-white' : (viewMode === 'gallery' ? 'text-gray-400 hover:text-white' : (isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'))
+                  viewMode === 'caseStudy' && caseStudyMode === 'executive'
+                    ? 'text-white'
+                    : (viewMode === 'gallery' ? 'text-gray-400 hover:text-white' : (isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'))
                 }`}>
-                  <span className="hidden sm:inline">{t.caseStudy}</span>
-                  <span className="sm:hidden">Étude</span>
+                  <span className="hidden sm:inline">{lang === 'fr' ? 'En bref' : 'At a glance'}</span>
+                  <span className="sm:hidden">{lang === 'fr' ? 'Bref' : 'Brief'}</span>
                 </span>
               </button>
+              {/* Full case study button */}
+              <button
+                onClick={() => { onViewModeChange('caseStudy'); setCaseStudyMode('full'); }}
+                className="relative z-10 px-2 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 whitespace-nowrap"
+              >
+                {viewMode === 'caseStudy' && caseStudyMode === 'full' && (
+                  <motion.div
+                    layoutId="sqool-toggle-pill"
+                    className="absolute inset-0 bg-blue-600 rounded-full shadow-md"
+                    transition={{ type: 'spring', stiffness: 500, damping: 35, mass: 0.8 }}
+                  />
+                )}
+                <span className={`relative z-10 ${
+                  viewMode === 'caseStudy' && caseStudyMode === 'full'
+                    ? 'text-white'
+                    : (viewMode === 'gallery' ? 'text-gray-400 hover:text-white' : (isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'))
+                }`}>
+                  <span className="hidden sm:inline">Full</span>
+                  <span className="sm:hidden">Complet</span>
+                </span>
+              </button>
+              {/* Gallery button */}
               <button
                 onClick={() => onViewModeChange('gallery')}
-                className="relative z-10 px-2.5 sm:px-5 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 whitespace-nowrap"
+                className="relative z-10 px-2 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 whitespace-nowrap"
               >
                 {viewMode === 'gallery' && (
                   <motion.div
@@ -1062,7 +1089,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
         </div>
       </header>
 
-      {/* Content - Switch between Case Study and Gallery */}
+      {/* Content - Switch between Gallery, Executive, and Full Case Study */}
       <AnimatePresence mode="wait">
         {viewMode === 'gallery' ? (
           /* Gallery View */
@@ -1085,8 +1112,24 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
               ))}
             </div>
           </motion.div>
+        ) : caseStudyMode === 'executive' ? (
+          /* Executive View (En bref) */
+          <motion.div
+            key="executive"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <SqoolExecutive
+              systemTheme={systemTheme}
+              lang={lang}
+              onImageClick={openLightbox}
+              onViewFull={() => setCaseStudyMode('full')}
+            />
+          </motion.div>
         ) : (
-          /* Case Study View */
+          /* Full Case Study View */
           <motion.div
             key="caseStudy"
             initial={{ opacity: 0 }}
@@ -1100,6 +1143,15 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
           <main className="w-full">
             {/* Hero Section */}
             <section id="hero" className="mb-16 md:mb-24">
+              {/* Logo */}
+              <div className="mb-8">
+                <img
+                  src={isDark ? '/images/sqool/logo-sqool-dark.svg' : '/images/sqool/logo-sqool.svg'}
+                  alt="SQOOL"
+                  className="h-6 w-auto"
+                />
+              </div>
+
               <div className="grid md:grid-cols-5 gap-8 md:gap-12">
                 {/* Left Column - Title and Description */}
                 <div className="md:col-span-3">
@@ -1503,10 +1555,10 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
                   <figure className="group flex flex-col">
                     <div
                       className={`relative overflow-hidden rounded-xl cursor-pointer flex-1 ${isDark ? 'bg-[#1D1D1F]' : 'bg-gray-100'}`}
-                      onClick={() => openLightbox('/videos/connect/connect-dashboard-prototype_complet_4k.mp4')}
+                      onClick={() => openLightbox('/videos/connect/connect-dashboard-prototype-compressed.mp4')}
                     >
                       <video
-                        src="/videos/connect/connect-dashboard-prototype_complet_4k.mp4"
+                        src="/videos/connect/connect-dashboard-prototype-compressed.mp4"
                         className="w-full h-full object-contain"
                         autoPlay
                         muted
@@ -1528,10 +1580,10 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
                   <figure className="group flex flex-col">
                     <div
                       className="relative overflow-hidden rounded-xl cursor-pointer flex-1 bg-black flex items-center justify-center"
-                      onClick={() => openLightbox('/videos/connect/Video-demo-bulle-interactions-02.mp4')}
+                      onClick={() => openLightbox('/videos/connect/Video-demo-bulle-interactions-compressed.mp4')}
                     >
                       <video
-                        src="/videos/connect/Video-demo-bulle-interactions-02.mp4"
+                        src="/videos/connect/Video-demo-bulle-interactions-compressed.mp4"
                         className="h-full w-auto max-w-full object-contain"
                         autoPlay
                         muted

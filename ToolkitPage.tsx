@@ -16,17 +16,16 @@ import {
   X,
   Play
 } from 'lucide-react';
-import { GalleryItem } from './BentoGallery';
+import { GalleryItem, getToolkitGalleryItems } from './BentoGallery';
 import ToolkitExecutive from './src/components/ToolkitExecutive';
 
 interface ToolkitPageProps {
   onClose: () => void;
   systemTheme: 'light' | 'dark';
   onToggleTheme: () => void;
-  viewMode: 'caseStudy' | 'gallery';
-  onViewModeChange: (mode: 'caseStudy' | 'gallery') => void;
+  viewMode: 'caseStudy' | 'gallery' | 'executive';
+  onViewModeChange: (mode: 'caseStudy' | 'gallery' | 'executive') => void;
   lang?: 'en' | 'fr';
-  galleryItems: GalleryItem[];
 }
 
 // Translations for Toolkit Case Study
@@ -659,10 +658,11 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
   onToggleTheme,
   viewMode,
   onViewModeChange,
-  lang = 'en',
-  galleryItems
+  lang = 'en'
 }) => {
   const t = TOOLKIT_TRANSLATIONS[lang];
+  // Load gallery items directly in the component
+  const galleryItems = getToolkitGalleryItems(lang);
 
   // Build allImages with translated captions
   const allImages = allImagesData.map(item => ({

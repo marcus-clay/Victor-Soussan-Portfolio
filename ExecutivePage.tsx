@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform, PanInfo } from 'framer-motion';
 import jsPDF from 'jspdf';
+import CareerCarousel from './src/components/CareerCarousel';
+import { careerData } from './src/data/careerData';
 import {
   X,
   ChevronLeft,
@@ -23,11 +25,14 @@ const springTransition = {
 };
 
 // Slide transition for carousel
+// direction === 0 means initial open (zoom from center)
+// direction > 0 means navigating forward (slide from right)
+// direction < 0 means navigating backward (slide from left)
 const slideVariants = {
   enter: (direction: number) => ({
-    x: direction > 0 ? '100%' : '-100%',
+    x: direction === 0 ? 0 : direction > 0 ? '100%' : '-100%',
     opacity: 0,
-    scale: 0.95,
+    scale: direction === 0 ? 0.8 : 0.95,
   }),
   center: {
     x: 0,
@@ -193,16 +198,16 @@ const generateExecutivePDF = async (lang: 'en' | 'fr', setGenerating?: (v: boole
 
       case 'timeline': {
         addCenteredText(slide.headline || '', 30, 28, black, 'bold');
-        const timelineItems = slide.items as Array<{ year: string; company: string; desc: string }>;
+        // Use careerData directly for PDF generation
         let yPos = 50;
         const lineHeight = 22;
 
-        timelineItems?.forEach((item) => {
+        careerData.forEach((item) => {
           // Year
           pdf.setFontSize(10);
           pdf.setTextColor(...gray400);
           pdf.setFont('helvetica', 'normal');
-          pdf.text(item.year, margin, yPos);
+          pdf.text(item.period.split('-')[0], margin, yPos);
 
           // Company name
           pdf.setFontSize(13);
@@ -210,11 +215,11 @@ const generateExecutivePDF = async (lang: 'en' | 'fr', setGenerating?: (v: boole
           pdf.setFont('helvetica', 'bold');
           pdf.text(item.company, margin + 25, yPos);
 
-          // Description
+          // Role (description)
           pdf.setFontSize(10);
           pdf.setTextColor(...gray500);
           pdf.setFont('helvetica', 'normal');
-          pdf.text(item.desc, margin + 25, yPos + 6);
+          pdf.text(item.role[lang], margin + 25, yPos + 6);
 
           // Separator line
           pdf.setDrawColor(...gray200);
@@ -429,20 +434,20 @@ const SLIDES = {
     {
       type: 'title',
       headline: 'Victor Soussan',
-      subline: 'Senior Product Designer & Design Lead',
+      subline: 'Senior Product Designer — Conceptualization & Rapid Prototyping',
       visual: '/images/victor-soussan.png',
     },
-    // 2. Big statement
+    // 2. Big statement - Frame. Design. Ship.
     {
       type: 'bigword',
-      headline: 'Shape.',
-      subline: 'Strategy, systems, and craft.',
+      headline: 'Frame. Design. Ship.',
+      subline: 'From vision to working prototype.',
     },
     // 3. Experience
     {
       type: 'metric',
       headline: '15 years',
-      subline: 'In tech. 10 in product design. From agency creative to product leadership.',
+      subline: 'In tech. 10 in product design. Specialized in rapid conceptualization and AI-assisted prototyping.',
       visual: '/images/sqool/hero_ecosystem_sqool.webp',
     },
     // 4. Scale
@@ -452,26 +457,49 @@ const SLIDES = {
       subline: 'Students using SQOOL. Deployed across 465 French public schools.',
       visual: '/images/sqool/image-unowhy-region-iledefrance-distribution-rentree.jpg',
     },
-    // 5. Career Timeline
+    // 5. Career Timeline - Uses CareerCarousel component with careerData
     {
       type: 'timeline',
       headline: 'Career Path',
-      items: [
-        { year: '2025', company: 'Freelance', desc: 'Toolkit.ac SaaS, Banque des Territoires UX, AI agents & Condamine Apps' },
-        { year: '2025', company: 'France VAE', desc: 'Public service for professional certification' },
-        { year: '2018', company: 'UNOWHY', desc: 'EdTech — Device management, classroom supervision' },
-        { year: '2017', company: 'Dailymotion', desc: 'Video platform — Upload, distribution, publishing' },
-        { year: '2016', company: 'Ogury', desc: 'AdTech — Campaign reporting dashboards' },
-        { year: '2014', company: 'PagesJaunes', desc: 'Media — Mobile apps, 22M downloads' },
-        { year: '2010', company: 'Airbus', desc: 'Aerospace — Internal social network for 15K managers' },
-      ],
     },
-    // 6. Designer pillar with bento visuals
+    // 6. FRAME - Pillar 1
+    {
+      type: 'bigword',
+      headline: 'Frame.',
+      subline: 'Product strategy, user research, team structuring.',
+    },
+    // 7. Frame pillar with photos
     {
       type: 'bento',
-      headline: 'Designer',
+      headline: 'Frame',
       items: [
-        'End-to-end product design: research, flows, UI, prototypes',
+        'Product framing & vision alignment',
+        'User research & interviews',
+        'Team structuring & workshops',
+      ],
+      visuals: [
+        '/images/photos victor/alexis victor hiba ateliers fiction 02.jpg',
+        '/images/photos victor/vic conference talk.jpeg',
+        '/images/photos victor/photo atelier aap.jpg',
+      ],
+      captions: [
+        'Strategy workshop at UNOWHY',
+        'Conference talk',
+        'Design thinking workshop',
+      ],
+    },
+    // 8. DESIGN - Pillar 2
+    {
+      type: 'bigword',
+      headline: 'Design.',
+      subline: 'Interactions, journeys, interfaces, animations.',
+    },
+    // 9. Design pillar with bento visuals
+    {
+      type: 'bento',
+      headline: 'Design',
+      items: [
+        'End-to-end product design: flows, UI, micro-interactions',
         'Design systems built for real dev handoff',
       ],
       visuals: [
@@ -479,27 +507,25 @@ const SLIDES = {
         '/images/thumbnail-sqool-suite.webp',
         '/images/thumbnail-toolkit.webp',
       ],
-    },
-    // 7. Design Lead pillar with photos
-    {
-      type: 'bento',
-      headline: 'Design Lead',
-      items: [
-        'Hiring, mentoring, career paths',
-        'Ideation workshops, design teardowns, C-level presentations',
-      ],
-      visuals: [
-        '/images/photos victor/photo victor demo.png',
-        '/images/photos victor/vic conference talk.jpeg',
-        '/images/photos victor/photo atelier aap.jpg',
+      captions: [
+        'Dailymotion Partner HQ',
+        'SQOOL Suite ecosystem',
+        'Toolkit.ac planning',
       ],
     },
-    // 8. AI Builder pillar with bento visuals
+    // 10. SHIP - Pillar 3
+    {
+      type: 'bigword',
+      headline: 'Ship.',
+      subline: 'Functional prototypes, fast iteration, deployment.',
+    },
+    // 11. Ship pillar with AI bento visuals
     {
       type: 'bento',
-      headline: 'AI Product Builder',
+      headline: 'Ship',
       items: [
-        '37+ apps designed and deployed',
+        '37+ apps designed and deployed with AI',
+        'From prototype to production in days',
       ],
       button: {
         label: 'Try the apps',
@@ -510,25 +536,13 @@ const SLIDES = {
         '/images/condamine apps/condamine apps 03.png',
         '/images/condamine apps/condamine apps 05.png',
       ],
-    },
-    // 9. Big statement - Method
-    {
-      type: 'bigword',
-      headline: 'Systems.',
-      subline: 'Beyond screens.',
-    },
-    // 10. How I work
-    {
-      type: 'pillar',
-      headline: 'How I work',
-      items: [
-        'Direct communication',
-        'Proactive problem-solving',
-        'Team player',
+      captions: [
+        'AI apps catalog',
+        'Text-to-speech generator',
+        'Visual content tools',
       ],
-      visual: '/images/photos victor/alexis victor hiba ateliers fiction 02.jpg',
     },
-    // 11. My approach
+    // 12. My approach
     {
       type: 'pillar',
       headline: 'My approach',
@@ -537,7 +551,7 @@ const SLIDES = {
         'Vision-driven design, grounded in prototyping and craft',
         'Collaborative teamwork, fast delivery',
       ],
-      video: '/videos/connect/Video-demo-bulle-interactions-02.mp4',
+      video: '/videos/connect/Video-demo-bulle-interactions-compressed.mp4',
     },
     // 12. Testimonials
     {
@@ -674,20 +688,20 @@ const SLIDES = {
     {
       type: 'title',
       headline: 'Victor Soussan',
-      subline: 'Senior Product Designer & Design Lead',
+      subline: 'Senior Product Designer — Conceptualisation & Prototypage Rapide',
       visual: '/images/victor-soussan.png',
     },
-    // 2. Big statement
+    // 2. Big statement - Cadrer. Concevoir. Livrer.
     {
       type: 'bigword',
-      headline: 'Donner forme.',
-      subline: 'Stratégie, systèmes et craft.',
+      headline: 'Cadrer. Concevoir. Livrer.',
+      subline: 'De la vision au prototype fonctionnel.',
     },
     // 3. Experience
     {
       type: 'metric',
       headline: '15 ans',
-      subline: 'Dans la tech. 10 en product design. Du créatif en agence au leadership produit.',
+      subline: 'Dans la tech. 10 en product design. Spécialisé en conceptualisation rapide et prototypage assisté par IA.',
       visual: '/images/sqool/hero_ecosystem_sqool.webp',
     },
     // 4. Scale
@@ -697,26 +711,49 @@ const SLIDES = {
       subline: 'Élèves utilisent SQOOL. Déployé dans 465 écoles publiques françaises.',
       visual: '/images/sqool/image-unowhy-region-iledefrance-distribution-rentree.jpg',
     },
-    // 5. Career Timeline
+    // 5. Career Timeline - Uses CareerCarousel component with careerData
     {
       type: 'timeline',
       headline: 'Parcours',
-      items: [
-        { year: '2025', company: 'Freelance', desc: 'Toolkit.ac SaaS, Banque des Territoires UX, agents IA & Condamine Apps' },
-        { year: '2025', company: 'France VAE', desc: 'Service public pour la certification professionnelle' },
-        { year: '2018', company: 'UNOWHY', desc: 'EdTech — Gestion de parc, supervision de classe' },
-        { year: '2017', company: 'Dailymotion', desc: 'Vidéo — Upload, distribution, publication' },
-        { year: '2016', company: 'Ogury', desc: 'AdTech — Dashboards de reporting campagnes' },
-        { year: '2014', company: 'PagesJaunes', desc: 'Media — Apps mobiles, 22M téléchargements' },
-        { year: '2010', company: 'Airbus', desc: 'Aéronautique — Réseau social interne pour 15K managers' },
-      ],
     },
-    // 6. Designer pillar with bento visuals
+    // 6. CADRER - Pillar 1
+    {
+      type: 'bigword',
+      headline: 'Cadrer.',
+      subline: 'Stratégie produit, recherche utilisateur, structuration d\'équipe.',
+    },
+    // 7. Cadrer pillar with photos
     {
       type: 'bento',
-      headline: 'Designer',
+      headline: 'Cadrer',
       items: [
-        'Design produit end-to-end : research, flows, UI, prototypes',
+        'Cadrage produit & alignement de vision',
+        'Recherche utilisateur & entretiens',
+        'Structuration d\'équipe & ateliers',
+      ],
+      visuals: [
+        '/images/photos victor/alexis victor hiba ateliers fiction 02.jpg',
+        '/images/photos victor/vic conference talk.jpeg',
+        '/images/photos victor/photo atelier aap.jpg',
+      ],
+      captions: [
+        'Atelier stratégie chez UNOWHY',
+        'Conférence talk',
+        'Atelier design thinking',
+      ],
+    },
+    // 8. CONCEVOIR - Pillar 2
+    {
+      type: 'bigword',
+      headline: 'Concevoir.',
+      subline: 'Interactions, parcours, interfaces, animations.',
+    },
+    // 9. Concevoir pillar with bento visuals
+    {
+      type: 'bento',
+      headline: 'Concevoir',
+      items: [
+        'Design produit end-to-end : flows, UI, micro-interactions',
         'Design systems pensés pour le handoff dev',
       ],
       visuals: [
@@ -724,27 +761,25 @@ const SLIDES = {
         '/images/thumbnail-sqool-suite.webp',
         '/images/thumbnail-toolkit.webp',
       ],
-    },
-    // 7. Design Lead pillar with photos
-    {
-      type: 'bento',
-      headline: 'Design Lead',
-      items: [
-        'Recrutement, mentoring, plans de carrière',
-        'Ateliers d\'idéation, design teardowns, présentations C-levels',
-      ],
-      visuals: [
-        '/images/photos victor/photo victor demo.png',
-        '/images/photos victor/vic conference talk.jpeg',
-        '/images/photos victor/photo atelier aap.jpg',
+      captions: [
+        'Dailymotion Partner HQ',
+        'Écosystème SQOOL Suite',
+        'Toolkit.ac planning',
       ],
     },
-    // 8. AI Builder pillar with bento visuals
+    // 10. LIVRER - Pillar 3
+    {
+      type: 'bigword',
+      headline: 'Livrer.',
+      subline: 'Prototypes fonctionnels, itération rapide, déploiement.',
+    },
+    // 11. Livrer pillar with AI bento visuals
     {
       type: 'bento',
-      headline: 'AI Product Builder',
+      headline: 'Livrer',
       items: [
-        '37+ apps conçues et déployées',
+        '37+ apps conçues et déployées avec l\'IA',
+        'Du prototype à la production en quelques jours',
       ],
       button: {
         label: 'Tester les apps',
@@ -755,25 +790,13 @@ const SLIDES = {
         '/images/condamine apps/condamine apps 03.png',
         '/images/condamine apps/condamine apps 05.png',
       ],
-    },
-    // 9. Big statement - Method
-    {
-      type: 'bigword',
-      headline: 'Systèmes.',
-      subline: 'Au-delà des écrans.',
-    },
-    // 10. How I work
-    {
-      type: 'pillar',
-      headline: 'Comment je travaille',
-      items: [
-        'Communication directe',
-        'Résolution proactive des problèmes',
-        'Team player',
+      captions: [
+        'Catalogue apps IA',
+        'Générateur text-to-speech',
+        'Outils de contenu visuel',
       ],
-      visual: '/images/photos victor/alexis victor hiba ateliers fiction 02.jpg',
     },
-    // 11. My approach
+    // 12. Mon approche
     {
       type: 'pillar',
       headline: 'Mon approche',
@@ -782,7 +805,7 @@ const SLIDES = {
         'Design guidé par la vision, ancré dans le prototypage et le craft',
         'Travail collaboratif, livraison rapide',
       ],
-      video: '/videos/connect/Video-demo-bulle-interactions-02.mp4',
+      video: '/videos/connect/Video-demo-bulle-interactions-compressed.mp4',
     },
     // 12. Testimonials
     {
@@ -975,6 +998,7 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
   const [[page, direction], setPage] = useState([0, 0]);
   const [testimonialsPage, setTestimonialsPage] = useState(0);
   const [slideDirection, setSlideDirection] = useState(0);
+  const [isInitialMount, setIsInitialMount] = useState(true); // Track initial mount for zoom animation
   const slides = SLIDES[lang];
 
   // Motion values for swipe navigation on main slides
@@ -998,13 +1022,22 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
   const visibleSlides = showFarewell ? slides : slides.filter(s => s.type !== 'farewell');
   const totalSlides = visibleSlides.length;
 
-  // Collect all images from all slides for lightbox navigation
-  const allImages = visibleSlides.flatMap(s => {
-    const images: string[] = [];
-    if (s.visual && s.type !== 'title' && s.type !== 'farewell') images.push(s.visual);
-    if (s.visuals) images.push(...(s.visuals as string[]));
-    return images;
+  // Collect all images with captions from all slides for lightbox navigation
+  const allImagesWithCaptions = visibleSlides.flatMap(s => {
+    const items: { src: string; caption?: string }[] = [];
+    if (s.visual && s.type !== 'title' && s.type !== 'farewell') {
+      items.push({ src: s.visual, caption: s.headline || undefined });
+    }
+    if (s.visuals) {
+      const visuals = s.visuals as string[];
+      const captions = (s.captions as string[] | undefined) || [];
+      visuals.forEach((src, idx) => {
+        items.push({ src, caption: captions[idx] || undefined });
+      });
+    }
+    return items;
   });
+  const allImages = allImagesWithCaptions.map(item => item.src);
 
   // Jump to farewell slide when showFarewell becomes true
   useEffect(() => {
@@ -1063,9 +1096,9 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
       return;
     }
 
-    // Don't navigate if clicking on interactive elements
+    // Don't navigate if clicking on interactive elements or career timeline
     const target = e.target as HTMLElement;
-    if (target.closest('button') || target.closest('a') || target.closest('video') || target.closest('input')) {
+    if (target.closest('button') || target.closest('a') || target.closest('video') || target.closest('input') || target.closest('.career-card') || target.closest('.career-timeline')) {
       return;
     }
 
@@ -1644,35 +1677,16 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
         );
 
       case 'timeline':
-        const timelineItems = slide.items as Array<{ year: string; company: string; desc: string }>;
         return (
-          <div className="flex flex-col items-center justify-start sm:justify-center h-full px-4 sm:px-6 md:px-12 max-w-4xl mx-auto py-4 sm:py-0">
-            <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 sm:mb-10 tracking-tight text-center">
-              {slide.headline}
-            </h2>
-            <div className="w-full space-y-2 sm:space-y-4">
-              {timelineItems?.map((item, idx) => (
-                <div key={idx} className="flex items-start gap-3 sm:gap-6 group">
-                  <span className="text-xs sm:text-lg font-mono text-gray-400 w-10 sm:w-16 flex-shrink-0 pt-0.5 sm:pt-1">
-                    {item.year}
-                  </span>
-                  <div className="flex-1 pb-2 sm:pb-4 border-b border-gray-100 group-last:border-0">
-                    <span className="text-sm sm:text-xl md:text-2xl font-semibold text-gray-900">
-                      {item.company}
-                    </span>
-                    <p className="text-xs sm:text-base md:text-lg text-gray-500 mt-0.5 sm:mt-1">
-                      {item.desc}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
+          <div className="h-full w-full py-4 sm:py-6">
+            <CareerCarousel lang={lang} headline={slide.headline} />
           </div>
         );
 
       case 'bento':
         const bentoVisuals = slide.visuals as string[];
         const bentoItems = slide.items as string[];
+        const bentoCaptions = slide.captions as string[] | undefined;
         const bentoButton = slide.button as { label: string; url: string } | undefined;
         // Check if this is the AI Product Builder slide (condamine apps have white backgrounds)
         const isCondamineApps = bentoVisuals?.[0]?.includes('condamine apps');
@@ -1710,28 +1724,45 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
                 </a>
               )}
             </div>
-            {/* Right: 1 large + 2 small bento layout */}
-            <div className="flex-1 w-full lg:w-[65%] max-h-[45vh] sm:max-h-[60vh] lg:max-h-[70vh]">
-              <div className="flex flex-col gap-2 sm:gap-3 h-full">
-                {/* Large image on top */}
+            {/* Right: 1 large + 2 small bento layout with captions below */}
+            <div className="flex-1 w-full lg:w-[65%] max-h-[50vh] sm:max-h-[65vh] lg:max-h-[75vh] overflow-y-auto">
+              <div className="flex flex-col gap-3 sm:gap-4">
+                {/* Large image on top with caption below */}
                 {bentoVisuals?.[0] && (
-                  <ClickableImage
-                    src={bentoVisuals[0]}
-                    className="flex-[2] rounded-lg sm:rounded-xl"
-                    onClick={() => openLightbox(bentoVisuals[0])}
-                    hasWhiteBg={isCondamineApps}
-                  />
+                  <figure className="flex-shrink-0">
+                    <div className="rounded-lg sm:rounded-xl overflow-hidden border border-gray-200 cursor-pointer hover:shadow-lg transition-shadow">
+                      <ClickableImage
+                        src={bentoVisuals[0]}
+                        className="w-full h-auto"
+                        onClick={() => openLightbox(bentoVisuals[0])}
+                        hasWhiteBg={isCondamineApps}
+                      />
+                    </div>
+                    {bentoCaptions?.[0] && (
+                      <figcaption className="mt-2 text-xs sm:text-sm text-gray-400 px-1">
+                        {bentoCaptions[0]}
+                      </figcaption>
+                    )}
+                  </figure>
                 )}
-                {/* 2 smaller images below */}
-                <div className="flex-1 grid grid-cols-2 gap-2 sm:gap-3">
+                {/* 2 smaller images below with captions */}
+                <div className="grid grid-cols-2 gap-3 sm:gap-4">
                   {bentoVisuals?.slice(1, 3).map((src, idx) => (
-                    <ClickableImage
-                      key={idx}
-                      src={src}
-                      className="rounded-lg sm:rounded-xl h-full"
-                      onClick={() => openLightbox(src)}
-                      hasWhiteBg={isCondamineApps}
-                    />
+                    <figure key={idx}>
+                      <div className="rounded-lg sm:rounded-xl overflow-hidden border border-gray-200 cursor-pointer hover:shadow-lg transition-shadow">
+                        <ClickableImage
+                          src={src}
+                          className="w-full h-auto"
+                          onClick={() => openLightbox(src)}
+                          hasWhiteBg={isCondamineApps}
+                        />
+                      </div>
+                      {bentoCaptions?.[idx + 1] && (
+                        <figcaption className="mt-1.5 text-[10px] sm:text-xs text-gray-400 px-1">
+                          {bentoCaptions[idx + 1]}
+                        </figcaption>
+                      )}
+                    </figure>
                   ))}
                 </div>
               </div>
@@ -1835,10 +1866,19 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
           <motion.div
             key={currentSlide}
             custom={slideDirection}
-            initial={{ opacity: 0, x: slideDirection >= 0 ? 100 : -100 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={isInitialMount
+              ? { opacity: 0, scale: 0.9 } // Zoom from center on initial open
+              : { opacity: 0, x: slideDirection >= 0 ? 100 : -100 } // Slide transition for navigation
+            }
+            animate={{ opacity: 1, x: 0, scale: 1 }}
             exit={{ opacity: 0, x: slideDirection >= 0 ? -100 : 100 }}
-            transition={{ duration: 0.3, ease: 'easeInOut' }}
+            transition={isInitialMount
+              ? { duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] } // Smooth ease for zoom
+              : { duration: 0.3, ease: 'easeInOut' } // Quick ease for slide
+            }
+            onAnimationComplete={() => {
+              if (isInitialMount) setIsInitialMount(false);
+            }}
             className="h-full"
             drag="x"
             dragConstraints={{ left: 0, right: 0 }}
@@ -1955,7 +1995,7 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
 
             {/* Image container with carousel */}
             <div className="relative w-full h-full flex items-center justify-center overflow-hidden px-4 md:px-20 py-20">
-              <AnimatePresence initial={false} custom={direction} mode="popLayout">
+              <AnimatePresence initial={true} custom={direction} mode="popLayout">
                 <motion.div
                   key={page}
                   custom={direction}
@@ -1991,18 +2031,28 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
                     >
                       <motion.img
                         src={allImages[lightboxIndex]}
-                        alt=""
+                        alt={allImagesWithCaptions[lightboxIndex]?.caption || ''}
                         className="w-[95vw] md:w-[90vw] h-auto rounded-lg shadow-2xl cursor-zoom-out"
                         initial={{ scale: 0.95, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
                         transition={springTransition}
                         draggable={false}
                       />
+                      {allImagesWithCaptions[lightboxIndex]?.caption && (
+                        <motion.p
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ delay: 0.15 }}
+                          className="mt-6 text-gray-500 text-sm max-w-2xl text-center"
+                        >
+                          {allImagesWithCaptions[lightboxIndex].caption}
+                        </motion.p>
+                      )}
                       <motion.p
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.2 }}
-                        className="mt-8 mb-8 text-gray-400 text-xs"
+                        className="mt-4 mb-8 text-gray-400 text-xs"
                       >
                         {lang === 'fr' ? 'Cliquez pour quitter le zoom' : 'Click to exit zoom'}
                       </motion.p>
@@ -2011,7 +2061,7 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
                     /* Normal mode - Centered with constraints */
                     <motion.div
                       style={{ x: parallaxX }}
-                      className="relative max-w-[90vw] max-h-[70vh] md:max-w-[80vw] md:max-h-[75vh]"
+                      className="relative flex flex-col items-center max-w-[90vw] md:max-w-[80vw]"
                       onClick={(e) => {
                         e.stopPropagation();
                         setLightboxZoomed(true);
@@ -2019,13 +2069,23 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
                     >
                       <motion.img
                         src={allImages[lightboxIndex]}
-                        alt=""
-                        className="max-w-full max-h-[70vh] md:max-h-[75vh] object-contain cursor-zoom-in rounded-lg shadow-2xl"
+                        alt={allImagesWithCaptions[lightboxIndex]?.caption || ''}
+                        className="max-w-full max-h-[65vh] md:max-h-[70vh] object-contain cursor-zoom-in rounded-lg shadow-2xl"
                         initial={{ scale: 0.8, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
                         transition={springTransition}
                         draggable={false}
                       />
+                      {allImagesWithCaptions[lightboxIndex]?.caption && (
+                        <motion.p
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.15, duration: 0.3 }}
+                          className="mt-4 text-gray-500 text-sm max-w-2xl text-center px-4"
+                        >
+                          {allImagesWithCaptions[lightboxIndex].caption}
+                        </motion.p>
+                      )}
                     </motion.div>
                   )}
                 </motion.div>

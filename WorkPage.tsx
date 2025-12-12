@@ -5,7 +5,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowRight, X } from 'lucide-react';
 
 type Language = 'en' | 'fr';
 
@@ -32,6 +32,18 @@ interface WorkPageProps {
 const getProjects = (lang: Language): Project[] => {
   const isEn = lang === 'en';
   return [
+    {
+      id: "france-vae",
+      title: "France VAE",
+      role: isEn ? "Lead Product Designer" : "Lead Product Designer",
+      period: "2024 – 2025",
+      summary: isEn
+        ? "6-month mission structuring product ops for a national public service scaling to 100K+ candidates."
+        : "Mission de 6 mois pour structurer les ops produit d'un service public national.",
+      coverImage: "/francevae/thumbnail_france_vae.webp",
+      color: "blue",
+      category: isEn ? "Product Design" : "Design Produit"
+    },
     {
       id: "toolkit",
       title: "Toolkit",
@@ -79,47 +91,18 @@ const getProjects = (lang: Language): Project[] => {
         : "Transformation d'une boite Hardware en écosystème SaaS EdTech.",
       coverImage: "thumbnail-sqool-suite.webp",
       color: "blue",
-      status: "coming-soon",
       category: isEn ? "Management" : "Management"
-    },
-    {
-      id: "edtech-mobile",
-      title: isEn ? "EdTech Mobile Apps" : "Apps Mobiles EdTech",
-      role: isEn ? "Product Designer" : "Product Designer",
-      period: "2019 – 2023",
-      summary: isEn
-        ? "Native Android apps for classroom management and student engagement."
-        : "Applications Android natives pour la gestion de classe.",
-      coverImage: "thumbnail-sqool-suite.webp",
-      color: "green",
-      status: "coming-soon",
-      category: isEn ? "Mobile" : "Mobile"
-    },
-    {
-      id: "design-systems",
-      title: "Design Systems",
-      role: isEn ? "Design System Lead" : "Design System Lead",
-      period: "2020 – 2024",
-      summary: isEn
-        ? "Building and scaling design systems across multiple product teams."
-        : "Construction et scaling de design systems multi-équipes.",
-      coverImage: "thumbnail-toolkit.webp",
-      color: "orange",
-      status: "coming-soon",
-      category: isEn ? "Systems" : "Systèmes"
     }
   ];
 };
 
 const TRANSLATIONS = {
   en: {
-    title: 'Work',
+    title: 'Index',
     subtitle: 'Selected projects and case studies',
-    back: 'Back',
     viewProject: 'View project',
-    comingSoon: 'Coming Soon',
+    shipped: 'Shipped',
     concept: 'Concept',
-    allProjects: 'All Projects',
     categories: {
       all: 'All',
       product: 'Product Design',
@@ -129,13 +112,11 @@ const TRANSLATIONS = {
     }
   },
   fr: {
-    title: 'Travaux',
+    title: 'Index',
     subtitle: 'Projets sélectionnés et études de cas',
-    back: 'Retour',
     viewProject: 'Voir le projet',
-    comingSoon: 'Bientôt',
+    shipped: 'Livré',
     concept: 'Concept',
-    allProjects: 'Tous les projets',
     categories: {
       all: 'Tous',
       product: 'Design Produit',
@@ -158,18 +139,13 @@ const ProjectCard: React.FC<{
   const t = TRANSLATIONS[lang];
   const isDark = systemTheme === 'dark';
 
-  // Status badge logic
+  // Status badge logic - only SHIPPED or CONCEPT
   const getStatusBadge = () => {
-    if (project.status === 'coming-soon') {
-      return { label: t.comingSoon, color: 'orange' };
-    } else if (project.status === 'concept') {
+    if (project.status === 'concept') {
       return { label: t.concept, color: 'purple' };
     }
-    const period = project.period.toLowerCase();
-    if (period.includes('2024') || period.includes('2025')) {
-      return { label: 'Active', color: 'green' };
-    }
-    return { label: 'Archive', color: 'gray' };
+    // All other projects are shipped
+    return { label: t.shipped, color: 'green' };
   };
 
   const status = getStatusBadge();
@@ -244,7 +220,7 @@ const ProjectCard: React.FC<{
 
           {/* Project Image */}
           <img
-            src={`/images/${project.coverImage}`}
+            src={project.coverImage.startsWith('/') ? project.coverImage : `/images/${project.coverImage}`}
             alt={project.title}
             className={`w-[90%] max-h-[85%] object-contain transition-transform duration-500 ease-out ${
               isHovered && !isDisabled ? 'scale-105' : 'scale-100'
@@ -265,37 +241,18 @@ const ProjectCard: React.FC<{
         </div>
 
         {/* Text Content */}
-        <div className="p-5">
-          <div className="flex items-start justify-between gap-3">
-            <div className="flex-1 min-w-0">
-              <h3 className={`text-lg font-semibold truncate ${
-                isDark ? 'text-white' : 'text-gray-900'
-              }`}>
-                {project.title}
-              </h3>
-              <p className={`text-sm mt-1 line-clamp-2 ${
-                isDark ? 'text-gray-400' : 'text-gray-500'
-              }`}>
-                {project.summary}
-              </p>
-            </div>
-
-            {/* Arrow on hover */}
-            <AnimatePresence>
-              {isHovered && !isDisabled && (
-                <motion.div
-                  initial={{ opacity: 0, x: -5 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -5 }}
-                  transition={{ duration: 0.15 }}
-                  className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
-                    isDark ? 'bg-white/10 text-white' : 'bg-gray-100 text-gray-600'
-                  }`}
-                >
-                  <ArrowRight size={14} />
-                </motion.div>
-              )}
-            </AnimatePresence>
+        <div className="p-5 relative">
+          <div>
+            <h3 className={`text-lg font-semibold truncate ${
+              isDark ? 'text-white' : 'text-gray-900'
+            }`}>
+              {project.title}
+            </h3>
+            <p className={`text-sm mt-1 line-clamp-2 pr-10 ${
+              isDark ? 'text-gray-400' : 'text-gray-500'
+            }`}>
+              {project.summary}
+            </p>
           </div>
 
           {/* Role & Category */}
@@ -313,6 +270,23 @@ const ProjectCard: React.FC<{
               </span>
             )}
           </div>
+
+          {/* Arrow button - positioned absolute bottom-right */}
+          <AnimatePresence>
+            {isHovered && !isDisabled && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                transition={{ duration: 0.15 }}
+                className={`absolute bottom-5 right-5 w-8 h-8 rounded-full flex items-center justify-center ${
+                  isDark ? 'bg-white/10 text-white' : 'bg-gray-100 text-gray-600'
+                }`}
+              >
+                <ArrowRight size={14} />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </motion.div>
     </motion.div>
@@ -331,7 +305,13 @@ const WorkPage: React.FC<WorkPageProps> = ({
   const projects = getProjects(lang);
 
   return (
-    <div className={`min-h-screen ${isDark ? 'bg-[#0a0a0a]' : 'bg-[#F5F5F7]'}`}>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+      className={`fixed inset-0 z-50 overflow-y-auto ${isDark ? 'bg-[#0a0a0a]' : 'bg-[#F5F5F7]'}`}
+    >
       {/* Header */}
       <header
         className={`sticky top-0 z-40 backdrop-blur-xl border-b ${
@@ -339,26 +319,22 @@ const WorkPage: React.FC<WorkPageProps> = ({
         }`}
       >
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          {/* Back Button */}
+          {/* Title on left */}
+          <h1 className={`text-xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+            {t.title}
+          </h1>
+
+          {/* Close Button on right */}
           <button
-            onClick={() => { window.location.href = '/'; }}
-            className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+            onClick={onBack}
+            className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${
               isDark
                 ? 'text-gray-300 hover:bg-white/10'
                 : 'text-gray-600 hover:bg-gray-100'
             }`}
           >
-            <ArrowLeft size={18} />
-            {t.back}
+            <X size={20} />
           </button>
-
-          {/* Title */}
-          <h1 className={`text-xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
-            {t.title}
-          </h1>
-
-          {/* Placeholder for symmetry */}
-          <div className="w-24" />
         </div>
       </header>
 
@@ -371,11 +347,6 @@ const WorkPage: React.FC<WorkPageProps> = ({
           transition={{ duration: 0.5 }}
           className="mb-12"
         >
-          <h2 className={`text-4xl md:text-5xl font-bold mb-4 ${
-            isDark ? 'text-white' : 'text-gray-900'
-          }`}>
-            {t.allProjects}
-          </h2>
           <p className={`text-lg ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
             {t.subtitle}
           </p>
@@ -404,7 +375,7 @@ const WorkPage: React.FC<WorkPageProps> = ({
           </p>
         </div>
       </footer>
-    </div>
+    </motion.div>
   );
 };
 

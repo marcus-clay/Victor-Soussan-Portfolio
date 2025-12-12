@@ -15,7 +15,7 @@ import {
   Layers,
   Building2
 } from 'lucide-react';
-import { GalleryItem } from './BentoGallery';
+import { GalleryItem, getDailymotionGalleryItems } from './BentoGallery';
 import EnhancedLightbox from './src/components/EnhancedLightbox';
 import DailymotionExecutive from './src/components/DailymotionExecutive';
 
@@ -23,10 +23,9 @@ interface DailymotionPageProps {
   onClose: () => void;
   systemTheme: 'light' | 'dark';
   onToggleTheme: () => void;
-  viewMode: 'caseStudy' | 'gallery';
-  onViewModeChange: (mode: 'caseStudy' | 'gallery') => void;
+  viewMode: 'caseStudy' | 'gallery' | 'executive';
+  onViewModeChange: (mode: 'caseStudy' | 'gallery' | 'executive') => void;
   lang?: 'en' | 'fr';
-  galleryItems: GalleryItem[];
 }
 
 // Translations for Dailymotion Case Study
@@ -520,10 +519,11 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
   onToggleTheme,
   viewMode,
   onViewModeChange,
-  lang = 'en',
-  galleryItems
+  lang = 'en'
 }) => {
   const t = DAILYMOTION_TRANSLATIONS[lang];
+  // Load gallery items directly in the component
+  const galleryItems = getDailymotionGalleryItems(lang);
 
   // Build allImages with translated captions
   const allImages = allImagesData.map(item => ({
@@ -953,11 +953,11 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
               {/* Logo */}
               <img
                 src={systemTheme === 'dark'
-                  ? '/images/dailymotion/logo_dailymotion_wordmark_white_safezone.png'
-                  : '/images/dailymotion/logo_dailymotion_wordmark_black_safezone.png'
+                  ? '/images/dailymotion/logo-dailymotion-white.svg'
+                  : '/images/dailymotion/logo-dailymotion-black.svg'
                 }
                 alt="Dailymotion"
-                className="h-12 w-auto mb-8"
+                className="h-8 w-auto mb-8"
               />
               <div className="md:col-span-3">
                 {/* Meta tags */}

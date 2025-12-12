@@ -1,0 +1,6 @@
+﻿Nom,Point d'amélioration / Fonctionnalité,Description,Source,Axe d'amélioration,Statut,Complexité (1 à 5)
+UX-05,Confirmation de vérification des données,Ajouter une case à cocher obligatoire pour confirmer la vérification des informations avant envoi,Julia,UX,Quick Win,1
+T-04,Accès bloqué en validation partielle,Corriger le blocage lié à la date prévisionnelle dans le cas d'une validation partielle,Clémence,Problème tech,Quick Win,1
+F-10,Gestion des droits d'accès par collaborateur,Permettre aux responsables d'organismes de définir les droits d'accès de leurs collaborateurs,Julia,Feature requests,A prioriser,4
+F-08,Notifications pour les AAP sur les actions des candidats,Informer les accompagnateurs des modifications faites par les candidats (notamment annulation d'abandon),Julia,Feature requests,A prioriser,3
+F-11,Code couleur par collaborateur AAP,Mettre en place un système de couleurs pour identifier les dossiers par collaborateur,Julia,Feature requests,A prioriser,2

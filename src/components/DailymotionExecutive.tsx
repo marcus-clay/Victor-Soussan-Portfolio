@@ -890,11 +890,11 @@ const DailymotionExecutive: React.FC<DailymotionExecutiveProps> = ({
           <FadeInSection>
             <img
               src={isDark
-                ? '/images/dailymotion/logo_dailymotion_wordmark_white_safezone.png'
-                : '/images/dailymotion/logo_dailymotion_wordmark_black_safezone.png'
+                ? '/images/dailymotion/logo-dailymotion-white.svg'
+                : '/images/dailymotion/logo-dailymotion-black.svg'
               }
               alt="Dailymotion"
-              className="h-6 w-auto mb-8"
+              className="h-8 w-auto mb-8"
             />
           </FadeInSection>
 

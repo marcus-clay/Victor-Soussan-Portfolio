@@ -10,17 +10,16 @@ import {
   X,
   Play
 } from 'lucide-react';
-import { GalleryItem } from './BentoGallery';
+import { GalleryItem, getConnectGalleryItems } from './BentoGallery';
 import ConnectExecutive from './src/components/ConnectExecutive';
 
 interface ConnectPageProps {
   onClose: () => void;
   systemTheme: 'light' | 'dark';
   onToggleTheme: () => void;
-  viewMode: 'caseStudy' | 'gallery';
-  onViewModeChange: (mode: 'caseStudy' | 'gallery') => void;
+  viewMode: 'caseStudy' | 'gallery' | 'executive';
+  onViewModeChange: (mode: 'caseStudy' | 'gallery' | 'executive') => void;
   lang?: 'en' | 'fr';
-  galleryItems: GalleryItem[];
 }
 
 // Translations for Connect Case Study
@@ -438,10 +437,11 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
   onToggleTheme,
   viewMode,
   onViewModeChange,
-  lang = 'en',
-  galleryItems
+  lang = 'en'
 }) => {
   const t = CONNECT_TRANSLATIONS[lang];
+  // Load gallery items directly in the component
+  const galleryItems = getConnectGalleryItems(lang);
 
   // Build allImages with translated captions
   const allImages = allImagesData.map(item => ({
