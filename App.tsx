@@ -114,6 +114,7 @@ interface Project {
   icon: React.ReactNode;
   color: 'blue' | 'gray' | 'indigo' | 'purple';
   coverImage: string; // Landscape cover image filename
+  hoverImage?: string; // Image to show on hover (with device mockup)
   externalLink?: string;
   testimonialId?: string;
 }
@@ -1212,7 +1213,8 @@ const getProjects = (lang: Language): Project[] => {
       ],
       icon: <FileText size={24} />,
       color: "blue",
-      coverImage: "/francevae/thumbnail_france_vae.webp"
+      coverImage: "/images/francevae/thumbnail_france_vae_02.webp",
+      hoverImage: "/images/francevae/thumbnail_france_vae.webp"
     },
     {
       id: "toolkit",
@@ -1250,7 +1252,8 @@ const getProjects = (lang: Language): Project[] => {
       ],
       icon: <Cpu size={24} />,
       color: "indigo",
-      coverImage: "thumbnail-toolkit.webp",
+      coverImage: "/images/toolkit/thumbnail_toolkit_02.webp",
+      hoverImage: "/images/thumbnail-toolkit.webp",
       externalLink: "https://victor-soussan.notion.site/ebd/2b7a519b0dea80d9b40cc730ce4cfc4b",
       testimonialId: "pierre-marie-nigay"
     },
@@ -1288,7 +1291,8 @@ const getProjects = (lang: Language): Project[] => {
       ],
       icon: <Users size={24} />,
       color: "gray",
-      coverImage: "thumbnail-dailymotion-web-platform.webp",
+      coverImage: "/images/dailymotion/thubmnail_dailymotion_03.webp",
+      hoverImage: "/images/thumbnail-dailymotion-web-platform.webp",
       externalLink: "https://victor-soussan.notion.site/ebd/2b7a519b0dea80b99138d4b51a65620b"
     },
     {
@@ -2725,16 +2729,31 @@ const App: React.FC = () => {
                           : 'bg-gradient-to-r from-transparent via-transparent to-blue-600/5'
                       }`} />
 
-                      <div className="aspect-[16/9] md:aspect-auto md:h-full p-3 md:p-6">
+                      <div className={`aspect-[16/9] md:aspect-auto md:h-full relative ${project.hoverImage ? 'p-0' : 'p-3 md:p-6'}`}>
+                        {/* Default image */}
                         <img
                           src={project.coverImage.startsWith('/') ? project.coverImage : `/images/${project.coverImage}`}
                           alt={`${project.title} preview`}
-                          className={`w-full h-full object-cover md:object-contain rounded-xl md:rounded-2xl transition-transform duration-500 ease-out ${
-                            project.id !== 'toolkit'
-                              ? 'md:scale-[1.2] md:group-hover:scale-[1.26]'
-                              : 'scale-100 group-hover:scale-105'
+                          className={`w-full h-full object-cover transition-all duration-500 ease-out ${
+                            project.hoverImage
+                              ? 'opacity-100 group-hover:opacity-0 rounded-none md:rounded-l-2xl'
+                              : 'rounded-xl md:rounded-2xl md:object-contain'
+                          } ${
+                            project.hoverImage
+                              ? ''
+                              : project.id !== 'toolkit'
+                                ? 'md:scale-[1.2] md:group-hover:scale-[1.26]'
+                                : 'scale-100 group-hover:scale-105'
                           }`}
                         />
+                        {/* Hover image (device mockup) */}
+                        {project.hoverImage && (
+                          <img
+                            src={project.hoverImage}
+                            alt={`${project.title} device mockup`}
+                            className="absolute inset-0 w-full h-full object-cover md:object-contain rounded-none md:rounded-l-2xl transition-all duration-500 ease-out opacity-0 group-hover:opacity-100"
+                          />
+                        )}
                       </div>
                     </div>
 

@@ -16,6 +16,7 @@ interface Project {
   period: string;
   summary: string;
   coverImage: string;
+  hoverImage?: string;
   color: 'blue' | 'gray' | 'indigo' | 'purple' | 'green' | 'orange';
   status?: 'coming-soon' | 'active' | 'concept';
   category?: string;
@@ -40,7 +41,8 @@ const getProjects = (lang: Language): Project[] => {
       summary: isEn
         ? "6-month mission structuring product ops for a national public service scaling to 100K+ candidates."
         : "Mission de 6 mois pour structurer les ops produit d'un service public national.",
-      coverImage: "/francevae/thumbnail_france_vae.webp",
+      coverImage: "/images/francevae/thumbnail_france_vae_02.webp",
+      hoverImage: "/images/francevae/thumbnail_france_vae.webp",
       color: "blue",
       category: isEn ? "Product Design" : "Design Produit"
     },
@@ -52,7 +54,8 @@ const getProjects = (lang: Language): Project[] => {
       summary: isEn
         ? "0-to-1 Product Design for a Construction Tech SaaS. From pitch deck to MVP."
         : "Création d'un SaaS B2B pour le BTP, de zéro (0 to 1).",
-      coverImage: "thumbnail-toolkit.webp",
+      coverImage: "/images/toolkit/thumbnail_toolkit_02.webp",
+      hoverImage: "/images/thumbnail-toolkit.webp",
       color: "indigo",
       category: isEn ? "Product Design" : "Design Produit"
     },
@@ -64,7 +67,8 @@ const getProjects = (lang: Language): Project[] => {
       summary: isEn
         ? "Redesigning the professional video management suite for tier-1 media partners."
         : "Refonte du back-office vidéo utilisé par les grands médias.",
-      coverImage: "thumbnail-dailymotion-web-platform.webp",
+      coverImage: "/images/dailymotion/thubmnail_dailymotion_03.webp",
+      hoverImage: "/images/thumbnail-dailymotion-web-platform.webp",
       color: "gray",
       category: isEn ? "Product Design" : "Design Produit"
     },
@@ -218,15 +222,29 @@ const ProjectCard: React.FC<{
             {project.period}
           </div>
 
-          {/* Project Image */}
+          {/* Project Image - Default (fills container) */}
           <img
             src={project.coverImage.startsWith('/') ? project.coverImage : `/images/${project.coverImage}`}
             alt={project.title}
-            className={`w-[90%] max-h-[85%] object-contain transition-transform duration-500 ease-out ${
-              isHovered && !isDisabled ? 'scale-105' : 'scale-100'
+            className={`absolute inset-0 w-full h-full object-cover transition-all duration-500 ease-out ${
+              project.hoverImage
+                ? isHovered && !isDisabled ? 'opacity-0' : 'opacity-100'
+                : isHovered && !isDisabled ? 'scale-105' : 'scale-100'
             } ${isDisabled ? 'grayscale' : ''}`}
             draggable={false}
           />
+
+          {/* Hover Image - Device mockup (contained) */}
+          {project.hoverImage && (
+            <img
+              src={project.hoverImage}
+              alt={`${project.title} device mockup`}
+              className={`w-[90%] max-h-[85%] object-contain transition-all duration-500 ease-out ${
+                isHovered && !isDisabled ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+              } ${isDisabled ? 'grayscale' : ''}`}
+              draggable={false}
+            />
+          )}
 
           {/* Coming Soon Overlay */}
           {isDisabled && (
