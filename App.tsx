@@ -1213,8 +1213,7 @@ const getProjects = (lang: Language): Project[] => {
       ],
       icon: <FileText size={24} />,
       color: "blue",
-      coverImage: "/images/francevae/thumbnail_france_vae_02.webp",
-      hoverImage: "/images/francevae/thumbnail_france_vae.webp"
+      coverImage: "/images/francevae/thumbnail_france_vae.webp"
     },
     {
       id: "toolkit",
@@ -1252,8 +1251,7 @@ const getProjects = (lang: Language): Project[] => {
       ],
       icon: <Cpu size={24} />,
       color: "indigo",
-      coverImage: "/images/toolkit/thumbnail_toolkit_02.webp",
-      hoverImage: "/images/thumbnail-toolkit.webp",
+      coverImage: "/images/thumbnail-toolkit.webp",
       externalLink: "https://victor-soussan.notion.site/ebd/2b7a519b0dea80d9b40cc730ce4cfc4b",
       testimonialId: "pierre-marie-nigay"
     },
@@ -1291,8 +1289,7 @@ const getProjects = (lang: Language): Project[] => {
       ],
       icon: <Users size={24} />,
       color: "gray",
-      coverImage: "/images/dailymotion/thubmnail_dailymotion_03.webp",
-      hoverImage: "/images/thumbnail-dailymotion-web-platform.webp",
+      coverImage: "/images/thumbnail-dailymotion-web-platform.webp",
       externalLink: "https://victor-soussan.notion.site/ebd/2b7a519b0dea80b99138d4b51a65620b"
     },
     {
