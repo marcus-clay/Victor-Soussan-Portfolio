@@ -1655,6 +1655,7 @@ const App: React.FC = () => {
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
+  const tooltipTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [isHoveringLogo, setIsHoveringLogo] = useState(false);
   const [isSimpleContactOpen, setIsSimpleContactOpen] = useState(false);
   const [isContactFormOpen, setIsContactFormOpen] = useState(false);
@@ -2712,8 +2713,14 @@ const App: React.FC = () => {
                 ? 'bg-white/10 border border-white/20 hover:bg-white/20'
                 : 'bg-white/60 border border-white/50 hover:bg-white/80'
             }`}
-            onMouseEnter={() => setShowTooltip(true)}
-            onMouseLeave={() => setShowTooltip(false)}
+            onMouseEnter={() => {
+              if (tooltipTimeoutRef.current) clearTimeout(tooltipTimeoutRef.current);
+              tooltipTimeoutRef.current = setTimeout(() => setShowTooltip(true), 300);
+            }}
+            onMouseLeave={() => {
+              if (tooltipTimeoutRef.current) clearTimeout(tooltipTimeoutRef.current);
+              tooltipTimeoutRef.current = setTimeout(() => setShowTooltip(false), 150);
+            }}
           >
             <Avatar
               filename="victor-soussan.webp"
@@ -2727,9 +2734,15 @@ const App: React.FC = () => {
             {/* Tooltip - positioned to the right */}
             {showTooltip && (
               <div
-                className="absolute top-1/2 left-full -translate-y-1/2 pl-3"
-                onMouseEnter={() => setShowTooltip(true)}
-                onMouseLeave={() => setShowTooltip(false)}
+                className="absolute top-1/2 left-full -translate-y-1/2 pl-2"
+                onMouseEnter={() => {
+                  if (tooltipTimeoutRef.current) clearTimeout(tooltipTimeoutRef.current);
+                  setShowTooltip(true);
+                }}
+                onMouseLeave={() => {
+                  if (tooltipTimeoutRef.current) clearTimeout(tooltipTimeoutRef.current);
+                  tooltipTimeoutRef.current = setTimeout(() => setShowTooltip(false), 150);
+                }}
               >
                 <motion.div
                   initial={{ opacity: 0, x: -10, scale: 0.95 }}
