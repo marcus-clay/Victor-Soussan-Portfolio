@@ -1,7 +1,14 @@
 {
   "rewrites": [
     { "source": "/project/:path*", "destination": "/" },
-    { "source": "/projects/:path*", "destination": "/" }
+    { "source": "/projects/:path*", "destination": "/" },
+    { "source": "/testimonials", "destination": "/" },
+    { "source": "/about", "destination": "/" },
+    { "source": "/work", "destination": "/" },
+    { "source": "/resume", "destination": "/" },
+    { "source": "/contact", "destination": "/" },
+    { "source": "/quote", "destination": "/" },
+    { "source": "/presentation", "destination": "/" }
   ],
   "headers": [
     {

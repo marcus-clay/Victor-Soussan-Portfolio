@@ -1593,24 +1593,28 @@ const App: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobileTabMenuOpen, setIsMobileTabMenuOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [isBioOpen, setIsBioOpen] = useState(false);
+
+  // Parse initial URL for modal states
+  const initialPath = typeof window !== 'undefined' ? window.location.pathname : '';
+  const initialUrlParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : new URLSearchParams();
+
+  const [isBioOpen, setIsBioOpen] = useState(initialPath === '/about');
   const [bioViewMode, setBioViewMode] = useState<'text' | 'timeline'>('text');
   const bioContentRef = useRef<HTMLDivElement>(null);
-  const [isTestimonialsOpen, setIsTestimonialsOpen] = useState(false);
-  const [isWorkOpen, setIsWorkOpen] = useState(false);
+  const [isTestimonialsOpen, setIsTestimonialsOpen] = useState(initialPath === '/testimonials');
+  const [isWorkOpen, setIsWorkOpen] = useState(initialPath === '/work');
   const [openedFromIndex, setOpenedFromIndex] = useState(false);
-  const [isBookingOpen, setIsBookingOpen] = useState(false);
+  const [isBookingOpen, setIsBookingOpen] = useState(initialPath === '/contact');
   const [selectedLabItem, setSelectedLabItem] = useState<string | null>(null);
   const [isExecutiveOpen, setIsExecutiveOpen] = useState(() => {
-    // Check URL parameters to open presentation directly
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get('presentation') === '1' || urlParams.get('deck') === '1';
+    // Check URL path or parameters to open presentation directly
+    return initialPath === '/presentation' || initialUrlParams.get('presentation') === '1' || initialUrlParams.get('deck') === '1';
   });
   const [showExecutiveFarewell, setShowExecutiveFarewell] = useState(false);
   const [themeMode, setThemeMode] = useState<'system' | 'light' | 'dark'>('light');
   const [systemTheme, setSystemTheme] = useState<'light' | 'dark'>('light');
   const [accessibilityMode, setAccessibilityMode] = useState<AccessibilityMode>('normal');
-  const [isResumeOpen, setIsResumeOpen] = useState(false);
+  const [isResumeOpen, setIsResumeOpen] = useState(initialPath === '/resume');
   const [resumeLang, setResumeLang] = useState<'fr' | 'en'>('fr');
   const [copiedResume, setCopiedResume] = useState(false);
   const [copiedEmail, setCopiedEmail] = useState(false);
@@ -1681,7 +1685,7 @@ const App: React.FC = () => {
   const [expandedService, setExpandedService] = useState<string | null>('execution');
 
   // Quote Generator State
-  const [isQuoteGeneratorOpen, setIsQuoteGeneratorOpen] = useState(false);
+  const [isQuoteGeneratorOpen, setIsQuoteGeneratorOpen] = useState(initialPath === '/quote');
   const [quoteStep, setQuoteStep] = useState(0);
   const [quoteData, setQuoteData] = useState({
     clientNeed: '' as 'new-product' | 'optimize-existing' | 'long-term' | 'other' | '',
@@ -1714,11 +1718,15 @@ const App: React.FC = () => {
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
+        const hasModalOpen = isBioOpen || isTestimonialsOpen || isWorkOpen || isBookingOpen || isResumeOpen || isExecutiveOpen || isQuoteGeneratorOpen;
+
         setSelectedImage(null);
         setIsBioOpen(false);
         setIsTestimonialsOpen(false);
         setIsWorkOpen(false);
         setIsBookingOpen(false);
+        setIsResumeOpen(false);
+        setIsExecutiveOpen(false);
         setSelectedLabItem(null);
         setIsContactFormOpen(false);
         setIsSimpleContactOpen(false);
@@ -1737,11 +1745,17 @@ const App: React.FC = () => {
             setIsQuoteGeneratorOpen(false);
           }
         }
+
+        // Reset URL if any modal was open
+        if (hasModalOpen) {
+          window.history.pushState({}, '', '/');
+          updateMetaTags(DEFAULT_SEO);
+        }
       }
     };
     window.addEventListener('keydown', handleEsc);
     return () => window.removeEventListener('keydown', handleEsc);
-  }, [isQuoteGeneratorOpen, quoteSuccess, quoteData, quoteStep, content]);
+  }, [isBioOpen, isTestimonialsOpen, isWorkOpen, isBookingOpen, isResumeOpen, isExecutiveOpen, isQuoteGeneratorOpen, quoteSuccess, quoteData, quoteStep, content]);
 
   // Autosave quote data to localStorage
   useEffect(() => {
@@ -2005,19 +2019,75 @@ const App: React.FC = () => {
   // Handle project close - return to Index if opened from there
   const handleProjectClose = () => {
     setOpenProject(null);
-    // Restore default meta tags
-    updateMetaTags(DEFAULT_SEO);
-    // Reset URL to home
-    window.history.pushState({}, '', '/');
     if (openedFromIndex) {
-      setIsWorkOpen(true);
+      // Go back to work modal with URL
+      openModalWithUrl('/work');
       setOpenedFromIndex(false);
+    } else {
+      // Restore default meta tags and reset URL
+      updateMetaTags(DEFAULT_SEO);
+      window.history.pushState({}, '', '/');
     }
+  };
+
+  // Modal URL helpers - open modals with URL routing
+  const MODAL_ROUTES: Record<string, { setter: (v: boolean) => void; title: string; description: string }> = {
+    '/testimonials': {
+      setter: setIsTestimonialsOpen,
+      title: 'Témoignages | Victor Soussan',
+      description: 'Témoignages de clients et collègues sur le travail de Victor Soussan, Product Design Lead.'
+    },
+    '/about': {
+      setter: setIsBioOpen,
+      title: 'À propos | Victor Soussan',
+      description: 'Parcours et expertise de Victor Soussan, Product Design Lead avec 15+ ans d\'expérience.'
+    },
+    '/work': {
+      setter: setIsWorkOpen,
+      title: 'Projets | Victor Soussan',
+      description: 'Portfolio de projets UX/UI : Dailymotion, France VAE, SQOOL, PagesJaunes et plus.'
+    },
+    '/resume': {
+      setter: setIsResumeOpen,
+      title: 'CV | Victor Soussan',
+      description: 'Curriculum vitae de Victor Soussan, Product Design Lead.'
+    },
+    '/contact': {
+      setter: setIsBookingOpen,
+      title: 'Contact | Victor Soussan',
+      description: 'Contactez Victor Soussan pour vos projets de Product Design et UX.'
+    },
+    '/quote': {
+      setter: setIsQuoteGeneratorOpen,
+      title: 'Demande de devis | Victor Soussan',
+      description: 'Demandez un devis pour vos projets de Product Design, UX Research ou Design System.'
+    },
+    '/presentation': {
+      setter: setIsExecutiveOpen,
+      title: 'Présentation Executive | Victor Soussan',
+      description: 'Présentation executive du portfolio de Victor Soussan, Product Design Lead.'
+    }
+  };
+
+  const openModalWithUrl = (path: string) => {
+    const route = MODAL_ROUTES[path];
+    if (route) {
+      route.setter(true);
+      window.history.pushState({ modal: path }, '', path);
+      updateMetaTags({ title: route.title, description: route.description, image: '/images/og_victor_soussan.webp' });
+    }
+  };
+
+  const closeModalWithUrl = (setterFn: (v: boolean) => void) => {
+    setterFn(false);
+    window.history.pushState({}, '', '/');
+    updateMetaTags(DEFAULT_SEO);
   };
 
   // Handle browser back/forward buttons
   useEffect(() => {
     const handlePopState = (event: PopStateEvent) => {
+      // Handle project modals
       if (event.state?.project) {
         setOpenProject({
           project: event.state.project,
@@ -2026,10 +2096,27 @@ const App: React.FC = () => {
         // Update meta tags for the project
         const seo = PROJECT_SEO[event.state.project];
         if (seo) updateMetaTags(seo);
-      } else {
-        setOpenProject(null);
-        updateMetaTags(DEFAULT_SEO);
+        return;
       }
+
+      // Handle other modals
+      if (event.state?.modal) {
+        const route = MODAL_ROUTES[event.state.modal];
+        if (route) {
+          // Close all modals first
+          Object.values(MODAL_ROUTES).forEach(r => r.setter(false));
+          setOpenProject(null);
+          // Open the requested modal
+          route.setter(true);
+          updateMetaTags({ title: route.title, description: route.description, image: '/images/og_victor_soussan.webp' });
+          return;
+        }
+      }
+
+      // No modal state - close everything
+      Object.values(MODAL_ROUTES).forEach(r => r.setter(false));
+      setOpenProject(null);
+      updateMetaTags(DEFAULT_SEO);
     };
 
     window.addEventListener('popstate', handlePopState);
@@ -2693,7 +2780,7 @@ const App: React.FC = () => {
                         onClick={(e) => {
                           e.stopPropagation();
                           setShowTooltip(false);
-                          setIsBookingOpen(true);
+                          openModalWithUrl('/contact');
                         }}
                         className={`flex items-center justify-center space-x-2 w-full px-5 py-3 rounded-2xl transition-all duration-200 border text-sm font-medium ${
                           systemTheme === 'dark'
@@ -2735,7 +2822,7 @@ const App: React.FC = () => {
 
           <div className="flex flex-col sm:flex-row justify-center items-center space-y-3 sm:space-y-0 sm:space-x-4">
             <button
-              onClick={() => setIsExecutiveOpen(true)}
+              onClick={() => openModalWithUrl('/presentation')}
               className={`px-5 py-2.5 sm:px-6 sm:py-3 rounded-full font-medium text-sm sm:text-base btn-pill flex items-center cursor-pointer relative z-20 whitespace-nowrap transition-all duration-200 backdrop-blur-xl ${
                 systemTheme === 'dark'
                   ? 'bg-white/15 text-white border border-white/20 hover:bg-white/25 hover:border-white/30'
@@ -2745,7 +2832,7 @@ const App: React.FC = () => {
               {content.hero.cta_projects} <ChevronRight className="ml-2 flex-shrink-0" size={16} />
             </button>
             <button
-               onClick={() => setIsBookingOpen(true)}
+               onClick={() => openModalWithUrl('/contact')}
                className={`px-5 py-2.5 sm:px-6 sm:py-3 rounded-full font-medium text-sm sm:text-base btn-pill cursor-pointer relative z-20 flex items-center justify-center whitespace-nowrap ${
                  systemTheme === 'dark'
                    ? 'bg-white/10 border border-white/20 text-white hover:bg-white/20'
@@ -3045,7 +3132,7 @@ const App: React.FC = () => {
           {/* View All Projects Button */}
           <div className="mt-12 text-center">
             <button
-              onClick={() => setIsWorkOpen(true)}
+              onClick={() => openModalWithUrl('/work')}
               className={`group px-8 py-3 rounded-full font-medium transition-colors inline-flex items-center shadow-sm hover:shadow-md ${
                 systemTheme === 'dark'
                   ? 'bg-white text-black hover:bg-gray-200'
@@ -3131,7 +3218,7 @@ const App: React.FC = () => {
                     systemTheme === 'dark' ? 'border-white/10' : 'border-gray-100'
                   }`}>
                      <button
-                       onClick={() => setIsBioOpen(true)}
+                       onClick={() => openModalWithUrl('/about')}
                        className="px-5 py-2.5 accent-blue text-white rounded-full text-sm font-medium btn-pill flex items-center"
                      >
                        <FileText size={16} className="mr-2"/> {content.bio.view_full_bio}
@@ -3151,7 +3238,7 @@ const App: React.FC = () => {
                         <button
                           onClick={() => {
                             setResumeLang('fr');
-                            setIsResumeOpen(true);
+                            openModalWithUrl('/resume');
                           }}
                           className={`px-4 py-2.5 rounded-full text-sm font-medium btn-pill flex items-center ${
                             systemTheme === 'dark'
@@ -3164,7 +3251,7 @@ const App: React.FC = () => {
                         <button
                           onClick={() => {
                             setResumeLang('en');
-                            setIsResumeOpen(true);
+                            openModalWithUrl('/resume');
                           }}
                           className={`px-4 py-2.5 rounded-full text-sm font-medium btn-pill flex items-center ${
                             systemTheme === 'dark'
@@ -3561,7 +3648,7 @@ const App: React.FC = () => {
 
           <div className="mt-12 text-center">
              <button
-               onClick={() => setIsTestimonialsOpen(true)}
+               onClick={() => openModalWithUrl('/testimonials')}
                className={`group px-8 py-3 border rounded-full font-medium transition-colors inline-flex items-center shadow-sm hover:shadow-md ${
                  systemTheme === 'dark'
                    ? 'bg-white/10 border-white/20 text-white hover:bg-white/20'
@@ -3768,7 +3855,7 @@ const App: React.FC = () => {
                  {/* Close Button - Right */}
                  <div className="flex-shrink-0">
                    <button
-                     onClick={() => setIsBioOpen(false)}
+                     onClick={() => closeModalWithUrl(setIsBioOpen)}
                      className={`w-8 h-8 flex items-center justify-center rounded-full transition-colors ${
                        systemTheme === 'dark'
                          ? 'text-gray-400 hover:text-white hover:bg-white/10'
@@ -4162,7 +4249,7 @@ const App: React.FC = () => {
 
               {/* Right - Close button */}
               <button
-                onClick={() => setIsTestimonialsOpen(false)}
+                onClick={() => closeModalWithUrl(setIsTestimonialsOpen)}
                 className={`flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full transition-colors ${
                   systemTheme === 'dark'
                     ? 'text-gray-400 hover:text-white hover:bg-white/10'
@@ -4279,8 +4366,8 @@ const App: React.FC = () => {
               </a>
               <button
                 onClick={() => {
-                  setIsTestimonialsOpen(false);
-                  setIsBookingOpen(true);
+                  closeModalWithUrl(setIsTestimonialsOpen);
+                  openModalWithUrl('/contact');
                 }}
                 className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-medium text-sm flex items-center justify-center w-full sm:w-auto transition-all duration-200 shadow-lg shadow-blue-600/20 hover:scale-105"
               >
@@ -4304,7 +4391,7 @@ const App: React.FC = () => {
              exit={{ opacity: 0 }}
              transition={{ duration: 0.2 }}
              onClick={() => {
-               setIsBookingOpen(false);
+               closeModalWithUrl(setIsBookingOpen);
                if (isExecutiveOpen) setShowExecutiveFarewell(true);
              }}
              className={`absolute inset-0 ${
@@ -4331,7 +4418,7 @@ const App: React.FC = () => {
               <div className="absolute top-6 right-6 z-20">
                  <button
                    onClick={() => {
-                     setIsBookingOpen(false);
+                     closeModalWithUrl(setIsBookingOpen);
                      if (isExecutiveOpen) setShowExecutiveFarewell(true);
                    }}
                    className={`p-2.5 rounded-full transition-all duration-200 backdrop-blur-sm ${
@@ -5210,7 +5297,7 @@ ${contactForm.message}`;
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            onClick={() => setIsResumeOpen(false)}
+            onClick={() => closeModalWithUrl(setIsResumeOpen)}
             className="absolute inset-0 bg-black/20 backdrop-blur-sm no-print"
           />
 
@@ -5239,7 +5326,7 @@ ${contactForm.message}`;
                     <p className="text-sm text-gray-500 mt-0.5">Product Design Lead</p>
                   </div>
                   <button
-                    onClick={() => setIsResumeOpen(false)}
+                    onClick={() => closeModalWithUrl(setIsResumeOpen)}
                     className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
                   >
                     <X size={20} className="text-gray-500" />
@@ -5579,7 +5666,7 @@ ${contactForm.message}`;
                  {content.nav.contact}
                </button>
                <button
-                 onClick={() => setIsQuoteGeneratorOpen(true)}
+                 onClick={() => openModalWithUrl('/quote')}
                  className="text-sm text-gray-400 hover:text-white transition-colors duration-200 font-medium"
                >
                  {content.contact.quote_button}
@@ -5594,7 +5681,7 @@ ${contactForm.message}`;
                  LinkedIn
                </a>
                <button
-                 onClick={() => setIsExecutiveOpen(true)}
+                 onClick={() => openModalWithUrl('/presentation')}
                  className="text-sm text-gray-400 hover:text-white transition-colors duration-200 flex items-center"
                >
                  <Briefcase size={14} className="mr-1.5" />
@@ -6062,10 +6149,10 @@ ${contactForm.message}`;
                 if (hasData && !quoteSuccess && quoteStep > 0) {
                   if (window.confirm(content.contact.quote_confirm_close)) {
                     localStorage.setItem('quoteDraft', JSON.stringify({ quoteData, quoteStep }));
-                    setIsQuoteGeneratorOpen(false);
+                    closeModalWithUrl(setIsQuoteGeneratorOpen);
                   }
                 } else {
-                  setIsQuoteGeneratorOpen(false);
+                  closeModalWithUrl(setIsQuoteGeneratorOpen);
                 }
               }}
             />
@@ -6122,10 +6209,10 @@ ${contactForm.message}`;
                         if (hasData && !quoteSuccess && quoteStep > 0) {
                           if (window.confirm(content.contact.quote_confirm_close)) {
                             localStorage.setItem('quoteDraft', JSON.stringify({ quoteData, quoteStep }));
-                            setIsQuoteGeneratorOpen(false);
+                            closeModalWithUrl(setIsQuoteGeneratorOpen);
                           }
                         } else {
-                          setIsQuoteGeneratorOpen(false);
+                          closeModalWithUrl(setIsQuoteGeneratorOpen);
                         }
                       }}
                       className={`p-2.5 rounded-full transition-all duration-200 ${
@@ -6155,7 +6242,7 @@ ${contactForm.message}`;
               {quoteStep === 0 && !quoteSuccess && (
                 <div className="absolute top-6 right-6 z-20">
                   <button
-                    onClick={() => setIsQuoteGeneratorOpen(false)}
+                    onClick={() => closeModalWithUrl(setIsQuoteGeneratorOpen)}
                     className={`p-2.5 backdrop-blur-xl rounded-full transition-all duration-200 ${
                       systemTheme === 'dark'
                         ? 'bg-white/10 hover:bg-white/20 text-white'
@@ -7358,7 +7445,7 @@ ${contactForm.message}`;
 
                               // Auto-close after 5 seconds
                               setTimeout(() => {
-                                setIsQuoteGeneratorOpen(false);
+                                closeModalWithUrl(setIsQuoteGeneratorOpen);
                                 setQuoteSuccess(false);
                                 setQuoteStep(0);
                                 setQuoteData({
@@ -7676,14 +7763,14 @@ ${contactForm.message}`;
             <ExecutivePage
               language={lang}
               onClose={() => {
-                setIsExecutiveOpen(false);
+                closeModalWithUrl(setIsExecutiveOpen);
                 setShowExecutiveFarewell(false);
               }}
-              onBookCall={() => setIsBookingOpen(true)}
+              onBookCall={() => openModalWithUrl('/contact')}
               onContact={() => setIsSimpleContactOpen(true)}
               onOpenResume={(resumeLanguage) => {
                 setResumeLang(resumeLanguage);
-                setIsResumeOpen(true);
+                openModalWithUrl('/resume');
               }}
               showFarewell={showExecutiveFarewell}
               systemTheme={systemTheme}
@@ -7700,13 +7787,13 @@ ${contactForm.message}`;
               systemTheme={systemTheme}
               lang={lang}
               onProjectClick={(projectId) => {
-                setIsWorkOpen(false);
+                closeModalWithUrl(setIsWorkOpen);
                 setOpenedFromIndex(true);
                 if (projectId === 'toolkit' || projectId === 'dailymotion' || projectId === 'connect' || projectId === 'sqool' || projectId === 'france-vae') {
                   openProjectWithUrl(projectId, 'caseStudy');
                 }
               }}
-              onBack={() => setIsWorkOpen(false)}
+              onBack={() => closeModalWithUrl(setIsWorkOpen)}
             />
           </Suspense>
         )}
