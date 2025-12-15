@@ -1916,6 +1916,70 @@ const App: React.FC = () => {
     };
   }, []);
 
+  // SEO metadata for each project
+  const PROJECT_SEO: Record<string, { title: string; description: string; image: string }> = {
+    'toolkit': {
+      title: 'Toolkit - Design System & Planning App | Victor Soussan',
+      description: 'Case study: Design System et application de planning pour PagesJaunes. UI Kit, composants Figma, et product design.',
+      image: '/images/thumbnail-toolkit.webp'
+    },
+    'dailymotion': {
+      title: 'Dailymotion - Video Platform Redesign | Victor Soussan',
+      description: 'Case study: Refonte UX/UI de la plateforme vidéo Dailymotion. Design System, Video Manager, et expérience utilisateur.',
+      image: '/images/dailymotion/thubmnail_dailymotion_03.webp'
+    },
+    'connect': {
+      title: 'SQOOL Connect - EdTech Dashboard | Victor Soussan',
+      description: 'Case study: Dashboard éducatif pour tablettes scolaires. UX Research, Design Sprint, et innovation EdTech.',
+      image: '/images/thumbnail-connect.webp'
+    },
+    'sqool': {
+      title: 'SQOOL Suite - Education Software | Victor Soussan',
+      description: 'Case study: Suite logicielle éducative pour 500K+ élèves. Design System, Hi-SQOOL chat, et outils pédagogiques.',
+      image: '/images/thumbnail-sqool-suite.webp'
+    },
+    'france-vae': {
+      title: 'France VAE - Service Public Numérique | Victor Soussan',
+      description: 'Case study: Plateforme nationale de Validation des Acquis. UX Research, VAE Collective, et transformation digitale.',
+      image: '/images/francevae/thumbnail_france_vae_02.webp'
+    }
+  };
+
+  const DEFAULT_SEO = {
+    title: 'Victor Soussan | Product Design Lead - UX/UI Portfolio',
+    description: 'Senior Product Design Lead avec 15+ ans d\'expérience. Spécialisé en Design System, UX Research, et transformation digitale.',
+    image: '/images/og_victor_soussan.webp'
+  };
+
+  // Update document meta tags for SEO
+  const updateMetaTags = (seo: { title: string; description: string; image: string }) => {
+    document.title = seo.title;
+
+    // Update meta description
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) metaDesc.setAttribute('content', seo.description);
+
+    // Update OG tags
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) ogTitle.setAttribute('content', seo.title);
+
+    const ogDesc = document.querySelector('meta[property="og:description"]');
+    if (ogDesc) ogDesc.setAttribute('content', seo.description);
+
+    const ogImage = document.querySelector('meta[property="og:image"]');
+    if (ogImage) ogImage.setAttribute('content', `https://victorsoussan.fr${seo.image}`);
+
+    // Update Twitter tags
+    const twTitle = document.querySelector('meta[name="twitter:title"]');
+    if (twTitle) twTitle.setAttribute('content', seo.title);
+
+    const twDesc = document.querySelector('meta[name="twitter:description"]');
+    if (twDesc) twDesc.setAttribute('content', seo.description);
+
+    const twImage = document.querySelector('meta[name="twitter:image"]');
+    if (twImage) twImage.setAttribute('content', `https://victorsoussan.fr${seo.image}`);
+  };
+
   // URL helpers for project routing
   const getProjectUrl = (projectId: string, viewMode: 'caseStudy' | 'gallery' | 'executive') => {
     const viewPath = viewMode === 'gallery' ? '/gallery' : viewMode === 'executive' ? '/executive' : '';
@@ -1929,6 +1993,9 @@ const App: React.FC = () => {
     pushHistory = true
   ) => {
     setOpenProject({ project: projectId, viewMode });
+    // Update meta tags for SEO
+    const seo = PROJECT_SEO[projectId];
+    if (seo) updateMetaTags(seo);
     if (pushHistory) {
       const url = getProjectUrl(projectId, viewMode);
       window.history.pushState({ project: projectId, viewMode }, '', url);
@@ -1938,6 +2005,8 @@ const App: React.FC = () => {
   // Handle project close - return to Index if opened from there
   const handleProjectClose = () => {
     setOpenProject(null);
+    // Restore default meta tags
+    updateMetaTags(DEFAULT_SEO);
     // Reset URL to home
     window.history.pushState({}, '', '/');
     if (openedFromIndex) {
@@ -1954,13 +2023,25 @@ const App: React.FC = () => {
           project: event.state.project,
           viewMode: event.state.viewMode || 'caseStudy'
         });
+        // Update meta tags for the project
+        const seo = PROJECT_SEO[event.state.project];
+        if (seo) updateMetaTags(seo);
       } else {
         setOpenProject(null);
+        updateMetaTags(DEFAULT_SEO);
       }
     };
 
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  // Update meta tags on initial load if project is open from URL
+  useEffect(() => {
+    if (openProject?.project) {
+      const seo = PROJECT_SEO[openProject.project];
+      if (seo) updateMetaTags(seo);
+    }
   }, []);
 
   // Scroll to section with offset for fixed header
