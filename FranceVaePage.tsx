@@ -3,9 +3,10 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion';
-import { X, ChevronLeft, ChevronRight, ChevronDown, ZoomIn, ZoomOut } from 'lucide-react';
+import { X, ChevronDown } from 'lucide-react';
 import FranceVaeExecutive from './src/components/FranceVaeExecutive';
 import FranceVaeFull from './src/components/FranceVaeFull';
+import EnhancedLightbox from './src/components/EnhancedLightbox';
 
 // Gallery Card with Apple TV-style 3D tilt effect (same as BentoGallery)
 interface GalleryCardProps {
@@ -82,11 +83,10 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick, lang })
           }}
         />
 
-        <img
+        <img loading="lazy"
           src={item.src}
           alt={lang === 'fr' ? item.captionFr : item.caption}
           className="w-full h-auto block"
-          loading="lazy"
         />
       </motion.div>
 
@@ -137,6 +137,7 @@ const TOC_SECTIONS = {
     { id: 'initiative-3', label: 'Research' },
     { id: 'initiative-4', label: 'Workshops' },
     { id: 'initiative-5', label: 'AI' },
+    { id: 'ui-delivery', label: 'UI & Delivery' },
     { id: 'learnings', label: 'Learnings' }
   ],
   fr: [
@@ -147,6 +148,7 @@ const TOC_SECTIONS = {
     { id: 'initiative-3', label: 'Recherche' },
     { id: 'initiative-4', label: 'Ateliers' },
     { id: 'initiative-5', label: 'IA' },
+    { id: 'ui-delivery', label: 'UI & Livraison' },
     { id: 'learnings', label: 'Apprentissages' }
   ]
 };
@@ -154,64 +156,56 @@ const TOC_SECTIONS = {
 // All media for lightbox - ordered to follow case study narrative
 const ALL_MEDIA = [
   // ===== CONTEXT =====
-  { src: '/francevae/france_vae_home.webp', caption: 'France VAE Homepage', captionFr: 'Page d\'accueil France VAE' },
+  { src: '/images/francevae/france_vae_home.webp', caption: 'France VAE Homepage', captionFr: 'Page d\'accueil France VAE' },
 
   // ===== INITIATIVE 1: VAE Collective =====
-  { src: '/francevae/prototype vae collective .png', caption: 'VAE Collective - Employer Dashboard Prototype', captionFr: 'VAE Collective - Prototype Dashboard Employeur' },
-  { src: '/francevae/slide presentation process vae collective.png', caption: 'VAE Collective - 4-Step Onboarding Process', captionFr: 'VAE Collective - Processus d\'onboarding en 4 étapes' },
-  { src: '/francevae/slide presentation benefices vae collective.png', caption: 'VAE Collective - ROI & Benefits for Enterprises', captionFr: 'VAE Collective - ROI et bénéfices entreprises' },
-  { src: '/francevae/VAE Collective/vae collective wireframes/vae collective - espace commanditaire - 01.png', caption: 'Wireframe - Employer Space Home', captionFr: 'Wireframe - Accueil Espace Commanditaire' },
-  { src: '/francevae/VAE Collective/vae collective wireframes/vae collective - espace commanditaire - 02.png', caption: 'Wireframe - Program Overview', captionFr: 'Wireframe - Vue Programme' },
-  { src: '/francevae/VAE Collective/vae collective wireframes/vae collective - espace commanditaire - vue cohorte - 03.png', caption: 'Wireframe - Cohort Tracking View', captionFr: 'Wireframe - Vue Suivi Cohorte' },
-  { src: '/francevae/VAE Collective/vae collective wireframes/vae collective - espace commanditaire - vue detail d\'une cohorte - 04.png', caption: 'Wireframe - Individual Cohort Detail', captionFr: 'Wireframe - Détail d\'une Cohorte' },
+  { src: '/images/francevae/prototype vae collective .webp', caption: 'VAE Collective - Employer Dashboard Prototype', captionFr: 'VAE Collective - Prototype Dashboard Employeur' },
+  { src: '/images/francevae/slide presentation process vae collective.webp', caption: 'VAE Collective - 4-Step Onboarding Process', captionFr: 'VAE Collective - Processus d\'onboarding en 4 étapes' },
+  { src: '/images/francevae/slide presentation benefices vae collective.webp', caption: 'VAE Collective - ROI & Benefits for Enterprises', captionFr: 'VAE Collective - ROI et bénéfices entreprises' },
+  { src: '/images/francevae/VAE Collective/vae collective wireframes/vae collective - espace commanditaire - 01.webp', caption: 'Wireframe - Employer Space Home', captionFr: 'Wireframe - Accueil Espace Commanditaire' },
+  { src: '/images/francevae/VAE Collective/vae collective wireframes/vae collective - espace commanditaire - 02.webp', caption: 'Wireframe - Program Overview', captionFr: 'Wireframe - Vue Programme' },
+  { src: '/images/francevae/VAE Collective/vae collective wireframes/vae collective - espace commanditaire - vue cohorte - 03.webp', caption: 'Wireframe - Cohort Tracking View', captionFr: 'Wireframe - Vue Suivi Cohorte' },
+  { src: '/images/francevae/VAE Collective/vae collective wireframes/vae collective - espace commanditaire - vue detail d\'une cohorte - 04.webp', caption: 'Wireframe - Individual Cohort Detail', captionFr: 'Wireframe - Détail d\'une Cohorte' },
 
   // ===== INITIATIVE 2: Product Operations =====
-  { src: '/francevae/presentation process_discovery @2x.png', caption: 'Monthly Seasons Framework - Preparation, Execution, Retrospective', captionFr: 'Framework Saisons Mensuelles - Préparation, Exécution, Rétrospective' },
-  { src: '/francevae/schema - equipe 01.png', caption: 'Before: Siloed Team Structure', captionFr: 'Avant : Structure d\'équipe en silos' },
-  { src: '/francevae/schema - equipe 02.png', caption: 'After: Unified Contributors Model', captionFr: 'Après : Modèle contributeurs unifiés' },
-  { src: '/francevae/presentation_process_discovery_05.png', caption: 'Initiative Lifecycle - Problem Framing & Cross-team Prioritization', captionFr: 'Cycle de vie initiative - Cadrage problème & Priorisation cross-équipe' },
-  { src: '/francevae/presentation_process_discovery_01.png', caption: 'Roadmap Structure - Goals, Initiatives, Features hierarchy', captionFr: 'Structure Roadmap - Hiérarchie Objectifs, Initiatives, Fonctionnalités' },
-  { src: '/francevae/presentation_process_discovery_02.png', caption: 'Solution - Unified Contributors Around Shared Objectives', captionFr: 'Solution - Contributeurs unifiés autour d\'objectifs communs' },
-  { src: '/francevae/presentation_process_discovery_03.png', caption: 'Three-tier Framework: Objectives, Initiatives, Features', captionFr: 'Framework à 3 niveaux : Objectifs, Initiatives, Features' },
-  { src: '/francevae/presentation_process_discovery_04.png', caption: 'Season Calendar - 25% Prep, 50% Execution, 25% Retro', captionFr: 'Calendrier Saison - 25% Prépa, 50% Exécution, 25% Rétro' },
+  { src: '/images/francevae/presentation process_discovery @2x.webp', caption: 'Monthly Seasons Framework - Preparation, Execution, Retrospective', captionFr: 'Framework Saisons Mensuelles - Préparation, Exécution, Rétrospective' },
+  { src: '/images/francevae/schema - equipe 01.webp', caption: 'Before: Siloed Team Structure', captionFr: 'Avant : Structure d\'équipe en silos' },
+  { src: '/images/francevae/schema - equipe 02.webp', caption: 'After: Unified Contributors Model', captionFr: 'Après : Modèle contributeurs unifiés' },
+  { src: '/images/francevae/presentation_process_discovery_05.webp', caption: 'Initiative Lifecycle - Problem Framing & Cross-team Prioritization', captionFr: 'Cycle de vie initiative - Cadrage problème & Priorisation cross-équipe' },
+  { src: '/images/francevae/presentation_process_discovery_01.webp', caption: 'Roadmap Structure - Goals, Initiatives, Features hierarchy', captionFr: 'Structure Roadmap - Hiérarchie Objectifs, Initiatives, Fonctionnalités' },
+  { src: '/images/francevae/presentation_process_discovery_02.webp', caption: 'Solution - Unified Contributors Around Shared Objectives', captionFr: 'Solution - Contributeurs unifiés autour d\'objectifs communs' },
+  { src: '/images/francevae/presentation_process_discovery_03.webp', caption: 'Three-tier Framework: Objectives, Initiatives, Features', captionFr: 'Framework à 3 niveaux : Objectifs, Initiatives, Features' },
+  { src: '/images/francevae/presentation_process_discovery_04.webp', caption: 'Season Calendar - 25% Prep, 50% Execution, 25% Retro', captionFr: 'Calendrier Saison - 25% Prépa, 50% Exécution, 25% Rétro' },
 
   // ===== INITIATIVE 3: User Research =====
-  { src: '/francevae/UXR - Rapport de campangne de test tableau de bord.png', caption: 'Dashboard Test Campaign - Synthesis Report', captionFr: 'Campagne de test Tableau de bord - Rapport de synthèse' },
-  { src: '/francevae/UXR - test - script candidat 01.png', caption: 'Moderated Interview Script - Test Protocol', captionFr: 'Script d\'entretien modéré - Protocole de test' },
-  { src: '/francevae/UXR - test - tableau prio.png', caption: 'Feedback Prioritization - Quick Wins, Bugs, UX Issues', captionFr: 'Priorisation des retours - Quick Wins, Bugs, Problèmes UX' },
-  { src: '/francevae/UXR - interface tableau de bord candidat.webp', caption: 'Candidate Dashboard Interface - Under Test', captionFr: 'Interface Tableau de bord candidat - En test' },
-  { src: '/francevae/UXR - panel france vae.png', caption: 'User Research Panel - Participant Database', captionFr: 'Panel Recherche Utilisateur - Base de participants' },
-  { src: '/francevae/UXR - base d\'etudes.png', caption: 'Centralized Research Knowledge Base', captionFr: 'Base de connaissances recherche centralisée' },
-  { src: '/francevae/UXR - test - script candidat 02.png', caption: 'Interview Script - Tasks & Scenarios', captionFr: 'Script d\'entretien - Tâches & Scénarios' },
+  { src: '/images/francevae/UXR - Rapport de campangne de test tableau de bord.webp', caption: 'Dashboard Test Campaign - Synthesis Report', captionFr: 'Campagne de test Tableau de bord - Rapport de synthèse' },
+  { src: '/images/francevae/UXR - test - script candidat 01.webp', caption: 'Moderated Interview Script - Test Protocol', captionFr: 'Script d\'entretien modéré - Protocole de test' },
+  { src: '/images/francevae/UXR - test - tableau prio.webp', caption: 'Feedback Prioritization - Quick Wins, Bugs, UX Issues', captionFr: 'Priorisation des retours - Quick Wins, Bugs, Problèmes UX' },
+  { src: '/images/francevae/UXR - interface tableau de bord candidat.webp', caption: 'Candidate Dashboard Interface - Under Test', captionFr: 'Interface Tableau de bord candidat - En test' },
+  { src: '/images/francevae/UXR - panel france vae.webp', caption: 'User Research Panel - Participant Database', captionFr: 'Panel Recherche Utilisateur - Base de participants' },
+  { src: '/images/francevae/UXR - base d\'etudes.webp', caption: 'Centralized Research Knowledge Base', captionFr: 'Base de connaissances recherche centralisée' },
+  { src: '/images/francevae/UXR - test - script candidat 02.webp', caption: 'Interview Script - Tasks & Scenarios', captionFr: 'Script d\'entretien - Tâches & Scénarios' },
 
   // ===== INITIATIVE 4: Design Thinking Workshops =====
-  { src: '/francevae/photo atelier aap.jpg', caption: 'Workshop Day 1 - With Accompaniment Providers (AAP)', captionFr: 'Atelier Jour 1 - Avec les Accompagnateurs (AAP)' },
-  { src: '/francevae/photo atelier aap 02.jpg', caption: 'Workshop Day 2 - Collaborative Ideation', captionFr: 'Atelier Jour 2 - Idéation collaborative' },
-  { src: '/francevae/atelier france vae AAP 01.png', caption: 'Workshop Objectives & Agenda', captionFr: 'Objectifs & Programme de l\'atelier' },
-  { src: '/francevae/animation atelier 00.png', caption: 'Facilitation Framework - Session Structure', captionFr: 'Framework d\'animation - Structure de session' },
-  { src: '/francevae/animation atelier 01.png', caption: 'Ideation Exercise - How Might We', captionFr: 'Exercice d\'idéation - How Might We' },
+  { src: '/images/francevae/photo atelier aap.webp', caption: 'Workshop Day 1 - With Accompaniment Providers (AAP)', captionFr: 'Atelier Jour 1 - Avec les Accompagnateurs (AAP)' },
+  { src: '/images/francevae/photo atelier aap 02.webp', caption: 'Workshop Day 2 - Collaborative Ideation', captionFr: 'Atelier Jour 2 - Idéation collaborative' },
+  { src: '/images/francevae/atelier france vae AAP 01.webp', caption: 'Workshop Objectives & Agenda', captionFr: 'Objectifs & Programme de l\'atelier' },
+  { src: '/images/francevae/animation atelier 00.webp', caption: 'Facilitation Framework - Session Structure', captionFr: 'Framework d\'animation - Structure de session' },
+  { src: '/images/francevae/animation atelier 01.webp', caption: 'Ideation Exercise - How Might We', captionFr: 'Exercice d\'idéation - How Might We' },
 
   // ===== INITIATIVE 5: AI Experimentation =====
-  { src: '/francevae/proto IA - chatbot de positionnement.png', caption: 'AI Chatbot Prototype - VAE Eligibility Assessment', captionFr: 'Prototype Chatbot IA - Évaluation éligibilité VAE' },
-  { src: '/francevae/proto IA - orientation professionnelle assistee par IA.png', caption: 'AI Skills Radar - Career Orientation Assistant', captionFr: 'Radar de compétences IA - Assistant orientation professionnelle' },
+  { src: '/images/francevae/proto IA - chatbot de positionnement.webp', caption: 'AI Chatbot Prototype - VAE Eligibility Assessment', captionFr: 'Prototype Chatbot IA - Évaluation éligibilité VAE' },
+  { src: '/images/francevae/proto IA - orientation professionnelle assistee par IA.webp', caption: 'AI Skills Radar - Career Orientation Assistant', captionFr: 'Radar de compétences IA - Assistant orientation professionnelle' },
 
   // ===== UX Workspace (Design Ops) =====
-  { src: '/francevae/workspace UX 01.png', caption: 'Notion UX Workspace - Team Hub Overview', captionFr: 'Espace Notion UX - Vue d\'ensemble du hub équipe' },
-  { src: '/francevae/workspace UX 02.png', caption: 'Design Tasks Board - Sprint Planning', captionFr: 'Tableau des tâches design - Planification sprint' },
-  { src: '/francevae/workspace UX 03.png', caption: 'Kanban Board - Task Status Tracking', captionFr: 'Kanban - Suivi statut des tâches' },
-  { src: '/francevae/workspace UX 04.png', caption: 'Weekly Meeting Notes - Design/Dev Sync', captionFr: 'Notes de réunion hebdo - Sync Design/Dev' },
-  { src: '/francevae/workspace UX 05 - uxr.png', caption: 'User Research Hub - Centralized Insights', captionFr: 'Hub Recherche Utilisateur - Insights centralisés' },
-  { src: '/francevae/workspace UX 06 - uxr - etudes.png', caption: 'Research Studies - Organized by Theme', captionFr: 'Études recherche - Organisées par thème' },
-  { src: '/francevae/workspace UX 07 - uxr - annuaire.png', caption: 'UXR Participant Directory', captionFr: 'Annuaire participants UXR' },
+  { src: '/images/francevae/workspace UX 01.webp', caption: 'Notion UX Workspace - Team Hub Overview', captionFr: 'Espace Notion UX - Vue d\'ensemble du hub équipe' },
+  { src: '/images/francevae/workspace UX 02.webp', caption: 'Design Tasks Board - Sprint Planning', captionFr: 'Tableau des tâches design - Planification sprint' },
+  { src: '/images/francevae/workspace UX 03.webp', caption: 'Kanban Board - Task Status Tracking', captionFr: 'Kanban - Suivi statut des tâches' },
+  { src: '/images/francevae/workspace UX 04.webp', caption: 'Weekly Meeting Notes - Design/Dev Sync', captionFr: 'Notes de réunion hebdo - Sync Design/Dev' },
+  { src: '/images/francevae/workspace UX 05 - uxr.webp', caption: 'User Research Hub - Centralized Insights', captionFr: 'Hub Recherche Utilisateur - Insights centralisés' },
+  { src: '/images/francevae/workspace UX 06 - uxr - etudes.webp', caption: 'Research Studies - Organized by Theme', captionFr: 'Études recherche - Organisées par thème' },
+  { src: '/images/francevae/workspace UX 07 - uxr - annuaire.webp', caption: 'UXR Participant Directory', captionFr: 'Annuaire participants UXR' },
 ];
-
-// Spring transition
-const springTransition = {
-  type: 'spring' as const,
-  stiffness: 300,
-  damping: 30,
-  mass: 1,
-};
 
 // Main Component
 const FranceVaePage: React.FC<FranceVaePageProps> = ({
@@ -236,9 +230,7 @@ const FranceVaePage: React.FC<FranceVaePageProps> = ({
   };
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
-  const [lightboxZoomed, setLightboxZoomed] = useState(false);
   const [activeSection, setActiveSection] = useState('top');
-  const lastTapRef = useRef<number>(0);
   const [isMobileNavExpanded, setIsMobileNavExpanded] = useState(false);
   const [showNav, setShowNav] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -338,65 +330,7 @@ const FranceVaePage: React.FC<FranceVaePageProps> = ({
   // Close lightbox
   const closeLightbox = () => {
     setLightboxOpen(false);
-    setLightboxZoomed(false);
-    document.body.style.overflow = '';
   };
-
-  // Navigate lightbox
-  const paginate = (direction: number) => {
-    const newIndex = lightboxIndex + direction;
-    if (newIndex >= 0 && newIndex < ALL_MEDIA.length) {
-      setLightboxZoomed(false);
-      setLightboxIndex(newIndex);
-    }
-  };
-
-  // Toggle zoom in lightbox
-  const toggleZoom = () => {
-    setLightboxZoomed(!lightboxZoomed);
-  };
-
-  // Check if device is mobile/touch
-  const isTouchDevice = () => {
-    return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-  };
-
-  // Handle tap/double-tap for mobile zoom
-  const handleImageTap = (e: React.MouseEvent | React.TouchEvent) => {
-    e.stopPropagation();
-
-    // On desktop: single click to zoom
-    if (!isTouchDevice()) {
-      toggleZoom();
-      return;
-    }
-
-    // On mobile: double-tap to zoom
-    const now = Date.now();
-    const DOUBLE_TAP_DELAY = 300;
-
-    if (now - lastTapRef.current < DOUBLE_TAP_DELAY) {
-      // Double tap - toggle zoom
-      toggleZoom();
-      lastTapRef.current = 0;
-    } else {
-      // Single tap - will check for double tap
-      lastTapRef.current = now;
-      // If not followed by another tap, do nothing (image stays as is)
-    }
-  };
-
-  // Keyboard navigation
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (!lightboxOpen) return;
-      if (e.key === 'Escape') closeLightbox();
-      if (e.key === 'ArrowRight') paginate(1);
-      if (e.key === 'ArrowLeft') paginate(-1);
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [lightboxOpen, lightboxIndex]);
 
   return (
     <motion.div
@@ -417,14 +351,14 @@ const FranceVaePage: React.FC<FranceVaePageProps> = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className={`fixed top-[53px] sm:top-[72px] left-0 right-0 z-30 border-b ${
+            className={`fixed top-16 left-0 right-0 z-30 backdrop-blur-xl ${
               isDark
-                ? 'bg-[#0a0a0a]/95 backdrop-blur-xl border-white/10'
-                : 'bg-white/95 backdrop-blur-xl border-gray-200'
+                ? 'bg-[#0a0a0a]/80'
+                : 'bg-white/80'
             }`}
           >
             {/* Collapsed state - shows current section */}
-            <div className="max-w-6xl mx-auto px-4 md:px-6">
+            <div className="w-full px-6">
               <button
                 onClick={() => setIsMobileNavExpanded(!isMobileNavExpanded)}
                 className="w-full h-12 flex items-center justify-between"
@@ -512,19 +446,19 @@ const FranceVaePage: React.FC<FranceVaePageProps> = ({
         )}
       </AnimatePresence>
 
-      {/* Header - iOS-inspired responsive design (same as ToolkitPage) */}
+      {/* Header - Glass effect */}
       <header
-        className={`sticky top-0 z-40 backdrop-blur-xl border-b ${
+        className={`sticky top-0 z-40 backdrop-blur-xl ${
           viewMode === 'gallery'
-            ? 'bg-black/80 border-white/10'
-            : (isDark ? 'bg-[#0a0a0a]/80 border-white/10' : 'bg-white/80 border-gray-200')
+            ? 'bg-black/80'
+            : (isDark ? 'bg-[#0a0a0a]/80' : 'bg-white/80')
         }`}
       >
-        <div className="max-w-6xl mx-auto px-3 sm:px-4 md:px-6 py-3 sm:py-4 flex items-center gap-2 sm:gap-4">
-          {/* Left - Title */}
-          <div className="flex-shrink-0 min-w-0 max-w-[30%] sm:max-w-none sm:w-32 md:w-40">
+        <div className="w-full px-6 h-16 flex items-center gap-4">
+          {/* Left - Title - Same style as Homepage nav */}
+          <div className="flex-shrink-0">
             <h1
-              className={`text-base sm:text-lg md:text-xl font-bold truncate ${
+              className={`font-semibold text-lg tracking-[-0.02em] ${
                 viewMode === 'gallery' ? 'text-white' : (isDark ? 'text-white' : 'text-gray-900')
               }`}
             >
@@ -600,24 +534,23 @@ const FranceVaePage: React.FC<FranceVaePageProps> = ({
                     ? 'text-white'
                     : (isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900')
                 }`}>
-                  {t.gallery}
+                  {lang === 'fr' ? 'Galerie' : 'Gallery'}
                 </span>
               </button>
             </div>
           </div>
 
           {/* Right - Close button */}
-          <div className="flex-shrink-0 sm:w-32 md:w-40 flex justify-end">
+          <div className="flex-shrink-0">
             <button
               onClick={onClose}
-              className={`p-1.5 sm:p-2 rounded-full ${
+              className={`w-8 h-8 flex items-center justify-center rounded-full transition-colors ${
                 viewMode === 'gallery'
-                  ? 'text-gray-300 hover:bg-white/10'
-                  : (isDark ? 'text-gray-300 hover:bg-white/10' : 'text-gray-600 hover:bg-gray-100')
+                  ? 'text-gray-400 hover:text-white hover:bg-white/10'
+                  : (isDark ? 'text-gray-400 hover:text-white hover:bg-white/10' : 'text-gray-500 hover:text-gray-900 hover:bg-black/5')
               }`}
             >
-              <X size={20} className="sm:hidden" />
-              <X size={24} className="hidden sm:block" />
+              <X size={18} />
             </button>
           </div>
         </div>
@@ -664,128 +597,20 @@ const FranceVaePage: React.FC<FranceVaePageProps> = ({
         </main>
       )}
 
-      {/* Lightbox Modal */}
-      <AnimatePresence>
-        {lightboxOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl flex items-center justify-center"
-            onClick={closeLightbox}
-          >
-            {/* Close button */}
-            <motion.button
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              transition={springTransition}
-              onClick={closeLightbox}
-              className="absolute top-4 right-4 md:top-6 md:right-6 z-10 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
-            >
-              <X size={24} />
-            </motion.button>
-
-            {/* Navigation arrows */}
-            {lightboxIndex > 0 && (
-              <motion.button
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={springTransition}
-                onClick={(e) => { e.stopPropagation(); paginate(-1); }}
-                className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
-              >
-                <ChevronLeft size={28} />
-              </motion.button>
-            )}
-
-            {lightboxIndex < ALL_MEDIA.length - 1 && (
-              <motion.button
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 20 }}
-                transition={springTransition}
-                onClick={(e) => { e.stopPropagation(); paginate(1); }}
-                className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
-              >
-                <ChevronRight size={28} />
-              </motion.button>
-            )}
-
-            {/* Image Container */}
-            <motion.div
-              key={`${lightboxIndex}-${lightboxZoomed}`}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              transition={springTransition}
-              className={`relative flex flex-col items-center ${
-                lightboxZoomed
-                  ? 'w-full h-full overflow-auto'
-                  : 'max-w-[90vw] max-h-[85vh]'
-              }`}
-              onClick={(e) => e.stopPropagation()}
-            >
-              {/* Scrollable image wrapper when zoomed */}
-              <div
-                className={`${
-                  lightboxZoomed
-                    ? 'w-full h-full overflow-auto flex items-start justify-center p-4'
-                    : 'flex flex-col items-center'
-                }`}
-              >
-                <img
-                  src={ALL_MEDIA[lightboxIndex].src}
-                  alt={lang === 'fr' ? ALL_MEDIA[lightboxIndex].captionFr : ALL_MEDIA[lightboxIndex].caption}
-                  className={`rounded-lg select-none transition-all ${
-                    lightboxZoomed
-                      ? 'max-w-none w-full h-auto max-h-none cursor-zoom-out'
-                      : 'max-w-full max-h-[80vh] object-contain cursor-zoom-in'
-                  }`}
-                  style={!lightboxZoomed ? { cursor: 'zoom-in' } : { cursor: 'zoom-out' }}
-                  onClick={handleImageTap}
-                  draggable={false}
-                />
-              </div>
-
-              {/* Caption - hidden when zoomed */}
-              {!lightboxZoomed && (
-                <>
-                  <p className="mt-4 text-center text-white/80 text-sm">
-                    {lang === 'fr' ? ALL_MEDIA[lightboxIndex].captionFr : ALL_MEDIA[lightboxIndex].caption}
-                  </p>
-                  <p className="mt-1 text-center text-white/40 text-xs">
-                    {lightboxIndex + 1} / {ALL_MEDIA.length}
-                  </p>
-                </>
-              )}
-
-              {/* Zoom hint - different for mobile vs desktop */}
-              {!lightboxZoomed && (
-                <p className="mt-2 text-center text-white/30 text-xs">
-                  <span className="hidden md:inline">{lang === 'fr' ? 'Cliquez pour agrandir' : 'Click to enlarge'}</span>
-                  <span className="md:hidden">{lang === 'fr' ? 'Double-tap pour zoomer' : 'Double-tap to zoom'}</span>
-                </p>
-              )}
-
-              {/* Unzoom button when zoomed */}
-              {lightboxZoomed && (
-                <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-10">
-                  <button
-                    onClick={(e) => { e.stopPropagation(); toggleZoom(); }}
-                    className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 text-white text-sm transition-colors backdrop-blur-sm"
-                  >
-                    <ZoomOut size={16} />
-                    {lang === 'fr' ? 'Réduire' : 'Zoom out'}
-                  </button>
-                </div>
-              )}
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Lightbox Modal - Using EnhancedLightbox */}
+      <EnhancedLightbox
+        isOpen={lightboxOpen}
+        onClose={closeLightbox}
+        images={ALL_MEDIA.map(item => ({
+          src: item.src,
+          caption: lang === 'fr' ? item.captionFr : item.caption
+        }))}
+        currentIndex={lightboxIndex}
+        onIndexChange={setLightboxIndex}
+        lang={lang}
+        projectId="france-vae"
+        updateUrl={true}
+      />
     </motion.div>
   );
 };

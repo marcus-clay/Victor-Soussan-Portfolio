@@ -117,6 +117,7 @@ interface Project {
   hoverImage?: string; // Image to show on hover (with device mockup)
   externalLink?: string;
   testimonialId?: string;
+  status?: 'shipped' | 'concept';
 }
 
 interface Resource {
@@ -175,7 +176,7 @@ const Avatar: React.FC<{ filename: string; alt: string; className?: string; isDa
   return (
     <div className={`relative overflow-hidden flex items-center justify-center ${className}`}>
       {!hasError ? (
-        <img
+        <img loading="lazy"
           src={imagePath}
           alt={alt}
           className="absolute inset-0 w-full h-full object-cover"
@@ -254,7 +255,7 @@ const TRANSLATIONS = {
         execution: [
           "UX framing, UI design, micro-interactions",
           "Hi-fi prototyping to validate ideas and sell a vision",
-          "MVP build-outs using Bolt, Lovable, Figma",
+          "Rapid MVP development using Claude Code, Gemini & Vercel (auth, DB, GenAI integration)",
           "Make Fast concept-to-interface workflows in complex domains"
         ],
         utility: [
@@ -293,6 +294,7 @@ const TRANSLATIONS = {
       view_full_bio: "View Biography & Track Record",
       view_executive: "1-min Presentation",
       modal_title: "Biography & Track Record",
+      modal_title_short: "Bio",
       modal_subtitle: "15 years building products, 10 years leading design",
       close: "Close",
       toolkit_title: "My Resource Toolkit",
@@ -541,6 +543,7 @@ const TRANSLATIONS = {
     },
     testimonials: {
       title: "In their words",
+      title_short: "Reviews",
       subtitle: "Feedback from clients, managers, and team members who have witnessed my impact on product and culture.",
       view_all: "View All 14 Recommendations",
       modal_title: "All Recommendations",
@@ -700,7 +703,7 @@ const TRANSLATIONS = {
         execution: [
           "Design d'interface (UI) propre et standardisé",
           "Prototypage haute-fidelité (du concept au test utilisateur)",
-          "Développement MVP rapide (Bolt, Lovable, Figma)",
+          "Développement MVP rapide via Claude Code, Gemini & Vercel (auth, BDD, intégration GenAI)",
           "Design mobile natif (iOS/Android) & Responsive Web"
         ],
         utility: [
@@ -740,6 +743,7 @@ const TRANSLATIONS = {
       view_full_bio: "Voir mon Parcours Complet",
       view_executive: "Présentation en 1-min",
       modal_title: "Biographie et Parcours",
+      modal_title_short: "Bio",
       modal_subtitle: "15 ans à construire des produits, 10 ans en design produit",
       close: "Fermer",
       toolkit_title: "Ma Boîte à Outils",
@@ -988,6 +992,7 @@ const TRANSLATIONS = {
     },
     testimonials: {
       title: "Témoignages",
+      title_short: "Avis",
       subtitle: "Ce que mes clients, managers et équipes disent de notre collaboration.",
       view_all: "Voir les 14 Recommandations",
       modal_title: "Toutes les Recommandations",
@@ -1413,7 +1418,7 @@ const getTestimonials = (lang: Language): Testimonial[] => {
       content: isEn 
         ? "Victor didn't just create mockups. We worked in workshops before the product even existed... He transformed business requirements into perfectly adapted user journeys. Victor is a great guy: curious, positive, ready to challenge to go further."
         : "Victor ne s’est pas contenté de faire des maquettes. Nous avons travaillé en ateliers avant même la création du produit... Il a transformé les besoins métiers en parcours utilisateurs parfaitement adaptés. Victor est un super gars : curieux, positif, prêt à challenger pour aller toujours plus loin.",
-      image: "pierre-marie-nigay.png",
+      image: "pierre-marie-nigay.webp",
       linkedin: "https://www.linkedin.com/in/pnigay/",
       category: "Clients"
     },
@@ -1425,7 +1430,7 @@ const getTestimonials = (lang: Language): Testimonial[] => {
       content: isEn 
         ? "Victor combines overflowing creativity with impressive rigor. He translates complex visions into clear, impactful user experiences. Always listening, curious, he constantly pushes thinking further."
         : "Victor allie une créativité débordante à une rigueur de travail impressionnante. Il sait traduire des visions complexes en expériences utilisateur claires et percutantes. Toujours à l’écoute, curieux, il pousse constamment les réflexions plus loin.",
-      image: "charlotte-rifflet.png",
+      image: "charlotte-rifflet.webp",
       linkedin: "https://www.linkedin.com/in/charlotterifflet/",
       category: "Management"
     },
@@ -1437,7 +1442,7 @@ const getTestimonials = (lang: Language): Testimonial[] => {
       content: isEn
         ? "Always proposing ideas that shake things up... you never settled for just thinking: you produced, tested, wireframed, prototyped. Your UX expertise is undeniable, but your experience made the difference."
         : "Toujours en train de proposer des idées qui bousculent... tu ne t’es jamais contenté de rester dans la réflexion : tu as produit, testé, maquetté, prototypé. Ton expertise UX est indéniable, mais c’est ton expérience qui a vraiment fait la différence.",
-      image: "boris-aime-bauderlique.png",
+      image: "boris-aime-bauderlique.webp",
       linkedin: "https://www.linkedin.com/in/borisaimebauderlique",
       category: "Product & Tech"
     },
@@ -1449,7 +1454,7 @@ const getTestimonials = (lang: Language): Testimonial[] => {
       content: isEn
         ? "Victor is a true source of inspiration. I was lucky to work with him on several projects... he brought a pragmatic and professional approach. His leadership and ability to collaborate were essential."
         : "Victor est une véritable source d’inspiration. J’ai eu la chance de travailler avec lui sur plusieurs projets... il a su apporter une approche pragmatique et professionnelle. Son leadership et sa capacité à collaborer étaient essentiels.",
-      image: "achref-akkari.png",
+      image: "achref-akkari.webp",
       linkedin: "https://www.linkedin.com/in/achref-akkari",
       category: "Product & Tech"
     },
@@ -1461,7 +1466,7 @@ const getTestimonials = (lang: Language): Testimonial[] => {
       content: isEn
         ? "As Product Lead in UI & Interaction Design, he played a central role in defining the product vision... I was struck by Victor's curiosity and his ability to share knowledge pedagogically. He was a real driver of progress."
         : "En tant que Product Lead en UI & Interaction Design, il a joué un rôle central dans la définition de la vision produit... J’ai été très marquée par la curiosité de Victor et sa capacité à partager son savoir avec pédagogie. Il a été un véritable moteur de progrès.",
-      image: "justine-le-tellier.png",
+      image: "justine-le-tellier.webp",
       linkedin: "https://www.linkedin.com/in/justine-le-tellier",
       category: "Design"
     },
@@ -1473,7 +1478,7 @@ const getTestimonials = (lang: Language): Testimonial[] => {
       content: isEn
         ? "I worked alongside Victor for 5 beautiful years. His expertise, 360 vision, and design talent enabled the creation and success of many projects... Victor is passionate and fascinating."
         : "J’ai travaillé aux côtés de Victor pendant 5 belles années. Son expertise, sa vision 360 et son talent de designer ont permis la création et la réussite de nombreux projets... Victor est passionné et passionnant.",
-      image: "hortense-jan.png",
+      image: "hortense-jan.webp",
       linkedin: "https://www.linkedin.com/in/hortensejan",
       category: "Management"
     },
@@ -1485,7 +1490,7 @@ const getTestimonials = (lang: Language): Testimonial[] => {
       content: isEn
         ? "Highly cultivated, curious, and creative, he always brings relevant ideas and original perspectives. Beyond his talent, Victor is particularly friendly, which makes collaborating with him even more enjoyable."
         : "Très cultivé, curieux et créatif, il apporte toujours des idées pertinentes et des perspectives originales. En plus de son talent, Victor est quelqu’un de particulièrement sympathique, ce qui rend la collaboration avec lui d’autant plus agréable.",
-      image: "hubert-bloch.png",
+      image: "hubert-bloch.webp",
       linkedin: "https://fr.linkedin.com/in/hubertbloch",
       category: "Management"
     },
@@ -1497,7 +1502,7 @@ const getTestimonials = (lang: Language): Testimonial[] => {
       content: isEn
         ? "Passionate and reliable... Lover of details... his feedback allowed me to reach a new level. He has the will to listen to his team, putting them in the best conditions."
         : "Passionné et fiable... Amoureux des détails... ses retours m'ont permis d'atteindre un nouveau palier. Il a la volonté d'être à l'écoute de son équipe, de les mettre dans les meilleures conditions.",
-      image: "johan-mbagna-gaby.png",
+      image: "johan-mbagna-gaby.webp",
       linkedin: "https://fr.linkedin.com/in/mbagnajohan",
       category: "Design"
     },
@@ -1509,7 +1514,7 @@ const getTestimonials = (lang: Language): Testimonial[] => {
       content: isEn
         ? "Beyond being a manager concerned with his team's well-being, he is passionate about details. Patient and pedagogical, he doesn't hesitate to give constructive advice... A mentor I appreciated working with."
         : "En plus d'être un manager soucieux du bien-être de son équipe, c'est un passionné qui a le souci du détail. Patient et pédagogue, il n'hésite pas à donner des conseils constructifs... Un mentor avec lequel j'ai apprécié travailler.",
-      image: "safak-aktas.png",
+      image: "safak-aktas.webp",
       linkedin: "https://www.linkedin.com/in/safak-aktas/",
       category: "Design"
     },
@@ -1521,7 +1526,7 @@ const getTestimonials = (lang: Language): Testimonial[] => {
       content: isEn
         ? "Professional and rigorous, Victor knows how to translate business stakes into relevant implementations... Victor is very attentive to his collaborators and different trades, both technical and marketing."
         : "Professionnel et rigoureux, Victor sait traduire les enjeux business dans des réalisations pertinentes... Victor est très à l'écoute de ses collaborateurs et des différents métiers, à la fois technique ou marketing.",
-      image: "frederic-rodriguez.png",
+      image: "frederic-rodriguez.webp",
       linkedin: "https://www.linkedin.com/in/frederic-rodriguez-71061255/",
       category: "Management"
     },
@@ -1533,7 +1538,7 @@ const getTestimonials = (lang: Language): Testimonial[] => {
       content: isEn
         ? "Accessible, attentive, and responsible... working with Victor is a pleasure as he adheres to collective intelligence principles and facilitates interactions between Design and Engineering."
         : "Accessible, à l'écoute et responsable... travailler avec Victor est un plaisir car il adhère aux principes de l'intelligence collective et facilite les interactions entre l'équipe Design et la maîtrise d'œuvre.",
-      image: "remi-serougne.png",
+      image: "remi-serougne.webp",
       linkedin: "https://www.linkedin.com/in/remi-serougne-7314b940/",
       category: "Product & Tech"
     },
@@ -1545,7 +1550,7 @@ const getTestimonials = (lang: Language): Testimonial[] => {
       content: isEn
         ? "He is a very capable designer who can do the legwork but also take a step back and advise on more strategic aspects... He's worked on mobile and web, and has a keen eye for interaction design. Highly recommended."
         : "Victor is passionate about UX... He is a very capable designer who can do the legwork but also take a step back... He's worked on mobile and web, and has a keen eye for interaction design. Highly recommended.",
-      image: "simon-white.png",
+      image: "simon-white.webp",
       linkedin: "https://www.linkedin.com/in/fruey/",
       category: "Design"
     },
@@ -1557,7 +1562,7 @@ const getTestimonials = (lang: Language): Testimonial[] => {
       content: isEn
         ? "He knows how to unite people around a project, allowing for total autonomy to see it through. It is very useful to discuss the medium-term service vision with him."
         : "Il sait fédérer les gens autour d'un projet et qu'on peut par conséquent lui laisser une autonomie totale pour le mener à bien. Il est très utile de discuter avec lui lorsqu'il s'agit d'aborder la vision moyen terme.",
-      image: "nicolas-moulin.png",
+      image: "nicolas-moulin.webp",
       linkedin: "https://www.linkedin.com/in/moulinnicolas",
       category: "Management"
     },
@@ -1569,7 +1574,7 @@ const getTestimonials = (lang: Language): Testimonial[] => {
       content: isEn
         ? "His previous experiences as Art Director and Designer bring a critical sense and a new approach to our projects which allow us to improve user experience... Victor helped us a lot on the embedded PagesJaunes application."
         : "Ses expériences précédentes de DA et Designer apportent un sens critique et une nouvelle approche... Victor nous a beaucoup aidé sur l'application embarquée PagesJaunes que nous avons conçue ensemble.",
-      image: "francois-khoury.png",
+      image: "francois-khoury.webp",
       linkedin: "https://www.linkedin.com/in/francoisk",
       category: "Product & Tech"
     }
@@ -1614,12 +1619,26 @@ const App: React.FC = () => {
   const [copiedPortfolio, setCopiedPortfolio] = useState(false);
   const [iframeModalUrl, setIframeModalUrl] = useState<string | null>(null);
   // Unified project modal state: which project is open and which view mode
+  // Also tracks initial media index if URL points to specific image/video
+  const [initialMediaIndex, setInitialMediaIndex] = useState<number | null>(null);
   const [openProject, setOpenProject] = useState<{
     project: 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'france-vae';
     viewMode: 'caseStudy' | 'gallery' | 'executive';
   } | null>(() => {
     // Parse URL on initial load
     const path = window.location.pathname;
+
+    // Match media URLs: /project/:id/media/:type/:index
+    const mediaMatch = path.match(/^\/projects?\/(toolkit|dailymotion|connect|sqool|france-vae)\/media\/(image|video)\/(\d+)$/);
+    if (mediaMatch) {
+      const projectId = mediaMatch[1] as 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'france-vae';
+      const mediaIndex = parseInt(mediaMatch[3], 10) - 1; // Convert to 0-based index
+      // Store the media index to open lightbox automatically
+      setTimeout(() => setInitialMediaIndex(mediaIndex >= 0 ? mediaIndex : 0), 100);
+      return { project: projectId, viewMode: 'gallery' };
+    }
+
+    // Match standard project URLs: /project/:id/:viewMode?
     const projectMatch = path.match(/^\/projects?\/(toolkit|dailymotion|connect|sqool|france-vae)(?:\/(case-study|gallery|executive))?$/);
     if (projectMatch) {
       const projectId = projectMatch[1] as 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'france-vae';
@@ -1659,7 +1678,7 @@ const App: React.FC = () => {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [selectedServiceGallery, setSelectedServiceGallery] = useState<string | null>(null);
-  const [expandedService, setExpandedService] = useState<string | null>(null);
+  const [expandedService, setExpandedService] = useState<string | null>('execution');
 
   // Quote Generator State
   const [isQuoteGeneratorOpen, setIsQuoteGeneratorOpen] = useState(false);
@@ -1789,6 +1808,49 @@ const App: React.FC = () => {
     document.body.classList.add(`accessibility-${accessibilityMode}`);
   }, [accessibilityMode]);
 
+  // Global haptic feedback and tap sound on all taps/clicks
+  useEffect(() => {
+    const handleGlobalTap = (e: MouseEvent | TouchEvent) => {
+      // Get the target element
+      const target = e.target as HTMLElement;
+
+      // Determine if it's an interactive element
+      const isButton = target.closest('button') ||
+                      target.closest('a') ||
+                      target.closest('[role="button"]') ||
+                      target.closest('[onclick]') ||
+                      target.tagName === 'BUTTON' ||
+                      target.tagName === 'A';
+
+      const isInteractive = target.closest('[class*="cursor-pointer"]') ||
+                           window.getComputedStyle(target).cursor === 'pointer';
+
+      // Play tap sound for all interactive taps
+      if (isButton || isInteractive) {
+        const audio = new Audio('/sounds/tap.wav');
+        audio.volume = 0.15;
+        audio.play().catch(() => {});
+      }
+
+      // Haptic feedback if device supports vibration
+      if (navigator.vibrate) {
+        if (isButton) {
+          navigator.vibrate(10);
+        } else if (isInteractive) {
+          navigator.vibrate(8);
+        } else {
+          navigator.vibrate(5);
+        }
+      }
+    };
+
+    // Use click for all devices (touchstart causes double sound on mobile)
+    document.addEventListener('click', handleGlobalTap, { passive: true });
+
+    return () => {
+      document.removeEventListener('click', handleGlobalTap);
+    };
+  }, []);
 
   // Detect scroll position
   useEffect(() => {
@@ -1800,45 +1862,48 @@ const App: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Detect active section on scroll
-  // Track active section with scroll detection for hero
+  // Detect active section on scroll - improved accuracy
   useEffect(() => {
-    const sections = ['services', 'bio', 'projects', 'lab', 'testimonials', 'contact'];
-    let currentSection: string | null = null;
+    const sectionIds = ['projects', 'services', 'bio', 'lab', 'testimonials', 'contact'];
 
-    const observerOptions = {
-      root: null,
-      rootMargin: '-40% 0px -40% 0px',
-      threshold: 0
-    };
-
-    const observerCallback = (entries: IntersectionObserverEntry[]) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          currentSection = entry.target.id;
-          setActiveSection(entry.target.id);
-        }
-      });
-    };
-
-    const observer = new IntersectionObserver(observerCallback, observerOptions);
-
-    sections.forEach((id) => {
-      const element = document.getElementById(id);
-      if (element) observer.observe(element);
-    });
-
-    // Scroll listener to detect when at top of page (hero section)
     const handleScroll = () => {
       const scrollY = window.scrollY;
-      const heroHeight = window.innerHeight * 0.5; // Roughly top half of viewport
+      const headerOffset = 80; // Height of sticky header
 
-      if (scrollY < heroHeight) {
-        // We're in the hero section
-        if (currentSection !== null) {
-          currentSection = null;
+      // Check if we're at the top (hero section)
+      const heroSection = document.querySelector('header.relative'); // Hero section
+      if (heroSection) {
+        const heroBottom = heroSection.getBoundingClientRect().bottom + scrollY;
+        if (scrollY < heroBottom - headerOffset - 100) {
           setActiveSection(null);
+          return;
         }
+      }
+
+      // Find the section that's currently most visible
+      let currentSectionId: string | null = null;
+      let minDistance = Infinity;
+
+      for (const id of sectionIds) {
+        const element = document.getElementById(id);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          const sectionTop = rect.top;
+
+          // Section is considered "active" when its top is near or above the header
+          // and it's not completely scrolled past
+          if (sectionTop <= headerOffset + 100 && rect.bottom > headerOffset) {
+            const distance = Math.abs(sectionTop - headerOffset);
+            if (distance < minDistance) {
+              minDistance = distance;
+              currentSectionId = id;
+            }
+          }
+        }
+      }
+
+      if (currentSectionId) {
+        setActiveSection(currentSectionId);
       }
     };
 
@@ -1847,10 +1912,6 @@ const App: React.FC = () => {
     handleScroll();
 
     return () => {
-      sections.forEach((id) => {
-        const element = document.getElementById(id);
-        if (element) observer.unobserve(element);
-      });
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
@@ -1987,36 +2048,13 @@ const App: React.FC = () => {
         : 'bg-[#F9F9F9] text-[#1D1D1F]'
     }`}>
 
-      {/* Theme Toggle Button - Fixed at top right corner - Hidden when modals/lightboxes are open */}
-      {!openProject && !isExecutiveOpen && !isWorkOpen && !selectedImage && !isBioOpen && !isTestimonialsOpen && !isBookingOpen && !selectedLabItem && !isContactFormOpen && !isSimpleContactOpen && !selectedServiceGallery && !isResumeOpen && !isQuoteGeneratorOpen && !iframeModalUrl && (
-      <div className="hidden md:block fixed top-4 right-4 z-[60]">
-        <button
-          onClick={() => {
-            // Cycle through: light -> dark -> system -> light
-            if (themeMode === 'light') setThemeMode('dark');
-            else if (themeMode === 'dark') setThemeMode('system');
-            else setThemeMode('light');
-          }}
-          className={`p-2.5 rounded-full transition-all hover:scale-105 ${
-            systemTheme === 'dark'
-              ? 'bg-black/40 backdrop-blur-xl border border-white/20 text-white/70 hover:bg-black/50 shadow-lg'
-              : 'bg-white/70 backdrop-blur-xl border border-white/50 text-black/50 hover:bg-white/80 shadow-[0_4px_16px_rgba(0,0,0,0.1)]'
-          }`}
-          aria-label={`Theme: ${themeMode}`}
-          title={themeMode === 'light' ? 'Light mode' : themeMode === 'dark' ? 'Dark mode' : 'System mode'}
-        >
-          {themeMode === 'light' ? <Sun size={16} /> : themeMode === 'dark' ? <Moon size={16} /> : <Monitor size={16} />}
-        </button>
-      </div>
-      )}
-
-      {/* Navigation */}
-      <nav className={`fixed top-0 w-full z-50 backdrop-blur-md transition-all duration-300 ${
+      {/* Navigation - Full width with glass effect */}
+      <nav className={`fixed top-0 w-full z-50 backdrop-blur-xl ${
         systemTheme === 'dark'
-          ? 'bg-[#0a0a0a]/80 border-b border-white/10'
-          : 'bg-[#F9F9F9]/80 border-b border-white/50'
+          ? 'bg-[#0a0a0a]/80'
+          : 'bg-white/80'
       }`}>
-        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+        <div className="w-full px-6 h-16 flex items-center justify-between">
           {/* Logo/Section Name - Logo visible when not scrolled, section name when scrolled */}
           <div
             className={`relative font-semibold text-lg tracking-[-0.02em] cursor-pointer transition-all duration-300 group ${isScrolled ? 'min-w-[100px]' : ''}`}
@@ -2235,7 +2273,7 @@ const App: React.FC = () => {
                           onClick={() => {
                             // Haptic feedback
                             if (navigator.vibrate) navigator.vibrate(15);
-                            // Play tap sound
+                            // Play button tap sound
                             const audio = new Audio('/sounds/tap.wav');
                             audio.volume = 0.25;
                             audio.play().catch(() => {});
@@ -2674,12 +2712,12 @@ const App: React.FC = () => {
       `}</style>
 
       {/* Case Studies Section - Landscape Banners */}
-      <section id="projects" className={`pt-8 pb-16 md:pt-16 md:pb-32 px-4 md:px-6 ${
+      <section id="projects" className={`pt-8 pb-16 md:pt-16 md:pb-32 px-10 ${
         systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-[#F9F9F9]'
       }`}>
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-[1280px] mx-auto">
           {/* Stacked Landscape Cards - Show only first 3 projects */}
-          <div className="flex flex-col gap-6 md:gap-8">
+          <div className="flex flex-col gap-10">
             {projects.slice(0, 3).map((project, index) => (
                 <motion.div
                   key={project.id}
@@ -2694,10 +2732,10 @@ const App: React.FC = () => {
                       setIframeModalUrl(project.externalLink);
                     }
                   }}
-                  className={`group cursor-pointer rounded-2xl md:rounded-3xl border overflow-hidden transition-all duration-300 hover:scale-[1.01] ${
+                  className={`group cursor-pointer rounded-2xl md:rounded-3xl border overflow-hidden transition-all duration-300 ${
                     systemTheme === 'dark'
-                      ? 'bg-[#1D1D1F] border-white/5 hover:border-white/15 hover:shadow-[0_25px_50px_rgba(0,0,0,0.4)]'
-                      : 'bg-white border-gray-200 hover:shadow-[0_25px_50px_rgba(0,0,0,0.04)]'
+                      ? 'bg-[#1D1D1F] border-white/5'
+                      : 'bg-white border-gray-200'
                   }`}
                 >
                   <div className="flex flex-col md:flex-row">
@@ -2719,19 +2757,12 @@ const App: React.FC = () => {
                         </span>
                       </div>
 
-                      {/* Subtle gradient overlay */}
-                      <div className={`absolute inset-0 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none ${
-                        systemTheme === 'dark'
-                          ? 'bg-gradient-to-r from-transparent via-transparent to-blue-600/5'
-                          : 'bg-gradient-to-r from-transparent via-transparent to-blue-600/5'
-                      }`} />
-
                       <div className={`aspect-[16/9] md:aspect-auto md:h-full relative ${project.hoverImage ? 'p-0' : 'p-3 md:p-6'}`}>
                         {/* Default image */}
-                        <img
+                        <img loading="lazy"
                           src={project.coverImage.startsWith('/') ? project.coverImage : `/images/${project.coverImage}`}
                           alt={`${project.title} preview`}
-                          className={`w-full h-full object-cover transition-all duration-500 ease-out ${
+                          className={`w-full h-full object-cover transition-transform duration-300 ease-out ${
                             project.hoverImage
                               ? 'opacity-100 group-hover:opacity-0 rounded-none md:rounded-l-2xl'
                               : 'rounded-xl md:rounded-2xl md:object-contain'
@@ -2743,12 +2774,12 @@ const App: React.FC = () => {
                                 : 'scale-100 group-hover:scale-105'
                           }`}
                         />
-                        {/* Hover image (device mockup) */}
+                        {/* Hover image (device mockup) - with zoom effect */}
                         {project.hoverImage && (
-                          <img
+                          <img loading="lazy"
                             src={project.hoverImage}
                             alt={`${project.title} device mockup`}
-                            className="absolute inset-0 w-full h-full object-cover md:object-contain rounded-none md:rounded-l-2xl transition-all duration-500 ease-out opacity-0 group-hover:opacity-100"
+                            className="absolute inset-0 w-full h-full object-cover md:object-contain rounded-none md:rounded-l-2xl transition-all duration-300 ease-out opacity-0 group-hover:opacity-100 scale-100 group-hover:scale-110"
                           />
                         )}
                       </div>
@@ -2934,10 +2965,10 @@ const App: React.FC = () => {
           <div className="mt-12 text-center">
             <button
               onClick={() => setIsWorkOpen(true)}
-              className={`group px-8 py-3 border rounded-full font-medium transition-colors inline-flex items-center shadow-sm hover:shadow-md ${
+              className={`group px-8 py-3 rounded-full font-medium transition-colors inline-flex items-center shadow-sm hover:shadow-md ${
                 systemTheme === 'dark'
-                  ? 'bg-white/10 border-white/20 text-white hover:bg-white/20'
-                  : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'
+                  ? 'bg-white text-black hover:bg-gray-200'
+                  : 'bg-black text-white hover:bg-gray-800'
               }`}
             >
               {content.projects.view_all} <ArrowUpRight size={18} className="ml-2 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
@@ -2947,16 +2978,16 @@ const App: React.FC = () => {
       </section>
 
       {/* Biography & Toolkit Section */}
-      <section id="bio" className={`py-16 md:py-32 px-4 md:px-6 relative ${
+      <section id="bio" className={`py-16 md:py-32 px-10 relative ${
         systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white'
       }`}>
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-[1280px] mx-auto">
           <div className="mb-8 md:mb-12 text-center">
             <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold tracking-[-0.02em] mb-4 md:mb-6">{content.bio.title}</h2>
             <p className={`text-sm sm:text-base md:text-lg max-w-2xl mx-auto ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>{content.bio.subtitle}</p>
           </div>
 
-          <div className="grid md:grid-cols-12 gap-6 md:gap-8">
+          <div className="grid md:grid-cols-12 gap-10">
 
             {/* Left: Bio Card */}
             <div className="md:col-span-7">
@@ -2968,7 +2999,7 @@ const App: React.FC = () => {
                   <div>
                     <div className="flex flex-col md:flex-row items-center md:items-start space-y-4 md:space-y-0 md:space-x-8 mb-6 md:mb-8">
                       <Avatar
-                        filename="victor-soussan.png"
+                        filename="victor-soussan.webp"
                         alt="Victor Soussan"
                         className="w-28 h-28 md:w-40 md:h-40 rounded-2xl md:rounded-[2rem] shadow-lg border border-white/20"
                         isDark={systemTheme === 'dark'}
@@ -3125,10 +3156,10 @@ const App: React.FC = () => {
       </section>
 
       {/* Services Section - Accordion Style */}
-      <section id="services" className={`py-16 md:py-32 px-4 md:px-6 ${
+      <section id="services" className={`py-16 md:py-32 px-10 ${
         systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-[#F9F9F9]'
       }`}>
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-[1280px] mx-auto">
           <div className="mb-8 md:mb-12 text-center">
              <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold tracking-[-0.02em] mb-4 md:mb-6">{content.services.title}</h2>
              <p className={`text-sm sm:text-base md:text-lg max-w-2xl mx-auto ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
@@ -3145,11 +3176,7 @@ const App: React.FC = () => {
                 title: content.services.execution,
                 items: content.services.items.execution,
                 color: 'pink' as const,
-                images: [
-                  { src: '/images/bd-sketches/07 - Designing the Micro-Interaction - no legend.jpg', caption: lang === 'en' ? 'Designing micro-interactions' : 'Conception de micro-interactions' },
-                  { src: '/images/bd-sketches/09 - Prototypage haute-fidélité et spécifications.jpg', caption: lang === 'en' ? 'Hi-fi prototyping & specs' : 'Prototypage haute-fidélité' },
-                  { src: '/images/bd-sketches/06b - Prototyping La Bulle.jpg', caption: lang === 'en' ? 'Feature prototyping' : 'Prototypage de fonctionnalités' }
-                ]
+                image: '/images/sketches services/gifs/01_image_hand_on_execution.gif'
               },
               {
                 id: 'utility',
@@ -3157,11 +3184,7 @@ const App: React.FC = () => {
                 title: content.services.utility,
                 items: content.services.items.utility,
                 color: 'blue' as const,
-                images: [
-                  { src: '/images/bd-sketches/03 - Deep user observation - empathy.jpg', caption: lang === 'en' ? 'User observation & empathy' : 'Observation utilisateur & empathie' },
-                  { src: '/images/bd-sketches/34 - User testing interviews.jpg', caption: lang === 'en' ? 'User testing & interviews' : 'Tests utilisateurs & interviews' },
-                  { src: '/images/bd-sketches/design UX, product architecture, user flows.png', caption: lang === 'en' ? 'UX & product architecture' : 'Architecture UX & produit' }
-                ]
+                image: '/images/sketches services/gifs/02_workshop_product_vision.gif'
               },
               {
                 id: 'efficiency',
@@ -3169,11 +3192,7 @@ const App: React.FC = () => {
                 title: content.services.efficiency,
                 items: content.services.items.efficiency,
                 color: 'orange' as const,
-                images: [
-                  { src: '/images/bd-sketches/11 - Construction du UI Kit et du Design System.jpg', caption: lang === 'en' ? 'UI Kit & Design System' : 'UI Kit & Design System' },
-                  { src: '/images/bd-sketches/10 - Synchronisations Design-Dev et Architecture des Composants.jpg', caption: lang === 'en' ? 'Design-dev sync' : 'Sync Design-Dev' },
-                  { src: '/images/bd-sketches/13b - Developer handoff.jpg', caption: lang === 'en' ? 'Developer handoff' : 'Passation aux développeurs' }
-                ]
+                image: '/images/sketches services/gifs/03 - product_vision_workshop_facilitation.gif'
               },
               {
                 id: 'impact',
@@ -3181,11 +3200,7 @@ const App: React.FC = () => {
                 title: content.services.impact,
                 items: content.services.items.impact,
                 color: 'teal' as const,
-                images: [
-                  { src: '/images/bd-sketches/21 - Ideation Workshop for the Suite.jpg', caption: lang === 'en' ? 'Ideation workshops' : 'Ateliers d\'idéation' },
-                  { src: '/images/bd-sketches/27 - Ateliers de co creation et sketching en equipe.jpg', caption: lang === 'en' ? 'Co-creation workshops' : 'Ateliers de co-création' },
-                  { src: '/images/bd-sketches/24 - Design teams rituals.jpg', caption: lang === 'en' ? 'Team rituals' : 'Rituels d\'équipe' }
-                ]
+                image: '/images/sketches services/gifs/04_organisationtal_impact_workshop_alignment.gif'
               }
             ].map((service) => {
               const isExpanded = expandedService === service.id;
@@ -3254,7 +3269,7 @@ const App: React.FC = () => {
                       <div className={`p-2 md:p-3 rounded-xl transition-transform duration-300 group-hover:scale-110 ${colorClasses.bg} ${colorClasses.text}`}>
                         {service.icon}
                       </div>
-                      <h3 className={`text-base md:text-lg font-bold ${
+                      <h3 className={`text-xl md:text-2xl font-bold tracking-[-0.02em] ${
                         systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                       }`}>{service.title}</h3>
                     </div>
@@ -3285,41 +3300,34 @@ const App: React.FC = () => {
                         <div className={`px-6 pb-6 border-t ${
                           systemTheme === 'dark' ? 'border-white/10' : 'border-gray-100'
                         }`}>
-                          {/* Bullet Points */}
-                          <ul className={`space-y-3 text-sm leading-relaxed pt-5 mb-6 ${
-                            systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'
-                          }`}>
-                            {service.items.map((item, i) => (
-                              <li key={i} className="flex items-start">
-                                <CheckCircle2 size={16} className={`mr-2 mt-0.5 ${colorClasses.check} flex-shrink-0`}/>
-                                {item}
-                              </li>
-                            ))}
-                          </ul>
-
-                          {/* Image Grid - 3 columns */}
-                          <div className="grid grid-cols-3 gap-3">
-                            {service.images.map((img, idx) => (
-                              <div
-                                key={idx}
-                                className={`rounded-xl overflow-hidden border ${
-                                  systemTheme === 'dark' ? 'border-white/10' : 'border-gray-100'
-                                }`}
-                              >
+                          {/* Layout: 1/3 image, 2/3 bullets */}
+                          <div className="flex flex-col md:flex-row gap-6 pt-6">
+                            {/* Image - 1/3 width on desktop */}
+                            <div className="md:w-1/3 flex-shrink-0">
+                              <div className={`rounded-2xl overflow-hidden border ${
+                                systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
+                              }`}>
                                 <img
-                                  src={img.src}
-                                  alt={img.caption}
-                                  className="w-full aspect-[4/3] object-cover"
+                                  src={service.image}
+                                  alt={service.title}
+                                  className="w-full h-auto object-cover"
+                                  loading="lazy"
                                 />
-                                <p className={`text-xs p-2 text-center ${
-                                  systemTheme === 'dark'
-                                    ? 'bg-white/5 text-gray-400'
-                                    : 'bg-gray-50 text-gray-600'
-                                }`}>
-                                  {img.caption}
-                                </p>
                               </div>
-                            ))}
+                            </div>
+                            {/* Bullet Points - 2/3 width on desktop */}
+                            <div className="md:w-2/3">
+                              <ul className={`space-y-4 ${
+                                systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                              }`}>
+                                {service.items.map((item, i) => (
+                                  <li key={i} className="flex items-start">
+                                    <CheckCircle2 size={18} className={`mr-3 mt-0.5 ${colorClasses.check} flex-shrink-0`}/>
+                                    <span className="text-base leading-relaxed font-medium tracking-[-0.01em]">{item}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
                           </div>
                         </div>
                       </motion.div>
@@ -3333,12 +3341,12 @@ const App: React.FC = () => {
       </section>
 
       {/* Clients Section */}
-      <section id="clients" className={`py-16 md:py-24 px-4 md:px-6 border-t ${
+      <section id="clients" className={`py-16 md:py-24 px-10 border-t ${
         systemTheme === 'dark'
           ? 'bg-[#0a0a0a] border-white/10'
           : 'bg-[#F9F9F9] border-gray-100'
       }`}>
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-[1280px] mx-auto">
           <div className="mb-8 md:mb-12 text-center">
             <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold tracking-[-0.02em] mb-4 md:mb-6">
               {lang === 'en' ? 'Trusted by leading companies' : 'Des entreprises qui me font confiance'}
@@ -3388,7 +3396,7 @@ const App: React.FC = () => {
                       key={`${setIndex}-${index}`}
                       className="flex items-center justify-center mx-2 md:mx-3"
                     >
-                      <img
+                      <img loading="lazy"
                         src={logo.src}
                         alt={logo.alt}
                         className={`h-[60px] sm:h-[80px] md:h-[100px] w-auto transition-all duration-500 ease-out ${
@@ -3407,12 +3415,12 @@ const App: React.FC = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section id="testimonials" className={`py-16 md:py-32 px-4 md:px-6 border-t ${
+      <section id="testimonials" className={`py-16 md:py-32 px-10 border-t ${
         systemTheme === 'dark'
           ? 'bg-[#0a0a0a] border-white/10'
           : 'bg-white border-gray-100'
       }`}>
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-[1280px] mx-auto">
           <div className="mb-8 md:mb-12 text-center">
             <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold tracking-[-0.02em] mb-4 md:mb-6">{content.testimonials.title}</h2>
             <p className={`text-sm sm:text-base md:text-lg max-w-2xl mx-auto ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
@@ -3486,12 +3494,12 @@ const App: React.FC = () => {
       </section>
 
       {/* Condamine Studio Section */}
-      <section id="lab" className="py-16 md:py-32 px-4 md:px-6 bg-[#09090b] text-white relative overflow-hidden">
+      <section id="lab" className="py-16 md:py-32 px-10 bg-[#09090b] text-white relative overflow-hidden">
          {/* Atmospheric Glows */}
          <div className="absolute top-0 right-0 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-indigo-600/10 rounded-full blur-[100px] pointer-events-none translate-x-1/2 -translate-y-1/2"></div>
          <div className="absolute bottom-0 left-0 w-[250px] md:w-[400px] h-[250px] md:h-[400px] bg-blue-600/10 rounded-full blur-[100px] pointer-events-none -translate-x-1/2 translate-y-1/2"></div>
 
-         <div className="max-w-6xl mx-auto relative z-10">
+         <div className="max-w-[1280px] mx-auto relative z-10">
             <div className="mb-8 md:mb-12 text-center">
               <div className="inline-flex items-center px-3 py-1 rounded-full bg-white/10 border border-white/10 text-xs font-medium text-blue-300 mb-3 md:mb-4 backdrop-blur-md">
                  <FlaskConical size={14} className="mr-2"/> {content.lab.tag}
@@ -3603,91 +3611,94 @@ const App: React.FC = () => {
           }`}
         >
 
-              {/* Full-Page Header */}
-              <div className={`sticky top-0 z-20 flex items-center py-4 px-6 md:px-12 border-b ${
+              {/* Full-Page Header - Responsive */}
+              <header className={`sticky top-0 z-20 backdrop-blur-xl ${
                 systemTheme === 'dark'
-                  ? 'border-white/10 bg-[#0a0a0a]/95 backdrop-blur-md'
-                  : 'border-gray-200 bg-[#F9F9F9]/95 backdrop-blur-md'
+                  ? 'bg-[#0a0a0a]/80'
+                  : 'bg-white/80'
               }`}>
+                <div className="w-full px-4 sm:px-6 h-16 flex items-center gap-2 sm:gap-4">
                  {/* Title - Left */}
-                 <div className="flex-1">
-                   <h2 className={`text-xl md:text-2xl font-bold ${
+                 <div className="flex-shrink-0">
+                   <h2 className={`font-semibold text-base sm:text-lg tracking-[-0.02em] ${
                      systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                   }`}>{content.bio.modal_title}</h2>
+                   }`}>
+                     <span className="hidden sm:inline">{content.bio.modal_title}</span>
+                     <span className="sm:hidden">{content.bio.modal_title_short}</span>
+                   </h2>
                  </div>
 
                  {/* Toggle - Center */}
-                 <div className={`relative flex items-center rounded-full p-1 ${
-                   systemTheme === 'dark' ? 'bg-white/10' : 'bg-gray-100'
-                 }`}>
-                   <motion.div
-                     className="absolute bg-blue-600 rounded-full shadow-md"
-                     initial={false}
-                     animate={{
-                       x: bioViewMode === 'text' ? 0 : '100%',
-                       width: bioViewMode === 'text' ? '50%' : '50%'
-                     }}
-                     transition={{
-                       type: 'spring',
-                       stiffness: 500,
-                       damping: 35,
-                       mass: 0.8
-                     }}
-                     style={{
-                       height: 'calc(100% - 8px)',
-                       top: '4px',
-                       left: '4px',
-                       right: '4px'
-                     }}
-                   />
-                   <button
-                     onClick={() => {
-                      setBioViewMode('text');
-                      bioContentRef.current?.scrollTo({ top: 0 });
-                    }}
-                     className={`relative z-10 px-4 py-2 rounded-full text-sm font-semibold transition-colors duration-200 ${
-                       bioViewMode === 'text'
-                         ? 'text-white'
-                         : systemTheme === 'dark'
-                           ? 'text-gray-400 hover:text-white'
-                           : 'text-gray-600 hover:text-gray-900'
-                     }`}
-                     style={{ width: '50%' }}
-                   >
-                     {lang === 'fr' ? 'Texte' : 'Text'}
-                   </button>
-                   <button
-                     onClick={() => {
-                      setBioViewMode('timeline');
-                      bioContentRef.current?.scrollTo({ top: 0 });
-                    }}
-                     className={`relative z-10 px-4 py-2 rounded-full text-sm font-semibold transition-colors duration-200 ${
-                       bioViewMode === 'timeline'
-                         ? 'text-white'
-                         : systemTheme === 'dark'
-                           ? 'text-gray-400 hover:text-white'
-                           : 'text-gray-600 hover:text-gray-900'
-                     }`}
-                     style={{ width: '50%' }}
-                   >
-                     Timeline
-                   </button>
+                 <div className="flex-1 flex justify-center">
+                   <div className={`relative flex items-center gap-0.5 sm:gap-1 rounded-full p-0.5 sm:p-1 ${
+                     systemTheme === 'dark' ? 'bg-white/10' : 'bg-gray-100'
+                   }`}>
+                     <button
+                       onClick={() => {
+                         setBioViewMode('text');
+                         bioContentRef.current?.scrollTo({ top: 0 });
+                       }}
+                       className="relative z-10 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200"
+                     >
+                       {bioViewMode === 'text' && (
+                         <motion.div
+                           layoutId="bio-toggle-pill"
+                           className="absolute inset-0 bg-blue-600 rounded-full shadow-md"
+                           transition={{ type: 'spring', stiffness: 500, damping: 35, mass: 0.8 }}
+                         />
+                       )}
+                       <span className={`relative z-10 ${
+                         bioViewMode === 'text'
+                           ? 'text-white'
+                           : systemTheme === 'dark'
+                             ? 'text-gray-400 hover:text-white'
+                             : 'text-gray-600 hover:text-gray-900'
+                       }`}>
+                         {lang === 'fr' ? 'Texte' : 'Text'}
+                       </span>
+                     </button>
+                     <button
+                       onClick={() => {
+                         setBioViewMode('timeline');
+                         bioContentRef.current?.scrollTo({ top: 0 });
+                       }}
+                       className="relative z-10 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200"
+                     >
+                       {bioViewMode === 'timeline' && (
+                         <motion.div
+                           layoutId="bio-toggle-pill"
+                           className="absolute inset-0 bg-blue-600 rounded-full shadow-md"
+                           transition={{ type: 'spring', stiffness: 500, damping: 35, mass: 0.8 }}
+                         />
+                       )}
+                       <span className={`relative z-10 ${
+                         bioViewMode === 'timeline'
+                           ? 'text-white'
+                           : systemTheme === 'dark'
+                             ? 'text-gray-400 hover:text-white'
+                             : 'text-gray-600 hover:text-gray-900'
+                       }`}>
+                         Timeline
+                       </span>
+                     </button>
+                   </div>
                  </div>
 
                  {/* Close Button - Right */}
-                 <div className="flex-1 flex justify-end">
+                 <div className="flex-shrink-0">
                    <button
                      onClick={() => setIsBioOpen(false)}
-                     className={`p-2 rounded-full transition-colors ${
+                     className={`w-8 h-8 flex items-center justify-center rounded-full transition-colors ${
                        systemTheme === 'dark'
-                         ? 'bg-white/10 hover:bg-white/20 text-white'
-                         : 'bg-gray-100 hover:bg-gray-200'
+                         ? 'text-gray-400 hover:text-white hover:bg-white/10'
+                         : 'text-gray-500 hover:text-gray-900 hover:bg-black/5'
                      }`}
                    >
-                      <X size={24} />
+                      <X size={18} />
                    </button>
                  </div>
-              </div>
+                </div>
+              </header>
 
               {/* Modal Content - Full Page Scrollable */}
               <div
@@ -4014,78 +4025,80 @@ const App: React.FC = () => {
             systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white'
           }`}
         >
-          {/* Sticky Header - Same style as other modals */}
+          {/* Sticky Header - Full width responsive */}
           <header
-            className={`sticky top-0 z-40 backdrop-blur-xl border-b ${
+            className={`sticky top-0 z-40 backdrop-blur-xl ${
               systemTheme === 'dark'
-                ? 'bg-[#0a0a0a]/80 border-white/10'
-                : 'bg-white/80 border-gray-200'
+                ? 'bg-[#0a0a0a]/80'
+                : 'bg-white/80'
             }`}
           >
-            <div className="max-w-6xl mx-auto px-4 md:px-6 py-4">
-              {/* Top row - Title and Close button */}
-              <div className="flex items-center justify-between">
-                {/* Left - Title */}
-                <div>
-                  <h1
-                    className={`text-lg md:text-xl font-bold ${
-                      systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                    }`}
-                  >
-                    {content.testimonials.modal_title}
-                  </h1>
-                  <p className={`text-sm ${
-                    systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                  }`}>
-                    {testimonials.length} {content.testimonials.modal_sub}
-                  </p>
-                </div>
-
-                {/* Right - Close button */}
-                <button
-                  onClick={() => setIsTestimonialsOpen(false)}
-                  className={`p-2 rounded-full ${
-                    systemTheme === 'dark'
-                      ? 'text-gray-300 hover:bg-white/10'
-                      : 'text-gray-600 hover:bg-gray-100'
+            <div className="w-full px-4 sm:px-6 h-16 flex items-center gap-2 sm:gap-4">
+              {/* Left - Title */}
+              <div className="flex-shrink-0">
+                <h1
+                  className={`font-semibold text-base sm:text-lg tracking-[-0.02em] ${
+                    systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                   }`}
                 >
-                  <X size={24} />
-                </button>
+                  <span className="hidden sm:inline">{content.testimonials.modal_title}</span>
+                  <span className="sm:hidden">{content.testimonials.title_short}</span>
+                </h1>
               </div>
 
-              {/* Bottom row - Filters (scrollable on mobile) */}
-              <div className="mt-4 -mx-4 px-4 md:mx-0 md:px-0">
-                <div className={`flex space-x-1 p-1 rounded-full overflow-x-auto no-scrollbar ${
+              {/* Center - Filters toggle with animated pill (scrollable on mobile) */}
+              <div className="flex-1 flex justify-center overflow-x-auto no-scrollbar">
+                <div className={`relative flex items-center gap-0.5 sm:gap-1 p-0.5 sm:p-1 rounded-full ${
                   systemTheme === 'dark' ? 'bg-white/10' : 'bg-gray-100'
                 }`}>
                   {(['All', 'Management', 'Design', 'Product & Tech', 'Clients'] as Category[]).map(cat => (
                     <button
                       key={cat}
                       onClick={() => setActiveCategory(cat)}
-                      className={`
-                        px-3 md:px-4 py-2 rounded-full text-xs font-semibold transition-all whitespace-nowrap flex-shrink-0
-                        ${activeCategory === cat
-                          ? 'bg-blue-600 text-white shadow-sm'
-                          : systemTheme === 'dark'
-                            ? 'text-gray-400 hover:text-white hover:bg-white/10'
-                            : 'text-gray-500 hover:text-gray-900 hover:bg-gray-200/50'}
-                      `}
+                      className="relative z-10 px-2 sm:px-3 py-1.5 sm:py-2 rounded-full text-[10px] sm:text-sm font-semibold transition-colors duration-200 whitespace-nowrap flex-shrink-0"
                     >
-                      {cat}
+                      {activeCategory === cat && (
+                        <motion.div
+                          layoutId="testimonials-filter-pill"
+                          className="absolute inset-0 bg-blue-600 rounded-full shadow-md"
+                          transition={{ type: 'spring', stiffness: 500, damping: 35, mass: 0.8 }}
+                        />
+                      )}
+                      <span className={`relative z-10 ${
+                        activeCategory === cat
+                          ? 'text-white'
+                          : systemTheme === 'dark'
+                            ? 'text-gray-400 hover:text-white'
+                            : 'text-gray-500 hover:text-gray-900'
+                      }`}>
+                        <span className="hidden sm:inline">{cat}</span>
+                        <span className="sm:hidden">{cat === 'Product & Tech' ? 'Tech' : cat === 'Management' ? 'Mgmt' : cat}</span>
+                      </span>
                     </button>
                   ))}
                 </div>
               </div>
+
+              {/* Right - Close button */}
+              <button
+                onClick={() => setIsTestimonialsOpen(false)}
+                className={`flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full transition-colors ${
+                  systemTheme === 'dark'
+                    ? 'text-gray-400 hover:text-white hover:bg-white/10'
+                    : 'text-gray-500 hover:text-gray-900 hover:bg-black/5'
+                }`}
+              >
+                <X size={18} />
+              </button>
             </div>
           </header>
 
           {/* Modal Content - Grid of testimonials */}
-          <div className={`px-4 md:px-6 py-8 md:py-12 ${
+          <div className={`px-10 py-8 md:py-12 ${
             systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-gray-50/50'
           }`}>
-            <div className="max-w-6xl mx-auto">
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="max-w-[1280px] mx-auto">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
                 {filteredTestimonials.map((t, i) => (
                   <motion.div
                     key={i}
@@ -4169,7 +4182,7 @@ const App: React.FC = () => {
               ? 'bg-[#0a0a0a]/80 border-white/10'
               : 'bg-white/80 border-gray-200'
           }`}>
-            <div className="max-w-6xl mx-auto px-4 md:px-6 py-4 flex flex-col sm:flex-row items-center justify-center gap-3">
+            <div className="max-w-[1280px] mx-auto px-4 md:px-6 py-4 flex flex-col sm:flex-row items-center justify-center gap-3">
               <a
                 href="https://linkedin.com/in/victorsoussan/"
                 target="_blank"
@@ -4329,8 +4342,8 @@ const App: React.FC = () => {
                 >
                   <div className="relative">
                     <div className="w-16 h-16 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 overflow-hidden border-2 border-white shadow-lg">
-                      <img
-                        src={systemTheme === 'dark' ? '/images/victor_soussan_dark.webp' : '/images/victor-soussan.png'}
+                      <img loading="lazy"
+                        src={systemTheme === 'dark' ? '/images/victor_soussan_dark.webp' : '/images/victor-soussan.webp'}
                         alt="Victor Soussan"
                         className="w-full h-full object-cover"
                         onError={(e) => {
@@ -4658,8 +4671,8 @@ ${simpleContactForm.message}`;
                 >
                   <div className="relative">
                     <div className="w-16 h-16 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 overflow-hidden border-2 border-white shadow-lg">
-                      <img
-                        src={systemTheme === 'dark' ? '/images/victor_soussan_dark.webp' : '/images/victor-soussan.png'}
+                      <img loading="lazy"
+                        src={systemTheme === 'dark' ? '/images/victor_soussan_dark.webp' : '/images/victor-soussan.webp'}
                         alt="Victor Soussan"
                         className="w-full h-full object-cover"
                         onError={(e) => {
@@ -5387,12 +5400,12 @@ ${contactForm.message}`;
       </AnimatePresence>
 
       {/* Contact Section */}
-      <section id="contact" className="py-20 pb-32 md:py-40 md:pb-40 px-4 md:px-6 bg-[#1D1D1F] text-white">
-        <div className="max-w-4xl mx-auto text-center">
+      <section id="contact" className="py-20 pb-32 md:py-40 md:pb-40 px-10 bg-[#1D1D1F] text-white">
+        <div className="max-w-[1280px] mx-auto text-center">
           {/* Portrait Photo - Same style as About section */}
           <div className="mb-8">
             <Avatar
-              filename="victor-soussan.png"
+              filename="victor-soussan.webp"
               alt="Victor Soussan"
               className="w-28 h-28 md:w-40 md:h-40 rounded-2xl md:rounded-[2rem] mx-auto shadow-lg border border-white/20"
               isDark={true}
@@ -5443,8 +5456,8 @@ ${contactForm.message}`;
       </section>
       
       {/* Footer */}
-      <footer className="bg-[#1D1D1F] text-gray-500 py-16 px-6 border-t border-gray-800">
-         <div className="max-w-6xl mx-auto">
+      <footer className="bg-[#1D1D1F] text-gray-500 py-16 px-10 border-t border-gray-800">
+         <div className="max-w-[1280px] mx-auto">
             {/* Navigation Links - Order matches page structure */}
             <div className="flex flex-wrap justify-center gap-6 mb-8 pb-8 border-b border-gray-800">
                <button
@@ -5584,8 +5597,8 @@ ${contactForm.message}`;
                   {selectedServiceGallery === 'execution' && (
                     <>
                       <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
-                        <img
-                          src="/images/bd-sketches/07 - Designing the Micro-Interaction - no legend.jpg"
+                        <img loading="lazy"
+                          src="/images/bd-sketches/07 - Designing the Micro-Interaction - no legend.webp"
                           alt="Micro-interaction design"
                           className="w-full h-auto object-cover"
                         />
@@ -5594,8 +5607,8 @@ ${contactForm.message}`;
                         </div>
                       </div>
                       <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
-                        <img
-                          src="/images/bd-sketches/09 - Prototypage haute-fidélité et spécifications.jpg"
+                        <img loading="lazy"
+                          src="/images/bd-sketches/09 - Prototypage haute-fidélité et spécifications.webp"
                           alt="High-fidelity prototyping"
                           className="w-full h-auto object-cover"
                         />
@@ -5604,8 +5617,8 @@ ${contactForm.message}`;
                         </div>
                       </div>
                       <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
-                        <img
-                          src="/images/bd-sketches/06b - Prototyping La Bulle.jpg"
+                        <img loading="lazy"
+                          src="/images/bd-sketches/06b - Prototyping La Bulle.webp"
                           alt="Prototyping features"
                           className="w-full h-auto object-cover"
                         />
@@ -5614,8 +5627,8 @@ ${contactForm.message}`;
                         </div>
                       </div>
                       <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
-                        <img
-                          src="/images/bd-sketches/16 - Des interactions fluides pour la gestion des médias (CRUD).jpg"
+                        <img loading="lazy"
+                          src="/images/bd-sketches/16 - Des interactions fluides pour la gestion des médias (CRUD).webp"
                           alt="Fluid interactions"
                           className="w-full h-auto object-cover"
                         />
@@ -5624,8 +5637,8 @@ ${contactForm.message}`;
                         </div>
                       </div>
                       <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
-                        <img
-                          src="/images/bd-sketches/micro interaction design on mobile.jpg"
+                        <img loading="lazy"
+                          src="/images/bd-sketches/micro interaction design on mobile.webp"
                           alt="Mobile micro-interactions"
                           className="w-full h-auto object-cover"
                         />
@@ -5634,8 +5647,8 @@ ${contactForm.message}`;
                         </div>
                       </div>
                       <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
-                        <img
-                          src="/images/bd-sketches/interaction and motion design with feedbacks.jpg"
+                        <img loading="lazy"
+                          src="/images/bd-sketches/interaction and motion design with feedbacks.webp"
                           alt="Motion design"
                           className="w-full h-auto object-cover"
                         />
@@ -5650,8 +5663,8 @@ ${contactForm.message}`;
                   {selectedServiceGallery === 'utility' && (
                     <>
                       <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
-                        <img
-                          src="/images/bd-sketches/03 - Deep user observation - empathy.jpg"
+                        <img loading="lazy"
+                          src="/images/bd-sketches/03 - Deep user observation - empathy.webp"
                           alt="User observation"
                           className="w-full h-auto object-cover"
                         />
@@ -5660,8 +5673,8 @@ ${contactForm.message}`;
                         </div>
                       </div>
                       <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
-                        <img
-                          src="/images/bd-sketches/15d - research field observation with use of the product.jpg"
+                        <img loading="lazy"
+                          src="/images/bd-sketches/15d - research field observation with use of the product.webp"
                           alt="Field research"
                           className="w-full h-auto object-cover"
                         />
@@ -5670,8 +5683,8 @@ ${contactForm.message}`;
                         </div>
                       </div>
                       <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
-                        <img
-                          src="/images/bd-sketches/34 - User testing interviews.jpg"
+                        <img loading="lazy"
+                          src="/images/bd-sketches/34 - User testing interviews.webp"
                           alt="User testing"
                           className="w-full h-auto object-cover"
                         />
@@ -5680,8 +5693,8 @@ ${contactForm.message}`;
                         </div>
                       </div>
                       <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
-                        <img
-                          src="/images/bd-sketches/11b - Design upstream strategy and roadmap.jpg"
+                        <img loading="lazy"
+                          src="/images/bd-sketches/11b - Design upstream strategy and roadmap.webp"
                           alt="Product strategy"
                           className="w-full h-auto object-cover"
                         />
@@ -5690,8 +5703,8 @@ ${contactForm.message}`;
                         </div>
                       </div>
                       <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
-                        <img
-                          src="/images/bd-sketches/design UX, product architecture, user flows.png"
+                        <img loading="lazy"
+                          src="/images/bd-sketches/design UX, product architecture, user flows.webp"
                           alt="UX architecture"
                           className="w-full h-auto object-cover"
                         />
@@ -5700,8 +5713,8 @@ ${contactForm.message}`;
                         </div>
                       </div>
                       <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
-                        <img
-                          src="/images/bd-sketches/11 - Presenting Collaborative Study to CODIR - c-level alignment.jpg"
+                        <img loading="lazy"
+                          src="/images/bd-sketches/11 - Presenting Collaborative Study to CODIR - c-level alignment.webp"
                           alt="Executive presentation"
                           className="w-full h-auto object-cover"
                         />
@@ -5716,8 +5729,8 @@ ${contactForm.message}`;
                   {selectedServiceGallery === 'efficiency' && (
                     <>
                       <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
-                        <img
-                          src="/images/bd-sketches/11 - Construction du UI Kit et du Design System.jpg"
+                        <img loading="lazy"
+                          src="/images/bd-sketches/11 - Construction du UI Kit et du Design System.webp"
                           alt="Design system"
                           className="w-full h-auto object-cover"
                         />
@@ -5726,8 +5739,8 @@ ${contactForm.message}`;
                         </div>
                       </div>
                       <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
-                        <img
-                          src="/images/bd-sketches/10 - Synchronisations Design-Dev et Architecture des Composants.jpg"
+                        <img loading="lazy"
+                          src="/images/bd-sketches/10 - Synchronisations Design-Dev et Architecture des Composants.webp"
                           alt="Design-dev sync"
                           className="w-full h-auto object-cover"
                         />
@@ -5736,8 +5749,8 @@ ${contactForm.message}`;
                         </div>
                       </div>
                       <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
-                        <img
-                          src="/images/bd-sketches/13b - Developer handoff.jpg"
+                        <img loading="lazy"
+                          src="/images/bd-sketches/13b - Developer handoff.webp"
                           alt="Developer handoff"
                           className="w-full h-auto object-cover"
                         />
@@ -5746,8 +5759,8 @@ ${contactForm.message}`;
                         </div>
                       </div>
                       <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
-                        <img
-                          src="/images/bd-sketches/12d - Figma file archi & libraries.jpg"
+                        <img loading="lazy"
+                          src="/images/bd-sketches/12d - Figma file archi & libraries.webp"
                           alt="Figma architecture"
                           className="w-full h-auto object-cover"
                         />
@@ -5756,8 +5769,8 @@ ${contactForm.message}`;
                         </div>
                       </div>
                       <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
-                        <img
-                          src="/images/bd-sketches/35 - Process - Standardized product design brief template.jpg"
+                        <img loading="lazy"
+                          src="/images/bd-sketches/35 - Process - Standardized product design brief template.webp"
                           alt="Design brief template"
                           className="w-full h-auto object-cover"
                         />
@@ -5766,8 +5779,8 @@ ${contactForm.message}`;
                         </div>
                       </div>
                       <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
-                        <img
-                          src="/images/bd-sketches/36 - Governance and process-  Mapping technical contraints with engineers.jpg"
+                        <img loading="lazy"
+                          src="/images/bd-sketches/36 - Governance and process-  Mapping technical contraints with engineers.webp"
                           alt="Technical governance"
                           className="w-full h-auto object-cover"
                         />
@@ -5776,8 +5789,8 @@ ${contactForm.message}`;
                         </div>
                       </div>
                       <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
-                        <img
-                          src="/images/bd-sketches/13 - Du design à l'architecture — Penser comme un ingénieur produit.jpg"
+                        <img loading="lazy"
+                          src="/images/bd-sketches/13 - Du design à l'architecture — Penser comme un ingénieur produit.webp"
                           alt="Engineering mindset"
                           className="w-full h-auto object-cover"
                         />
@@ -5786,8 +5799,8 @@ ${contactForm.message}`;
                         </div>
                       </div>
                       <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
-                        <img
-                          src="/images/bd-sketches/19 - Boucles de feedback et amélioration continue.jpg"
+                        <img loading="lazy"
+                          src="/images/bd-sketches/19 - Boucles de feedback et amélioration continue.webp"
                           alt="Feedback loops"
                           className="w-full h-auto object-cover"
                         />
@@ -5802,8 +5815,8 @@ ${contactForm.message}`;
                   {selectedServiceGallery === 'impact' && (
                     <>
                       <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
-                        <img
-                          src="/images/bd-sketches/21 - Ideation Workshop for the Suite.jpg"
+                        <img loading="lazy"
+                          src="/images/bd-sketches/21 - Ideation Workshop for the Suite.webp"
                           alt="Ideation workshop"
                           className="w-full h-auto object-cover"
                         />
@@ -5812,8 +5825,8 @@ ${contactForm.message}`;
                         </div>
                       </div>
                       <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
-                        <img
-                          src="/images/bd-sketches/27 - Ateliers de co creation et sketching en equipe.jpg"
+                        <img loading="lazy"
+                          src="/images/bd-sketches/27 - Ateliers de co creation et sketching en equipe.webp"
                           alt="Co-creation workshop"
                           className="w-full h-auto object-cover"
                         />
@@ -5822,8 +5835,8 @@ ${contactForm.message}`;
                         </div>
                       </div>
                       <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
-                        <img
-                          src="/images/bd-sketches/24 - Design teams rituals.jpg"
+                        <img loading="lazy"
+                          src="/images/bd-sketches/24 - Design teams rituals.webp"
                           alt="Design team rituals"
                           className="w-full h-auto object-cover"
                         />
@@ -5832,8 +5845,8 @@ ${contactForm.message}`;
                         </div>
                       </div>
                       <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
-                        <img
-                          src="/images/bd-sketches/25 - Weekly design critique.jpg"
+                        <img loading="lazy"
+                          src="/images/bd-sketches/25 - Weekly design critique.webp"
                           alt="Design critique"
                           className="w-full h-auto object-cover"
                         />
@@ -5842,8 +5855,8 @@ ${contactForm.message}`;
                         </div>
                       </div>
                       <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
-                        <img
-                          src="/images/bd-sketches/22 - product Squad daily rituals.jpg"
+                        <img loading="lazy"
+                          src="/images/bd-sketches/22 - product Squad daily rituals.webp"
                           alt="Squad rituals"
                           className="w-full h-auto object-cover"
                         />
@@ -5852,8 +5865,8 @@ ${contactForm.message}`;
                         </div>
                       </div>
                       <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
-                        <img
-                          src="/images/bd-sketches/28 - remote UX workshops.jpg"
+                        <img loading="lazy"
+                          src="/images/bd-sketches/28 - remote UX workshops.webp"
                           alt="Remote workshops"
                           className="w-full h-auto object-cover"
                         />
@@ -5862,8 +5875,8 @@ ${contactForm.message}`;
                         </div>
                       </div>
                       <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
-                        <img
-                          src="/images/bd-sketches/design mentoring.png"
+                        <img loading="lazy"
+                          src="/images/bd-sketches/design mentoring.webp"
                           alt="Design mentoring"
                           className="w-full h-auto object-cover"
                         />
@@ -5872,8 +5885,8 @@ ${contactForm.message}`;
                         </div>
                       </div>
                       <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
-                        <img
-                          src="/images/bd-sketches/12b - Brand Identity system -Unifying Color and Grid.jpg"
+                        <img loading="lazy"
+                          src="/images/bd-sketches/12b - Brand Identity system -Unifying Color and Grid.webp"
                           alt="Brand identity"
                           className="w-full h-auto object-cover"
                         />
@@ -5998,8 +6011,8 @@ ${contactForm.message}`;
                     <div className="flex items-center space-x-4">
                       {/* Small Avatar */}
                       <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-blue-600/20 shadow-lg">
-                        <img
-                          src={systemTheme === 'dark' ? '/images/victor_soussan_dark.webp' : '/images/victor-soussan.png'}
+                        <img loading="lazy"
+                          src={systemTheme === 'dark' ? '/images/victor_soussan_dark.webp' : '/images/victor-soussan.webp'}
                           alt="Victor Soussan"
                           className="w-full h-full object-cover"
                         />
@@ -6095,8 +6108,8 @@ ${contactForm.message}`;
                       >
                         <div className="relative">
                           <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-blue-600/20 shadow-2xl shadow-blue-600/10 mx-auto">
-                            <img
-                              src={systemTheme === 'dark' ? '/images/victor_soussan_dark.webp' : '/images/victor-soussan.png'}
+                            <img loading="lazy"
+                              src={systemTheme === 'dark' ? '/images/victor_soussan_dark.webp' : '/images/victor-soussan.webp'}
                               alt="Victor Soussan"
                               className="w-full h-full object-cover"
                             />

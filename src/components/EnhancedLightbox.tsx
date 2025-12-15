@@ -1,18 +1,24 @@
 /**
- * EnhancedLightbox - Mobile-optimized lightbox with WhatsApp-style gestures
+ * EnhancedLightbox - Desktop & Mobile optimized lightbox
  *
- * Features:
- * - Tap to open (on mobile)
- * - Double-tap to zoom in/out
+ * Desktop:
+ * - Cursor with magnifying glass icon
+ * - Single click to zoom to full width (scrollable height)
+ * - Click again to dezoom (smooth transition)
+ * - Keyboard navigation (arrows, escape)
+ *
+ * Mobile:
+ * - Tap opens image with caption
+ * - Double-tap to zoom at tap location
+ * - Pan gesture when zoomed
+ * - Double-tap to dezoom
  * - Swipe down to close
  * - Swipe left/right to navigate
- * - UI fades when zoomed
- * - Pinch to zoom (native)
  */
 
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { motion, AnimatePresence, useAnimation, PanInfo, useMotionValue } from 'framer-motion';
-import { X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, ZoomIn, ZoomOut } from 'lucide-react';
 
 export interface LightboxImage {
   src: string;
@@ -27,6 +33,11 @@ interface EnhancedLightboxProps {
   currentIndex: number;
   onIndexChange: (index: number) => void;
   lang?: 'en' | 'fr';
+  videoStartTime?: number;
+  /** Project ID for URL generation (e.g., 'toolkit', 'dailymotion') */
+  projectId?: string;
+  /** Whether to update browser URL when navigating images */
+  updateUrl?: boolean;
 }
 
 const springTransition = {
@@ -41,9 +52,12 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
   images,
   currentIndex,
   onIndexChange,
-  lang = 'fr'
+  lang = 'fr',
+  videoStartTime = 0,
+  projectId,
+  updateUrl = false
 }) => {
-  // Mobile gesture state
+  // State
   const [isZoomed, setIsZoomed] = useState(false);
   const [scale, setScale] = useState(1);
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -57,21 +71,33 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
 
   // Refs
   const containerRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
   const lastTap = useRef<number>(0);
   const doubleTapTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Set video start time when lightbox opens with a video
+  useEffect(() => {
+    const currentImg = images[currentIndex];
+    if (isOpen && currentImg?.type === 'video' && videoRef.current && videoStartTime > 0) {
+      videoRef.current.currentTime = videoStartTime;
+    }
+  }, [isOpen, currentIndex, videoStartTime, images]);
 
   // Translations
   const t = {
     close: lang === 'fr' ? 'Fermer' : 'Close',
     swipeHint: lang === 'fr' ? 'Glisser pour fermer' : 'Swipe to close',
     tapToZoom: lang === 'fr' ? 'Double-tap pour zoomer' : 'Double-tap to zoom',
+    clickToZoom: lang === 'fr' ? 'Cliquez pour agrandir' : 'Click to enlarge',
+    clickToShrink: lang === 'fr' ? 'Cliquez pour réduire' : 'Click to shrink',
     counter: (idx: number, total: number) => `${idx + 1} / ${total}`
   };
 
   // Detect mobile viewport
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
+      setIsMobile(window.innerWidth < 768 || 'ontouchstart' in window);
     };
     checkMobile();
     window.addEventListener('resize', checkMobile);
@@ -82,7 +108,6 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
-      // Hide hint after a delay
       const timer = setTimeout(() => setShowHint(false), 2500);
       return () => clearTimeout(timer);
     } else {
@@ -95,21 +120,61 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
     };
   }, [isOpen]);
 
+  // Reset zoom when changing images
+  useEffect(() => {
+    resetState();
+  }, [currentIndex]);
+
+  // Update URL when image changes (for SEO and shareability)
+  useEffect(() => {
+    if (!isOpen || !updateUrl || !projectId) return;
+
+    const currentImg = images[currentIndex];
+    const mediaType = currentImg?.type === 'video' ? 'video' : 'image';
+    const mediaUrl = `/project/${projectId}/media/${mediaType}/${currentIndex + 1}`;
+
+    // Update URL without triggering navigation
+    window.history.replaceState(
+      { project: projectId, mediaIndex: currentIndex, mediaType },
+      '',
+      mediaUrl
+    );
+  }, [isOpen, currentIndex, projectId, updateUrl, images]);
+
+  // Restore URL when lightbox closes
+  const handleClose = useCallback(() => {
+    if (updateUrl && projectId) {
+      // Restore the gallery URL when closing
+      window.history.replaceState(
+        { project: projectId, viewMode: 'gallery' },
+        '',
+        `/project/${projectId}/gallery`
+      );
+    }
+    onClose();
+  }, [onClose, updateUrl, projectId]);
+
   // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!isOpen) return;
-      if (e.key === 'Escape') onClose();
-      if (e.key === 'ArrowRight' && currentIndex < images.length - 1) {
+      if (e.key === 'Escape') {
+        if (isZoomed) {
+          resetState();
+        } else {
+          handleClose();
+        }
+      }
+      if (e.key === 'ArrowRight' && currentIndex < images.length - 1 && !isZoomed) {
         onIndexChange(currentIndex + 1);
       }
-      if (e.key === 'ArrowLeft' && currentIndex > 0) {
+      if (e.key === 'ArrowLeft' && currentIndex > 0 && !isZoomed) {
         onIndexChange(currentIndex - 1);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, currentIndex, images.length, onClose, onIndexChange]);
+  }, [isOpen, currentIndex, images.length, handleClose, onIndexChange, isZoomed]);
 
   // Reset all state
   const resetState = useCallback(() => {
@@ -118,10 +183,32 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
     setPosition({ x: 0, y: 0 });
     setDragY(0);
     controls.start({ scale: 1, x: 0, y: 0 });
+    // Reset scroll position
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop = 0;
+    }
   }, [controls]);
 
-  // Handle double-tap zoom
-  const handleDoubleTap = useCallback((e: React.MouseEvent | React.TouchEvent) => {
+  // Desktop: Single click to toggle zoom
+  const handleDesktopClick = useCallback((e: React.MouseEvent) => {
+    if (isMobile) return;
+    e.stopPropagation();
+
+    if (isZoomed) {
+      // Dezoom with smooth animation
+      setIsZoomed(false);
+      // Scroll to top when dezooming
+      if (scrollContainerRef.current) {
+        scrollContainerRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    } else {
+      // Zoom in
+      setIsZoomed(true);
+    }
+  }, [isMobile, isZoomed]);
+
+  // Mobile: Handle double-tap zoom
+  const handleMobileDoubleTap = useCallback((e: React.TouchEvent) => {
     if (!isMobile) return;
     e.stopPropagation();
 
@@ -146,19 +233,10 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
       } else {
         // Zoom in to tap location
         const rect = containerRef.current?.getBoundingClientRect();
-        if (!rect) return;
+        if (!rect || !e.changedTouches[0]) return;
 
-        let clientX: number, clientY: number;
-        if ('changedTouches' in e && e.changedTouches.length > 0) {
-          clientX = e.changedTouches[0].clientX;
-          clientY = e.changedTouches[0].clientY;
-        } else if ('clientX' in e) {
-          clientX = e.clientX;
-          clientY = e.clientY;
-        } else {
-          clientX = rect.width / 2 + rect.left;
-          clientY = rect.height / 2 + rect.top;
-        }
+        const clientX = e.changedTouches[0].clientX;
+        const clientY = e.changedTouches[0].clientY;
 
         const x = clientX - rect.left - rect.width / 2;
         const y = clientY - rect.top - rect.height / 2;
@@ -180,7 +258,7 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
     }
   }, [isMobile, isZoomed, controls]);
 
-  // Handle vertical drag for swipe-to-close
+  // Handle vertical drag for swipe-to-close (mobile only)
   const handleDragY = useCallback((_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     if (isZoomed || !isMobile) return;
     setDragY(info.offset.y);
@@ -194,14 +272,14 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
     const velocity = info.velocity.y;
 
     if ((info.offset.y > threshold || velocity > 500) && isMobile) {
-      onClose();
+      handleClose();
     } else if (isMobile) {
       setDragY(0);
       controls.start({ y: 0 });
     }
-  }, [isZoomed, isMobile, onClose, controls]);
+  }, [isZoomed, isMobile, handleClose, controls]);
 
-  // Handle horizontal drag for navigation (desktop + mobile non-zoomed)
+  // Handle horizontal drag for navigation (mobile non-zoomed)
   const handleDragXEnd = useCallback((_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     if (isZoomed) return;
 
@@ -209,12 +287,10 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
     const velocity = 500;
 
     if (info.offset.x < -threshold || info.velocity.x < -velocity) {
-      // Swiped left - go to next
       if (currentIndex < images.length - 1) {
         onIndexChange(currentIndex + 1);
       }
     } else if (info.offset.x > threshold || info.velocity.x > velocity) {
-      // Swiped right - go to previous
       if (currentIndex > 0) {
         onIndexChange(currentIndex - 1);
       }
@@ -222,14 +298,14 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
     dragX.set(0);
   }, [isZoomed, currentIndex, images.length, onIndexChange, dragX]);
 
-  // Handle pan when zoomed
+  // Handle pan when zoomed (mobile)
   const handlePanWhenZoomed = useCallback((_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    if (!isZoomed) return;
+    if (!isZoomed || !isMobile) return;
     setPosition(prev => ({
       x: prev.x + info.delta.x,
       y: prev.y + info.delta.y
     }));
-  }, [isZoomed]);
+  }, [isZoomed, isMobile]);
 
   // Calculate background opacity based on drag
   const backgroundOpacity = isMobile ? Math.max(0.3, 1 - Math.abs(dragY) / 250) : 1;
@@ -267,10 +343,10 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
           <motion.div
             className="absolute inset-0 bg-black"
             style={{ opacity: backgroundOpacity }}
-            onClick={!isZoomed ? onClose : undefined}
+            onClick={!isZoomed ? handleClose : undefined}
           />
 
-          {/* Close button - fades when zoomed on mobile */}
+          {/* Close button */}
           <motion.button
             initial={{ opacity: 0, y: -20 }}
             animate={{
@@ -280,12 +356,26 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
             }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.2 }}
-            onClick={onClose}
+            onClick={handleClose}
             className="absolute top-4 right-4 z-20 p-3 rounded-full bg-white/10 backdrop-blur-sm text-white transition-colors hover:bg-white/20"
             aria-label={t.close}
           >
             <X size={24} />
           </motion.button>
+
+          {/* Desktop: Zoom/Unzoom button */}
+          {!isMobile && (
+            <motion.button
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={(e) => { e.stopPropagation(); handleDesktopClick(e); }}
+              className="absolute top-4 left-4 z-20 p-3 rounded-full bg-white/10 backdrop-blur-sm text-white transition-colors hover:bg-white/20"
+              aria-label={isZoomed ? t.clickToShrink : t.clickToZoom}
+            >
+              {isZoomed ? <ZoomOut size={24} /> : <ZoomIn size={24} />}
+            </motion.button>
+          )}
 
           {/* Navigation arrows - hidden on mobile or when zoomed */}
           {!isMobile && !isZoomed && (
@@ -319,64 +409,114 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
           )}
 
           {/* Main content container */}
-          <motion.div
-            ref={containerRef}
-            className="relative w-full h-full flex items-center justify-center overflow-hidden"
-            drag={!isZoomed ? (isMobile ? 'y' : 'x') : false}
-            dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-            dragElastic={0.5}
-            onDrag={isMobile ? handleDragY : undefined}
-            onDragEnd={isMobile ? handleDragYEnd : handleDragXEnd}
-            animate={controls}
-            style={{ y: isZoomed ? 0 : (isMobile ? dragY : 0) }}
-          >
-            {/* Image/Video */}
+          {isMobile ? (
+            // Mobile: Gesture-based container
             <motion.div
-              key={currentIndex}
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{
-                scale: isZoomed ? scale : 1,
-                opacity: 1,
-                x: isZoomed ? position.x : 0,
-                y: isZoomed ? position.y : 0
-              }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              transition={springTransition}
-              onClick={handleDoubleTap}
-              onPan={isZoomed ? handlePanWhenZoomed : undefined}
-              className="relative max-w-[95vw] md:max-w-[85vw] max-h-[85vh] px-4"
-              style={{ touchAction: 'none' }}
+              ref={containerRef}
+              className="relative w-full h-full flex items-center justify-center overflow-hidden"
+              drag={!isZoomed ? 'y' : false}
+              dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+              dragElastic={0.5}
+              onDrag={handleDragY}
+              onDragEnd={!isZoomed ? handleDragYEnd : handleDragXEnd}
+              animate={controls}
+              style={{ y: isZoomed ? 0 : dragY }}
             >
-              {currentImage.type === 'video' ? (
-                <video
-                  src={currentImage.src}
-                  className="max-w-full max-h-[80vh] object-contain rounded-lg shadow-2xl"
-                  controls
-                  playsInline
-                  autoPlay
-                />
-              ) : (
-                <img
-                  src={currentImage.src}
-                  alt={currentImage.caption || ''}
-                  className="max-w-full max-h-[80vh] object-contain rounded-lg shadow-2xl select-none"
-                  draggable={false}
-                />
-              )}
+              <motion.div
+                key={currentIndex}
+                initial={{ scale: 0.95, opacity: 0 }}
+                animate={{
+                  scale: isZoomed ? scale : 1,
+                  opacity: 1,
+                  x: isZoomed ? position.x : 0,
+                  y: isZoomed ? position.y : 0
+                }}
+                exit={{ scale: 0.95, opacity: 0 }}
+                transition={springTransition}
+                onTouchEnd={handleMobileDoubleTap}
+                onPan={isZoomed ? handlePanWhenZoomed : undefined}
+                className="relative max-w-[95vw] max-h-[85vh] px-4"
+                style={{ touchAction: 'none' }}
+              >
+                {currentImage.type === 'video' ? (
+                  <video
+                    ref={videoRef}
+                    src={currentImage.src}
+                    className="max-w-full max-h-[80vh] object-contain rounded-lg shadow-2xl"
+                    controls
+                    playsInline
+                    autoPlay
+                  />
+                ) : (
+                  <img loading="lazy"
+                    src={currentImage.src}
+                    alt={currentImage.caption || ''}
+                    className="max-w-full max-h-[80vh] object-contain rounded-lg shadow-2xl select-none"
+                    draggable={false}
+                  />
+                )}
+              </motion.div>
             </motion.div>
-          </motion.div>
+          ) : (
+            // Desktop: Scrollable container when zoomed
+            <div
+              ref={scrollContainerRef}
+              className={`relative w-full h-full flex ${
+                isZoomed
+                  ? 'overflow-y-auto overflow-x-hidden items-start justify-center py-8'
+                  : 'overflow-hidden items-center justify-center'
+              }`}
+              onClick={(e) => {
+                // Only close if clicking background, not image
+                if (e.target === e.currentTarget && !isZoomed) {
+                  handleClose();
+                }
+              }}
+            >
+              <motion.div
+                key={`${currentIndex}-${isZoomed}`}
+                initial={{ opacity: 0, scale: isZoomed ? 1 : 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+                onClick={handleDesktopClick}
+                className={`relative ${isZoomed ? 'w-full max-w-[95vw]' : 'max-w-[85vw] max-h-[85vh]'}`}
+                style={{
+                  cursor: isZoomed ? 'zoom-out' : 'zoom-in'
+                }}
+              >
+                {currentImage.type === 'video' ? (
+                  <video
+                    ref={videoRef}
+                    src={currentImage.src}
+                    className={`${isZoomed ? 'w-full h-auto' : 'max-w-full max-h-[85vh] object-contain'} rounded-lg shadow-2xl`}
+                    controls
+                    playsInline
+                    autoPlay
+                  />
+                ) : (
+                  <img loading="lazy"
+                    src={currentImage.src}
+                    alt={currentImage.caption || ''}
+                    className={`${isZoomed ? 'w-full h-auto' : 'max-w-full max-h-[85vh] object-contain'} rounded-lg shadow-2xl select-none`}
+                    draggable={false}
+                  />
+                )}
+              </motion.div>
+            </div>
+          )}
 
-          {/* Caption and counter - fades when zoomed */}
+          {/* Caption and counter - hidden when zoomed on desktop, fades on mobile */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{
-              opacity: isZoomed && isMobile ? 0 : 1,
+              opacity: isZoomed ? 0 : 1,
               y: 0,
-              pointerEvents: isZoomed && isMobile ? 'none' : 'auto'
+              pointerEvents: isZoomed ? 'none' : 'auto'
             }}
             exit={{ opacity: 0, y: 20 }}
-            transition={{ delay: 0.1 }}
-            className="absolute bottom-16 md:bottom-8 left-4 right-4 text-center z-10"
+            transition={{ duration: 0.2 }}
+            className="absolute bottom-16 md:bottom-8 left-4 right-4 text-center z-10 pointer-events-none"
           >
             {currentImage.caption && (
               <p className="text-white/90 text-sm md:text-base mb-2 line-clamp-2">
@@ -385,7 +525,11 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
             )}
             <p className="text-white/50 text-xs">
               {t.counter(currentIndex, images.length)}
-              {isMobile && !isZoomed && ` • ${t.tapToZoom}`}
+              {!isZoomed && (
+                <span className="ml-2">
+                  • {isMobile ? t.tapToZoom : t.clickToZoom}
+                </span>
+              )}
             </p>
           </motion.div>
 

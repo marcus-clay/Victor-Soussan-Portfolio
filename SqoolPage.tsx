@@ -2,7 +2,7 @@
 // A trunk case study that synthesizes the SQOOL journey (2018-2024)
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { motion, AnimatePresence, useMotionValue, useTransform, useSpring, PanInfo } from 'framer-motion';
+import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import {
   ChevronRight,
   ChevronLeft,
@@ -18,6 +18,7 @@ import {
 import { GalleryItem, getSqoolGalleryItems } from './BentoGallery';
 import { SqoolTimeline } from './SqoolTimeline';
 import SqoolExecutive from './src/components/SqoolExecutive';
+import EnhancedLightbox from './src/components/EnhancedLightbox';
 
 interface SqoolPageProps {
   onClose: () => void;
@@ -577,13 +578,13 @@ const sections = [
 type MediaItem = { src: string; captionKey: string; type: 'image' | 'video' };
 const allImagesData: MediaItem[] = [
   { src: '/images/sqool/hero_ecosystem_sqool.webp', captionKey: 'hero', type: 'image' },
-  { src: '/images/sqool/image-unowhy-region-iledefrance-distribution-rentree.jpg', captionKey: 'distribution', type: 'image' },
-  { src: '/images/sqool/image-unowhy-shootingphoto-tablette.jpg', captionKey: 'tablette', type: 'image' },
-  { src: '/images/sqool/image-unowhy-marquage-fonctionnalites-appareils.jpg', captionKey: 'marquage', type: 'image' },
+  { src: '/images/sqool/image-unowhy-region-iledefrance-distribution-rentree.webp', captionKey: 'distribution', type: 'image' },
+  { src: '/images/sqool/image-unowhy-shootingphoto-tablette.webp', captionKey: 'tablette', type: 'image' },
+  { src: '/images/sqool/image-unowhy-marquage-fonctionnalites-appareils.webp', captionKey: 'marquage', type: 'image' },
   { src: '/images/sqool/sqool_legacy_launcher_eleve.webp', captionKey: 'legacyLauncher', type: 'image' },
   { src: '/images/sqool/sqool_legacy_manager_teacher.webp', captionKey: 'legacyManager', type: 'image' },
   { src: '/images/sqool/sqool_legacy_mdm.webp', captionKey: 'legacyMdm', type: 'image' },
-  { src: '/images/sqool/hi sqool/004 003-hp-scroll-2x.png', captionKey: 'hisqool', type: 'image' },
+  { src: '/images/sqool/hi sqool/004 003-hp-scroll-2x.webp', captionKey: 'hisqool', type: 'image' },
   { src: '/videos/connect/connect-dashboard-prototype-compressed.mp4', captionKey: 'connect', type: 'video' },
   { src: '/videos/connect/Video-demo-bulle-interactions-compressed.mp4', captionKey: 'bulle', type: 'video' },
   { src: '/images/sqool/sqool_brand.webp', captionKey: 'brand', type: 'image' },
@@ -612,30 +613,6 @@ const allImagesData: MediaItem[] = [
   { src: '/images/sqool/sqool_protect.webp', captionKey: 'protect', type: 'image' },
   { src: '/images/sqool/sqool_extend.webp', captionKey: 'extend', type: 'image' },
 ];
-
-// Spring transition
-const springTransition = {
-  type: 'spring' as const,
-  stiffness: 300,
-  damping: 30,
-  mass: 1,
-};
-
-// Slide variants for carousel
-const slideVariants = {
-  enter: (direction: number) => ({
-    x: direction > 0 ? '100%' : '-100%',
-    opacity: 0,
-  }),
-  center: {
-    x: 0,
-    opacity: 1,
-  },
-  exit: (direction: number) => ({
-    x: direction < 0 ? '100%' : '-100%',
-    opacity: 0,
-  }),
-};
 
 // Gallery Card Component
 interface GalleryCardProps {
@@ -685,7 +662,7 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick }) => {
             </div>
           </div>
         ) : (
-          <img src={item.src} alt={item.caption} className="w-full h-auto" loading="lazy" />
+          <img loading="lazy" src={item.src} alt={item.caption} className="w-full h-auto" />
         )}
       </motion.div>
       <figcaption className="mt-3 text-sm text-gray-400">
@@ -721,12 +698,12 @@ const ImageWithFallback: React.FC<{
 
   return (
     <img
+      loading="lazy"
       src={src}
       alt={alt}
       className={`w-full h-auto rounded-2xl cursor-pointer ${className}`}
       onClick={onClick}
       onError={() => setHasError(true)}
-      loading="lazy"
     />
   );
 };
@@ -754,14 +731,12 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
   const [caseStudyMode, setCaseStudyMode] = useState<'executive' | 'full'>('executive');
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
-  const [lightboxZoomed, setLightboxZoomed] = useState(false);
-  const [[page, direction], setPage] = useState([0, 0]);
+  const [videoStartTime, setVideoStartTime] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const brandCarouselRef = useRef<HTMLDivElement>(null);
+  const videoRefs = useRef<{ [key: string]: HTMLVideoElement | null }>({});
   const [canScrollBrandLeft, setCanScrollBrandLeft] = useState(false);
   const [canScrollBrandRight, setCanScrollBrandRight] = useState(true);
-  const dragX = useMotionValue(0);
-  const parallaxX = useTransform(dragX, [-300, 0, 300], [30, 0, -30]);
 
   // Section labels for nav
   const sectionLabels = sections.map(s => ({
@@ -795,52 +770,30 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
     return () => container.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Lightbox functions
-  const openLightbox = (imageSrc: string) => {
+  // Lightbox functions with video start time support
+  const openLightbox = (imageSrc: string, startTime: number = 0) => {
     const index = allImages.findIndex(img => img.src === imageSrc);
     if (index !== -1) {
       setLightboxIndex(index);
-      setPage([index, 0]);
-      setLightboxZoomed(false);
+      setVideoStartTime(startTime);
       setLightboxOpen(true);
-      document.body.style.overflow = 'hidden';
     }
   };
 
   const closeLightbox = () => {
     setLightboxOpen(false);
-    document.body.style.overflow = '';
   };
 
-  const paginate = useCallback((newDirection: number) => {
-    const newIndex = lightboxIndex + newDirection;
-    if (newIndex >= 0 && newIndex < allImages.length) {
-      setLightboxIndex(newIndex);
-      setPage([newIndex, newDirection]);
-      setLightboxZoomed(false);
-    }
-  }, [lightboxIndex, allImages.length]);
-
-  // Keyboard navigation
+  // Keyboard navigation for escape only when lightbox closed
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (lightboxOpen) {
-        if (e.key === 'ArrowRight') paginate(1);
-        if (e.key === 'ArrowLeft') paginate(-1);
-        if (e.key === 'Escape') closeLightbox();
-      } else if (e.key === 'Escape') {
+      if (!lightboxOpen && e.key === 'Escape') {
         onClose();
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [lightboxOpen, paginate, onClose]);
-
-  const handleDragEnd = (_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    if (info.offset.x > 50 && lightboxIndex > 0) paginate(-1);
-    else if (info.offset.x < -50 && lightboxIndex < allImages.length - 1) paginate(1);
-    dragX.set(0);
-  };
+  }, [lightboxOpen, onClose]);
 
   // Scroll to section with proper offset for header + sticky mini-nav
   const scrollToSection = (sectionId: string) => {
@@ -919,13 +872,13 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className={`fixed top-[53px] sm:top-[72px] left-0 right-0 z-30 border-b ${
+            className={`fixed top-16 left-0 right-0 z-30 backdrop-blur-xl ${
               isDark
-                ? 'bg-[#0a0a0a]/95 backdrop-blur-xl border-white/10'
-                : 'bg-white/95 backdrop-blur-xl border-gray-200'
+                ? 'bg-[#0a0a0a]/80'
+                : 'bg-white/80'
             }`}
           >
-            <div className="max-w-6xl mx-auto px-4 md:px-6">
+            <div className="w-full px-6">
               <button
                 onClick={() => setIsMobileNavExpanded(!isMobileNavExpanded)}
                 className="w-full h-12 flex items-center justify-between"
@@ -987,16 +940,16 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
         )}
       </AnimatePresence>
 
-      {/* Header - iOS-inspired responsive design */}
-      <header className={`sticky top-0 z-40 backdrop-blur-xl border-b ${
+      {/* Header - Glass effect */}
+      <header className={`sticky top-0 z-40 backdrop-blur-xl ${
         viewMode === 'gallery'
-          ? 'bg-black/80 border-white/10'
-          : (isDark ? 'bg-[#0a0a0a]/80 border-white/10' : 'bg-white/80 border-gray-200')
+          ? 'bg-black/80'
+          : (isDark ? 'bg-[#0a0a0a]/80' : 'bg-white/80')
       }`}>
-        <div className="max-w-6xl mx-auto px-3 sm:px-4 md:px-6 py-3 sm:py-4 flex items-center gap-2 sm:gap-4">
-          {/* Left - Title (truncates on mobile, fixed width on desktop for centering) */}
-          <div className="flex-shrink-0 min-w-0 max-w-[30%] sm:max-w-none sm:w-32 md:w-40">
-            <h1 className={`text-base sm:text-lg md:text-xl font-bold truncate ${
+        <div className="w-full px-6 h-16 flex items-center gap-4">
+          {/* Left - Title - Same style as Homepage nav */}
+          <div className="flex-shrink-0">
+            <h1 className={`font-semibold text-lg tracking-[-0.02em] ${
               viewMode === 'gallery' ? 'text-white' : (isDark ? 'text-white' : 'text-gray-900')
             }`}>
               SQOOL
@@ -1025,8 +978,8 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
                     ? 'text-white'
                     : (viewMode === 'gallery' ? 'text-gray-400 hover:text-white' : (isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'))
                 }`}>
-                  <span className="hidden sm:inline">{lang === 'fr' ? 'En bref' : 'At a glance'}</span>
-                  <span className="sm:hidden">{lang === 'fr' ? 'Bref' : 'Brief'}</span>
+                  <span className="hidden sm:inline">{lang === 'fr' ? 'En bref' : 'Summary'}</span>
+                  <span className="sm:hidden">{lang === 'fr' ? 'Bref' : 'Sum.'}</span>
                 </span>
               </button>
               {/* Full case study button */}
@@ -1046,8 +999,8 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
                     ? 'text-white'
                     : (viewMode === 'gallery' ? 'text-gray-400 hover:text-white' : (isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'))
                 }`}>
-                  <span className="hidden sm:inline">Full</span>
-                  <span className="sm:hidden">Complet</span>
+                  <span className="hidden sm:inline">{lang === 'fr' ? 'Complet' : 'Full case'}</span>
+                  <span className="sm:hidden">{lang === 'fr' ? 'Full' : 'Full'}</span>
                 </span>
               </button>
               {/* Gallery button */}
@@ -1065,25 +1018,24 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
                 <span className={`relative z-10 ${
                   viewMode === 'gallery' ? 'text-white' : (isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900')
                 }`}>
-                  <span className="hidden sm:inline">{t.gallery}</span>
-                  <span className="sm:hidden">Galerie</span>
+                  <span className="hidden sm:inline">{lang === 'fr' ? 'Galerie' : 'Gallery'}</span>
+                  <span className="sm:hidden">{lang === 'fr' ? 'Gal.' : 'Gal.'}</span>
                 </span>
               </button>
             </div>
           </div>
 
-          {/* Right - Close button (fixed width matching title for centering) */}
-          <div className="flex-shrink-0 sm:w-32 md:w-40 flex justify-end">
+          {/* Right - Close button */}
+          <div className="flex-shrink-0">
             <button
               onClick={onClose}
-              className={`p-1.5 sm:p-2 rounded-full ${
+              className={`w-8 h-8 flex items-center justify-center rounded-full transition-colors ${
                 viewMode === 'gallery'
-                  ? 'text-gray-300 hover:bg-white/10'
-                  : (isDark ? 'text-gray-300 hover:bg-white/10' : 'text-gray-600 hover:bg-gray-100')
+                  ? 'text-gray-400 hover:text-white hover:bg-white/10'
+                  : (isDark ? 'text-gray-400 hover:text-white hover:bg-white/10' : 'text-gray-500 hover:text-gray-900 hover:bg-black/5')
               }`}
             >
-              <X size={20} className="sm:hidden" />
-              <X size={24} className="hidden sm:block" />
+              <X size={18} />
             </button>
           </div>
         </div>
@@ -1137,7 +1089,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
-      <div className="max-w-6xl mx-auto px-4 md:px-6 py-12 md:py-16">
+      <div className="max-w-[1480px] mx-auto px-10 py-12 md:py-16">
         <div>
           {/* Main Content */}
           <main className="w-full">
@@ -1145,14 +1097,14 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
             <section id="hero" className="mb-16 md:mb-24">
               {/* Logo */}
               <div className="mb-8">
-                <img
+                <img loading="lazy"
                   src={isDark ? '/images/sqool/logo-sqool-dark.svg' : '/images/sqool/logo-sqool.svg'}
                   alt="SQOOL"
                   className="h-6 w-auto"
                 />
               </div>
 
-              <div className="grid md:grid-cols-5 gap-8 md:gap-12">
+              <div className="grid md:grid-cols-5 gap-10">
                 {/* Left Column - Title and Description */}
                 <div className="md:col-span-3">
                   {/* Meta tags inline like Toolkit */}
@@ -1210,8 +1162,8 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
                       {t.testimonial.quote}
                     </p>
                     <div className="flex items-center space-x-3">
-                      <img
-                        src="/images/charlotte-rifflet.png"
+                      <img loading="lazy"
+                        src="/images/charlotte-rifflet.webp"
                         alt={t.testimonial.author}
                         className="w-10 h-10 rounded-full object-cover"
                       />
@@ -1336,12 +1288,12 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
             <figure className="mb-16 md:mb-24">
               <div
                 onClick={() => openLightbox('/images/sqool/hero_ecosystem_sqool.webp')}
-                className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${isDark ? 'border-white/10' : 'border-gray-200'}`}
+                className={`rounded-2xl overflow-hidden border cursor-pointer ${isDark ? 'border-white/10' : 'border-gray-200'}`}
               >
-                <ImageWithFallback
+                <img loading="lazy"
                   src="/images/sqool/hero_ecosystem_sqool.webp"
                   alt={t.captions.hero}
-                  caption={t.captions.hero}
+                  className="w-full h-auto"
                 />
               </div>
             </figure>
@@ -1365,10 +1317,10 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
                 <figure>
                   <ImageWithFallback
-                    src="/images/sqool/image-unowhy-region-iledefrance-distribution-rentree.jpg"
+                    src="/images/sqool/image-unowhy-region-iledefrance-distribution-rentree.webp"
                     alt={t.captions.distribution}
                     caption={t.captions.distribution}
-                    onClick={() => openLightbox('/images/sqool/image-unowhy-region-iledefrance-distribution-rentree.jpg')}
+                    onClick={() => openLightbox('/images/sqool/image-unowhy-region-iledefrance-distribution-rentree.webp')}
                     className="aspect-[4/3] object-cover"
                   />
                   <figcaption className={`mt-2 text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>
@@ -1377,10 +1329,10 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
                 </figure>
                 <figure>
                   <ImageWithFallback
-                    src="/images/sqool/image-unowhy-shootingphoto-tablette.jpg"
+                    src="/images/sqool/image-unowhy-shootingphoto-tablette.webp"
                     alt={t.captions.tablette}
                     caption={t.captions.tablette}
-                    onClick={() => openLightbox('/images/sqool/image-unowhy-shootingphoto-tablette.jpg')}
+                    onClick={() => openLightbox('/images/sqool/image-unowhy-shootingphoto-tablette.webp')}
                     className="aspect-[4/3] object-cover"
                   />
                   <figcaption className={`mt-2 text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>
@@ -1389,10 +1341,10 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
                 </figure>
                 <figure>
                   <ImageWithFallback
-                    src="/images/sqool/image-unowhy-marquage-fonctionnalites-appareils.jpg"
+                    src="/images/sqool/image-unowhy-marquage-fonctionnalites-appareils.webp"
                     alt={t.captions.marquage}
                     caption={t.captions.marquage}
-                    onClick={() => openLightbox('/images/sqool/image-unowhy-marquage-fonctionnalites-appareils.jpg')}
+                    onClick={() => openLightbox('/images/sqool/image-unowhy-marquage-fonctionnalites-appareils.webp')}
                     className="aspect-[4/3] object-cover"
                   />
                   <figcaption className={`mt-2 text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>
@@ -1519,10 +1471,10 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
 
                 <figure className="mb-6">
                   <ImageWithFallback
-                    src="/images/sqool/hi sqool/004 003-hp-scroll-2x.png"
+                    src="/images/sqool/hi sqool/004 003-hp-scroll-2x.webp"
                     alt={t.captions.hisqool}
                     caption={t.captions.hisqool}
-                    onClick={() => openLightbox('/images/sqool/hi sqool/004 003-hp-scroll-2x.png')}
+                    onClick={() => openLightbox('/images/sqool/hi sqool/004 003-hp-scroll-2x.webp')}
                   />
                   <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>
                     {t.captions.hisqool} - {t.captions.hisqoolDesc}
@@ -1551,7 +1503,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
                   {t.phase1.connect.p3}
                 </p>
 
-                <div className="grid md:grid-cols-2 gap-4 mb-6 md:items-stretch">
+                <div className="grid md:grid-cols-2 gap-6 mb-6 md:items-stretch">
                   <figure className="group flex flex-col">
                     <div
                       className={`relative overflow-hidden rounded-xl cursor-pointer flex-1 ${isDark ? 'bg-[#1D1D1F]' : 'bg-gray-100'}`}
@@ -1658,7 +1610,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
                   className="mb-6 rounded-2xl overflow-hidden cursor-pointer transition-transform hover:scale-[1.01]"
                   onClick={() => openLightbox('/images/sqool/thumbnail_suite_sqool_blue.webp')}
                 >
-                  <img
+                  <img loading="lazy"
                     src="/images/sqool/thumbnail_suite_sqool_blue.webp"
                     alt="Suite SQOOL"
                     className="w-full h-auto object-cover"
@@ -1713,7 +1665,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
                         transition={{ duration: 0.3 }}
                         onClick={() => openLightbox(item.src)}
                       >
-                        <img
+                        <img loading="lazy"
                           src={item.src}
                           alt={t.captions[item.key as keyof typeof t.captions]}
                           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
@@ -2064,201 +2016,22 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
         )}
       </AnimatePresence>
 
-      {/* Lightbox Modal - Toolkit style */}
-      <AnimatePresence>
-        {lightboxOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl flex items-center justify-center"
-            onClick={closeLightbox}
-          >
-            {/* Close button */}
-            <motion.button
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              transition={springTransition}
-              onClick={closeLightbox}
-              className="absolute top-4 right-4 md:top-6 md:right-6 z-10 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
-            >
-              <X size={24} />
-            </motion.button>
-
-            {/* Navigation arrows */}
-            {lightboxIndex > 0 && (
-              <motion.button
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={springTransition}
-                onClick={(e) => { e.stopPropagation(); paginate(-1); }}
-                className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
-              >
-                <ChevronLeft size={28} />
-              </motion.button>
-            )}
-
-            {lightboxIndex < allImages.length - 1 && (
-              <motion.button
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 20 }}
-                transition={springTransition}
-                onClick={(e) => { e.stopPropagation(); paginate(1); }}
-                className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
-              >
-                <ChevronRight size={28} />
-              </motion.button>
-            )}
-
-            {/* Image container with carousel */}
-            <div className="relative w-full h-full flex items-center justify-center overflow-hidden px-4 md:px-20 py-20">
-              <AnimatePresence initial={false} custom={direction} mode="popLayout">
-                <motion.div
-                  key={page}
-                  custom={direction}
-                  variants={slideVariants}
-                  initial="enter"
-                  animate="center"
-                  exit="exit"
-                  transition={{
-                    x: { type: 'spring', stiffness: 350, damping: 35 },
-                    opacity: { duration: 0.2 },
-                    scale: { type: 'spring', stiffness: 350, damping: 35 },
-                  }}
-                  drag={lightboxZoomed ? false : "x"}
-                  dragConstraints={{ left: 0, right: 0 }}
-                  dragElastic={0.2}
-                  onDrag={(_, info) => dragX.set(info.offset.x)}
-                  onDragEnd={handleDragEnd}
-                  onClick={(e) => e.stopPropagation()}
-                  className={`absolute w-full h-full ${
-                    lightboxZoomed
-                      ? 'overflow-y-auto overflow-x-hidden cursor-grab active:cursor-grabbing'
-                      : 'flex flex-col items-center justify-center cursor-grab active:cursor-grabbing'
-                  }`}
-                  style={lightboxZoomed ? { scrollBehavior: 'smooth' } : {}}
-                >
-                  {lightboxZoomed ? (
-                    /* Zoomed mode - Full scrollable container */
-                    <div
-                      className="min-h-full w-full flex flex-col items-center py-16 px-4"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setLightboxZoomed(false);
-                      }}
-                    >
-                      <motion.img
-                        src={allImages[lightboxIndex].src}
-                        alt={allImages[lightboxIndex].caption}
-                        className="w-[95vw] md:w-[90vw] h-auto rounded-lg shadow-2xl cursor-zoom-out"
-                        initial={{ scale: 0.95, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        transition={springTransition}
-                        draggable={false}
-                      />
-                      {/* Caption at the bottom of zoomed image */}
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.2 }}
-                        className="mt-8 mb-8 px-4 text-center max-w-3xl"
-                      >
-                        <p className="text-white/80 text-sm md:text-base leading-relaxed">
-                          {allImages[lightboxIndex].caption}
-                        </p>
-                        <p className="text-white/40 text-xs mt-2">
-                          {t.clickToExitZoom}
-                        </p>
-                      </motion.div>
-                    </div>
-                  ) : (
-                    /* Normal mode - Centered with constraints */
-                    <>
-                      <motion.div
-                        style={{ x: parallaxX }}
-                        className="relative max-w-[90vw] max-h-[70vh] md:max-w-[80vw] md:max-h-[75vh]"
-                        onClick={(e) => {
-                          if (allImages[lightboxIndex].type === 'image') {
-                            e.stopPropagation();
-                            setLightboxZoomed(true);
-                          }
-                        }}
-                      >
-                        {allImages[lightboxIndex].type === 'video' ? (
-                          <motion.video
-                            src={allImages[lightboxIndex].src}
-                            className="max-w-full max-h-[70vh] md:max-h-[75vh] object-contain rounded-2xl shadow-2xl"
-                            initial={{ scale: 0.8, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            transition={springTransition}
-                            autoPlay
-                            loop
-                            muted
-                            playsInline
-                            controls
-                          />
-                        ) : (
-                          <motion.img
-                            src={allImages[lightboxIndex].src}
-                            alt={allImages[lightboxIndex].caption}
-                            className="max-w-full max-h-[70vh] md:max-h-[75vh] object-contain cursor-zoom-in rounded-lg shadow-2xl"
-                            initial={{ scale: 0.8, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            transition={springTransition}
-                            draggable={false}
-                          />
-                        )}
-                      </motion.div>
-
-                      {/* Caption */}
-                      <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.1, ...springTransition }}
-                        className="mt-6 px-4 text-center max-w-3xl"
-                      >
-                        <p className="text-white/80 text-sm md:text-base leading-relaxed">
-                          {allImages[lightboxIndex].caption}
-                        </p>
-                        <p className="text-white/40 text-xs mt-2">
-                          {lightboxIndex + 1} / {allImages.length} • {t.clickToZoom}
-                        </p>
-                      </motion.div>
-                    </>
-                  )}
-                </motion.div>
-              </AnimatePresence>
-            </div>
-
-            {/* Image dots indicator */}
-            {!lightboxZoomed && (
-              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center space-x-2">
-                {allImages.map((_, idx) => (
-                  <button
-                    key={idx}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      const dir = idx > lightboxIndex ? 1 : -1;
-                      setLightboxIndex(idx);
-                      setPage([idx, dir]);
-                      setLightboxZoomed(false);
-                    }}
-                    className={`w-2 h-2 rounded-full transition-all duration-200 ${
-                      idx === lightboxIndex
-                        ? 'bg-white w-4'
-                        : 'bg-white/30 hover:bg-white/50'
-                    }`}
-                  />
-                ))}
-              </div>
-            )}
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Lightbox Modal - Using EnhancedLightbox */}
+      <EnhancedLightbox
+        isOpen={lightboxOpen}
+        onClose={closeLightbox}
+        images={allImages.map(img => ({
+          src: img.src,
+          caption: img.caption,
+          type: img.type
+        }))}
+        currentIndex={lightboxIndex}
+        onIndexChange={setLightboxIndex}
+        lang={lang}
+        videoStartTime={videoStartTime}
+        projectId="sqool"
+        updateUrl={true}
+      />
     </motion.div>
   );
 };

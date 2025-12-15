@@ -131,182 +131,80 @@ const TRANSLATIONS = {
   }
 };
 
-// Project Card Component
+// Project Card Component - Minimal style inspired by Gabriel Valdivia
 const ProjectCard: React.FC<{
   project: Project;
   systemTheme: 'light' | 'dark';
   lang: Language;
   onClick: () => void;
   index: number;
-}> = ({ project, systemTheme, lang, onClick, index }) => {
+}> = ({ project, systemTheme, onClick, index }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const t = TRANSLATIONS[lang];
   const isDark = systemTheme === 'dark';
-
-  // Status badge logic - only SHIPPED or CONCEPT
-  const getStatusBadge = () => {
-    if (project.status === 'concept') {
-      return { label: t.concept, color: 'purple' };
-    }
-    // All other projects are shipped
-    return { label: t.shipped, color: 'green' };
-  };
-
-  const status = getStatusBadge();
   const isDisabled = project.status === 'coming-soon';
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.08, duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+      transition={{ delay: index * 0.05, duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
       className={`group ${isDisabled ? 'cursor-default' : 'cursor-pointer'}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={() => !isDisabled && onClick()}
     >
-      <motion.div
-        whileHover={!isDisabled ? { scale: 1.02 } : {}}
-        whileTap={!isDisabled ? { scale: 0.98 } : {}}
-        transition={{ type: "spring", stiffness: 400, damping: 25 }}
-        className={`relative overflow-hidden rounded-2xl transition-all duration-300 ${
-          isDark ? 'bg-[#1C1C1E]' : 'bg-white'
-        } ${isDisabled ? 'opacity-60' : ''}`}
-        style={{
-          boxShadow: isHovered && !isDisabled
-            ? isDark
-              ? '0 25px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.08)'
-              : '0 25px 60px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,0,0,0.04)'
-            : isDark
-              ? '0 8px 24px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.04)'
-              : '0 8px 24px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.03)'
-        }}
+      {/* Card Container - minimal border */}
+      <div
+        className={`relative overflow-hidden rounded-2xl border transition-all duration-300 ${
+          isDark
+            ? 'bg-[#1a1a1c] border-white/5'
+            : 'bg-[#F3F3F3] border-transparent'
+        } ${isDisabled ? 'opacity-50' : ''}`}
       >
-        {/* Image Container */}
-        <div
-          className={`relative aspect-[4/3] flex items-center justify-center overflow-hidden ${
-            isDark ? 'bg-[#2C2C2E]' : 'bg-[#F5F5F7]'
-          }`}
-        >
-          {/* Status Badge */}
-          <div
-            className={`absolute top-3 left-3 z-10 px-2.5 py-1 rounded-full text-xs font-semibold backdrop-blur-sm ${
-              status.color === 'green'
-                ? isDark
-                  ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
-                  : 'bg-emerald-50 text-emerald-600 border border-emerald-200'
-                : status.color === 'orange'
-                ? isDark
-                  ? 'bg-orange-500/20 text-orange-400 border border-orange-500/30'
-                  : 'bg-orange-50 text-orange-600 border border-orange-200'
-                : status.color === 'purple'
-                ? isDark
-                  ? 'bg-purple-500/20 text-purple-400 border border-purple-500/30'
-                  : 'bg-purple-50 text-purple-600 border border-purple-200'
-                : isDark
-                  ? 'bg-gray-500/20 text-gray-400 border border-gray-500/30'
-                  : 'bg-gray-100 text-gray-500 border border-gray-200'
-            }`}
-          >
-            {status.label}
-          </div>
-
-          {/* Period Badge */}
-          <div
-            className={`absolute top-3 right-3 z-10 px-2.5 py-1 rounded-full text-xs font-medium backdrop-blur-sm ${
-              isDark
-                ? 'bg-white/10 text-white/70 border border-white/10'
-                : 'bg-black/5 text-black/50 border border-black/5'
-            }`}
-          >
-            {project.period}
-          </div>
-
-          {/* Project Image - Default (fills container) */}
-          <img
-            src={project.coverImage.startsWith('/') ? project.coverImage : `/images/${project.coverImage}`}
+        {/* Image Container - Square ratio, larger visuals */}
+        <div className="relative aspect-square flex items-center justify-center overflow-hidden">
+          {/* Project Image - Device mockup with zoom effect - larger size */}
+          <img loading="lazy"
+            src={project.hoverImage
+              ? project.hoverImage
+              : project.coverImage.startsWith('/') ? project.coverImage : `/images/${project.coverImage}`}
             alt={project.title}
-            className={`absolute inset-0 w-full h-full object-cover transition-all duration-500 ease-out ${
-              project.hoverImage
-                ? isHovered && !isDisabled ? 'opacity-0' : 'opacity-100'
-                : isHovered && !isDisabled ? 'scale-105' : 'scale-100'
+            className={`w-full h-full object-contain transition-transform duration-300 ease-out ${
+              isHovered && !isDisabled ? 'scale-105' : 'scale-100'
             } ${isDisabled ? 'grayscale' : ''}`}
             draggable={false}
           />
-
-          {/* Hover Image - Device mockup (contained) */}
-          {project.hoverImage && (
-            <img
-              src={project.hoverImage}
-              alt={`${project.title} device mockup`}
-              className={`w-[90%] max-h-[85%] object-contain transition-all duration-500 ease-out ${
-                isHovered && !isDisabled ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
-              } ${isDisabled ? 'grayscale' : ''}`}
-              draggable={false}
-            />
-          )}
-
-          {/* Coming Soon Overlay */}
-          {isDisabled && (
-            <div className={`absolute inset-0 flex items-center justify-center ${
-              isDark ? 'bg-black/40' : 'bg-white/40'
-            }`}>
-              <span className={`text-sm font-semibold ${isDark ? 'text-white/60' : 'text-black/40'}`}>
-                {t.comingSoon}
-              </span>
-            </div>
-          )}
         </div>
 
-        {/* Text Content */}
-        <div className="p-5 relative">
-          <div>
-            <h3 className={`text-lg font-semibold truncate ${
-              isDark ? 'text-white' : 'text-gray-900'
-            }`}>
-              {project.title}
-            </h3>
-            <p className={`text-sm mt-1 line-clamp-2 pr-10 ${
-              isDark ? 'text-gray-400' : 'text-gray-500'
-            }`}>
-              {project.summary}
-            </p>
-          </div>
-
-          {/* Role & Category */}
-          <div className="flex items-center gap-2 mt-3">
-            <span className={`text-xs px-2 py-1 rounded-md ${
-              isDark ? 'bg-white/5 text-gray-400' : 'bg-gray-100 text-gray-500'
-            }`}>
-              {project.role}
-            </span>
-            {project.category && (
-              <span className={`text-xs px-2 py-1 rounded-md ${
-                isDark ? 'bg-blue-500/10 text-blue-400' : 'bg-blue-50 text-blue-600'
-              }`}>
-                {project.category}
-              </span>
-            )}
-          </div>
-
-          {/* Arrow button - positioned absolute bottom-right */}
-          <AnimatePresence>
-            {isHovered && !isDisabled && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.8 }}
-                transition={{ duration: 0.15 }}
-                className={`absolute bottom-5 right-5 w-8 h-8 rounded-full flex items-center justify-center ${
-                  isDark ? 'bg-white/10 text-white' : 'bg-gray-100 text-gray-600'
-                }`}
-              >
-                <ArrowRight size={14} />
-              </motion.div>
-            )}
-          </AnimatePresence>
+        {/* Text Content - Same style as Homepage */}
+        <div className="px-5 pb-5">
+          <h3 className={`text-xl md:text-2xl font-bold tracking-[-0.02em] ${
+            isDark ? 'text-white' : 'text-gray-900'
+          }`}>
+            {project.title}
+          </h3>
+          <p className={`text-sm mt-1 line-clamp-2 ${
+            isDark ? 'text-gray-400' : 'text-gray-500'
+          }`}>
+            {project.summary}
+          </p>
         </div>
-      </motion.div>
+
+        {/* Arrow button on hover - black circle, white arrow - positioned at card bottom right */}
+        <AnimatePresence>
+          {isHovered && !isDisabled && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              transition={{ duration: 0.15 }}
+              className="absolute bottom-5 right-5 w-10 h-10 rounded-full flex items-center justify-center bg-black text-white"
+            >
+              <ArrowRight size={18} />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </motion.div>
   );
 };
@@ -328,50 +226,36 @@ const WorkPage: React.FC<WorkPageProps> = ({
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
-      className={`fixed inset-0 z-50 overflow-y-auto ${isDark ? 'bg-[#0a0a0a]' : 'bg-[#F5F5F7]'}`}
+      className={`fixed inset-0 z-50 overflow-y-auto ${isDark ? 'bg-[#0a0a0a]' : 'bg-white'}`}
     >
-      {/* Header */}
-      <header
-        className={`sticky top-0 z-40 backdrop-blur-xl border-b ${
-          isDark ? 'bg-[#0a0a0a]/80 border-white/10' : 'bg-white/80 border-gray-200'
-        }`}
-      >
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          {/* Title on left */}
-          <h1 className={`text-xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+      {/* Header - Glass effect */}
+      <header className={`sticky top-0 z-40 backdrop-blur-xl ${
+        isDark
+          ? 'bg-[#0a0a0a]/80'
+          : 'bg-white/80'
+      }`}>
+        <div className="w-full px-6 h-16 flex items-center justify-between">
+          {/* Title on left - Same style as Homepage nav */}
+          <span className={`font-semibold text-lg tracking-[-0.02em] ${isDark ? 'text-white' : 'text-gray-900'}`}>
             {t.title}
-          </h1>
+          </span>
 
           {/* Close Button on right */}
           <button
             onClick={onBack}
-            className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${
-              isDark
-                ? 'text-gray-300 hover:bg-white/10'
-                : 'text-gray-600 hover:bg-gray-100'
+            className={`w-8 h-8 flex items-center justify-center rounded-full transition-colors ${
+              isDark ? 'text-gray-400 hover:text-white hover:bg-white/10' : 'text-gray-500 hover:text-gray-900 hover:bg-black/5'
             }`}
           >
-            <X size={20} />
+            <X size={18} />
           </button>
         </div>
       </header>
 
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-6 py-12">
-        {/* Page Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="mb-12"
-        >
-          <p className={`text-lg ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-            {t.subtitle}
-          </p>
-        </motion.div>
-
-        {/* Projects Grid - 3 columns */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {/* Main Content - Full width with 40px padding */}
+      <main className="p-10">
+        {/* Projects Grid - 3 columns, full width, 40px gap */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
           {projects.map((project, index) => (
             <ProjectCard
               key={project.id}
@@ -385,14 +269,6 @@ const WorkPage: React.FC<WorkPageProps> = ({
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className={`py-12 border-t ${isDark ? 'border-white/5' : 'border-gray-200'}`}>
-        <div className="max-w-7xl mx-auto px-6 text-center">
-          <p className={`text-sm ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
-            {lang === 'en' ? 'More projects coming soon...' : 'Plus de projets à venir...'}
-          </p>
-        </div>
-      </footer>
     </motion.div>
   );
 };

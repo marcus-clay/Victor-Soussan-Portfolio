@@ -1,8 +1,8 @@
 // Toolkit Case Study Page - Static content with instant loading
 // Displays the Toolkit project case study with portfolio styling
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { motion, AnimatePresence, useMotionValue, useTransform, useSpring, PanInfo } from 'framer-motion';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import {
   ExternalLink,
   Calendar,
@@ -11,13 +11,17 @@ import {
   Rocket,
   Quote,
   ChevronRight,
-  ChevronLeft,
   ChevronDown,
   X,
-  Play
+  Play,
+  Zap,
+  Trophy,
+  CheckCircle2,
+  ArrowRight
 } from 'lucide-react';
 import { GalleryItem, getToolkitGalleryItems } from './BentoGallery';
 import ToolkitExecutive from './src/components/ToolkitExecutive';
+import EnhancedLightbox from './src/components/EnhancedLightbox';
 
 interface ToolkitPageProps {
   onClose: () => void;
@@ -552,33 +556,6 @@ const allImagesData: MediaItem[] = [
   { src: '/images/toolkit/Diagram_06_-_Impact.svg', captionKey: 'projectImpact', type: 'image' },
 ];
 
-// Apple-style spring transition
-const springTransition = {
-  type: 'spring' as const,
-  stiffness: 300,
-  damping: 30,
-  mass: 1,
-};
-
-// Slide transition for carousel
-const slideVariants = {
-  enter: (direction: number) => ({
-    x: direction > 0 ? '100%' : '-100%',
-    opacity: 0,
-    scale: 0.95,
-  }),
-  center: {
-    x: 0,
-    opacity: 1,
-    scale: 1,
-  },
-  exit: (direction: number) => ({
-    x: direction < 0 ? '100%' : '-100%',
-    opacity: 0,
-    scale: 0.95,
-  }),
-};
-
 // Gallery Card component with Apple TV-style 3D tilt effect
 interface GalleryCardProps {
   item: GalleryItem;
@@ -641,7 +618,7 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick }) => {
             </div>
           </div>
         ) : (
-          <img src={item.src} alt={item.caption} className="w-full h-auto block" loading="lazy" />
+          <img loading="lazy" src={item.src} alt={item.caption} className="w-full h-auto block" />
         )}
       </motion.div>
       <figcaption className="mt-4 text-sm text-gray-400">
@@ -649,6 +626,376 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick }) => {
         {item.captionDesc && <span className="hidden sm:inline"> — {item.captionDesc}</span>}
       </figcaption>
     </motion.figure>
+  );
+};
+
+// ============================================================================
+// PHASES DATA - Three phases to market-fit
+// ============================================================================
+
+const PHASES_DATA = {
+  en: [
+    {
+      id: 1,
+      title: "Foundation",
+      duration: "Months 1-3",
+      icon: Layers,
+      description: "Establishing the core architecture and essential workflows.",
+      features: [
+        "Core authentication & navigation architecture",
+        "Project creation & management workflows",
+        "Task library with drag-drop sequences",
+        "Planning V1 with colorful task cards",
+        "Subscription system (individual + enterprise)",
+        "PDF export functionality"
+      ]
+    },
+    {
+      id: 2,
+      title: "Feature Expansion",
+      duration: "Months 4-8",
+      icon: Zap,
+      description: "Enhancing interactivity and visual systems.",
+      features: [
+        "Advanced planning interactions (multi-select)",
+        "Dynamic island adaptive menu system",
+        "Refined task card aesthetic (V2 visual system)",
+        "Fluid zoom timeline (daily to quarterly)",
+        "Project hub for multi-site managers",
+        "Stakeholder management features"
+      ]
+    },
+    {
+      id: 3,
+      title: "Platform Maturity",
+      duration: "Months 9-12",
+      icon: Trophy,
+      description: "Scalability, mobile strategy, and refinement.",
+      features: [
+        "Visual complexity management (hierarchy)",
+        "Mobile strategy with platform-specific design",
+        "Navigation evolution (direct access)",
+        "Consolidated mobile navigation (4 groups)",
+        "Activity enrichment (photo annotation)",
+        "Design system scalability (120+ screens)"
+      ]
+    }
+  ],
+  fr: [
+    {
+      id: 1,
+      title: "Fondation",
+      duration: "Mois 1-3",
+      icon: Layers,
+      description: "Architecture core et workflows essentiels.",
+      features: [
+        "Architecture authentification & navigation",
+        "Workflows création & gestion projet",
+        "Bibliothèque tâches avec séquences drag-drop",
+        "Planning V1 avec cartes colorées",
+        "Système abonnement (individuel + entreprise)",
+        "Export PDF"
+      ]
+    },
+    {
+      id: 2,
+      title: "Expansion Features",
+      duration: "Mois 4-8",
+      icon: Zap,
+      description: "Interactions enrichies et systèmes visuels.",
+      features: [
+        "Interactions planning avancées (multi-sélection)",
+        "Système menu adaptatif dynamic island",
+        "Esthétique cartes tâches affinée (V2)",
+        "Zoom fluide timeline (jour à trimestre)",
+        "Hub projet pour managers multi-sites",
+        "Gestion des parties prenantes"
+      ]
+    },
+    {
+      id: 3,
+      title: "Maturité Plateforme",
+      duration: "Mois 9-12",
+      icon: Trophy,
+      description: "Scalabilité, stratégie mobile et raffinement.",
+      features: [
+        "Gestion complexité visuelle (hiérarchie)",
+        "Stratégie mobile platform-specific",
+        "Évolution navigation (accès direct)",
+        "Navigation mobile consolidée (4 groupes)",
+        "Enrichissement activité (annotation photo)",
+        "Scalabilité design system (120+ écrans)"
+      ]
+    }
+  ]
+};
+
+// ============================================================================
+// PRODUCT EVOLUTION DIAGRAM - Interactive carousel
+// ============================================================================
+
+const ProductEvolutionDiagram: React.FC<{
+  isDark: boolean;
+  lang: 'en' | 'fr';
+}> = ({ isDark, lang }) => {
+  const [activePhase, setActivePhase] = useState(0);
+  const [viewMode, setViewMode] = useState<'focus' | 'overview'>('focus');
+  const phases = PHASES_DATA[lang];
+
+  // Swipe logic for mobile
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const minSwipeDistance = 50;
+
+  const handleNext = () => {
+    if (activePhase < phases.length - 1) setActivePhase(prev => prev + 1);
+  };
+
+  const handlePrev = () => {
+    if (activePhase > 0) setActivePhase(prev => prev - 1);
+  };
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    if (distance > minSwipeDistance) handleNext();
+    if (distance < -minSwipeDistance) handlePrev();
+  };
+
+  const texts = {
+    focus: lang === 'fr' ? 'Focus' : 'Focus',
+    overview: lang === 'fr' ? 'Vue d\'ensemble' : 'Overview',
+    keyDeliverables: lang === 'fr' ? 'Livrables clés' : 'Key Deliverables',
+    phase: lang === 'fr' ? 'Phase' : 'Phase',
+    more: lang === 'fr' ? 'de plus' : 'more'
+  };
+
+  return (
+    <div className="mt-8">
+      {/* View Toggle */}
+      <div className="flex justify-center mb-8">
+        <div className={`inline-flex rounded-full p-1 ${isDark ? 'bg-white/10' : 'bg-gray-100'}`}>
+          <button
+            onClick={() => setViewMode('focus')}
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+              viewMode === 'focus'
+                ? isDark ? 'bg-white text-black' : 'bg-gray-900 text-white'
+                : isDark ? 'text-gray-400 hover:text-white' : 'text-gray-500 hover:text-gray-900'
+            }`}
+          >
+            {texts.focus}
+          </button>
+          <button
+            onClick={() => setViewMode('overview')}
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+              viewMode === 'overview'
+                ? isDark ? 'bg-white text-black' : 'bg-gray-900 text-white'
+                : isDark ? 'text-gray-400 hover:text-white' : 'text-gray-500 hover:text-gray-900'
+            }`}
+          >
+            {texts.overview}
+          </button>
+        </div>
+      </div>
+
+      {viewMode === 'focus' ? (
+        /* Focus View */
+        <div
+          className="relative touch-pan-y"
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
+        >
+          {/* Progress Indicator */}
+          <div className="flex items-center justify-center gap-3 mb-8">
+            {phases.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setActivePhase(idx)}
+                className={`h-2 rounded-full transition-all duration-500 ${
+                  idx === activePhase
+                    ? `w-12 ${isDark ? 'bg-white' : 'bg-gray-900'}`
+                    : `w-2 ${isDark ? 'bg-white/20 hover:bg-white/40' : 'bg-gray-300 hover:bg-gray-400'}`
+                }`}
+              />
+            ))}
+          </div>
+
+          {/* Card Container */}
+          <div className="relative h-[480px] md:h-[420px]">
+            {phases.map((phase, idx) => {
+              const isActive = idx === activePhase;
+              const isPrev = idx < activePhase;
+              const isNext = idx > activePhase;
+              const PhaseIcon = phase.icon;
+
+              return (
+                <div
+                  key={phase.id}
+                  className={`absolute inset-0 w-full h-full transition-all duration-700 ease-out origin-bottom
+                    ${isActive ? 'opacity-100 scale-100 translate-x-0 z-20' : ''}
+                    ${isPrev ? 'opacity-0 scale-95 -translate-x-12 z-10 pointer-events-none' : ''}
+                    ${isNext ? 'opacity-0 scale-95 translate-x-12 z-10 pointer-events-none' : ''}
+                  `}
+                >
+                  <div className={`rounded-3xl overflow-hidden h-full flex flex-col md:flex-row ${
+                    isDark ? 'bg-white/5 border border-white/10' : 'bg-white shadow-xl border border-gray-100'
+                  }`}>
+                    {/* Left: Identity */}
+                    <div className={`md:w-1/3 p-8 md:p-10 flex flex-col justify-between ${
+                      isDark ? 'bg-white/5 border-b md:border-b-0 md:border-r border-white/10' : 'bg-gray-50 border-b md:border-b-0 md:border-r border-gray-100'
+                    }`}>
+                      <div>
+                        <div className={`inline-flex items-center justify-center w-14 h-14 rounded-2xl mb-6 ${
+                          isDark ? 'bg-white text-black' : 'bg-gray-900 text-white'
+                        }`}>
+                          <PhaseIcon size={26} strokeWidth={2} />
+                        </div>
+                        <div className={`uppercase tracking-widest text-[10px] font-bold mb-2 ${
+                          isDark ? 'text-gray-500' : 'text-gray-400'
+                        }`}>
+                          {texts.phase} {phase.id}
+                        </div>
+                        <h3 className={`text-2xl md:text-3xl font-bold leading-tight mb-2 ${
+                          isDark ? 'text-white' : 'text-gray-900'
+                        }`}>
+                          {phase.title}
+                        </h3>
+                        <div className={`inline-block px-3 py-1 rounded-md text-xs font-semibold ${
+                          isDark ? 'bg-white/10 text-gray-300' : 'bg-gray-200 text-gray-700'
+                        }`}>
+                          {phase.duration}
+                        </div>
+                      </div>
+                      <p className={`text-sm leading-relaxed mt-6 ${
+                        isDark ? 'text-gray-400' : 'text-gray-500'
+                      }`}>
+                        {phase.description}
+                      </p>
+                    </div>
+
+                    {/* Right: Features */}
+                    <div className="md:w-2/3 p-8 md:p-10 overflow-y-auto">
+                      <h4 className={`text-xs font-semibold uppercase tracking-wider mb-6 ${
+                        isDark ? 'text-gray-500' : 'text-gray-400'
+                      }`}>
+                        {texts.keyDeliverables}
+                      </h4>
+                      <ul className="space-y-4">
+                        {phase.features.map((feature, fIdx) => (
+                          <motion.li
+                            key={fIdx}
+                            initial={{ opacity: 0, x: 10 }}
+                            animate={isActive ? { opacity: 1, x: 0 } : { opacity: 0, x: 10 }}
+                            transition={{ delay: isActive ? 0.2 + fIdx * 0.08 : 0, duration: 0.4 }}
+                            className="flex items-start gap-3"
+                          >
+                            <CheckCircle2 size={18} className="text-emerald-500 mt-0.5 flex-shrink-0" strokeWidth={2.5} />
+                            <span className={`text-sm md:text-base font-medium leading-relaxed ${
+                              isDark ? 'text-gray-200' : 'text-gray-800'
+                            }`}>
+                              {feature}
+                            </span>
+                          </motion.li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Navigation Arrows */}
+          <div className="absolute top-1/2 -translate-y-1/2 w-full flex justify-between pointer-events-none px-2 md:-mx-4 z-50">
+            <button
+              onClick={handlePrev}
+              disabled={activePhase === 0}
+              className={`w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center pointer-events-auto transition-all duration-300 hover:scale-110 disabled:opacity-0 disabled:pointer-events-none ${
+                isDark ? 'bg-white/80 text-black' : 'bg-white shadow-lg text-gray-900'
+              }`}
+            >
+              <ArrowRight size={20} className="rotate-180" />
+            </button>
+            <button
+              onClick={handleNext}
+              disabled={activePhase === phases.length - 1}
+              className={`w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center pointer-events-auto transition-all duration-300 hover:scale-110 disabled:opacity-0 disabled:pointer-events-none ${
+                isDark ? 'bg-white/80 text-black' : 'bg-white shadow-lg text-gray-900'
+              }`}
+            >
+              <ArrowRight size={20} />
+            </button>
+          </div>
+        </div>
+      ) : (
+        /* Overview View */
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {phases.map((phase) => {
+            const PhaseIcon = phase.icon;
+            return (
+              <div
+                key={phase.id}
+                className={`group rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1 ${
+                  isDark ? 'bg-white/5 hover:bg-white/10 border border-white/10' : 'bg-white shadow-sm hover:shadow-lg border border-gray-100'
+                }`}
+              >
+                <div className="flex items-center gap-3 mb-4">
+                  <div className={`p-3 rounded-xl transition-colors duration-300 ${
+                    isDark
+                      ? 'bg-white/10 text-white group-hover:bg-white group-hover:text-black'
+                      : 'bg-gray-100 text-gray-700 group-hover:bg-gray-900 group-hover:text-white'
+                  }`}>
+                    <PhaseIcon size={20} strokeWidth={2} />
+                  </div>
+                  <div>
+                    <div className={`text-[10px] uppercase font-bold tracking-wider ${
+                      isDark ? 'text-gray-500' : 'text-gray-400'
+                    }`}>
+                      {texts.phase} {phase.id}
+                    </div>
+                    <div className={`text-xs font-semibold ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                      {phase.duration}
+                    </div>
+                  </div>
+                </div>
+
+                <h4 className={`text-lg font-bold mb-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                  {phase.title}
+                </h4>
+
+                <div className="space-y-2">
+                  {phase.features.slice(0, 4).map((f, i) => (
+                    <div key={i} className="flex items-center gap-2">
+                      <div className={`w-1.5 h-1.5 rounded-full transition-colors duration-300 ${
+                        isDark ? 'bg-white/30 group-hover:bg-emerald-400' : 'bg-gray-300 group-hover:bg-emerald-500'
+                      }`} />
+                      <span className={`text-sm truncate ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                        {f}
+                      </span>
+                    </div>
+                  ))}
+                  {phase.features.length > 4 && (
+                    <div className={`text-xs italic pl-3.5 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
+                      + {phase.features.length - 4} {texts.more}
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
   );
 };
 
@@ -677,14 +1024,12 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [caseStudyMode, setCaseStudyMode] = useState<'executive' | 'full'>('executive');
   const [lightboxIndex, setLightboxIndex] = useState(0);
-  const [lightboxZoomed, setLightboxZoomed] = useState(false);
-  const [[page, direction], setPage] = useState([0, 0]);
+  const [videoStartTime, setVideoStartTime] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const tocRef = useRef<HTMLDivElement>(null);
 
-  // Motion values for parallax effect
-  const dragX = useMotionValue(0);
-  const parallaxX = useTransform(dragX, [-300, 0, 300], [30, 0, -30]);
+  // Video refs for tracking currentTime
+  const videoRefs = useRef<{ [key: string]: HTMLVideoElement | null }>({});
 
   // Project metadata
   const projectMeta = {
@@ -759,56 +1104,19 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
     return ((currentIndex + 1) / sections.length) * 100;
   };
 
-  // Open lightbox with specific image
-  const openLightbox = (imageSrc: string) => {
+  // Open lightbox with specific image and optional start time for videos
+  const openLightbox = (imageSrc: string, startTime: number = 0) => {
     const index = allImages.findIndex(img => img.src === imageSrc);
     if (index !== -1) {
       setLightboxIndex(index);
-      setPage([index, 0]);
-      setLightboxZoomed(false);
+      setVideoStartTime(startTime);
       setLightboxOpen(true);
-      document.body.style.overflow = 'hidden';
     }
   };
 
   // Close lightbox
   const closeLightbox = () => {
     setLightboxOpen(false);
-    document.body.style.overflow = '';
-  };
-
-  // Navigate to next/previous image
-  const paginate = useCallback((newDirection: number) => {
-    const newIndex = lightboxIndex + newDirection;
-    if (newIndex >= 0 && newIndex < allImages.length) {
-      setLightboxIndex(newIndex);
-      setPage([newIndex, newDirection]);
-      setLightboxZoomed(false);
-    }
-  }, [lightboxIndex]);
-
-  // Handle keyboard navigation
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (!lightboxOpen) return;
-      if (e.key === 'Escape') closeLightbox();
-      if (e.key === 'ArrowRight') paginate(1);
-      if (e.key === 'ArrowLeft') paginate(-1);
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [lightboxOpen, paginate]);
-
-  // Handle drag end for swipe navigation
-  const handleDragEnd = (e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    const swipeThreshold = 50;
-    const swipeVelocity = 500;
-
-    if (info.offset.x < -swipeThreshold || info.velocity.x < -swipeVelocity) {
-      if (lightboxIndex < allImages.length - 1) paginate(1);
-    } else if (info.offset.x > swipeThreshold || info.velocity.x > swipeVelocity) {
-      if (lightboxIndex > 0) paginate(-1);
-    }
   };
 
   return (
@@ -830,14 +1138,14 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className={`fixed top-[53px] sm:top-[72px] left-0 right-0 z-30 border-b ${
+            className={`fixed top-16 left-0 right-0 z-30 backdrop-blur-xl ${
               systemTheme === 'dark'
-                ? 'bg-[#0a0a0a]/95 backdrop-blur-xl border-white/10'
-                : 'bg-white/95 backdrop-blur-xl border-gray-200'
+                ? 'bg-[#0a0a0a]/80'
+                : 'bg-white/80'
             }`}
           >
             {/* Collapsed state - shows current section */}
-            <div className="max-w-6xl mx-auto px-4 md:px-6">
+            <div className="w-full px-6">
               <button
                 onClick={() => setIsMobileNavExpanded(!isMobileNavExpanded)}
                 className="w-full h-12 flex items-center justify-between"
@@ -925,19 +1233,19 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
         )}
       </AnimatePresence>
 
-      {/* Header - iOS-inspired responsive design */}
+      {/* Header - Glass effect */}
       <header
-        className={`sticky top-0 z-40 backdrop-blur-xl border-b ${
+        className={`sticky top-0 z-40 backdrop-blur-xl ${
           viewMode === 'gallery'
-            ? 'bg-black/80 border-white/10'
-            : (systemTheme === 'dark' ? 'bg-[#0a0a0a]/80 border-white/10' : 'bg-white/80 border-gray-200')
+            ? 'bg-black/80'
+            : (systemTheme === 'dark' ? 'bg-[#0a0a0a]/80' : 'bg-white/80')
         }`}
       >
-        <div className="max-w-6xl mx-auto px-3 sm:px-4 md:px-6 py-3 sm:py-4 flex items-center gap-2 sm:gap-4">
-          {/* Left - Title (truncates on mobile, fixed width on desktop for centering) */}
-          <div className="flex-shrink-0 min-w-0 max-w-[30%] sm:max-w-none sm:w-32 md:w-40">
+        <div className="w-full px-6 h-16 flex items-center gap-4">
+          {/* Left - Title - Same style as Homepage nav */}
+          <div className="flex-shrink-0">
             <h1
-              className={`text-base sm:text-lg md:text-xl font-bold truncate ${
+              className={`font-semibold text-lg tracking-[-0.02em] ${
                 viewMode === 'gallery' ? 'text-white' : (systemTheme === 'dark' ? 'text-white' : 'text-gray-900')
               }`}
             >
@@ -969,8 +1277,8 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                     ? 'text-white'
                     : (viewMode === 'gallery' ? 'text-gray-400 hover:text-white' : (systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'))
                 }`}>
-                  <span className="hidden sm:inline">{lang === 'fr' ? 'En bref' : 'At a glance'}</span>
-                  <span className="sm:hidden">{lang === 'fr' ? 'Bref' : 'Brief'}</span>
+                  <span className="hidden sm:inline">{lang === 'fr' ? 'En bref' : 'Summary'}</span>
+                  <span className="sm:hidden">{lang === 'fr' ? 'Bref' : 'Sum.'}</span>
                 </span>
               </button>
               {/* Full case study button */}
@@ -990,8 +1298,8 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                     ? 'text-white'
                     : (viewMode === 'gallery' ? 'text-gray-400 hover:text-white' : (systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'))
                 }`}>
-                  <span className="hidden sm:inline">Full</span>
-                  <span className="sm:hidden">Complet</span>
+                  <span className="hidden sm:inline">{lang === 'fr' ? 'Complet' : 'Full case'}</span>
+                  <span className="sm:hidden">{lang === 'fr' ? 'Full' : 'Full'}</span>
                 </span>
               </button>
               {/* Gallery button */}
@@ -1009,225 +1317,45 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                 <span className={`relative z-10 ${
                   viewMode === 'gallery' ? 'text-white' : (systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900')
                 }`}>
-                  <span className="hidden sm:inline">{t.gallery}</span>
-                  <span className="sm:hidden">Galerie</span>
+                  <span className="hidden sm:inline">{lang === 'fr' ? 'Galerie' : 'Gallery'}</span>
+                  <span className="sm:hidden">{lang === 'fr' ? 'Gal.' : 'Gal.'}</span>
                 </span>
               </button>
             </div>
           </div>
 
-          {/* Right - Close button (fixed width matching title for centering) */}
-          <div className="flex-shrink-0 sm:w-32 md:w-40 flex justify-end">
+          {/* Right - Close button */}
+          <div className="flex-shrink-0">
             <button
               onClick={onClose}
-              className={`p-1.5 sm:p-2 rounded-full ${
+              className={`w-8 h-8 flex items-center justify-center rounded-full transition-colors ${
                 viewMode === 'gallery'
-                  ? 'text-gray-300 hover:bg-white/10'
-                  : (systemTheme === 'dark' ? 'text-gray-300 hover:bg-white/10' : 'text-gray-600 hover:bg-gray-100')
+                  ? 'text-gray-400 hover:text-white hover:bg-white/10'
+                  : (systemTheme === 'dark' ? 'text-gray-400 hover:text-white hover:bg-white/10' : 'text-gray-500 hover:text-gray-900 hover:bg-black/5')
               }`}
             >
-              <X size={20} className="sm:hidden" />
-              <X size={24} className="hidden sm:block" />
+              <X size={18} />
             </button>
           </div>
         </div>
       </header>
 
-      {/* Lightbox Modal */}
-      <AnimatePresence>
-        {lightboxOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl flex items-center justify-center"
-            onClick={closeLightbox}
-          >
-            {/* Close button */}
-            <motion.button
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              transition={springTransition}
-              onClick={closeLightbox}
-              className="absolute top-4 right-4 md:top-6 md:right-6 z-10 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
-            >
-              <X size={24} />
-            </motion.button>
-
-            {/* Navigation arrows */}
-            {lightboxIndex > 0 && (
-              <motion.button
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={springTransition}
-                onClick={(e) => { e.stopPropagation(); paginate(-1); }}
-                className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
-              >
-                <ChevronLeft size={28} />
-              </motion.button>
-            )}
-
-            {lightboxIndex < allImages.length - 1 && (
-              <motion.button
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 20 }}
-                transition={springTransition}
-                onClick={(e) => { e.stopPropagation(); paginate(1); }}
-                className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
-              >
-                <ChevronRight size={28} />
-              </motion.button>
-            )}
-
-            {/* Image container with carousel */}
-            <div className="relative w-full h-full flex items-center justify-center overflow-hidden px-4 md:px-20 py-20">
-              <AnimatePresence initial={false} custom={direction} mode="popLayout">
-                <motion.div
-                  key={page}
-                  custom={direction}
-                  variants={slideVariants}
-                  initial="enter"
-                  animate="center"
-                  exit="exit"
-                  transition={{
-                    x: { type: 'spring', stiffness: 350, damping: 35 },
-                    opacity: { duration: 0.2 },
-                    scale: { type: 'spring', stiffness: 350, damping: 35 },
-                  }}
-                  drag={lightboxZoomed ? false : "x"}
-                  dragConstraints={{ left: 0, right: 0 }}
-                  dragElastic={0.2}
-                  onDrag={(_, info) => dragX.set(info.offset.x)}
-                  onDragEnd={handleDragEnd}
-                  onClick={(e) => e.stopPropagation()}
-                  className={`absolute w-full h-full ${
-                    lightboxZoomed
-                      ? 'overflow-y-auto overflow-x-hidden cursor-grab active:cursor-grabbing'
-                      : 'flex flex-col items-center justify-center cursor-grab active:cursor-grabbing'
-                  }`}
-                  style={lightboxZoomed ? { scrollBehavior: 'smooth' } : {}}
-                >
-                  {lightboxZoomed ? (
-                    /* Zoomed mode - Full scrollable container */
-                    <div
-                      className="min-h-full w-full flex flex-col items-center py-16 px-4"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setLightboxZoomed(false);
-                      }}
-                    >
-                      <motion.img
-                        src={allImages[lightboxIndex].src}
-                        alt={allImages[lightboxIndex].caption}
-                        className="w-[95vw] md:w-[90vw] h-auto rounded-lg shadow-2xl cursor-zoom-out"
-                        initial={{ scale: 0.95, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        transition={springTransition}
-                        draggable={false}
-                      />
-                      {/* Caption at the bottom of zoomed image */}
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.2 }}
-                        className="mt-8 mb-8 px-4 text-center max-w-3xl"
-                      >
-                        <p className="text-white/80 text-sm md:text-base leading-relaxed">
-                          {allImages[lightboxIndex].caption}
-                        </p>
-                        <p className="text-white/40 text-xs mt-2">
-                          Click to exit zoom
-                        </p>
-                      </motion.div>
-                    </div>
-                  ) : (
-                    /* Normal mode - Centered with constraints */
-                    <>
-                      <motion.div
-                        style={{ x: parallaxX }}
-                        className="relative max-w-[90vw] max-h-[70vh] md:max-w-[80vw] md:max-h-[75vh]"
-                        onClick={(e) => {
-                          if (allImages[lightboxIndex].type === 'image') {
-                            e.stopPropagation();
-                            setLightboxZoomed(true);
-                          }
-                        }}
-                      >
-                        {allImages[lightboxIndex].type === 'video' ? (
-                          <motion.video
-                            src={allImages[lightboxIndex].src}
-                            className="max-w-full max-h-[70vh] md:max-h-[75vh] object-contain rounded-2xl shadow-2xl"
-                            initial={{ scale: 0.8, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            transition={springTransition}
-                            autoPlay
-                            loop
-                            muted
-                            playsInline
-                            controls
-                          />
-                        ) : (
-                          <motion.img
-                            src={allImages[lightboxIndex].src}
-                            alt={allImages[lightboxIndex].caption}
-                            className="max-w-full max-h-[70vh] md:max-h-[75vh] object-contain cursor-zoom-in rounded-lg shadow-2xl"
-                            initial={{ scale: 0.8, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            transition={springTransition}
-                            draggable={false}
-                          />
-                        )}
-                      </motion.div>
-
-                      {/* Caption */}
-                      <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.1, ...springTransition }}
-                        className="mt-6 px-4 text-center max-w-3xl"
-                      >
-                        <p className="text-white/80 text-sm md:text-base leading-relaxed">
-                          {allImages[lightboxIndex].caption}
-                        </p>
-                        <p className="text-white/40 text-xs mt-2">
-                          {lightboxIndex + 1} / {allImages.length} • Click image to zoom
-                        </p>
-                      </motion.div>
-                    </>
-                  )}
-                </motion.div>
-              </AnimatePresence>
-            </div>
-
-            {/* Image dots indicator */}
-            {!lightboxZoomed && (
-              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center space-x-2">
-                {allImages.map((_, idx) => (
-                  <button
-                    key={idx}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      const dir = idx > lightboxIndex ? 1 : -1;
-                      setLightboxIndex(idx);
-                      setPage([idx, dir]);
-                      setLightboxZoomed(false);
-                    }}
-                    className={`w-2 h-2 rounded-full transition-all duration-200 ${
-                      idx === lightboxIndex
-                        ? 'bg-white w-4'
-                        : 'bg-white/30 hover:bg-white/50'
-                    }`}
-                  />
-                ))}
-              </div>
-            )}
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Lightbox Modal - Using EnhancedLightbox */}
+      <EnhancedLightbox
+        isOpen={lightboxOpen}
+        onClose={closeLightbox}
+        images={allImages.map(img => ({
+          src: img.src,
+          caption: img.caption,
+          type: img.type
+        }))}
+        currentIndex={lightboxIndex}
+        onIndexChange={setLightboxIndex}
+        lang={lang}
+        videoStartTime={videoStartTime}
+        projectId="toolkit"
+        updateUrl={true}
+      />
 
       {/* Content - Switch between Case Study and Gallery */}
       <AnimatePresence mode="wait">
@@ -1277,10 +1405,20 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
-      <div className="max-w-6xl mx-auto px-4 md:px-6 py-12 md:py-16">
+      <div className="max-w-[1480px] mx-auto px-10 py-12 md:py-16">
             {/* Hero Section - Title + Logo + Testimonial */}
             <section id="hero" className="mb-16 md:mb-24">
-          <div className="grid md:grid-cols-5 gap-8 items-start">
+          {/* Logo at top-left */}
+          <img loading="lazy"
+            src={systemTheme === 'dark'
+              ? '/images/toolkit/Logo toolkit - dark bg - large - horizontal.svg'
+              : '/images/toolkit/Logo toolkit - light bg - large - horizontal.svg'
+            }
+            alt="Toolkit"
+            className="h-8 md:h-10 w-auto mb-8"
+          />
+
+          <div className="grid md:grid-cols-5 gap-10 items-start">
             {/* Left Column - Title and Description */}
             <div className="md:col-span-3">
               {/* Meta tags */}
@@ -1345,7 +1483,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
               </a>
             </div>
 
-            {/* Right Column - Logo + Testimonial */}
+            {/* Right Column - Testimonial */}
             <div className="md:col-span-2">
               {/* Testimonial Card */}
               <div
@@ -1369,8 +1507,8 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   {t.testimonial.quote}
                 </p>
                 <div className="flex items-center space-x-3">
-                  <img
-                    src="/images/pierre-marie-nigay.png"
+                  <img loading="lazy"
+                    src="/images/pierre-marie-nigay.webp"
                     alt={t.testimonial.author}
                     className="w-10 h-10 rounded-full object-cover"
                   />
@@ -1495,11 +1633,11 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
         <figure className="mb-16">
           <div
             onClick={() => openLightbox('/images/toolkit/hero.webp')}
-            className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
+            className={`rounded-2xl overflow-hidden border cursor-pointer ${
               systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
             }`}
           >
-            <img
+            <img loading="lazy"
               src="/images/toolkit/hero.webp"
               alt="Toolkit App Overview"
               className="w-full h-auto"
@@ -1611,20 +1749,10 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
             {t.context.intro}
           </p>
 
-          <figure className="mb-12">
-            <div
-              onClick={() => openLightbox('/images/toolkit/Diagram_00_-_Product_Evolution___12_months.svg')}
-              className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
-                systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-              }`}
-            >
-              <img
-                src="/images/toolkit/Diagram_00_-_Product_Evolution___12_months.svg"
-                alt="Product Evolution - 12 months roadmap"
-                className="w-full h-auto"
-              />
-            </div>
-          </figure>
+          {/* Interactive Three Phases to Market-Fit */}
+          <div className="mb-12">
+            <ProductEvolutionDiagram isDark={systemTheme === 'dark'} lang={lang} />
+          </div>
 
           {/* Core Design Challenge, Research, Foundation */}
           <div className="grid md:grid-cols-3 gap-6 mb-12">
@@ -1635,7 +1763,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
                 }`}
               >
-                <img
+                <img loading="lazy"
                   src="/images/toolkit/Diagram_01_-_Problem.svg"
                   alt="Core Design Challenge"
                   className="w-full h-full object-cover"
@@ -1657,7 +1785,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
                 }`}
               >
-                <img
+                <img loading="lazy"
                   src="/images/toolkit/Diagram_02_-_Research.svg"
                   alt="Research process"
                   className="w-full h-full object-cover"
@@ -1679,7 +1807,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
                 }`}
               >
-                <img
+                <img loading="lazy"
                   src="/images/toolkit/Diagram_03_-_Foundation.svg"
                   alt="Foundation"
                   className="w-full h-full object-cover"
@@ -1704,7 +1832,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
                 }`}
               >
-                <img
+                <img loading="lazy"
                   src="/images/toolkit/Diagram_04_-_Project_creation_workflow.svg"
                   alt="Project Creation Workflow"
                   className="w-full h-auto"
@@ -1726,7 +1854,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
                 }`}
               >
-                <img
+                <img loading="lazy"
                   src="/images/toolkit/Diagram_05_-_Core_interaction_principles.svg"
                   alt="Core Interaction Principles"
                   className="w-full h-auto"
@@ -1778,7 +1906,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
                 }`}
               >
-                <img
+                <img loading="lazy"
                   src="/images/toolkit/authentication_-_magic_link.svg"
                   alt="Passwordless authentication"
                   className="w-full h-auto"
@@ -1800,7 +1928,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
                 }`}
               >
-                <img
+                <img loading="lazy"
                   src="/images/toolkit/desktop_-_chantier_-_create_-_empty.svg"
                   alt={t.captions.emptyState}
                   className="w-full h-auto"
@@ -1825,7 +1953,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
                 }`}
               >
-                <img
+                <img loading="lazy"
                   src="/images/toolkit/desktop_-_chantier_-_create_-_modal.svg"
                   alt="Form design pattern"
                   className="w-full h-auto"
@@ -1847,7 +1975,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
                 }`}
               >
-                <img
+                <img loading="lazy"
                   src="/images/toolkit/desktop_-_chantier_-_details_-_v1.svg"
                   alt="Chantier Detail v1"
                   className="w-full h-auto"
@@ -1871,7 +1999,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                 systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
               }`}
             >
-              <img
+              <img loading="lazy"
                 src="/images/toolkit/desktop_-_chantier_-_details_-_v2.svg"
                 alt="Chantier Detail v2"
                 className="w-full h-auto"
@@ -1904,12 +2032,16 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
 
           <figure className="mb-8">
             <div
-              onClick={() => openLightbox('/videos/toolkit/video_-_navigation_-_show_hide.mp4')}
+              onClick={() => {
+                const currentTime = videoRefs.current['nav-show-hide']?.currentTime || 0;
+                openLightbox('/videos/toolkit/video_-_navigation_-_show_hide.mp4', currentTime);
+              }}
               className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
                 systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
               }`}
             >
               <video
+                ref={(el) => { videoRefs.current['nav-show-hide'] = el; }}
                 src="/videos/toolkit/video_-_navigation_-_show_hide.mp4"
                 autoPlay
                 loop
@@ -1950,7 +2082,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                 systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
               }`}
             >
-              <img
+              <img loading="lazy"
                 src="/images/toolkit/daktop_-_site_setup_-_tasks_list.svg"
                 alt="Task creation interface"
                 className="w-full h-auto"
@@ -1981,7 +2113,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                 systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
               }`}
             >
-              <img
+              <img loading="lazy"
                 src="/images/toolkit/daktop_-_site_setup_-_tasks_sequence.svg"
                 alt="Tasks sequences interface"
                 className="w-full h-auto"
@@ -2019,7 +2151,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                 systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
               }`}
             >
-              <img
+              <img loading="lazy"
                 src="/images/toolkit/planning_-_v1.svg"
                 alt="Planning interface v1"
                 className="w-full h-auto"
@@ -2043,7 +2175,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
                 }`}
               >
-                <img
+                <img loading="lazy"
                   src="/images/toolkit/Component_Task_v1.svg"
                   alt="Task component v1"
                   className="w-full h-auto"
@@ -2065,7 +2197,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
                 }`}
               >
-                <img
+                <img loading="lazy"
                   src="/images/toolkit/Component_Task_v2.svg"
                   alt="Task component v2"
                   className="w-full h-auto"
@@ -2089,7 +2221,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                 systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
               }`}
             >
-              <img
+              <img loading="lazy"
                 src="/images/toolkit/planning_-_v2.svg"
                 alt="Planning interface v2"
                 className="w-full h-auto"
@@ -2113,7 +2245,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
                 }`}
               >
-                <img
+                <img loading="lazy"
                   src="/images/toolkit/planning_-_mouse_-_selection_rectangle.svg"
                   alt="Multi-select"
                   className="w-full h-auto"
@@ -2135,7 +2267,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
                 }`}
               >
-                <img
+                <img loading="lazy"
                   src="/images/toolkit/planning_-_mouse_-_right_click.svg"
                   alt="Context menu"
                   className="w-full h-auto"
@@ -2157,7 +2289,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
                 }`}
               >
-                <img
+                <img loading="lazy"
                   src="/images/toolkit/planning_-_selection_tache_dynamic_menu.svg"
                   alt="Adaptive zoom"
                   className="w-full h-auto"
@@ -2190,12 +2322,16 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
 
           <figure className="mb-8">
             <div
-              onClick={() => openLightbox('/videos/toolkit/video_-_planning_-_zoom_dezoom.mp4')}
+              onClick={() => {
+                const currentTime = videoRefs.current['planning-zoom']?.currentTime || 0;
+                openLightbox('/videos/toolkit/video_-_planning_-_zoom_dezoom.mp4', currentTime);
+              }}
               className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
                 systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
               }`}
             >
               <video
+                ref={(el) => { videoRefs.current['planning-zoom'] = el; }}
                 src="/videos/toolkit/video_-_planning_-_zoom_dezoom.mp4"
                 autoPlay
                 loop
@@ -2262,7 +2398,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                 systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
               }`}
             >
-              <img
+              <img loading="lazy"
                 src="/images/toolkit/dynamic_island_menu_-_modifier_tache.svg"
                 alt="Dynamic island menu - task modification"
                 className="w-full h-auto"
@@ -2295,12 +2431,16 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
 
           <figure className="mb-12">
             <div
-              onClick={() => openLightbox('/videos/toolkit/video_-_task_manipulation.mp4')}
+              onClick={() => {
+                const currentTime = videoRefs.current['task-manipulation']?.currentTime || 0;
+                openLightbox('/videos/toolkit/video_-_task_manipulation.mp4', currentTime);
+              }}
               className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
                 systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
               }`}
             >
               <video
+                ref={(el) => { videoRefs.current['task-manipulation'] = el; }}
                 src="/videos/toolkit/video_-_task_manipulation.mp4"
                 autoPlay
                 loop
@@ -2336,12 +2476,16 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
 
           <figure className="mb-12">
             <div
-              onClick={() => openLightbox('/videos/toolkit/video_-_batch_edition.mp4')}
+              onClick={() => {
+                const currentTime = videoRefs.current['batch-edition']?.currentTime || 0;
+                openLightbox('/videos/toolkit/video_-_batch_edition.mp4', currentTime);
+              }}
               className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
                 systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
               }`}
             >
               <video
+                ref={(el) => { videoRefs.current['batch-edition'] = el; }}
                 src="/videos/toolkit/video_-_batch_edition.mp4"
                 autoPlay
                 loop
@@ -2366,7 +2510,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                 systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
               }`}
             >
-              <img
+              <img loading="lazy"
                 src="/images/toolkit/dynamic_menu_-_components_and_interface_system.svg"
                 alt="Dynamic menu components and interface system"
                 className="w-full h-auto"
@@ -2388,7 +2532,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                 systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
               }`}
             >
-              <img
+              <img loading="lazy"
                 src="/images/toolkit/cars_detail_tache_-_dynamic_menu_-_comportement_section_activite.svg"
                 alt="Task detail with activity section"
                 className="w-full h-auto"
@@ -2452,7 +2596,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                 systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
               }`}
             >
-              <img
+              <img loading="lazy"
                 src="/images/toolkit/desktop_-_chantier_-_index_-_v3.svg"
                 alt="Project hub - construction site index v3"
                 className="w-full h-auto"
@@ -2491,7 +2635,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                 systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
               }`}
             >
-              <img
+              <img loading="lazy"
                 src="/images/toolkit/evolution_mobile_menu.svg"
                 alt="Mobile menu evolution"
                 className="w-full h-auto"
@@ -2538,7 +2682,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                 systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
               }`}
             >
-              <img
+              <img loading="lazy"
                 src="/images/toolkit/Design_system.svg"
                 alt="Design system overview"
                 className="w-full h-auto"
@@ -2560,7 +2704,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                 systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
               }`}
             >
-              <img
+              <img loading="lazy"
                 src="/images/toolkit/system_-_icons_-_files_and_folders.svg"
                 alt="Icon system - files and folders"
                 className="w-full h-auto"
@@ -2607,7 +2751,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                 systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
               }`}
             >
-              <img
+              <img loading="lazy"
                 src="/images/toolkit/Diagram_06_-_Impact.svg"
                 alt="Impact diagram"
                 className="w-full h-auto"

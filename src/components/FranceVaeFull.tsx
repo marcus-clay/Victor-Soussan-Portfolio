@@ -101,9 +101,9 @@ const TRANSLATIONS = {
       prototypeButton: 'Open prototype',
       prototypeCaption: 'VAE Collective employer dashboard - Cohort management interface',
       bentoImages: {
-        large: { src: '/francevae/prototype vae collective .png', caption: 'The dashboard gives HR managers real-time visibility on cohort progression, a key pain point from discovery' },
-        small1: { src: '/francevae/slide presentation process vae collective.png', caption: 'Sales deck slide explaining the 4-step process designed to reduce onboarding friction' },
-        small2: { src: '/francevae/slide presentation benefices vae collective.png', caption: 'ROI visualization for enterprise buyers, translating user value into business language' }
+        large: { src: '/images/francevae/VAE Collective/vae collective wireframes/interface commanditaires cible@2x.webp', caption: 'VAE Collective employer dashboard - Complete interface overview showing cohort management features' },
+        small1: { src: '/images/francevae/slide presentation process vae collective.webp', caption: 'Sales deck slide explaining the 4-step process designed to reduce onboarding friction' },
+        small2: { src: '/images/francevae/slide presentation benefices vae collective.webp', caption: 'ROI visualization for enterprise buyers, translating user value into business language' }
       }
     },
     initiative2: {
@@ -146,10 +146,10 @@ const TRANSLATIONS = {
       impact: 'Faster decisions, stronger alignment. Teams have a clear framework to arbitrate between initiatives.',
       imageCaption: 'Discovery process and monthly seasons framework presented to teams',
       bentoImages: {
-        large: { src: '/francevae/presentation process_discovery @2x.png', caption: 'The seasons framework gave teams a shared rhythm: preparation, execution, retrospective' },
-        small1: { src: '/francevae/schema - equipe 01.png', caption: 'Team organization before: siloed structure with limited cross-team collaboration' },
-        small2: { src: '/francevae/schema - equipe 02.png', caption: 'Team organization after: unified contributors with clear roles and shared rituals' },
-        large2: { src: '/francevae/presentation_process_discovery_05.png', caption: 'Initiative lifecycle co-designed with Lead PM Aurélie: deeper problem framing and cross-team prioritization (yellow) before delivery sprints (green lanes)' }
+        large: { src: '/images/francevae/presentation process_discovery @2x.webp', caption: 'The seasons framework gave teams a shared rhythm: preparation, execution, retrospective' },
+        small1: { src: '/images/francevae/schema - equipe 01.webp', caption: 'Team organization before: siloed structure with limited cross-team collaboration' },
+        small2: { src: '/images/francevae/schema - equipe 02.webp', caption: 'Team organization after: unified contributors with clear roles and shared rituals' },
+        large2: { src: '/images/francevae/presentation_process_discovery_05.webp', caption: 'Initiative lifecycle co-designed with Lead PM Aurélie: deeper problem framing and cross-team prioritization (yellow) before delivery sprints (green lanes)' }
       }
     },
     initiative3: {
@@ -185,9 +185,9 @@ const TRANSLATIONS = {
       reportButton: 'View full report',
       imageCaption: 'Candidate dashboard interface tested with users',
       bentoImages: {
-        large: { src: '/francevae/UXR - Rapport de campangne de test tableau de bord.png', caption: 'Synthesis report shared in plenary, transforming scattered feedback into actionable product decisions' },
-        small1: { src: '/francevae/UXR - test - script candidat 01.png', caption: 'Standardized interview guide ensuring consistent data collection across 10 moderated sessions' },
-        small2: { src: '/francevae/UXR - test - tableau prio.png', caption: 'Prioritization matrix categorizing feedback: quick wins, technical bugs, UX issues, feature requests' }
+        large: { src: '/images/francevae/UXR - Rapport de campangne de test tableau de bord.webp', caption: 'Synthesis report shared in plenary, transforming scattered feedback into actionable product decisions' },
+        small1: { src: '/images/francevae/UXR - test - script candidat 01.webp', caption: 'Standardized interview guide ensuring consistent data collection across 10 moderated sessions' },
+        small2: { src: '/images/francevae/UXR - test - tableau prio.webp', caption: 'Prioritization matrix categorizing feedback: quick wins, technical bugs, UX issues, feature requests' }
       }
     },
     initiative4: {
@@ -225,9 +225,9 @@ const TRANSLATIONS = {
       impact: 'Co-creation of grounded solutions. Accompaniment providers became active design partners.',
       imageCaption: 'Design thinking workshop with AAP accompaniment structures',
       bentoImages: {
-        large: { src: '/francevae/photo atelier aap.jpg', caption: 'Accompaniment providers became active design partners, bridging the gap between product team and field reality' },
-        small1: { src: '/francevae/animation atelier 00.png', caption: 'Structured facilitation framework: from problem framing to solution sketching in 2 days' },
-        small2: { src: '/francevae/animation atelier 01.png', caption: 'Crazy-8 ideation outputs for rapid concept generation before convergence phase' }
+        large: { src: '/images/francevae/photo atelier aap.webp', caption: 'Accompaniment providers became active design partners, bridging the gap between product team and field reality' },
+        small1: { src: '/images/francevae/animation atelier 00.webp', caption: 'Structured facilitation framework: from problem framing to solution sketching in 2 days' },
+        small2: { src: '/images/francevae/animation atelier 01.webp', caption: 'Crazy-8 ideation outputs for rapid concept generation before convergence phase' }
       }
     },
     initiative5: {
@@ -302,9 +302,9 @@ const TRANSLATIONS = {
       homepageCaption: 'France VAE Homepage - Before and after redesign',
       searchEngineTitle: 'Certification search engine',
       searchEngineDescription: 'Redesign of the certification search engine to help candidates find the right certification based on their professional experience. Improved filters, clearer results presentation, and better guidance through the 16,000+ available certifications.',
-      videoTitle: 'Candidate journey presentation video',
-      videoSubtitle: 'Complete video presenting the full VAE candidate journey to ministers and stakeholders.',
-      videoCaption: 'VAE Candidate journey video - Designed and produced by Victor Soussan'
+      videoTitle: 'Platform presentation video for the Minister of Labor',
+      videoSubtitle: 'My final milestone at France VAE: complete design and production of a presentation video showcasing the entire candidate journey on the platform, presented to the Minister of Labor\'s cabinet.',
+      videoCaption: 'France VAE platform presentation - Designed and produced by Victor Soussan for the Minister of Labor\'s cabinet'
     },
     cta: {
       title: 'Interested in working together?',
@@ -375,9 +375,9 @@ const TRANSLATIONS = {
       prototypeButton: 'Ouvrir le prototype',
       prototypeCaption: 'Dashboard employeur VAE Collective - Interface de gestion des cohortes',
       bentoImages: {
-        large: { src: '/francevae/prototype vae collective .png', caption: 'Le dashboard donne aux RH une visibilité temps réel sur l\'avancement des cohortes, un point de friction clé identifié en discovery' },
-        small1: { src: '/francevae/slide presentation process vae collective.png', caption: 'Slide du pitch commercial expliquant le processus en 4 étapes, conçu pour réduire la friction d\'onboarding' },
-        small2: { src: '/francevae/slide presentation benefices vae collective.png', caption: 'Visualisation du ROI pour les acheteurs entreprise, traduire la valeur utilisateur en langage business' }
+        large: { src: '/images/francevae/VAE Collective/vae collective wireframes/interface commanditaires cible@2x.webp', caption: 'Dashboard employeur VAE Collective - Vue d\'ensemble de l\'interface avec les fonctionnalités de gestion de cohortes' },
+        small1: { src: '/images/francevae/slide presentation process vae collective.webp', caption: 'Slide du pitch commercial expliquant le processus en 4 étapes, conçu pour réduire la friction d\'onboarding' },
+        small2: { src: '/images/francevae/slide presentation benefices vae collective.webp', caption: 'Visualisation du ROI pour les acheteurs entreprise, traduire la valeur utilisateur en langage business' }
       }
     },
     initiative2: {
@@ -420,10 +420,10 @@ const TRANSLATIONS = {
       impact: 'Décisions plus rapides, alignement renforcé. Les équipes disposent d\'un cadre clair pour arbitrer entre les initiatives.',
       imageCaption: 'Framework discovery et saisons mensuelles présenté aux équipes',
       bentoImages: {
-        large: { src: '/francevae/presentation process_discovery @2x.png', caption: 'Le framework saisons donne aux équipes un rythme partagé : préparation, exécution, rétrospective' },
-        small1: { src: '/francevae/schema - equipe 01.png', caption: 'Organisation d\'équipe avant : structure silotée avec collaboration cross-équipe limitée' },
-        small2: { src: '/francevae/schema - equipe 02.png', caption: 'Organisation d\'équipe après : contributeurs unifiés avec rôles clairs et rituels partagés' },
-        large2: { src: '/francevae/presentation_process_discovery_05.png', caption: 'Cycle de vie d\'une initiative co-construit avec la Lead PM Aurélie : cadrage approfondi et priorisation cross-équipe (jaune) avant les sprints de delivery (couloirs verts)' }
+        large: { src: '/images/francevae/presentation process_discovery @2x.webp', caption: 'Le framework saisons donne aux équipes un rythme partagé : préparation, exécution, rétrospective' },
+        small1: { src: '/images/francevae/schema - equipe 01.webp', caption: 'Organisation d\'équipe avant : structure silotée avec collaboration cross-équipe limitée' },
+        small2: { src: '/images/francevae/schema - equipe 02.webp', caption: 'Organisation d\'équipe après : contributeurs unifiés avec rôles clairs et rituels partagés' },
+        large2: { src: '/images/francevae/presentation_process_discovery_05.webp', caption: 'Cycle de vie d\'une initiative co-construit avec la Lead PM Aurélie : cadrage approfondi et priorisation cross-équipe (jaune) avant les sprints de delivery (couloirs verts)' }
       }
     },
     initiative3: {
@@ -459,9 +459,9 @@ const TRANSLATIONS = {
       reportButton: 'Voir le rapport complet',
       imageCaption: 'Interface tableau de bord candidat testée avec les utilisateurs',
       bentoImages: {
-        large: { src: '/francevae/UXR - Rapport de campangne de test tableau de bord.png', caption: 'Synthèse présentée en plénière, transformer les retours épars en décisions produit actionnables' },
-        small1: { src: '/francevae/UXR - test - script candidat 01.png', caption: 'Guide d\'entretien standardisé pour assurer la reproductibilité des tests entre les vagues' },
-        small2: { src: '/francevae/UXR - test - tableau prio.png', caption: 'Catégorisation des retours : quick-wins, bugs, problèmes UX et features' }
+        large: { src: '/images/francevae/UXR - Rapport de campangne de test tableau de bord.webp', caption: 'Synthèse présentée en plénière, transformer les retours épars en décisions produit actionnables' },
+        small1: { src: '/images/francevae/UXR - test - script candidat 01.webp', caption: 'Guide d\'entretien standardisé pour assurer la reproductibilité des tests entre les vagues' },
+        small2: { src: '/images/francevae/UXR - test - tableau prio.webp', caption: 'Catégorisation des retours : quick-wins, bugs, problèmes UX et features' }
       }
     },
     initiative4: {
@@ -499,9 +499,9 @@ const TRANSLATIONS = {
       impact: 'Co-création de solutions ancrées dans le réel. Les accompagnateurs sont devenus des partenaires actifs de la conception.',
       imageCaption: 'Atelier design thinking avec les structures d\'accompagnement AAP',
       bentoImages: {
-        large: { src: '/francevae/photo atelier aap.jpg', caption: 'Les accompagnateurs deviennent partenaires actifs de la conception, comblant le fossé entre équipe produit et réalité terrain' },
-        small1: { src: '/francevae/animation atelier 00.png', caption: 'Framework structuré pour guider les participants de l\'identification des problèmes vers la co-création' },
-        small2: { src: '/francevae/animation atelier 01.png', caption: 'Support d\'idéation pour canaliser la créativité collective en concepts actionnables' }
+        large: { src: '/images/francevae/photo atelier aap.webp', caption: 'Les accompagnateurs deviennent partenaires actifs de la conception, comblant le fossé entre équipe produit et réalité terrain' },
+        small1: { src: '/images/francevae/animation atelier 00.webp', caption: 'Framework structuré pour guider les participants de l\'identification des problèmes vers la co-création' },
+        small2: { src: '/images/francevae/animation atelier 01.webp', caption: 'Support d\'idéation pour canaliser la créativité collective en concepts actionnables' }
       }
     },
     initiative5: {
@@ -576,9 +576,9 @@ const TRANSLATIONS = {
       homepageCaption: 'Page d\'accueil France VAE - Avant et après la refonte',
       searchEngineTitle: 'Moteur de recherche de certifications',
       searchEngineDescription: 'Refonte du moteur de recherche de certifications pour aider les candidats à trouver la certification adaptée à leur expérience professionnelle. Filtres améliorés, présentation des résultats plus claire, et meilleur accompagnement à travers les 16 000+ certifications disponibles.',
-      videoTitle: 'Vidéo de présentation du parcours candidat',
-      videoSubtitle: 'Vidéo complète présentant le parcours complet du candidat VAE aux ministres et parties prenantes.',
-      videoCaption: 'Vidéo du parcours candidat VAE - Conçue et réalisée par Victor Soussan'
+      videoTitle: 'Vidéo de présentation pour le cabinet de la Ministre du Travail',
+      videoSubtitle: 'Mon dernier livrable chez France VAE : conception et production complète d\'une vidéo présentant tout le parcours du candidat sur la plateforme, présentée au cabinet de la Ministre du Travail.',
+      videoCaption: 'Présentation de la plateforme France VAE - Conçue et réalisée par Victor Soussan pour le cabinet ministériel'
     },
     cta: {
       title: 'Intéressé par une collaboration ?',
@@ -638,11 +638,10 @@ const ClickableImage: React.FC<{
           isDark ? 'border-white/10 hover:border-white/20' : 'border-gray-200 hover:border-gray-300 hover:shadow-lg'
         } ${aspectRatio || ''}`}
       >
-        <img
+        <img loading="lazy"
           src={src}
           alt={alt}
           className={`w-full h-full transition-transform group-hover:scale-[1.02] ${aspectRatio ? 'object-cover object-top' : 'object-cover'}`}
-          loading="lazy"
         />
       </div>
       {caption && (
@@ -664,7 +663,7 @@ const BentoImageGrid: React.FC<{
   onClick: (src: string) => void;
 }> = ({ large, small1, small2, large2, isDark, onClick }) => {
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       {/* Large landscape image - full width on top */}
       <figure>
         <div
@@ -673,11 +672,10 @@ const BentoImageGrid: React.FC<{
             isDark ? 'border-white/10 hover:border-white/20' : 'border-gray-200 hover:border-gray-300 hover:shadow-lg'
           }`}
         >
-          <img
+          <img loading="lazy"
             src={large.src}
             alt={large.caption}
             className="w-full h-auto object-cover object-left-top transition-transform group-hover:scale-[1.01]"
-            loading="lazy"
           />
         </div>
         <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
@@ -686,7 +684,7 @@ const BentoImageGrid: React.FC<{
       </figure>
 
       {/* Two smaller thumbnails side by side below - 3:2 aspect ratio with background */}
-      <div className="grid grid-cols-2 gap-4 items-start">
+      <div className="grid grid-cols-2 gap-6 items-start">
         <figure>
           <div
             onClick={() => onClick(small1.src)}
@@ -696,11 +694,10 @@ const BentoImageGrid: React.FC<{
                 : 'border-gray-200 hover:border-gray-300 hover:shadow-lg bg-gray-100'
             }`}
           >
-            <img
+            <img loading="lazy"
               src={small1.src}
               alt={small1.caption}
               className="w-full h-full object-contain transition-transform group-hover:scale-[1.02]"
-              loading="lazy"
             />
           </div>
           <figcaption className={`mt-2 text-xs leading-relaxed ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
@@ -716,11 +713,10 @@ const BentoImageGrid: React.FC<{
                 : 'border-gray-200 hover:border-gray-300 hover:shadow-lg bg-gray-100'
             }`}
           >
-            <img
+            <img loading="lazy"
               src={small2.src}
               alt={small2.caption}
               className="w-full h-full object-contain transition-transform group-hover:scale-[1.02]"
-              loading="lazy"
             />
           </div>
           <figcaption className={`mt-2 text-xs leading-relaxed ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
@@ -738,11 +734,10 @@ const BentoImageGrid: React.FC<{
               isDark ? 'border-white/10 hover:border-white/20' : 'border-gray-200 hover:border-gray-300 hover:shadow-lg'
             }`}
           >
-            <img
+            <img loading="lazy"
               src={large2.src}
               alt={large2.caption}
               className="w-full h-auto object-cover object-left-top transition-transform group-hover:scale-[1.01]"
-              loading="lazy"
             />
           </div>
           <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
@@ -860,7 +855,7 @@ const BeforeAfterSlider: React.FC<{
       onClick={handleContainerClick}
     >
       {/* After image (full size, visible on right side) */}
-      <img
+      <img loading="lazy"
         src={afterSrc}
         alt="After"
         className="w-full h-auto block pointer-events-none"
@@ -872,7 +867,7 @@ const BeforeAfterSlider: React.FC<{
         className="absolute inset-0"
         style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
       >
-        <img
+        <img loading="lazy"
           src={beforeSrc}
           alt="Before"
           className="w-full h-full object-cover pointer-events-none"
@@ -1408,14 +1403,14 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
     <div className={`min-h-screen ${isDark ? 'bg-[#0a0a0a]' : 'bg-white'}`}>
 
       {/* HERO - Grid with Testimonial Card */}
-      <section className="px-4 md:px-8 pt-8 pb-12">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-5 gap-8 items-start">
+      <section className="px-10 pt-8 pb-12">
+        <div className="max-w-[1280px] mx-auto">
+          <div className="grid md:grid-cols-5 gap-10 items-start">
             {/* Left Column - Title and Description */}
             <div className="md:col-span-3">
               {/* Logo */}
-              <img
-                src="/francevae/logo fvae.webp"
+              <img loading="lazy"
+                src="/images/francevae/logo fvae.webp"
                 alt="France VAE"
                 className="h-10 w-auto mb-6"
               />
@@ -1462,7 +1457,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
             </div>
 
             {/* Right Column - Testimonial Card */}
-            <div className="md:col-span-2">
+            <div className="md:col-span-2 md:pt-16">
               <div
                 className={`p-6 rounded-2xl border ${
                   isDark
@@ -1482,8 +1477,8 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
                   {t.testimonial.quote}
                 </p>
                 <div className="flex items-center space-x-3">
-                  <img
-                    src="/images/boris-aime-bauderlique.png"
+                  <img loading="lazy"
+                    src="/images/boris-aime-bauderlique.webp"
                     alt={t.testimonial.author}
                     className="w-10 h-10 rounded-full object-cover"
                   />
@@ -1511,8 +1506,8 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
       </section>
 
       {/* Meta Card - Full width */}
-      <section className="px-4 md:px-8 pb-8">
-        <div className="max-w-6xl mx-auto">
+      <section className="px-10 pb-8">
+        <div className="max-w-[1280px] mx-auto">
           <div className={`p-6 rounded-2xl border ${isDark ? 'bg-[#1D1D1F] border-white/10' : 'bg-gray-50 border-gray-200'}`}>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="flex items-center space-x-3">
@@ -1557,11 +1552,11 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
       </section>
 
       {/* Hero Image - 2:3 aspect ratio aligned top */}
-      <section className="px-4 md:px-8 pb-8">
-        <div className="max-w-6xl mx-auto">
+      <section className="px-10 pb-8">
+        <div className="max-w-[1280px] mx-auto">
           <FadeInSection>
             <ClickableImage
-              src="/francevae/france_vae_home.webp"
+              src="/images/francevae/france_vae_home.webp"
               alt="France VAE Homepage"
               caption={t.hero.heroCaption}
               isDark={isDark}
@@ -1573,8 +1568,8 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
       </section>
 
       {/* INTERACTIVE INITIATIVES DIAGRAM */}
-      <section className="px-4 md:px-8 py-16">
-        <div className="max-w-6xl mx-auto">
+      <section className="px-10 py-16">
+        <div className="max-w-[1280px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${isDark ? 'text-blue-400' : 'text-blue-600'}`}>
               {t.initiatives.eyebrow}
@@ -1594,8 +1589,8 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
       </section>
 
       {/* MAIN CONTENT */}
-      <div className="px-4 md:px-8 py-12">
-        <div className="max-w-6xl mx-auto">
+      <div className="px-10 py-12">
+        <div className="max-w-[1280px] mx-auto">
 
           {/* CONTEXT */}
           <section id="context" className="mb-32">
@@ -1612,7 +1607,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
               </p>
             </FadeInSection>
 
-            <div className="grid md:grid-cols-2 gap-8">
+            <div className="grid md:grid-cols-2 gap-6">
               <FadeInSection delay={0.2}>
                 <h3 className={`font-semibold mb-2 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
                   {t.context.challenge}
@@ -1674,15 +1669,15 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
               <figure className="mb-6">
                 <div
                   onClick={() => onImageClick(t.initiative1.bentoImages.large.src)}
-                  className={`group cursor-pointer rounded-2xl overflow-hidden border transition-all hover:scale-[1.005] ${
+                  className={`group cursor-pointer rounded-2xl overflow-hidden border transition-all hover:scale-[1.01] ${
                     isDark ? 'border-white/10 hover:border-white/20' : 'border-gray-200 hover:border-gray-300 hover:shadow-lg'
                   }`}
                 >
                   <img
+                    loading="lazy"
                     src={t.initiative1.bentoImages.large.src}
                     alt={t.initiative1.bentoImages.large.caption}
-                    className="w-full h-auto object-cover object-left-top transition-transform group-hover:scale-[1.01]"
-                    loading="lazy"
+                    className="w-full h-auto object-cover transition-transform group-hover:scale-[1.02]"
                   />
                 </div>
                 <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
@@ -1706,7 +1701,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
               </div>
 
               {/* Presentation slides - two thumbnails side by side */}
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-6">
                 <figure>
                   <div
                     onClick={() => onImageClick(t.initiative1.bentoImages.small1.src)}
@@ -1714,11 +1709,10 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
                       isDark ? 'border-white/10 hover:border-white/20' : 'border-gray-200 hover:border-gray-300 hover:shadow-lg'
                     }`}
                   >
-                    <img
+                    <img loading="lazy"
                       src={t.initiative1.bentoImages.small1.src}
                       alt={t.initiative1.bentoImages.small1.caption}
                       className="w-full h-auto object-cover object-left-top transition-transform group-hover:scale-[1.02]"
-                      loading="lazy"
                     />
                   </div>
                   <figcaption className={`mt-2 text-xs ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
@@ -1732,11 +1726,10 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
                       isDark ? 'border-white/10 hover:border-white/20' : 'border-gray-200 hover:border-gray-300 hover:shadow-lg'
                     }`}
                   >
-                    <img
+                    <img loading="lazy"
                       src={t.initiative1.bentoImages.small2.src}
                       alt={t.initiative1.bentoImages.small2.caption}
                       className="w-full h-auto object-cover object-left-top transition-transform group-hover:scale-[1.02]"
-                      loading="lazy"
                     />
                   </div>
                   <figcaption className={`mt-2 text-xs ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
@@ -1986,7 +1979,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <ClickableImage
-                    src="/francevae/proto IA - chatbot de positionnement.png"
+                    src="/images/francevae/proto IA - chatbot de positionnement.webp"
                     alt="AI Chatbot Prototype"
                     caption={t.initiative5.chatbotCaption}
                     isDark={isDark}
@@ -2010,7 +2003,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
                 </div>
                 <div>
                   <ClickableImage
-                    src="/francevae/proto IA - orientation professionnelle assistee par IA.png"
+                    src="/images/francevae/proto IA - orientation professionnelle assistee par IA.webp"
                     alt="AI Skills Radar Prototype"
                     caption={t.initiative5.radarCaption}
                     isDark={isDark}
@@ -2066,8 +2059,8 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
               </p>
               <figure>
                 <BeforeAfterSlider
-                  beforeSrc="/francevae/france_vae_home_before_2x.webp"
-                  afterSrc="/francevae/france_vae_home_after_2x.webp"
+                  beforeSrc="/images/francevae/france_vae_home_before_2x.webp"
+                  afterSrc="/images/francevae/france_vae_home_after_2x.webp"
                   beforeLabel={t.uiDelivery.homepageBefore}
                   afterLabel={t.uiDelivery.homepageAfter}
                   isDark={isDark}
@@ -2113,9 +2106,8 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
                   <video
                     controls
                     className="w-full h-auto"
-                    poster="/francevae/prototype vae collective .png"
                   >
-                    <source src="/francevae/20250701 - Video ministre - revision Audrey P.mp4" type="video/mp4" />
+                    <source src="/images/francevae/20250701 - Video ministre - revision 3'30.mp4" type="video/mp4" />
                     Your browser does not support the video tag.
                   </video>
                 </div>
@@ -2137,8 +2129,8 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
               <div className={`mt-6 p-8 rounded-2xl ${isDark ? 'bg-white/5 border border-white/10' : 'bg-gray-50 border border-gray-100'}`}>
                 <div className="flex flex-col md:flex-row gap-6 items-center">
                   <div className="flex-shrink-0">
-                    <img
-                      src="/images/boris-aime-bauderlique.png"
+                    <img loading="lazy"
+                      src="/images/boris-aime-bauderlique.webp"
                       alt={t.testimonial.author}
                       className="w-20 h-20 md:w-24 md:h-24 rounded-full object-cover"
                     />
@@ -2225,7 +2217,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
           >
             <div className="flex items-center justify-between px-4 py-3 bg-black/50 backdrop-blur-sm border-b border-white/10">
               <div className="flex items-center gap-3">
-                <img src="/francevae/logo fvae.webp" alt="France VAE" className="h-6 w-auto" />
+                <img loading="lazy" src="/images/francevae/logo fvae.webp" alt="France VAE" className="h-6 w-auto" />
                 <span className="text-white/70 text-sm font-medium">
                   {lang === 'fr' ? 'Prototype VAE Collective' : 'VAE Collective Prototype'}
                 </span>
@@ -2260,7 +2252,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
           >
             <div className="flex items-center justify-between px-4 py-3 bg-black/50 backdrop-blur-sm border-b border-white/10">
               <div className="flex items-center gap-3">
-                <img src="/francevae/logo fvae.webp" alt="France VAE" className="h-6 w-auto" />
+                <img loading="lazy" src="/images/francevae/logo fvae.webp" alt="France VAE" className="h-6 w-auto" />
                 <span className="text-white/70 text-sm font-medium">
                   {lang === 'fr' ? 'Rapport de test - Tableau de bord candidat' : 'Test Report - Candidate Dashboard'}
                 </span>

@@ -470,7 +470,7 @@ const ScopeGrid: React.FC<{
         >
           {/* Image */}
           <div className="aspect-[4/3] overflow-hidden">
-            <img
+            <img loading="lazy"
               src={area.image}
               alt={area.title}
               className="w-full h-full object-cover"
@@ -901,7 +901,7 @@ const HighlightsGrid: React.FC<{
                 playsInline
               />
             ) : (
-              <img
+              <img loading="lazy"
                 src={item.media}
                 alt={item.title}
                 className="w-full h-auto"
@@ -984,11 +984,11 @@ const ToolkitExecutive: React.FC<ToolkitExecutiveProps> = ({
       {/* ================================================================== */}
       {/* HERO SECTION */}
       {/* ================================================================== */}
-      <section className="min-h-[85vh] flex flex-col justify-center px-4 md:px-8 py-20">
-        <div className="max-w-5xl mx-auto w-full">
+      <section className="min-h-[85vh] flex flex-col justify-center px-10 py-20">
+        <div className="max-w-[1280px] mx-auto w-full">
           {/* Logo */}
           <FadeInSection>
-            <img
+            <img loading="lazy"
               src={isDark
                 ? '/images/toolkit/Logo toolkit - dark bg - large - horizontal.svg'
                 : '/images/toolkit/Logo toolkit - light bg - large - horizontal.svg'
@@ -1030,7 +1030,7 @@ const ToolkitExecutive: React.FC<ToolkitExecutiveProps> = ({
                 isDark ? 'border-white/10' : 'border-gray-200'
               }`}
             >
-              <img
+              <img loading="lazy"
                 src="/images/toolkit/toolkit_app_v3.webp"
                 alt="Toolkit App"
                 className="w-full h-auto"
@@ -1057,8 +1057,8 @@ const ToolkitExecutive: React.FC<ToolkitExecutiveProps> = ({
       {/* ================================================================== */}
       {/* ROLE SECTION */}
       {/* ================================================================== */}
-      <section className={`py-20 md:py-28 px-4 md:px-8 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
-        <div className="max-w-5xl mx-auto">
+      <section className={`py-20 md:py-28 px-10 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
+        <div className="max-w-[1280px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
               isDark ? 'text-blue-400' : 'text-blue-600'
@@ -1098,8 +1098,8 @@ const ToolkitExecutive: React.FC<ToolkitExecutiveProps> = ({
       {/* ================================================================== */}
       {/* SCOPE SECTION */}
       {/* ================================================================== */}
-      <section className="py-20 md:py-28 px-4 md:px-8">
-        <div className="max-w-6xl mx-auto">
+      <section className="py-20 md:py-28 px-10">
+        <div className="max-w-[1280px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
               isDark ? 'text-purple-400' : 'text-purple-600'
@@ -1131,8 +1131,8 @@ const ToolkitExecutive: React.FC<ToolkitExecutiveProps> = ({
       {/* ================================================================== */}
       {/* JOURNEY SECTION */}
       {/* ================================================================== */}
-      <section className={`py-20 md:py-28 px-4 md:px-8 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
-        <div className="max-w-5xl mx-auto">
+      <section className={`py-20 md:py-28 px-10 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
+        <div className="max-w-[1280px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
               isDark ? 'text-emerald-400' : 'text-emerald-600'
@@ -1158,8 +1158,8 @@ const ToolkitExecutive: React.FC<ToolkitExecutiveProps> = ({
       {/* ================================================================== */}
       {/* HIGHLIGHTS SECTION */}
       {/* ================================================================== */}
-      <section className="py-20 md:py-28 px-4 md:px-8">
-        <div className="max-w-5xl mx-auto">
+      <section className="py-20 md:py-28 px-10">
+        <div className="max-w-[1280px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
               isDark ? 'text-orange-400' : 'text-orange-600'
@@ -1189,8 +1189,8 @@ const ToolkitExecutive: React.FC<ToolkitExecutiveProps> = ({
       {/* ================================================================== */}
       {/* OUTCOME SECTION */}
       {/* ================================================================== */}
-      <section className={`py-20 md:py-28 px-4 md:px-8 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
-        <div className="max-w-5xl mx-auto">
+      <section className={`py-20 md:py-28 px-10 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
+        <div className="max-w-[1280px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
               isDark ? 'text-amber-400' : 'text-amber-600'
@@ -1214,8 +1214,8 @@ const ToolkitExecutive: React.FC<ToolkitExecutiveProps> = ({
       {/* ================================================================== */}
       {/* TESTIMONIAL SECTION */}
       {/* ================================================================== */}
-      <section className="py-20 md:py-28 px-4 md:px-8">
-        <div className="max-w-4xl mx-auto">
+      <section className="py-20 md:py-28 px-10">
+        <div className="max-w-[1280px] mx-auto">
           <FadeInSection>
             <div className={`rounded-3xl p-8 md:p-12 ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}>
               <div className={`text-4xl mb-6 ${isDark ? 'text-blue-400' : 'text-blue-600'}`}>
@@ -1227,8 +1227,8 @@ const ToolkitExecutive: React.FC<ToolkitExecutiveProps> = ({
                 {t.testimonial.quote}
               </blockquote>
               <div className="mt-8 flex items-center gap-4">
-                <img
-                  src="/images/toolkit/photo_avatar_pierre-marie2x.png"
+                <img loading="lazy"
+                  src="/images/toolkit/photo_avatar_pierre-marie2x.webp"
                   alt={t.testimonial.author}
                   className="w-12 h-12 rounded-full object-cover"
                 />
@@ -1249,8 +1249,8 @@ const ToolkitExecutive: React.FC<ToolkitExecutiveProps> = ({
       {/* ================================================================== */}
       {/* CTA SECTION */}
       {/* ================================================================== */}
-      <section className="py-20 md:py-28 px-4 md:px-8">
-        <div className="max-w-4xl mx-auto text-center">
+      <section className="py-20 md:py-28 px-10">
+        <div className="max-w-[1280px] mx-auto text-center">
           <FadeInSection>
             <h2 className={`text-2xl md:text-3xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
               {t.cta.title}

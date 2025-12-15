@@ -67,42 +67,42 @@ const TRANSLATIONS = {
           id: 'workflow',
           title: 'Product Workflow Redesign',
           description: 'Co-designed new org model with 1-month seasons and cross-team prioritization matrix.',
-          image: '/francevae/presentation process_discovery @2x.png',
+          image: '/images/francevae/presentation process_discovery @2x.webp',
           caption: 'Discovery process and monthly seasons framework'
         },
         {
           id: 'vae-collective',
           title: 'VAE Collective MVP',
           description: 'End-to-end employer journey for collective certification programs.',
-          image: '/francevae/prototype vae collective .png',
+          image: '/images/francevae/prototype vae collective .webp',
           caption: 'Employer dashboard prototype for collective VAE programs'
         },
         {
           id: 'research',
           title: 'User Research',
           description: '10 interviews across 2 waves for the new candidate dashboard.',
-          image: '/francevae/UXR - interface tableau de bord candidat.webp',
+          image: '/images/francevae/UXR - interface tableau de bord candidat.webp',
           caption: 'Candidate dashboard interface tested with users'
         },
         {
           id: 'workshop',
           title: 'Design Thinking Workshops',
           description: '2-day workshop with field practitioners. Problem framing to solution sketching.',
-          image: '/francevae/photo atelier aap 02.jpg',
+          image: '/images/francevae/photo atelier aap 02.webp',
           caption: 'Design thinking workshop with AAP practitioners'
         },
         {
           id: 'design-ops',
           title: 'Design Ops',
           description: 'New Figma architecture by user journey, lot-based prototyping for faster handoff.',
-          image: '/francevae/Design ops/workspace UX 02.png',
+          image: '/images/francevae/Design ops/workspace UX 02.webp',
           caption: 'Figma workspace organized by user journey'
         },
         {
           id: 'ai-orientation',
           title: 'AI Experimentation',
           description: 'Built 2 functional prototypes: positioning chatbot and skills radar.',
-          image: '/francevae/proto IA - orientation professionnelle assistee par IA.png',
+          image: '/images/francevae/proto IA - orientation professionnelle assistee par IA.webp',
           caption: 'AI skills radar prototype for career orientation'
         }
       ]
@@ -155,42 +155,42 @@ const TRANSLATIONS = {
           id: 'workflow',
           title: 'Refonte Workflow Produit',
           description: 'Co-conception d\'un nouveau modèle avec saisons d\'1 mois et matrice de priorisation.',
-          image: '/francevae/presentation process_discovery @2x.png',
+          image: '/images/francevae/presentation process_discovery @2x.webp',
           caption: 'Framework discovery et saisons mensuelles'
         },
         {
           id: 'vae-collective',
           title: 'MVP VAE Collective',
           description: 'Parcours employeur complet pour programmes de certification collective.',
-          image: '/francevae/prototype vae collective .png',
+          image: '/images/francevae/prototype vae collective .webp',
           caption: 'Prototype dashboard employeur pour VAE collective'
         },
         {
           id: 'research',
           title: 'Recherche Utilisateur',
           description: '10 entretiens sur 2 vagues pour le nouveau tableau de bord candidat.',
-          image: '/francevae/UXR - interface tableau de bord candidat.webp',
+          image: '/images/francevae/UXR - interface tableau de bord candidat.webp',
           caption: 'Interface tableau de bord testée avec les utilisateurs'
         },
         {
           id: 'workshop',
           title: 'Ateliers Design Thinking',
           description: 'Atelier de 2 jours avec praticiens terrain. Du cadrage problème au croquis de solutions.',
-          image: '/francevae/photo atelier aap 02.jpg',
+          image: '/images/francevae/photo atelier aap 02.webp',
           caption: 'Atelier design thinking avec les praticiens AAP'
         },
         {
           id: 'design-ops',
           title: 'Design Ops',
           description: 'Nouvelle architecture Figma par parcours utilisateur, prototypage par lots.',
-          image: '/francevae/Design ops/workspace UX 02.png',
+          image: '/images/francevae/Design ops/workspace UX 02.webp',
           caption: 'Espace Figma organisé par parcours utilisateur'
         },
         {
           id: 'ai-orientation',
           title: 'Expérimentation IA',
           description: 'Construction de 2 prototypes fonctionnels : chatbot et radar de compétences.',
-          image: '/francevae/proto IA - orientation professionnelle assistee par IA.png',
+          image: '/images/francevae/proto IA - orientation professionnelle assistee par IA.webp',
           caption: 'Prototype IA radar de compétences pour l\'orientation'
         }
       ]
@@ -750,12 +750,12 @@ const FranceVaeExecutive: React.FC<FranceVaeExecutiveProps> = ({
       {/* ================================================================== */}
       {/* HERO SECTION */}
       {/* ================================================================== */}
-      <section className="min-h-[85vh] flex flex-col justify-center px-4 md:px-8 py-20">
-        <div className="max-w-5xl mx-auto w-full">
+      <section className="min-h-[85vh] flex flex-col justify-center px-10 py-20">
+        <div className="max-w-[1280px] mx-auto w-full">
           {/* Logo */}
           <FadeInSection>
-            <img
-              src="/francevae/logo fvae.webp"
+            <img loading="lazy"
+              src="/images/francevae/logo fvae.webp"
               alt="France VAE"
               className="h-10 md:h-12 w-auto mb-8"
             />
@@ -789,14 +789,14 @@ const FranceVaeExecutive: React.FC<FranceVaeExecutiveProps> = ({
           <FadeInSection delay={0.3} className="mt-12">
             <figure>
               <div
-                onClick={() => onImageClick('/francevae/france_vae_home.webp')}
+                onClick={() => onImageClick('/images/francevae/france_vae_home.webp')}
                 className={`group rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
                   isDark ? 'border-white/10' : 'border-gray-200'
                 }`}
               >
                 <div className="aspect-[3/2] overflow-hidden">
-                  <img
-                    src="/francevae/france_vae_home.webp"
+                  <img loading="lazy"
+                    src="/images/francevae/france_vae_home.webp"
                     alt="France VAE Homepage"
                     className="w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-[1.02]"
                   />
@@ -827,8 +827,8 @@ const FranceVaeExecutive: React.FC<FranceVaeExecutiveProps> = ({
       {/* ================================================================== */}
       {/* INITIATIVES DIAGRAM SECTION */}
       {/* ================================================================== */}
-      <section className="py-20 md:py-28 px-4 md:px-8">
-        <div className="max-w-6xl mx-auto">
+      <section className="py-20 md:py-28 px-10">
+        <div className="max-w-[1280px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
               isDark ? 'text-purple-400' : 'text-purple-600'
@@ -854,8 +854,8 @@ const FranceVaeExecutive: React.FC<FranceVaeExecutiveProps> = ({
       {/* ================================================================== */}
       {/* ROLE SECTION */}
       {/* ================================================================== */}
-      <section className={`py-20 md:py-28 px-4 md:px-8 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
-        <div className="max-w-5xl mx-auto">
+      <section className={`py-20 md:py-28 px-10 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
+        <div className="max-w-[1280px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
               isDark ? 'text-blue-400' : 'text-blue-600'
@@ -896,8 +896,8 @@ const FranceVaeExecutive: React.FC<FranceVaeExecutiveProps> = ({
       {/* ================================================================== */}
       {/* OUTCOME SECTION */}
       {/* ================================================================== */}
-      <section className={`py-20 md:py-28 px-4 md:px-8 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
-        <div className="max-w-5xl mx-auto">
+      <section className={`py-20 md:py-28 px-10 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
+        <div className="max-w-[1280px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
               isDark ? 'text-amber-400' : 'text-amber-600'
@@ -921,8 +921,8 @@ const FranceVaeExecutive: React.FC<FranceVaeExecutiveProps> = ({
       {/* ================================================================== */}
       {/* TESTIMONIAL SECTION */}
       {/* ================================================================== */}
-      <section className="py-20 md:py-28 px-4 md:px-8">
-        <div className="max-w-4xl mx-auto">
+      <section className="py-20 md:py-28 px-10">
+        <div className="max-w-[1280px] mx-auto">
           <FadeInSection>
             <div className={`rounded-3xl p-8 md:p-12 ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}>
               <div className={`text-4xl mb-6 ${isDark ? 'text-blue-400' : 'text-blue-600'}`}>
@@ -956,8 +956,8 @@ const FranceVaeExecutive: React.FC<FranceVaeExecutiveProps> = ({
       {/* ================================================================== */}
       {/* CTA SECTION */}
       {/* ================================================================== */}
-      <section className="py-20 md:py-28 px-4 md:px-8">
-        <div className="max-w-4xl mx-auto text-center">
+      <section className="py-20 md:py-28 px-10">
+        <div className="max-w-[1280px] mx-auto text-center">
           <FadeInSection>
             <h2 className={`text-2xl md:text-3xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
               {t.cta.title}

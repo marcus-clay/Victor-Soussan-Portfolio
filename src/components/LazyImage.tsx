@@ -61,10 +61,9 @@ const LazyImage: React.FC<LazyImageProps> = ({
 
       {/* Actual image - only load src when in view */}
       {isInView && (
-        <img
+        <img loading="lazy"
           src={src}
           alt={alt}
-          loading="lazy"
           decoding="async"
           draggable={draggable}
           onClick={onClick}

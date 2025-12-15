@@ -68,7 +68,7 @@ const TRANSLATIONS = {
           id: 'classe',
           title: 'SQOOL Classe',
           description: 'Real-time classroom supervision. Teachers see every student screen, lock devices, push content.',
-          image: '/images/sqool/sqool classe/Visuel - Comm - Pilotage - accueil - Focus Classe temporaire@2x.png'
+          image: '/images/sqool/sqool classe/Visuel - Comm - Pilotage - accueil - Focus Classe temporaire@2x.webp'
         },
         {
           id: 'partage',
@@ -98,7 +98,7 @@ const TRANSLATIONS = {
           id: 'design-system',
           title: 'Design System',
           description: 'Figma libraries, ZeroHeight documentation, tokens, and components scaling to 7+ apps.',
-          image: '/images/sqool/hi sqool/hisqoolcomponents2x.jpg'
+          image: '/images/sqool/hi sqool/hisqoolcomponents2x.webp'
         }
       ]
     },
@@ -159,7 +159,7 @@ const TRANSLATIONS = {
           title: 'Color System',
           subtitle: 'App differentiation',
           description: 'Each app has a signature color while maintaining family recognition across the suite.',
-          media: '/images/sqool/sqool brand/ColorsGradients.png',
+          media: '/images/sqool/sqool brand/ColorsGradients.webp',
           type: 'image' as const
         },
         {
@@ -183,7 +183,7 @@ const TRANSLATIONS = {
           title: 'Component Library',
           subtitle: 'Design system foundations',
           description: 'Reusable UI components ensuring consistency across 7+ applications and 120+ screens.',
-          media: '/images/sqool/hi sqool/hisqooltokens2x3.jpg',
+          media: '/images/sqool/hi sqool/hisqooltokens2x3.webp',
           type: 'image' as const
         }
       ]
@@ -258,7 +258,7 @@ const TRANSLATIONS = {
           id: 'classe',
           title: 'SQOOL Classe',
           description: 'Supervision de classe en temps réel. Les enseignants voient chaque écran, verrouillent les appareils, poussent du contenu.',
-          image: '/images/sqool/sqool classe/Visuel - Comm - Pilotage - accueil - Focus Classe temporaire@2x.png'
+          image: '/images/sqool/sqool classe/Visuel - Comm - Pilotage - accueil - Focus Classe temporaire@2x.webp'
         },
         {
           id: 'partage',
@@ -288,7 +288,7 @@ const TRANSLATIONS = {
           id: 'design-system',
           title: 'Design System',
           description: 'Bibliothèques Figma, documentation ZeroHeight, tokens et composants scalant sur 7+ apps.',
-          image: '/images/sqool/hi sqool/hisqoolcomponents2x.jpg'
+          image: '/images/sqool/hi sqool/hisqoolcomponents2x.webp'
         }
       ]
     },
@@ -349,7 +349,7 @@ const TRANSLATIONS = {
           title: 'Système de Couleurs',
           subtitle: 'Différenciation des apps',
           description: 'Chaque app a une couleur signature tout en maintenant la reconnaissance famille dans la suite.',
-          media: '/images/sqool/sqool brand/ColorsGradients.png',
+          media: '/images/sqool/sqool brand/ColorsGradients.webp',
           type: 'image' as const
         },
         {
@@ -373,7 +373,7 @@ const TRANSLATIONS = {
           title: 'Bibliothèque de Composants',
           subtitle: 'Fondations design system',
           description: 'Composants UI réutilisables assurant la cohérence sur 7+ applications et 120+ écrans.',
-          media: '/images/sqool/hi sqool/hisqooltokens2x3.jpg',
+          media: '/images/sqool/hi sqool/hisqooltokens2x3.webp',
           type: 'image' as const
         }
       ]
@@ -516,7 +516,7 @@ const ScopeGrid: React.FC<{
         >
           {/* Image */}
           <div className="aspect-[4/3] overflow-hidden">
-            <img
+            <img loading="lazy"
               src={area.image}
               alt={area.title}
               className="w-full h-full object-cover"
@@ -947,7 +947,7 @@ const HighlightsGrid: React.FC<{
                 playsInline
               />
             ) : (
-              <img
+              <img loading="lazy"
                 src={item.media}
                 alt={item.title}
                 className="w-full h-auto"
@@ -1063,12 +1063,12 @@ const SqoolExecutive: React.FC<SqoolExecutiveProps> = ({
       {/* ================================================================== */}
       {/* HERO SECTION */}
       {/* ================================================================== */}
-      <section className="min-h-[85vh] flex flex-col justify-center px-4 md:px-8 py-20">
-        <div className="max-w-5xl mx-auto w-full">
+      <section className="min-h-[85vh] flex flex-col justify-center px-10 py-20">
+        <div className="max-w-[1280px] mx-auto w-full">
           {/* Logo */}
           <FadeInSection>
             <div className="mb-8">
-              <img
+              <img loading="lazy"
                 src={isDark ? '/images/sqool/logo-sqool-dark.svg' : '/images/sqool/logo-sqool.svg'}
                 alt="SQOOL"
                 className="h-6 w-auto"
@@ -1108,7 +1108,7 @@ const SqoolExecutive: React.FC<SqoolExecutiveProps> = ({
                 isDark ? 'border-white/10' : 'border-gray-200'
               }`}
             >
-              <img
+              <img loading="lazy"
                 src="/images/sqool/hero_ecosystem_sqool.webp"
                 alt="SQOOL Ecosystem"
                 className="w-full h-auto"
@@ -1135,8 +1135,8 @@ const SqoolExecutive: React.FC<SqoolExecutiveProps> = ({
       {/* ================================================================== */}
       {/* ROLE SECTION */}
       {/* ================================================================== */}
-      <section className={`py-20 md:py-28 px-4 md:px-8 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
-        <div className="max-w-5xl mx-auto">
+      <section className={`py-20 md:py-28 px-10 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
+        <div className="max-w-[1280px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
               isDark ? 'text-blue-400' : 'text-blue-600'
@@ -1176,8 +1176,8 @@ const SqoolExecutive: React.FC<SqoolExecutiveProps> = ({
       {/* ================================================================== */}
       {/* SCOPE SECTION */}
       {/* ================================================================== */}
-      <section className="py-20 md:py-28 px-4 md:px-8">
-        <div className="max-w-6xl mx-auto">
+      <section className="py-20 md:py-28 px-10">
+        <div className="max-w-[1280px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
               isDark ? 'text-purple-400' : 'text-purple-600'
@@ -1209,8 +1209,8 @@ const SqoolExecutive: React.FC<SqoolExecutiveProps> = ({
       {/* ================================================================== */}
       {/* JOURNEY SECTION */}
       {/* ================================================================== */}
-      <section className={`py-20 md:py-28 px-4 md:px-8 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
-        <div className="max-w-5xl mx-auto">
+      <section className={`py-20 md:py-28 px-10 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
+        <div className="max-w-[1280px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
               isDark ? 'text-emerald-400' : 'text-emerald-600'
@@ -1236,8 +1236,8 @@ const SqoolExecutive: React.FC<SqoolExecutiveProps> = ({
       {/* ================================================================== */}
       {/* HIGHLIGHTS SECTION */}
       {/* ================================================================== */}
-      <section className="py-20 md:py-28 px-4 md:px-8">
-        <div className="max-w-5xl mx-auto">
+      <section className="py-20 md:py-28 px-10">
+        <div className="max-w-[1280px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
               isDark ? 'text-orange-400' : 'text-orange-600'
@@ -1267,8 +1267,8 @@ const SqoolExecutive: React.FC<SqoolExecutiveProps> = ({
       {/* ================================================================== */}
       {/* USER RESEARCH INSIGHTS SECTION */}
       {/* ================================================================== */}
-      <section className={`py-20 md:py-28 px-4 md:px-8 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
-        <div className="max-w-5xl mx-auto">
+      <section className={`py-20 md:py-28 px-10 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
+        <div className="max-w-[1280px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
               isDark ? 'text-cyan-400' : 'text-cyan-600'
@@ -1294,8 +1294,8 @@ const SqoolExecutive: React.FC<SqoolExecutiveProps> = ({
       {/* ================================================================== */}
       {/* OUTCOME SECTION */}
       {/* ================================================================== */}
-      <section className="py-20 md:py-28 px-4 md:px-8">
-        <div className="max-w-5xl mx-auto">
+      <section className="py-20 md:py-28 px-10">
+        <div className="max-w-[1280px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
               isDark ? 'text-amber-400' : 'text-amber-600'
@@ -1319,8 +1319,8 @@ const SqoolExecutive: React.FC<SqoolExecutiveProps> = ({
       {/* ================================================================== */}
       {/* TESTIMONIAL SECTION */}
       {/* ================================================================== */}
-      <section className={`py-20 md:py-28 px-4 md:px-8 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
-        <div className="max-w-4xl mx-auto">
+      <section className={`py-20 md:py-28 px-10 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
+        <div className="max-w-[1280px] mx-auto">
           <FadeInSection>
             <div className={`rounded-3xl p-8 md:p-12 ${isDark ? 'bg-white/5' : 'bg-white border border-gray-100'}`}>
               <div className={`text-4xl mb-6 ${isDark ? 'text-blue-400' : 'text-blue-600'}`}>
@@ -1354,8 +1354,8 @@ const SqoolExecutive: React.FC<SqoolExecutiveProps> = ({
       {/* ================================================================== */}
       {/* CTA SECTION */}
       {/* ================================================================== */}
-      <section className="py-20 md:py-28 px-4 md:px-8">
-        <div className="max-w-4xl mx-auto text-center">
+      <section className="py-20 md:py-28 px-10">
+        <div className="max-w-[1280px] mx-auto text-center">
           <FadeInSection>
             <h2 className={`text-2xl md:text-3xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
               {t.cta.title}

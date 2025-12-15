@@ -292,7 +292,7 @@ const TappableMedia = ({
                     autoPlay
                   />
                 ) : (
-                  <img
+                  <img loading="lazy"
                     src={src}
                     alt={alt}
                     className="max-w-full max-h-[85vh] object-contain select-none rounded-lg"

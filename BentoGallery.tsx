@@ -168,11 +168,10 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, isVideo, onClick
             </div>
           </div>
         ) : (
-          <img
+          <img loading="lazy"
             src={item.src}
             alt={item.caption}
             className="w-full h-auto block"
-            loading="lazy"
           />
         )}
       </motion.div>
@@ -756,7 +755,7 @@ export const TOOLKIT_GALLERY_ITEMS: GalleryItem[] = [
 // Gallery data for Dailymotion case study
 export const DAILYMOTION_GALLERY_ITEMS: GalleryItem[] = [
   {
-    src: '/images/dailymotion/thumbnail_dailymotion_-_web_platform2x.png',
+    src: '/images/dailymotion/thumbnail_dailymotion_-_web_platform2x.webp',
     caption: 'Platform Overview',
     captionDesc: 'Dailymotion Partner Platform',
     type: 'image',
@@ -781,7 +780,7 @@ export const DAILYMOTION_GALLERY_ITEMS: GalleryItem[] = [
     type: 'image',
   },
   {
-    src: '/images/dailymotion/dailymotion_-_upload2x.png',
+    src: '/images/dailymotion/dailymotion_-_upload2x.webp',
     caption: 'Batch Upload',
     captionDesc: 'Parallel upload with real-time feedback',
     type: 'image',
@@ -836,56 +835,56 @@ export const DAILYMOTION_GALLERY_ITEMS: GalleryItem[] = [
     type: 'video',
   },
   {
-    src: '/images/dailymotion/dailymotion_-_share_expanded2x.png',
+    src: '/images/dailymotion/dailymotion_-_share_expanded2x.webp',
     caption: 'Share Modal',
     captionDesc: 'Full embed customization options',
     type: 'image',
   },
   {
-    src: '/images/dailymotion/Share_-_keyboard_input2x.png',
+    src: '/images/dailymotion/Share_-_keyboard_input2x.webp',
     caption: 'Keyboard Mapping',
     captionDesc: 'Share modal specifications',
     type: 'image',
   },
   {
-    src: '/images/dailymotion/image.png',
+    src: '/images/dailymotion/image.webp',
     caption: 'Start Time Input',
     captionDesc: 'Keyboard input specifications',
     type: 'image',
   },
   {
-    src: '/images/dailymotion/dailymotion_-_add_to_playlist_-_spec2x.png',
+    src: '/images/dailymotion/dailymotion_-_add_to_playlist_-_spec2x.webp',
     caption: 'Add to Playlist',
     captionDesc: 'Playlist management flow',
     type: 'image',
   },
   {
-    src: '/images/dailymotion/dailymotion_-_live_-_countdown2x.png',
+    src: '/images/dailymotion/dailymotion_-_live_-_countdown2x.webp',
     caption: 'Pre-broadcast Countdown',
     captionDesc: 'Scheduled start with OFF AIR badge',
     type: 'image',
   },
   {
-    src: '/images/dailymotion/dailymotion_-_livestream2x.png',
+    src: '/images/dailymotion/dailymotion_-_livestream2x.webp',
     caption: 'Live Dashboard',
     captionDesc: 'Real-time broadcast monitoring',
     type: 'image',
     span: 'wide',
   },
   {
-    src: '/images/dailymotion/dailymotion_-_create_player2x.png',
+    src: '/images/dailymotion/dailymotion_-_create_player2x.webp',
     caption: 'Player Configurator',
     captionDesc: 'Define appearance and retrieve embed code',
     type: 'image',
   },
   {
-    src: '/images/dailymotion/design_system_-_Styles2x.png',
+    src: '/images/dailymotion/design_system_-_Styles2x.webp',
     caption: 'UI Kit - Styles',
     captionDesc: 'Foundation for coherent product suite',
     type: 'image',
   },
   {
-    src: '/images/dailymotion/design_system_-_component_library2x.png',
+    src: '/images/dailymotion/design_system_-_component_library2x.webp',
     caption: 'UI Kit - Components',
     captionDesc: 'Scalable component library',
     type: 'image',
@@ -1157,13 +1156,13 @@ export const SQOOL_GALLERY_ITEMS: GalleryItem[] = [
     span: 'wide',
   },
   {
-    src: '/images/sqool/image-unowhy-region-iledefrance-distribution-rentree.jpg',
+    src: '/images/sqool/image-unowhy-region-iledefrance-distribution-rentree.webp',
     caption: 'Back-to-school distribution',
     captionDesc: 'Ile-de-France region deploying 500,000 devices to students',
     type: 'image',
   },
   {
-    src: '/images/sqool/image-unowhy-shootingphoto-tablette.jpg',
+    src: '/images/sqool/image-unowhy-shootingphoto-tablette.webp',
     caption: 'SQOOL tablet',
     captionDesc: 'Student device designed for education',
     type: 'image',
@@ -1190,26 +1189,26 @@ export const SQOOL_GALLERY_ITEMS: GalleryItem[] = [
   },
   // Hi-SQOOL
   {
-    src: '/images/sqool/hi sqool/004 003-hp-scroll-2x.png',
+    src: '/images/sqool/hi sqool/004 003-hp-scroll-2x.webp',
     caption: 'Hi-SQOOL Dashboard',
     captionDesc: 'Early redesign targeting high-school audiences',
     type: 'image',
     span: 'wide',
   },
   {
-    src: '/images/sqool/hi sqool/021 020b-chat-input-doc-comment-2x.png',
+    src: '/images/sqool/hi sqool/021 020b-chat-input-doc-comment-2x.webp',
     caption: 'Hi-SQOOL Chat Interface',
     captionDesc: 'Document sharing and commenting features',
     type: 'image',
   },
   {
-    src: '/images/sqool/hi sqool/hisqoolcomponents2x.jpg',
+    src: '/images/sqool/hi sqool/hisqoolcomponents2x.webp',
     caption: 'Hi-SQOOL Components',
     captionDesc: 'UI component library for the student platform',
     type: 'image',
   },
   {
-    src: '/images/sqool/hi sqool/hisqooltokens2x3.jpg',
+    src: '/images/sqool/hi sqool/hisqooltokens2x3.webp',
     caption: 'Hi-SQOOL Design Tokens',
     captionDesc: 'Color and typography tokens',
     type: 'image',
@@ -1268,7 +1267,7 @@ export const SQOOL_GALLERY_ITEMS: GalleryItem[] = [
   },
   // Brand System
   {
-    src: '/images/sqool/sqool brand/ColorsGradients.png',
+    src: '/images/sqool/sqool brand/ColorsGradients.webp',
     caption: 'Color System',
     captionDesc: 'Primary colors and gradient library',
     type: 'image',
@@ -1339,7 +1338,7 @@ export const SQOOL_GALLERY_ITEMS: GalleryItem[] = [
   },
   // SQOOL Classe
   {
-    src: '/images/sqool/sqool classe/Visuel - Comm - Pilotage - accueil - Focus Classe temporaire@2x.png',
+    src: '/images/sqool/sqool classe/Visuel - Comm - Pilotage - accueil - Focus Classe temporaire@2x.webp',
     caption: 'SQOOL Classe',
     captionDesc: 'Real-time classroom supervision interface',
     type: 'image',

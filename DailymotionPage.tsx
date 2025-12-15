@@ -389,11 +389,11 @@ const sections = [
 // All media (images + videos) for lightbox navigation
 type MediaItem = { src: string; captionKey: string; type: 'image' | 'video' };
 const allImagesData: MediaItem[] = [
-  { src: '/images/dailymotion/thumbnail_dailymotion_-_web_platform2x.png', captionKey: 'hero', type: 'image' },
+  { src: '/images/dailymotion/thumbnail_dailymotion_-_web_platform2x.webp', captionKey: 'hero', type: 'image' },
   { src: '/images/dailymotion/dailymotion_focus_upload_2x.webp', captionKey: 'videoManagement', type: 'image' },
   { src: '/images/dailymotion/dailymotion_focus_livestream_2x.webp', captionKey: 'liveDashboard', type: 'image' },
   { src: '/images/dailymotion/dailymotion_focus_player_template_2x.webp', captionKey: 'playerManager', type: 'image' },
-  { src: '/images/dailymotion/dailymotion_-_upload2x.png', captionKey: 'batchUpload', type: 'image' },
+  { src: '/images/dailymotion/dailymotion_-_upload2x.webp', captionKey: 'batchUpload', type: 'image' },
   { src: '/videos/dailymotion/video_-_cancel_upload.mp4', captionKey: 'cancelUpload', type: 'video' },
   { src: '/videos/dailymotion/video_2025-11-10_02.26.48.mp4', captionKey: 'thumbnailUpdate', type: 'video' },
   { src: '/videos/dailymotion/video_add_subtitle.mp4', captionKey: 'addSubtitles', type: 'video' },
@@ -402,15 +402,15 @@ const allImagesData: MediaItem[] = [
   { src: '/videos/dailymotion/switch_12-24.mp4', captionKey: 'timePicker', type: 'video' },
   { src: '/videos/dailymotion/dailymotion_video_manager_-_set_password.mp4', captionKey: 'passwordProtection', type: 'video' },
   { src: '/videos/dailymotion/Geoblocking.mp4', captionKey: 'geoblocking', type: 'video' },
-  { src: '/images/dailymotion/dailymotion_-_share_expanded2x.png', captionKey: 'shareModal', type: 'image' },
-  { src: '/images/dailymotion/Share_-_keyboard_input2x.png', captionKey: 'keyboardMapping', type: 'image' },
-  { src: '/images/dailymotion/image.png', captionKey: 'startTimeInput', type: 'image' },
-  { src: '/images/dailymotion/dailymotion_-_add_to_playlist_-_spec2x.png', captionKey: 'addToPlaylist', type: 'image' },
-  { src: '/images/dailymotion/dailymotion_-_live_-_countdown2x.png', captionKey: 'preBroadcast', type: 'image' },
-  { src: '/images/dailymotion/dailymotion_-_livestream2x.png', captionKey: 'liveMonitor', type: 'image' },
-  { src: '/images/dailymotion/dailymotion_-_create_player2x.png', captionKey: 'playerConfigurator', type: 'image' },
-  { src: '/images/dailymotion/design_system_-_Styles2x.png', captionKey: 'uiKitStyles', type: 'image' },
-  { src: '/images/dailymotion/design_system_-_component_library2x.png', captionKey: 'uiKitComponents', type: 'image' },
+  { src: '/images/dailymotion/dailymotion_-_share_expanded2x.webp', captionKey: 'shareModal', type: 'image' },
+  { src: '/images/dailymotion/Share_-_keyboard_input2x.webp', captionKey: 'keyboardMapping', type: 'image' },
+  { src: '/images/dailymotion/image.webp', captionKey: 'startTimeInput', type: 'image' },
+  { src: '/images/dailymotion/dailymotion_-_add_to_playlist_-_spec2x.webp', captionKey: 'addToPlaylist', type: 'image' },
+  { src: '/images/dailymotion/dailymotion_-_live_-_countdown2x.webp', captionKey: 'preBroadcast', type: 'image' },
+  { src: '/images/dailymotion/dailymotion_-_livestream2x.webp', captionKey: 'liveMonitor', type: 'image' },
+  { src: '/images/dailymotion/dailymotion_-_create_player2x.webp', captionKey: 'playerConfigurator', type: 'image' },
+  { src: '/images/dailymotion/design_system_-_Styles2x.webp', captionKey: 'uiKitStyles', type: 'image' },
+  { src: '/images/dailymotion/design_system_-_component_library2x.webp', captionKey: 'uiKitComponents', type: 'image' },
 ];
 
 // Apple-style spring transition
@@ -502,7 +502,7 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick }) => {
             </div>
           </div>
         ) : (
-          <img src={item.src} alt={item.caption} className="w-full h-auto block" loading="lazy" />
+          <img loading="lazy" src={item.src} alt={item.caption} className="w-full h-auto block" />
         )}
       </motion.div>
       <figcaption className="mt-4 text-sm text-gray-400">
@@ -540,7 +540,9 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
   const [lightboxZoomed, setLightboxZoomed] = useState(false);
   const [[page, direction], setPage] = useState([0, 0]);
   const [caseStudyMode, setCaseStudyMode] = useState<'executive' | 'full'>('executive');
+  const [videoStartTime, setVideoStartTime] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
+  const videoRefs = useRef<{ [key: string]: HTMLVideoElement | null }>({});
 
   // Motion values for parallax effect
   const dragX = useMotionValue(0);
@@ -605,13 +607,14 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
     }
   };
 
-  // Open lightbox with specific image
-  const openLightbox = (imageSrc: string) => {
+  // Open lightbox with specific image and optional start time for videos
+  const openLightbox = (imageSrc: string, startTime: number = 0) => {
     const index = allImages.findIndex(img => img.src === imageSrc);
     if (index !== -1) {
       setLightboxIndex(index);
       setPage([index, 0]);
       setLightboxZoomed(false);
+      setVideoStartTime(startTime);
       setLightboxOpen(true);
       document.body.style.overflow = 'hidden';
     }
@@ -676,14 +679,14 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className={`fixed top-[53px] sm:top-[72px] left-0 right-0 z-30 border-b ${
+            className={`fixed top-16 left-0 right-0 z-30 backdrop-blur-xl ${
               systemTheme === 'dark'
-                ? 'bg-[#0a0a0a]/95 backdrop-blur-xl border-white/10'
-                : 'bg-white/95 backdrop-blur-xl border-gray-200'
+                ? 'bg-[#0a0a0a]/80'
+                : 'bg-white/80'
             }`}
           >
             {/* Collapsed state - shows current section */}
-            <div className="max-w-6xl mx-auto px-4 md:px-6">
+            <div className="w-full px-6">
               <button
                 onClick={() => setIsMobileNavExpanded(!isMobileNavExpanded)}
                 className="w-full h-12 flex items-center justify-between"
@@ -771,19 +774,19 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
         )}
       </AnimatePresence>
 
-      {/* Header - iOS-inspired responsive design */}
+      {/* Header - Glass effect */}
       <header
-        className={`sticky top-0 z-40 backdrop-blur-xl border-b ${
+        className={`sticky top-0 z-40 backdrop-blur-xl ${
           viewMode === 'gallery'
-            ? 'bg-black/80 border-white/10'
-            : (systemTheme === 'dark' ? 'bg-[#0a0a0a]/80 border-white/10' : 'bg-white/80 border-gray-200')
+            ? 'bg-black/80'
+            : (systemTheme === 'dark' ? 'bg-[#0a0a0a]/80' : 'bg-white/80')
         }`}
       >
-        <div className="max-w-6xl mx-auto px-3 sm:px-4 md:px-6 py-3 sm:py-4 flex items-center gap-2 sm:gap-4">
-          {/* Left - Title (truncates on mobile, fixed width on desktop for centering) */}
-          <div className="flex-shrink-0 min-w-0 max-w-[30%] sm:max-w-none sm:w-32 md:w-40">
+        <div className="w-full px-6 h-16 flex items-center gap-4">
+          {/* Left - Title - Same style as Homepage nav */}
+          <div className="flex-shrink-0">
             <h1
-              className={`text-base sm:text-lg md:text-xl font-bold truncate ${
+              className={`font-semibold text-lg tracking-[-0.02em] ${
                 viewMode === 'gallery' ? 'text-white' : (systemTheme === 'dark' ? 'text-white' : 'text-gray-900')
               }`}
             >
@@ -815,8 +818,8 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                     ? 'text-white'
                     : (viewMode === 'gallery' ? 'text-gray-400 hover:text-white' : (systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'))
                 }`}>
-                  <span className="hidden sm:inline">{lang === 'fr' ? 'En bref' : 'At a glance'}</span>
-                  <span className="sm:hidden">{lang === 'fr' ? 'Bref' : 'Brief'}</span>
+                  <span className="hidden sm:inline">{lang === 'fr' ? 'En bref' : 'Summary'}</span>
+                  <span className="sm:hidden">{lang === 'fr' ? 'Bref' : 'Sum.'}</span>
                 </span>
               </button>
               {/* Full case study button */}
@@ -836,8 +839,8 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                     ? 'text-white'
                     : (viewMode === 'gallery' ? 'text-gray-400 hover:text-white' : (systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'))
                 }`}>
-                  <span className="hidden sm:inline">Full</span>
-                  <span className="sm:hidden">Complet</span>
+                  <span className="hidden sm:inline">{lang === 'fr' ? 'Complet' : 'Full case'}</span>
+                  <span className="sm:hidden">{lang === 'fr' ? 'Full' : 'Full'}</span>
                 </span>
               </button>
               {/* Gallery button */}
@@ -855,25 +858,24 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                 <span className={`relative z-10 ${
                   viewMode === 'gallery' ? 'text-white' : (systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900')
                 }`}>
-                  <span className="hidden sm:inline">{t.gallery}</span>
-                  <span className="sm:hidden">Galerie</span>
+                  <span className="hidden sm:inline">{lang === 'fr' ? 'Galerie' : 'Gallery'}</span>
+                  <span className="sm:hidden">{lang === 'fr' ? 'Gal.' : 'Gal.'}</span>
                 </span>
               </button>
             </div>
           </div>
 
-          {/* Right - Close button (fixed width matching title for centering) */}
-          <div className="flex-shrink-0 sm:w-32 md:w-40 flex justify-end">
+          {/* Right - Close button */}
+          <div className="flex-shrink-0">
             <button
               onClick={onClose}
-              className={`p-1.5 sm:p-2 rounded-full ${
+              className={`w-8 h-8 flex items-center justify-center rounded-full transition-colors ${
                 viewMode === 'gallery'
-                  ? 'text-gray-300 hover:bg-white/10'
-                  : (systemTheme === 'dark' ? 'text-gray-300 hover:bg-white/10' : 'text-gray-600 hover:bg-gray-100')
+                  ? 'text-gray-400 hover:text-white hover:bg-white/10'
+                  : (systemTheme === 'dark' ? 'text-gray-400 hover:text-white hover:bg-white/10' : 'text-gray-500 hover:text-gray-900 hover:bg-black/5')
               }`}
             >
-              <X size={20} className="sm:hidden" />
-              <X size={24} className="hidden sm:block" />
+              <X size={18} />
             </button>
           </div>
         </div>
@@ -894,6 +896,9 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
           setPage([idx, idx > lightboxIndex ? 1 : -1]);
         }}
         lang={lang}
+        videoStartTime={videoStartTime}
+        projectId="dailymotion"
+        updateUrl={true}
       />
 
       {/* Content - Switch between Case Study and Gallery */}
@@ -944,14 +949,14 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
-      <div className="max-w-6xl mx-auto px-4 md:px-6 py-12 md:py-16">
+      <div className="max-w-[1480px] mx-auto px-10 py-12 md:py-16">
         <div>
           {/* Main Content */}
           <main className="w-full">
             {/* Hero Section */}
             <section id="hero" className="mb-16 md:mb-24">
               {/* Logo */}
-              <img
+              <img loading="lazy"
                 src={systemTheme === 'dark'
                   ? '/images/dailymotion/logo-dailymotion-white.svg'
                   : '/images/dailymotion/logo-dailymotion-black.svg'
@@ -1121,13 +1126,13 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
             {/* Hero Image */}
             <figure className="mb-16 md:mb-24">
               <div
-                onClick={() => openLightbox('/images/dailymotion/thumbnail_dailymotion_-_web_platform2x.png')}
-                className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
+                onClick={() => openLightbox('/images/dailymotion/thumbnail_dailymotion_-_web_platform2x.webp')}
+                className={`rounded-2xl overflow-hidden border cursor-pointer ${
                   systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
                 }`}
               >
-                <img
-                  src="/images/dailymotion/thumbnail_dailymotion_-_web_platform2x.png"
+                <img loading="lazy"
+                  src="/images/dailymotion/thumbnail_dailymotion_-_web_platform2x.webp"
                   alt="Dailymotion Partner Platform Overview"
                   className="w-full h-auto"
                 />
@@ -1227,7 +1232,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                       systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
                     }`}
                   >
-                    <img
+                    <img loading="lazy"
                       src="/images/dailymotion/dailymotion_focus_upload_2x.webp"
                       alt="Video Management Workflows"
                       className="w-full h-full object-cover"
@@ -1250,7 +1255,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                       systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
                     }`}
                   >
-                    <img
+                    <img loading="lazy"
                       src="/images/dailymotion/dailymotion_focus_livestream_2x.webp"
                       alt="Live Dashboard"
                       className="w-full h-full object-cover"
@@ -1273,7 +1278,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                       systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
                     }`}
                   >
-                    <img
+                    <img loading="lazy"
                       src="/images/dailymotion/dailymotion_focus_player_template_2x.webp"
                       alt="Player Manager"
                       className="w-full h-full object-cover"
@@ -1335,13 +1340,13 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
               <div className="grid md:grid-cols-2 gap-6 mb-8">
                 <figure>
                   <div
-                    onClick={() => openLightbox('/images/dailymotion/dailymotion_-_upload2x.png')}
+                    onClick={() => openLightbox('/images/dailymotion/dailymotion_-_upload2x.webp')}
                     className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
                       systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
                     }`}
                   >
-                    <img
-                      src="/images/dailymotion/dailymotion_-_upload2x.png"
+                    <img loading="lazy"
+                      src="/images/dailymotion/dailymotion_-_upload2x.webp"
                       alt="Batch upload interface"
                       className="w-full h-auto"
                     />
@@ -1357,12 +1362,16 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
 
                 <figure>
                   <div
-                    onClick={() => openLightbox('/videos/dailymotion/video_-_cancel_upload.mp4')}
+                    onClick={() => {
+                      const currentTime = videoRefs.current['cancel-upload']?.currentTime || 0;
+                      openLightbox('/videos/dailymotion/video_-_cancel_upload.mp4', currentTime);
+                    }}
                     className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
                       systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
                     }`}
                   >
                     <video
+                      ref={(el) => { videoRefs.current['cancel-upload'] = el; }}
                       src="/videos/dailymotion/video_-_cancel_upload.mp4"
                       autoPlay
                       loop
@@ -1457,7 +1466,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                     systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
                   }`}
                 >
-                  <img
+                  <img loading="lazy"
                     src="/images/dailymotion/dailymotion_-_video_manager.svg"
                     alt="Video library"
                     className="w-full h-auto"
@@ -1580,13 +1589,13 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
               {/* Share modal */}
               <figure className="mb-8">
                 <div
-                  onClick={() => openLightbox('/images/dailymotion/dailymotion_-_share_expanded2x.png')}
+                  onClick={() => openLightbox('/images/dailymotion/dailymotion_-_share_expanded2x.webp')}
                   className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
                     systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
                   }`}
                 >
-                  <img
-                    src="/images/dailymotion/dailymotion_-_share_expanded2x.png"
+                  <img loading="lazy"
+                    src="/images/dailymotion/dailymotion_-_share_expanded2x.webp"
                     alt="Share modal"
                     className="w-full h-auto"
                   />
@@ -1604,13 +1613,13 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
               <div className="grid md:grid-cols-2 gap-6 mb-8">
                 <figure>
                   <div
-                    onClick={() => openLightbox('/images/dailymotion/Share_-_keyboard_input2x.png')}
+                    onClick={() => openLightbox('/images/dailymotion/Share_-_keyboard_input2x.webp')}
                     className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
                       systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
                     }`}
                   >
-                    <img
-                      src="/images/dailymotion/Share_-_keyboard_input2x.png"
+                    <img loading="lazy"
+                      src="/images/dailymotion/Share_-_keyboard_input2x.webp"
                       alt="Share modal keyboard mapping"
                       className="w-full h-auto"
                     />
@@ -1626,13 +1635,13 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
 
                 <figure>
                   <div
-                    onClick={() => openLightbox('/images/dailymotion/image.png')}
+                    onClick={() => openLightbox('/images/dailymotion/image.webp')}
                     className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
                       systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
                     }`}
                   >
-                    <img
-                      src="/images/dailymotion/image.png"
+                    <img loading="lazy"
+                      src="/images/dailymotion/image.webp"
                       alt="Start time keyboard input"
                       className="w-full h-auto"
                     />
@@ -1650,13 +1659,13 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
               {/* Playlist */}
               <figure className="mb-8">
                 <div
-                  onClick={() => openLightbox('/images/dailymotion/dailymotion_-_add_to_playlist_-_spec2x.png')}
+                  onClick={() => openLightbox('/images/dailymotion/dailymotion_-_add_to_playlist_-_spec2x.webp')}
                   className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
                     systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
                   }`}
                 >
-                  <img
-                    src="/images/dailymotion/dailymotion_-_add_to_playlist_-_spec2x.png"
+                  <img loading="lazy"
+                    src="/images/dailymotion/dailymotion_-_add_to_playlist_-_spec2x.webp"
                     alt="Add to playlist flow"
                     className="w-full h-auto"
                   />
@@ -1707,13 +1716,13 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
               {/* Live countdown */}
               <figure className="mb-8">
                 <div
-                  onClick={() => openLightbox('/images/dailymotion/dailymotion_-_live_-_countdown2x.png')}
+                  onClick={() => openLightbox('/images/dailymotion/dailymotion_-_live_-_countdown2x.webp')}
                   className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
                     systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
                   }`}
                 >
-                  <img
-                    src="/images/dailymotion/dailymotion_-_live_-_countdown2x.png"
+                  <img loading="lazy"
+                    src="/images/dailymotion/dailymotion_-_live_-_countdown2x.webp"
                     alt="Pre-broadcast countdown"
                     className="w-full h-auto"
                   />
@@ -1730,13 +1739,13 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
               {/* Live dashboard */}
               <figure className="mb-8">
                 <div
-                  onClick={() => openLightbox('/images/dailymotion/dailymotion_-_livestream2x.png')}
+                  onClick={() => openLightbox('/images/dailymotion/dailymotion_-_livestream2x.webp')}
                   className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
                     systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
                   }`}
                 >
-                  <img
-                    src="/images/dailymotion/dailymotion_-_livestream2x.png"
+                  <img loading="lazy"
+                    src="/images/dailymotion/dailymotion_-_livestream2x.webp"
                     alt="Live dashboard"
                     className="w-full h-auto"
                   />
@@ -1787,13 +1796,13 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
               {/* Player configurator */}
               <figure className="mb-8">
                 <div
-                  onClick={() => openLightbox('/images/dailymotion/dailymotion_-_create_player2x.png')}
+                  onClick={() => openLightbox('/images/dailymotion/dailymotion_-_create_player2x.webp')}
                   className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
                     systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
                   }`}
                 >
-                  <img
-                    src="/images/dailymotion/dailymotion_-_create_player2x.png"
+                  <img loading="lazy"
+                    src="/images/dailymotion/dailymotion_-_create_player2x.webp"
                     alt="Player template configurator"
                     className="w-full h-auto"
                   />
@@ -1836,13 +1845,13 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
               <div className="grid md:grid-cols-2 gap-6 mb-8">
                 <figure>
                   <div
-                    onClick={() => openLightbox('/images/dailymotion/design_system_-_Styles2x.png')}
+                    onClick={() => openLightbox('/images/dailymotion/design_system_-_Styles2x.webp')}
                     className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
                       systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
                     }`}
                   >
-                    <img
-                      src="/images/dailymotion/design_system_-_Styles2x.png"
+                    <img loading="lazy"
+                      src="/images/dailymotion/design_system_-_Styles2x.webp"
                       alt="UI Kit - Styles"
                       className="w-full h-auto"
                     />
@@ -1858,13 +1867,13 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
 
                 <figure>
                   <div
-                    onClick={() => openLightbox('/images/dailymotion/design_system_-_component_library2x.png')}
+                    onClick={() => openLightbox('/images/dailymotion/design_system_-_component_library2x.webp')}
                     className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
                       systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
                     }`}
                   >
-                    <img
-                      src="/images/dailymotion/design_system_-_component_library2x.png"
+                    <img loading="lazy"
+                      src="/images/dailymotion/design_system_-_component_library2x.webp"
                       alt="UI Kit - Components"
                       className="w-full h-auto"
                     />

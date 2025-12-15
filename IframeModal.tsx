@@ -121,10 +121,10 @@ export const IframeModal: React.FC<IframeModalProps> = ({
       transition={{ duration: 0.3 }}
       className={`fixed inset-0 z-[100] flex flex-col ${isDark ? 'bg-[#0a0a0a]' : 'bg-white'}`}
     >
-      {/* Header */}
+      {/* Header - Glass effect */}
       <header
-        className={`sticky top-0 z-40 backdrop-blur-xl border-b ${
-          isDark ? 'bg-[#0a0a0a]/80 border-white/10' : 'bg-white/80 border-gray-200'
+        className={`sticky top-0 z-40 backdrop-blur-xl ${
+          isDark ? 'bg-[#0a0a0a]/80' : 'bg-white/80'
         }`}
       >
         <div className="max-w-full mx-auto px-4 md:px-6 py-4 flex items-center justify-between">

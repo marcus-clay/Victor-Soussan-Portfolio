@@ -551,7 +551,7 @@ const ScopeGrid: React.FC<{
           }`}
         >
           <div className="aspect-[4/3] overflow-hidden">
-            <img
+            <img loading="lazy"
               src={area.image}
               alt={area.title}
               className="w-full h-full object-cover"
@@ -880,7 +880,7 @@ const HighlightsGrid: React.FC<{
                 playsInline
               />
             ) : (
-              <img
+              <img loading="lazy"
                 src={item.media}
                 alt={item.title}
                 className="w-full h-auto"
@@ -1018,11 +1018,11 @@ const ConnectExecutive: React.FC<ConnectExecutiveProps> = ({
       {/* ================================================================== */}
       {/* HERO SECTION */}
       {/* ================================================================== */}
-      <section className="min-h-[85vh] flex flex-col justify-center px-4 md:px-6 py-20">
-        <div className="max-w-6xl mx-auto w-full">
+      <section className="min-h-[85vh] flex flex-col justify-center px-10 py-20">
+        <div className="max-w-[1280px] mx-auto w-full">
           {/* Logo */}
           <FadeInSection>
-            <img
+            <img loading="lazy"
               src={isDark
                 ? '/images/unowhy/Logo-Unowhy-DarkBg.svg'
                 : '/images/unowhy/Logo-Unowhy-LightBg.svg'
@@ -1064,7 +1064,7 @@ const ConnectExecutive: React.FC<ConnectExecutiveProps> = ({
                 isDark ? 'border-white/10' : 'border-gray-200'
               }`}
             >
-              <img
+              <img loading="lazy"
                 src="/images/connect/connect_overview.webp"
                 alt="Connect Dashboard Overview"
                 className="w-full h-auto"
@@ -1091,8 +1091,8 @@ const ConnectExecutive: React.FC<ConnectExecutiveProps> = ({
       {/* ================================================================== */}
       {/* CONTEXT SECTION */}
       {/* ================================================================== */}
-      <section className={`py-20 md:py-28 px-4 md:px-6 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
-        <div className="max-w-6xl mx-auto">
+      <section className={`py-20 md:py-28 px-10 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
+        <div className="max-w-[1280px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
               isDark ? 'text-gray-400' : 'text-gray-500'
@@ -1122,8 +1122,8 @@ const ConnectExecutive: React.FC<ConnectExecutiveProps> = ({
       {/* ================================================================== */}
       {/* ROLE SECTION */}
       {/* ================================================================== */}
-      <section className="py-20 md:py-28 px-4 md:px-6">
-        <div className="max-w-6xl mx-auto">
+      <section className="py-20 md:py-28 px-10">
+        <div className="max-w-[1280px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
               isDark ? 'text-gray-400' : 'text-gray-500'
@@ -1163,8 +1163,8 @@ const ConnectExecutive: React.FC<ConnectExecutiveProps> = ({
       {/* ================================================================== */}
       {/* JOURNEY SECTION */}
       {/* ================================================================== */}
-      <section className={`py-20 md:py-28 px-4 md:px-6 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
-        <div className="max-w-6xl mx-auto">
+      <section className={`py-20 md:py-28 px-10 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
+        <div className="max-w-[1280px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
               isDark ? 'text-gray-400' : 'text-gray-500'
@@ -1190,8 +1190,8 @@ const ConnectExecutive: React.FC<ConnectExecutiveProps> = ({
       {/* ================================================================== */}
       {/* SCOPE SECTION */}
       {/* ================================================================== */}
-      <section className="py-20 md:py-28 px-4 md:px-6">
-        <div className="max-w-6xl mx-auto">
+      <section className="py-20 md:py-28 px-10">
+        <div className="max-w-[1280px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
               isDark ? 'text-gray-400' : 'text-gray-500'
@@ -1223,8 +1223,8 @@ const ConnectExecutive: React.FC<ConnectExecutiveProps> = ({
       {/* ================================================================== */}
       {/* HIGHLIGHTS SECTION */}
       {/* ================================================================== */}
-      <section className={`py-20 md:py-28 px-4 md:px-6 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
-        <div className="max-w-6xl mx-auto">
+      <section className={`py-20 md:py-28 px-10 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
+        <div className="max-w-[1280px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
               isDark ? 'text-gray-400' : 'text-gray-500'
@@ -1254,8 +1254,8 @@ const ConnectExecutive: React.FC<ConnectExecutiveProps> = ({
       {/* ================================================================== */}
       {/* USER TESTING SECTION */}
       {/* ================================================================== */}
-      <section className="py-20 md:py-28 px-4 md:px-6">
-        <div className="max-w-6xl mx-auto">
+      <section className="py-20 md:py-28 px-10">
+        <div className="max-w-[1280px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
               isDark ? 'text-gray-400' : 'text-gray-500'
@@ -1286,8 +1286,8 @@ const ConnectExecutive: React.FC<ConnectExecutiveProps> = ({
       {/* ================================================================== */}
       {/* OUTCOME SECTION */}
       {/* ================================================================== */}
-      <section className={`py-20 md:py-28 px-4 md:px-6 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
-        <div className="max-w-6xl mx-auto">
+      <section className={`py-20 md:py-28 px-10 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
+        <div className="max-w-[1280px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
               isDark ? 'text-gray-400' : 'text-gray-500'
@@ -1311,8 +1311,8 @@ const ConnectExecutive: React.FC<ConnectExecutiveProps> = ({
       {/* ================================================================== */}
       {/* TESTIMONIAL SECTION */}
       {/* ================================================================== */}
-      <section className="py-20 md:py-28 px-4 md:px-6">
-        <div className="max-w-6xl mx-auto">
+      <section className="py-20 md:py-28 px-10">
+        <div className="max-w-[1280px] mx-auto">
           <FadeInSection>
             <div className={`rounded-3xl p-8 md:p-12 ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}>
               <div className={`text-4xl mb-6 ${isDark ? 'text-gray-600' : 'text-gray-300'}`}>
@@ -1324,8 +1324,8 @@ const ConnectExecutive: React.FC<ConnectExecutiveProps> = ({
                 {t.testimonial.quote}
               </blockquote>
               <div className="mt-8 flex items-center gap-4">
-                <img
-                  src="/images/justine-le-tellier.png"
+                <img loading="lazy"
+                  src="/images/justine-le-tellier.webp"
                   alt={t.testimonial.author}
                   className="w-12 h-12 rounded-full object-cover"
                 />
@@ -1346,8 +1346,8 @@ const ConnectExecutive: React.FC<ConnectExecutiveProps> = ({
       {/* ================================================================== */}
       {/* CTA SECTION */}
       {/* ================================================================== */}
-      <section className="py-20 md:py-28 px-4 md:px-6">
-        <div className="max-w-6xl mx-auto text-center">
+      <section className="py-20 md:py-28 px-10">
+        <div className="max-w-[1280px] mx-auto text-center">
           <FadeInSection>
             <div className="flex flex-wrap justify-center gap-4">
               <button

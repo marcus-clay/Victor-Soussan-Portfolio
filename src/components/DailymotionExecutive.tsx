@@ -96,13 +96,13 @@ const TRANSLATIONS = {
           id: 'share',
           title: 'Share & Embed',
           description: 'Full embed customization with auto-generated iframe code that updates dynamically.',
-          image: '/images/dailymotion/dailymotion_-_share_expanded2x.png'
+          image: '/images/dailymotion/dailymotion_-_share_expanded2x.webp'
         },
         {
           id: 'system',
           title: 'Design System',
           description: 'Component library with tokens, patterns, and usage guidelines.',
-          image: '/images/dailymotion/design_system_-_component_library2x.png'
+          image: '/images/dailymotion/design_system_-_component_library2x.webp'
         }
       ]
     },
@@ -216,13 +216,13 @@ const TRANSLATIONS = {
           id: 'share',
           title: 'Partage & Embed',
           description: 'Personnalisation embed complète avec code iframe auto-généré mis à jour dynamiquement.',
-          image: '/images/dailymotion/dailymotion_-_share_expanded2x.png'
+          image: '/images/dailymotion/dailymotion_-_share_expanded2x.webp'
         },
         {
           id: 'system',
           title: 'Design System',
           description: 'Bibliothèque de composants avec tokens, patterns et guidelines d\'usage.',
-          image: '/images/dailymotion/design_system_-_component_library2x.png'
+          image: '/images/dailymotion/design_system_-_component_library2x.webp'
         }
       ]
     },
@@ -474,7 +474,7 @@ const ScopeGrid: React.FC<{
           }`}
         >
           <div className="aspect-[4/3] overflow-hidden">
-            <img
+            <img loading="lazy"
               src={area.image}
               alt={area.title}
               className="w-full h-full object-cover"
@@ -803,7 +803,7 @@ const HighlightsGrid: React.FC<{
                 playsInline
               />
             ) : (
-              <img
+              <img loading="lazy"
                 src={item.media}
                 alt={item.title}
                 className="w-full h-auto"
@@ -884,11 +884,11 @@ const DailymotionExecutive: React.FC<DailymotionExecutiveProps> = ({
       {/* ================================================================== */}
       {/* HERO SECTION */}
       {/* ================================================================== */}
-      <section className="min-h-[85vh] flex flex-col justify-center px-4 md:px-6 py-20">
-        <div className="max-w-6xl mx-auto w-full">
+      <section className="min-h-[85vh] flex flex-col justify-center px-10 py-20">
+        <div className="max-w-[1280px] mx-auto w-full">
           {/* Logo */}
           <FadeInSection>
-            <img
+            <img loading="lazy"
               src={isDark
                 ? '/images/dailymotion/logo-dailymotion-white.svg'
                 : '/images/dailymotion/logo-dailymotion-black.svg'
@@ -925,13 +925,13 @@ const DailymotionExecutive: React.FC<DailymotionExecutiveProps> = ({
           {/* Hero Image */}
           <FadeInSection delay={0.3} className="mt-12">
             <div
-              onClick={() => onImageClick('/images/dailymotion/thumbnail_dailymotion_-_web_platform2x.png')}
+              onClick={() => onImageClick('/images/dailymotion/thumbnail_dailymotion_-_web_platform2x.webp')}
               className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
                 isDark ? 'border-white/10' : 'border-gray-200'
               }`}
             >
-              <img
-                src="/images/dailymotion/thumbnail_dailymotion_-_web_platform2x.png"
+              <img loading="lazy"
+                src="/images/dailymotion/thumbnail_dailymotion_-_web_platform2x.webp"
                 alt="Dailymotion Partner Platform"
                 className="w-full h-auto"
               />
@@ -957,8 +957,8 @@ const DailymotionExecutive: React.FC<DailymotionExecutiveProps> = ({
       {/* ================================================================== */}
       {/* CONTEXT SECTION */}
       {/* ================================================================== */}
-      <section className={`py-20 md:py-28 px-4 md:px-6 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
-        <div className="max-w-6xl mx-auto">
+      <section className={`py-20 md:py-28 px-10 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
+        <div className="max-w-[1280px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
               isDark ? 'text-gray-400' : 'text-gray-500'
@@ -988,8 +988,8 @@ const DailymotionExecutive: React.FC<DailymotionExecutiveProps> = ({
       {/* ================================================================== */}
       {/* ROLE SECTION */}
       {/* ================================================================== */}
-      <section className="py-20 md:py-28 px-4 md:px-6">
-        <div className="max-w-6xl mx-auto">
+      <section className="py-20 md:py-28 px-10">
+        <div className="max-w-[1280px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
               isDark ? 'text-blue-400' : 'text-blue-600'
@@ -1029,8 +1029,8 @@ const DailymotionExecutive: React.FC<DailymotionExecutiveProps> = ({
       {/* ================================================================== */}
       {/* MODULES SECTION */}
       {/* ================================================================== */}
-      <section className={`py-20 md:py-28 px-4 md:px-6 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
-        <div className="max-w-6xl mx-auto">
+      <section className={`py-20 md:py-28 px-10 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
+        <div className="max-w-[1280px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
               isDark ? 'text-emerald-400' : 'text-emerald-600'
@@ -1056,8 +1056,8 @@ const DailymotionExecutive: React.FC<DailymotionExecutiveProps> = ({
       {/* ================================================================== */}
       {/* SCOPE SECTION */}
       {/* ================================================================== */}
-      <section className="py-20 md:py-28 px-4 md:px-6">
-        <div className="max-w-6xl mx-auto">
+      <section className="py-20 md:py-28 px-10">
+        <div className="max-w-[1280px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
               isDark ? 'text-purple-400' : 'text-purple-600'
@@ -1089,8 +1089,8 @@ const DailymotionExecutive: React.FC<DailymotionExecutiveProps> = ({
       {/* ================================================================== */}
       {/* HIGHLIGHTS SECTION */}
       {/* ================================================================== */}
-      <section className={`py-20 md:py-28 px-4 md:px-6 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
-        <div className="max-w-6xl mx-auto">
+      <section className={`py-20 md:py-28 px-10 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
+        <div className="max-w-[1280px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
               isDark ? 'text-orange-400' : 'text-orange-600'
@@ -1120,8 +1120,8 @@ const DailymotionExecutive: React.FC<DailymotionExecutiveProps> = ({
       {/* ================================================================== */}
       {/* OUTCOME SECTION */}
       {/* ================================================================== */}
-      <section className="py-20 md:py-28 px-4 md:px-6">
-        <div className="max-w-6xl mx-auto">
+      <section className="py-20 md:py-28 px-10">
+        <div className="max-w-[1280px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
               isDark ? 'text-amber-400' : 'text-amber-600'
@@ -1145,8 +1145,8 @@ const DailymotionExecutive: React.FC<DailymotionExecutiveProps> = ({
       {/* ================================================================== */}
       {/* CTA SECTION */}
       {/* ================================================================== */}
-      <section className="py-20 md:py-28 px-4 md:px-6">
-        <div className="max-w-6xl mx-auto text-center">
+      <section className="py-20 md:py-28 px-10">
+        <div className="max-w-[1280px] mx-auto text-center">
           <FadeInSection>
             <div className="flex flex-wrap justify-center gap-4">
               <button

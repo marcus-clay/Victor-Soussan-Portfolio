@@ -1,17 +1,17 @@
 // Connect Case Study Page - Static content with instant loading
 // Displays the SQOOL Connect project case study with portfolio styling
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { motion, AnimatePresence, useMotionValue, useTransform, useSpring, PanInfo } from 'framer-motion';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import {
   ChevronRight,
-  ChevronLeft,
   ChevronDown,
   X,
   Play
 } from 'lucide-react';
 import { GalleryItem, getConnectGalleryItems } from './BentoGallery';
 import ConnectExecutive from './src/components/ConnectExecutive';
+import EnhancedLightbox from './src/components/EnhancedLightbox';
 
 interface ConnectPageProps {
   onClose: () => void;
@@ -309,33 +309,6 @@ const sections = [
   { id: 'bulle', label: 'La Bulle', shortLabel: 'LB' },
 ];
 
-// Apple-style spring transition
-const springTransition = {
-  type: 'spring' as const,
-  stiffness: 300,
-  damping: 30,
-  mass: 1,
-};
-
-// Slide transition for carousel
-const slideVariants = {
-  enter: (direction: number) => ({
-    x: direction > 0 ? '100%' : '-100%',
-    opacity: 0,
-    scale: 0.95,
-  }),
-  center: {
-    x: 0,
-    opacity: 1,
-    scale: 1,
-  },
-  exit: (direction: number) => ({
-    x: direction < 0 ? '100%' : '-100%',
-    opacity: 0,
-    scale: 0.95,
-  }),
-};
-
 // All images for lightbox navigation with caption keys
 type MediaItem = { src: string; captionKey: string; type: 'image' | 'video' };
 const allImagesData: MediaItem[] = [
@@ -420,7 +393,7 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick }) => {
             </div>
           </div>
         ) : (
-          <img src={item.src} alt={item.caption} className="w-full h-auto block" loading="lazy" />
+          <img loading="lazy" src={item.src} alt={item.caption} className="w-full h-auto block" />
         )}
       </motion.div>
       <figcaption className="mt-4 text-sm text-gray-400">
@@ -456,13 +429,9 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [caseStudyMode, setCaseStudyMode] = useState<'executive' | 'full'>('executive');
   const [lightboxIndex, setLightboxIndex] = useState(0);
-  const [lightboxZoomed, setLightboxZoomed] = useState(false);
-  const [[page, direction], setPage] = useState([0, 0]);
+  const [videoStartTime, setVideoStartTime] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
-
-  // Motion values for parallax effect
-  const dragX = useMotionValue(0);
-  const parallaxX = useTransform(dragX, [-300, 0, 300], [30, 0, -30]);
+  const videoRefs = useRef<{ [key: string]: HTMLVideoElement | null }>({});
 
   // Scroll to top when mode changes
   useEffect(() => {
@@ -506,56 +475,19 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
     }
   };
 
-  // Open lightbox with specific image
-  const openLightbox = (imageSrc: string) => {
+  // Open lightbox with specific image and optional start time for videos
+  const openLightbox = (imageSrc: string, startTime: number = 0) => {
     const index = allImages.findIndex(img => img.src === imageSrc);
     if (index !== -1) {
       setLightboxIndex(index);
-      setPage([index, 0]);
-      setLightboxZoomed(false);
+      setVideoStartTime(startTime);
       setLightboxOpen(true);
-      document.body.style.overflow = 'hidden';
     }
   };
 
   // Close lightbox
   const closeLightbox = () => {
     setLightboxOpen(false);
-    document.body.style.overflow = '';
-  };
-
-  const paginate = useCallback((newDirection: number) => {
-    const newIndex = lightboxIndex + newDirection;
-    if (newIndex >= 0 && newIndex < allImages.length) {
-      setLightboxIndex(newIndex);
-      setPage([newIndex, newDirection]);
-      setLightboxZoomed(false);
-    }
-  }, [lightboxIndex]);
-
-  // Keyboard navigation for lightbox
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (!lightboxOpen) return;
-      if (e.key === 'Escape') closeLightbox();
-      if (e.key === 'ArrowRight') paginate(1);
-      if (e.key === 'ArrowLeft') paginate(-1);
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [lightboxOpen, paginate]);
-
-  // Handle drag end for swipe navigation
-  const handleDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    const swipeThreshold = 50;
-    const swipeVelocity = 500;
-
-    if (info.offset.x < -swipeThreshold || info.velocity.x < -swipeVelocity) {
-      if (lightboxIndex < allImages.length - 1) paginate(1);
-    } else if (info.offset.x > swipeThreshold || info.velocity.x > swipeVelocity) {
-      if (lightboxIndex > 0) paginate(-1);
-    }
-    dragX.set(0);
   };
 
 
@@ -578,14 +510,14 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className={`fixed top-[53px] sm:top-[72px] left-0 right-0 z-30 border-b ${
+            className={`fixed top-16 left-0 right-0 z-30 backdrop-blur-xl ${
               systemTheme === 'dark'
-                ? 'bg-[#0a0a0a]/95 backdrop-blur-xl border-white/10'
-                : 'bg-white/95 backdrop-blur-xl border-gray-200'
+                ? 'bg-[#0a0a0a]/80'
+                : 'bg-white/80'
             }`}
           >
             {/* Collapsed state - shows current section */}
-            <div className="max-w-6xl mx-auto px-4 md:px-6">
+            <div className="w-full px-6">
               <button
                 onClick={() => setIsMobileNavExpanded(!isMobileNavExpanded)}
                 className="w-full h-12 flex items-center justify-between"
@@ -670,24 +602,23 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
         )}
       </AnimatePresence>
 
-      {/* Header - iOS-inspired responsive design */}
+      {/* Header - Glass effect */}
       <header
-        className={`sticky top-0 z-40 backdrop-blur-xl border-b ${
+        className={`sticky top-0 z-40 backdrop-blur-xl ${
           viewMode === 'gallery'
-            ? 'bg-black/80 border-white/10'
-            : (systemTheme === 'dark' ? 'bg-[#0a0a0a]/80 border-white/10' : 'bg-white/80 border-gray-200')
+            ? 'bg-black/80'
+            : (systemTheme === 'dark' ? 'bg-[#0a0a0a]/80' : 'bg-white/80')
         }`}
       >
-        <div className="max-w-6xl mx-auto px-3 sm:px-4 md:px-6 py-3 sm:py-4 flex items-center gap-2 sm:gap-4">
-          {/* Left - Title (truncates on mobile, fixed width on desktop for centering) */}
-          <div className="flex-shrink-0 min-w-0 max-w-[30%] sm:max-w-none sm:w-32 md:w-40">
+        <div className="w-full px-6 h-16 flex items-center gap-4">
+          {/* Left - Title - Same style as Homepage nav */}
+          <div className="flex-shrink-0">
             <h1
-              className={`text-base sm:text-lg md:text-xl font-bold truncate ${
+              className={`font-semibold text-lg tracking-[-0.02em] ${
                 viewMode === 'gallery' ? 'text-white' : (systemTheme === 'dark' ? 'text-white' : 'text-gray-900')
               }`}
             >
-              <span className="hidden sm:inline">SQOOL Connect</span>
-              <span className="sm:hidden">Connect</span>
+              SQOOL Connect
             </h1>
           </div>
 
@@ -715,8 +646,8 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
                     ? 'text-white'
                     : (viewMode === 'gallery' ? 'text-gray-400 hover:text-white' : (systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'))
                 }`}>
-                  <span className="hidden sm:inline">{lang === 'fr' ? 'En bref' : 'At a glance'}</span>
-                  <span className="sm:hidden">{lang === 'fr' ? 'Bref' : 'Brief'}</span>
+                  <span className="hidden sm:inline">{lang === 'fr' ? 'En bref' : 'Summary'}</span>
+                  <span className="sm:hidden">{lang === 'fr' ? 'Bref' : 'Sum.'}</span>
                 </span>
               </button>
               {/* Full case study button */}
@@ -736,8 +667,8 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
                     ? 'text-white'
                     : (viewMode === 'gallery' ? 'text-gray-400 hover:text-white' : (systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'))
                 }`}>
-                  <span className="hidden sm:inline">Full</span>
-                  <span className="sm:hidden">Complet</span>
+                  <span className="hidden sm:inline">{lang === 'fr' ? 'Complet' : 'Full case'}</span>
+                  <span className="sm:hidden">{lang === 'fr' ? 'Full' : 'Full'}</span>
                 </span>
               </button>
               {/* Gallery button */}
@@ -755,225 +686,45 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
                 <span className={`relative z-10 ${
                   viewMode === 'gallery' ? 'text-white' : (systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900')
                 }`}>
-                  <span className="hidden sm:inline">{t.gallery}</span>
-                  <span className="sm:hidden">Galerie</span>
+                  <span className="hidden sm:inline">{lang === 'fr' ? 'Galerie' : 'Gallery'}</span>
+                  <span className="sm:hidden">{lang === 'fr' ? 'Gal.' : 'Gal.'}</span>
                 </span>
               </button>
             </div>
           </div>
 
-          {/* Right - Close button (fixed width matching title for centering) */}
-          <div className="flex-shrink-0 sm:w-32 md:w-40 flex justify-end">
+          {/* Right - Close button */}
+          <div className="flex-shrink-0">
             <button
               onClick={onClose}
-              className={`p-1.5 sm:p-2 rounded-full ${
+              className={`w-8 h-8 flex items-center justify-center rounded-full transition-colors ${
                 viewMode === 'gallery'
-                  ? 'text-gray-300 hover:bg-white/10'
-                  : (systemTheme === 'dark' ? 'text-gray-300 hover:bg-white/10' : 'text-gray-600 hover:bg-gray-100')
+                  ? 'text-gray-400 hover:text-white hover:bg-white/10'
+                  : (systemTheme === 'dark' ? 'text-gray-400 hover:text-white hover:bg-white/10' : 'text-gray-500 hover:text-gray-900 hover:bg-black/5')
               }`}
             >
-              <X size={20} className="sm:hidden" />
-              <X size={24} className="hidden sm:block" />
+              <X size={18} />
             </button>
           </div>
         </div>
       </header>
 
-      {/* Lightbox Modal */}
-      <AnimatePresence>
-        {lightboxOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl flex items-center justify-center"
-            onClick={closeLightbox}
-          >
-            {/* Close button */}
-            <motion.button
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              transition={springTransition}
-              onClick={closeLightbox}
-              className="absolute top-4 right-4 md:top-6 md:right-6 z-10 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
-            >
-              <X size={24} />
-            </motion.button>
-
-            {/* Navigation arrows */}
-            {lightboxIndex > 0 && (
-              <motion.button
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={springTransition}
-                onClick={(e) => { e.stopPropagation(); paginate(-1); }}
-                className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
-              >
-                <ChevronLeft size={28} />
-              </motion.button>
-            )}
-
-            {lightboxIndex < allImages.length - 1 && (
-              <motion.button
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 20 }}
-                transition={springTransition}
-                onClick={(e) => { e.stopPropagation(); paginate(1); }}
-                className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
-              >
-                <ChevronRight size={28} />
-              </motion.button>
-            )}
-
-            {/* Image container with carousel */}
-            <div className="relative w-full h-full flex items-center justify-center overflow-hidden px-4 md:px-20 py-20">
-              <AnimatePresence initial={false} custom={direction} mode="popLayout">
-                <motion.div
-                  key={page}
-                  custom={direction}
-                  variants={slideVariants}
-                  initial="enter"
-                  animate="center"
-                  exit="exit"
-                  transition={{
-                    x: { type: 'spring', stiffness: 350, damping: 35 },
-                    opacity: { duration: 0.2 },
-                    scale: { type: 'spring', stiffness: 350, damping: 35 },
-                  }}
-                  drag={lightboxZoomed ? false : "x"}
-                  dragConstraints={{ left: 0, right: 0 }}
-                  dragElastic={0.2}
-                  onDrag={(_, info) => dragX.set(info.offset.x)}
-                  onDragEnd={handleDragEnd}
-                  onClick={(e) => e.stopPropagation()}
-                  className={`absolute w-full h-full ${
-                    lightboxZoomed
-                      ? 'overflow-y-auto overflow-x-hidden cursor-grab active:cursor-grabbing'
-                      : 'flex flex-col items-center justify-center cursor-grab active:cursor-grabbing'
-                  }`}
-                  style={lightboxZoomed ? { scrollBehavior: 'smooth' } : {}}
-                >
-                  {lightboxZoomed ? (
-                    /* Zoomed mode - Full scrollable container */
-                    <div
-                      className="min-h-full w-full flex flex-col items-center py-16 px-4"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setLightboxZoomed(false);
-                      }}
-                    >
-                      <motion.img
-                        src={allImages[lightboxIndex].src}
-                        alt={allImages[lightboxIndex].caption}
-                        className="w-[95vw] md:w-[90vw] h-auto rounded-lg shadow-2xl cursor-zoom-out"
-                        initial={{ scale: 0.95, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        transition={springTransition}
-                        draggable={false}
-                      />
-                      {/* Caption at the bottom of zoomed image */}
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.2 }}
-                        className="mt-8 mb-8 px-4 text-center max-w-3xl"
-                      >
-                        <p className="text-white/80 text-sm md:text-base leading-relaxed">
-                          {allImages[lightboxIndex].caption}
-                        </p>
-                        <p className="text-white/40 text-xs mt-2">
-                          {t.clickToExitZoom}
-                        </p>
-                      </motion.div>
-                    </div>
-                  ) : (
-                    /* Normal mode - Centered with constraints */
-                    <>
-                      <motion.div
-                        style={{ x: parallaxX }}
-                        className="relative max-w-[90vw] max-h-[70vh] md:max-w-[80vw] md:max-h-[75vh]"
-                        onClick={(e) => {
-                          if (allImages[lightboxIndex].type === 'image') {
-                            e.stopPropagation();
-                            setLightboxZoomed(true);
-                          }
-                        }}
-                      >
-                        {allImages[lightboxIndex].type === 'video' ? (
-                          <motion.video
-                            src={allImages[lightboxIndex].src}
-                            className="max-w-full max-h-[70vh] md:max-h-[75vh] object-contain rounded-2xl shadow-2xl"
-                            initial={{ scale: 0.8, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            transition={springTransition}
-                            autoPlay
-                            loop
-                            muted
-                            playsInline
-                            controls
-                          />
-                        ) : (
-                          <motion.img
-                            src={allImages[lightboxIndex].src}
-                            alt={allImages[lightboxIndex].caption}
-                            className="max-w-full max-h-[70vh] md:max-h-[75vh] object-contain cursor-zoom-in rounded-lg shadow-2xl"
-                            initial={{ scale: 0.8, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            transition={springTransition}
-                            draggable={false}
-                          />
-                        )}
-                      </motion.div>
-
-                      {/* Caption */}
-                      <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.1, ...springTransition }}
-                        className="mt-6 px-4 text-center max-w-3xl"
-                      >
-                        <p className="text-white/80 text-sm md:text-base leading-relaxed">
-                          {allImages[lightboxIndex].caption}
-                        </p>
-                        <p className="text-white/40 text-xs mt-2">
-                          {lightboxIndex + 1} / {allImages.length} • {t.clickToZoom}
-                        </p>
-                      </motion.div>
-                    </>
-                  )}
-                </motion.div>
-              </AnimatePresence>
-            </div>
-
-            {/* Image dots indicator */}
-            {!lightboxZoomed && (
-              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center space-x-2">
-                {allImages.map((_, idx) => (
-                  <button
-                    key={idx}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      const dir = idx > lightboxIndex ? 1 : -1;
-                      setLightboxIndex(idx);
-                      setPage([idx, dir]);
-                      setLightboxZoomed(false);
-                    }}
-                    className={`w-2 h-2 rounded-full transition-all duration-200 ${
-                      idx === lightboxIndex
-                        ? 'bg-white w-4'
-                        : 'bg-white/30 hover:bg-white/50'
-                    }`}
-                  />
-                ))}
-              </div>
-            )}
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Lightbox Modal - Using EnhancedLightbox */}
+      <EnhancedLightbox
+        isOpen={lightboxOpen}
+        onClose={closeLightbox}
+        images={allImages.map(img => ({
+          src: img.src,
+          caption: img.caption,
+          type: img.type
+        }))}
+        currentIndex={lightboxIndex}
+        onIndexChange={setLightboxIndex}
+        lang={lang}
+        videoStartTime={videoStartTime}
+        projectId="connect"
+        updateUrl={true}
+      />
 
       {/* Content - Switch between Case Study and Gallery */}
       <AnimatePresence mode="wait">
@@ -1023,7 +774,7 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
-      <div className="max-w-6xl mx-auto px-4 md:px-6 py-12 md:py-16">
+      <div className="max-w-[1480px] mx-auto px-10 py-12 md:py-16">
         <div>
           {/* Main Content */}
           <main className="w-full">
@@ -1082,11 +833,11 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
             <figure className="mb-16 md:mb-24">
               <div
                 onClick={() => openLightbox('/images/connect/connect_overview.webp')}
-                className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
+                className={`rounded-2xl overflow-hidden border cursor-pointer ${
                   systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
                 }`}
               >
-                <img
+                <img loading="lazy"
                   src="/images/connect/connect_overview.webp"
                   alt="SQOOL Connect Overview"
                   className="w-full h-auto"
@@ -1208,7 +959,7 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
                     systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
                   }`}
                 >
-                  <img
+                  <img loading="lazy"
                     src="/images/connect/connect_dashboard_home_dark_full_smartphone-scaled.webp"
                     alt={t.dashboard.homeDark}
                     className="w-full h-auto"
@@ -1232,7 +983,7 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
                       systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
                     }`}
                   >
-                    <img
+                    <img loading="lazy"
                       src="/images/connect/connect_dashboard_home_light_full-scaled.webp"
                       alt={t.dashboard.homeLight}
                       className="w-full h-auto"
@@ -1254,7 +1005,7 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
                       systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
                     }`}
                   >
-                    <img
+                    <img loading="lazy"
                       src="/images/connect/connect_dashboard_applications_full-scaled.webp"
                       alt={t.dashboard.applications}
                       className="w-full h-auto"
@@ -1330,7 +1081,7 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
                     systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
                   }`}
                 >
-                  <img
+                  <img loading="lazy"
                     src="/images/connect/connect_tech_architecture-1-scaled.webp"
                     alt={t.dashboard.techArch}
                     className="w-full h-auto"
@@ -1354,7 +1105,7 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
                       systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
                     }`}
                   >
-                    <img
+                    <img loading="lazy"
                       src="/images/connect/connect_specifications_implem_01-scaled.webp"
                       alt={t.dashboard.specsImplem}
                       className="w-full h-auto"
@@ -1376,7 +1127,7 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
                       systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
                     }`}
                   >
-                    <img
+                    <img loading="lazy"
                       src="/images/connect/connect_specifications_content_02-scaled.webp"
                       alt={t.dashboard.specsContent}
                       className="w-full h-auto"
@@ -1452,7 +1203,7 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
                     systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
                   }`}
                 >
-                  <img
+                  <img loading="lazy"
                     src="/images/connect/connect_bulle_ui_wireframes_concept-scaled.webp"
                     alt={t.bulle.wireframes}
                     className="w-full h-auto"
@@ -1476,7 +1227,7 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
                       systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
                     }`}
                   >
-                    <img
+                    <img loading="lazy"
                       src="/images/connect/connect_bulle_ui_focus-scaled.webp"
                       alt={t.bulle.uiFocus}
                       className="w-full h-auto"
@@ -1498,7 +1249,7 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
                       systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
                     }`}
                   >
-                    <img
+                    <img loading="lazy"
                       src="/images/connect/connect_bulle_icons-1-scaled.webp"
                       alt={t.bulle.icons}
                       className="w-full h-auto"
@@ -1523,7 +1274,7 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
                       systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
                     }`}
                   >
-                    <img
+                    <img loading="lazy"
                       src="/images/connect/connect_bulle_behaviour_square_01-scaled.webp"
                       alt={t.bulle.behaviour1}
                       className="w-full h-auto"
@@ -1545,7 +1296,7 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
                       systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
                     }`}
                   >
-                    <img
+                    <img loading="lazy"
                       src="/images/connect/connect_bulle_behaviour_square_02-scaled.webp"
                       alt={t.bulle.behaviour2}
                       className="w-full h-auto"

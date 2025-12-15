@@ -435,7 +435,7 @@ const SLIDES = {
       type: 'title',
       headline: 'Victor Soussan',
       subline: 'Senior Product Designer — Conceptualization & Rapid Prototyping',
-      visual: '/images/victor-soussan.png',
+      visual: '/images/victor-soussan.webp',
     },
     // 2. Big statement - Frame. Design. Ship.
     {
@@ -479,13 +479,13 @@ const SLIDES = {
         'Team structuring & workshops',
       ],
       visuals: [
-        '/images/photos victor/alexis victor hiba ateliers fiction 02.jpg',
-        '/images/photos victor/vic conference talk.jpeg',
-        '/images/photos victor/photo atelier aap.jpg',
+        '/images/photos victor/alexis victor hiba ateliers fiction 02.webp',
+        '/images/photos victor/photo victor demo.webp',
+        '/images/photos victor/photo atelier aap.webp',
       ],
       captions: [
         'Strategy workshop at UNOWHY',
-        'Conference talk',
+        'Product demo presentation',
         'Design thinking workshop',
       ],
     },
@@ -533,9 +533,9 @@ const SLIDES = {
         url: 'https://imaginative-youtiao-371d08.netlify.app',
       },
       visuals: [
-        '/images/condamine apps/condamine apps 01.png',
-        '/images/condamine apps/condamine apps 03.png',
-        '/images/condamine apps/condamine apps 05.png',
+        '/images/condamine apps/condamine apps 01.webp',
+        '/images/condamine apps/condamine apps 03.webp',
+        '/images/condamine apps/condamine apps 05.webp',
       ],
       captions: [
         'AI apps catalog',
@@ -563,98 +563,98 @@ const SLIDES = {
           quote: 'Victor didn\'t just create mockups. He transformed business requirements into perfectly adapted user journeys. Victor is a great guy: curious, positive, ready to challenge to go further.',
           author: 'Pierre-Marie Nigay',
           role: 'Founder of Toolkit',
-          image: 'pierre-marie-nigay.png',
+          image: 'pierre-marie-nigay.webp',
           linkedin: 'https://www.linkedin.com/in/pnigay/',
         },
         {
           quote: 'Victor combines overflowing creativity with impressive rigor. He translates complex visions into clear, impactful user experiences. Always listening, curious, he constantly pushes thinking further.',
           author: 'Charlotte Rifflet',
           role: 'CPO @UNOWHY',
-          image: 'charlotte-rifflet.png',
+          image: 'charlotte-rifflet.webp',
           linkedin: 'https://www.linkedin.com/in/charlotterifflet/',
         },
         {
           quote: 'Always proposing ideas that shake things up... you never settled for just thinking: you produced, tested, wireframed, prototyped. Your UX expertise is undeniable.',
           author: 'Boris Aimé-Bauderlique',
           role: 'Deployment Manager @FranceVAE',
-          image: 'boris-aime-bauderlique.png',
+          image: 'boris-aime-bauderlique.webp',
           linkedin: 'https://www.linkedin.com/in/borisaimebauderlique',
         },
         {
           quote: 'Victor is a true source of inspiration. I was lucky to work with him on several projects... he brought a pragmatic and professional approach.',
           author: 'Achref Akkari',
           role: 'Product Manager @UNOWHY',
-          image: 'achref-akkari.png',
+          image: 'achref-akkari.webp',
           linkedin: 'https://www.linkedin.com/in/achref-akkari',
         },
         {
           quote: 'As Product Lead in UI & Interaction Design, he played a central role in defining the product vision... I was struck by Victor\'s curiosity.',
           author: 'Justine Le Tellier',
           role: 'UX Researcher @UNOWHY',
-          image: 'justine-le-tellier.png',
+          image: 'justine-le-tellier.webp',
           linkedin: 'https://www.linkedin.com/in/justine-le-tellier',
         },
         {
           quote: 'I worked alongside Victor for 5 beautiful years. His expertise, 360 vision, and design talent enabled the creation and success of many projects.',
           author: 'Hortense Jan',
           role: 'Marketing Director @UNOWHY',
-          image: 'hortense-jan.png',
+          image: 'hortense-jan.webp',
           linkedin: 'https://www.linkedin.com/in/hortensejan',
         },
         {
           quote: 'Highly cultivated, curious, and creative, he always brings relevant ideas and original perspectives. Victor is particularly friendly.',
           author: 'Hubert Bloch',
           role: 'Deputy CEO @UNOWHY',
-          image: 'hubert-bloch.png',
+          image: 'hubert-bloch.webp',
           linkedin: 'https://fr.linkedin.com/in/hubertbloch',
         },
         {
           quote: 'Passionate and reliable... Lover of details... his feedback allowed me to reach a new level. He has the will to listen to his team.',
           author: 'Mbagna Johan Gaby',
           role: 'Product Designer',
-          image: 'johan-mbagna-gaby.png',
+          image: 'johan-mbagna-gaby.webp',
           linkedin: 'https://fr.linkedin.com/in/mbagnajohan',
         },
         {
           quote: 'Beyond being a manager concerned with his team\'s well-being, he is passionate about details. Patient and pedagogical... A mentor I appreciated working with.',
           author: 'Şafak Aktaş',
           role: 'Graphic Designer at Reflet Digital',
-          image: 'safak-aktas.png',
+          image: 'safak-aktas.webp',
           linkedin: 'https://www.linkedin.com/in/safak-aktas/',
         },
         {
           quote: 'Professional and rigorous, Victor knows how to translate business stakes into relevant implementations... Victor is very attentive to his collaborators.',
           author: 'Frederic Rodriguez',
           role: 'Head of Poker - FDJ',
-          image: 'frederic-rodriguez.png',
+          image: 'frederic-rodriguez.webp',
           linkedin: 'https://www.linkedin.com/in/frederic-rodriguez-71061255/',
         },
         {
           quote: 'Accessible, attentive, and responsible... working with Victor is a pleasure as he adheres to collective intelligence principles.',
           author: 'Rémi Serougne',
           role: 'Web Developer',
-          image: 'remi-serougne.png',
+          image: 'remi-serougne.webp',
           linkedin: 'https://www.linkedin.com/in/remi-serougne-7314b940/',
         },
         {
           quote: 'He is a very capable designer who can do the legwork but also take a step back... He\'s worked on mobile and web, and has a keen eye for interaction design. Highly recommended.',
           author: 'Simon White',
           role: 'Senior UX',
-          image: 'simon-white.png',
+          image: 'simon-white.webp',
           linkedin: 'https://www.linkedin.com/in/fruey/',
         },
         {
           quote: 'He knows how to unite people around a project, allowing for total autonomy to see it through.',
           author: 'Nicolas Moulin',
           role: 'Entrepreneur / Advisor',
-          image: 'nicolas-moulin.png',
+          image: 'nicolas-moulin.webp',
           linkedin: 'https://www.linkedin.com/in/moulinnicolas',
         },
         {
           quote: 'His previous experiences as Art Director and Designer bring a critical sense and a new approach... Victor helped us a lot on the embedded PagesJaunes application.',
           author: 'François Khoury',
           role: 'Senior Presales',
-          image: 'francois-khoury.png',
+          image: 'francois-khoury.webp',
           linkedin: 'https://www.linkedin.com/in/francoisk',
         },
       ],
@@ -681,7 +681,7 @@ const SLIDES = {
     {
       type: 'farewell',
       headline: 'See you soon',
-      visual: '/images/victor-soussan.png',
+      visual: '/images/victor-soussan.webp',
     },
   ],
   fr: [
@@ -690,7 +690,7 @@ const SLIDES = {
       type: 'title',
       headline: 'Victor Soussan',
       subline: 'Senior Product Designer — Conceptualisation & Prototypage Rapide',
-      visual: '/images/victor-soussan.png',
+      visual: '/images/victor-soussan.webp',
     },
     // 2. Big statement - Cadrer. Concevoir. Livrer.
     {
@@ -734,13 +734,13 @@ const SLIDES = {
         'Structuration d\'équipe & ateliers',
       ],
       visuals: [
-        '/images/photos victor/alexis victor hiba ateliers fiction 02.jpg',
-        '/images/photos victor/vic conference talk.jpeg',
-        '/images/photos victor/photo atelier aap.jpg',
+        '/images/photos victor/alexis victor hiba ateliers fiction 02.webp',
+        '/images/photos victor/photo victor demo.webp',
+        '/images/photos victor/photo atelier aap.webp',
       ],
       captions: [
         'Atelier stratégie chez UNOWHY',
-        'Conférence talk',
+        'Présentation démo produit',
         'Atelier design thinking',
       ],
     },
@@ -788,9 +788,9 @@ const SLIDES = {
         url: 'https://imaginative-youtiao-371d08.netlify.app',
       },
       visuals: [
-        '/images/condamine apps/condamine apps 01.png',
-        '/images/condamine apps/condamine apps 03.png',
-        '/images/condamine apps/condamine apps 05.png',
+        '/images/condamine apps/condamine apps 01.webp',
+        '/images/condamine apps/condamine apps 03.webp',
+        '/images/condamine apps/condamine apps 05.webp',
       ],
       captions: [
         'Catalogue apps IA',
@@ -818,98 +818,98 @@ const SLIDES = {
           quote: 'Victor ne s\'est pas contenté de faire des maquettes. Il a transformé les besoins métiers en parcours utilisateurs parfaitement adaptés. Victor est un super gars : curieux, positif, prêt à challenger pour aller toujours plus loin.',
           author: 'Pierre-Marie Nigay',
           role: 'Fondateur de Toolkit',
-          image: 'pierre-marie-nigay.png',
+          image: 'pierre-marie-nigay.webp',
           linkedin: 'https://www.linkedin.com/in/pnigay/',
         },
         {
           quote: 'Victor allie une créativité débordante à une rigueur de travail impressionnante. Il sait traduire des visions complexes en expériences utilisateur claires et percutantes. Toujours à l\'écoute, curieux, il pousse constamment les réflexions plus loin.',
           author: 'Charlotte Rifflet',
           role: 'CPO @UNOWHY',
-          image: 'charlotte-rifflet.png',
+          image: 'charlotte-rifflet.webp',
           linkedin: 'https://www.linkedin.com/in/charlotterifflet/',
         },
         {
           quote: 'Toujours en train de proposer des idées qui bousculent... tu ne t\'es jamais contenté de rester dans la réflexion : tu as produit, testé, maquetté, prototypé. Ton expertise UX est indéniable.',
           author: 'Boris Aimé-Bauderlique',
           role: 'Chargé de déploiement @FranceVAE',
-          image: 'boris-aime-bauderlique.png',
+          image: 'boris-aime-bauderlique.webp',
           linkedin: 'https://www.linkedin.com/in/borisaimebauderlique',
         },
         {
           quote: 'Victor est une véritable source d\'inspiration. J\'ai eu la chance de travailler avec lui sur plusieurs projets... il a su apporter une approche pragmatique et professionnelle.',
           author: 'Achref Akkari',
           role: 'Product Manager @UNOWHY',
-          image: 'achref-akkari.png',
+          image: 'achref-akkari.webp',
           linkedin: 'https://www.linkedin.com/in/achref-akkari',
         },
         {
           quote: 'En tant que Product Lead en UI & Interaction Design, il a joué un rôle central dans la définition de la vision produit... J\'ai été très marquée par la curiosité de Victor.',
           author: 'Justine Le Tellier',
           role: 'UX Researcher @UNOWHY',
-          image: 'justine-le-tellier.png',
+          image: 'justine-le-tellier.webp',
           linkedin: 'https://www.linkedin.com/in/justine-le-tellier',
         },
         {
           quote: 'J\'ai travaillé aux côtés de Victor pendant 5 belles années. Son expertise, sa vision 360 et son talent de designer ont permis la création et la réussite de nombreux projets.',
           author: 'Hortense Jan',
           role: 'Directrice Marketing @UNOWHY',
-          image: 'hortense-jan.png',
+          image: 'hortense-jan.webp',
           linkedin: 'https://www.linkedin.com/in/hortensejan',
         },
         {
           quote: 'Très cultivé, curieux et créatif, il apporte toujours des idées pertinentes et des perspectives originales. Victor est quelqu\'un de particulièrement sympathique.',
           author: 'Hubert Bloch',
           role: 'Directeur Général Adjoint @UNOWHY',
-          image: 'hubert-bloch.png',
+          image: 'hubert-bloch.webp',
           linkedin: 'https://fr.linkedin.com/in/hubertbloch',
         },
         {
           quote: 'Passionné et fiable... Amoureux des détails... ses retours m\'ont permis d\'atteindre un nouveau palier. Il a la volonté d\'être à l\'écoute de son équipe.',
           author: 'Mbagna Johan Gaby',
           role: 'Product Designer',
-          image: 'johan-mbagna-gaby.png',
+          image: 'johan-mbagna-gaby.webp',
           linkedin: 'https://fr.linkedin.com/in/mbagnajohan',
         },
         {
           quote: 'En plus d\'être un manager soucieux du bien-être de son équipe, c\'est un passionné qui a le souci du détail. Patient et pédagogue... Un mentor avec lequel j\'ai apprécié travailler.',
           author: 'Şafak Aktaş',
           role: 'Graphiste chez Reflet Digital',
-          image: 'safak-aktas.png',
+          image: 'safak-aktas.webp',
           linkedin: 'https://www.linkedin.com/in/safak-aktas/',
         },
         {
           quote: 'Professionnel et rigoureux, Victor sait traduire les enjeux business dans des réalisations pertinentes... Victor est très à l\'écoute de ses collaborateurs.',
           author: 'Frederic Rodriguez',
           role: 'Head of Poker - FDJ',
-          image: 'frederic-rodriguez.png',
+          image: 'frederic-rodriguez.webp',
           linkedin: 'https://www.linkedin.com/in/frederic-rodriguez-71061255/',
         },
         {
           quote: 'Accessible, à l\'écoute et responsable... travailler avec Victor est un plaisir car il adhère aux principes de l\'intelligence collective.',
           author: 'Rémi Serougne',
           role: 'Développeur Web',
-          image: 'remi-serougne.png',
+          image: 'remi-serougne.webp',
           linkedin: 'https://www.linkedin.com/in/remi-serougne-7314b940/',
         },
         {
           quote: 'He is a very capable designer who can do the legwork but also take a step back... He\'s worked on mobile and web, and has a keen eye for interaction design. Highly recommended.',
           author: 'Simon White',
           role: 'Senior UX',
-          image: 'simon-white.png',
+          image: 'simon-white.webp',
           linkedin: 'https://www.linkedin.com/in/fruey/',
         },
         {
           quote: 'Il sait fédérer les gens autour d\'un projet et qu\'on peut par conséquent lui laisser une autonomie totale pour le mener à bien.',
           author: 'Nicolas Moulin',
           role: 'Entrepreneur / Advisor',
-          image: 'nicolas-moulin.png',
+          image: 'nicolas-moulin.webp',
           linkedin: 'https://www.linkedin.com/in/moulinnicolas',
         },
         {
           quote: 'Ses expériences précédentes de DA et Designer apportent un sens critique et une nouvelle approche... Victor nous a beaucoup aidé sur l\'application embarquée PagesJaunes.',
           author: 'François Khoury',
           role: 'Senior Presales',
-          image: 'francois-khoury.png',
+          image: 'francois-khoury.webp',
           linkedin: 'https://www.linkedin.com/in/francoisk',
         },
       ],
@@ -936,7 +936,7 @@ const SLIDES = {
     {
       type: 'farewell',
       headline: 'À bientôt',
-      visual: '/images/victor-soussan.png',
+      visual: '/images/victor-soussan.webp',
     },
   ],
 };
@@ -953,7 +953,7 @@ interface ExecutivePageProps {
 
 // Helper to get portrait image based on theme
 const getPortraitImage = (isDark: boolean) => {
-  return isDark ? '/images/victor_soussan_dark.webp' : '/images/victor-soussan.png';
+  return isDark ? '/images/victor_soussan_dark.webp' : '/images/victor-soussan.webp';
 };
 
 // Clickable image component with hover effect and iPadOS-style border
@@ -979,7 +979,7 @@ const ClickableImage = ({
     whileHover={{ scale: 1.02 }}
     transition={{ duration: 0.2 }}
   >
-    <img
+    <img loading="lazy"
       src={src}
       alt={alt}
       className={`w-full h-full object-cover transition-all duration-300 group-hover:brightness-95 ${
@@ -1218,7 +1218,7 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
         return (
           <div className="flex flex-col items-center justify-center h-full text-center px-4 sm:px-8">
             {slide.visual && (
-              <img
+              <img loading="lazy"
                 src={portraitImage}
                 alt=""
                 className="w-24 h-24 sm:w-32 sm:h-32 rounded-full object-cover mb-6 sm:mb-8 border-4 border-gray-100"
@@ -1261,7 +1261,7 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
             {slide.visual && (
               <ClickableImage
                 src={slide.visual}
-                className="flex-1 w-full lg:w-[60%] max-h-[40vh] sm:max-h-[50vh] lg:max-h-[60vh] rounded-xl sm:rounded-2xl shadow-xl"
+                className="flex-1 w-full lg:w-[60%] max-h-[40vh] sm:max-h-[50vh] lg:max-h-[60vh] rounded-xl sm:rounded-2xl border border-gray-200"
                 onClick={() => openLightbox(slide.visual!)}
               />
             )}
@@ -1288,7 +1288,7 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
             </div>
             {pillarVideo ? (
               <motion.div
-                className="group relative flex-1 w-full lg:w-[60%] max-h-[40vh] sm:max-h-[50vh] lg:max-h-[60vh] rounded-xl sm:rounded-2xl shadow-xl overflow-hidden cursor-pointer"
+                className="group relative flex-1 w-full lg:w-[60%] max-h-[40vh] sm:max-h-[50vh] lg:max-h-[60vh] rounded-xl sm:rounded-2xl border border-gray-200 overflow-hidden cursor-pointer"
                 onClick={(e) => {
                   e.stopPropagation(); // Prevent navigation when clicking video
                   const currentTime = pillarVideoRef.current?.currentTime || 0;
@@ -1318,7 +1318,7 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
             ) : slide.visual && (
               <ClickableImage
                 src={slide.visual}
-                className="flex-1 w-full lg:w-[60%] max-h-[40vh] sm:max-h-[50vh] lg:max-h-[60vh] rounded-xl sm:rounded-2xl shadow-xl"
+                className="flex-1 w-full lg:w-[60%] max-h-[40vh] sm:max-h-[50vh] lg:max-h-[60vh] rounded-xl sm:rounded-2xl border border-gray-200"
                 onClick={() => openLightbox(slide.visual!)}
               />
             )}
@@ -1438,7 +1438,7 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
                       {/* Author info with avatar */}
                       <div className="flex items-center mb-4 sm:mb-5">
                         {testimonial.image ? (
-                          <img
+                          <img loading="lazy"
                             src={`/images/${testimonial.image}`}
                             alt={testimonial.author}
                             className="w-10 h-10 sm:w-12 sm:h-12 rounded-full mr-3 sm:mr-4 border-2 border-white shadow-sm object-cover"
@@ -1784,7 +1784,7 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
         return (
           <div className="flex flex-col items-center justify-center h-full text-center px-4 sm:px-8">
             {slide.visual && (
-              <img
+              <img loading="lazy"
                 src={portraitImage}
                 alt=""
                 className="w-28 h-28 sm:w-40 sm:h-40 rounded-full object-cover mb-6 sm:mb-10 border-4 border-gray-100 shadow-xl"
@@ -1821,10 +1821,10 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
       }}
       className="fixed inset-0 z-[100] bg-white"
     >
-      {/* Header */}
-      <header className="absolute top-0 left-0 right-0 z-50 px-3 sm:px-4 md:px-6 py-2 sm:py-4 flex items-center justify-between border-b border-gray-100 bg-white/95 backdrop-blur-sm">
-        {/* Left: Title (hidden on mobile) */}
-        <span className="text-xs sm:text-sm text-gray-500 font-medium hidden sm:block">
+      {/* Header - Glass effect */}
+      <header className="absolute top-0 left-0 right-0 z-50 px-6 h-16 flex items-center justify-between bg-white/80 backdrop-blur-xl">
+        {/* Left: Title - Same style as Homepage nav */}
+        <span className="font-semibold text-lg tracking-[-0.02em] text-gray-900 hidden sm:block">
           {lang === 'fr' ? 'Présentation 1-min' : '1-min Presentation'}
         </span>
         {/* Mobile: Just show slide counter on left */}
@@ -1961,7 +1961,7 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-[200] bg-white/98 backdrop-blur-xl flex items-center justify-center"
+            className="fixed inset-0 z-[200] bg-white flex items-center justify-center"
             onClick={closeLightbox}
           >
             {/* Close button */}
@@ -2042,7 +2042,7 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
                       <motion.img
                         src={allImages[lightboxIndex]}
                         alt={allImagesWithCaptions[lightboxIndex]?.caption || ''}
-                        className="w-[95vw] md:w-[90vw] h-auto rounded-lg shadow-2xl cursor-zoom-out"
+                        className="w-[95vw] md:w-[90vw] h-auto rounded-lg border border-gray-200 cursor-zoom-out"
                         initial={{ scale: 0.95, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
                         transition={springTransition}
@@ -2080,7 +2080,7 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
                       <motion.img
                         src={allImages[lightboxIndex]}
                         alt={allImagesWithCaptions[lightboxIndex]?.caption || ''}
-                        className="max-w-full max-h-[65vh] md:max-h-[70vh] object-contain cursor-zoom-in rounded-lg shadow-2xl"
+                        className="max-w-full max-h-[65vh] md:max-h-[70vh] object-contain cursor-zoom-in rounded-lg border border-gray-200"
                         initial={{ scale: 0.8, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
                         transition={springTransition}
@@ -2118,7 +2118,7 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-[200] bg-black/95 backdrop-blur-xl flex items-center justify-center"
+            className="fixed inset-0 z-[200] bg-white flex items-center justify-center"
             onClick={closeVideoLightbox}
           >
             {/* Close button */}
@@ -2128,7 +2128,7 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
               exit={{ opacity: 0, scale: 0.8 }}
               transition={springTransition}
               onClick={closeVideoLightbox}
-              className="absolute top-4 right-4 md:top-6 md:right-6 z-10 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+              className="absolute top-4 right-4 md:top-6 md:right-6 z-10 p-3 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors"
             >
               <X size={24} />
             </motion.button>
@@ -2144,7 +2144,7 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
             >
               <video
                 src={videoLightboxSrc}
-                className="max-w-full max-h-full rounded-2xl shadow-2xl"
+                className="max-w-full max-h-full rounded-2xl border border-gray-200"
                 autoPlay
                 loop
                 muted
@@ -2160,7 +2160,7 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
             </motion.div>
 
             {/* Hint to close */}
-            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/60 text-sm">
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-gray-400 text-sm">
               {lang === 'fr' ? 'Cliquez en dehors pour fermer' : 'Click outside to close'}
             </div>
           </motion.div>

@@ -193,7 +193,7 @@ const MobileLightbox = ({
     return type === 'video' ? (
       <video src={src} poster={poster} className={className} controls playsInline />
     ) : (
-      <img src={src} alt={alt} className={className} />
+      <img loading="lazy" src={src} alt={alt} className={className} />
     );
   }
 
@@ -211,7 +211,7 @@ const MobileLightbox = ({
           type === 'video' ? (
             <video src={src} poster={poster} className={className} playsInline muted />
           ) : (
-            <img src={src} alt={alt} className={className} loading="lazy" />
+            <img loading="lazy" src={src} alt={alt} className={className} loading="lazy" />
           )
         )}
       </div>
@@ -294,7 +294,7 @@ const MobileLightbox = ({
                     autoPlay
                   />
                 ) : (
-                  <img
+                  <img loading="lazy"
                     ref={imageRef}
                     src={src}
                     alt={alt}
