@@ -2724,19 +2724,19 @@ const App: React.FC = () => {
             <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
             <span className={`text-xs font-medium ${systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>{content.hero.availability}</span>
 
-            {/* Tooltip */}
+            {/* Tooltip - positioned to the right */}
             {showTooltip && (
               <div
-                className="absolute top-full left-1/2 -translate-x-1/2 pt-3"
+                className="absolute top-1/2 left-full -translate-y-1/2 pl-3"
                 onMouseEnter={() => setShowTooltip(true)}
                 onMouseLeave={() => setShowTooltip(false)}
               >
                 <motion.div
-                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                  initial={{ opacity: 0, x: -10, scale: 0.95 }}
+                  animate={{ opacity: 1, x: 0, scale: 1 }}
+                  exit={{ opacity: 0, x: -10, scale: 0.95 }}
                   transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                  className={`w-[280px] backdrop-blur-xl rounded-3xl shadow-2xl p-5 z-50 ${
+                  className={`w-[220px] backdrop-blur-xl rounded-2xl shadow-2xl p-4 z-50 ${
                     systemTheme === 'dark'
                       ? 'bg-[#1D1D1F]/95 border border-white/10'
                       : 'bg-white/95 border border-gray-200/50'
@@ -2747,87 +2747,39 @@ const App: React.FC = () => {
                       : '0 20px 60px -15px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.05)'
                   }}
                 >
-                  {/* Arrow */}
-                  <div className={`absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 backdrop-blur-xl rotate-45 ${
+                  {/* Arrow pointing left */}
+                  <div className={`absolute top-1/2 -left-2 -translate-y-1/2 w-4 h-4 backdrop-blur-xl rotate-45 ${
                     systemTheme === 'dark'
-                      ? 'bg-[#1D1D1F]/95 border-l border-t border-white/10'
-                      : 'bg-white/95 border-l border-t border-gray-200/50'
+                      ? 'bg-[#1D1D1F]/95 border-l border-b border-white/10'
+                      : 'bg-white/95 border-l border-b border-gray-200/50'
                   }`} />
 
                   <div className="relative">
-                    {/* Profile Header */}
-                    <div className={`flex items-center space-x-3 mb-4 pb-4 border-b ${
-                      systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200/50'
+                    {/* Title */}
+                    <h3 className={`text-sm font-semibold mb-3 text-center ${
+                      systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                     }`}>
-                      <Avatar
-                        filename="victor-soussan.webp"
-                        alt="Victor Soussan"
-                        className={`w-12 h-12 rounded-full ring-2 ring-offset-2 ring-green-500/50 ${
-                          systemTheme === 'dark' ? 'ring-offset-[#1D1D1F]' : 'ring-offset-white'
-                        }`}
-                        isDark={systemTheme === 'dark'}
-                      />
-                      <div className="flex-1 min-w-0">
-                        <h3 className={`text-sm font-semibold truncate ${
-                          systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                        }`}>
-                          Victor Soussan
-                        </h3>
-                        <p className={`text-xs truncate ${
-                          systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                        }`}>
-                          Product Design Lead
-                        </p>
-                        <div className="flex items-center mt-1">
-                          <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse mr-1.5" />
-                          <span className={`text-[10px] font-medium ${
-                            systemTheme === 'dark' ? 'text-green-400' : 'text-green-600'
-                          }`}>
-                            {content.hero.tooltip_title}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
+                      {content.hero.tooltip_title}
+                    </h3>
 
-                    <div className="space-y-2.5">
-                      {/* Contact Form Button */}
-                      <button
-                        className={`flex items-center justify-center space-x-2 w-full px-5 py-3 rounded-2xl transition-all duration-200 shadow-lg text-sm font-medium ${
-                          systemTheme === 'dark'
-                            ? 'bg-white hover:bg-gray-100 text-gray-900 shadow-white/10'
-                            : 'bg-gray-900 hover:bg-black text-white shadow-gray-900/20'
-                        }`}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setShowTooltip(false);
-                          setIsSimpleContactOpen(true);
-                        }}
-                      >
-                        <Mail size={18} />
-                        <span>
-                          {content.hero.tooltip_email}
-                        </span>
-                      </button>
-
-                      {/* Book Call Button */}
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setShowTooltip(false);
-                          openModalWithUrl('/contact');
-                        }}
-                        className={`flex items-center justify-center space-x-2 w-full px-5 py-3 rounded-2xl transition-all duration-200 border text-sm font-medium ${
-                          systemTheme === 'dark'
-                            ? 'bg-white/10 hover:bg-white/20 text-white border-white/20'
-                            : 'bg-white hover:bg-gray-50 text-gray-900 border-gray-200'
-                        }`}
-                      >
-                        <Calendar size={18} />
-                        <span>
-                          {content.hero.tooltip_book}
-                        </span>
-                      </button>
-                    </div>
+                    {/* Contact Form Button */}
+                    <button
+                      className={`flex items-center justify-center space-x-2 w-full px-4 py-2.5 rounded-xl transition-all duration-200 shadow-lg text-sm font-medium ${
+                        systemTheme === 'dark'
+                          ? 'bg-white hover:bg-gray-100 text-gray-900 shadow-white/10'
+                          : 'bg-gray-900 hover:bg-black text-white shadow-gray-900/20'
+                      }`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setShowTooltip(false);
+                        setIsSimpleContactOpen(true);
+                      }}
+                    >
+                      <Mail size={16} />
+                      <span>
+                        {content.hero.tooltip_email}
+                      </span>
+                    </button>
                   </div>
                 </motion.div>
               </div>
