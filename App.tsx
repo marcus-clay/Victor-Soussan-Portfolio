@@ -2707,7 +2707,7 @@ const App: React.FC = () => {
 
         <div className="relative max-w-4xl mx-auto text-center z-10">
           <div
-            className={`inline-flex items-center space-x-2 px-3 py-1 backdrop-blur rounded-full mb-8 shadow-sm cursor-pointer transition-all duration-300 relative ${
+            className={`inline-flex items-center space-x-2.5 pl-1 pr-3 py-1 backdrop-blur rounded-full mb-8 shadow-sm cursor-pointer transition-all duration-300 relative ${
               systemTheme === 'dark'
                 ? 'bg-white/10 border border-white/20 hover:bg-white/20'
                 : 'bg-white/60 border border-white/50 hover:bg-white/80'
@@ -2715,6 +2715,12 @@ const App: React.FC = () => {
             onMouseEnter={() => setShowTooltip(true)}
             onMouseLeave={() => setShowTooltip(false)}
           >
+            <Avatar
+              filename="victor-soussan.webp"
+              alt="Victor Soussan"
+              className="w-7 h-7 rounded-full ring-2 ring-white/20"
+              isDark={systemTheme === 'dark'}
+            />
             <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
             <span className={`text-xs font-medium ${systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>{content.hero.availability}</span>
 
