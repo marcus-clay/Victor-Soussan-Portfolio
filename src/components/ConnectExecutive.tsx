@@ -120,7 +120,7 @@ const TRANSLATIONS = {
           title: 'Design Sprint Flow',
           subtitle: 'User journey walkthrough',
           description: 'Complete prototype flow from onboarding to classroom piloting, presented during design sprint sessions.',
-          media: '/videos/connect/connect design sprint.mp4',
+          media: '/videos/connect/connect-design-sprint-compressed.mp4',
           type: 'video' as const
         },
         {
@@ -128,7 +128,7 @@ const TRANSLATIONS = {
           title: 'Dashboard Prototype',
           subtitle: 'Full interaction flow',
           description: 'Complete walkthrough demonstrating the dashboard\'s modular capabilities and responsive behavior.',
-          media: '/videos/connect/connect-dashboard-prototype_complet_4k.mp4',
+          media: '/videos/connect/connect-dashboard-prototype_complet_4k-compressed.mp4',
           type: 'video' as const
         },
         {
@@ -136,7 +136,7 @@ const TRANSLATIONS = {
           title: 'La Bulle Demo',
           subtitle: 'Contextual interactions',
           description: 'Full demonstration of the bubble\'s capabilities including shortcuts, search, and sharing.',
-          media: '/videos/connect/Video-demo-bulle-interactions-02.mp4',
+          media: '/videos/connect/Video-demo-bulle-interactions-02-compressed.mp4',
           type: 'video' as const
         },
         {
@@ -144,7 +144,7 @@ const TRANSLATIONS = {
           title: 'Bubble Animation',
           subtitle: 'Opening interaction',
           description: 'Motion prototype showing the bubble\'s opening animation and menu transitions.',
-          media: '/videos/connect/interaction-bulle-connect.mp4',
+          media: '/videos/connect/interaction-bulle-connect-compressed.mp4',
           type: 'video' as const
         }
       ]
@@ -279,7 +279,7 @@ const TRANSLATIONS = {
           title: 'Parcours Design Sprint',
           subtitle: 'Walkthrough user journey',
           description: 'Flux prototype complet de l\'onboarding au pilotage de classe, présenté lors des sessions de design sprint.',
-          media: '/videos/connect/connect design sprint.mp4',
+          media: '/videos/connect/connect-design-sprint-compressed.mp4',
           type: 'video' as const
         },
         {
@@ -287,7 +287,7 @@ const TRANSLATIONS = {
           title: 'Prototype Dashboard',
           subtitle: 'Flux d\'interaction complet',
           description: 'Walkthrough complet démontrant les capacités modulaires du dashboard et son comportement responsive.',
-          media: '/videos/connect/connect-dashboard-prototype_complet_4k.mp4',
+          media: '/videos/connect/connect-dashboard-prototype_complet_4k-compressed.mp4',
           type: 'video' as const
         },
         {
@@ -295,7 +295,7 @@ const TRANSLATIONS = {
           title: 'Démo La Bulle',
           subtitle: 'Interactions contextuelles',
           description: 'Démonstration complète des capacités de la bulle incluant raccourcis, recherche et partage.',
-          media: '/videos/connect/Video-demo-bulle-interactions-02.mp4',
+          media: '/videos/connect/Video-demo-bulle-interactions-02-compressed.mp4',
           type: 'video' as const
         },
         {
@@ -303,7 +303,7 @@ const TRANSLATIONS = {
           title: 'Animation Bulle',
           subtitle: 'Interaction d\'ouverture',
           description: 'Prototype motion montrant l\'animation d\'ouverture de la bulle et les transitions menu.',
-          media: '/videos/connect/interaction-bulle-connect.mp4',
+          media: '/videos/connect/interaction-bulle-connect-compressed.mp4',
           type: 'video' as const
         }
       ]
