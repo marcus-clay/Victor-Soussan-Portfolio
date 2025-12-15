@@ -2755,11 +2755,39 @@ const App: React.FC = () => {
                   }`} />
 
                   <div className="relative">
-                    <h3 className={`text-base font-semibold mb-3 text-center ${
-                      systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+                    {/* Profile Header */}
+                    <div className={`flex items-center space-x-3 mb-4 pb-4 border-b ${
+                      systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200/50'
                     }`}>
-                      {content.hero.tooltip_title}
-                    </h3>
+                      <Avatar
+                        filename="victor-soussan.webp"
+                        alt="Victor Soussan"
+                        className={`w-12 h-12 rounded-full ring-2 ring-offset-2 ring-green-500/50 ${
+                          systemTheme === 'dark' ? 'ring-offset-[#1D1D1F]' : 'ring-offset-white'
+                        }`}
+                        isDark={systemTheme === 'dark'}
+                      />
+                      <div className="flex-1 min-w-0">
+                        <h3 className={`text-sm font-semibold truncate ${
+                          systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+                        }`}>
+                          Victor Soussan
+                        </h3>
+                        <p className={`text-xs truncate ${
+                          systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+                        }`}>
+                          Product Design Lead
+                        </p>
+                        <div className="flex items-center mt-1">
+                          <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse mr-1.5" />
+                          <span className={`text-[10px] font-medium ${
+                            systemTheme === 'dark' ? 'text-green-400' : 'text-green-600'
+                          }`}>
+                            {content.hero.tooltip_title}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
 
                     <div className="space-y-2.5">
                       {/* Contact Form Button */}
