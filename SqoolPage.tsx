@@ -728,7 +728,9 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
   const [activeSection, setActiveSection] = useState('hero');
   const [showNav, setShowNav] = useState(false);
   const [isMobileNavExpanded, setIsMobileNavExpanded] = useState(false);
-  const [caseStudyMode, setCaseStudyMode] = useState<'executive' | 'full'>('executive');
+  // Initialize caseStudyMode based on viewMode prop: 'executive' -> 'executive', 'caseStudy' -> 'full'
+  const initialCaseStudyMode = viewMode === 'executive' ? 'executive' : (viewMode === 'caseStudy' ? 'full' : 'executive');
+  const [caseStudyMode, setCaseStudyModeInternal] = useState<'executive' | 'full'>(initialCaseStudyMode);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [videoStartTime, setVideoStartTime] = useState(0);
@@ -737,6 +739,21 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
   const videoRefs = useRef<{ [key: string]: HTMLVideoElement | null }>({});
   const [canScrollBrandLeft, setCanScrollBrandLeft] = useState(false);
   const [canScrollBrandRight, setCanScrollBrandRight] = useState(true);
+
+  // Wrapper to sync caseStudyMode with URL
+  const setCaseStudyMode = (mode: 'executive' | 'full') => {
+    setCaseStudyModeInternal(mode);
+    onViewModeChange(mode === 'executive' ? 'executive' : 'caseStudy');
+  };
+
+  // Sync caseStudyMode when viewMode prop changes
+  useEffect(() => {
+    if (viewMode === 'executive') {
+      setCaseStudyModeInternal('executive');
+    } else if (viewMode === 'caseStudy') {
+      setCaseStudyModeInternal('full');
+    }
+  }, [viewMode]);
 
   // Section labels for nav
   const sectionLabels = sections.map(s => ({
@@ -963,10 +980,10 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
             }`}>
               {/* Executive button (En bref) */}
               <button
-                onClick={() => { onViewModeChange('caseStudy'); setCaseStudyMode('executive'); }}
+                onClick={() => setCaseStudyMode('executive')}
                 className="relative z-10 px-2 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 whitespace-nowrap"
               >
-                {viewMode === 'caseStudy' && caseStudyMode === 'executive' && (
+                {viewMode !== 'gallery' && caseStudyMode === 'executive' && (
                   <motion.div
                     layoutId="sqool-toggle-pill"
                     className="absolute inset-0 bg-blue-600 rounded-full shadow-md"
@@ -974,7 +991,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
                   />
                 )}
                 <span className={`relative z-10 ${
-                  viewMode === 'caseStudy' && caseStudyMode === 'executive'
+                  viewMode !== 'gallery' && caseStudyMode === 'executive'
                     ? 'text-white'
                     : (viewMode === 'gallery' ? 'text-gray-400 hover:text-white' : (isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'))
                 }`}>
@@ -984,10 +1001,10 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
               </button>
               {/* Full case study button */}
               <button
-                onClick={() => { onViewModeChange('caseStudy'); setCaseStudyMode('full'); }}
+                onClick={() => setCaseStudyMode('full')}
                 className="relative z-10 px-2 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 whitespace-nowrap"
               >
-                {viewMode === 'caseStudy' && caseStudyMode === 'full' && (
+                {viewMode !== 'gallery' && caseStudyMode === 'full' && (
                   <motion.div
                     layoutId="sqool-toggle-pill"
                     className="absolute inset-0 bg-blue-600 rounded-full shadow-md"
@@ -995,7 +1012,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
                   />
                 )}
                 <span className={`relative z-10 ${
-                  viewMode === 'caseStudy' && caseStudyMode === 'full'
+                  viewMode !== 'gallery' && caseStudyMode === 'full'
                     ? 'text-white'
                     : (viewMode === 'gallery' ? 'text-gray-400 hover:text-white' : (isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'))
                 }`}>

@@ -1022,8 +1022,25 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
   const [isMobileNavExpanded, setIsMobileNavExpanded] = useState(false);
   const [showNav, setShowNav] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
-  const [caseStudyMode, setCaseStudyMode] = useState<'executive' | 'full'>('executive');
+  // Initialize caseStudyMode based on viewMode prop: 'executive' -> 'executive', 'caseStudy' -> 'full'
+  const initialCaseStudyMode = viewMode === 'executive' ? 'executive' : (viewMode === 'caseStudy' ? 'full' : 'executive');
+  const [caseStudyMode, setCaseStudyModeInternal] = useState<'executive' | 'full'>(initialCaseStudyMode);
   const [lightboxIndex, setLightboxIndex] = useState(0);
+
+  // Wrapper to sync caseStudyMode with URL
+  const setCaseStudyMode = (mode: 'executive' | 'full') => {
+    setCaseStudyModeInternal(mode);
+    onViewModeChange(mode === 'executive' ? 'executive' : 'caseStudy');
+  };
+
+  // Sync caseStudyMode when viewMode prop changes
+  useEffect(() => {
+    if (viewMode === 'executive') {
+      setCaseStudyModeInternal('executive');
+    } else if (viewMode === 'caseStudy') {
+      setCaseStudyModeInternal('full');
+    }
+  }, [viewMode]);
   const [videoStartTime, setVideoStartTime] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const tocRef = useRef<HTMLDivElement>(null);
@@ -1262,10 +1279,10 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
             >
               {/* Executive button */}
               <button
-                onClick={() => { onViewModeChange('caseStudy'); setCaseStudyMode('executive'); }}
+                onClick={() => setCaseStudyMode('executive')}
                 className="relative z-10 px-2 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 whitespace-nowrap"
               >
-                {viewMode === 'caseStudy' && caseStudyMode === 'executive' && (
+                {viewMode !== 'gallery' && caseStudyMode === 'executive' && (
                   <motion.div
                     layoutId="toolkit-toggle-pill"
                     className="absolute inset-0 bg-blue-600 rounded-full shadow-md"
@@ -1273,7 +1290,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   />
                 )}
                 <span className={`relative z-10 ${
-                  viewMode === 'caseStudy' && caseStudyMode === 'executive'
+                  viewMode !== 'gallery' && caseStudyMode === 'executive'
                     ? 'text-white'
                     : (viewMode === 'gallery' ? 'text-gray-400 hover:text-white' : (systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'))
                 }`}>
@@ -1283,10 +1300,10 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
               </button>
               {/* Full case study button */}
               <button
-                onClick={() => { onViewModeChange('caseStudy'); setCaseStudyMode('full'); }}
+                onClick={() => setCaseStudyMode('full')}
                 className="relative z-10 px-2 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 whitespace-nowrap"
               >
-                {viewMode === 'caseStudy' && caseStudyMode === 'full' && (
+                {viewMode !== 'gallery' && caseStudyMode === 'full' && (
                   <motion.div
                     layoutId="toolkit-toggle-pill"
                     className="absolute inset-0 bg-blue-600 rounded-full shadow-md"
@@ -1294,7 +1311,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   />
                 )}
                 <span className={`relative z-10 ${
-                  viewMode === 'caseStudy' && caseStudyMode === 'full'
+                  viewMode !== 'gallery' && caseStudyMode === 'full'
                     ? 'text-white'
                     : (viewMode === 'gallery' ? 'text-gray-400 hover:text-white' : (systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'))
                 }`}>

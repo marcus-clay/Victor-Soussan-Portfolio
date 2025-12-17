@@ -219,13 +219,25 @@ const FranceVaePage: React.FC<FranceVaePageProps> = ({
   // Map external viewMode to internal
   const initialViewMode = propViewMode === 'gallery' ? 'gallery' : 'caseStudy';
   const [viewMode, setViewModeInternal] = useState<'caseStudy' | 'gallery'>(initialViewMode);
-  const [caseStudyMode, setCaseStudyMode] = useState<'executive' | 'full'>('executive');
+  // Initialize caseStudyMode based on propViewMode: 'executive' -> 'executive', 'caseStudy' -> 'full'
+  const initialCaseStudyMode = propViewMode === 'executive' ? 'executive' : (propViewMode === 'caseStudy' ? 'full' : 'executive');
+  const [caseStudyMode, setCaseStudyModeInternal] = useState<'executive' | 'full'>(initialCaseStudyMode);
 
-  // Wrapper to sync with external state
+  // Wrapper to sync viewMode with URL
   const setViewMode = (mode: 'caseStudy' | 'gallery') => {
     setViewModeInternal(mode);
     if (onViewModeChange) {
-      onViewModeChange(mode === 'gallery' ? 'gallery' : 'caseStudy');
+      // When switching to gallery, pass 'gallery'
+      // When switching to caseStudy, preserve the current caseStudyMode
+      onViewModeChange(mode === 'gallery' ? 'gallery' : (caseStudyMode === 'executive' ? 'executive' : 'caseStudy'));
+    }
+  };
+
+  // Wrapper to sync caseStudyMode with URL
+  const setCaseStudyMode = (mode: 'executive' | 'full') => {
+    setCaseStudyModeInternal(mode);
+    if (onViewModeChange) {
+      onViewModeChange(mode === 'executive' ? 'executive' : 'caseStudy');
     }
   };
   const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -247,6 +259,12 @@ const FranceVaePage: React.FC<FranceVaePageProps> = ({
   useEffect(() => {
     if (propViewMode) {
       setViewModeInternal(propViewMode === 'gallery' ? 'gallery' : 'caseStudy');
+      // Also sync caseStudyMode when propViewMode changes
+      if (propViewMode === 'executive') {
+        setCaseStudyModeInternal('executive');
+      } else if (propViewMode === 'caseStudy') {
+        setCaseStudyModeInternal('full');
+      }
     }
   }, [propViewMode]);
 

@@ -539,14 +539,31 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [lightboxZoomed, setLightboxZoomed] = useState(false);
   const [[page, direction], setPage] = useState([0, 0]);
-  const [caseStudyMode, setCaseStudyMode] = useState<'executive' | 'full'>('executive');
+  // Initialize caseStudyMode based on viewMode prop: 'executive' -> 'executive', 'caseStudy' -> 'full'
+  const initialCaseStudyMode = viewMode === 'executive' ? 'executive' : (viewMode === 'caseStudy' ? 'full' : 'executive');
+  const [caseStudyMode, setCaseStudyModeInternal] = useState<'executive' | 'full'>(initialCaseStudyMode);
   const [videoStartTime, setVideoStartTime] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRefs = useRef<{ [key: string]: HTMLVideoElement | null }>({});
 
+  // Wrapper to sync caseStudyMode with URL
+  const setCaseStudyMode = (mode: 'executive' | 'full') => {
+    setCaseStudyModeInternal(mode);
+    onViewModeChange(mode === 'executive' ? 'executive' : 'caseStudy');
+  };
+
   // Motion values for parallax effect
   const dragX = useMotionValue(0);
   const parallaxX = useTransform(dragX, [-300, 0, 300], [30, 0, -30]);
+
+  // Sync caseStudyMode when viewMode prop changes
+  useEffect(() => {
+    if (viewMode === 'executive') {
+      setCaseStudyModeInternal('executive');
+    } else if (viewMode === 'caseStudy') {
+      setCaseStudyModeInternal('full');
+    }
+  }, [viewMode]);
 
   // Scroll to top when mode changes
   useEffect(() => {
@@ -803,10 +820,10 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
             >
               {/* Executive button */}
               <button
-                onClick={() => { onViewModeChange('caseStudy'); setCaseStudyMode('executive'); }}
+                onClick={() => setCaseStudyMode('executive')}
                 className="relative z-10 px-2 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 whitespace-nowrap"
               >
-                {viewMode === 'caseStudy' && caseStudyMode === 'executive' && (
+                {viewMode !== 'gallery' && caseStudyMode === 'executive' && (
                   <motion.div
                     layoutId="dailymotion-toggle-pill"
                     className="absolute inset-0 bg-blue-600 rounded-full shadow-md"
@@ -814,7 +831,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                   />
                 )}
                 <span className={`relative z-10 ${
-                  viewMode === 'caseStudy' && caseStudyMode === 'executive'
+                  viewMode !== 'gallery' && caseStudyMode === 'executive'
                     ? 'text-white'
                     : (viewMode === 'gallery' ? 'text-gray-400 hover:text-white' : (systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'))
                 }`}>
@@ -824,10 +841,10 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
               </button>
               {/* Full case study button */}
               <button
-                onClick={() => { onViewModeChange('caseStudy'); setCaseStudyMode('full'); }}
+                onClick={() => setCaseStudyMode('full')}
                 className="relative z-10 px-2 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 whitespace-nowrap"
               >
-                {viewMode === 'caseStudy' && caseStudyMode === 'full' && (
+                {viewMode !== 'gallery' && caseStudyMode === 'full' && (
                   <motion.div
                     layoutId="dailymotion-toggle-pill"
                     className="absolute inset-0 bg-blue-600 rounded-full shadow-md"
@@ -835,7 +852,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                   />
                 )}
                 <span className={`relative z-10 ${
-                  viewMode === 'caseStudy' && caseStudyMode === 'full'
+                  viewMode !== 'gallery' && caseStudyMode === 'full'
                     ? 'text-white'
                     : (viewMode === 'gallery' ? 'text-gray-400 hover:text-white' : (systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'))
                 }`}>
