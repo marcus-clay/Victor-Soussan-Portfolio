@@ -130,6 +130,33 @@ interface Resource {
   icon: React.ReactNode;
 }
 
+// --- Utility Functions ---
+
+// Generate srcset for images with responsive versions
+const getResponsiveSrcSet = (src: string): string | undefined => {
+  const responsiveImages = [
+    'thumbnail-toolkit',
+    'thumbnail-connect',
+    'thumbnail-sqool-suite',
+    'thumbnail-dailymotion-web-platform',
+    'thumbnail-pagesjaunes-multidevices',
+    'thumbnail_france_vae',
+    'thumbnail_france_vae_02',
+    'thumbnail_toolkit_02',
+    'thubmnail_dailymotion_03',
+  ];
+
+  if (!responsiveImages.some(name => src.includes(name))) {
+    return undefined;
+  }
+
+  const lastDot = src.lastIndexOf('.');
+  const basePath = src.substring(0, lastDot);
+  const ext = src.substring(lastDot);
+
+  return `${basePath}-400w${ext} 400w, ${basePath}-800w${ext} 800w, ${basePath}-1200w${ext} 1200w`;
+};
+
 // --- Components ---
 
 const GlassCard: React.FC<GlassCardProps> = ({ children, className = "", onClick }) => (
@@ -2946,9 +2973,9 @@ const App: React.FC = () => {
           {/* Stacked Landscape Cards - Show only first 3 projects */}
           <div className="flex flex-col gap-10">
             {projects.slice(0, 3).map((project, index) => {
-              // Scroll-linked scale animation only for first card (France VAE)
-              const shouldAnimate = index === 0;
-              const startScale = 0.95; // France VAE starts at 95% scale
+              // No scale animation - all cards at 100%
+              const shouldAnimate = false;
+              const startScale = 1;
 
               return (
                 <ScrollExpandCard
@@ -2986,30 +3013,45 @@ const App: React.FC = () => {
                       </div>
 
                       <div className={`aspect-[16/9] md:aspect-auto md:h-full relative ${project.hoverImage ? 'p-0' : 'p-3 md:p-6'}`}>
-                        {/* Default image */}
-                        <img loading="lazy"
-                          src={project.coverImage.startsWith('/') ? project.coverImage : `/images/${project.coverImage}`}
-                          alt={`${project.title} preview`}
-                          className={`w-full h-full object-cover transition-transform duration-300 ease-out ${
-                            project.hoverImage
-                              ? 'opacity-100 group-hover:opacity-0 rounded-none md:rounded-l-2xl'
-                              : 'rounded-xl md:rounded-2xl md:object-contain'
-                          } ${
-                            project.hoverImage
-                              ? ''
-                              : project.id !== 'toolkit'
-                                ? 'md:scale-[1.02] md:group-hover:scale-[1.08]'
-                                : 'scale-[0.85] group-hover:scale-90'
-                          }`}
-                        />
-                        {/* Hover image (device mockup) - with zoom effect */}
-                        {project.hoverImage && (
-                          <img loading="lazy"
-                            src={project.hoverImage}
-                            alt={`${project.title} device mockup`}
-                            className="absolute inset-0 w-full h-full object-cover md:object-contain rounded-none md:rounded-l-2xl transition-all duration-300 ease-out opacity-0 group-hover:opacity-100 scale-100 group-hover:scale-110"
-                          />
-                        )}
+                        {/* Default image - with responsive srcset */}
+                        {(() => {
+                          const imgSrc = project.coverImage.startsWith('/') ? project.coverImage : `/images/${project.coverImage}`;
+                          const srcSet = getResponsiveSrcSet(imgSrc);
+                          return (
+                            <img
+                              loading="lazy"
+                              src={imgSrc}
+                              srcSet={srcSet}
+                              sizes={srcSet ? "(max-width: 768px) 100vw, 55vw" : undefined}
+                              alt={`${project.title} preview`}
+                              className={`w-full h-full object-cover transition-transform duration-300 ease-out ${
+                                project.hoverImage
+                                  ? 'opacity-100 group-hover:opacity-0 rounded-none md:rounded-l-2xl'
+                                  : 'rounded-xl md:rounded-2xl md:object-contain'
+                              } ${
+                                project.hoverImage
+                                  ? ''
+                                  : project.id !== 'toolkit'
+                                    ? 'md:scale-[1.02] md:group-hover:scale-[1.08]'
+                                    : 'scale-[0.85] group-hover:scale-90'
+                              }`}
+                            />
+                          );
+                        })()}
+                        {/* Hover image (device mockup) - with zoom effect and responsive srcset */}
+                        {project.hoverImage && (() => {
+                          const srcSet = getResponsiveSrcSet(project.hoverImage);
+                          return (
+                            <img
+                              loading="lazy"
+                              src={project.hoverImage}
+                              srcSet={srcSet}
+                              sizes={srcSet ? "(max-width: 768px) 100vw, 55vw" : undefined}
+                              alt={`${project.title} device mockup`}
+                              className="absolute inset-0 w-full h-full object-cover md:object-contain rounded-none md:rounded-l-2xl transition-all duration-300 ease-out opacity-0 group-hover:opacity-100 scale-100 group-hover:scale-110"
+                            />
+                          );
+                        })()}
                       </div>
                     </div>
 
