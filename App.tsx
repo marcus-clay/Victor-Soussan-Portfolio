@@ -1731,11 +1731,19 @@ const App: React.FC = () => {
     }
 
     // Match standard project URLs: /project/:id/:viewMode?
-    const projectMatch = path.match(/^\/projects?\/(toolkit|dailymotion|connect|sqool|france-vae)(?:\/(case-study|gallery|executive))?$/);
+    // Supports new URLs: /project/:id/summary, /project/:id/full, /project/:id/gallery
+    // Also supports legacy URLs: /project/:id/executive, /project/:id/case-study
+    const projectMatch = path.match(/^\/projects?\/(toolkit|dailymotion|connect|sqool|france-vae)(?:\/(case-study|full|gallery|executive|summary))?$/);
     if (projectMatch) {
       const projectId = projectMatch[1] as 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'france-vae';
       const viewParam = projectMatch[2];
-      const viewMode = viewParam === 'gallery' ? 'gallery' : viewParam === 'executive' ? 'executive' : 'caseStudy';
+      // Map URL paths to internal view modes
+      // summary & executive -> executive (En bref)
+      // full & case-study & default -> caseStudy (Complet)
+      // gallery -> gallery
+      const viewMode = viewParam === 'gallery' ? 'gallery'
+        : (viewParam === 'executive' || viewParam === 'summary') ? 'executive'
+        : 'caseStudy';
       return { project: projectId, viewMode };
     }
     return null;
@@ -2084,8 +2092,11 @@ const App: React.FC = () => {
   };
 
   // URL helpers for project routing
+  // New URL structure: /project/:id/summary (En bref), /project/:id/full (Complet), /project/:id/gallery
   const getProjectUrl = (projectId: string, viewMode: 'caseStudy' | 'gallery' | 'executive') => {
-    const viewPath = viewMode === 'gallery' ? '/gallery' : viewMode === 'executive' ? '/executive' : '';
+    const viewPath = viewMode === 'gallery' ? '/gallery'
+      : viewMode === 'executive' ? '/summary'
+      : '/full';
     return `/project/${projectId}${viewPath}`;
   };
 
