@@ -190,8 +190,8 @@ const ALL_MEDIA = [
   { src: '/images/francevae/photo atelier aap.webp', caption: 'Workshop Day 1 - With Accompaniment Providers (AAP)', captionFr: 'Atelier Jour 1 - Avec les Accompagnateurs (AAP)' },
   { src: '/images/francevae/photo atelier aap 02.webp', caption: 'Workshop Day 2 - Collaborative Ideation', captionFr: 'Atelier Jour 2 - Idéation collaborative' },
   { src: '/images/francevae/atelier france vae AAP 01.webp', caption: 'Workshop Objectives & Agenda', captionFr: 'Objectifs & Programme de l\'atelier' },
-  { src: '/images/francevae/animation atelier 00.webp', caption: 'Facilitation Framework - Session Structure', captionFr: 'Framework d\'animation - Structure de session' },
-  { src: '/images/francevae/animation atelier 01.webp', caption: 'Ideation Exercise - How Might We', captionFr: 'Exercice d\'idéation - How Might We' },
+  { src: '/images/francevae/animation atelier 00.webp', caption: 'Data-driven discovery: user pain points that shaped the workshop agenda', captionFr: 'Découverte data-driven : les insights terrain qui ont cadré l\'agenda de l\'atelier' },
+  { src: '/images/francevae/animation atelier 01.webp', caption: 'Six Thinking Hats: structured divergence before convergence', captionFr: 'Méthode des Six Chapeaux : divergence structurée avant convergence' },
 
   // ===== INITIATIVE 5: AI Experimentation =====
   { src: '/images/francevae/proto IA - chatbot de positionnement.webp', caption: 'AI Chatbot Prototype - VAE Eligibility Assessment', captionFr: 'Prototype Chatbot IA - Évaluation éligibilité VAE' },

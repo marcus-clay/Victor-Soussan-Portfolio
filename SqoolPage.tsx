@@ -1094,9 +1094,9 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
           {/* Main Content */}
           <main className="w-full">
             {/* Hero Section */}
-            <section id="hero" className="mb-16 md:mb-24">
+            <section id="hero" className="mb-24 md:mb-32">
               {/* Logo */}
-              <div className="mb-8">
+              <div className="my-12">
                 <img loading="lazy"
                   src={isDark ? '/images/sqool/logo-sqool-dark.svg' : '/images/sqool/logo-sqool.svg'}
                   alt="SQOOL"
@@ -1285,7 +1285,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
             </div>
 
             {/* Hero Image */}
-            <figure className="mb-16 md:mb-24">
+            <figure className="mb-24 md:mb-32">
               <div
                 onClick={() => openLightbox('/images/sqool/hero_ecosystem_sqool.webp')}
                 className={`rounded-2xl overflow-hidden border cursor-pointer ${isDark ? 'border-white/10' : 'border-gray-200'}`}
@@ -1489,7 +1489,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
               </div>
 
               {/* Connect */}
-              <div className="mb-8">
+              <div className="my-12">
                 <h3 className={`text-xl font-bold mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
                   {t.phase1.connect.title}
                 </h3>
@@ -1869,9 +1869,9 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
             <hr className={`my-16 md:my-20 ${isDark ? 'border-white/10' : 'border-gray-200'}`} />
 
             {/* Impact - Toolkit style */}
-            <section id="impact" className="mb-16 md:mb-24">
+            <section id="impact" className="mb-24 md:mb-32">
               <h1
-                className={`text-2xl md:text-3xl font-bold mb-4 ${
+                className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-4 tracking-tight ${
                   isDark ? 'text-white' : 'text-gray-900'
                 }`}
               >

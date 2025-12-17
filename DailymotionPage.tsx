@@ -954,7 +954,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
           {/* Main Content */}
           <main className="w-full">
             {/* Hero Section */}
-            <section id="hero" className="mb-16 md:mb-24">
+            <section id="hero" className="mb-24 md:mb-32">
               {/* Logo */}
               <img loading="lazy"
                 src={systemTheme === 'dark'
@@ -1124,7 +1124,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
             </div>
 
             {/* Hero Image */}
-            <figure className="mb-16 md:mb-24">
+            <figure className="mb-24 md:mb-32">
               <div
                 onClick={() => openLightbox('/images/dailymotion/thumbnail_dailymotion_-_web_platform2x.webp')}
                 className={`rounded-2xl overflow-hidden border cursor-pointer ${
@@ -1140,9 +1140,9 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
             </figure>
 
             {/* Overview Section */}
-            <section id="overview" className="mb-16 md:mb-24">
+            <section id="overview" className="mb-24 md:mb-32">
               <h1
-                className={`text-2xl md:text-3xl font-bold mb-2 ${
+                className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-4 tracking-tight ${
                   systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                 }`}
               >
@@ -1158,14 +1158,14 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                 {/* Introduction */}
                 <div>
                   <h2
-                    className={`text-lg font-bold mb-4 ${
+                    className={`text-xl md:text-2xl font-semibold mb-5 tracking-tight ${
                       systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                     }`}
                   >
                     {t.overview.introTitle}
                   </h2>
                   <p
-                    className={`text-sm leading-relaxed ${
+                    className={`text-base leading-relaxed ${
                       systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
                     }`}
                   >
@@ -1176,14 +1176,14 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                 {/* Role and scope */}
                 <div>
                   <h2
-                    className={`text-lg font-bold mb-4 ${
+                    className={`text-xl md:text-2xl font-semibold mb-5 tracking-tight ${
                       systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                     }`}
                   >
                     {t.overview.roleTitle}
                   </h2>
                   <p
-                    className={`text-sm leading-relaxed ${
+                    className={`text-base leading-relaxed ${
                       systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
                     }`}
                   >
@@ -1194,14 +1194,14 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                 {/* Strategic goals */}
                 <div>
                   <h2
-                    className={`text-lg font-bold mb-4 ${
+                    className={`text-xl md:text-2xl font-semibold mb-5 tracking-tight ${
                       systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                     }`}
                   >
                     {t.overview.goalsTitle}
                   </h2>
                   <ul
-                    className={`text-sm leading-relaxed space-y-2 ${
+                    className={`text-base leading-relaxed space-y-2 ${
                       systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
                     }`}
                   >
@@ -1214,7 +1214,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
             </section>
 
             {/* Key Product Modules Section */}
-            <section id="modules" className="mb-16 md:mb-24">
+            <section id="modules" className="mb-24 md:mb-32">
               <h1
                 className={`text-2xl md:text-3xl font-bold mb-8 ${
                   systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
@@ -1303,9 +1303,9 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
             />
 
             {/* Video Upload and Management Workflows Section */}
-            <section id="upload" className="mb-16 md:mb-24">
+            <section id="upload" className="mb-24 md:mb-32">
               <h1
-                className={`text-2xl md:text-3xl font-bold mb-6 ${
+                className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-6 tracking-tight ${
                   systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                 }`}
               >
@@ -1330,7 +1330,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
 
               {/* Upload Section */}
               <h3
-                className={`text-lg font-bold mb-4 ${
+                className={`text-xl md:text-2xl font-semibold mb-5 tracking-tight ${
                   systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                 }`}
               >
@@ -1444,7 +1444,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
 
               {/* Video Library Section */}
               <h3
-                className={`text-lg font-bold mb-4 ${
+                className={`text-xl md:text-2xl font-semibold mb-5 tracking-tight ${
                   systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                 }`}
               >
@@ -1459,7 +1459,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                 {t.upload.videoLibraryIntro}
               </p>
 
-              <figure className="mb-8">
+              <figure className="my-12">
                 <div
                   onClick={() => openLightbox('/images/dailymotion/dailymotion_-_video_manager.svg')}
                   className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
@@ -1587,7 +1587,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
               </div>
 
               {/* Share modal */}
-              <figure className="mb-8">
+              <figure className="my-12">
                 <div
                   onClick={() => openLightbox('/images/dailymotion/dailymotion_-_share_expanded2x.webp')}
                   className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
@@ -1657,7 +1657,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
               </div>
 
               {/* Playlist */}
-              <figure className="mb-8">
+              <figure className="my-12">
                 <div
                   onClick={() => openLightbox('/images/dailymotion/dailymotion_-_add_to_playlist_-_spec2x.webp')}
                   className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
@@ -1688,9 +1688,9 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
             />
 
             {/* Live Management Console Section */}
-            <section id="live" className="mb-16 md:mb-24">
+            <section id="live" className="mb-24 md:mb-32">
               <h1
-                className={`text-2xl md:text-3xl font-bold mb-6 ${
+                className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-6 tracking-tight ${
                   systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                 }`}
               >
@@ -1714,7 +1714,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
               </p>
 
               {/* Live countdown */}
-              <figure className="mb-8">
+              <figure className="my-12">
                 <div
                   onClick={() => openLightbox('/images/dailymotion/dailymotion_-_live_-_countdown2x.webp')}
                   className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
@@ -1737,7 +1737,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
               </figure>
 
               {/* Live dashboard */}
-              <figure className="mb-8">
+              <figure className="my-12">
                 <div
                   onClick={() => openLightbox('/images/dailymotion/dailymotion_-_livestream2x.webp')}
                   className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
@@ -1768,9 +1768,9 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
             />
 
             {/* Player Manager Section */}
-            <section id="player" className="mb-16 md:mb-24">
+            <section id="player" className="mb-24 md:mb-32">
               <h1
-                className={`text-2xl md:text-3xl font-bold mb-6 ${
+                className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-6 tracking-tight ${
                   systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                 }`}
               >
@@ -1794,7 +1794,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
               </p>
 
               {/* Player configurator */}
-              <figure className="mb-8">
+              <figure className="my-12">
                 <div
                   onClick={() => openLightbox('/images/dailymotion/dailymotion_-_create_player2x.webp')}
                   className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
@@ -1825,9 +1825,9 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
             />
 
             {/* Design System Section */}
-            <section id="design-system" className="mb-16 md:mb-24">
+            <section id="design-system" className="mb-24 md:mb-32">
               <h1
-                className={`text-2xl md:text-3xl font-bold mb-6 ${
+                className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-6 tracking-tight ${
                   systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                 }`}
               >
@@ -1897,9 +1897,9 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
             />
 
             {/* Impact Section - Toolkit style */}
-            <section id="impact" className="mb-16 md:mb-24">
+            <section id="impact" className="mb-24 md:mb-32">
               <h1
-                className={`text-2xl md:text-3xl font-bold mb-4 ${
+                className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-4 tracking-tight ${
                   systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                 }`}
               >

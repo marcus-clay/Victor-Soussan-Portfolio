@@ -876,7 +876,7 @@ const ProductEvolutionDiagram: React.FC<{
                           {phase.duration}
                         </div>
                       </div>
-                      <p className={`text-sm leading-relaxed mt-6 ${
+                      <p className={`text-base leading-relaxed mt-6 ${
                         isDark ? 'text-gray-400' : 'text-gray-500'
                       }`}>
                         {phase.description}
@@ -1373,7 +1373,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
             transition={{ duration: 0.3 }}
             className="w-full px-6 md:px-10 lg:px-12 py-8 md:py-12"
           >
-            <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 md:gap-8">
+            <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 md:gap-10">
               {galleryItems.map((item, index) => (
                 <GalleryCard
                   key={index}
@@ -1411,7 +1411,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
           >
       <div className="max-w-[1480px] mx-auto px-10 py-12 md:py-16">
             {/* Hero Section - Title + Logo + Testimonial */}
-            <section id="hero" className="mb-16 md:mb-24">
+            <section id="hero" className="mb-24 md:mb-32">
           {/* Logo at top-left */}
           <img loading="lazy"
             src={systemTheme === 'dark'
@@ -1650,39 +1650,39 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
         </figure>
 
         {/* Overview Section */}
-        <section id="overview" className="mb-16 md:mb-24">
+        <section id="overview" className="mb-24 md:mb-32">
           <h1
-            className={`text-2xl md:text-3xl font-bold mb-2 ${
+            className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-4 tracking-tight ${
               systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
             }`}
           >
             {t.overview.title}
           </h1>
           <hr
-            className={`mb-8 ${
+            className={`mb-10 ${
               systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
             }`}
           />
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-10">
             {/* Introduction */}
             <div>
               <h2
-                className={`text-lg font-bold mb-4 ${
+                className={`text-xl md:text-2xl font-semibold mb-5 tracking-tight ${
                   systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                 }`}
               >
                 {t.overview.introTitle}
               </h2>
               <p
-                className={`text-sm leading-relaxed mb-4 ${
+                className={`text-base leading-relaxed mb-5 ${
                   systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
                 }`}
               >
                 {t.overview.introP1}
               </p>
               <p
-                className={`text-sm leading-relaxed ${
+                className={`text-base leading-relaxed ${
                   systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
                 }`}
               >
@@ -1693,14 +1693,14 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
             {/* My Role */}
             <div>
               <h2
-                className={`text-lg font-bold mb-4 ${
+                className={`text-xl md:text-2xl font-semibold mb-5 tracking-tight ${
                   systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                 }`}
               >
                 {t.overview.roleTitle}
               </h2>
               <p
-                className={`text-sm leading-relaxed ${
+                className={`text-base leading-relaxed ${
                   systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
                 }`}
               >
@@ -1711,21 +1711,21 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
             {/* Project and Impact */}
             <div>
               <h2
-                className={`text-lg font-bold mb-4 ${
+                className={`text-xl md:text-2xl font-semibold mb-5 tracking-tight ${
                   systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                 }`}
               >
                 {t.overview.projectTitle}
               </h2>
               <p
-                className={`text-sm leading-relaxed mb-4 ${
+                className={`text-base leading-relaxed mb-4 ${
                   systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
                 }`}
               >
                 {t.overview.projectP1}
               </p>
               <p
-                className={`text-sm leading-relaxed ${
+                className={`text-base leading-relaxed ${
                   systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
                 }`}
               >
@@ -1736,9 +1736,9 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
         </section>
 
         {/* Context and Approach Section */}
-        <section id="context" className="mb-16 md:mb-24">
+        <section id="context" className="mb-24 md:mb-32">
           <h1
-            className={`text-2xl md:text-3xl font-bold mb-6 ${
+            className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-6 tracking-tight ${
               systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
             }`}
           >
@@ -1883,9 +1883,9 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
         />
 
         {/* Phase 1 - Foundation */}
-        <section id="phase1" className="mb-16 md:mb-24">
+        <section id="phase1" className="mb-24 md:mb-32">
           <h1
-            className={`text-2xl md:text-3xl font-bold mb-8 ${
+            className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-8 tracking-tight ${
               systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
             }`}
           >
@@ -1996,7 +1996,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
           </div>
 
           {/* Chantier Detail v2 - Full width */}
-          <figure className="mb-8">
+          <figure className="my-12">
             <div
               onClick={() => openLightbox('/images/toolkit/desktop_-_chantier_-_details_-_v2.svg')}
               className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
@@ -2020,7 +2020,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
 
           {/* Show and Hide navigation */}
           <h3
-            className={`text-lg font-bold mb-4 ${
+            className={`text-xl md:text-2xl font-semibold mb-5 tracking-tight ${
               systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
             }`}
           >
@@ -2034,7 +2034,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
             Secondary sidebar collapsing and expanding on demand. Setup sections (zones, companies, task libraries) prominent during project creation, collapsing once project active. Operations sections (planning, documents, observations) surfacing as primary navigation. Progressive disclosure: complexity hidden until relevant, interface adapting to project lifecycle stage.
           </p>
 
-          <figure className="mb-8">
+          <figure className="my-12">
             <div
               onClick={() => {
                 const currentTime = videoRefs.current['nav-show-hide']?.currentTime || 0;
@@ -2079,7 +2079,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
             Tasks
           </h2>
 
-          <figure className="mb-8">
+          <figure className="my-12">
             <div
               onClick={() => openLightbox('/images/toolkit/daktop_-_site_setup_-_tasks_list.svg')}
               className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
@@ -2110,7 +2110,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
             Sequences
           </h2>
 
-          <figure className="mb-8">
+          <figure className="my-12">
             <div
               onClick={() => openLightbox('/images/toolkit/daktop_-_site_setup_-_tasks_sequence.svg')}
               className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
@@ -2148,7 +2148,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
             Planning
           </h2>
 
-          <figure className="mb-8">
+          <figure className="my-12">
             <div
               onClick={() => openLightbox('/images/toolkit/planning_-_v1.svg')}
               className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
@@ -2218,7 +2218,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
           </div>
 
           {/* Planning v2 */}
-          <figure className="mb-8">
+          <figure className="my-12">
             <div
               onClick={() => openLightbox('/images/toolkit/planning_-_v2.svg')}
               className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
@@ -2310,7 +2310,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
           </div>
 
           <h3
-            className={`text-lg font-bold mb-4 ${
+            className={`text-xl md:text-2xl font-semibold mb-5 tracking-tight ${
               systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
             }`}
           >
@@ -2324,7 +2324,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
             To enhance ease of use on the planning we implemented a way to expand the layout to focus on task management, without getting confusion with navigation panel.
           </p>
 
-          <figure className="mb-8">
+          <figure className="my-12">
             <div
               onClick={() => {
                 const currentTime = videoRefs.current['planning-zoom']?.currentTime || 0;
@@ -2362,9 +2362,9 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
         />
 
         {/* Phase 2 - Feature expansion */}
-        <section id="phase2" className="mb-16 md:mb-24">
+        <section id="phase2" className="mb-24 md:mb-32">
           <h1
-            className={`text-2xl md:text-3xl font-bold mb-4 ${
+            className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-4 tracking-tight ${
               systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
             }`}
           >
@@ -2419,7 +2419,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
 
           {/* Task manipulation video */}
           <h3
-            className={`text-lg font-bold mb-4 ${
+            className={`text-xl md:text-2xl font-semibold mb-5 tracking-tight ${
               systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
             }`}
           >
@@ -2464,7 +2464,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
 
           {/* Batch edition video */}
           <h3
-            className={`text-lg font-bold mb-4 ${
+            className={`text-xl md:text-2xl font-semibold mb-5 tracking-tight ${
               systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
             }`}
           >
@@ -2529,7 +2529,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
             </figcaption>
           </figure>
 
-          <figure className="mb-8">
+          <figure className="my-12">
             <div
               onClick={() => openLightbox('/images/toolkit/cars_detail_tache_-_dynamic_menu_-_comportement_section_activite.svg')}
               className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
@@ -2560,9 +2560,9 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
         />
 
         {/* Phase 3 - Platform maturity */}
-        <section id="phase3" className="mb-16 md:mb-24">
+        <section id="phase3" className="mb-24 md:mb-32">
           <h1
-            className={`text-2xl md:text-3xl font-bold mb-4 ${
+            className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-4 tracking-tight ${
               systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
             }`}
           >
@@ -2632,7 +2632,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
             Construction happens on-site, often in challenging conditions. The mobile experience needed to be robust, fast, and usable with gloves. We redesigned the navigation system for touch-first interaction while maintaining feature parity with desktop.
           </p>
 
-          <figure className="mb-8">
+          <figure className="my-12">
             <div
               onClick={() => openLightbox('/images/toolkit/evolution_mobile_menu.svg')}
               className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
@@ -2663,9 +2663,9 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
         />
 
         {/* Design System Foundation */}
-        <section id="design-system" className="mb-16 md:mb-24">
+        <section id="design-system" className="mb-24 md:mb-32">
           <h1
-            className={`text-2xl md:text-3xl font-bold mb-4 ${
+            className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-4 tracking-tight ${
               systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
             }`}
           >
@@ -2701,7 +2701,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
             </figcaption>
           </figure>
 
-          <figure className="mb-8">
+          <figure className="my-12">
             <div
               onClick={() => openLightbox('/images/toolkit/system_-_icons_-_files_and_folders.svg')}
               className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
@@ -2732,9 +2732,9 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
         />
 
         {/* Impact */}
-        <section id="impact" className="mb-16 md:mb-24">
+        <section id="impact" className="mb-24 md:mb-32">
           <h1
-            className={`text-2xl md:text-3xl font-bold mb-4 ${
+            className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-4 tracking-tight ${
               systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
             }`}
           >

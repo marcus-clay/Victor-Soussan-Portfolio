@@ -789,7 +789,7 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
           {/* Main Content */}
           <main className="w-full">
             {/* Hero Section */}
-            <section id="hero" className="mb-16 md:mb-24">
+            <section id="hero" className="mb-24 md:mb-32">
               <div className="md:col-span-3">
                 {/* Meta tags */}
                 <div className="flex flex-wrap gap-2 mb-4">
@@ -840,7 +840,7 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
             </section>
 
             {/* Hero Image */}
-            <figure className="mb-16 md:mb-24">
+            <figure className="mb-24 md:mb-32">
               <div
                 onClick={() => openLightbox('/images/connect/connect_overview.webp')}
                 className={`rounded-2xl overflow-hidden border cursor-pointer ${
@@ -863,9 +863,9 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
             </figure>
 
             {/* Overview Section */}
-            <section id="overview" className="mb-16 md:mb-24">
+            <section id="overview" className="mb-24 md:mb-32">
               <h1
-                className={`text-2xl md:text-3xl font-bold mb-2 ${
+                className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-4 tracking-tight ${
                   systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                 }`}
               >
@@ -881,14 +881,14 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
                 {/* Introduction */}
                 <div className="md:col-span-2">
                   <h2
-                    className={`text-lg font-bold mb-4 ${
+                    className={`text-xl md:text-2xl font-semibold mb-5 tracking-tight ${
                       systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                     }`}
                   >
                     {t.overview.introTitle}
                   </h2>
                   <p
-                    className={`text-sm leading-relaxed ${
+                    className={`text-base leading-relaxed ${
                       systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
                     }`}
                   >
@@ -899,14 +899,14 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
                 {/* Goals */}
                 <div>
                   <h2
-                    className={`text-lg font-bold mb-4 ${
+                    className={`text-xl md:text-2xl font-semibold mb-5 tracking-tight ${
                       systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                     }`}
                   >
                     {t.overview.goalsTitle}
                   </h2>
                   <ul
-                    className={`text-sm leading-relaxed space-y-2 ${
+                    className={`text-base leading-relaxed space-y-2 ${
                       systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
                     }`}
                   >
@@ -920,14 +920,14 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
               {/* Role Section */}
               <div className="mt-8">
                 <h2
-                  className={`text-lg font-bold mb-4 ${
+                  className={`text-xl md:text-2xl font-semibold mb-5 tracking-tight ${
                     systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                   }`}
                 >
                   {t.overview.roleTitle}
                 </h2>
                 <p
-                  className={`text-sm leading-relaxed ${
+                  className={`text-base leading-relaxed ${
                     systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
                   }`}
                 >
@@ -944,9 +944,9 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
             />
 
             {/* Dashboard Section */}
-            <section id="dashboard" className="mb-16 md:mb-24">
+            <section id="dashboard" className="mb-24 md:mb-32">
               <h1
-                className={`text-2xl md:text-3xl font-bold mb-6 ${
+                className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-6 tracking-tight ${
                   systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                 }`}
               >
@@ -962,7 +962,7 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
               </p>
 
               {/* Dashboard Home Dark */}
-              <figure className="mb-8">
+              <figure className="my-12">
                 <div
                   onClick={() => openLightbox('/images/connect/connect_dashboard_home_dark_full_smartphone-scaled.webp')}
                   className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
@@ -1032,7 +1032,7 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
               </div>
 
               {/* Loading & Auth Video */}
-              <figure className="mb-8">
+              <figure className="my-12">
                 <div
                   onClick={() => openLightbox('/videos/connect/connect-loading-user-authent-app-launch-study.mp4')}
                   className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
@@ -1058,7 +1058,7 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
               </figure>
 
               {/* Complete Dashboard Prototype Video */}
-              <figure className="mb-8">
+              <figure className="my-12">
                 <div
                   onClick={() => openLightbox('/videos/connect/connect-dashboard-prototype_complet_4k-compressed.mp4')}
                   className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
@@ -1084,7 +1084,7 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
               </figure>
 
               {/* Tech Architecture */}
-              <figure className="mb-8">
+              <figure className="my-12">
                 <div
                   onClick={() => openLightbox('/images/connect/connect_tech_architecture-1-scaled.webp')}
                   className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
@@ -1154,7 +1154,7 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
               </div>
 
               {/* App Loading Choreography */}
-              <figure className="mb-8">
+              <figure className="my-12">
                 <div
                   onClick={() => openLightbox('/videos/connect/connect-specs-app-loading-choregraphy.mp4')}
                   className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
@@ -1188,9 +1188,9 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
             />
 
             {/* La Bulle Section */}
-            <section id="bulle" className="mb-16 md:mb-24">
+            <section id="bulle" className="mb-24 md:mb-32">
               <h1
-                className={`text-2xl md:text-3xl font-bold mb-6 ${
+                className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-6 tracking-tight ${
                   systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                 }`}
               >
@@ -1206,7 +1206,7 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
               </p>
 
               {/* Bulle Wireframes */}
-              <figure className="mb-8">
+              <figure className="my-12">
                 <div
                   onClick={() => openLightbox('/images/connect/connect_bulle_ui_wireframes_concept-scaled.webp')}
                   className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
@@ -1323,7 +1323,7 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
               </div>
 
               {/* Interaction Demo Video */}
-              <figure className="mb-8">
+              <figure className="my-12">
                 <div
                   onClick={() => openLightbox('/videos/connect/interaction-bulle-connect-compressed.mp4')}
                   className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
@@ -1349,7 +1349,7 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
               </figure>
 
               {/* Bulle Demo Video */}
-              <figure className="mb-8">
+              <figure className="my-12">
                 <div
                   onClick={() => openLightbox('/videos/connect/Video-demo-bulle-interactions-02-compressed.mp4')}
                   className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${

@@ -528,7 +528,7 @@ const ScopeGrid: React.FC<{
             <h4 className={`font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
               {area.title}
             </h4>
-            <p className={`text-sm leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+            <p className={`text-base leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
               {area.description}
             </p>
           </div>
@@ -770,7 +770,7 @@ const ProductEvolutionDiagram: React.FC<{
                         }`}>
                           {texts.phase} {phase.id}
                         </div>
-                        <h3 className={`text-2xl md:text-3xl font-bold leading-tight mb-2 ${
+                        <h3 className={`text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight leading-tight mb-2 ${
                           isDark ? 'text-white' : 'text-gray-900'
                         }`}>
                           {phase.title}
@@ -781,7 +781,7 @@ const ProductEvolutionDiagram: React.FC<{
                           {phase.duration}
                         </div>
                       </div>
-                      <p className={`text-sm leading-relaxed mt-6 ${
+                      <p className={`text-base leading-relaxed mt-6 ${
                         isDark ? 'text-gray-400' : 'text-gray-500'
                       }`}>
                         {phase.description}
@@ -963,7 +963,7 @@ const HighlightsGrid: React.FC<{
             <h4 className={`font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
               {item.title}
             </h4>
-            <p className={`text-sm leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+            <p className={`text-base leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
               {item.description}
             </p>
           </div>
@@ -996,7 +996,7 @@ const InsightsGrid: React.FC<{
           <h4 className={`font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
             {item.title}
           </h4>
-          <p className={`text-sm leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+          <p className={`text-base leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
             {item.description}
           </p>
         </motion.div>
@@ -1067,7 +1067,7 @@ const SqoolExecutive: React.FC<SqoolExecutiveProps> = ({
         <div className="max-w-[1280px] mx-auto w-full">
           {/* Logo */}
           <FadeInSection>
-            <div className="mb-8">
+            <div className="my-12">
               <img loading="lazy"
                 src={isDark ? '/images/sqool/logo-sqool-dark.svg' : '/images/sqool/logo-sqool.svg'}
                 alt="SQOOL"
@@ -1357,7 +1357,7 @@ const SqoolExecutive: React.FC<SqoolExecutiveProps> = ({
       <section className="py-20 md:py-28 px-10">
         <div className="max-w-[1280px] mx-auto text-center">
           <FadeInSection>
-            <h2 className={`text-2xl md:text-3xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+            <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
               {t.cta.title}
             </h2>
           </FadeInSection>

@@ -226,8 +226,8 @@ const TRANSLATIONS = {
       imageCaption: 'Design thinking workshop with AAP accompaniment structures',
       bentoImages: {
         large: { src: '/images/francevae/photo atelier aap.webp', caption: 'Accompaniment providers became active design partners, bridging the gap between product team and field reality' },
-        small1: { src: '/images/francevae/animation atelier 00.webp', caption: 'Structured facilitation framework: from problem framing to solution sketching in 2 days' },
-        small2: { src: '/images/francevae/animation atelier 01.webp', caption: 'Crazy-8 ideation outputs for rapid concept generation before convergence phase' }
+        small1: { src: '/images/francevae/animation atelier 00.webp', caption: 'Data-driven discovery: surfacing user pain points that shaped the workshop agenda' },
+        small2: { src: '/images/francevae/animation atelier 01.webp', caption: 'Six Thinking Hats method: structured divergence before convergence' }
       }
     },
     initiative5: {
@@ -500,8 +500,8 @@ const TRANSLATIONS = {
       imageCaption: 'Atelier design thinking avec les structures d\'accompagnement AAP',
       bentoImages: {
         large: { src: '/images/francevae/photo atelier aap.webp', caption: 'Les accompagnateurs deviennent partenaires actifs de la conception, comblant le fossé entre équipe produit et réalité terrain' },
-        small1: { src: '/images/francevae/animation atelier 00.webp', caption: 'Framework structuré pour guider les participants de l\'identification des problèmes vers la co-création' },
-        small2: { src: '/images/francevae/animation atelier 01.webp', caption: 'Support d\'idéation pour canaliser la créativité collective en concepts actionnables' }
+        small1: { src: '/images/francevae/animation atelier 00.webp', caption: 'Découverte data-driven : les insights terrain qui ont cadré l\'agenda de l\'atelier' },
+        small2: { src: '/images/francevae/animation atelier 01.webp', caption: 'Méthode des Six Chapeaux : divergence structurée avant convergence' }
       }
     },
     initiative5: {
@@ -756,15 +756,15 @@ const BulletSection: React.FC<{
   isDark: boolean;
 }> = ({ title, items, isDark }) => {
   return (
-    <div className="mb-6">
-      <h4 className={`font-semibold mb-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+    <div className="mb-8">
+      <h4 className={`text-lg font-semibold mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
         {title}
       </h4>
-      <ul className="space-y-2">
+      <ul className="space-y-3">
         {items.map((item, idx) => (
           <li key={idx} className="flex items-start gap-3">
-            <div className={`w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0 ${isDark ? 'bg-blue-400' : 'bg-blue-600'}`} />
-            <span className={`text-sm leading-relaxed ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+            <div className={`w-1.5 h-1.5 rounded-full mt-2.5 flex-shrink-0 ${isDark ? 'bg-blue-400' : 'bg-blue-600'}`} />
+            <span className={`text-base leading-relaxed ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
               {item}
             </span>
           </li>
@@ -1589,38 +1589,38 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
       </section>
 
       {/* MAIN CONTENT */}
-      <div className="px-10 py-12">
+      <div className="px-6 md:px-10 py-16 md:py-24">
         <div className="max-w-[1280px] mx-auto">
 
           {/* CONTEXT */}
-          <section id="context" className="mb-32">
+          <section id="context" className="mb-40 md:mb-48">
             <FadeInSection>
-              <h2 className={`text-2xl md:text-3xl font-bold mb-2 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-4 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
                 {t.context.title}
               </h2>
-              <hr className={`mb-8 ${isDark ? 'border-white/10' : 'border-gray-200'}`} />
+              <hr className={`mb-10 ${isDark ? 'border-white/10' : 'border-gray-200'}`} />
             </FadeInSection>
 
             <FadeInSection delay={0.1}>
-              <p className={`text-base md:text-lg leading-relaxed mb-8 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+              <p className={`text-lg md:text-xl leading-relaxed mb-12 max-w-4xl ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
                 {t.context.intro}
               </p>
             </FadeInSection>
 
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid md:grid-cols-2 gap-8 md:gap-12">
               <FadeInSection delay={0.2}>
-                <h3 className={`font-semibold mb-2 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                <h3 className={`text-xl md:text-2xl font-semibold mb-4 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
                   {t.context.challenge}
                 </h3>
-                <p className={`text-sm leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                <p className={`text-base md:text-lg leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
                   {t.context.challengeText}
                 </p>
               </FadeInSection>
               <FadeInSection delay={0.3}>
-                <h3 className={`font-semibold mb-2 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                <h3 className={`text-xl md:text-2xl font-semibold mb-4 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
                   {t.context.myScope}
                 </h3>
-                <p className={`text-sm leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                <p className={`text-base md:text-lg leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
                   {t.context.myScopeText}
                 </p>
               </FadeInSection>
@@ -1628,36 +1628,36 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
           </section>
 
           {/* INITIATIVE 1: VAE COLLECTIVE */}
-          <section id="initiative-1" className="mb-32">
+          <section id="initiative-1" className="mb-40 md:mb-48">
             <FadeInSection>
-              <span className={`text-sm font-medium tracking-wide ${isDark ? 'text-orange-400' : 'text-orange-600'}`}>
+              <span className={`text-sm md:text-base font-medium tracking-wide ${isDark ? 'text-orange-400' : 'text-orange-600'}`}>
                 {t.initiative1.eyebrow}
               </span>
-              <h2 className={`text-2xl md:text-3xl font-bold mt-2 mb-1 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold mt-3 mb-2 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
                 {t.initiative1.title}
               </h2>
-              <p className={`text-lg mb-2 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+              <p className={`text-lg md:text-xl mb-4 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
                 {t.initiative1.subtitle}
               </p>
-              <hr className={`mb-8 ${isDark ? 'border-white/10' : 'border-gray-200'}`} />
+              <hr className={`mb-10 ${isDark ? 'border-white/10' : 'border-gray-200'}`} />
             </FadeInSection>
 
             {/* Problem */}
             <FadeInSection delay={0.1}>
-              <h3 className={`font-semibold mb-3 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <h3 className={`text-xl md:text-2xl font-semibold mb-4 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
                 {t.initiative1.problem}
               </h3>
-              <p className={`text-base leading-relaxed mb-8 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+              <p className={`text-base md:text-lg leading-relaxed mb-12 max-w-4xl ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
                 {t.initiative1.problemText}
               </p>
             </FadeInSection>
 
             {/* What I did */}
             <FadeInSection delay={0.2}>
-              <h3 className={`text-lg font-semibold mb-6 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <h3 className={`text-xl md:text-2xl font-semibold mb-8 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
                 {t.initiative1.whatIDid}
               </h3>
-              <div className="grid md:grid-cols-2 gap-6 mb-8">
+              <div className="grid md:grid-cols-2 gap-8 mb-10">
                 <BulletSection title={t.initiative1.discovery.title} items={t.initiative1.discovery.items} isDark={isDark} />
                 <BulletSection title={t.initiative1.design.title} items={t.initiative1.design.items} isDark={isDark} />
               </div>
@@ -1665,8 +1665,8 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
             </FadeInSection>
 
             {/* Prototype image with CTA below */}
-            <FadeInSection delay={0.3} className="mb-8">
-              <figure className="mb-6">
+            <FadeInSection delay={0.3} className="mt-12">
+              <figure className="mb-8">
                 <div
                   onClick={() => onImageClick(t.initiative1.bentoImages.large.src)}
                   className={`group cursor-pointer rounded-2xl overflow-hidden border transition-all hover:scale-[1.01] ${
@@ -1680,13 +1680,13 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
                     className="w-full h-auto object-cover transition-transform group-hover:scale-[1.02]"
                   />
                 </div>
-                <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
+                <figcaption className={`mt-4 text-sm ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
                   {t.initiative1.bentoImages.large.caption}
                 </figcaption>
               </figure>
 
               {/* CTA Button - directly under prototype */}
-              <div className="text-center mb-8">
+              <div className="text-center my-12">
                 <button
                   onClick={() => setPrototypeModalOpen(true)}
                   className={`inline-flex items-center gap-2 px-6 py-3 font-semibold rounded-full transition-colors ${
@@ -1746,30 +1746,30 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
           </section>
 
           {/* INITIATIVE 2: PRODUCT OPS */}
-          <section id="initiative-2" className="mb-32">
+          <section id="initiative-2" className="mb-40 md:mb-48">
             <FadeInSection>
-              <span className={`text-sm font-medium tracking-wide ${isDark ? 'text-cyan-400' : 'text-cyan-600'}`}>
+              <span className={`text-sm md:text-base font-medium tracking-wide ${isDark ? 'text-cyan-400' : 'text-cyan-600'}`}>
                 {t.initiative2.eyebrow}
               </span>
-              <h2 className={`text-2xl md:text-3xl font-bold mt-2 mb-2 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold mt-3 mb-2 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
                 {t.initiative2.title}
               </h2>
-              <hr className={`mb-8 ${isDark ? 'border-white/10' : 'border-gray-200'}`} />
+              <hr className={`mb-10 ${isDark ? 'border-white/10' : 'border-gray-200'}`} />
             </FadeInSection>
 
             {/* Problem */}
             <FadeInSection delay={0.1}>
-              <h3 className={`font-semibold mb-3 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <h3 className={`text-xl md:text-2xl font-semibold mb-4 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
                 {t.initiative2.problem}
               </h3>
-              <p className={`text-base leading-relaxed mb-8 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+              <p className={`text-base md:text-lg leading-relaxed mb-12 max-w-4xl ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
                 {t.initiative2.problemText}
               </p>
             </FadeInSection>
 
             {/* What I did */}
             <FadeInSection delay={0.2}>
-              <h3 className={`text-lg font-semibold mb-6 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <h3 className={`text-xl md:text-2xl font-semibold mb-8 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
                 {t.initiative2.whatIDid}
               </h3>
               <ExpandableSection
@@ -1778,7 +1778,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
                 expandLabel={t.progressive.readMore}
                 collapseLabel={t.progressive.showLess}
               >
-                <div className="space-y-6 mb-8">
+                <div className="space-y-8 mb-10">
                   <BulletSection title={t.initiative2.diagnostic.title} items={t.initiative2.diagnostic.items} isDark={isDark} />
                   <BulletSection title={t.initiative2.coDesign.title} items={t.initiative2.coDesign.items} isDark={isDark} />
                   <BulletSection title={t.initiative2.matrix.title} items={t.initiative2.matrix.items} isDark={isDark} />
@@ -1788,7 +1788,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
             </FadeInSection>
 
             {/* Bento image grid */}
-            <FadeInSection delay={0.3} className="mb-8">
+            <FadeInSection delay={0.3} className="my-12">
               <BentoImageGrid
                 large={t.initiative2.bentoImages.large}
                 small1={t.initiative2.bentoImages.small1}
@@ -1806,33 +1806,33 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
           </section>
 
           {/* INITIATIVE 3: USER RESEARCH */}
-          <section id="initiative-3" className="mb-32">
+          <section id="initiative-3" className="mb-40 md:mb-48">
             <FadeInSection>
-              <span className={`text-sm font-medium tracking-wide ${isDark ? 'text-pink-400' : 'text-pink-600'}`}>
+              <span className={`text-sm md:text-base font-medium tracking-wide ${isDark ? 'text-pink-400' : 'text-pink-600'}`}>
                 {t.initiative3.eyebrow}
               </span>
-              <h2 className={`text-2xl md:text-3xl font-bold mt-2 mb-1 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold mt-3 mb-2 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
                 {t.initiative3.title}
               </h2>
-              <p className={`text-lg mb-2 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+              <p className={`text-lg md:text-xl mb-4 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
                 {t.initiative3.subtitle}
               </p>
-              <hr className={`mb-8 ${isDark ? 'border-white/10' : 'border-gray-200'}`} />
+              <hr className={`mb-10 ${isDark ? 'border-white/10' : 'border-gray-200'}`} />
             </FadeInSection>
 
             {/* Problem */}
             <FadeInSection delay={0.1}>
-              <h3 className={`font-semibold mb-3 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <h3 className={`text-xl md:text-2xl font-semibold mb-4 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
                 {t.initiative3.problem}
               </h3>
-              <p className={`text-base leading-relaxed mb-8 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+              <p className={`text-base md:text-lg leading-relaxed mb-12 max-w-4xl ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
                 {t.initiative3.problemText}
               </p>
             </FadeInSection>
 
             {/* What I did */}
             <FadeInSection delay={0.2}>
-              <h3 className={`text-lg font-semibold mb-6 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <h3 className={`text-xl md:text-2xl font-semibold mb-8 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
                 {t.initiative3.whatIDid}
               </h3>
               <ExpandableSection
@@ -1841,7 +1841,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
                 expandLabel={t.progressive.readMore}
                 collapseLabel={t.progressive.showLess}
               >
-                <div className="space-y-6 mb-8">
+                <div className="space-y-8 mb-10">
                   <BulletSection title={t.initiative3.structuring.title} items={t.initiative3.structuring.items} isDark={isDark} />
                   <BulletSection title={t.initiative3.campaigns.title} items={t.initiative3.campaigns.items} isDark={isDark} />
                   <BulletSection title={t.initiative3.presentation.title} items={t.initiative3.presentation.items} isDark={isDark} />
@@ -1850,7 +1850,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
             </FadeInSection>
 
             {/* Bento image grid */}
-            <FadeInSection delay={0.3} className="mb-8">
+            <FadeInSection delay={0.3} className="my-12">
               <BentoImageGrid
                 large={t.initiative3.bentoImages.large}
                 small1={t.initiative3.bentoImages.small1}
@@ -1858,7 +1858,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
                 isDark={isDark}
                 onClick={onImageClick}
               />
-              <div className="mt-6 text-center">
+              <div className="mt-10 text-center">
                 <button
                   onClick={() => setReportModalOpen(true)}
                   className={`inline-flex items-center gap-2 px-6 py-3 font-semibold rounded-full transition-colors ${
@@ -1880,36 +1880,36 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
           </section>
 
           {/* INITIATIVE 4: WORKSHOPS */}
-          <section id="initiative-4" className="mb-32">
+          <section id="initiative-4" className="mb-40 md:mb-48">
             <FadeInSection>
-              <span className={`text-sm font-medium tracking-wide ${isDark ? 'text-amber-400' : 'text-amber-600'}`}>
+              <span className={`text-sm md:text-base font-medium tracking-wide ${isDark ? 'text-amber-400' : 'text-amber-600'}`}>
                 {t.initiative4.eyebrow}
               </span>
-              <h2 className={`text-2xl md:text-3xl font-bold mt-2 mb-1 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold mt-3 mb-2 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
                 {t.initiative4.title}
               </h2>
-              <p className={`text-lg mb-2 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+              <p className={`text-lg md:text-xl mb-4 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
                 {t.initiative4.subtitle}
               </p>
-              <hr className={`mb-8 ${isDark ? 'border-white/10' : 'border-gray-200'}`} />
+              <hr className={`mb-10 ${isDark ? 'border-white/10' : 'border-gray-200'}`} />
             </FadeInSection>
 
             {/* Problem */}
             <FadeInSection delay={0.1}>
-              <h3 className={`font-semibold mb-3 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <h3 className={`text-xl md:text-2xl font-semibold mb-4 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
                 {t.initiative4.problem}
               </h3>
-              <p className={`text-base leading-relaxed mb-8 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+              <p className={`text-base md:text-lg leading-relaxed mb-12 max-w-4xl ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
                 {t.initiative4.problemText}
               </p>
             </FadeInSection>
 
             {/* What I did */}
             <FadeInSection delay={0.2}>
-              <h3 className={`text-lg font-semibold mb-6 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <h3 className={`text-xl md:text-2xl font-semibold mb-8 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
                 {t.initiative4.whatIDid}
               </h3>
-              <div className="grid md:grid-cols-2 gap-6 mb-8">
+              <div className="grid md:grid-cols-2 gap-8 mb-10">
                 <BulletSection title={t.initiative4.preparation.title} items={t.initiative4.preparation.items} isDark={isDark} />
                 <BulletSection title={t.initiative4.facilitation.title} items={t.initiative4.facilitation.items} isDark={isDark} />
               </div>
@@ -1917,7 +1917,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
             </FadeInSection>
 
             {/* Bento image grid */}
-            <FadeInSection delay={0.3} className="mb-8">
+            <FadeInSection delay={0.3} className="my-12">
               <BentoImageGrid
                 large={t.initiative4.bentoImages.large}
                 small1={t.initiative4.bentoImages.small1}
@@ -1934,30 +1934,30 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
           </section>
 
           {/* INITIATIVE 5: AI */}
-          <section id="initiative-5" className="mb-32">
+          <section id="initiative-5" className="mb-40 md:mb-48">
             <FadeInSection>
-              <span className={`text-sm font-medium tracking-wide ${isDark ? 'text-purple-400' : 'text-purple-600'}`}>
+              <span className={`text-sm md:text-base font-medium tracking-wide ${isDark ? 'text-purple-400' : 'text-purple-600'}`}>
                 {t.initiative5.eyebrow}
               </span>
-              <h2 className={`text-2xl md:text-3xl font-bold mt-2 mb-1 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold mt-3 mb-2 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
                 {t.initiative5.title}
               </h2>
-              <p className={`text-lg mb-2 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+              <p className={`text-lg md:text-xl mb-4 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
                 {t.initiative5.subtitle}
               </p>
-              <hr className={`mb-8 ${isDark ? 'border-white/10' : 'border-gray-200'}`} />
+              <hr className={`mb-10 ${isDark ? 'border-white/10' : 'border-gray-200'}`} />
             </FadeInSection>
 
             {/* Context */}
             <FadeInSection delay={0.1}>
-              <p className={`text-base leading-relaxed mb-8 italic ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+              <p className={`text-base md:text-lg leading-relaxed mb-12 italic max-w-4xl ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
                 {t.initiative5.context}
               </p>
             </FadeInSection>
 
             {/* What I did */}
             <FadeInSection delay={0.2}>
-              <h3 className={`text-lg font-semibold mb-6 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <h3 className={`text-xl md:text-2xl font-semibold mb-8 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
                 {t.initiative5.whatIDid}
               </h3>
               <ExpandableSection
@@ -1966,7 +1966,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
                 expandLabel={t.progressive.readMore}
                 collapseLabel={t.progressive.showLess}
               >
-                <div className="space-y-6 mb-8">
+                <div className="space-y-8 mb-10">
                   <BulletSection title={t.initiative5.study.title} items={t.initiative5.study.items} isDark={isDark} />
                   <BulletSection title={t.initiative5.ideation.title} items={t.initiative5.ideation.items} isDark={isDark} />
                   <BulletSection title={t.initiative5.prototyping.title} items={t.initiative5.prototyping.items} isDark={isDark} />
@@ -1975,7 +1975,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
             </FadeInSection>
 
             {/* Prototype images */}
-            <FadeInSection delay={0.3} className="mb-8">
+            <FadeInSection delay={0.3} className="my-12">
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <ClickableImage
@@ -2035,26 +2035,26 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
           </section>
 
           {/* UI & DELIVERY */}
-          <section id="ui-delivery" className="mb-32">
+          <section id="ui-delivery" className="mb-40 md:mb-48">
             <FadeInSection>
-              <span className={`text-sm font-medium tracking-wide ${isDark ? 'text-teal-400' : 'text-teal-600'}`}>
+              <span className={`text-sm md:text-base font-medium tracking-wide ${isDark ? 'text-teal-400' : 'text-teal-600'}`}>
                 {t.uiDelivery.eyebrow}
               </span>
-              <h2 className={`text-2xl md:text-3xl font-bold mt-2 mb-1 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold mt-3 mb-2 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
                 {t.uiDelivery.title}
               </h2>
-              <p className={`text-lg mb-2 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+              <p className={`text-lg md:text-xl mb-4 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
                 {t.uiDelivery.subtitle}
               </p>
-              <hr className={`mb-8 ${isDark ? 'border-white/10' : 'border-gray-200'}`} />
+              <hr className={`mb-10 ${isDark ? 'border-white/10' : 'border-gray-200'}`} />
             </FadeInSection>
 
             {/* Homepage Before/After */}
-            <FadeInSection delay={0.1} className="mb-12">
-              <h3 className={`text-lg font-semibold mb-3 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+            <FadeInSection delay={0.1} className="mb-16">
+              <h3 className={`text-xl md:text-2xl font-semibold mb-4 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
                 {t.uiDelivery.homepageTitle}
               </h3>
-              <p className={`text-base leading-relaxed mb-6 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+              <p className={`text-base md:text-lg leading-relaxed mb-8 max-w-4xl ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
                 {t.uiDelivery.homepageDescription}
               </p>
               <figure>
@@ -2073,17 +2073,17 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
             </FadeInSection>
 
             {/* Search Engine - Text description */}
-            <FadeInSection delay={0.15} className="mb-12">
-              <div className={`p-6 rounded-2xl border ${isDark ? 'bg-white/5 border-white/10' : 'bg-gray-50 border-gray-200'}`}>
-                <div className="flex items-start gap-4">
+            <FadeInSection delay={0.15} className="mb-16">
+              <div className={`p-8 rounded-2xl border ${isDark ? 'bg-white/5 border-white/10' : 'bg-gray-50 border-gray-200'}`}>
+                <div className="flex items-start gap-5">
                   <div className={`flex-shrink-0 p-3 rounded-xl ${isDark ? 'bg-teal-500/20' : 'bg-teal-100'}`}>
                     <Search size={24} className={isDark ? 'text-teal-400' : 'text-teal-600'} />
                   </div>
                   <div>
-                    <h4 className={`font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                    <h4 className={`text-lg font-semibold mb-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>
                       {t.uiDelivery.searchEngineTitle}
                     </h4>
-                    <p className={`text-sm leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                    <p className={`text-base leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
                       {t.uiDelivery.searchEngineDescription}
                     </p>
                   </div>
@@ -2093,10 +2093,10 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
 
             {/* Video Section */}
             <FadeInSection delay={0.2}>
-              <h3 className={`text-lg font-semibold mb-3 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <h3 className={`text-xl md:text-2xl font-semibold mb-4 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
                 {t.uiDelivery.videoTitle}
               </h3>
-              <p className={`text-base leading-relaxed mb-6 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+              <p className={`text-base md:text-lg leading-relaxed mb-8 max-w-4xl ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
                 {t.uiDelivery.videoSubtitle}
               </p>
               <figure>
@@ -2119,31 +2119,31 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
           </section>
 
           {/* TESTIMONIAL */}
-          <section className="mb-32">
+          <section className="mb-40 md:mb-48">
             <FadeInSection>
-              <span className={`text-sm font-medium tracking-wide ${isDark ? 'text-rose-400' : 'text-rose-600'}`}>
+              <span className={`text-sm md:text-base font-medium tracking-wide ${isDark ? 'text-rose-400' : 'text-rose-600'}`}>
                 {t.testimonial.eyebrow}
               </span>
             </FadeInSection>
             <FadeInSection delay={0.1}>
-              <div className={`mt-6 p-8 rounded-2xl ${isDark ? 'bg-white/5 border border-white/10' : 'bg-gray-50 border border-gray-100'}`}>
-                <div className="flex flex-col md:flex-row gap-6 items-center">
+              <div className={`mt-8 p-8 md:p-10 rounded-2xl ${isDark ? 'bg-white/5 border border-white/10' : 'bg-gray-50 border border-gray-100'}`}>
+                <div className="flex flex-col md:flex-row gap-8 items-center">
                   <div className="flex-shrink-0">
                     <img loading="lazy"
                       src="/images/boris-aime-bauderlique.webp"
                       alt={t.testimonial.author}
-                      className="w-20 h-20 md:w-24 md:h-24 rounded-full object-cover"
+                      className="w-24 h-24 md:w-28 md:h-28 rounded-full object-cover"
                     />
                   </div>
                   <div className="flex-1 text-center md:text-left">
-                    <blockquote className={`text-base md:text-lg leading-relaxed italic ${isDark ? 'text-gray-200' : 'text-gray-700'}`}>
+                    <blockquote className={`text-lg md:text-xl leading-relaxed italic ${isDark ? 'text-gray-200' : 'text-gray-700'}`}>
                       "{t.testimonial.quote}"
                     </blockquote>
-                    <div className="mt-4">
-                      <p className={`font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                    <div className="mt-5">
+                      <p className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
                         {t.testimonial.author}
                       </p>
-                      <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                      <p className={`text-base ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
                         {t.testimonial.role}
                       </p>
                     </div>
@@ -2154,25 +2154,25 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
           </section>
 
           {/* LEARNINGS */}
-          <section id="learnings" className="mb-32">
+          <section id="learnings" className="mb-40 md:mb-48">
             <FadeInSection>
-              <span className={`text-sm font-medium tracking-wide ${isDark ? 'text-indigo-400' : 'text-indigo-600'}`}>
+              <span className={`text-sm md:text-base font-medium tracking-wide ${isDark ? 'text-indigo-400' : 'text-indigo-600'}`}>
                 {t.learnings.eyebrow}
               </span>
-              <h2 className={`text-2xl md:text-3xl font-bold mt-2 mb-2 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold mt-3 mb-4 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
                 {t.learnings.title}
               </h2>
-              <hr className={`mb-8 ${isDark ? 'border-white/10' : 'border-gray-200'}`} />
+              <hr className={`mb-10 ${isDark ? 'border-white/10' : 'border-gray-200'}`} />
             </FadeInSection>
 
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid md:grid-cols-2 gap-8">
               {t.learnings.items.map((item, idx) => (
                 <FadeInSection key={idx} delay={0.1 + idx * 0.05}>
-                  <div className={`p-6 rounded-xl ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}>
-                    <h4 className={`font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                  <div className={`p-8 rounded-xl ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}>
+                    <h4 className={`text-lg font-semibold mb-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>
                       {item.title}
                     </h4>
-                    <p className={`text-sm leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                    <p className={`text-base leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
                       {item.text}
                     </p>
                   </div>
@@ -2182,16 +2182,16 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
           </section>
 
           {/* CTA */}
-          <section className="text-center pb-12">
+          <section className="text-center pb-16 md:pb-24">
             <FadeInSection>
-              <h2 className={`text-2xl md:text-3xl font-bold tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
                 {t.cta.title}
               </h2>
             </FadeInSection>
             <FadeInSection delay={0.1}>
               <a
                 href="mailto:victor.soussan@gmail.com"
-                className={`inline-flex items-center gap-2 mt-6 px-8 py-4 font-semibold rounded-full transition-colors ${
+                className={`inline-flex items-center gap-2 mt-8 px-8 py-4 text-lg font-semibold rounded-full transition-colors ${
                   isDark
                     ? 'bg-white hover:bg-gray-100 text-black'
                     : 'bg-gray-900 hover:bg-black text-white'
