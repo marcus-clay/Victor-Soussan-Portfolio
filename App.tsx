@@ -52,7 +52,7 @@ import {
   FolderOpen
 } from 'lucide-react';
 import { Rocket, Buildings, HandHeart, ArrowsClockwise, ChatCircleDots, ChartLineUp, Envelope, Phone, LinkedinLogo, Globe } from '@phosphor-icons/react';
-import { InfiniteGrid } from './src/components/ui/InfiniteGrid';
+// InfiniteGrid removed for performance - was causing 60fps JS animation loop
 
 // Lazy load heavy page components for code splitting
 const ToolkitPage = lazy(() => import('./ToolkitPage'));
@@ -2820,8 +2820,28 @@ const App: React.FC = () => {
 
       {/* Hero Section */}
       <header className="relative min-h-[85vh] flex flex-col justify-center px-6 overflow-hidden">
-        {/* Infinite Grid Background */}
-        <InfiniteGrid isDark={systemTheme === 'dark'} />
+        {/* Static Background - Performance optimized (no JS animation) */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {/* Gradient blobs only - no animated grid */}
+          <div className={`absolute right-[-10%] top-[-20%] w-[50%] h-[50%] rounded-full blur-[120px] ${
+            systemTheme === 'dark' ? 'bg-blue-600/8' : 'bg-blue-300/20'
+          }`} />
+          <div className={`absolute right-[20%] top-[10%] w-[25%] h-[25%] rounded-full blur-[100px] ${
+            systemTheme === 'dark' ? 'bg-indigo-500/5' : 'bg-indigo-300/15'
+          }`} />
+          <div className={`absolute left-[-15%] bottom-[-10%] w-[45%] h-[45%] rounded-full blur-[120px] ${
+            systemTheme === 'dark' ? 'bg-indigo-600/8' : 'bg-indigo-300/20'
+          }`} />
+          <div className={`absolute left-[30%] bottom-[20%] w-[20%] h-[20%] rounded-full blur-[80px] ${
+            systemTheme === 'dark' ? 'bg-violet-500/5' : 'bg-violet-300/12'
+          }`} />
+          {/* Bottom fade */}
+          <div className={`absolute bottom-0 left-0 right-0 h-40 ${
+            systemTheme === 'dark'
+              ? 'bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/70 to-transparent'
+              : 'bg-gradient-to-t from-[#F9F9F9] via-[#F9F9F9]/70 to-transparent'
+          }`} />
+        </div>
 
         <div className="relative max-w-4xl mx-auto text-center z-10 pt-2.5">
           {/* Availability Badge */}
