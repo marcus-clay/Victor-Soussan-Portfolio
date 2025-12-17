@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform, PanInfo } from 'framer-motion';
-import jsPDF from 'jspdf';
+// jsPDF is now lazy-loaded in generateExecutivePDF to reduce initial bundle by ~380KB
 import CareerCarousel from './src/components/CareerCarousel';
 import { careerData } from './src/data/careerData';
 import {
@@ -69,8 +69,12 @@ const loadImageAsBase64 = (src: string): Promise<string | null> => {
 };
 
 // PDF generation function for the Executive Profile deck
+// jsPDF is lazy-loaded to reduce initial bundle size by ~380KB
 const generateExecutivePDF = async (lang: 'en' | 'fr', setGenerating?: (v: boolean) => void) => {
   if (setGenerating) setGenerating(true);
+
+  // Lazy load jsPDF only when PDF generation is needed
+  const { default: jsPDF } = await import('jspdf');
 
   const pdf = new jsPDF({
     orientation: 'landscape',

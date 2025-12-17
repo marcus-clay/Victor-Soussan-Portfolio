@@ -325,7 +325,7 @@ const allImagesData: MediaItem[] = [
   { src: '/images/connect/connect_dashboard_home_light_full-scaled.webp', captionKey: 'homeLight', type: 'image' },
   { src: '/images/connect/connect_dashboard_applications_full-scaled.webp', captionKey: 'applications', type: 'image' },
   { src: '/videos/connect/connect-loading-user-authent-app-launch-study.mp4', captionKey: 'loadingAuth', type: 'video' },
-  { src: '/videos/connect/connect-dashboard-prototype_complet_4k-compressed.mp4', captionKey: 'prototype', type: 'video' },
+  { src: '/videos/connect/connect-dashboard-prototype_complet_1080p.mp4', captionKey: 'prototype', type: 'video' },
   { src: '/videos/connect/connect-design-sprint-compressed.mp4', captionKey: 'designSprint', type: 'video' },
   { src: '/images/connect/connect_tech_architecture-1-scaled.webp', captionKey: 'techArch', type: 'image' },
   { src: '/images/connect/connect_specifications_implem_01-scaled.webp', captionKey: 'specsImplem', type: 'image' },
@@ -1077,13 +1077,13 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
               {/* Complete Dashboard Prototype Video */}
               <figure className="my-12">
                 <div
-                  onClick={() => openLightbox('/videos/connect/connect-dashboard-prototype_complet_4k-compressed.mp4')}
+                  onClick={() => openLightbox('/videos/connect/connect-dashboard-prototype_complet_1080p.mp4')}
                   className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
                     systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
                   }`}
                 >
                   <video
-                    src="/videos/connect/connect-dashboard-prototype_complet_4k-compressed.mp4"
+                    src="/videos/connect/connect-dashboard-prototype_complet_1080p.mp4"
                     autoPlay
                     loop
                     muted

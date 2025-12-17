@@ -128,7 +128,7 @@ const TRANSLATIONS = {
           title: 'Dashboard Prototype',
           subtitle: 'Full interaction flow',
           description: 'Complete walkthrough demonstrating the dashboard\'s modular capabilities and responsive behavior.',
-          media: '/videos/connect/connect-dashboard-prototype_complet_4k-compressed.mp4',
+          media: '/videos/connect/connect-dashboard-prototype_complet_1080p.mp4',
           type: 'video' as const
         },
         {
@@ -287,7 +287,7 @@ const TRANSLATIONS = {
           title: 'Prototype Dashboard',
           subtitle: 'Flux d\'interaction complet',
           description: 'Walkthrough complet démontrant les capacités modulaires du dashboard et son comportement responsive.',
-          media: '/videos/connect/connect-dashboard-prototype_complet_4k-compressed.mp4',
+          media: '/videos/connect/connect-dashboard-prototype_complet_1080p.mp4',
           type: 'video' as const
         },
         {

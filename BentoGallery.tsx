@@ -924,7 +924,7 @@ export const CONNECT_GALLERY_ITEMS: GalleryItem[] = [
     type: 'video',
   },
   {
-    src: '/videos/connect/connect-dashboard-prototype_complet_4k.mp4',
+    src: '/videos/connect/connect-dashboard-prototype_complet_1080p.mp4',
     caption: 'Dashboard Prototype',
     captionDesc: 'Full interaction walkthrough demonstrating modular capabilities',
     type: 'video',
@@ -1214,7 +1214,7 @@ export const SQOOL_GALLERY_ITEMS: GalleryItem[] = [
   },
   // Connect Vision Prototype (videos)
   {
-    src: '/videos/connect/connect-dashboard-prototype_complet_4k.mp4',
+    src: '/videos/connect/connect-dashboard-prototype_complet_1080p.mp4',
     caption: 'Connect Dashboard Prototype',
     captionDesc: 'Full walkthrough of the web-based dashboard demonstrator',
     type: 'video',
