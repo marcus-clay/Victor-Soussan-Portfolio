@@ -1088,8 +1088,8 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
     }
     const element = document.getElementById(sectionId);
     if (element && containerRef.current) {
-      // Header height (73px) + sticky mini-nav height (~56px with py-4) + padding (24px)
-      const headerOffset = 73 + 56 + 24;
+      // Header height (80px with pt-4) + sticky mini-nav height (~56px with py-4) + padding (24px)
+      const headerOffset = 80 + 56 + 24;
       const elementPosition = element.offsetTop - headerOffset;
       containerRef.current.scrollTo({
         top: elementPosition,
@@ -1138,7 +1138,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className={`fixed top-16 left-0 right-0 z-30 backdrop-blur-xl ${
+            className={`fixed top-20 left-0 right-0 z-30 backdrop-blur-xl ${
               systemTheme === 'dark'
                 ? 'bg-[#0a0a0a]/80'
                 : 'bg-white/80'
@@ -1324,17 +1324,21 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
             </div>
           </div>
 
-          {/* Right - Close button */}
+          {/* Right - Close button pill for case study, plain for gallery */}
           <div className="flex-shrink-0">
             <button
               onClick={onClose}
-              className={`w-8 h-8 flex items-center justify-center rounded-full transition-colors ${
+              className={`relative flex items-center justify-center rounded-full transition-colors before:absolute before:inset-[-12px] before:content-[''] ${
                 viewMode === 'gallery'
-                  ? 'text-gray-400 hover:text-white hover:bg-white/10'
-                  : (systemTheme === 'dark' ? 'text-gray-400 hover:text-white hover:bg-white/10' : 'text-gray-500 hover:text-gray-900 hover:bg-black/5')
+                  ? 'w-8 h-8 text-gray-400 hover:text-white hover:bg-white/10'
+                  : `p-3 backdrop-blur-xl ${
+                      systemTheme === 'dark'
+                        ? 'bg-[#0a0a0a]/80 text-gray-400 hover:text-white border border-white/10'
+                        : 'bg-[#FCFCFD]/80 text-gray-500 hover:text-gray-900 border border-gray-200/50'
+                    }`
               }`}
             >
-              <X size={18} />
+              <X size={viewMode === 'gallery' ? 18 : 24} />
             </button>
           </div>
         </div>

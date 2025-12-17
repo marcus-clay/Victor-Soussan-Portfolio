@@ -159,6 +159,10 @@ const CONNECT_TRANSLATIONS = {
       interactionDemoDesc: 'Motion prototype of bubble opening animation.',
       bulleDemo: 'La Bulle - Full demo',
       bulleDemoDesc: 'Complete demonstration of bubble capabilities.',
+      designSprint: 'Design Sprint Flow',
+      designSprintDesc: 'User journey walkthrough from onboarding to classroom piloting.',
+      designSystem: 'Design System',
+      designSystemDesc: 'Component library and visual language foundation.',
     },
   },
   fr: {
@@ -296,6 +300,10 @@ const CONNECT_TRANSLATIONS = {
       interactionDemoDesc: 'Prototype motion de l\'animation d\'ouverture de la bulle.',
       bulleDemo: 'La Bulle - Démo complète',
       bulleDemoDesc: 'Démonstration complète des capacités de la bulle.',
+      designSprint: 'Design Sprint Flow',
+      designSprintDesc: 'Parcours utilisateur de l\'onboarding au pilotage de classe.',
+      designSystem: 'Design System',
+      designSystemDesc: 'Bibliothèque de composants et fondation du langage visuel.',
     },
   },
 };
@@ -317,7 +325,8 @@ const allImagesData: MediaItem[] = [
   { src: '/images/connect/connect_dashboard_home_light_full-scaled.webp', captionKey: 'homeLight', type: 'image' },
   { src: '/images/connect/connect_dashboard_applications_full-scaled.webp', captionKey: 'applications', type: 'image' },
   { src: '/videos/connect/connect-loading-user-authent-app-launch-study.mp4', captionKey: 'loadingAuth', type: 'video' },
-  { src: '/videos/connect/connect-dashboard-prototype_complet_4k.mp4', captionKey: 'prototype', type: 'video' },
+  { src: '/videos/connect/connect-dashboard-prototype_complet_4k-compressed.mp4', captionKey: 'prototype', type: 'video' },
+  { src: '/videos/connect/connect-design-sprint-compressed.mp4', captionKey: 'designSprint', type: 'video' },
   { src: '/images/connect/connect_tech_architecture-1-scaled.webp', captionKey: 'techArch', type: 'image' },
   { src: '/images/connect/connect_specifications_implem_01-scaled.webp', captionKey: 'specsImplem', type: 'image' },
   { src: '/images/connect/connect_specifications_content_02-scaled.webp', captionKey: 'specsContent', type: 'image' },
@@ -327,8 +336,9 @@ const allImagesData: MediaItem[] = [
   { src: '/images/connect/connect_bulle_icons-1-scaled.webp', captionKey: 'icons', type: 'image' },
   { src: '/images/connect/connect_bulle_behaviour_square_01-scaled.webp', captionKey: 'behaviour1', type: 'image' },
   { src: '/images/connect/connect_bulle_behaviour_square_02-scaled.webp', captionKey: 'behaviour2', type: 'image' },
-  { src: '/videos/connect/interaction-bulle-connect.mp4', captionKey: 'interactionDemo', type: 'video' },
-  { src: '/videos/connect/Video-demo-bulle-interactions-02.mp4', captionKey: 'bulleDemo', type: 'video' },
+  { src: '/videos/connect/interaction-bulle-connect-compressed.mp4', captionKey: 'interactionDemo', type: 'video' },
+  { src: '/videos/connect/Video-demo-bulle-interactions-02-compressed.mp4', captionKey: 'bulleDemo', type: 'video' },
+  { src: '/images/connect/connect_design_system.webp', captionKey: 'designSystem', type: 'image' },
 ];
 
 // Gallery Card component with Apple TV-style 3D tilt effect
@@ -697,13 +707,13 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
           <div className="flex-shrink-0">
             <button
               onClick={onClose}
-              className={`w-8 h-8 flex items-center justify-center rounded-full transition-colors ${
+              className={`relative p-3 flex items-center justify-center rounded-full transition-colors before:absolute before:inset-[-12px] before:content-[''] ${
                 viewMode === 'gallery'
                   ? 'text-gray-400 hover:text-white hover:bg-white/10'
                   : (systemTheme === 'dark' ? 'text-gray-400 hover:text-white hover:bg-white/10' : 'text-gray-500 hover:text-gray-900 hover:bg-black/5')
               }`}
             >
-              <X size={18} />
+              <X size={24} />
             </button>
           </div>
         </div>
@@ -1050,13 +1060,13 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
               {/* Complete Dashboard Prototype Video */}
               <figure className="mb-8">
                 <div
-                  onClick={() => openLightbox('/videos/connect/connect-dashboard-prototype_complet_4k.mp4')}
+                  onClick={() => openLightbox('/videos/connect/connect-dashboard-prototype_complet_4k-compressed.mp4')}
                   className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
                     systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
                   }`}
                 >
                   <video
-                    src="/videos/connect/connect-dashboard-prototype_complet_4k.mp4"
+                    src="/videos/connect/connect-dashboard-prototype_complet_4k-compressed.mp4"
                     autoPlay
                     loop
                     muted
@@ -1315,13 +1325,13 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
               {/* Interaction Demo Video */}
               <figure className="mb-8">
                 <div
-                  onClick={() => openLightbox('/videos/connect/interaction-bulle-connect.mp4')}
+                  onClick={() => openLightbox('/videos/connect/interaction-bulle-connect-compressed.mp4')}
                   className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
                     systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
                   }`}
                 >
                   <video
-                    src="/videos/connect/interaction-bulle-connect.mp4"
+                    src="/videos/connect/interaction-bulle-connect-compressed.mp4"
                     autoPlay
                     loop
                     muted
@@ -1341,13 +1351,13 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
               {/* Bulle Demo Video */}
               <figure className="mb-8">
                 <div
-                  onClick={() => openLightbox('/videos/connect/Video-demo-bulle-interactions-02.mp4')}
+                  onClick={() => openLightbox('/videos/connect/Video-demo-bulle-interactions-02-compressed.mp4')}
                   className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
                     systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
                   }`}
                 >
                   <video
-                    src="/videos/connect/Video-demo-bulle-interactions-02.mp4"
+                    src="/videos/connect/Video-demo-bulle-interactions-02-compressed.mp4"
                     autoPlay
                     loop
                     muted

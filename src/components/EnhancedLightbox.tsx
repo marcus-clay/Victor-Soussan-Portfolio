@@ -17,7 +17,7 @@
  */
 
 import React, { useState, useRef, useCallback, useEffect } from 'react';
-import { motion, AnimatePresence, useAnimation, PanInfo, useMotionValue } from 'framer-motion';
+import { motion, AnimatePresence, useAnimation, PanInfo, useMotionValue, LayoutGroup } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight, ZoomIn, ZoomOut } from 'lucide-react';
 
 export interface LightboxImage {
@@ -64,6 +64,7 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
   const [dragY, setDragY] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [showHint, setShowHint] = useState(true);
+  const [slideDirection, setSlideDirection] = useState<'left' | 'right' | null>(null);
 
   // Animation controls
   const controls = useAnimation();
@@ -288,10 +289,12 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
 
     if (info.offset.x < -threshold || info.velocity.x < -velocity) {
       if (currentIndex < images.length - 1) {
+        setSlideDirection('left');
         onIndexChange(currentIndex + 1);
       }
     } else if (info.offset.x > threshold || info.velocity.x > velocity) {
       if (currentIndex > 0) {
+        setSlideDirection('right');
         onIndexChange(currentIndex - 1);
       }
     }
@@ -313,6 +316,7 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
   // Navigate functions
   const goNext = useCallback(() => {
     if (currentIndex < images.length - 1) {
+      setSlideDirection('left');
       resetState();
       onIndexChange(currentIndex + 1);
     }
@@ -320,10 +324,37 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
 
   const goPrev = useCallback(() => {
     if (currentIndex > 0) {
+      setSlideDirection('right');
       resetState();
       onIndexChange(currentIndex - 1);
     }
   }, [currentIndex, onIndexChange, resetState]);
+
+  // Slide animation variants with parallax effect (iOS Photos style)
+  const slideVariants = {
+    enter: (direction: 'left' | 'right' | null) => ({
+      x: direction === 'left' ? 300 : direction === 'right' ? -300 : 0,
+      opacity: 0,
+      scale: 0.9
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+      scale: 1
+    },
+    exit: (direction: 'left' | 'right' | null) => ({
+      x: direction === 'left' ? -300 : direction === 'right' ? 300 : 0,
+      opacity: 0,
+      scale: 0.9
+    })
+  };
+
+  const slideTransition = {
+    type: 'spring' as const,
+    stiffness: 300,
+    damping: 28,
+    mass: 0.8
+  };
 
   const currentImage = images[currentIndex];
   if (!currentImage) return null;
@@ -357,7 +388,7 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.2 }}
             onClick={handleClose}
-            className="absolute top-4 right-4 z-20 p-3 rounded-full bg-white/10 backdrop-blur-sm text-white transition-colors hover:bg-white/20"
+            className="absolute top-4 right-4 z-20 p-3 rounded-full bg-white/10 backdrop-blur-sm text-white transition-colors hover:bg-white/20 before:absolute before:inset-[-12px] before:content-['']"
             aria-label={t.close}
           >
             <X size={24} />
@@ -409,6 +440,7 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
           )}
 
           {/* Main content container */}
+          <LayoutGroup>
           {isMobile ? (
             // Mobile: Gesture-based container
             <motion.div
@@ -422,40 +454,74 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
               animate={controls}
               style={{ y: isZoomed ? 0 : dragY }}
             >
-              <motion.div
-                key={currentIndex}
-                initial={{ scale: 0.95, opacity: 0 }}
-                animate={{
-                  scale: isZoomed ? scale : 1,
-                  opacity: 1,
-                  x: isZoomed ? position.x : 0,
-                  y: isZoomed ? position.y : 0
-                }}
-                exit={{ scale: 0.95, opacity: 0 }}
-                transition={springTransition}
-                onTouchEnd={handleMobileDoubleTap}
-                onPan={isZoomed ? handlePanWhenZoomed : undefined}
-                className="relative max-w-[95vw] max-h-[85vh] px-4"
-                style={{ touchAction: 'none' }}
-              >
-                {currentImage.type === 'video' ? (
-                  <video
-                    ref={videoRef}
-                    src={currentImage.src}
-                    className="max-w-full max-h-[80vh] object-contain rounded-lg shadow-2xl"
-                    controls
-                    playsInline
-                    autoPlay
-                  />
-                ) : (
-                  <img loading="lazy"
-                    src={currentImage.src}
-                    alt={currentImage.caption || ''}
-                    className="max-w-full max-h-[80vh] object-contain rounded-lg shadow-2xl select-none"
-                    draggable={false}
-                  />
-                )}
-              </motion.div>
+              <AnimatePresence mode="popLayout" custom={slideDirection}>
+                <motion.div
+                  key={currentIndex}
+                  custom={slideDirection}
+                  variants={slideVariants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={slideTransition}
+                  className="flex flex-col items-center max-w-[95vw] px-4"
+                >
+                  <motion.div
+                    animate={{
+                      scale: isZoomed ? scale : 1,
+                      x: isZoomed ? position.x : 0,
+                      y: isZoomed ? position.y : 0
+                    }}
+                    transition={springTransition}
+                    onTouchEnd={handleMobileDoubleTap}
+                    onPan={isZoomed ? handlePanWhenZoomed : undefined}
+                    className="relative"
+                    style={{ touchAction: 'none' }}
+                  >
+                    {currentImage.type === 'video' ? (
+                      <video
+                        ref={videoRef}
+                        src={currentImage.src}
+                        className="max-w-full max-h-[60vh] object-contain rounded-3xl shadow-2xl"
+                        controls
+                        playsInline
+                        autoPlay
+                      />
+                    ) : (
+                      <img loading="lazy"
+                        src={currentImage.src}
+                        alt={currentImage.caption || ''}
+                        className="max-w-full max-h-[60vh] object-contain rounded-3xl shadow-2xl select-none"
+                        draggable={false}
+                      />
+                    )}
+                  </motion.div>
+
+                  {/* Caption below media - mobile */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{
+                      opacity: isZoomed ? 0 : 1,
+                      y: isZoomed ? 10 : 0
+                    }}
+                    transition={{ duration: 0.2, delay: 0.15 }}
+                    className="mt-5 text-center max-w-full px-2"
+                  >
+                    {currentImage.caption && (
+                      <p className="text-white/90 text-sm font-medium leading-relaxed mb-2">
+                        {currentImage.caption}
+                      </p>
+                    )}
+                    <p className="text-white/40 text-xs tracking-wide">
+                      {t.counter(currentIndex, images.length)}
+                      {!isZoomed && (
+                        <span className="ml-2">
+                          • {t.tapToZoom}
+                        </span>
+                      )}
+                    </p>
+                  </motion.div>
+                </motion.div>
+              </AnimatePresence>
             </motion.div>
           ) : (
             // Desktop: Scrollable container when zoomed
@@ -473,65 +539,89 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
                 }
               }}
             >
-              <motion.div
-                key={`${currentIndex}-${isZoomed}`}
-                initial={{ opacity: 0, scale: isZoomed ? 1 : 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-                onClick={handleDesktopClick}
-                className={`relative ${isZoomed ? 'w-full max-w-[95vw]' : 'max-w-[85vw] max-h-[85vh]'}`}
-                style={{
-                  cursor: isZoomed ? 'zoom-out' : 'zoom-in'
-                }}
-              >
-                {currentImage.type === 'video' ? (
-                  <video
-                    ref={videoRef}
-                    src={currentImage.src}
-                    className={`${isZoomed ? 'w-full h-auto' : 'max-w-full max-h-[85vh] object-contain'} rounded-lg shadow-2xl`}
-                    controls
-                    playsInline
-                    autoPlay
-                  />
-                ) : (
-                  <img loading="lazy"
-                    src={currentImage.src}
-                    alt={currentImage.caption || ''}
-                    className={`${isZoomed ? 'w-full h-auto' : 'max-w-full max-h-[85vh] object-contain'} rounded-lg shadow-2xl select-none`}
-                    draggable={false}
-                  />
-                )}
-              </motion.div>
+              <AnimatePresence mode="popLayout" custom={slideDirection}>
+                <motion.div
+                  key={currentIndex}
+                  custom={slideDirection}
+                  variants={slideVariants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={slideTransition}
+                  className={`flex flex-col items-center ${isZoomed ? 'w-full max-w-[95vw]' : 'max-w-[85vw]'}`}
+                >
+                  {/* Media container with shared element transition */}
+                  <motion.div
+                    layoutId={`lightbox-media-${currentIndex}`}
+                    onClick={handleDesktopClick}
+                    className="relative"
+                    style={{
+                      cursor: isZoomed ? 'zoom-out' : 'zoom-in'
+                    }}
+                    transition={{
+                      layout: {
+                        type: 'spring',
+                        stiffness: 300,
+                        damping: 30
+                      }
+                    }}
+                  >
+                    {currentImage.type === 'video' ? (
+                      <video
+                        ref={videoRef}
+                        src={currentImage.src}
+                        className={`${isZoomed ? 'w-full h-auto max-w-[95vw]' : 'max-w-[85vw] max-h-[65vh] object-contain'} rounded-3xl shadow-2xl`}
+                        controls
+                        playsInline
+                        autoPlay
+                      />
+                    ) : (
+                      <motion.img
+                        layoutId={`lightbox-img-${currentIndex}`}
+                        src={currentImage.src}
+                        alt={currentImage.caption || ''}
+                        className={`${isZoomed ? 'w-full h-auto max-w-[95vw]' : 'max-w-[85vw] max-h-[65vh] object-contain'} rounded-3xl shadow-2xl select-none`}
+                        draggable={false}
+                        transition={{
+                          layout: {
+                            type: 'spring',
+                            stiffness: 300,
+                            damping: 30
+                          }
+                        }}
+                      />
+                    )}
+                  </motion.div>
+
+                  {/* Caption below media - only visible when not zoomed */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{
+                      opacity: isZoomed ? 0 : 1,
+                      y: isZoomed ? 10 : 0
+                    }}
+                    transition={{ duration: 0.2, delay: isZoomed ? 0 : 0.15 }}
+                    className="mt-6 text-center max-w-3xl px-4"
+                  >
+                    {currentImage.caption && (
+                      <p className="text-white/90 text-sm md:text-base font-medium leading-relaxed mb-2">
+                        {currentImage.caption}
+                      </p>
+                    )}
+                    <p className="text-white/40 text-xs tracking-wide">
+                      {t.counter(currentIndex, images.length)}
+                      {!isZoomed && (
+                        <span className="ml-2">
+                          • {t.clickToZoom}
+                        </span>
+                      )}
+                    </p>
+                  </motion.div>
+                </motion.div>
+              </AnimatePresence>
             </div>
           )}
-
-          {/* Caption and counter - hidden when zoomed on desktop, fades on mobile */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{
-              opacity: isZoomed ? 0 : 1,
-              y: 0,
-              pointerEvents: isZoomed ? 'none' : 'auto'
-            }}
-            exit={{ opacity: 0, y: 20 }}
-            transition={{ duration: 0.2 }}
-            className="absolute bottom-16 md:bottom-8 left-4 right-4 text-center z-10 pointer-events-none"
-          >
-            {currentImage.caption && (
-              <p className="text-white/90 text-sm md:text-base mb-2 line-clamp-2">
-                {currentImage.caption}
-              </p>
-            )}
-            <p className="text-white/50 text-xs">
-              {t.counter(currentIndex, images.length)}
-              {!isZoomed && (
-                <span className="ml-2">
-                  • {isMobile ? t.tapToZoom : t.clickToZoom}
-                </span>
-              )}
-            </p>
-          </motion.div>
+          </LayoutGroup>
 
           {/* Dots indicator - hidden when zoomed */}
           {images.length > 1 && !isZoomed && (

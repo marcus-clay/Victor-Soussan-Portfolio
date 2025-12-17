@@ -373,11 +373,10 @@ export const BentoGallery: React.FC<BentoGalleryProps> = ({
               <div className="flex-shrink-0 sm:w-32 md:w-40 flex justify-end">
                 <button
                   onClick={onClose}
-                  className="p-1.5 sm:p-2 rounded-full transition-colors bg-white/10 hover:bg-white/20 text-white"
+                  className="relative p-2 sm:p-3 rounded-full transition-colors bg-white/10 hover:bg-white/20 text-white before:absolute before:inset-[-12px] before:content-['']"
                   aria-label={t.close}
                 >
-                  <X size={20} className="sm:hidden" />
-                  <X size={24} className="hidden sm:block" />
+                  <X size={24} />
                 </button>
               </div>
             </div>
@@ -424,7 +423,7 @@ export const BentoGallery: React.FC<BentoGalleryProps> = ({
                   exit={{ opacity: 0, scale: 0.8 }}
                   transition={springTransition}
                   onClick={closeLightbox}
-                  className="absolute top-4 right-4 md:top-6 md:right-6 z-[210] p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+                  className="absolute top-4 right-4 md:top-6 md:right-6 z-[210] p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors before:absolute before:inset-[-12px] before:content-['']"
                   aria-label={t.close}
                 >
                   <X size={24} />

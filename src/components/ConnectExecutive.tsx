@@ -500,7 +500,7 @@ const RoleDiagram: React.FC<{
   };
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mt-8">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 mt-8">
       {items.map((item, idx) => (
         <motion.div
           key={idx}
@@ -538,7 +538,7 @@ const ScopeGrid: React.FC<{
   onImageClick: (src: string) => void;
 }> = ({ areas, isDark, onImageClick }) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-8">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
       {areas.map((area, idx) => (
         <motion.div
           key={area.id}
@@ -778,7 +778,7 @@ const ProductEvolutionDiagram: React.FC<{
         </div>
       ) : (
         /* Overview View */
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {phases.map((phase) => {
             const PhaseIcon = phase.icon;
             return (
@@ -917,7 +917,7 @@ const UserTestingSection: React.FC<{
   return (
     <div className="mt-8 space-y-8">
       {/* Quotes Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {insights.map((insight, idx) => (
           <motion.div
             key={idx}

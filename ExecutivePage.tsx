@@ -1822,7 +1822,7 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
       className="fixed inset-0 z-[100] bg-white"
     >
       {/* Header - Glass effect */}
-      <header className="absolute top-0 left-0 right-0 z-50 px-6 h-16 flex items-center justify-between bg-white/80 backdrop-blur-xl">
+      <header className="absolute top-0 left-0 right-0 z-50 pl-6 pr-2.5 h-16 flex items-center justify-between bg-white/80 backdrop-blur-xl">
         {/* Left: Title - Same style as Homepage nav */}
         <span className="font-semibold text-lg tracking-[-0.02em] text-gray-900 hidden sm:block">
           {lang === 'fr' ? 'Présentation 1-min' : '1-min Presentation'}
@@ -1860,10 +1860,10 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
         {/* Right: Close button */}
         <button
           onClick={onClose}
-          className="p-1.5 sm:p-2 rounded-full hover:bg-gray-100 transition-colors"
+          className="relative p-3 rounded-full hover:bg-gray-100 transition-colors before:absolute before:inset-[-12px] before:content-['']"
           aria-label="Close"
         >
-          <X size={18} className="sm:w-5 sm:h-5 text-gray-500" />
+          <X size={24} className="text-gray-500" />
         </button>
       </header>
 
@@ -1971,7 +1971,7 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
               exit={{ opacity: 0, scale: 0.8 }}
               transition={springTransition}
               onClick={closeLightbox}
-              className="absolute top-4 right-4 md:top-6 md:right-6 z-10 p-3 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors"
+              className="absolute top-4 right-4 md:top-6 md:right-2.5 z-10 p-3 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors before:absolute before:inset-[-12px] before:content-['']"
             >
               <X size={24} />
             </motion.button>
@@ -2128,7 +2128,7 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
               exit={{ opacity: 0, scale: 0.8 }}
               transition={springTransition}
               onClick={closeVideoLightbox}
-              className="absolute top-4 right-4 md:top-6 md:right-6 z-10 p-3 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors"
+              className="absolute top-4 right-4 md:top-6 md:right-2.5 z-10 p-3 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors before:absolute before:inset-[-12px] before:content-['']"
             >
               <X size={24} />
             </motion.button>

@@ -245,7 +245,7 @@ const TappableMedia = ({
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.2 }}
               onClick={handleClose}
-              className="absolute top-4 right-4 z-10 p-3 rounded-full bg-white/10 backdrop-blur-sm text-white transition-colors active:bg-white/20"
+              className="absolute top-4 right-4 z-10 p-3 rounded-full bg-white/10 backdrop-blur-sm text-white transition-colors active:bg-white/20 before:absolute before:inset-[-12px] before:content-['']"
             >
               <X size={24} />
             </motion.button>

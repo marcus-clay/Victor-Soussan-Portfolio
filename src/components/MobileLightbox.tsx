@@ -245,7 +245,7 @@ const MobileLightbox = ({
               exit={{ opacity: 0, scale: 0.8 }}
               transition={{ duration: 0.2 }}
               onClick={handleClose}
-              className="absolute top-4 right-4 z-10 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+              className="absolute top-4 right-4 z-10 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors before:absolute before:inset-[-12px] before:content-['']"
             >
               <X size={24} />
             </motion.button>

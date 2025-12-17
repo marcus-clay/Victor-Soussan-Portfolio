@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, LayoutGroup, useScroll, useTransform, useSpring } from 'framer-motion';
 import { EMAILJS_CONFIG } from './emailConfig';
 import {
   ChevronRight,
@@ -52,6 +52,7 @@ import {
   FolderOpen
 } from 'lucide-react';
 import { Rocket, Buildings, HandHeart, ArrowsClockwise, ChatCircleDots, ChartLineUp, Envelope, Phone, LinkedinLogo, Globe } from '@phosphor-icons/react';
+import { InfiniteGrid } from './src/components/ui/InfiniteGrid';
 
 // Lazy load heavy page components for code splitting
 const ToolkitPage = lazy(() => import('./ToolkitPage'));
@@ -62,6 +63,7 @@ const FranceVaePage = lazy(() => import('./FranceVaePage'));
 const ExecutivePage = lazy(() => import('./ExecutivePage'));
 const WorkPage = lazy(() => import('./WorkPage'));
 const IframeModal = lazy(() => import('./IframeModal'));
+const HomePageV2 = lazy(() => import('./HomePageV2'));
 
 // Loading spinner component for lazy loaded pages
 const PageLoader = () => (
@@ -188,6 +190,63 @@ const Avatar: React.FC<{ filename: string; alt: string; className?: string; isDa
         </div>
       )}
     </div>
+  );
+};
+
+// Scroll-linked expanding card component using Framer Motion for smooth Apple-style animations
+// Uses scale transform instead of width to prevent text reflow
+const ScrollExpandCard: React.FC<{
+  project: Project;
+  index: number;
+  shouldAnimate: boolean;
+  startScale: number;
+  systemTheme: 'light' | 'dark';
+  onClick: () => void;
+  children: React.ReactNode;
+}> = ({ project, index, shouldAnimate, startScale, systemTheme, onClick, children }) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  // Track scroll progress relative to the card's position
+  const { scrollYProgress } = useScroll({
+    target: cardRef,
+    // Start animation when card enters viewport, end when it's fully visible
+    offset: ["start end", "start 0.3"]
+  });
+
+  // Smooth spring physics for Apple-like feel
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+
+  // Transform scroll progress to scale (uniform scaling prevents text reflow)
+  const scale = useTransform(
+    smoothProgress,
+    [0, 1],
+    shouldAnimate ? [startScale, 1] : [1, 1]
+  );
+
+  return (
+    <motion.div
+      ref={cardRef}
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.6, delay: index * 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
+      onClick={onClick}
+      style={shouldAnimate ? {
+        scale,
+        transformOrigin: 'center top',
+      } : undefined}
+      className={`group cursor-pointer rounded-2xl md:rounded-3xl border overflow-hidden ${
+        systemTheme === 'dark'
+          ? 'bg-[#1D1D1F] border-white/5 shadow-xl shadow-black/20'
+          : 'bg-white border-gray-200 shadow-lg shadow-gray-300/40'
+      }`}
+    >
+      {children}
+    </motion.div>
   );
 };
 
@@ -685,7 +744,7 @@ const TRANSLATIONS = {
       tagline: "Frame. Design. Ship.",
       title: "Designer expérimenté pour",
       subtitle: "équipes produit et startups",
-      desc: "15 ans dans la tech, 10 en design produit. Je transforme des besoins flous en prototypes fonctionnels, vite. Logiciels entreprise, médias, éducation, services publics. Workflows augmentés par l'IA.",
+      desc: "15 ans dans la tech, 10 en design produit. Je transforme vos intuitions produit en prototypes fonctionnels, vite. Logiciels entreprise, médias, éducation, services publics. Workflows augmentés par l'IA.",
       cta_projects: "Ma présentation en 1-min",
       cta_book: "Planifier un appel de 30min",
       tooltip_title: "Besoin d'un designer ou d'un lead pour votre équipe ?",
@@ -1127,20 +1186,7 @@ const TRANSLATIONS = {
 const getResources = (lang: Language): Resource[] => {
   const isEn = lang === 'en';
   return [
-    {
-      title: isEn ? "Checklist: Feature Design" : "Checklist : Design de fonctionnalité",
-      type: "Notion",
-      desc: isEn ? "A granular checklist to ensure quality from kickoff to handoff." : "Rien ne doit être oublié avant le dev : edge cases, états vides, erreurs, responsive.",
-      link: "https://victor-soussan.notion.site/LONG-Checklist-Design-d-une-nouvelle-fonctionnalit-112a519b0dea8119b5ecc4084f3c0e53",
-      icon: <CheckCircle2 size={20} className="text-green-600"/>
-    },
-    {
-      title: isEn ? "Process: UI Slicing" : "Méthode : Découpage UI (Slicing)",
-      type: "Notion",
-      desc: isEn ? "Methodology to break down interfaces into atomic components for devs." : "Comment je découpe une interface en composants React/Atomic pour les développeurs.",
-      link: "https://victor-soussan.notion.site/Process-D-couper-finement-une-UI-22ea519b0dea81158739d163fc196f0c",
-      icon: <Layers size={20} className="text-blue-600"/>
-    },
+    // 1. Frame - Discovery/Framing
     {
       title: isEn ? "Template: Design Scoping" : "Template : Cadrage Design",
       type: "Notion",
@@ -1148,6 +1194,7 @@ const getResources = (lang: Language): Resource[] => {
       link: "https://victor-soussan.notion.site/Template-Id-ation-Cadrage-de-conception-22ea519b0dea810f9d50cf4eeb7f0c48",
       icon: <Target size={20} className="text-red-600"/>
     },
+    // 2. Align - Establish rituals with stakeholders
     {
       title: isEn ? "Process: PO / Design Sync" : "Rituel : Synchro PO / Design",
       type: "Notion",
@@ -1155,6 +1202,7 @@ const getResources = (lang: Language): Resource[] => {
       link: "https://victor-soussan.notion.site/Process-de-synchro-PO-Design-22ea519b0dea815690c0c5e178b61bf7",
       icon: <Users size={20} className="text-orange-600"/>
     },
+    // 3. Analyze - Audit existing interfaces
     {
       title: "Atelier : Design Teardown",
       type: "Notion",
@@ -1162,13 +1210,23 @@ const getResources = (lang: Language): Resource[] => {
       link: "https://victor-soussan.notion.site/Template-Id-ation-Atelier-Design-Teardown-22ea519b0dea81b09215c004b04ef56d",
       icon: <ScrollText size={20} className="text-purple-600"/>
     },
+    // 4. Design - Execution checklist
     {
-      title: "Atelier : Design Studio",
+      title: isEn ? "Checklist: Feature Design" : "Checklist : Design de fonctionnalité",
       type: "Notion",
-      desc: isEn ? "Facilitation guide for Crazy 8s and collaborative sketching sessions." : "Guide d'animation pour faire dessiner des solutions aux non-designers (Crazy 8s).",
-      link: "https://victor-soussan.notion.site/Template-Id-ation-Atelier-Design-Studio-22ea519b0dea811ea219efa2ae2569a8",
-      icon: <PenTool size={20} className="text-pink-600"/>
+      desc: isEn ? "A granular checklist to ensure quality from kickoff to handoff." : "Rien ne doit être oublié avant le dev : edge cases, états vides, erreurs, responsive.",
+      link: "https://victor-soussan.notion.site/LONG-Checklist-Design-d-une-nouvelle-fonctionnalit-112a519b0dea8119b5ecc4084f3c0e53",
+      icon: <CheckCircle2 size={20} className="text-green-600"/>
     },
+    // 5. Handoff - Break down UI for developers
+    {
+      title: isEn ? "Process: UI Slicing" : "Méthode : Découpage UI (Slicing)",
+      type: "Notion",
+      desc: isEn ? "Methodology to break down interfaces into atomic components for devs." : "Comment je découpe une interface en composants React/Atomic pour les développeurs.",
+      link: "https://victor-soussan.notion.site/Process-D-couper-finement-une-UI-22ea519b0dea81158739d163fc196f0c",
+      icon: <Layers size={20} className="text-blue-600"/>
+    },
+    // 6. Maintain - Ongoing file organization
     {
       title: isEn ? "Figma: File Status" : "Figma : Convention de nommage",
       type: "Notion",
@@ -1598,6 +1656,9 @@ const App: React.FC = () => {
   const initialPath = typeof window !== 'undefined' ? window.location.pathname : '';
   const initialUrlParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : new URLSearchParams();
 
+  // Check if we should show HomePageV2
+  const [showHomeV2, setShowHomeV2] = useState(initialPath === '/home-v2' || initialPath === '/v2');
+
   const [isBioOpen, setIsBioOpen] = useState(initialPath === '/about');
   const [bioViewMode, setBioViewMode] = useState<'text' | 'timeline'>('text');
   const bioContentRef = useRef<HTMLDivElement>(null);
@@ -1786,12 +1847,12 @@ const App: React.FC = () => {
 
   // Prevent body scroll when modals are open
   useEffect(() => {
-    if (selectedImage || isBioOpen || isTestimonialsOpen || isBookingOpen || selectedLabItem || isContactFormOpen || isSimpleContactOpen || selectedServiceGallery || isQuoteGeneratorOpen || isExecutiveOpen) {
+    if (selectedImage || isBioOpen || isTestimonialsOpen || isWorkOpen || isBookingOpen || selectedLabItem || isContactFormOpen || isSimpleContactOpen || selectedServiceGallery || isQuoteGeneratorOpen || isExecutiveOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
     }
-  }, [selectedImage, isBioOpen, isTestimonialsOpen, isBookingOpen, selectedLabItem, isContactFormOpen, isSimpleContactOpen, selectedServiceGallery, isExecutiveOpen]);
+  }, [selectedImage, isBioOpen, isTestimonialsOpen, isWorkOpen, isBookingOpen, selectedLabItem, isContactFormOpen, isSimpleContactOpen, selectedServiceGallery, isExecutiveOpen]);
 
   // Detect system theme (light/dark mode)
   useEffect(() => {
@@ -1873,7 +1934,7 @@ const App: React.FC = () => {
       setIsScrolled(window.scrollY > 50);
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -2132,20 +2193,64 @@ const App: React.FC = () => {
     }
   }, []);
 
-  // Scroll to section with offset for fixed header
+  // Easing function for smooth scroll
+  const easeInOutCubic = (t: number): number => {
+    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  };
+
+  // Smooth scroll to top
+  const scrollToTop = () => {
+    const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+    const duration = 800; // ms
+    let startTime: number | null = null;
+
+    const animateScroll = (currentTime: number) => {
+      if (startTime === null) startTime = currentTime;
+      const timeElapsed = currentTime - startTime;
+      const progress = Math.min(timeElapsed / duration, 1);
+      const easedProgress = easeInOutCubic(progress);
+
+      window.scrollTo(0, currentScroll * (1 - easedProgress));
+
+      if (timeElapsed < duration) {
+        requestAnimationFrame(animateScroll);
+      }
+    };
+
+    requestAnimationFrame(animateScroll);
+  };
+
+  // Scroll to section with offset
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
-      const offset = 100;
-      const bodyRect = document.body.getBoundingClientRect().top;
+      // Projects section has negative margin, needs more offset to show cards properly
+      // Bio section needs less offset (30px instead of 50px)
+      const offset = id === 'projects' ? 150 : id === 'bio' ? 30 : 50;
       const elementRect = element.getBoundingClientRect().top;
-      const elementPosition = elementRect - bodyRect;
-      const offsetPosition = elementPosition - offset;
+      const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+      const targetPosition = currentScroll + elementRect - offset;
 
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
+      // Use native smooth scroll with explicit duration for consistency
+      const startPosition = currentScroll;
+      const distance = targetPosition - startPosition;
+      const duration = 800; // ms
+      let startTime: number | null = null;
+
+      const animateScroll = (currentTime: number) => {
+        if (startTime === null) startTime = currentTime;
+        const timeElapsed = currentTime - startTime;
+        const progress = Math.min(timeElapsed / duration, 1);
+        const easedProgress = easeInOutCubic(progress);
+
+        window.scrollTo(0, startPosition + distance * easedProgress);
+
+        if (timeElapsed < duration) {
+          requestAnimationFrame(animateScroll);
+        }
+      };
+
+      requestAnimationFrame(animateScroll);
       setIsMenuOpen(false);
     }
   };
@@ -2210,6 +2315,20 @@ const App: React.FC = () => {
     });
   };
 
+  // If showing HomePageV2, render only that
+  if (showHomeV2) {
+    return (
+      <Suspense fallback={<PageLoader />}>
+        <HomePageV2
+          onNavigateHome={() => {
+            setShowHomeV2(false);
+            window.history.pushState({}, '', '/');
+          }}
+        />
+      </Suspense>
+    );
+  }
+
   return (
     <div className={`min-h-screen font-sans transition-colors duration-300 ${
       systemTheme === 'dark'
@@ -2218,16 +2337,18 @@ const App: React.FC = () => {
     }`}>
 
       {/* Navigation - Full width with glass effect */}
-      <nav className={`fixed top-0 w-full z-50 backdrop-blur-xl ${
-        systemTheme === 'dark'
-          ? 'bg-[#0a0a0a]/80'
-          : 'bg-white/80'
+      <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${
+        isScrolled
+          ? systemTheme === 'dark'
+            ? 'bg-[#0a0a0a]/80 backdrop-blur-xl'
+            : 'bg-white/80 backdrop-blur-xl'
+          : 'bg-transparent'
       }`}>
         <div className="w-full px-6 h-16 flex items-center justify-between">
           {/* Logo/Section Name - Logo visible when not scrolled, section name when scrolled */}
           <div
             className={`relative font-semibold text-lg tracking-[-0.02em] cursor-pointer transition-all duration-300 group ${isScrolled ? 'min-w-[100px]' : ''}`}
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            onClick={() => scrollToTop()}
             onMouseEnter={() => setIsHoveringLogo(true)}
             onMouseLeave={() => setIsHoveringLogo(false)}
           >
@@ -2332,13 +2453,13 @@ const App: React.FC = () => {
               {lang === 'en' ? 'FR' : 'EN'}
             </button>
 
-            {/* Contact Button - Liquid glass style (dark on light, white on dark) */}
+            {/* Contact Button - Black on light, white on dark */}
             <button
               onClick={() => scrollToSection('contact')}
-              className={`px-4 py-1.5 text-sm font-medium rounded-full transition-all backdrop-blur-xl shadow-lg ${
+              className={`px-5 py-2 text-sm font-medium rounded-full transition-all shadow-md hover:shadow-lg ${
                 systemTheme === 'dark'
-                  ? 'bg-white/15 text-white border border-white/20 hover:bg-white/25 hover:border-white/30'
-                  : 'bg-black/80 text-white border border-white/10 hover:bg-black/90 hover:border-white/20'
+                  ? 'bg-white text-black hover:bg-gray-100'
+                  : 'bg-black text-white hover:bg-gray-800'
               }`}
             >
               {content.nav.contact}
@@ -2426,7 +2547,7 @@ const App: React.FC = () => {
                       : 'bg-black/[0.03]'
                   }`}>
                     {[
-                      { id: 'home', label: lang === 'en' ? 'Home' : 'Accueil', icon: Home, action: () => { window.scrollTo({ top: 0, behavior: 'smooth' }); setActiveSection(null); } },
+                      { id: 'home', label: lang === 'en' ? 'Home' : 'Accueil', icon: Home, action: () => { scrollToTop(); setActiveSection(null); } },
                       { id: 'projects', label: content.nav.projects, icon: FolderOpen, action: () => scrollToSection('projects') },
                       { id: 'bio', label: content.nav.bio, icon: User, action: () => scrollToSection('bio') },
                       { id: 'services', label: content.nav.services, icon: Layers, action: () => scrollToSection('services') },
@@ -2579,7 +2700,7 @@ const App: React.FC = () => {
                 const audio = new Audio('/sounds/tap.wav');
                 audio.volume = 0.25;
                 audio.play().catch(() => {});
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                scrollToTop();
                 setActiveSection(null);
               }}
               whileTap={{ scale: 0.85 }}
@@ -2698,28 +2819,21 @@ const App: React.FC = () => {
       </div>
 
       {/* Hero Section */}
-      <header className="relative pt-[154px] pb-[82px] md:pt-[170px] md:pb-[98px] px-6 overflow-hidden">
-        <div className={`absolute top-0 right-0 w-[600px] h-[600px] rounded-full blur-3xl -translate-y-1/4 translate-x-1/4 pointer-events-none ${
-          systemTheme === 'dark' ? 'bg-blue-600/10' : 'bg-blue-200/30'
-        }`} />
-        <div className={`absolute bottom-0 left-0 w-[500px] h-[500px] rounded-full blur-3xl translate-y-1/4 -translate-x-1/4 pointer-events-none ${
-          systemTheme === 'dark' ? 'bg-indigo-500/10' : 'bg-indigo-200/30'
-        }`} />
+      <header className="relative min-h-[85vh] flex flex-col justify-center px-6 overflow-hidden">
+        {/* Infinite Grid Background */}
+        <InfiniteGrid isDark={systemTheme === 'dark'} />
 
-        <div className="relative max-w-4xl mx-auto text-center z-10">
+        <div className="relative max-w-4xl mx-auto text-center z-10 pt-2.5">
+          {/* Availability Badge */}
           <div
-            className={`inline-flex items-center space-x-2.5 pl-1 pr-3 py-1 backdrop-blur rounded-full mb-8 shadow-sm cursor-pointer transition-all duration-300 relative ${
+            className={`inline-flex items-center relative z-20 pl-1 pr-3 py-1 rounded-full mb-8 ${
               systemTheme === 'dark'
-                ? 'bg-white/10 border border-white/20 hover:bg-white/20'
-                : 'bg-white/60 border border-white/50 hover:bg-white/80'
+                ? 'bg-white/10 border border-white/20'
+                : 'bg-white/70 border border-gray-200/60'
             }`}
-            onMouseEnter={() => {
-              if (tooltipTimeoutRef.current) clearTimeout(tooltipTimeoutRef.current);
-              tooltipTimeoutRef.current = setTimeout(() => setShowTooltip(true), 300);
-            }}
-            onMouseLeave={() => {
-              if (tooltipTimeoutRef.current) clearTimeout(tooltipTimeoutRef.current);
-              tooltipTimeoutRef.current = setTimeout(() => setShowTooltip(false), 150);
+            style={{
+              backdropFilter: 'blur(20px)',
+              WebkitBackdropFilter: 'blur(20px)',
             }}
           >
             <Avatar
@@ -2728,86 +2842,21 @@ const App: React.FC = () => {
               className="w-7 h-7 rounded-full ring-2 ring-white/20"
               isDark={systemTheme === 'dark'}
             />
-            <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-            <span className={`text-xs font-medium ${systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>{content.hero.availability}</span>
-
-            {/* Tooltip - positioned to the right */}
-            {showTooltip && (
-              <div
-                className="absolute top-1/2 left-full -translate-y-1/2 pl-2"
-                onMouseEnter={() => {
-                  if (tooltipTimeoutRef.current) clearTimeout(tooltipTimeoutRef.current);
-                  setShowTooltip(true);
-                }}
-                onMouseLeave={() => {
-                  if (tooltipTimeoutRef.current) clearTimeout(tooltipTimeoutRef.current);
-                  tooltipTimeoutRef.current = setTimeout(() => setShowTooltip(false), 150);
-                }}
-              >
-                <motion.div
-                  initial={{ opacity: 0, x: -10, scale: 0.95 }}
-                  animate={{ opacity: 1, x: 0, scale: 1 }}
-                  exit={{ opacity: 0, x: -10, scale: 0.95 }}
-                  transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                  className={`w-[220px] backdrop-blur-xl rounded-2xl shadow-2xl p-4 z-50 ${
-                    systemTheme === 'dark'
-                      ? 'bg-[#1D1D1F]/95 border border-white/10'
-                      : 'bg-white/95 border border-gray-200/50'
-                  }`}
-                  style={{
-                    boxShadow: systemTheme === 'dark'
-                      ? '0 20px 60px -15px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05)'
-                      : '0 20px 60px -15px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.05)'
-                  }}
-                >
-                  {/* Arrow pointing left */}
-                  <div className={`absolute top-1/2 -left-2 -translate-y-1/2 w-4 h-4 backdrop-blur-xl rotate-45 ${
-                    systemTheme === 'dark'
-                      ? 'bg-[#1D1D1F]/95 border-l border-b border-white/10'
-                      : 'bg-white/95 border-l border-b border-gray-200/50'
-                  }`} />
-
-                  <div className="relative">
-                    {/* Title */}
-                    <h3 className={`text-sm font-semibold mb-3 text-center ${
-                      systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                    }`}>
-                      {content.hero.tooltip_title}
-                    </h3>
-
-                    {/* Contact Form Button */}
-                    <button
-                      className={`flex items-center justify-center space-x-2 w-full px-4 py-2.5 rounded-xl transition-all duration-200 shadow-lg text-sm font-medium ${
-                        systemTheme === 'dark'
-                          ? 'bg-white hover:bg-gray-100 text-gray-900 shadow-white/10'
-                          : 'bg-gray-900 hover:bg-black text-white shadow-gray-900/20'
-                      }`}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setShowTooltip(false);
-                        setIsSimpleContactOpen(true);
-                      }}
-                    >
-                      <Mail size={16} />
-                      <span>
-                        {content.hero.tooltip_email}
-                      </span>
-                    </button>
-                  </div>
-                </motion.div>
-              </div>
-            )}
+            <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse ml-2.5" />
+            <span className={`text-xs font-medium ml-2 ${systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
+              {content.hero.availability}
+            </span>
           </div>
 
           {/* Main Tagline - Frame. Design. Ship. */}
-          <h1 className={`text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-[-0.03em] mb-4 md:mb-6 leading-[1.05] whitespace-nowrap ${
+          <h1 className={`text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-[-0.05em] mb-4 md:mb-6 leading-[1.05] ${
             systemTheme === 'dark' ? 'text-white' : 'text-[#1D1D1F]'
           }`}>
             {content.hero.tagline}
           </h1>
 
           {/* Subtitle */}
-          <p className={`text-base sm:text-lg md:text-xl font-medium mb-3 md:mb-4 ${
+          <p className={`text-lg sm:text-xl md:text-2xl font-medium mb-3 md:mb-4 ${
             systemTheme === 'dark' ? 'text-white' : 'text-[#1D1D1F]'
           }`}>
             {content.hero.title} <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">{content.hero.subtitle}</span>
@@ -2819,26 +2868,12 @@ const App: React.FC = () => {
             {content.hero.desc}
           </p>
 
-          <div className="flex flex-col sm:flex-row justify-center items-center space-y-3 sm:space-y-0 sm:space-x-4">
+          <div className="flex justify-center">
             <button
               onClick={() => openModalWithUrl('/presentation')}
-              className={`px-5 py-2.5 sm:px-6 sm:py-3 rounded-full font-medium text-sm sm:text-base btn-pill flex items-center cursor-pointer relative z-20 whitespace-nowrap transition-all duration-200 backdrop-blur-xl ${
-                systemTheme === 'dark'
-                  ? 'bg-white/15 text-white border border-white/20 hover:bg-white/25 hover:border-white/30'
-                  : 'bg-black/80 text-white border border-white/10 hover:bg-black/90 hover:border-white/20'
-              }`}
+              className="group px-10 py-4 sm:px-12 sm:py-5 rounded-full font-semibold text-lg sm:text-xl btn-pill flex items-center cursor-pointer relative z-20 whitespace-nowrap transition-all duration-200 bg-[#2D5CF3] text-white hover:bg-[#2450d9] shadow-lg shadow-[#2D5CF3]/25 hover:shadow-xl hover:shadow-[#2D5CF3]/30"
             >
-              {content.hero.cta_projects} <ChevronRight className="ml-2 flex-shrink-0" size={16} />
-            </button>
-            <button
-               onClick={() => openModalWithUrl('/contact')}
-               className={`px-5 py-2.5 sm:px-6 sm:py-3 rounded-full font-medium text-sm sm:text-base btn-pill cursor-pointer relative z-20 flex items-center justify-center whitespace-nowrap ${
-                 systemTheme === 'dark'
-                   ? 'bg-white/10 border border-white/20 text-white hover:bg-white/20'
-                   : 'glass-effect text-[#1D1D1F] hover:text-blue-600'
-               }`}
-            >
-              <Calendar size={16} className="mr-2 flex-shrink-0"/> {content.hero.cta_book}
+              {lang === 'en' ? '1-Min Presentation' : 'Présentation en 1 min'} <ArrowUpRight className="ml-2 flex-shrink-0 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" size={20} />
             </button>
           </div>
         </div>
@@ -2848,13 +2883,18 @@ const App: React.FC = () => {
       <style>{`
         .logo-carousel-track {
           animation: scroll 30s linear infinite;
+          will-change: transform;
+          contain: layout style;
+          backface-visibility: hidden;
+          -webkit-backface-visibility: hidden;
+          transform: translateZ(0);
         }
         @keyframes scroll {
           0% {
-            transform: translateX(0);
+            transform: translate3d(0, 0, 0);
           }
           100% {
-            transform: translateX(-50%);
+            transform: translate3d(-50%, 0, 0);
           }
         }
         .thin-scrollbar::-webkit-scrollbar {
@@ -2879,19 +2919,25 @@ const App: React.FC = () => {
       `}</style>
 
       {/* Case Studies Section - Landscape Banners */}
-      <section id="projects" className={`pt-8 pb-16 md:pt-16 md:pb-32 px-10 ${
-        systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-[#F9F9F9]'
+      <section id="projects" className={`-mt-[36px] md:-mt-[68px] pt-0 pb-16 md:pb-32 px-10 relative z-10 ${
+        systemTheme === 'dark' ? 'bg-transparent' : 'bg-transparent'
       }`}>
         <div className="max-w-[1280px] mx-auto">
           {/* Stacked Landscape Cards - Show only first 3 projects */}
           <div className="flex flex-col gap-10">
-            {projects.slice(0, 3).map((project, index) => (
-                <motion.div
+            {projects.slice(0, 3).map((project, index) => {
+              // Scroll-linked scale animation only for first card (France VAE)
+              const shouldAnimate = index === 0;
+              const startScale = 0.95; // France VAE starts at 95% scale
+
+              return (
+                <ScrollExpandCard
                   key={project.id}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  transition={{ duration: 0.6, delay: index * 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
+                  project={project}
+                  index={index}
+                  shouldAnimate={shouldAnimate}
+                  startScale={startScale}
+                  systemTheme={systemTheme}
                   onClick={() => {
                     if (project.id === 'toolkit' || project.id === 'dailymotion' || project.id === 'connect' || project.id === 'sqool' || project.id === 'france-vae') {
                       openProjectWithUrl(project.id, 'caseStudy');
@@ -2899,11 +2945,6 @@ const App: React.FC = () => {
                       setIframeModalUrl(project.externalLink);
                     }
                   }}
-                  className={`group cursor-pointer rounded-2xl md:rounded-3xl border overflow-hidden transition-all duration-300 ${
-                    systemTheme === 'dark'
-                      ? 'bg-[#1D1D1F] border-white/5'
-                      : 'bg-white border-gray-200'
-                  }`}
                 >
                   <div className="flex flex-col md:flex-row">
                     {/* Image Section - Left on desktop, full width on mobile */}
@@ -2937,8 +2978,8 @@ const App: React.FC = () => {
                             project.hoverImage
                               ? ''
                               : project.id !== 'toolkit'
-                                ? 'md:scale-[1.2] md:group-hover:scale-[1.26]'
-                                : 'scale-100 group-hover:scale-105'
+                                ? 'md:scale-[1.02] md:group-hover:scale-[1.08]'
+                                : 'scale-[0.85] group-hover:scale-90'
                           }`}
                         />
                         {/* Hover image (device mockup) - with zoom effect */}
@@ -3104,8 +3145,8 @@ const App: React.FC = () => {
                             {/* Case Study Button */}
                             <div className={`inline-flex items-center text-sm font-medium px-5 py-2.5 rounded-full backdrop-blur-xl transition-colors duration-300 ${
                               systemTheme === 'dark'
-                                ? 'bg-white/10 text-gray-200 border border-white/20 group-hover:bg-white group-hover:text-black group-hover:border-white'
-                                : 'bg-gray-100/80 text-gray-700 border border-gray-200/50 group-hover:bg-gray-900 group-hover:text-white group-hover:border-gray-900'
+                                ? 'bg-white/10 text-gray-200 border border-white/20 group-hover:bg-[#2D5CF3] group-hover:text-white group-hover:border-[#2D5CF3]'
+                                : 'bg-gray-100/80 text-gray-700 border border-gray-200/50 group-hover:bg-[#2D5CF3] group-hover:text-white group-hover:border-[#2D5CF3]'
                             }`}>
                               <span className="mr-2">Case Study</span>
                               <ChevronRight size={16} />
@@ -3124,19 +3165,16 @@ const App: React.FC = () => {
                       </div>
                     </div>
                   </div>
-                </motion.div>
-            ))}
+                </ScrollExpandCard>
+              );
+            })}
           </div>
 
           {/* View All Projects Button */}
           <div className="mt-12 text-center">
             <button
               onClick={() => openModalWithUrl('/work')}
-              className={`group px-8 py-3 rounded-full font-medium transition-colors inline-flex items-center shadow-sm hover:shadow-md ${
-                systemTheme === 'dark'
-                  ? 'bg-white text-black hover:bg-gray-200'
-                  : 'bg-black text-white hover:bg-gray-800'
-              }`}
+              className="group px-8 py-3 rounded-full font-medium transition-colors inline-flex items-center shadow-sm hover:shadow-md bg-[#2D5CF3] text-white hover:bg-[#2450d9]"
             >
               {content.projects.view_all} <ArrowUpRight size={18} className="ml-2 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
             </button>
@@ -3172,7 +3210,7 @@ const App: React.FC = () => {
                         isDark={systemTheme === 'dark'}
                       />
                       <div className="text-center md:text-left pt-2 flex-1">
-                        <h3 className={`text-2xl md:text-3xl font-bold mb-2 ${
+                        <h3 className={`text-2xl md:text-3xl font-bold mb-2 tracking-[-0.02em] ${
                           systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                         }`}>Victor Soussan</h3>
                         <p className={`font-medium mb-3 md:mb-4 text-sm md:text-lg ${
@@ -3218,25 +3256,26 @@ const App: React.FC = () => {
                   }`}>
                      <button
                        onClick={() => openModalWithUrl('/about')}
-                       className="px-5 py-2.5 accent-blue text-white rounded-full text-sm font-medium btn-pill flex items-center"
+                       className="group px-8 py-3 rounded-full font-medium transition-colors inline-flex items-center shadow-sm hover:shadow-md bg-[#2D5CF3] text-white hover:bg-[#2450d9]"
                      >
-                       <FileText size={16} className="mr-2"/> {content.bio.view_full_bio}
+                       {content.bio.view_full_bio} <ArrowUpRight size={18} className="ml-2 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                      </button>
 
-                     <a
-                       href="https://linkedin.com/in/victorsoussan"
-                       target="_blank"
-                       rel="noreferrer"
-                       className="px-5 py-2.5 rounded-full text-sm font-medium btn-pill flex items-center text-white"
-                       style={{background: 'linear-gradient(135deg, #0077b5 0%, #006097 100%)'}}
-                     >
-                       <Linkedin size={16} className="mr-2"/> LinkedIn
-                     </a>
-
                      <div className="flex space-x-2">
+                        <a
+                          href="https://linkedin.com/in/victorsoussan"
+                          target="_blank"
+                          rel="noreferrer"
+                          className={`px-4 py-2.5 rounded-full text-sm font-medium btn-pill flex items-center ${
+                            systemTheme === 'dark'
+                              ? 'bg-white/10 text-gray-300 hover:text-white hover:bg-white/20'
+                              : 'glass-effect text-gray-700 hover:text-[#0077b5]'
+                          }`}
+                        >
+                          <Linkedin size={16} className="mr-2"/> LinkedIn
+                        </a>
                         <button
                           onClick={() => {
-                            setResumeLang('fr');
                             openModalWithUrl('/resume');
                           }}
                           className={`px-4 py-2.5 rounded-full text-sm font-medium btn-pill flex items-center ${
@@ -3245,20 +3284,7 @@ const App: React.FC = () => {
                               : 'glass-effect text-gray-700 hover:text-blue-600'
                           }`}
                         >
-                          <Download size={16} className="mr-2"/> Résumé FR
-                        </button>
-                        <button
-                          onClick={() => {
-                            setResumeLang('en');
-                            openModalWithUrl('/resume');
-                          }}
-                          className={`px-4 py-2.5 rounded-full text-sm font-medium btn-pill flex items-center ${
-                            systemTheme === 'dark'
-                              ? 'bg-white/10 text-gray-300 hover:text-white hover:bg-white/20'
-                              : 'glass-effect text-gray-700 hover:text-blue-600'
-                          }`}
-                        >
-                          <Download size={16} className="mr-2"/> Résumé EN
+                          <FileText size={16} className="mr-2"/> Résumé
                         </button>
                      </div>
                   </div>
@@ -3322,13 +3348,15 @@ const App: React.FC = () => {
         </div>
       </section>
 
-      {/* Services Section - Accordion Style */}
-      <section id="services" className={`py-16 md:py-32 px-10 ${
-        systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-[#F9F9F9]'
+      {/* Services & Clients Section - Combined */}
+      <section id="services" className={`py-16 md:py-32 px-10 relative overflow-hidden ${
+        systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-[#FCFCFD]'
       }`}>
-        <div className="max-w-[1280px] mx-auto">
+        <div className="max-w-[1280px] mx-auto relative z-10">
           <div className="mb-8 md:mb-12 text-center">
-             <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold tracking-[-0.02em] mb-4 md:mb-6">{content.services.title}</h2>
+             <h2 className={`text-2xl sm:text-3xl md:text-5xl font-bold tracking-[-0.02em] mb-4 md:mb-6 ${
+               systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+             }`}>{content.services.title}</h2>
              <p className={`text-sm sm:text-base md:text-lg max-w-2xl mx-auto ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
                {content.services.subtitle}
              </p>
@@ -3454,205 +3482,225 @@ const App: React.FC = () => {
                     </div>
                   </button>
 
-                  {/* Accordion Content */}
-                  <AnimatePresence>
-                    {isExpanded && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3, ease: 'easeInOut' }}
-                        className="overflow-hidden relative z-10"
-                      >
-                        <div className={`px-6 pb-6 border-t ${
-                          systemTheme === 'dark' ? 'border-white/10' : 'border-gray-100'
-                        }`}>
-                          {/* Layout: 1/3 image, 2/3 bullets */}
-                          <div className="flex flex-col md:flex-row gap-6 pt-6">
-                            {/* Image - 1/3 width on desktop */}
-                            <div className="md:w-1/3 flex-shrink-0">
-                              <div className={`rounded-2xl overflow-hidden border ${
-                                systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-                              }`}>
-                                <img
-                                  src={service.image}
-                                  alt={service.title}
-                                  className="w-full h-auto object-cover"
-                                  loading="lazy"
-                                />
-                              </div>
-                            </div>
-                            {/* Bullet Points - 2/3 width on desktop */}
-                            <div className="md:w-2/3">
-                              <ul className={`space-y-4 ${
-                                systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-700'
-                              }`}>
-                                {service.items.map((item, i) => (
-                                  <li key={i} className="flex items-start">
-                                    <CheckCircle2 size={18} className={`mr-3 mt-0.5 ${colorClasses.check} flex-shrink-0`}/>
-                                    <span className="text-base leading-relaxed font-medium tracking-[-0.01em]">{item}</span>
-                                  </li>
-                                ))}
-                              </ul>
+                  {/* Accordion Content - CSS Grid trick for smooth height animation */}
+                  <div
+                    className="grid relative z-10"
+                    style={{
+                      gridTemplateRows: isExpanded ? '1fr' : '0fr',
+                      transition: 'grid-template-rows 300ms ease-out',
+                    }}
+                  >
+                    <div
+                      className="overflow-hidden"
+                      style={{
+                        opacity: isExpanded ? 1 : 0,
+                        transition: 'opacity 200ms ease-out',
+                        transitionDelay: isExpanded ? '100ms' : '0ms',
+                      }}
+                    >
+                      <div className={`px-6 pb-6 border-t ${
+                        systemTheme === 'dark' ? 'border-white/10' : 'border-gray-100'
+                      }`}>
+                        {/* Layout: 1/3 image, 2/3 bullets */}
+                        <div className="flex flex-col md:flex-row gap-6 pt-6">
+                          {/* Image - 1/3 width on desktop */}
+                          <div className="md:w-1/3 flex-shrink-0">
+                            <div className={`rounded-2xl overflow-hidden border ${
+                              systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
+                            }`}>
+                              <img
+                                src={service.image}
+                                alt={service.title}
+                                className="w-full h-auto object-cover"
+                                loading="eager"
+                              />
                             </div>
                           </div>
+                          {/* Bullet Points - 2/3 width on desktop */}
+                          <div className="md:w-2/3">
+                            <ul className={`space-y-4 ${
+                              systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                            }`}>
+                              {service.items.map((item, i) => (
+                                <li key={i} className="flex items-start">
+                                  <CheckCircle2 size={18} className={`mr-3 mt-0.5 ${colorClasses.check} flex-shrink-0`}/>
+                                  <span className="text-base leading-relaxed font-medium tracking-[-0.01em]">{item}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
                         </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               );
             })}
           </div>
-        </div>
-      </section>
 
-      {/* Clients Section */}
-      <section id="clients" className={`py-16 md:py-24 px-10 border-t ${
-        systemTheme === 'dark'
-          ? 'bg-[#0a0a0a] border-white/10'
-          : 'bg-[#F9F9F9] border-gray-100'
-      }`}>
-        <div className="max-w-[1280px] mx-auto">
-          <div className="mb-8 md:mb-12 text-center">
-            <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold tracking-[-0.02em] mb-4 md:mb-6">
-              {lang === 'en' ? 'Trusted by leading companies' : 'Des entreprises qui me font confiance'}
-            </h2>
-            <p className={`text-sm sm:text-base md:text-lg max-w-2xl mx-auto ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
-              {lang === 'en'
-                ? 'From startups to Fortune 500 companies, I help teams build products that matter.'
-                : 'Des startups aux grands groupes, j\'accompagne les équipes dans la création de produits qui comptent.'}
-            </p>
-          </div>
+          {/* Trusted by - Integrated in same section */}
+          <div id="clients" className="mt-32 md:mt-48">
+            <div className="mb-8 md:mb-12 text-center">
+              <h3 className={`text-2xl md:text-3xl lg:text-4xl font-bold tracking-[-0.02em] ${
+                systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+              }`}>
+                {lang === 'en' ? 'Trusted by leading companies' : 'Ils me font confiance'}
+              </h3>
+            </div>
 
-          <div className="relative overflow-hidden">
-            {/* Fade edges */}
-            <div className={`absolute left-0 top-0 bottom-0 w-32 z-10 pointer-events-none ${
-              systemTheme === 'dark'
-                ? 'bg-gradient-to-r from-[#0a0a0a] to-transparent'
-                : 'bg-gradient-to-r from-[#F9F9F9] to-transparent'
-            }`} />
-            <div className={`absolute right-0 top-0 bottom-0 w-32 z-10 pointer-events-none ${
-              systemTheme === 'dark'
-                ? 'bg-gradient-to-l from-[#0a0a0a] to-transparent'
-                : 'bg-gradient-to-l from-[#F9F9F9] to-transparent'
-            }`} />
+            <div className="relative overflow-hidden">
+              {/* Fade edges */}
+              <div className={`absolute left-0 top-0 bottom-0 w-32 z-20 pointer-events-none ${
+                systemTheme === 'dark'
+                  ? 'bg-gradient-to-r from-[#0a0a0a] to-transparent'
+                  : 'bg-gradient-to-r from-[#FCFCFD] to-transparent'
+              }`} />
+              <div className={`absolute right-0 top-0 bottom-0 w-32 z-20 pointer-events-none ${
+                systemTheme === 'dark'
+                  ? 'bg-gradient-to-l from-[#0a0a0a] to-transparent'
+                  : 'bg-gradient-to-l from-[#FCFCFD] to-transparent'
+              }`} />
 
-            <div className="logo-carousel-track flex hover:[animation-play-state:paused]">
-              {[...Array(2)].map((_, setIndex) => (
-                <div key={setIndex} className="flex shrink-0">
-                  {[
-                    { src: '/logos/LOGO UNOWHY.svg', alt: 'Unowhy' },
-                    { src: '/logos/LOGO BETAGOUV.svg', alt: 'Beta.gouv' },
-                    { src: '/logos/LOGO TOOLKIT.svg', alt: 'Toolkit' },
-                    { src: '/logos/LOGO KYU.svg', alt: 'Kyu' },
-                    { src: '/logos/LOGO AIRBUS.svg', alt: 'Airbus' },
-                    { src: '/logos/LOGO ORANGE.svg', alt: 'Orange' },
-                    { src: '/logos/LOGO VINCI.svg', alt: 'Vinci' },
-                    { src: '/logos/LOGO DAILYMOTION-1.svg', alt: 'Dailymotion' },
-                    { src: '/logos/LOGO BOUYGUES IMMO.svg', alt: 'Bouygues Immobilier' },
-                    { src: '/logos/LOGO REGION ILE DE FRANCE.svg', alt: 'Région Île-de-France' },
-                    { src: '/logos/LOGO OGURY.svg', alt: 'Ogury' },
-                    { src: '/logos/LOGO SOLOCAL.svg', alt: 'Solocal' },
-                    { src: '/logos/LOGO CELIO.svg', alt: 'Celio' },
-                    { src: '/logos/LOGO OPERA COMIQUE.svg', alt: 'Opéra Comique' },
-                    { src: '/logos/LOGO VERLINDE.svg', alt: 'Verlinde' },
-                    { src: '/logos/LOGO UPTRADE.svg', alt: 'Uptrade' },
-                  ].map((logo, index) => (
-                    <div
-                      key={`${setIndex}-${index}`}
-                      className="flex items-center justify-center mx-2 md:mx-3"
-                    >
-                      <img loading="lazy"
-                        src={logo.src}
-                        alt={logo.alt}
-                        className={`h-[60px] sm:h-[80px] md:h-[100px] w-auto transition-all duration-500 ease-out ${
-                          systemTheme === 'dark'
-                            ? 'brightness-0 invert opacity-60 hover:opacity-100'
-                            : 'grayscale opacity-80 hover:grayscale-0 hover:opacity-100'
-                        }`}
-                      />
-                    </div>
-                  ))}
-                </div>
-              ))}
+              <div className="logo-carousel-track flex hover:[animation-play-state:paused]">
+                {[...Array(2)].map((_, setIndex) => (
+                  <div key={setIndex} className="flex shrink-0">
+                    {[
+                      { src: '/logos/LOGO UNOWHY.svg', alt: 'Unowhy' },
+                      { src: '/logos/LOGO BETAGOUV.svg', alt: 'Beta.gouv' },
+                      { src: '/logos/LOGO TOOLKIT.svg', alt: 'Toolkit' },
+                      { src: '/logos/LOGO KYU.svg', alt: 'Kyu' },
+                      { src: '/logos/LOGO AIRBUS.svg', alt: 'Airbus' },
+                      { src: '/logos/LOGO ORANGE.svg', alt: 'Orange' },
+                      { src: '/logos/LOGO VINCI.svg', alt: 'Vinci' },
+                      { src: '/logos/LOGO DAILYMOTION-1.svg', alt: 'Dailymotion' },
+                      { src: '/logos/LOGO BOUYGUES IMMO.svg', alt: 'Bouygues Immobilier' },
+                      { src: '/logos/LOGO REGION ILE DE FRANCE.svg', alt: 'Région Île-de-France' },
+                      { src: '/logos/LOGO OGURY.svg', alt: 'Ogury' },
+                      { src: '/logos/LOGO SOLOCAL.svg', alt: 'Solocal' },
+                      { src: '/logos/LOGO CELIO.svg', alt: 'Celio' },
+                      { src: '/logos/LOGO OPERA COMIQUE.svg', alt: 'Opéra Comique' },
+                      { src: '/logos/LOGO VERLINDE.svg', alt: 'Verlinde' },
+                      { src: '/logos/LOGO UPTRADE.svg', alt: 'Uptrade' },
+                    ].map((logo, index) => (
+                      <div
+                        key={`${setIndex}-${index}`}
+                        className="flex items-center justify-center mx-2 md:mx-3 flex-shrink-0"
+                        style={{ contain: 'layout style' }}
+                      >
+                        <img
+                          src={logo.src}
+                          alt={logo.alt}
+                          width="100"
+                          height="100"
+                          className={`h-[60px] sm:h-[80px] md:h-[100px] w-auto transition-opacity duration-300 ease-out ${
+                            systemTheme === 'dark'
+                              ? 'brightness-0 invert opacity-60 hover:opacity-100'
+                              : 'grayscale opacity-80 hover:grayscale-0 hover:opacity-100'
+                          }`}
+                          style={{ contentVisibility: 'auto' }}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Testimonials Section */}
-      <section id="testimonials" className={`py-16 md:py-32 px-10 border-t ${
+      <section id="testimonials" className={`py-16 md:py-32 px-10 ${
         systemTheme === 'dark'
-          ? 'bg-[#0a0a0a] border-white/10'
-          : 'bg-white border-gray-100'
+          ? 'bg-[#0a0a0a]'
+          : 'bg-[#FCFCFD]'
       }`}>
         <div className="max-w-[1280px] mx-auto">
           <div className="mb-8 md:mb-12 text-center">
-            <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold tracking-[-0.02em] mb-4 md:mb-6">{content.testimonials.title}</h2>
+            <h2 className={`text-2xl sm:text-3xl md:text-5xl font-bold tracking-[-0.02em] mb-4 md:mb-6 ${
+              systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+            }`}>{content.testimonials.title}</h2>
             <p className={`text-sm sm:text-base md:text-lg max-w-2xl mx-auto ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
               {content.testimonials.subtitle}
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-             {/* Preview: Top 3 curated testimonials */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
+             {/* Preview: Top 3 curated testimonials - Same style as modal */}
              {[testimonials[0], testimonials[1], testimonials[2]].map((t, i) => (
-                <div key={i} className={`p-5 md:p-8 rounded-2xl md:rounded-3xl border transition-colors shadow-sm h-full flex flex-col justify-between ${
-                  systemTheme === 'dark'
-                    ? 'bg-[#1D1D1F] border-white/10 hover:border-white/20'
-                    : 'bg-[#F9F9F9] border-transparent hover:border-gray-200'
-                }`}>
-                   <div className="mb-6">
-                      <div className="flex items-center mb-6">
-                        <Avatar filename={t.image} alt={t.author} className={`w-14 h-14 rounded-full mr-4 border-2 shadow-sm ${systemTheme === 'dark' ? 'border-gray-700' : 'border-white'}`} />
-                        <div>
-                           {t.linkedin ? (
-                             <a
-                               href={t.linkedin}
-                               target="_blank"
-                               rel="noreferrer"
-                               className={`font-bold leading-none hover:text-[#0077b5] transition-colors flex items-center group text-lg ${systemTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}
-                             >
-                               {t.author}
-                               <Linkedin size={16} className="ml-2 text-gray-400 group-hover:text-[#0077b5] transition-colors" />
-                             </a>
-                           ) : (
-                             <div className={`font-bold leading-none text-lg ${systemTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{t.author}</div>
-                           )}
-                           <div className={`text-xs font-medium mt-1 ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>{t.role}</div>
-                        </div>
-                      </div>
-                      <div className="relative">
-                        <Quote size={20} className={`absolute -top-2 -left-2 transform -scale-x-100 ${systemTheme === 'dark' ? 'text-gray-600' : 'text-gray-300'}`} />
-                        <p className={`leading-relaxed text-[15px] pl-4 relative z-10 ${systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
-                          "{t.content.length > 180 ? t.content.substring(0, 180) + '...' : t.content}"
-                        </p>
-                      </div>
-                   </div>
-
-                   <div className={`flex justify-between items-center border-t pt-4 mt-auto ${systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200/50'}`}>
-                      <span className="text-xs text-gray-400 font-medium">{t.date}</span>
-                      <span className={`px-2.5 py-1 rounded-md text-[10px] font-semibold uppercase tracking-wide ${
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.3, delay: i * 0.1 }}
+                  className={`p-8 rounded-3xl border shadow-sm hover:shadow-md transition-all h-fit flex flex-col ${
+                    systemTheme === 'dark'
+                      ? 'bg-[#1D1D1F] border-white/10'
+                      : 'bg-white border-gray-100'
+                  }`}
+                >
+                  <div className="flex items-center mb-6">
+                    <Avatar filename={t.image} alt={t.author} className={`w-14 h-14 rounded-full mr-4 border-2 shadow-sm ${
+                      systemTheme === 'dark' ? 'border-white/20' : 'border-white'
+                    }`} />
+                    <div>
+                      {t.linkedin ? (
+                        <a
+                          href={t.linkedin}
+                          target="_blank"
+                          rel="noreferrer"
+                          className={`font-bold leading-none hover:text-[#0077b5] transition-colors flex items-center group text-lg ${
+                            systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+                          }`}
+                        >
+                          {t.author}
+                          <Linkedin size={16} className="ml-2 text-gray-400 group-hover:text-[#0077b5] transition-colors" />
+                        </a>
+                      ) : (
+                        <div className={`font-bold leading-none text-lg ${
+                          systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+                        }`}>{t.author}</div>
+                      )}
+                      <div className={`text-xs font-medium px-2 py-0.5 rounded-full w-fit mt-1 ${
                         systemTheme === 'dark'
-                          ? 'bg-white/10 text-gray-400 border border-white/10'
-                          : 'bg-white text-gray-500 border border-gray-100'
-                      }`}>
-                        {t.category}
-                      </span>
-                   </div>
-                </div>
+                          ? 'text-blue-400 bg-blue-600/20'
+                          : 'text-blue-600 bg-blue-50'
+                      }`}>{t.role}</div>
+                    </div>
+                  </div>
+
+                  <div className="relative mb-6">
+                    <Quote size={24} className={`absolute -top-4 -left-2 transform -scale-x-100 ${
+                      systemTheme === 'dark' ? 'text-white/10' : 'text-gray-100'
+                    }`} />
+                    <p className={`leading-relaxed text-[15px] relative z-10 pt-2 ${
+                      systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                    }`}>
+                      "{t.content.length > 180 ? t.content.substring(0, 180) + '...' : t.content}"
+                    </p>
+                  </div>
+
+                  <div className={`border-t pt-4 mt-auto flex justify-between items-center ${
+                    systemTheme === 'dark' ? 'border-white/10' : 'border-gray-50'
+                  }`}>
+                    <span className={`text-xs font-medium ${
+                      systemTheme === 'dark' ? 'text-gray-500' : 'text-gray-400'
+                    }`}>{t.date}</span>
+                    <span className={`text-[10px] uppercase tracking-wider font-bold px-2 py-1 rounded ${
+                      systemTheme === 'dark'
+                        ? 'text-gray-400 bg-white/5'
+                        : 'text-gray-400 bg-gray-50'
+                    }`}>{t.category}</span>
+                  </div>
+                </motion.div>
              ))}
           </div>
 
           <div className="mt-12 text-center">
              <button
                onClick={() => openModalWithUrl('/testimonials')}
-               className={`group px-8 py-3 border rounded-full font-medium transition-colors inline-flex items-center shadow-sm hover:shadow-md ${
-                 systemTheme === 'dark'
-                   ? 'bg-white/10 border-white/20 text-white hover:bg-white/20'
-                   : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'
-               }`}
+               className="group px-8 py-3 rounded-full font-medium transition-colors inline-flex items-center shadow-sm hover:shadow-md bg-[#2D5CF3] text-white hover:bg-[#2450d9]"
              >
                {content.testimonials.view_all} <ArrowUpRight size={18} className="ml-2 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
              </button>
@@ -3784,7 +3832,7 @@ const App: React.FC = () => {
                   ? 'bg-[#0a0a0a]/80'
                   : 'bg-white/80'
               }`}>
-                <div className="w-full px-4 sm:px-6 h-16 flex items-center gap-2 sm:gap-4">
+                <div className="w-full pl-6 pr-2.5 h-16 flex items-center justify-between relative">
                  {/* Title - Left */}
                  <div className="flex-shrink-0">
                    <h2 className={`font-semibold text-base sm:text-lg tracking-[-0.02em] ${
@@ -3795,8 +3843,8 @@ const App: React.FC = () => {
                    </h2>
                  </div>
 
-                 {/* Toggle - Center */}
-                 <div className="flex-1 flex justify-center">
+                 {/* Toggle - Absolute Center */}
+                 <div className="absolute left-1/2 -translate-x-1/2">
                    <div className={`relative flex items-center gap-0.5 sm:gap-1 rounded-full p-0.5 sm:p-1 ${
                      systemTheme === 'dark' ? 'bg-white/10' : 'bg-gray-100'
                    }`}>
@@ -3810,7 +3858,7 @@ const App: React.FC = () => {
                        {bioViewMode === 'text' && (
                          <motion.div
                            layoutId="bio-toggle-pill"
-                           className="absolute inset-0 bg-blue-600 rounded-full shadow-md"
+                           className="absolute inset-0 bg-[#2D5CF3] rounded-full shadow-md"
                            transition={{ type: 'spring', stiffness: 500, damping: 35, mass: 0.8 }}
                          />
                        )}
@@ -3834,7 +3882,7 @@ const App: React.FC = () => {
                        {bioViewMode === 'timeline' && (
                          <motion.div
                            layoutId="bio-toggle-pill"
-                           className="absolute inset-0 bg-blue-600 rounded-full shadow-md"
+                           className="absolute inset-0 bg-[#2D5CF3] rounded-full shadow-md"
                            transition={{ type: 'spring', stiffness: 500, damping: 35, mass: 0.8 }}
                          />
                        )}
@@ -3855,13 +3903,13 @@ const App: React.FC = () => {
                  <div className="flex-shrink-0">
                    <button
                      onClick={() => closeModalWithUrl(setIsBioOpen)}
-                     className={`w-8 h-8 flex items-center justify-center rounded-full transition-colors ${
+                     className={`relative p-3 flex items-center justify-center rounded-full transition-colors before:absolute before:inset-[-12px] before:content-[''] ${
                        systemTheme === 'dark'
                          ? 'text-gray-400 hover:text-white hover:bg-white/10'
                          : 'text-gray-500 hover:text-gray-900 hover:bg-black/5'
                      }`}
                    >
-                      <X size={18} />
+                      <X size={24} />
                    </button>
                  </div>
                 </div>
@@ -4249,13 +4297,13 @@ const App: React.FC = () => {
               {/* Right - Close button */}
               <button
                 onClick={() => closeModalWithUrl(setIsTestimonialsOpen)}
-                className={`flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full transition-colors ${
+                className={`relative flex-shrink-0 p-3 flex items-center justify-center rounded-full transition-colors before:absolute before:inset-[-12px] before:content-[''] ${
                   systemTheme === 'dark'
                     ? 'text-gray-400 hover:text-white hover:bg-white/10'
                     : 'text-gray-500 hover:text-gray-900 hover:bg-black/5'
                 }`}
               >
-                <X size={18} />
+                <X size={24} />
               </button>
             </div>
           </header>
@@ -4368,7 +4416,7 @@ const App: React.FC = () => {
                   closeModalWithUrl(setIsTestimonialsOpen);
                   openModalWithUrl('/contact');
                 }}
-                className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-medium text-sm flex items-center justify-center w-full sm:w-auto transition-all duration-200 shadow-lg shadow-blue-600/20 hover:scale-105"
+                className="px-5 py-2.5 bg-[#2D5CF3] hover:bg-[#2450d9] text-white rounded-full font-medium text-sm flex items-center justify-center w-full sm:w-auto transition-all duration-200 shadow-lg shadow-[#2D5CF3]/20 hover:scale-105"
               >
                 <Calendar size={16} className="mr-2" />
                 {content.contact.book}
@@ -4420,7 +4468,7 @@ const App: React.FC = () => {
                      closeModalWithUrl(setIsBookingOpen);
                      if (isExecutiveOpen) setShowExecutiveFarewell(true);
                    }}
-                   className={`p-2.5 rounded-full transition-all duration-200 backdrop-blur-sm ${
+                   className={`relative p-3 rounded-full transition-all duration-200 backdrop-blur-sm before:absolute before:inset-[-12px] before:content-[''] ${
                      systemTheme === 'dark'
                        ? 'bg-white/10 hover:bg-white/20 text-white border border-white/10'
                        : 'bg-gray-100 hover:bg-gray-200 text-gray-900 border border-gray-200'
@@ -4492,13 +4540,13 @@ const App: React.FC = () => {
                     setIsSimpleContactOpen(false);
                     if (isExecutiveOpen) setShowExecutiveFarewell(true);
                   }}
-                  className={`absolute top-6 right-6 p-2 rounded-full transition-colors ${
+                  className={`absolute top-6 right-6 p-3 rounded-full transition-colors before:absolute before:inset-[-12px] before:content-[''] ${
                     systemTheme === 'dark'
                       ? 'bg-gray-800 hover:bg-gray-700 text-white'
                       : 'bg-gray-100 hover:bg-gray-200 text-gray-900'
                   }`}
                 >
-                  <X size={20} />
+                  <X size={24} />
                 </button>
 
                 <motion.div
@@ -4776,7 +4824,7 @@ ${simpleContactForm.message}`;
                   <button
                     type="submit"
                     disabled={isSendingEmail}
-                    className="w-full flex items-center justify-center space-x-3 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-semibold text-lg btn-pill transition-colors duration-200 shadow-lg shadow-blue-600/30 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full flex items-center justify-center space-x-3 px-8 py-4 bg-[#2D5CF3] hover:bg-[#2450d9] text-white rounded-full font-semibold text-lg btn-pill transition-colors duration-200 shadow-lg shadow-[#2D5CF3]/30 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isSendingEmail ? (
                       <>
@@ -4825,9 +4873,9 @@ ${simpleContactForm.message}`;
               <div className="sticky top-0 bg-white/95 backdrop-blur-xl border-b border-gray-100 p-6 z-10">
                 <button
                   onClick={() => setIsContactFormOpen(false)}
-                  className="absolute top-6 right-6 p-2 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors"
+                  className="absolute top-6 right-6 p-3 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors before:absolute before:inset-[-12px] before:content-['']"
                 >
-                  <X size={20} />
+                  <X size={24} />
                 </button>
 
                 <motion.div
@@ -5326,9 +5374,9 @@ ${contactForm.message}`;
                   </div>
                   <button
                     onClick={() => closeModalWithUrl(setIsResumeOpen)}
-                    className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                    className="relative p-3 hover:bg-gray-100 rounded-full transition-colors before:absolute before:inset-[-12px] before:content-['']"
                   >
-                    <X size={20} className="text-gray-500" />
+                    <X size={24} className="text-gray-500" />
                   </button>
                 </div>
 
@@ -5566,21 +5614,29 @@ ${contactForm.message}`;
       )}
       </AnimatePresence>
 
-      {/* Contact Section */}
-      <section id="contact" className="py-20 pb-32 md:py-40 md:pb-40 px-10 bg-[#1D1D1F] text-white">
-        <div className="max-w-[1280px] mx-auto text-center">
-          {/* Portrait Photo - Same style as About section */}
+      {/* Contact Section - White Background */}
+      <section id="contact" className={`py-20 pb-16 md:py-32 md:pb-24 px-6 md:px-10 ${
+        systemTheme === 'dark' ? 'bg-[#111111]' : 'bg-white'
+      }`}>
+        <div className="max-w-4xl mx-auto text-center">
+          {/* Portrait Photo */}
           <div className="mb-8">
             <Avatar
               filename="victor-soussan.webp"
               alt="Victor Soussan"
-              className="w-28 h-28 md:w-40 md:h-40 rounded-2xl md:rounded-[2rem] mx-auto shadow-lg border border-white/20"
-              isDark={true}
+              className="w-24 h-24 md:w-32 md:h-32 rounded-2xl md:rounded-3xl mx-auto shadow-lg ring-4 ring-blue-100"
+              isDark={systemTheme === 'dark'}
             />
           </div>
 
-          <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold tracking-[-0.02em] mb-5 md:mb-8">{content.contact.title}</h2>
-          <p className="text-gray-400 text-sm sm:text-base md:text-xl mb-8 md:mb-12 max-w-2xl mx-auto">
+          <h2 className={`text-3xl sm:text-4xl md:text-5xl font-bold tracking-[-0.02em] mb-4 md:mb-6 ${
+            systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+          }`}>
+            {content.contact.title}
+          </h2>
+          <p className={`text-base md:text-lg mb-8 md:mb-10 max-w-2xl mx-auto ${
+            systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+          }`}>
             {content.contact.subtitle}
           </p>
 
@@ -5588,7 +5644,7 @@ ${contactForm.message}`;
           <div className="mb-4">
             <button
               onClick={() => setIsSimpleContactOpen(true)}
-              className="px-8 py-4 sm:px-10 sm:py-5 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-semibold text-lg sm:text-xl btn-pill flex items-center justify-center mx-auto hover:scale-105 transition-all duration-200 shadow-lg shadow-blue-600/30"
+              className="px-8 py-4 sm:px-10 sm:py-5 bg-[#2D5CF3] hover:bg-[#2450d9] text-white rounded-full font-semibold text-lg sm:text-xl btn-pill flex items-center justify-center mx-auto hover:scale-105 transition-all duration-200 shadow-lg shadow-[#2D5CF3]/25"
             >
               <Mail className="mr-3" size={22} /> {content.contact.shoot_note}
             </button>
@@ -5604,12 +5660,16 @@ ${contactForm.message}`;
                   setTimeout(() => setCopiedEmail(false), 2000);
                 });
               }}
-              className="flex items-center space-x-1.5 text-xs text-gray-400 hover:text-gray-200 transition-colors duration-200 px-3 py-1.5 rounded-full hover:bg-white/5"
+              className={`flex items-center space-x-1.5 text-xs transition-colors duration-200 px-3 py-1.5 rounded-full ${
+                systemTheme === 'dark'
+                  ? 'text-gray-400 hover:text-gray-200 hover:bg-white/5'
+                  : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
+              }`}
             >
               {copiedEmail ? (
                 <>
-                  <CheckCircle2 size={12} className="text-green-400" />
-                  <span className="text-green-400">{content.contact.email_copied}</span>
+                  <CheckCircle2 size={12} className="text-green-500" />
+                  <span className="text-green-500">{content.contact.email_copied}</span>
                 </>
               ) : (
                 <>
@@ -5621,85 +5681,234 @@ ${contactForm.message}`;
           </div>
         </div>
       </section>
-      
-      {/* Footer */}
-      <footer className="bg-[#1D1D1F] text-gray-500 py-16 px-10 border-t border-gray-800">
-         <div className="max-w-[1280px] mx-auto">
-            {/* Navigation Links - Order matches page structure */}
-            <div className="flex flex-wrap justify-center gap-6 mb-8 pb-8 border-b border-gray-800">
-               <button
-                 onClick={() => scrollToSection('projects')}
-                 className="text-sm text-gray-400 hover:text-white transition-colors duration-200"
-               >
-                 {content.nav.projects}
-               </button>
-               <button
-                 onClick={() => scrollToSection('bio')}
-                 className="text-sm text-gray-400 hover:text-white transition-colors duration-200"
-               >
-                 {content.nav.bio}
-               </button>
-               <button
-                 onClick={() => scrollToSection('services')}
-                 className="text-sm text-gray-400 hover:text-white transition-colors duration-200"
-               >
-                 {content.nav.services}
-               </button>
-               <button
-                 onClick={() => scrollToSection('testimonials')}
-                 className="text-sm text-gray-400 hover:text-white transition-colors duration-200"
-               >
-                 {content.nav.testimonials}
-               </button>
-               <button
-                 onClick={() => scrollToSection('lab')}
-                 className="text-sm text-gray-400 hover:text-white transition-colors duration-200 flex items-center"
-               >
-                 <FlaskConical size={14} className="mr-1.5" />
-                 {content.nav.lab}
-               </button>
-               <button
-                 onClick={() => scrollToSection('contact')}
-                 className="text-sm text-gray-400 hover:text-white transition-colors duration-200"
-               >
-                 {content.nav.contact}
-               </button>
-               <button
-                 onClick={() => openModalWithUrl('/quote')}
-                 className="text-sm text-gray-400 hover:text-white transition-colors duration-200 font-medium"
-               >
-                 {content.contact.quote_button}
-               </button>
-               <a
-                 href="https://linkedin.com/in/victorsoussan/"
-                 target="_blank"
-                 rel="noreferrer"
-                 className="text-sm text-gray-400 hover:text-white transition-colors duration-200 flex items-center"
-               >
-                 <Linkedin size={14} className="mr-1.5" />
-                 LinkedIn
-               </a>
-               <button
-                 onClick={() => openModalWithUrl('/presentation')}
-                 className="text-sm text-gray-400 hover:text-white transition-colors duration-200 flex items-center"
-               >
-                 <Briefcase size={14} className="mr-1.5" />
-                 {content.bio.view_executive}
-               </button>
+
+      {/* Footer - Jumpshare Style */}
+      <footer className={`py-16 px-6 md:px-10 border-t ${
+        systemTheme === 'dark'
+          ? 'bg-[#0a0a0a] border-gray-800'
+          : 'bg-white border-gray-200'
+      }`}>
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-12">
+            {/* Brand Column */}
+            <div className="col-span-2">
+              <div className="flex items-center gap-3 mb-4">
+                <Avatar
+                  filename="victor-soussan.webp"
+                  alt="Victor Soussan"
+                  className="w-10 h-10 rounded-full"
+                  isDark={systemTheme === 'dark'}
+                />
+                <span className={`font-bold text-lg ${systemTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                  Victor Soussan
+                </span>
+              </div>
+              <p className={`text-sm mb-4 max-w-sm ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                {lang === 'en'
+                  ? 'Product Design Lead helping startups and enterprises ship better products, faster.'
+                  : 'Product Design Lead aidant startups et entreprises à livrer de meilleurs produits, plus vite.'}
+              </p>
+              <div className="flex items-center gap-3">
+                <a
+                  href="https://linkedin.com/in/victorsoussan"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${
+                    systemTheme === 'dark'
+                      ? 'bg-white/10 hover:bg-white/20 text-gray-300'
+                      : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
+                  }`}
+                >
+                  <Linkedin className="w-5 h-5" />
+                </a>
+                <a
+                  href="mailto:victorsoussan@gmail.com"
+                  className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${
+                    systemTheme === 'dark'
+                      ? 'bg-white/10 hover:bg-white/20 text-gray-300'
+                      : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
+                  }`}
+                >
+                  <Mail className="w-5 h-5" />
+                </a>
+              </div>
             </div>
 
-            {/* Footer Info */}
-            <div className="flex flex-col md:flex-row justify-between items-center">
-               <div className="mb-4 md:mb-0">
-                  <span className="font-bold text-white">Victor Soussan</span>
-                  <span className="mx-2">•</span>
-                  <span>Senior Product Design Lead</span>
-               </div>
-               <div className="text-sm">
-                  © {new Date().getFullYear()} — Designed & Built with React & Tailwind
-               </div>
+            {/* Navigation Column */}
+            <div>
+              <h4 className={`font-semibold mb-4 ${systemTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                {lang === 'en' ? 'Navigation' : 'Navigation'}
+              </h4>
+              <ul className="space-y-3">
+                <li>
+                  <button
+                    onClick={() => scrollToSection('projects')}
+                    className={`text-sm transition-colors ${
+                      systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                  >
+                    {content.nav.projects}
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => scrollToSection('bio')}
+                    className={`text-sm transition-colors ${
+                      systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                  >
+                    {content.nav.bio}
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => scrollToSection('services')}
+                    className={`text-sm transition-colors ${
+                      systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                  >
+                    {content.nav.services}
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => scrollToSection('testimonials')}
+                    className={`text-sm transition-colors ${
+                      systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                  >
+                    {content.nav.testimonials}
+                  </button>
+                </li>
+              </ul>
             </div>
-         </div>
+
+            {/* Studio Column */}
+            <div>
+              <h4 className={`font-semibold mb-4 ${systemTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                Condamine Studio
+              </h4>
+              <ul className="space-y-3">
+                <li>
+                  <a
+                    href="https://imaginative-youtiao-371d08.netlify.app"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`text-sm transition-colors flex items-center ${
+                      systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                  >
+                    Condamine Apps
+                    <ArrowUpRight size={12} className="ml-1" />
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://condamine-learning-a-5xzh.bolt.host"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`text-sm transition-colors flex items-center ${
+                      systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                  >
+                    Condamine Learning
+                    <ArrowUpRight size={12} className="ml-1" />
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://victor-soussan.notion.site/Prompts-agents-database-VSO-155a519b0dea80ec9c99cdd229649c56"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`text-sm transition-colors flex items-center ${
+                      systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                  >
+                    {lang === 'en' ? 'Agents & Prompts' : 'Agents & Prompts'}
+                    <ArrowUpRight size={12} className="ml-1" />
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://victor-soussan.notion.site/IA-Art-gallery-created-by-Victor-Soussan-2b8a519b0dea80b19385c8fe25dc9bb7"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`text-sm transition-colors flex items-center ${
+                      systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                  >
+                    AI Art Gallery
+                    <ArrowUpRight size={12} className="ml-1" />
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            {/* Contact Column */}
+            <div>
+              <h4 className={`font-semibold mb-4 ${systemTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                Contact
+              </h4>
+              <ul className="space-y-3">
+                <li>
+                  <a
+                    href="mailto:victorsoussan@gmail.com"
+                    className={`text-sm transition-colors ${
+                      systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                  >
+                    victorsoussan@gmail.com
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="tel:+33615989400"
+                    className={`text-sm transition-colors ${
+                      systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                  >
+                    +33 6 15 98 94 00
+                  </a>
+                </li>
+                <li>
+                  <span className={`text-sm ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                    Paris, France
+                  </span>
+                </li>
+                <li>
+                  <a
+                    href="https://calendly.com/victorsoussan/30min"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-[#2D5CF3] hover:text-[#2450d9] transition-colors"
+                  >
+                    {lang === 'en' ? 'Book a call' : 'Réserver un appel'}
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Bottom Bar */}
+          <div className={`pt-8 border-t flex flex-col md:flex-row items-center justify-between gap-4 ${
+            systemTheme === 'dark' ? 'border-gray-800' : 'border-gray-200'
+          }`}>
+            <p className={`text-sm ${systemTheme === 'dark' ? 'text-gray-500' : 'text-gray-500'}`}>
+              © {new Date().getFullYear()} Victor Soussan. {lang === 'en' ? 'All rights reserved.' : 'Tous droits réservés.'}
+            </p>
+            <div className="flex items-center gap-6">
+              <button
+                onClick={() => setLang(lang === 'en' ? 'fr' : 'en')}
+                className={`text-sm transition-colors flex items-center gap-2 ${
+                  systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                <Globe className="w-4 h-4" />
+                {lang === 'en' ? 'Français' : 'English'}
+              </button>
+            </div>
+          </div>
+        </div>
       </footer>
 
       {/* Service Gallery Modal */}
@@ -5716,7 +5925,7 @@ ${contactForm.message}`;
               {/* Close button - fixed top right */}
               <button
                 onClick={() => setSelectedServiceGallery(null)}
-                className="fixed top-6 right-6 z-30 p-3 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors shadow-lg"
+                className="relative fixed top-6 right-2.5 z-30 p-3 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors shadow-lg before:absolute before:inset-[-12px] before:content-['']"
                 aria-label="Close gallery"
               >
                 <X size={24} />
@@ -6214,13 +6423,13 @@ ${contactForm.message}`;
                           closeModalWithUrl(setIsQuoteGeneratorOpen);
                         }
                       }}
-                      className={`p-2.5 rounded-full transition-all duration-200 ${
+                      className={`relative p-3 rounded-full transition-all duration-200 before:absolute before:inset-[-12px] before:content-[''] ${
                         systemTheme === 'dark'
                           ? 'bg-white/10 hover:bg-white/20 text-white'
                           : 'bg-gray-100 hover:bg-gray-200'
                       }`}
                     >
-                      <X size={20} />
+                      <X size={24} />
                     </button>
                   </div>
 
@@ -6229,7 +6438,7 @@ ${contactForm.message}`;
                     {[1, 2, 3, 4, 5, 6, 7, 8].map((step) => (
                       <div key={step} className="flex items-center flex-1">
                         <div className={`w-full h-1.5 rounded-full transition-all duration-300 ${
-                          step <= quoteStep ? 'bg-blue-600' : systemTheme === 'dark' ? 'bg-white/20' : 'bg-gray-200'
+                          step <= quoteStep ? 'bg-[#2D5CF3]' : systemTheme === 'dark' ? 'bg-white/20' : 'bg-gray-200'
                         }`} />
                         {step < 8 && <div className="w-2" />}
                       </div>
@@ -6239,16 +6448,16 @@ ${contactForm.message}`;
               )}
 
               {quoteStep === 0 && !quoteSuccess && (
-                <div className="absolute top-6 right-6 z-20">
+                <div className="absolute top-6 right-2.5 z-20">
                   <button
                     onClick={() => closeModalWithUrl(setIsQuoteGeneratorOpen)}
-                    className={`p-2.5 backdrop-blur-xl rounded-full transition-all duration-200 ${
+                    className={`relative p-3 backdrop-blur-xl rounded-full transition-all duration-200 before:absolute before:inset-[-12px] before:content-[''] ${
                       systemTheme === 'dark'
                         ? 'bg-white/10 hover:bg-white/20 text-white'
                         : 'bg-gray-100/80 hover:bg-gray-200'
                     }`}
                   >
-                    <X size={20} />
+                    <X size={24} />
                   </button>
                 </div>
               )}
@@ -6381,7 +6590,7 @@ ${contactForm.message}`;
                         whileHover={{ scale: 1.05, y: -2 }}
                         whileTap={{ scale: 0.98 }}
                         onClick={() => setQuoteStep(1)}
-                        className="inline-flex items-center px-12 py-5 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-full font-semibold text-xl shadow-lg shadow-blue-600/30 hover:shadow-xl hover:shadow-blue-600/50 transition-all duration-200"
+                        className="inline-flex items-center px-12 py-5 bg-[#2D5CF3] hover:bg-[#2450d9] text-white rounded-full font-semibold text-xl shadow-lg shadow-[#2D5CF3]/30 hover:shadow-xl hover:shadow-[#2D5CF3]/50 transition-all duration-200"
                       >
                         {lang === 'en' ? 'Start Now' : 'Démarrer'}
                         <ArrowRight className="ml-2" size={24} />
@@ -6666,7 +6875,7 @@ ${contactForm.message}`;
                               <motion.span
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.98 }}
-                                className="px-5 py-2.5 bg-white border-2 border-blue-600 text-blue-600 rounded-full font-medium text-sm hover:bg-blue-50 transition-all cursor-pointer inline-block btn-pill"
+                                className="px-5 py-2.5 bg-white border-2 border-[#2D5CF3] text-[#2D5CF3] rounded-full font-medium text-sm hover:bg-[#2D5CF3]/5 transition-all cursor-pointer inline-block btn-pill"
                               >
                                 {lang === 'en' ? 'Browse Files' : 'Parcourir les fichiers'}
                               </motion.span>
@@ -7391,7 +7600,7 @@ ${contactForm.message}`;
                           }}
                           whileHover={{ scale: 1.02, y: -2 }}
                           whileTap={{ scale: 0.98 }}
-                          className="flex items-center justify-center space-x-2 px-5 py-2.5 border-2 border-blue-600 text-blue-600 rounded-full font-medium text-sm hover:bg-blue-50 transition-all duration-200 btn-pill"
+                          className="flex items-center justify-center space-x-2 px-5 py-2.5 border-2 border-[#2D5CF3] text-[#2D5CF3] rounded-full font-medium text-sm hover:bg-[#2D5CF3]/5 transition-all duration-200 btn-pill"
                         >
                           <Download size={16} />
                           <span>{content.contact.quote_step_7_download}</span>
@@ -7570,7 +7779,7 @@ ${contactForm.message}`;
                         onClick={() => setQuoteStep(4)}
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
-                        className="px-6 py-3 text-gray-600 hover:text-blue-600 font-semibold transition-colors"
+                        className="px-6 py-3 text-gray-600 hover:text-[#2D5CF3] font-semibold transition-colors"
                         style={{ pointerEvents: 'auto', position: 'relative', zIndex: 20 }}
                       >
                         {content.contact.quote_skip}
@@ -7618,7 +7827,7 @@ ${contactForm.message}`;
                         }}
                         whileHover={{ scale: 1.02, y: -2 }}
                         whileTap={{ scale: 0.98 }}
-                        className="flex items-center space-x-2 px-8 py-3.5 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-full font-semibold shadow-lg shadow-blue-600/25 hover:shadow-xl hover:shadow-blue-600/40 transition-all duration-200"
+                        className="flex items-center space-x-2 px-8 py-3.5 bg-[#2D5CF3] hover:bg-[#2450d9] text-white rounded-full font-semibold shadow-lg shadow-[#2D5CF3]/25 hover:shadow-xl hover:shadow-[#2D5CF3]/40 transition-all duration-200"
                         style={{ pointerEvents: 'auto', position: 'relative', zIndex: 20 }}
                       >
                         <span>{content.contact.quote_next}</span>
@@ -7647,7 +7856,7 @@ ${contactForm.message}`;
               {/* Close button - fixed top right */}
               <button
                 onClick={() => setIframeModalUrl(null)}
-                className="fixed top-6 right-6 z-[210] p-3 bg-gray-900 hover:bg-black text-white rounded-full transition-colors shadow-lg"
+                className="relative fixed top-6 right-2.5 z-[210] p-3 bg-gray-900 hover:bg-black text-white rounded-full transition-colors shadow-lg before:absolute before:inset-[-12px] before:content-['']"
                 aria-label="Close"
               >
                 <X size={24} />

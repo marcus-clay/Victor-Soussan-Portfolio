@@ -869,13 +869,13 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
           <div className="flex-shrink-0">
             <button
               onClick={onClose}
-              className={`w-8 h-8 flex items-center justify-center rounded-full transition-colors ${
+              className={`relative p-3 flex items-center justify-center rounded-full transition-colors before:absolute before:inset-[-12px] before:content-[''] ${
                 viewMode === 'gallery'
                   ? 'text-gray-400 hover:text-white hover:bg-white/10'
                   : (systemTheme === 'dark' ? 'text-gray-400 hover:text-white hover:bg-white/10' : 'text-gray-500 hover:text-gray-900 hover:bg-black/5')
               }`}
             >
-              <X size={18} />
+              <X size={24} />
             </button>
           </div>
         </div>

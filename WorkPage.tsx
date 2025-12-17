@@ -153,12 +153,12 @@ const ProjectCard: React.FC<{
       onMouseLeave={() => setIsHovered(false)}
       onClick={() => !isDisabled && onClick()}
     >
-      {/* Card Container - minimal border */}
+      {/* Card Container - testimonial card style */}
       <div
-        className={`relative overflow-hidden rounded-2xl border transition-all duration-300 ${
+        className={`relative overflow-hidden rounded-3xl border shadow-sm hover:shadow-md transition-all duration-300 ${
           isDark
-            ? 'bg-[#1a1a1c] border-white/5'
-            : 'bg-[#F3F3F3] border-transparent'
+            ? 'bg-[#1D1D1F] border-white/10'
+            : 'bg-white border-gray-100'
         } ${isDisabled ? 'opacity-50' : ''}`}
       >
         {/* Image Container - Square ratio, larger visuals */}
@@ -183,7 +183,7 @@ const ProjectCard: React.FC<{
           }`}>
             {project.title}
           </h3>
-          <p className={`text-sm mt-1 line-clamp-2 ${
+          <p className={`text-sm mt-1 line-clamp-2 max-w-[75%] ${
             isDark ? 'text-gray-400' : 'text-gray-500'
           }`}>
             {project.summary}
@@ -198,7 +198,7 @@ const ProjectCard: React.FC<{
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.8 }}
               transition={{ duration: 0.15 }}
-              className="absolute bottom-5 right-5 w-10 h-10 rounded-full flex items-center justify-center bg-black text-white"
+              className="absolute bottom-5 right-5 w-10 h-10 rounded-full flex items-center justify-center bg-[#2D5CF3] text-white"
             >
               <ArrowRight size={18} />
             </motion.div>
@@ -226,28 +226,28 @@ const WorkPage: React.FC<WorkPageProps> = ({
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
-      className={`fixed inset-0 z-50 overflow-y-auto ${isDark ? 'bg-[#0a0a0a]' : 'bg-white'}`}
+      className={`fixed inset-0 z-50 overflow-y-auto ${isDark ? 'bg-[#0a0a0a]' : 'bg-[#FCFCFD]'}`}
     >
       {/* Header - Glass effect */}
       <header className={`sticky top-0 z-40 backdrop-blur-xl ${
         isDark
           ? 'bg-[#0a0a0a]/80'
-          : 'bg-white/80'
+          : 'bg-[#FCFCFD]/80'
       }`}>
-        <div className="w-full px-6 h-16 flex items-center justify-between">
+        <div className="w-full pl-6 pr-2.5 h-16 flex items-center justify-between">
           {/* Title on left - Same style as Homepage nav */}
           <span className={`font-semibold text-lg tracking-[-0.02em] ${isDark ? 'text-white' : 'text-gray-900'}`}>
             {t.title}
           </span>
 
-          {/* Close Button on right */}
+          {/* Close Button on right - same size as lightbox with larger hitbox */}
           <button
             onClick={onBack}
-            className={`w-8 h-8 flex items-center justify-center rounded-full transition-colors ${
+            className={`relative p-3 rounded-full transition-colors before:absolute before:inset-[-12px] before:content-[''] ${
               isDark ? 'text-gray-400 hover:text-white hover:bg-white/10' : 'text-gray-500 hover:text-gray-900 hover:bg-black/5'
             }`}
           >
-            <X size={18} />
+            <X size={24} />
           </button>
         </div>
       </header>

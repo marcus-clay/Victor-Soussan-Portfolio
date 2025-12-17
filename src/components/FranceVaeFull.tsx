@@ -2224,7 +2224,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
               </div>
               <button
                 onClick={() => setPrototypeModalOpen(false)}
-                className="w-10 h-10 rounded-full flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-colors"
+                className="relative p-3 rounded-full flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-colors before:absolute before:inset-[-12px] before:content-['']"
               >
                 <X size={24} />
               </button>
@@ -2259,7 +2259,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
               </div>
               <button
                 onClick={() => setReportModalOpen(false)}
-                className="w-10 h-10 rounded-full flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-colors"
+                className="relative p-3 rounded-full flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-colors before:absolute before:inset-[-12px] before:content-['']"
               >
                 <X size={24} />
               </button>

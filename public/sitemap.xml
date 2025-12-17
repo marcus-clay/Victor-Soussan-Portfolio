@@ -4,186 +4,70 @@
 
   <!-- Homepage -->
   <url>
-    <loc>https://victorsoussan.fr</loc>
-    <lastmod>2025-12-15</lastmod>
+    <loc>https://www.victorsoussan.fr</loc>
+    <lastmod>2025-12-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://www.victorsoussan.fr/images/victor-soussan.webp</image:loc>
+      <image:title>Victor Soussan - Product Design Lead</image:title>
+    </image:image>
   </url>
 
-  <!-- Projects - Main Case Studies -->
+  <!-- Case Studies - Main Project Pages Only -->
   <url>
-    <loc>https://victorsoussan.fr/project/toolkit</loc>
-    <lastmod>2025-12-15</lastmod>
+    <loc>https://www.victorsoussan.fr/project/toolkit</loc>
+    <lastmod>2025-12-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
     <image:image>
-      <image:loc>https://victorsoussan.fr/images/thumbnail-toolkit.webp</image:loc>
-      <image:title>Toolkit - Design System Project</image:title>
+      <image:loc>https://www.victorsoussan.fr/images/thumbnail-toolkit.webp</image:loc>
+      <image:title>Toolkit - Design System for Construction Industry</image:title>
     </image:image>
   </url>
 
   <url>
-    <loc>https://victorsoussan.fr/project/toolkit/gallery</loc>
-    <lastmod>2025-12-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://victorsoussan.fr/project/toolkit/executive</loc>
-    <lastmod>2025-12-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://victorsoussan.fr/project/dailymotion</loc>
-    <lastmod>2025-12-15</lastmod>
+    <loc>https://www.victorsoussan.fr/project/dailymotion</loc>
+    <lastmod>2025-12-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
     <image:image>
-      <image:loc>https://victorsoussan.fr/images/dailymotion/thubmnail_dailymotion_03.webp</image:loc>
+      <image:loc>https://www.victorsoussan.fr/images/dailymotion/thubmnail_dailymotion_03.webp</image:loc>
       <image:title>Dailymotion - Video Platform Redesign</image:title>
     </image:image>
   </url>
 
   <url>
-    <loc>https://victorsoussan.fr/project/dailymotion/gallery</loc>
-    <lastmod>2025-12-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://victorsoussan.fr/project/dailymotion/executive</loc>
-    <lastmod>2025-12-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://victorsoussan.fr/project/connect</loc>
-    <lastmod>2025-12-15</lastmod>
+    <loc>https://www.victorsoussan.fr/project/connect</loc>
+    <lastmod>2025-12-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
     <image:image>
-      <image:loc>https://victorsoussan.fr/images/thumbnail-connect.webp</image:loc>
+      <image:loc>https://www.victorsoussan.fr/images/thumbnail-connect.webp</image:loc>
       <image:title>SQOOL Connect - EdTech Platform</image:title>
     </image:image>
   </url>
 
   <url>
-    <loc>https://victorsoussan.fr/project/connect/gallery</loc>
-    <lastmod>2025-12-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://victorsoussan.fr/project/connect/executive</loc>
-    <lastmod>2025-12-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://victorsoussan.fr/project/sqool</loc>
-    <lastmod>2025-12-15</lastmod>
+    <loc>https://www.victorsoussan.fr/project/sqool</loc>
+    <lastmod>2025-12-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
     <image:image>
-      <image:loc>https://victorsoussan.fr/images/thumbnail-sqool-suite.webp</image:loc>
-      <image:title>SQOOL Suite - Education Software</image:title>
+      <image:loc>https://www.victorsoussan.fr/images/thumbnail-sqool-suite.webp</image:loc>
+      <image:title>SQOOL Suite - Education Software Ecosystem</image:title>
     </image:image>
   </url>
 
   <url>
-    <loc>https://victorsoussan.fr/project/sqool/gallery</loc>
-    <lastmod>2025-12-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://victorsoussan.fr/project/sqool/executive</loc>
-    <lastmod>2025-12-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://victorsoussan.fr/project/france-vae</loc>
-    <lastmod>2025-12-15</lastmod>
+    <loc>https://www.victorsoussan.fr/project/france-vae</loc>
+    <lastmod>2025-12-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
     <image:image>
-      <image:loc>https://victorsoussan.fr/images/francevae/thumbnail_france_vae_02.webp</image:loc>
+      <image:loc>https://www.victorsoussan.fr/images/francevae/thumbnail_france_vae_02.webp</image:loc>
       <image:title>France VAE - Government Digital Service</image:title>
     </image:image>
-  </url>
-
-  <url>
-    <loc>https://victorsoussan.fr/project/france-vae/gallery</loc>
-    <lastmod>2025-12-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://victorsoussan.fr/project/france-vae/executive</loc>
-    <lastmod>2025-12-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- Modal Pages -->
-  <url>
-    <loc>https://victorsoussan.fr/about</loc>
-    <lastmod>2025-12-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://victorsoussan.fr/work</loc>
-    <lastmod>2025-12-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <url>
-    <loc>https://victorsoussan.fr/testimonials</loc>
-    <lastmod>2025-12-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://victorsoussan.fr/resume</loc>
-    <lastmod>2025-12-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://victorsoussan.fr/contact</loc>
-    <lastmod>2025-12-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://victorsoussan.fr/quote</loc>
-    <lastmod>2025-12-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://victorsoussan.fr/presentation</loc>
-    <lastmod>2025-12-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
   </url>
 
 </urlset>

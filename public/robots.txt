@@ -5,29 +5,9 @@ User-agent: *
 Allow: /
 
 # Sitemap location
-Sitemap: https://victorsoussan.fr/sitemap.xml
+Sitemap: https://www.victorsoussan.fr/sitemap.xml
 
-# Allow all crawlers to access the main content
-User-agent: Googlebot
-Allow: /
-
-User-agent: Bingbot
-Allow: /
-
-# Disallow admin/private paths (none currently, but future-proofing)
+# Disallow internal paths
 Disallow: /api/
 Disallow: /_next/
 Disallow: /.vercel/
-
-# Allow social media crawlers for rich previews
-User-agent: facebookexternalhit
-Allow: /
-
-User-agent: Twitterbot
-Allow: /
-
-User-agent: LinkedInBot
-Allow: /
-
-# Crawl delay to be respectful (optional)
-Crawl-delay: 1

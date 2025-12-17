@@ -173,10 +173,10 @@ export const IframeModal: React.FC<IframeModalProps> = ({
           </div>
 
           {/* Right - Close button */}
-          <div className="flex-1 flex justify-end">
+          <div className="flex-1 flex justify-end pr-2.5">
             <button
               onClick={onClose}
-              className={`p-2 rounded-full ${
+              className={`relative p-3 rounded-full before:absolute before:inset-[-12px] before:content-[''] ${
                 isDark
                   ? 'text-gray-300 hover:bg-white/10'
                   : 'text-gray-600 hover:bg-gray-100'
