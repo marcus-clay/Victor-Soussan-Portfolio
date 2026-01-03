@@ -682,9 +682,9 @@ const App: React.FC = () => {
                <GlassCard className="p-8 h-full flex flex-col justify-between overflow-hidden relative">
                   <div>
                     <div className="flex flex-col md:flex-row items-center md:items-start space-y-6 md:space-y-0 md:space-x-8 mb-8">
-                      <Avatar 
-                        filename="victor-soussan.jpg" 
-                        alt="Victor Soussan" 
+                      <Avatar
+                        filename="victor-soussan.png"
+                        alt="Victor Soussan"
                         className="w-40 h-40 rounded-[2rem] shadow-lg border border-white/20"
                       />
                       <div className="text-center md:text-left pt-2 flex-1">
