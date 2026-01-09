@@ -2953,7 +2953,7 @@ const App: React.FC = () => {
             {content.hero.desc}
           </p>
 
-          <div className="flex justify-center gap-4">
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4">
             <button
               onClick={() => {
                 const projectsSection = document.getElementById('projects');
@@ -2962,19 +2962,19 @@ const App: React.FC = () => {
                   window.scrollTo({ top: offsetTop, behavior: 'smooth' });
                 }
               }}
-              className="group px-8 py-4 sm:px-10 sm:py-5 rounded-full font-semibold text-base sm:text-lg btn-pill flex items-center cursor-pointer relative z-20 whitespace-nowrap transition-all duration-200 bg-[#2D5CF3] text-white hover:bg-[#2450d9] shadow-lg shadow-[#2D5CF3]/25 hover:shadow-xl hover:shadow-[#2D5CF3]/30"
+              className="group px-6 py-3 sm:px-8 sm:py-4 rounded-full font-semibold text-sm sm:text-base btn-pill flex items-center justify-center cursor-pointer relative z-20 whitespace-nowrap transition-all duration-200 bg-[#2D5CF3] text-white hover:bg-[#2450d9] shadow-lg shadow-[#2D5CF3]/25 hover:shadow-xl hover:shadow-[#2D5CF3]/30 w-full sm:w-auto"
             >
-              {lang === 'en' ? 'View work' : 'Voir mes projets'} <ArrowUpRight className="ml-2 flex-shrink-0 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" size={18} />
+              {lang === 'en' ? 'View work' : 'Voir mes projets'} <ArrowUpRight className="ml-2 flex-shrink-0 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" size={16} />
             </button>
             <button
               onClick={() => openModalWithUrl('/presentation')}
-              className={`group px-8 py-4 sm:px-10 sm:py-5 rounded-full font-semibold text-base sm:text-lg btn-pill flex items-center cursor-pointer relative z-20 whitespace-nowrap transition-all duration-200 ${
+              className={`group px-6 py-3 sm:px-8 sm:py-4 rounded-full font-semibold text-sm sm:text-base btn-pill flex items-center justify-center cursor-pointer relative z-20 whitespace-nowrap transition-all duration-200 w-full sm:w-auto ${
                 systemTheme === 'dark'
                   ? 'bg-white/10 text-white border border-white/20 hover:bg-white/15'
                   : 'bg-white text-gray-900 border border-gray-200 hover:bg-gray-50 shadow-sm'
               }`}
             >
-              {lang === 'en' ? '1-min Presentation' : 'Présentation 1 min'} <ArrowUpRight className="ml-2 flex-shrink-0 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" size={18} />
+              {lang === 'en' ? '1-min Presentation' : 'Présentation 1 min'} <ArrowUpRight className="ml-2 flex-shrink-0 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" size={16} />
             </button>
           </div>
         </div>
