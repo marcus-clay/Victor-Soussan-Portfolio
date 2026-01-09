@@ -147,7 +147,7 @@ const ProjectCard: React.FC<{
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.05, duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+      transition={{ delay: index * 0.03, duration: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
       className={`group ${isDisabled ? 'cursor-default' : 'cursor-pointer'}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -225,7 +225,7 @@ const WorkPage: React.FC<WorkPageProps> = ({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.3 }}
+      transition={{ duration: 0.15 }}
       className={`fixed inset-0 z-50 overflow-y-auto ${isDark ? 'bg-[#0a0a0a]' : 'bg-[#FCFCFD]'}`}
     >
       {/* Header - Glass effect */}

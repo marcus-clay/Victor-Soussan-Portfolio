@@ -268,10 +268,10 @@ const ShowcaseCard: React.FC<{
   if (section.type === 'testimonial') {
     return (
       <motion.div
-        initial={{ opacity: 0, y: 24 }}
+        initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-80px' }}
-        transition={{ duration: 0.6, delay: index * 0.08, ease: [0.25, 0.1, 0.25, 1] }}
+        viewport={{ once: true, margin: '-50px' }}
+        transition={{ duration: 0.3, delay: index * 0.04, ease: [0.25, 0.1, 0.25, 1] }}
         className={`relative rounded-2xl p-7 ${
           section.size === 'large' ? 'md:col-span-2' : ''
         } ${
@@ -338,10 +338,10 @@ const ShowcaseCard: React.FC<{
   if (section.type === 'stats') {
     return (
       <motion.div
-        initial={{ opacity: 0, y: 24 }}
+        initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-80px' }}
-        transition={{ duration: 0.6, delay: index * 0.08, ease: [0.25, 0.1, 0.25, 1] }}
+        viewport={{ once: true, margin: '-50px' }}
+        transition={{ duration: 0.3, delay: index * 0.04, ease: [0.25, 0.1, 0.25, 1] }}
         className={`relative rounded-2xl p-8 md:col-span-2 overflow-hidden ${
           isDark
             ? 'bg-gradient-to-br from-[#0f1628] via-[#111827] to-[#0c1220] border border-blue-500/15'
@@ -394,10 +394,10 @@ const ShowcaseCard: React.FC<{
   // Media card (image or video) - Apple-quality design
   return (
     <motion.div
-      initial={{ opacity: 0, y: 24 }}
+      initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-80px' }}
-      transition={{ duration: 0.6, delay: index * 0.08, ease: [0.25, 0.1, 0.25, 1] }}
+      viewport={{ once: true, margin: '-50px' }}
+      transition={{ duration: 0.3, delay: index * 0.04, ease: [0.25, 0.1, 0.25, 1] }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       className={`relative rounded-2xl overflow-hidden ${
@@ -548,7 +548,7 @@ const ToolkitShowcase: React.FC<ToolkitShowcaseProps> = ({ systemTheme, lang }) 
         <motion.h1
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
+          transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
           className={`text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight mb-3 ${
             isDark ? 'text-white' : 'text-gray-900'
           }`}
@@ -558,7 +558,7 @@ const ToolkitShowcase: React.FC<ToolkitShowcaseProps> = ({ systemTheme, lang }) 
         <motion.p
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
+          transition={{ duration: 0.35, delay: 0.05, ease: [0.25, 0.1, 0.25, 1] }}
           className={`text-base md:text-lg ${isDark ? 'text-gray-400' : 'text-gray-500'}`}
         >
           {content.hero.subtitle}

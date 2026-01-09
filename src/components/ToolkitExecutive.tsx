@@ -25,12 +25,12 @@ import {
   Briefcase,
   Trophy
 } from 'lucide-react';
-
 interface ToolkitExecutiveProps {
   systemTheme: 'light' | 'dark';
   lang: 'en' | 'fr';
   onImageClick: (src: string) => void;
   onViewFull: () => void;
+  onContact?: () => void;
 }
 
 // ============================================================================
@@ -203,7 +203,9 @@ const TRANSLATIONS = {
     },
     cta: {
       title: 'Interested in similar results?',
-      button: 'Get in touch'
+      button: 'Get in touch',
+      viewFull: 'View full case study',
+      nextProject: 'Next case study'
     }
   },
   fr: {
@@ -371,7 +373,9 @@ const TRANSLATIONS = {
     },
     cta: {
       title: 'Intéressé par des résultats similaires ?',
-      button: 'Me contacter'
+      button: 'Me contacter',
+      viewFull: 'Voir le case study complet',
+      nextProject: 'Projet suivant'
     }
   }
 };
@@ -386,14 +390,14 @@ const FadeInSection: React.FC<{
   className?: string;
 }> = ({ children, delay = 0, className = '' }) => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-80px' });
+  const isInView = useInView(ref, { once: true, margin: '-50px' });
 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 30 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-      transition={{ duration: 0.7, delay, ease: [0.25, 0.1, 0.25, 1] }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+      transition={{ duration: 0.35, delay: delay * 0.5, ease: [0.25, 0.1, 0.25, 1] }}
       className={className}
     >
       {children}
@@ -973,7 +977,8 @@ const ToolkitExecutive: React.FC<ToolkitExecutiveProps> = ({
   systemTheme,
   lang,
   onImageClick,
-  onViewFull
+  onViewFull,
+  onContact
 }) => {
   const isDark = systemTheme === 'dark';
   const t = TRANSLATIONS[lang];
@@ -1249,21 +1254,21 @@ const ToolkitExecutive: React.FC<ToolkitExecutiveProps> = ({
       {/* ================================================================== */}
       {/* CTA SECTION */}
       {/* ================================================================== */}
-      <section className="py-20 md:py-28 px-10">
-        <div className="max-w-[1280px] mx-auto text-center">
+      <section className="py-24 md:py-32 px-10">
+        <div className="max-w-[800px] mx-auto text-center">
           <FadeInSection>
-            <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+            <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-8 ${isDark ? 'text-white' : 'text-gray-900'}`}>
               {t.cta.title}
             </h2>
           </FadeInSection>
           <FadeInSection delay={0.1}>
-            <a
-              href="mailto:victor.soussan@gmail.com"
-              className="inline-flex items-center gap-2 mt-8 px-8 py-4 bg-gray-900 hover:bg-black text-white font-semibold rounded-full transition-colors"
+            <button
+              onClick={onContact}
+              className="inline-flex items-center gap-3 px-10 py-5 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-lg rounded-full transition-colors"
             >
               {t.cta.button}
-              <ArrowRight size={20} />
-            </a>
+              <ArrowRight size={22} />
+            </button>
           </FadeInSection>
         </div>
       </section>

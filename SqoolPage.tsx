@@ -18,6 +18,7 @@ import {
 import { GalleryItem, getSqoolGalleryItems } from './BentoGallery';
 import { SqoolTimeline } from './SqoolTimeline';
 import SqoolExecutive from './src/components/SqoolExecutive';
+import StackedCaseStudies from './src/components/StackedCaseStudies';
 import EnhancedLightbox from './src/components/EnhancedLightbox';
 
 interface SqoolPageProps {
@@ -27,6 +28,7 @@ interface SqoolPageProps {
   viewMode: 'caseStudy' | 'gallery' | 'executive';
   onViewModeChange: (mode: 'caseStudy' | 'gallery' | 'executive') => void;
   lang?: 'en' | 'fr';
+  onContact?: () => void;
 }
 
 // Translations - Clear, jargon-free language
@@ -639,9 +641,9 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick }) => {
 
   return (
     <motion.figure
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay: index * 0.03 }}
+      transition={{ duration: 0.2, delay: index * 0.02 }}
       className="group cursor-pointer break-inside-avoid mb-8"
       onClick={onClick}
     >
@@ -713,7 +715,8 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
   systemTheme,
   viewMode,
   onViewModeChange,
-  lang = 'en'
+  lang = 'en',
+  onContact,
 }) => {
   const t = SQOOL_TRANSLATIONS[lang];
   // Load gallery items directly in the component
@@ -728,9 +731,9 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
   const [activeSection, setActiveSection] = useState('hero');
   const [showNav, setShowNav] = useState(false);
   const [isMobileNavExpanded, setIsMobileNavExpanded] = useState(false);
-  // Initialize caseStudyMode based on viewMode prop: 'executive' -> 'executive', 'caseStudy' -> 'full'
+  // Sync caseStudyMode with external viewMode
   const initialCaseStudyMode = viewMode === 'executive' ? 'executive' : (viewMode === 'caseStudy' ? 'full' : 'executive');
-  const [caseStudyMode, setCaseStudyModeInternal] = useState<'executive' | 'full'>(initialCaseStudyMode);
+  const [caseStudyMode, setCaseStudyMode] = useState<'executive' | 'full'>(initialCaseStudyMode);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [videoStartTime, setVideoStartTime] = useState(0);
@@ -740,18 +743,12 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
   const [canScrollBrandLeft, setCanScrollBrandLeft] = useState(false);
   const [canScrollBrandRight, setCanScrollBrandRight] = useState(true);
 
-  // Wrapper to sync caseStudyMode with URL
-  const setCaseStudyMode = (mode: 'executive' | 'full') => {
-    setCaseStudyModeInternal(mode);
-    onViewModeChange(mode === 'executive' ? 'executive' : 'caseStudy');
-  };
-
-  // Sync caseStudyMode when viewMode prop changes
+  // Sync caseStudyMode when viewMode changes from outside
   useEffect(() => {
     if (viewMode === 'executive') {
-      setCaseStudyModeInternal('executive');
+      setCaseStudyMode('executive');
     } else if (viewMode === 'caseStudy') {
-      setCaseStudyModeInternal('full');
+      setCaseStudyMode('full');
     }
   }, [viewMode]);
 
@@ -876,7 +873,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.3 }}
+      transition={{ duration: 0.15 }}
       className={`fixed inset-0 z-50 overflow-y-auto ${
         viewMode === 'gallery' ? 'bg-black' : (isDark ? 'bg-[#0a0a0a]' : 'bg-white')
       }`}
@@ -978,12 +975,12 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
             <div className={`relative flex items-center gap-0.5 sm:gap-1 rounded-full p-0.5 sm:p-1 ${
               viewMode === 'gallery' ? 'bg-white/10' : (isDark ? 'bg-white/10' : 'bg-gray-100')
             }`}>
-              {/* Executive button (En bref) */}
+              {/* Summary button */}
               <button
-                onClick={() => setCaseStudyMode('executive')}
+                onClick={() => { onViewModeChange('executive'); setCaseStudyMode('executive'); }}
                 className="relative z-10 px-2 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 whitespace-nowrap"
               >
-                {viewMode !== 'gallery' && caseStudyMode === 'executive' && (
+                {(viewMode === 'executive' || (viewMode === 'caseStudy' && caseStudyMode === 'executive')) && (
                   <motion.div
                     layoutId="sqool-toggle-pill"
                     className="absolute inset-0 bg-blue-600 rounded-full shadow-md"
@@ -991,20 +988,20 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
                   />
                 )}
                 <span className={`relative z-10 ${
-                  viewMode !== 'gallery' && caseStudyMode === 'executive'
+                  (viewMode === 'executive' || (viewMode === 'caseStudy' && caseStudyMode === 'executive'))
                     ? 'text-white'
                     : (viewMode === 'gallery' ? 'text-gray-400 hover:text-white' : (isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'))
                 }`}>
-                  <span className="hidden sm:inline">{lang === 'fr' ? 'En bref' : 'Summary'}</span>
-                  <span className="sm:hidden">{lang === 'fr' ? 'Bref' : 'Sum.'}</span>
+                  <span className="hidden sm:inline">{lang === 'fr' ? 'Résumé' : 'Summary'}</span>
+                  <span className="sm:hidden">{lang === 'fr' ? 'Rés.' : 'Sum.'}</span>
                 </span>
               </button>
-              {/* Full case study button */}
+              {/* Full case button */}
               <button
-                onClick={() => setCaseStudyMode('full')}
+                onClick={() => { onViewModeChange('caseStudy'); setCaseStudyMode('full'); }}
                 className="relative z-10 px-2 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 whitespace-nowrap"
               >
-                {viewMode !== 'gallery' && caseStudyMode === 'full' && (
+                {viewMode === 'caseStudy' && caseStudyMode === 'full' && (
                   <motion.div
                     layoutId="sqool-toggle-pill"
                     className="absolute inset-0 bg-blue-600 rounded-full shadow-md"
@@ -1012,11 +1009,11 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
                   />
                 )}
                 <span className={`relative z-10 ${
-                  viewMode !== 'gallery' && caseStudyMode === 'full'
+                  viewMode === 'caseStudy' && caseStudyMode === 'full'
                     ? 'text-white'
                     : (viewMode === 'gallery' ? 'text-gray-400 hover:text-white' : (isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'))
                 }`}>
-                  <span className="hidden sm:inline">{lang === 'fr' ? 'Complet' : 'Full case'}</span>
+                  <span className="hidden sm:inline">{lang === 'fr' ? 'Cas complet' : 'Full case'}</span>
                   <span className="sm:hidden">{lang === 'fr' ? 'Full' : 'Full'}</span>
                 </span>
               </button>
@@ -1067,7 +1064,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.15 }}
             className="w-full px-6 md:px-10 lg:px-12 py-8 md:py-12"
           >
             <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 md:gap-8">
@@ -1088,13 +1085,14 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.15 }}
           >
             <SqoolExecutive
               systemTheme={systemTheme}
               lang={lang}
               onImageClick={openLightbox}
               onViewFull={() => setCaseStudyMode('full')}
+              onContact={onContact}
             />
           </motion.div>
         ) : (
@@ -1104,7 +1102,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.15 }}
           >
       <div className="max-w-[1480px] mx-auto px-10 py-12 md:py-16">
         <div>
@@ -1679,7 +1677,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
                         }}
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
-                        transition={{ duration: 0.3 }}
+                        transition={{ duration: 0.15 }}
                         onClick={() => openLightbox(item.src)}
                       >
                         <img loading="lazy"
@@ -2020,11 +2018,14 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
               </div>
             </section>
 
-            {/* Footer */}
-            <div className={`text-center py-12 border-t ${isDark ? 'border-white/10' : 'border-gray-200'}`}>
-              <p className={`text-sm ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
+            {/* Footer CTA */}
+            <div className={`text-center py-16 border-t ${isDark ? 'border-white/10' : 'border-gray-200'}`}>
+              <button
+                onClick={onContact}
+                className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-full text-base font-medium transition-colors"
+              >
                 {t.contactVictor}
-              </p>
+              </button>
             </div>
           </main>
         </div>

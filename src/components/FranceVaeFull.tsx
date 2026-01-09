@@ -38,6 +38,7 @@ interface FranceVaeFullProps {
   systemTheme: 'light' | 'dark';
   lang: 'en' | 'fr';
   onImageClick: (src: string) => void;
+  onContact?: () => void;
 }
 
 // ============================================================================
@@ -612,7 +613,7 @@ const FadeInSection: React.FC<{
       ref={ref}
       initial={{ opacity: 0, y: 20 }}
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-      transition={{ duration: 0.5, delay, ease: [0.25, 0.1, 0.25, 1] }}
+      transition={{ duration: 0.25, delay: delay * 0.5, ease: [0.25, 0.1, 0.25, 1] }}
       className={className}
     >
       {children}
@@ -1390,7 +1391,8 @@ const InitiativesDiagram: React.FC<{
 const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
   systemTheme,
   lang,
-  onImageClick
+  onImageClick,
+  onContact
 }) => {
   const isDark = systemTheme === 'dark';
   const t = TRANSLATIONS[lang];
@@ -2189,17 +2191,13 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
               </h2>
             </FadeInSection>
             <FadeInSection delay={0.1}>
-              <a
-                href="mailto:victor.soussan@gmail.com"
-                className={`inline-flex items-center gap-2 mt-8 px-8 py-4 text-lg font-semibold rounded-full transition-colors ${
-                  isDark
-                    ? 'bg-white hover:bg-gray-100 text-black'
-                    : 'bg-gray-900 hover:bg-black text-white'
-                }`}
+              <button
+                onClick={onContact}
+                className="inline-flex items-center gap-2 mt-8 px-8 py-4 text-lg font-semibold rounded-full transition-colors bg-blue-600 hover:bg-blue-700 text-white"
               >
                 {t.cta.button}
                 <ArrowRight size={20} />
-              </a>
+              </button>
             </FadeInSection>
           </section>
 

@@ -260,7 +260,7 @@ const ScrollExpandCard: React.FC<{
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.6, delay: index * 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
+      transition={{ duration: 0.3, delay: index * 0.05, ease: [0.25, 0.46, 0.45, 0.94] }}
       onClick={onClick}
       style={shouldAnimate ? {
         scale,
@@ -284,25 +284,19 @@ const LAB_PREVIEWS = {
     title: 'Condamine Apps', subtitle: '37+ Apps Deployed', color: 'blue',
     highlights: ['37+ production-ready applications', 'Built using Bolt.new and Lovable AI', 'Real-world use cases from 2025'],
     previews: ['Timeboxing App', 'Recipe Generator', 'Portfolio Analyzer', 'Dashboard Builder', 'AI Chat Interface', 'Todo List Pro', 'Weather Station', 'Calculator Plus'],
-    link: 'https://imaginative-youtiao-371d08.netlify.app'
-  },
-  learning: {
-    title: 'Condamine Learning', subtitle: 'Education & Training', color: 'amber',
-    highlights: ['Courses on AI-assisted design workflows', 'Workshops for Product Managers & Designers', 'From ideation to prototyping in hours'],
-    previews: ['AI for Designers', 'Prompt Engineering', 'No-Code Prototyping', 'Design Systems with AI'],
-    link: 'https://condamine-learning-a-5xzh.bolt.host'
+    link: 'https://www.condamine.studio/apps'
   },
   agents: {
     title: 'Agents & Prompts', subtitle: 'System Engineering', color: 'purple',
     highlights: ['Custom GPTs optimized for design tasks', 'System prompts for product workflows', 'Agent configurations for automation'],
     previews: ['Design Critique Agent', 'User Story Generator', 'Component Naming Agent', 'Accessibility Checker'],
-    link: 'https://victor-soussan.notion.site/Prompts-agents-database-VSO-155a519b0dea80ec9c99cdd229649c56'
+    link: 'https://www.condamine.studio/agents-prompts'
   },
   art: {
     title: 'AI Art Gallery', subtitle: 'Midjourney V6', color: 'pink',
     highlights: ['Curated collection of AI-generated imagery', 'Exploring light, texture, and composition', 'Surreal and abstract visual experiments'],
     previews: ['Light & Shadow', 'Architectural Dreams', 'Abstract Textures', 'Portrait Series'],
-    link: 'https://victor-soussan.notion.site/IA-Art-gallery-created-by-Victor-Soussan-2b8a519b0dea80b19385c8fe25dc9bb7'
+    link: 'https://www.condamine.studio/art'
   }
 };
 
@@ -1669,7 +1663,18 @@ const getTestimonials = (lang: Language): Testimonial[] => {
 // --- Main App Component ---
 
 const App: React.FC = () => {
-  const [lang, setLang] = useState<Language>('en');
+  // Parse initial language from URL query param
+  const getInitialLang = (): Language => {
+    if (typeof window === 'undefined') return 'en';
+    const params = new URLSearchParams(window.location.search);
+    const urlLang = params.get('lang');
+    if (urlLang === 'fr' || urlLang === 'en') return urlLang;
+    // Default to browser language or 'en'
+    const browserLang = navigator.language.toLowerCase();
+    return browserLang.startsWith('fr') ? 'fr' : 'en';
+  };
+
+  const [lang, setLang] = useState<Language>(getInitialLang);
   const content = TRANSLATIONS[lang];
   const resources = getResources(lang);
   const projects = getProjects(lang);
@@ -2093,11 +2098,13 @@ const App: React.FC = () => {
 
   // URL helpers for project routing
   // New URL structure: /project/:id/summary (En bref), /project/:id/full (Complet), /project/:id/gallery
-  const getProjectUrl = (projectId: string, viewMode: 'caseStudy' | 'gallery' | 'executive') => {
+  // Includes ?lang=xx parameter for sharing
+  const getProjectUrl = (projectId: string, viewMode: 'caseStudy' | 'gallery' | 'executive', includeLang = true) => {
     const viewPath = viewMode === 'gallery' ? '/gallery'
       : viewMode === 'executive' ? '/summary'
       : '/full';
-    return `/project/${projectId}${viewPath}`;
+    const langParam = includeLang ? `?lang=${lang}` : '';
+    return `/project/${projectId}${viewPath}${langParam}`;
   };
 
   // Open project with URL update
@@ -2124,9 +2131,9 @@ const App: React.FC = () => {
       openModalWithUrl('/work');
       setOpenedFromIndex(false);
     } else {
-      // Restore default meta tags and reset URL
+      // Restore default meta tags and reset URL with lang param
       updateMetaTags(DEFAULT_SEO);
-      window.history.pushState({}, '', '/');
+      window.history.pushState({ lang }, '', `/?lang=${lang}`);
     }
   };
 
@@ -2173,20 +2180,33 @@ const App: React.FC = () => {
     const route = MODAL_ROUTES[path];
     if (route) {
       route.setter(true);
-      window.history.pushState({ modal: path }, '', path);
+      const urlWithLang = `${path}?lang=${lang}`;
+      window.history.pushState({ modal: path, lang }, '', urlWithLang);
       updateMetaTags({ title: route.title, description: route.description, image: '/images/og_victor_soussan.webp' });
     }
   };
 
   const closeModalWithUrl = (setterFn: (v: boolean) => void) => {
     setterFn(false);
-    window.history.pushState({}, '', '/');
+    window.history.pushState({ lang }, '', `/?lang=${lang}`);
     updateMetaTags(DEFAULT_SEO);
   };
 
   // Handle browser back/forward buttons
   useEffect(() => {
     const handlePopState = (event: PopStateEvent) => {
+      // Restore language from state or URL
+      if (event.state?.lang) {
+        setLang(event.state.lang);
+      } else {
+        // Try to get lang from URL
+        const params = new URLSearchParams(window.location.search);
+        const urlLang = params.get('lang');
+        if (urlLang === 'fr' || urlLang === 'en') {
+          setLang(urlLang);
+        }
+      }
+
       // Handle project modals
       if (event.state?.project) {
         setOpenProject({
@@ -2230,6 +2250,13 @@ const App: React.FC = () => {
       if (seo) updateMetaTags(seo);
     }
   }, []);
+
+  // Update URL when language changes (keeps current path, updates lang param)
+  useEffect(() => {
+    const currentPath = window.location.pathname;
+    const newUrl = currentPath === '/' ? `/?lang=${lang}` : `${currentPath}?lang=${lang}`;
+    window.history.replaceState({ ...window.history.state, lang }, '', newUrl);
+  }, [lang]);
 
   // Easing function for smooth scroll
   const easeInOutCubic = (t: number): number => {
@@ -2520,7 +2547,7 @@ const App: React.FC = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.15 }}
                 className="fixed inset-0 bg-black/40 backdrop-blur-md pointer-events-auto"
                 onClick={() => {
                   // Haptic feedback
@@ -2926,12 +2953,27 @@ const App: React.FC = () => {
             {content.hero.desc}
           </p>
 
-          <div className="flex justify-center">
+          <div className="flex justify-center gap-4">
+            <button
+              onClick={() => {
+                const projectsSection = document.getElementById('projects');
+                if (projectsSection) {
+                  projectsSection.scrollIntoView({ behavior: 'smooth' });
+                }
+              }}
+              className="group px-8 py-4 sm:px-10 sm:py-5 rounded-full font-semibold text-base sm:text-lg btn-pill flex items-center cursor-pointer relative z-20 whitespace-nowrap transition-all duration-200 bg-[#2D5CF3] text-white hover:bg-[#2450d9] shadow-lg shadow-[#2D5CF3]/25 hover:shadow-xl hover:shadow-[#2D5CF3]/30"
+            >
+              {lang === 'en' ? 'View work' : 'Voir mes projets'} <ArrowUpRight className="ml-2 flex-shrink-0 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" size={18} />
+            </button>
             <button
               onClick={() => openModalWithUrl('/presentation')}
-              className="group px-10 py-4 sm:px-12 sm:py-5 rounded-full font-semibold text-lg sm:text-xl btn-pill flex items-center cursor-pointer relative z-20 whitespace-nowrap transition-all duration-200 bg-[#2D5CF3] text-white hover:bg-[#2450d9] shadow-lg shadow-[#2D5CF3]/25 hover:shadow-xl hover:shadow-[#2D5CF3]/30"
+              className={`group px-8 py-4 sm:px-10 sm:py-5 rounded-full font-semibold text-base sm:text-lg btn-pill flex items-center cursor-pointer relative z-20 whitespace-nowrap transition-all duration-200 ${
+                systemTheme === 'dark'
+                  ? 'bg-white/10 text-white border border-white/20 hover:bg-white/15'
+                  : 'bg-white text-gray-900 border border-gray-200 hover:bg-gray-50 shadow-sm'
+              }`}
             >
-              {lang === 'en' ? '1-Min Presentation' : 'Présentation en 1 min'} <ArrowUpRight className="ml-2 flex-shrink-0 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" size={20} />
+              {lang === 'en' ? '1-min Presentation' : 'Présentation 1 min'} <ArrowUpRight className="ml-2 flex-shrink-0 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" size={18} />
             </button>
           </div>
         </div>
@@ -2998,7 +3040,7 @@ const App: React.FC = () => {
                   systemTheme={systemTheme}
                   onClick={() => {
                     if (project.id === 'toolkit' || project.id === 'dailymotion' || project.id === 'connect' || project.id === 'sqool' || project.id === 'france-vae') {
-                      openProjectWithUrl(project.id, 'caseStudy');
+                      openProjectWithUrl(project.id, 'executive');
                     } else if (project.externalLink) {
                       setIframeModalUrl(project.externalLink);
                     }
@@ -3798,7 +3840,7 @@ const App: React.FC = () => {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
                {/* Card 1: Condamine Apps */}
                <a
                  href={LAB_PREVIEWS.apps.link}
@@ -3820,28 +3862,7 @@ const App: React.FC = () => {
                   </div>
                </a>
 
-               {/* Card 2: Condamine Learning (NEW) */}
-               <a
-                 href={LAB_PREVIEWS.learning.link}
-                 target="_blank"
-                 rel="noopener noreferrer"
-                 className="group relative bg-[#151517] border border-white/5 hover:border-amber-500/50 p-5 md:p-8 rounded-2xl md:rounded-3xl transition-all duration-300 hover:shadow-2xl hover:shadow-amber-900/10 flex flex-col overflow-hidden cursor-pointer"
-               >
-                  <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                  <div className="mb-6 p-4 bg-amber-900/20 w-fit rounded-2xl text-amber-400 group-hover:scale-110 transition-transform duration-300">
-                     <GraduationCap size={32}/>
-                  </div>
-                  <h3 className="text-2xl font-bold tracking-[-0.02em] mb-2">{content.lab.learning_title}</h3>
-                  <div className="text-xs font-mono text-amber-400 mb-4">{content.lab.learning_sub}</div>
-                  <p className="text-gray-400 text-sm leading-relaxed mb-6 flex-1">
-                     {content.lab.learning_desc}
-                  </p>
-                  <div className="flex items-center text-sm font-medium text-white group-hover:translate-x-1 transition-transform">
-                     {content.lab.learning_cta} <ArrowUpRight size={16} className="ml-2"/>
-                  </div>
-               </a>
-
-               {/* Card 3: Prompts DB */}
+               {/* Card 2: Prompts DB */}
                <a
                  href={LAB_PREVIEWS.agents.link}
                  target="_blank"
@@ -3862,7 +3883,7 @@ const App: React.FC = () => {
                   </div>
                </a>
 
-               {/* Card 4: Art Gallery */}
+               {/* Card 3: Art Gallery */}
                <a
                  href={LAB_PREVIEWS.art.link}
                  target="_blank"
@@ -3893,7 +3914,7 @@ const App: React.FC = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
+          transition={{ duration: 0.15 }}
           className={`fixed inset-0 z-[100] flex flex-col ${
             systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-[#F9F9F9]'
           }`}
@@ -4308,7 +4329,7 @@ const App: React.FC = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
+          transition={{ duration: 0.15 }}
           className={`fixed inset-0 z-[100] overflow-y-auto ${
             systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white'
           }`}
@@ -4842,7 +4863,7 @@ ${simpleContactForm.message}`;
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3, duration: 0.3 }}
+                  transition={{ delay: 0.1, duration: 0.15 }}
                   className="grid md:grid-cols-2 gap-4"
                 >
                   <div>
@@ -4873,7 +4894,7 @@ ${simpleContactForm.message}`;
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.35, duration: 0.3 }}
+                  transition={{ delay: 0.12, duration: 0.15 }}
                 >
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     {content.contact.simple_form_message} *
@@ -4892,7 +4913,7 @@ ${simpleContactForm.message}`;
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.45, duration: 0.3 }}
+                  transition={{ delay: 0.15, duration: 0.15 }}
                 >
                   <button
                     type="submit"
@@ -5103,7 +5124,7 @@ ${contactForm.message}`;
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: 'auto' }}
                     exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.3 }}
+                    transition={{ duration: 0.15 }}
                   >
                     <label className="block text-sm font-medium text-gray-700 mb-3">
                       What services are you interested in? (Select all that apply)
@@ -5266,7 +5287,7 @@ ${contactForm.message}`;
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.3 }}
+                    transition={{ duration: 0.15 }}
                     className="space-y-6"
                   >
                     {/* Name & Company */}
@@ -5348,7 +5369,7 @@ ${contactForm.message}`;
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3 }}
+                    transition={{ duration: 0.15 }}
                     className="flex items-center justify-end space-x-3 pt-4 border-t border-gray-100"
                   >
                     <button
@@ -5864,7 +5885,7 @@ ${contactForm.message}`;
               <ul className="space-y-3">
                 <li>
                   <a
-                    href="https://imaginative-youtiao-371d08.netlify.app"
+                    href="https://www.condamine.studio/apps"
                     target="_blank"
                     rel="noopener noreferrer"
                     className={`text-sm transition-colors flex items-center ${
@@ -5877,20 +5898,7 @@ ${contactForm.message}`;
                 </li>
                 <li>
                   <a
-                    href="https://condamine-learning-a-5xzh.bolt.host"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`text-sm transition-colors flex items-center ${
-                      systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'
-                    }`}
-                  >
-                    Condamine Learning
-                    <ArrowUpRight size={12} className="ml-1" />
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://victor-soussan.notion.site/Prompts-agents-database-VSO-155a519b0dea80ec9c99cdd229649c56"
+                    href="https://www.condamine.studio/agents-prompts"
                     target="_blank"
                     rel="noopener noreferrer"
                     className={`text-sm transition-colors flex items-center ${
@@ -5903,7 +5911,7 @@ ${contactForm.message}`;
                 </li>
                 <li>
                   <a
-                    href="https://victor-soussan.notion.site/IA-Art-gallery-created-by-Victor-Soussan-2b8a519b0dea80b19385c8fe25dc9bb7"
+                    href="https://www.condamine.studio/art"
                     target="_blank"
                     rel="noopener noreferrer"
                     className={`text-sm transition-colors flex items-center ${
@@ -5992,7 +6000,7 @@ ${contactForm.message}`;
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
+              transition={{ duration: 0.15 }}
               className="absolute inset-0 bg-white overflow-auto"
             >
               {/* Close button - fixed top right */}
@@ -6545,7 +6553,7 @@ ${contactForm.message}`;
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -20 }}
-                      transition={{ duration: 0.4 }}
+                      transition={{ duration: 0.2 }}
                       className="text-center py-12 px-8 max-w-3xl mx-auto"
                     >
                       {/* Portrait */}
@@ -6678,7 +6686,7 @@ ${contactForm.message}`;
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -20 }}
-                      transition={{ duration: 0.3 }}
+                      transition={{ duration: 0.15 }}
                       className="space-y-6 max-w-3xl mx-auto"
                     >
                       <div className="text-center mb-6">
@@ -6770,7 +6778,7 @@ ${contactForm.message}`;
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -20 }}
-                      transition={{ duration: 0.3 }}
+                      transition={{ duration: 0.15 }}
                       className="space-y-6 max-w-3xl mx-auto"
                     >
                       <div className="text-center mb-6">
@@ -6849,7 +6857,7 @@ ${contactForm.message}`;
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -20 }}
-                      transition={{ duration: 0.3 }}
+                      transition={{ duration: 0.15 }}
                       className="space-y-6 max-w-2xl mx-auto"
                     >
                       <div className="text-center mb-6">
@@ -7019,7 +7027,7 @@ ${contactForm.message}`;
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -20 }}
-                      transition={{ duration: 0.3 }}
+                      transition={{ duration: 0.15 }}
                       className="space-y-6 max-w-3xl mx-auto"
                     >
                       <div className="text-center mb-6">
@@ -7086,7 +7094,7 @@ ${contactForm.message}`;
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -20 }}
-                      transition={{ duration: 0.3 }}
+                      transition={{ duration: 0.15 }}
                       className="space-y-6 max-w-3xl mx-auto"
                     >
                       <div className="text-center mb-6">
@@ -7153,7 +7161,7 @@ ${contactForm.message}`;
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -20 }}
-                      transition={{ duration: 0.3 }}
+                      transition={{ duration: 0.15 }}
                       className="space-y-6 max-w-3xl mx-auto"
                     >
                       <div className="text-center mb-6">
@@ -7198,7 +7206,7 @@ ${contactForm.message}`;
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -20 }}
-                      transition={{ duration: 0.3 }}
+                      transition={{ duration: 0.15 }}
                       className="space-y-6 max-w-3xl mx-auto"
                     >
                       <div className="text-center mb-6">
@@ -7299,7 +7307,7 @@ ${contactForm.message}`;
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -20 }}
-                      transition={{ duration: 0.3 }}
+                      transition={{ duration: 0.15 }}
                       className="space-y-6 max-w-3xl mx-auto"
                     >
                       <div className="text-center mb-6">
@@ -7923,7 +7931,7 @@ ${contactForm.message}`;
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
+              transition={{ duration: 0.15 }}
               className="absolute inset-0 bg-white"
             >
               {/* Close button - fixed top right */}
@@ -7960,6 +7968,7 @@ ${contactForm.message}`;
               viewMode={openProject.viewMode}
               onViewModeChange={(mode) => openProjectWithUrl('toolkit', mode)}
               lang={lang}
+              onContact={() => setIsSimpleContactOpen(true)}
             />
           </Suspense>
         )}
@@ -7978,6 +7987,7 @@ ${contactForm.message}`;
               viewMode={openProject.viewMode}
               onViewModeChange={(mode) => openProjectWithUrl('dailymotion', mode)}
               lang={lang}
+              onContact={() => setIsSimpleContactOpen(true)}
             />
           </Suspense>
         )}
@@ -7996,6 +8006,7 @@ ${contactForm.message}`;
               viewMode={openProject.viewMode}
               onViewModeChange={(mode) => openProjectWithUrl('connect', mode)}
               lang={lang}
+              onContact={() => setIsSimpleContactOpen(true)}
             />
           </Suspense>
         )}
@@ -8014,6 +8025,7 @@ ${contactForm.message}`;
               viewMode={openProject.viewMode}
               onViewModeChange={(mode) => openProjectWithUrl('sqool', mode)}
               lang={lang}
+              onContact={() => setIsSimpleContactOpen(true)}
             />
           </Suspense>
         )}
@@ -8032,6 +8044,7 @@ ${contactForm.message}`;
               viewMode={openProject.viewMode}
               onViewModeChange={(mode) => openProjectWithUrl('france-vae', mode)}
               lang={lang}
+              onContact={() => setIsSimpleContactOpen(true)}
             />
           </Suspense>
         )}
@@ -8071,7 +8084,7 @@ ${contactForm.message}`;
                 closeModalWithUrl(setIsWorkOpen);
                 setOpenedFromIndex(true);
                 if (projectId === 'toolkit' || projectId === 'dailymotion' || projectId === 'connect' || projectId === 'sqool' || projectId === 'france-vae') {
-                  openProjectWithUrl(projectId, 'caseStudy');
+                  openProjectWithUrl(projectId, 'executive');
                 }
               }}
               onBack={() => closeModalWithUrl(setIsWorkOpen)}

@@ -6,6 +6,7 @@ import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from
 import { X, ChevronDown } from 'lucide-react';
 import FranceVaeExecutive from './src/components/FranceVaeExecutive';
 import FranceVaeFull from './src/components/FranceVaeFull';
+import StackedCaseStudies from './src/components/StackedCaseStudies';
 import EnhancedLightbox from './src/components/EnhancedLightbox';
 
 // Gallery Card with Apple TV-style 3D tilt effect (same as BentoGallery)
@@ -49,9 +50,9 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick, lang })
 
   return (
     <motion.figure
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay: index * 0.03 }}
+      transition={{ duration: 0.2, delay: index * 0.02 }}
       className="group cursor-pointer break-inside-avoid mb-8 md:mb-10"
       onClick={onClick}
       style={{ perspective: 1000 }}
@@ -107,6 +108,7 @@ interface FranceVaePageProps {
   lang?: 'en' | 'fr';
   viewMode?: 'caseStudy' | 'gallery' | 'executive';
   onViewModeChange?: (mode: 'caseStudy' | 'gallery' | 'executive') => void;
+  onContact?: () => void;
 }
 
 // Translations
@@ -117,6 +119,7 @@ const FRANCEVAE_TRANSLATIONS = {
     full: 'Full',
     fullShort: 'Full',
     gallery: 'Gallery',
+    contactVictor: 'Contact Victor for a similar project',
   },
   fr: {
     enBref: 'En bref',
@@ -124,6 +127,7 @@ const FRANCEVAE_TRANSLATIONS = {
     full: 'Complet',
     fullShort: 'Complet',
     gallery: 'Galerie',
+    contactVictor: 'Contacter Victor pour un projet similaire',
   }
 };
 
@@ -213,31 +217,35 @@ const FranceVaePage: React.FC<FranceVaePageProps> = ({
   systemTheme,
   lang: propLang,
   viewMode: propViewMode,
-  onViewModeChange
+  onViewModeChange,
+  onContact,
 }) => {
   const [lang, setLang] = useState<'en' | 'fr'>(propLang || 'fr');
   // Map external viewMode to internal
   const initialViewMode = propViewMode === 'gallery' ? 'gallery' : 'caseStudy';
   const [viewMode, setViewModeInternal] = useState<'caseStudy' | 'gallery'>(initialViewMode);
-  // Initialize caseStudyMode based on propViewMode: 'executive' -> 'executive', 'caseStudy' -> 'full'
+  // Sync caseStudyMode with external viewMode
   const initialCaseStudyMode = propViewMode === 'executive' ? 'executive' : (propViewMode === 'caseStudy' ? 'full' : 'executive');
-  const [caseStudyMode, setCaseStudyModeInternal] = useState<'executive' | 'full'>(initialCaseStudyMode);
+  const [caseStudyMode, setCaseStudyMode] = useState<'executive' | 'full'>(initialCaseStudyMode);
 
-  // Wrapper to sync viewMode with URL
+  // Sync caseStudyMode when propViewMode changes from outside
+  useEffect(() => {
+    if (propViewMode === 'executive') {
+      setCaseStudyMode('executive');
+      setViewModeInternal('caseStudy');
+    } else if (propViewMode === 'caseStudy') {
+      setCaseStudyMode('full');
+      setViewModeInternal('caseStudy');
+    } else if (propViewMode === 'gallery') {
+      setViewModeInternal('gallery');
+    }
+  }, [propViewMode]);
+
+  // Wrapper to sync with external state
   const setViewMode = (mode: 'caseStudy' | 'gallery') => {
     setViewModeInternal(mode);
     if (onViewModeChange) {
-      // When switching to gallery, pass 'gallery'
-      // When switching to caseStudy, preserve the current caseStudyMode
-      onViewModeChange(mode === 'gallery' ? 'gallery' : (caseStudyMode === 'executive' ? 'executive' : 'caseStudy'));
-    }
-  };
-
-  // Wrapper to sync caseStudyMode with URL
-  const setCaseStudyMode = (mode: 'executive' | 'full') => {
-    setCaseStudyModeInternal(mode);
-    if (onViewModeChange) {
-      onViewModeChange(mode === 'executive' ? 'executive' : 'caseStudy');
+      onViewModeChange(mode === 'gallery' ? 'gallery' : 'caseStudy');
     }
   };
   const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -259,12 +267,6 @@ const FranceVaePage: React.FC<FranceVaePageProps> = ({
   useEffect(() => {
     if (propViewMode) {
       setViewModeInternal(propViewMode === 'gallery' ? 'gallery' : 'caseStudy');
-      // Also sync caseStudyMode when propViewMode changes
-      if (propViewMode === 'executive') {
-        setCaseStudyModeInternal('executive');
-      } else if (propViewMode === 'caseStudy') {
-        setCaseStudyModeInternal('full');
-      }
     }
   }, [propViewMode]);
 
@@ -356,7 +358,7 @@ const FranceVaePage: React.FC<FranceVaePageProps> = ({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.3 }}
+      transition={{ duration: 0.15 }}
       className={`fixed inset-0 z-50 overflow-y-auto ${
         viewMode === 'gallery' ? 'bg-black' : (isDark ? 'bg-[#0a0a0a]' : 'bg-white')
       }`}
@@ -491,12 +493,12 @@ const FranceVaePage: React.FC<FranceVaePageProps> = ({
                 viewMode === 'gallery' ? 'bg-white/10' : (isDark ? 'bg-white/10' : 'bg-gray-100')
               }`}
             >
-              {/* En bref button */}
+              {/* Summary button */}
               <button
-                onClick={() => { setViewMode('caseStudy'); setCaseStudyMode('executive'); }}
+                onClick={() => { if (onViewModeChange) onViewModeChange('executive'); setViewMode('caseStudy'); setCaseStudyMode('executive'); }}
                 className="relative z-10 px-2 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 whitespace-nowrap"
               >
-                {viewMode === 'caseStudy' && caseStudyMode === 'executive' && (
+                {(propViewMode === 'executive' || (viewMode === 'caseStudy' && caseStudyMode === 'executive')) && (
                   <motion.div
                     layoutId="francevae-toggle-pill"
                     className="absolute inset-0 bg-blue-600 rounded-full shadow-md"
@@ -504,18 +506,18 @@ const FranceVaePage: React.FC<FranceVaePageProps> = ({
                   />
                 )}
                 <span className={`relative z-10 ${
-                  viewMode === 'caseStudy' && caseStudyMode === 'executive'
+                  (propViewMode === 'executive' || (viewMode === 'caseStudy' && caseStudyMode === 'executive'))
                     ? 'text-white'
                     : (viewMode === 'gallery' ? 'text-gray-400 hover:text-white' : (isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'))
                 }`}>
-                  <span className="hidden sm:inline">{t.enBref}</span>
-                  <span className="sm:hidden">{t.enBrefShort}</span>
+                  <span className="hidden sm:inline">{lang === 'fr' ? 'Résumé' : 'Summary'}</span>
+                  <span className="sm:hidden">{lang === 'fr' ? 'Rés.' : 'Sum.'}</span>
                 </span>
               </button>
 
-              {/* Full case study button */}
+              {/* Full case button */}
               <button
-                onClick={() => { setViewMode('caseStudy'); setCaseStudyMode('full'); }}
+                onClick={() => { if (onViewModeChange) onViewModeChange('caseStudy'); setViewMode('caseStudy'); setCaseStudyMode('full'); }}
                 className="relative z-10 px-2 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 whitespace-nowrap"
               >
                 {viewMode === 'caseStudy' && caseStudyMode === 'full' && (
@@ -530,14 +532,14 @@ const FranceVaePage: React.FC<FranceVaePageProps> = ({
                     ? 'text-white'
                     : (viewMode === 'gallery' ? 'text-gray-400 hover:text-white' : (isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'))
                 }`}>
-                  <span className="hidden sm:inline">{t.full}</span>
-                  <span className="sm:hidden">{t.fullShort}</span>
+                  <span className="hidden sm:inline">{lang === 'fr' ? 'Cas complet' : 'Full case'}</span>
+                  <span className="sm:hidden">{lang === 'fr' ? 'Full' : 'Full'}</span>
                 </span>
               </button>
 
               {/* Gallery button */}
               <button
-                onClick={() => setViewMode('gallery')}
+                onClick={() => { if (onViewModeChange) onViewModeChange('gallery'); setViewMode('gallery'); }}
                 className="relative z-10 px-2 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 whitespace-nowrap"
               >
                 {viewMode === 'gallery' && (
@@ -552,7 +554,8 @@ const FranceVaePage: React.FC<FranceVaePageProps> = ({
                     ? 'text-white'
                     : (isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900')
                 }`}>
-                  {lang === 'fr' ? 'Galerie' : 'Gallery'}
+                  <span className="hidden sm:inline">{lang === 'fr' ? 'Galerie' : 'Gallery'}</span>
+                  <span className="sm:hidden">{lang === 'fr' ? 'Gal.' : 'Gal.'}</span>
                 </span>
               </button>
             </div>
@@ -583,6 +586,7 @@ const FranceVaePage: React.FC<FranceVaePageProps> = ({
               lang={lang}
               onImageClick={openLightbox}
               onViewFull={() => setCaseStudyMode('full')}
+              onContact={onContact}
             />
           </main>
         ) : (
@@ -592,6 +596,7 @@ const FranceVaePage: React.FC<FranceVaePageProps> = ({
               systemTheme={systemTheme}
               lang={lang}
               onImageClick={openLightbox}
+              onContact={onContact}
             />
           </main>
         )

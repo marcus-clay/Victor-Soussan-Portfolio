@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform, PanInfo } from 'framer-motion';
-// jsPDF is now lazy-loaded in generateExecutivePDF to reduce initial bundle by ~380KB
+import jsPDF from 'jspdf';
 import CareerCarousel from './src/components/CareerCarousel';
 import { careerData } from './src/data/careerData';
 import {
@@ -69,12 +69,8 @@ const loadImageAsBase64 = (src: string): Promise<string | null> => {
 };
 
 // PDF generation function for the Executive Profile deck
-// jsPDF is lazy-loaded to reduce initial bundle size by ~380KB
 const generateExecutivePDF = async (lang: 'en' | 'fr', setGenerating?: (v: boolean) => void) => {
   if (setGenerating) setGenerating(true);
-
-  // Lazy load jsPDF only when PDF generation is needed
-  const { default: jsPDF } = await import('jspdf');
 
   const pdf = new jsPDF({
     orientation: 'landscape',
@@ -1188,14 +1184,22 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
   // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // If video lightbox is open, handle Escape
+      // If video lightbox is open, handle Escape - prevent closing presentation
       if (videoLightboxOpen) {
-        if (e.key === 'Escape') closeVideoLightbox();
+        if (e.key === 'Escape') {
+          e.preventDefault();
+          e.stopPropagation();
+          closeVideoLightbox();
+        }
         return;
       }
-      // If image lightbox is open, handle its navigation
+      // If image lightbox is open, handle its navigation - prevent closing presentation
       if (lightboxOpen) {
-        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'Escape') {
+          e.preventDefault();
+          e.stopPropagation();
+          closeLightbox();
+        }
         if (e.key === 'ArrowRight') paginateLightbox(1);
         if (e.key === 'ArrowLeft') paginateLightbox(-1);
         return;
@@ -1212,9 +1216,10 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [goNext, goPrev, onClose, lightboxOpen, videoLightboxOpen, paginateLightbox]);
+    // Use capture phase to intercept ESC before other listeners
+    window.addEventListener('keydown', handleKeyDown, { capture: true });
+    return () => window.removeEventListener('keydown', handleKeyDown, { capture: true });
+  }, [goNext, goPrev, onClose, lightboxOpen, videoLightboxOpen, paginateLightbox, closeLightbox, closeVideoLightbox]);
 
   const renderSlideContent = () => {
     switch (slide.type) {
@@ -1739,7 +1744,7 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
               )}
             </div>
             {/* Right: 1 large + 2 small bento layout with captions below */}
-            <div className="flex-1 w-full lg:w-[65%] max-h-[50vh] sm:max-h-[65vh] lg:max-h-[75vh] overflow-y-auto">
+            <div className="flex-1 w-full lg:w-[65%] bg-gray-50/50 rounded-2xl p-3 sm:p-4">
               <div className="flex flex-col gap-3 sm:gap-4">
                 {/* Large image on top with caption below */}
                 {bentoVisuals?.[0] && (
@@ -1747,7 +1752,7 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
                     <div className="rounded-lg sm:rounded-xl overflow-hidden border border-gray-200 cursor-pointer hover:shadow-lg transition-shadow">
                       <ClickableImage
                         src={bentoVisuals[0]}
-                        className="w-full h-auto max-h-[35vh] sm:max-h-[40vh] object-cover"
+                        className="w-full h-auto max-h-[35vh] sm:max-h-[42vh] object-cover"
                         onClick={() => openLightbox(bentoVisuals[0])}
                         hasWhiteBg={isCondamineApps}
                       />
@@ -1759,14 +1764,14 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
                     )}
                   </figure>
                 )}
-                {/* 2 smaller images below with captions */}
+                {/* 2 smaller images below with captions - equal height with 16:9 ratio */}
                 <div className="grid grid-cols-2 gap-3 sm:gap-4">
                   {bentoVisuals?.slice(1, 3).map((src, idx) => (
                     <figure key={idx}>
-                      <div className="rounded-lg sm:rounded-xl overflow-hidden border border-gray-200 cursor-pointer hover:shadow-lg transition-shadow">
+                      <div className="rounded-lg sm:rounded-xl overflow-hidden border border-gray-200 cursor-pointer hover:shadow-lg transition-shadow aspect-video bg-white">
                         <ClickableImage
                           src={src}
-                          className="w-full h-auto"
+                          className="w-full h-full object-contain"
                           onClick={() => openLightbox(src)}
                           hasWhiteBg={isCondamineApps}
                         />

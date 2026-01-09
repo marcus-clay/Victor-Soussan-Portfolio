@@ -113,9 +113,9 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, isVideo, onClick
 
   return (
     <motion.figure
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay: index * 0.03 }}
+      transition={{ duration: 0.2, delay: index * 0.02 }}
       className="group cursor-pointer break-inside-avoid mb-8 md:mb-10"
       onClick={onClick}
       style={{ perspective: 1000 }}
@@ -298,8 +298,8 @@ export const BentoGallery: React.FC<BentoGalleryProps> = ({
           animate={{ opacity: 1, backgroundColor: 'rgba(0,0,0,1)' }}
           exit={{ opacity: 0, backgroundColor: 'rgba(255,255,255,1)' }}
           transition={{
-            opacity: { duration: 0.3 },
-            backgroundColor: { duration: 0.5, ease: 'easeInOut' }
+            opacity: { duration: 0.15 },
+            backgroundColor: { duration: 0.25, ease: 'easeInOut' }
           }}
           className="fixed inset-0 z-[100] overflow-y-auto"
         >
@@ -307,7 +307,7 @@ export const BentoGallery: React.FC<BentoGalleryProps> = ({
           <motion.header
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.1 }}
+            transition={{ duration: 0.2, delay: 0.05 }}
             className="sticky top-0 z-50 backdrop-blur-xl border-b bg-black/80 border-white/10"
           >
             <div className="max-w-6xl mx-auto px-3 sm:px-4 md:px-6 py-3 sm:py-4 flex items-center gap-2 sm:gap-4">
@@ -386,7 +386,7 @@ export const BentoGallery: React.FC<BentoGalleryProps> = ({
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.4, delay: 0.2 }}
+            transition={{ duration: 0.2, delay: 0.08 }}
             className="overflow-y-auto"
           >
             <div className="w-full px-6 md:px-10 lg:px-12 py-8 md:py-12">
@@ -924,7 +924,7 @@ export const CONNECT_GALLERY_ITEMS: GalleryItem[] = [
     type: 'video',
   },
   {
-    src: '/videos/connect/connect-dashboard-prototype_complet_1080p.mp4',
+    src: '/videos/connect/connect-dashboard-prototype_complet_4k.mp4',
     caption: 'Dashboard Prototype',
     captionDesc: 'Full interaction walkthrough demonstrating modular capabilities',
     type: 'video',
@@ -1214,7 +1214,7 @@ export const SQOOL_GALLERY_ITEMS: GalleryItem[] = [
   },
   // Connect Vision Prototype (videos)
   {
-    src: '/videos/connect/connect-dashboard-prototype_complet_1080p.mp4',
+    src: '/videos/connect/connect-dashboard-prototype_complet_4k.mp4',
     caption: 'Connect Dashboard Prototype',
     captionDesc: 'Full walkthrough of the web-based dashboard demonstrator',
     type: 'video',

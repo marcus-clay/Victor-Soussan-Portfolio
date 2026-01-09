@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { GalleryItem, getConnectGalleryItems } from './BentoGallery';
 import ConnectExecutive from './src/components/ConnectExecutive';
+import StackedCaseStudies from './src/components/StackedCaseStudies';
 import EnhancedLightbox from './src/components/EnhancedLightbox';
 
 interface ConnectPageProps {
@@ -20,6 +21,7 @@ interface ConnectPageProps {
   viewMode: 'caseStudy' | 'gallery' | 'executive';
   onViewModeChange: (mode: 'caseStudy' | 'gallery' | 'executive') => void;
   lang?: 'en' | 'fr';
+  onContact?: () => void;
 }
 
 // Translations for Connect Case Study
@@ -325,7 +327,7 @@ const allImagesData: MediaItem[] = [
   { src: '/images/connect/connect_dashboard_home_light_full-scaled.webp', captionKey: 'homeLight', type: 'image' },
   { src: '/images/connect/connect_dashboard_applications_full-scaled.webp', captionKey: 'applications', type: 'image' },
   { src: '/videos/connect/connect-loading-user-authent-app-launch-study.mp4', captionKey: 'loadingAuth', type: 'video' },
-  { src: '/videos/connect/connect-dashboard-prototype_complet_1080p.mp4', captionKey: 'prototype', type: 'video' },
+  { src: '/videos/connect/connect-dashboard-prototype_complet_4k-compressed.mp4', captionKey: 'prototype', type: 'video' },
   { src: '/videos/connect/connect-design-sprint-compressed.mp4', captionKey: 'designSprint', type: 'video' },
   { src: '/images/connect/connect_tech_architecture-1-scaled.webp', captionKey: 'techArch', type: 'image' },
   { src: '/images/connect/connect_specifications_implem_01-scaled.webp', captionKey: 'specsImplem', type: 'image' },
@@ -372,9 +374,9 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick }) => {
 
   return (
     <motion.figure
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay: index * 0.03 }}
+      transition={{ duration: 0.2, delay: index * 0.02 }}
       className="group cursor-pointer break-inside-avoid mb-8 md:mb-10"
       onClick={onClick}
       style={{ perspective: 1000 }}
@@ -420,7 +422,8 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
   onToggleTheme,
   viewMode,
   onViewModeChange,
-  lang = 'en'
+  lang = 'en',
+  onContact,
 }) => {
   const t = CONNECT_TRANSLATIONS[lang];
   // Load gallery items directly in the component
@@ -437,26 +440,20 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
   const [isMobileNavExpanded, setIsMobileNavExpanded] = useState(false);
   const [showNav, setShowNav] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
-  // Initialize caseStudyMode based on viewMode prop: 'executive' -> 'executive', 'caseStudy' -> 'full'
+  // Sync caseStudyMode with external viewMode
   const initialCaseStudyMode = viewMode === 'executive' ? 'executive' : (viewMode === 'caseStudy' ? 'full' : 'executive');
-  const [caseStudyMode, setCaseStudyModeInternal] = useState<'executive' | 'full'>(initialCaseStudyMode);
+  const [caseStudyMode, setCaseStudyMode] = useState<'executive' | 'full'>(initialCaseStudyMode);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [videoStartTime, setVideoStartTime] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRefs = useRef<{ [key: string]: HTMLVideoElement | null }>({});
 
-  // Wrapper to sync caseStudyMode with URL
-  const setCaseStudyMode = (mode: 'executive' | 'full') => {
-    setCaseStudyModeInternal(mode);
-    onViewModeChange(mode === 'executive' ? 'executive' : 'caseStudy');
-  };
-
-  // Sync caseStudyMode when viewMode prop changes
+  // Sync caseStudyMode when viewMode changes from outside
   useEffect(() => {
     if (viewMode === 'executive') {
-      setCaseStudyModeInternal('executive');
+      setCaseStudyMode('executive');
     } else if (viewMode === 'caseStudy') {
-      setCaseStudyModeInternal('full');
+      setCaseStudyMode('full');
     }
   }, [viewMode]);
 
@@ -524,7 +521,7 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.3 }}
+      transition={{ duration: 0.15 }}
       className={`fixed inset-0 z-50 overflow-y-auto ${
         viewMode === 'gallery' ? 'bg-black' : (systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white')
       }`}
@@ -656,12 +653,12 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
                 viewMode === 'gallery' ? 'bg-white/10' : (systemTheme === 'dark' ? 'bg-white/10' : 'bg-gray-100')
               }`}
             >
-              {/* Executive button */}
+              {/* Summary button */}
               <button
-                onClick={() => setCaseStudyMode('executive')}
+                onClick={() => { onViewModeChange('executive'); setCaseStudyMode('executive'); }}
                 className="relative z-10 px-2 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 whitespace-nowrap"
               >
-                {viewMode !== 'gallery' && caseStudyMode === 'executive' && (
+                {(viewMode === 'executive' || (viewMode === 'caseStudy' && caseStudyMode === 'executive')) && (
                   <motion.div
                     layoutId="connect-toggle-pill"
                     className="absolute inset-0 bg-blue-600 rounded-full shadow-md"
@@ -669,20 +666,20 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
                   />
                 )}
                 <span className={`relative z-10 ${
-                  viewMode !== 'gallery' && caseStudyMode === 'executive'
+                  (viewMode === 'executive' || (viewMode === 'caseStudy' && caseStudyMode === 'executive'))
                     ? 'text-white'
                     : (viewMode === 'gallery' ? 'text-gray-400 hover:text-white' : (systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'))
                 }`}>
-                  <span className="hidden sm:inline">{lang === 'fr' ? 'En bref' : 'Summary'}</span>
-                  <span className="sm:hidden">{lang === 'fr' ? 'Bref' : 'Sum.'}</span>
+                  <span className="hidden sm:inline">{lang === 'fr' ? 'Résumé' : 'Summary'}</span>
+                  <span className="sm:hidden">{lang === 'fr' ? 'Rés.' : 'Sum.'}</span>
                 </span>
               </button>
-              {/* Full case study button */}
+              {/* Full case button */}
               <button
-                onClick={() => setCaseStudyMode('full')}
+                onClick={() => { onViewModeChange('caseStudy'); setCaseStudyMode('full'); }}
                 className="relative z-10 px-2 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 whitespace-nowrap"
               >
-                {viewMode !== 'gallery' && caseStudyMode === 'full' && (
+                {viewMode === 'caseStudy' && caseStudyMode === 'full' && (
                   <motion.div
                     layoutId="connect-toggle-pill"
                     className="absolute inset-0 bg-blue-600 rounded-full shadow-md"
@@ -690,11 +687,11 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
                   />
                 )}
                 <span className={`relative z-10 ${
-                  viewMode !== 'gallery' && caseStudyMode === 'full'
+                  viewMode === 'caseStudy' && caseStudyMode === 'full'
                     ? 'text-white'
                     : (viewMode === 'gallery' ? 'text-gray-400 hover:text-white' : (systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'))
                 }`}>
-                  <span className="hidden sm:inline">{lang === 'fr' ? 'Complet' : 'Full case'}</span>
+                  <span className="hidden sm:inline">{lang === 'fr' ? 'Cas complet' : 'Full case'}</span>
                   <span className="sm:hidden">{lang === 'fr' ? 'Full' : 'Full'}</span>
                 </span>
               </button>
@@ -762,7 +759,7 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.15 }}
             className="w-full px-6 md:px-10 lg:px-12 py-8 md:py-12"
           >
             <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 md:gap-8">
@@ -783,13 +780,14 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.15 }}
           >
             <ConnectExecutive
               systemTheme={systemTheme}
               lang={lang}
               onImageClick={openLightbox}
               onViewFull={() => setCaseStudyMode('full')}
+              onContact={onContact}
             />
           </motion.div>
         ) : (
@@ -799,7 +797,7 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.15 }}
           >
       <div className="max-w-[1480px] mx-auto px-10 py-12 md:py-16">
         <div>
@@ -1077,13 +1075,13 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
               {/* Complete Dashboard Prototype Video */}
               <figure className="my-12">
                 <div
-                  onClick={() => openLightbox('/videos/connect/connect-dashboard-prototype_complet_1080p.mp4')}
+                  onClick={() => openLightbox('/videos/connect/connect-dashboard-prototype_complet_4k-compressed.mp4')}
                   className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
                     systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
                   }`}
                 >
                   <video
-                    src="/videos/connect/connect-dashboard-prototype_complet_1080p.mp4"
+                    src="/videos/connect/connect-dashboard-prototype_complet_4k-compressed.mp4"
                     autoPlay
                     loop
                     muted
@@ -1391,6 +1389,16 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
                 </figcaption>
               </figure>
             </section>
+
+            {/* Footer CTA */}
+            <div className={`text-center py-16 border-t ${systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'}`}>
+              <button
+                onClick={onContact}
+                className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-full text-base font-medium transition-colors"
+              >
+                {t.contactVictor}
+              </button>
+            </div>
           </main>
         </div>
       </div>

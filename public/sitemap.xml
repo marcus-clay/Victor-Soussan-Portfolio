@@ -5,7 +5,7 @@
   <!-- Homepage -->
   <url>
     <loc>https://www.victorsoussan.fr</loc>
-    <lastmod>2025-12-16</lastmod>
+    <lastmod>2026-01-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <image:image>
@@ -14,10 +14,46 @@
     </image:image>
   </url>
 
-  <!-- Case Studies - Main Project Pages Only -->
+  <!-- Modal Pages -->
   <url>
-    <loc>https://www.victorsoussan.fr/project/toolkit</loc>
-    <lastmod>2025-12-16</lastmod>
+    <loc>https://www.victorsoussan.fr/work</loc>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.victorsoussan.fr/about</loc>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.victorsoussan.fr/testimonials</loc>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://www.victorsoussan.fr/contact</loc>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.victorsoussan.fr/resume</loc>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Toolkit Case Study -->
+  <url>
+    <loc>https://www.victorsoussan.fr/project/toolkit/summary</loc>
+    <lastmod>2026-01-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
     <image:image>
@@ -27,19 +63,49 @@
   </url>
 
   <url>
-    <loc>https://www.victorsoussan.fr/project/dailymotion</loc>
-    <lastmod>2025-12-16</lastmod>
+    <loc>https://www.victorsoussan.fr/project/toolkit/full</loc>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.victorsoussan.fr/project/toolkit/gallery</loc>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Dailymotion Case Study -->
+  <url>
+    <loc>https://www.victorsoussan.fr/project/dailymotion/summary</loc>
+    <lastmod>2026-01-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
     <image:image>
-      <image:loc>https://www.victorsoussan.fr/images/dailymotion/thubmnail_dailymotion_03.webp</image:loc>
+      <image:loc>https://www.victorsoussan.fr/images/thumbnail-dailymotion-web-platform.webp</image:loc>
       <image:title>Dailymotion - Video Platform Redesign</image:title>
     </image:image>
   </url>
 
   <url>
-    <loc>https://www.victorsoussan.fr/project/connect</loc>
-    <lastmod>2025-12-16</lastmod>
+    <loc>https://www.victorsoussan.fr/project/dailymotion/full</loc>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.victorsoussan.fr/project/dailymotion/gallery</loc>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- SQOOL Connect Case Study -->
+  <url>
+    <loc>https://www.victorsoussan.fr/project/connect/summary</loc>
+    <lastmod>2026-01-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
     <image:image>
@@ -49,8 +115,23 @@
   </url>
 
   <url>
-    <loc>https://www.victorsoussan.fr/project/sqool</loc>
-    <lastmod>2025-12-16</lastmod>
+    <loc>https://www.victorsoussan.fr/project/connect/full</loc>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.victorsoussan.fr/project/connect/gallery</loc>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- SQOOL Suite Case Study -->
+  <url>
+    <loc>https://www.victorsoussan.fr/project/sqool/summary</loc>
+    <lastmod>2026-01-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
     <image:image>
@@ -60,14 +141,43 @@
   </url>
 
   <url>
-    <loc>https://www.victorsoussan.fr/project/france-vae</loc>
-    <lastmod>2025-12-16</lastmod>
+    <loc>https://www.victorsoussan.fr/project/sqool/full</loc>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.victorsoussan.fr/project/sqool/gallery</loc>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- France VAE Case Study -->
+  <url>
+    <loc>https://www.victorsoussan.fr/project/france-vae/summary</loc>
+    <lastmod>2026-01-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
     <image:image>
       <image:loc>https://www.victorsoussan.fr/images/francevae/thumbnail_france_vae_02.webp</image:loc>
       <image:title>France VAE - Government Digital Service</image:title>
     </image:image>
+  </url>
+
+  <url>
+    <loc>https://www.victorsoussan.fr/project/france-vae/full</loc>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.victorsoussan.fr/project/france-vae/gallery</loc>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
 
 </urlset>
