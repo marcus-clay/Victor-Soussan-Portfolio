@@ -2958,7 +2958,8 @@ const App: React.FC = () => {
               onClick={() => {
                 const projectsSection = document.getElementById('projects');
                 if (projectsSection) {
-                  projectsSection.scrollIntoView({ behavior: 'smooth' });
+                  const offsetTop = projectsSection.getBoundingClientRect().top + window.scrollY - 100;
+                  window.scrollTo({ top: offsetTop, behavior: 'smooth' });
                 }
               }}
               className="group px-8 py-4 sm:px-10 sm:py-5 rounded-full font-semibold text-base sm:text-lg btn-pill flex items-center cursor-pointer relative z-20 whitespace-nowrap transition-all duration-200 bg-[#2D5CF3] text-white hover:bg-[#2450d9] shadow-lg shadow-[#2D5CF3]/25 hover:shadow-xl hover:shadow-[#2D5CF3]/30"
