@@ -3744,16 +3744,19 @@ const App: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
              {/* Preview: Top 3 curated testimonials - Same style as modal */}
              {[testimonials[0], testimonials[1], testimonials[2]].map((t, i) => (
-                <motion.div
+                <motion.a
                   key={i}
+                  href={t.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.3, delay: i * 0.1 }}
-                  className={`p-8 rounded-3xl border shadow-sm hover:shadow-md transition-all h-fit flex flex-col ${
+                  className={`p-8 rounded-3xl border shadow-sm hover:shadow-md transition-all h-fit flex flex-col cursor-pointer group/card ${
                     systemTheme === 'dark'
-                      ? 'bg-[#1D1D1F] border-white/10'
-                      : 'bg-white border-gray-100'
+                      ? 'bg-[#1D1D1F] border-white/10 hover:border-[#0077b5]/50'
+                      : 'bg-white border-gray-100 hover:border-[#0077b5]/30'
                   }`}
                 >
                   <div className="flex items-center mb-6">
@@ -3809,7 +3812,7 @@ const App: React.FC = () => {
                         : 'text-gray-400 bg-gray-50'
                     }`}>{t.category}</span>
                   </div>
-                </motion.div>
+                </motion.a>
              ))}
           </div>
 
