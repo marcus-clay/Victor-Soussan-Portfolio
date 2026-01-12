@@ -757,7 +757,7 @@ const TRANSLATIONS = {
       bio: "A propos",
       projects: "Études de Cas",
       lab: "Lab",
-      testimonials: "Recommandations",
+      testimonials: "Témoignages",
       contact: "Contact"
     },
     hero: {
@@ -1074,10 +1074,10 @@ const TRANSLATIONS = {
       title: "Témoignages",
       title_short: "Avis",
       subtitle: "Ce que mes clients, managers et équipes disent de notre collaboration.",
-      view_all: "Voir les 14 Recommandations",
-      modal_title: "Toutes les Recommandations",
+      view_all: "Voir les 14 Témoignages",
+      modal_title: "Tous les Témoignages",
       modal_sub: "avis vérifiés (LinkedIn / PDF)",
-      empty: "Aucune recommandation trouvée dans cette catégorie.",
+      empty: "Aucun témoignage trouvé dans cette catégorie.",
       close: "Fermer"
     },
     contact: {
@@ -4415,7 +4415,10 @@ const App: React.FC = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: i * 0.05 }}
+                    onClick={() => t.linkedin && window.open(t.linkedin, '_blank')}
                     className={`p-8 rounded-3xl border shadow-sm hover:shadow-md transition-all h-fit break-inside-avoid flex flex-col ${
+                      t.linkedin ? 'cursor-pointer' : ''
+                    } ${
                       systemTheme === 'dark'
                         ? 'bg-[#1D1D1F] border-white/10'
                         : 'bg-white border-gray-100'

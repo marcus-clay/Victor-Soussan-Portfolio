@@ -661,7 +661,10 @@ const HomePageV2: React.FC<HomePageV2Props> = ({ onNavigateHome }) => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="p-8 rounded-3xl bg-white border border-gray-200/50 hover:shadow-xl transition-all"
+                onClick={() => testimonial.linkedin && window.open(testimonial.linkedin, '_blank')}
+                className={`p-8 rounded-3xl bg-white border border-gray-200/50 hover:shadow-xl transition-all ${
+                  testimonial.linkedin ? 'cursor-pointer' : ''
+                }`}
               >
                 <Quote className="w-10 h-10 text-blue-100 mb-4" />
                 <p className="text-gray-700 leading-relaxed mb-6">
@@ -675,7 +678,19 @@ const HomePageV2: React.FC<HomePageV2Props> = ({ onNavigateHome }) => {
                     isDark={isDark}
                   />
                   <div>
-                    <div className="font-bold text-gray-900">{testimonial.author}</div>
+                    {testimonial.linkedin ? (
+                      <a
+                        href={testimonial.linkedin}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="font-bold text-gray-900 hover:text-[#0077b5] transition-colors flex items-center gap-1 group"
+                      >
+                        {testimonial.author}
+                        <Linkedin size={14} className="text-gray-400 group-hover:text-[#0077b5] transition-colors" />
+                      </a>
+                    ) : (
+                      <div className="font-bold text-gray-900">{testimonial.author}</div>
+                    )}
                     <div className="text-sm text-gray-500">{testimonial.role}</div>
                   </div>
                 </div>
