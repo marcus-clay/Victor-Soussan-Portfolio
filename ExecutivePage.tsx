@@ -1442,7 +1442,10 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
                       initial={testimonialsPage === 0 ? { opacity: 0 } : false}
                       animate={{ opacity: 1 }}
                       transition={testimonialsPage === 0 ? { duration: 0.4, delay: idx * 0.1 } : { duration: 0 }}
-                      className="flex flex-col p-5 sm:p-6 pb-6 sm:pb-8 bg-white rounded-xl sm:rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all h-[240px] sm:h-[320px] overflow-hidden"
+                      onClick={() => testimonial.linkedin && window.open(testimonial.linkedin, '_blank')}
+                      className={`flex flex-col p-5 sm:p-6 pb-6 sm:pb-8 bg-white rounded-xl sm:rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all h-[240px] sm:h-[320px] overflow-hidden ${
+                        testimonial.linkedin ? 'cursor-pointer' : ''
+                      }`}
                     >
                       {/* Author info with avatar */}
                       <div className="flex items-center mb-4 sm:mb-5">
