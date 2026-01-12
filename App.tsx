@@ -5725,7 +5725,7 @@ ${contactForm.message}`;
             <Avatar
               filename="victor-soussan.webp"
               alt="Victor Soussan"
-              className="w-24 h-24 md:w-32 md:h-32 rounded-2xl md:rounded-3xl mx-auto shadow-lg ring-4 ring-blue-100"
+              className="w-24 h-24 md:w-32 md:h-32 rounded-2xl md:rounded-[2rem] mx-auto shadow-lg border border-white/20"
               isDark={systemTheme === 'dark'}
             />
           </div>
