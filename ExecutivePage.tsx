@@ -449,7 +449,7 @@ const SLIDES = {
       headline: '15 years',
       subline: 'In tech. 10 in product design. Specialized in rapid conceptualization and AI-assisted prototyping.',
       visual: '/images/sqool/hero_ecosystem_sqool.webp',
-      caption: 'SQOOL Suite deployed in 465 high schools across Île-de-France',
+      caption: 'SQOOL Suite: 6 modular apps designed from 0-to-1, design system, and team rituals (2019–2024)',
     },
     // 4. Scale
     {
@@ -457,6 +457,7 @@ const SLIDES = {
       headline: '22M+',
       subline: 'Downloads for PagesJaunes mobile apps in 2016. Award-winning smartphone & tablet experience.',
       visual: '/images/thumbnail_pagesjaunes_sp_tablette.webp',
+      caption: 'Conversational homepage, iOS/Android onboarding, and map navigation redesign (2014–2016)',
     },
     // 5. Career Timeline - Uses CareerCarousel component with careerData
     {
@@ -704,7 +705,7 @@ const SLIDES = {
       headline: '15 ans',
       subline: 'Dans la tech. 10 en product design. Spécialisé en conceptualisation rapide et prototypage assisté par IA.',
       visual: '/images/sqool/hero_ecosystem_sqool.webp',
-      caption: 'Suite SQOOL déployée dans 465 lycées d\'Île-de-France',
+      caption: 'SQOOL Suite : 6 apps modulaires conçues de 0, design system et rituels d\'équipe (2019–2024)',
     },
     // 4. Scale
     {
@@ -712,6 +713,7 @@ const SLIDES = {
       headline: '22M+',
       subline: 'Téléchargements des apps mobiles PagesJaunes en 2016. Expérience smartphone & tablette primée.',
       visual: '/images/thumbnail_pagesjaunes_sp_tablette.webp',
+      caption: 'Homepage conversationnelle, onboarding iOS/Android et refonte navigation carte (2014–2016)',
     },
     // 5. Career Timeline - Uses CareerCarousel component with careerData
     {
