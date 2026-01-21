@@ -1728,9 +1728,9 @@ const App: React.FC = () => {
     const path = window.location.pathname;
 
     // Match media URLs: /project/:id/media/:type/:index
-    const mediaMatch = path.match(/^\/projects?\/(toolkit|dailymotion|connect|sqool|france-vae|pagesjaunes)\/media\/(image|video)\/(\d+)$/);
+    const mediaMatch = path.match(/^\/projects?\/(toolkit|dailymotion|connect|sqool|france-vae|pagesjaunes|androidwear)\/media\/(image|video)\/(\d+)$/);
     if (mediaMatch) {
-      const projectId = mediaMatch[1] as 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'france-vae' | 'pagesjaunes';
+      const projectId = mediaMatch[1] as 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'france-vae' | 'pagesjaunes' | 'androidwear';
       const mediaIndex = parseInt(mediaMatch[3], 10) - 1; // Convert to 0-based index
       // Store the media index to open lightbox automatically
       setTimeout(() => setInitialMediaIndex(mediaIndex >= 0 ? mediaIndex : 0), 100);
@@ -1740,9 +1740,9 @@ const App: React.FC = () => {
     // Match standard project URLs: /project/:id/:viewMode?
     // Supports new URLs: /project/:id/summary, /project/:id/full, /project/:id/gallery
     // Also supports legacy URLs: /project/:id/executive, /project/:id/case-study
-    const projectMatch = path.match(/^\/projects?\/(toolkit|dailymotion|connect|sqool|france-vae|pagesjaunes)(?:\/(case-study|full|gallery|executive|summary))?$/);
+    const projectMatch = path.match(/^\/projects?\/(toolkit|dailymotion|connect|sqool|france-vae|pagesjaunes|androidwear)(?:\/(case-study|full|gallery|executive|summary))?$/);
     if (projectMatch) {
-      const projectId = projectMatch[1] as 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'france-vae' | 'pagesjaunes';
+      const projectId = projectMatch[1] as 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'france-vae' | 'pagesjaunes' | 'androidwear';
       const viewParam = projectMatch[2];
       // Map URL paths to internal view modes
       // summary & executive -> executive (En bref)
@@ -2065,6 +2065,11 @@ const App: React.FC = () => {
       title: 'PagesJaunes - Mobile Apps Redesign | Victor Soussan',
       description: 'Case study: Modernisation des apps mobiles PagesJaunes pour 22M+ utilisateurs. Homepage conversationnelle, navigation et design system.',
       image: '/images/thumbnail_pagesjaunes_sp_tablette.webp'
+    },
+    'androidwear': {
+      title: 'PagesJaunes Android Wear - Wearable App Design | Victor Soussan',
+      description: 'Case study: Conception de l\'app Android Wear PagesJaunes. Recherche locale glanceable, Material Design, collaboration designer-développeur.',
+      image: '/images/pagesjaunes/Android wear/android_wear_insitu_store_01.png'
     }
   };
 
@@ -2116,7 +2121,7 @@ const App: React.FC = () => {
 
   // Open project with URL update
   const openProjectWithUrl = (
-    projectId: 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'france-vae' | 'pagesjaunes',
+    projectId: 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'france-vae' | 'pagesjaunes' | 'androidwear',
     viewMode: 'caseStudy' | 'gallery' | 'executive',
     pushHistory = true
   ) => {
@@ -8135,8 +8140,10 @@ ${contactForm.message}`;
               onProjectClick={(projectId) => {
                 closeModalWithUrl(setIsWorkOpen);
                 setOpenedFromIndex(true);
-                if (projectId === 'toolkit' || projectId === 'dailymotion' || projectId === 'connect' || projectId === 'sqool' || projectId === 'france-vae') {
+                if (projectId === 'toolkit' || projectId === 'dailymotion' || projectId === 'connect' || projectId === 'sqool' || projectId === 'france-vae' || projectId === 'pagesjaunes') {
                   openProjectWithUrl(projectId, 'executive');
+                } else if (projectId === 'androidwear') {
+                  openProjectWithUrl(projectId, 'caseStudy');
                 }
               }}
               onBack={() => closeModalWithUrl(setIsWorkOpen)}
