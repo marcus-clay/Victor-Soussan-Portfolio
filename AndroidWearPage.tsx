@@ -1039,44 +1039,39 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
               </figcaption>
             </figure>
 
-            {/* Bento Grid - Screen Captures */}
-            <div className="mb-12">
-              <h3 className={`text-xl font-semibold mb-6 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                {lang === 'fr' ? 'Inventaire des Écrans' : 'Screen Inventory'}
-              </h3>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {[
-                  { src: '/images/pagesjaunes/Android%20wear/screens/00%20Loading.jpg', caption: lang === 'fr' ? 'Chargement' : 'Loading' },
-                  { src: '/images/pagesjaunes/Android%20wear/screens/01%20Time.jpg', caption: lang === 'fr' ? 'Cadran' : 'Watch Face' },
-                  { src: '/images/pagesjaunes/Android%20wear/screens/02%20App%20list.jpg', caption: lang === 'fr' ? 'Apps' : 'App List' },
-                  { src: '/images/pagesjaunes/Android%20wear/screens/03%20Rubriques%20list.jpg', caption: lang === 'fr' ? 'Catégories' : 'Categories' },
-                  { src: '/images/pagesjaunes/Android%20wear/screens/04%20LR%2001.jpg', caption: lang === 'fr' ? 'Résultat 1' : 'Result 1' },
-                  { src: '/images/pagesjaunes/Android%20wear/screens/05%20LR%2002.jpg', caption: lang === 'fr' ? 'Résultat 2' : 'Result 2' },
-                  { src: '/images/pagesjaunes/Android%20wear/screens/06%20LR%2003.jpg', caption: lang === 'fr' ? 'Résultat 3' : 'Result 3' },
-                  { src: '/images/pagesjaunes/Android%20wear/screens/07%20FD.jpg', caption: lang === 'fr' ? 'Fiche Détail' : 'Detail Card' },
-                ].map((screen, idx) => (
-                  <figure key={idx} className="group">
+            {/* Bento Grid - Screen Captures - Compact Apple-style layout */}
+            <figure className="mb-12">
+              <div className={`rounded-2xl overflow-hidden border ${isDark ? 'border-white/10 bg-[#1a1a1a]' : 'border-gray-200 bg-gray-50'} p-6`}>
+                <div className="grid grid-cols-4 md:grid-cols-8 gap-2">
+                  {[
+                    { src: '/images/pagesjaunes/Android%20wear/screens/00%20Loading.jpg', alt: 'Loading' },
+                    { src: '/images/pagesjaunes/Android%20wear/screens/01%20Time.jpg', alt: 'Watch Face' },
+                    { src: '/images/pagesjaunes/Android%20wear/screens/02%20App%20list.jpg', alt: 'App List' },
+                    { src: '/images/pagesjaunes/Android%20wear/screens/03%20Rubriques%20list.jpg', alt: 'Categories' },
+                    { src: '/images/pagesjaunes/Android%20wear/screens/04%20LR%2001.jpg', alt: 'Result 1' },
+                    { src: '/images/pagesjaunes/Android%20wear/screens/05%20LR%2002.jpg', alt: 'Result 2' },
+                    { src: '/images/pagesjaunes/Android%20wear/screens/06%20LR%2003.jpg', alt: 'Result 3' },
+                    { src: '/images/pagesjaunes/Android%20wear/screens/07%20FD.jpg', alt: 'Detail Card' },
+                  ].map((screen, idx) => (
                     <div
+                      key={idx}
                       onClick={() => handleImageClick(screen.src)}
-                      className={`rounded-xl overflow-hidden border cursor-pointer transition-all duration-200 group-hover:shadow-lg ${isDark ? 'border-white/10 group-hover:border-white/20' : 'border-gray-200 group-hover:border-gray-300'}`}
+                      className="cursor-pointer rounded-lg overflow-hidden transition-transform duration-200 hover:scale-105"
                     >
                       <img
                         loading="lazy"
                         src={screen.src}
-                        alt={screen.caption}
+                        alt={screen.alt}
                         className="w-full h-auto"
                       />
                     </div>
-                    <figcaption className={`mt-2 text-xs text-center ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
-                      {screen.caption}
-                    </figcaption>
-                  </figure>
-                ))}
+                  ))}
+                </div>
               </div>
-              <p className={`mt-4 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                {lang === 'fr' ? 'Catalogue systématique de chaque état d\'écran. De l\'écran de chargement à la fiche détail, chaque transition a été pensée pour une lecture rapide sur un écran de 280dp.' : 'Systematic catalog of every screen state. From loading to detail card, each transition was designed for quick scanning on a 280dp display.'}
-              </p>
-            </div>
+              <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                <strong className={isDark ? 'text-gray-200' : 'text-gray-700'}>{lang === 'fr' ? 'Inventaire des Écrans' : 'Screen Inventory'}.</strong> {lang === 'fr' ? 'Catalogue de chaque état d\'écran, du chargement à la fiche détail. Chaque transition pensée pour une lecture rapide sur un écran de 280dp.' : 'Catalog of every screen state, from loading to detail card. Each transition designed for quick scanning on a 280dp display.'}
+              </figcaption>
+            </figure>
 
             {/* 2 columns - Component Library & In-situ mockups */}
             <div className="grid md:grid-cols-2 gap-8 mb-12">
