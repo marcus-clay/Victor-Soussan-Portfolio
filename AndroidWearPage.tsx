@@ -355,8 +355,8 @@ const getGalleryItems = (lang: 'en' | 'fr'): GalleryItem[] => {
       uiModesDesc: 'High-contrast yellow vs monochrome modes.',
       ui: 'Component System',
       uiDesc: 'Full screen inventory for wearable.',
-      components: 'Component Details',
-      componentsDesc: 'Screen designs for square and round.',
+      components: 'Component Library',
+      componentsDesc: 'Complete screen inventory for square and round.',
       insituStore: 'Play Store Visual',
       insituStoreDesc: 'Promotional mockup for Google Play.',
       insituDetail: 'In-situ Detail',
@@ -365,8 +365,12 @@ const getGalleryItems = (lang: 'en' | 'fr'): GalleryItem[] => {
       devSessionDesc: 'Real device testing with Thibault.',
       designWork: 'Design Work',
       designWorkDesc: 'Keynote design session.',
+      designDetail: 'Pixel Perfect',
+      designDetailDesc: 'Device verification session.',
       prototypeVideo: 'Prototype Demo',
       prototypeVideoDesc: 'Working prototype on real hardware.',
+      navVideo: 'Navigation Demo',
+      navVideoDesc: 'Navigation flow to Google Maps.',
     },
     fr: {
       sketches: 'Wireframes Précoces',
@@ -381,8 +385,8 @@ const getGalleryItems = (lang: 'en' | 'fr'): GalleryItem[] => {
       uiModesDesc: 'Jaune haut contraste vs modes monochrome.',
       ui: 'Système Composants',
       uiDesc: 'Inventaire complet d\'écrans wearable.',
-      components: 'Détails Composants',
-      componentsDesc: 'Designs écrans carrés et ronds.',
+      components: 'Bibliothèque Composants',
+      componentsDesc: 'Inventaire écrans complet carrés et ronds.',
       insituStore: 'Visuel Play Store',
       insituStoreDesc: 'Mockup promo pour Google Play.',
       insituDetail: 'Détail In-situ',
@@ -391,26 +395,32 @@ const getGalleryItems = (lang: 'en' | 'fr'): GalleryItem[] => {
       devSessionDesc: 'Test device réel avec Thibault.',
       designWork: 'Travail Design',
       designWorkDesc: 'Session design Keynote.',
+      designDetail: 'Pixel Perfect',
+      designDetailDesc: 'Session vérification device.',
       prototypeVideo: 'Démo Prototype',
       prototypeVideoDesc: 'Prototype fonctionnel sur vrai hardware.',
+      navVideo: 'Démo Navigation',
+      navVideoDesc: 'Flow navigation vers Google Maps.',
     },
   };
 
   const t = captions[lang];
 
   return [
-    { src: '/images/pagesjaunes/Android wear/IMG_20151016_105901.jpg', type: 'image', caption: t.sketches, captionDesc: t.sketchesDesc },
-    { src: '/images/pagesjaunes/Android wear/Android Wear - ambient mode sketches.jpg', type: 'image', caption: t.ambient, captionDesc: t.ambientDesc },
+    { src: '/images/pagesjaunes/Android wear/early_wireframes.webp', type: 'image', caption: t.sketches, captionDesc: t.sketchesDesc },
+    { src: '/images/pagesjaunes/Android wear/android_wear_ambient_sketches.webp', type: 'image', caption: t.ambient, captionDesc: t.ambientDesc },
     { src: '/images/pagesjaunes/pj android wear flows.jpeg', type: 'image', caption: t.flows, captionDesc: t.flowsDesc },
-    { src: '/images/pagesjaunes/Android wear/Android Wear UI and Interactions.jpg', type: 'image', caption: t.flowsDetailed, captionDesc: t.flowsDetailedDesc },
+    { src: '/images/pagesjaunes/Android wear/ui_interactions.webp', type: 'image', caption: t.flowsDetailed, captionDesc: t.flowsDetailedDesc },
     { src: '/images/pagesjaunes/pj android wear ui modes.jpeg', type: 'image', caption: t.uiModes, captionDesc: t.uiModesDesc },
     { src: '/images/pagesjaunes/pj android wear ui.jpeg', type: 'image', caption: t.ui, captionDesc: t.uiDesc },
-    { src: '/images/pagesjaunes/Android wear/android_wear_design_02.png', type: 'image', caption: t.components, captionDesc: t.componentsDesc },
+    { src: '/images/pagesjaunes/Android wear/component_library.webp', type: 'image', caption: t.components, captionDesc: t.componentsDesc },
     { src: '/images/pagesjaunes/Android wear/android_wear_insitu_store_01.png', type: 'image', caption: t.insituStore, captionDesc: t.insituStoreDesc },
     { src: '/images/pagesjaunes/Android wear/maquette_insitu_FD_03 (1).png', type: 'image', caption: t.insituDetail, captionDesc: t.insituDetailDesc },
-    { src: '/images/pagesjaunes/Android wear/IMG_20151214_183749.jpg', type: 'image', caption: t.devSession, captionDesc: t.devSessionDesc },
-    { src: '/images/pagesjaunes/Android wear/IMG_20151113_153404.jpg', type: 'image', caption: t.designWork, captionDesc: t.designWorkDesc },
+    { src: '/images/pagesjaunes/Android wear/dev_session_1.webp', type: 'image', caption: t.devSession, captionDesc: t.devSessionDesc },
+    { src: '/images/pagesjaunes/Android wear/design_work_keynote.webp', type: 'image', caption: t.designWork, captionDesc: t.designWorkDesc },
+    { src: '/images/pagesjaunes/Android wear/design_work_detail.webp', type: 'image', caption: t.designDetail, captionDesc: t.designDetailDesc },
     { src: '/images/pagesjaunes/Android wear/VID_20151202_184124.mp4', type: 'video', caption: t.prototypeVideo, captionDesc: t.prototypeVideoDesc },
+    { src: '/images/pagesjaunes/Android wear/VID_20151218_100148.mp4', type: 'video', caption: t.navVideo, captionDesc: t.navVideoDesc },
   ];
 };
 
@@ -529,45 +539,85 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
       exit={{ opacity: 0 }}
       className={`fixed inset-0 z-50 ${isDark ? 'bg-[#0a0a0a]' : 'bg-white'} overflow-y-auto`}
     >
-      {/* Header */}
-      <header className={`sticky top-0 z-50 backdrop-blur-xl border-b ${isDark ? 'bg-[#0a0a0a]/80 border-white/10' : 'bg-white/80 border-gray-200'}`}>
-        <div className="max-w-[1480px] mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <button
-              onClick={onClose}
-              className={`p-2 rounded-full transition-colors ${isDark ? 'hover:bg-white/10' : 'hover:bg-gray-100'}`}
+      {/* Header - Glass effect matching DailymotionPage */}
+      <header
+        className={`sticky top-0 z-40 backdrop-blur-xl ${
+          viewMode === 'gallery'
+            ? 'bg-black/80'
+            : (isDark ? 'bg-[#0a0a0a]/80' : 'bg-white/80')
+        }`}
+      >
+        <div className="w-full px-6 h-16 flex items-center gap-4">
+          {/* Left - Title */}
+          <div className="flex-shrink-0">
+            <h1
+              className={`font-semibold text-lg tracking-[-0.02em] ${
+                viewMode === 'gallery' ? 'text-white' : (isDark ? 'text-white' : 'text-gray-900')
+              }`}
             >
-              <X size={20} className={isDark ? 'text-white' : 'text-gray-900'} />
-            </button>
-            <div className="flex items-center gap-2">
-              <Watch size={20} className="text-purple-500" />
-              <span className={`font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                Android Wear
-              </span>
+              Android Wear
+            </h1>
+          </div>
+
+          {/* Center - Toggle Switch with animated pill */}
+          <div className="flex-1 flex justify-center">
+            <div
+              className={`relative flex items-center gap-0.5 sm:gap-1 rounded-full p-0.5 sm:p-1 ${
+                viewMode === 'gallery' ? 'bg-white/10' : (isDark ? 'bg-white/10' : 'bg-gray-100')
+              }`}
+            >
+              {/* Case Study button */}
+              <button
+                onClick={() => onViewModeChange('caseStudy')}
+                className="relative z-10 px-2 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 whitespace-nowrap"
+              >
+                {viewMode === 'caseStudy' && (
+                  <motion.div
+                    layoutId="androidwear-toggle-pill"
+                    className="absolute inset-0 bg-purple-600 rounded-full shadow-md"
+                    transition={{ type: 'spring', stiffness: 500, damping: 35, mass: 0.8 }}
+                  />
+                )}
+                <span className={`relative z-10 ${
+                  viewMode === 'caseStudy'
+                    ? 'text-white'
+                    : (viewMode === 'gallery' ? 'text-gray-400 hover:text-white' : (isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'))
+                }`}>
+                  {t.caseStudy}
+                </span>
+              </button>
+              {/* Gallery button */}
+              <button
+                onClick={() => onViewModeChange('gallery')}
+                className="relative z-10 px-2 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 whitespace-nowrap"
+              >
+                {viewMode === 'gallery' && (
+                  <motion.div
+                    layoutId="androidwear-toggle-pill"
+                    className="absolute inset-0 bg-purple-600 rounded-full shadow-md"
+                    transition={{ type: 'spring', stiffness: 500, damping: 35, mass: 0.8 }}
+                  />
+                )}
+                <span className={`relative z-10 ${
+                  viewMode === 'gallery' ? 'text-white' : (isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900')
+                }`}>
+                  {t.gallery}
+                </span>
+              </button>
             </div>
           </div>
 
-          {/* View Mode Toggle */}
-          <div className={`flex rounded-full p-1 ${isDark ? 'bg-white/10' : 'bg-gray-100'}`}>
+          {/* Right - Close button */}
+          <div className="flex-shrink-0">
             <button
-              onClick={() => onViewModeChange('caseStudy')}
-              className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                viewMode === 'caseStudy'
-                  ? isDark ? 'bg-white text-black' : 'bg-gray-900 text-white'
-                  : isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'
-              }`}
-            >
-              {t.caseStudy}
-            </button>
-            <button
-              onClick={() => onViewModeChange('gallery')}
-              className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
+              onClick={onClose}
+              className={`relative p-3 flex items-center justify-center rounded-full transition-colors before:absolute before:inset-[-12px] before:content-[''] ${
                 viewMode === 'gallery'
-                  ? isDark ? 'bg-white text-black' : 'bg-gray-900 text-white'
-                  : isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'
+                  ? 'text-gray-400 hover:text-white hover:bg-white/10'
+                  : (isDark ? 'text-gray-400 hover:text-white hover:bg-white/10' : 'text-gray-500 hover:text-gray-900 hover:bg-black/5')
               }`}
             >
-              {t.gallery}
+              <X size={24} />
             </button>
           </div>
         </div>
@@ -806,15 +856,15 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
               {t.process.title}
             </h2>
 
-            {/* Sketches */}
-            <figure className="mb-8">
+            {/* Full width - Sketches */}
+            <figure className="mb-12">
               <div
-                onClick={() => handleImageClick('/images/pagesjaunes/Android wear/IMG_20151016_105901.jpg')}
+                onClick={() => handleImageClick('/images/pagesjaunes/Android wear/early_wireframes.webp')}
                 className={`rounded-2xl overflow-hidden border cursor-pointer ${isDark ? 'border-white/10' : 'border-gray-200'}`}
               >
                 <img
                   loading="lazy"
-                  src="/images/pagesjaunes/Android wear/IMG_20151016_105901.jpg"
+                  src="/images/pagesjaunes/Android wear/early_wireframes.webp"
                   alt={t.process.sketches}
                   className="w-full h-auto"
                 />
@@ -824,15 +874,15 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
               </figcaption>
             </figure>
 
-            {/* Ambient Mode */}
-            <figure className="mb-8">
+            {/* Full width - Ambient Mode Sketches */}
+            <figure className="mb-12">
               <div
-                onClick={() => handleImageClick('/images/pagesjaunes/Android wear/Android Wear - ambient mode sketches.jpg')}
+                onClick={() => handleImageClick('/images/pagesjaunes/Android wear/android_wear_ambient_sketches.webp')}
                 className={`rounded-2xl overflow-hidden border cursor-pointer ${isDark ? 'border-white/10' : 'border-gray-200'}`}
               >
                 <img
                   loading="lazy"
-                  src="/images/pagesjaunes/Android wear/Android Wear - ambient mode sketches.jpg"
+                  src="/images/pagesjaunes/Android wear/android_wear_ambient_sketches.webp"
                   alt={t.process.ambient}
                   className="w-full h-auto"
                 />
@@ -842,57 +892,111 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
               </figcaption>
             </figure>
 
-            {/* Task Flows */}
-            <figure className="mb-8">
+            {/* 2 columns - Task Flows & UI Modes */}
+            <div className="grid md:grid-cols-2 gap-8 mb-12">
+              <figure>
+                <div
+                  onClick={() => handleImageClick('/images/pagesjaunes/pj android wear flows.jpeg')}
+                  className={`rounded-2xl overflow-hidden border cursor-pointer ${isDark ? 'border-white/10' : 'border-gray-200'}`}
+                >
+                  <img
+                    loading="lazy"
+                    src="/images/pagesjaunes/pj android wear flows.jpeg"
+                    alt={t.process.flows}
+                    className="w-full h-auto"
+                  />
+                </div>
+                <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                  {t.process.flows} — {t.process.flowsDesc}
+                </figcaption>
+              </figure>
+              <figure>
+                <div
+                  onClick={() => handleImageClick('/images/pagesjaunes/pj android wear ui modes.jpeg')}
+                  className={`rounded-2xl overflow-hidden border cursor-pointer ${isDark ? 'border-white/10' : 'border-gray-200'}`}
+                >
+                  <img
+                    loading="lazy"
+                    src="/images/pagesjaunes/pj android wear ui modes.jpeg"
+                    alt={t.process.uiModes}
+                    className="w-full h-auto"
+                  />
+                </div>
+                <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                  {t.process.uiModes} — {t.process.uiModesDesc}
+                </figcaption>
+              </figure>
+            </div>
+
+            {/* Full width - UI Interactions */}
+            <figure className="mb-12">
               <div
-                onClick={() => handleImageClick('/images/pagesjaunes/pj android wear flows.jpeg')}
+                onClick={() => handleImageClick('/images/pagesjaunes/Android wear/ui_interactions.webp')}
                 className={`rounded-2xl overflow-hidden border cursor-pointer ${isDark ? 'border-white/10' : 'border-gray-200'}`}
               >
                 <img
                   loading="lazy"
-                  src="/images/pagesjaunes/pj android wear flows.jpeg"
+                  src="/images/pagesjaunes/Android wear/ui_interactions.webp"
                   alt={t.process.flows}
                   className="w-full h-auto"
                 />
               </div>
               <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                {t.process.flows} — {t.process.flowsDesc}
+                {lang === 'fr' ? 'UI et Interactions' : 'UI and Interactions'} — {lang === 'fr' ? 'Flow détaillé avec patterns handoff téléphone.' : 'Detailed flow with phone handoff patterns.'}
               </figcaption>
             </figure>
 
-            {/* UI Modes */}
-            <figure className="mb-8">
+            {/* 2 columns - Component Library & In-situ mockups */}
+            <div className="grid md:grid-cols-2 gap-8 mb-12">
+              <figure>
+                <div
+                  onClick={() => handleImageClick('/images/pagesjaunes/pj android wear ui.jpeg')}
+                  className={`rounded-2xl overflow-hidden border cursor-pointer ${isDark ? 'border-white/10' : 'border-gray-200'}`}
+                >
+                  <img
+                    loading="lazy"
+                    src="/images/pagesjaunes/pj android wear ui.jpeg"
+                    alt={t.process.components}
+                    className="w-full h-auto"
+                  />
+                </div>
+                <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                  {t.process.components} — {t.process.componentsDesc}
+                </figcaption>
+              </figure>
+              <figure>
+                <div
+                  onClick={() => handleImageClick('/images/pagesjaunes/Android wear/maquette_insitu_FD_03 (1).png')}
+                  className={`rounded-2xl overflow-hidden border cursor-pointer ${isDark ? 'border-white/10' : 'border-gray-200'}`}
+                >
+                  <img
+                    loading="lazy"
+                    src="/images/pagesjaunes/Android wear/maquette_insitu_FD_03 (1).png"
+                    alt={lang === 'fr' ? 'Détail In-situ' : 'In-situ Detail'}
+                    className="w-full h-auto"
+                  />
+                </div>
+                <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                  {lang === 'fr' ? 'Détail In-situ' : 'In-situ Detail'} — {lang === 'fr' ? 'Fiche commerce en contexte montre.' : 'Business card in watch context.'}
+                </figcaption>
+              </figure>
+            </div>
+
+            {/* Full width - Component Library Detail */}
+            <figure className="mb-12">
               <div
-                onClick={() => handleImageClick('/images/pagesjaunes/pj android wear ui modes.jpeg')}
+                onClick={() => handleImageClick('/images/pagesjaunes/Android wear/component_library.webp')}
                 className={`rounded-2xl overflow-hidden border cursor-pointer ${isDark ? 'border-white/10' : 'border-gray-200'}`}
               >
                 <img
                   loading="lazy"
-                  src="/images/pagesjaunes/pj android wear ui modes.jpeg"
-                  alt={t.process.uiModes}
-                  className="w-full h-auto"
-                />
-              </div>
-              <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                {t.process.uiModes} — {t.process.uiModesDesc}
-              </figcaption>
-            </figure>
-
-            {/* Component Library */}
-            <figure className="mb-8">
-              <div
-                onClick={() => handleImageClick('/images/pagesjaunes/pj android wear ui.jpeg')}
-                className={`rounded-2xl overflow-hidden border cursor-pointer ${isDark ? 'border-white/10' : 'border-gray-200'}`}
-              >
-                <img
-                  loading="lazy"
-                  src="/images/pagesjaunes/pj android wear ui.jpeg"
+                  src="/images/pagesjaunes/Android wear/component_library.webp"
                   alt={t.process.components}
                   className="w-full h-auto"
                 />
               </div>
               <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                {t.process.components} — {t.process.componentsDesc}
+                {lang === 'fr' ? 'Bibliothèque de Composants Détaillée' : 'Detailed Component Library'} — {lang === 'fr' ? 'Guidelines pour écrans carrés et ronds.' : 'Guidelines for square and round displays.'}
               </figcaption>
             </figure>
           </section>
@@ -903,15 +1007,15 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
               {t.implementation.title}
             </h2>
 
-            {/* Dev Session */}
-            <figure className="mb-8">
+            {/* Full width - Dev Session */}
+            <figure className="mb-12">
               <div
-                onClick={() => handleImageClick('/images/pagesjaunes/Android wear/IMG_20151214_183749.jpg')}
+                onClick={() => handleImageClick('/images/pagesjaunes/Android wear/dev_session_1.webp')}
                 className={`rounded-2xl overflow-hidden border cursor-pointer ${isDark ? 'border-white/10' : 'border-gray-200'}`}
               >
                 <img
                   loading="lazy"
-                  src="/images/pagesjaunes/Android wear/IMG_20151214_183749.jpg"
+                  src="/images/pagesjaunes/Android wear/dev_session_1.webp"
                   alt={t.implementation.devSession}
                   className="w-full h-auto"
                 />
@@ -921,29 +1025,98 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
               </figcaption>
             </figure>
 
-            {/* Video Prototype */}
-            <figure className="mb-8">
+            {/* 2 columns - Design Work Photos */}
+            <div className="grid md:grid-cols-2 gap-8 mb-12">
+              <figure>
+                <div
+                  onClick={() => handleImageClick('/images/pagesjaunes/Android wear/design_work_keynote.webp')}
+                  className={`rounded-2xl overflow-hidden border cursor-pointer ${isDark ? 'border-white/10' : 'border-gray-200'}`}
+                >
+                  <img
+                    loading="lazy"
+                    src="/images/pagesjaunes/Android wear/design_work_keynote.webp"
+                    alt={lang === 'fr' ? 'Session Design' : 'Design Session'}
+                    className="w-full h-auto"
+                  />
+                </div>
+                <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                  {lang === 'fr' ? 'Travail Design' : 'Design Work'} — {lang === 'fr' ? 'Session design Keynote.' : 'Keynote design session.'}
+                </figcaption>
+              </figure>
+              <figure>
+                <div
+                  onClick={() => handleImageClick('/images/pagesjaunes/Android wear/design_work_detail.webp')}
+                  className={`rounded-2xl overflow-hidden border cursor-pointer ${isDark ? 'border-white/10' : 'border-gray-200'}`}
+                >
+                  <img
+                    loading="lazy"
+                    src="/images/pagesjaunes/Android wear/design_work_detail.webp"
+                    alt={lang === 'fr' ? 'Détail Pixel Perfect' : 'Pixel Perfect Detail'}
+                    className="w-full h-auto"
+                  />
+                </div>
+                <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                  {lang === 'fr' ? 'Travail Détail' : 'Detail Work'} — {lang === 'fr' ? 'Vérification pixel-perfect sur device.' : 'Pixel-perfect verification on device.'}
+                </figcaption>
+              </figure>
+            </div>
+
+            {/* Full width - Video Prototype */}
+            <figure className="mb-12">
               <div className={`rounded-2xl overflow-hidden border ${isDark ? 'border-white/10' : 'border-gray-200'}`}>
                 <div
-                  className="flex items-center justify-center p-8"
-                  style={{ backgroundColor: '#C8C8C8' }}
+                  className="flex items-center justify-center p-12"
+                  style={{ backgroundColor: isDark ? '#1D1D1F' : '#F5F5F7' }}
                 >
-                  <div className="relative w-full max-w-md">
-                    <div className={`relative rounded-[50%] overflow-hidden border-8 ${isDark ? 'border-gray-700' : 'border-gray-800'}`} style={{ aspectRatio: '1/1' }}>
-                      <video
-                        src="/images/pagesjaunes/Android wear/VID_20151202_184124.mp4"
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
-                        className="w-full h-full object-cover"
-                      />
+                  <div className="relative w-full max-w-sm">
+                    {/* Watch frame */}
+                    <div className="relative">
+                      <div className={`absolute inset-0 rounded-full ${isDark ? 'bg-gray-800' : 'bg-gray-900'}`} style={{ transform: 'scale(1.15)' }} />
+                      <div className="relative rounded-full overflow-hidden border-4 border-gray-700" style={{ aspectRatio: '1/1' }}>
+                        <video
+                          src="/images/pagesjaunes/Android wear/VID_20151202_184124.mp4"
+                          autoPlay
+                          loop
+                          muted
+                          playsInline
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
               <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
                 {t.implementation.prototype} — {t.implementation.prototypeDesc}
+              </figcaption>
+            </figure>
+
+            {/* Second video if available */}
+            <figure className="mb-12">
+              <div className={`rounded-2xl overflow-hidden border ${isDark ? 'border-white/10' : 'border-gray-200'}`}>
+                <div
+                  className="flex items-center justify-center p-12"
+                  style={{ backgroundColor: isDark ? '#1D1D1F' : '#F5F5F7' }}
+                >
+                  <div className="relative w-full max-w-sm">
+                    <div className="relative">
+                      <div className={`absolute inset-0 rounded-full ${isDark ? 'bg-gray-800' : 'bg-gray-900'}`} style={{ transform: 'scale(1.15)' }} />
+                      <div className="relative rounded-full overflow-hidden border-4 border-gray-700" style={{ aspectRatio: '1/1' }}>
+                        <video
+                          src="/images/pagesjaunes/Android wear/VID_20151218_100148.mp4"
+                          autoPlay
+                          loop
+                          muted
+                          playsInline
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                {lang === 'fr' ? 'Démo Navigation' : 'Navigation Demo'} — {lang === 'fr' ? 'Flow de navigation vers Google Maps.' : 'Navigation flow to Google Maps.'}
               </figcaption>
             </figure>
           </section>
