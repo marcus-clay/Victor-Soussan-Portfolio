@@ -41,7 +41,6 @@ const GALLERY_IMAGES = {
   homepage: {
     main: '/images/pagesjaunes/pagesjaunes homepage.jpeg',
     variations: '/images/pagesjaunes/pagesjaunes homepage - variations.jpeg',
-    android: '/images/pagesjaunes/pj 01@2x.png',
   },
   homepageIpad: {
     main: '/images/pagesjaunes/pagesjaunes hp ipad.jpeg',
@@ -99,7 +98,6 @@ const CAPTIONS = {
     homepage: {
       main: 'A conversational greeting ("What do you need today?") reframes the search from directory lookup to problem-solving. Users act faster when the interface feels personal.',
       variations: 'Eight contextual hero images featuring local pros: the baker, mechanic, florist. Each builds trust by showing the human behind the service.',
-      android: 'Material Design adapted to PagesJaunes brand identity. The yellow search bar signals action and creates visual continuity across platforms.',
     },
     homepageIpad: {
       main: 'Tablet split-view respects the user\'s mental model: browse categories on the left, take action on the right. Two tasks visible, one screen.',
@@ -153,7 +151,6 @@ const CAPTIONS = {
     homepage: {
       main: 'Une accroche conversationnelle ("De quoi avez-vous besoin ?") transforme la recherche d\'annuaire en résolution de problème. Les utilisateurs agissent plus vite quand l\'interface est personnelle.',
       variations: 'Huit visuels contextuels de pros locaux : boulanger, garagiste, fleuriste. Chacun crée la confiance en montrant l\'humain derrière le service.',
-      android: 'Material Design adapté à l\'identité PagesJaunes. La barre jaune signale l\'action et crée une continuité visuelle entre plateformes.',
     },
     homepageIpad: {
       main: 'Le split-view tablette respecte le modèle mental de l\'utilisateur : parcourir les catégories à gauche, agir à droite. Deux tâches visibles, un seul écran.',
@@ -895,39 +892,26 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
               </figcaption>
             </figure>
 
-            {/* Search Engine Prototype Video in Android Mockup */}
+            {/* Search Engine Prototype Video */}
             <figure className="mb-8">
               <div
                 onClick={() => onImageClick(GALLERY_IMAGES.search.prototype)}
                 className={`group rounded-2xl overflow-hidden border cursor-pointer transition-transform duration-300 hover:scale-[1.01] relative ${
                   isDark ? 'border-white/10' : 'border-gray-200'
                 }`}
-                style={{ backgroundColor: '#C8C8C8', aspectRatio: '3/2' }}
+                style={{ backgroundColor: '#C8C8C8' }}
               >
-                <div className="absolute inset-0 flex items-center justify-center">
-                  {/* Android Phone Mockup */}
-                  <div className="relative h-[85%]" style={{ aspectRatio: '9/19.5' }}>
-                    {/* Phone Frame */}
-                    <div className="relative bg-[#1a1a1a] rounded-[2.5rem] p-2 shadow-2xl h-full">
-                      {/* Top Speaker/Camera area */}
-                      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-6 bg-[#1a1a1a] rounded-b-2xl z-10 flex items-center justify-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-gray-700"></div>
-                        <div className="w-12 h-1 rounded-full bg-gray-700"></div>
-                      </div>
-                      {/* Screen */}
-                      <div className="relative rounded-[2rem] overflow-hidden bg-white h-full">
-                        <video
-                          src={GALLERY_IMAGES.search.prototype}
-                          className="w-full h-full object-cover"
-                          muted
-                          playsInline
-                          loop
-                          autoPlay
-                        />
-                      </div>
-                      {/* Bottom Navigation Bar hint */}
-                      <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-24 h-1 bg-gray-600 rounded-full"></div>
-                    </div>
+                <div className="flex items-center justify-center py-12 px-8">
+                  {/* Video with drop shadow */}
+                  <div className="relative rounded-lg overflow-hidden" style={{ maxWidth: '320px', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.35)' }}>
+                    <video
+                      src={GALLERY_IMAGES.search.prototype}
+                      className="w-full h-auto"
+                      muted
+                      playsInline
+                      loop
+                      autoPlay
+                    />
                   </div>
                 </div>
                 {/* Play overlay on hover */}
@@ -961,26 +945,6 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
               </div>
               <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
                 {CAPTIONS[lang].homepage.variations}
-              </figcaption>
-            </figure>
-
-            {/* Android Homepage with carousel */}
-            <figure className="mb-8">
-              <div
-                onClick={() => onImageClick(GALLERY_IMAGES.homepage.android)}
-                className={`group rounded-2xl overflow-hidden border cursor-pointer transition-transform duration-300 hover:scale-[1.01] ${
-                  isDark ? 'border-white/10' : 'border-gray-200'
-                }`}
-              >
-                <img
-                  loading="lazy"
-                  src={GALLERY_IMAGES.homepage.android}
-                  alt="PagesJaunes Android Homepage"
-                  className="w-full h-auto transition-transform duration-300 group-hover:scale-[1.03]"
-                />
-              </div>
-              <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                {CAPTIONS[lang].homepage.android}
               </figcaption>
             </figure>
 
