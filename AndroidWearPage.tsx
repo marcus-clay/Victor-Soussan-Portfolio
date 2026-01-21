@@ -1,8 +1,8 @@
 // Android Wear Case Study Page - Standalone case study for PagesJaunes Android Wear
 // A focused deep-dive into the wearable design project
 
-import React, { useState, useRef } from 'react';
-import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
+import React, { useState, useRef, useEffect } from 'react';
+import { motion, useMotionValue, useTransform, useSpring, AnimatePresence } from 'framer-motion';
 import {
   X,
   Play,
@@ -15,7 +15,8 @@ import {
   ArrowRight,
   Users,
   Smartphone,
-  Quote
+  Quote,
+  ChevronDown
 } from 'lucide-react';
 import { GalleryItem } from './BentoGallery';
 import EnhancedLightbox from './src/components/EnhancedLightbox';
@@ -544,6 +545,17 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick }) => {
   );
 };
 
+// TOC Sections for navigation
+const getSections = (lang: 'en' | 'fr') => [
+  { id: 'top', label: 'Top', labelFr: 'Haut' },
+  { id: 'overview', label: 'Overview', labelFr: 'Vue d\'ensemble' },
+  { id: 'research', label: 'Research', labelFr: 'Recherche' },
+  { id: 'design', label: 'Screen Design', labelFr: 'Design' },
+  { id: 'specs', label: 'Specifications', labelFr: 'Spécifications' },
+  { id: 'implementation', label: 'Implementation', labelFr: 'Implémentation' },
+  { id: 'results', label: 'Results', labelFr: 'Résultats' },
+];
+
 // Main Component
 const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
   onClose,
@@ -556,9 +568,65 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
   const isDark = systemTheme === 'dark';
   const t = TRANSLATIONS[lang];
   const galleryItems = getGalleryItems(lang);
+  const sections = getSections(lang);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
+  const [activeSection, setActiveSection] = useState('top');
+  const [showNav, setShowNav] = useState(false);
+  const [isMobileNavExpanded, setIsMobileNavExpanded] = useState(false);
+
+  // Track scroll position and update active section
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const handleScroll = () => {
+      const scrollTop = container.scrollTop;
+
+      // Show nav after scrolling past hero
+      setShowNav(scrollTop > 300);
+
+      // Find active section
+      const sectionElements = sections.map(s => ({
+        id: s.id,
+        element: document.getElementById(s.id)
+      })).filter(s => s.element);
+
+      for (let i = sectionElements.length - 1; i >= 0; i--) {
+        const section = sectionElements[i];
+        if (section.element) {
+          const rect = section.element.getBoundingClientRect();
+          if (rect.top <= 200) {
+            setActiveSection(section.id);
+            break;
+          }
+        }
+      }
+    };
+
+    container.addEventListener('scroll', handleScroll);
+    return () => container.removeEventListener('scroll', handleScroll);
+  }, [sections]);
+
+  // Scroll to section with proper offset
+  const scrollToSection = (sectionId: string) => {
+    if (sectionId === 'top') {
+      containerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    const element = document.getElementById(sectionId);
+    if (element && containerRef.current) {
+      // Header height (64px) + sticky mini-nav height (~48px) + padding (24px)
+      const headerOffset = 64 + 48 + 24;
+      const elementPosition = element.offsetTop - headerOffset;
+      containerRef.current.scrollTo({
+        top: elementPosition,
+        behavior: 'smooth'
+      });
+    }
+  };
 
   const openLightbox = (index: number) => {
     setLightboxIndex(index);
@@ -584,6 +652,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
 
   return (
     <motion.div
+      ref={containerRef}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -593,6 +662,98 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
           : (isDark ? 'bg-[#0a0a0a]' : 'bg-white')
       }`}
     >
+      {/* Sticky Mini-Nav - TOC Navigation - Hidden in gallery mode */}
+      <AnimatePresence>
+        {showNav && viewMode === 'caseStudy' && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+            className={`fixed top-16 left-0 right-0 z-30 backdrop-blur-xl ${
+              isDark ? 'bg-[#0a0a0a]/80' : 'bg-white/80'
+            }`}
+          >
+            {/* Collapsed state - shows current section */}
+            <div className="w-full px-6">
+              <button
+                onClick={() => setIsMobileNavExpanded(!isMobileNavExpanded)}
+                className="w-full h-12 flex items-center justify-between"
+              >
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-blue-500" />
+                  <span className={`text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                    {lang === 'fr'
+                      ? sections.find(s => s.id === activeSection)?.labelFr
+                      : sections.find(s => s.id === activeSection)?.label}
+                  </span>
+                </div>
+                <motion.div
+                  animate={{ rotate: isMobileNavExpanded ? 180 : 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <ChevronDown size={20} className={isDark ? 'text-gray-400' : 'text-gray-500'} />
+                </motion.div>
+              </button>
+
+              {/* Expanded state - shows all sections */}
+              <AnimatePresence>
+                {isMobileNavExpanded && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="overflow-hidden"
+                  >
+                    <div className={`pb-3 space-y-1 border-t ${isDark ? 'border-white/5' : 'border-gray-100'}`}>
+                      {sections.map((section) => {
+                        const isActive = activeSection === section.id;
+                        const currentIndex = sections.findIndex(s => s.id === activeSection);
+                        const sectionIndex = sections.findIndex(s => s.id === section.id);
+                        const isPast = sectionIndex < currentIndex;
+
+                        return (
+                          <button
+                            key={section.id}
+                            onClick={() => {
+                              scrollToSection(section.id);
+                              setIsMobileNavExpanded(false);
+                            }}
+                            className={`w-full text-left py-2 px-3 rounded-lg flex items-center gap-3 transition-colors ${
+                              isActive
+                                ? isDark
+                                  ? 'bg-blue-600/10 text-blue-400'
+                                  : 'bg-blue-50 text-blue-600'
+                                : isDark
+                                  ? 'text-gray-400 hover:bg-white/5'
+                                  : 'text-gray-600 hover:bg-gray-50'
+                            }`}
+                          >
+                            <div
+                              className={`w-1.5 h-1.5 rounded-full ${
+                                isActive
+                                  ? 'bg-blue-500'
+                                  : isPast
+                                    ? isDark ? 'bg-gray-500' : 'bg-gray-400'
+                                    : isDark ? 'bg-gray-700' : 'bg-gray-300'
+                              }`}
+                            />
+                            <span className="text-sm font-medium">
+                              {lang === 'fr' ? section.labelFr : section.label}
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Header - Glass effect matching DailymotionPage */}
       <header
         className={`sticky top-0 z-40 backdrop-blur-xl ${
@@ -679,9 +840,9 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
 
       {/* Content */}
       {viewMode === 'caseStudy' ? (
-        <div className="max-w-[1480px] mx-auto px-10 py-12">
+        <div id="top" className="max-w-[1480px] mx-auto px-10 py-12">
           {/* Hero Section */}
-          <section className="mb-16">
+          <section id="overview" className="mb-16">
             <div className="grid md:grid-cols-5 gap-8 items-start">
               <div className="md:col-span-3">
                 <div className="flex flex-wrap items-center gap-3 mb-6 text-sm">
@@ -910,7 +1071,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
           {/* ================================================================== */}
           {/* PHASE 1: RESEARCH & DISCOVERY */}
           {/* ================================================================== */}
-          <section className="mb-24">
+          <section id="research" className="mb-24">
             <div className="flex items-center gap-3 mb-4">
               <span className={`px-3 py-1 rounded-full text-xs font-medium ${isDark ? 'bg-blue-500/20 text-blue-400' : 'bg-blue-100 text-blue-700'}`}>
                 {lang === 'fr' ? 'Phase 1' : 'Phase 1'}
@@ -985,7 +1146,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
           {/* ================================================================== */}
           {/* PHASE 2: SCREEN DESIGN */}
           {/* ================================================================== */}
-          <section className="mb-24">
+          <section id="design" className="mb-24">
             <div className="flex items-center gap-3 mb-4">
               <span className={`px-3 py-1 rounded-full text-xs font-medium ${isDark ? 'bg-blue-500/20 text-blue-400' : 'bg-blue-100 text-blue-700'}`}>
                 {lang === 'fr' ? 'Phase 2' : 'Phase 2'}
@@ -1092,7 +1253,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
           {/* ================================================================== */}
           {/* PHASE 3: SPECIFICATIONS */}
           {/* ================================================================== */}
-          <section className="mb-24">
+          <section id="specs" className="mb-24">
             <div className="flex items-center gap-3 mb-4">
               <span className={`px-3 py-1 rounded-full text-xs font-medium ${isDark ? 'bg-blue-500/20 text-blue-400' : 'bg-blue-100 text-blue-700'}`}>
                 {lang === 'fr' ? 'Phase 3' : 'Phase 3'}
@@ -1147,7 +1308,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
           {/* ================================================================== */}
           {/* PHASE 4: IMPLEMENTATION & LAUNCH */}
           {/* ================================================================== */}
-          <section className="mb-24">
+          <section id="implementation" className="mb-24">
             <div className="flex items-center gap-3 mb-4">
               <span className={`px-3 py-1 rounded-full text-xs font-medium ${isDark ? 'bg-blue-500/20 text-blue-400' : 'bg-blue-100 text-blue-700'}`}>
                 {lang === 'fr' ? 'Phase 4' : 'Phase 4'}
@@ -1326,7 +1487,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
           </section>
 
           {/* Results Section */}
-          <section className="mb-24">
+          <section id="results" className="mb-24">
             <h2 className={`text-3xl md:text-4xl font-bold mb-8 ${isDark ? 'text-white' : 'text-gray-900'}`}>
               {t.result.title}
             </h2>
