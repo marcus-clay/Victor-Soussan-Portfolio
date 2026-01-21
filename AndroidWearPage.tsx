@@ -587,7 +587,11 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className={`fixed inset-0 z-50 ${isDark ? 'bg-[#0a0a0a]' : 'bg-white'} overflow-y-auto`}
+      className={`fixed inset-0 z-50 overflow-y-auto ${
+        viewMode === 'gallery'
+          ? 'bg-black'
+          : (isDark ? 'bg-[#0a0a0a]' : 'bg-white')
+      }`}
     >
       {/* Header - Glass effect matching DailymotionPage */}
       <header
