@@ -407,20 +407,20 @@ const getGalleryItems = (lang: 'en' | 'fr'): GalleryItem[] => {
   const t = captions[lang];
 
   return [
-    { src: '/images/pagesjaunes/Android wear/early_wireframes.webp', type: 'image', caption: t.sketches, captionDesc: t.sketchesDesc },
-    { src: '/images/pagesjaunes/Android wear/android_wear_ambient_sketches.webp', type: 'image', caption: t.ambient, captionDesc: t.ambientDesc },
-    { src: '/images/pagesjaunes/pj android wear flows.jpeg', type: 'image', caption: t.flows, captionDesc: t.flowsDesc },
-    { src: '/images/pagesjaunes/Android wear/ui_interactions.webp', type: 'image', caption: t.flowsDetailed, captionDesc: t.flowsDetailedDesc },
-    { src: '/images/pagesjaunes/pj android wear ui modes.jpeg', type: 'image', caption: t.uiModes, captionDesc: t.uiModesDesc },
-    { src: '/images/pagesjaunes/pj android wear ui.jpeg', type: 'image', caption: t.ui, captionDesc: t.uiDesc },
-    { src: '/images/pagesjaunes/Android wear/component_library.webp', type: 'image', caption: t.components, captionDesc: t.componentsDesc },
-    { src: '/images/pagesjaunes/Android wear/android_wear_insitu_store_01.png', type: 'image', caption: t.insituStore, captionDesc: t.insituStoreDesc },
-    { src: '/images/pagesjaunes/Android wear/maquette_insitu_FD_03 (1).png', type: 'image', caption: t.insituDetail, captionDesc: t.insituDetailDesc },
-    { src: '/images/pagesjaunes/Android wear/dev_session_1.webp', type: 'image', caption: t.devSession, captionDesc: t.devSessionDesc },
-    { src: '/images/pagesjaunes/Android wear/design_work_keynote.webp', type: 'image', caption: t.designWork, captionDesc: t.designWorkDesc },
-    { src: '/images/pagesjaunes/Android wear/design_work_detail.webp', type: 'image', caption: t.designDetail, captionDesc: t.designDetailDesc },
-    { src: '/images/pagesjaunes/Android wear/VID_20151202_184124.mp4', type: 'video', caption: t.prototypeVideo, captionDesc: t.prototypeVideoDesc },
-    { src: '/images/pagesjaunes/Android wear/VID_20151218_100148.mp4', type: 'video', caption: t.navVideo, captionDesc: t.navVideoDesc },
+    { src: '/images/pagesjaunes/Android%20wear/early_wireframes.webp', type: 'image', caption: t.sketches, captionDesc: t.sketchesDesc },
+    { src: '/images/pagesjaunes/Android%20wear/android_wear_ambient_sketches.webp', type: 'image', caption: t.ambient, captionDesc: t.ambientDesc },
+    { src: '/images/pagesjaunes/Android%20wear/pj%20android%20wear%20flows.jpeg', type: 'image', caption: t.flows, captionDesc: t.flowsDesc },
+    { src: '/images/pagesjaunes/Android%20wear/ui_interactions.webp', type: 'image', caption: t.flowsDetailed, captionDesc: t.flowsDetailedDesc },
+    { src: '/images/pagesjaunes/Android%20wear/pj%20android%20wear%20ui%20modes.jpeg', type: 'image', caption: t.uiModes, captionDesc: t.uiModesDesc },
+    { src: '/images/pagesjaunes/Android%20wear/pj%20android%20wear%20ui.jpeg', type: 'image', caption: t.ui, captionDesc: t.uiDesc },
+    { src: '/images/pagesjaunes/Android%20wear/component_library.webp', type: 'image', caption: t.components, captionDesc: t.componentsDesc },
+    { src: '/images/pagesjaunes/Android%20wear/android_wear_insitu_store_01.png', type: 'image', caption: t.insituStore, captionDesc: t.insituStoreDesc },
+    { src: '/images/pagesjaunes/Android%20wear/maquette_insitu_FD_03%20(1).png', type: 'image', caption: t.insituDetail, captionDesc: t.insituDetailDesc },
+    { src: '/images/pagesjaunes/Android%20wear/dev_session_1.webp', type: 'image', caption: t.devSession, captionDesc: t.devSessionDesc },
+    { src: '/images/pagesjaunes/Android%20wear/design_work_keynote.webp', type: 'image', caption: t.designWork, captionDesc: t.designWorkDesc },
+    { src: '/images/pagesjaunes/Android%20wear/design_work_detail.webp', type: 'image', caption: t.designDetail, captionDesc: t.designDetailDesc },
+    { src: '/images/pagesjaunes/Android%20wear/VID_20151202_184124.mp4', type: 'video', caption: t.prototypeVideo, captionDesc: t.prototypeVideoDesc },
+    { src: '/images/pagesjaunes/Android%20wear/VID_20151218_100148.mp4', type: 'video', caption: t.navVideo, captionDesc: t.navVideoDesc },
   ];
 };
 
@@ -723,12 +723,12 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
           {/* Hero Image */}
           <figure className="mb-24">
             <div
-              onClick={() => handleImageClick('/images/pagesjaunes/Android wear/android_wear_insitu_store_01.png')}
+              onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/android_wear_insitu_store_01.png')}
               className={`rounded-2xl overflow-hidden border cursor-pointer ${isDark ? 'border-white/10' : 'border-gray-200'}`}
             >
               <img
                 loading="lazy"
-                src="/images/pagesjaunes/Android wear/android_wear_insitu_store_01.png"
+                src="/images/pagesjaunes/Android%20wear/android_wear_insitu_store_01.png"
                 alt="PagesJaunes Android Wear"
                 className="w-full h-auto"
               />
@@ -859,12 +859,12 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
             {/* Full width - Sketches */}
             <figure className="mb-12">
               <div
-                onClick={() => handleImageClick('/images/pagesjaunes/Android wear/early_wireframes.webp')}
+                onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/early_wireframes.webp')}
                 className={`rounded-2xl overflow-hidden border cursor-pointer ${isDark ? 'border-white/10' : 'border-gray-200'}`}
               >
                 <img
                   loading="lazy"
-                  src="/images/pagesjaunes/Android wear/early_wireframes.webp"
+                  src="/images/pagesjaunes/Android%20wear/early_wireframes.webp"
                   alt={t.process.sketches}
                   className="w-full h-auto"
                 />
@@ -877,12 +877,12 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
             {/* Full width - Ambient Mode Sketches */}
             <figure className="mb-12">
               <div
-                onClick={() => handleImageClick('/images/pagesjaunes/Android wear/android_wear_ambient_sketches.webp')}
+                onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/android_wear_ambient_sketches.webp')}
                 className={`rounded-2xl overflow-hidden border cursor-pointer ${isDark ? 'border-white/10' : 'border-gray-200'}`}
               >
                 <img
                   loading="lazy"
-                  src="/images/pagesjaunes/Android wear/android_wear_ambient_sketches.webp"
+                  src="/images/pagesjaunes/Android%20wear/android_wear_ambient_sketches.webp"
                   alt={t.process.ambient}
                   className="w-full h-auto"
                 />
@@ -896,12 +896,12 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
             <div className="grid md:grid-cols-2 gap-8 mb-12">
               <figure>
                 <div
-                  onClick={() => handleImageClick('/images/pagesjaunes/pj android wear flows.jpeg')}
+                  onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/pj%20android%20wear%20flows.jpeg')}
                   className={`rounded-2xl overflow-hidden border cursor-pointer ${isDark ? 'border-white/10' : 'border-gray-200'}`}
                 >
                   <img
                     loading="lazy"
-                    src="/images/pagesjaunes/pj android wear flows.jpeg"
+                    src="/images/pagesjaunes/Android%20wear/pj%20android%20wear%20flows.jpeg"
                     alt={t.process.flows}
                     className="w-full h-auto"
                   />
@@ -912,12 +912,12 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
               </figure>
               <figure>
                 <div
-                  onClick={() => handleImageClick('/images/pagesjaunes/pj android wear ui modes.jpeg')}
+                  onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/pj%20android%20wear%20ui%20modes.jpeg')}
                   className={`rounded-2xl overflow-hidden border cursor-pointer ${isDark ? 'border-white/10' : 'border-gray-200'}`}
                 >
                   <img
                     loading="lazy"
-                    src="/images/pagesjaunes/pj android wear ui modes.jpeg"
+                    src="/images/pagesjaunes/Android%20wear/pj%20android%20wear%20ui%20modes.jpeg"
                     alt={t.process.uiModes}
                     className="w-full h-auto"
                   />
@@ -931,12 +931,12 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
             {/* Full width - UI Interactions */}
             <figure className="mb-12">
               <div
-                onClick={() => handleImageClick('/images/pagesjaunes/Android wear/ui_interactions.webp')}
+                onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/ui_interactions.webp')}
                 className={`rounded-2xl overflow-hidden border cursor-pointer ${isDark ? 'border-white/10' : 'border-gray-200'}`}
               >
                 <img
                   loading="lazy"
-                  src="/images/pagesjaunes/Android wear/ui_interactions.webp"
+                  src="/images/pagesjaunes/Android%20wear/ui_interactions.webp"
                   alt={t.process.flows}
                   className="w-full h-auto"
                 />
@@ -950,12 +950,12 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
             <div className="grid md:grid-cols-2 gap-8 mb-12">
               <figure>
                 <div
-                  onClick={() => handleImageClick('/images/pagesjaunes/pj android wear ui.jpeg')}
+                  onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/pj%20android%20wear%20ui.jpeg')}
                   className={`rounded-2xl overflow-hidden border cursor-pointer ${isDark ? 'border-white/10' : 'border-gray-200'}`}
                 >
                   <img
                     loading="lazy"
-                    src="/images/pagesjaunes/pj android wear ui.jpeg"
+                    src="/images/pagesjaunes/Android%20wear/pj%20android%20wear%20ui.jpeg"
                     alt={t.process.components}
                     className="w-full h-auto"
                   />
@@ -966,12 +966,12 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
               </figure>
               <figure>
                 <div
-                  onClick={() => handleImageClick('/images/pagesjaunes/Android wear/maquette_insitu_FD_03 (1).png')}
+                  onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/maquette_insitu_FD_03%20(1).png')}
                   className={`rounded-2xl overflow-hidden border cursor-pointer ${isDark ? 'border-white/10' : 'border-gray-200'}`}
                 >
                   <img
                     loading="lazy"
-                    src="/images/pagesjaunes/Android wear/maquette_insitu_FD_03 (1).png"
+                    src="/images/pagesjaunes/Android%20wear/maquette_insitu_FD_03%20(1).png"
                     alt={lang === 'fr' ? 'Détail In-situ' : 'In-situ Detail'}
                     className="w-full h-auto"
                   />
@@ -985,12 +985,12 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
             {/* Full width - Component Library Detail */}
             <figure className="mb-12">
               <div
-                onClick={() => handleImageClick('/images/pagesjaunes/Android wear/component_library.webp')}
+                onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/component_library.webp')}
                 className={`rounded-2xl overflow-hidden border cursor-pointer ${isDark ? 'border-white/10' : 'border-gray-200'}`}
               >
                 <img
                   loading="lazy"
-                  src="/images/pagesjaunes/Android wear/component_library.webp"
+                  src="/images/pagesjaunes/Android%20wear/component_library.webp"
                   alt={t.process.components}
                   className="w-full h-auto"
                 />
@@ -1010,12 +1010,12 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
             {/* Full width - Dev Session */}
             <figure className="mb-12">
               <div
-                onClick={() => handleImageClick('/images/pagesjaunes/Android wear/dev_session_1.webp')}
+                onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/dev_session_1.webp')}
                 className={`rounded-2xl overflow-hidden border cursor-pointer ${isDark ? 'border-white/10' : 'border-gray-200'}`}
               >
                 <img
                   loading="lazy"
-                  src="/images/pagesjaunes/Android wear/dev_session_1.webp"
+                  src="/images/pagesjaunes/Android%20wear/dev_session_1.webp"
                   alt={t.implementation.devSession}
                   className="w-full h-auto"
                 />
@@ -1029,12 +1029,12 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
             <div className="grid md:grid-cols-2 gap-8 mb-12">
               <figure>
                 <div
-                  onClick={() => handleImageClick('/images/pagesjaunes/Android wear/design_work_keynote.webp')}
+                  onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/design_work_keynote.webp')}
                   className={`rounded-2xl overflow-hidden border cursor-pointer ${isDark ? 'border-white/10' : 'border-gray-200'}`}
                 >
                   <img
                     loading="lazy"
-                    src="/images/pagesjaunes/Android wear/design_work_keynote.webp"
+                    src="/images/pagesjaunes/Android%20wear/design_work_keynote.webp"
                     alt={lang === 'fr' ? 'Session Design' : 'Design Session'}
                     className="w-full h-auto"
                   />
@@ -1045,12 +1045,12 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
               </figure>
               <figure>
                 <div
-                  onClick={() => handleImageClick('/images/pagesjaunes/Android wear/design_work_detail.webp')}
+                  onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/design_work_detail.webp')}
                   className={`rounded-2xl overflow-hidden border cursor-pointer ${isDark ? 'border-white/10' : 'border-gray-200'}`}
                 >
                   <img
                     loading="lazy"
-                    src="/images/pagesjaunes/Android wear/design_work_detail.webp"
+                    src="/images/pagesjaunes/Android%20wear/design_work_detail.webp"
                     alt={lang === 'fr' ? 'Détail Pixel Perfect' : 'Pixel Perfect Detail'}
                     className="w-full h-auto"
                   />
@@ -1074,7 +1074,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
                       <div className={`absolute inset-0 rounded-full ${isDark ? 'bg-gray-800' : 'bg-gray-900'}`} style={{ transform: 'scale(1.15)' }} />
                       <div className="relative rounded-full overflow-hidden border-4 border-gray-700" style={{ aspectRatio: '1/1' }}>
                         <video
-                          src="/images/pagesjaunes/Android wear/VID_20151202_184124.mp4"
+                          src="/images/pagesjaunes/Android%20wear/VID_20151202_184124.mp4"
                           autoPlay
                           loop
                           muted
@@ -1103,7 +1103,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
                       <div className={`absolute inset-0 rounded-full ${isDark ? 'bg-gray-800' : 'bg-gray-900'}`} style={{ transform: 'scale(1.15)' }} />
                       <div className="relative rounded-full overflow-hidden border-4 border-gray-700" style={{ aspectRatio: '1/1' }}>
                         <video
-                          src="/images/pagesjaunes/Android wear/VID_20151218_100148.mp4"
+                          src="/images/pagesjaunes/Android%20wear/VID_20151218_100148.mp4"
                           autoPlay
                           loop
                           muted
