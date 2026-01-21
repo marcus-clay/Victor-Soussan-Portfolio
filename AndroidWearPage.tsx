@@ -347,6 +347,8 @@ const getGalleryItems = (lang: 'en' | 'fr'): GalleryItem[] => {
       sketchesDesc: 'Before opening Sketch, I explored dozens of layout options on paper. This rapid iteration revealed which information hierarchy worked best for a 280dp circular display.',
       ambient: 'Ambient Mode Mapping',
       ambientDesc: 'Each active screen needed a low-power equivalent. White outlines on black preserved battery life while keeping users oriented when they glanced at their wrist.',
+      ambientDesign: 'Ambient Mode Design',
+      ambientDesignDesc: 'Final ambient mode specifications. Monochrome outlines preserve battery while maintaining brand recognition.',
       flows: 'User Task Flows',
       flowsDesc: 'Two optimized journeys: find-and-call for urgent needs, find-and-navigate for discovery. Every tap counted on a screen this constrained.',
       flowsDetailed: 'UI and Interactions',
@@ -361,6 +363,8 @@ const getGalleryItems = (lang: 'en' | 'fr'): GalleryItem[] => {
       insituStoreDesc: 'The promotional asset for Play Store listing. First impressions matter when users are browsing new wearable experiences.',
       insituDetail: 'Contextual Preview',
       insituDetailDesc: 'Showing the business detail card on an actual wrist helps stakeholders understand the real-world reading conditions we designed for.',
+      storeSubmission: 'Play Store Submission',
+      storeSubmissionDesc: 'Internal communication for app launch. Marketing assets and store listing materials ready for publication.',
       devSession: 'Pair Programming Sessions',
       devSessionDesc: 'Daily working sessions with developer Thibault Fighiera. Two watches connected, iterating on actual builds instead of static mockups.',
       designWork: 'Design in Progress',
@@ -371,12 +375,30 @@ const getGalleryItems = (lang: 'en' | 'fr'): GalleryItem[] => {
       prototypeVideoDesc: 'The complete search journey captured on real hardware. From voice input to business card display.',
       navVideo: 'Navigation Handoff',
       navVideoDesc: 'Demonstrating the seamless transition from watch to phone when the user requests directions.',
+      screenLoading: 'Loading State',
+      screenLoadingDesc: 'Minimalist loading indicator on brand yellow.',
+      screenTime: 'Watch Face',
+      screenTimeDesc: 'System time display before app launch.',
+      screenAppList: 'App Launcher',
+      screenAppListDesc: 'PagesJaunes icon in the Android Wear app list.',
+      screenRubriques: 'Category Selection',
+      screenRubriquesDesc: 'Browse by category for exploratory search.',
+      screenLR01: 'Search Results',
+      screenLR01Desc: 'First result in the local search list.',
+      screenLR02: 'Results Navigation',
+      screenLR02Desc: 'Scrolling through search results.',
+      screenLR03: 'Result Details Preview',
+      screenLR03Desc: 'Quick preview before full detail card.',
+      screenFD: 'Business Detail Card',
+      screenFDDesc: 'Complete business information at a glance.',
     },
     fr: {
       sketches: 'Wireframes Papier',
       sketchesDesc: 'Avant d\'ouvrir Sketch, j\'ai exploré des dizaines d\'options de layout sur papier. Cette itération rapide a révélé quelle hiérarchie d\'information fonctionnait sur un écran circulaire de 280dp.',
       ambient: 'Mapping Mode Ambiant',
       ambientDesc: 'Chaque écran actif nécessitait un équivalent basse consommation. Des contours blancs sur fond noir préservaient la batterie tout en gardant les utilisateurs orientés.',
+      ambientDesign: 'Design Mode Ambiant',
+      ambientDesignDesc: 'Spécifications finales du mode ambiant. Contours monochromes pour préserver la batterie tout en maintenant la reconnaissance de marque.',
       flows: 'Parcours Utilisateur',
       flowsDesc: 'Deux trajectoires optimisées : trouver-et-appeler pour l\'urgence, trouver-et-naviguer pour la découverte. Chaque tap comptait sur un écran aussi contraint.',
       flowsDetailed: 'UI et Interactions',
@@ -391,6 +413,8 @@ const getGalleryItems = (lang: 'en' | 'fr'): GalleryItem[] => {
       insituStoreDesc: 'Le visuel promotionnel pour le Play Store. Les premières impressions comptent quand les utilisateurs découvrent de nouvelles expériences wearables.',
       insituDetail: 'Prévisualisation Contextuelle',
       insituDetailDesc: 'Montrer la fiche détail sur un vrai poignet aide les stakeholders à comprendre les conditions de lecture réelles pour lesquelles nous avons designé.',
+      storeSubmission: 'Soumission Play Store',
+      storeSubmissionDesc: 'Communication interne pour le lancement. Assets marketing et matériels de listing store prêts pour publication.',
       devSession: 'Sessions en Binôme',
       devSessionDesc: 'Sessions de travail quotidiennes avec le développeur Thibault Fighiera. Deux montres connectées, itérant sur des builds réels plutôt que des maquettes statiques.',
       designWork: 'Design en Cours',
@@ -401,6 +425,22 @@ const getGalleryItems = (lang: 'en' | 'fr'): GalleryItem[] => {
       prototypeVideoDesc: 'Le parcours de recherche complet capturé sur du vrai hardware. De l\'input vocal à l\'affichage de la fiche commerce.',
       navVideo: 'Handoff Navigation',
       navVideoDesc: 'Démonstration de la transition fluide de la montre au téléphone quand l\'utilisateur demande un itinéraire.',
+      screenLoading: 'État de Chargement',
+      screenLoadingDesc: 'Indicateur de chargement minimaliste sur jaune marque.',
+      screenTime: 'Cadran Montre',
+      screenTimeDesc: 'Affichage de l\'heure système avant lancement app.',
+      screenAppList: 'Lanceur d\'Apps',
+      screenAppListDesc: 'Icône PagesJaunes dans la liste d\'apps Android Wear.',
+      screenRubriques: 'Sélection Catégorie',
+      screenRubriquesDesc: 'Navigation par catégorie pour recherche exploratoire.',
+      screenLR01: 'Résultats Recherche',
+      screenLR01Desc: 'Premier résultat dans la liste de recherche locale.',
+      screenLR02: 'Navigation Résultats',
+      screenLR02Desc: 'Défilement dans les résultats de recherche.',
+      screenLR03: 'Aperçu Détail Résultat',
+      screenLR03Desc: 'Aperçu rapide avant la fiche détail complète.',
+      screenFD: 'Fiche Détail Pro',
+      screenFDDesc: 'Information commerce complète en un coup d\'œil.',
     },
   };
 
@@ -409,13 +449,23 @@ const getGalleryItems = (lang: 'en' | 'fr'): GalleryItem[] => {
   return [
     { src: '/images/pagesjaunes/Android%20wear/early_wireframes.webp', type: 'image', caption: t.sketches, captionDesc: t.sketchesDesc },
     { src: '/images/pagesjaunes/Android%20wear/android_wear_ambient_sketches.webp', type: 'image', caption: t.ambient, captionDesc: t.ambientDesc },
+    { src: '/images/pagesjaunes/Android%20wear/screens/android%20wear%20design%20ambient%20mode.png', type: 'image', caption: t.ambientDesign, captionDesc: t.ambientDesignDesc },
     { src: '/images/pagesjaunes/Android%20wear/pj%20android%20wear%20flows.jpeg', type: 'image', caption: t.flows, captionDesc: t.flowsDesc },
     { src: '/images/pagesjaunes/Android%20wear/ui_interactions.webp', type: 'image', caption: t.flowsDetailed, captionDesc: t.flowsDetailedDesc },
     { src: '/images/pagesjaunes/Android%20wear/pj%20android%20wear%20ui%20modes.jpeg', type: 'image', caption: t.uiModes, captionDesc: t.uiModesDesc },
     { src: '/images/pagesjaunes/Android%20wear/pj%20android%20wear%20ui.jpeg', type: 'image', caption: t.ui, captionDesc: t.uiDesc },
     { src: '/images/pagesjaunes/Android%20wear/component_library.webp', type: 'image', caption: t.components, captionDesc: t.componentsDesc },
+    { src: '/images/pagesjaunes/Android%20wear/screens/00%20Loading.jpg', type: 'image', caption: t.screenLoading, captionDesc: t.screenLoadingDesc },
+    { src: '/images/pagesjaunes/Android%20wear/screens/01%20Time.jpg', type: 'image', caption: t.screenTime, captionDesc: t.screenTimeDesc },
+    { src: '/images/pagesjaunes/Android%20wear/screens/02%20App%20list.jpg', type: 'image', caption: t.screenAppList, captionDesc: t.screenAppListDesc },
+    { src: '/images/pagesjaunes/Android%20wear/screens/03%20Rubriques%20list.jpg', type: 'image', caption: t.screenRubriques, captionDesc: t.screenRubriquesDesc },
+    { src: '/images/pagesjaunes/Android%20wear/screens/04%20LR%2001.jpg', type: 'image', caption: t.screenLR01, captionDesc: t.screenLR01Desc },
+    { src: '/images/pagesjaunes/Android%20wear/screens/05%20LR%2002.jpg', type: 'image', caption: t.screenLR02, captionDesc: t.screenLR02Desc },
+    { src: '/images/pagesjaunes/Android%20wear/screens/06%20LR%2003.jpg', type: 'image', caption: t.screenLR03, captionDesc: t.screenLR03Desc },
+    { src: '/images/pagesjaunes/Android%20wear/screens/07%20FD.jpg', type: 'image', caption: t.screenFD, captionDesc: t.screenFDDesc },
     { src: '/images/pagesjaunes/Android%20wear/android_wear_insitu_store_01.png', type: 'image', caption: t.insituStore, captionDesc: t.insituStoreDesc },
     { src: '/images/pagesjaunes/Android%20wear/maquette_insitu_FD_03%20(1).png', type: 'image', caption: t.insituDetail, captionDesc: t.insituDetailDesc },
+    { src: '/images/pagesjaunes/Android%20wear/screens/android_wear_visuel_mail_comm.jpg', type: 'image', caption: t.storeSubmission, captionDesc: t.storeSubmissionDesc },
     { src: '/images/pagesjaunes/Android%20wear/dev_session_1.webp', type: 'image', caption: t.devSession, captionDesc: t.devSessionDesc },
     { src: '/images/pagesjaunes/Android%20wear/design_work_keynote.webp', type: 'image', caption: t.designWork, captionDesc: t.designWorkDesc },
     { src: '/images/pagesjaunes/Android%20wear/design_work_detail.webp', type: 'image', caption: t.designDetail, captionDesc: t.designDetailDesc },
@@ -873,25 +923,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
                 />
               </div>
               <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                {t.process.sketches}. {t.process.sketchesDesc}
-              </figcaption>
-            </figure>
-
-            {/* Full width - Ambient Mode Sketches */}
-            <figure className="mb-12">
-              <div
-                onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/android_wear_ambient_sketches.webp')}
-                className={`rounded-2xl overflow-hidden border cursor-pointer ${isDark ? 'border-white/10' : 'border-gray-200'}`}
-              >
-                <img
-                  loading="lazy"
-                  src="/images/pagesjaunes/Android%20wear/android_wear_ambient_sketches.webp"
-                  alt={t.process.ambient}
-                  className="w-full h-auto"
-                />
-              </div>
-              <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                {t.process.ambient}. {t.process.ambientDesc}
+                <strong className={isDark ? 'text-gray-200' : 'text-gray-700'}>{t.process.sketches}.</strong> {t.process.sketchesDesc}
               </figcaption>
             </figure>
 
@@ -910,7 +942,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
                   />
                 </div>
                 <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                  {t.process.flows}. {t.process.flowsDesc}
+                  <strong className={isDark ? 'text-gray-200' : 'text-gray-700'}>{t.process.flows}.</strong> {t.process.flowsDesc}
                 </figcaption>
               </figure>
               <figure>
@@ -926,7 +958,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
                   />
                 </div>
                 <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                  {t.process.uiModes}. {t.process.uiModesDesc}
+                  <strong className={isDark ? 'text-gray-200' : 'text-gray-700'}>{t.process.uiModes}.</strong> {t.process.uiModesDesc}
                 </figcaption>
               </figure>
             </div>
@@ -945,9 +977,102 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
                 />
               </div>
               <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                {lang === 'fr' ? 'UI et Interactions' : 'UI and Interactions'}. {lang === 'fr' ? 'Le modèle d\'interaction complet montrant comment les actions montre se transmettent au téléphone.' : 'The complete interaction model showing how watch actions hand off to phone for calls and navigation.'}
+                <strong className={isDark ? 'text-gray-200' : 'text-gray-700'}>{lang === 'fr' ? 'UI et Interactions' : 'UI and Interactions'}.</strong> {lang === 'fr' ? 'Le modèle d\'interaction complet montrant comment les actions montre se transmettent au téléphone pour les appels et la navigation.' : 'The complete interaction model showing how watch actions hand off to phone for calls and navigation.'}
               </figcaption>
             </figure>
+
+            {/* 2 columns - Ambient Mode Sketches & Final Design */}
+            <div className="grid md:grid-cols-2 gap-8 mb-12">
+              <figure>
+                <div
+                  onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/android_wear_ambient_sketches.webp')}
+                  className={`rounded-2xl overflow-hidden border cursor-pointer ${isDark ? 'border-white/10' : 'border-gray-200'}`}
+                >
+                  <img
+                    loading="lazy"
+                    src="/images/pagesjaunes/Android%20wear/android_wear_ambient_sketches.webp"
+                    alt={t.process.ambient}
+                    className="w-full h-auto"
+                  />
+                </div>
+                <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                  <strong className={isDark ? 'text-gray-200' : 'text-gray-700'}>{t.process.ambient}.</strong> {t.process.ambientDesc}
+                </figcaption>
+              </figure>
+              <figure>
+                <div
+                  onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/screens/android%20wear%20design%20ambient%20mode.png')}
+                  className={`rounded-2xl overflow-hidden border cursor-pointer ${isDark ? 'border-white/10' : 'border-gray-200'}`}
+                >
+                  <img
+                    loading="lazy"
+                    src="/images/pagesjaunes/Android%20wear/screens/android%20wear%20design%20ambient%20mode.png"
+                    alt={lang === 'fr' ? 'Design Mode Ambiant' : 'Ambient Mode Design'}
+                    className="w-full h-auto"
+                  />
+                </div>
+                <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                  <strong className={isDark ? 'text-gray-200' : 'text-gray-700'}>{lang === 'fr' ? 'Design Mode Ambiant' : 'Ambient Mode Design'}.</strong> {lang === 'fr' ? 'Spécifications finales du mode ambiant. Contours monochromes pour économiser la batterie tout en maintenant la reconnaissance de marque.' : 'Final ambient mode specifications. Monochrome outlines preserve battery while maintaining brand recognition.'}
+                </figcaption>
+              </figure>
+            </div>
+
+            {/* Full width - Component Library */}
+            <figure className="mb-12">
+              <div
+                onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/component_library.webp')}
+                className={`rounded-2xl overflow-hidden border cursor-pointer ${isDark ? 'border-white/10' : 'border-gray-200'}`}
+              >
+                <img
+                  loading="lazy"
+                  src="/images/pagesjaunes/Android%20wear/component_library.webp"
+                  alt={t.process.components}
+                  className="w-full h-auto"
+                />
+              </div>
+              <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                <strong className={isDark ? 'text-gray-200' : 'text-gray-700'}>{lang === 'fr' ? 'Bibliothèque Composants' : 'Component Library'}.</strong> {lang === 'fr' ? 'Documentation complète couvrant les variantes rondes et carrées. Cette bibliothèque est devenue la source de vérité pour notre équipe de deux.' : 'Full documentation covering round and square watch variants. This became the single source of truth for our two-person team.'}
+              </figcaption>
+            </figure>
+
+            {/* Bento Grid - Screen Captures */}
+            <div className="mb-12">
+              <h3 className={`text-xl font-semibold mb-6 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                {lang === 'fr' ? 'Inventaire des Écrans' : 'Screen Inventory'}
+              </h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {[
+                  { src: '/images/pagesjaunes/Android%20wear/screens/00%20Loading.jpg', caption: lang === 'fr' ? 'Chargement' : 'Loading' },
+                  { src: '/images/pagesjaunes/Android%20wear/screens/01%20Time.jpg', caption: lang === 'fr' ? 'Cadran' : 'Watch Face' },
+                  { src: '/images/pagesjaunes/Android%20wear/screens/02%20App%20list.jpg', caption: lang === 'fr' ? 'Apps' : 'App List' },
+                  { src: '/images/pagesjaunes/Android%20wear/screens/03%20Rubriques%20list.jpg', caption: lang === 'fr' ? 'Catégories' : 'Categories' },
+                  { src: '/images/pagesjaunes/Android%20wear/screens/04%20LR%2001.jpg', caption: lang === 'fr' ? 'Résultat 1' : 'Result 1' },
+                  { src: '/images/pagesjaunes/Android%20wear/screens/05%20LR%2002.jpg', caption: lang === 'fr' ? 'Résultat 2' : 'Result 2' },
+                  { src: '/images/pagesjaunes/Android%20wear/screens/06%20LR%2003.jpg', caption: lang === 'fr' ? 'Résultat 3' : 'Result 3' },
+                  { src: '/images/pagesjaunes/Android%20wear/screens/07%20FD.jpg', caption: lang === 'fr' ? 'Fiche Détail' : 'Detail Card' },
+                ].map((screen, idx) => (
+                  <figure key={idx} className="group">
+                    <div
+                      onClick={() => handleImageClick(screen.src)}
+                      className={`rounded-xl overflow-hidden border cursor-pointer transition-all duration-200 group-hover:shadow-lg ${isDark ? 'border-white/10 group-hover:border-white/20' : 'border-gray-200 group-hover:border-gray-300'}`}
+                    >
+                      <img
+                        loading="lazy"
+                        src={screen.src}
+                        alt={screen.caption}
+                        className="w-full h-auto"
+                      />
+                    </div>
+                    <figcaption className={`mt-2 text-xs text-center ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
+                      {screen.caption}
+                    </figcaption>
+                  </figure>
+                ))}
+              </div>
+              <p className={`mt-4 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                {lang === 'fr' ? 'Catalogue systématique de chaque état d\'écran. De l\'écran de chargement à la fiche détail, chaque transition a été pensée pour une lecture rapide sur un écran de 280dp.' : 'Systematic catalog of every screen state. From loading to detail card, each transition was designed for quick scanning on a 280dp display.'}
+              </p>
+            </div>
 
             {/* 2 columns - Component Library & In-situ mockups */}
             <div className="grid md:grid-cols-2 gap-8 mb-12">
@@ -964,7 +1089,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
                   />
                 </div>
                 <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                  {t.process.components}. {t.process.componentsDesc}
+                  <strong className={isDark ? 'text-gray-200' : 'text-gray-700'}>{lang === 'fr' ? 'Inventaire Écrans' : 'Screen Inventory'}.</strong> {lang === 'fr' ? 'Catalogue des états d\'écran assurant la cohérence à travers l\'expérience wearable.' : 'Systematic catalog of screen states ensuring design consistency across the wearable experience.'}
                 </figcaption>
               </figure>
               <figure>
@@ -980,28 +1105,10 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
                   />
                 </div>
                 <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                  {lang === 'fr' ? 'Prévisualisation Contextuelle' : 'Contextual Preview'}. {lang === 'fr' ? 'Montrer la fiche détail sur un vrai poignet aide à comprendre les conditions de lecture réelles.' : 'Showing the business card on an actual wrist reveals the real-world reading conditions we designed for.'}
+                  <strong className={isDark ? 'text-gray-200' : 'text-gray-700'}>{lang === 'fr' ? 'Prévisualisation Contextuelle' : 'Contextual Preview'}.</strong> {lang === 'fr' ? 'Montrer la fiche détail sur un vrai poignet aide les stakeholders à comprendre les conditions de lecture réelles.' : 'Showing the business card on an actual wrist helps stakeholders understand real-world reading conditions.'}
                 </figcaption>
               </figure>
             </div>
-
-            {/* Full width - Component Library Detail */}
-            <figure className="mb-12">
-              <div
-                onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/component_library.webp')}
-                className={`rounded-2xl overflow-hidden border cursor-pointer ${isDark ? 'border-white/10' : 'border-gray-200'}`}
-              >
-                <img
-                  loading="lazy"
-                  src="/images/pagesjaunes/Android%20wear/component_library.webp"
-                  alt={t.process.components}
-                  className="w-full h-auto"
-                />
-              </div>
-              <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                {lang === 'fr' ? 'Bibliothèque Composants Détaillée' : 'Detailed Component Library'}. {lang === 'fr' ? 'Documentation complète couvrant les variantes rondes et carrées, devenue la source de vérité de l\'équipe.' : 'Full documentation covering round and square variants, serving as the single source of truth for our team.'}
-              </figcaption>
-            </figure>
           </section>
 
           {/* Implementation Section */}
@@ -1024,7 +1131,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
                 />
               </div>
               <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                {t.implementation.devSession}. {t.implementation.devSessionDesc}
+                <strong className={isDark ? 'text-gray-200' : 'text-gray-700'}>{t.implementation.devSession}.</strong> {t.implementation.devSessionDesc}
               </figcaption>
             </figure>
 
@@ -1043,7 +1150,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
                   />
                 </div>
                 <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                  {lang === 'fr' ? 'Design en Cours' : 'Design in Progress'}. {lang === 'fr' ? 'Keynote servait d\'outil de prototypage rapide, facile à itérer et partager.' : 'Keynote served as my rapid prototyping tool. Quick to iterate and easy to share.'}
+                  <strong className={isDark ? 'text-gray-200' : 'text-gray-700'}>{lang === 'fr' ? 'Design en Cours' : 'Design in Progress'}.</strong> {lang === 'fr' ? 'Keynote servait d\'outil de prototypage rapide. Rapide à itérer, facile à partager, et assez précis pour le handoff production.' : 'Keynote served as my rapid prototyping tool. Quick to iterate, easy to share, and precise enough for production handoff.'}
                 </figcaption>
               </figure>
               <figure>
@@ -1059,15 +1166,18 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
                   />
                 </div>
                 <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                  {lang === 'fr' ? 'Vérification sur Device' : 'On-Device Verification'}. {lang === 'fr' ? 'Rien ne remplace la vérification sur le vrai hardware. Reflets et zones tactiles ne se révèlent qu\'en contexte.' : 'Nothing replaces checking designs on actual hardware. Screen reflections and touch targets only reveal themselves in context.'}
+                  <strong className={isDark ? 'text-gray-200' : 'text-gray-700'}>{lang === 'fr' ? 'Vérification sur Device' : 'On-Device Verification'}.</strong> {lang === 'fr' ? 'Rien ne remplace la vérification sur le vrai hardware. Reflets d\'écran, angles de vue et zones tactiles ne se révèlent qu\'en contexte.' : 'Nothing replaces checking designs on actual hardware. Screen reflections, viewing angles, and touch targets only reveal themselves in context.'}
                 </figcaption>
               </figure>
             </div>
 
-            {/* Video Prototypes - Side by side, 3:2 ratio */}
+            {/* Video Prototypes - Side by side, 3:2 ratio, clickable */}
             <div className="grid md:grid-cols-2 gap-8 mb-12">
               <figure>
-                <div className={`rounded-2xl overflow-hidden border ${isDark ? 'border-white/10' : 'border-gray-200'}`}>
+                <div
+                  onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/VID_20151202_184124.mp4')}
+                  className={`relative rounded-2xl overflow-hidden border cursor-pointer group ${isDark ? 'border-white/10' : 'border-gray-200'}`}
+                >
                   <video
                     src="/images/pagesjaunes/Android%20wear/VID_20151202_184124.mp4"
                     autoPlay
@@ -1077,13 +1187,21 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
                     className="w-full h-auto"
                     style={{ aspectRatio: '3/2', objectFit: 'cover' }}
                   />
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/20 transition-colors">
+                    <div className="w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-md transition-all duration-300 opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 bg-white/20">
+                      <Play size={28} className="text-white ml-1" fill="white" />
+                    </div>
+                  </div>
                 </div>
                 <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                  {t.implementation.prototype}
+                  <strong className={isDark ? 'text-gray-200' : 'text-gray-700'}>{t.implementation.prototype}.</strong> {t.implementation.prototypeDesc}
                 </figcaption>
               </figure>
               <figure>
-                <div className={`rounded-2xl overflow-hidden border ${isDark ? 'border-white/10' : 'border-gray-200'}`}>
+                <div
+                  onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/VID_20151218_100148.mp4')}
+                  className={`relative rounded-2xl overflow-hidden border cursor-pointer group ${isDark ? 'border-white/10' : 'border-gray-200'}`}
+                >
                   <video
                     src="/images/pagesjaunes/Android%20wear/VID_20151218_100148.mp4"
                     autoPlay
@@ -1093,9 +1211,72 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
                     className="w-full h-auto"
                     style={{ aspectRatio: '3/2', objectFit: 'cover' }}
                   />
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/20 transition-colors">
+                    <div className="w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-md transition-all duration-300 opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 bg-white/20">
+                      <Play size={28} className="text-white ml-1" fill="white" />
+                    </div>
+                  </div>
                 </div>
                 <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                  {lang === 'fr' ? 'Démo Navigation' : 'Navigation Demo'}
+                  <strong className={isDark ? 'text-gray-200' : 'text-gray-700'}>{lang === 'fr' ? 'Démo Navigation' : 'Navigation Demo'}.</strong> {lang === 'fr' ? 'Démonstration de la transition fluide de la montre au téléphone quand l\'utilisateur demande un itinéraire.' : 'Demonstrating the seamless transition from watch to phone when the user requests directions.'}
+                </figcaption>
+              </figure>
+            </div>
+
+            {/* Full width - Google Play Store Submission */}
+            <figure className="mb-12">
+              <div
+                onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/screens/android_wear_visuel_mail_comm.jpg')}
+                className={`rounded-2xl overflow-hidden border cursor-pointer ${isDark ? 'border-white/10' : 'border-gray-200'}`}
+              >
+                <img
+                  loading="lazy"
+                  src="/images/pagesjaunes/Android%20wear/screens/android_wear_visuel_mail_comm.jpg"
+                  alt={lang === 'fr' ? 'Soumission Play Store' : 'Play Store Submission'}
+                  className="w-full h-auto"
+                />
+              </div>
+              <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                <strong className={isDark ? 'text-gray-200' : 'text-gray-700'}>{lang === 'fr' ? 'Soumission Google Play' : 'Google Play Submission'}.</strong> {lang === 'fr' ? 'Communication interne pour le lancement de l\'app. Assets marketing et matériels de listing store prêts pour publication sur Google Play.' : 'Internal communication for app launch. Marketing assets and store listing materials ready for publication on Google Play.'}
+              </figcaption>
+            </figure>
+
+            {/* 2 columns - Store Presence */}
+            <div className="grid md:grid-cols-2 gap-8 mb-12">
+              <figure>
+                <div
+                  onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/android_wear_insitu_store_01.png')}
+                  className={`rounded-2xl overflow-hidden border cursor-pointer ${isDark ? 'border-white/10' : 'border-gray-200'}`}
+                >
+                  <img
+                    loading="lazy"
+                    src="/images/pagesjaunes/Android%20wear/android_wear_insitu_store_01.png"
+                    alt={lang === 'fr' ? 'Présence Google Play' : 'Google Play Presence'}
+                    className="w-full h-auto"
+                  />
+                </div>
+                <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                  <strong className={isDark ? 'text-gray-200' : 'text-gray-700'}>{lang === 'fr' ? 'Présence Google Play' : 'Google Play Presence'}.</strong> {lang === 'fr' ? 'Le visuel promotionnel pour le Play Store. Les premières impressions comptent quand les utilisateurs découvrent de nouvelles expériences wearables.' : 'The promotional asset for Play Store listing. First impressions matter when users browse new wearable experiences.'}
+                </figcaption>
+              </figure>
+              <figure>
+                <div
+                  onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/maquette_insitu_FD_03%20(1).png')}
+                  className="rounded-2xl overflow-hidden border cursor-pointer border-gray-200"
+                  style={{ backgroundColor: '#E7E7E7' }}
+                >
+                  <div className="flex items-center justify-center p-8" style={{ aspectRatio: '4/3' }}>
+                    <img
+                      loading="lazy"
+                      src="/images/pagesjaunes/Android%20wear/maquette_insitu_FD_03%20(1).png"
+                      alt={lang === 'fr' ? 'Fiche Pro sur Poignet' : 'Business Card on Wrist'}
+                      className="h-full w-auto object-contain"
+                      style={{ transform: 'rotate(-5deg)' }}
+                    />
+                  </div>
+                </div>
+                <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                  <strong className={isDark ? 'text-gray-200' : 'text-gray-700'}>{lang === 'fr' ? 'Fiche Pro en Contexte' : 'Business Card in Context'}.</strong> {lang === 'fr' ? 'Visualiser la fiche détail sur un vrai poignet révèle les conditions de lecture réelles pour lesquelles nous avons conçu.' : 'Visualizing the detail card on an actual wrist reveals the real-world reading conditions we designed for.'}
                 </figcaption>
               </figure>
             </div>
