@@ -60,6 +60,8 @@ const DailymotionPage = lazy(() => import('./DailymotionPage'));
 const ConnectPage = lazy(() => import('./ConnectPage'));
 const SqoolPage = lazy(() => import('./SqoolPage'));
 const FranceVaePage = lazy(() => import('./FranceVaePage'));
+const PagesJaunesPage = lazy(() => import('./PagesJaunesPage'));
+const AndroidWearPage = lazy(() => import('./AndroidWearPage'));
 const ExecutivePage = lazy(() => import('./ExecutivePage'));
 const WorkPage = lazy(() => import('./WorkPage'));
 const IframeModal = lazy(() => import('./IframeModal'));
@@ -1719,16 +1721,16 @@ const App: React.FC = () => {
   // Also tracks initial media index if URL points to specific image/video
   const [initialMediaIndex, setInitialMediaIndex] = useState<number | null>(null);
   const [openProject, setOpenProject] = useState<{
-    project: 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'france-vae';
+    project: 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'france-vae' | 'pagesjaunes';
     viewMode: 'caseStudy' | 'gallery' | 'executive';
   } | null>(() => {
     // Parse URL on initial load
     const path = window.location.pathname;
 
     // Match media URLs: /project/:id/media/:type/:index
-    const mediaMatch = path.match(/^\/projects?\/(toolkit|dailymotion|connect|sqool|france-vae)\/media\/(image|video)\/(\d+)$/);
+    const mediaMatch = path.match(/^\/projects?\/(toolkit|dailymotion|connect|sqool|france-vae|pagesjaunes)\/media\/(image|video)\/(\d+)$/);
     if (mediaMatch) {
-      const projectId = mediaMatch[1] as 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'france-vae';
+      const projectId = mediaMatch[1] as 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'france-vae' | 'pagesjaunes';
       const mediaIndex = parseInt(mediaMatch[3], 10) - 1; // Convert to 0-based index
       // Store the media index to open lightbox automatically
       setTimeout(() => setInitialMediaIndex(mediaIndex >= 0 ? mediaIndex : 0), 100);
@@ -1738,9 +1740,9 @@ const App: React.FC = () => {
     // Match standard project URLs: /project/:id/:viewMode?
     // Supports new URLs: /project/:id/summary, /project/:id/full, /project/:id/gallery
     // Also supports legacy URLs: /project/:id/executive, /project/:id/case-study
-    const projectMatch = path.match(/^\/projects?\/(toolkit|dailymotion|connect|sqool|france-vae)(?:\/(case-study|full|gallery|executive|summary))?$/);
+    const projectMatch = path.match(/^\/projects?\/(toolkit|dailymotion|connect|sqool|france-vae|pagesjaunes)(?:\/(case-study|full|gallery|executive|summary))?$/);
     if (projectMatch) {
-      const projectId = projectMatch[1] as 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'france-vae';
+      const projectId = projectMatch[1] as 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'france-vae' | 'pagesjaunes';
       const viewParam = projectMatch[2];
       // Map URL paths to internal view modes
       // summary & executive -> executive (En bref)
@@ -2058,6 +2060,11 @@ const App: React.FC = () => {
       title: 'France VAE - Service Public Numérique | Victor Soussan',
       description: 'Case study: Plateforme nationale de Validation des Acquis. UX Research, VAE Collective, et transformation digitale.',
       image: '/images/francevae/thumbnail_france_vae_02.webp'
+    },
+    'pagesjaunes': {
+      title: 'PagesJaunes - Mobile Apps Redesign | Victor Soussan',
+      description: 'Case study: Modernisation des apps mobiles PagesJaunes pour 22M+ utilisateurs. Homepage conversationnelle, navigation et design system.',
+      image: '/images/thumbnail_pagesjaunes_sp_tablette.webp'
     }
   };
 
@@ -2109,7 +2116,7 @@ const App: React.FC = () => {
 
   // Open project with URL update
   const openProjectWithUrl = (
-    projectId: 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'france-vae',
+    projectId: 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'france-vae' | 'pagesjaunes',
     viewMode: 'caseStudy' | 'gallery' | 'executive',
     pushHistory = true
   ) => {
@@ -8050,6 +8057,44 @@ ${contactForm.message}`;
               }}
               viewMode={openProject.viewMode}
               onViewModeChange={(mode) => openProjectWithUrl('france-vae', mode)}
+              lang={lang}
+              onContact={() => setIsSimpleContactOpen(true)}
+            />
+          </Suspense>
+        )}
+      </AnimatePresence>
+
+      {/* Unified Project Modal - PagesJaunes */}
+      <AnimatePresence>
+        {openProject?.project === 'pagesjaunes' && (
+          <Suspense fallback={<PageLoader />}>
+            <PagesJaunesPage
+              onClose={handleProjectClose}
+              systemTheme={systemTheme}
+              onToggleTheme={() => {
+                setThemeMode(prev => prev === 'dark' ? 'light' : 'dark');
+              }}
+              viewMode={openProject.viewMode}
+              onViewModeChange={(mode) => openProjectWithUrl('pagesjaunes', mode)}
+              lang={lang}
+              onContact={() => setIsSimpleContactOpen(true)}
+            />
+          </Suspense>
+        )}
+      </AnimatePresence>
+
+      {/* Unified Project Modal - Android Wear */}
+      <AnimatePresence>
+        {openProject?.project === 'androidwear' && (
+          <Suspense fallback={<PageLoader />}>
+            <AndroidWearPage
+              onClose={handleProjectClose}
+              systemTheme={systemTheme}
+              onToggleTheme={() => {
+                setThemeMode(prev => prev === 'dark' ? 'light' : 'dark');
+              }}
+              viewMode={openProject.viewMode as 'caseStudy' | 'gallery'}
+              onViewModeChange={(mode) => openProjectWithUrl('androidwear', mode)}
               lang={lang}
               onContact={() => setIsSimpleContactOpen(true)}
             />
