@@ -20,6 +20,7 @@ interface Project {
   color: 'blue' | 'gray' | 'indigo' | 'purple' | 'green' | 'orange';
   status?: 'coming-soon' | 'active' | 'concept';
   category?: string;
+  baseScale?: number;
 }
 
 interface WorkPageProps {
@@ -108,7 +109,8 @@ const getProjects = (lang: Language): Project[] => {
       coverImage: "/images/thumbnail_pagesjaunes_sp_tablette.webp",
       hoverImage: "/images/thumbnail-pagesjaunes-multidevices.webp",
       color: "orange",
-      category: isEn ? "Product Design" : "Design Produit"
+      category: isEn ? "Product Design" : "Design Produit",
+      baseScale: 1.15
     },
     {
       id: "androidwear",
@@ -120,7 +122,8 @@ const getProjects = (lang: Language): Project[] => {
         : "Conception d'une expérience de recherche locale pour montre connectée en duo designer-dev.",
       coverImage: "/images/pagesjaunes/Android%20wear/android_wear_thumbnail%2002.webp",
       color: "purple",
-      category: isEn ? "Mobile" : "Mobile"
+      category: isEn ? "Mobile" : "Mobile",
+      baseScale: 1.15
     }
   ];
 };
@@ -194,9 +197,12 @@ const ProjectCard: React.FC<{
               ? project.hoverImage
               : project.coverImage.startsWith('/') ? project.coverImage : `/images/${project.coverImage}`}
             alt={project.title}
-            className={`w-full h-full object-contain transition-transform duration-300 ease-out ${
-              isHovered && !isDisabled ? 'scale-105' : 'scale-100'
-            } ${isDisabled ? 'grayscale' : ''}`}
+            className={`w-full h-full object-contain transition-transform duration-300 ease-out ${isDisabled ? 'grayscale' : ''}`}
+            style={{
+              transform: `scale(${isHovered && !isDisabled
+                ? (project.baseScale || 1) * 1.05
+                : (project.baseScale || 1)})`
+            }}
             draggable={false}
           />
         </div>
