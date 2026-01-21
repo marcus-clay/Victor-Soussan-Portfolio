@@ -118,7 +118,7 @@ const getProjects = (lang: Language): Project[] => {
       summary: isEn
         ? "Designing a glanceable local search experience for wearables in duo with Android developer."
         : "Conception d'une expérience de recherche locale pour montre connectée en duo designer-dev.",
-      coverImage: "/images/pagesjaunes/Android wear/android_wear_insitu_store_01.png",
+      coverImage: "/images/pagesjaunes/Android%20wear/android_wear_thumbnail%2002.webp",
       color: "purple",
       category: isEn ? "Mobile" : "Mobile"
     }
