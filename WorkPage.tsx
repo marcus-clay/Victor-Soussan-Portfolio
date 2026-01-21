@@ -96,6 +96,31 @@ const getProjects = (lang: Language): Project[] => {
       coverImage: "thumbnail-sqool-suite.webp",
       color: "blue",
       category: isEn ? "Management" : "Management"
+    },
+    {
+      id: "pagesjaunes",
+      title: "PagesJaunes",
+      role: isEn ? "Product Designer → UI Team Lead" : "Product Designer → UI Team Lead",
+      period: "2014 – 2016",
+      summary: isEn
+        ? "Redesigning France's most downloaded utility app for 22M users across iOS, Android, and web."
+        : "Refonte de l'app utilitaire la plus téléchargée de France pour 22M d'utilisateurs.",
+      coverImage: "/images/thumbnail_pagesjaunes_sp_tablette.webp",
+      hoverImage: "/images/thumbnail-pagesjaunes-multidevices.webp",
+      color: "orange",
+      category: isEn ? "Product Design" : "Design Produit"
+    },
+    {
+      id: "androidwear",
+      title: "PagesJaunes Android Wear",
+      role: isEn ? "Product Designer" : "Product Designer",
+      period: "2015",
+      summary: isEn
+        ? "Designing a glanceable local search experience for wearables in duo with Android developer."
+        : "Conception d'une expérience de recherche locale pour montre connectée en duo designer-dev.",
+      coverImage: "/images/pagesjaunes/Android wear/android_wear_insitu_store_01.png",
+      color: "purple",
+      category: isEn ? "Mobile" : "Mobile"
     }
   ];
 };
