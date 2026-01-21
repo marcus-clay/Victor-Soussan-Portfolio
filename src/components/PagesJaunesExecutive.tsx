@@ -11,8 +11,8 @@
  * Design: Apple Keynote-style with progressive disclosure
  */
 
-import React, { useState, useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import React, { useState, useRef, useEffect } from 'react';
+import { motion, useInView, AnimatePresence } from 'framer-motion';
 import {
   ChevronDown,
   Layers,
@@ -29,6 +29,17 @@ import {
   Heart,
   Navigation
 } from 'lucide-react';
+
+// TOC Sections for navigation
+const getSections = (lang: 'en' | 'fr') => [
+  { id: 'top', label: 'Top', labelFr: 'Haut' },
+  { id: 'context', label: 'Context', labelFr: 'Contexte' },
+  { id: 'role', label: 'My Role', labelFr: 'Mon Rôle' },
+  { id: 'journey', label: 'Journey', labelFr: 'Parcours' },
+  { id: 'scope', label: 'Scope', labelFr: 'Périmètre' },
+  { id: 'insights', label: 'Insights', labelFr: 'Insights' },
+  { id: 'outcome', label: 'Outcome', labelFr: 'Résultat' },
+];
 
 interface PagesJaunesExecutiveProps {
   systemTheme: 'light' | 'dark';
@@ -828,9 +839,154 @@ const PagesJaunesExecutive: React.FC<PagesJaunesExecutiveProps> = ({
 }) => {
   const isDark = systemTheme === 'dark';
   const t = TRANSLATIONS[lang];
+  const sections = getSections(lang);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const [activeSection, setActiveSection] = useState('top');
+  const [showNav, setShowNav] = useState(false);
+  const [isMobileNavExpanded, setIsMobileNavExpanded] = useState(false);
+
+  // Track scroll position and update active section
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+
+      // Show nav after scrolling past hero
+      setShowNav(scrollTop > 400);
+
+      // Find active section
+      const sectionElements = sections.map(s => ({
+        id: s.id,
+        element: document.getElementById(s.id)
+      })).filter(s => s.element);
+
+      for (let i = sectionElements.length - 1; i >= 0; i--) {
+        const section = sectionElements[i];
+        if (section.element) {
+          const rect = section.element.getBoundingClientRect();
+          if (rect.top <= 200) {
+            setActiveSection(section.id);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [sections]);
+
+  // Scroll to section with proper offset
+  const scrollToSection = (sectionId: string) => {
+    if (sectionId === 'top') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    const element = document.getElementById(sectionId);
+    if (element) {
+      // Header height (64px) + sticky mini-nav height (~48px) + padding (24px)
+      const headerOffset = 64 + 48 + 24;
+      const elementPosition = element.offsetTop - headerOffset;
+      window.scrollTo({
+        top: elementPosition,
+        behavior: 'smooth'
+      });
+    }
+  };
 
   return (
-    <div className={`min-h-screen ${isDark ? 'bg-[#0a0a0a]' : 'bg-white'}`}>
+    <div ref={containerRef} id="top" className={`min-h-screen ${isDark ? 'bg-[#0a0a0a]' : 'bg-white'}`}>
+      {/* Sticky Mini-Nav - TOC Navigation */}
+      <AnimatePresence>
+        {showNav && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+            className={`fixed top-16 left-0 right-0 z-30 backdrop-blur-xl ${
+              isDark ? 'bg-[#0a0a0a]/80' : 'bg-white/80'
+            }`}
+          >
+            {/* Collapsed state - shows current section */}
+            <div className="w-full px-6">
+              <button
+                onClick={() => setIsMobileNavExpanded(!isMobileNavExpanded)}
+                className="w-full h-12 flex items-center justify-between"
+              >
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-yellow-500" />
+                  <span className={`text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                    {lang === 'fr'
+                      ? sections.find(s => s.id === activeSection)?.labelFr
+                      : sections.find(s => s.id === activeSection)?.label}
+                  </span>
+                </div>
+                <motion.div
+                  animate={{ rotate: isMobileNavExpanded ? 180 : 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <ChevronDown size={20} className={isDark ? 'text-gray-400' : 'text-gray-500'} />
+                </motion.div>
+              </button>
+
+              {/* Expanded state - shows all sections */}
+              <AnimatePresence>
+                {isMobileNavExpanded && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="overflow-hidden"
+                  >
+                    <div className={`pb-3 space-y-1 border-t ${isDark ? 'border-white/5' : 'border-gray-100'}`}>
+                      {sections.map((section) => {
+                        const isActive = activeSection === section.id;
+                        const currentIndex = sections.findIndex(s => s.id === activeSection);
+                        const sectionIndex = sections.findIndex(s => s.id === section.id);
+                        const isPast = sectionIndex < currentIndex;
+
+                        return (
+                          <button
+                            key={section.id}
+                            onClick={() => {
+                              scrollToSection(section.id);
+                              setIsMobileNavExpanded(false);
+                            }}
+                            className={`w-full text-left py-2 px-3 rounded-lg flex items-center gap-3 transition-colors ${
+                              isActive
+                                ? isDark
+                                  ? 'bg-yellow-600/10 text-yellow-400'
+                                  : 'bg-yellow-50 text-yellow-600'
+                                : isDark
+                                  ? 'text-gray-400 hover:bg-white/5'
+                                  : 'text-gray-600 hover:bg-gray-50'
+                            }`}
+                          >
+                            <div
+                              className={`w-1.5 h-1.5 rounded-full ${
+                                isActive
+                                  ? 'bg-yellow-500'
+                                  : isPast
+                                    ? isDark ? 'bg-gray-500' : 'bg-gray-400'
+                                    : isDark ? 'bg-gray-700' : 'bg-gray-300'
+                              }`}
+                            />
+                            <span className="text-sm font-medium">
+                              {lang === 'fr' ? section.labelFr : section.label}
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* ================================================================== */}
       {/* HERO SECTION */}
@@ -911,7 +1067,7 @@ const PagesJaunesExecutive: React.FC<PagesJaunesExecutiveProps> = ({
       {/* ================================================================== */}
       {/* CONTEXT SECTION */}
       {/* ================================================================== */}
-      <section className={`py-20 md:py-28 px-10 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
+      <section id="context" className={`py-20 md:py-28 px-10 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
         <div className="max-w-[1280px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
@@ -942,7 +1098,7 @@ const PagesJaunesExecutive: React.FC<PagesJaunesExecutiveProps> = ({
       {/* ================================================================== */}
       {/* ROLE SECTION */}
       {/* ================================================================== */}
-      <section className="py-20 md:py-28 px-10">
+      <section id="role" className="py-20 md:py-28 px-10">
         <div className="max-w-[1280px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
@@ -1078,7 +1234,7 @@ const PagesJaunesExecutive: React.FC<PagesJaunesExecutiveProps> = ({
       {/* ================================================================== */}
       {/* JOURNEY SECTION */}
       {/* ================================================================== */}
-      <section className={`py-20 md:py-28 px-10 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
+      <section id="journey" className={`py-20 md:py-28 px-10 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
         <div className="max-w-[1280px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
@@ -1105,7 +1261,7 @@ const PagesJaunesExecutive: React.FC<PagesJaunesExecutiveProps> = ({
       {/* ================================================================== */}
       {/* SCOPE SECTION */}
       {/* ================================================================== */}
-      <section className="py-20 md:py-28 px-10">
+      <section id="scope" className="py-20 md:py-28 px-10">
         <div className="max-w-[1280px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
@@ -1138,7 +1294,7 @@ const PagesJaunesExecutive: React.FC<PagesJaunesExecutiveProps> = ({
       {/* ================================================================== */}
       {/* INSIGHTS SECTION */}
       {/* ================================================================== */}
-      <section className={`py-20 md:py-28 px-10 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
+      <section id="insights" className={`py-20 md:py-28 px-10 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
         <div className="max-w-[1280px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
@@ -1165,7 +1321,7 @@ const PagesJaunesExecutive: React.FC<PagesJaunesExecutiveProps> = ({
       {/* ================================================================== */}
       {/* OUTCOME SECTION */}
       {/* ================================================================== */}
-      <section className="py-20 md:py-28 px-10">
+      <section id="outcome" className="py-20 md:py-28 px-10">
         <div className="max-w-[1280px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
