@@ -1721,7 +1721,7 @@ const App: React.FC = () => {
   // Also tracks initial media index if URL points to specific image/video
   const [initialMediaIndex, setInitialMediaIndex] = useState<number | null>(null);
   const [openProject, setOpenProject] = useState<{
-    project: 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'france-vae' | 'pagesjaunes';
+    project: 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'france-vae' | 'pagesjaunes' | 'androidwear';
     viewMode: 'caseStudy' | 'gallery' | 'executive';
   } | null>(() => {
     // Parse URL on initial load
