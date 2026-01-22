@@ -899,9 +899,9 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
                 className={`group rounded-2xl overflow-hidden border cursor-pointer transition-transform duration-300 hover:scale-[1.01] relative ${
                   isDark ? 'border-white/10' : 'border-gray-200'
                 }`}
-                style={{ backgroundColor: '#C8C8C8' }}
+                style={{ backgroundColor: '#C8C8C8', paddingBottom: '66.67%' }}
               >
-                <div className="flex items-center justify-center py-12 px-8">
+                <div className="absolute inset-0 flex items-center justify-center">
                   {/* Video with drop shadow */}
                   <div className="relative rounded-lg overflow-hidden" style={{ maxWidth: '320px', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.35)' }}>
                     <video
