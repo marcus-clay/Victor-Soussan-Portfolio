@@ -1022,7 +1022,7 @@ const ConnectExecutive: React.FC<ConnectExecutiveProps> = ({
       {/* HERO SECTION */}
       {/* ================================================================== */}
       <section className="min-h-[85vh] flex flex-col justify-center px-10 py-20">
-        <div className="max-w-[1280px] mx-auto w-full">
+        <div className="max-w-[1200px] mx-auto w-full">
           {/* Logo */}
           <FadeInSection>
             <img loading="lazy"
@@ -1095,7 +1095,7 @@ const ConnectExecutive: React.FC<ConnectExecutiveProps> = ({
       {/* CONTEXT SECTION */}
       {/* ================================================================== */}
       <section className={`py-20 md:py-28 px-10 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
-        <div className="max-w-[1280px] mx-auto">
+        <div className="max-w-[1200px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
               isDark ? 'text-gray-400' : 'text-gray-500'
@@ -1126,7 +1126,7 @@ const ConnectExecutive: React.FC<ConnectExecutiveProps> = ({
       {/* ROLE SECTION */}
       {/* ================================================================== */}
       <section className="py-20 md:py-28 px-10">
-        <div className="max-w-[1280px] mx-auto">
+        <div className="max-w-[1200px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
               isDark ? 'text-gray-400' : 'text-gray-500'
@@ -1167,7 +1167,7 @@ const ConnectExecutive: React.FC<ConnectExecutiveProps> = ({
       {/* JOURNEY SECTION */}
       {/* ================================================================== */}
       <section className={`py-20 md:py-28 px-10 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
-        <div className="max-w-[1280px] mx-auto">
+        <div className="max-w-[1200px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
               isDark ? 'text-gray-400' : 'text-gray-500'
@@ -1194,7 +1194,7 @@ const ConnectExecutive: React.FC<ConnectExecutiveProps> = ({
       {/* SCOPE SECTION */}
       {/* ================================================================== */}
       <section className="py-20 md:py-28 px-10">
-        <div className="max-w-[1280px] mx-auto">
+        <div className="max-w-[1200px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
               isDark ? 'text-gray-400' : 'text-gray-500'
@@ -1227,7 +1227,7 @@ const ConnectExecutive: React.FC<ConnectExecutiveProps> = ({
       {/* HIGHLIGHTS SECTION */}
       {/* ================================================================== */}
       <section className={`py-20 md:py-28 px-10 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
-        <div className="max-w-[1280px] mx-auto">
+        <div className="max-w-[1200px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
               isDark ? 'text-gray-400' : 'text-gray-500'
@@ -1258,7 +1258,7 @@ const ConnectExecutive: React.FC<ConnectExecutiveProps> = ({
       {/* USER TESTING SECTION */}
       {/* ================================================================== */}
       <section className="py-20 md:py-28 px-10">
-        <div className="max-w-[1280px] mx-auto">
+        <div className="max-w-[1200px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
               isDark ? 'text-gray-400' : 'text-gray-500'
@@ -1290,7 +1290,7 @@ const ConnectExecutive: React.FC<ConnectExecutiveProps> = ({
       {/* OUTCOME SECTION */}
       {/* ================================================================== */}
       <section className={`py-20 md:py-28 px-10 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
-        <div className="max-w-[1280px] mx-auto">
+        <div className="max-w-[1200px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
               isDark ? 'text-gray-400' : 'text-gray-500'
@@ -1315,7 +1315,7 @@ const ConnectExecutive: React.FC<ConnectExecutiveProps> = ({
       {/* TESTIMONIAL SECTION */}
       {/* ================================================================== */}
       <section className="py-20 md:py-28 px-10">
-        <div className="max-w-[1280px] mx-auto">
+        <div className="max-w-[1200px] mx-auto">
           <FadeInSection>
             <div className={`rounded-3xl p-8 md:p-12 ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}>
               <div className={`text-4xl mb-6 ${isDark ? 'text-gray-600' : 'text-gray-300'}`}>

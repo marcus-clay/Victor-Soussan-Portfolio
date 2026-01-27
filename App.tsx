@@ -1988,16 +1988,6 @@ const App: React.FC = () => {
       const scrollY = window.scrollY;
       const headerOffset = 80; // Height of sticky header
 
-      // Check if we're at the top (hero section)
-      const heroSection = document.querySelector('header.relative'); // Hero section
-      if (heroSection) {
-        const heroBottom = heroSection.getBoundingClientRect().bottom + scrollY;
-        if (scrollY < heroBottom - headerOffset - 100) {
-          setActiveSection(null);
-          return;
-        }
-      }
-
       // Find the section that's currently most visible
       let currentSectionId: string | null = null;
       let minDistance = Infinity;
@@ -2010,7 +2000,7 @@ const App: React.FC = () => {
 
           // Section is considered "active" when its top is near or above the header
           // and it's not completely scrolled past
-          if (sectionTop <= headerOffset + 100 && rect.bottom > headerOffset) {
+          if (sectionTop <= headerOffset + 150 && rect.bottom > headerOffset) {
             const distance = Math.abs(sectionTop - headerOffset);
             if (distance < minDistance) {
               minDistance = distance;
@@ -2020,8 +2010,11 @@ const App: React.FC = () => {
         }
       }
 
+      // Only show "Victor Soussan" when truly at the top (no section detected and scroll near top)
       if (currentSectionId) {
         setActiveSection(currentSectionId);
+      } else if (scrollY < 200) {
+        setActiveSection(null);
       }
     };
 
@@ -2069,7 +2062,7 @@ const App: React.FC = () => {
     'androidwear': {
       title: 'PagesJaunes Android Wear - Wearable App Design | Victor Soussan',
       description: 'Case study: Conception de l\'app Android Wear PagesJaunes. Recherche locale glanceable, Material Design, collaboration designer-développeur.',
-      image: '/images/pagesjaunes/Android wear/android_wear_insitu_store_01.png'
+      image: '/images/pagesjaunes/Android wear/android_wear_insitu_store_01.webp'
     }
   };
 
@@ -2967,13 +2960,7 @@ const App: React.FC = () => {
 
           <div className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4">
             <button
-              onClick={() => {
-                const projectsSection = document.getElementById('projects');
-                if (projectsSection) {
-                  const offsetTop = projectsSection.getBoundingClientRect().top + window.scrollY - 100;
-                  window.scrollTo({ top: offsetTop, behavior: 'smooth' });
-                }
-              }}
+              onClick={() => scrollToSection('projects')}
               className="group px-6 py-3 sm:px-8 sm:py-4 rounded-full font-semibold text-sm sm:text-base btn-pill flex items-center justify-center cursor-pointer relative z-20 whitespace-nowrap transition-all duration-200 bg-[#2D5CF3] text-white hover:bg-[#2450d9] shadow-lg shadow-[#2D5CF3]/25 hover:shadow-xl hover:shadow-[#2D5CF3]/30 w-full sm:w-auto"
             >
               {lang === 'en' ? 'View work' : 'Voir mes projets'} <ArrowUpRight className="ml-2 flex-shrink-0 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" size={16} />
@@ -8083,6 +8070,7 @@ ${contactForm.message}`;
               onViewModeChange={(mode) => openProjectWithUrl('pagesjaunes', mode)}
               lang={lang}
               onContact={() => setIsSimpleContactOpen(true)}
+              onNavigateToProject={(projectId) => openProjectWithUrl(projectId as 'androidwear', 'caseStudy')}
             />
           </Suspense>
         )}

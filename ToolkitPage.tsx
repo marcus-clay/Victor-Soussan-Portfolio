@@ -10,8 +10,6 @@ import {
   Layers,
   Rocket,
   Quote,
-  ChevronRight,
-  ChevronDown,
   X,
   Play,
   Zap,
@@ -21,8 +19,8 @@ import {
 } from 'lucide-react';
 import { GalleryItem, getToolkitGalleryItems } from './BentoGallery';
 import ToolkitExecutive from './src/components/ToolkitExecutive';
-import StackedCaseStudies from './src/components/StackedCaseStudies';
 import EnhancedLightbox from './src/components/EnhancedLightbox';
+import CaseStudyTOCSidebar from './src/components/CaseStudyTOCSidebar';
 
 interface ToolkitPageProps {
   onClose: () => void;
@@ -506,18 +504,31 @@ const TOOLKIT_TRANSLATIONS = {
   },
 };
 
-// Navigation sections configuration
-const sections = [
-  { id: 'top', label: 'Top', shortLabel: '' },
-  { id: 'hero', label: 'Intro', shortLabel: '' },
-  { id: 'overview', label: 'Overview', shortLabel: 'OV' },
-  { id: 'context', label: 'Context', shortLabel: 'CT' },
-  { id: 'phase1', label: 'Phase 1', shortLabel: 'P1' },
-  { id: 'phase2', label: 'Phase 2', shortLabel: 'P2' },
-  { id: 'phase3', label: 'Phase 3', shortLabel: 'P3' },
-  { id: 'design-system', label: 'Design System', shortLabel: 'DS' },
-  { id: 'impact', label: 'Impact', shortLabel: 'IM' },
-];
+// TOC Sections for Full case study
+const TOC_SECTIONS = {
+  en: [
+    { id: 'top', label: 'Top' },
+    { id: 'hero', label: 'Intro' },
+    { id: 'overview', label: 'Overview' },
+    { id: 'context', label: 'Context' },
+    { id: 'phase1', label: 'Phase 1' },
+    { id: 'phase2', label: 'Phase 2' },
+    { id: 'phase3', label: 'Phase 3' },
+    { id: 'design-system', label: 'Design System' },
+    { id: 'impact', label: 'Impact' },
+  ],
+  fr: [
+    { id: 'top', label: 'Haut' },
+    { id: 'hero', label: 'Intro' },
+    { id: 'overview', label: 'Vue d\'ensemble' },
+    { id: 'context', label: 'Contexte' },
+    { id: 'phase1', label: 'Phase 1' },
+    { id: 'phase2', label: 'Phase 2' },
+    { id: 'phase3', label: 'Phase 3' },
+    { id: 'design-system', label: 'Design System' },
+    { id: 'impact', label: 'Impact' },
+  ]
+};
 
 // All media (images + videos) for lightbox navigation
 type MediaItem = { src: string; captionKey: string; type: 'image' | 'video' };
@@ -1011,6 +1022,8 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
   onContact,
 }) => {
   const t = TOOLKIT_TRANSLATIONS[lang];
+  const sections = TOC_SECTIONS[lang];
+  const isDark = systemTheme === 'dark';
   // Load gallery items directly in the component
   const galleryItems = getToolkitGalleryItems(lang);
 
@@ -1022,7 +1035,6 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
   }));
 
   const [activeSection, setActiveSection] = useState('hero');
-  const [isMobileNavExpanded, setIsMobileNavExpanded] = useState(false);
   const [showNav, setShowNav] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   // Sync caseStudyMode with external viewMode
@@ -1031,7 +1043,6 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [videoStartTime, setVideoStartTime] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
-  const tocRef = useRef<HTMLDivElement>(null);
 
   // Sync caseStudyMode when viewMode changes from outside
   useEffect(() => {
@@ -1112,12 +1123,6 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
     }
   };
 
-  // Get progress percentage
-  const getProgress = () => {
-    const currentIndex = sections.findIndex(s => s.id === activeSection);
-    return ((currentIndex + 1) / sections.length) * 100;
-  };
-
   // Open lightbox with specific image and optional start time for videos
   const openLightbox = (imageSrc: string, startTime: number = 0) => {
     const index = allImages.findIndex(img => img.src === imageSrc);
@@ -1144,108 +1149,15 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
         viewMode === 'gallery' ? 'bg-black' : (systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white')
       }`}
     >
-      {/* Mobile Navigation - Sticky under header - Hidden in gallery mode and executive mode */}
-      <AnimatePresence>
-        {showNav && viewMode !== 'gallery' && caseStudyMode !== 'executive' && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2 }}
-            className={`fixed top-16 left-0 right-0 z-30 backdrop-blur-xl ${
-              systemTheme === 'dark'
-                ? 'bg-[#0a0a0a]/80'
-                : 'bg-white/80'
-            }`}
-          >
-            {/* Collapsed state - shows current section */}
-            <div className="w-full px-6">
-              <button
-                onClick={() => setIsMobileNavExpanded(!isMobileNavExpanded)}
-                className="w-full h-12 flex items-center justify-between"
-              >
-              <div className="flex items-center gap-2">
-                <div className={`w-2 h-2 rounded-full bg-blue-500`} />
-                <span
-                  className={`text-sm font-medium ${
-                    systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                  }`}
-                >
-                  {sections.find(s => s.id === activeSection)?.label || 'Top'}
-                </span>
-              </div>
-              <motion.div
-                animate={{ rotate: isMobileNavExpanded ? 180 : 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                <ChevronDown
-                  size={20}
-                  className={systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}
-                />
-              </motion.div>
-            </button>
-
-            {/* Expanded state - shows all sections */}
-            <AnimatePresence>
-              {isMobileNavExpanded && (
-                <motion.div
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: 'auto', opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                  className="overflow-hidden"
-                >
-                  <div className={`pb-3 space-y-1 border-t ${
-                    systemTheme === 'dark' ? 'border-white/5' : 'border-gray-100'
-                  }`}>
-                    {sections.map((section) => {
-                      const isActive = activeSection === section.id;
-                      const currentIndex = sections.findIndex(s => s.id === activeSection);
-                      const sectionIndex = sections.findIndex(s => s.id === section.id);
-                      const isPast = sectionIndex < currentIndex;
-
-                      return (
-                        <button
-                          key={section.id}
-                          onClick={() => {
-                            scrollToSection(section.id);
-                            setIsMobileNavExpanded(false);
-                          }}
-                          className={`w-full text-left py-2 px-3 rounded-lg flex items-center gap-3 transition-colors ${
-                            isActive
-                              ? systemTheme === 'dark'
-                                ? 'bg-blue-600/10 text-blue-400'
-                                : 'bg-blue-50 text-blue-600'
-                              : systemTheme === 'dark'
-                                ? 'text-gray-400 hover:bg-white/5'
-                                : 'text-gray-600 hover:bg-gray-50'
-                          }`}
-                        >
-                          <div
-                            className={`w-1.5 h-1.5 rounded-full ${
-                              isActive
-                                ? 'bg-blue-600'
-                                : isPast
-                                  ? systemTheme === 'dark'
-                                    ? 'bg-gray-500'
-                                    : 'bg-gray-400'
-                                  : systemTheme === 'dark'
-                                    ? 'bg-gray-700'
-                                    : 'bg-gray-300'
-                            }`}
-                          />
-                          <span className="text-sm font-medium">{section.label}</span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* TOC Sidebar - Persistent left navigation for full mode */}
+      <CaseStudyTOCSidebar
+        sections={sections}
+        activeSection={activeSection}
+        onSectionClick={scrollToSection}
+        isDark={isDark}
+        isVisible={showNav && viewMode !== 'gallery' && caseStudyMode === 'full'}
+        lang={lang}
+      />
 
       {/* Header - Glass effect */}
       <header
@@ -1425,7 +1337,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
           >
-      <div className="max-w-[1480px] mx-auto px-10 py-12 md:py-16">
+      <div className="max-w-[1200px] mx-auto px-10 py-12 md:py-16">
             {/* Hero Section - Title + Logo + Testimonial */}
             <section id="hero" className="mb-24 md:mb-32">
           {/* Logo at top-left */}

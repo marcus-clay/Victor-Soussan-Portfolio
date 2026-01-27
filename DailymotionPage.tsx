@@ -4,7 +4,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform, useSpring, PanInfo } from 'framer-motion';
 import {
-  ChevronDown,
   X,
   ExternalLink,
   Play,
@@ -17,6 +16,7 @@ import {
 import { GalleryItem, getDailymotionGalleryItems } from './BentoGallery';
 import EnhancedLightbox from './src/components/EnhancedLightbox';
 import DailymotionExecutive from './src/components/DailymotionExecutive';
+import CaseStudyTOCSidebar from './src/components/CaseStudyTOCSidebar';
 
 interface DailymotionPageProps {
   onClose: () => void;
@@ -380,17 +380,29 @@ const DAILYMOTION_TRANSLATIONS = {
   },
 };
 
-// Navigation sections configuration
-const sections = [
-  { id: 'top', label: 'Top', shortLabel: '' },
-  { id: 'hero', label: 'Intro', shortLabel: '' },
-  { id: 'overview', label: 'Overview', shortLabel: 'OV' },
-  { id: 'modules', label: 'Key Modules', shortLabel: 'KM' },
-  { id: 'upload', label: 'Upload & Management', shortLabel: 'UM' },
-  { id: 'live', label: 'Live Console', shortLabel: 'LC' },
-  { id: 'player', label: 'Player Manager', shortLabel: 'PM' },
-  { id: 'design-system', label: 'Design System', shortLabel: 'DS' },
-];
+// TOC Sections for Full case study
+const TOC_SECTIONS = {
+  en: [
+    { id: 'top', label: 'Top' },
+    { id: 'hero', label: 'Intro' },
+    { id: 'overview', label: 'Overview' },
+    { id: 'modules', label: 'Key Modules' },
+    { id: 'upload', label: 'Upload & Management' },
+    { id: 'live', label: 'Live Console' },
+    { id: 'player', label: 'Player Manager' },
+    { id: 'design-system', label: 'Design System' },
+  ],
+  fr: [
+    { id: 'top', label: 'Haut' },
+    { id: 'hero', label: 'Intro' },
+    { id: 'overview', label: 'Vue d\'ensemble' },
+    { id: 'modules', label: 'Modules clés' },
+    { id: 'upload', label: 'Upload & Gestion' },
+    { id: 'live', label: 'Console Live' },
+    { id: 'player', label: 'Gestionnaire Player' },
+    { id: 'design-system', label: 'Design System' },
+  ]
+};
 
 // All media (images + videos) for lightbox navigation
 type MediaItem = { src: string; captionKey: string; type: 'image' | 'video' };
@@ -539,8 +551,11 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
     caption: `${t.captions[item.captionKey as keyof typeof t.captions]} - ${t.captions[`${item.captionKey}Desc` as keyof typeof t.captions] || ''}`
   }));
 
-  const [activeSection, setActiveSection] = useState('hero');
-  const [isMobileNavExpanded, setIsMobileNavExpanded] = useState(false);
+  // TOC sections for current language
+  const sections = TOC_SECTIONS[lang];
+  const isDark = systemTheme === 'dark';
+
+  const [activeSection, setActiveSection] = useState('top');
   const [showNav, setShowNav] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
@@ -574,7 +589,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
     }
   }, [caseStudyMode, viewMode]);
 
-  // Track scroll position and update active section
+  // Track scroll position and update active section (only in full mode)
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
@@ -582,14 +597,22 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
     const handleScroll = () => {
       const scrollTop = container.scrollTop;
 
-      // Show nav after scrolling past hero
+      // Show nav after scrolling past hero (300px)
       setShowNav(scrollTop > 300);
 
-      // Find active section
-      const sectionElements = sections.map(s => ({
-        id: s.id,
-        element: document.getElementById(s.id)
-      })).filter(s => s.element);
+      // If at the very top, set 'top' as active
+      if (scrollTop < 100) {
+        setActiveSection('top');
+        return;
+      }
+
+      // Find active section (skip 'top' which has no DOM element)
+      const sectionElements = sections
+        .filter(s => s.id !== 'top')
+        .map(s => ({
+          id: s.id,
+          element: document.getElementById(s.id)
+        })).filter(s => s.element);
 
       for (let i = sectionElements.length - 1; i >= 0; i--) {
         const section = sectionElements[i];
@@ -605,9 +628,9 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
 
     container.addEventListener('scroll', handleScroll);
     return () => container.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [sections]);
 
-  // Scroll to section with proper offset for header + sticky mini-nav
+  // Scroll to section with proper offset for sticky mini-nav
   const scrollToSection = (sectionId: string) => {
     if (sectionId === 'top') {
       containerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
@@ -615,9 +638,15 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
     }
     const element = document.getElementById(sectionId);
     if (element && containerRef.current) {
-      // Header height (73px) + sticky mini-nav height (~56px with py-4) + padding (24px)
-      const headerOffset = 73 + 56 + 24;
-      const elementPosition = element.offsetTop - headerOffset;
+      // Get element position relative to the scrollable container
+      const elementRect = element.getBoundingClientRect();
+      const currentScroll = containerRef.current.scrollTop;
+      // The container starts at 64px from viewport top (under header)
+      // The TOC bar is 48px tall and overlaps the container content
+      // So we need to offset by TOC height + some padding
+      const tocOffset = 48 + 16;
+      // elementRect.top is relative to viewport, container top is at 64px
+      const elementPosition = currentScroll + elementRect.top - 64 - tocOffset;
       containerRef.current.scrollTo({
         top: elementPosition,
         behavior: 'smooth'
@@ -689,108 +718,15 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
         viewMode === 'gallery' ? 'bg-black' : (systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white')
       }`}
     >
-      {/* Sticky Mini-Nav - All screen sizes - Hidden in gallery mode and executive mode */}
-      <AnimatePresence>
-        {showNav && viewMode !== 'gallery' && caseStudyMode !== 'executive' && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2 }}
-            className={`fixed top-16 left-0 right-0 z-30 backdrop-blur-xl ${
-              systemTheme === 'dark'
-                ? 'bg-[#0a0a0a]/80'
-                : 'bg-white/80'
-            }`}
-          >
-            {/* Collapsed state - shows current section */}
-            <div className="w-full px-6">
-              <button
-                onClick={() => setIsMobileNavExpanded(!isMobileNavExpanded)}
-                className="w-full h-12 flex items-center justify-between"
-              >
-              <div className="flex items-center gap-2">
-                <div className={`w-2 h-2 rounded-full bg-blue-500`} />
-                <span
-                  className={`text-sm font-medium ${
-                    systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                  }`}
-                >
-                  {sections.find(s => s.id === activeSection)?.label || 'Top'}
-                </span>
-              </div>
-              <motion.div
-                animate={{ rotate: isMobileNavExpanded ? 180 : 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                <ChevronDown
-                  size={20}
-                  className={systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}
-                />
-              </motion.div>
-            </button>
-
-            {/* Expanded state - shows all sections */}
-            <AnimatePresence>
-              {isMobileNavExpanded && (
-                <motion.div
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: 'auto', opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                  className="overflow-hidden"
-                >
-                  <div className={`pb-3 space-y-1 border-t ${
-                    systemTheme === 'dark' ? 'border-white/5' : 'border-gray-100'
-                  }`}>
-                    {sections.map((section) => {
-                      const isActive = activeSection === section.id;
-                      const currentIndex = sections.findIndex(s => s.id === activeSection);
-                      const sectionIndex = sections.findIndex(s => s.id === section.id);
-                      const isPast = sectionIndex < currentIndex;
-
-                      return (
-                        <button
-                          key={section.id}
-                          onClick={() => {
-                            scrollToSection(section.id);
-                            setIsMobileNavExpanded(false);
-                          }}
-                          className={`w-full text-left py-2 px-3 rounded-lg flex items-center gap-3 transition-colors ${
-                            isActive
-                              ? systemTheme === 'dark'
-                                ? 'bg-blue-600/10 text-blue-400'
-                                : 'bg-blue-50 text-blue-600'
-                              : systemTheme === 'dark'
-                                ? 'text-gray-400 hover:bg-white/5'
-                                : 'text-gray-600 hover:bg-gray-50'
-                          }`}
-                        >
-                          <div
-                            className={`w-1.5 h-1.5 rounded-full ${
-                              isActive
-                                ? 'bg-blue-600'
-                                : isPast
-                                  ? systemTheme === 'dark'
-                                    ? 'bg-gray-500'
-                                    : 'bg-gray-400'
-                                  : systemTheme === 'dark'
-                                    ? 'bg-gray-700'
-                                    : 'bg-gray-300'
-                            }`}
-                          />
-                          <span className="text-sm font-medium">{section.label}</span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* TOC Sidebar - Persistent left navigation for full mode */}
+      <CaseStudyTOCSidebar
+        sections={sections}
+        activeSection={activeSection}
+        onSectionClick={scrollToSection}
+        isDark={isDark}
+        isVisible={showNav && viewMode !== 'gallery' && caseStudyMode === 'full'}
+        lang={lang}
+      />
 
       {/* Header - Glass effect */}
       <header
@@ -968,7 +904,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
           >
-      <div className="max-w-[1480px] mx-auto px-10 py-12 md:py-16">
+      <div className="max-w-[1200px] mx-auto px-10 py-12 md:py-16">
         <div>
           {/* Main Content */}
           <main className="w-full">

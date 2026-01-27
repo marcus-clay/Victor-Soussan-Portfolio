@@ -15,11 +15,11 @@ import {
   ArrowRight,
   Users,
   Smartphone,
-  Quote,
-  ChevronDown
+  Quote
 } from 'lucide-react';
 import { GalleryItem } from './BentoGallery';
 import EnhancedLightbox from './src/components/EnhancedLightbox';
+import CaseStudyTOCSidebar from './src/components/CaseStudyTOCSidebar';
 
 interface AndroidWearPageProps {
   onClose: () => void;
@@ -189,11 +189,11 @@ const TRANSLATIONS = {
     caseStudy: 'Étude de cas',
     gallery: 'Galerie',
     cta: {
-      title: 'Un projet wearable en cours ?',
+      title: 'Un projet montre connectée en cours ?',
       button: 'Me contacter',
     },
     meta: {
-      type: 'App Wearable',
+      type: 'App Montre Connectée',
       typeLabel: 'Type',
       scope: 'Product Design',
       scopeLabel: 'Périmètre',
@@ -207,28 +207,28 @@ const TRANSLATIONS = {
       scope: 'Android Wear, Material Design',
       period: '2015',
       title: 'PagesJaunes à Votre Poignet',
-      subtitle: 'Concevoir une expérience de recherche locale glanceable pour Android Wear',
+      subtitle: 'Concevoir une expérience de recherche locale lisible d\'un coup d\'œil pour Android Wear',
       description: 'Un sprint design de deux mois pour porter l\'annuaire local leader en France sur les montres connectées. En binôme serré avec le développeur Android Thibault Fighiera, nous avons livré une app Android Wear complète du concept au Google Play.',
     },
     testimonial: {
-      quote: 'Victor a conçu une expérience wearable complète from scratch en deux mois. Sa capacité à comprendre les contraintes d\'une nouvelle plateforme et à les traduire en un langage design cohérent était impressionnante.',
+      quote: 'Victor a conçu une expérience montre connectée complète en partant de zéro en deux mois. Sa capacité à comprendre les contraintes d\'une nouvelle plateforme et à les traduire en un langage design cohérent était impressionnante.',
       author: 'Thibault Fighiera',
       role: 'Développeur Android @ PagesJaunes',
     },
     overview: {
       title: 'Vue d\'ensemble',
       contextTitle: 'Le Contexte',
-      contextDesc: 'PagesJaunes voulait expérimenter avec la technologie wearable. Android Wear émergeait comme plateforme, et nous avons vu une opportunité d\'aider les utilisateurs à trouver des pros locaux de la manière la plus contextuelle : directement depuis leur poignet.',
+      contextDesc: 'PagesJaunes voulait expérimenter avec les montres connectées. Android Wear émergeait comme plateforme, et nous avons vu une opportunité d\'aider les utilisateurs à trouver des pros locaux de la manière la plus contextuelle : directement depuis leur poignet.',
       challengeTitle: 'Le Défi',
       challengeDesc: 'Concevoir une expérience de recherche locale complète pour un écran circulaire de 280dp. Les utilisateurs devaient trouver des commerces, voir les infos clés, et agir (appeler ou naviguer) en secondes, pas en minutes.',
       roleTitle: 'Mon Rôle',
-      roleDesc: 'J\'ai owné tout le process design : recherche utilisateur, création persona, sketching, wireframing, UI design, specs d\'interaction, prototypage, et présentations aux stakeholders. En binôme avec notre développeur pour une itération rapide.',
+      roleDesc: 'J\'ai piloté tout le processus de design : recherche utilisateur, création de profils types, croquis, maquettes fil de fer, design d\'interface, spécifications d\'interaction, prototypage, et présentations aux décideurs. En binôme avec notre développeur pour itérer rapidement.',
     },
     persona: {
       title: 'Scénario Utilisateur',
       scenario: '"Il est midi, Julien a faim. Il veut trouver rapidement un resto près du bureau et s\'y faire guider."',
       name: 'Julien, 25 ans',
-      context: 'Pro occupé, toujours en mouvement. Utilise son téléphone pour tout mais veut un accès plus rapide aux tâches rapides. Early adopter de tech wearable.',
+      context: 'Pro occupé, toujours en mouvement. Utilise son téléphone pour tout mais veut un accès plus rapide aux tâches courantes. Adepte des nouvelles technologies.',
       needs: [
         'Trouver des commerces proches en secondes',
         'Obtenir les infos clés en un coup d\'œil (ouvert/fermé, note, distance)',
@@ -241,18 +241,18 @@ const TRANSLATIONS = {
       items: [
         {
           title: 'Apprendre la Plateforme',
-          desc: 'Plongée dans les guidelines Android Wear. Comprendre les contraintes : écrans circulaires, mode ambiant, input vocal, patterns de handoff téléphone.',
+          desc: 'Plongée dans les recommandations Android Wear. Comprendre les contraintes : écrans circulaires, mode ambiant, saisie vocale, relais vers le téléphone.',
         },
         {
-          title: 'Définir les Flows',
-          desc: 'Deux parcours utilisateur principaux : "Trouver et Appeler" et "Trouver et Naviguer." Chaque chemin optimisé pour un minimum de taps et une clarté maximale.',
+          title: 'Définir les Parcours',
+          desc: 'Deux parcours utilisateur principaux : "Trouver et Appeler" et "Trouver et Naviguer." Chaque chemin optimisé pour un minimum d\'interactions et une clarté maximale.',
         },
         {
-          title: 'Designer pour la Glanceability',
+          title: 'Concevoir pour la Lisibilité Instantanée',
           desc: 'Chaque écran devait communiquer son propos en moins de 2 secondes. La hiérarchie d\'information est devenue critique sur un écran de 280dp.',
         },
         {
-          title: 'Itérer sur du Vrai Hardware',
+          title: 'Itérer sur du Vrai Matériel',
           desc: 'Sessions hebdomadaires avec de vraies montres. Tester avec des contraintes réelles a révélé des problèmes que les maquettes ne pouvaient pas montrer.',
         },
       ],
@@ -261,10 +261,10 @@ const TRANSLATIONS = {
       title: 'Ce qu\'on a construit',
       items: [
         'UI en cartes avec notes, statut et CTA contact',
-        'Deux flows utilisateur optimisés : recherche→appel et recherche→navigation',
+        'Deux parcours utilisateur optimisés : recherche→appel et recherche→navigation',
         'Mode normal (jaune haut contraste) et mode ambiant (monochrome)',
         'Intégration recherche vocale "Ok Google"',
-        'Handoff téléphone pour appels et navigation Google Maps',
+        'Relais vers le téléphone pour appels et navigation Google Maps',
         'Raccourcis catégories pour accès rapide aux recherches courantes',
       ],
     },
@@ -276,7 +276,7 @@ const TRANSLATIONS = {
         'UI design complet pour écrans circulaires et carrés',
         'Specs d\'interaction et motion design',
         'Prototypage et vidéos de démo',
-        'Deck de présentation stakeholders',
+        'Support de présentation aux décideurs',
       ],
     },
     process: {
@@ -295,9 +295,9 @@ const TRANSLATIONS = {
     implementation: {
       title: 'Implémentation',
       devSession: 'Sessions en Binôme',
-      devSessionDesc: 'Sessions de travail quotidiennes avec le développeur Thibault Fighiera. Deux montres connectées, itérant sur des builds réels plutôt que des maquettes statiques.',
-      prototype: 'Démo Flow Recherche',
-      prototypeDesc: 'Le parcours de recherche complet capturé sur du vrai hardware. De l\'input vocal à l\'affichage de la fiche commerce.',
+      devSessionDesc: 'Sessions de travail quotidiennes avec le développeur Thibault Fighiera. Deux montres connectées, itérant sur des versions réelles plutôt que des maquettes statiques.',
+      prototype: 'Démo Parcours Recherche',
+      prototypeDesc: 'Le parcours de recherche complet capturé sur du vrai matériel. De la saisie vocale à l\'affichage de la fiche commerce.',
     },
     result: {
       title: 'Résultat',
@@ -307,7 +307,7 @@ const TRANSLATIONS = {
           label: 'Du concept au Google Play',
         },
         {
-          value: '2 flows',
+          value: '2 parcours',
           label: 'Parcours utilisateur optimisés',
         },
         {
@@ -407,24 +407,24 @@ const getGalleryItems = (lang: 'en' | 'fr'): GalleryItem[] => {
       uiModes: 'États Actif vs Ambiant',
       uiModesDesc: 'Le jaune PagesJaunes assurait une reconnaissance instantanée en mode actif. L\'état ambiant se réduisait à l\'essentiel monochrome, prolongeant la batterie de plusieurs heures.',
       ui: 'Inventaire Écrans',
-      uiDesc: 'Un catalogue systématique de chaque état d\'écran, assurant la cohérence du design à travers l\'expérience wearable compacte.',
+      uiDesc: 'Un catalogue systématique de chaque état d\'écran, assurant la cohérence du design à travers l\'expérience montre connectée.',
       components: 'Bibliothèque Composants',
       componentsDesc: 'Documentation complète couvrant les variantes de montres rondes et carrées. Cette bibliothèque est devenue la source de vérité pour notre équipe de deux.',
       insituStore: 'Présence Google Play',
-      insituStoreDesc: 'Le visuel promotionnel pour le Play Store. Les premières impressions comptent quand les utilisateurs découvrent de nouvelles expériences wearables.',
+      insituStoreDesc: 'Le visuel promotionnel pour le Play Store. Les premières impressions comptent quand les utilisateurs découvrent de nouvelles apps pour montre connectée.',
       insituDetail: 'Prévisualisation Contextuelle',
-      insituDetailDesc: 'Montrer la fiche détail sur un vrai poignet aide les stakeholders à comprendre les conditions de lecture réelles pour lesquelles nous avons designé.',
+      insituDetailDesc: 'Montrer la fiche détail sur un vrai poignet aide les décideurs à comprendre les conditions de lecture réelles pour lesquelles nous avons conçu.',
       storeSubmission: 'Soumission Play Store',
-      storeSubmissionDesc: 'Communication interne pour le lancement. Assets marketing et matériels de listing store prêts pour publication.',
+      storeSubmissionDesc: 'Communication interne pour le lancement. Visuels marketing et supports de présentation prêts pour publication.',
       devSession: 'Sessions en Binôme',
-      devSessionDesc: 'Sessions de travail quotidiennes avec le développeur Thibault Fighiera. Deux montres connectées, itérant sur des builds réels plutôt que des maquettes statiques.',
+      devSessionDesc: 'Sessions de travail quotidiennes avec le développeur Thibault Fighiera. Deux montres connectées, itérant sur des versions réelles plutôt que des maquettes statiques.',
       designWork: 'Design en Cours',
-      designWorkDesc: 'Keynote servait d\'outil de prototypage rapide. Rapide à itérer, facile à partager, et assez précis pour le handoff production.',
-      designDetail: 'Vérification sur Device',
-      designDetailDesc: 'Rien ne remplace la vérification des designs sur le vrai hardware. Reflets d\'écran, angles de vue et zones tactiles ne se révèlent qu\'en contexte.',
-      prototypeVideo: 'Démo Flow Recherche',
-      prototypeVideoDesc: 'Le parcours de recherche complet capturé sur du vrai hardware. De l\'input vocal à l\'affichage de la fiche commerce.',
-      navVideo: 'Handoff Navigation',
+      designWorkDesc: 'Keynote servait d\'outil de prototypage rapide. Rapide à itérer, facile à partager, et assez précis pour la transmission au développeur.',
+      designDetail: 'Vérification sur Appareil',
+      designDetailDesc: 'Rien ne remplace la vérification des designs sur le vrai matériel. Reflets d\'écran, angles de vue et zones tactiles ne se révèlent qu\'en contexte.',
+      prototypeVideo: 'Démo Parcours Recherche',
+      prototypeVideoDesc: 'Le parcours de recherche complet capturé sur du vrai matériel. De la saisie vocale à l\'affichage de la fiche commerce.',
+      navVideo: 'Relais Navigation',
       navVideoDesc: 'Démonstration de la transition fluide de la montre au téléphone quand l\'utilisateur demande un itinéraire.',
       screenLoading: 'État de Chargement',
       screenLoadingDesc: 'Indicateur de chargement minimaliste sur jaune marque.',
@@ -450,23 +450,23 @@ const getGalleryItems = (lang: 'en' | 'fr'): GalleryItem[] => {
   return [
     { src: '/images/pagesjaunes/Android%20wear/early_wireframes.webp', type: 'image', caption: t.sketches, captionDesc: t.sketchesDesc },
     { src: '/images/pagesjaunes/Android%20wear/android_wear_ambient_sketches.webp', type: 'image', caption: t.ambient, captionDesc: t.ambientDesc },
-    { src: '/images/pagesjaunes/Android%20wear/screens/android%20wear%20design%20ambient%20mode.png', type: 'image', caption: t.ambientDesign, captionDesc: t.ambientDesignDesc },
-    { src: '/images/pagesjaunes/Android%20wear/pj%20android%20wear%20flows.jpeg', type: 'image', caption: t.flows, captionDesc: t.flowsDesc },
+    { src: '/images/pagesjaunes/Android%20wear/screens/android%20wear%20design%20ambient%20mode.webp', type: 'image', caption: t.ambientDesign, captionDesc: t.ambientDesignDesc },
+    { src: '/images/pagesjaunes/Android%20wear/pj%20android%20wear%20flows.webp', type: 'image', caption: t.flows, captionDesc: t.flowsDesc },
     { src: '/images/pagesjaunes/Android%20wear/ui_interactions.webp', type: 'image', caption: t.flowsDetailed, captionDesc: t.flowsDetailedDesc },
-    { src: '/images/pagesjaunes/Android%20wear/pj%20android%20wear%20ui%20modes.jpeg', type: 'image', caption: t.uiModes, captionDesc: t.uiModesDesc },
-    { src: '/images/pagesjaunes/Android%20wear/pj%20android%20wear%20ui.jpeg', type: 'image', caption: t.ui, captionDesc: t.uiDesc },
+    { src: '/images/pagesjaunes/Android%20wear/pj%20android%20wear%20ui%20modes.webp', type: 'image', caption: t.uiModes, captionDesc: t.uiModesDesc },
+    { src: '/images/pagesjaunes/Android%20wear/pj%20android%20wear%20ui.webp', type: 'image', caption: t.ui, captionDesc: t.uiDesc },
     { src: '/images/pagesjaunes/Android%20wear/component_library.webp', type: 'image', caption: t.components, captionDesc: t.componentsDesc },
-    { src: '/images/pagesjaunes/Android%20wear/screens/00%20Loading.jpg', type: 'image', caption: t.screenLoading, captionDesc: t.screenLoadingDesc },
-    { src: '/images/pagesjaunes/Android%20wear/screens/01%20Time.jpg', type: 'image', caption: t.screenTime, captionDesc: t.screenTimeDesc },
-    { src: '/images/pagesjaunes/Android%20wear/screens/02%20App%20list.jpg', type: 'image', caption: t.screenAppList, captionDesc: t.screenAppListDesc },
-    { src: '/images/pagesjaunes/Android%20wear/screens/03%20Rubriques%20list.jpg', type: 'image', caption: t.screenRubriques, captionDesc: t.screenRubriquesDesc },
-    { src: '/images/pagesjaunes/Android%20wear/screens/04%20LR%2001.jpg', type: 'image', caption: t.screenLR01, captionDesc: t.screenLR01Desc },
-    { src: '/images/pagesjaunes/Android%20wear/screens/05%20LR%2002.jpg', type: 'image', caption: t.screenLR02, captionDesc: t.screenLR02Desc },
-    { src: '/images/pagesjaunes/Android%20wear/screens/06%20LR%2003.jpg', type: 'image', caption: t.screenLR03, captionDesc: t.screenLR03Desc },
-    { src: '/images/pagesjaunes/Android%20wear/screens/07%20FD.jpg', type: 'image', caption: t.screenFD, captionDesc: t.screenFDDesc },
-    { src: '/images/pagesjaunes/Android%20wear/android_wear_insitu_store_01.png', type: 'image', caption: t.insituStore, captionDesc: t.insituStoreDesc },
-    { src: '/images/pagesjaunes/Android%20wear/maquette_insitu_FD_03%20(1).png', type: 'image', caption: t.insituDetail, captionDesc: t.insituDetailDesc },
-    { src: '/images/pagesjaunes/Android%20wear/screens/android_wear_visuel_mail_comm.jpg', type: 'image', caption: t.storeSubmission, captionDesc: t.storeSubmissionDesc },
+    { src: '/images/pagesjaunes/Android%20wear/screens/00%20Loading.webp', type: 'image', caption: t.screenLoading, captionDesc: t.screenLoadingDesc },
+    { src: '/images/pagesjaunes/Android%20wear/screens/01%20Time.webp', type: 'image', caption: t.screenTime, captionDesc: t.screenTimeDesc },
+    { src: '/images/pagesjaunes/Android%20wear/screens/02%20App%20list.webp', type: 'image', caption: t.screenAppList, captionDesc: t.screenAppListDesc },
+    { src: '/images/pagesjaunes/Android%20wear/screens/03%20Rubriques%20list.webp', type: 'image', caption: t.screenRubriques, captionDesc: t.screenRubriquesDesc },
+    { src: '/images/pagesjaunes/Android%20wear/screens/04%20LR%2001.webp', type: 'image', caption: t.screenLR01, captionDesc: t.screenLR01Desc },
+    { src: '/images/pagesjaunes/Android%20wear/screens/05%20LR%2002.webp', type: 'image', caption: t.screenLR02, captionDesc: t.screenLR02Desc },
+    { src: '/images/pagesjaunes/Android%20wear/screens/06%20LR%2003.webp', type: 'image', caption: t.screenLR03, captionDesc: t.screenLR03Desc },
+    { src: '/images/pagesjaunes/Android%20wear/screens/07%20FD.webp', type: 'image', caption: t.screenFD, captionDesc: t.screenFDDesc },
+    { src: '/images/pagesjaunes/Android%20wear/android_wear_insitu_store_01.webp', type: 'image', caption: t.insituStore, captionDesc: t.insituStoreDesc },
+    { src: '/images/pagesjaunes/Android%20wear/maquette_insitu_FD_03%20(1).webp', type: 'image', caption: t.insituDetail, captionDesc: t.insituDetailDesc },
+    { src: '/images/pagesjaunes/Android%20wear/screens/android_wear_visuel_mail_comm.webp', type: 'image', caption: t.storeSubmission, captionDesc: t.storeSubmissionDesc },
     { src: '/images/pagesjaunes/Android%20wear/dev_session_1.webp', type: 'image', caption: t.devSession, captionDesc: t.devSessionDesc },
     { src: '/images/pagesjaunes/Android%20wear/design_work_keynote.webp', type: 'image', caption: t.designWork, captionDesc: t.designWorkDesc },
     { src: '/images/pagesjaunes/Android%20wear/design_work_detail.webp', type: 'image', caption: t.designDetail, captionDesc: t.designDetailDesc },
@@ -546,15 +546,26 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick }) => {
 };
 
 // TOC Sections for navigation
-const getSections = (lang: 'en' | 'fr') => [
-  { id: 'top', label: 'Top', labelFr: 'Haut' },
-  { id: 'overview', label: 'Overview', labelFr: 'Vue d\'ensemble' },
-  { id: 'research', label: 'Research', labelFr: 'Recherche' },
-  { id: 'design', label: 'Screen Design', labelFr: 'Design' },
-  { id: 'specs', label: 'Specifications', labelFr: 'Spécifications' },
-  { id: 'implementation', label: 'Implementation', labelFr: 'Implémentation' },
-  { id: 'results', label: 'Results', labelFr: 'Résultats' },
-];
+const TOC_SECTIONS = {
+  en: [
+    { id: 'top', label: 'Top' },
+    { id: 'overview', label: 'Overview' },
+    { id: 'research', label: 'Research' },
+    { id: 'design', label: 'Screen Design' },
+    { id: 'specs', label: 'Specifications' },
+    { id: 'implementation', label: 'Implementation' },
+    { id: 'results', label: 'Results' },
+  ],
+  fr: [
+    { id: 'top', label: 'Haut' },
+    { id: 'overview', label: 'Vue d\'ensemble' },
+    { id: 'research', label: 'Recherche' },
+    { id: 'design', label: 'Design' },
+    { id: 'specs', label: 'Spécifications' },
+    { id: 'implementation', label: 'Implémentation' },
+    { id: 'results', label: 'Résultats' },
+  ]
+};
 
 // Main Component
 const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
@@ -568,14 +579,13 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
   const isDark = systemTheme === 'dark';
   const t = TRANSLATIONS[lang];
   const galleryItems = getGalleryItems(lang);
-  const sections = getSections(lang);
+  const sections = TOC_SECTIONS[lang];
   const containerRef = useRef<HTMLDivElement>(null);
 
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [activeSection, setActiveSection] = useState('top');
   const [showNav, setShowNav] = useState(false);
-  const [isMobileNavExpanded, setIsMobileNavExpanded] = useState(false);
 
   // Track scroll position and update active section
   useEffect(() => {
@@ -662,98 +672,6 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
           : (isDark ? 'bg-[#0a0a0a]' : 'bg-white')
       }`}
     >
-      {/* Sticky Mini-Nav - TOC Navigation - Hidden in gallery mode */}
-      <AnimatePresence>
-        {showNav && viewMode === 'caseStudy' && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2 }}
-            className={`fixed top-16 left-0 right-0 z-30 backdrop-blur-xl ${
-              isDark ? 'bg-[#0a0a0a]/80' : 'bg-white/80'
-            }`}
-          >
-            {/* Collapsed state - shows current section */}
-            <div className="w-full px-6">
-              <button
-                onClick={() => setIsMobileNavExpanded(!isMobileNavExpanded)}
-                className="w-full h-12 flex items-center justify-between"
-              >
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-blue-500" />
-                  <span className={`text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                    {lang === 'fr'
-                      ? sections.find(s => s.id === activeSection)?.labelFr
-                      : sections.find(s => s.id === activeSection)?.label}
-                  </span>
-                </div>
-                <motion.div
-                  animate={{ rotate: isMobileNavExpanded ? 180 : 0 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <ChevronDown size={20} className={isDark ? 'text-gray-400' : 'text-gray-500'} />
-                </motion.div>
-              </button>
-
-              {/* Expanded state - shows all sections */}
-              <AnimatePresence>
-                {isMobileNavExpanded && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="overflow-hidden"
-                  >
-                    <div className={`pb-3 space-y-1 border-t ${isDark ? 'border-white/5' : 'border-gray-100'}`}>
-                      {sections.map((section) => {
-                        const isActive = activeSection === section.id;
-                        const currentIndex = sections.findIndex(s => s.id === activeSection);
-                        const sectionIndex = sections.findIndex(s => s.id === section.id);
-                        const isPast = sectionIndex < currentIndex;
-
-                        return (
-                          <button
-                            key={section.id}
-                            onClick={() => {
-                              scrollToSection(section.id);
-                              setIsMobileNavExpanded(false);
-                            }}
-                            className={`w-full text-left py-2 px-3 rounded-lg flex items-center gap-3 transition-colors ${
-                              isActive
-                                ? isDark
-                                  ? 'bg-blue-600/10 text-blue-400'
-                                  : 'bg-blue-50 text-blue-600'
-                                : isDark
-                                  ? 'text-gray-400 hover:bg-white/5'
-                                  : 'text-gray-600 hover:bg-gray-50'
-                            }`}
-                          >
-                            <div
-                              className={`w-1.5 h-1.5 rounded-full ${
-                                isActive
-                                  ? 'bg-blue-500'
-                                  : isPast
-                                    ? isDark ? 'bg-gray-500' : 'bg-gray-400'
-                                    : isDark ? 'bg-gray-700' : 'bg-gray-300'
-                              }`}
-                            />
-                            <span className="text-sm font-medium">
-                              {lang === 'fr' ? section.labelFr : section.label}
-                            </span>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       {/* Header - Glass effect matching DailymotionPage */}
       <header
         className={`sticky top-0 z-40 backdrop-blur-xl ${
@@ -838,9 +756,19 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
         </div>
       </header>
 
+      {/* TOC Sidebar */}
+      <CaseStudyTOCSidebar
+        sections={sections}
+        activeSection={activeSection}
+        onSectionClick={scrollToSection}
+        isDark={isDark}
+        isVisible={showNav && viewMode === 'caseStudy'}
+        lang={lang}
+      />
+
       {/* Content */}
       {viewMode === 'caseStudy' ? (
-        <div id="top" className="max-w-[1480px] mx-auto px-10 py-12">
+        <div id="top" className="max-w-[1200px] mx-auto px-10 py-12">
           {/* Hero Section */}
           <section id="overview" className="mb-16">
             <div className="grid md:grid-cols-5 gap-8 items-start">
@@ -853,11 +781,11 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
                   <span className={isDark ? 'text-gray-400' : 'text-gray-500'}>{t.hero.period}</span>
                 </div>
 
-                <h1 className={`text-3xl md:text-4xl font-bold mb-4 leading-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                <h1 className={`text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-4 leading-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
                   {t.hero.title}
                 </h1>
 
-                <h2 className={`text-xl md:text-2xl font-bold mb-6 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                <h2 className={`text-xl md:text-2xl font-semibold tracking-tight mb-6 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
                   {t.hero.subtitle}
                 </h2>
 
@@ -955,14 +883,14 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
 
           {/* Overview Section */}
           <section className="mb-24">
-            <h2 className={`text-3xl md:text-4xl font-bold mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+            <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
               {t.overview.title}
             </h2>
             <hr className={`mb-8 ${isDark ? 'border-white/10' : 'border-gray-200'}`} />
 
             <div className="grid md:grid-cols-3 gap-8">
               <div>
-                <h3 className={`text-xl font-semibold mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                <h3 className={`text-xl md:text-2xl font-semibold tracking-tight mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
                   {t.overview.contextTitle}
                 </h3>
                 <p className={`text-base leading-relaxed ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
@@ -970,7 +898,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
                 </p>
               </div>
               <div>
-                <h3 className={`text-xl font-semibold mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                <h3 className={`text-xl md:text-2xl font-semibold tracking-tight mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
                   {t.overview.challengeTitle}
                 </h3>
                 <p className={`text-base leading-relaxed ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
@@ -978,7 +906,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
                 </p>
               </div>
               <div>
-                <h3 className={`text-xl font-semibold mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                <h3 className={`text-xl md:text-2xl font-semibold tracking-tight mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
                   {t.overview.roleTitle}
                 </h3>
                 <p className={`text-base leading-relaxed ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
@@ -990,7 +918,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
 
           {/* User Scenario Section */}
           <section className="mb-24">
-            <h2 className={`text-3xl md:text-4xl font-bold mb-8 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+            <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-8 ${isDark ? 'text-white' : 'text-gray-900'}`}>
               {t.persona.title}
             </h2>
 
@@ -1018,7 +946,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
 
           {/* Approach Section */}
           <section className="mb-24">
-            <h2 className={`text-3xl md:text-4xl font-bold mb-8 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+            <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-8 ${isDark ? 'text-white' : 'text-gray-900'}`}>
               {t.approach.title}
             </h2>
 
@@ -1040,9 +968,9 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
           <section className="mb-24">
             <div className="grid md:grid-cols-2 gap-8">
               <div>
-                <h2 className={`text-2xl font-bold mb-6 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                <h3 className={`text-xl md:text-2xl font-semibold tracking-tight mb-6 ${isDark ? 'text-white' : 'text-gray-900'}`}>
                   {t.features.title}
-                </h2>
+                </h3>
                 <ul className={`text-sm space-y-3 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
                   {t.features.items.map((item, idx) => (
                     <li key={idx} className="flex items-start gap-2">
@@ -1053,9 +981,9 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
                 </ul>
               </div>
               <div>
-                <h2 className={`text-2xl font-bold mb-6 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                <h3 className={`text-xl md:text-2xl font-semibold tracking-tight mb-6 ${isDark ? 'text-white' : 'text-gray-900'}`}>
                   {t.deliverables.title}
-                </h2>
+                </h3>
                 <ul className={`text-sm space-y-3 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
                   {t.deliverables.items.map((item, idx) => (
                     <li key={idx} className="flex items-start gap-2">
@@ -1077,7 +1005,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
                 {lang === 'fr' ? 'Phase 1' : 'Phase 1'}
               </span>
             </div>
-            <h2 className={`text-3xl md:text-4xl font-bold mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+            <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
               {lang === 'fr' ? 'Recherche & Exploration' : 'Research & Discovery'}
             </h2>
             <p className={`text-base mb-8 max-w-3xl ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
@@ -1109,12 +1037,12 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
               {/* User Task Flows - cropped 1:1 */}
               <figure>
                 <div
-                  onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/pj%20android%20wear%20flows.jpeg')}
+                  onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/pj%20android%20wear%20flows.webp')}
                   className={`rounded-2xl overflow-hidden border cursor-pointer aspect-square ${isDark ? 'border-white/10' : 'border-gray-200'}`}
                 >
                   <img
                     loading="lazy"
-                    src="/images/pagesjaunes/Android%20wear/pj%20android%20wear%20flows.jpeg"
+                    src="/images/pagesjaunes/Android%20wear/pj%20android%20wear%20flows.webp"
                     alt={t.process.flows}
                     className="w-full h-full object-cover object-top"
                   />
@@ -1152,7 +1080,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
                 {lang === 'fr' ? 'Phase 2' : 'Phase 2'}
               </span>
             </div>
-            <h2 className={`text-3xl md:text-4xl font-bold mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+            <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
               {lang === 'fr' ? 'Design d\'Interface' : 'Screen Design'}
             </h2>
             <p className={`text-base mb-8 max-w-3xl ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
@@ -1184,14 +1112,14 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
               <div className={`rounded-2xl overflow-hidden border p-4 ${isDark ? 'border-white/10 bg-[#1a1a1a]' : 'border-gray-200 bg-gray-100'}`}>
                 <div className="grid grid-cols-4 gap-3">
                   {[
-                    { src: '/images/pagesjaunes/Android%20wear/screens/00%20Loading.jpg', alt: 'Loading' },
-                    { src: '/images/pagesjaunes/Android%20wear/screens/02%20App%20list.jpg', alt: 'App List' },
-                    { src: '/images/pagesjaunes/Android%20wear/screens/03%20Rubriques%20list.jpg', alt: 'Categories' },
-                    { src: '/images/pagesjaunes/Android%20wear/screens/04%20LR%2001.jpg', alt: 'Result 1' },
-                    { src: '/images/pagesjaunes/Android%20wear/screens/05%20LR%2002.jpg', alt: 'Result 2' },
-                    { src: '/images/pagesjaunes/Android%20wear/screens/06%20LR%2003.jpg', alt: 'Result 3' },
-                    { src: '/images/pagesjaunes/Android%20wear/screens/07%20FD.jpg', alt: 'Detail Card' },
-                    { src: '/images/pagesjaunes/Android%20wear/screens/01%20Time.jpg', alt: 'Watch Face' },
+                    { src: '/images/pagesjaunes/Android%20wear/screens/00%20Loading.webp', alt: 'Loading' },
+                    { src: '/images/pagesjaunes/Android%20wear/screens/02%20App%20list.webp', alt: 'App List' },
+                    { src: '/images/pagesjaunes/Android%20wear/screens/03%20Rubriques%20list.webp', alt: 'Categories' },
+                    { src: '/images/pagesjaunes/Android%20wear/screens/04%20LR%2001.webp', alt: 'Result 1' },
+                    { src: '/images/pagesjaunes/Android%20wear/screens/05%20LR%2002.webp', alt: 'Result 2' },
+                    { src: '/images/pagesjaunes/Android%20wear/screens/06%20LR%2003.webp', alt: 'Result 3' },
+                    { src: '/images/pagesjaunes/Android%20wear/screens/07%20FD.webp', alt: 'Detail Card' },
+                    { src: '/images/pagesjaunes/Android%20wear/screens/01%20Time.webp', alt: 'Watch Face' },
                   ].map((screen, idx) => (
                     <div
                       key={idx}
@@ -1217,12 +1145,12 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
             <div className="grid grid-cols-2 gap-3 mb-12">
               <figure>
                 <div
-                  onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/pj%20android%20wear%20ui%20modes.jpeg')}
+                  onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/pj%20android%20wear%20ui%20modes.webp')}
                   className={`rounded-2xl overflow-hidden border cursor-pointer aspect-square ${isDark ? 'border-white/10' : 'border-gray-200'}`}
                 >
                   <img
                     loading="lazy"
-                    src="/images/pagesjaunes/Android%20wear/pj%20android%20wear%20ui%20modes.jpeg"
+                    src="/images/pagesjaunes/Android%20wear/pj%20android%20wear%20ui%20modes.webp"
                     alt={t.process.uiModes}
                     className="w-full h-full object-cover object-top"
                   />
@@ -1233,18 +1161,18 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
               </figure>
               <figure>
                 <div
-                  onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/pj%20android%20wear%20ui.jpeg')}
+                  onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/pj%20android%20wear%20ui.webp')}
                   className={`rounded-2xl overflow-hidden border cursor-pointer aspect-square ${isDark ? 'border-white/10' : 'border-gray-200'}`}
                 >
                   <img
                     loading="lazy"
-                    src="/images/pagesjaunes/Android%20wear/pj%20android%20wear%20ui.jpeg"
+                    src="/images/pagesjaunes/Android%20wear/pj%20android%20wear%20ui.webp"
                     alt={lang === 'fr' ? 'Vue d\'ensemble UI' : 'UI Overview'}
                     className="w-full h-full object-cover object-top"
                   />
                 </div>
                 <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                  <strong className={isDark ? 'text-gray-200' : 'text-gray-700'}>{lang === 'fr' ? 'Vue d\'ensemble UI' : 'UI Overview'}.</strong> {lang === 'fr' ? 'Catalogue des états d\'écran assurant la cohérence à travers l\'expérience wearable compacte.' : 'Systematic catalog of screen states ensuring design consistency across the wearable experience.'}
+                  <strong className={isDark ? 'text-gray-200' : 'text-gray-700'}>{lang === 'fr' ? 'Vue d\'ensemble UI' : 'UI Overview'}.</strong> {lang === 'fr' ? 'Catalogue des états d\'écran assurant la cohérence à travers l\'expérience montre connectée.' : 'Systematic catalog of screen states ensuring design consistency across the wearable experience.'}
                 </figcaption>
               </figure>
             </div>
@@ -1259,12 +1187,12 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
                 {lang === 'fr' ? 'Phase 3' : 'Phase 3'}
               </span>
             </div>
-            <h2 className={`text-3xl md:text-4xl font-bold mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+            <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
               {lang === 'fr' ? 'Spécifications & Guidelines' : 'Specifications & Guidelines'}
             </h2>
             <p className={`text-base mb-8 max-w-3xl ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
               {lang === 'fr'
-                ? 'Documentation exhaustive des modes actif et ambiant, bibliothèque de composants pour les variantes rondes et carrées, et specs d\'interaction pour le handoff développeur.'
+                ? 'Documentation exhaustive des modes actif et ambiant, bibliothèque de composants pour les variantes rondes et carrées, et spécifications d\'interaction pour la transmission au développeur.'
                 : 'Comprehensive documentation of active and ambient modes, component library for round and square variants, and interaction specs for developer handoff.'}
             </p>
 
@@ -1289,12 +1217,12 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
             {/* Full width - Ambient Mode Final Design */}
             <figure className="mb-12">
               <div
-                onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/screens/android%20wear%20design%20ambient%20mode.png')}
+                onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/screens/android%20wear%20design%20ambient%20mode.webp')}
                 className={`rounded-2xl overflow-hidden border cursor-pointer ${isDark ? 'border-white/10' : 'border-gray-200'}`}
               >
                 <img
                   loading="lazy"
-                  src="/images/pagesjaunes/Android%20wear/screens/android%20wear%20design%20ambient%20mode.png"
+                  src="/images/pagesjaunes/Android%20wear/screens/android%20wear%20design%20ambient%20mode.webp"
                   alt={lang === 'fr' ? 'Design Mode Ambiant' : 'Ambient Mode Design'}
                   className="w-full h-auto"
                 />
@@ -1314,7 +1242,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
                 {lang === 'fr' ? 'Phase 4' : 'Phase 4'}
               </span>
             </div>
-            <h2 className={`text-3xl md:text-4xl font-bold mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+            <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
               {lang === 'fr' ? 'Implémentation & Lancement' : 'Implementation & Launch'}
             </h2>
             <p className={`text-base mb-8 max-w-3xl ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
@@ -1356,7 +1284,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
                   />
                 </div>
                 <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                  <strong className={isDark ? 'text-gray-200' : 'text-gray-700'}>{lang === 'fr' ? 'Prototypage Keynote' : 'Keynote Prototyping'}.</strong> {lang === 'fr' ? 'Keynote servait d\'outil de prototypage rapide. Rapide à itérer, facile à partager, assez précis pour le handoff.' : 'Keynote served as my rapid prototyping tool. Quick to iterate, easy to share, precise enough for handoff.'}
+                  <strong className={isDark ? 'text-gray-200' : 'text-gray-700'}>{lang === 'fr' ? 'Prototypage Keynote' : 'Keynote Prototyping'}.</strong> {lang === 'fr' ? 'Keynote servait d\'outil de prototypage rapide. Rapide à itérer, facile à partager, assez précis pour la transmission au développeur.' : 'Keynote served as my rapid prototyping tool. Quick to iterate, easy to share, precise enough for handoff.'}
                 </figcaption>
               </figure>
               <figure>
@@ -1372,7 +1300,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
                   />
                 </div>
                 <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                  <strong className={isDark ? 'text-gray-200' : 'text-gray-700'}>{lang === 'fr' ? 'Vérification sur Device' : 'On-Device Verification'}.</strong> {lang === 'fr' ? 'Rien ne remplace le test sur le vrai hardware. Reflets, angles de vue et zones tactiles ne se révèlent qu\'en contexte.' : 'Nothing replaces testing on real hardware. Reflections, viewing angles and touch targets only reveal themselves in context.'}
+                  <strong className={isDark ? 'text-gray-200' : 'text-gray-700'}>{lang === 'fr' ? 'Vérification sur Appareil' : 'On-Device Verification'}.</strong> {lang === 'fr' ? 'Rien ne remplace le test sur le vrai matériel. Reflets, angles de vue et zones tactiles ne se révèlent qu\'en contexte.' : 'Nothing replaces testing on real hardware. Reflections, viewing angles and touch targets only reveal themselves in context.'}
                 </figcaption>
               </figure>
             </div>
@@ -1430,18 +1358,18 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
             {/* Full width - Google Play Store Submission */}
             <figure className="mb-12">
               <div
-                onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/screens/android_wear_visuel_mail_comm.jpg')}
+                onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/screens/android_wear_visuel_mail_comm.webp')}
                 className={`rounded-2xl overflow-hidden border cursor-pointer ${isDark ? 'border-white/10' : 'border-gray-200'}`}
               >
                 <img
                   loading="lazy"
-                  src="/images/pagesjaunes/Android%20wear/screens/android_wear_visuel_mail_comm.jpg"
+                  src="/images/pagesjaunes/Android%20wear/screens/android_wear_visuel_mail_comm.webp"
                   alt={lang === 'fr' ? 'Soumission Play Store' : 'Play Store Submission'}
                   className="w-full h-auto"
                 />
               </div>
               <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                <strong className={isDark ? 'text-gray-200' : 'text-gray-700'}>{lang === 'fr' ? 'Communication Lancement' : 'Launch Communication'}.</strong> {lang === 'fr' ? 'Communication interne pour le lancement. Assets marketing et matériels de listing store prêts pour publication.' : 'Internal communication for app launch. Marketing assets and store listing materials ready for publication.'}
+                <strong className={isDark ? 'text-gray-200' : 'text-gray-700'}>{lang === 'fr' ? 'Communication Lancement' : 'Launch Communication'}.</strong> {lang === 'fr' ? 'Communication interne pour le lancement. Visuels marketing prêts pour publication.' : 'Internal communication for app launch. Marketing assets and store listing materials ready for publication.'}
               </figcaption>
             </figure>
 
@@ -1449,12 +1377,12 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
             <div className="grid grid-cols-2 gap-3 mb-12">
               <figure>
                 <div
-                  onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/android_wear_insitu_store_01.png')}
+                  onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/android_wear_insitu_store_01.webp')}
                   className={`rounded-2xl overflow-hidden border cursor-pointer aspect-square ${isDark ? 'border-white/10' : 'border-gray-200'}`}
                 >
                   <img
                     loading="lazy"
-                    src="/images/pagesjaunes/Android%20wear/android_wear_insitu_store_01.png"
+                    src="/images/pagesjaunes/Android%20wear/android_wear_insitu_store_01.webp"
                     alt={lang === 'fr' ? 'Présence Google Play' : 'Google Play Presence'}
                     className="w-full h-full object-cover object-center"
                   />
@@ -1465,14 +1393,14 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
               </figure>
               <figure>
                 <div
-                  onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/maquette_insitu_FD_03%20(1).png')}
+                  onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/maquette_insitu_FD_03%20(1).webp')}
                   className={`rounded-2xl overflow-hidden border cursor-pointer aspect-square ${isDark ? 'border-white/10' : 'border-gray-200'}`}
                   style={{ backgroundColor: isDark ? '#1a1a1a' : '#E7E7E7' }}
                 >
                   <div className="w-full h-full flex items-center justify-center p-6">
                     <img
                       loading="lazy"
-                      src="/images/pagesjaunes/Android%20wear/maquette_insitu_FD_03%20(1).png"
+                      src="/images/pagesjaunes/Android%20wear/maquette_insitu_FD_03%20(1).webp"
                       alt={lang === 'fr' ? 'Fiche Pro sur Poignet' : 'Business Card on Wrist'}
                       className="max-w-full max-h-full object-contain"
                       style={{ transform: 'rotate(-5deg)' }}
@@ -1488,7 +1416,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
 
           {/* Results Section */}
           <section id="results" className="mb-24">
-            <h2 className={`text-3xl md:text-4xl font-bold mb-8 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+            <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-8 ${isDark ? 'text-white' : 'text-gray-900'}`}>
               {t.result.title}
             </h2>
 
@@ -1508,7 +1436,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
 
           {/* Learnings Section */}
           <section className="mb-24">
-            <h2 className={`text-3xl md:text-4xl font-bold mb-8 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+            <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-8 ${isDark ? 'text-white' : 'text-gray-900'}`}>
               {t.learnings.title}
             </h2>
 
@@ -1544,7 +1472,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
         </div>
       ) : (
         /* Gallery View */
-        <div className="max-w-[1480px] mx-auto px-6 py-12">
+        <div className="max-w-[1200px] mx-auto px-6 py-12">
           <div className="columns-1 md:columns-2 lg:columns-3 gap-8">
             {galleryItems.map((item, index) => (
               <GalleryCard

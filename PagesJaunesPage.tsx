@@ -8,6 +8,41 @@ import { GalleryItem } from './BentoGallery';
 import EnhancedLightbox from './src/components/EnhancedLightbox';
 import PagesJaunesExecutive from './src/components/PagesJaunesExecutive';
 import PagesJaunesFull from './src/components/PagesJaunesFull';
+import CaseStudyTOCSidebar from './src/components/CaseStudyTOCSidebar';
+
+// TOC Sections for Full case study
+const TOC_SECTIONS = {
+  en: [
+    { id: 'top', label: 'Top' },
+    { id: 'overview', label: 'Overview' },
+    { id: 'homepage', label: 'Homepage' },
+    { id: 'search', label: 'Search Engine' },
+    { id: 'onboarding', label: 'Onboarding' },
+    { id: 'navigation', label: 'Navigation' },
+    { id: 'account', label: 'Account' },
+    { id: 'micro-interactions', label: 'Motion' },
+    { id: 'wear', label: 'Android Wear' },
+    { id: 'design-system', label: 'Design System' },
+    { id: 'team', label: 'Team' },
+    { id: 'impact', label: 'Impact' },
+    { id: 'learnings', label: 'Learnings' }
+  ],
+  fr: [
+    { id: 'top', label: 'Haut' },
+    { id: 'overview', label: 'Aperçu' },
+    { id: 'homepage', label: 'Homepage' },
+    { id: 'search', label: 'Moteur' },
+    { id: 'onboarding', label: 'Onboarding' },
+    { id: 'navigation', label: 'Navigation' },
+    { id: 'account', label: 'Compte' },
+    { id: 'micro-interactions', label: 'Motion' },
+    { id: 'wear', label: 'Android Wear' },
+    { id: 'design-system', label: 'Design System' },
+    { id: 'team', label: 'Équipe' },
+    { id: 'impact', label: 'Impact' },
+    { id: 'learnings', label: 'Apprentissages' }
+  ]
+};
 
 interface PagesJaunesPageProps {
   onClose: () => void;
@@ -17,6 +52,7 @@ interface PagesJaunesPageProps {
   onViewModeChange: (mode: 'caseStudy' | 'gallery' | 'executive') => void;
   lang?: 'en' | 'fr';
   onContact?: () => void;
+  onNavigateToProject?: (projectId: string) => void;
 }
 
 // Gallery items for PagesJaunes
@@ -153,51 +189,51 @@ const getPagesJaunesGalleryItems = (lang: 'en' | 'fr'): GalleryItem[] => {
   return [
     // Homepage
     {
-      src: '/images/pagesjaunes/pagesjaunes homepage.jpeg',
+      src: '/images/pagesjaunes/pagesjaunes homepage.webp',
       type: 'image',
       caption: t.homepage,
       captionDesc: t.homepageDesc
     },
     {
-      src: '/images/pagesjaunes/pagesjaunes homepage - variations.jpeg',
+      src: '/images/pagesjaunes/pagesjaunes homepage - variations.webp',
       type: 'image',
       caption: t.homepageVariations,
       captionDesc: t.homepageVariationsDesc
     },
     {
-      src: '/images/pagesjaunes/pj 01@2x.png',
+      src: '/images/pagesjaunes/pj 01@2x.webp',
       type: 'image',
       caption: t.androidHomepage,
       captionDesc: t.androidHomepageDesc
     },
     {
-      src: '/images/pagesjaunes/pagesjaunes hp ipad.jpeg',
+      src: '/images/pagesjaunes/pagesjaunes hp ipad.webp',
       type: 'image',
       caption: t.ipadHomepage,
       captionDesc: t.ipadHomepageDesc
     },
     {
-      src: '/images/pagesjaunes/pagesjaunes hp ipad variations.jpeg',
+      src: '/images/pagesjaunes/pagesjaunes hp ipad variations.webp',
       type: 'image',
       caption: t.ipadVariations,
       captionDesc: t.ipadVariationsDesc
     },
     // Art Direction
     {
-      src: '/images/pagesjaunes/pj 02@2x.png',
+      src: '/images/pagesjaunes/pj 02@2x.webp',
       type: 'image',
       caption: t.artDirectionBefore,
       captionDesc: t.artDirectionBeforeDesc
     },
     {
-      src: '/images/pagesjaunes/pj 03@2x.png',
+      src: '/images/pagesjaunes/pj 03@2x.webp',
       type: 'image',
       caption: t.artDirectionAfter,
       captionDesc: t.artDirectionAfterDesc
     },
     // Search & Account
     {
-      src: '/images/pagesjaunes/pj 04@2x.png',
+      src: '/images/pagesjaunes/pj 04@2x.webp',
       type: 'image',
       caption: t.searchFlow,
       captionDesc: t.searchFlowDesc
@@ -209,125 +245,125 @@ const getPagesJaunesGalleryItems = (lang: 'en' | 'fr'): GalleryItem[] => {
       captionDesc: t.searchPrototypeDesc
     },
     {
-      src: '/images/pagesjaunes/pj 05@2x.png',
+      src: '/images/pagesjaunes/pj 05@2x.webp',
       type: 'image',
       caption: t.accountFlow,
       captionDesc: t.accountFlowDesc
     },
     {
-      src: '/images/pagesjaunes/pj 06@2x.png',
+      src: '/images/pagesjaunes/pj 06@2x.webp',
       type: 'image',
       caption: t.engagement,
       captionDesc: t.engagementDesc
     },
     // Maps & Navigation
     {
-      src: '/images/pagesjaunes/pj 07@2x.png',
+      src: '/images/pagesjaunes/pj 07@2x.webp',
       type: 'image',
       caption: t.mapsSystem,
       captionDesc: t.mapsSystemDesc
     },
     {
-      src: '/images/pagesjaunes/pj 08@2x.png',
+      src: '/images/pagesjaunes/pj 08@2x.webp',
       type: 'image',
       caption: t.mapsMultidevice,
       captionDesc: t.mapsMultideviceDesc
     },
     {
-      src: '/images/pagesjaunes/pagejaunes itineraire iphone.jpeg',
+      src: '/images/pagesjaunes/pagejaunes itineraire iphone.webp',
       type: 'image',
       caption: t.iphoneItinerary,
       captionDesc: t.iphoneItineraryDesc
     },
     {
-      src: '/images/pagesjaunes/pagejaunes itineraire ipad.jpeg',
+      src: '/images/pagesjaunes/pagejaunes itineraire ipad.webp',
       type: 'image',
       caption: t.ipadItinerary,
       captionDesc: t.ipadItineraryDesc
     },
     // Tooltip Redesign
     {
-      src: '/images/pagesjaunes/pagejaunes tooltip redesign.jpeg',
+      src: '/images/pagesjaunes/pagejaunes tooltip redesign.webp',
       type: 'image',
       caption: t.tooltipRedesign,
       captionDesc: t.tooltipRedesignDesc
     },
     // Android Wear
     {
-      src: '/images/pagesjaunes/pj android wear flows.jpeg',
+      src: '/images/pagesjaunes/Android wear/pj android wear flows.webp',
       type: 'image',
       caption: t.wearFlows,
       captionDesc: t.wearFlowsDesc
     },
     {
-      src: '/images/pagesjaunes/pj android wear ui modes.jpeg',
+      src: '/images/pagesjaunes/Android wear/pj android wear ui modes.webp',
       type: 'image',
       caption: t.wearUiModes,
       captionDesc: t.wearUiModesDesc
     },
     {
-      src: '/images/pagesjaunes/pj android wear ui.jpeg',
+      src: '/images/pagesjaunes/Android wear/pj android wear ui.webp',
       type: 'image',
       caption: t.wearUi,
       captionDesc: t.wearUiDesc
     },
     {
-      src: '/images/pagesjaunes/pj 09@2x.png',
+      src: '/images/pagesjaunes/pj 09@2x.webp',
       type: 'image',
       caption: t.wearFlowsDetailed,
       captionDesc: t.wearFlowsDetailedDesc
     },
     {
-      src: '/images/pagesjaunes/pj 10@2x.png',
+      src: '/images/pagesjaunes/pj 10@2x.webp',
       type: 'image',
       caption: t.wearComponents,
       captionDesc: t.wearComponentsDesc
     },
     {
-      src: '/images/pagesjaunes/pj 11@2x.png',
+      src: '/images/pagesjaunes/pj 11@2x.webp',
       type: 'image',
       caption: t.wearAmbient,
       captionDesc: t.wearAmbientDesc
     },
     // Android Wear Additional Assets
     {
-      src: '/images/pagesjaunes/Android wear/IMG_20151016_105901.jpg',
+      src: '/images/pagesjaunes/Android wear/IMG_20151016_105901.webp',
       type: 'image',
       caption: t.wearSketches,
       captionDesc: t.wearSketchesDesc
     },
     {
-      src: '/images/pagesjaunes/Android wear/Android Wear - ambient mode sketches.jpg',
+      src: '/images/pagesjaunes/Android wear/Android Wear - ambient mode sketches.webp',
       type: 'image',
       caption: t.wearAmbient,
       captionDesc: t.wearAmbientDesc
     },
     {
-      src: '/images/pagesjaunes/Android wear/Android Wear UI and Interactions.jpg',
+      src: '/images/pagesjaunes/Android wear/Android Wear UI and Interactions.webp',
       type: 'image',
       caption: t.wearFlowsDetailed,
       captionDesc: t.wearFlowsDetailedDesc
     },
     {
-      src: '/images/pagesjaunes/Android wear/android_wear_design_02.png',
+      src: '/images/pagesjaunes/Android wear/android_wear_design_02.webp',
       type: 'image',
       caption: t.wearComponents,
       captionDesc: t.wearComponentsDesc
     },
     {
-      src: '/images/pagesjaunes/Android wear/android_wear_insitu_store_01.png',
+      src: '/images/pagesjaunes/Android wear/android_wear_insitu_store_01.webp',
       type: 'image',
       caption: t.wearInsituStore,
       captionDesc: t.wearInsituStoreDesc
     },
     {
-      src: '/images/pagesjaunes/Android wear/maquette_insitu_FD_03 (1).png',
+      src: '/images/pagesjaunes/Android wear/maquette_insitu_FD_03 (1).webp',
       type: 'image',
       caption: t.wearInsituDetail,
       captionDesc: t.wearInsituDetailDesc
     },
     {
-      src: '/images/pagesjaunes/Android wear/IMG_20151214_183749.jpg',
+      src: '/images/pagesjaunes/Android wear/IMG_20151214_183749.webp',
       type: 'image',
       caption: t.wearDevSession,
       captionDesc: t.wearDevSessionDesc
@@ -340,7 +376,7 @@ const getPagesJaunesGalleryItems = (lang: 'en' | 'fr'): GalleryItem[] => {
     },
     // Desktop Review
     {
-      src: '/images/pagesjaunes/24_06_2015_avis_edition.jpg',
+      src: '/images/pagesjaunes/24_06_2015_avis_edition.webp',
       type: 'image',
       caption: t.desktopReview,
       captionDesc: t.desktopReviewDesc
@@ -375,13 +411,14 @@ const getAllImages = (lang: 'en' | 'fr') => {
     { src: '/images/thumbnail_pagesjaunes_sp_tablette.webp', type: 'image', caption: 'PagesJaunes Mobile Apps' },
     { src: '/images/thumbnail-pagesjaunes-multidevices.webp', type: 'image', caption: 'PagesJaunes Multi-devices' },
     // Itinerary images with special characters - need both encoded and regular versions
-    { src: '/images/pagesjaunes/pj_ipad_itinéraire_piéton.jpg', type: 'image', caption: lang === 'fr' ? 'Itinéraire piéton iPad' : 'iPad Pedestrian Route' },
-    { src: '/images/pagesjaunes/pj_ipad_itinéraire_transports.jpg', type: 'image', caption: lang === 'fr' ? 'Itinéraire transports iPad' : 'iPad Transit Route' },
-    { src: '/images/pagesjaunes/pj_ipad_itinéraire_voiture.jpg', type: 'image', caption: lang === 'fr' ? 'Itinéraire voiture iPad' : 'iPad Driving Route' },
-    { src: '/images/pagesjaunes/pj_iphone_itinéraire_piéton.jpg', type: 'image', caption: lang === 'fr' ? 'Itinéraire piéton iPhone' : 'iPhone Pedestrian Route' },
-    { src: '/images/pagesjaunes/pj_iphone_itinéraire_transports.jpg', type: 'image', caption: lang === 'fr' ? 'Itinéraire transports iPhone' : 'iPhone Transit Route' },
-    { src: '/images/pagesjaunes/pj_iphone_itinéraire_voiture.jpg', type: 'image', caption: lang === 'fr' ? 'Itinéraire voiture iPhone' : 'iPhone Driving Route' },
-    { src: '/images/pagesjaunes/pj_iphone_itinéraire_piéton_ficheroute.jpg', type: 'image', caption: lang === 'fr' ? 'Fiche route piéton iPhone' : 'iPhone Pedestrian Route Sheet' },
+    { src: '/images/pagesjaunes/pj_ipad_itinéraire_piéton.webp', type: 'image', caption: lang === 'fr' ? 'Itinéraire piéton iPad' : 'iPad Pedestrian Route' },
+    { src: '/images/pagesjaunes/pj_ipad_itinéraire_transports.webp', type: 'image', caption: lang === 'fr' ? 'Itinéraire transports iPad' : 'iPad Transit Route' },
+    { src: '/images/pagesjaunes/pj_ipad_itinéraire_voiture.webp', type: 'image', caption: lang === 'fr' ? 'Itinéraire voiture iPad' : 'iPad Driving Route' },
+    { src: '/images/pagesjaunes/pj_iphone_itinéraire_piéton.webp', type: 'image', caption: lang === 'fr' ? 'Itinéraire piéton iPhone' : 'iPhone Pedestrian Route' },
+    { src: '/images/pagesjaunes/pj_iphone_itinéraire_transports.webp', type: 'image', caption: lang === 'fr' ? 'Itinéraire transports iPhone' : 'iPhone Transit Route' },
+    { src: '/images/pagesjaunes/pj_iphone_itinéraire_voiture.webp', type: 'image', caption: lang === 'fr' ? 'Itinéraire voiture iPhone' : 'iPhone Driving Route' },
+    { src: '/images/pagesjaunes/pj_iphone_itinéraire_piéton_ficheroute.webp', type: 'image', caption: lang === 'fr' ? 'Fiche route piéton iPhone' : 'iPhone Pedestrian Route Sheet' },
+    { src: '/images/pagesjaunes/Android wear/screens/cover_yellow strap apps.webp', type: 'image', caption: lang === 'fr' ? 'Stratégie Design System Yellowstrap' : 'Yellowstrap Design System Strategy' },
   ];
 
   // Combine and deduplicate by src
@@ -476,6 +513,7 @@ export const PagesJaunesPage: React.FC<PagesJaunesPageProps> = ({
   onViewModeChange,
   lang = 'en',
   onContact,
+  onNavigateToProject,
 }) => {
   const galleryItems = getPagesJaunesGalleryItems(lang);
   const allImages = getAllImages(lang);
@@ -487,6 +525,10 @@ export const PagesJaunesPage: React.FC<PagesJaunesPageProps> = ({
   const initialCaseStudyMode = viewMode === 'executive' ? 'executive' : (viewMode === 'caseStudy' ? 'full' : 'executive');
   const [caseStudyMode, setCaseStudyMode] = useState<'executive' | 'full'>(initialCaseStudyMode);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [activeSection, setActiveSection] = useState('top');
+  const [showNav, setShowNav] = useState(false);
+  const sections = TOC_SECTIONS[lang];
+  const isDark = systemTheme === 'dark';
 
   // Sync caseStudyMode when viewMode changes from outside
   useEffect(() => {
@@ -504,6 +546,71 @@ export const PagesJaunesPage: React.FC<PagesJaunesPageProps> = ({
       container.scrollTo({ top: 0, behavior: 'instant' });
     }
   }, [caseStudyMode, viewMode]);
+
+  // Track scroll position and update active section (only in full mode)
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const handleScroll = () => {
+      const scrollTop = container.scrollTop;
+
+      // Show nav after scrolling past hero (300px)
+      setShowNav(scrollTop > 300);
+
+      // If at the very top, set 'top' as active
+      if (scrollTop < 100) {
+        setActiveSection('top');
+        return;
+      }
+
+      // Find active section (skip 'top' which has no DOM element)
+      const sectionElements = sections
+        .filter(s => s.id !== 'top')
+        .map(s => ({
+          id: s.id,
+          element: document.getElementById(s.id)
+        })).filter(s => s.element);
+
+      for (let i = sectionElements.length - 1; i >= 0; i--) {
+        const section = sectionElements[i];
+        if (section.element) {
+          const rect = section.element.getBoundingClientRect();
+          if (rect.top <= 200) {
+            setActiveSection(section.id);
+            break;
+          }
+        }
+      }
+    };
+
+    container.addEventListener('scroll', handleScroll);
+    return () => container.removeEventListener('scroll', handleScroll);
+  }, [sections]);
+
+  // Scroll to section with proper offset for sticky mini-nav
+  const scrollToSection = (sectionId: string) => {
+    if (sectionId === 'top') {
+      containerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    const element = document.getElementById(sectionId);
+    if (element && containerRef.current) {
+      // Get element position relative to the scrollable container
+      const elementRect = element.getBoundingClientRect();
+      const currentScroll = containerRef.current.scrollTop;
+      // The container starts at 64px from viewport top (under header)
+      // The TOC bar is 48px tall and overlaps the container content
+      // So we need to offset by TOC height + some padding
+      const tocOffset = 48 + 16;
+      // elementRect.top is relative to viewport, container top is at 64px
+      const elementPosition = currentScroll + elementRect.top - 64 - tocOffset;
+      containerRef.current.scrollTo({
+        top: elementPosition,
+        behavior: 'smooth'
+      });
+    }
+  };
 
   // Open lightbox with specific image
   const openLightbox = (imageSrc: string, startTime: number = 0) => {
@@ -552,20 +659,13 @@ export const PagesJaunesPage: React.FC<PagesJaunesPageProps> = ({
         <div className="w-full px-6 h-16 flex items-center gap-4">
           {/* Left - Title */}
           <div className="flex-shrink-0">
-            <div className="flex items-center gap-2">
-              <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
-                viewMode === 'gallery' ? 'bg-yellow-500' : (systemTheme === 'dark' ? 'bg-yellow-500' : 'bg-yellow-400')
-              }`}>
-                <span className="text-black font-bold text-sm">PJ</span>
-              </div>
-              <h1
-                className={`font-semibold text-lg tracking-[-0.02em] ${
-                  viewMode === 'gallery' ? 'text-white' : (systemTheme === 'dark' ? 'text-white' : 'text-gray-900')
-                }`}
-              >
-                PagesJaunes
-              </h1>
-            </div>
+            <h1
+              className={`font-semibold text-lg tracking-[-0.02em] ${
+                viewMode === 'gallery' ? 'text-white' : (systemTheme === 'dark' ? 'text-white' : 'text-gray-900')
+              }`}
+            >
+              PagesJaunes
+            </h1>
           </div>
 
           {/* Center - Toggle Switch with animated pill (compact on mobile) */}
@@ -655,6 +755,16 @@ export const PagesJaunesPage: React.FC<PagesJaunesPageProps> = ({
         </div>
       </header>
 
+      {/* TOC Sidebar - Persistent left navigation for full mode */}
+      <CaseStudyTOCSidebar
+        sections={sections}
+        activeSection={activeSection}
+        onSectionClick={scrollToSection}
+        isDark={isDark}
+        isVisible={showNav && viewMode !== 'gallery' && caseStudyMode === 'full'}
+        lang={lang}
+      />
+
       {/* Main content */}
       <div
         ref={containerRef}
@@ -715,6 +825,7 @@ export const PagesJaunesPage: React.FC<PagesJaunesPageProps> = ({
                 lang={lang}
                 onImageClick={(src) => openLightbox(src)}
                 onContact={onContact}
+                onNavigateToProject={onNavigateToProject}
               />
             </motion.div>
           )}

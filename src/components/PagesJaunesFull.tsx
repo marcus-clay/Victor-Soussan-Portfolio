@@ -19,7 +19,9 @@ import {
   Palette,
   Watch,
   CheckCircle2,
-  ArrowRight
+  ArrowRight,
+  Heart,
+  Search
 } from 'lucide-react';
 
 interface PagesJaunesFullProps {
@@ -27,6 +29,7 @@ interface PagesJaunesFullProps {
   lang: 'en' | 'fr';
   onImageClick: (src: string) => void;
   onContact?: () => void;
+  onNavigateToProject?: (projectId: string) => void;
 }
 
 // ============================================================================
@@ -39,57 +42,64 @@ interface PagesJaunesFullProps {
 
 const GALLERY_IMAGES = {
   homepage: {
-    main: '/images/pagesjaunes/pagesjaunes homepage.jpeg',
-    variations: '/images/pagesjaunes/pagesjaunes homepage - variations.jpeg',
+    main: '/images/pagesjaunes/pagesjaunes homepage.webp',
+    variations: '/images/pagesjaunes/pagesjaunes homepage - variations.webp',
   },
   homepageIpad: {
-    main: '/images/pagesjaunes/pagesjaunes hp ipad.jpeg',
-    variations: '/images/pagesjaunes/pagesjaunes hp ipad variations.jpeg',
+    main: '/images/pagesjaunes/pagesjaunes hp ipad.webp',
+    variations: '/images/pagesjaunes/pagesjaunes hp ipad variations.webp',
   },
   artDirection: {
-    before: '/images/pagesjaunes/pj 02@2x.png',
-    after: '/images/pagesjaunes/pj 03@2x.png',
+    before: '/images/pagesjaunes/pj 02@2x.webp',
+    after: '/images/pagesjaunes/pj 03@2x.webp',
   },
   search: {
-    flow: '/images/pagesjaunes/pj 04@2x.png',
+    flow: '/images/pagesjaunes/pj 04@2x.webp',
     prototype: '/images/pagesjaunes/2020_NES_moteur_Android_img.mp4',
   },
   account: {
-    flow: '/images/pagesjaunes/pj 05@2x.png',
-    engagement: '/images/pagesjaunes/pj 06@2x.png',
+    flow: '/images/pagesjaunes/pj 05@2x.webp',
+    engagement: '/images/pagesjaunes/pj 06@2x.webp',
   },
   maps: {
-    system: '/images/pagesjaunes/pj 07@2x.png',
-    multidevice: '/images/pagesjaunes/pj 08@2x.png',
-    ipadPedestrian: '/images/pagesjaunes/pj_ipad_itinéraire_piéton.jpg',
-    ipadTransit: '/images/pagesjaunes/pj_ipad_itinéraire_transports.jpg',
-    ipadDriving: '/images/pagesjaunes/pj_ipad_itinéraire_voiture.jpg',
-    iphonePedestrian: '/images/pagesjaunes/pj_iphone_itinéraire_piéton.jpg',
-    iphoneTransit: '/images/pagesjaunes/pj_iphone_itinéraire_transports.jpg',
-    iphoneDriving: '/images/pagesjaunes/pj_iphone_itinéraire_voiture.jpg',
-    iphoneFlows: '/images/pagesjaunes/pagejaunes itineraire iphone.jpeg',
-    ipadItinerary: '/images/pagesjaunes/pagejaunes itineraire ipad.jpeg',
+    system: '/images/pagesjaunes/pj 07@2x.webp',
+    multidevice: '/images/pagesjaunes/pj 08@2x.webp',
+    ipadPedestrian: '/images/pagesjaunes/pj_ipad_itinéraire_piéton.webp',
+    ipadTransit: '/images/pagesjaunes/pj_ipad_itinéraire_transports.webp',
+    ipadDriving: '/images/pagesjaunes/pj_ipad_itinéraire_voiture.webp',
+    iphonePedestrian: '/images/pagesjaunes/pj_iphone_itinéraire_piéton.webp',
+    iphoneTransit: '/images/pagesjaunes/pj_iphone_itinéraire_transports.webp',
+    iphoneDriving: '/images/pagesjaunes/pj_iphone_itinéraire_voiture.webp',
+    iphoneFlows: '/images/pagesjaunes/pagejaunes itineraire iphone.webp',
+    ipadItinerary: '/images/pagesjaunes/pagejaunes itineraire ipad.webp',
   },
   wear: {
-    flows: '/images/pagesjaunes/pj android wear flows.jpeg',
-    uiModes: '/images/pagesjaunes/pj android wear ui modes.jpeg',
-    ui: '/images/pagesjaunes/pj android wear ui.jpeg',
-    flowsDetailed: '/images/pagesjaunes/Android wear/Android Wear UI and Interactions.jpg',
-    components: '/images/pagesjaunes/Android wear/android_wear_design_02.png',
-    ambient: '/images/pagesjaunes/Android wear/Android Wear - ambient mode sketches.jpg',
-    insituStore: '/images/pagesjaunes/Android wear/android_wear_insitu_store_01.png',
-    insituDetail: '/images/pagesjaunes/Android wear/maquette_insitu_FD_03 (1).png',
-    sketches: '/images/pagesjaunes/Android wear/IMG_20151016_105901.jpg',
-    devSession: '/images/pagesjaunes/Android wear/IMG_20151214_183749.jpg',
-    designWork: '/images/pagesjaunes/Android wear/IMG_20151113_153404.jpg',
+    flows: '/images/pagesjaunes/pj android wear flows.webp',
+    uiModes: '/images/pagesjaunes/pj android wear ui modes.webp',
+    ui: '/images/pagesjaunes/pj android wear ui.webp',
+    flowsDetailed: '/images/pagesjaunes/Android wear/Android Wear UI and Interactions.webp',
+    components: '/images/pagesjaunes/Android wear/android_wear_design_02.webp',
+    ambient: '/images/pagesjaunes/Android wear/Android Wear - ambient mode sketches.webp',
+    insituStore: '/images/pagesjaunes/Android wear/android_wear_insitu_store_01.webp',
+    insituDetail: '/images/pagesjaunes/Android wear/maquette_insitu_FD_03 (1).webp',
+    sketches: '/images/pagesjaunes/Android wear/IMG_20151016_105901.webp',
+    devSession: '/images/pagesjaunes/Android wear/IMG_20151214_183749.webp',
+    thumbnail: '/images/pagesjaunes/Android wear/android_wear_thumbnail.webp',
+    yAllerBtn: '/images/pagesjaunes/Android wear/screens/09 Y Aller BTN.webp',
+    designWork: '/images/pagesjaunes/Android wear/IMG_20151113_153404.webp',
     prototypeVideo1: '/images/pagesjaunes/Android wear/VID_20151202_184124.mp4',
     prototypeVideo2: '/images/pagesjaunes/Android wear/VID_20151218_100148.mp4',
   },
   contributions: {
-    desktopReview: '/images/pagesjaunes/24_06_2015_avis_edition.jpg',
+    desktopReview: '/images/pagesjaunes/24_06_2015_avis_edition.webp',
   },
   tooltips: {
-    redesign: '/images/pagesjaunes/pagejaunes tooltip redesign.jpeg',
+    redesign: '/images/pagesjaunes/pagejaunes tooltip redesign.webp',
+  },
+  microInteractions: {
+    navDrawer: '/images/pagesjaunes/micro-interactions/NES_Anim_Nav_Drawer.gif',
+    favorites: '/images/pagesjaunes/micro-interactions/anim_favoris.mp4',
+    historyRemarketing: '/images/pagesjaunes/micro-interactions/Anim_remarketing_historique.mp4',
   },
 };
 
@@ -100,7 +110,7 @@ const CAPTIONS = {
       variations: 'Eight contextual hero images featuring local pros: the baker, mechanic, florist. Each builds trust by showing the human behind the service.',
     },
     homepageIpad: {
-      main: 'Tablet split-view respects the user\'s mental model: browse categories on the left, take action on the right. Two tasks visible, one screen.',
+      main: 'Two homepage variants on iPad showcasing contextual hero photography. Each image features a local professional—creating warmth and trust at first glance.',
       variations: 'Responsive hero images across iPhone 4, Retina, iPad, Android phone/tablet. Auto-detection of image focal point with viewport-adaptive cropping. Co-developed with Android lead dev Alexandre Badie.',
     },
     artDirection: {
@@ -137,6 +147,8 @@ const CAPTIONS = {
       insituDetail: 'Business detail card in context. Key info hierarchy: name, category, status, rating, phone, address. All scannable in under 2 seconds.',
       sketches: 'Early wireframe sketches for the reminder flow. User can set a reminder after calling a business to pick up an order later.',
       devSession: 'Real device testing with Thibault. Two watches connected, smartphone synced, iterating on the build in real-time.',
+      thumbnail: 'PagesJaunes Android Wear app on watch face. Glanceable local search for wearables.',
+      yAllerBtn: 'Navigation action screen. One-tap "Y Aller" (Go There) button triggers Google Maps handoff.',
       designWork: 'Keynote design session. Building the full detail card flow: business info, map preview, hours, budget, action buttons.',
       prototypeVideo: 'Working prototype on real hardware. Full flow from app launch to business detail to phone call handoff.',
     },
@@ -146,6 +158,13 @@ const CAPTIONS = {
     tooltips: {
       redesign: 'Contextual tooltips guide feature discovery. Clear visual hierarchy, animated entrance, minimal disruption to the user flow.',
     },
+    microInteractions: {
+      sectionTitle: 'Micro-Interactions',
+      intro: 'Motion specs I delivered to dev teams. These animations shipped in production across iOS and Android.',
+      navDrawer: 'Material Design Navigation Drawer. Familiar Android pattern, PagesJaunes colors. Users already know how this works.',
+      favorites: 'Heart animation on "Add to Favorites". The bounce gives instant feedback that the action worked.',
+      historyRemarketing: 'History screen with photo upload prompt. Encouraging users to share their experience after visiting a business.',
+    },
   },
   fr: {
     homepage: {
@@ -153,7 +172,7 @@ const CAPTIONS = {
       variations: 'Huit visuels contextuels de pros locaux : boulanger, garagiste, fleuriste. Chacun crée la confiance en montrant l\'humain derrière le service.',
     },
     homepageIpad: {
-      main: 'Le split-view tablette respecte le modèle mental de l\'utilisateur : parcourir les catégories à gauche, agir à droite. Deux tâches visibles, un seul écran.',
+      main: 'Deux variantes de homepage sur iPad avec photographies de professionnels en fond. Chaque visuel met en avant un pro local — créant chaleur et confiance dès le premier regard.',
       variations: 'Visuels héros responsive sur iPhone 4, Retina, iPad, Android phone/tablet. Détection auto du point focal avec recadrage adapté au viewport. Co-développé avec Alexandre Badie, lead dev Android.',
     },
     artDirection: {
@@ -190,6 +209,8 @@ const CAPTIONS = {
       insituDetail: 'Fiche pro en contexte. Hiérarchie d\'info clé : nom, catégorie, statut, note, tel, adresse. Scannable en moins de 2 secondes.',
       sketches: 'Wireframes précoces du flow rappel. L\'utilisateur peut programmer un rappel après avoir appelé un commerce pour récupérer une commande.',
       devSession: 'Test sur device réel avec Thibault. Deux montres connectées, smartphone sync, itérations sur le build en temps réel.',
+      thumbnail: 'App PagesJaunes Android Wear sur cadran de montre. Infos locales lisibles d\'un coup d\'œil.',
+      yAllerBtn: 'Écran d\'action navigation. Bouton "Y Aller" en un tap déclenche le handoff vers Google Maps.',
       designWork: 'Session design Keynote. Construction du flow complet fiche détail : infos commerce, aperçu carte, horaires, budget, boutons d\'action.',
       prototypeVideo: 'Prototype fonctionnel sur hardware réel. Flow complet du lancement app à la fiche détail jusqu\'au handoff appel téléphone.',
     },
@@ -198,6 +219,13 @@ const CAPTIONS = {
     },
     tooltips: {
       redesign: 'Tooltips contextuels pour guider la découverte des features. Hiérarchie visuelle claire, animation d\'entrée, perturbation minimale du flow utilisateur.',
+    },
+    microInteractions: {
+      sectionTitle: 'Micro-Interactions',
+      intro: 'Specs motion livrées aux équipes dev. Ces animations sont passées en production sur iOS et Android.',
+      navDrawer: 'Navigation Drawer Material Design. Pattern Android familier, couleurs PagesJaunes. Les utilisateurs savent déjà comment ça marche.',
+      favorites: 'Animation cœur sur "Ajouter aux Favoris". Le rebond donne un feedback immédiat que l\'action a fonctionné.',
+      historyRemarketing: 'Écran Historique avec incitation à uploader une photo. Encourager les utilisateurs à partager leur expérience après une visite.',
     },
   },
 };
@@ -236,7 +264,7 @@ const TRANSLATIONS = {
       goalsTitle: 'Key Objectives',
       goals: [
         'Redesign the homepage with intent-first search',
-        'Ship native onboarding for iOS & Android v8.0',
+        'Ship native onboarding for iOS & Android',
         'Build pedestrian navigation (Mappy API)',
         'Audit and roadmap the design system (Yellowstrap)'
       ]
@@ -252,8 +280,21 @@ const TRANSLATIONS = {
       simplification: 'Search Simplification',
       simplificationDesc: 'Replaced dual fields with a single search bar. Reduced visual clutter. Unified tab language across iOS and Android.'
     },
+    searchEngine: {
+      sectionTitle: 'Search Engine Evolution',
+      question: 'How do you redesign the revenue engine without losing users?',
+      intro: 'The search engine is the heart of PagesJaunes. With close to €500M in annual revenue tied to search rankings and visibility, every change carried high stakes. Users needed to find professionals quickly—the business needed to preserve the ranking model that monetized every query.',
+      stakes: 'High Stakes',
+      stakesDesc: 'The search engine powered the entire business model. Ranking position in suggestions and results directly impacted advertiser revenue. Any misstep in the redesign could cost millions.',
+      model: 'The "What + Where" Model',
+      modelDesc: 'Search structured around two core questions: What professional or company are you looking for? Where do you need them? This geolocation-centric approach helped users find nearby professionals, view their details, call them, or navigate there.',
+      materialDesign: 'Material Design Transitions',
+      materialDesignDesc: 'We implemented Google\'s Material Design patterns with Activity transitions and shared element animations. The search bar elegantly transforms into full-screen results—maintaining context while expanding functionality.',
+      shipped: 'Shipped to Production',
+      shippedDesc: 'This prototype became the production implementation deployed on Google Play Store. Smooth transitions reduced perceived latency while the familiar search model preserved user habits built over years.'
+    },
     onboarding: {
-      sectionTitle: 'Native Onboarding v8.0',
+      sectionTitle: 'Native Onboarding',
       question: 'How do you guide 22M users through a major app update?',
       intro: 'We were launching a major version update. Users needed to discover the new features without being blocked. We designed short, non-blocking animations at first launch.',
       ios: 'iOS Implementation',
@@ -307,7 +348,7 @@ const TRANSLATIONS = {
         'Shipped to Google Play, December 2015'
       ],
       approach: 'Design Approach',
-      approachDesc: 'Learning the OS guidelines, assessing Android Wear constraints, matching PagesJaunes branding. Designing for watch with context in mind: low-effort usage, glanceable information, quick actions.',
+      approachDesc: 'Learning the OS guidelines, assessing Android Wear constraints, matching PagesJaunes branding. Designing for watch with context in mind: low-effort usage, information readable at a glance, quick actions.',
       features: 'What We Built',
       featuresList: [
         'Card-based UI with ratings, status, and contact CTA',
@@ -423,7 +464,7 @@ const TRANSLATIONS = {
       goalsTitle: 'Objectifs Clés',
       goals: [
         'Refonte de la homepage avec recherche par intention',
-        'Livrer l\'onboarding natif pour iOS & Android v8.0',
+        'Livrer l\'onboarding natif pour iOS & Android',
         'Construire la navigation piétonne (API Mappy)',
         'Auditer et planifier le design system (Yellowstrap)'
       ]
@@ -439,8 +480,21 @@ const TRANSLATIONS = {
       simplification: 'Simplification Recherche',
       simplificationDesc: 'Remplacement des deux champs par une barre de recherche unique. Réduction du bruit visuel. Unification du langage des onglets sur iOS et Android.'
     },
+    searchEngine: {
+      sectionTitle: 'Évolution Moteur de Recherche',
+      question: 'Comment refondre le moteur de revenus sans perdre les utilisateurs ?',
+      intro: 'Le moteur de recherche est le cœur de PagesJaunes. Avec près de 500M€ de revenus annuels liés au ranking et à la visibilité, chaque changement était à haut risque. Les utilisateurs devaient trouver les professionnels rapidement — le business devait préserver le modèle de ranking qui monétisait chaque requête.',
+      stakes: 'Enjeux Élevés',
+      stakesDesc: 'Le moteur de recherche alimentait tout le modèle économique. La position dans les suggestions et résultats impactait directement les revenus publicitaires. Toute erreur de redesign pouvait coûter des millions.',
+      model: 'Le Modèle "Quoi + Où"',
+      modelDesc: 'Recherche structurée autour de deux questions : Quel professionnel ou entreprise cherchez-vous ? Où en avez-vous besoin ? Cette approche géolocalisée aide les utilisateurs à trouver des pros à proximité, consulter leurs infos, les appeler ou s\'y rendre.',
+      materialDesign: 'Transitions Material Design',
+      materialDesignDesc: 'On a implémenté les patterns Material Design de Google avec transitions Activity et animations d\'éléments partagés. La barre de recherche se transforme élégamment en résultats plein écran — maintenant le contexte tout en étendant les fonctionnalités.',
+      shipped: 'Livré en Production',
+      shippedDesc: 'Ce prototype est devenu l\'implémentation production déployée sur le Google Play Store. Les transitions fluides réduisent la latence perçue tout en préservant les habitudes utilisateur construites au fil des années.'
+    },
     onboarding: {
-      sectionTitle: 'Onboarding Natif v8.0',
+      sectionTitle: 'Onboarding Natif',
       question: 'Comment guider 22M d\'utilisateurs à travers une mise à jour majeure ?',
       intro: 'On lançait une version majeure. Les utilisateurs devaient découvrir les nouvelles features sans être bloqués. On a conçu des animations courtes et non-bloquantes au premier lancement.',
       ios: 'Implémentation iOS',
@@ -612,14 +666,15 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
   systemTheme,
   lang,
   onImageClick,
-  onContact
+  onContact,
+  onNavigateToProject
 }) => {
   const isDark = systemTheme === 'dark';
   const t = TRANSLATIONS[lang];
 
   return (
     <div className={`${isDark ? 'bg-[#0a0a0a]' : 'bg-white'}`}>
-      <div className="max-w-[1480px] mx-auto px-10 py-12 md:py-16">
+      <div className="max-w-[1200px] mx-auto px-6 md:px-10 py-12 md:py-16">
 
         {/* ================================================================ */}
         {/* HERO SECTION */}
@@ -771,7 +826,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
         {/* OVERVIEW SECTION */}
         {/* ================================================================ */}
         <FadeInSection>
-          <section className="mb-24 md:mb-32">
+          <section id="overview" className="mb-24 md:mb-32">
             <h1 className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-4 tracking-tight ${
               isDark ? 'text-white' : 'text-gray-900'
             }`}>
@@ -825,12 +880,12 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
         {/* HOMEPAGE SECTION */}
         {/* ================================================================ */}
         <FadeInSection>
-          <section className="mb-24 md:mb-32">
+          <section id="homepage" className="mb-24 md:mb-32">
             <div className="flex items-center gap-3 mb-4">
               <div className={`p-2 rounded-xl ${isDark ? 'bg-yellow-500/20' : 'bg-yellow-100'}`}>
                 <Smartphone size={20} className={isDark ? 'text-yellow-400' : 'text-yellow-600'} />
               </div>
-              <h2 className={`text-2xl md:text-3xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
                 {t.homepage.sectionTitle}
               </h2>
             </div>
@@ -889,42 +944,6 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
               </div>
               <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
                 {CAPTIONS[lang].homepage.main}
-              </figcaption>
-            </figure>
-
-            {/* Search Engine Prototype Video */}
-            <figure className="mb-8">
-              <div
-                onClick={() => onImageClick(GALLERY_IMAGES.search.prototype)}
-                className={`group rounded-2xl overflow-hidden border cursor-pointer transition-transform duration-300 hover:scale-[1.01] relative ${
-                  isDark ? 'border-white/10' : 'border-gray-200'
-                }`}
-                style={{ backgroundColor: '#C8C8C8', paddingBottom: '66.67%' }}
-              >
-                <div className="absolute inset-0 flex items-center justify-center">
-                  {/* Video with drop shadow */}
-                  <div className="relative rounded-lg overflow-hidden" style={{ maxWidth: '320px', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.35)' }}>
-                    <video
-                      src={GALLERY_IMAGES.search.prototype}
-                      className="w-full h-auto"
-                      muted
-                      playsInline
-                      loop
-                      autoPlay
-                    />
-                  </div>
-                </div>
-                {/* Play overlay on hover */}
-                <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/10 transition-colors pointer-events-none">
-                  <div className="w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-md transition-all duration-300 opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 bg-white/30">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="white" className="ml-1">
-                      <polygon points="5 3 19 12 5 21 5 3" />
-                    </svg>
-                  </div>
-                </div>
-              </div>
-              <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                {CAPTIONS[lang].search.prototype}
               </figcaption>
             </figure>
 
@@ -992,10 +1011,49 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
         </FadeInSection>
 
         {/* ================================================================ */}
-        {/* SEARCH FLOW SECTION */}
+        {/* SEARCH ENGINE EVOLUTION SECTION */}
         {/* ================================================================ */}
         <FadeInSection>
-          <section className="mb-24 md:mb-32">
+          <section id="search" className="mb-24 md:mb-32">
+            <div className="flex items-center gap-3 mb-4">
+              <div className={`p-2 rounded-xl ${isDark ? 'bg-yellow-500/20' : 'bg-yellow-100'}`}>
+                <Search size={20} className={isDark ? 'text-yellow-400' : 'text-yellow-600'} />
+              </div>
+              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                {t.searchEngine.sectionTitle}
+              </h2>
+            </div>
+
+            <p className={`text-lg italic mb-6 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+              {t.searchEngine.question}
+            </p>
+
+            <p className={`text-base leading-relaxed mb-8 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+              {t.searchEngine.intro}
+            </p>
+
+            {/* Key Points Grid */}
+            <div className="grid md:grid-cols-2 gap-6 mb-8">
+              <div className={`p-5 rounded-2xl ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}>
+                <p className={`text-base font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                  {t.searchEngine.stakes}
+                </p>
+                <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                  {t.searchEngine.stakesDesc}
+                </p>
+              </div>
+
+              <div className={`p-5 rounded-2xl ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}>
+                <p className={`text-base font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                  {t.searchEngine.model}
+                </p>
+                <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                  {t.searchEngine.modelDesc}
+                </p>
+              </div>
+            </div>
+
+            {/* Search Flow Image */}
             <figure className="mb-8">
               <div
                 onClick={() => onImageClick(GALLERY_IMAGES.search.flow)}
@@ -1015,24 +1073,52 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
               </figcaption>
             </figure>
 
+            {/* Material Design Implementation */}
+            <div className="grid md:grid-cols-2 gap-6 mb-8">
+              <div className={`p-5 rounded-2xl ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}>
+                <p className={`text-base font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                  {t.searchEngine.materialDesign}
+                </p>
+                <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                  {t.searchEngine.materialDesignDesc}
+                </p>
+              </div>
+
+              <div className={`p-5 rounded-2xl ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}>
+                <p className={`text-base font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                  {t.searchEngine.shipped}
+                </p>
+                <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                  {t.searchEngine.shippedDesc}
+                </p>
+              </div>
+            </div>
+
             {/* Search Engine Prototype Video */}
-            <figure>
+            <figure className="mb-8">
               <div
                 onClick={() => onImageClick(GALLERY_IMAGES.search.prototype)}
-                className={`rounded-2xl overflow-hidden border cursor-pointer group relative ${
+                className={`group rounded-2xl overflow-hidden border cursor-pointer transition-transform duration-300 hover:scale-[1.01] relative ${
                   isDark ? 'border-white/10' : 'border-gray-200'
                 }`}
+                style={{ backgroundColor: '#C8C8C8', width: '100%', height: 0, paddingTop: '66.67%', position: 'relative' }}
               >
-                <video
-                  src={GALLERY_IMAGES.search.prototype}
-                  className="w-full h-auto"
-                  muted
-                  playsInline
-                  loop
-                  autoPlay
-                />
-                <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/20 transition-colors">
-                  <div className="w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-md transition-all duration-300 opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 bg-white/20">
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  {/* Video with drop shadow */}
+                  <div className="relative rounded-lg overflow-hidden" style={{ maxWidth: '384px', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.35)' }}>
+                    <video
+                      src={GALLERY_IMAGES.search.prototype}
+                      className="w-full h-auto"
+                      muted
+                      playsInline
+                      loop
+                      autoPlay
+                    />
+                  </div>
+                </div>
+                {/* Play overlay on hover */}
+                <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/10 transition-colors pointer-events-none">
+                  <div className="w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-md transition-all duration-300 opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 bg-white/30">
                     <svg width="28" height="28" viewBox="0 0 24 24" fill="white" className="ml-1">
                       <polygon points="5 3 19 12 5 21 5 3" />
                     </svg>
@@ -1050,12 +1136,12 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
         {/* ONBOARDING SECTION */}
         {/* ================================================================ */}
         <FadeInSection>
-          <section className="mb-24 md:mb-32">
+          <section id="onboarding" className="mb-24 md:mb-32">
             <div className="flex items-center gap-3 mb-4">
               <div className={`p-2 rounded-xl ${isDark ? 'bg-blue-500/20' : 'bg-blue-100'}`}>
                 <Users size={20} className={isDark ? 'text-blue-400' : 'text-blue-600'} />
               </div>
-              <h2 className={`text-2xl md:text-3xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
                 {t.onboarding.sectionTitle}
               </h2>
             </div>
@@ -1164,12 +1250,12 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
         {/* NAVIGATION SECTION */}
         {/* ================================================================ */}
         <FadeInSection>
-          <section className="mb-24 md:mb-32">
+          <section id="navigation" className="mb-24 md:mb-32">
             <div className="flex items-center gap-3 mb-4">
               <div className={`p-2 rounded-xl ${isDark ? 'bg-green-500/20' : 'bg-green-100'}`}>
                 <Map size={20} className={isDark ? 'text-green-400' : 'text-green-600'} />
               </div>
-              <h2 className={`text-2xl md:text-3xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
                 {t.navigation.sectionTitle}
               </h2>
             </div>
@@ -1293,12 +1379,12 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
         {/* ACCOUNT SECTION */}
         {/* ================================================================ */}
         <FadeInSection>
-          <section className="mb-24 md:mb-32">
+          <section id="account" className="mb-24 md:mb-32">
             <div className="flex items-center gap-3 mb-4">
               <div className={`p-2 rounded-xl ${isDark ? 'bg-cyan-500/20' : 'bg-cyan-100'}`}>
                 <Users size={20} className={isDark ? 'text-cyan-400' : 'text-cyan-600'} />
               </div>
-              <h2 className={`text-2xl md:text-3xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
                 {t.account.sectionTitle}
               </h2>
             </div>
@@ -1374,337 +1460,214 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
         </FadeInSection>
 
         {/* ================================================================ */}
+        {/* MICRO-INTERACTIONS SECTION */}
+        {/* ================================================================ */}
+        <FadeInSection>
+          <section id="micro-interactions" className="mb-24 md:mb-32">
+            <div className="flex items-center gap-3 mb-4">
+              <div className={`p-2 rounded-xl ${isDark ? 'bg-pink-500/20' : 'bg-pink-100'}`}>
+                <Heart size={20} className={isDark ? 'text-pink-400' : 'text-pink-600'} />
+              </div>
+              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                {CAPTIONS[lang].microInteractions.sectionTitle}
+              </h2>
+            </div>
+
+            <p className={`text-base leading-relaxed mb-8 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+              {CAPTIONS[lang].microInteractions.intro}
+            </p>
+
+            {/* Micro-interactions Grid - 3 columns, 2:3 aspect ratio */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Navigation Drawer */}
+              <figure>
+                <div
+                  onClick={() => onImageClick(GALLERY_IMAGES.microInteractions.navDrawer)}
+                  className={`group rounded-2xl overflow-hidden border cursor-pointer transition-transform duration-300 hover:scale-[1.01] ${
+                    isDark ? 'border-white/10' : 'border-gray-200'
+                  }`}
+                >
+                  <div
+                    className="aspect-[2/3] flex items-center justify-center"
+                    style={{ backgroundColor: '#C8C8C8' }}
+                  >
+                    <img
+                      loading="lazy"
+                      src={GALLERY_IMAGES.microInteractions.navDrawer}
+                      alt="Material Design Navigation Drawer"
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                </div>
+                <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                  {CAPTIONS[lang].microInteractions.navDrawer}
+                </figcaption>
+              </figure>
+
+              {/* Favorites Animation */}
+              <figure>
+                <div
+                  onClick={() => onImageClick(GALLERY_IMAGES.microInteractions.favorites)}
+                  className={`group rounded-2xl overflow-hidden border cursor-pointer transition-transform duration-300 hover:scale-[1.01] relative ${
+                    isDark ? 'border-white/10' : 'border-gray-200'
+                  }`}
+                >
+                  <div
+                    className="aspect-[2/3] flex items-center justify-center"
+                    style={{ backgroundColor: '#C8C8C8' }}
+                  >
+                    <video
+                      src={GALLERY_IMAGES.microInteractions.favorites}
+                      className="w-full h-full object-contain"
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                    />
+                  </div>
+                </div>
+                <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                  {CAPTIONS[lang].microInteractions.favorites}
+                </figcaption>
+              </figure>
+
+              {/* History Remarketing Animation */}
+              <figure>
+                <div
+                  onClick={() => onImageClick(GALLERY_IMAGES.microInteractions.historyRemarketing)}
+                  className={`group rounded-2xl overflow-hidden border cursor-pointer transition-transform duration-300 hover:scale-[1.01] relative ${
+                    isDark ? 'border-white/10' : 'border-gray-200'
+                  }`}
+                >
+                  <div
+                    className="aspect-[2/3] flex items-center justify-center"
+                    style={{ backgroundColor: '#C8C8C8' }}
+                  >
+                    <video
+                      src={GALLERY_IMAGES.microInteractions.historyRemarketing}
+                      className="w-full h-full object-contain"
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                    />
+                  </div>
+                </div>
+                <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                  {CAPTIONS[lang].microInteractions.historyRemarketing}
+                </figcaption>
+              </figure>
+            </div>
+          </section>
+        </FadeInSection>
+
+        {/* ================================================================ */}
         {/* ANDROID WEAR SECTION */}
         {/* ================================================================ */}
         <FadeInSection>
-          <section className="mb-24 md:mb-32">
+          <section id="wear" className="mb-24 md:mb-32">
             <div className="flex items-center gap-3 mb-4">
-              <div className={`p-2 rounded-xl ${isDark ? 'bg-purple-500/20' : 'bg-purple-100'}`}>
-                <Watch size={20} className={isDark ? 'text-purple-400' : 'text-purple-600'} />
+              <div className={`p-2 rounded-xl ${isDark ? 'bg-white/10' : 'bg-gray-100'}`}>
+                <Watch size={20} className={isDark ? 'text-gray-300' : 'text-gray-600'} />
               </div>
-              <h2 className={`text-2xl md:text-3xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
                 {t.wear.sectionTitle}
               </h2>
             </div>
 
-            <p className={`text-base leading-relaxed mb-6 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+            <p className={`text-base leading-relaxed mb-8 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
               {t.wear.intro}
             </p>
 
-            <blockquote className={`text-lg italic mb-8 pl-4 border-l-4 ${
-              isDark ? 'text-gray-400 border-purple-500' : 'text-gray-500 border-purple-400'
-            }`}>
-              {t.wear.scenario}
-            </blockquote>
-
-            {/* Context & Approach Grid */}
-            <div className="grid md:grid-cols-2 gap-6 mb-8">
-              <div className={`p-5 rounded-2xl ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}>
-                <p className={`text-base font-semibold mb-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                  {t.wear.context}
-                </p>
-                <ul className={`text-sm space-y-2 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                  {t.wear.contextItems.map((item, idx) => (
-                    <li key={idx} className="flex items-start gap-2">
-                      <CheckCircle2 size={14} className="text-purple-500 mt-0.5 flex-shrink-0" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className={`p-5 rounded-2xl ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}>
-                <p className={`text-base font-semibold mb-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                  {t.wear.approach}
-                </p>
-                <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                  {t.wear.approachDesc}
-                </p>
-              </div>
-            </div>
-
-            {/* Features & Deliverables Grid */}
-            <div className="grid md:grid-cols-2 gap-6 mb-8">
-              <div className={`p-5 rounded-2xl ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}>
-                <p className={`text-base font-semibold mb-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                  {t.wear.features}
-                </p>
-                <ul className={`text-sm space-y-2 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                  {t.wear.featuresList.map((feature, idx) => (
-                    <li key={idx} className="flex items-start gap-2">
-                      <CheckCircle2 size={14} className="text-purple-500 mt-0.5 flex-shrink-0" />
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className={`p-5 rounded-2xl ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}>
-                <p className={`text-base font-semibold mb-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                  {t.wear.deliverables}
-                </p>
-                <ul className={`text-sm space-y-2 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                  {t.wear.deliverablesList.map((item, idx) => (
-                    <li key={idx} className="flex items-start gap-2">
-                      <CheckCircle2 size={14} className="text-purple-500 mt-0.5 flex-shrink-0" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-
-            {/* Thibault Fighiera Collaborator Card */}
-            <div className={`p-5 rounded-2xl border mb-8 ${isDark ? 'bg-purple-900/10 border-purple-500/20' : 'bg-purple-50 border-purple-200'}`}>
-              <p className={`text-xs font-medium uppercase tracking-wider mb-3 ${isDark ? 'text-purple-400' : 'text-purple-600'}`}>
-                {lang === 'en' ? 'Key Collaborator' : 'Collaborateur Clé'}
-              </p>
-              <div className="flex items-center gap-4">
-                <div className={`w-12 h-12 rounded-full flex items-center justify-center text-sm font-bold ${isDark ? 'bg-purple-500/20 text-purple-400' : 'bg-purple-100 text-purple-700'}`}>
-                  TF
-                </div>
-                <div>
-                  <a
-                    href="https://www.linkedin.com/in/thibaultfighiera/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`text-base font-medium hover:underline ${isDark ? 'text-white' : 'text-gray-900'}`}
-                  >
-                    {t.wear.collaborator}
-                  </a>
-                  <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{t.wear.collaboratorRole}</p>
-                  <p className={`text-xs mt-1 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>{t.wear.collaboratorDesc}</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Design Process: Sketches */}
-            <figure className="mb-8">
-              <div
-                onClick={() => onImageClick(GALLERY_IMAGES.wear.sketches)}
-                className={`group rounded-2xl overflow-hidden border cursor-pointer transition-transform duration-300 hover:scale-[1.01] ${
-                  isDark ? 'border-white/10' : 'border-gray-200'
-                }`}
-              >
-                <img
-                  loading="lazy"
-                  src={GALLERY_IMAGES.wear.sketches}
-                  alt="Android Wear early wireframe sketches"
-                  className="w-full h-auto transition-transform duration-300 group-hover:scale-[1.03]"
-                />
-              </div>
-              <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                {CAPTIONS[lang].wear.sketches}
-              </figcaption>
-            </figure>
-
-            {/* Ambient Mode Sketches */}
-            <figure className="mb-8">
-              <div
-                onClick={() => onImageClick(GALLERY_IMAGES.wear.ambient)}
-                className={`group rounded-2xl overflow-hidden border cursor-pointer transition-transform duration-300 hover:scale-[1.01] ${
-                  isDark ? 'border-white/10' : 'border-gray-200'
-                }`}
-              >
-                <img
-                  loading="lazy"
-                  src={GALLERY_IMAGES.wear.ambient}
-                  alt="Android Wear ambient mode sketches"
-                  className="w-full h-auto transition-transform duration-300 group-hover:scale-[1.03]"
-                />
-              </div>
-              <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                {CAPTIONS[lang].wear.ambient}
-              </figcaption>
-            </figure>
-
-            {/* Android Wear Task Flows */}
-            <figure className="mb-8">
-              <div
-                onClick={() => onImageClick(GALLERY_IMAGES.wear.flows)}
-                className={`group rounded-2xl overflow-hidden border cursor-pointer transition-transform duration-300 hover:scale-[1.01] ${
-                  isDark ? 'border-white/10' : 'border-gray-200'
-                }`}
-              >
-                <img
-                  loading="lazy"
-                  src={GALLERY_IMAGES.wear.flows}
-                  alt="PagesJaunes Android Wear Task Flows"
-                  className="w-full h-auto transition-transform duration-300 group-hover:scale-[1.03]"
-                />
-              </div>
-              <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                {CAPTIONS[lang].wear.flows}
-              </figcaption>
-            </figure>
-
-            {/* Detailed UI and Interactions Flow */}
-            <figure className="mb-8">
-              <div
-                onClick={() => onImageClick(GALLERY_IMAGES.wear.flowsDetailed)}
-                className={`group rounded-2xl overflow-hidden border cursor-pointer transition-transform duration-300 hover:scale-[1.01] ${
-                  isDark ? 'border-white/10' : 'border-gray-200'
-                }`}
-              >
-                <img
-                  loading="lazy"
-                  src={GALLERY_IMAGES.wear.flowsDetailed}
-                  alt="Android Wear UI and Interactions detailed flow"
-                  className="w-full h-auto transition-transform duration-300 group-hover:scale-[1.03]"
-                />
-              </div>
-              <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                {CAPTIONS[lang].wear.flowsDetailed}
-              </figcaption>
-            </figure>
-
-            {/* Android Wear UI Modes */}
-            <figure className="mb-8">
-              <div
-                onClick={() => onImageClick(GALLERY_IMAGES.wear.uiModes)}
-                className={`group rounded-2xl overflow-hidden border cursor-pointer transition-transform duration-300 hover:scale-[1.01] ${
-                  isDark ? 'border-white/10' : 'border-gray-200'
-                }`}
-              >
-                <img
-                  loading="lazy"
-                  src={GALLERY_IMAGES.wear.uiModes}
-                  alt="PagesJaunes Android Wear UI Modes"
-                  className="w-full h-auto transition-transform duration-300 group-hover:scale-[1.03]"
-                />
-              </div>
-              <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                {CAPTIONS[lang].wear.uiModes}
-              </figcaption>
-            </figure>
-
-            {/* Android Wear Component System */}
-            <figure className="mb-8">
-              <div
-                onClick={() => onImageClick(GALLERY_IMAGES.wear.ui)}
-                className={`group rounded-2xl overflow-hidden border cursor-pointer transition-transform duration-300 hover:scale-[1.01] ${
-                  isDark ? 'border-white/10' : 'border-gray-200'
-                }`}
-              >
-                <img
-                  loading="lazy"
-                  src={GALLERY_IMAGES.wear.ui}
-                  alt="PagesJaunes Android Wear UI Components"
-                  className="w-full h-auto transition-transform duration-300 group-hover:scale-[1.03]"
-                />
-              </div>
-              <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                {CAPTIONS[lang].wear.ui}
-              </figcaption>
-            </figure>
-
-            {/* Component Design Details */}
-            <figure className="mb-8">
-              <div
-                onClick={() => onImageClick(GALLERY_IMAGES.wear.components)}
-                className={`group rounded-2xl overflow-hidden border cursor-pointer transition-transform duration-300 hover:scale-[1.01] ${
-                  isDark ? 'border-white/10' : 'border-gray-200'
-                }`}
-              >
-                <img
-                  loading="lazy"
-                  src={GALLERY_IMAGES.wear.components}
-                  alt="Android Wear component design details"
-                  className="w-full h-auto transition-transform duration-300 group-hover:scale-[1.03]"
-                />
-              </div>
-              <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                {CAPTIONS[lang].wear.components}
-              </figcaption>
-            </figure>
-
-            {/* In-situ Mockups Grid */}
-            <div className="grid md:grid-cols-2 gap-6 mb-8">
+            {/* Key visuals - 2-column grid with square aspect ratio */}
+            <div className="grid grid-cols-2 gap-6 mb-8">
               <figure>
                 <div
-                  onClick={() => onImageClick(GALLERY_IMAGES.wear.insituStore)}
-                  className={`group rounded-2xl overflow-hidden border cursor-pointer transition-transform duration-300 hover:scale-[1.01] ${
+                  onClick={() => onImageClick(GALLERY_IMAGES.wear.thumbnail)}
+                  className={`group rounded-2xl overflow-hidden border cursor-pointer transition-transform duration-300 hover:scale-[1.01] aspect-square ${
                     isDark ? 'border-white/10' : 'border-gray-200'
                   }`}
                 >
                   <img
                     loading="lazy"
-                    src={GALLERY_IMAGES.wear.insituStore}
-                    alt="Android Wear Google Play Store promotional visual"
-                    className="w-full h-auto transition-transform duration-300 group-hover:scale-[1.03]"
+                    src={GALLERY_IMAGES.wear.thumbnail}
+                    alt="PagesJaunes Android Wear"
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
                   />
                 </div>
                 <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                  {CAPTIONS[lang].wear.insituStore}
+                  {CAPTIONS[lang].wear.thumbnail}
                 </figcaption>
               </figure>
-
               <figure>
                 <div
-                  onClick={() => onImageClick(GALLERY_IMAGES.wear.insituDetail)}
-                  className={`group rounded-2xl overflow-hidden border cursor-pointer transition-transform duration-300 hover:scale-[1.01] ${
+                  onClick={() => onImageClick(GALLERY_IMAGES.wear.yAllerBtn)}
+                  className={`group rounded-2xl overflow-hidden border cursor-pointer transition-transform duration-300 hover:scale-[1.01] aspect-square ${
                     isDark ? 'border-white/10' : 'border-gray-200'
                   }`}
                 >
                   <img
                     loading="lazy"
-                    src={GALLERY_IMAGES.wear.insituDetail}
-                    alt="Android Wear business detail card in context"
-                    className="w-full h-auto transition-transform duration-300 group-hover:scale-[1.03]"
+                    src={GALLERY_IMAGES.wear.yAllerBtn}
+                    alt="Y Aller navigation button"
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
                   />
                 </div>
                 <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                  {CAPTIONS[lang].wear.insituDetail}
+                  {CAPTIONS[lang].wear.yAllerBtn}
                 </figcaption>
               </figure>
             </div>
 
-            {/* Development Session Photo */}
-            <figure className="mb-8">
-              <div
-                onClick={() => onImageClick(GALLERY_IMAGES.wear.devSession)}
-                className={`group rounded-2xl overflow-hidden border cursor-pointer transition-transform duration-300 hover:scale-[1.01] ${
-                  isDark ? 'border-white/10' : 'border-gray-200'
-                }`}
-              >
-                <img
-                  loading="lazy"
-                  src={GALLERY_IMAGES.wear.devSession}
-                  alt="Real device testing session with Thibault"
-                  className="w-full h-auto transition-transform duration-300 group-hover:scale-[1.03]"
-                />
-              </div>
-              <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                {CAPTIONS[lang].wear.devSession}
-              </figcaption>
-            </figure>
-
-            {/* Video Prototype */}
-            <figure className="mb-8">
-              <div className={`rounded-2xl overflow-hidden border ${isDark ? 'border-white/10' : 'border-gray-200'}`}>
-                <div
-                  className="flex items-center justify-center p-8"
-                  style={{ backgroundColor: '#C8C8C8' }}
-                >
-                  <div className="relative w-full max-w-md">
-                    {/* Watch mockup frame */}
-                    <div className={`relative rounded-[50%] overflow-hidden border-8 ${isDark ? 'border-gray-700' : 'border-gray-800'}`} style={{ aspectRatio: '1/1' }}>
-                      <video
-                        src={GALLERY_IMAGES.wear.prototypeVideo1}
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
-                        className="w-full h-full object-cover"
+            {/* CTA to dedicated Android Wear case study */}
+            <div
+              onClick={() => onNavigateToProject?.('androidwear')}
+              className={`group rounded-2xl overflow-hidden border cursor-pointer transition-all duration-300 hover:scale-[1.005] ${
+                isDark
+                  ? 'bg-white/5 border-white/10 hover:border-white/20'
+                  : 'bg-gray-50 border-gray-200 hover:border-gray-300'
+              }`}
+            >
+              <div className="p-5">
+                {/* Mobile: Stack vertically / Desktop: Horizontal */}
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
+                  {/* Thumbnail + Content row on mobile */}
+                  <div className="flex items-start sm:items-center gap-4 flex-1 min-w-0">
+                    {/* Square thumbnail */}
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0 rounded-xl overflow-hidden">
+                      <img
+                        loading="lazy"
+                        src={GALLERY_IMAGES.wear.insituStore}
+                        alt="PagesJaunes Android Wear"
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                       />
                     </div>
+                    {/* Content */}
+                    <div className="flex-1 min-w-0">
+                      <p className={`text-xs font-semibold uppercase tracking-wider mb-1 ${isDark ? 'text-blue-400' : 'text-blue-600'}`}>
+                        {lang === 'en' ? 'Case Study' : 'Case Study'}
+                      </p>
+                      <h3 className={`text-base font-bold mb-1 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                        {lang === 'en'
+                          ? 'PagesJaunes on your wrist'
+                          : 'PagesJaunes au poignet'}
+                      </h3>
+                      <p className={`text-sm line-clamp-2 sm:line-clamp-none ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                        {lang === 'en'
+                          ? 'When users need a plumber now, can a watch be faster than pulling out a phone?'
+                          : 'Quand l\'utilisateur a besoin d\'un plombier maintenant, une montre peut-elle être plus rapide qu\'un téléphone ?'}
+                      </p>
+                    </div>
+                  </div>
+                  {/* CTA button - full width on mobile, auto on desktop */}
+                  <div className="flex-shrink-0 sm:self-center">
+                    <span className="flex sm:inline-flex items-center justify-center px-5 py-2.5 rounded-full bg-[#2D5CF3] text-white text-sm font-semibold transition-transform duration-300 group-hover:scale-105 whitespace-nowrap">
+                      {lang === 'en' ? 'Read more' : 'Lire la suite'}
+                    </span>
                   </div>
                 </div>
               </div>
-              <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                {CAPTIONS[lang].wear.prototypeVideo}
-              </figcaption>
-            </figure>
+            </div>
           </section>
         </FadeInSection>
 
@@ -1712,12 +1675,12 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
         {/* DESIGN SYSTEM SECTION */}
         {/* ================================================================ */}
         <FadeInSection>
-          <section className="mb-24 md:mb-32">
+          <section id="design-system" className="mb-24 md:mb-32">
             <div className="flex items-center gap-3 mb-4">
               <div className={`p-2 rounded-xl ${isDark ? 'bg-orange-500/20' : 'bg-orange-100'}`}>
                 <Palette size={20} className={isDark ? 'text-orange-400' : 'text-orange-600'} />
               </div>
-              <h2 className={`text-2xl md:text-3xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
                 {t.system.sectionTitle}
               </h2>
             </div>
@@ -1756,12 +1719,12 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
         {/* TEAM SECTION */}
         {/* ================================================================ */}
         <FadeInSection>
-          <section className="mb-24 md:mb-32">
+          <section id="team" className="mb-24 md:mb-32">
             <div className="flex items-center gap-3 mb-4">
               <div className={`p-2 rounded-xl ${isDark ? 'bg-cyan-500/20' : 'bg-cyan-100'}`}>
                 <Users size={20} className={isDark ? 'text-cyan-400' : 'text-cyan-600'} />
               </div>
-              <h2 className={`text-2xl md:text-3xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
                 {t.team.sectionTitle}
               </h2>
             </div>
@@ -1770,120 +1733,127 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
               {t.team.intro}
             </p>
 
-            {/* Team Collaborator Cards */}
-            <div className="grid md:grid-cols-3 gap-6 mb-8">
-              {/* UX Core Team */}
-              <div className={`p-5 rounded-2xl border ${isDark ? 'bg-yellow-900/10 border-yellow-500/20' : 'bg-yellow-50 border-yellow-200'}`}>
-                <p className={`text-xs font-medium uppercase tracking-wider mb-3 ${isDark ? 'text-yellow-400' : 'text-yellow-600'}`}>
-                  UX Core Team
-                </p>
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold ${isDark ? 'bg-yellow-500/20 text-yellow-400' : 'bg-yellow-100 text-yellow-700'}`}>
-                      BD
-                    </div>
-                    <div>
-                      <p className={`text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>Benjamin Dupont</p>
-                      <p className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>UX Lead</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold ${isDark ? 'bg-yellow-500/20 text-yellow-400' : 'bg-yellow-100 text-yellow-700'}`}>
-                      SW
-                    </div>
-                    <div>
-                      <p className={`text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>Simon White</p>
-                      <p className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>Director of UX</p>
-                    </div>
-                  </div>
-                </div>
+            {/* Phase 1: 2014-2015 - UX Core Team */}
+            <div className={`p-6 rounded-2xl border mb-6 ${isDark ? 'bg-white/[0.02] border-white/10' : 'bg-gray-50 border-gray-200'}`}>
+              <div className="flex flex-wrap items-center gap-3 mb-4">
+                <span className={`px-3 py-1 rounded-full text-xs font-semibold ${isDark ? 'bg-yellow-500/20 text-yellow-400' : 'bg-yellow-100 text-yellow-700'}`}>
+                  2014–2015
+                </span>
+                <h3 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                  {lang === 'en' ? 'UX Core Team' : 'Équipe UX centrale'}
+                </h3>
+                <span className={`ml-auto px-3 py-1 rounded-full text-xs font-medium ${isDark ? 'bg-white/10 text-white' : 'bg-gray-200 text-gray-700'}`}>
+                  {lang === 'en' ? 'My role: Product Designer' : 'Mon rôle : Product Designer'}
+                </span>
               </div>
-
-              {/* Product Squad */}
-              <div className={`p-5 rounded-2xl border ${isDark ? 'bg-blue-900/10 border-blue-500/20' : 'bg-blue-50 border-blue-200'}`}>
-                <p className={`text-xs font-medium uppercase tracking-wider mb-3 ${isDark ? 'text-blue-400' : 'text-blue-600'}`}>
-                  Product Squad
-                </p>
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold ${isDark ? 'bg-blue-500/20 text-blue-400' : 'bg-blue-100 text-blue-700'}`}>
-                      VB
-                    </div>
-                    <div>
-                      <p className={`text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>Vedran Beric</p>
-                      <p className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>Product Manager</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold ${isDark ? 'bg-blue-500/20 text-blue-400' : 'bg-blue-100 text-blue-700'}`}>
-                      FR
-                    </div>
-                    <div>
-                      <p className={`text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>Frédéric Rodriguez</p>
-                      <p className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>Product Owner</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* UI Team */}
-              <div className={`p-5 rounded-2xl border ${isDark ? 'bg-purple-900/10 border-purple-500/20' : 'bg-purple-50 border-purple-200'}`}>
-                <p className={`text-xs font-medium uppercase tracking-wider mb-3 ${isDark ? 'text-purple-400' : 'text-purple-600'}`}>
-                  UI Team
-                </p>
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold ${isDark ? 'bg-purple-500/20 text-purple-400' : 'bg-purple-100 text-purple-700'}`}>
-                      QL
-                    </div>
-                    <div>
-                      <p className={`text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>Qian Liu</p>
-                      <p className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>UI Designer</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold ${isDark ? 'bg-purple-500/20 text-purple-400' : 'bg-purple-100 text-purple-700'}`}>
-                      FM
-                    </div>
-                    <div>
-                      <p className={`text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>Fabien Music</p>
-                      <p className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>UI Designer</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold ${isDark ? 'bg-purple-500/20 text-purple-400' : 'bg-purple-100 text-purple-700'}`}>
-                      VR
-                    </div>
-                    <div>
-                      <p className={`text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>Vedran Rustempasic</p>
-                      <p className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>UI Designer</p>
-                    </div>
-                  </div>
-                </div>
+              <p className={`text-sm mb-4 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                {lang === 'en'
+                  ? 'Integrated within the central UX team, working on cross-platform design strategy and visual direction.'
+                  : 'Intégré à l\'équipe UX centrale, travail sur la stratégie design cross-plateforme et la direction visuelle.'}
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  { name: 'Simon White', role: 'Director of UX', url: 'https://www.linkedin.com/in/fruey/' },
+                  { name: 'Benjamin Dupont', role: 'Head of UX', url: 'https://www.linkedin.com/in/benjamin-dupont-141b7312/' },
+                  { name: 'Karl Smits', role: 'Lead UX', url: 'https://www.linkedin.com/in/karlsmits/' },
+                  { name: 'Fabien Bajeot', role: 'Lead UX Research', url: null },
+                  { name: 'Qian Xu', role: 'UI Designer', url: 'https://www.linkedin.com/in/alixxu/' },
+                  { name: 'Mylène Roquinarc\'h', role: 'UI Designer', url: null },
+                  { name: 'Emilie Conty', role: 'Marketing Manager', url: 'https://www.linkedin.com/in/emilie-conty/' },
+                  { name: 'Taline Kabakian', role: 'Marketing UGC', url: 'https://www.linkedin.com/in/talinekabakian/' },
+                  { name: 'Nicolas Moulin', role: 'Marketing Director', url: 'https://www.linkedin.com/in/moulinnicolas/' },
+                  { name: 'François Khoury', role: 'Business Owner', url: 'https://www.linkedin.com/in/francoisk/' },
+                ].map((person, idx) => (
+                  person.url ? (
+                    <a
+                      key={idx}
+                      href={person.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm transition-colors ${
+                        isDark
+                          ? 'bg-white/5 hover:bg-white/10 text-gray-300'
+                          : 'bg-white hover:bg-gray-100 text-gray-700 border border-gray-200'
+                      }`}
+                    >
+                      <span className="font-medium">{person.name}</span>
+                      <span className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>{person.role}</span>
+                    </a>
+                  ) : (
+                    <span
+                      key={idx}
+                      className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm ${
+                        isDark
+                          ? 'bg-white/5 text-gray-400'
+                          : 'bg-gray-100 text-gray-600'
+                      }`}
+                    >
+                      <span className="font-medium">{person.name}</span>
+                      <span className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>{person.role}</span>
+                    </span>
+                  )
+                ))}
               </div>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-6 mb-6">
-              <div className={`p-5 rounded-2xl ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}>
-                <p className={`text-base font-semibold mb-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                  {t.team.led}
-                </p>
-                <ul className={`text-sm space-y-2 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                  {t.team.ledList.map((item, idx) => (
-                    <li key={idx}>• {item}</li>
-                  ))}
-                </ul>
+            {/* Phase 2: 2015-2016 - Feature Team */}
+            <div className={`p-6 rounded-2xl border mb-6 ${isDark ? 'bg-white/[0.02] border-white/10' : 'bg-gray-50 border-gray-200'}`}>
+              <div className="flex flex-wrap items-center gap-3 mb-4">
+                <span className={`px-3 py-1 rounded-full text-xs font-semibold ${isDark ? 'bg-blue-500/20 text-blue-400' : 'bg-blue-100 text-blue-700'}`}>
+                  2015–2016
+                </span>
+                <h3 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                  {lang === 'en' ? 'Feature Team' : 'Feature Team'}
+                </h3>
+                <span className={`ml-auto px-3 py-1 rounded-full text-xs font-medium ${isDark ? 'bg-white/10 text-white' : 'bg-gray-200 text-gray-700'}`}>
+                  {lang === 'en' ? 'My role: Product Designer → UI Team Lead' : 'Mon rôle : Product Designer → UI Team Lead'}
+                </span>
               </div>
-
-              <div className={`p-5 rounded-2xl ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}>
-                <p className={`text-base font-semibold mb-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                  {t.team.collaborated}
-                </p>
-                <ul className={`text-sm space-y-2 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                  {t.team.collaboratedList.map((item, idx) => (
-                    <li key={idx}>• {item}</li>
-                  ))}
-                </ul>
+              <p className={`text-sm mb-4 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                {lang === 'en'
+                  ? 'Dedicated squad for homepage redesign, Material Design integration, user accounts, favorites, and history.'
+                  : 'Squad dédiée à la refonte homepage, intégration Material Design, compte utilisateur, favoris et historique.'}
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  { name: 'Vedran Beric', role: 'UX/UI Designer', url: 'https://www.linkedin.com/in/vedran-beric-26002155/' },
+                  { name: 'Frédéric Rodriguez', role: 'Product Manager', url: 'https://www.linkedin.com/in/frederic-rodriguez-71061255/' },
+                  { name: 'Thibault Fighiera', role: 'Android Dev', url: 'https://www.linkedin.com/in/thibault-fighiera-65794731/' },
+                  { name: 'Alexandre Badie', role: 'Android Dev', url: null },
+                  { name: 'Jérémie Godon', role: 'iOS Dev', url: 'https://www.linkedin.com/in/jgodon/' },
+                  { name: 'Jeffrey Macko', role: 'iOS Dev', url: 'https://www.linkedin.com/in/mackojeffrey/' },
+                  { name: 'Marilyn Kol', role: 'Scrum Master', url: 'https://www.linkedin.com/in/marilyn-kol-933878b0/' },
+                  { name: 'Nicolas Dovran', role: 'Team Lead', url: 'https://www.linkedin.com/in/nicolas-dovran-scrum-coach-agile/' },
+                ].map((person, idx) => (
+                  person.url ? (
+                    <a
+                      key={idx}
+                      href={person.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm transition-colors ${
+                        isDark
+                          ? 'bg-white/5 hover:bg-white/10 text-gray-300'
+                          : 'bg-white hover:bg-gray-100 text-gray-700 border border-gray-200'
+                      }`}
+                    >
+                      <span className="font-medium">{person.name}</span>
+                      <span className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>{person.role}</span>
+                    </a>
+                  ) : (
+                    <span
+                      key={idx}
+                      className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm ${
+                        isDark
+                          ? 'bg-white/5 text-gray-400'
+                          : 'bg-gray-100 text-gray-600'
+                      }`}
+                    >
+                      <span className="font-medium">{person.name}</span>
+                      <span className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>{person.role}</span>
+                    </span>
+                  )
+                ))}
               </div>
             </div>
 
@@ -1897,8 +1867,8 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
         {/* IMPACT SECTION */}
         {/* ================================================================ */}
         <FadeInSection>
-          <section className="mb-24 md:mb-32">
-            <h2 className={`text-2xl md:text-3xl font-bold mb-8 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+          <section id="impact" className="mb-24 md:mb-32">
+            <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-8 ${isDark ? 'text-white' : 'text-gray-900'}`}>
               {t.impact.sectionTitle}
             </h2>
 
@@ -1924,8 +1894,8 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
         {/* LEARNINGS SECTION */}
         {/* ================================================================ */}
         <FadeInSection>
-          <section className="mb-24 md:mb-32">
-            <h2 className={`text-2xl md:text-3xl font-bold mb-8 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+          <section id="learnings" className="mb-24 md:mb-32">
+            <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-8 ${isDark ? 'text-white' : 'text-gray-900'}`}>
               {t.learnings.sectionTitle}
             </h2>
 

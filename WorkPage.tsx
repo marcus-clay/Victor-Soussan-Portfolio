@@ -147,7 +147,7 @@ const TRANSLATIONS = {
     title: 'Index',
     subtitle: 'Projets sélectionnés et études de cas',
     viewProject: 'Voir le projet',
-    shipped: 'Livré',
+    shipped: 'En Production',
     concept: 'Concept',
     categories: {
       all: 'Tous',
@@ -166,10 +166,12 @@ const ProjectCard: React.FC<{
   lang: Language;
   onClick: () => void;
   index: number;
-}> = ({ project, systemTheme, onClick, index }) => {
+}> = ({ project, systemTheme, lang, onClick, index }) => {
   const [isHovered, setIsHovered] = useState(false);
   const isDark = systemTheme === 'dark';
   const isDisabled = project.status === 'coming-soon';
+  const t = TRANSLATIONS[lang];
+  const isConcept = project.status === 'concept';
 
   return (
     <motion.div
@@ -191,6 +193,20 @@ const ProjectCard: React.FC<{
       >
         {/* Image Container - Square ratio, larger visuals */}
         <div className="relative aspect-square flex items-center justify-center overflow-hidden">
+          {/* Status Badge - Top left */}
+          <div className="absolute top-4 left-4 z-20">
+            <span className={`inline-flex items-center text-xs font-medium px-3 py-1.5 rounded-full backdrop-blur-md ${
+              isDark
+                ? 'bg-black/40 text-white border border-white/10'
+                : 'bg-white/70 text-gray-700 border border-gray-200/50'
+            }`}>
+              <span className={`w-2 h-2 rounded-full mr-2 ${
+                isConcept ? 'bg-violet-500' : 'bg-green-500'
+              }`} />
+              {isConcept ? t.concept.toUpperCase() : t.shipped.toUpperCase()}
+            </span>
+          </div>
+
           {/* Project Image - Device mockup with zoom effect - larger size */}
           <img loading="lazy"
             src={project.hoverImage

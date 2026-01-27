@@ -4,8 +4,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import {
-  ChevronRight,
-  ChevronDown,
   X,
   Play
 } from 'lucide-react';
@@ -13,6 +11,7 @@ import { GalleryItem, getConnectGalleryItems } from './BentoGallery';
 import ConnectExecutive from './src/components/ConnectExecutive';
 import StackedCaseStudies from './src/components/StackedCaseStudies';
 import EnhancedLightbox from './src/components/EnhancedLightbox';
+import CaseStudyTOCSidebar from './src/components/CaseStudyTOCSidebar';
 
 interface ConnectPageProps {
   onClose: () => void;
@@ -310,14 +309,23 @@ const CONNECT_TRANSLATIONS = {
   },
 };
 
-// Navigation sections configuration
-const sections = [
-  { id: 'top', label: 'Top', shortLabel: '' },
-  { id: 'hero', label: 'Intro', shortLabel: '' },
-  { id: 'overview', label: 'Overview', shortLabel: 'OV' },
-  { id: 'dashboard', label: 'Dashboard', shortLabel: 'DB' },
-  { id: 'bulle', label: 'La Bulle', shortLabel: 'LB' },
-];
+// TOC Sections for Full case study
+const TOC_SECTIONS = {
+  en: [
+    { id: 'top', label: 'Top' },
+    { id: 'hero', label: 'Intro' },
+    { id: 'overview', label: 'Overview' },
+    { id: 'dashboard', label: 'Dashboard' },
+    { id: 'bulle', label: 'La Bulle' },
+  ],
+  fr: [
+    { id: 'top', label: 'Haut' },
+    { id: 'hero', label: 'Intro' },
+    { id: 'overview', label: 'Aperçu' },
+    { id: 'dashboard', label: 'Dashboard' },
+    { id: 'bulle', label: 'La Bulle' },
+  ]
+};
 
 // All images for lightbox navigation with caption keys
 type MediaItem = { src: string; captionKey: string; type: 'image' | 'video' };
@@ -436,8 +444,7 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
     caption: `${t.captions[item.captionKey as keyof typeof t.captions]} - ${t.captions[`${item.captionKey}Desc` as keyof typeof t.captions] || ''}`
   }));
 
-  const [activeSection, setActiveSection] = useState('hero');
-  const [isMobileNavExpanded, setIsMobileNavExpanded] = useState(false);
+  const [activeSection, setActiveSection] = useState('top');
   const [showNav, setShowNav] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   // Sync caseStudyMode with external viewMode
@@ -447,6 +454,8 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
   const [videoStartTime, setVideoStartTime] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRefs = useRef<{ [key: string]: HTMLVideoElement | null }>({});
+  const sections = TOC_SECTIONS[lang];
+  const isDark = systemTheme === 'dark';
 
   // Sync caseStudyMode when viewMode changes from outside
   useEffect(() => {
@@ -465,24 +474,48 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
     }
   }, [caseStudyMode, viewMode]);
 
-  // Track scroll position to show/hide mini-nav
+  // Track scroll position and update active section (only in full mode)
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
 
     const handleScroll = () => {
-      const heroSection = document.getElementById('hero');
-      if (heroSection) {
-        const heroBottom = heroSection.offsetTop + heroSection.offsetHeight;
-        setShowNav(container.scrollTop > heroBottom - 100);
+      const scrollTop = container.scrollTop;
+
+      // Show nav after scrolling past hero (300px)
+      setShowNav(scrollTop > 300);
+
+      // If at the very top, set 'top' as active
+      if (scrollTop < 100) {
+        setActiveSection('top');
+        return;
+      }
+
+      // Find active section (skip 'top' which has no DOM element)
+      const sectionElements = sections
+        .filter(s => s.id !== 'top')
+        .map(s => ({
+          id: s.id,
+          element: document.getElementById(s.id)
+        })).filter(s => s.element);
+
+      for (let i = sectionElements.length - 1; i >= 0; i--) {
+        const section = sectionElements[i];
+        if (section.element) {
+          const rect = section.element.getBoundingClientRect();
+          if (rect.top <= 200) {
+            setActiveSection(section.id);
+            break;
+          }
+        }
       }
     };
 
     container.addEventListener('scroll', handleScroll);
     return () => container.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [sections]);
 
-  // Scroll to section with proper offset for header + sticky mini-nav
+  // Scroll to section with proper offset for sticky mini-nav
   const scrollToSection = (sectionId: string) => {
     if (sectionId === 'top') {
       containerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
@@ -490,8 +523,15 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
     }
     const element = document.getElementById(sectionId);
     if (element && containerRef.current) {
-      const headerOffset = 73 + 56 + 24;
-      const elementPosition = element.offsetTop - headerOffset;
+      // Get element position relative to the scrollable container
+      const elementRect = element.getBoundingClientRect();
+      const currentScroll = containerRef.current.scrollTop;
+      // The container starts at 64px from viewport top (under header)
+      // The TOC bar is 48px tall and overlaps the container content
+      // So we need to offset by TOC height + some padding
+      const tocOffset = 48 + 16;
+      // elementRect.top is relative to viewport, container top is at 64px
+      const elementPosition = currentScroll + elementRect.top - 64 - tocOffset;
       containerRef.current.scrollTo({
         top: elementPosition,
         behavior: 'smooth'
@@ -526,106 +566,6 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
         viewMode === 'gallery' ? 'bg-black' : (systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white')
       }`}
     >
-      {/* Sticky Mini-Nav - All screen sizes - Hidden in gallery mode and executive mode */}
-      <AnimatePresence>
-        {showNav && viewMode !== 'gallery' && caseStudyMode !== 'executive' && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2 }}
-            className={`fixed top-16 left-0 right-0 z-30 backdrop-blur-xl ${
-              systemTheme === 'dark'
-                ? 'bg-[#0a0a0a]/80'
-                : 'bg-white/80'
-            }`}
-          >
-            {/* Collapsed state - shows current section */}
-            <div className="w-full px-6">
-              <button
-                onClick={() => setIsMobileNavExpanded(!isMobileNavExpanded)}
-                className="w-full h-12 flex items-center justify-between"
-              >
-              <div className="flex items-center gap-2">
-                <div className={`w-2 h-2 rounded-full bg-blue-500`} />
-                <span
-                  className={`text-sm font-medium ${
-                    systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                  }`}
-                >
-                  {sections.find(s => s.id === activeSection)?.label || 'Top'}
-                </span>
-              </div>
-                <ChevronDown
-                  size={16}
-                  className={`transition-transform ${isMobileNavExpanded ? 'rotate-180' : ''} ${
-                    systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                  }`}
-                />
-              </button>
-
-            {/* Expanded state - shows all sections */}
-            <AnimatePresence>
-              {isMobileNavExpanded && (
-                <motion.div
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: 'auto', opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                  className="overflow-hidden"
-                >
-                  <div className={`pb-3 space-y-1 border-t ${
-                    systemTheme === 'dark' ? 'border-white/5' : 'border-gray-100'
-                  }`}>
-                    {sections.map((section) => {
-                      const isActive = activeSection === section.id;
-                      const currentIndex = sections.findIndex(s => s.id === activeSection);
-                      const sectionIndex = sections.findIndex(s => s.id === section.id);
-                      const isPast = sectionIndex < currentIndex;
-
-                      return (
-                        <button
-                          key={section.id}
-                          onClick={() => {
-                            scrollToSection(section.id);
-                            setIsMobileNavExpanded(false);
-                          }}
-                          className={`w-full text-left py-2 px-3 rounded-lg flex items-center gap-3 transition-colors ${
-                            isActive
-                              ? systemTheme === 'dark'
-                                ? 'bg-blue-600/10 text-blue-400'
-                                : 'bg-blue-50 text-blue-600'
-                              : systemTheme === 'dark'
-                                ? 'text-gray-400 hover:bg-white/5'
-                                : 'text-gray-600 hover:bg-gray-50'
-                          }`}
-                        >
-                          <div
-                            className={`w-1.5 h-1.5 rounded-full ${
-                              isActive
-                                ? 'bg-blue-600'
-                                : isPast
-                                  ? systemTheme === 'dark'
-                                    ? 'bg-gray-500'
-                                    : 'bg-gray-400'
-                                  : systemTheme === 'dark'
-                                    ? 'bg-gray-700'
-                                    : 'bg-gray-300'
-                            }`}
-                          />
-                          <span className="text-sm font-medium">{section.label}</span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       {/* Header - Glass effect */}
       <header
         className={`sticky top-0 z-40 backdrop-blur-xl ${
@@ -733,6 +673,16 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
         </div>
       </header>
 
+      {/* TOC Sidebar - Persistent left navigation for full mode */}
+      <CaseStudyTOCSidebar
+        sections={sections}
+        activeSection={activeSection}
+        onSectionClick={scrollToSection}
+        isDark={isDark}
+        isVisible={showNav && viewMode !== 'gallery' && caseStudyMode === 'full'}
+        lang={lang}
+      />
+
       {/* Lightbox Modal - Using EnhancedLightbox */}
       <EnhancedLightbox
         isOpen={lightboxOpen}
@@ -799,7 +749,7 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
           >
-      <div className="max-w-[1480px] mx-auto px-10 py-12 md:py-16">
+      <div className="max-w-[1200px] mx-auto px-10 py-12 md:py-16">
         <div>
           {/* Main Content */}
           <main className="w-full">

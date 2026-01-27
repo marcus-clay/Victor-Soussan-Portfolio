@@ -755,7 +755,7 @@ const FranceVaeExecutive: React.FC<FranceVaeExecutiveProps> = ({
       {/* HERO SECTION */}
       {/* ================================================================== */}
       <section className="min-h-[85vh] flex flex-col justify-center px-10 py-20">
-        <div className="max-w-[1280px] mx-auto w-full">
+        <div className="max-w-[1200px] mx-auto w-full">
           {/* Logo */}
           <FadeInSection>
             <img loading="lazy"
@@ -832,7 +832,7 @@ const FranceVaeExecutive: React.FC<FranceVaeExecutiveProps> = ({
       {/* INITIATIVES DIAGRAM SECTION */}
       {/* ================================================================== */}
       <section className="py-20 md:py-28 px-10">
-        <div className="max-w-[1280px] mx-auto">
+        <div className="max-w-[1200px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
               isDark ? 'text-purple-400' : 'text-purple-600'
@@ -859,7 +859,7 @@ const FranceVaeExecutive: React.FC<FranceVaeExecutiveProps> = ({
       {/* ROLE SECTION */}
       {/* ================================================================== */}
       <section className={`py-20 md:py-28 px-10 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
-        <div className="max-w-[1280px] mx-auto">
+        <div className="max-w-[1200px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
               isDark ? 'text-blue-400' : 'text-blue-600'
@@ -901,7 +901,7 @@ const FranceVaeExecutive: React.FC<FranceVaeExecutiveProps> = ({
       {/* OUTCOME SECTION */}
       {/* ================================================================== */}
       <section className={`py-20 md:py-28 px-10 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
-        <div className="max-w-[1280px] mx-auto">
+        <div className="max-w-[1200px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
               isDark ? 'text-amber-400' : 'text-amber-600'
@@ -926,7 +926,7 @@ const FranceVaeExecutive: React.FC<FranceVaeExecutiveProps> = ({
       {/* TESTIMONIAL SECTION */}
       {/* ================================================================== */}
       <section className="py-20 md:py-28 px-10">
-        <div className="max-w-[1280px] mx-auto">
+        <div className="max-w-[1200px] mx-auto">
           <FadeInSection>
             <div className={`rounded-3xl p-8 md:p-12 ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}>
               <div className={`text-4xl mb-6 ${isDark ? 'text-blue-400' : 'text-blue-600'}`}>

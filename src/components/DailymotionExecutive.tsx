@@ -479,7 +479,7 @@ const ScopeGrid: React.FC<{
             <img loading="lazy"
               src={area.image}
               alt={area.title}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.05]"
             />
           </div>
           <div className="p-5">
@@ -888,7 +888,7 @@ const DailymotionExecutive: React.FC<DailymotionExecutiveProps> = ({
       {/* HERO SECTION */}
       {/* ================================================================== */}
       <section className="min-h-[85vh] flex flex-col justify-center px-10 py-20">
-        <div className="max-w-[1280px] mx-auto w-full">
+        <div className="max-w-[1200px] mx-auto w-full">
           {/* Logo */}
           <FadeInSection>
             <img loading="lazy"
@@ -961,7 +961,7 @@ const DailymotionExecutive: React.FC<DailymotionExecutiveProps> = ({
       {/* CONTEXT SECTION */}
       {/* ================================================================== */}
       <section className={`py-20 md:py-28 px-10 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
-        <div className="max-w-[1280px] mx-auto">
+        <div className="max-w-[1200px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
               isDark ? 'text-gray-400' : 'text-gray-500'
@@ -992,7 +992,7 @@ const DailymotionExecutive: React.FC<DailymotionExecutiveProps> = ({
       {/* ROLE SECTION */}
       {/* ================================================================== */}
       <section className="py-20 md:py-28 px-10">
-        <div className="max-w-[1280px] mx-auto">
+        <div className="max-w-[1200px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
               isDark ? 'text-blue-400' : 'text-blue-600'
@@ -1033,7 +1033,7 @@ const DailymotionExecutive: React.FC<DailymotionExecutiveProps> = ({
       {/* MODULES SECTION */}
       {/* ================================================================== */}
       <section className={`py-20 md:py-28 px-10 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
-        <div className="max-w-[1280px] mx-auto">
+        <div className="max-w-[1200px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
               isDark ? 'text-emerald-400' : 'text-emerald-600'
@@ -1060,7 +1060,7 @@ const DailymotionExecutive: React.FC<DailymotionExecutiveProps> = ({
       {/* SCOPE SECTION */}
       {/* ================================================================== */}
       <section className="py-20 md:py-28 px-10">
-        <div className="max-w-[1280px] mx-auto">
+        <div className="max-w-[1200px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
               isDark ? 'text-purple-400' : 'text-purple-600'
@@ -1093,7 +1093,7 @@ const DailymotionExecutive: React.FC<DailymotionExecutiveProps> = ({
       {/* HIGHLIGHTS SECTION */}
       {/* ================================================================== */}
       <section className={`py-20 md:py-28 px-10 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
-        <div className="max-w-[1280px] mx-auto">
+        <div className="max-w-[1200px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
               isDark ? 'text-orange-400' : 'text-orange-600'
@@ -1124,7 +1124,7 @@ const DailymotionExecutive: React.FC<DailymotionExecutiveProps> = ({
       {/* OUTCOME SECTION */}
       {/* ================================================================== */}
       <section className="py-20 md:py-28 px-10">
-        <div className="max-w-[1280px] mx-auto">
+        <div className="max-w-[1200px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
               isDark ? 'text-amber-400' : 'text-amber-600'

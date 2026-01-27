@@ -73,7 +73,7 @@ const TRANSLATIONS = {
       items: [
         { icon: 'briefcase', label: 'UI Team Lead', detail: '4 designers, 2015-2016' },
         { icon: 'target', label: 'Homepage redesign', detail: 'New search experience' },
-        { icon: 'smartphone', label: 'iOS & Android', detail: 'Onboarding v8.0' },
+        { icon: 'smartphone', label: 'iOS & Android', detail: 'First launch onboarding' },
         { icon: 'map', label: 'Maps & directions', detail: 'Pedestrian routes' },
         { icon: 'layers', label: 'System audit', detail: 'Yellowstrap roadmap' }
       ],
@@ -88,37 +88,37 @@ const TRANSLATIONS = {
           id: 'homepage',
           title: 'Homepage Redesign',
           description: 'A conversational greeting reframes search from directory lookup to problem-solving. Users act faster when the interface feels personal.',
-          image: '/images/pagesjaunes/pagesjaunes homepage.jpeg'
+          image: '/images/pagesjaunes/pagesjaunes homepage.webp'
         },
         {
           id: 'onboarding',
-          title: 'Onboarding v8.0',
+          title: 'First Launch Onboarding',
           description: 'Non-blocking animations at first launch. CAAnimation on iOS, Material transitions on Android. Tested in Paris UX lab.',
-          image: '/images/pagesjaunes/pj 01@2x.png'
+          image: '/images/pagesjaunes/pj 01@2x.webp'
         },
         {
           id: 'navigation',
           title: 'Walking Itinerary',
           description: 'Three modes: walk, drive, transit. The interface adapts to the user\'s choice. Built on Mappy API with handoff to external navigation apps.',
-          image: '/images/pagesjaunes/pj 08@2x.png'
+          image: '/images/pagesjaunes/pj 08@2x.webp'
         },
         {
           id: 'account',
           title: 'My PagesJaunes',
           description: 'History and Favorites turn one-time searches into retained value. Each saved business is a reason to return.',
-          image: '/images/pagesjaunes/pj 06@2x.png'
+          image: '/images/pagesjaunes/pj 06@2x.webp'
         },
         {
           id: 'wear',
           title: 'Android Wear',
           description: 'Wearable task flows: search then call, or search then navigate. Two jobs, two paths, minimal taps.',
-          image: '/images/pagesjaunes/pj android wear ui.jpeg'
+          image: '/images/pagesjaunes/Android wear/pj android wear ui.webp'
         },
         {
           id: 'system',
-          title: 'Yellowstrap Audit',
-          description: 'Transit icons carry data: metro line colors, station names, walking segments. All parsed from Mappy API and styled for quick scanning.',
-          image: '/images/pagesjaunes/pj 07@2x.png'
+          title: 'Design System Strategy',
+          description: 'Component audit across iOS, Android, and web. Identifying inconsistencies, documenting patterns, building the roadmap for "Yellowstrap".',
+          image: '/images/pagesjaunes/Android wear/screens/cover_yellow strap apps.webp'
         }
       ]
     },
@@ -181,7 +181,7 @@ const TRANSLATIONS = {
       items: [
         { icon: 'briefcase', label: 'UI Team Lead', detail: '4 designers, 2015-2016' },
         { icon: 'target', label: 'Refonte homepage', detail: 'Nouvelle recherche' },
-        { icon: 'smartphone', label: 'iOS & Android', detail: 'Onboarding v8.0' },
+        { icon: 'smartphone', label: 'iOS & Android', detail: 'Onboarding première ouverture' },
         { icon: 'map', label: 'Cartes & itinéraires', detail: 'Navigation piéton' },
         { icon: 'layers', label: 'Audit système', detail: 'Roadmap Yellowstrap' }
       ],
@@ -196,37 +196,37 @@ const TRANSLATIONS = {
           id: 'homepage',
           title: 'Refonte Homepage',
           description: 'Une accroche conversationnelle transforme la recherche d\'annuaire en résolution de problème. Les utilisateurs agissent plus vite quand l\'interface est personnelle.',
-          image: '/images/pagesjaunes/pagesjaunes homepage.jpeg'
+          image: '/images/pagesjaunes/pagesjaunes homepage.webp'
         },
         {
           id: 'onboarding',
-          title: 'Onboarding v8.0',
+          title: 'Onboarding Première Ouverture',
           description: 'Animations non-bloquantes au premier lancement. CAAnimation sur iOS, transitions Material sur Android. Testé au labo UX Paris.',
-          image: '/images/pagesjaunes/pj 01@2x.png'
+          image: '/images/pagesjaunes/pj 01@2x.webp'
         },
         {
           id: 'navigation',
           title: 'Itinéraire Piéton',
           description: 'Trois modes : marche, voiture, transports. L\'interface s\'adapte au choix de l\'utilisateur. Basé sur l\'API Mappy avec handoff vers les apps de navigation.',
-          image: '/images/pagesjaunes/pj 08@2x.png'
+          image: '/images/pagesjaunes/pj 08@2x.webp'
         },
         {
           id: 'account',
           title: 'Mon PagesJaunes',
           description: 'Historique et Favoris transforment les recherches ponctuelles en valeur conservée. Chaque établissement sauvegardé est une raison de revenir.',
-          image: '/images/pagesjaunes/pj 06@2x.png'
+          image: '/images/pagesjaunes/pj 06@2x.webp'
         },
         {
           id: 'wear',
           title: 'Android Wear',
           description: 'Flows wearable : recherche puis appel, ou recherche puis navigation. Deux jobs, deux chemins, minimum de taps.',
-          image: '/images/pagesjaunes/pj android wear ui.jpeg'
+          image: '/images/pagesjaunes/Android wear/pj android wear ui.webp'
         },
         {
           id: 'system',
-          title: 'Audit Yellowstrap',
-          description: 'Les icônes de transport portent des données : couleurs des lignes de métro, noms de stations, segments piétons. Parsés depuis l\'API Mappy pour lecture rapide.',
-          image: '/images/pagesjaunes/pj 07@2x.png'
+          title: 'Stratégie Design System',
+          description: 'Audit de composants sur iOS, Android et web. Identification des incohérences, documentation des patterns, construction de la roadmap "Yellowstrap".',
+          image: '/images/pagesjaunes/Android wear/screens/cover_yellow strap apps.webp'
         }
       ]
     },
@@ -301,7 +301,7 @@ const PHASES_DATA = {
       description: "UI Team Lead. 4 designers. Major app release.",
       features: [
         "Led team of 4 UI designers",
-        "iOS & Android onboarding (v8.0 release)",
+        "iOS & Android first launch onboarding",
         "Material Design migration plan for Android",
         "Android Wear app shipped on Google Play",
         "Walking itinerary feature (Mappy API)",
@@ -348,7 +348,7 @@ const PHASES_DATA = {
       description: "UI Team Lead. 4 designers. Release majeure app.",
       features: [
         "Management équipe de 4 designers UI",
-        "Onboarding iOS & Android (release v8.0)",
+        "Onboarding iOS & Android première ouverture",
         "Plan migration Material Design pour Android",
         "App Android Wear livrée sur Google Play",
         "Feature itinéraire piéton (API Mappy)",
@@ -992,7 +992,7 @@ const PagesJaunesExecutive: React.FC<PagesJaunesExecutiveProps> = ({
       {/* HERO SECTION */}
       {/* ================================================================== */}
       <section className="min-h-[85vh] flex flex-col justify-center px-10 py-20">
-        <div className="max-w-[1280px] mx-auto w-full">
+        <div className="max-w-[1200px] mx-auto w-full">
           {/* Logo */}
           <FadeInSection>
             <div className={`flex items-center gap-3 mb-8`}>
@@ -1034,14 +1034,14 @@ const PagesJaunesExecutive: React.FC<PagesJaunesExecutiveProps> = ({
           {/* Hero Image */}
           <FadeInSection delay={0.3} className="mt-12">
             <div
-              onClick={() => onImageClick('/images/pagesjaunes/pagesjaunes homepage.jpeg')}
+              onClick={() => onImageClick('/images/pagesjaunes/pagesjaunes homepage.webp')}
               className={`group rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
                 isDark ? 'border-white/10' : 'border-gray-200'
               }`}
             >
               <img
                 loading="lazy"
-                src="/images/pagesjaunes/pagesjaunes homepage.jpeg"
+                src="/images/pagesjaunes/pagesjaunes homepage.webp"
                 alt="PagesJaunes Mobile Apps"
                 className="w-full h-auto transition-transform duration-300 group-hover:scale-[1.03]"
               />
@@ -1068,7 +1068,7 @@ const PagesJaunesExecutive: React.FC<PagesJaunesExecutiveProps> = ({
       {/* CONTEXT SECTION */}
       {/* ================================================================== */}
       <section id="context" className={`py-20 md:py-28 px-10 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
-        <div className="max-w-[1280px] mx-auto">
+        <div className="max-w-[1200px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
               isDark ? 'text-gray-400' : 'text-gray-500'
@@ -1099,7 +1099,7 @@ const PagesJaunesExecutive: React.FC<PagesJaunesExecutiveProps> = ({
       {/* ROLE SECTION */}
       {/* ================================================================== */}
       <section id="role" className="py-20 md:py-28 px-10">
-        <div className="max-w-[1280px] mx-auto">
+        <div className="max-w-[1200px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
               isDark ? 'text-yellow-400' : 'text-yellow-600'
@@ -1134,96 +1134,82 @@ const PagesJaunesExecutive: React.FC<PagesJaunesExecutiveProps> = ({
             </p>
           </FadeInSection>
 
-          {/* Team Collaborator Cards */}
+          {/* Team - Two phases */}
           <FadeInSection delay={0.4}>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
-              {/* UX Core Team */}
-              <div className={`p-5 rounded-2xl border ${isDark ? 'bg-yellow-900/10 border-yellow-500/20' : 'bg-yellow-50 border-yellow-200'}`}>
-                <p className={`text-xs font-medium uppercase tracking-wider mb-3 ${isDark ? 'text-yellow-400' : 'text-yellow-600'}`}>
-                  UX Core Team
-                </p>
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold ${isDark ? 'bg-yellow-500/20 text-yellow-400' : 'bg-yellow-100 text-yellow-700'}`}>
-                      BD
-                    </div>
-                    <div>
-                      <p className={`text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>Benjamin Dupont</p>
-                      <p className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>UX Lead</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold ${isDark ? 'bg-yellow-500/20 text-yellow-400' : 'bg-yellow-100 text-yellow-700'}`}>
-                      SW
-                    </div>
-                    <div>
-                      <p className={`text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>Simon White</p>
-                      <p className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>Director of UX</p>
-                    </div>
-                  </div>
+            <div className="mt-8 space-y-4">
+              {/* Phase 1: 2014-2015 - UX Core Team */}
+              <div className={`p-5 rounded-2xl border ${isDark ? 'bg-white/[0.02] border-white/10' : 'bg-gray-50 border-gray-200'}`}>
+                <div className="flex flex-wrap items-center gap-2 mb-3">
+                  <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${isDark ? 'bg-yellow-500/20 text-yellow-400' : 'bg-yellow-100 text-yellow-700'}`}>
+                    2014–2015
+                  </span>
+                  <h3 className={`text-base font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                    {lang === 'fr' ? 'Équipe UX centrale' : 'UX Core Team'}
+                  </h3>
+                  <span className={`ml-auto px-2.5 py-1 rounded-full text-xs font-medium ${isDark ? 'bg-white/10 text-white' : 'bg-gray-200 text-gray-700'}`}>
+                    {lang === 'fr' ? 'Mon rôle : Product Designer' : 'My role: Product Designer'}
+                  </span>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {[
+                    { name: 'Simon White', role: 'Director of UX', url: 'https://www.linkedin.com/in/fruey/' },
+                    { name: 'Benjamin Dupont', role: 'Head of UX', url: 'https://www.linkedin.com/in/benjamin-dupont-141b7312/' },
+                    { name: 'Karl Smits', role: 'Lead UX', url: 'https://www.linkedin.com/in/karlsmits/' },
+                    { name: 'Qian Xu', role: 'UI Designer', url: 'https://www.linkedin.com/in/alixxu/' },
+                  ].map((person, idx) => (
+                    <a
+                      key={idx}
+                      href={person.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm transition-colors ${
+                        isDark
+                          ? 'bg-white/5 hover:bg-white/10 text-gray-300'
+                          : 'bg-white hover:bg-gray-100 text-gray-700 border border-gray-200'
+                      }`}
+                    >
+                      <span className="font-medium">{person.name}</span>
+                      <span className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>{person.role}</span>
+                    </a>
+                  ))}
                 </div>
               </div>
 
-              {/* Product Squad */}
-              <div className={`p-5 rounded-2xl border ${isDark ? 'bg-blue-900/10 border-blue-500/20' : 'bg-blue-50 border-blue-200'}`}>
-                <p className={`text-xs font-medium uppercase tracking-wider mb-3 ${isDark ? 'text-blue-400' : 'text-blue-600'}`}>
-                  Product Squad
-                </p>
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold ${isDark ? 'bg-blue-500/20 text-blue-400' : 'bg-blue-100 text-blue-700'}`}>
-                      VB
-                    </div>
-                    <div>
-                      <p className={`text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>Vedran Beric</p>
-                      <p className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>Product Manager</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold ${isDark ? 'bg-blue-500/20 text-blue-400' : 'bg-blue-100 text-blue-700'}`}>
-                      FR
-                    </div>
-                    <div>
-                      <p className={`text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>Frédéric Rodriguez</p>
-                      <p className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>Product Owner</p>
-                    </div>
-                  </div>
+              {/* Phase 2: 2015-2016 - Feature Team */}
+              <div className={`p-5 rounded-2xl border ${isDark ? 'bg-white/[0.02] border-white/10' : 'bg-gray-50 border-gray-200'}`}>
+                <div className="flex flex-wrap items-center gap-2 mb-3">
+                  <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${isDark ? 'bg-blue-500/20 text-blue-400' : 'bg-blue-100 text-blue-700'}`}>
+                    2015–2016
+                  </span>
+                  <h3 className={`text-base font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                    Feature Team
+                  </h3>
+                  <span className={`ml-auto px-2.5 py-1 rounded-full text-xs font-medium ${isDark ? 'bg-white/10 text-white' : 'bg-gray-200 text-gray-700'}`}>
+                    {lang === 'fr' ? 'Mon rôle : Product Designer → UI Team Lead' : 'My role: Product Designer → UI Team Lead'}
+                  </span>
                 </div>
-              </div>
-
-              {/* UI Team */}
-              <div className={`p-5 rounded-2xl border ${isDark ? 'bg-purple-900/10 border-purple-500/20' : 'bg-purple-50 border-purple-200'}`}>
-                <p className={`text-xs font-medium uppercase tracking-wider mb-3 ${isDark ? 'text-purple-400' : 'text-purple-600'}`}>
-                  UI Team
-                </p>
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold ${isDark ? 'bg-purple-500/20 text-purple-400' : 'bg-purple-100 text-purple-700'}`}>
-                      QL
-                    </div>
-                    <div>
-                      <p className={`text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>Qian Liu</p>
-                      <p className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>UI Designer</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold ${isDark ? 'bg-purple-500/20 text-purple-400' : 'bg-purple-100 text-purple-700'}`}>
-                      FM
-                    </div>
-                    <div>
-                      <p className={`text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>Fabien Music</p>
-                      <p className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>UI Designer</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold ${isDark ? 'bg-purple-500/20 text-purple-400' : 'bg-purple-100 text-purple-700'}`}>
-                      VR
-                    </div>
-                    <div>
-                      <p className={`text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>Vedran Rustempasic</p>
-                      <p className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>UI Designer</p>
-                    </div>
-                  </div>
+                <div className="flex flex-wrap gap-2">
+                  {[
+                    { name: 'Vedran Beric', role: 'UX/UI Designer', url: 'https://www.linkedin.com/in/vedran-beric-26002155/' },
+                    { name: 'Frédéric Rodriguez', role: 'Product Manager', url: 'https://www.linkedin.com/in/frederic-rodriguez-71061255/' },
+                    { name: 'Thibault Fighiera', role: 'Android Dev', url: 'https://www.linkedin.com/in/thibault-fighiera-65794731/' },
+                    { name: 'Jérémie Godon', role: 'iOS Dev', url: 'https://www.linkedin.com/in/jgodon/' },
+                  ].map((person, idx) => (
+                    <a
+                      key={idx}
+                      href={person.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm transition-colors ${
+                        isDark
+                          ? 'bg-white/5 hover:bg-white/10 text-gray-300'
+                          : 'bg-white hover:bg-gray-100 text-gray-700 border border-gray-200'
+                      }`}
+                    >
+                      <span className="font-medium">{person.name}</span>
+                      <span className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>{person.role}</span>
+                    </a>
+                  ))}
                 </div>
               </div>
             </div>
@@ -1235,7 +1221,7 @@ const PagesJaunesExecutive: React.FC<PagesJaunesExecutiveProps> = ({
       {/* JOURNEY SECTION */}
       {/* ================================================================== */}
       <section id="journey" className={`py-20 md:py-28 px-10 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
-        <div className="max-w-[1280px] mx-auto">
+        <div className="max-w-[1200px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
               isDark ? 'text-emerald-400' : 'text-emerald-600'
@@ -1262,7 +1248,7 @@ const PagesJaunesExecutive: React.FC<PagesJaunesExecutiveProps> = ({
       {/* SCOPE SECTION */}
       {/* ================================================================== */}
       <section id="scope" className="py-20 md:py-28 px-10">
-        <div className="max-w-[1280px] mx-auto">
+        <div className="max-w-[1200px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
               isDark ? 'text-purple-400' : 'text-purple-600'
@@ -1295,7 +1281,7 @@ const PagesJaunesExecutive: React.FC<PagesJaunesExecutiveProps> = ({
       {/* INSIGHTS SECTION */}
       {/* ================================================================== */}
       <section id="insights" className={`py-20 md:py-28 px-10 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
-        <div className="max-w-[1280px] mx-auto">
+        <div className="max-w-[1200px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
               isDark ? 'text-cyan-400' : 'text-cyan-600'
@@ -1322,7 +1308,7 @@ const PagesJaunesExecutive: React.FC<PagesJaunesExecutiveProps> = ({
       {/* OUTCOME SECTION */}
       {/* ================================================================== */}
       <section id="outcome" className="py-20 md:py-28 px-10">
-        <div className="max-w-[1280px] mx-auto">
+        <div className="max-w-[1200px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
               isDark ? 'text-amber-400' : 'text-amber-600'

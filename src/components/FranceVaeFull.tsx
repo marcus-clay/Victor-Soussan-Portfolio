@@ -1406,7 +1406,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
 
       {/* HERO - Grid with Testimonial Card */}
       <section className="px-10 pt-8 pb-12">
-        <div className="max-w-[1280px] mx-auto">
+        <div className="max-w-[1200px] mx-auto">
           <div className="grid md:grid-cols-5 gap-10 items-start">
             {/* Left Column - Title and Description */}
             <div className="md:col-span-3">
@@ -1509,7 +1509,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
 
       {/* Meta Card - Full width */}
       <section className="px-10 pb-8">
-        <div className="max-w-[1280px] mx-auto">
+        <div className="max-w-[1200px] mx-auto">
           <div className={`p-6 rounded-2xl border ${isDark ? 'bg-[#1D1D1F] border-white/10' : 'bg-gray-50 border-gray-200'}`}>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="flex items-center space-x-3">
@@ -1555,7 +1555,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
 
       {/* Hero Image - 2:3 aspect ratio aligned top */}
       <section className="px-10 pb-8">
-        <div className="max-w-[1280px] mx-auto">
+        <div className="max-w-[1200px] mx-auto">
           <FadeInSection>
             <ClickableImage
               src="/images/francevae/france_vae_home.webp"
@@ -1571,7 +1571,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
 
       {/* INTERACTIVE INITIATIVES DIAGRAM */}
       <section className="px-10 py-16">
-        <div className="max-w-[1280px] mx-auto">
+        <div className="max-w-[1200px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${isDark ? 'text-blue-400' : 'text-blue-600'}`}>
               {t.initiatives.eyebrow}
@@ -1592,7 +1592,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
 
       {/* MAIN CONTENT */}
       <div className="px-6 md:px-10 py-16 md:py-24">
-        <div className="max-w-[1280px] mx-auto">
+        <div className="max-w-[1200px] mx-auto">
 
           {/* CONTEXT */}
           <section id="context" className="mb-40 md:mb-48">

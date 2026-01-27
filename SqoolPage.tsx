@@ -20,6 +20,31 @@ import { SqoolTimeline } from './SqoolTimeline';
 import SqoolExecutive from './src/components/SqoolExecutive';
 import StackedCaseStudies from './src/components/StackedCaseStudies';
 import EnhancedLightbox from './src/components/EnhancedLightbox';
+import CaseStudyTOCSidebar from './src/components/CaseStudyTOCSidebar';
+
+// TOC Sections for Full case study
+const TOC_SECTIONS = {
+  en: [
+    { id: 'top', label: 'Top' },
+    { id: 'hero', label: 'Intro' },
+    { id: 'context', label: 'Context' },
+    { id: 'phase1', label: '2019-2020' },
+    { id: 'phase2', label: '2021' },
+    { id: 'phase3', label: '2022-2024' },
+    { id: 'apps', label: 'Apps' },
+    { id: 'impact', label: 'Impact' },
+  ],
+  fr: [
+    { id: 'top', label: 'Haut' },
+    { id: 'hero', label: 'Intro' },
+    { id: 'context', label: 'Contexte' },
+    { id: 'phase1', label: '2019-2020' },
+    { id: 'phase2', label: '2021' },
+    { id: 'phase3', label: '2022-2024' },
+    { id: 'apps', label: 'Apps' },
+    { id: 'impact', label: 'Impact' },
+  ]
+};
 
 interface SqoolPageProps {
   onClose: () => void;
@@ -565,17 +590,6 @@ const SQOOL_TRANSLATIONS = {
   },
 };
 
-// Navigation sections
-const sections = [
-  { id: 'hero', labelKey: 'intro' },
-  { id: 'context', labelKey: 'context' },
-  { id: 'phase1', labelKey: 'phase1' },
-  { id: 'phase2', labelKey: 'phase2' },
-  { id: 'phase3', labelKey: 'phase3' },
-  { id: 'apps', labelKey: 'apps' },
-  { id: 'impact', labelKey: 'impact' },
-];
-
 // Media items for lightbox
 type MediaItem = { src: string; captionKey: string; type: 'image' | 'video' };
 const allImagesData: MediaItem[] = [
@@ -728,9 +742,8 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
     caption: `${t.captions[item.captionKey as keyof typeof t.captions]} - ${t.captions[`${item.captionKey}Desc` as keyof typeof t.captions] || ''}`
   }));
 
-  const [activeSection, setActiveSection] = useState('hero');
+  const [activeSection, setActiveSection] = useState('top');
   const [showNav, setShowNav] = useState(false);
-  const [isMobileNavExpanded, setIsMobileNavExpanded] = useState(false);
   // Sync caseStudyMode with external viewMode
   const initialCaseStudyMode = viewMode === 'executive' ? 'executive' : (viewMode === 'caseStudy' ? 'full' : 'executive');
   const [caseStudyMode, setCaseStudyMode] = useState<'executive' | 'full'>(initialCaseStudyMode);
@@ -742,6 +755,8 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
   const videoRefs = useRef<{ [key: string]: HTMLVideoElement | null }>({});
   const [canScrollBrandLeft, setCanScrollBrandLeft] = useState(false);
   const [canScrollBrandRight, setCanScrollBrandRight] = useState(true);
+  const sections = TOC_SECTIONS[lang];
+  const isDark = systemTheme === 'dark';
 
   // Sync caseStudyMode when viewMode changes from outside
   useEffect(() => {
@@ -752,37 +767,46 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
     }
   }, [viewMode]);
 
-  // Section labels for nav
-  const sectionLabels = sections.map(s => ({
-    id: s.id,
-    label: t.nav[s.labelKey as keyof typeof t.nav]
-  }));
-
-  // Scroll tracking
+  // Track scroll position and update active section (only in full mode)
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
 
     const handleScroll = () => {
-      setShowNav(container.scrollTop > 300);
+      const scrollTop = container.scrollTop;
 
-      const sectionElements = sections.map(s => ({
-        id: s.id,
-        element: document.getElementById(s.id)
-      })).filter(s => s.element);
+      // Show nav after scrolling past hero (300px)
+      setShowNav(scrollTop > 300);
+
+      // If at the very top, set 'top' as active
+      if (scrollTop < 100) {
+        setActiveSection('top');
+        return;
+      }
+
+      // Find active section (skip 'top' which has no DOM element)
+      const sectionElements = sections
+        .filter(s => s.id !== 'top')
+        .map(s => ({
+          id: s.id,
+          element: document.getElementById(s.id)
+        })).filter(s => s.element);
 
       for (let i = sectionElements.length - 1; i >= 0; i--) {
         const section = sectionElements[i];
-        if (section.element && section.element.getBoundingClientRect().top <= 200) {
-          setActiveSection(section.id);
-          break;
+        if (section.element) {
+          const rect = section.element.getBoundingClientRect();
+          if (rect.top <= 200) {
+            setActiveSection(section.id);
+            break;
+          }
         }
       }
     };
 
     container.addEventListener('scroll', handleScroll);
     return () => container.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [sections]);
 
   // Lightbox functions with video start time support
   const openLightbox = (imageSrc: string, startTime: number = 0) => {
@@ -809,7 +833,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [lightboxOpen, onClose]);
 
-  // Scroll to section with proper offset for header + sticky mini-nav
+  // Scroll to section with proper offset for sticky mini-nav
   const scrollToSection = (sectionId: string) => {
     if (sectionId === 'top') {
       containerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
@@ -817,9 +841,15 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
     }
     const element = document.getElementById(sectionId);
     if (element && containerRef.current) {
-      // Header height (73px) + sticky mini-nav height (~56px with py-4) + padding (24px)
-      const headerOffset = 73 + 56 + 24;
-      const elementPosition = element.offsetTop - headerOffset;
+      // Get element position relative to the scrollable container
+      const elementRect = element.getBoundingClientRect();
+      const currentScroll = containerRef.current.scrollTop;
+      // The container starts at 64px from viewport top (under header)
+      // The TOC bar is 48px tall and overlaps the container content
+      // So we need to offset by TOC height + some padding
+      const tocOffset = 48 + 16;
+      // elementRect.top is relative to viewport, container top is at 64px
+      const elementPosition = currentScroll + elementRect.top - 64 - tocOffset;
       containerRef.current.scrollTo({
         top: elementPosition,
         behavior: 'smooth'
@@ -865,8 +895,6 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
     { src: '/images/sqool/systeme de marque/visuel_systeme_de_marque_15.webp', key: 'brandVisual15' },
   ];
 
-  const isDark = systemTheme === 'dark';
-
   return (
     <motion.div
       ref={containerRef}
@@ -878,82 +906,6 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
         viewMode === 'gallery' ? 'bg-black' : (isDark ? 'bg-[#0a0a0a]' : 'bg-white')
       }`}
     >
-      {/* Sticky Mini-Nav TOC - Hidden in gallery mode and executive mode */}
-      <AnimatePresence>
-        {showNav && viewMode !== 'gallery' && caseStudyMode !== 'executive' && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2 }}
-            className={`fixed top-16 left-0 right-0 z-30 backdrop-blur-xl ${
-              isDark
-                ? 'bg-[#0a0a0a]/80'
-                : 'bg-white/80'
-            }`}
-          >
-            <div className="w-full px-6">
-              <button
-                onClick={() => setIsMobileNavExpanded(!isMobileNavExpanded)}
-                className="w-full h-12 flex items-center justify-between"
-              >
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-blue-500" />
-                  <span className={`text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                    {sectionLabels.find(s => s.id === activeSection)?.label || 'Top'}
-                  </span>
-                </div>
-                <motion.div animate={{ rotate: isMobileNavExpanded ? 180 : 0 }} transition={{ duration: 0.2 }}>
-                  <ChevronDown size={20} className={isDark ? 'text-gray-400' : 'text-gray-500'} />
-                </motion.div>
-              </button>
-
-              {/* Expanded state - shows all sections */}
-              <AnimatePresence>
-                {isMobileNavExpanded && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="overflow-hidden"
-                  >
-                    <div className={`pb-3 space-y-1 border-t ${isDark ? 'border-white/5' : 'border-gray-100'}`}>
-                      {sectionLabels.map((section) => {
-                        const isActive = activeSection === section.id;
-                        const currentIndex = sectionLabels.findIndex(s => s.id === activeSection);
-                        const sectionIndex = sectionLabels.findIndex(s => s.id === section.id);
-                        const isPast = sectionIndex < currentIndex;
-
-                        return (
-                          <button
-                            key={section.id}
-                            onClick={() => {
-                              scrollToSection(section.id);
-                              setIsMobileNavExpanded(false);
-                            }}
-                            className={`w-full text-left py-2 px-3 rounded-lg flex items-center gap-3 transition-colors ${
-                              isActive
-                                ? isDark ? 'bg-blue-600/10 text-blue-400' : 'bg-blue-50 text-blue-600'
-                                : isDark ? 'text-gray-400 hover:bg-white/5' : 'text-gray-600 hover:bg-gray-50'
-                            }`}
-                          >
-                            <div className={`w-1.5 h-1.5 rounded-full ${
-                              isActive ? 'bg-blue-600' : isPast ? (isDark ? 'bg-gray-500' : 'bg-gray-400') : (isDark ? 'bg-gray-700' : 'bg-gray-300')
-                            }`} />
-                            <span className="text-sm font-medium">{section.label}</span>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       {/* Header - Glass effect */}
       <header className={`sticky top-0 z-40 backdrop-blur-xl ${
         viewMode === 'gallery'
@@ -1055,6 +1007,16 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
         </div>
       </header>
 
+      {/* TOC Sidebar - Persistent left navigation for full mode */}
+      <CaseStudyTOCSidebar
+        sections={sections}
+        activeSection={activeSection}
+        onSectionClick={scrollToSection}
+        isDark={isDark}
+        isVisible={showNav && viewMode !== 'gallery' && caseStudyMode === 'full'}
+        lang={lang}
+      />
+
       {/* Content - Switch between Gallery, Executive, and Full Case Study */}
       <AnimatePresence mode="wait">
         {viewMode === 'gallery' ? (
@@ -1104,7 +1066,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
           >
-      <div className="max-w-[1480px] mx-auto px-10 py-12 md:py-16">
+      <div className="max-w-[1200px] mx-auto px-10 py-12 md:py-16">
         <div>
           {/* Main Content */}
           <main className="w-full">

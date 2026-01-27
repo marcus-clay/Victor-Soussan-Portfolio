@@ -3,7 +3,8 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion';
-import { X, ChevronDown } from 'lucide-react';
+import { X } from 'lucide-react';
+import CaseStudyTOCSidebar from './src/components/CaseStudyTOCSidebar';
 import FranceVaeExecutive from './src/components/FranceVaeExecutive';
 import FranceVaeFull from './src/components/FranceVaeFull';
 import StackedCaseStudies from './src/components/StackedCaseStudies';
@@ -251,7 +252,6 @@ const FranceVaePage: React.FC<FranceVaePageProps> = ({
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [activeSection, setActiveSection] = useState('top');
-  const [isMobileNavExpanded, setIsMobileNavExpanded] = useState(false);
   const [showNav, setShowNav] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const t = FRANCEVAE_TRANSLATIONS[lang];
@@ -363,109 +363,6 @@ const FranceVaePage: React.FC<FranceVaePageProps> = ({
         viewMode === 'gallery' ? 'bg-black' : (isDark ? 'bg-[#0a0a0a]' : 'bg-white')
       }`}
     >
-      {/* Mobile Navigation - Sticky under header - Only visible in full mode */}
-      <AnimatePresence>
-        {showNav && viewMode !== 'gallery' && caseStudyMode === 'full' && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2 }}
-            className={`fixed top-16 left-0 right-0 z-30 backdrop-blur-xl ${
-              isDark
-                ? 'bg-[#0a0a0a]/80'
-                : 'bg-white/80'
-            }`}
-          >
-            {/* Collapsed state - shows current section */}
-            <div className="w-full px-6">
-              <button
-                onClick={() => setIsMobileNavExpanded(!isMobileNavExpanded)}
-                className="w-full h-12 flex items-center justify-between"
-              >
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-blue-500" />
-                  <span
-                    className={`text-sm font-medium ${
-                      isDark ? 'text-white' : 'text-gray-900'
-                    }`}
-                  >
-                    {sections.find(s => s.id === activeSection)?.label || 'Top'}
-                  </span>
-                </div>
-                <motion.div
-                  animate={{ rotate: isMobileNavExpanded ? 180 : 0 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <ChevronDown
-                    size={20}
-                    className={isDark ? 'text-gray-400' : 'text-gray-500'}
-                  />
-                </motion.div>
-              </button>
-
-              {/* Expanded state - shows all sections */}
-              <AnimatePresence>
-                {isMobileNavExpanded && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="overflow-hidden"
-                  >
-                    <div className={`pb-3 space-y-1 border-t ${
-                      isDark ? 'border-white/5' : 'border-gray-100'
-                    }`}>
-                      {sections.map((section) => {
-                        const isActive = activeSection === section.id;
-                        const currentIndex = sections.findIndex(s => s.id === activeSection);
-                        const sectionIndex = sections.findIndex(s => s.id === section.id);
-                        const isPast = sectionIndex < currentIndex;
-
-                        return (
-                          <button
-                            key={section.id}
-                            onClick={() => {
-                              scrollToSection(section.id);
-                              setIsMobileNavExpanded(false);
-                            }}
-                            className={`w-full text-left py-2 px-3 rounded-lg flex items-center gap-3 transition-colors ${
-                              isActive
-                                ? isDark
-                                  ? 'bg-blue-600/10 text-blue-400'
-                                  : 'bg-blue-50 text-blue-600'
-                                : isDark
-                                  ? 'text-gray-400 hover:bg-white/5'
-                                  : 'text-gray-600 hover:bg-gray-50'
-                            }`}
-                          >
-                            <div
-                              className={`w-1.5 h-1.5 rounded-full ${
-                                isActive
-                                  ? 'bg-blue-600'
-                                  : isPast
-                                    ? isDark
-                                      ? 'bg-gray-500'
-                                      : 'bg-gray-400'
-                                    : isDark
-                                      ? 'bg-gray-700'
-                                      : 'bg-gray-300'
-                              }`}
-                            />
-                            <span className="text-sm font-medium">{section.label}</span>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       {/* Header - Glass effect */}
       <header
         className={`sticky top-0 z-40 backdrop-blur-xl ${
@@ -576,6 +473,16 @@ const FranceVaePage: React.FC<FranceVaePageProps> = ({
           </div>
         </div>
       </header>
+
+      {/* TOC Sidebar - Persistent left navigation for full mode */}
+      <CaseStudyTOCSidebar
+        sections={sections}
+        activeSection={activeSection}
+        onSectionClick={scrollToSection}
+        isDark={isDark}
+        isVisible={showNav && viewMode !== 'gallery' && caseStudyMode === 'full'}
+        lang={lang}
+      />
 
       {/* Main Content */}
       {viewMode === 'caseStudy' ? (
