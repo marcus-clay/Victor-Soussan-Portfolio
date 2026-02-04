@@ -9,5 +9,4 @@ Sitemap: https://www.victorsoussan.fr/sitemap.xml
 
 # Disallow internal paths
 Disallow: /api/
-Disallow: /_next/
 Disallow: /.vercel/

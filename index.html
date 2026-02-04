@@ -11,14 +11,17 @@
     <meta name="keywords" content="Product Design, UX Design, UI Design, Design System, Design Lead, Senior Designer, Portfolio, Victor Soussan, France, Paris, Figma, User Research, Product Strategy" />
     <meta name="author" content="Victor Soussan" />
     <meta name="robots" content="index, follow" />
-    <link rel="canonical" href="https://victorsoussan.fr" />
+    <link rel="canonical" href="https://www.victorsoussan.fr" />
+    <link rel="alternate" hreflang="fr" href="https://www.victorsoussan.fr/?lang=fr" />
+    <link rel="alternate" hreflang="en" href="https://www.victorsoussan.fr/?lang=en" />
+    <link rel="alternate" hreflang="x-default" href="https://www.victorsoussan.fr" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://victorsoussan.fr" />
+    <meta property="og:url" content="https://www.victorsoussan.fr" />
     <meta property="og:title" content="Victor Soussan | Product Design Lead" />
     <meta property="og:description" content="Senior Product Design Lead avec 15+ ans d'expérience. Spécialisé en Design System, UX Research, et transformation digitale." />
-    <meta property="og:image" content="https://victorsoussan.fr/images/og_victor_soussan.webp" />
+    <meta property="og:image" content="https://www.victorsoussan.fr/images/og_victor_soussan.webp" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:locale" content="fr_FR" />
@@ -27,26 +30,31 @@
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:url" content="https://victorsoussan.fr" />
+    <meta name="twitter:url" content="https://www.victorsoussan.fr" />
     <meta name="twitter:title" content="Victor Soussan | Product Design Lead" />
     <meta name="twitter:description" content="Senior Product Design Lead avec 15+ ans d'expérience. Spécialisé en Design System, UX Research, et transformation digitale." />
-    <meta name="twitter:image" content="https://victorsoussan.fr/images/og_victor_soussan.webp" />
+    <meta name="twitter:image" content="https://www.victorsoussan.fr/images/og_victor_soussan.webp" />
 
     <!-- Favicons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
     <link rel="icon" type="image/webp" href="/images/victor-soussan.webp" />
-    <link rel="apple-touch-icon" href="/images/victor-soussan.webp" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon-180.png" />
 
-    <!-- Structured Data JSON-LD -->
+    <!-- Structured Data JSON-LD: Person -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Person",
+      "@id": "https://www.victorsoussan.fr/#person",
       "name": "Victor Soussan",
       "jobTitle": "Product Design Lead",
-      "url": "https://victorsoussan.fr",
-      "image": "https://victorsoussan.fr/images/victor-soussan.webp",
+      "description": "Product Design Lead with 15+ years in tech. Expert in design systems, UX research, and digital transformation.",
+      "url": "https://www.victorsoussan.fr",
+      "image": "https://www.victorsoussan.fr/images/victor-soussan.webp",
       "sameAs": [
-        "https://linkedin.com/in/victorsoussan"
+        "https://www.linkedin.com/in/victorsoussan",
+        "https://github.com/victorsoussan",
+        "https://www.collective.work/profile/victor-soussan"
       ],
       "email": "victorsoussan@gmail.com",
       "telephone": "+33615989400",
@@ -55,37 +63,45 @@
         "addressLocality": "Paris",
         "addressCountry": "FR"
       },
+      "nationality": { "@type": "Country", "name": "France" },
       "knowsAbout": ["Product Design", "UX Design", "UI Design", "Design Systems", "User Research", "Figma", "Design Leadership"],
+      "hasCredential": [
+        {
+          "@type": "EducationalOccupationalCredential",
+          "name": "Master in Communication & Multimedia",
+          "credentialCategory": "degree",
+          "recognizedBy": { "@type": "Organization", "name": "ISCOM Paris" }
+        }
+      ],
       "worksFor": {
         "@type": "Organization",
-        "name": "Freelance / Consultant"
-      }
+        "name": "Independent Consultant"
+      },
+      "knowsLanguage": ["fr", "en"]
     }
     </script>
 
-    <!-- Portfolio/Website Structured Data -->
+    <!-- Structured Data JSON-LD: WebSite -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
       "name": "Victor Soussan Portfolio",
-      "url": "https://victorsoussan.fr",
+      "url": "https://www.victorsoussan.fr",
       "description": "Portfolio de Victor Soussan, Product Design Lead",
-      "author": {
-        "@type": "Person",
-        "name": "Victor Soussan"
-      },
-      "inLanguage": ["fr-FR", "en-US"]
+      "author": { "@type": "Person", "name": "Victor Soussan" },
+      "inLanguage": ["fr-FR", "en-US"],
+      "mainEntity": { "@id": "https://www.victorsoussan.fr/#person" }
     }
     </script>
 
-    <!-- Creative Works / Portfolio Projects -->
+    <!-- Structured Data JSON-LD: Portfolio Projects -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "ItemList",
       "name": "Portfolio Projects",
-      "description": "Featured case studies and design projects",
+      "description": "Featured case studies and design projects by Victor Soussan",
       "itemListElement": [
         {
           "@type": "ListItem",
@@ -94,10 +110,12 @@
             "@type": "CreativeWork",
             "name": "Toolkit Design System",
             "description": "Design system for the construction industry, unifying digital products across multiple platforms",
-            "url": "https://victorsoussan.fr/project/toolkit/summary",
-            "image": "https://victorsoussan.fr/images/thumbnail-toolkit.webp",
-            "author": {"@type": "Person", "name": "Victor Soussan"},
-            "dateCreated": "2023",
+            "url": "https://www.victorsoussan.fr/project/toolkit/summary",
+            "image": "https://www.victorsoussan.fr/images/thumbnail-toolkit.webp",
+            "author": { "@id": "https://www.victorsoussan.fr/#person" },
+            "dateCreated": "2023-01-01",
+            "dateModified": "2024-12-31",
+            "inLanguage": ["fr", "en"],
             "keywords": ["Design System", "B2B", "Construction", "SaaS"]
           }
         },
@@ -108,10 +126,12 @@
             "@type": "CreativeWork",
             "name": "Dailymotion Partner Platform",
             "description": "Complete redesign of the video partner management platform for content creators and media companies",
-            "url": "https://victorsoussan.fr/project/dailymotion/summary",
-            "image": "https://victorsoussan.fr/images/thumbnail-dailymotion-web-platform.webp",
-            "author": {"@type": "Person", "name": "Victor Soussan"},
-            "dateCreated": "2017-2018",
+            "url": "https://www.victorsoussan.fr/project/dailymotion/summary",
+            "image": "https://www.victorsoussan.fr/images/thumbnail-dailymotion-web-platform.webp",
+            "author": { "@id": "https://www.victorsoussan.fr/#person" },
+            "dateCreated": "2017-09-01",
+            "dateModified": "2018-01-31",
+            "inLanguage": ["fr", "en"],
             "keywords": ["Video Platform", "Media", "B2B", "Dashboard"]
           }
         },
@@ -122,10 +142,12 @@
             "@type": "CreativeWork",
             "name": "SQOOL Connect",
             "description": "EdTech platform connecting teachers, students and parents in the digital classroom",
-            "url": "https://victorsoussan.fr/project/connect/summary",
-            "image": "https://victorsoussan.fr/images/thumbnail-connect.webp",
-            "author": {"@type": "Person", "name": "Victor Soussan"},
-            "dateCreated": "2020-2021",
+            "url": "https://www.victorsoussan.fr/project/connect/summary",
+            "image": "https://www.victorsoussan.fr/images/thumbnail-connect.webp",
+            "author": { "@id": "https://www.victorsoussan.fr/#person" },
+            "dateCreated": "2020-01-01",
+            "dateModified": "2021-12-31",
+            "inLanguage": ["fr", "en"],
             "keywords": ["EdTech", "Education", "Android", "Dashboard"]
           }
         },
@@ -136,10 +158,12 @@
             "@type": "CreativeWork",
             "name": "SQOOL Suite",
             "description": "Complete EdTech ecosystem transformation over 6 years, from tablets to software suite",
-            "url": "https://victorsoussan.fr/project/sqool/summary",
-            "image": "https://victorsoussan.fr/images/thumbnail-sqool-suite.webp",
-            "author": {"@type": "Person", "name": "Victor Soussan"},
-            "dateCreated": "2018-2024",
+            "url": "https://www.victorsoussan.fr/project/sqool/summary",
+            "image": "https://www.victorsoussan.fr/images/thumbnail-sqool-suite.webp",
+            "author": { "@id": "https://www.victorsoussan.fr/#person" },
+            "dateCreated": "2018-01-01",
+            "dateModified": "2024-12-31",
+            "inLanguage": ["fr", "en"],
             "keywords": ["EdTech", "Design System", "Ecosystem", "Product Strategy"]
           }
         },
@@ -150,43 +174,224 @@
             "@type": "CreativeWork",
             "name": "France VAE",
             "description": "Government digital service for professional certification validation (VAE)",
-            "url": "https://victorsoussan.fr/project/france-vae/summary",
-            "image": "https://victorsoussan.fr/images/francevae/thumbnail_france_vae_02.webp",
-            "author": {"@type": "Person", "name": "Victor Soussan"},
-            "dateCreated": "2024",
+            "url": "https://www.victorsoussan.fr/project/france-vae/summary",
+            "image": "https://www.victorsoussan.fr/images/francevae/thumbnail_france_vae_02.webp",
+            "author": { "@id": "https://www.victorsoussan.fr/#person" },
+            "dateCreated": "2024-12-01",
+            "dateModified": "2025-07-31",
+            "inLanguage": ["fr", "en"],
             "keywords": ["Government", "Digital Service", "UX Research", "Public Sector"]
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 6,
+          "item": {
+            "@type": "CreativeWork",
+            "name": "PagesJaunes Mobile Apps Redesign",
+            "description": "Modernisation des apps mobiles PagesJaunes pour 22M+ utilisateurs. Homepage conversationnelle, navigation et design system.",
+            "url": "https://www.victorsoussan.fr/project/pagesjaunes/summary",
+            "image": "https://www.victorsoussan.fr/images/thumbnail-pagesjaunes-multidevices.webp",
+            "author": { "@id": "https://www.victorsoussan.fr/#person" },
+            "dateCreated": "2015-01-01",
+            "dateModified": "2017-09-30",
+            "inLanguage": ["fr", "en"],
+            "keywords": ["Mobile Apps", "Redesign", "Local Search", "Design System"]
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 7,
+          "item": {
+            "@type": "CreativeWork",
+            "name": "PagesJaunes Android Wear",
+            "description": "Conception de l'app Android Wear PagesJaunes. Recherche locale glanceable, Material Design.",
+            "url": "https://www.victorsoussan.fr/project/androidwear/summary",
+            "image": "https://www.victorsoussan.fr/images/pagesjaunes/Android%20wear/android_wear_insitu_store_01.webp",
+            "author": { "@id": "https://www.victorsoussan.fr/#person" },
+            "dateCreated": "2015-01-01",
+            "dateModified": "2015-12-31",
+            "inLanguage": ["fr", "en"],
+            "keywords": ["Wearable", "Android Wear", "Material Design", "Innovation"]
           }
         }
       ]
     }
     </script>
 
-    <!-- Professional Service offering -->
+    <!-- Structured Data JSON-LD: Professional Service + Reviews -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "ProfessionalService",
-      "name": "Victor Soussan - Product Design Services",
-      "description": "Consulting et expertise en Product Design, UX Research, et Design System",
-      "url": "https://victorsoussan.fr",
-      "image": "https://victorsoussan.fr/images/victor-soussan.webp",
+      "name": "Victor Soussan - Product Design & UX Consulting",
+      "description": "Consulting en design produit, UX/UI, design systems et leadership d'équipe",
+      "url": "https://www.victorsoussan.fr",
+      "image": "https://www.victorsoussan.fr/images/victor-soussan.webp",
       "priceRange": "$$$$",
+      "telephone": "+33615989400",
+      "email": "victorsoussan@gmail.com",
       "address": {
         "@type": "PostalAddress",
         "addressLocality": "Paris",
         "addressCountry": "FR"
       },
-      "areaServed": ["France", "Europe"],
+      "areaServed": [
+        { "@type": "Country", "name": "France" },
+        { "@type": "Place", "name": "Europe" }
+      ],
       "hasOfferCatalog": {
         "@type": "OfferCatalog",
         "name": "Design Services",
         "itemListElement": [
-          {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Product Design"}},
-          {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "UX Research"}},
-          {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Design System"}},
-          {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Design Leadership"}}
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Design Leadership & Team Building",
+              "description": "Interim Design Lead. Building and scaling design teams, establishing design operations and culture."
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "UX Strategy & Product Design",
+              "description": "End-to-end product design from discovery to delivery. User research, prototyping, design systems."
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Design Audit & Consulting",
+              "description": "UX audit, design maturity assessment, and strategic recommendations for product teams."
+            }
+          }
         ]
-      }
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "5",
+        "bestRating": "5",
+        "ratingCount": "14",
+        "reviewCount": "14"
+      },
+      "review": [
+        {
+          "@type": "Review",
+          "author": { "@type": "Person", "name": "Pierre-Marie Nigay", "jobTitle": "Founder of Toolkit" },
+          "datePublished": "2025-11-14",
+          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+          "reviewBody": "Victor didn't just create mockups. We worked in workshops before the product even existed. He transformed business requirements into perfectly adapted user journeys."
+        },
+        {
+          "@type": "Review",
+          "author": { "@type": "Person", "name": "Charlotte Rifflet", "jobTitle": "CPO, UNOWHY" },
+          "datePublished": "2025-06-24",
+          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+          "reviewBody": "Victor combines overflowing creativity with impressive rigor. He translates complex visions into clear, impactful user experiences. Always listening, curious, he constantly pushes thinking further."
+        },
+        {
+          "@type": "Review",
+          "author": { "@type": "Person", "name": "Boris Aimé-Bauderlique", "jobTitle": "Deployment Manager, France VAE" },
+          "datePublished": "2025-06-28",
+          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+          "reviewBody": "Always proposing ideas that shake things up. You never settled for just thinking: you produced, tested, wireframed, prototyped. Your UX expertise is undeniable, but your experience made the difference."
+        },
+        {
+          "@type": "Review",
+          "author": { "@type": "Person", "name": "Achref Akkari", "jobTitle": "Product Manager, UNOWHY" },
+          "datePublished": "2024-12-18",
+          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+          "reviewBody": "Victor is a true source of inspiration. He brought a pragmatic and professional approach. His leadership and ability to collaborate were essential."
+        },
+        {
+          "@type": "Review",
+          "author": { "@type": "Person", "name": "Justine Le Tellier", "jobTitle": "UX Researcher, UNOWHY" },
+          "datePublished": "2024-12-12",
+          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+          "reviewBody": "As Product Lead in UI & Interaction Design, he played a central role in defining the product vision. I was struck by Victor's curiosity and his ability to share knowledge pedagogically. He was a real driver of progress."
+        },
+        {
+          "@type": "Review",
+          "author": { "@type": "Person", "name": "Hortense Jan", "jobTitle": "Marketing Director, UNOWHY" },
+          "datePublished": "2024-12-09",
+          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+          "reviewBody": "I worked alongside Victor for 5 beautiful years. His expertise, 360 vision, and design talent enabled the creation and success of many projects. Victor is passionate and fascinating."
+        },
+        {
+          "@type": "Review",
+          "author": { "@type": "Person", "name": "Hubert Bloch", "jobTitle": "Deputy CEO, UNOWHY" },
+          "datePublished": "2024-12-08",
+          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+          "reviewBody": "Highly cultivated, curious, and creative, he always brings relevant ideas and original perspectives. Beyond his talent, Victor is particularly friendly, which makes collaborating with him even more enjoyable."
+        },
+        {
+          "@type": "Review",
+          "author": { "@type": "Person", "name": "Mbagna Johan Gaby", "jobTitle": "Product Designer" },
+          "datePublished": "2024-09-30",
+          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+          "reviewBody": "Passionate and reliable. Lover of details. His feedback allowed me to reach a new level. He has the will to listen to his team, putting them in the best conditions."
+        },
+        {
+          "@type": "Review",
+          "author": { "@type": "Person", "name": "Şafak Aktaş", "jobTitle": "Graphic Designer, Reflet Digital" },
+          "datePublished": "2020-12-10",
+          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+          "reviewBody": "Beyond being a manager concerned with his team's well-being, he is passionate about details. Patient and pedagogical, he doesn't hesitate to give constructive advice. A mentor I appreciated working with."
+        },
+        {
+          "@type": "Review",
+          "author": { "@type": "Person", "name": "Frederic Rodriguez", "jobTitle": "Head of Poker, FDJ" },
+          "datePublished": "2017-06-29",
+          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+          "reviewBody": "Professional and rigorous, Victor knows how to translate business stakes into relevant implementations. Very attentive to his collaborators and different trades, both technical and marketing."
+        },
+        {
+          "@type": "Review",
+          "author": { "@type": "Person", "name": "Rémi Serougne", "jobTitle": "Web Developer" },
+          "datePublished": "2017-03-08",
+          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+          "reviewBody": "Accessible, attentive, and responsible. Working with Victor is a pleasure as he adheres to collective intelligence principles and facilitates interactions between Design and Engineering."
+        },
+        {
+          "@type": "Review",
+          "author": { "@type": "Person", "name": "Simon White", "jobTitle": "Senior UX Designer" },
+          "datePublished": "2016-04-22",
+          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+          "reviewBody": "He is a very capable designer who can do the legwork but also take a step back and advise on more strategic aspects. He's worked on mobile and web, and has a keen eye for interaction design. Highly recommended."
+        },
+        {
+          "@type": "Review",
+          "author": { "@type": "Person", "name": "Nicolas Moulin", "jobTitle": "Entrepreneur / Advisor" },
+          "datePublished": "2016-04-12",
+          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+          "reviewBody": "He knows how to unite people around a project, allowing for total autonomy to see it through. It is very useful to discuss the medium-term service vision with him."
+        },
+        {
+          "@type": "Review",
+          "author": { "@type": "Person", "name": "François Khoury", "jobTitle": "Senior Presales" },
+          "datePublished": "2014-10-30",
+          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+          "reviewBody": "His previous experiences as Art Director and Designer bring a critical sense and a new approach to our projects which allow us to improve user experience. Victor helped us a lot on the embedded PagesJaunes application."
+        }
+      ]
+    }
+    </script>
+
+    <!-- Structured Data JSON-LD: BreadcrumbList -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.victorsoussan.fr" },
+        { "@type": "ListItem", "position": 2, "name": "Projects", "item": "https://www.victorsoussan.fr/work" },
+        { "@type": "ListItem", "position": 3, "name": "About", "item": "https://www.victorsoussan.fr/about" },
+        { "@type": "ListItem", "position": 4, "name": "Testimonials", "item": "https://www.victorsoussan.fr/testimonials" },
+        { "@type": "ListItem", "position": 5, "name": "Contact", "item": "https://www.victorsoussan.fr/contact" }
+      ]
     }
     </script>
 

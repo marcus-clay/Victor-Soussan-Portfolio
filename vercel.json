@@ -8,7 +8,8 @@
     { "source": "/resume", "destination": "/" },
     { "source": "/contact", "destination": "/" },
     { "source": "/quote", "destination": "/" },
-    { "source": "/presentation", "destination": "/" }
+    { "source": "/presentation", "destination": "/" },
+    { "source": "/home-v2", "destination": "/" }
   ],
   "headers": [
     {

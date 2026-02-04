@@ -319,7 +319,7 @@ const TRANSLATIONS = {
       tagline: "Frame. Design. Ship.",
       title: "Experienced designer for",
       subtitle: "product teams and startups",
-      desc: "15 years in tech, 10 in product design. I turn ambiguous requirements into functional prototypes, fast. Enterprise software, media, education, public services. AI-augmented workflows.",
+      desc: "15 years in tech, 10 in product design. I turn ambiguous requirements into functional prototypes, fast. Enterprise software, media, education, public services. Available for Design Direction, UX Strategy and Senior Product Design roles.",
       cta_projects: "My 1-min Presentation",
       cta_book: "Book a 30min Call",
       tooltip_title: "Need a Design Partner?",
@@ -767,7 +767,7 @@ const TRANSLATIONS = {
       tagline: "Frame. Design. Ship.",
       title: "Designer expérimenté pour",
       subtitle: "équipes produit et startups",
-      desc: "15 ans dans la tech, 10 en design produit. Je transforme vos intuitions produit en prototypes fonctionnels, vite. Logiciels entreprise, médias, éducation, services publics. Workflows augmentés par l'IA.",
+      desc: "15 ans dans la tech, 10 en design produit. Je transforme vos intuitions produit en prototypes fonctionnels, vite. Logiciels entreprise, médias, éducation, services publics. Disponible pour des rôles de Direction Design, Stratégie UX et Senior Product Design.",
       cta_projects: "Ma présentation en 1-min",
       cta_book: "Planifier un appel de 30min",
       tooltip_title: "Besoin d'un designer ou d'un lead pour votre équipe ?",
@@ -1980,6 +1980,11 @@ const App: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Signal to prerender script that the app is ready
+  useEffect(() => {
+    document.dispatchEvent(new Event('prerender-ready'));
+  }, []);
+
   // Detect active section on scroll - improved accuracy
   useEffect(() => {
     const sectionIds = ['projects', 'services', 'bio', 'lab', 'testimonials', 'contact'];
@@ -2088,7 +2093,7 @@ const App: React.FC = () => {
     if (ogDesc) ogDesc.setAttribute('content', seo.description);
 
     const ogImage = document.querySelector('meta[property="og:image"]');
-    if (ogImage) ogImage.setAttribute('content', `https://victorsoussan.fr${seo.image}`);
+    if (ogImage) ogImage.setAttribute('content', `https://www.victorsoussan.fr${seo.image}`);
 
     // Update Twitter tags
     const twTitle = document.querySelector('meta[name="twitter:title"]');
@@ -2098,7 +2103,7 @@ const App: React.FC = () => {
     if (twDesc) twDesc.setAttribute('content', seo.description);
 
     const twImage = document.querySelector('meta[name="twitter:image"]');
-    if (twImage) twImage.setAttribute('content', `https://victorsoussan.fr${seo.image}`);
+    if (twImage) twImage.setAttribute('content', `https://www.victorsoussan.fr${seo.image}`);
   };
 
   // URL helpers for project routing
