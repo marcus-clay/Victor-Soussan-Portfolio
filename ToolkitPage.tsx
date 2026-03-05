@@ -3,6 +3,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion';
+import { smoothScrollTo } from './src/utils/smoothScroll';
 import {
   ExternalLink,
   Calendar,
@@ -636,7 +637,7 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick }) => {
       </motion.div>
       <figcaption className="mt-4 text-sm text-gray-400">
         <strong className="text-gray-200">{item.caption}</strong>
-        {item.captionDesc && <span className="hidden sm:inline"> — {item.captionDesc}</span>}
+        {item.captionDesc && <span className="hidden sm:inline"> · {item.captionDesc}</span>}
       </figcaption>
     </motion.figure>
   );
@@ -1107,19 +1108,16 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
 
   // Scroll to section with proper offset for header + sticky mini-nav
   const scrollToSection = (sectionId: string) => {
+    if (!containerRef.current) return;
     if (sectionId === 'top') {
-      containerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+      smoothScrollTo(containerRef.current, 0);
       return;
     }
     const element = document.getElementById(sectionId);
-    if (element && containerRef.current) {
-      // Header height (80px with pt-4) + sticky mini-nav height (~56px with py-4) + padding (24px)
+    if (element) {
       const headerOffset = 80 + 56 + 24;
       const elementPosition = element.offsetTop - headerOffset;
-      containerRef.current.scrollTo({
-        top: elementPosition,
-        behavior: 'smooth'
-      });
+      smoothScrollTo(containerRef.current, elementPosition);
     }
   };
 

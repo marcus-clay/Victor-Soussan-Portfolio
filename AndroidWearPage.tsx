@@ -3,6 +3,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, useMotionValue, useTransform, useSpring, AnimatePresence } from 'framer-motion';
+import { smoothScrollTo } from './src/utils/smoothScroll';
 import {
   X,
   Play,
@@ -622,19 +623,16 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
 
   // Scroll to section with proper offset
   const scrollToSection = (sectionId: string) => {
+    if (!containerRef.current) return;
     if (sectionId === 'top') {
-      containerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+      smoothScrollTo(containerRef.current, 0);
       return;
     }
     const element = document.getElementById(sectionId);
-    if (element && containerRef.current) {
-      // Header height (64px) + sticky mini-nav height (~48px) + padding (24px)
+    if (element) {
       const headerOffset = 64 + 48 + 24;
       const elementPosition = element.offsetTop - headerOffset;
-      containerRef.current.scrollTo({
-        top: elementPosition,
-        behavior: 'smooth'
-      });
+      smoothScrollTo(containerRef.current, elementPosition);
     }
   };
 
@@ -1462,7 +1460,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
               </h2>
               <button
                 onClick={onContact}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#2D5CF3] text-white font-medium hover:bg-[#2453d4] transition-colors"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#2D5CF3] text-white font-medium hover:bg-[#2450d9] transition-colors"
               >
                 {t.cta.button}
                 <ArrowRight size={18} />

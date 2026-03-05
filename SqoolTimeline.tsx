@@ -57,7 +57,7 @@ const TRANSLATIONS = {
         year: '2019',
         title: 'Finding Our Path',
         subtitle: 'Web-first exploration',
-        description: 'With 500,000 personal devices deploying, we needed a new approach. Hi-SQOOL tested student engagement while Connect prototype validated web technology—and revealed why dashboards wouldn\'t work.',
+        description: 'With 500,000 personal devices deploying, we needed a new approach. Hi-SQOOL tested student engagement while Connect prototype validated web technology, and revealed why dashboards wouldn\'t work.',
         items: [
           { title: 'Hi-SQOOL', description: 'Student platform with fresh identity' },
           { title: 'Connect Prototype', description: 'Vision dashboard with "La Bulle" concept' },
@@ -125,7 +125,7 @@ const TRANSLATIONS = {
         year: '2019',
         title: 'Trouver notre voie',
         subtitle: 'Exploration web-first',
-        description: 'Avec 500 000 appareils personnels à déployer, nous avions besoin d\'une nouvelle approche. Hi-SQOOL a testé l\'engagement des élèves tandis que le prototype Connect a validé la technologie web—et révélé pourquoi les dashboards ne marcheraient pas.',
+        description: 'Avec 500 000 appareils personnels à déployer, nous avions besoin d\'une nouvelle approche. Hi-SQOOL a testé l\'engagement des élèves tandis que le prototype Connect a validé la technologie web, et révélé pourquoi les dashboards ne marcheraient pas.',
         items: [
           { title: 'Hi-SQOOL', description: 'Plateforme élève avec nouvelle identité' },
           { title: 'Prototype Connect', description: 'Dashboard de vision avec concept "La Bulle"' },

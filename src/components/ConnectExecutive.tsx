@@ -47,7 +47,7 @@ const TRANSLATIONS = {
     context: {
       eyebrow: 'Context',
       title: 'Replacing an\nobsolete launcher',
-      description: 'By 2020, UNOWHY\'s Android launcher was technically obsolete and visually outdated. The COVID-19 acceleration of digital usage made the need even more critical. Connect was the proof-of-concept for a modern, web-based dashboard — designed to centralize classroom control, app access, and notifications for 500,000+ students across France.'
+      description: 'By 2020, UNOWHY\'s Android launcher was technically obsolete and visually outdated. The COVID-19 acceleration of digital usage made the need even more critical. Connect was the proof-of-concept for a modern, web-based dashboard designed to centralize classroom control, app access, and notifications for 500,000+ students across France.'
     },
     role: {
       eyebrow: 'My Role',
@@ -207,7 +207,7 @@ const TRANSLATIONS = {
     context: {
       eyebrow: 'Contexte',
       title: 'Remplacer un\nlanceur obsolète',
-      description: 'En 2020, le lanceur Android d\'UNOWHY était techniquement obsolète et visuellement dépassé. L\'accélération numérique COVID-19 rendait le besoin encore plus critique. Connect était le proof-of-concept pour un dashboard web moderne — conçu pour centraliser le contrôle de classe, l\'accès aux apps et les notifications pour plus de 500 000 élèves en France.'
+      description: 'En 2020, le lanceur Android d\'UNOWHY était techniquement obsolète et visuellement dépassé. L\'accélération numérique COVID-19 rendait le besoin encore plus critique. Connect était le proof-of-concept pour un dashboard web moderne conçu pour centraliser le contrôle de classe, l\'accès aux apps et les notifications pour plus de 500 000 élèves en France.'
     },
     role: {
       eyebrow: 'Mon Rôle',

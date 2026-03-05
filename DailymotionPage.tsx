@@ -3,6 +3,7 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform, useSpring, PanInfo } from 'framer-motion';
+import { smoothScrollTo } from './src/utils/smoothScroll';
 import {
   X,
   ExternalLink,
@@ -525,7 +526,7 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick }) => {
       </motion.div>
       <figcaption className="mt-4 text-sm text-gray-400">
         <strong className="text-gray-200">{item.caption}</strong>
-        {item.captionDesc && <span className="hidden sm:inline"> — {item.captionDesc}</span>}
+        {item.captionDesc && <span className="hidden sm:inline"> · {item.captionDesc}</span>}
       </figcaption>
     </motion.figure>
   );
@@ -632,25 +633,18 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
 
   // Scroll to section with proper offset for sticky mini-nav
   const scrollToSection = (sectionId: string) => {
+    if (!containerRef.current) return;
     if (sectionId === 'top') {
-      containerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+      smoothScrollTo(containerRef.current, 0);
       return;
     }
     const element = document.getElementById(sectionId);
-    if (element && containerRef.current) {
-      // Get element position relative to the scrollable container
+    if (element) {
       const elementRect = element.getBoundingClientRect();
       const currentScroll = containerRef.current.scrollTop;
-      // The container starts at 64px from viewport top (under header)
-      // The TOC bar is 48px tall and overlaps the container content
-      // So we need to offset by TOC height + some padding
       const tocOffset = 48 + 16;
-      // elementRect.top is relative to viewport, container top is at 64px
       const elementPosition = currentScroll + elementRect.top - 64 - tocOffset;
-      containerRef.current.scrollTo({
-        top: elementPosition,
-        behavior: 'smooth'
-      });
+      smoothScrollTo(containerRef.current, elementPosition);
     }
   };
 

@@ -84,7 +84,7 @@ const SHOWCASE_CONTENT = {
       {
         id: 'task-manipulation',
         title: 'Drag, resize, reschedule',
-        description: 'Intuitive task manipulation directly on the canvas. Change duration, move between zones, update status—all with natural gestures.',
+        description: 'Intuitive task manipulation directly on the canvas. Change duration, move between zones, update status, all with natural gestures.',
         media: '/videos/toolkit/video_-_task_manipulation.mp4',
         mediaType: 'video' as const,
         size: 'medium' as const,

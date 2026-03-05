@@ -183,7 +183,7 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, isVideo, onClick
         </strong>
         {item.captionDesc && (
           <span className="hidden sm:inline">
-            {' '}— {item.captionDesc}
+            {' '}· {item.captionDesc}
           </span>
         )}
       </figcaption>
@@ -513,7 +513,7 @@ export const BentoGallery: React.FC<BentoGalleryProps> = ({
                           >
                             <p className="text-white/80 text-sm md:text-base leading-relaxed">
                               {currentItem.caption}
-                              {currentItem.captionDesc && ` — ${currentItem.captionDesc}`}
+                              {currentItem.captionDesc && ` · ${currentItem.captionDesc}`}
                             </p>
                             <p className="text-white/40 text-xs mt-2">
                               {t.clickToExitZoom}
@@ -568,7 +568,7 @@ export const BentoGallery: React.FC<BentoGalleryProps> = ({
                           >
                             <p className="text-white/80 text-sm md:text-base leading-relaxed">
                               {currentItem.caption}
-                              {currentItem.captionDesc && ` — ${currentItem.captionDesc}`}
+                              {currentItem.captionDesc && ` · ${currentItem.captionDesc}`}
                             </p>
                             <p className="text-white/40 text-xs mt-2">
                               {lightboxIndex + 1} / {items.length}

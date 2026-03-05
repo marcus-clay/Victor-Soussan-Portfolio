@@ -155,26 +155,30 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
     onClose();
   }, [onClose, updateUrl, projectId]);
 
-  // Keyboard navigation
+  // Keyboard navigation - capture phase prevents App.tsx global Escape from closing parent modal
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!isOpen) return;
       if (e.key === 'Escape') {
+        e.stopImmediatePropagation();
         if (isZoomed) {
           resetState();
         } else {
           handleClose();
         }
+        return;
       }
       if (e.key === 'ArrowRight' && currentIndex < images.length - 1 && !isZoomed) {
+        setSlideDirection('left');
         onIndexChange(currentIndex + 1);
       }
       if (e.key === 'ArrowLeft' && currentIndex > 0 && !isZoomed) {
+        setSlideDirection('right');
         onIndexChange(currentIndex - 1);
       }
     };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener('keydown', handleKeyDown, true);
+    return () => window.removeEventListener('keydown', handleKeyDown, true);
   }, [isOpen, currentIndex, images.length, handleClose, onIndexChange, isZoomed]);
 
   // Reset all state
@@ -280,6 +284,40 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
     }
   }, [isZoomed, isMobile, handleClose, controls]);
 
+  // Combined drag end handler for mobile - determines intent from gesture direction
+  const handleCombinedDragEnd = useCallback((_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    if (isZoomed) return;
+
+    const absX = Math.abs(info.offset.x);
+    const absY = Math.abs(info.offset.y);
+
+    if (absX > absY) {
+      // Horizontal swipe → navigate between images
+      const threshold = 50;
+      if (info.offset.x < -threshold || info.velocity.x < -500) {
+        if (currentIndex < images.length - 1) {
+          setSlideDirection('left');
+          onIndexChange(currentIndex + 1);
+        }
+      } else if (info.offset.x > threshold || info.velocity.x > 500) {
+        if (currentIndex > 0) {
+          setSlideDirection('right');
+          onIndexChange(currentIndex - 1);
+        }
+      }
+    } else {
+      // Vertical swipe → close lightbox
+      const threshold = 100;
+      if ((info.offset.y > threshold || info.velocity.y > 500) && isMobile) {
+        handleClose();
+      } else if (isMobile) {
+        setDragY(0);
+        controls.start({ y: 0 });
+      }
+    }
+    dragX.set(0);
+  }, [isZoomed, currentIndex, images.length, onIndexChange, isMobile, handleClose, controls, dragX]);
+
   // Handle horizontal drag for navigation (mobile non-zoomed)
   const handleDragXEnd = useCallback((_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     if (isZoomed) return;
@@ -333,9 +371,9 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
   // Slide animation variants with parallax effect (iOS Photos style)
   const slideVariants = {
     enter: (direction: 'left' | 'right' | null) => ({
-      x: direction === 'left' ? 300 : direction === 'right' ? -300 : 0,
+      x: direction === 'left' ? 500 : direction === 'right' ? -500 : 0,
       opacity: 0,
-      scale: 0.9
+      scale: 0.95
     }),
     center: {
       x: 0,
@@ -343,9 +381,9 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
       scale: 1
     },
     exit: (direction: 'left' | 'right' | null) => ({
-      x: direction === 'left' ? -300 : direction === 'right' ? 300 : 0,
+      x: direction === 'left' ? -500 : direction === 'right' ? 500 : 0,
       opacity: 0,
-      scale: 0.9
+      scale: 0.95
     })
   };
 
@@ -446,11 +484,12 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
             <motion.div
               ref={containerRef}
               className="relative w-full h-full flex items-center justify-center overflow-hidden"
-              drag={!isZoomed ? 'y' : false}
+              drag={!isZoomed}
+              dragDirectionLock
               dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
               dragElastic={0.5}
               onDrag={handleDragY}
-              onDragEnd={!isZoomed ? handleDragYEnd : handleDragXEnd}
+              onDragEnd={handleCombinedDragEnd}
               animate={controls}
               style={{ y: isZoomed ? 0 : dragY }}
             >
@@ -623,24 +662,32 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
           )}
           </LayoutGroup>
 
-          {/* Dots indicator - hidden when zoomed */}
+          {/* Navigation indicator - dots for small sets, counter for large sets */}
           {images.length > 1 && !isZoomed && (
-            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 z-10">
-              {images.map((_, idx) => (
-                <button
-                  key={idx}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    resetState();
-                    onIndexChange(idx);
-                  }}
-                  className={`rounded-full transition-all duration-200 ${
-                    idx === currentIndex
-                      ? 'bg-white w-6 h-2'
-                      : 'bg-white/30 hover:bg-white/50 w-2 h-2'
-                  }`}
-                />
-              ))}
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10">
+              {images.length <= 20 ? (
+                <div className="flex items-center gap-2">
+                  {images.map((_, idx) => (
+                    <button
+                      key={idx}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        resetState();
+                        onIndexChange(idx);
+                      }}
+                      className={`rounded-full transition-all duration-200 ${
+                        idx === currentIndex
+                          ? 'bg-white w-6 h-2'
+                          : 'bg-white/30 hover:bg-white/50 w-2 h-2'
+                      }`}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div className="px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-sm text-white/70 text-xs font-medium tracking-wide">
+                  {currentIndex + 1} / {images.length}
+                </div>
+              )}
             </div>
           )}
 
