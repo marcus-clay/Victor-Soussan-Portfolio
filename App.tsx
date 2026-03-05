@@ -59,6 +59,7 @@ const ToolkitPage = lazy(() => import('./ToolkitPage'));
 const DailymotionPage = lazy(() => import('./DailymotionPage'));
 const ConnectPage = lazy(() => import('./ConnectPage'));
 const SqoolPage = lazy(() => import('./SqoolPage'));
+const SqoolClassePage = lazy(() => import('./SqoolClassePage'));
 const FranceVaePage = lazy(() => import('./FranceVaePage'));
 const PagesJaunesPage = lazy(() => import('./PagesJaunesPage'));
 const AndroidWearPage = lazy(() => import('./AndroidWearPage'));
@@ -1721,16 +1722,16 @@ const App: React.FC = () => {
   // Also tracks initial media index if URL points to specific image/video
   const [initialMediaIndex, setInitialMediaIndex] = useState<number | null>(null);
   const [openProject, setOpenProject] = useState<{
-    project: 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'france-vae' | 'pagesjaunes' | 'androidwear';
+    project: 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'sqool-classe' | 'france-vae' | 'pagesjaunes' | 'androidwear';
     viewMode: 'caseStudy' | 'gallery' | 'executive';
   } | null>(() => {
     // Parse URL on initial load
     const path = window.location.pathname;
 
     // Match media URLs: /project/:id/media/:type/:index
-    const mediaMatch = path.match(/^\/projects?\/(toolkit|dailymotion|connect|sqool|france-vae|pagesjaunes|androidwear)\/media\/(image|video)\/(\d+)$/);
+    const mediaMatch = path.match(/^\/projects?\/(toolkit|dailymotion|connect|sqool|sqool-classe|france-vae|pagesjaunes|androidwear)\/media\/(image|video)\/(\d+)$/);
     if (mediaMatch) {
-      const projectId = mediaMatch[1] as 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'france-vae' | 'pagesjaunes' | 'androidwear';
+      const projectId = mediaMatch[1] as 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'sqool-classe' | 'france-vae' | 'pagesjaunes' | 'androidwear';
       const mediaIndex = parseInt(mediaMatch[3], 10) - 1; // Convert to 0-based index
       // Store the media index to open lightbox automatically
       setTimeout(() => setInitialMediaIndex(mediaIndex >= 0 ? mediaIndex : 0), 100);
@@ -1740,9 +1741,9 @@ const App: React.FC = () => {
     // Match standard project URLs: /project/:id/:viewMode?
     // Supports new URLs: /project/:id/summary, /project/:id/full, /project/:id/gallery
     // Also supports legacy URLs: /project/:id/executive, /project/:id/case-study
-    const projectMatch = path.match(/^\/projects?\/(toolkit|dailymotion|connect|sqool|france-vae|pagesjaunes|androidwear)(?:\/(case-study|full|gallery|executive|summary))?$/);
+    const projectMatch = path.match(/^\/projects?\/(toolkit|dailymotion|connect|sqool|sqool-classe|france-vae|pagesjaunes|androidwear)(?:\/(case-study|full|gallery|executive|summary))?$/);
     if (projectMatch) {
-      const projectId = projectMatch[1] as 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'france-vae' | 'pagesjaunes' | 'androidwear';
+      const projectId = projectMatch[1] as 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'sqool-classe' | 'france-vae' | 'pagesjaunes' | 'androidwear';
       const viewParam = projectMatch[2];
       // Map URL paths to internal view modes
       // summary & executive -> executive (En bref)
@@ -2054,6 +2055,11 @@ const App: React.FC = () => {
       description: 'Case study: Suite logicielle éducative pour 500K+ élèves. Design System, Hi-SQOOL chat, et outils pédagogiques.',
       image: '/images/thumbnail-sqool-suite.webp'
     },
+    'sqool-classe': {
+      title: 'SQOOL Classe - Supervision de classe en temps réel | Victor Soussan',
+      description: 'Case study: Outil de gestion de classe en temps réel pour les enseignants. Grille de supervision, verrouillage d\'écrans, groupes, communication élèves-professeurs.',
+      image: '/images/thumbnail-sqool-suite.webp'
+    },
     'france-vae': {
       title: 'France VAE - Service Public Numérique | Victor Soussan',
       description: 'Case study: Plateforme nationale de Validation des Acquis. UX Research, VAE Collective, et transformation digitale.',
@@ -2119,7 +2125,7 @@ const App: React.FC = () => {
 
   // Open project with URL update
   const openProjectWithUrl = (
-    projectId: 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'france-vae' | 'pagesjaunes' | 'androidwear',
+    projectId: 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'sqool-classe' | 'france-vae' | 'pagesjaunes' | 'androidwear',
     viewMode: 'caseStudy' | 'gallery' | 'executive',
     pushHistory = true
   ) => {
@@ -8035,6 +8041,25 @@ ${contactForm.message}`;
               }}
               viewMode={openProject.viewMode}
               onViewModeChange={(mode) => openProjectWithUrl('sqool', mode)}
+              lang={lang}
+              onContact={() => setIsSimpleContactOpen(true)}
+            />
+          </Suspense>
+        )}
+      </AnimatePresence>
+
+      {/* Unified Project Modal - SQOOL Classe */}
+      <AnimatePresence>
+        {openProject?.project === 'sqool-classe' && (
+          <Suspense fallback={<PageLoader />}>
+            <SqoolClassePage
+              onClose={handleProjectClose}
+              systemTheme={systemTheme}
+              onToggleTheme={() => {
+                setThemeMode(prev => prev === 'dark' ? 'light' : 'dark');
+              }}
+              viewMode={openProject.viewMode}
+              onViewModeChange={(mode) => openProjectWithUrl('sqool-classe', mode)}
               lang={lang}
               onContact={() => setIsSimpleContactOpen(true)}
             />
