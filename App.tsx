@@ -10,7 +10,6 @@ import {
   Figma,
   PenTool,
   ArrowUpRight,
-  ArrowUp,
   Mail,
   Linkedin,
   CheckCircle2,
@@ -49,9 +48,12 @@ import {
   ChevronDown,
   Home,
   MessageCircle,
-  FolderOpen
+  FolderOpen,
+  Link2
 } from 'lucide-react';
 import { Rocket, Buildings, HandHeart, ArrowsClockwise, ChatCircleDots, ChartLineUp, Envelope, Phone, LinkedinLogo, Globe } from '@phosphor-icons/react';
+import { SIGNALS, FEATURED_SIGNAL_IDS, CATEGORY_COLORS as SIGNAL_CATEGORY_COLORS, CATEGORY_LABELS as SIGNAL_CATEGORY_LABELS } from './src/data/signalsData';
+import type { Signal } from './src/data/signalsData';
 // InfiniteGrid removed for performance - was causing 60fps JS animation loop
 
 // Lazy load heavy page components for code splitting
@@ -66,6 +68,12 @@ const ExecutivePage = lazy(() => import('./ExecutivePage'));
 const WorkPage = lazy(() => import('./WorkPage'));
 const IframeModal = lazy(() => import('./IframeModal'));
 const HomePageV2 = lazy(() => import('./HomePageV2'));
+const ServicesPage = lazy(() => import('./ServicesPage'));
+const VisualArchivePage = lazy(() => import('./VisualArchivePage'));
+const AboutPage = lazy(() => import('./AboutPage'));
+const SignalsPage = lazy(() => import('./SignalsPage'));
+const ConsultingPage = lazy(() => import('./ConsultingPage'));
+const SignalDetailPage = lazy(() => import('./SignalDetailPage'));
 
 // Loading spinner component for lazy loaded pages
 const PageLoader = () => (
@@ -283,8 +291,8 @@ const ScrollExpandCard: React.FC<{
 
 const LAB_PREVIEWS = {
   apps: {
-    title: 'Condamine Apps', subtitle: '37+ Apps Deployed', color: 'blue',
-    highlights: ['37+ production-ready applications', 'Built using Bolt.new and Lovable AI', 'Real-world use cases from 2025'],
+    title: 'Condamine Apps', subtitle: '50+ Apps Deployed', color: 'blue',
+    highlights: ['50+ production-ready applications', 'Built using Bolt.new and Lovable AI', 'Real-world use cases from 2025'],
     previews: ['Timeboxing App', 'Recipe Generator', 'Portfolio Analyzer', 'Dashboard Builder', 'AI Chat Interface', 'Todo List Pro', 'Weather Station', 'Calculator Plus'],
     link: 'https://www.condamine.studio/apps'
   },
@@ -307,19 +315,21 @@ const LAB_PREVIEWS = {
 const TRANSLATIONS = {
   en: {
     nav: {
-      services: "Services",
+      services: "Expertise",
       bio: "About",
       projects: "Work",
       lab: "The Lab",
       testimonials: "Testimonials",
-      contact: "Contact"
+      contact: "Contact",
+      archive: "Gallery"
     },
     hero: {
-      availability: "Available for new missions starting Jan '26",
+      availability: "Available for new projects",
       tagline: "Frame. Design. Ship.",
-      title: "Experienced designer for",
-      subtitle: "product teams and startups",
-      desc: "15 years in tech, 10 in product design. I turn ambiguous requirements into functional prototypes, fast. Enterprise software, media, education, public services. Available for Design Direction, UX Strategy and Senior Product Design roles.",
+      title: "Lead Product Designer",
+      subtitle: "end-to-end",
+      positioning: "SaaS B2B & B2G · Complex business interfaces · Design Systems · AI-driven design & prototyping",
+      desc: "15 years in tech, 10 in product design. I help teams frame the problem, materialize the product vision through prototypes, and ship in short cycles. I work alongside PM and engineering to build what lasts: design systems, documented components, and shared practices that let the team scale without dependency. I use Claude Code and Figma MCP to go from concept to deployed prototype in hours.",
       cta_projects: "My 1-min Presentation",
       cta_book: "Book a 30min Call",
       tooltip_title: "Need a Design Partner?",
@@ -327,8 +337,8 @@ const TRANSLATIONS = {
       tooltip_book: "Book a 30min Chat"
     },
     services: {
-      title: "Services",
-      subtitle: "From early ambiguity to clear form, I help you define what your product should be, its logic, its look, and the way people experience it.",
+      title: "Expertise",
+      subtitle: "From early ambiguity to clear form, I partner with product teams to define what the product should be, its logic, its look, and the way people experience it.",
       execution: "Hands-on Execution",
       utility: "Product Utility",
       efficiency: "Operational Efficiency",
@@ -356,7 +366,86 @@ const TRANSLATIONS = {
           "Run design workshops with teams to boost collaboration and creativity",
           "Shape team culture through clarity, coaching, and tools"
         ]
-      }
+      },
+      homepage_pillars: [
+        {
+          title: "Design & Prototyping",
+          desc: "Interface design, hi-fi prototyping, and rapid MVP development. From concept to tested screens, with AI-assisted workflows."
+        },
+        {
+          title: "Product Strategy",
+          desc: "Product vision, feature scoping, ideation workshops. Working alongside PMs to move from ambiguity to a clear, validated direction."
+        },
+        {
+          title: "Leadership & Ops",
+          desc: "Design team building, design systems, dev handoff rituals. Practices that scale and stick."
+        }
+      ],
+      cta_all: "Explore my expertise"
+    },
+    services_page: {
+      page_title: "Expertise",
+      page_subtitle: "From ambiguity to shipped product",
+      page_intro: "I work with product teams, startups and public services to reduce risk through design. Whether you need an end-to-end designer, a strategic partner, or someone to structure your design practice, here is what I bring.",
+      pillars: [
+        {
+          title: "Design & Prototyping",
+          desc: "I design interfaces from wireframe to pixel-perfect screens, then prototype them at high fidelity to validate ideas before a single line of code is written. When speed matters, I build functional MVPs using Claude Code and Vercel, and I use Figma MCP to generate production-ready components directly from my design files.",
+          deliverables: [
+            "UX framing, UI design, micro-interactions",
+            "Hi-fi prototyping to validate ideas and sell a vision",
+            "AI-driven prototyping: Figma to deployed prototype via Claude Code and Figma MCP",
+            "Rapid MVP development shipped to Vercel for stakeholder validation",
+            "Mobile native (iOS/Android) and responsive web design",
+            "Concept-to-interface workflows in complex domains"
+          ]
+        },
+        {
+          title: "Product Strategy",
+          desc: "Before designing screens, I help clarify what the product should be. I facilitate workshops, define feature scope, and shape the vision through interaction-first thinking. The goal is always to reduce ambiguity and align the team.",
+          deliverables: [
+            "Feature scoping (0 to 1) and product roadmap input",
+            "Product vision clarification through key user journeys",
+            "Ideation and vision workshops with users and stakeholders",
+            "Accessibility strategy and inclusive UX standards"
+          ]
+        },
+        {
+          title: "Design Ops",
+          desc: "A good design system is not a library of components. It is a shared language between design and engineering. I set up the tools, documentation and rituals that make collaboration efficient and sustainable.",
+          deliverables: [
+            "Scalable design systems and reusable component libraries",
+            "Technical documentation for developer handoff",
+            "Collaboration rituals between design, product and engineering"
+          ]
+        },
+        {
+          title: "Leadership & Organisation",
+          desc: "I have recruited, managed and mentored design teams of up to 5 people. I align stakeholders, run design workshops, and build the culture and processes that let a design practice thrive inside an organisation.",
+          deliverables: [
+            "Team leadership, hiring and onboarding of designers",
+            "Design workshops for collaboration and creativity",
+            "Stakeholder alignment (C-Level, PM, Engineering)",
+            "Mentoring and skill development for junior designers"
+          ]
+        }
+      ],
+      approach_title: "How I work",
+      approach_steps: [
+        { title: "Frame", desc: "Understand the problem, the users, the constraints. Align the team on what we are solving and why." },
+        { title: "Design", desc: "Explore solutions, prototype fast, test with real users. Iterate until the direction is validated." },
+        { title: "Ship", desc: "Collaborate with engineering, refine details, deliver production-ready designs. Stay involved until it is live." },
+        { title: "Scale", desc: "Document patterns, build the system, establish rituals. Make sure what works today still works at 10x." }
+      ],
+      cta_text: "Let's talk about your project"
+    },
+    visual_archive: {
+      title: "Gallery",
+      subtitle: "Interfaces, design systems and interaction prototypes from across my projects.",
+      filter_all: "All",
+      filter_product: "Product",
+      filter_workshop: "Workshop",
+      filter_brand: "Brand"
     },
     bio: {
       title: "About",
@@ -396,7 +485,7 @@ const TRANSLATIONS = {
       ],
       journey_p7: "In parallel, I designed for <strong>Toolkit.ac (2023-2024)</strong>, a construction management SaaS startup, as their first product designer, helping shape their V2 product serving 2,000 paying users.",
       journey_p8: "From <strong>December 2024 to July 2025</strong>, I joined <strong>beta.gouv.fr</strong> to work on France VAE, a public service innovation. I designed the collective VAE MVP, conducted 10 user interviews, ran 2-day design thinking workshops, and restructured their product workflow with clear delivery cycles.",
-      journey_p9: "Since <strong>July 2025</strong>, I've been operating as a <strong>Principal Designer</strong>, helping startups and enterprises with 0-to-1 product design, UX optimization, and AI integration. I'm also deeply exploring generative AI—building custom GPTs, prototyping with Bolt and Claude, and <strong>deploying 37+ functional web apps</strong> through my Condamine Apps lab.",
+      journey_p9: "Since <strong>July 2025</strong>, I've been operating as a <strong>Principal Designer</strong>, helping startups and enterprises with 0-to-1 product design, UX optimization, and AI integration. I'm also deeply exploring generative AI, building custom GPTs, prototyping with Bolt and Claude, and <strong>deploying 50+ functional web apps</strong> through my Condamine Apps lab.",
       journey_conclusion: "What drives me is turning complex problems into clear, testable products. Whether it's designing for 500,000 students, 8,000 B2B users, or helping a startup find product-market fit, I bring strategic vision grounded in hands-on execution, rapid prototyping, and a relentless focus on what actually works.",
       tools_title: "Daily Drivers",
       education_title: "Education & Certifications",
@@ -411,7 +500,7 @@ const TRANSLATIONS = {
           "Goal: Deploy <strong>100+ applications</strong> with Condamine Apps"
         ],
         "2025": [
-          "Launched <strong>Condamine Apps</strong> – 37+ web apps prototyped and deployed",
+          "Launched <strong>Condamine Apps</strong> – 50+ web apps prototyped and deployed",
           "Joined <strong>beta.gouv.fr</strong> as Lead Product Designer for France VAE",
           "Founded <strong>Victor Soussan Design</strong> as Principal Designer"
         ],
@@ -478,7 +567,7 @@ const TRANSLATIONS = {
           role: "Principal Designer (Freelance)",
           company: "Independent Practice",
           achievements: [
-            "Launched Condamine Apps – 37+ functional web apps prototyped and deployed",
+            "Launched Condamine Apps – 50+ functional web apps prototyped and deployed",
             "Exploring AI-assisted design workflows with custom GPTs and rapid prototyping tools",
             "Advising startups on product strategy, UX optimization, and AI integration"
           ]
@@ -607,7 +696,7 @@ const TRANSLATIONS = {
       title: "Condamine Studio",
       desc: "Beyond pixel-perfect UI, I explore the frontiers of generative AI. My dedicated studio for rapid prototyping, prompt engineering, and synthetic art.",
       apps_title: "Condamine Apps",
-      apps_sub: "37+ Apps Deployed",
+      apps_sub: "50+ Apps Deployed",
       apps_desc: "A living archive of functional web prototypes built since 2025. Showcasing the speed of AI-assisted development.",
       apps_cta: "Visit App Gallery",
       learning_title: "Condamine Learning",
@@ -622,6 +711,21 @@ const TRANSLATIONS = {
       art_sub: "Midjourney V6",
       art_desc: "A curated collection of synthetic imagery, exploring light, texture, and surreal composition via generative models.",
       art_cta: "View Gallery"
+    },
+    homepage_about: {
+      title: "About",
+      text: "I've been designing digital products for close to twenty years, from advertising agencies to enterprise software, EdTech platforms and public services. I've led design teams, worked hand in hand with product managers and engineers, and shipped products used by hundreds of thousands of people.",
+      cta: "Full biography",
+    },
+    homepage_visual_archive: {
+      title: "Gallery",
+      subtitle: "A selection of interfaces, design systems, and interaction prototypes from across my projects.",
+      cta: "Browse the full gallery",
+    },
+    signals: {
+      title: "Signals",
+      subtitle: "Perspectives on product design, leadership and methodology.",
+      cta: "All signals",
     },
     testimonials: {
       title: "In their words",
@@ -673,7 +777,7 @@ const TRANSLATIONS = {
       quote_step_2_browse: "Browse files",
       quote_step_2_formats: "PDF or DOCX (max 3MB)",
       quote_step_2_skip: "Skip this step",
-      quote_step_3_title: "Which services do you need?",
+      quote_step_3_title: "Which expertise do you need?",
       quote_step_3_service_1: "UX framing & UI design",
       quote_step_3_service_2: "Hi-fi prototyping & validation",
       quote_step_3_service_3: "MVP build-out (Bolt, Lovable, Figma)",
@@ -706,7 +810,7 @@ const TRANSLATIONS = {
       quote_step_7_title: "Review your quote request",
       quote_step_7_project_type: "Project Type",
       quote_step_7_brief: "Brief Attached",
-      quote_step_7_services: "Services",
+      quote_step_7_services: "Expertise",
       quote_step_7_project_details: "Project Details",
       quote_step_7_need: "Need",
       quote_step_7_description: "Description",
@@ -733,7 +837,7 @@ const TRANSLATIONS = {
       quote_continue_no: "Start fresh",
       quote_file_remove: "Remove file",
       quote_validation_select_type: "Please select a project type",
-      quote_validation_select_service: "Please select at least one service",
+      quote_validation_select_service: "Please select at least one expertise",
       quote_validation_min_chars: "Please write at least 50 characters",
       quote_validation_required: "This field is required",
       quote_validation_email: "Please enter a valid email",
@@ -755,19 +859,21 @@ const TRANSLATIONS = {
   },
   fr: {
     nav: {
-      services: "Services",
+      services: "Expertises",
       bio: "A propos",
       projects: "Études de Cas",
       lab: "Lab",
       testimonials: "Témoignages",
-      contact: "Contact"
+      contact: "Contact",
+      archive: "Galerie"
     },
     hero: {
-      availability: "Disponible à partir de Janv. '26",
+      availability: "Disponible pour de nouvelles missions",
       tagline: "Frame. Design. Ship.",
-      title: "Designer expérimenté pour",
-      subtitle: "équipes produit et startups",
-      desc: "15 ans dans la tech, 10 en design produit. Je transforme vos intuitions produit en prototypes fonctionnels, vite. Logiciels entreprise, médias, éducation, services publics. Disponible pour des rôles de Direction Design, Stratégie UX et Senior Product Design.",
+      title: "Lead Product Designer",
+      subtitle: "end-to-end",
+      positioning: "SaaS B2B & B2G · Interfaces métier complexes · Design Systems · Design et prototypage pilotés par IA",
+      desc: "15 ans dans la tech, 10 en design produit. J'accompagne les équipes à cadrer le problème, matérialiser la vision produit par des prototypes, et livrer en cycles courts. Je travaille avec le PM et l'engineering pour construire ce qui dure : design systems, composants documentés, pratiques partagées qui permettent à l'équipe de scaler sans dépendance. J'utilise Claude Code et Figma MCP pour passer du concept au prototype déployé en quelques heures.",
       cta_projects: "Ma présentation en 1-min",
       cta_book: "Planifier un appel de 30min",
       tooltip_title: "Besoin d'un designer ou d'un lead pour votre équipe ?",
@@ -775,8 +881,8 @@ const TRANSLATIONS = {
       tooltip_book: "Planifier un appel de 30min"
     },
     services: {
-      title: "Services",
-      subtitle: "Je transforme des problèmes business flous en écrans clairs et fonctionnels. Mon rôle est de réduire le risque produit par le design et le prototypage rapide.",
+      title: "Expertises",
+      subtitle: "Du flou initial à la forme claire, je travaille avec les équipes produit pour définir ce que le produit doit être, sa logique, son apparence, et la manière dont les gens l'utilisent.",
       execution: "Exécution & Craft",
       utility: "Stratégie Produit",
       efficiency: "Efficacité & Ops",
@@ -805,7 +911,86 @@ const TRANSLATIONS = {
           "Alignement des parties prenantes (C-Level, PM, Tech)",
           "Mentorat et montée en compétence des juniors"
         ]
-      }
+      },
+      homepage_pillars: [
+        {
+          title: "Design & Prototypage",
+          desc: "Design d'interface, prototypage haute fidélité et développement MVP rapide. Du concept aux écrans testés, avec des workflows assistés par IA."
+        },
+        {
+          title: "Stratégie Produit",
+          desc: "Vision produit, cadrage fonctionnel, ateliers d'idéation. En binôme avec les PM pour passer de l'ambiguïté à une direction claire et validée."
+        },
+        {
+          title: "Leadership & Ops",
+          desc: "Construction d'équipe design, design systems, rituels de handoff. Des pratiques qui tiennent et qui passent à l'échelle."
+        }
+      ],
+      cta_all: "Voir toutes les expertises"
+    },
+    services_page: {
+      page_title: "Expertises",
+      page_subtitle: "Du flou au produit livré",
+      page_intro: "J'accompagne les équipes produit, les startups et les services publics pour réduire le risque par le design. Que vous cherchiez un designer end-to-end, un partenaire stratégique ou quelqu'un pour structurer votre pratique design, voici ce que j'apporte.",
+      pillars: [
+        {
+          title: "Design & Prototypage",
+          desc: "Je conçois les interfaces du wireframe à l'écran pixel-perfect, puis je les prototype en haute fidélité pour valider les idées avant la moindre ligne de code. Quand la vitesse compte, je construis des MVP fonctionnels avec Claude Code et Vercel, et j'utilise Figma MCP pour générer des composants production-ready directement depuis mes fichiers Figma.",
+          deliverables: [
+            "Cadrage UX, design UI, micro-interactions",
+            "Prototypage haute fidélité pour valider et vendre une vision",
+            "Prototypage piloté par IA : de Figma au prototype déployé via Claude Code et Figma MCP",
+            "Développement MVP rapide déployé sur Vercel pour validation parties prenantes",
+            "Design mobile natif (iOS/Android) et responsive web",
+            "Workflows concept-to-interface dans des domaines complexes"
+          ]
+        },
+        {
+          title: "Stratégie Produit",
+          desc: "Avant de dessiner des écrans, j'aide à clarifier ce que le produit doit être. J'anime des ateliers, je définis le scope des fonctionnalités et je structure la vision par le design d'interaction. L'objectif : réduire l'ambiguïté et aligner l'équipe.",
+          deliverables: [
+            "Cadrage de fonctionnalités (0 to 1) et contribution à la roadmap",
+            "Clarification de la vision produit par les parcours utilisateurs clés",
+            "Ateliers d'idéation et de vision avec utilisateurs et parties prenantes",
+            "Stratégie d'accessibilité et standards UX inclusifs"
+          ]
+        },
+        {
+          title: "Design Ops",
+          desc: "Un bon design system n'est pas une bibliothèque de composants. C'est un langage commun entre le design et l'engineering. Je mets en place les outils, la documentation et les rituels qui rendent la collaboration efficace et durable.",
+          deliverables: [
+            "Design systems scalables et bibliothèques de composants réutilisables",
+            "Documentation technique pour le handoff développeur",
+            "Rituels de collaboration entre design, produit et engineering"
+          ]
+        },
+        {
+          title: "Leadership & Organisation",
+          desc: "J'ai recruté, managé et mentoré des équipes design jusqu'à 5 personnes. J'aligne les parties prenantes, j'anime des ateliers design et je construis la culture et les process qui permettent à une pratique design de s'épanouir dans une organisation.",
+          deliverables: [
+            "Leadership d'équipe, recrutement et onboarding de designers",
+            "Ateliers design pour la collaboration et la créativité",
+            "Alignement des parties prenantes (C-Level, PM, Engineering)",
+            "Mentorat et montée en compétence des juniors"
+          ]
+        }
+      ],
+      approach_title: "Comment je travaille",
+      approach_steps: [
+        { title: "Frame", desc: "Comprendre le problème, les utilisateurs, les contraintes. Aligner l'équipe sur ce qu'on résout et pourquoi." },
+        { title: "Design", desc: "Explorer les solutions, prototyper vite, tester avec de vrais utilisateurs. Itérer jusqu'à valider la direction." },
+        { title: "Ship", desc: "Collaborer avec l'engineering, affiner les détails, livrer des designs prêts pour la production. Rester impliqué jusqu'à la mise en ligne." },
+        { title: "Scale", desc: "Documenter les patterns, construire le système, installer les rituels. S'assurer que ce qui marche aujourd'hui tient à 10x." }
+      ],
+      cta_text: "Parlons de votre projet"
+    },
+    visual_archive: {
+      title: "Galerie",
+      subtitle: "Interfaces, design systems et prototypes d'interaction issus de mes projets.",
+      filter_all: "Tout",
+      filter_product: "Produit",
+      filter_workshop: "Atelier",
+      filter_brand: "Marque"
     },
     bio: {
       title: "À Propos",
@@ -845,7 +1030,7 @@ const TRANSLATIONS = {
       ],
       journey_p7: "En parallèle, j'ai designé pour <strong>Toolkit.ac (2023-2024)</strong>, une startup SaaS de gestion de chantier, en tant que premier product designer, contribuant à façonner leur produit V2 servant 2 000 utilisateurs payants.",
       journey_p8: "De <strong>décembre 2024 à juillet 2025</strong>, j'ai rejoint <strong>beta.gouv.fr</strong> pour travailler sur France VAE, une innovation de service public. J'ai designé le MVP VAE collectif, conduit 10 entretiens utilisateurs, animé des ateliers design thinking de 2 jours et restructuré leur workflow produit avec des cycles de livraison clairs.",
-      journey_p9: "Depuis <strong>juillet 2025</strong>, j'opère en tant que <strong>Principal Designer</strong>, aidant les startups et entreprises avec le design produit 0-to-1, l'optimisation UX et l'intégration IA. J'explore également en profondeur l'IA générative—création de GPTs personnalisés, prototypage avec Bolt et Claude, et <strong>déploiement de 37+ applications web fonctionnelles</strong> via mon lab Condamine Apps.",
+      journey_p9: "Depuis <strong>juillet 2025</strong>, j'opère en tant que <strong>Principal Designer</strong>, aidant les startups et entreprises avec le design produit 0-to-1, l'optimisation UX et l'intégration IA. J'explore également en profondeur l'IA générative, création de GPTs personnalisés, prototypage avec Bolt et Claude, et <strong>déploiement de 50+ applications web fonctionnelles</strong> via mon lab Condamine Apps.",
       journey_conclusion: "Ce qui me motive, c'est transformer des problèmes complexes en produits clairs et testables. Que ce soit designer pour 500 000 élèves, 8 000 utilisateurs B2B ou aider une startup à trouver son product-market fit, j'apporte une vision stratégique ancrée dans l'exécution concrète, le prototypage rapide et une focalisation sans relâche sur ce qui fonctionne réellement.",
       tools_title: "Outils",
       education_title: "Formation & Certifications",
@@ -860,7 +1045,7 @@ const TRANSLATIONS = {
           "Objectif : Déployer <strong>100+ applications</strong> avec Condamine Apps"
         ],
         "2025": [
-          "Lancement de <strong>Condamine Apps</strong> – 37+ applications web prototypées et déployées",
+          "Lancement de <strong>Condamine Apps</strong> – 50+ applications web prototypées et déployées",
           "Rejoint <strong>beta.gouv.fr</strong> en tant que Lead Product Designer pour France VAE",
           "Création de <strong>Victor Soussan Design</strong> en tant que Principal Designer"
         ],
@@ -927,7 +1112,7 @@ const TRANSLATIONS = {
           role: "Principal Designer (Freelance)",
           company: "Pratique Indépendante",
           achievements: [
-            "Lancement de Condamine Apps – 37+ applications web fonctionnelles prototypées et déployées",
+            "Lancement de Condamine Apps – 50+ applications web fonctionnelles prototypées et déployées",
             "Exploration des workflows de design assistés par IA avec GPTs personnalisés et outils de prototypage rapide",
             "Conseil auprès de startups sur stratégie produit, optimisation UX et intégration IA"
           ]
@@ -1056,7 +1241,7 @@ const TRANSLATIONS = {
       title: "Studio Condamine",
       desc: "Mon espace personnel pour tester les limites de l'IA générative. J'y explore comment ces outils peuvent accélérer le design et le développement de produits.",
       apps_title: "Condamine Apps",
-      apps_sub: "37+ Apps Déployées",
+      apps_sub: "50+ Apps Déployées",
       apps_desc: "Une galerie de prototypes fonctionnels (React/Web) générés par IA. La preuve par l'exemple qu'on peut passer de l'idée au produit en quelques heures.",
       apps_cta: "Voir les Apps",
       learning_title: "Condamine Learning",
@@ -1071,6 +1256,21 @@ const TRANSLATIONS = {
       art_sub: "Midjourney V6",
       art_desc: "Exploration purement visuelle. Composition, lumière et texture générées synthétiquement.",
       art_cta: "Voir la Galerie"
+    },
+    homepage_about: {
+      title: "À propos",
+      text: "Je conçois des produits numériques depuis bientôt vingt ans, de l'agence de publicité aux logiciels d'entreprise, plateformes EdTech et services publics. J'ai dirigé des équipes design, travaillé main dans la main avec des product managers et des ingénieurs, et livré des produits utilisés par des centaines de milliers de personnes.",
+      cta: "Parcours complet",
+    },
+    homepage_visual_archive: {
+      title: "Galerie",
+      subtitle: "Une sélection d'interfaces, de design systems et de prototypes d'interaction issus de mes projets.",
+      cta: "Parcourir la galerie complète",
+    },
+    signals: {
+      title: "Signaux",
+      subtitle: "Réflexions sur le design produit, le leadership et la méthodologie.",
+      cta: "Tous les signaux",
     },
     testimonials: {
       title: "Témoignages",
@@ -1122,7 +1322,7 @@ const TRANSLATIONS = {
       quote_step_2_browse: "Parcourir",
       quote_step_2_formats: "PDF ou DOCX (max 3Mo)",
       quote_step_2_skip: "Passer cette étape",
-      quote_step_3_title: "De quels services avez-vous besoin ?",
+      quote_step_3_title: "De quelles expertises avez-vous besoin ?",
       quote_step_3_service_1: "Cadrage UX & Design UI",
       quote_step_3_service_2: "Prototypage haute-fidélité & validation",
       quote_step_3_service_3: "Build-out MVP (Bolt, Lovable, Figma)",
@@ -1155,7 +1355,7 @@ const TRANSLATIONS = {
       quote_step_7_title: "Revue de votre demande",
       quote_step_7_project_type: "Type de Projet",
       quote_step_7_brief: "Brief Joint",
-      quote_step_7_services: "Services",
+      quote_step_7_services: "Expertises",
       quote_step_7_project_details: "Détails du Projet",
       quote_step_7_need: "Besoin",
       quote_step_7_description: "Description",
@@ -1182,7 +1382,7 @@ const TRANSLATIONS = {
       quote_continue_no: "Recommencer",
       quote_file_remove: "Supprimer le fichier",
       quote_validation_select_type: "Veuillez sélectionner un type de projet",
-      quote_validation_select_service: "Veuillez sélectionner au moins un service",
+      quote_validation_select_service: "Veuillez sélectionner au moins une expertise",
       quote_validation_min_chars: "Veuillez écrire au moins 50 caractères",
       quote_validation_required: "Ce champ est requis",
       quote_validation_email: "Veuillez entrer un email valide",
@@ -1264,44 +1464,6 @@ const getProjects = (lang: Language): Project[] => {
   const isEn = lang === 'en';
   return [
     {
-      id: "france-vae",
-      title: "France VAE",
-      role: isEn ? "Lead Product Designer" : "Lead Product Designer",
-      period: "2024 – 2025",
-      summary: isEn
-        ? "6-month mission structuring product ops for a national public service scaling to 100K+ candidates."
-        : "Mission de 6 mois pour structurer les ops produit d'un service public national servant 100K+ candidats.",
-      missions: isEn ? [
-        "Co-designed prioritization matrix with Lead PM",
-        "Led 10 user interviews for dashboard launch",
-        "Organized 2-day design thinking workshop with field actors",
-        "Restructured Figma architecture & delivery process"
-      ] : [
-        "Co-conception matrice de priorisation avec Lead PM",
-        "10 entretiens utilisateurs pour lancement dashboard",
-        "Organisation atelier design thinking 2 jours avec AAP",
-        "Restructuration architecture Figma & process delivery"
-      ],
-      system: {
-        title: isEn ? "Season-based Workflow" : "Workflow en Saisons",
-        desc: isEn ? "Implemented 1-month seasons with 3 delivery cycles, cross-team prioritization matrix, and weekly discovery rituals." : "Mise en place de saisons d'1 mois avec 3 cycles de livraison, matrice de priorisation cross-équipe et rituels discovery hebdo."
-      },
-      deliverables: isEn ? [
-        "VAE Collective MVP & Employer Journey",
-        "Promotional Video (Screencast)",
-        "User Research Protocol & Synthesis",
-        "Design Ops & Figma Architecture"
-      ] : [
-        "MVP VAE Collective & Parcours Employeur",
-        "Vidéo Promotionnelle (Screencast)",
-        "Protocole Recherche & Synthèses",
-        "Design Ops & Architecture Figma"
-      ],
-      icon: <FileText size={24} />,
-      color: "blue",
-      coverImage: "/images/francevae/thumbnail_france_vae.webp"
-    },
-    {
       id: "toolkit",
       title: "Toolkit",
       role: isEn ? "Founding Designer" : "Founding Designer (Premier Designer)",
@@ -1377,6 +1539,44 @@ const getProjects = (lang: Language): Project[] => {
       color: "gray",
       coverImage: "/images/thumbnail-dailymotion-web-platform.webp",
       externalLink: "https://victor-soussan.notion.site/ebd/2b7a519b0dea80b99138d4b51a65620b"
+    },
+    {
+      id: "france-vae",
+      title: "France VAE",
+      role: isEn ? "Lead Product Designer" : "Lead Product Designer",
+      period: isEn ? "Dec 2024 – Jul 2025" : "Déc 2024 – Juil 2025",
+      summary: isEn
+        ? "6-month mission structuring product ops for a national public service scaling to 100K+ candidates."
+        : "Mission de 6 mois pour structurer les ops produit d'un service public national servant 100K+ candidats.",
+      missions: isEn ? [
+        "Co-designed prioritization matrix with Lead PM",
+        "Led 10 user interviews for dashboard launch",
+        "Organized 2-day design thinking workshop with field actors",
+        "Restructured Figma architecture & delivery process"
+      ] : [
+        "Co-conception matrice de priorisation avec Lead PM",
+        "10 entretiens utilisateurs pour lancement dashboard",
+        "Organisation atelier design thinking 2 jours avec AAP",
+        "Restructuration architecture Figma & process delivery"
+      ],
+      system: {
+        title: isEn ? "Season-based Workflow" : "Workflow en Saisons",
+        desc: isEn ? "Implemented 1-month seasons with 3 delivery cycles, cross-team prioritization matrix, and weekly discovery rituals." : "Mise en place de saisons d'1 mois avec 3 cycles de livraison, matrice de priorisation cross-équipe et rituels discovery hebdo."
+      },
+      deliverables: isEn ? [
+        "VAE Collective MVP & Employer Journey",
+        "Promotional Video (Screencast)",
+        "User Research Protocol & Synthesis",
+        "Design Ops & Figma Architecture"
+      ] : [
+        "MVP VAE Collective & Parcours Employeur",
+        "Vidéo Promotionnelle (Screencast)",
+        "Protocole Recherche & Synthèses",
+        "Design Ops & Architecture Figma"
+      ],
+      icon: <FileText size={24} />,
+      color: "blue",
+      coverImage: "/images/francevae/thumbnail_france_vae.webp"
     },
     {
       id: "connect",
@@ -1694,8 +1894,15 @@ const App: React.FC = () => {
   const [showHomeV2, setShowHomeV2] = useState(initialPath === '/home-v2' || initialPath === '/v2');
 
   const [isBioOpen, setIsBioOpen] = useState(initialPath === '/about');
-  const [bioViewMode, setBioViewMode] = useState<'text' | 'timeline'>('text');
-  const bioContentRef = useRef<HTMLDivElement>(null);
+  const [isServicesPageOpen, setIsServicesPageOpen] = useState(initialPath === '/services');
+  const [isVisualArchiveOpen, setIsVisualArchiveOpen] = useState(initialPath === '/visual-archive');
+  const [isSignalsOpen, setIsSignalsOpen] = useState(initialPath === '/signals');
+  const [openSignalId, setOpenSignalId] = useState<string | null>(() => {
+    const match = initialPath.match(/^\/signal\/(.+)$/);
+    return match ? match[1] : null;
+  });
+  const [copiedSignalId, setCopiedSignalId] = useState<string | null>(null);
+  const [isConsultingOpen, setIsConsultingOpen] = useState(initialPath === '/consulting');
   const [isTestimonialsOpen, setIsTestimonialsOpen] = useState(initialPath === '/testimonials');
   const [isWorkOpen, setIsWorkOpen] = useState(initialPath === '/work');
   const [openedFromIndex, setOpenedFromIndex] = useState(false);
@@ -1756,10 +1963,19 @@ const App: React.FC = () => {
     return null;
   });
   const [activeSection, setActiveSection] = useState<string | null>(null);
-  const [isScrolled, setIsScrolled] = useState(false);
+
+  // Track which modal page is currently open (for nav active state)
+  const activePageId = isBioOpen ? 'about'
+    : isServicesPageOpen ? 'services'
+    : isConsultingOpen ? 'consulting'
+    : isVisualArchiveOpen ? 'visual-archive'
+    : isSignalsOpen ? 'signals'
+    : isWorkOpen ? 'work'
+    : null;
+  const anyModalOpen = activePageId !== null;
+
   const [showTooltip, setShowTooltip] = useState(false);
   const tooltipTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const [isHoveringLogo, setIsHoveringLogo] = useState(false);
   const [isSimpleContactOpen, setIsSimpleContactOpen] = useState(false);
   const [isContactFormOpen, setIsContactFormOpen] = useState(false);
   const [simpleContactForm, setSimpleContactForm] = useState({
@@ -1822,7 +2038,7 @@ const App: React.FC = () => {
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        const hasModalOpen = isBioOpen || isTestimonialsOpen || isWorkOpen || isBookingOpen || isResumeOpen || isExecutiveOpen || isQuoteGeneratorOpen;
+        const hasModalOpen = isBioOpen || isTestimonialsOpen || isWorkOpen || isBookingOpen || isResumeOpen || isExecutiveOpen || isQuoteGeneratorOpen || isServicesPageOpen || isVisualArchiveOpen || isSignalsOpen || !!openSignalId;
 
         setSelectedImage(null);
         setIsBioOpen(false);
@@ -1835,6 +2051,10 @@ const App: React.FC = () => {
         setIsContactFormOpen(false);
         setIsSimpleContactOpen(false);
         setShowTooltip(false);
+        setIsServicesPageOpen(false);
+        setIsVisualArchiveOpen(false);
+        setIsSignalsOpen(false);
+        setOpenSignalId(null);
 
         // Quote generator with confirmation
         if (isQuoteGeneratorOpen && !quoteSuccess) {
@@ -1859,7 +2079,7 @@ const App: React.FC = () => {
     };
     window.addEventListener('keydown', handleEsc);
     return () => window.removeEventListener('keydown', handleEsc);
-  }, [isBioOpen, isTestimonialsOpen, isWorkOpen, isBookingOpen, isResumeOpen, isExecutiveOpen, isQuoteGeneratorOpen, quoteSuccess, quoteData, quoteStep, content]);
+  }, [isBioOpen, isTestimonialsOpen, isWorkOpen, isBookingOpen, isResumeOpen, isExecutiveOpen, isQuoteGeneratorOpen, isServicesPageOpen, isVisualArchiveOpen, isSignalsOpen, quoteSuccess, quoteData, quoteStep, content]);
 
   // Autosave quote data to localStorage
   useEffect(() => {
@@ -1889,12 +2109,12 @@ const App: React.FC = () => {
 
   // Prevent body scroll when modals are open
   useEffect(() => {
-    if (selectedImage || isBioOpen || isTestimonialsOpen || isWorkOpen || isBookingOpen || selectedLabItem || isContactFormOpen || isSimpleContactOpen || selectedServiceGallery || isQuoteGeneratorOpen || isExecutiveOpen) {
+    if (selectedImage || isBioOpen || isTestimonialsOpen || isWorkOpen || isBookingOpen || selectedLabItem || isContactFormOpen || isSimpleContactOpen || selectedServiceGallery || isQuoteGeneratorOpen || isExecutiveOpen || isServicesPageOpen || isVisualArchiveOpen || isSignalsOpen || openSignalId) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
     }
-  }, [selectedImage, isBioOpen, isTestimonialsOpen, isWorkOpen, isBookingOpen, selectedLabItem, isContactFormOpen, isSimpleContactOpen, selectedServiceGallery, isExecutiveOpen]);
+  }, [selectedImage, isBioOpen, isTestimonialsOpen, isWorkOpen, isBookingOpen, selectedLabItem, isContactFormOpen, isSimpleContactOpen, selectedServiceGallery, isExecutiveOpen, isServicesPageOpen, isVisualArchiveOpen, isSignalsOpen, openSignalId]);
 
   // Detect system theme (light/dark mode)
   useEffect(() => {
@@ -1970,15 +2190,6 @@ const App: React.FC = () => {
     };
   }, []);
 
-  // Detect scroll position
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   // Signal to prerender script that the app is ready
   useEffect(() => {
@@ -1987,7 +2198,7 @@ const App: React.FC = () => {
 
   // Detect active section on scroll - improved accuracy
   useEffect(() => {
-    const sectionIds = ['projects', 'services', 'bio', 'lab', 'testimonials', 'contact'];
+    const sectionIds = ['projects', 'gallery', 'services', 'lab', 'testimonials', 'contact'];
 
     const handleScroll = () => {
       const scrollY = window.scrollY;
@@ -2183,12 +2394,48 @@ const App: React.FC = () => {
       setter: setIsExecutiveOpen,
       title: 'Présentation Executive | Victor Soussan',
       description: 'Présentation executive du portfolio de Victor Soussan, Product Design Lead.'
+    },
+    '/services': {
+      setter: setIsServicesPageOpen,
+      title: 'Expertises | Victor Soussan',
+      description: 'Expertises en design produit : conception d\'interfaces, stratégie, design ops et leadership.'
+    },
+    '/visual-archive': {
+      setter: setIsVisualArchiveOpen,
+      title: 'Gallery | Victor Soussan',
+      description: 'Galerie d\'interfaces, design systems et prototypes d\'interaction de Victor Soussan.'
+    },
+    '/signals': {
+      setter: setIsSignalsOpen,
+      title: 'Signals | Victor Soussan',
+      description: 'Réflexions et perspectives sur le design produit, le leadership et la méthodologie.'
+    },
+    '/consulting': {
+      setter: setIsConsultingOpen,
+      title: 'Consulting | Victor Soussan',
+      description: 'Consulting design senior pour directions digitales, DSI et VP Produit. Diagnostic, prototypage, recherche utilisateur, transformation.'
     }
   };
 
   const openModalWithUrl = (path: string) => {
+    // Handle dynamic signal detail routes
+    const signalMatch = path.match(/^\/signal\/(.+)$/);
+    if (signalMatch) {
+      const sId = signalMatch[1];
+      Object.values(MODAL_ROUTES).forEach(r => r.setter(false));
+      setOpenSignalId(sId);
+      const signal = SIGNALS.find(s => s.id === sId);
+      const signalTitle = signal ? (lang === 'en' ? signal.title_en : signal.title_fr) : 'Signal';
+      window.history.pushState({ signalId: sId, lang }, '', `${path}?lang=${lang}`);
+      updateMetaTags({ title: `${signalTitle} | Victor Soussan`, description: signal ? (lang === 'en' ? signal.body_en : signal.body_fr).substring(0, 160) : '', image: '/images/og_victor_soussan.webp' });
+      return;
+    }
+
     const route = MODAL_ROUTES[path];
     if (route) {
+      // Close all other modals first to prevent stacking
+      Object.values(MODAL_ROUTES).forEach(r => r.setter(false));
+      setOpenSignalId(null);
       route.setter(true);
       const urlWithLang = `${path}?lang=${lang}`;
       window.history.pushState({ modal: path, lang }, '', urlWithLang);
@@ -2217,6 +2464,14 @@ const App: React.FC = () => {
         }
       }
 
+      // Handle signal detail
+      if (event.state?.signalId) {
+        Object.values(MODAL_ROUTES).forEach(r => r.setter(false));
+        setOpenProject(null);
+        setOpenSignalId(event.state.signalId);
+        return;
+      }
+
       // Handle project modals
       if (event.state?.project) {
         setOpenProject({
@@ -2236,6 +2491,7 @@ const App: React.FC = () => {
           // Close all modals first
           Object.values(MODAL_ROUTES).forEach(r => r.setter(false));
           setOpenProject(null);
+          setOpenSignalId(null);
           // Open the requested modal
           route.setter(true);
           updateMetaTags({ title: route.title, description: route.description, image: '/images/og_victor_soussan.webp' });
@@ -2246,6 +2502,7 @@ const App: React.FC = () => {
       // No modal state - close everything
       Object.values(MODAL_ROUTES).forEach(r => r.setter(false));
       setOpenProject(null);
+      setOpenSignalId(null);
       updateMetaTags(DEFAULT_SEO);
     };
 
@@ -2300,8 +2557,7 @@ const App: React.FC = () => {
     const element = document.getElementById(id);
     if (element) {
       // Projects section has negative margin, needs more offset to show cards properly
-      // Bio section needs less offset (30px instead of 50px)
-      const offset = id === 'projects' ? 150 : id === 'bio' ? 30 : 50;
+      const offset = id === 'projects' ? 150 : 50;
       const elementRect = element.getBoundingClientRect().top;
       const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
       const targetPosition = currentScroll + elementRect - offset;
@@ -2412,109 +2668,82 @@ const App: React.FC = () => {
     }`}>
 
       {/* Navigation - Full width with glass effect */}
-      <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${
-        isScrolled
-          ? systemTheme === 'dark'
-            ? 'bg-[#0a0a0a]/80 backdrop-blur-xl'
-            : 'bg-white/80 backdrop-blur-xl'
-          : 'bg-transparent'
+      {/* z-[150] when a modal page is open (above z-[100] pages), z-50 otherwise (case studies cover it) */}
+      <nav className={`fixed top-0 w-full ${anyModalOpen ? 'z-[150]' : 'z-50'} ${
+        systemTheme === 'dark'
+          ? 'bg-[#0a0a0a]/80 backdrop-blur-xl'
+          : 'bg-white/80 backdrop-blur-xl'
       }`}>
         <div className="w-full px-6 h-16 flex items-center justify-between">
-          {/* Logo/Section Name - Logo visible when not scrolled, section name when scrolled */}
+          {/* Logo - click returns home when a modal is open */}
           <div
-            className={`relative font-semibold text-lg tracking-[-0.02em] cursor-pointer transition-all duration-300 group ${isScrolled ? 'min-w-[100px]' : ''}`}
-            onClick={() => scrollToTop()}
-            onMouseEnter={() => setIsHoveringLogo(true)}
-            onMouseLeave={() => setIsHoveringLogo(false)}
+            className="font-semibold text-lg tracking-[-0.02em] cursor-pointer transition-opacity duration-300 hover:opacity-70 whitespace-nowrap"
+            onClick={() => {
+              if (anyModalOpen) {
+                Object.values(MODAL_ROUTES).forEach(r => r.setter(false));
+                window.history.pushState({ lang }, '', `/?lang=${lang}`);
+                updateMetaTags(DEFAULT_SEO);
+              } else {
+                scrollToTop();
+              }
+            }}
           >
-            {!isScrolled ? (
-              <span className="inline-block transition-opacity duration-300 opacity-100 group-hover:opacity-70 whitespace-nowrap">
-                Victor Soussan
-              </span>
-            ) : (
-              <div className="relative inline-flex items-center">
-                {/* Section name - visible by default, fades out on hover (desktop only) */}
-                <span className={`transition-all duration-300 ease-out ${isHoveringLogo ? 'md:opacity-0' : 'opacity-100'}`}>
-                  {[
-                    { id: 'services', label: content.nav.services },
-                    { id: 'bio', label: content.nav.bio },
-                    { id: 'projects', label: content.nav.projects },
-                    { id: 'lab', label: content.nav.lab },
-                    { id: 'testimonials', label: content.nav.testimonials },
-                    { id: 'contact', label: content.nav.contact }
-                  ].find(item => item.id === activeSection)?.label || 'Victor Soussan'}
-                </span>
-
-                {/* "Top" with arrow icon - hidden by default, fades in on hover (desktop only) */}
-                <div className={`hidden md:flex items-center gap-1.5 absolute left-0 top-1/2 -translate-y-1/2 transition-all duration-300 ease-out whitespace-nowrap px-3 py-1.5 rounded-full border ${
-                  isHoveringLogo
-                    ? 'opacity-100'
-                    : 'opacity-0 pointer-events-none'
-                } ${
-                  systemTheme === 'dark'
-                    ? 'border-white/30 bg-white/5'
-                    : 'border-gray-300 bg-gray-100/50'
-                }`}>
-                  <ArrowUp size={16} className="flex-shrink-0" strokeWidth={2.5} />
-                  <span className="text-sm">Top</span>
-                </div>
-              </div>
-            )}
+            Victor Soussan
           </div>
 
           <div className="hidden md:flex items-center gap-2 text-sm font-medium">
-            {/* Navigation Items - All visible when at top, progressive disclosure when scrolled */}
+            {/* Scroll-section items */}
             {[
               { id: 'projects', label: content.nav.projects },
-              { id: 'bio', label: content.nav.bio },
+              { id: 'gallery', label: content.nav.archive },
               { id: 'services', label: content.nav.services },
               { id: 'testimonials', label: content.nav.testimonials },
-              { id: 'lab', label: content.nav.lab, icon: <FlaskConical size={14} className="mr-1.5"/> }
-            ].map((item) => {
-              const isActive = activeSection === item.id;
+            ].map((item) => (
+              <button
+                key={item.id}
+                onClick={() => {
+                  if (anyModalOpen) {
+                    Object.values(MODAL_ROUTES).forEach(r => r.setter(false));
+                    window.history.pushState({ lang }, '', `/?lang=${lang}`);
+                    updateMetaTags(DEFAULT_SEO);
+                    setTimeout(() => scrollToSection(item.id), 100);
+                  } else {
+                    scrollToSection(item.id);
+                  }
+                }}
+                className={`px-3 py-2 transition-colors duration-200 flex items-center whitespace-nowrap ${
+                  systemTheme === 'dark'
+                    ? 'text-gray-400 hover:text-white'
+                    : 'text-gray-600 hover:text-black'
+                }`}
+              >
+                {item.label}
+              </button>
+            ))}
 
-              // When not scrolled: show all items as simple text
-              if (!isScrolled) {
-                return (
-                  <button
-                    key={item.id}
-                    onClick={() => scrollToSection(item.id)}
-                    className={`px-3 py-2 transition-all duration-300 flex items-center whitespace-nowrap ${
-                      systemTheme === 'dark'
-                        ? 'text-gray-400 hover:text-white'
-                        : 'text-gray-600 hover:text-black'
-                    }`}
-                  >
-                    {item.icon}
-                    {item.label}
-                  </button>
-                );
-              }
+            {/* About - Opens modal */}
+            <button
+              onClick={() => openModalWithUrl('/about')}
+              className={`px-3 py-2 transition-colors duration-200 flex items-center whitespace-nowrap ${
+                activePageId === 'about'
+                  ? systemTheme === 'dark' ? 'text-white' : 'text-black'
+                  : systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-black'
+              }`}
+            >
+              {content.nav.bio}
+            </button>
 
-              // When scrolled: hide active pill (shown in logo), show only inactive pills
-              if (isActive) {
-                return null;
-              }
-
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => scrollToSection(item.id)}
-                  className={`px-4 py-2 rounded-full flex items-center whitespace-nowrap transition-all duration-300 ease-out opacity-60 hover:opacity-100 scale-100 backdrop-blur-sm ${
-                    systemTheme === 'dark'
-                      ? 'text-gray-400 hover:text-white bg-white/10 border border-white/10'
-                      : 'text-gray-600 hover:text-black bg-white/30 border border-gray-200/30'
-                  }`}
-                  style={{
-                    transitionProperty: 'opacity, background-color, color, transform, border-color',
-                    transitionDuration: '300ms'
-                  }}
-                >
-                  {item.icon}
-                  {item.label}
-                </button>
-              );
-            })}
+            {/* Gallery - Opens modal */}
+            <button
+              onClick={() => openModalWithUrl('/visual-archive')}
+              className={`px-3 py-2 transition-colors duration-200 flex items-center whitespace-nowrap ${
+                activePageId === 'visual-archive'
+                  ? systemTheme === 'dark' ? 'text-white' : 'text-black'
+                  : systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-black'
+              }`}
+            >
+              {content.nav.archive}
+            </button>
 
             {/* Language Switch */}
             <button
@@ -2528,9 +2757,18 @@ const App: React.FC = () => {
               {lang === 'en' ? 'FR' : 'EN'}
             </button>
 
-            {/* Contact Button - Black on light, white on dark */}
+            {/* Contact Button */}
             <button
-              onClick={() => scrollToSection('contact')}
+              onClick={() => {
+                if (anyModalOpen) {
+                  Object.values(MODAL_ROUTES).forEach(r => r.setter(false));
+                  window.history.pushState({ lang }, '', `/?lang=${lang}`);
+                  updateMetaTags(DEFAULT_SEO);
+                  setTimeout(() => scrollToSection('contact'), 100);
+                } else {
+                  scrollToSection('contact');
+                }
+              }}
               className={`px-5 py-2 text-sm font-medium rounded-full transition-all shadow-md hover:shadow-lg ${
                 systemTheme === 'dark'
                   ? 'bg-white text-black hover:bg-gray-100'
@@ -2624,10 +2862,10 @@ const App: React.FC = () => {
                     {[
                       { id: 'home', label: lang === 'en' ? 'Home' : 'Accueil', icon: Home, action: () => { scrollToTop(); setActiveSection(null); } },
                       { id: 'projects', label: content.nav.projects, icon: FolderOpen, action: () => scrollToSection('projects') },
-                      { id: 'bio', label: content.nav.bio, icon: User, action: () => scrollToSection('bio') },
+                      { id: 'gallery', label: content.nav.archive, icon: Images, action: () => scrollToSection('gallery') },
                       { id: 'services', label: content.nav.services, icon: Layers, action: () => scrollToSection('services') },
                       { id: 'testimonials', label: content.nav.testimonials, icon: MessageCircle, action: () => scrollToSection('testimonials') },
-                      { id: 'lab', label: content.nav.lab, icon: FlaskConical, action: () => scrollToSection('lab') },
+                      { id: 'bio', label: content.nav.bio, icon: User, action: () => openModalWithUrl('/about') },
                       { id: 'contact', label: content.nav.contact, icon: Mail, action: () => scrollToSection('contact') },
                     ].map((item, index, arr) => {
                       const isActive = activeSection === item.id || (item.id === 'home' && activeSection === null);
@@ -2822,20 +3060,16 @@ const App: React.FC = () => {
                 const audio = new Audio('/sounds/tap.wav');
                 audio.volume = 0.25;
                 audio.play().catch(() => {});
-                scrollToSection('bio');
+                openModalWithUrl('/about');
               }}
               whileTap={{ scale: 0.85 }}
               className={`flex items-center justify-center w-14 h-12 rounded-[22px] transition-all ${
-                activeSection === 'bio'
-                  ? systemTheme === 'dark'
-                    ? 'bg-white/20 text-white shadow-lg'
-                    : 'bg-white text-gray-900 shadow-md'
-                  : systemTheme === 'dark'
-                    ? 'text-gray-400 hover:text-white hover:bg-white/10'
-                    : 'text-gray-400 hover:text-gray-700 hover:bg-black/5'
+                systemTheme === 'dark'
+                  ? 'text-gray-400 hover:text-white hover:bg-white/10'
+                  : 'text-gray-400 hover:text-gray-700 hover:bg-black/5'
               }`}
             >
-              <User size={22} strokeWidth={activeSection === 'bio' ? 2.5 : 2} />
+              <User size={22} strokeWidth={2} />
             </motion.button>
 
             {/* Divider */}
@@ -2894,7 +3128,7 @@ const App: React.FC = () => {
       </div>
 
       {/* Hero Section */}
-      <header className="relative min-h-[85vh] flex flex-col justify-center px-6 overflow-hidden">
+      <header className="relative min-h-[85vh] flex flex-col justify-center px-6 py-24 md:py-32 overflow-hidden">
         {/* Static Background - Performance optimized (no JS animation) */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           {/* Gradient blobs only - no animated grid */}
@@ -2918,68 +3152,97 @@ const App: React.FC = () => {
           }`} />
         </div>
 
-        <div className="relative max-w-4xl mx-auto text-center z-10 pt-2.5">
-          {/* Availability Badge */}
-          <div
-            className={`inline-flex items-center relative z-20 pl-1 pr-3 py-1 rounded-full mb-8 ${
-              systemTheme === 'dark'
-                ? 'bg-white/10 border border-white/20'
-                : 'bg-white/70 border border-gray-200/60'
-            }`}
-            style={{
-              backdropFilter: 'blur(20px)',
-              WebkitBackdropFilter: 'blur(20px)',
-            }}
-          >
-            <Avatar
-              filename="victor-soussan.webp"
-              alt="Victor Soussan"
-              className="w-7 h-7 rounded-full ring-2 ring-white/20"
-              isDark={systemTheme === 'dark'}
-            />
-            <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse ml-2.5" />
-            <span className={`text-xs font-medium ml-2 ${systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
-              {content.hero.availability}
-            </span>
-          </div>
+        <div className="relative max-w-[1280px] mx-auto z-10 px-6">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-center">
 
-          {/* Main Tagline - Frame. Design. Ship. */}
-          <h1 className={`text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-[-0.05em] mb-4 md:mb-6 leading-[1.05] ${
-            systemTheme === 'dark' ? 'text-white' : 'text-[#1D1D1F]'
-          }`}>
-            {content.hero.tagline}
-          </h1>
+            {/* Left: Text Content (2/3) */}
+            <div className="md:col-span-7 lg:col-span-8 text-left">
+              {/* Availability Badge */}
+              <div
+                className={`inline-flex items-center relative z-20 pl-1 pr-3 py-1 rounded-full mb-6 md:mb-8 ${
+                  systemTheme === 'dark'
+                    ? 'bg-white/10 border border-white/20'
+                    : 'bg-white/70 border border-gray-200/60'
+                }`}
+                style={{
+                  backdropFilter: 'blur(20px)',
+                  WebkitBackdropFilter: 'blur(20px)',
+                }}
+              >
+                <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse ml-1" />
+                <span className={`text-xs font-medium ml-2 ${systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
+                  {content.hero.availability}
+                </span>
+              </div>
 
-          {/* Subtitle */}
-          <p className={`text-lg sm:text-xl md:text-2xl font-medium mb-3 md:mb-4 ${
-            systemTheme === 'dark' ? 'text-white' : 'text-[#1D1D1F]'
-          }`}>
-            {content.hero.title} <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">{content.hero.subtitle}</span>
-          </p>
+              {/* Main Tagline */}
+              <h1 className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-[-0.04em] mb-4 md:mb-5 leading-[1.05] ${
+                systemTheme === 'dark' ? 'text-white' : 'text-[#1D1D1F]'
+              }`}>
+                {content.hero.tagline}
+              </h1>
 
-          <p className={`text-sm sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-8 md:mb-12 ${
-            systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-          }`}>
-            {content.hero.desc}
-          </p>
+              {/* Subtitle */}
+              <p className={`text-lg sm:text-xl md:text-2xl font-medium mb-3 md:mb-4 ${
+                systemTheme === 'dark' ? 'text-white' : 'text-[#1D1D1F]'
+              }`}>
+                {content.hero.title} <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">{content.hero.subtitle}</span>
+              </p>
 
-          <div className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4">
-            <button
-              onClick={() => scrollToSection('projects')}
-              className="group px-6 py-3 sm:px-8 sm:py-4 rounded-full font-semibold text-sm sm:text-base btn-pill flex items-center justify-center cursor-pointer relative z-20 whitespace-nowrap transition-all duration-200 bg-[#2D5CF3] text-white hover:bg-[#2450d9] shadow-lg shadow-[#2D5CF3]/25 hover:shadow-xl hover:shadow-[#2D5CF3]/30 w-full sm:w-auto"
-            >
-              {lang === 'en' ? 'View work' : 'Voir mes projets'} <ArrowUpRight className="ml-2 flex-shrink-0 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" size={16} />
-            </button>
-            <button
-              onClick={() => openModalWithUrl('/presentation')}
-              className={`group px-6 py-3 sm:px-8 sm:py-4 rounded-full font-semibold text-sm sm:text-base btn-pill flex items-center justify-center cursor-pointer relative z-20 whitespace-nowrap transition-all duration-200 w-full sm:w-auto ${
-                systemTheme === 'dark'
-                  ? 'bg-white/10 text-white border border-white/20 hover:bg-white/15'
-                  : 'bg-white text-gray-900 border border-gray-200 hover:bg-gray-50 shadow-sm'
-              }`}
-            >
-              {lang === 'en' ? '1-min Presentation' : 'Présentation 1 min'} <ArrowUpRight className="ml-2 flex-shrink-0 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" size={16} />
-            </button>
+              {/* Positioning keywords */}
+              <p className={`text-sm md:text-base mb-5 md:mb-6 max-w-2xl ${
+                systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+              }`}>
+                {content.hero.positioning}
+              </p>
+
+              <p className={`text-sm sm:text-base md:text-lg leading-relaxed mb-7 md:mb-8 max-w-2xl ${
+                systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+              }`}>
+                {content.hero.desc}
+              </p>
+
+              {/* CTAs */}
+              <div className="flex flex-col sm:flex-row justify-start items-stretch sm:items-center gap-3 sm:gap-4">
+                <button
+                  onClick={() => scrollToSection('projects')}
+                  className="group px-6 py-3 sm:px-8 sm:py-4 rounded-full font-semibold text-sm sm:text-base btn-pill flex items-center justify-center cursor-pointer relative z-20 whitespace-nowrap transition-all duration-200 bg-[#2D5CF3] text-white hover:bg-[#2450d9] shadow-lg shadow-[#2D5CF3]/25 hover:shadow-xl hover:shadow-[#2D5CF3]/30 w-full sm:w-auto"
+                >
+                  {lang === 'en' ? 'View work' : 'Voir mes projets'} <ArrowUpRight className="ml-2 flex-shrink-0 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" size={16} />
+                </button>
+                <button
+                  onClick={() => openModalWithUrl('/presentation')}
+                  className={`group px-6 py-3 sm:px-8 sm:py-4 rounded-full font-semibold text-sm sm:text-base btn-pill flex items-center justify-center cursor-pointer relative z-20 whitespace-nowrap transition-all duration-200 w-full sm:w-auto ${
+                    systemTheme === 'dark'
+                      ? 'bg-white/10 text-white border border-white/20 hover:bg-white/15'
+                      : 'bg-white text-gray-900 border border-gray-200 hover:bg-gray-50 shadow-sm'
+                  }`}
+                >
+                  {lang === 'en' ? '1-min Presentation' : 'Présentation 1 min'} <ArrowUpRight className="ml-2 flex-shrink-0 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" size={16} />
+                </button>
+              </div>
+            </div>
+
+            {/* Right: Photo (1/3) - Portrait */}
+            <div className="hidden md:flex md:col-span-5 lg:col-span-4 justify-center md:justify-end">
+              <div className="relative w-full max-w-[340px]">
+                <div
+                  className={`aspect-[3/4] rounded-2xl md:rounded-3xl overflow-hidden border shadow-lg ${
+                    systemTheme === 'dark'
+                      ? 'border-white/10 shadow-black/30'
+                      : 'border-gray-200/60 shadow-gray-200/50'
+                  }`}
+                >
+                  <img
+                    src="/images/photos victor/image_victor_home.png"
+                    alt="Victor Soussan"
+                    className="w-full h-full object-cover object-[center_15%]"
+                    loading="eager"
+                  />
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </header>
@@ -3024,12 +3287,12 @@ const App: React.FC = () => {
       `}</style>
 
       {/* Case Studies Section - Landscape Banners */}
-      <section id="projects" className={`-mt-[36px] md:-mt-[68px] pt-0 pb-16 md:pb-32 px-10 relative z-10 ${
+      <section id="projects" className={`-mt-[36px] md:-mt-[68px] pt-0 pb-16 md:pb-32 px-4 md:px-10 relative z-10 ${
         systemTheme === 'dark' ? 'bg-transparent' : 'bg-transparent'
       }`}>
         <div className="max-w-[1280px] mx-auto">
           {/* Stacked Landscape Cards - Show only first 3 projects */}
-          <div className="flex flex-col gap-10">
+          <div className="flex flex-col gap-6 md:gap-10">
             {projects.slice(0, 3).map((project, index) => {
               // No scale animation - all cards at 100%
               const shouldAnimate = false;
@@ -3302,174 +3565,74 @@ const App: React.FC = () => {
         </div>
       </section>
 
-      {/* Biography & Toolkit Section */}
-      <section id="bio" className={`py-16 md:py-32 px-10 relative ${
-        systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white'
+      {/* Gallery Preview */}
+      <section id="gallery" className={`py-16 md:py-24 px-4 md:px-10 ${
+        systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-[#FCFCFD]'
       }`}>
         <div className="max-w-[1280px] mx-auto">
-          <div className="mb-8 md:mb-12 text-center">
-            <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold tracking-[-0.02em] mb-4 md:mb-6">{content.bio.title}</h2>
-            <p className={`text-sm sm:text-base md:text-lg max-w-2xl mx-auto ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>{content.bio.subtitle}</p>
+          <div className="mb-10 md:mb-14 text-center">
+            <h2 className={`text-2xl sm:text-3xl md:text-5xl font-bold tracking-[-0.02em] mb-4 ${
+              systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+            }`}>{content.homepage_visual_archive.title}</h2>
+            <p className={`text-base md:text-lg max-w-2xl mx-auto ${
+              systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+            }`}>{content.homepage_visual_archive.subtitle}</p>
           </div>
-
-          <div className="grid md:grid-cols-12 gap-10">
-
-            {/* Left: Bio Card */}
-            <div className="md:col-span-7">
-               <div className={`p-5 md:p-8 h-full flex flex-col justify-between overflow-hidden relative rounded-2xl md:rounded-3xl border shadow-sm ${
-                 systemTheme === 'dark'
-                   ? 'bg-[#1D1D1F] border-white/10'
-                   : 'glass-effect border-white/50'
-               }`}>
-                  <div>
-                    <div className="flex flex-col md:flex-row items-center md:items-start space-y-4 md:space-y-0 md:space-x-8 mb-6 md:mb-8">
-                      <Avatar
-                        filename="victor-soussan.webp"
-                        alt="Victor Soussan"
-                        className="w-28 h-28 md:w-40 md:h-40 rounded-2xl md:rounded-[2rem] shadow-lg border border-white/20"
-                        isDark={systemTheme === 'dark'}
-                      />
-                      <div className="text-center md:text-left pt-2 flex-1">
-                        <h3 className={`text-2xl md:text-3xl font-bold mb-2 tracking-[-0.02em] ${
-                          systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                        }`}>Victor Soussan</h3>
-                        <p className={`font-medium mb-3 md:mb-4 text-sm md:text-lg ${
-                          systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                        }`}>{content.bio.role}</p>
-                        <div className="flex flex-wrap gap-2 justify-center md:justify-start">
-                          <Badge color="blue">{content.bio.exp}</Badge>
-                          <Badge color="gray">{content.bio.loc}</Badge>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className={`space-y-5 leading-relaxed text-[15px] ${
-                      systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
-                    }`}>
-                      {/* Intro paragraphs first */}
-                      <p>{content.bio.p1}</p>
-                      <p>{content.bio.p2}</p>
-
-                      {/* Value proposition block */}
-                      <div className={`p-5 rounded-2xl border ${
-                        systemTheme === 'dark'
-                          ? 'bg-blue-900/20 border-blue-600/20'
-                          : 'bg-blue-50/50 border-blue-100'
-                      }`}>
-                        <p className={`font-semibold mb-3 text-base ${
-                          systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                        }`}>{content.bio.value_prop}</p>
-                        <ul className="space-y-2">
-                          {content.bio.bullets.map((bullet, i) => (
-                            <li key={i} className="flex items-start text-sm">
-                              <CheckCircle2 size={16} className="mr-2.5 mt-0.5 text-blue-600 flex-shrink-0" />
-                              <span>{bullet}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className={`flex flex-wrap gap-4 mt-8 pt-6 border-t ${
-                    systemTheme === 'dark' ? 'border-white/10' : 'border-gray-100'
-                  }`}>
-                     <button
-                       onClick={() => openModalWithUrl('/about')}
-                       className="group px-8 py-3 rounded-full font-medium transition-colors inline-flex items-center shadow-sm hover:shadow-md bg-[#2D5CF3] text-white hover:bg-[#2450d9]"
-                     >
-                       {content.bio.view_full_bio} <ArrowUpRight size={18} className="ml-2 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                     </button>
-
-                     <div className="flex space-x-2">
-                        <a
-                          href="https://linkedin.com/in/victorsoussan"
-                          target="_blank"
-                          rel="noreferrer"
-                          className={`px-4 py-2.5 rounded-full text-sm font-medium btn-pill flex items-center ${
-                            systemTheme === 'dark'
-                              ? 'bg-white/10 text-gray-300 hover:text-white hover:bg-white/20'
-                              : 'glass-effect text-gray-700 hover:text-[#0077b5]'
-                          }`}
-                        >
-                          <Linkedin size={16} className="mr-2"/> LinkedIn
-                        </a>
-                        <button
-                          onClick={() => {
-                            openModalWithUrl('/resume');
-                          }}
-                          className={`px-4 py-2.5 rounded-full text-sm font-medium btn-pill flex items-center ${
-                            systemTheme === 'dark'
-                              ? 'bg-white/10 text-gray-300 hover:text-white hover:bg-white/20'
-                              : 'glass-effect text-gray-700 hover:text-blue-600'
-                          }`}
-                        >
-                          <FileText size={16} className="mr-2"/> Résumé
-                        </button>
-                     </div>
-                  </div>
-               </div>
-            </div>
-
-            {/* Right: Toolkit Grid */}
-            <div className="md:col-span-5 flex flex-col space-y-6">
-              <div className={`p-6 rounded-3xl border shadow-sm h-full flex flex-col ${
-                systemTheme === 'dark'
-                  ? 'bg-[#1D1D1F] border-white/10'
-                  : 'bg-white border-gray-100'
-              }`}>
-                 <div className={`flex items-center mb-4 font-bold ${
-                   systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                 }`}>
-                   <BookOpen size={20} className="mr-2 text-blue-600"/>
-                   <h3>{content.bio.toolkit_title}</h3>
-                 </div>
-                 <p className={`text-sm mb-6 ${
-                   systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                 }`}>
-                   {content.bio.toolkit_desc}
-                 </p>
-
-                 <div className="space-y-3 flex-1">
-                    {resources.map((res, idx) => (
-                       <a
-                         key={idx}
-                         href={res.link}
-                         target="_blank"
-                         rel="noopener noreferrer"
-                         className={`flex items-center p-3 rounded-xl transition-colors group cursor-pointer border ${
-                           systemTheme === 'dark'
-                             ? 'bg-white/5 hover:bg-blue-900/30 text-gray-300 hover:text-blue-400 border-white/5 hover:border-blue-600/30'
-                             : 'bg-gray-50 hover:bg-blue-50 hover:text-blue-700 border-transparent hover:border-blue-100'
-                         }`}
-                       >
-                          <div className={`mr-3 p-2 rounded-lg border shadow-sm ${
-                            systemTheme === 'dark'
-                              ? 'bg-white/10 border-white/10 group-hover:border-blue-600/30'
-                              : 'bg-white border-gray-100 group-hover:border-blue-100'
-                          }`}>
-                            {res.icon}
-                          </div>
-                          <div className="flex-1">
-                             <div className="text-sm font-semibold">{res.title}</div>
-                             <div className={`text-xs ${
-                               systemTheme === 'dark'
-                                 ? 'text-gray-500 group-hover:text-blue-400'
-                                 : 'text-gray-400 group-hover:text-blue-400'
-                             }`}>{res.desc}</div>
-                          </div>
-                          <ArrowUpRight size={16} className="opacity-0 group-hover:opacity-100 transition-opacity text-blue-600"/>
-                       </a>
-                    ))}
-                 </div>
+          {/* First image: full width, high impact */}
+          <div
+            onClick={() => openModalWithUrl('/visual-archive')}
+            className={`rounded-2xl overflow-hidden border cursor-pointer transition-all duration-300 hover:shadow-lg mb-4 ${
+              systemTheme === 'dark'
+                ? 'border-white/5 hover:border-white/10'
+                : 'border-gray-100 hover:border-gray-200'
+            }`}
+          >
+            <img
+              src="/images/visuels UI/100_1_5x.webp"
+              alt=""
+              loading="lazy"
+              className="w-full h-auto object-cover transition-transform duration-500 hover:scale-[1.01]"
+            />
+          </div>
+          {/* Three images in row */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
+            {[
+              '/images/visuels UI/800_1_5x.webp',
+              '/images/visuels UI/200_1_5x.webp',
+              '/images/visuels UI/1102_1_5x.webp',
+            ].map((src, i) => (
+              <div
+                key={i}
+                onClick={() => openModalWithUrl('/visual-archive')}
+                className={`rounded-2xl overflow-hidden border cursor-pointer transition-all duration-300 hover:shadow-lg ${
+                  systemTheme === 'dark'
+                    ? 'border-white/5 hover:border-white/10'
+                    : 'border-gray-100 hover:border-gray-200'
+                }`}
+              >
+                <img
+                  src={src}
+                  alt=""
+                  loading="lazy"
+                  className="w-full h-auto object-cover transition-transform duration-500 hover:scale-[1.01]"
+                />
               </div>
-            </div>
+            ))}
+          </div>
+          <div className="text-center">
+            <button
+              onClick={() => openModalWithUrl('/visual-archive')}
+              className="group inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-medium transition-all duration-200 cursor-pointer bg-[#2D5CF3] text-white hover:bg-[#2450d9] shadow-sm hover:shadow-md"
+            >
+              {content.homepage_visual_archive.cta}
+              <ArrowRight size={16} />
+            </button>
           </div>
         </div>
       </section>
 
       {/* Services & Clients Section - Combined */}
-      <section id="services" className={`py-16 md:py-32 px-10 relative overflow-hidden ${
+      <section id="services" className={`py-16 md:py-32 px-4 md:px-10 relative overflow-hidden ${
         systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-[#FCFCFD]'
       }`}>
         <div className="max-w-[1280px] mx-auto relative z-10">
@@ -3482,184 +3645,67 @@ const App: React.FC = () => {
              </p>
           </div>
 
-          <div className="space-y-4">
-            {/* Service Accordion Items */}
-            {[
-              {
-                id: 'execution',
-                icon: <PenTool size={24}/>,
-                title: content.services.execution,
-                items: content.services.items.execution,
-                color: 'pink' as const,
-                image: '/images/sketches services/gifs/01_image_hand_on_execution.gif'
-              },
-              {
-                id: 'utility',
-                icon: <Zap size={24}/>,
-                title: content.services.utility,
-                items: content.services.items.utility,
-                color: 'blue' as const,
-                image: '/images/sketches services/gifs/02_workshop_product_vision.gif'
-              },
-              {
-                id: 'efficiency',
-                icon: <Settings size={24}/>,
-                title: content.services.efficiency,
-                items: content.services.items.efficiency,
-                color: 'orange' as const,
-                image: '/images/sketches services/gifs/03 - product_vision_workshop_facilitation.gif'
-              },
-              {
-                id: 'impact',
-                icon: <Users size={24}/>,
-                title: content.services.impact,
-                items: content.services.items.impact,
-                color: 'teal' as const,
-                image: '/images/sketches services/gifs/04_organisationtal_impact_workshop_alignment.gif'
-              }
-            ].map((service) => {
-              const isExpanded = expandedService === service.id;
-              const colorClasses = {
-                pink: {
+          {/* Service Pillar Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {(() => {
+              const pillarIcons = [
+                <PenTool size={24} key="pen" />,
+                <Zap size={24} key="zap" />,
+                <Users size={24} key="users" />
+              ];
+              const pillarColors = [
+                {
                   bg: systemTheme === 'dark' ? 'bg-pink-500/20' : 'bg-pink-50',
                   text: systemTheme === 'dark' ? 'text-pink-400' : 'text-pink-600',
-                  check: 'text-pink-400'
+                  border: 'hover:border-pink-500/30'
                 },
-                blue: {
+                {
                   bg: systemTheme === 'dark' ? 'bg-blue-600/20' : 'bg-blue-50',
                   text: systemTheme === 'dark' ? 'text-blue-400' : 'text-blue-600',
-                  check: 'text-blue-400'
+                  border: 'hover:border-blue-600/30'
                 },
-                orange: {
-                  bg: systemTheme === 'dark' ? 'bg-orange-500/20' : 'bg-orange-50',
-                  text: systemTheme === 'dark' ? 'text-orange-400' : 'text-orange-600',
-                  check: 'text-orange-400'
-                },
-                teal: {
+                {
                   bg: systemTheme === 'dark' ? 'bg-teal-500/20' : 'bg-teal-50',
                   text: systemTheme === 'dark' ? 'text-teal-400' : 'text-teal-600',
-                  check: 'text-teal-400'
+                  border: 'hover:border-teal-500/30'
                 }
-              }[service.color];
-
-              const borderHoverColor = {
-                pink: 'hover:border-pink-500/50',
-                blue: 'hover:border-blue-600/50',
-                orange: 'hover:border-orange-500/50',
-                teal: 'hover:border-teal-500/50'
-              }[service.color];
-
-              const shadowHoverColor = {
-                pink: 'hover:shadow-pink-900/10',
-                blue: 'hover:shadow-blue-900/10',
-                orange: 'hover:shadow-orange-900/10',
-                teal: 'hover:shadow-teal-900/10'
-              }[service.color];
-
-              const gradientColor = {
-                pink: 'from-pink-500/5',
-                blue: 'from-blue-600/5',
-                orange: 'from-orange-500/5',
-                teal: 'from-teal-500/5'
-              }[service.color];
-
-              return (
+              ];
+              return content.services.homepage_pillars.map((pillar: { title: string; desc: string }, i: number) => (
                 <div
-                  key={service.id}
-                  className={`group relative rounded-3xl border overflow-hidden transition-all duration-300 cursor-pointer ${
+                  key={i}
+                  className={`group p-6 md:p-8 rounded-2xl border transition-all duration-300 ${
                     systemTheme === 'dark'
-                      ? `bg-[#1D1D1F] border-white/5 ${borderHoverColor}`
-                      : `bg-white border-gray-100 ${borderHoverColor}`
-                  } ${isExpanded ? 'shadow-xl' : `shadow-sm hover:shadow-2xl ${shadowHoverColor}`}`}
+                      ? `bg-[#1D1D1F] border-white/5 ${pillarColors[i].border}`
+                      : `bg-white border-gray-100 ${pillarColors[i].border}`
+                  } hover:shadow-lg`}
                 >
-                  {/* Gradient overlay on hover */}
-                  <div className={`absolute inset-0 bg-gradient-to-br ${gradientColor} to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none`}></div>
-
-                  {/* Accordion Header */}
-                  <button
-                    onClick={() => setExpandedService(isExpanded ? null : service.id)}
-                    className="relative z-10 w-full px-6 py-5 flex items-center justify-between cursor-pointer"
-                  >
-                    <div className="flex items-center gap-3 md:gap-4">
-                      <div className={`p-2 md:p-3 rounded-xl transition-transform duration-300 group-hover:scale-110 ${colorClasses.bg} ${colorClasses.text}`}>
-                        {service.icon}
-                      </div>
-                      <h3 className={`text-xl md:text-2xl font-bold tracking-[-0.02em] ${
-                        systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                      }`}>{service.title}</h3>
-                    </div>
-                    <div className={`p-2 rounded-full transition-all duration-300 opacity-0 group-hover:opacity-100 ${
-                      systemTheme === 'dark'
-                        ? 'bg-white/10'
-                        : 'bg-gray-100'
-                    } ${isExpanded ? 'opacity-100' : ''}`}>
-                      <ChevronDown
-                        size={20}
-                        className={`transition-transform duration-300 ${
-                          isExpanded ? 'rotate-180' : ''
-                        } ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}
-                      />
-                    </div>
-                  </button>
-
-                  {/* Accordion Content - CSS Grid trick for smooth height animation */}
-                  <div
-                    className="grid relative z-10"
-                    style={{
-                      gridTemplateRows: isExpanded ? '1fr' : '0fr',
-                      transition: 'grid-template-rows 300ms ease-out',
-                    }}
-                  >
-                    <div
-                      className="overflow-hidden"
-                      style={{
-                        opacity: isExpanded ? 1 : 0,
-                        transition: 'opacity 200ms ease-out',
-                        transitionDelay: isExpanded ? '100ms' : '0ms',
-                      }}
-                    >
-                      <div className={`px-6 pb-6 border-t ${
-                        systemTheme === 'dark' ? 'border-white/10' : 'border-gray-100'
-                      }`}>
-                        {/* Layout: 1/3 image, 2/3 bullets */}
-                        <div className="flex flex-col md:flex-row gap-6 pt-6">
-                          {/* Image - 1/3 width on desktop */}
-                          <div className="md:w-1/3 flex-shrink-0">
-                            <div className={`rounded-2xl overflow-hidden border ${
-                              systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-                            }`}>
-                              <img
-                                src={service.image}
-                                alt={service.title}
-                                className="w-full h-auto object-cover"
-                                loading="eager"
-                              />
-                            </div>
-                          </div>
-                          {/* Bullet Points - 2/3 width on desktop */}
-                          <div className="md:w-2/3">
-                            <ul className={`space-y-4 ${
-                              systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-700'
-                            }`}>
-                              {service.items.map((item, i) => (
-                                <li key={i} className="flex items-start">
-                                  <CheckCircle2 size={18} className={`mr-3 mt-0.5 ${colorClasses.check} flex-shrink-0`}/>
-                                  <span className="text-base leading-relaxed font-medium tracking-[-0.01em]">{item}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                  <div className={`p-3 rounded-xl inline-flex mb-5 transition-transform duration-300 group-hover:scale-110 ${pillarColors[i].bg} ${pillarColors[i].text}`}>
+                    {pillarIcons[i]}
                   </div>
+                  <h3 className={`text-xl font-bold tracking-[-0.02em] mb-3 ${
+                    systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+                  }`}>{pillar.title}</h3>
+                  <p className={`text-sm leading-relaxed ${
+                    systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                  }`}>{pillar.desc}</p>
                 </div>
-              );
-            })}
+              ));
+            })()}
+          </div>
+
+          {/* CTA to full services page */}
+          <div className="mt-10 text-center">
+            <button
+              onClick={() => openModalWithUrl('/services')}
+              className="group inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-medium transition-all duration-200 cursor-pointer bg-[#2D5CF3] text-white hover:bg-[#2450d9] shadow-sm hover:shadow-md"
+            >
+              {content.services.cta_all}
+              <ArrowRight size={16} />
+            </button>
           </div>
 
           {/* Trusted by - Integrated in same section */}
-          <div id="clients" className="mt-32 md:mt-48">
+          <div id="clients" className="mt-20 md:mt-48">
             <div className="mb-8 md:mb-12 text-center">
               <h3 className={`text-2xl md:text-3xl lg:text-4xl font-bold tracking-[-0.02em] ${
                 systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
@@ -3670,12 +3716,12 @@ const App: React.FC = () => {
 
             <div className="relative overflow-hidden">
               {/* Fade edges */}
-              <div className={`absolute left-0 top-0 bottom-0 w-32 z-20 pointer-events-none ${
+              <div className={`absolute left-0 top-0 bottom-0 w-16 md:w-32 z-20 pointer-events-none ${
                 systemTheme === 'dark'
                   ? 'bg-gradient-to-r from-[#0a0a0a] to-transparent'
                   : 'bg-gradient-to-r from-[#FCFCFD] to-transparent'
               }`} />
-              <div className={`absolute right-0 top-0 bottom-0 w-32 z-20 pointer-events-none ${
+              <div className={`absolute right-0 top-0 bottom-0 w-16 md:w-32 z-20 pointer-events-none ${
                 systemTheme === 'dark'
                   ? 'bg-gradient-to-l from-[#0a0a0a] to-transparent'
                   : 'bg-gradient-to-l from-[#FCFCFD] to-transparent'
@@ -3729,8 +3775,124 @@ const App: React.FC = () => {
         </div>
       </section>
 
+      {/* Signals Section */}
+      <section className={`py-16 md:py-32 px-4 md:px-10 ${
+        systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-[#FCFCFD]'
+      }`}>
+        <div className="max-w-[1280px] mx-auto">
+          <div className="mb-8 md:mb-12 text-center">
+            <h2 className={`text-2xl sm:text-3xl md:text-5xl font-bold tracking-[-0.02em] mb-4 md:mb-6 ${
+              systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
+            }`}>{content.signals.title}</h2>
+            <p className={`text-base md:text-lg max-w-2xl mx-auto ${
+              systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+            }`}>{content.signals.subtitle}</p>
+          </div>
+
+          {/* Featured signal cards - inline layout with square thumbnail */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
+            {(() => {
+              const featured = FEATURED_SIGNAL_IDS
+                .map(id => SIGNALS.find(s => s.id === id))
+                .filter((s): s is Signal => !!s);
+
+              const categoryGradients: Record<string, string> = {
+                ai: 'from-[#7B61FF] via-[#D946EF] to-[#F472B6]',
+                methodology: 'from-[#38BDF8] via-[#6366F1] to-[#4F46E5]',
+                strategy: 'from-[#FBBF24] via-[#F97316] to-[#EF4444]',
+                leadership: 'from-[#34D399] via-[#14B8A6] to-[#0891B2]',
+                craft: 'from-[#FB7185] via-[#E879F9] to-[#A855F7]',
+              };
+
+              return featured.map(signal => {
+                const gradient = categoryGradients[signal.category] || categoryGradients.ai;
+                return (
+                  <div
+                    key={signal.id}
+                    onClick={() => openModalWithUrl(`/signal/${signal.id}`)}
+                    className={`group cursor-pointer rounded-2xl overflow-hidden flex transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5 ${
+                      systemTheme === 'dark'
+                        ? 'bg-[#1D1D1F] ring-1 ring-white/5 hover:ring-white/15'
+                        : 'bg-white ring-1 ring-gray-200/60 hover:ring-gray-300/80 shadow-sm'
+                    }`}
+                  >
+                    {/* Square gradient thumbnail on the left */}
+                    <div className={`relative w-28 md:w-36 flex-shrink-0 overflow-hidden bg-gradient-to-br ${gradient}`}>
+                      <div className="absolute -top-1/2 -right-1/4 w-3/4 h-full rounded-full bg-white/15 blur-3xl" />
+                      <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-black/15 to-transparent" />
+                    </div>
+
+                    {/* Content on the right */}
+                    <div className="flex-1 p-4 md:p-5 flex flex-col justify-center min-w-0">
+                      <div className="flex items-start justify-between gap-2 mb-2.5">
+                        <span className={`inline-block px-2.5 py-0.5 rounded-full text-[11px] font-semibold ${
+                          systemTheme === 'dark' ? SIGNAL_CATEGORY_COLORS[signal.category].bgDark : SIGNAL_CATEGORY_COLORS[signal.category].bg
+                        } ${SIGNAL_CATEGORY_COLORS[signal.category].text}`}>
+                          {SIGNAL_CATEGORY_LABELS[signal.category][lang]}
+                        </span>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            const url = `${window.location.origin}/signal/${signal.id}?lang=${lang}`;
+                            navigator.clipboard.writeText(url).then(() => {
+                              setCopiedSignalId(signal.id);
+                              setTimeout(() => setCopiedSignalId(null), 2000);
+                            });
+                          }}
+                          className={`flex-shrink-0 p-1.5 rounded-lg transition-colors ${
+                            copiedSignalId === signal.id
+                              ? 'text-green-500'
+                              : systemTheme === 'dark'
+                                ? 'text-gray-600 hover:text-gray-300 hover:bg-white/5'
+                                : 'text-gray-300 hover:text-gray-600 hover:bg-gray-100'
+                          }`}
+                          title={copiedSignalId === signal.id ? (lang === 'en' ? 'Link copied' : 'Lien copié') : 'Copy link'}
+                        >
+                          {copiedSignalId === signal.id ? <Check size={14} /> : <Link2 size={14} />}
+                        </button>
+                      </div>
+                      <h3 className={`text-sm md:text-base font-bold mb-1.5 leading-snug tracking-[-0.02em] transition-colors line-clamp-2 ${
+                        systemTheme === 'dark' ? 'text-white group-hover:text-blue-400' : 'text-gray-900 group-hover:text-[#2D5CF3]'
+                      }`}>
+                        {lang === 'en' ? signal.title_en : signal.title_fr}
+                      </h3>
+                      <p className={`text-xs md:text-sm leading-relaxed mb-3 line-clamp-2 ${
+                        systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+                      }`}>
+                        {lang === 'en' ? signal.body_en : signal.body_fr}
+                      </p>
+                      <div className="flex items-center gap-1.5">
+                        <span className={`text-xs md:text-sm font-medium transition-colors ${
+                          systemTheme === 'dark' ? 'text-blue-400' : 'text-[#2D5CF3]'
+                        }`}>
+                          {lang === 'en' ? 'Read more' : 'Lire la suite'}
+                        </span>
+                        <ArrowRight size={12} className={`transition-transform group-hover:translate-x-1 ${
+                          systemTheme === 'dark' ? 'text-blue-400' : 'text-[#2D5CF3]'
+                        }`} />
+                      </div>
+                    </div>
+                  </div>
+                );
+              });
+            })()}
+          </div>
+
+          {/* CTA */}
+          <div className="mt-10 text-center">
+            <button
+              onClick={() => openModalWithUrl('/signals')}
+              className="group inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-medium transition-all duration-200 cursor-pointer bg-[#2D5CF3] text-white hover:bg-[#2450d9] shadow-sm hover:shadow-md"
+            >
+              {content.signals.cta}
+              <ArrowRight size={16} />
+            </button>
+          </div>
+        </div>
+      </section>
+
       {/* Testimonials Section */}
-      <section id="testimonials" className={`py-16 md:py-32 px-10 ${
+      <section id="testimonials" className={`py-16 md:py-32 px-4 md:px-10 ${
         systemTheme === 'dark'
           ? 'bg-[#0a0a0a]'
           : 'bg-[#FCFCFD]'
@@ -3747,7 +3909,7 @@ const App: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
              {/* Preview: Top 3 curated testimonials - Same style as modal */}
-             {[testimonials[0], testimonials[1], testimonials[2]].map((t, i) => (
+             {[testimonials[1], testimonials[6], testimonials[0]].map((t, i) => (
                 <motion.a
                   key={i}
                   href={t.linkedin}
@@ -3757,7 +3919,7 @@ const App: React.FC = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.3, delay: i * 0.1 }}
-                  className={`p-8 rounded-3xl border shadow-sm hover:shadow-md transition-all h-fit flex flex-col cursor-pointer group/card ${
+                  className={`p-5 md:p-8 rounded-2xl md:rounded-3xl border shadow-sm hover:shadow-md transition-all h-fit flex flex-col cursor-pointer group/card ${
                     systemTheme === 'dark'
                       ? 'bg-[#1D1D1F] border-white/10 hover:border-[#0077b5]/50'
                       : 'bg-white border-gray-100 hover:border-[#0077b5]/30'
@@ -3831,503 +3993,22 @@ const App: React.FC = () => {
         </div>
       </section>
 
-      {/* Condamine Studio Section */}
-      <section id="lab" className="py-16 md:py-32 px-10 bg-[#09090b] text-white relative overflow-hidden">
-         {/* Atmospheric Glows */}
-         <div className="absolute top-0 right-0 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-indigo-600/10 rounded-full blur-[100px] pointer-events-none translate-x-1/2 -translate-y-1/2"></div>
-         <div className="absolute bottom-0 left-0 w-[250px] md:w-[400px] h-[250px] md:h-[400px] bg-blue-600/10 rounded-full blur-[100px] pointer-events-none -translate-x-1/2 translate-y-1/2"></div>
+      {/* Condamine Studio Section - Removed from homepage (Phase 1 MOFU restructuring) */}
+      {/* Lab content remains accessible via footer links and direct URLs */}
 
-         <div className="max-w-[1280px] mx-auto relative z-10">
-            <div className="mb-8 md:mb-12 text-center">
-              <div className="inline-flex items-center px-3 py-1 rounded-full bg-white/10 border border-white/10 text-xs font-medium text-blue-300 mb-3 md:mb-4 backdrop-blur-md">
-                 <FlaskConical size={14} className="mr-2"/> {content.lab.tag}
-              </div>
-              <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold tracking-[-0.02em] bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-500">{content.lab.title}</h2>
-              <p className="text-gray-400 mt-3 md:mt-4 text-sm sm:text-base md:text-lg max-w-2xl mx-auto">
-                 {content.lab.desc}
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-               {/* Card 1: Condamine Apps */}
-               <a
-                 href={LAB_PREVIEWS.apps.link}
-                 target="_blank"
-                 rel="noopener noreferrer"
-                 className="group relative bg-[#151517] border border-white/5 hover:border-blue-600/50 p-5 md:p-8 rounded-2xl md:rounded-3xl transition-all duration-300 hover:shadow-2xl hover:shadow-blue-900/10 flex flex-col overflow-hidden cursor-pointer"
-               >
-                  <div className="absolute inset-0 bg-gradient-to-br from-blue-600/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                  <div className="mb-6 p-4 bg-blue-900/20 w-fit rounded-2xl text-blue-400 group-hover:scale-110 transition-transform duration-300">
-                     <Smartphone size={32}/>
-                  </div>
-                  <h3 className="text-2xl font-bold tracking-[-0.02em] mb-2">{content.lab.apps_title}</h3>
-                  <div className="text-xs font-mono text-blue-400 mb-4">{content.lab.apps_sub}</div>
-                  <p className="text-gray-400 text-sm leading-relaxed mb-6 flex-1">
-                     {content.lab.apps_desc}
-                  </p>
-                  <div className="flex items-center text-sm font-medium text-white group-hover:translate-x-1 transition-transform">
-                     {content.lab.apps_cta} <ArrowUpRight size={16} className="ml-2"/>
-                  </div>
-               </a>
-
-               {/* Card 2: Prompts DB */}
-               <a
-                 href={LAB_PREVIEWS.agents.link}
-                 target="_blank"
-                 rel="noopener noreferrer"
-                 className="group relative bg-[#151517] border border-white/5 hover:border-purple-500/50 p-5 md:p-8 rounded-2xl md:rounded-3xl transition-all duration-300 hover:shadow-2xl hover:shadow-purple-900/10 flex flex-col overflow-hidden cursor-pointer"
-               >
-                  <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                  <div className="mb-6 p-4 bg-purple-900/20 w-fit rounded-2xl text-purple-400 group-hover:scale-110 transition-transform duration-300">
-                     <Bot size={32}/>
-                  </div>
-                  <h3 className="text-2xl font-bold tracking-[-0.02em] mb-2">{content.lab.agents_title}</h3>
-                  <div className="text-xs font-mono text-purple-400 mb-4">{content.lab.agents_sub}</div>
-                  <p className="text-gray-400 text-sm leading-relaxed mb-6 flex-1">
-                     {content.lab.agents_desc}
-                  </p>
-                  <div className="flex items-center text-sm font-medium text-white group-hover:translate-x-1 transition-transform">
-                     {content.lab.agents_cta} <ArrowUpRight size={16} className="ml-2"/>
-                  </div>
-               </a>
-
-               {/* Card 3: Art Gallery */}
-               <a
-                 href={LAB_PREVIEWS.art.link}
-                 target="_blank"
-                 rel="noopener noreferrer"
-                 className="group relative bg-[#151517] border border-white/5 hover:border-pink-500/50 p-5 md:p-8 rounded-2xl md:rounded-3xl transition-all duration-300 hover:shadow-2xl hover:shadow-pink-900/10 flex flex-col overflow-hidden cursor-pointer"
-               >
-                  <div className="absolute inset-0 bg-gradient-to-br from-pink-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                  <div className="mb-6 p-4 bg-pink-900/20 w-fit rounded-2xl text-pink-400 group-hover:scale-110 transition-transform duration-300">
-                     <Palette size={32}/>
-                  </div>
-                  <h3 className="text-2xl font-bold tracking-[-0.02em] mb-2">{content.lab.art_title}</h3>
-                  <div className="text-xs font-mono text-pink-400 mb-4">{content.lab.art_sub}</div>
-                  <p className="text-gray-400 text-sm leading-relaxed mb-6 flex-1">
-                     {content.lab.art_desc}
-                  </p>
-                  <div className="flex items-center text-sm font-medium text-white group-hover:translate-x-1 transition-transform">
-                     {content.lab.art_cta} <ArrowUpRight size={16} className="ml-2"/>
-                  </div>
-               </a>
-            </div>
-         </div>
-      </section>
-
-      {/* Full Screen Bio Modal - True Full Page */}
+      {/* About Page */}
       <AnimatePresence>
-      {isBioOpen && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.15 }}
-          className={`fixed inset-0 z-[100] flex flex-col ${
-            systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-[#F9F9F9]'
-          }`}
-        >
-
-              {/* Full-Page Header - Responsive */}
-              <header className={`sticky top-0 z-20 backdrop-blur-xl ${
-                systemTheme === 'dark'
-                  ? 'bg-[#0a0a0a]/80'
-                  : 'bg-white/80'
-              }`}>
-                <div className="w-full pl-6 pr-2.5 h-16 flex items-center justify-between relative">
-                 {/* Title - Left */}
-                 <div className="flex-shrink-0">
-                   <h2 className={`font-semibold text-base sm:text-lg tracking-[-0.02em] ${
-                     systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                   }`}>
-                     <span className="hidden sm:inline">{content.bio.modal_title}</span>
-                     <span className="sm:hidden">{content.bio.modal_title_short}</span>
-                   </h2>
-                 </div>
-
-                 {/* Toggle - Absolute Center */}
-                 <div className="absolute left-1/2 -translate-x-1/2">
-                   <div className={`relative flex items-center gap-0.5 sm:gap-1 rounded-full p-0.5 sm:p-1 ${
-                     systemTheme === 'dark' ? 'bg-white/10' : 'bg-gray-100'
-                   }`}>
-                     <button
-                       onClick={() => {
-                         setBioViewMode('text');
-                         bioContentRef.current?.scrollTo({ top: 0 });
-                       }}
-                       className="relative z-10 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200"
-                     >
-                       {bioViewMode === 'text' && (
-                         <motion.div
-                           layoutId="bio-toggle-pill"
-                           className="absolute inset-0 bg-[#2D5CF3] rounded-full shadow-md"
-                           transition={{ type: 'spring', stiffness: 500, damping: 35, mass: 0.8 }}
-                         />
-                       )}
-                       <span className={`relative z-10 ${
-                         bioViewMode === 'text'
-                           ? 'text-white'
-                           : systemTheme === 'dark'
-                             ? 'text-gray-400 hover:text-white'
-                             : 'text-gray-600 hover:text-gray-900'
-                       }`}>
-                         {lang === 'fr' ? 'Texte' : 'Text'}
-                       </span>
-                     </button>
-                     <button
-                       onClick={() => {
-                         setBioViewMode('timeline');
-                         bioContentRef.current?.scrollTo({ top: 0 });
-                       }}
-                       className="relative z-10 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200"
-                     >
-                       {bioViewMode === 'timeline' && (
-                         <motion.div
-                           layoutId="bio-toggle-pill"
-                           className="absolute inset-0 bg-[#2D5CF3] rounded-full shadow-md"
-                           transition={{ type: 'spring', stiffness: 500, damping: 35, mass: 0.8 }}
-                         />
-                       )}
-                       <span className={`relative z-10 ${
-                         bioViewMode === 'timeline'
-                           ? 'text-white'
-                           : systemTheme === 'dark'
-                             ? 'text-gray-400 hover:text-white'
-                             : 'text-gray-600 hover:text-gray-900'
-                       }`}>
-                         Timeline
-                       </span>
-                     </button>
-                   </div>
-                 </div>
-
-                 {/* Close Button - Right */}
-                 <div className="flex-shrink-0">
-                   <button
-                     onClick={() => closeModalWithUrl(setIsBioOpen)}
-                     className={`relative p-3 flex items-center justify-center rounded-full transition-colors before:absolute before:inset-[-12px] before:content-[''] ${
-                       systemTheme === 'dark'
-                         ? 'text-gray-400 hover:text-white hover:bg-white/10'
-                         : 'text-gray-500 hover:text-gray-900 hover:bg-black/5'
-                     }`}
-                   >
-                      <X size={24} />
-                   </button>
-                 </div>
-                </div>
-              </header>
-
-              {/* Modal Content - Full Page Scrollable */}
-              <div
-                ref={bioContentRef}
-                className={`flex-1 overflow-y-auto px-6 md:px-12 py-8 md:py-12 ${
-                systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-[#F9F9F9]'
-              }`}>
-                 <div className="max-w-4xl mx-auto">
-                    <AnimatePresence mode="wait">
-                    {/* TEXT VIEW */}
-                    {bioViewMode === 'text' && (
-                      <motion.div
-                        key="text"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                        transition={{
-                          type: 'spring',
-                          stiffness: 400,
-                          damping: 30,
-                          mass: 0.8
-                        }}
-                        className="space-y-8"
-                      >
-                        {/* Personal Story */}
-                        <div className={`p-8 md:p-10 rounded-3xl border shadow-sm ${
-                          systemTheme === 'dark'
-                            ? 'bg-[#1D1D1F] border-white/10'
-                            : 'bg-white border-gray-100'
-                        }`}>
-                           <h3 className={`text-2xl font-bold mb-6 ${
-                             systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                           }`}>{content.bio.journey_title}</h3>
-                           <div className={`prose max-w-none space-y-6 leading-relaxed ${
-                             systemTheme === 'dark' ? 'text-gray-300 prose-invert' : 'text-gray-700 prose-gray'
-                           }`}>
-                              <p className="text-lg" dangerouslySetInnerHTML={{ __html: content.bio.journey_p1 }} />
-                              <p dangerouslySetInnerHTML={{ __html: content.bio.journey_p2 }} />
-                              <p dangerouslySetInnerHTML={{ __html: content.bio.journey_p3 }} />
-                              <p dangerouslySetInnerHTML={{ __html: content.bio.journey_p4 }} />
-                              <p dangerouslySetInnerHTML={{ __html: content.bio.journey_p5 }} />
-                              <p dangerouslySetInnerHTML={{ __html: content.bio.journey_p6 }} />
-                              <ul className="list-disc pl-6 space-y-2">
-                                 {content.bio.journey_bullets.map((bullet, i) => (
-                                    <li key={i} dangerouslySetInnerHTML={{ __html: bullet }} />
-                                 ))}
-                              </ul>
-                              <p dangerouslySetInnerHTML={{ __html: content.bio.journey_p7 }} />
-                              <p dangerouslySetInnerHTML={{ __html: content.bio.journey_p8 }} />
-                              <p dangerouslySetInnerHTML={{ __html: content.bio.journey_p9 }} />
-                              <p className={`text-lg font-semibold pt-4 ${
-                                systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                              }`} dangerouslySetInnerHTML={{ __html: content.bio.journey_conclusion }} />
-                           </div>
-                        </div>
-
-                        {/* Tools & Stack - iOS App Store Style */}
-                        <div className={`p-8 rounded-3xl border shadow-sm ${
-                          systemTheme === 'dark'
-                            ? 'bg-[#1D1D1F] border-white/10'
-                            : 'bg-white border-gray-100'
-                        }`}>
-                           <h3 className={`text-xl font-bold mb-6 ${
-                             systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                           }`}>{content.bio.tools_title}</h3>
-                           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                              {[
-                                { name: 'Figma', color: 'bg-[#1E1E1E]', iconColor: '#F24E1E' },
-                                { name: 'Notion', color: 'bg-white', iconColor: '#000000' },
-                                { name: 'Linear', color: 'bg-[#5E6AD2]', iconColor: '#FFFFFF' },
-                                { name: 'GSlides', color: 'bg-[#FBBC04]', iconColor: '#FFFFFF' },
-                                { name: 'Claude', color: 'bg-[#D4A27F]', iconColor: '#FFFFFF' },
-                                { name: 'Gemini', color: 'bg-gradient-to-br from-[#4285F4] via-[#9B72CB] to-[#D96570]', iconColor: '#FFFFFF' },
-                                { name: 'Midjourney', color: 'bg-[#0B0B0B]', iconColor: '#FFFFFF' },
-                                { name: 'ScreenStudio', color: 'bg-gradient-to-br from-[#7C3AED] to-[#4F46E5]', iconColor: '#FFFFFF' },
-                              ].map(tool => (
-                                <div
-                                  key={tool.name}
-                                  className={`flex items-center gap-3 p-3 rounded-2xl border transition-all duration-200 hover:scale-[1.02] cursor-default ${
-                                    systemTheme === 'dark'
-                                      ? 'bg-white/5 border-white/10 hover:border-white/20 hover:bg-white/10'
-                                      : 'bg-gray-50 border-gray-200 hover:border-gray-300 hover:bg-white hover:shadow-md'
-                                  }`}
-                                >
-                                  {/* App Icon - iOS Style with SVG */}
-                                  <div className={`w-10 h-10 rounded-xl ${tool.color} flex items-center justify-center shadow-sm overflow-hidden flex-shrink-0 border ${systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'}`}>
-                                    {tool.name === 'Figma' && (
-                                      <svg width="20" height="20" viewBox="0 0 38 57" fill="none">
-                                        <path d="M19 28.5C19 23.2533 23.2533 19 28.5 19C33.7467 19 38 23.2533 38 28.5C38 33.7467 33.7467 38 28.5 38C23.2533 38 19 33.7467 19 28.5Z" fill="#1ABCFE"/>
-                                        <path d="M0 47.5C0 42.2533 4.25329 38 9.5 38H19V47.5C19 52.7467 14.7467 57 9.5 57C4.25329 57 0 52.7467 0 47.5Z" fill="#0ACF83"/>
-                                        <path d="M19 0V19H28.5C33.7467 19 38 14.7467 38 9.5C38 4.25329 33.7467 0 28.5 0H19Z" fill="#FF7262"/>
-                                        <path d="M0 9.5C0 14.7467 4.25329 19 9.5 19H19V0H9.5C4.25329 0 0 4.25329 0 9.5Z" fill="#F24E1E"/>
-                                        <path d="M0 28.5C0 33.7467 4.25329 38 9.5 38H19V19H9.5C4.25329 19 0 23.2533 0 28.5Z" fill="#A259FF"/>
-                                      </svg>
-                                    )}
-                                    {tool.name === 'Notion' && (
-                                      <svg width="18" height="18" viewBox="0 0 100 100" fill="none">
-                                        <path d="M6.017 4.313l55.333 -4.087c6.797 -0.583 8.543 -0.19 12.817 2.917l17.663 12.443c2.913 2.14 3.883 2.723 3.883 5.053v68.243c0 4.277 -1.553 6.807 -6.99 7.193L24.467 99.967c-4.08 0.193 -6.023 -0.39 -8.16 -3.113L3.3 79.94c-2.333 -3.113 -3.3 -5.443 -3.3 -8.167V11.113c0 -3.497 1.553 -6.413 6.017 -6.8z" fill="#fff"/>
-                                        <path fillRule="evenodd" clipRule="evenodd" d="M61.35 0.227l-55.333 4.087C1.553 4.7 0 7.617 0 11.113v60.66c0 2.723 0.967 5.053 3.3 8.167l13.007 16.913c2.137 2.723 4.08 3.307 8.16 3.113l64.257 -3.89c5.433 -0.387 6.99 -2.917 6.99 -7.193V20.64c0 -2.21 -0.873 -2.847 -3.443 -4.733L74.167 3.143c-4.273 -3.107 -6.02 -3.5 -12.817 -2.917zM25.92 19.523c-5.247 0.353 -6.437 0.433 -9.417 -1.99L8.927 11.507c-0.77 -0.78 -0.383 -1.753 1.557 -1.947l53.193 -3.887c4.467 -0.39 6.793 1.167 8.54 2.527l9.123 6.61c0.39 0.197 1.36 1.36 0.193 1.36l-54.933 3.307 -0.68 0.047zM19.803 88.3V30.367c0 -2.53 0.777 -3.697 3.103 -3.893L86 22.78c2.14 -0.193 3.107 1.167 3.107 3.693v57.547c0 2.53 -0.39 4.67 -3.883 4.863l-60.377 3.5c-3.493 0.193 -5.043 -0.97 -5.043 -4.083zm59.6 -54.827c0.387 1.75 0 3.5 -1.75 3.7l-2.91 0.577v42.773c-2.527 1.36 -4.853 2.137 -6.797 2.137 -3.107 0 -3.883 -0.973 -6.21 -3.887l-19.03 -29.94v28.967l6.02 1.363s0 3.5 -4.857 3.5l-13.39 0.777c-0.39 -0.78 0 -2.723 1.357 -3.11l3.497 -0.97v-38.3L30.48 40.667c-0.39 -1.75 0.58 -4.277 3.3 -4.473l14.367 -0.967 19.8 30.327v-26.83l-5.047 -0.58c-0.39 -2.143 1.163 -3.7 3.103 -3.89l13.4 -0.78z" fill="#000"/>
-                                      </svg>
-                                    )}
-                                    {tool.name === 'Linear' && (
-                                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                                        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25z" fill="#fff"/>
-                                        <path d="M20.71 7.04a.996.996 0 0 0 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" fill="#fff"/>
-                                      </svg>
-                                    )}
-                                    {tool.name === 'GSlides' && (
-                                      <svg width="18" height="18" viewBox="0 0 48 48" fill="none">
-                                        <path d="M37 45H11c-2.209 0-4-1.791-4-4V7c0-2.209 1.791-4 4-4h18l12 12v26c0 2.209-1.791 4-4 4z" fill="#FFC107"/>
-                                        <path d="M29 3L29 15 41 15z" fill="#FFECB3"/>
-                                        <path d="M15 23H33V35H15z" fill="#FFECB3"/>
-                                        <path d="M15 27H33V31H15z" fill="#FFC107"/>
-                                      </svg>
-                                    )}
-                                    {tool.name === 'Claude' && (
-                                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                                        <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2z" fill="#fff"/>
-                                        <path d="M16.5 8.5c-.828 0-1.5.672-1.5 1.5s.672 1.5 1.5 1.5 1.5-.672 1.5-1.5-.672-1.5-1.5-1.5zm-9 0C6.672 8.5 6 9.172 6 10s.672 1.5 1.5 1.5S9 10.828 9 10s-.672-1.5-1.5-1.5zm4.5 9c-2.33 0-4.304-1.458-5.084-3.5h10.168c-.78 2.042-2.754 3.5-5.084 3.5z" fill="#D4A27F"/>
-                                      </svg>
-                                    )}
-                                    {tool.name === 'Gemini' && (
-                                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" fill="#fff"/>
-                                        <path d="M12 6l-4 6h8l-4-6zm0 12l4-6H8l4 6z" fill="#fff"/>
-                                      </svg>
-                                    )}
-                                    {tool.name === 'Midjourney' && (
-                                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" fill="#FFFFFF"/>
-                                        <path d="M8 8h8v2H8V8zm0 3h8v2H8v-2zm0 3h5v2H8v-2z" fill="#0B0B0B"/>
-                                      </svg>
-                                    )}
-                                    {tool.name === 'ScreenStudio' && (
-                                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                                        <rect x="3" y="4" width="18" height="12" rx="2" fill="#fff"/>
-                                        <circle cx="12" cy="10" r="3" fill="#7C3AED"/>
-                                        <path d="M8 20h8" stroke="#fff" strokeWidth="2" strokeLinecap="round"/>
-                                      </svg>
-                                    )}
-                                  </div>
-                                  {/* App Name */}
-                                  <span className={`text-sm font-medium ${
-                                    systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                                  }`}>
-                                    {tool.name}
-                                  </span>
-                                </div>
-                              ))}
-                           </div>
-                        </div>
-
-                        {/* Education */}
-                        <div className={`p-8 rounded-3xl border shadow-sm ${
-                          systemTheme === 'dark'
-                            ? 'bg-[#1D1D1F] border-white/10'
-                            : 'bg-white border-gray-100'
-                        }`}>
-                           <h3 className={`text-xl font-bold mb-6 ${
-                             systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                           }`}>{content.bio.education_title}</h3>
-                           <div className="space-y-4">
-                              <div className="flex items-start">
-                                 <GraduationCap size={20} className="mr-3 mt-1 text-blue-600 flex-shrink-0" />
-                                 <div>
-                                    <h4 className={`font-bold ${
-                                      systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                                    }`}>{content.bio.education_master_title}</h4>
-                                    <p className={`text-sm ${
-                                      systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'
-                                    }`}>{content.bio.education_master_school}</p>
-                                 </div>
-                              </div>
-                              <div className="flex items-start">
-                                 <BookOpen size={20} className="mr-3 mt-1 text-blue-600 flex-shrink-0" />
-                                 <div>
-                                    <h4 className={`font-bold ${
-                                      systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                                    }`}>{content.bio.education_ux_title}</h4>
-                                    <p className={`text-sm ${
-                                      systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'
-                                    }`}>{content.bio.education_ux_school}</p>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-
-                        {/* Resource Toolkit - Integrated into Biography */}
-                        <div className={`p-8 rounded-3xl border shadow-sm ${
-                          systemTheme === 'dark'
-                            ? 'bg-[#1D1D1F] border-white/10'
-                            : 'bg-white border-gray-100'
-                        }`}>
-                           <div className={`flex items-center mb-6 ${
-                             systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                           }`}>
-                             <BookOpen size={24} className="mr-3 text-blue-600"/>
-                             <h3 className="text-xl font-bold">{content.bio.toolkit_title}</h3>
-                           </div>
-                           <p className={`text-sm mb-6 ${
-                             systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                           }`}>
-                             {content.bio.toolkit_desc}
-                           </p>
-
-                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                              {resources.map((res, idx) => (
-                                 <a
-                                   key={idx}
-                                   href={res.link}
-                                   target="_blank"
-                                   rel="noopener noreferrer"
-                                   className={`flex items-center p-4 rounded-xl transition-colors group cursor-pointer border ${
-                                     systemTheme === 'dark'
-                                       ? 'bg-white/5 hover:bg-blue-900/30 text-gray-300 hover:text-blue-400 border-white/5 hover:border-blue-600/30'
-                                       : 'bg-gray-50 hover:bg-blue-50 hover:text-blue-700 border-transparent hover:border-blue-100'
-                                   }`}
-                                 >
-                                    <div className={`mr-4 p-2.5 rounded-lg border shadow-sm ${
-                                      systemTheme === 'dark'
-                                        ? 'bg-white/10 border-white/10 group-hover:border-blue-600/30'
-                                        : 'bg-white border-gray-100 group-hover:border-blue-100'
-                                    }`}>
-                                      {res.icon}
-                                    </div>
-                                    <div className="flex-1">
-                                       <div className="text-sm font-semibold">{res.title}</div>
-                                       <div className={`text-xs ${
-                                         systemTheme === 'dark'
-                                           ? 'text-gray-500 group-hover:text-blue-400'
-                                           : 'text-gray-400 group-hover:text-blue-400'
-                                       }`}>{res.desc}</div>
-                                    </div>
-                                    <ArrowUpRight size={16} className="opacity-0 group-hover:opacity-100 transition-opacity text-blue-600"/>
-                                 </a>
-                              ))}
-                           </div>
-                        </div>
-                      </motion.div>
-                    )}
-
-                    {/* TIMELINE VIEW */}
-                    {bioViewMode === 'timeline' && (
-                      <motion.div
-                        key="timeline"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                        transition={{
-                          type: 'spring',
-                          stiffness: 400,
-                          damping: 30,
-                          mass: 0.8
-                        }}
-                        className={`p-8 md:p-10 rounded-3xl border shadow-sm ${
-                          systemTheme === 'dark'
-                            ? 'bg-[#1D1D1F] border-white/10'
-                            : 'bg-white border-gray-100'
-                        }`}
-                      >
-                        <h3 className={`text-2xl font-bold mb-8 ${
-                          systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                        }`}>{content.bio.timeline_title}</h3>
-                        <div className="space-y-12">
-                          {['2026', '2025', '2024', '2023', '2022', '2020-2021', '2018-2019', '2017-2018', '2016-2017', '2014-2016', '2010-2014', '2005-2010']
-                            .filter(year => (content.bio.timeline as any)[year])
-                            .map((year, idx) => {
-                            const items = (content.bio.timeline as any)[year] as string[];
-                            const colors = [
-                              { border: systemTheme === 'dark' ? 'border-blue-600/30' : 'border-blue-200', dot: 'bg-blue-600', text: 'text-blue-600' },
-                              { border: systemTheme === 'dark' ? 'border-indigo-500/30' : 'border-indigo-200', dot: 'bg-indigo-500', text: 'text-indigo-500' },
-                              { border: systemTheme === 'dark' ? 'border-purple-500/30' : 'border-purple-200', dot: 'bg-purple-500', text: 'text-purple-500' },
-                              { border: systemTheme === 'dark' ? 'border-pink-500/30' : 'border-pink-200', dot: 'bg-pink-500', text: 'text-pink-500' },
-                              { border: systemTheme === 'dark' ? 'border-orange-500/30' : 'border-orange-200', dot: 'bg-orange-500', text: 'text-orange-500' },
-                              { border: systemTheme === 'dark' ? 'border-teal-500/30' : 'border-teal-200', dot: 'bg-teal-500', text: 'text-teal-500' },
-                              { border: systemTheme === 'dark' ? 'border-cyan-500/30' : 'border-cyan-200', dot: 'bg-cyan-500', text: 'text-cyan-500' },
-                              { border: systemTheme === 'dark' ? 'border-emerald-500/30' : 'border-emerald-200', dot: 'bg-emerald-500', text: 'text-emerald-500' },
-                              { border: systemTheme === 'dark' ? 'border-amber-500/30' : 'border-amber-200', dot: 'bg-amber-500', text: 'text-amber-500' },
-                              { border: systemTheme === 'dark' ? 'border-slate-500/30' : 'border-slate-200', dot: 'bg-slate-500', text: 'text-slate-500' },
-                              { border: systemTheme === 'dark' ? 'border-gray-500/30' : 'border-gray-300', dot: 'bg-gray-500', text: 'text-gray-500' },
-                            ];
-                            const colorSet = colors[idx % colors.length];
-                            const totalYears = ['2026', '2025', '2024', '2023', '2022', '2020-2021', '2018-2019', '2017-2018', '2016-2017', '2014-2016', '2010-2014', '2005-2010'].filter(y => (content.bio.timeline as any)[y]).length;
-                            return (
-                              <div key={year} className={`relative pl-8 ${idx < totalYears - 1 ? `border-l-2 ${colorSet.border}` : ''}`}>
-                                <div className={`absolute -left-[9px] top-0 w-4 h-4 ${colorSet.dot} rounded-full`}></div>
-                                <div className={`text-2xl font-bold ${colorSet.text} mb-4`}>{year}</div>
-                                <ul className={`space-y-3 ${
-                                  systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-700'
-                                }`}>
-                                  {items.map((item: string, i: number) => (
-                                    <li key={i} className="flex items-start">
-                                      <span className={`mr-3 mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0 ${
-                                        systemTheme === 'dark' ? 'bg-gray-500' : 'bg-gray-400'
-                                      }`} />
-                                      <span dangerouslySetInnerHTML={{ __html: item }} />
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </motion.div>
-                    )}
-                    </AnimatePresence>
-
-                 </div>
-              </div>
-
-        </motion.div>
-      )}
+        {isBioOpen && (
+          <Suspense fallback={<PageLoader />}>
+            <AboutPage
+              systemTheme={systemTheme}
+              lang={lang}
+              onBack={() => closeModalWithUrl(setIsBioOpen)}
+              onContact={() => { closeModalWithUrl(setIsBioOpen); openModalWithUrl('/contact'); }}
+              resources={resources}
+            />
+          </Suspense>
+        )}
       </AnimatePresence>
 
       {/* Full Screen Testimonials Modal */}
@@ -4411,11 +4092,11 @@ const App: React.FC = () => {
           </header>
 
           {/* Modal Content - Grid of testimonials */}
-          <div className={`px-10 py-8 md:py-12 ${
+          <div className={`px-4 md:px-10 py-8 md:py-12 ${
             systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-gray-50/50'
           }`}>
             <div className="max-w-[1280px] mx-auto">
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
                 {filteredTestimonials.map((t, i) => (
                   <motion.div
                     key={i}
@@ -5810,8 +5491,8 @@ ${contactForm.message}`;
               </div>
               <p className={`text-sm mb-4 max-w-sm ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
                 {lang === 'en'
-                  ? 'Product Design Lead helping startups and enterprises ship better products, faster.'
-                  : 'Product Design Lead aidant startups et entreprises à livrer de meilleurs produits, plus vite.'}
+                  ? 'Lead Product Designer. Strategy, user research and product design for teams building enterprise tools and digital services.'
+                  : 'Lead Product Designer. Strat\u00e9gie, recherche utilisateur et design produit pour les \u00e9quipes qui construisent des outils m\u00e9tier et des services num\u00e9riques.'}
               </p>
               <div className="flex items-center gap-3">
                 <a
@@ -5857,7 +5538,7 @@ ${contactForm.message}`;
                 </li>
                 <li>
                   <button
-                    onClick={() => scrollToSection('bio')}
+                    onClick={() => openModalWithUrl('/about')}
                     className={`text-sm transition-colors ${
                       systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'
                     }`}
@@ -5883,6 +5564,16 @@ ${contactForm.message}`;
                     }`}
                   >
                     {content.nav.testimonials}
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => openModalWithUrl('/consulting')}
+                    className={`text-sm transition-colors ${
+                      systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                  >
+                    Consulting
                   </button>
                 </li>
               </ul>
@@ -5921,17 +5612,24 @@ ${contactForm.message}`;
                   </a>
                 </li>
                 <li>
-                  <a
-                    href="https://www.condamine.studio/art"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`text-sm transition-colors flex items-center ${
+                  <button
+                    onClick={() => openModalWithUrl('/visual-archive')}
+                    className={`text-sm transition-colors flex items-center cursor-pointer ${
                       systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'
                     }`}
                   >
-                    AI Art Gallery
-                    <ArrowUpRight size={12} className="ml-1" />
-                  </a>
+                    {lang === 'en' ? 'Gallery' : 'Galerie'}
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => openModalWithUrl('/signals')}
+                    className={`text-sm transition-colors flex items-center cursor-pointer ${
+                      systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                  >
+                    {lang === 'en' ? 'Signals' : 'Signaux'}
+                  </button>
                 </li>
               </ul>
             </div>
@@ -6258,12 +5956,12 @@ ${contactForm.message}`;
                       </div>
                       <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
                         <img loading="lazy"
-                          src="/images/bd-sketches/13 - Du design à l'architecture — Penser comme un ingénieur produit.webp"
+                          src="/images/bd-sketches/13 - Du design à l'architecture - Penser comme un ingénieur produit.webp"
                           alt="Engineering mindset"
                           className="w-full h-auto object-cover"
                         />
                         <div className="p-4 bg-white">
-                          <p className="text-sm text-gray-700 font-medium">From design to architecture — Product engineer mindset</p>
+                          <p className="text-sm text-gray-700 font-medium">From design to architecture, product engineer mindset</p>
                         </div>
                       </div>
                       <div className="group rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200">
@@ -7044,7 +6742,7 @@ ${contactForm.message}`;
                       <div className="text-center mb-6">
                         <h3 className="text-2xl font-bold text-gray-900 mb-2">{content.contact.quote_step_3_title}</h3>
                         <p className="text-base text-gray-600">
-                          {lang === 'en' ? 'Select all services that apply to your project' : 'Sélectionnez tous les services qui s\'appliquent à votre projet'}
+                          {lang === 'en' ? 'Select all areas of expertise that apply to your project' : 'Sélectionnez toutes les expertises qui s\'appliquent à votre projet'}
                         </p>
                       </div>
 
@@ -7656,7 +7354,7 @@ ${contactForm.message}`;
                             // Services
                             if (quoteData.services.length > 0) {
                               const servicesText = quoteData.services.join(', ');
-                              addSection(lang === 'en' ? 'Services Requested' : 'Services Demandés', servicesText);
+                              addSection(lang === 'en' ? 'Expertise Requested' : 'Expertises demandées', servicesText);
                             }
 
                             // Project Details
@@ -8140,6 +7838,96 @@ ${contactForm.message}`;
                 }
               }}
               onBack={() => closeModalWithUrl(setIsWorkOpen)}
+            />
+          </Suspense>
+        )}
+      </AnimatePresence>
+
+      {/* Services Page Modal */}
+      <AnimatePresence>
+        {isServicesPageOpen && (
+          <Suspense fallback={<PageLoader />}>
+            <ServicesPage
+              systemTheme={systemTheme}
+              lang={lang}
+              onBack={() => closeModalWithUrl(setIsServicesPageOpen)}
+              onContact={() => {
+                closeModalWithUrl(setIsServicesPageOpen);
+                openModalWithUrl('/contact');
+              }}
+            />
+          </Suspense>
+        )}
+      </AnimatePresence>
+
+      {/* Consulting Page Modal */}
+      <AnimatePresence>
+        {isConsultingOpen && (
+          <Suspense fallback={<PageLoader />}>
+            <ConsultingPage
+              systemTheme={systemTheme}
+              lang={lang}
+              onBack={() => closeModalWithUrl(setIsConsultingOpen)}
+              onContact={() => {
+                closeModalWithUrl(setIsConsultingOpen);
+                openModalWithUrl('/contact');
+              }}
+              onProjectClick={(projectId) => {
+                closeModalWithUrl(setIsConsultingOpen);
+                setOpenedFromIndex(true);
+                openProjectWithUrl(projectId, 'executive');
+              }}
+            />
+          </Suspense>
+        )}
+      </AnimatePresence>
+
+      {/* Gallery Page Modal */}
+      <AnimatePresence>
+        {isVisualArchiveOpen && (
+          <Suspense fallback={<PageLoader />}>
+            <VisualArchivePage
+              systemTheme={systemTheme}
+              lang={lang}
+              onBack={() => closeModalWithUrl(setIsVisualArchiveOpen)}
+            />
+          </Suspense>
+        )}
+      </AnimatePresence>
+
+      {/* Signals Page Modal */}
+      <AnimatePresence>
+        {isSignalsOpen && (
+          <Suspense fallback={<PageLoader />}>
+            <SignalsPage
+              systemTheme={systemTheme}
+              lang={lang}
+              onBack={() => closeModalWithUrl(setIsSignalsOpen)}
+              onOpenSignal={(signalId: string) => {
+                setIsSignalsOpen(false);
+                openModalWithUrl(`/signal/${signalId}`);
+              }}
+            />
+          </Suspense>
+        )}
+      </AnimatePresence>
+
+      {/* Signal Detail Page */}
+      <AnimatePresence>
+        {openSignalId && (
+          <Suspense fallback={<PageLoader />}>
+            <SignalDetailPage
+              signalId={openSignalId}
+              systemTheme={systemTheme}
+              lang={lang}
+              onBack={() => {
+                setOpenSignalId(null);
+                window.history.pushState({ lang }, '', `/?lang=${lang}`);
+                updateMetaTags(DEFAULT_SEO);
+              }}
+              onOpenSignal={(newSignalId: string) => {
+                openModalWithUrl(`/signal/${newSignalId}`);
+              }}
             />
           </Suspense>
         )}

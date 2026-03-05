@@ -434,7 +434,7 @@ const SLIDES = {
     {
       type: 'title',
       headline: 'Victor Soussan',
-      subline: 'Senior Product Designer — Conceptualization & Rapid Prototyping',
+      subline: 'Senior Product Designer, Conceptualization & Rapid Prototyping',
       visual: '/images/victor-soussan.webp',
     },
     // 2. Big statement - Frame. Design. Ship.
@@ -549,7 +549,7 @@ const SLIDES = {
       type: 'pillar',
       headline: 'My approach',
       items: [
-        'From ambiguity to clarity — defining what your product should be',
+        'From ambiguity to clarity: defining what your product should be',
         'Vision-driven design, grounded in prototyping and craft',
         'Collaborative teamwork, fast delivery',
       ],
@@ -690,7 +690,7 @@ const SLIDES = {
     {
       type: 'title',
       headline: 'Victor Soussan',
-      subline: 'Senior Product Designer — Conceptualisation & Prototypage Rapide',
+      subline: 'Senior Product Designer, Conceptualisation & Prototypage Rapide',
       visual: '/images/victor-soussan.webp',
     },
     // 2. Big statement - Cadrer. Concevoir. Livrer.
@@ -805,7 +805,7 @@ const SLIDES = {
       type: 'pillar',
       headline: 'Mon approche',
       items: [
-        'De l\'ambiguïté à la clarté — définir ce que doit être votre produit',
+        'De l\'ambiguïté à la clarté : définir ce que doit être votre produit',
         'Design guidé par la vision, ancré dans le prototypage et le craft',
         'Travail collaboratif, livraison rapide',
       ],

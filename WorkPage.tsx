@@ -273,10 +273,10 @@ const WorkPage: React.FC<WorkPageProps> = ({
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.15 }}
-      className={`fixed inset-0 z-50 overflow-y-auto ${isDark ? 'bg-[#0a0a0a]' : 'bg-[#FCFCFD]'}`}
+      className={`fixed inset-0 md:top-16 z-[100] overflow-y-auto ${isDark ? 'bg-[#0a0a0a]' : 'bg-[#FCFCFD]'}`}
     >
-      {/* Header - Glass effect */}
-      <header className={`sticky top-0 z-40 backdrop-blur-xl ${
+      {/* Header - mobile only, desktop uses persistent nav */}
+      <header className={`sticky top-0 z-40 backdrop-blur-xl md:hidden ${
         isDark
           ? 'bg-[#0a0a0a]/80'
           : 'bg-[#FCFCFD]/80'
@@ -301,6 +301,12 @@ const WorkPage: React.FC<WorkPageProps> = ({
 
       {/* Main Content - Full width with 40px padding */}
       <main className="p-10">
+        {/* Page title - visible on desktop when header is hidden */}
+        <h1 className={`hidden md:block text-3xl font-bold tracking-[-0.03em] mb-8 ${
+          isDark ? 'text-white' : 'text-gray-900'
+        }`}>
+          {t.title}
+        </h1>
         {/* Projects Grid - 3 columns, full width, 40px gap */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
           {projects.map((project, index) => (

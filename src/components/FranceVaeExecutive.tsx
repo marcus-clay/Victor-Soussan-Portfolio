@@ -40,7 +40,7 @@ interface FranceVaeExecutiveProps {
 const TRANSLATIONS = {
   en: {
     hero: {
-      eyebrow: 'Lead Product Designer • beta.gouv.fr • 2024-2025',
+      eyebrow: 'Lead Product Designer • beta.gouv.fr • Dec 2024 – Jul 2025',
       title: 'Shipping fast in a\ncomplex environment',
       subtitle: '6-month mission structuring product operations for France\'s national VAE platform serving 100K+ citizens',
       scrollHint: 'Scroll to explore'
@@ -56,7 +56,7 @@ const TRANSLATIONS = {
         { icon: 'users', label: 'User research', detail: '10 interviews + workshops' },
         { icon: 'layers', label: 'Design ops', detail: 'Figma + delivery' }
       ],
-      context: 'France VAE is the national public service for Validation of Acquired Experience. I joined to lead the design team process, co-drive the roadmap with the Lead PM, and structure discovery to help the delivery team ship faster—especially on politically-driven initiatives lacking clear specs.'
+      context: 'France VAE is the national public service for Validation of Acquired Experience. I joined to lead the design team process, co-drive the roadmap with the Lead PM, and structure discovery to help the delivery team ship faster, especially on politically-driven initiatives lacking clear specs.'
     },
     scope: {
       eyebrow: 'Scope of Work',
@@ -130,7 +130,7 @@ const TRANSLATIONS = {
   },
   fr: {
     hero: {
-      eyebrow: 'Lead Product Designer • beta.gouv.fr • 2024-2025',
+      eyebrow: 'Lead Product Designer • beta.gouv.fr • Déc 2024 – Juil 2025',
       title: 'Livrer vite dans un\nenvironnement complexe',
       subtitle: 'Mission de 6 mois pour structurer les opérations produit de la plateforme nationale VAE servant 100K+ citoyens',
       scrollHint: 'Défiler pour explorer'
@@ -146,7 +146,7 @@ const TRANSLATIONS = {
         { icon: 'users', label: 'Recherche utilisateur', detail: '10 entretiens + ateliers' },
         { icon: 'layers', label: 'Design ops', detail: 'Figma + delivery' }
       ],
-      context: 'France VAE est le service public national de Validation des Acquis de l\'Expérience. J\'ai rejoint l\'équipe pour encadrer le processus design, co-piloter la roadmap avec la Lead PM, et structurer la découverte pour permettre à l\'équipe de réalisation de livrer plus vite—notamment sur des commandes politiques floues manquant de specs claires.'
+      context: 'France VAE est le service public national de Validation des Acquis de l\'Expérience. J\'ai rejoint l\'équipe pour encadrer le processus design, co-piloter la roadmap avec la Lead PM, et structurer la découverte pour permettre à l\'équipe de réalisation de livrer plus vite, notamment sur des commandes politiques floues manquant de specs claires.'
     },
     scope: {
       eyebrow: 'Périmètre',

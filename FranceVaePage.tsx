@@ -3,6 +3,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion';
+import { smoothScrollTo } from './src/utils/smoothScroll';
 import { X } from 'lucide-react';
 import CaseStudyTOCSidebar from './src/components/CaseStudyTOCSidebar';
 import FranceVaeExecutive from './src/components/FranceVaeExecutive';
@@ -321,19 +322,16 @@ const FranceVaePage: React.FC<FranceVaePageProps> = ({
 
   // Scroll to section with proper offset for header + sticky mini-nav
   const scrollToSection = (sectionId: string) => {
+    if (!containerRef.current) return;
     if (sectionId === 'top') {
-      containerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+      smoothScrollTo(containerRef.current, 0);
       return;
     }
     const element = document.getElementById(sectionId);
-    if (element && containerRef.current) {
-      // Header height (73px) + sticky mini-nav height (~56px with py-4) + padding (24px)
+    if (element) {
       const headerOffset = 73 + 56 + 24;
       const elementPosition = element.offsetTop - headerOffset;
-      containerRef.current.scrollTo({
-        top: elementPosition,
-        behavior: 'smooth'
-      });
+      smoothScrollTo(containerRef.current, elementPosition);
     }
   };
 

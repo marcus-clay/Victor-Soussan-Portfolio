@@ -235,7 +235,7 @@ const HomePageV2: React.FC<HomePageV2Props> = ({ onNavigateHome }) => {
               {lang === 'en' ? 'Work' : 'Projets'}
             </a>
             <a href="#services" className={`text-sm font-medium ${isDark ? 'text-gray-300 hover:text-white' : 'text-gray-600 hover:text-gray-900'} transition-colors`}>
-              Services
+              {lang === 'en' ? 'Expertise' : 'Expertises'}
             </a>
             <a href="#about" className={`text-sm font-medium ${isDark ? 'text-gray-300 hover:text-white' : 'text-gray-600 hover:text-gray-900'} transition-colors`}>
               {lang === 'en' ? 'About' : 'À propos'}
@@ -484,7 +484,7 @@ const HomePageV2: React.FC<HomePageV2Props> = ({ onNavigateHome }) => {
         </div>
       </section>
 
-      {/* Services Section - Colored Cards */}
+      {/* Expertise Section - Colored Cards */}
       <section id="services" className="py-24 md:py-32 px-6 bg-gradient-to-b from-gray-50 to-white">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
@@ -494,7 +494,7 @@ const HomePageV2: React.FC<HomePageV2Props> = ({ onNavigateHome }) => {
               viewport={{ once: true }}
               className="inline-block px-4 py-1.5 rounded-full bg-emerald-100 text-emerald-700 text-sm font-medium mb-4"
             >
-              Services
+              {lang === 'en' ? 'Expertise' : 'Expertises'}
             </motion.span>
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
@@ -770,8 +770,8 @@ const HomePageV2: React.FC<HomePageV2Props> = ({ onNavigateHome }) => {
               </div>
               <p className="text-sm text-gray-600 mb-4 max-w-sm">
                 {lang === 'en'
-                  ? 'Product Design Lead helping startups and enterprises ship better products, faster.'
-                  : 'Product Design Lead aidant startups et entreprises à livrer de meilleurs produits, plus vite.'}
+                  ? 'Lead Product Designer. Strategy, user research and product design for teams building enterprise tools and digital services.'
+                  : 'Lead Product Designer. Strat\u00e9gie, recherche utilisateur et design produit pour les \u00e9quipes qui construisent des outils m\u00e9tier et des services num\u00e9riques.'}
               </p>
               <div className="flex items-center gap-3">
                 <a

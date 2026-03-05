@@ -64,7 +64,7 @@ const TRANSLATIONS = {
     context: {
       eyebrow: 'Context',
       title: 'Legacy product,\nmassive scale',
-      description: 'In 2014, PagesJaunes served 15M+ monthly visitors but felt stuck in web directory logic. The mobile apps existed, had millions of downloads, but the experience was heavy. Navigation felt dated. The challenge: make it faster, cleaner, more useful—without breaking what worked for existing users.'
+      description: 'In 2014, PagesJaunes served 15M+ monthly visitors but felt stuck in web directory logic. The mobile apps existed, had millions of downloads, but the experience was heavy. Navigation felt dated. The challenge: make it faster, cleaner, more useful, without breaking what worked for existing users.'
     },
     role: {
       eyebrow: 'My Role',
@@ -140,11 +140,11 @@ const TRANSLATIONS = {
         },
         {
           title: 'Consistency is hard',
-          description: 'iOS, Android, web, Wear—each platform has its own constraints. Shared patterns require constant negotiation.'
+          description: 'iOS, Android, web, Wear: each platform has its own constraints. Shared patterns require constant negotiation.'
         },
         {
           title: 'Politics slow things down',
-          description: 'Big company, many stakeholders. Sometimes the hardest part isn\'t design—it\'s alignment.'
+          description: 'Big company, many stakeholders. Sometimes the hardest part isn\'t design, it\'s alignment.'
         }
       ]
     },
@@ -172,7 +172,7 @@ const TRANSLATIONS = {
     context: {
       eyebrow: 'Contexte',
       title: 'Produit legacy,\néchelle massive',
-      description: 'En 2014, PagesJaunes servait 15M+ de visiteurs mensuels mais restait ancré dans une logique d\'annuaire web. Les apps mobiles existaient, avaient des millions de téléchargements, mais l\'expérience était lourde. La navigation datée. Le défi : rendre tout ça plus rapide, plus clair, plus utile — sans casser ce qui marchait pour les utilisateurs existants.'
+      description: 'En 2014, PagesJaunes servait 15M+ de visiteurs mensuels mais restait ancré dans une logique d\'annuaire web. Les apps mobiles existaient, avaient des millions de téléchargements, mais l\'expérience était lourde. La navigation datée. Le défi : rendre tout ça plus rapide, plus clair, plus utile, sans casser ce qui marchait pour les utilisateurs existants.'
     },
     role: {
       eyebrow: 'Mon Rôle',
@@ -248,11 +248,11 @@ const TRANSLATIONS = {
         },
         {
           title: 'La cohérence, c\'est dur',
-          description: 'iOS, Android, web, Wear — chaque plateforme a ses contraintes. Les patterns partagés demandent une négociation constante.'
+          description: 'iOS, Android, web, Wear : chaque plateforme a ses contraintes. Les patterns partagés demandent une négociation constante.'
         },
         {
           title: 'La politique ralentit',
-          description: 'Grande boîte, beaucoup de stakeholders. Parfois le plus dur n\'est pas le design — c\'est l\'alignement.'
+          description: 'Grande boîte, beaucoup de stakeholders. Parfois le plus dur n\'est pas le design, c\'est l\'alignement.'
         }
       ]
     },

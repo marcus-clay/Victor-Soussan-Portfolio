@@ -110,7 +110,7 @@ const CAPTIONS = {
       variations: 'Eight contextual hero images featuring local pros: the baker, mechanic, florist. Each builds trust by showing the human behind the service.',
     },
     homepageIpad: {
-      main: 'Two homepage variants on iPad showcasing contextual hero photography. Each image features a local professional—creating warmth and trust at first glance.',
+      main: 'Two homepage variants on iPad showcasing contextual hero photography. Each image features a local professional, creating warmth and trust at first glance.',
       variations: 'Responsive hero images across iPhone 4, Retina, iPad, Android phone/tablet. Auto-detection of image focal point with viewport-adaptive cropping. Co-developed with Android lead dev Alexandre Badie.',
     },
     artDirection: {
@@ -172,7 +172,7 @@ const CAPTIONS = {
       variations: 'Huit visuels contextuels de pros locaux : boulanger, garagiste, fleuriste. Chacun crée la confiance en montrant l\'humain derrière le service.',
     },
     homepageIpad: {
-      main: 'Deux variantes de homepage sur iPad avec photographies de professionnels en fond. Chaque visuel met en avant un pro local — créant chaleur et confiance dès le premier regard.',
+      main: 'Deux variantes de homepage sur iPad avec photographies de professionnels en fond. Chaque visuel met en avant un pro local, créant chaleur et confiance dès le premier regard.',
       variations: 'Visuels héros responsive sur iPhone 4, Retina, iPad, Android phone/tablet. Détection auto du point focal avec recadrage adapté au viewport. Co-développé avec Alexandre Badie, lead dev Android.',
     },
     artDirection: {
@@ -258,7 +258,7 @@ const TRANSLATIONS = {
     overview: {
       title: 'Overview',
       introTitle: 'The Context',
-      introDesc: 'In 2014, PagesJaunes served 15M+ monthly visitors but felt stuck in web directory logic. The mobile apps had millions of downloads, but the experience was heavy. The product needed to evolve from static listings to a fluid, personal, mobile-first experience—without breaking what worked for existing users.',
+      introDesc: 'In 2014, PagesJaunes served 15M+ monthly visitors but felt stuck in web directory logic. The mobile apps had millions of downloads, but the experience was heavy. The product needed to evolve from static listings to a fluid, personal, mobile-first experience, without breaking what worked for existing users.',
       roleTitle: 'My Role',
       roleDesc: 'I joined as Product Designer working on web, partnerships (TheFork, Renault R-Link), and login flows. In 2015, I became UI Team Lead: coordinating 4 designers, owning the mobile app redesign, and running weekly syncs with iOS/Android devs.',
       goalsTitle: 'Key Objectives',
@@ -276,20 +276,20 @@ const TRANSLATIONS = {
       greeting: 'Bonjour, de quoi avez-vous besoin?',
       greetingDesc: 'This friendly phrase set the tone. It brought warmth to a utility-first tool.',
       imagery: 'Contextual Imagery',
-      imageryDesc: 'We designed art direction rules for rotating background images featuring local professionals—the baker, the mechanic, the florist. Contextual based on search category.',
+      imageryDesc: 'We designed art direction rules for rotating background images featuring local professionals: the baker, the mechanic, the florist. Contextual based on search category.',
       simplification: 'Search Simplification',
       simplificationDesc: 'Replaced dual fields with a single search bar. Reduced visual clutter. Unified tab language across iOS and Android.'
     },
     searchEngine: {
       sectionTitle: 'Search Engine Evolution',
       question: 'How do you redesign the revenue engine without losing users?',
-      intro: 'The search engine is the heart of PagesJaunes. With close to €500M in annual revenue tied to search rankings and visibility, every change carried high stakes. Users needed to find professionals quickly—the business needed to preserve the ranking model that monetized every query.',
+      intro: 'The search engine is the heart of PagesJaunes. With close to €500M in annual revenue tied to search rankings and visibility, every change carried high stakes. Users needed to find professionals quickly. The business needed to preserve the ranking model that monetized every query.',
       stakes: 'High Stakes',
       stakesDesc: 'The search engine powered the entire business model. Ranking position in suggestions and results directly impacted advertiser revenue. Any misstep in the redesign could cost millions.',
       model: 'The "What + Where" Model',
       modelDesc: 'Search structured around two core questions: What professional or company are you looking for? Where do you need them? This geolocation-centric approach helped users find nearby professionals, view their details, call them, or navigate there.',
       materialDesign: 'Material Design Transitions',
-      materialDesignDesc: 'We implemented Google\'s Material Design patterns with Activity transitions and shared element animations. The search bar elegantly transforms into full-screen results—maintaining context while expanding functionality.',
+      materialDesignDesc: 'We implemented Google\'s Material Design patterns with Activity transitions and shared element animations. The search bar elegantly transforms into full-screen results, maintaining context while expanding functionality.',
       shipped: 'Shipped to Production',
       shippedDesc: 'This prototype became the production implementation deployed on Google Play Store. Smooth transitions reduced perceived latency while the familiar search model preserved user habits built over years.'
     },
@@ -376,7 +376,7 @@ const TRANSLATIONS = {
       auditDesc: 'Reviewed all app screens across iOS, Android, and web. Interviewed designers and developers across squads to understand pain points.',
       roadmap: 'Yellowstrap Roadmap',
       roadmapDesc: 'Delivered the component system roadmap and guidelines. Defined naming conventions, color usage, CTA styles, status indicators. Pre-Figma era tools: Zeplin, PDF kits, Sketch.',
-      note: 'Note: My role focused on strategic definition and requirements—not hands-on library building.'
+      note: 'Note: My role focused on strategic definition and requirements, not hands-on library building.'
     },
     team: {
       sectionTitle: 'Team & Collaboration',
@@ -417,7 +417,7 @@ const TRANSLATIONS = {
         },
         {
           title: 'Consistency is hard',
-          description: 'iOS, Android, web, Wear—each platform has its own constraints. Shared patterns require constant negotiation.'
+          description: 'iOS, Android, web, Wear: each platform has its own constraints. Shared patterns require constant negotiation.'
         },
         {
           title: 'Strategy creates leverage',
@@ -458,7 +458,7 @@ const TRANSLATIONS = {
     overview: {
       title: 'Vue d\'ensemble',
       introTitle: 'Le Contexte',
-      introDesc: 'En 2014, PagesJaunes servait 15M+ de visiteurs mensuels mais restait ancré dans une logique d\'annuaire web. Les apps mobiles avaient des millions de téléchargements, mais l\'expérience était lourde. Le produit devait évoluer de fiches statiques vers une expérience fluide, personnelle et mobile-first — sans casser ce qui marchait.',
+      introDesc: 'En 2014, PagesJaunes servait 15M+ de visiteurs mensuels mais restait ancré dans une logique d\'annuaire web. Les apps mobiles avaient des millions de téléchargements, mais l\'expérience était lourde. Le produit devait évoluer de fiches statiques vers une expérience fluide, personnelle et mobile-first, sans casser ce qui marchait.',
       roleTitle: 'Mon Rôle',
       roleDesc: 'J\'ai rejoint comme Product Designer sur le web, les partenariats (TheFork, Renault R-Link), et les flows de login. En 2015, je suis devenu UI Team Lead : coordination de 4 designers, ownership de la refonte mobile, et syncs hebdo avec les devs iOS/Android.',
       goalsTitle: 'Objectifs Clés',
@@ -476,20 +476,20 @@ const TRANSLATIONS = {
       greeting: 'Bonjour, de quoi avez-vous besoin ?',
       greetingDesc: 'Cette phrase amicale donnait le ton. Elle apportait de la chaleur à un outil utilitaire.',
       imagery: 'Imagerie Contextuelle',
-      imageryDesc: 'On a conçu des règles de direction artistique pour des images de fond tournantes montrant des pros locaux — le boulanger, le garagiste, le fleuriste. Contextualisées selon la catégorie de recherche.',
+      imageryDesc: 'On a conçu des règles de direction artistique pour des images de fond tournantes montrant des pros locaux : le boulanger, le garagiste, le fleuriste. Contextualisées selon la catégorie de recherche.',
       simplification: 'Simplification Recherche',
       simplificationDesc: 'Remplacement des deux champs par une barre de recherche unique. Réduction du bruit visuel. Unification du langage des onglets sur iOS et Android.'
     },
     searchEngine: {
       sectionTitle: 'Évolution Moteur de Recherche',
       question: 'Comment refondre le moteur de revenus sans perdre les utilisateurs ?',
-      intro: 'Le moteur de recherche est le cœur de PagesJaunes. Avec près de 500M€ de revenus annuels liés au ranking et à la visibilité, chaque changement était à haut risque. Les utilisateurs devaient trouver les professionnels rapidement — le business devait préserver le modèle de ranking qui monétisait chaque requête.',
+      intro: 'Le moteur de recherche est le cœur de PagesJaunes. Avec près de 500M€ de revenus annuels liés au ranking et à la visibilité, chaque changement était à haut risque. Les utilisateurs devaient trouver les professionnels rapidement. Le business devait préserver le modèle de ranking qui monétisait chaque requête.',
       stakes: 'Enjeux Élevés',
       stakesDesc: 'Le moteur de recherche alimentait tout le modèle économique. La position dans les suggestions et résultats impactait directement les revenus publicitaires. Toute erreur de redesign pouvait coûter des millions.',
       model: 'Le Modèle "Quoi + Où"',
       modelDesc: 'Recherche structurée autour de deux questions : Quel professionnel ou entreprise cherchez-vous ? Où en avez-vous besoin ? Cette approche géolocalisée aide les utilisateurs à trouver des pros à proximité, consulter leurs infos, les appeler ou s\'y rendre.',
       materialDesign: 'Transitions Material Design',
-      materialDesignDesc: 'On a implémenté les patterns Material Design de Google avec transitions Activity et animations d\'éléments partagés. La barre de recherche se transforme élégamment en résultats plein écran — maintenant le contexte tout en étendant les fonctionnalités.',
+      materialDesignDesc: 'On a implémenté les patterns Material Design de Google avec transitions Activity et animations d\'éléments partagés. La barre de recherche se transforme élégamment en résultats plein écran, maintenant le contexte tout en étendant les fonctionnalités.',
       shipped: 'Livré en Production',
       shippedDesc: 'Ce prototype est devenu l\'implémentation production déployée sur le Google Play Store. Les transitions fluides réduisent la latence perçue tout en préservant les habitudes utilisateur construites au fil des années.'
     },
@@ -576,7 +576,7 @@ const TRANSLATIONS = {
       auditDesc: 'Revue de tous les écrans app sur iOS, Android et web. Interviews des designers et devs à travers les squads pour comprendre les points de friction.',
       roadmap: 'Roadmap Yellowstrap',
       roadmapDesc: 'Livraison de la roadmap système de composants et des guidelines. Définition des conventions de nommage, usage couleurs, styles CTA, indicateurs de statut. Outils pré-Figma : Zeplin, kits PDF, Sketch.',
-      note: 'Note : Mon rôle était focalisé sur la définition stratégique et les besoins — pas sur la construction hands-on de la bibliothèque.'
+      note: 'Note : Mon rôle était focalisé sur la définition stratégique et les besoins, pas sur la construction hands-on de la bibliothèque.'
     },
     team: {
       sectionTitle: 'Équipe & Collaboration',
@@ -617,7 +617,7 @@ const TRANSLATIONS = {
         },
         {
           title: 'La cohérence, c\'est dur',
-          description: 'iOS, Android, web, Wear — chaque plateforme a ses contraintes. Les patterns partagés demandent une négociation constante.'
+          description: 'iOS, Android, web, Wear : chaque plateforme a ses contraintes. Les patterns partagés demandent une négociation constante.'
         },
         {
           title: 'La stratégie crée du levier',
