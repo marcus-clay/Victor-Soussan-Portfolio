@@ -39,6 +39,9 @@ const ROUTES = [
   // SQOOL Suite
   '/project/sqool/summary',
   '/project/sqool/full',
+  // SQOOL Classe
+  '/project/sqool-classe/summary',
+  '/project/sqool-classe/full',
   // France VAE
   '/project/france-vae/summary',
   '/project/france-vae/full',
