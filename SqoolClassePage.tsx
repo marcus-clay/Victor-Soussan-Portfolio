@@ -27,7 +27,7 @@ import EnhancedLightbox from './src/components/EnhancedLightbox';
 import CaseStudyTOCSidebar from './src/components/CaseStudyTOCSidebar';
 
 // UI Motion base URL for prototype iframes
-const UI_MOTION_BASE_URL = 'https://ui-motion.vercel.app';
+const UI_MOTION_BASE_URL = 'https://ui-motion-five.vercel.app';
 
 interface SqoolClassePageProps {
   onClose: () => void;
