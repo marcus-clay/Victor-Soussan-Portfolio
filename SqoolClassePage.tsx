@@ -211,6 +211,13 @@ const TRANSLATIONS = {
       period: 'Period',
       company: 'Company',
     },
+    transitions: {
+      gridToOrchestration: 'Seeing is the foundation. But a teacher also needs to act — quickly, without leaving the overview.',
+      orchestrationToCommunication: 'Beyond screen management, the tool supports the pedagogical relationship itself.',
+      communicationToSessions: 'These interactions live within a structured framework: the session.',
+      sessionsToStudents: 'So far, we\'ve designed for the teacher. But what does the student see?',
+      studentsToJourneys: 'Let\'s see how all of this works together in a real lesson.',
+    },
     tryPrototype: 'Try the prototype',
     fullscreen: 'Fullscreen',
     exitFullscreen: 'Exit fullscreen',
@@ -384,6 +391,13 @@ const TRANSLATIONS = {
       scope: 'P\u00e9rim\u00e8tre',
       period: 'P\u00e9riode',
       company: 'Entreprise',
+    },
+    transitions: {
+      gridToOrchestration: 'Voir, c\u2019est le socle. Mais un enseignant a aussi besoin d\u2019agir\u00a0: vite, sans quitter la vue d\u2019ensemble.',
+      orchestrationToCommunication: 'Au-del\u00e0 de la gestion d\u2019\u00e9crans, l\u2019outil soutient la relation p\u00e9dagogique elle-m\u00eame.',
+      communicationToSessions: 'Ces interactions s\u2019inscrivent dans un cadre structur\u00e9\u00a0: la s\u00e9ance.',
+      sessionsToStudents: 'Jusqu\u2019ici, nous avons con\u00e7u pour l\u2019enseignant. Mais que voit l\u2019\u00e9l\u00e8ve\u00a0?',
+      studentsToJourneys: 'Voyons comment tout s\u2019articule en conditions r\u00e9elles.',
     },
     tryPrototype: 'Essayer le prototype',
     fullscreen: 'Plein \u00e9cran',
@@ -976,7 +990,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                       {t.grid.description}
                     </p>
 
-                    {/* T3 - Show screens */}
+                    {/* T3 - Show screens (key prototype: the big reveal) */}
                     <PrototypeEmbed
                       prototypeId="T3"
                       title={t.grid.screensTitle}
@@ -985,26 +999,30 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                       tryLabel={t.tryPrototype}
                     />
 
-                    {/* T5 - Lock screens */}
-                    <PrototypeEmbed
-                      prototypeId="T5"
-                      title={t.grid.lockTitle}
-                      description={t.grid.lockDesc}
-                      isDark={isDark}
-                      tryLabel={t.tryPrototype}
-                    />
-
-                    {/* T25 - Student viewer */}
-                    <PrototypeEmbed
-                      prototypeId="T25"
-                      title={t.grid.viewerTitle}
-                      description={t.grid.viewerDesc}
-                      isDark={isDark}
-                      tryLabel={t.tryPrototype}
-                    />
+                    {/* Grid features described as cards */}
+                    <div className="grid md:grid-cols-3 gap-6 mt-8">
+                      {[
+                        { icon: <Eye size={24} />, title: t.grid.statesTitle, desc: t.grid.statesDesc },
+                        { icon: <Lock size={24} />, title: t.grid.lockTitle, desc: t.grid.lockDesc },
+                        { icon: <Maximize2 size={24} />, title: t.grid.viewerTitle, desc: t.grid.viewerDesc },
+                      ].map((item, i) => (
+                        <div key={i} className={`p-6 rounded-2xl border ${isDark ? 'bg-[#1D1D1F] border-white/10' : 'bg-gray-50 border-gray-200'}`}>
+                          <div className={`p-2 rounded-xl w-fit mb-4 ${isDark ? 'bg-blue-600/20' : 'bg-blue-50'}`}>
+                            <div className={isDark ? 'text-blue-400' : 'text-blue-600'}>{item.icon}</div>
+                          </div>
+                          <h3 className={`text-lg font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>{item.title}</h3>
+                          <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{item.desc}</p>
+                        </div>
+                      ))}
+                    </div>
                   </section>
 
-                  <hr className={`my-12 ${isDark ? 'border-white/10' : 'border-gray-200'}`} />
+                  {/* Transition: Grid → Orchestration */}
+                  <div className={`my-16 md:my-24 py-8 border-t border-b ${isDark ? 'border-white/10' : 'border-gray-200'}`}>
+                    <p className={`text-lg md:text-xl leading-relaxed text-center max-w-2xl mx-auto ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                      {t.transitions.gridToOrchestration}
+                    </p>
+                  </div>
 
                   {/* ==================== ORCHESTRATION ==================== */}
                   <section id="orchestration" className="mb-24 md:mb-32">
@@ -1018,7 +1036,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                       {t.orchestration.description}
                     </p>
 
-                    {/* T9 - Create groups */}
+                    {/* T9 - Create groups (key prototype: direct manipulation gesture) */}
                     <PrototypeEmbed
                       prototypeId="T9"
                       title={t.orchestration.groupsTitle}
@@ -1027,35 +1045,30 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                       tryLabel={t.tryPrototype}
                     />
 
-                    {/* T18 - Random groups */}
-                    <PrototypeEmbed
-                      prototypeId="T18"
-                      title={t.orchestration.randomTitle}
-                      description={t.orchestration.randomDesc}
-                      isDark={isDark}
-                      tryLabel={t.tryPrototype}
-                    />
-
-                    {/* T7 - Projection */}
-                    <PrototypeEmbed
-                      prototypeId="T7"
-                      title={t.orchestration.projectionTitle}
-                      description={t.orchestration.projectionDesc}
-                      isDark={isDark}
-                      tryLabel={t.tryPrototype}
-                    />
-
-                    {/* T12 - Spotlight */}
-                    <PrototypeEmbed
-                      prototypeId="T12"
-                      title={t.orchestration.spotlightTitle}
-                      description={t.orchestration.spotlightDesc}
-                      isDark={isDark}
-                      tryLabel={t.tryPrototype}
-                    />
+                    {/* Orchestration features described as cards */}
+                    <div className="grid md:grid-cols-3 gap-6 mt-8">
+                      {[
+                        { icon: <Users size={24} />, title: t.orchestration.randomTitle, desc: t.orchestration.randomDesc },
+                        { icon: <Monitor size={24} />, title: t.orchestration.projectionTitle, desc: t.orchestration.projectionDesc },
+                        { icon: <Eye size={24} />, title: t.orchestration.spotlightTitle, desc: t.orchestration.spotlightDesc },
+                      ].map((item, i) => (
+                        <div key={i} className={`p-6 rounded-2xl border ${isDark ? 'bg-[#1D1D1F] border-white/10' : 'bg-gray-50 border-gray-200'}`}>
+                          <div className={`p-2 rounded-xl w-fit mb-4 ${isDark ? 'bg-purple-500/20' : 'bg-purple-50'}`}>
+                            <div className={isDark ? 'text-purple-400' : 'text-purple-600'}>{item.icon}</div>
+                          </div>
+                          <h3 className={`text-lg font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>{item.title}</h3>
+                          <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{item.desc}</p>
+                        </div>
+                      ))}
+                    </div>
                   </section>
 
-                  <hr className={`my-12 ${isDark ? 'border-white/10' : 'border-gray-200'}`} />
+                  {/* Transition: Orchestration → Communication */}
+                  <div className={`my-16 md:my-24 py-8 border-t border-b ${isDark ? 'border-white/10' : 'border-gray-200'}`}>
+                    <p className={`text-lg md:text-xl leading-relaxed text-center max-w-2xl mx-auto ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                      {t.transitions.orchestrationToCommunication}
+                    </p>
+                  </div>
 
                   {/* ==================== COMMUNICATION ==================== */}
                   <section id="communication" className="mb-24 md:mb-32">
@@ -1069,25 +1082,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                       {t.communication.description}
                     </p>
 
-                    {/* T4 - Messages */}
-                    <PrototypeEmbed
-                      prototypeId="T4"
-                      title={t.communication.messagesTitle}
-                      description={t.communication.messagesDesc}
-                      isDark={isDark}
-                      tryLabel={t.tryPrototype}
-                    />
-
-                    {/* T11 - Reply */}
-                    <PrototypeEmbed
-                      prototypeId="T11"
-                      title={t.communication.replyTitle}
-                      description={t.communication.replyDesc}
-                      isDark={isDark}
-                      tryLabel={t.tryPrototype}
-                    />
-
-                    {/* T10 - Poll */}
+                    {/* T10 - Poll (key prototype: the most engaging interaction) */}
                     <PrototypeEmbed
                       prototypeId="T10"
                       title={t.communication.pollTitle}
@@ -1096,35 +1091,32 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                       tryLabel={t.tryPrototype}
                     />
 
-                    {/* T17 - Timer */}
-                    <PrototypeEmbed
-                      prototypeId="T17"
-                      title={t.communication.timerTitle}
-                      description={t.communication.timerDesc}
-                      isDark={isDark}
-                      tryLabel={t.tryPrototype}
-                    />
-
-                    {/* T6 - Send resource */}
-                    <PrototypeEmbed
-                      prototypeId="T6"
-                      title={t.communication.resourceTitle}
-                      description={t.communication.resourceDesc}
-                      isDark={isDark}
-                      tryLabel={t.tryPrototype}
-                    />
-
-                    {/* T16 - Share link */}
-                    <PrototypeEmbed
-                      prototypeId="T16"
-                      title={t.communication.linkTitle}
-                      description={t.communication.linkDesc}
-                      isDark={isDark}
-                      tryLabel={t.tryPrototype}
-                    />
+                    {/* Communication features described as cards */}
+                    <div className="grid md:grid-cols-3 gap-6 mt-8">
+                      {[
+                        { icon: <MessageCircle size={24} />, title: t.communication.messagesTitle, desc: t.communication.messagesDesc },
+                        { icon: <ArrowRight size={24} />, title: t.communication.replyTitle, desc: t.communication.replyDesc },
+                        { icon: <Timer size={24} />, title: t.communication.timerTitle, desc: t.communication.timerDesc },
+                        { icon: <FileText size={24} />, title: t.communication.resourceTitle, desc: t.communication.resourceDesc },
+                        { icon: <ExternalLink size={24} />, title: t.communication.linkTitle, desc: t.communication.linkDesc },
+                      ].map((item, i) => (
+                        <div key={i} className={`p-6 rounded-2xl border ${isDark ? 'bg-[#1D1D1F] border-white/10' : 'bg-gray-50 border-gray-200'}`}>
+                          <div className={`p-2 rounded-xl w-fit mb-4 ${isDark ? 'bg-indigo-500/20' : 'bg-indigo-50'}`}>
+                            <div className={isDark ? 'text-indigo-400' : 'text-indigo-600'}>{item.icon}</div>
+                          </div>
+                          <h3 className={`text-lg font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>{item.title}</h3>
+                          <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{item.desc}</p>
+                        </div>
+                      ))}
+                    </div>
                   </section>
 
-                  <hr className={`my-12 ${isDark ? 'border-white/10' : 'border-gray-200'}`} />
+                  {/* Transition: Communication → Sessions */}
+                  <div className={`my-16 md:my-24 py-8 border-t border-b ${isDark ? 'border-white/10' : 'border-gray-200'}`}>
+                    <p className={`text-lg md:text-xl leading-relaxed text-center max-w-2xl mx-auto ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                      {t.transitions.communicationToSessions}
+                    </p>
+                  </div>
 
                   {/* ==================== SESSIONS & EXAMS ==================== */}
                   <section id="sessions" className="mb-24 md:mb-32">
@@ -1138,7 +1130,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                       {t.sessions.description}
                     </p>
 
-                    {/* T1 - Open class */}
+                    {/* T1 - Open class (key prototype: the iconic QR code moment) */}
                     <PrototypeEmbed
                       prototypeId="T1"
                       title={t.sessions.openTitle}
@@ -1147,53 +1139,32 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                       tryLabel={t.tryPrototype}
                     />
 
-                    {/* T15 - End session */}
-                    <PrototypeEmbed
-                      prototypeId="T15"
-                      title={t.sessions.endTitle}
-                      description={t.sessions.endDesc}
-                      isDark={isDark}
-                      tryLabel={t.tryPrototype}
-                    />
-
-                    {/* T21 - Assignment mode */}
-                    <PrototypeEmbed
-                      prototypeId="T21"
-                      title={t.sessions.assignmentTitle}
-                      description={t.sessions.assignmentDesc}
-                      isDark={isDark}
-                      tryLabel={t.tryPrototype}
-                    />
-
-                    {/* T22 - Exam setup */}
-                    <PrototypeEmbed
-                      prototypeId="T22"
-                      title={t.sessions.examSetupTitle}
-                      description={t.sessions.examSetupDesc}
-                      isDark={isDark}
-                      tryLabel={t.tryPrototype}
-                    />
-
-                    {/* T23 - Exam monitoring */}
-                    <PrototypeEmbed
-                      prototypeId="T23"
-                      title={t.sessions.examMonitorTitle}
-                      description={t.sessions.examMonitorDesc}
-                      isDark={isDark}
-                      tryLabel={t.tryPrototype}
-                    />
-
-                    {/* T24 - Exam review */}
-                    <PrototypeEmbed
-                      prototypeId="T24"
-                      title={t.sessions.examReviewTitle}
-                      description={t.sessions.examReviewDesc}
-                      isDark={isDark}
-                      tryLabel={t.tryPrototype}
-                    />
+                    {/* Session & exam features described as cards */}
+                    <div className="grid md:grid-cols-3 gap-6 mt-8">
+                      {[
+                        { icon: <Timer size={24} />, title: t.sessions.endTitle, desc: t.sessions.endDesc },
+                        { icon: <FileText size={24} />, title: t.sessions.assignmentTitle, desc: t.sessions.assignmentDesc },
+                        { icon: <Layers size={24} />, title: t.sessions.examSetupTitle, desc: t.sessions.examSetupDesc },
+                        { icon: <Eye size={24} />, title: t.sessions.examMonitorTitle, desc: t.sessions.examMonitorDesc },
+                        { icon: <FileText size={24} />, title: t.sessions.examReviewTitle, desc: t.sessions.examReviewDesc },
+                      ].map((item, i) => (
+                        <div key={i} className={`p-6 rounded-2xl border ${isDark ? 'bg-[#1D1D1F] border-white/10' : 'bg-gray-50 border-gray-200'}`}>
+                          <div className={`p-2 rounded-xl w-fit mb-4 ${isDark ? 'bg-orange-500/20' : 'bg-orange-50'}`}>
+                            <div className={isDark ? 'text-orange-400' : 'text-orange-600'}>{item.icon}</div>
+                          </div>
+                          <h3 className={`text-lg font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>{item.title}</h3>
+                          <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{item.desc}</p>
+                        </div>
+                      ))}
+                    </div>
                   </section>
 
-                  <hr className={`my-12 ${isDark ? 'border-white/10' : 'border-gray-200'}`} />
+                  {/* Transition: Sessions → Students */}
+                  <div className={`my-16 md:my-24 py-8 border-t border-b ${isDark ? 'border-white/10' : 'border-gray-200'}`}>
+                    <p className={`text-lg md:text-xl leading-relaxed text-center max-w-2xl mx-auto ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                      {t.transitions.sessionsToStudents}
+                    </p>
+                  </div>
 
                   {/* ==================== STUDENT EXPERIENCE ==================== */}
                   <section id="students" className="mb-24 md:mb-32">
@@ -1207,7 +1178,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                       {t.students.description}
                     </p>
 
-                    {/* S1 - Login */}
+                    {/* S1 - Login (key prototype: mirrors the teacher's QR code) */}
                     <PrototypeEmbed
                       prototypeId="S1"
                       title={t.students.loginTitle}
@@ -1216,62 +1187,33 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                       tryLabel={t.tryPrototype}
                     />
 
-                    {/* S2 - Resources */}
-                    <PrototypeEmbed
-                      prototypeId="S2"
-                      title={t.students.resourcesTitle}
-                      description={t.students.resourcesDesc}
-                      isDark={isDark}
-                      tryLabel={t.tryPrototype}
-                    />
-
-                    {/* S3 - Done */}
-                    <PrototypeEmbed
-                      prototypeId="S3"
-                      title={t.students.doneTitle}
-                      description={t.students.doneDesc}
-                      isDark={isDark}
-                      tryLabel={t.tryPrototype}
-                    />
-
-                    {/* S4 - Question */}
-                    <PrototypeEmbed
-                      prototypeId="S4"
-                      title={t.students.questionTitle}
-                      description={t.students.questionDesc}
-                      isDark={isDark}
-                      tryLabel={t.tryPrototype}
-                    />
-
-                    {/* S5 - Share */}
-                    <PrototypeEmbed
-                      prototypeId="S5"
-                      title={t.students.shareTitle}
-                      description={t.students.shareDesc}
-                      isDark={isDark}
-                      tryLabel={t.tryPrototype}
-                    />
-
-                    {/* S6 - Receive */}
-                    <PrototypeEmbed
-                      prototypeId="S6"
-                      title={t.students.receiveTitle}
-                      description={t.students.receiveDesc}
-                      isDark={isDark}
-                      tryLabel={t.tryPrototype}
-                    />
-
-                    {/* S7 - Locked */}
-                    <PrototypeEmbed
-                      prototypeId="S7"
-                      title={t.students.lockedTitle}
-                      description={t.students.lockedDesc}
-                      isDark={isDark}
-                      tryLabel={t.tryPrototype}
-                    />
+                    {/* Student features described as cards */}
+                    <div className="grid md:grid-cols-3 gap-6 mt-8">
+                      {[
+                        { icon: <FileText size={24} />, title: t.students.resourcesTitle, desc: t.students.resourcesDesc },
+                        { icon: <ArrowRight size={24} />, title: t.students.doneTitle, desc: t.students.doneDesc },
+                        { icon: <MessageCircle size={24} />, title: t.students.questionTitle, desc: t.students.questionDesc },
+                        { icon: <FileText size={24} />, title: t.students.shareTitle, desc: t.students.shareDesc },
+                        { icon: <FileText size={24} />, title: t.students.receiveTitle, desc: t.students.receiveDesc },
+                        { icon: <Lock size={24} />, title: t.students.lockedTitle, desc: t.students.lockedDesc },
+                      ].map((item, i) => (
+                        <div key={i} className={`p-6 rounded-2xl border ${isDark ? 'bg-[#1D1D1F] border-white/10' : 'bg-gray-50 border-gray-200'}`}>
+                          <div className={`p-2 rounded-xl w-fit mb-4 ${isDark ? 'bg-green-500/20' : 'bg-green-50'}`}>
+                            <div className={isDark ? 'text-green-400' : 'text-green-600'}>{item.icon}</div>
+                          </div>
+                          <h3 className={`text-lg font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>{item.title}</h3>
+                          <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{item.desc}</p>
+                        </div>
+                      ))}
+                    </div>
                   </section>
 
-                  <hr className={`my-12 ${isDark ? 'border-white/10' : 'border-gray-200'}`} />
+                  {/* Transition: Students → Journeys */}
+                  <div className={`my-16 md:my-24 py-8 border-t border-b ${isDark ? 'border-white/10' : 'border-gray-200'}`}>
+                    <p className={`text-lg md:text-xl leading-relaxed text-center max-w-2xl mx-auto ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                      {t.transitions.studentsToJourneys}
+                    </p>
+                  </div>
 
                   {/* ==================== COMPLETE JOURNEYS ==================== */}
                   <section id="journeys" className="mb-24 md:mb-32">
@@ -1285,25 +1227,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                       {t.journeys.description}
                     </p>
 
-                    {/* SC1 - Start & distribute */}
-                    <PrototypeEmbed
-                      prototypeId="SC1"
-                      title={t.journeys.sc1Title}
-                      description={t.journeys.sc1Desc}
-                      isDark={isDark}
-                      tryLabel={t.tryPrototype}
-                    />
-
-                    {/* SC7 - Full exam */}
-                    <PrototypeEmbed
-                      prototypeId="SC7"
-                      title={t.journeys.sc7Title}
-                      description={t.journeys.sc7Desc}
-                      isDark={isDark}
-                      tryLabel={t.tryPrototype}
-                    />
-
-                    {/* SC10 - Complete session */}
+                    {/* SC10 - Complete session (capstone prototype) */}
                     <PrototypeEmbed
                       prototypeId="SC10"
                       title={t.journeys.sc10Title}
@@ -1311,6 +1235,22 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                       isDark={isDark}
                       tryLabel={t.tryPrototype}
                     />
+
+                    {/* Other journeys described as cards */}
+                    <div className="grid md:grid-cols-2 gap-6 mt-8">
+                      {[
+                        { icon: <Play size={24} />, title: t.journeys.sc1Title, desc: t.journeys.sc1Desc },
+                        { icon: <FileText size={24} />, title: t.journeys.sc7Title, desc: t.journeys.sc7Desc },
+                      ].map((item, i) => (
+                        <div key={i} className={`p-6 rounded-2xl border ${isDark ? 'bg-[#1D1D1F] border-white/10' : 'bg-gray-50 border-gray-200'}`}>
+                          <div className={`p-2 rounded-xl w-fit mb-4 ${isDark ? 'bg-blue-600/20' : 'bg-blue-50'}`}>
+                            <div className={isDark ? 'text-blue-400' : 'text-blue-600'}>{item.icon}</div>
+                          </div>
+                          <h3 className={`text-lg font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>{item.title}</h3>
+                          <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{item.desc}</p>
+                        </div>
+                      ))}
+                    </div>
                   </section>
 
                   <hr className={`my-12 ${isDark ? 'border-white/10' : 'border-gray-200'}`} />
