@@ -479,7 +479,7 @@ const PrototypeEmbed: React.FC<PrototypeEmbedProps> = ({ prototypeId, title, des
               {isFullscreen ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
             </button>
             <a
-              href={`${UI_MOTION_BASE_URL}/#${prototypeId}`}
+              href={`${UI_MOTION_BASE_URL}/#${prototypeId.toLowerCase()}`}
               target="_blank"
               rel="noopener noreferrer"
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
@@ -502,7 +502,7 @@ const PrototypeEmbed: React.FC<PrototypeEmbedProps> = ({ prototypeId, title, des
             </div>
           )}
           <iframe
-            src={`${UI_MOTION_BASE_URL}/#${prototypeId}`}
+            src={`${UI_MOTION_BASE_URL}/?embed=1#${prototypeId.toLowerCase()}`}
             className="absolute inset-0 w-full h-full"
             style={{ border: 'none' }}
             onLoad={() => setIsLoaded(true)}
