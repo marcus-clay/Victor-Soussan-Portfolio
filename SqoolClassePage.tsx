@@ -433,7 +433,7 @@ const TOC_SECTIONS = {
   ],
 };
 
-// Prototype embed component
+// Prototype embed component — hover-to-play, 0.8x speed, iPadOS style
 interface PrototypeEmbedProps {
   prototypeId: string;
   title: string;
@@ -444,13 +444,36 @@ interface PrototypeEmbedProps {
 
 const PrototypeEmbed: React.FC<PrototypeEmbedProps> = ({ prototypeId, title, description, isDark, tryLabel }) => {
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const [hasPlayed, setHasPlayed] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+
+  const embedSrc = `${UI_MOTION_BASE_URL}/?embed=1&speed=0.8&autoplay=0#${prototypeId.toLowerCase()}`;
+
+  const handleMouseEnter = useCallback(() => {
+    setIsHovered(true);
+    if (iframeRef.current?.contentWindow) {
+      iframeRef.current.contentWindow.postMessage(hasPlayed ? 'restart' : 'play', '*');
+      setHasPlayed(true);
+    }
+  }, [hasPlayed]);
+
+  const handleMouseLeave = useCallback(() => {
+    setIsHovered(false);
+    if (iframeRef.current?.contentWindow) {
+      iframeRef.current.contentWindow.postMessage('pause', '*');
+    }
+  }, []);
 
   const toggleFullscreen = useCallback(() => {
     if (!isFullscreen && containerRef.current) {
       containerRef.current.requestFullscreen?.();
       setIsFullscreen(true);
+      if (iframeRef.current?.contentWindow) {
+        iframeRef.current.contentWindow.postMessage('play', '*');
+      }
     } else if (isFullscreen) {
       document.exitFullscreen?.();
       setIsFullscreen(false);
@@ -459,64 +482,73 @@ const PrototypeEmbed: React.FC<PrototypeEmbedProps> = ({ prototypeId, title, des
 
   useEffect(() => {
     const handleFullscreenChange = () => {
-      setIsFullscreen(!!document.fullscreenElement);
+      const fs = !!document.fullscreenElement;
+      setIsFullscreen(fs);
+      if (!fs && iframeRef.current?.contentWindow) {
+        iframeRef.current.contentWindow.postMessage('pause', '*');
+      }
     };
     document.addEventListener('fullscreenchange', handleFullscreenChange);
     return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
   }, []);
 
   return (
-    <div className="my-12">
+    <div className="my-16">
+      {/* Title + description above the frame */}
+      <div className="mb-5">
+        <h3 className={`text-lg font-semibold tracking-[-0.01em] mb-1.5 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+          {title}
+        </h3>
+        <p className={`text-[15px] leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+          {description}
+        </p>
+      </div>
+
       <div
         ref={containerRef}
-        className={`rounded-2xl overflow-hidden border ${
-          isDark ? 'border-white/10 bg-[#1D1D1F]' : 'border-gray-200 bg-gray-50'
-        }`}
+        className={`rounded-[20px] overflow-hidden transition-shadow duration-300 ${
+          isDark
+            ? 'bg-[#1C1C1E] ring-1 ring-white/[0.08]'
+            : 'bg-[#F2F2F7] ring-1 ring-black/[0.04]'
+        } ${isHovered ? (isDark ? 'shadow-2xl shadow-white/5' : 'shadow-2xl shadow-black/10') : ''}`}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
       >
-        {/* Header bar */}
-        <div className={`flex items-center justify-between px-4 py-3 border-b ${
-          isDark ? 'border-white/10' : 'border-gray-200'
-        }`}>
-          <div className="flex items-center gap-2">
-            <Play size={14} className={isDark ? 'text-blue-400' : 'text-blue-600'} />
-            <span className={`text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>
-              {title}
-            </span>
-          </div>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={toggleFullscreen}
-              className={`p-1.5 rounded-lg transition-colors ${
-                isDark ? 'hover:bg-white/10 text-gray-400' : 'hover:bg-gray-200 text-gray-500'
-              }`}
-            >
-              {isFullscreen ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
-            </button>
-            <a
-              href={`${UI_MOTION_BASE_URL}/#${prototypeId.toLowerCase()}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                isDark
-                  ? 'bg-blue-600/20 text-blue-400 hover:bg-blue-600/30'
-                  : 'bg-blue-50 text-blue-600 hover:bg-blue-100'
-              }`}
-            >
-              <ExternalLink size={12} />
-              {tryLabel}
-            </a>
-          </div>
-        </div>
-
-        {/* Iframe */}
+        {/* Iframe viewport */}
         <div className="relative" style={{ paddingBottom: '62.5%' }}>
+          {/* Loading state */}
           {!isLoaded && (
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-6 h-6 border-2 border-current border-t-transparent rounded-full animate-spin opacity-30" />
+            <div className={`absolute inset-0 flex items-center justify-center ${isDark ? 'bg-[#1C1C1E]' : 'bg-[#F2F2F7]'}`}>
+              <div className={`w-8 h-8 rounded-full border-2 border-t-transparent animate-spin ${isDark ? 'border-white/20' : 'border-black/10'}`} />
             </div>
           )}
+
+          {/* Hover-to-play overlay */}
+          <AnimatePresence>
+            {isLoaded && !isHovered && !isFullscreen && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className="absolute inset-0 z-10 flex items-center justify-center cursor-pointer"
+                style={{ pointerEvents: 'auto' }}
+              >
+                <div className={`flex items-center gap-2.5 px-5 py-3 rounded-full backdrop-blur-xl ${
+                  isDark
+                    ? 'bg-white/10 text-white/80'
+                    : 'bg-black/5 text-black/50'
+                }`}>
+                  <Play size={16} fill="currentColor" />
+                  <span className="text-sm font-medium">Hover to play</span>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
           <iframe
-            src={`${UI_MOTION_BASE_URL}/?embed=1#${prototypeId.toLowerCase()}`}
+            ref={iframeRef}
+            src={embedSrc}
             className="absolute inset-0 w-full h-full"
             style={{ border: 'none' }}
             onLoad={() => setIsLoaded(true)}
@@ -525,10 +557,36 @@ const PrototypeEmbed: React.FC<PrototypeEmbedProps> = ({ prototypeId, title, des
             title={title}
           />
         </div>
+
+        {/* Bottom bar — minimal, iPadOS style */}
+        <div className={`flex items-center justify-between px-5 py-3 ${
+          isDark ? 'border-t border-white/[0.06]' : 'border-t border-black/[0.04]'
+        }`}>
+          <span className={`text-xs font-medium tracking-wide uppercase ${isDark ? 'text-white/30' : 'text-black/25'}`}>
+            {prototypeId}
+          </span>
+          <div className="flex items-center gap-1.5">
+            <button
+              onClick={toggleFullscreen}
+              className={`p-2 rounded-xl transition-colors ${
+                isDark ? 'hover:bg-white/10 text-white/40' : 'hover:bg-black/5 text-black/30'
+              }`}
+            >
+              {isFullscreen ? <Minimize2 size={15} /> : <Maximize2 size={15} />}
+            </button>
+            <a
+              href={`${UI_MOTION_BASE_URL}/#${prototypeId.toLowerCase()}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`p-2 rounded-xl transition-colors ${
+                isDark ? 'hover:bg-white/10 text-white/40' : 'hover:bg-black/5 text-black/30'
+              }`}
+            >
+              <ExternalLink size={15} />
+            </a>
+          </div>
+        </div>
       </div>
-      <p className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-        <strong>{title}</strong> — {description}
-      </p>
     </div>
   );
 };
@@ -740,7 +798,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
 
                 {/* 3 Design Pillars */}
                 <section className="mb-16">
-                  <div className="grid md:grid-cols-3 gap-6">
+                  <div className="grid md:grid-cols-3 gap-5">
                     {[
                       { icon: <Eye size={24} />, title: t.challenge.pillar1Title, desc: t.challenge.pillar1Desc, color: 'blue' },
                       { icon: <Monitor size={24} />, title: t.challenge.pillar2Title, desc: t.challenge.pillar2Desc, color: 'purple' },
@@ -752,14 +810,14 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                           isDark ? 'bg-[#1D1D1F] border-white/10' : 'bg-gray-50 border-gray-200'
                         }`}
                       >
-                        <div className={`p-2 rounded-xl w-fit mb-4 ${
+                        <div className={`p-2.5 rounded-[12px] w-fit mb-5 ${
                           isDark ? `bg-${pillar.color}-600/20` : `bg-${pillar.color}-50`
                         }`}>
                           <div className={isDark ? `text-${pillar.color}-400` : `text-${pillar.color}-600`}>
                             {pillar.icon}
                           </div>
                         </div>
-                        <h3 className={`text-lg font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                        <h3 className={`text-[15px] font-semibold mb-2 tracking-[-0.01em] ${isDark ? 'text-white/90' : 'text-black/80'}`}>
                           {pillar.title}
                         </h3>
                         <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
@@ -788,7 +846,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                       { value: t.impact.stat3, label: t.impact.stat3Desc },
                       { value: t.impact.stat4, label: t.impact.stat4Desc },
                     ].map((stat, i) => (
-                      <div key={i} className={`p-6 rounded-2xl border ${isDark ? 'bg-[#1D1D1F] border-white/10' : 'bg-gray-50 border-gray-200'}`}>
+                      <div key={i} className={`p-7 rounded-[16px] ${isDark ? 'bg-[#1C1C1E] ring-1 ring-white/[0.06]' : 'bg-[#F2F2F7] ring-1 ring-black/[0.03]'}`}>
                         <p className={`text-3xl font-bold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>{stat.value}</p>
                         <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{stat.label}</p>
                       </div>
@@ -830,163 +888,143 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
           >
-            <div className="max-w-[1200px] mx-auto px-10 py-12 md:py-16">
+            <div className="max-w-[980px] mx-auto px-8 md:px-12 py-16 md:py-24">
               <div>
                 <main className="w-full">
 
                   {/* ==================== HERO ==================== */}
-                  <section id="hero" className="mb-24 md:mb-32">
+                  <section id="hero" className="mb-32 md:mb-40">
                     {/* Logo */}
                     <img
                       loading="lazy"
                       src="/images/sqool/logo-sqool.svg"
                       alt="SQOOL"
-                      className="h-8 w-auto mb-8"
+                      className="h-7 w-auto mb-10 opacity-60"
                     />
                     <div>
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{t.hero.role}</span>
-                        <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>-</span>
-                        <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{t.hero.scope}</span>
-                        <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>-</span>
-                        <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{t.hero.period}</span>
+                      <div className="flex flex-wrap gap-2 mb-6">
+                        <span className={`text-[13px] tracking-wide ${isDark ? 'text-white/40' : 'text-black/35'}`}>{t.hero.role}</span>
+                        <span className={`text-[13px] ${isDark ? 'text-white/20' : 'text-black/15'}`}>/</span>
+                        <span className={`text-[13px] tracking-wide ${isDark ? 'text-white/40' : 'text-black/35'}`}>{t.hero.scope}</span>
+                        <span className={`text-[13px] ${isDark ? 'text-white/20' : 'text-black/15'}`}>/</span>
+                        <span className={`text-[13px] tracking-wide ${isDark ? 'text-white/40' : 'text-black/35'}`}>{t.hero.period}</span>
                       </div>
 
-                      <h1 className={`text-3xl md:text-4xl font-bold mb-4 leading-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                      <h1 className={`text-[34px] md:text-[40px] font-semibold mb-5 leading-[1.15] tracking-[-0.02em] ${isDark ? 'text-white' : 'text-gray-900'}`}>
                         {t.hero.title}
                       </h1>
 
-                      <h2 className={`text-xl md:text-2xl font-bold mb-6 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                      <h2 className={`text-xl md:text-[22px] font-medium mb-8 leading-relaxed ${isDark ? 'text-white/60' : 'text-black/50'}`}>
                         {t.hero.subtitle}
                       </h2>
 
-                      <p className={`text-base leading-relaxed mb-6 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                      <p className={`text-[17px] leading-[1.65] ${isDark ? 'text-white/55' : 'text-black/55'}`}>
                         {t.hero.description}
                       </p>
                     </div>
                   </section>
 
                   {/* Project Meta Card */}
-                  <div className={`p-6 rounded-3xl border mb-12 ${isDark ? 'bg-[#1D1D1F] border-white/10' : 'bg-gray-50 border-gray-200'}`}>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                      <div className="flex items-center space-x-3">
-                        <div className={`p-2 rounded-xl ${isDark ? 'bg-blue-600/20' : 'bg-blue-50'}`}>
-                          <Layers size={20} className={isDark ? 'text-blue-400' : 'text-blue-600'} />
+                  <div className={`px-8 py-7 rounded-[20px] mb-16 ${isDark ? 'bg-[#1C1C1E] ring-1 ring-white/[0.06]' : 'bg-[#F2F2F7] ring-1 ring-black/[0.03]'}`}>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                      {[
+                        { icon: <Layers size={18} />, label: t.metaLabels.type, value: t.meta.type },
+                        { icon: <Briefcase size={18} />, label: t.metaLabels.scope, value: t.meta.scope },
+                        { icon: <Calendar size={18} />, label: t.metaLabels.period, value: t.meta.period },
+                        { icon: <Building2 size={18} />, label: t.metaLabels.company, value: t.meta.company },
+                      ].map((item, i) => (
+                        <div key={i} className="flex items-center gap-3.5">
+                          <div className={`${isDark ? 'text-white/30' : 'text-black/25'}`}>
+                            {item.icon}
+                          </div>
+                          <div>
+                            <p className={`text-[11px] tracking-wider uppercase mb-0.5 ${isDark ? 'text-white/30' : 'text-black/30'}`}>{item.label}</p>
+                            <p className={`text-[14px] font-medium ${isDark ? 'text-white/80' : 'text-black/70'}`}>{item.value}</p>
+                          </div>
                         </div>
-                        <div>
-                          <p className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{t.metaLabels.type}</p>
-                          <p className={`text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>{t.meta.type}</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center space-x-3">
-                        <div className={`p-2 rounded-xl ${isDark ? 'bg-purple-500/20' : 'bg-purple-50'}`}>
-                          <Briefcase size={20} className={isDark ? 'text-purple-400' : 'text-purple-600'} />
-                        </div>
-                        <div>
-                          <p className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{t.metaLabels.scope}</p>
-                          <p className={`text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>{t.meta.scope}</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center space-x-3">
-                        <div className={`p-2 rounded-xl ${isDark ? 'bg-green-500/20' : 'bg-green-50'}`}>
-                          <Calendar size={20} className={isDark ? 'text-green-400' : 'text-green-600'} />
-                        </div>
-                        <div>
-                          <p className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{t.metaLabels.period}</p>
-                          <p className={`text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>{t.meta.period}</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center space-x-3">
-                        <div className={`p-2 rounded-xl ${isDark ? 'bg-orange-500/20' : 'bg-orange-50'}`}>
-                          <Building2 size={20} className={isDark ? 'text-orange-400' : 'text-orange-600'} />
-                        </div>
-                        <div>
-                          <p className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{t.metaLabels.company}</p>
-                          <p className={`text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>{t.meta.company}</p>
-                        </div>
-                      </div>
+                      ))}
                     </div>
                   </div>
 
                   {/* ==================== CONTEXT ==================== */}
-                  <section id="context" className="mb-24 md:mb-32">
-                    <h1 className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-6 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                  <section id="context" className="mb-32 md:mb-40">
+                    <h1 className={`text-[28px] md:text-[34px] font-semibold mb-4 tracking-[-0.02em] leading-[1.15] ${isDark ? 'text-white' : 'text-gray-900'}`}>
                       {t.context.title}
                     </h1>
-                    <h2 className={`text-xl md:text-2xl font-bold mb-6 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                    <h2 className={`text-[17px] md:text-[19px] font-medium mb-6 leading-relaxed ${isDark ? 'text-white/50' : 'text-black/45'}`}>
                       {t.context.subtitle}
                     </h2>
-                    <p className={`text-base leading-relaxed mb-12 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                    <p className={`text-[16px] leading-[1.7] mb-14 ${isDark ? 'text-white/55' : 'text-black/55'}`}>
                       {t.context.description}
                     </p>
 
                     {/* Frustration cards */}
-                    <div className="grid md:grid-cols-3 gap-6">
+                    <div className="grid md:grid-cols-3 gap-5">
                       {[
                         { icon: <Monitor size={24} />, title: t.context.frustration1Title, desc: t.context.frustration1Desc },
                         { icon: <Eye size={24} />, title: t.context.frustration2Title, desc: t.context.frustration2Desc },
                         { icon: <Users size={24} />, title: t.context.frustration3Title, desc: t.context.frustration3Desc },
                       ].map((item, i) => (
-                        <div key={i} className={`p-6 rounded-2xl border ${isDark ? 'bg-[#1D1D1F] border-white/10' : 'bg-gray-50 border-gray-200'}`}>
-                          <div className={`p-2 rounded-xl w-fit mb-4 ${isDark ? 'bg-red-600/20' : 'bg-red-50'}`}>
+                        <div key={i} className={`p-7 rounded-[16px] ${isDark ? 'bg-[#1C1C1E] ring-1 ring-white/[0.06]' : 'bg-[#F2F2F7] ring-1 ring-black/[0.03]'}`}>
+                          <div className={`p-2.5 rounded-[12px] w-fit mb-5 ${isDark ? 'bg-red-600/20' : 'bg-red-50'}`}>
                             <div className={isDark ? 'text-red-400' : 'text-red-600'}>{item.icon}</div>
                           </div>
-                          <h3 className={`text-lg font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>{item.title}</h3>
-                          <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{item.desc}</p>
+                          <h3 className={`text-[15px] font-semibold mb-2 tracking-[-0.01em] ${isDark ? 'text-white/90' : 'text-black/80'}`}>{item.title}</h3>
+                          <p className={`text-[13px] leading-[1.6] ${isDark ? 'text-white/40' : 'text-black/40'}`}>{item.desc}</p>
                         </div>
                       ))}
                     </div>
                   </section>
 
                   {/* ==================== CHALLENGE ==================== */}
-                  <section id="challenge" className="mb-24 md:mb-32">
-                    <h1 className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-6 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                  <section id="challenge" className="mb-32 md:mb-40">
+                    <h1 className={`text-[28px] md:text-[34px] font-semibold mb-4 tracking-[-0.02em] leading-[1.15] ${isDark ? 'text-white' : 'text-gray-900'}`}>
                       {t.challenge.title}
                     </h1>
-                    <h2 className={`text-xl md:text-2xl font-bold mb-6 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                    <h2 className={`text-[17px] md:text-[19px] font-medium mb-6 leading-relaxed ${isDark ? 'text-white/50' : 'text-black/45'}`}>
                       {t.challenge.subtitle}
                     </h2>
-                    <p className={`text-base leading-relaxed mb-12 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                    <p className={`text-[16px] leading-[1.7] mb-14 ${isDark ? 'text-white/55' : 'text-black/55'}`}>
                       {t.challenge.description}
                     </p>
 
                     {/* 3 Design Pillars */}
-                    <div className="grid md:grid-cols-3 gap-6">
-                      <div className={`p-6 rounded-2xl border ${isDark ? 'bg-[#1D1D1F] border-white/10' : 'bg-gray-50 border-gray-200'}`}>
-                        <div className={`p-2 rounded-xl w-fit mb-4 ${isDark ? 'bg-blue-600/20' : 'bg-blue-50'}`}>
+                    <div className="grid md:grid-cols-3 gap-5">
+                      <div className={`p-7 rounded-[16px] ${isDark ? 'bg-[#1C1C1E] ring-1 ring-white/[0.06]' : 'bg-[#F2F2F7] ring-1 ring-black/[0.03]'}`}>
+                        <div className={`p-2.5 rounded-[12px] w-fit mb-5 ${isDark ? 'bg-blue-600/20' : 'bg-blue-50'}`}>
                           <Eye size={24} className={isDark ? 'text-blue-400' : 'text-blue-600'} />
                         </div>
-                        <h3 className={`text-lg font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>{t.challenge.pillar1Title}</h3>
-                        <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{t.challenge.pillar1Desc}</p>
+                        <h3 className={`text-[15px] font-semibold mb-2 tracking-[-0.01em] ${isDark ? 'text-white/90' : 'text-black/80'}`}>{t.challenge.pillar1Title}</h3>
+                        <p className={`text-[13px] leading-[1.6] ${isDark ? 'text-white/40' : 'text-black/40'}`}>{t.challenge.pillar1Desc}</p>
                       </div>
-                      <div className={`p-6 rounded-2xl border ${isDark ? 'bg-[#1D1D1F] border-white/10' : 'bg-gray-50 border-gray-200'}`}>
-                        <div className={`p-2 rounded-xl w-fit mb-4 ${isDark ? 'bg-purple-500/20' : 'bg-purple-50'}`}>
+                      <div className={`p-7 rounded-[16px] ${isDark ? 'bg-[#1C1C1E] ring-1 ring-white/[0.06]' : 'bg-[#F2F2F7] ring-1 ring-black/[0.03]'}`}>
+                        <div className={`p-2.5 rounded-[12px] w-fit mb-5 ${isDark ? 'bg-purple-500/20' : 'bg-purple-50'}`}>
                           <Monitor size={24} className={isDark ? 'text-purple-400' : 'text-purple-600'} />
                         </div>
-                        <h3 className={`text-lg font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>{t.challenge.pillar2Title}</h3>
-                        <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{t.challenge.pillar2Desc}</p>
+                        <h3 className={`text-[15px] font-semibold mb-2 tracking-[-0.01em] ${isDark ? 'text-white/90' : 'text-black/80'}`}>{t.challenge.pillar2Title}</h3>
+                        <p className={`text-[13px] leading-[1.6] ${isDark ? 'text-white/40' : 'text-black/40'}`}>{t.challenge.pillar2Desc}</p>
                       </div>
-                      <div className={`p-6 rounded-2xl border ${isDark ? 'bg-[#1D1D1F] border-white/10' : 'bg-gray-50 border-gray-200'}`}>
-                        <div className={`p-2 rounded-xl w-fit mb-4 ${isDark ? 'bg-green-500/20' : 'bg-green-50'}`}>
+                      <div className={`p-7 rounded-[16px] ${isDark ? 'bg-[#1C1C1E] ring-1 ring-white/[0.06]' : 'bg-[#F2F2F7] ring-1 ring-black/[0.03]'}`}>
+                        <div className={`p-2.5 rounded-[12px] w-fit mb-5 ${isDark ? 'bg-green-500/20' : 'bg-green-50'}`}>
                           <Users size={24} className={isDark ? 'text-green-400' : 'text-green-600'} />
                         </div>
-                        <h3 className={`text-lg font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>{t.challenge.pillar3Title}</h3>
-                        <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{t.challenge.pillar3Desc}</p>
+                        <h3 className={`text-[15px] font-semibold mb-2 tracking-[-0.01em] ${isDark ? 'text-white/90' : 'text-black/80'}`}>{t.challenge.pillar3Title}</h3>
+                        <p className={`text-[13px] leading-[1.6] ${isDark ? 'text-white/40' : 'text-black/40'}`}>{t.challenge.pillar3Desc}</p>
                       </div>
                     </div>
                   </section>
 
-                  <hr className={`my-12 ${isDark ? 'border-white/10' : 'border-gray-200'}`} />
+                  <div className={`my-20 md:my-28 border-t ${isDark ? 'border-white/[0.06]' : 'border-black/[0.04]'}`} />
 
                   {/* ==================== THE GRID ==================== */}
-                  <section id="grid" className="mb-24 md:mb-32">
-                    <h1 className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-6 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                  <section id="grid" className="mb-32 md:mb-40">
+                    <h1 className={`text-[28px] md:text-[34px] font-semibold mb-4 tracking-[-0.02em] leading-[1.15] ${isDark ? 'text-white' : 'text-gray-900'}`}>
                       {t.grid.title}
                     </h1>
-                    <h2 className={`text-xl md:text-2xl font-bold mb-6 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                    <h2 className={`text-[17px] md:text-[19px] font-medium mb-6 leading-relaxed ${isDark ? 'text-white/50' : 'text-black/45'}`}>
                       {t.grid.subtitle}
                     </h2>
-                    <p className={`text-base leading-relaxed mb-12 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                    <p className={`text-[16px] leading-[1.7] mb-14 ${isDark ? 'text-white/55' : 'text-black/55'}`}>
                       {t.grid.description}
                     </p>
 
@@ -1000,39 +1038,39 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                     />
 
                     {/* Grid features described as cards */}
-                    <div className="grid md:grid-cols-3 gap-6 mt-8">
+                    <div className="grid md:grid-cols-3 gap-5 mt-10">
                       {[
                         { icon: <Eye size={24} />, title: t.grid.statesTitle, desc: t.grid.statesDesc },
                         { icon: <Lock size={24} />, title: t.grid.lockTitle, desc: t.grid.lockDesc },
                         { icon: <Maximize2 size={24} />, title: t.grid.viewerTitle, desc: t.grid.viewerDesc },
                       ].map((item, i) => (
-                        <div key={i} className={`p-6 rounded-2xl border ${isDark ? 'bg-[#1D1D1F] border-white/10' : 'bg-gray-50 border-gray-200'}`}>
-                          <div className={`p-2 rounded-xl w-fit mb-4 ${isDark ? 'bg-blue-600/20' : 'bg-blue-50'}`}>
+                        <div key={i} className={`p-7 rounded-[16px] ${isDark ? 'bg-[#1C1C1E] ring-1 ring-white/[0.06]' : 'bg-[#F2F2F7] ring-1 ring-black/[0.03]'}`}>
+                          <div className={`p-2.5 rounded-[12px] w-fit mb-5 ${isDark ? 'bg-blue-600/20' : 'bg-blue-50'}`}>
                             <div className={isDark ? 'text-blue-400' : 'text-blue-600'}>{item.icon}</div>
                           </div>
-                          <h3 className={`text-lg font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>{item.title}</h3>
-                          <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{item.desc}</p>
+                          <h3 className={`text-[15px] font-semibold mb-2 tracking-[-0.01em] ${isDark ? 'text-white/90' : 'text-black/80'}`}>{item.title}</h3>
+                          <p className={`text-[13px] leading-[1.6] ${isDark ? 'text-white/40' : 'text-black/40'}`}>{item.desc}</p>
                         </div>
                       ))}
                     </div>
                   </section>
 
                   {/* Transition: Grid → Orchestration */}
-                  <div className={`my-16 md:my-24 py-8 border-t border-b ${isDark ? 'border-white/10' : 'border-gray-200'}`}>
-                    <p className={`text-lg md:text-xl leading-relaxed text-center max-w-2xl mx-auto ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                  <div className={`my-20 md:my-28 py-10 border-t border-b ${isDark ? 'border-white/[0.06]' : 'border-black/[0.04]'}`}>
+                    <p className={`text-[17px] md:text-[19px] leading-[1.6] text-center max-w-xl mx-auto font-medium ${isDark ? 'text-white/45' : 'text-black/40'}`}>
                       {t.transitions.gridToOrchestration}
                     </p>
                   </div>
 
                   {/* ==================== ORCHESTRATION ==================== */}
-                  <section id="orchestration" className="mb-24 md:mb-32">
-                    <h1 className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-6 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                  <section id="orchestration" className="mb-32 md:mb-40">
+                    <h1 className={`text-[28px] md:text-[34px] font-semibold mb-4 tracking-[-0.02em] leading-[1.15] ${isDark ? 'text-white' : 'text-gray-900'}`}>
                       {t.orchestration.title}
                     </h1>
-                    <h2 className={`text-xl md:text-2xl font-bold mb-6 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                    <h2 className={`text-[17px] md:text-[19px] font-medium mb-6 leading-relaxed ${isDark ? 'text-white/50' : 'text-black/45'}`}>
                       {t.orchestration.subtitle}
                     </h2>
-                    <p className={`text-base leading-relaxed mb-12 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                    <p className={`text-[16px] leading-[1.7] mb-14 ${isDark ? 'text-white/55' : 'text-black/55'}`}>
                       {t.orchestration.description}
                     </p>
 
@@ -1046,39 +1084,39 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                     />
 
                     {/* Orchestration features described as cards */}
-                    <div className="grid md:grid-cols-3 gap-6 mt-8">
+                    <div className="grid md:grid-cols-3 gap-5 mt-10">
                       {[
                         { icon: <Users size={24} />, title: t.orchestration.randomTitle, desc: t.orchestration.randomDesc },
                         { icon: <Monitor size={24} />, title: t.orchestration.projectionTitle, desc: t.orchestration.projectionDesc },
                         { icon: <Eye size={24} />, title: t.orchestration.spotlightTitle, desc: t.orchestration.spotlightDesc },
                       ].map((item, i) => (
-                        <div key={i} className={`p-6 rounded-2xl border ${isDark ? 'bg-[#1D1D1F] border-white/10' : 'bg-gray-50 border-gray-200'}`}>
-                          <div className={`p-2 rounded-xl w-fit mb-4 ${isDark ? 'bg-purple-500/20' : 'bg-purple-50'}`}>
+                        <div key={i} className={`p-7 rounded-[16px] ${isDark ? 'bg-[#1C1C1E] ring-1 ring-white/[0.06]' : 'bg-[#F2F2F7] ring-1 ring-black/[0.03]'}`}>
+                          <div className={`p-2.5 rounded-[12px] w-fit mb-5 ${isDark ? 'bg-purple-500/20' : 'bg-purple-50'}`}>
                             <div className={isDark ? 'text-purple-400' : 'text-purple-600'}>{item.icon}</div>
                           </div>
-                          <h3 className={`text-lg font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>{item.title}</h3>
-                          <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{item.desc}</p>
+                          <h3 className={`text-[15px] font-semibold mb-2 tracking-[-0.01em] ${isDark ? 'text-white/90' : 'text-black/80'}`}>{item.title}</h3>
+                          <p className={`text-[13px] leading-[1.6] ${isDark ? 'text-white/40' : 'text-black/40'}`}>{item.desc}</p>
                         </div>
                       ))}
                     </div>
                   </section>
 
                   {/* Transition: Orchestration → Communication */}
-                  <div className={`my-16 md:my-24 py-8 border-t border-b ${isDark ? 'border-white/10' : 'border-gray-200'}`}>
-                    <p className={`text-lg md:text-xl leading-relaxed text-center max-w-2xl mx-auto ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                  <div className={`my-20 md:my-28 py-10 border-t border-b ${isDark ? 'border-white/[0.06]' : 'border-black/[0.04]'}`}>
+                    <p className={`text-[17px] md:text-[19px] leading-[1.6] text-center max-w-xl mx-auto font-medium ${isDark ? 'text-white/45' : 'text-black/40'}`}>
                       {t.transitions.orchestrationToCommunication}
                     </p>
                   </div>
 
                   {/* ==================== COMMUNICATION ==================== */}
-                  <section id="communication" className="mb-24 md:mb-32">
-                    <h1 className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-6 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                  <section id="communication" className="mb-32 md:mb-40">
+                    <h1 className={`text-[28px] md:text-[34px] font-semibold mb-4 tracking-[-0.02em] leading-[1.15] ${isDark ? 'text-white' : 'text-gray-900'}`}>
                       {t.communication.title}
                     </h1>
-                    <h2 className={`text-xl md:text-2xl font-bold mb-6 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                    <h2 className={`text-[17px] md:text-[19px] font-medium mb-6 leading-relaxed ${isDark ? 'text-white/50' : 'text-black/45'}`}>
                       {t.communication.subtitle}
                     </h2>
-                    <p className={`text-base leading-relaxed mb-12 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                    <p className={`text-[16px] leading-[1.7] mb-14 ${isDark ? 'text-white/55' : 'text-black/55'}`}>
                       {t.communication.description}
                     </p>
 
@@ -1092,7 +1130,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                     />
 
                     {/* Communication features described as cards */}
-                    <div className="grid md:grid-cols-3 gap-6 mt-8">
+                    <div className="grid md:grid-cols-3 gap-5 mt-10">
                       {[
                         { icon: <MessageCircle size={24} />, title: t.communication.messagesTitle, desc: t.communication.messagesDesc },
                         { icon: <ArrowRight size={24} />, title: t.communication.replyTitle, desc: t.communication.replyDesc },
@@ -1100,33 +1138,33 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                         { icon: <FileText size={24} />, title: t.communication.resourceTitle, desc: t.communication.resourceDesc },
                         { icon: <ExternalLink size={24} />, title: t.communication.linkTitle, desc: t.communication.linkDesc },
                       ].map((item, i) => (
-                        <div key={i} className={`p-6 rounded-2xl border ${isDark ? 'bg-[#1D1D1F] border-white/10' : 'bg-gray-50 border-gray-200'}`}>
-                          <div className={`p-2 rounded-xl w-fit mb-4 ${isDark ? 'bg-indigo-500/20' : 'bg-indigo-50'}`}>
+                        <div key={i} className={`p-7 rounded-[16px] ${isDark ? 'bg-[#1C1C1E] ring-1 ring-white/[0.06]' : 'bg-[#F2F2F7] ring-1 ring-black/[0.03]'}`}>
+                          <div className={`p-2.5 rounded-[12px] w-fit mb-5 ${isDark ? 'bg-indigo-500/20' : 'bg-indigo-50'}`}>
                             <div className={isDark ? 'text-indigo-400' : 'text-indigo-600'}>{item.icon}</div>
                           </div>
-                          <h3 className={`text-lg font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>{item.title}</h3>
-                          <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{item.desc}</p>
+                          <h3 className={`text-[15px] font-semibold mb-2 tracking-[-0.01em] ${isDark ? 'text-white/90' : 'text-black/80'}`}>{item.title}</h3>
+                          <p className={`text-[13px] leading-[1.6] ${isDark ? 'text-white/40' : 'text-black/40'}`}>{item.desc}</p>
                         </div>
                       ))}
                     </div>
                   </section>
 
                   {/* Transition: Communication → Sessions */}
-                  <div className={`my-16 md:my-24 py-8 border-t border-b ${isDark ? 'border-white/10' : 'border-gray-200'}`}>
-                    <p className={`text-lg md:text-xl leading-relaxed text-center max-w-2xl mx-auto ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                  <div className={`my-20 md:my-28 py-10 border-t border-b ${isDark ? 'border-white/[0.06]' : 'border-black/[0.04]'}`}>
+                    <p className={`text-[17px] md:text-[19px] leading-[1.6] text-center max-w-xl mx-auto font-medium ${isDark ? 'text-white/45' : 'text-black/40'}`}>
                       {t.transitions.communicationToSessions}
                     </p>
                   </div>
 
                   {/* ==================== SESSIONS & EXAMS ==================== */}
-                  <section id="sessions" className="mb-24 md:mb-32">
-                    <h1 className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-6 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                  <section id="sessions" className="mb-32 md:mb-40">
+                    <h1 className={`text-[28px] md:text-[34px] font-semibold mb-4 tracking-[-0.02em] leading-[1.15] ${isDark ? 'text-white' : 'text-gray-900'}`}>
                       {t.sessions.title}
                     </h1>
-                    <h2 className={`text-xl md:text-2xl font-bold mb-6 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                    <h2 className={`text-[17px] md:text-[19px] font-medium mb-6 leading-relaxed ${isDark ? 'text-white/50' : 'text-black/45'}`}>
                       {t.sessions.subtitle}
                     </h2>
-                    <p className={`text-base leading-relaxed mb-12 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                    <p className={`text-[16px] leading-[1.7] mb-14 ${isDark ? 'text-white/55' : 'text-black/55'}`}>
                       {t.sessions.description}
                     </p>
 
@@ -1140,7 +1178,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                     />
 
                     {/* Session & exam features described as cards */}
-                    <div className="grid md:grid-cols-3 gap-6 mt-8">
+                    <div className="grid md:grid-cols-3 gap-5 mt-10">
                       {[
                         { icon: <Timer size={24} />, title: t.sessions.endTitle, desc: t.sessions.endDesc },
                         { icon: <FileText size={24} />, title: t.sessions.assignmentTitle, desc: t.sessions.assignmentDesc },
@@ -1148,33 +1186,33 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                         { icon: <Eye size={24} />, title: t.sessions.examMonitorTitle, desc: t.sessions.examMonitorDesc },
                         { icon: <FileText size={24} />, title: t.sessions.examReviewTitle, desc: t.sessions.examReviewDesc },
                       ].map((item, i) => (
-                        <div key={i} className={`p-6 rounded-2xl border ${isDark ? 'bg-[#1D1D1F] border-white/10' : 'bg-gray-50 border-gray-200'}`}>
-                          <div className={`p-2 rounded-xl w-fit mb-4 ${isDark ? 'bg-orange-500/20' : 'bg-orange-50'}`}>
+                        <div key={i} className={`p-7 rounded-[16px] ${isDark ? 'bg-[#1C1C1E] ring-1 ring-white/[0.06]' : 'bg-[#F2F2F7] ring-1 ring-black/[0.03]'}`}>
+                          <div className={`p-2.5 rounded-[12px] w-fit mb-5 ${isDark ? 'bg-orange-500/20' : 'bg-orange-50'}`}>
                             <div className={isDark ? 'text-orange-400' : 'text-orange-600'}>{item.icon}</div>
                           </div>
-                          <h3 className={`text-lg font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>{item.title}</h3>
-                          <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{item.desc}</p>
+                          <h3 className={`text-[15px] font-semibold mb-2 tracking-[-0.01em] ${isDark ? 'text-white/90' : 'text-black/80'}`}>{item.title}</h3>
+                          <p className={`text-[13px] leading-[1.6] ${isDark ? 'text-white/40' : 'text-black/40'}`}>{item.desc}</p>
                         </div>
                       ))}
                     </div>
                   </section>
 
                   {/* Transition: Sessions → Students */}
-                  <div className={`my-16 md:my-24 py-8 border-t border-b ${isDark ? 'border-white/10' : 'border-gray-200'}`}>
-                    <p className={`text-lg md:text-xl leading-relaxed text-center max-w-2xl mx-auto ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                  <div className={`my-20 md:my-28 py-10 border-t border-b ${isDark ? 'border-white/[0.06]' : 'border-black/[0.04]'}`}>
+                    <p className={`text-[17px] md:text-[19px] leading-[1.6] text-center max-w-xl mx-auto font-medium ${isDark ? 'text-white/45' : 'text-black/40'}`}>
                       {t.transitions.sessionsToStudents}
                     </p>
                   </div>
 
                   {/* ==================== STUDENT EXPERIENCE ==================== */}
-                  <section id="students" className="mb-24 md:mb-32">
-                    <h1 className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-6 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                  <section id="students" className="mb-32 md:mb-40">
+                    <h1 className={`text-[28px] md:text-[34px] font-semibold mb-4 tracking-[-0.02em] leading-[1.15] ${isDark ? 'text-white' : 'text-gray-900'}`}>
                       {t.students.title}
                     </h1>
-                    <h2 className={`text-xl md:text-2xl font-bold mb-6 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                    <h2 className={`text-[17px] md:text-[19px] font-medium mb-6 leading-relaxed ${isDark ? 'text-white/50' : 'text-black/45'}`}>
                       {t.students.subtitle}
                     </h2>
-                    <p className={`text-base leading-relaxed mb-12 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                    <p className={`text-[16px] leading-[1.7] mb-14 ${isDark ? 'text-white/55' : 'text-black/55'}`}>
                       {t.students.description}
                     </p>
 
@@ -1188,7 +1226,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                     />
 
                     {/* Student features described as cards */}
-                    <div className="grid md:grid-cols-3 gap-6 mt-8">
+                    <div className="grid md:grid-cols-3 gap-5 mt-10">
                       {[
                         { icon: <FileText size={24} />, title: t.students.resourcesTitle, desc: t.students.resourcesDesc },
                         { icon: <ArrowRight size={24} />, title: t.students.doneTitle, desc: t.students.doneDesc },
@@ -1197,33 +1235,33 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                         { icon: <FileText size={24} />, title: t.students.receiveTitle, desc: t.students.receiveDesc },
                         { icon: <Lock size={24} />, title: t.students.lockedTitle, desc: t.students.lockedDesc },
                       ].map((item, i) => (
-                        <div key={i} className={`p-6 rounded-2xl border ${isDark ? 'bg-[#1D1D1F] border-white/10' : 'bg-gray-50 border-gray-200'}`}>
-                          <div className={`p-2 rounded-xl w-fit mb-4 ${isDark ? 'bg-green-500/20' : 'bg-green-50'}`}>
+                        <div key={i} className={`p-7 rounded-[16px] ${isDark ? 'bg-[#1C1C1E] ring-1 ring-white/[0.06]' : 'bg-[#F2F2F7] ring-1 ring-black/[0.03]'}`}>
+                          <div className={`p-2.5 rounded-[12px] w-fit mb-5 ${isDark ? 'bg-green-500/20' : 'bg-green-50'}`}>
                             <div className={isDark ? 'text-green-400' : 'text-green-600'}>{item.icon}</div>
                           </div>
-                          <h3 className={`text-lg font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>{item.title}</h3>
-                          <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{item.desc}</p>
+                          <h3 className={`text-[15px] font-semibold mb-2 tracking-[-0.01em] ${isDark ? 'text-white/90' : 'text-black/80'}`}>{item.title}</h3>
+                          <p className={`text-[13px] leading-[1.6] ${isDark ? 'text-white/40' : 'text-black/40'}`}>{item.desc}</p>
                         </div>
                       ))}
                     </div>
                   </section>
 
                   {/* Transition: Students → Journeys */}
-                  <div className={`my-16 md:my-24 py-8 border-t border-b ${isDark ? 'border-white/10' : 'border-gray-200'}`}>
-                    <p className={`text-lg md:text-xl leading-relaxed text-center max-w-2xl mx-auto ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                  <div className={`my-20 md:my-28 py-10 border-t border-b ${isDark ? 'border-white/[0.06]' : 'border-black/[0.04]'}`}>
+                    <p className={`text-[17px] md:text-[19px] leading-[1.6] text-center max-w-xl mx-auto font-medium ${isDark ? 'text-white/45' : 'text-black/40'}`}>
                       {t.transitions.studentsToJourneys}
                     </p>
                   </div>
 
                   {/* ==================== COMPLETE JOURNEYS ==================== */}
-                  <section id="journeys" className="mb-24 md:mb-32">
-                    <h1 className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-6 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                  <section id="journeys" className="mb-32 md:mb-40">
+                    <h1 className={`text-[28px] md:text-[34px] font-semibold mb-4 tracking-[-0.02em] leading-[1.15] ${isDark ? 'text-white' : 'text-gray-900'}`}>
                       {t.journeys.title}
                     </h1>
-                    <h2 className={`text-xl md:text-2xl font-bold mb-6 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                    <h2 className={`text-[17px] md:text-[19px] font-medium mb-6 leading-relaxed ${isDark ? 'text-white/50' : 'text-black/45'}`}>
                       {t.journeys.subtitle}
                     </h2>
-                    <p className={`text-base leading-relaxed mb-12 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                    <p className={`text-[16px] leading-[1.7] mb-14 ${isDark ? 'text-white/55' : 'text-black/55'}`}>
                       {t.journeys.description}
                     </p>
 
@@ -1237,71 +1275,71 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                     />
 
                     {/* Other journeys described as cards */}
-                    <div className="grid md:grid-cols-2 gap-6 mt-8">
+                    <div className="grid md:grid-cols-2 gap-5 mt-10">
                       {[
                         { icon: <Play size={24} />, title: t.journeys.sc1Title, desc: t.journeys.sc1Desc },
                         { icon: <FileText size={24} />, title: t.journeys.sc7Title, desc: t.journeys.sc7Desc },
                       ].map((item, i) => (
-                        <div key={i} className={`p-6 rounded-2xl border ${isDark ? 'bg-[#1D1D1F] border-white/10' : 'bg-gray-50 border-gray-200'}`}>
-                          <div className={`p-2 rounded-xl w-fit mb-4 ${isDark ? 'bg-blue-600/20' : 'bg-blue-50'}`}>
+                        <div key={i} className={`p-7 rounded-[16px] ${isDark ? 'bg-[#1C1C1E] ring-1 ring-white/[0.06]' : 'bg-[#F2F2F7] ring-1 ring-black/[0.03]'}`}>
+                          <div className={`p-2.5 rounded-[12px] w-fit mb-5 ${isDark ? 'bg-blue-600/20' : 'bg-blue-50'}`}>
                             <div className={isDark ? 'text-blue-400' : 'text-blue-600'}>{item.icon}</div>
                           </div>
-                          <h3 className={`text-lg font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>{item.title}</h3>
-                          <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{item.desc}</p>
+                          <h3 className={`text-[15px] font-semibold mb-2 tracking-[-0.01em] ${isDark ? 'text-white/90' : 'text-black/80'}`}>{item.title}</h3>
+                          <p className={`text-[13px] leading-[1.6] ${isDark ? 'text-white/40' : 'text-black/40'}`}>{item.desc}</p>
                         </div>
                       ))}
                     </div>
                   </section>
 
-                  <hr className={`my-12 ${isDark ? 'border-white/10' : 'border-gray-200'}`} />
+                  <div className={`my-20 md:my-28 border-t ${isDark ? 'border-white/[0.06]' : 'border-black/[0.04]'}`} />
 
                   {/* ==================== IMPACT ==================== */}
-                  <section id="impact" className="mb-24 md:mb-32">
-                    <h1 className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-4 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                  <section id="impact" className="mb-32 md:mb-40">
+                    <h1 className={`text-[28px] md:text-[34px] font-semibold mb-4 tracking-[-0.02em] leading-[1.15] ${isDark ? 'text-white' : 'text-gray-900'}`}>
                       {t.impact.title}
                     </h1>
-                    <p className={`text-base leading-relaxed mb-8 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                    <p className={`text-[16px] leading-[1.7] mb-14 ${isDark ? 'text-white/55' : 'text-black/55'}`}>
                       {t.impact.intro}
                     </p>
 
                     {/* Stats */}
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-5 mb-14">
                       {[
                         { value: t.impact.stat1, label: t.impact.stat1Desc },
                         { value: t.impact.stat2, label: t.impact.stat2Desc },
                         { value: t.impact.stat3, label: t.impact.stat3Desc },
                         { value: t.impact.stat4, label: t.impact.stat4Desc },
                       ].map((stat, i) => (
-                        <div key={i} className={`p-6 rounded-2xl border ${isDark ? 'bg-[#1D1D1F] border-white/10' : 'bg-gray-50 border-gray-200'}`}>
-                          <p className={`text-3xl font-bold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>{stat.value}</p>
-                          <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{stat.label}</p>
+                        <div key={i} className={`p-7 rounded-[16px] ${isDark ? 'bg-[#1C1C1E] ring-1 ring-white/[0.06]' : 'bg-[#F2F2F7] ring-1 ring-black/[0.03]'}`}>
+                          <p className={`text-[28px] font-semibold mb-1.5 tracking-[-0.02em] ${isDark ? 'text-white' : 'text-gray-900'}`}>{stat.value}</p>
+                          <p className={`text-[13px] leading-[1.5] ${isDark ? 'text-white/40' : 'text-black/40'}`}>{stat.label}</p>
                         </div>
                       ))}
                     </div>
 
                     {/* Testimonial */}
-                    <blockquote className={`p-8 rounded-2xl border ${isDark ? 'bg-[#1D1D1F] border-white/10' : 'bg-gray-50 border-gray-200'}`}>
-                      <p className={`text-lg italic mb-4 ${isDark ? 'text-gray-200' : 'text-gray-700'}`}>
+                    <blockquote className={`px-10 py-9 rounded-[20px] ${isDark ? 'bg-[#1C1C1E] ring-1 ring-white/[0.06]' : 'bg-[#F2F2F7] ring-1 ring-black/[0.03]'}`}>
+                      <p className={`text-[17px] leading-[1.65] italic mb-5 ${isDark ? 'text-white/70' : 'text-black/60'}`}>
                         "{t.testimonial.quote}"
                       </p>
-                      <footer className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                        — {t.testimonial.author}, {t.testimonial.role}
+                      <footer className={`text-[13px] ${isDark ? 'text-white/30' : 'text-black/30'}`}>
+                        {t.testimonial.author}, {t.testimonial.role}
                       </footer>
                     </blockquote>
                   </section>
 
                   {/* ==================== CTA ==================== */}
-                  <section className="py-24 md:py-32 px-10">
-                    <div className="max-w-[800px] mx-auto text-center">
-                      <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-8 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                  <section className="py-28 md:py-36">
+                    <div className="max-w-[600px] mx-auto text-center">
+                      <h2 className={`text-[28px] md:text-[34px] font-semibold tracking-[-0.02em] mb-10 ${isDark ? 'text-white' : 'text-gray-900'}`}>
                         {t.cta.title}
                       </h2>
                       <button
                         onClick={onContact}
-                        className="inline-flex items-center gap-3 px-10 py-5 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-lg rounded-full transition-colors"
+                        className="inline-flex items-center gap-3 px-10 py-4.5 bg-blue-600 hover:bg-blue-500 text-white font-semibold text-[16px] rounded-full transition-colors"
                       >
                         {t.cta.button}
-                        <ArrowRight size={22} />
+                        <ArrowRight size={20} />
                       </button>
                     </div>
                   </section>
