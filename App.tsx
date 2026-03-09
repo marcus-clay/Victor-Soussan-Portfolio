@@ -2269,7 +2269,7 @@ const App: React.FC = () => {
     'sqool-classe': {
       title: 'SQOOL Classe - Supervision de classe en temps réel | Victor Soussan',
       description: 'Case study: Outil de gestion de classe en temps réel pour les enseignants. Grille de supervision, verrouillage d\'écrans, groupes, communication élèves-professeurs.',
-      image: '/images/thumbnail-sqool-suite.webp'
+      image: '/images/thumbnail_sqool_classe.webp'
     },
     'france-vae': {
       title: 'France VAE - Service Public Numérique | Victor Soussan',
@@ -3313,7 +3313,7 @@ const App: React.FC = () => {
                   startScale={startScale}
                   systemTheme={systemTheme}
                   onClick={() => {
-                    if (project.id === 'toolkit' || project.id === 'dailymotion' || project.id === 'connect' || project.id === 'sqool' || project.id === 'france-vae') {
+                    if (project.id === 'toolkit' || project.id === 'dailymotion' || project.id === 'connect' || project.id === 'sqool' || project.id === 'sqool-classe' || project.id === 'france-vae') {
                       openProjectWithUrl(project.id, 'executive');
                     } else if (project.externalLink) {
                       setIframeModalUrl(project.externalLink);
@@ -3513,13 +3513,13 @@ const App: React.FC = () => {
                         }`} />
 
                         {/* Desktop: Full buttons */}
-                        {(project.id === 'toolkit' || project.id === 'dailymotion' || project.id === 'connect' || project.id === 'sqool' || project.id === 'france-vae') ? (
+                        {(project.id === 'toolkit' || project.id === 'dailymotion' || project.id === 'connect' || project.id === 'sqool' || project.id === 'sqool-classe' || project.id === 'france-vae') ? (
                           <div className="hidden md:flex items-center gap-2">
                             {/* Gallery Button */}
                             <button
                               onClick={(e) => {
                                 e.stopPropagation();
-                                openProjectWithUrl(project.id as 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'france-vae', 'gallery');
+                                openProjectWithUrl(project.id as 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'sqool-classe' | 'france-vae', 'gallery');
                               }}
                               className={`inline-flex items-center text-sm font-medium px-5 py-2.5 rounded-full transition-colors duration-200 ${
                                 systemTheme === 'dark'
@@ -7856,7 +7856,7 @@ ${contactForm.message}`;
               onProjectClick={(projectId) => {
                 closeModalWithUrl(setIsWorkOpen);
                 setOpenedFromIndex(true);
-                if (projectId === 'toolkit' || projectId === 'dailymotion' || projectId === 'connect' || projectId === 'sqool' || projectId === 'france-vae' || projectId === 'pagesjaunes') {
+                if (projectId === 'toolkit' || projectId === 'dailymotion' || projectId === 'connect' || projectId === 'sqool' || projectId === 'sqool-classe' || projectId === 'france-vae' || projectId === 'pagesjaunes') {
                   openProjectWithUrl(projectId, 'executive');
                 } else if (projectId === 'androidwear') {
                   openProjectWithUrl(projectId, 'caseStudy');

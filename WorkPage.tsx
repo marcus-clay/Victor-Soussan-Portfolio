@@ -74,6 +74,18 @@ const getProjects = (lang: Language): Project[] => {
       category: isEn ? "Product Design" : "Design Produit"
     },
     {
+      id: "sqool-classe",
+      title: "SQOOL Classe",
+      role: isEn ? "Lead Interaction Designer" : "Lead Interaction Designer",
+      period: "2022",
+      summary: isEn
+        ? "Designing a real-time classroom supervision tool for 465 schools across Île-de-France."
+        : "Conception d\u2019un outil de supervision de classe en temps r\u00e9el pour 465 \u00e9tablissements en \u00cele-de-France.",
+      coverImage: "/images/thumbnail_sqool_classe.webp",
+      color: "blue",
+      category: isEn ? "Product Design" : "Design Produit"
+    },
+    {
       id: "connect",
       title: "SQOOL Connect",
       role: isEn ? "Product Design Lead" : "Product Design Lead",
