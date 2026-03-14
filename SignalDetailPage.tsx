@@ -296,7 +296,7 @@ const SignalDetailPage: React.FC<Props> = ({ signalId, systemTheme, lang, onBack
               <p className={`text-xs font-semibold uppercase tracking-widest mb-5 ${
                 isDark ? 'text-gray-500' : 'text-gray-400'
               }`}>
-                {lang === 'en' ? 'More signals' : 'Autres signaux'}
+                {lang === 'en' ? 'More articles' : 'Autres articles'}
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 {relatedSignals.map(rs => {
@@ -340,7 +340,7 @@ const SignalDetailPage: React.FC<Props> = ({ signalId, systemTheme, lang, onBack
                 className="group inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-medium transition-all duration-200 cursor-pointer bg-[#2D5CF3] text-white hover:bg-[#2450d9] shadow-sm hover:shadow-md"
               >
                 <ArrowLeft size={16} className="transition-transform group-hover:-translate-x-1" />
-                {lang === 'en' ? 'All signals' : 'Tous les signaux'}
+                {lang === 'en' ? 'All articles' : 'Tous les articles'}
               </button>
             </div>
           </article>
@@ -351,7 +351,7 @@ const SignalDetailPage: React.FC<Props> = ({ signalId, systemTheme, lang, onBack
               <p className={`text-xs font-semibold uppercase tracking-widest mb-5 ${
                 isDark ? 'text-gray-500' : 'text-gray-400'
               }`}>
-                {lang === 'en' ? 'More signals' : 'Autres signaux'}
+                {lang === 'en' ? 'More articles' : 'Autres articles'}
               </p>
               <div className="space-y-4">
                 {relatedSignals.map(rs => {

@@ -20,35 +20,23 @@ interface SignalsPageProps {
 }
 
 // ---------------------------------------------------------------------------
-// Gradient map per category
-// ---------------------------------------------------------------------------
-
-const CATEGORY_GRADIENTS: Record<string, string> = {
-  ai: 'from-[#7B61FF] via-[#D946EF] to-[#F472B6]',
-  methodology: 'from-[#38BDF8] via-[#6366F1] to-[#4F46E5]',
-  strategy: 'from-[#FBBF24] via-[#F97316] to-[#EF4444]',
-  leadership: 'from-[#34D399] via-[#14B8A6] to-[#0891B2]',
-  craft: 'from-[#FB7185] via-[#E879F9] to-[#A855F7]',
-};
-
-// ---------------------------------------------------------------------------
 // Translations
 // ---------------------------------------------------------------------------
 
 const TRANSLATIONS = {
   en: {
     back: 'Close',
-    page_title: 'Signals',
+    page_title: 'Blog',
     page_subtitle: 'Perspectives on product design, leadership and methodology. Short reads drawn from fifteen years of practice.',
-    items: 'signals',
+    items: 'articles',
     read_more: 'Read more',
     copied: 'Link copied',
   },
   fr: {
     back: 'Fermer',
-    page_title: 'Signaux',
+    page_title: 'Blog',
     page_subtitle: 'Réflexions sur le design produit, le leadership et la méthodologie. Lectures courtes tirées de quinze ans de pratique.',
-    items: 'signaux',
+    items: 'articles',
     read_more: 'Lire la suite',
     copied: 'Lien copié',
   },
@@ -150,7 +138,6 @@ const SignalsPage: React.FC<SignalsPageProps> = ({ systemTheme, lang, onBack, on
           <AnimatePresence mode="popLayout">
             {filteredSignals.map(signal => {
               const colors = CATEGORY_COLORS[signal.category];
-              const gradient = CATEGORY_GRADIENTS[signal.category] || CATEGORY_GRADIENTS.ai;
               const isCopied = copiedId === signal.id;
               return (
                 <motion.article
@@ -161,27 +148,19 @@ const SignalsPage: React.FC<SignalsPageProps> = ({ systemTheme, lang, onBack, on
                   exit={{ opacity: 0, scale: 0.97 }}
                   transition={{ duration: 0.2 }}
                   onClick={() => onOpenSignal(signal.id)}
-                  className={`group cursor-pointer flex rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5 ${
+                  className={`group cursor-pointer rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5 ${
                     isDark
                       ? 'bg-[#1D1D1F] ring-1 ring-white/5 hover:ring-white/15'
                       : 'bg-white ring-1 ring-gray-200/60 hover:ring-gray-300/80 shadow-sm'
                   }`}
                 >
-                  {/* Square gradient thumbnail */}
-                  <div className={`relative w-28 md:w-36 flex-shrink-0 overflow-hidden bg-gradient-to-br ${gradient}`}>
-                    <div className="absolute -top-1/2 -right-1/4 w-3/4 h-full rounded-full bg-white/15 blur-3xl" />
-                    <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-black/15 to-transparent" />
-                  </div>
-
-                  {/* Content */}
-                  <div className="flex-1 p-4 md:p-5 flex flex-col min-w-0">
-                    <div className="flex items-start justify-between gap-2 mb-2">
+                  <div className="p-5 md:p-6 flex flex-col min-w-0">
+                    <div className="flex items-start justify-between gap-2 mb-3">
                       <span className={`inline-block px-2.5 py-0.5 rounded-full text-[11px] font-semibold ${
                         isDark ? colors.bgDark : colors.bg
                       } ${colors.text}`}>
                         {CATEGORY_LABELS[signal.category][lang]}
                       </span>
-                      {/* Copy link button */}
                       <button
                         onClick={(e) => handleCopy(e, signal)}
                         className={`flex-shrink-0 p-1.5 rounded-lg transition-colors ${
@@ -197,13 +176,13 @@ const SignalsPage: React.FC<SignalsPageProps> = ({ systemTheme, lang, onBack, on
                       </button>
                     </div>
 
-                    <h3 className={`text-sm md:text-base font-bold mb-1.5 leading-snug tracking-[-0.02em] transition-colors line-clamp-2 ${
+                    <h3 className={`text-lg md:text-xl font-bold mb-2 leading-snug tracking-[-0.02em] transition-colors line-clamp-3 ${
                       isDark ? 'text-white group-hover:text-blue-400' : 'text-gray-900 group-hover:text-[#2D5CF3]'
                     }`}>
                       {getTitle(signal)}
                     </h3>
 
-                    <p className={`text-xs md:text-sm leading-relaxed mb-3 line-clamp-2 ${
+                    <p className={`text-sm leading-relaxed mb-4 line-clamp-2 ${
                       isDark ? 'text-gray-400' : 'text-gray-500'
                     }`}>
                       {getBody(signal)}
@@ -211,12 +190,12 @@ const SignalsPage: React.FC<SignalsPageProps> = ({ systemTheme, lang, onBack, on
 
                     <div className="mt-auto flex items-center justify-between">
                       <div className="flex items-center gap-1.5">
-                        <span className={`text-xs md:text-sm font-medium transition-colors ${
+                        <span className={`text-sm font-medium transition-colors ${
                           isDark ? 'text-blue-400' : 'text-[#2D5CF3]'
                         }`}>
                           {t.read_more}
                         </span>
-                        <ArrowRight size={12} className={`transition-transform group-hover:translate-x-1 ${
+                        <ArrowRight size={14} className={`transition-transform group-hover:translate-x-1 ${
                           isDark ? 'text-blue-400' : 'text-[#2D5CF3]'
                         }`} />
                       </div>

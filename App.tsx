@@ -724,9 +724,9 @@ const TRANSLATIONS = {
       cta: "Browse the full gallery",
     },
     signals: {
-      title: "Signals",
+      title: "Blog",
       subtitle: "Perspectives on product design, leadership and methodology.",
-      cta: "All signals",
+      cta: "All articles",
     },
     testimonials: {
       title: "In their words",
@@ -1269,9 +1269,9 @@ const TRANSLATIONS = {
       cta: "Parcourir la galerie complète",
     },
     signals: {
-      title: "Signaux",
+      title: "Blog",
       subtitle: "Réflexions sur le design produit, le leadership et la méthodologie.",
-      cta: "Tous les signaux",
+      cta: "Tous les articles",
     },
     testimonials: {
       title: "Témoignages",
@@ -2413,7 +2413,7 @@ const App: React.FC = () => {
     },
     '/signals': {
       setter: setIsSignalsOpen,
-      title: 'Signals | Victor Soussan',
+      title: 'Blog | Victor Soussan',
       description: 'Réflexions et perspectives sur le design produit, le leadership et la méthodologie.'
     },
     '/consulting': {
@@ -3795,42 +3795,26 @@ const App: React.FC = () => {
             }`}>{content.signals.subtitle}</p>
           </div>
 
-          {/* Featured signal cards - inline layout with square thumbnail */}
+          {/* Featured blog cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
             {(() => {
               const featured = FEATURED_SIGNAL_IDS
                 .map(id => SIGNALS.find(s => s.id === id))
                 .filter((s): s is Signal => !!s);
 
-              const categoryGradients: Record<string, string> = {
-                ai: 'from-[#7B61FF] via-[#D946EF] to-[#F472B6]',
-                methodology: 'from-[#38BDF8] via-[#6366F1] to-[#4F46E5]',
-                strategy: 'from-[#FBBF24] via-[#F97316] to-[#EF4444]',
-                leadership: 'from-[#34D399] via-[#14B8A6] to-[#0891B2]',
-                craft: 'from-[#FB7185] via-[#E879F9] to-[#A855F7]',
-              };
-
               return featured.map(signal => {
-                const gradient = categoryGradients[signal.category] || categoryGradients.ai;
                 return (
                   <div
                     key={signal.id}
                     onClick={() => openModalWithUrl(`/signal/${signal.id}`)}
-                    className={`group cursor-pointer rounded-2xl overflow-hidden flex transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5 ${
+                    className={`group cursor-pointer rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5 ${
                       systemTheme === 'dark'
                         ? 'bg-[#1D1D1F] ring-1 ring-white/5 hover:ring-white/15'
                         : 'bg-white ring-1 ring-gray-200/60 hover:ring-gray-300/80 shadow-sm'
                     }`}
                   >
-                    {/* Square gradient thumbnail on the left */}
-                    <div className={`relative w-28 md:w-36 flex-shrink-0 overflow-hidden bg-gradient-to-br ${gradient}`}>
-                      <div className="absolute -top-1/2 -right-1/4 w-3/4 h-full rounded-full bg-white/15 blur-3xl" />
-                      <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-black/15 to-transparent" />
-                    </div>
-
-                    {/* Content on the right */}
-                    <div className="flex-1 p-4 md:p-5 flex flex-col justify-center min-w-0">
-                      <div className="flex items-start justify-between gap-2 mb-2.5">
+                    <div className="p-5 md:p-6 flex flex-col min-w-0">
+                      <div className="flex items-start justify-between gap-2 mb-3">
                         <span className={`inline-block px-2.5 py-0.5 rounded-full text-[11px] font-semibold ${
                           systemTheme === 'dark' ? SIGNAL_CATEGORY_COLORS[signal.category].bgDark : SIGNAL_CATEGORY_COLORS[signal.category].bg
                         } ${SIGNAL_CATEGORY_COLORS[signal.category].text}`}>
@@ -3857,23 +3841,23 @@ const App: React.FC = () => {
                           {copiedSignalId === signal.id ? <Check size={14} /> : <Link2 size={14} />}
                         </button>
                       </div>
-                      <h3 className={`text-sm md:text-base font-bold mb-1.5 leading-snug tracking-[-0.02em] transition-colors line-clamp-2 ${
+                      <h3 className={`text-lg md:text-xl font-bold mb-2 leading-snug tracking-[-0.02em] transition-colors line-clamp-3 ${
                         systemTheme === 'dark' ? 'text-white group-hover:text-blue-400' : 'text-gray-900 group-hover:text-[#2D5CF3]'
                       }`}>
                         {lang === 'en' ? signal.title_en : signal.title_fr}
                       </h3>
-                      <p className={`text-xs md:text-sm leading-relaxed mb-3 line-clamp-2 ${
+                      <p className={`text-sm leading-relaxed mb-4 line-clamp-2 ${
                         systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
                       }`}>
                         {lang === 'en' ? signal.body_en : signal.body_fr}
                       </p>
                       <div className="flex items-center gap-1.5">
-                        <span className={`text-xs md:text-sm font-medium transition-colors ${
+                        <span className={`text-sm font-medium transition-colors ${
                           systemTheme === 'dark' ? 'text-blue-400' : 'text-[#2D5CF3]'
                         }`}>
                           {lang === 'en' ? 'Read more' : 'Lire la suite'}
                         </span>
-                        <ArrowRight size={12} className={`transition-transform group-hover:translate-x-1 ${
+                        <ArrowRight size={14} className={`transition-transform group-hover:translate-x-1 ${
                           systemTheme === 'dark' ? 'text-blue-400' : 'text-[#2D5CF3]'
                         }`} />
                       </div>
@@ -5634,7 +5618,7 @@ ${contactForm.message}`;
                       systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'
                     }`}
                   >
-                    {lang === 'en' ? 'Signals' : 'Signaux'}
+                    {lang === 'en' ? 'Blog' : 'Blog'}
                   </button>
                 </li>
               </ul>
