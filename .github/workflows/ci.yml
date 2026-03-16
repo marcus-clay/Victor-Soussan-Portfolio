@@ -20,7 +20,7 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        run: npm ci || (rm -rf node_modules && npm install)
+        run: rm -rf node_modules package-lock.json && npm install
 
       - name: TypeScript typecheck
         run: npx tsc --noEmit
