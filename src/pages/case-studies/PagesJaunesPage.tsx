@@ -10,7 +10,7 @@ import EnhancedLightbox from '../../components/media/EnhancedLightbox';
 import PagesJaunesExecutive from '../../components/case-studies/PagesJaunesExecutive';
 import PagesJaunesFull from '../../components/case-studies/PagesJaunesFull';
 import CaseStudyTOCSidebar from '../../components/CaseStudyTOCSidebar';
-import { PROJECT_SEO, DEFAULT_SEO, updateMetaTags } from '../../utils/seo';
+import { PROJECT_SEO, DEFAULT_SEO, updateMetaTags, injectJsonLd } from '../../utils/seo';
 import { TOC_SECTIONS as PJ_TOC_SECTIONS, PAGESJAUNES_CAPTIONS } from '../../data/caseStudyTranslations/pagesJaunesTranslations';
 
 const TOC_SECTIONS = PJ_TOC_SECTIONS;
@@ -362,7 +362,12 @@ export const PagesJaunesPage: React.FC<PagesJaunesPageProps> = ({
   onNavigateToProject,
 }) => {
   useEffect(() => {
-    updateMetaTags(PROJECT_SEO['pagesjaunes']);
+    const seo = PROJECT_SEO['pagesjaunes'];
+    if (seo) {
+      updateMetaTags(seo);
+      const removeJsonLd = injectJsonLd('pagesjaunes', seo);
+      return () => { updateMetaTags(DEFAULT_SEO); removeJsonLd(); };
+    }
     return () => updateMetaTags(DEFAULT_SEO);
   }, []);
 
@@ -465,9 +470,7 @@ export const PagesJaunesPage: React.FC<PagesJaunesPageProps> = ({
       setLightboxOpen(true);
       document.body.style.overflow = 'hidden';
     } else {
-      // Image not in list - open lightbox with a single image
-      console.warn('Image not found in lightbox list:', imageSrc);
-      // Still open lightbox at first image as fallback
+      // Image not in list - fallback to first image
       setLightboxIndex(0);
       setVideoStartTime(startTime);
       setLightboxOpen(true);

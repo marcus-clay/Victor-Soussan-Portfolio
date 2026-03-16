@@ -2625,7 +2625,6 @@ const App: React.FC = () => {
 
                   // Anti-spam: Honeypot check - bots fill hidden fields
                   if (simpleContactForm.website) {
-                    console.log('Spam detected: honeypot field filled');
                     setToastMessage('Message sent successfully!');
                     setShowToast(true);
                     setIsSimpleContactOpen(false);

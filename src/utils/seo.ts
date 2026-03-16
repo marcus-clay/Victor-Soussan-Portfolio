@@ -53,6 +53,33 @@ export const DEFAULT_SEO: SeoMeta = {
   image: '/images/og_victor_soussan.webp'
 };
 
+export const injectJsonLd = (projectId: string, seo: SeoMeta): (() => void) => {
+  const schema = {
+    '@context': 'https://schema.org',
+    '@type': 'CreativeWork',
+    name: seo.title.split(' | ')[0],
+    description: seo.description,
+    url: `https://www.victorsoussan.fr/project/${projectId}`,
+    image: `https://www.victorsoussan.fr${seo.image}`,
+    author: {
+      '@type': 'Person',
+      name: 'Victor Soussan',
+      url: 'https://www.victorsoussan.fr',
+      jobTitle: 'Product Design Lead'
+    },
+    provider: {
+      '@type': 'Organization',
+      name: 'Condamine Studio'
+    }
+  };
+  const script = document.createElement('script');
+  script.type = 'application/ld+json';
+  script.textContent = JSON.stringify(schema);
+  script.dataset.jsonld = projectId;
+  document.head.appendChild(script);
+  return () => script.remove();
+};
+
 export const updateMetaTags = (seo: SeoMeta): void => {
   document.title = seo.title;
 

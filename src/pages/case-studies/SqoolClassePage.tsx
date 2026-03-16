@@ -28,7 +28,7 @@ import PrototypeCard from '../../components/prototype/PrototypeCard';
 import PrototypeCarousel from '../../components/prototype/PrototypeCarousel';
 import PrototypeLightbox from '../../components/prototype/PrototypeLightbox';
 import GallerySidebar from '../../components/GallerySidebar';
-import { PROJECT_SEO, DEFAULT_SEO, updateMetaTags } from '../../utils/seo';
+import { PROJECT_SEO, DEFAULT_SEO, updateMetaTags, injectJsonLd } from '../../utils/seo';
 import { SQOOL_CLASSE_TRANSLATIONS } from '../../data/caseStudyTranslations/sqoolClasseTranslations';
 import {
   PROTOTYPE_MAP,
@@ -93,7 +93,12 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
   onContact,
 }) => {
   useEffect(() => {
-    updateMetaTags(PROJECT_SEO['sqool-classe']);
+    const seo = PROJECT_SEO['sqool-classe'];
+    if (seo) {
+      updateMetaTags(seo);
+      const removeJsonLd = injectJsonLd('sqool-classe', seo);
+      return () => { updateMetaTags(DEFAULT_SEO); removeJsonLd(); };
+    }
     return () => updateMetaTags(DEFAULT_SEO);
   }, []);
 

@@ -18,7 +18,7 @@ import {
 import { GalleryItem } from '../../components/BentoGallery';
 import EnhancedLightbox from '../../components/media/EnhancedLightbox';
 import CaseStudyTOCSidebar from '../../components/CaseStudyTOCSidebar';
-import { PROJECT_SEO, DEFAULT_SEO, updateMetaTags } from '../../utils/seo';
+import { PROJECT_SEO, DEFAULT_SEO, updateMetaTags, injectJsonLd } from '../../utils/seo';
 import { ANDROID_WEAR_TRANSLATIONS } from '../../data/caseStudyTranslations/androidWearTranslations';
 
 interface AndroidWearPageProps {
@@ -270,7 +270,12 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
   onContact,
 }) => {
   useEffect(() => {
-    updateMetaTags(PROJECT_SEO['androidwear']);
+    const seo = PROJECT_SEO['androidwear'];
+    if (seo) {
+      updateMetaTags(seo);
+      const removeJsonLd = injectJsonLd('androidwear', seo);
+      return () => { updateMetaTags(DEFAULT_SEO); removeJsonLd(); };
+    }
     return () => updateMetaTags(DEFAULT_SEO);
   }, []);
 

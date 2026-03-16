@@ -12,7 +12,7 @@ import { GalleryItem, getConnectGalleryItems } from '../../components/BentoGalle
 import ConnectExecutive from '../../components/case-studies/ConnectExecutive';
 import EnhancedLightbox from '../../components/media/EnhancedLightbox';
 import CaseStudyTOCSidebar from '../../components/CaseStudyTOCSidebar';
-import { PROJECT_SEO, DEFAULT_SEO, updateMetaTags } from '../../utils/seo';
+import { PROJECT_SEO, DEFAULT_SEO, updateMetaTags, injectJsonLd } from '../../utils/seo';
 import { CONNECT_TRANSLATIONS } from '../../data/caseStudyTranslations/connectTranslations';
 
 interface ConnectPageProps {
@@ -150,7 +150,12 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
   onContact,
 }) => {
   useEffect(() => {
-    updateMetaTags(PROJECT_SEO['connect']);
+    const seo = PROJECT_SEO['connect'];
+    if (seo) {
+      updateMetaTags(seo);
+      const removeJsonLd = injectJsonLd('connect', seo);
+      return () => { updateMetaTags(DEFAULT_SEO); removeJsonLd(); };
+    }
     return () => updateMetaTags(DEFAULT_SEO);
   }, []);
 

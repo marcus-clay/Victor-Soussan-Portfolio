@@ -20,7 +20,7 @@ import { SqoolTimeline } from './SqoolTimeline';
 import SqoolExecutive from '../../components/case-studies/SqoolExecutive';
 import EnhancedLightbox from '../../components/media/EnhancedLightbox';
 import CaseStudyTOCSidebar from '../../components/CaseStudyTOCSidebar';
-import { PROJECT_SEO, DEFAULT_SEO, updateMetaTags } from '../../utils/seo';
+import { PROJECT_SEO, DEFAULT_SEO, updateMetaTags, injectJsonLd } from '../../utils/seo';
 import { SQOOL_TRANSLATIONS } from '../../data/caseStudyTranslations/sqoolTranslations';
 
 // TOC Sections for Full case study
@@ -200,7 +200,12 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
   onContact,
 }) => {
   useEffect(() => {
-    updateMetaTags(PROJECT_SEO['sqool']);
+    const seo = PROJECT_SEO['sqool'];
+    if (seo) {
+      updateMetaTags(seo);
+      const removeJsonLd = injectJsonLd('sqool', seo);
+      return () => { updateMetaTags(DEFAULT_SEO); removeJsonLd(); };
+    }
     return () => updateMetaTags(DEFAULT_SEO);
   }, []);
 

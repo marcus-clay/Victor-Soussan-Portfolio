@@ -18,7 +18,7 @@ import { GalleryItem, getDailymotionGalleryItems } from '../../components/BentoG
 import EnhancedLightbox from '../../components/media/EnhancedLightbox';
 import DailymotionExecutive from '../../components/case-studies/DailymotionExecutive';
 import CaseStudyTOCSidebar from '../../components/CaseStudyTOCSidebar';
-import { PROJECT_SEO, DEFAULT_SEO, updateMetaTags } from '../../utils/seo';
+import { PROJECT_SEO, DEFAULT_SEO, updateMetaTags, injectJsonLd } from '../../utils/seo';
 import { DAILYMOTION_TRANSLATIONS } from '../../data/caseStudyTranslations/dailymotionTranslations';
 
 interface DailymotionPageProps {
@@ -165,7 +165,12 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
   onContact,
 }) => {
   useEffect(() => {
-    updateMetaTags(PROJECT_SEO['dailymotion']);
+    const seo = PROJECT_SEO['dailymotion'];
+    if (seo) {
+      updateMetaTags(seo);
+      const removeJsonLd = injectJsonLd('dailymotion', seo);
+      return () => { updateMetaTags(DEFAULT_SEO); removeJsonLd(); };
+    }
     return () => updateMetaTags(DEFAULT_SEO);
   }, []);
 
