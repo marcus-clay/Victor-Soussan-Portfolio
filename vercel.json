@@ -11,7 +11,8 @@
     { "source": "/presentation", "destination": "/" },
     { "source": "/home-v2", "destination": "/" },
     { "source": "/prototypes", "destination": "/prototypes/index.html" },
-    { "source": "/prototypes/", "destination": "/prototypes/index.html" }
+    { "source": "/prototypes/", "destination": "/prototypes/index.html" },
+    { "source": "/(.*)", "destination": "/" }
   ],
   "headers": [
     {
