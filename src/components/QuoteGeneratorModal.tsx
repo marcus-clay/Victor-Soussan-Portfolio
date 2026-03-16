@@ -2,22 +2,20 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { EMAILJS_CONFIG } from '../config/emailConfig';
 import {
-  ChevronRight,
-  CheckCircle2,
+  CaretRight as ChevronRight,
+  CheckCircle as CheckCircle2,
   Target,
   X,
-  Download,
-  Zap,
+  DownloadSimple as Download,
+  Lightning as Zap,
   FileText,
-  Send,
+  PaperPlaneTilt as Send,
   Upload,
   CheckSquare,
   Square,
   Clock,
   Check,
   ArrowRight,
-} from 'lucide-react';
-import {
   Rocket,
   HandHeart,
   ArrowsClockwise,
@@ -87,8 +85,7 @@ export default function QuoteGeneratorModal({
   const [quoteSuccess, setQuoteSuccess] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [uploadProgress, setUploadProgress] = useState(0);
+  const [, setUploadProgress] = useState(0);
 
   // Pre-fill user data from localStorage when opening
   useEffect(() => {

@@ -1,26 +1,26 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
-  ChevronRight,
+  CaretRight as ChevronRight,
   ArrowUpRight,
-  Mail,
-  Linkedin,
+  Envelope as Mail,
+  LinkedinLogo as Linkedin,
   Calendar,
-  Zap,
+  Lightning as Zap,
   Users,
-  Layers,
+  Stack as Layers,
   Target,
   Cpu,
-  PenTool,
-  Quote,
+  PencilSimple as PenTool,
+  Quotes as Quote,
   Star,
   ArrowRight,
-  Sparkles,
+  Sparkle as Sparkles,
   Globe,
   Sun,
   Moon,
   X
-} from 'lucide-react';
+} from '@phosphor-icons/react';
 
 // Types
 type Language = 'en' | 'fr';

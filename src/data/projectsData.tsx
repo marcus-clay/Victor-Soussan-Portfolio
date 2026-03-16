@@ -3,10 +3,10 @@ import {
   Cpu,
   Users,
   FileText,
-  Layers,
+  Stack as Layers,
   Briefcase,
-  Smartphone,
-} from 'lucide-react';
+  DeviceMobile as Smartphone,
+} from '@phosphor-icons/react';
 import type { Language } from './translations';
 
 export interface Project {

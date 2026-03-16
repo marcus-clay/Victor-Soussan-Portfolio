@@ -2,11 +2,11 @@ import React from 'react';
 import {
   Target,
   Users,
-  ScrollText,
-  CheckCircle2,
-  Layers,
-  Figma,
-} from 'lucide-react';
+  Scroll as ScrollText,
+  CheckCircle as CheckCircle2,
+  Stack as Layers,
+  FigmaLogo as Figma,
+} from '@phosphor-icons/react';
 import type { Language } from './translations';
 
 export interface Resource {

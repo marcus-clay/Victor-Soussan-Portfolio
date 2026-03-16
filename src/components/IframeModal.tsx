@@ -4,7 +4,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { X, ExternalLink, RefreshCw, Globe, ArrowUpRight } from 'lucide-react';
+import { X, ArrowSquareOut as ExternalLink, ArrowClockwise as RefreshCw, Globe, ArrowUpRight } from '@phosphor-icons/react';
 
 interface IframeModalProps {
   onClose: () => void;

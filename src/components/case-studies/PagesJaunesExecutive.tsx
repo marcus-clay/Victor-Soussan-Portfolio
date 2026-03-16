@@ -14,20 +14,20 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 import {
-  ChevronDown,
-  Layers,
+  CaretDown as ChevronDown,
+  Stack as Layers,
   Layout,
   Users,
   Briefcase,
   Target,
   ArrowRight,
-  CheckCircle2,
-  Smartphone,
-  Map,
-  Search,
+  CheckCircle as CheckCircle2,
+  DeviceMobile as Smartphone,
+  MapTrifold as Map,
+  MagnifyingGlass as Search,
   Heart,
-  Navigation
-} from 'lucide-react';
+  NavigationArrow as Navigation
+} from '@phosphor-icons/react';
 
 // TOC Sections for navigation
 const getSections = (_lang: 'en' | 'fr') => [

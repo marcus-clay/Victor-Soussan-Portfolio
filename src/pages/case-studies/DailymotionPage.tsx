@@ -6,19 +6,20 @@ import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from
 import { smoothScrollTo } from '../../utils/smoothScroll';
 import {
   X,
-  ExternalLink,
+  ArrowSquareOut as ExternalLink,
   Play,
   Calendar,
   Briefcase,
-  Layers,
-  Building2,
+  Stack as Layers,
+  Buildings as Building2,
   ArrowRight
-} from 'lucide-react';
+} from '@phosphor-icons/react';
 import { GalleryItem, getDailymotionGalleryItems } from '../../components/BentoGallery';
 import EnhancedLightbox from '../../components/media/EnhancedLightbox';
 import DailymotionExecutive from '../../components/case-studies/DailymotionExecutive';
 import CaseStudyTOCSidebar from '../../components/CaseStudyTOCSidebar';
 import { PROJECT_SEO, DEFAULT_SEO, updateMetaTags } from '../../utils/seo';
+import { DAILYMOTION_TRANSLATIONS } from '../../data/caseStudyTranslations/dailymotionTranslations';
 
 interface DailymotionPageProps {
   onClose: () => void;
@@ -29,358 +30,6 @@ interface DailymotionPageProps {
   lang?: 'en' | 'fr';
   onContact?: () => void;
 }
-
-// Translations for Dailymotion Case Study
-const DAILYMOTION_TRANSLATIONS = {
-  en: {
-    caseStudy: 'Case Study',
-    visitDailymotion: 'Visit Dailymotion',
-    projectGallery: 'Project Gallery',
-    gallery: 'Gallery',
-    cta: {
-      title: 'Interested in working together?',
-      button: 'Get in touch',
-    },
-    clickToZoom: 'Click to zoom',
-    clickToExitZoom: 'Click to exit zoom',
-    meta: {
-      type: 'Product Design',
-      scope: 'Platform Redesign',
-      period: '2017-2018',
-      company: 'Dailymotion',
-    },
-    nav: {
-      top: 'Top',
-      intro: 'Intro',
-      overview: 'Overview',
-      modules: 'Key Modules',
-      upload: 'Upload & Management',
-      live: 'Live Console',
-      player: 'Player Manager',
-      designSystem: 'Design System',
-    },
-    hero: {
-      role: 'Senior Product Designer',
-      scope: 'Media Management, Design System',
-      period: '2017-2018',
-      title: 'Empowering Dailymotion\'s Video Partners to Manage, Publish and Go Live with Confidence',
-      subtitle: 'Improved media management tools for video publishers',
-      description: 'Between 2017 and 2018, I was responsible for the UX and UI of Dailymotion\'s partner tool ecosystem. These web and mobile tools empowered over 30,000 content partners, including broadcasters and media publishers like France TV, CBS, and beIN Sports, to upload, edit, and livestream videos to their audiences.',
-    },
-    overview: {
-      title: 'Overview',
-      introTitle: 'Introduction',
-      introDesc: 'Dailymotion was undergoing a major strategic pivot, shifting from general consumer content to repositioning itself as a premium platform for media partners. While high-profile partners were onboard, the existing platform tools were outdated, clunky, and inconsistent, hindering professional use. Thousands of videos were uploaded daily, managed from a legacy backend.',
-      roleTitle: 'Role and scope',
-      roleDesc: 'As Senior Product Designer for the Partner Business Unit, my role was to co-lead the full redesign. Rebuild the experience into a real control center for media operators.',
-      goalsTitle: 'Strategic goals',
-      goals: [
-        'Rework the media manager experience upload, edition and distribution',
-        'Design a new Live Dashboard for video broadcasts',
-        'Rethink player and widget managers',
-        'Establish a scalable design infrastructure',
-      ],
-    },
-    modules: {
-      title: 'Key Modules',
-      deliveredTitle: 'Key product modules delivered',
-      intro: 'The Partner Space was reorganized around three primary workflows that partners use daily. Each module was designed to work independently while sharing common patterns from the design system.',
-      upload: {
-        title: 'Upload & Management',
-        desc: 'Redesigned upload to publication experience with batch processing and inline editing.',
-      },
-      live: {
-        title: 'Live Console',
-        desc: 'Real-time monitoring interface for live video streams with clear status indicators.',
-      },
-      player: {
-        title: 'Player Manager',
-        desc: 'Visual customization tools for embed players and playback behaviors.',
-      },
-    },
-    upload: {
-      title: 'Upload & Video Management',
-      sectionTitle: 'Video Upload and Management Workflows',
-      question: 'How can a media platform help publishers process, manage, and monetize thousands of videos daily?',
-      intro: 'Managing large volumes of video required more than an upload button. Dailymotion\'s media partners worked with industrial-scale workflows, multiple encodes, metadata rules, ad configuration, and distribution timelines that all had to stay in sync. The objective was to design a system that made these operations fast, traceable, and intuitive. The new Upload flow introduced parallel processing with real-time progress and error visibility. Editors could queue files, edit titles or geoblocking while encoding ran, and publish once all checks passed.',
-      uploadSubtitle: 'Upload',
-      batchUpload: 'Batch upload interface',
-      batchUploadDesc: 'Supports parallel uploads with real-time feedback. Editors can edit metadata, geoblocking, and scheduling while encoding runs.',
-      interactions: 'Key interactions',
-      interactionsDesc: 'Smooth microinteractions provide immediate feedback for actions like cancellation, thumbnail updates, and subtitle uploads.',
-      videoManager: 'Video library',
-      videoManagerDesc: 'Displays bulk media management with status indicators and batch actions. Each video card shows privacy state, timestamp, view count, and duration overlay.',
-      videoLibraryTitle: 'Video Library',
-      videoLibraryIntro: 'In the Video Library, hierarchy and motion replaced heavy controls. Hover actions surfaced only when needed, reducing clutter while keeping all operations one click away. The interface supported continuous publishing, users could act while data refreshed in the background, cutting idle time between uploads.',
-      embedShare: 'Share & embed',
-      embedShareDesc: 'Expanded share modal reveals full embed customization options with auto-generated iframe code that updates dynamically.',
-    },
-    live: {
-      title: 'Live Streaming Console',
-      sectionTitle: 'Live Management Console',
-      question: 'How can a live platform compete with Twitch and Facebook while giving professionals real control?',
-      intro: 'Going live brought a different kind of complexity. Operators needed to monitor performance and react instantly to encoding or audience shifts. The goal was to design a calm control surface that worked under pressure. The Live Manager structured all actions around three panels, Control, Information, and Record, matching the mental model of a live broadcast. Status changes and transitions were central: Ready > On Air > Recording > Completed. Each transition was animated with clear visual feedback to confirm that a command had been received. Metrics such as bitrate, viewers, or latency updated in place without motion noise.',
-      countdown: 'Pre-broadcast countdown',
-      countdownDesc: 'Displays scheduled start time with OFF AIR badge. The persistent Share button enables promotional distribution before stream begins.',
-      dashboard: 'Live dashboard',
-      dashboardDesc: 'Monitors active broadcasts with real-time technical metrics and viewer count. The preview pane displays current stream frame with persistent LIVE badge.',
-    },
-    player: {
-      title: 'Player Manager',
-      question: 'How do you turn player configuration into a task anyone can complete in minutes?',
-      intro: 'Once uploaded and streamed, videos needed consistent playback across partner sites. The Player Manager solved this by giving non-technical users the ability to create and configure their own players. The interface focused on progressive disclosure. Users started from a simple list and expanded into detailed tabs only when required. Creating a player triggered a guided flow: define appearance, assign content, then retrieve the embed code. Subtle transitions kept context between steps, avoiding modal interruptions.',
-      configurator: 'Player template configurator',
-      configuratorDesc: 'Define appearance, assign content, retrieve embed code - all in one place.',
-    },
-    designSystem: {
-      title: 'Design System',
-      sectionTitle: 'Building a Scalable UI Kit',
-      intro: 'To ensure coherence across the growing product suite, I led the creation of a new Design System and Component Library.',
-      styles: 'Styles foundation',
-      stylesDesc: 'Color, typography, and spacing tokens ensure visual coherence across the product suite.',
-      components: 'Component library',
-      componentsDesc: 'Reusable UI components with variants and states for scalable development.',
-    },
-    impact: {
-      title: 'Impact',
-      intro: 'The design approach delivered measurable business results. By focusing on core workflows and progressive complexity, we created tools that media partners could adopt quickly.',
-      partners: '30,000+',
-      partnersDesc: 'Content partners served worldwide',
-      videos: '10K+',
-      videosDesc: 'Videos uploaded daily through the platform',
-      reduction: '-50%',
-      reductionDesc: 'Upload preparation time reduction',
-      components: '120+',
-      componentsDesc: 'UI components shipped in design system',
-    },
-    metaLabels: {
-      type: 'Type',
-      scope: 'Scope',
-      period: 'Period',
-      company: 'Company',
-    },
-    captions: {
-      hero: 'Dailymotion Partner Platform',
-      heroDesc: 'Web-based dashboard for video partners to manage, publish and go live with confidence.',
-      videoManagement: 'Video Management Workflows',
-      videoManagementDesc: 'Redesigned the full video management experience, from upload to publication. Introduced batch processing, inline editing, and contextual sharing actions.',
-      liveDashboard: 'Live Dashboard',
-      liveDashboardDesc: 'Designed the creation and monitoring interface for live video streams, ensuring real-time stats and clarity in a complex, high-pressure environment.',
-      playerManager: 'Player Manager',
-      playerManagerDesc: 'Redesigned the visual customization tools for embed players, allowing partners to define player themes and manage playback behaviors.',
-      batchUpload: 'Batch upload',
-      batchUploadDesc: 'Parallel uploads with real-time feedback. Editors can edit metadata, geoblocking, and scheduling while encoding runs. Reduces clip preparation time by 50%.',
-      cancelUpload: 'Cancel Upload',
-      cancelUploadDesc: 'Smooth cancellation flow with visual feedback.',
-      thumbnailUpdate: 'Thumbnail update',
-      thumbnailUpdateDesc: 'Upload an image and update video preview thumbnail instantly.',
-      addSubtitles: 'Add subtitles',
-      addSubtitlesDesc: 'Streamlined subtitle upload workflow.',
-      videoLibrary: 'Video library',
-      videoLibraryDesc: 'Bulk media management with status indicators and batch actions. Each video card shows privacy state, timestamp, view count, and duration overlay. Multi-select checkboxes enable batch operations on hundreds of videos.',
-      embedCode: 'Embed code',
-      embedCodeDesc: 'Input copy interaction and user feedback.',
-      timePicker: 'Time picker',
-      timePickerDesc: '12/24H switch interaction.',
-      passwordProtection: 'Password protection',
-      passwordProtectionDesc: 'Secure video access workflow.',
-      geoblocking: 'Geoblocking',
-      geoblockingDesc: 'Allow/Block video broadcasts in certain locations.',
-      shareModal: 'Share modal',
-      shareModalDesc: 'Full embed customization options with auto-generated iframe code that updates dynamically. Progressive disclosure keeps simple sharing lightweight while offering technical control.',
-      keyboardMapping: 'Keyboard mapping',
-      keyboardMappingDesc: 'Share modal specifications.',
-      startTimeInput: 'Start time input',
-      startTimeInputDesc: 'Keyboard input specifications.',
-      addToPlaylist: 'Add to playlist',
-      addToPlaylistDesc: 'Streamlined playlist management flow.',
-      preBroadcast: 'Pre-broadcast countdown',
-      preBroadcastDesc: 'Displays scheduled start time with OFF AIR badge. The persistent Share button enables promotional distribution before stream begins.',
-      liveMonitor: 'Live dashboard',
-      liveMonitorDesc: 'Monitors active broadcasts with real-time technical metrics and viewer count. The preview pane displays current stream frame with persistent LIVE badge and elapsed time. The right panel surfaces critical encoding parameters enabling technical operators to diagnose stream quality issues during high-pressure live events.',
-      playerConfigurator: 'Player template configurator',
-      playerConfiguratorDesc: 'Define appearance, assign content, retrieve embed code. Speed and control for editors managing dozens of templates.',
-      uiKitStyles: 'UI Kit - Styles',
-      uiKitStylesDesc: 'Foundation for coherent product suite across all partner tools.',
-      uiKitComponents: 'UI Kit - Components',
-      uiKitComponentsDesc: 'Scalable component library for consistent development.',
-    },
-  },
-  fr: {
-    caseStudy: 'Étude de cas',
-    visitDailymotion: 'Visiter Dailymotion',
-    projectGallery: 'Galerie du projet',
-    gallery: 'Galerie',
-    cta: {
-      title: 'Envie de travailler ensemble ?',
-      button: 'Me contacter',
-    },
-    clickToZoom: 'Cliquer pour agrandir',
-    clickToExitZoom: 'Cliquer pour fermer',
-    meta: {
-      type: 'Design Produit',
-      scope: 'Refonte Plateforme',
-      period: '2019-2021',
-      company: 'Dailymotion',
-    },
-    nav: {
-      top: 'Haut',
-      intro: 'Intro',
-      overview: 'Vue d\'ensemble',
-      modules: 'Modules clés',
-      upload: 'Upload & Gestion',
-      live: 'Console Live',
-      player: 'Gestionnaire Player',
-      designSystem: 'Design System',
-    },
-    hero: {
-      role: 'Senior Product Designer',
-      scope: 'Gestion Média, Design System',
-      period: '2017-2018',
-      title: 'Permettre aux partenaires vidéo de Dailymotion de gérer, publier et diffuser en live en toute confiance',
-      subtitle: 'Outils de gestion média améliorés pour les éditeurs vidéo',
-      description: 'Entre 2017 et 2018, j\'étais responsable de l\'UX et UI de l\'écosystème d\'outils partenaires de Dailymotion. Ces outils web et mobile ont permis à plus de 30 000 partenaires de contenu, incluant des diffuseurs et éditeurs médias comme France TV, CBS et beIN Sports, d\'uploader, éditer et diffuser des vidéos en live à leurs audiences.',
-    },
-    overview: {
-      title: 'Vue d\'ensemble',
-      introTitle: 'Introduction',
-      introDesc: 'Dailymotion était en plein pivot stratégique majeur, passant du contenu grand public à un repositionnement comme plateforme premium pour les partenaires médias. Bien que des partenaires de renom soient déjà à bord, les outils de la plateforme existante étaient obsolètes, peu ergonomiques et incohérents, freinant l\'usage professionnel. Des milliers de vidéos étaient uploadées quotidiennement, gérées depuis un backend legacy.',
-      roleTitle: 'Rôle et périmètre',
-      roleDesc: 'En tant que Senior Product Designer pour la Business Unit Partner, mon rôle était de co-piloter la refonte complète. Reconstruire l\'expérience en un véritable centre de contrôle pour les opérateurs médias.',
-      goalsTitle: 'Objectifs stratégiques',
-      goals: [
-        'Repenser l\'expérience du gestionnaire média : upload, édition et distribution',
-        'Concevoir un nouveau Dashboard Live pour les diffusions vidéo',
-        'Repenser les gestionnaires de player et de widgets',
-        'Établir une infrastructure design scalable',
-      ],
-    },
-    modules: {
-      title: 'Modules clés',
-      deliveredTitle: 'Modules produit clés livrés',
-      intro: 'Le Partner Space a été réorganisé autour de trois workflows principaux que les partenaires utilisent quotidiennement. Chaque module a été conçu pour fonctionner indépendamment tout en partageant des patterns communs du design system.',
-      upload: {
-        title: 'Upload & Gestion',
-        desc: 'Expérience d\'upload vers publication repensée avec traitement par lot et édition inline.',
-      },
-      live: {
-        title: 'Console Live',
-        desc: 'Interface de monitoring temps réel pour les streams vidéo live avec indicateurs de statut clairs.',
-      },
-      player: {
-        title: 'Gestionnaire Player',
-        desc: 'Outils de personnalisation visuelle pour les players embed et les comportements de lecture.',
-      },
-    },
-    upload: {
-      title: 'Upload & Gestion Vidéo',
-      sectionTitle: 'Workflows d\'Upload et de Gestion Vidéo',
-      question: 'Comment une plateforme média peut-elle aider les éditeurs à traiter, gérer et monétiser des milliers de vidéos quotidiennement ?',
-      intro: 'Gérer de gros volumes de vidéos nécessitait plus qu\'un simple bouton d\'upload. Les partenaires médias de Dailymotion travaillaient avec des workflows à l\'échelle industrielle : encodages multiples, règles de métadonnées, configuration publicitaire et calendriers de distribution devaient tous rester synchronisés. L\'objectif était de concevoir un système rendant ces opérations rapides, traçables et intuitives. Le nouveau flux d\'Upload a introduit le traitement parallèle avec une visibilité en temps réel de la progression et des erreurs. Les éditeurs pouvaient mettre des fichiers en file d\'attente, modifier les titres ou le geoblocking pendant l\'encodage, et publier une fois toutes les vérifications passées.',
-      uploadSubtitle: 'Upload',
-      batchUpload: 'Interface d\'upload par lot',
-      batchUploadDesc: 'Supporte les uploads parallèles avec feedback en temps réel. Les éditeurs peuvent modifier les métadonnées, le geoblocking et la programmation pendant l\'encodage.',
-      interactions: 'Interactions clés',
-      interactionsDesc: 'Des microinteractions fluides fournissent un retour immédiat pour des actions comme l\'annulation, les mises à jour de vignettes et les uploads de sous-titres.',
-      videoManager: 'Bibliothèque vidéo',
-      videoManagerDesc: 'Affiche la gestion de médias en masse avec indicateurs de statut et actions par lot. Chaque carte vidéo montre l\'état de confidentialité, l\'horodatage, le nombre de vues et la durée.',
-      videoLibraryTitle: 'Bibliothèque Vidéo',
-      videoLibraryIntro: 'Dans la Bibliothèque Vidéo, la hiérarchie et le mouvement ont remplacé les contrôles lourds. Les actions au survol n\'apparaissaient que lorsque nécessaire, réduisant l\'encombrement tout en gardant toutes les opérations à un clic. L\'interface supportait la publication continue : les utilisateurs pouvaient agir pendant que les données se rafraîchissaient en arrière-plan, réduisant le temps mort entre les uploads.',
-      embedShare: 'Partage & embed',
-      embedShareDesc: 'Le modal de partage étendu révèle les options complètes de personnalisation de l\'embed avec un code iframe auto-généré qui se met à jour dynamiquement.',
-    },
-    live: {
-      title: 'Console de Streaming Live',
-      sectionTitle: 'Console de Gestion Live',
-      question: 'Comment une plateforme live peut-elle concurrencer Twitch et Facebook tout en donnant aux professionnels un véritable contrôle ?',
-      intro: 'Passer en live apportait une complexité différente. Les opérateurs devaient surveiller les performances et réagir instantanément aux changements d\'encodage ou d\'audience. L\'objectif était de concevoir une surface de contrôle sereine fonctionnant sous pression. Le Live Manager a structuré toutes les actions autour de trois panneaux : Contrôle, Information et Enregistrement, correspondant au modèle mental d\'une diffusion live. Les changements et transitions de statut étaient centraux : Prêt > À l\'antenne > Enregistrement > Terminé. Chaque transition était animée avec un retour visuel clair pour confirmer qu\'une commande avait été reçue. Les métriques comme le débit, les viewers ou la latence se mettaient à jour sur place sans bruit de mouvement.',
-      countdown: 'Compte à rebours pré-diffusion',
-      countdownDesc: 'Affiche l\'heure de démarrage programmée avec un badge OFF AIR. Le bouton Partager persistant permet la distribution promotionnelle avant le début du stream.',
-      dashboard: 'Dashboard live',
-      dashboardDesc: 'Surveille les diffusions actives avec des métriques techniques en temps réel et le nombre de viewers. Le panneau de prévisualisation affiche l\'image actuelle du stream avec un badge LIVE persistant.',
-    },
-    player: {
-      title: 'Gestionnaire de Player',
-      question: 'Comment transformer la configuration d\'un player en une tâche que n\'importe qui peut accomplir en quelques minutes ?',
-      intro: 'Une fois uploadées et diffusées, les vidéos avaient besoin d\'une lecture cohérente sur les sites partenaires. Le Gestionnaire de Player a résolu ce problème en donnant aux utilisateurs non techniques la possibilité de créer et configurer leurs propres players. L\'interface s\'est concentrée sur la divulgation progressive. Les utilisateurs partaient d\'une liste simple et développaient des onglets détaillés uniquement si nécessaire. La création d\'un player déclenchait un flux guidé : définir l\'apparence, assigner le contenu, puis récupérer le code embed. Des transitions subtiles maintenaient le contexte entre les étapes, évitant les interruptions modales.',
-      configurator: 'Configurateur de template player',
-      configuratorDesc: 'Définir l\'apparence, assigner le contenu, récupérer le code embed - tout en un seul endroit.',
-    },
-    designSystem: {
-      title: 'Design System',
-      sectionTitle: 'Construire un UI Kit Scalable',
-      intro: 'Pour assurer la cohérence à travers la suite produit grandissante, j\'ai dirigé la création d\'un nouveau Design System et d\'une Bibliothèque de Composants.',
-      styles: 'Fondation des styles',
-      stylesDesc: 'Les tokens de couleur, typographie et espacement assurent la cohérence visuelle à travers la suite produit.',
-      components: 'Bibliothèque de composants',
-      componentsDesc: 'Composants UI réutilisables avec variantes et états pour un développement scalable.',
-    },
-    impact: {
-      title: 'Impact',
-      intro: 'L\'approche design a produit des résultats mesurables. En se concentrant sur les workflows essentiels et la complexité progressive, nous avons créé des outils que les partenaires médias ont pu adopter rapidement.',
-      partners: '30 000+',
-      partnersDesc: 'Partenaires de contenu dans le monde',
-      videos: '10K+',
-      videosDesc: 'Vidéos uploadées quotidiennement sur la plateforme',
-      reduction: '-50%',
-      reductionDesc: 'Réduction du temps de préparation upload',
-      components: '120+',
-      componentsDesc: 'Composants UI livrés dans le design system',
-    },
-    metaLabels: {
-      type: 'Type',
-      scope: 'Périmètre',
-      period: 'Période',
-      company: 'Entreprise',
-    },
-    captions: {
-      hero: 'Plateforme Partenaires Dailymotion',
-      heroDesc: 'Dashboard web permettant aux partenaires vidéo de gérer, publier et diffuser en live en toute confiance.',
-      videoManagement: 'Workflows de gestion vidéo',
-      videoManagementDesc: 'Refonte complète de l\'expérience de gestion vidéo, de l\'upload à la publication. Introduction du traitement par lot, de l\'édition inline et des actions de partage contextuelles.',
-      liveDashboard: 'Dashboard Live',
-      liveDashboardDesc: 'Conception de l\'interface de création et monitoring pour les streams vidéo live, assurant des stats en temps réel et de la clarté dans un environnement complexe et sous pression.',
-      playerManager: 'Gestionnaire de Player',
-      playerManagerDesc: 'Refonte des outils de personnalisation visuelle pour les players embed, permettant aux partenaires de définir des thèmes et gérer les comportements de lecture.',
-      batchUpload: 'Upload par lot',
-      batchUploadDesc: 'Uploads parallèles avec feedback en temps réel. Les éditeurs peuvent modifier les métadonnées, le geoblocking et la programmation pendant l\'encodage. Réduit le temps de préparation de 50%.',
-      cancelUpload: 'Annuler l\'upload',
-      cancelUploadDesc: 'Flux d\'annulation fluide avec retour visuel.',
-      thumbnailUpdate: 'Mise à jour vignette',
-      thumbnailUpdateDesc: 'Uploader une image et mettre à jour la vignette de prévisualisation instantanément.',
-      addSubtitles: 'Ajouter des sous-titres',
-      addSubtitlesDesc: 'Workflow d\'upload de sous-titres simplifié.',
-      videoLibrary: 'Bibliothèque vidéo',
-      videoLibraryDesc: 'Gestion média en masse avec indicateurs de statut et actions par lot. Chaque carte vidéo affiche l\'état de confidentialité, l\'horodatage, le nombre de vues et la durée. Les cases multi-sélection permettent des opérations par lot sur des centaines de vidéos.',
-      embedCode: 'Code embed',
-      embedCodeDesc: 'Interaction de copie et retour utilisateur.',
-      timePicker: 'Sélecteur d\'heure',
-      timePickerDesc: 'Interaction de switch 12/24H.',
-      passwordProtection: 'Protection par mot de passe',
-      passwordProtectionDesc: 'Workflow d\'accès vidéo sécurisé.',
-      geoblocking: 'Geoblocking',
-      geoblockingDesc: 'Autoriser/Bloquer les diffusions vidéo dans certaines zones.',
-      shareModal: 'Modal de partage',
-      shareModalDesc: 'Options complètes de personnalisation embed avec code iframe auto-généré qui se met à jour dynamiquement. La divulgation progressive garde le partage simple léger tout en offrant un contrôle technique.',
-      keyboardMapping: 'Mapping clavier',
-      keyboardMappingDesc: 'Spécifications du modal de partage.',
-      startTimeInput: 'Input heure de début',
-      startTimeInputDesc: 'Spécifications de saisie clavier.',
-      addToPlaylist: 'Ajouter à la playlist',
-      addToPlaylistDesc: 'Flux de gestion de playlist simplifié.',
-      preBroadcast: 'Compte à rebours pré-diffusion',
-      preBroadcastDesc: 'Affiche l\'heure de démarrage programmée avec un badge OFF AIR. Le bouton Partager persistant permet la distribution promotionnelle avant le début du stream.',
-      liveMonitor: 'Dashboard live',
-      liveMonitorDesc: 'Surveille les diffusions actives avec des métriques techniques en temps réel et le nombre de viewers. Le panneau de prévisualisation affiche l\'image actuelle du stream avec badge LIVE persistant et temps écoulé. Le panneau droit expose les paramètres d\'encodage critiques permettant aux opérateurs techniques de diagnostiquer les problèmes de qualité de stream pendant les événements live sous pression.',
-      playerConfigurator: 'Configurateur de template player',
-      playerConfiguratorDesc: 'Définir l\'apparence, assigner le contenu, récupérer le code embed. Rapidité et contrôle pour les éditeurs gérant des dizaines de templates.',
-      uiKitStyles: 'UI Kit - Styles',
-      uiKitStylesDesc: 'Fondation pour une suite produit cohérente à travers tous les outils partenaires.',
-      uiKitComponents: 'UI Kit - Composants',
-      uiKitComponentsDesc: 'Bibliothèque de composants scalable pour un développement cohérent.',
-    },
-  },
-};
 
 // TOC Sections for Full case study
 const TOC_SECTIONS = {
@@ -432,7 +81,6 @@ const allImagesData: MediaItem[] = [
   { src: '/images/dailymotion/design_system_-_Styles2x.webp', captionKey: 'uiKitStyles', type: 'image' },
   { src: '/images/dailymotion/design_system_-_component_library2x.webp', captionKey: 'uiKitComponents', type: 'image' },
 ];
-
 
 // Gallery Card component with Apple TV-style 3D tilt effect
 interface GalleryCardProps {
@@ -558,7 +206,6 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
     }
   }, [viewMode]);
 
-
   // Scroll to top when mode changes
   useEffect(() => {
     const container = containerRef.current;
@@ -665,7 +312,6 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [lightboxOpen, paginate]);
-
 
   return (
     <motion.div

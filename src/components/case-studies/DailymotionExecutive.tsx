@@ -13,18 +13,18 @@
 import React, { useState, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import {
-  ChevronDown,
-  Layers,
+  CaretDown as ChevronDown,
+  Stack as Layers,
   Layout,
   Users,
   Briefcase,
   Target,
   ArrowRight,
-  CheckCircle2,
+  CheckCircle as CheckCircle2,
   Upload,
   Radio,
   Play
-} from 'lucide-react';
+} from '@phosphor-icons/react';
 interface DailymotionExecutiveProps {
   systemTheme: 'light' | 'dark';
   lang: 'en' | 'fr';

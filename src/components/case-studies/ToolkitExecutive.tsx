@@ -14,17 +14,17 @@
 import React, { useState, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import {
-  ChevronDown,
-  Layers,
+  CaretDown as ChevronDown,
+  Stack as Layers,
   Palette,
   Layout,
   Users,
-  Zap,
+  Lightning as Zap,
   ArrowRight,
-  CheckCircle2,
+  CheckCircle as CheckCircle2,
   Briefcase,
   Trophy
-} from 'lucide-react';
+} from '@phosphor-icons/react';
 interface ToolkitExecutiveProps {
   systemTheme: 'light' | 'dark';
   lang: 'en' | 'fr';

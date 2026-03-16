@@ -14,17 +14,17 @@
 import React, { useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
 import {
-  ChevronDown,
-  Layers,
+  CaretDown as ChevronDown,
+  Stack as Layers,
   Users,
   ArrowRight,
   Briefcase,
   Target,
   Calendar,
   Lightbulb,
-  Bot,
-  CheckCircle2
-} from 'lucide-react';
+  Robot as Bot,
+  CheckCircle as CheckCircle2
+} from '@phosphor-icons/react';
 interface FranceVaeExecutiveProps {
   systemTheme: 'light' | 'dark';
   lang: 'en' | 'fr';

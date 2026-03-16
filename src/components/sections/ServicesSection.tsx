@@ -1,12 +1,12 @@
 import React from 'react';
 import {
-  PenTool,
-  Zap,
-  Settings,
+  PencilSimple as PenTool,
+  Lightning as Zap,
+  Gear as Settings,
   Users,
-  CheckCircle2,
-  ChevronDown,
-} from 'lucide-react';
+  CheckCircle as CheckCircle2,
+  CaretDown as ChevronDown,
+} from '@phosphor-icons/react';
 
 interface ServicesSectionProps {
   systemTheme: 'light' | 'dark';

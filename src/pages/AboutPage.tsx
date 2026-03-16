@@ -13,7 +13,7 @@ import {
   ArrowRight,
   MapPin,
   Briefcase,
-} from 'lucide-react';
+} from '@phosphor-icons/react';
 
 type Language = 'en' | 'fr';
 

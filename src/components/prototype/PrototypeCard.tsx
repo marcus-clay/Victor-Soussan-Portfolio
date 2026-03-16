@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Play } from 'lucide-react';
+import { Play } from '@phosphor-icons/react';
 import { PrototypeCategory, CATEGORY_COLORS } from '../../data/sqoolPrototypesData';
 
 interface PrototypeCardProps {

@@ -4,39 +4,43 @@ import ErrorBoundary from './components/ErrorBoundary';
 import { motion, AnimatePresence, useScroll, useTransform, useSpring } from 'framer-motion';
 import { EMAILJS_CONFIG } from './config/emailConfig';
 import {
-  ChevronRight,
-  Layers,
+  CaretRight as ChevronRight,
+  Stack as Layers,
   Users,
-  PenTool,
+  PencilSimple as PenTool,
   ArrowUpRight,
-  Mail,
-  Linkedin,
-  CheckCircle2,
+  Envelope,
+  LinkedinLogo,
+  CheckCircle as CheckCircle2,
   Target,
-  Box,
-  Menu as MenuIcon,
+  Package as Box,
+  List as MenuIcon,
   X,
-  Download,
-  Zap,
-  Settings,
+  DownloadSimple as Download,
+  Lightning as Zap,
+  Gear as Settings,
   Lightbulb,
-  Quote,
+  Quotes as Quote,
   User,
   Calendar,
   Copy,
-  Send,
+  PaperPlaneTilt as Send,
   Images,
   Check,
   ArrowRight,
   Sun,
   Moon,
   Monitor,
-  Home,
-  MessageCircle,
+  House as Home,
+  ChatCircle as MessageCircle,
   FolderOpen,
-  Link2
-} from 'lucide-react';
-import { Rocket, Buildings, HandHeart, Envelope, Phone, LinkedinLogo, Globe } from '@phosphor-icons/react';
+  Link as Link2,
+  Rocket,
+  Buildings,
+  HandHeart,
+  Phone,
+  Globe
+} from '@phosphor-icons/react';
 import { SIGNALS, FEATURED_SIGNAL_IDS, CATEGORY_COLORS as SIGNAL_CATEGORY_COLORS, CATEGORY_LABELS as SIGNAL_CATEGORY_LABELS } from './data/signalsData';
 import type { Signal } from './data/signalsData';
 import { TRANSLATIONS } from './data/translations';
@@ -48,6 +52,10 @@ import { getResources } from './data/resourcesData';
 import { getProjects } from './data/projectsData';
 import type { Project } from './data/projectsData';
 import { PROJECT_SEO, DEFAULT_SEO, updateMetaTags } from './utils/seo';
+
+// Phosphor aliases for JSX backward compatibility
+const Mail = Envelope;
+const Linkedin = LinkedinLogo;
 
 // Lazy load heavy page components for code splitting
 const ToolkitPage = lazy(() => import('./pages/case-studies/ToolkitPage'));

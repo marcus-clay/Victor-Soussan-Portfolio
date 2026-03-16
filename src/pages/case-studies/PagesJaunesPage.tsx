@@ -4,47 +4,16 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import { smoothScrollTo } from '../../utils/smoothScroll';
-import { X, Play } from 'lucide-react';
+import { X, Play } from '@phosphor-icons/react';
 import { GalleryItem } from '../../components/BentoGallery';
 import EnhancedLightbox from '../../components/media/EnhancedLightbox';
 import PagesJaunesExecutive from '../../components/case-studies/PagesJaunesExecutive';
 import PagesJaunesFull from '../../components/case-studies/PagesJaunesFull';
 import CaseStudyTOCSidebar from '../../components/CaseStudyTOCSidebar';
 import { PROJECT_SEO, DEFAULT_SEO, updateMetaTags } from '../../utils/seo';
+import { TOC_SECTIONS as PJ_TOC_SECTIONS, PAGESJAUNES_CAPTIONS } from '../../data/caseStudyTranslations/pagesJaunesTranslations';
 
-// TOC Sections for Full case study
-const TOC_SECTIONS = {
-  en: [
-    { id: 'top', label: 'Top' },
-    { id: 'overview', label: 'Overview' },
-    { id: 'homepage', label: 'Homepage' },
-    { id: 'search', label: 'Search Engine' },
-    { id: 'onboarding', label: 'Onboarding' },
-    { id: 'navigation', label: 'Navigation' },
-    { id: 'account', label: 'Account' },
-    { id: 'micro-interactions', label: 'Motion' },
-    { id: 'wear', label: 'Android Wear' },
-    { id: 'design-system', label: 'Design System' },
-    { id: 'team', label: 'Team' },
-    { id: 'impact', label: 'Impact' },
-    { id: 'learnings', label: 'Learnings' }
-  ],
-  fr: [
-    { id: 'top', label: 'Haut' },
-    { id: 'overview', label: 'Aperçu' },
-    { id: 'homepage', label: 'Homepage' },
-    { id: 'search', label: 'Moteur' },
-    { id: 'onboarding', label: 'Onboarding' },
-    { id: 'navigation', label: 'Navigation' },
-    { id: 'account', label: 'Compte' },
-    { id: 'micro-interactions', label: 'Motion' },
-    { id: 'wear', label: 'Android Wear' },
-    { id: 'design-system', label: 'Design System' },
-    { id: 'team', label: 'Équipe' },
-    { id: 'impact', label: 'Impact' },
-    { id: 'learnings', label: 'Apprentissages' }
-  ]
-};
+const TOC_SECTIONS = PJ_TOC_SECTIONS;
 
 interface PagesJaunesPageProps {
   onClose: () => void;
@@ -59,132 +28,7 @@ interface PagesJaunesPageProps {
 
 // Gallery items for PagesJaunes
 const getPagesJaunesGalleryItems = (lang: 'en' | 'fr'): GalleryItem[] => {
-  const captions = {
-    en: {
-      homepage: 'Conversational Homepage',
-      homepageDesc: 'A friendly greeting ("What do you need today?") reframes search from directory lookup to problem-solving.',
-      homepageVariations: 'Contextual Hero Images',
-      homepageVariationsDesc: 'Eight variations featuring local pros: baker, mechanic, florist. Each builds trust by showing the human behind the service.',
-      ipadVariations: 'Responsive Hero Strategy',
-      ipadVariationsDesc: 'Hero images across iPhone 4, Retina, iPad, Android phone/tablet. Auto-detection of focal point with viewport-adaptive cropping. With Alexandre Badie, Android lead.',
-      androidHomepage: 'Android Material Homepage',
-      androidHomepageDesc: 'Material Design adapted to PagesJaunes brand. The yellow search bar signals action and creates visual continuity.',
-      ipadHomepage: 'iPad Split-View Homepage',
-      ipadHomepageDesc: 'Split-view respects the user\'s mental model: browse categories on the left, take action on the right.',
-      artDirectionBefore: 'Art Direction: Before',
-      artDirectionBeforeDesc: 'Raw photo. The subject competes with distracting background elements.',
-      artDirectionAfter: 'Art Direction: After',
-      artDirectionAfterDesc: 'Strategic cropping and color grading. Focus shifts to the craftsman\'s expertise.',
-      searchFlow: 'Search to Listing Flow',
-      searchFlowDesc: 'From query to listing in three taps. Autocomplete reduces cognitive load, location context eliminates redundant input.',
-      searchPrototype: 'Search Engine Prototype',
-      searchPrototypeDesc: 'Material Design activity transitions with shared element animations. Search bar transforms into full-screen results.',
-      accountFlow: 'Login & Account Flow',
-      accountFlowDesc: 'Social login reduces friction by 60%. Email/password fallback preserved for users who prefer traditional auth.',
-      engagement: 'History & Favorites',
-      engagementDesc: 'History and Favorites turn one-time searches into retained value. Each saved business is a reason to return.',
-      mapsSystem: 'Transit System Components',
-      mapsSystemDesc: 'Metro line colors, station names, walking segments: all parsed from Mappy API and styled for quick scanning.',
-      mapsMultidevice: 'Multi-device Navigation',
-      mapsMultideviceDesc: 'One journey, three modes: walk, drive, transit. The interface adapts to the user\'s choice.',
-      iphoneItinerary: 'iPhone Navigation Flows',
-      iphoneItineraryDesc: 'Three flows: route sheet, map preview, transit breakdown. Each screen answers a different user question.',
-      ipadItinerary: 'iPad Itinerary Split-View',
-      ipadItineraryDesc: 'Map context on the left, turn-by-turn on the right. Both visible, no tab switching needed.',
-      tooltipRedesign: 'Tooltip Redesign',
-      tooltipRedesignDesc: 'Contextual tooltips guide feature discovery. Clear visual hierarchy, minimal disruption to the flow.',
-      wearFlows: 'Android Wear Task Flows',
-      wearFlowsDesc: 'Wearable task flows: search then call, or search then navigate. Two jobs, two paths, minimal taps.',
-      wearUiModes: 'Wear Regular & Ambient Modes',
-      wearUiModesDesc: 'Regular mode uses high-contrast yellow. Ambient mode switches to monochrome for battery efficiency.',
-      wearUi: 'Wear Component System',
-      wearUiDesc: 'Complete Android Wear pattern library: loading states, launcher, home, results, detail cards, action buttons.',
-      wearFlowsDetailed: 'Wear User Task Flows',
-      wearFlowsDetailedDesc: 'User task flows mapped: "Find a restaurant and call" or "Find a restaurant and navigate." Each path optimized.',
-      wearComponents: 'Wear Micro-UI Patterns',
-      wearComponentsDesc: 'Micro-UI pattern library: cards, CTAs, status indicators. Every element earns its pixel on a 280dp screen.',
-      wearAmbient: 'Wear Ambient Mode',
-      wearAmbientDesc: 'White outlines on black. Battery-conscious and still functional for at-a-glance information.',
-      wearSketches: 'Early Wireframe Sketches',
-      wearSketchesDesc: 'Early wireframe sketches for the reminder flow. User can set a reminder after calling a business.',
-      wearDevSession: 'Real Device Testing',
-      wearDevSessionDesc: 'Testing session with Thibault Fighiera. Two watches connected, smartphone synced, iterating in real-time.',
-      wearInsituStore: 'Google Play Store Visual',
-      wearInsituStoreDesc: 'Promotional visual for Google Play Store. Watch mockup on PagesJaunes yellow background.',
-      wearInsituDetail: 'Business Detail In-situ',
-      wearInsituDetailDesc: 'Business detail card in context. Key info hierarchy: name, category, status, rating, phone, address.',
-      wearPrototypeVideo: 'Working Prototype Demo',
-      wearPrototypeVideoDesc: 'Working prototype on real hardware. Full flow from app launch to business detail to phone call handoff.',
-      desktopReview: 'Desktop Review Editing',
-      desktopReviewDesc: 'Web interface for review editing. Multi-criteria ratings with star system, pros/cons fields, rich text support.',
-      iosOnboarding: 'iOS Onboarding Animation',
-      iosOnboardingDesc: 'Non-blocking animations at first launch. CAAnimation for smooth walkthrough sequences.',
-      androidOnboarding: 'Android Onboarding Animation',
-      androidOnboardingDesc: 'Material Design onboarding with Activity transitions. Coordinated motion specs.',
-    },
-    fr: {
-      homepage: 'Homepage Conversationnelle',
-      homepageDesc: 'Une accroche amicale ("De quoi avez-vous besoin ?") transforme la recherche d\'annuaire en résolution de problème.',
-      homepageVariations: 'Visuels Héros Contextuels',
-      homepageVariationsDesc: 'Huit variations avec des pros locaux : boulanger, garagiste, fleuriste. Chacun crée la confiance.',
-      ipadVariations: 'Stratégie Visuels Responsive',
-      ipadVariationsDesc: 'Visuels héros sur iPhone 4, Retina, iPad, Android phone/tablet. Détection auto du point focal avec recadrage adapté au viewport. Avec Alexandre Badie, lead dev Android.',
-      androidHomepage: 'Homepage Android Material',
-      androidHomepageDesc: 'Material Design adapté à la marque PagesJaunes. La barre jaune signale l\'action et crée une continuité visuelle.',
-      ipadHomepage: 'Homepage iPad Split-View',
-      ipadHomepageDesc: 'Le split-view respecte le modèle mental : parcourir à gauche, agir à droite.',
-      artDirectionBefore: 'Direction Artistique : Avant',
-      artDirectionBeforeDesc: 'Photo brute. Le sujet entre en concurrence avec les éléments de fond distrayants.',
-      artDirectionAfter: 'Direction Artistique : Après',
-      artDirectionAfterDesc: 'Cadrage stratégique et étalonnage couleur. Le focus se déplace vers l\'expertise de l\'artisan.',
-      searchFlow: 'Flow Recherche vers Fiche',
-      searchFlowDesc: 'De la requête à la fiche en trois taps. L\'autocomplétion réduit la charge cognitive.',
-      searchPrototype: 'Prototype Moteur de Recherche',
-      searchPrototypeDesc: 'Transitions Activity Material Design avec animations d\'éléments partagés. La barre de recherche se transforme en résultats.',
-      accountFlow: 'Flow Login & Compte',
-      accountFlowDesc: 'La connexion sociale réduit la friction de 60%. Le fallback email/mot de passe est conservé.',
-      engagement: 'Historique & Favoris',
-      engagementDesc: 'Historique et Favoris transforment les recherches ponctuelles en valeur conservée.',
-      mapsSystem: 'Composants Transports',
-      mapsSystemDesc: 'Couleurs des lignes de métro, noms de stations, segments piétons : parsés depuis l\'API Mappy.',
-      mapsMultidevice: 'Navigation Multi-appareil',
-      mapsMultideviceDesc: 'Un trajet, trois modes : marche, voiture, transports. L\'interface s\'adapte au choix de l\'utilisateur.',
-      iphoneItinerary: 'Flows Navigation iPhone',
-      iphoneItineraryDesc: 'Trois flows : feuille de route, aperçu carte, détail transports.',
-      ipadItinerary: 'Itinéraire iPad Split-View',
-      ipadItineraryDesc: 'Contexte carte à gauche, guidage pas-à-pas à droite. Tout visible, pas besoin de changer d\'onglet.',
-      tooltipRedesign: 'Refonte Tooltips',
-      tooltipRedesignDesc: 'Tooltips contextuels pour guider la découverte des features. Hiérarchie visuelle claire, perturbation minimale.',
-      wearFlows: 'Flows Android Wear',
-      wearFlowsDesc: 'Flows wearable : recherche puis appel, ou recherche puis navigation. Deux jobs, minimum de taps.',
-      wearUiModes: 'Modes Normal & Ambiant Wear',
-      wearUiModesDesc: 'Le mode normal utilise un jaune à fort contraste. Le mode ambiant passe en monochrome.',
-      wearUi: 'Système Composants Wear',
-      wearUiDesc: 'Bibliothèque patterns Android Wear complète : chargement, launcher, home, résultats, fiches, actions.',
-      wearFlowsDetailed: 'Flows Utilisateur Wear',
-      wearFlowsDetailedDesc: 'Cartographie des flux : "Trouver un resto et appeler" ou "Trouver un resto et y aller." Chaque chemin optimisé.',
-      wearComponents: 'Patterns Micro-UI Wear',
-      wearComponentsDesc: 'Bibliothèque de patterns micro-UI : cartes, CTAs, indicateurs de statut. Chaque élément mérite son pixel.',
-      wearAmbient: 'Mode Ambiant Wear',
-      wearAmbientDesc: 'Contours blancs sur noir. Économe en batterie et toujours fonctionnel pour l\'information rapide.',
-      wearSketches: 'Sketches Wireframes',
-      wearSketchesDesc: 'Wireframes précoces du flow rappel. L\'utilisateur peut programmer un rappel après avoir appelé un commerce.',
-      wearDevSession: 'Test sur Device Réel',
-      wearDevSessionDesc: 'Session de test avec Thibault Fighiera. Deux montres connectées, smartphone sync, itérations en temps réel.',
-      wearInsituStore: 'Visuel Google Play Store',
-      wearInsituStoreDesc: 'Visuel promo pour Google Play Store. Mockup montre sur fond jaune PagesJaunes.',
-      wearInsituDetail: 'Fiche Pro en Contexte',
-      wearInsituDetailDesc: 'Fiche détail pro en contexte. Hiérarchie d\'info : nom, catégorie, statut, note, tel, adresse.',
-      wearPrototypeVideo: 'Démo Prototype Fonctionnel',
-      wearPrototypeVideoDesc: 'Prototype fonctionnel sur hardware réel. Flow complet du lancement app jusqu\'au handoff appel téléphone.',
-      desktopReview: 'Édition Avis Desktop',
-      desktopReviewDesc: 'Interface web pour l\'édition d\'avis. Notes multi-critères avec étoiles, champs pour/contre, texte enrichi.',
-      iosOnboarding: 'Animation Onboarding iOS',
-      iosOnboardingDesc: 'Animations non-bloquantes au premier lancement. CAAnimation pour des séquences fluides.',
-      androidOnboarding: 'Animation Onboarding Android',
-      androidOnboardingDesc: 'Onboarding Material Design avec transitions Activity. Specs motion coordonnées.',
-    }
-  };
+  const captions = PAGESJAUNES_CAPTIONS;
 
   const t = captions[lang];
 

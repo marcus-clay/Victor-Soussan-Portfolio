@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  ArrowRight, 
-  CheckCircle2, 
-  Layers, 
-  Zap, 
+import {
+  ArrowRight,
+  CheckCircle as CheckCircle2,
+  Stack as Layers,
+  Lightning as Zap,
   Trophy
-} from 'lucide-react';
+} from '@phosphor-icons/react';
 
 // --- DATA ---
 

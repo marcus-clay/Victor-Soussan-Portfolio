@@ -1,11 +1,11 @@
 import React from 'react';
 import {
-  CheckCircle2,
+  CheckCircle as CheckCircle2,
   ArrowUpRight,
-  Linkedin,
+  LinkedinLogo as Linkedin,
   FileText,
   BookOpen,
-} from 'lucide-react';
+} from '@phosphor-icons/react';
 
 interface Resource {
   title: string;

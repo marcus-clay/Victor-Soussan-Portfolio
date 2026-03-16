@@ -11,18 +11,18 @@ import {
   X,
   Target,
   Users,
-  Zap,
-  RefreshCw,
-  Search,
-  Layers,
+  Lightning as Zap,
+  ArrowClockwise as RefreshCw,
+  MagnifyingGlass as Search,
+  Stack as Layers,
   Calendar,
   Briefcase,
-  CheckCircle2,
+  CheckCircle as CheckCircle2,
   ArrowRight,
-  Mail,
-  ChevronDown,
-  ExternalLink,
-} from 'lucide-react';
+  Envelope as Mail,
+  CaretDown as ChevronDown,
+  ArrowSquareOut as ExternalLink,
+} from '@phosphor-icons/react';
 import CaseStudyTOCSidebar from '../components/CaseStudyTOCSidebar';
 import {
   LIFECYCLE_PHASES,

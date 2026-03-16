@@ -10,7 +10,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Play, Quote } from 'lucide-react';
+import { Play, Quotes as Quote } from '@phosphor-icons/react';
 import EnhancedLightbox, { LightboxImage } from '../media/EnhancedLightbox';
 
 interface ToolkitShowcaseProps {

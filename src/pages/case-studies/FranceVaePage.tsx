@@ -4,12 +4,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import { smoothScrollTo } from '../../utils/smoothScroll';
-import { X } from 'lucide-react';
+import { X } from '@phosphor-icons/react';
 import CaseStudyTOCSidebar from '../../components/CaseStudyTOCSidebar';
 import FranceVaeExecutive from '../../components/case-studies/FranceVaeExecutive';
 import FranceVaeFull from '../../components/case-studies/FranceVaeFull';
 import EnhancedLightbox from '../../components/media/EnhancedLightbox';
 import { PROJECT_SEO, DEFAULT_SEO, updateMetaTags } from '../../utils/seo';
+import { FRANCEVAE_TRANSLATIONS } from '../../data/caseStudyTranslations/franceVaeTranslations';
 
 // Gallery Card with Apple TV-style 3D tilt effect (same as BentoGallery)
 interface GalleryCardProps {
@@ -112,26 +113,6 @@ interface FranceVaePageProps {
   onViewModeChange?: (mode: 'caseStudy' | 'gallery' | 'executive') => void;
   onContact?: () => void;
 }
-
-// Translations
-const FRANCEVAE_TRANSLATIONS = {
-  en: {
-    enBref: 'At a glance',
-    enBrefShort: 'Brief',
-    full: 'Full',
-    fullShort: 'Full',
-    gallery: 'Gallery',
-    contactVictor: 'Contact Victor for a similar project',
-  },
-  fr: {
-    enBref: 'En bref',
-    enBrefShort: 'Bref',
-    full: 'Complet',
-    fullShort: 'Complet',
-    gallery: 'Galerie',
-    contactVictor: 'Contacter Victor pour un projet similaire',
-  }
-};
 
 // TOC Sections for Full case study
 const TOC_SECTIONS = {

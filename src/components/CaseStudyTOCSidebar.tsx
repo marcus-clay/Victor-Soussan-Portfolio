@@ -6,7 +6,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronDown, List } from 'lucide-react';
+import { CaretLeft as ChevronLeft, CaretDown as ChevronDown, List } from '@phosphor-icons/react';
 
 interface TOCSection {
   id: string;

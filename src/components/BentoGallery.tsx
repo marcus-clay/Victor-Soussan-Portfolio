@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence, PanInfo, useMotionValue, useTransform, useSpring } from 'framer-motion';
-import { X, ChevronLeft, ChevronRight, Play } from 'lucide-react';
+import { X, CaretLeft as ChevronLeft, CaretRight as ChevronRight, Play } from '@phosphor-icons/react';
 
 // Apple-style spring transition
 const springTransition = {

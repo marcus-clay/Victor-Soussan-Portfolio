@@ -11,7 +11,7 @@
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Play, Loader2 } from 'lucide-react';
+import { Play, SpinnerGap as Loader2 } from '@phosphor-icons/react';
 
 interface ProgressiveVideoProps {
   src: string;

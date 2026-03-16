@@ -1,12 +1,12 @@
 import React from 'react';
 import {
-  ChevronRight,
-  CheckCircle2,
+  CaretRight as ChevronRight,
+  CheckCircle as CheckCircle2,
   Target,
-  Box,
+  Package as Box,
   ArrowUpRight,
   Images,
-} from 'lucide-react';
+} from '@phosphor-icons/react';
 
 interface Project {
   id: string;

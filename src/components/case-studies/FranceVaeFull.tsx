@@ -15,23 +15,23 @@
 import React, { useRef, useState } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 import {
-  Layers,
+  Stack as Layers,
   ArrowRight,
   Briefcase,
   Calendar,
-  Building2,
+  Buildings as Building2,
   X,
   Play,
-  ExternalLink,
+  ArrowSquareOut as ExternalLink,
   Users,
   Lightbulb,
-  Bot,
-  CheckCircle2,
+  Robot as Bot,
+  CheckCircle as CheckCircle2,
   Target,
-  ChevronDown,
-  Search,
-  Quote
-} from 'lucide-react';
+  CaretDown as ChevronDown,
+  MagnifyingGlass as Search,
+  Quotes as Quote
+} from '@phosphor-icons/react';
 
 interface FranceVaeFullProps {
   systemTheme: 'light' | 'dark';

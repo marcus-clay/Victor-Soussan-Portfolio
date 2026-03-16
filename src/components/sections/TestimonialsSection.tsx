@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Linkedin, ArrowUpRight, Quote } from 'lucide-react';
+import { LinkedinLogo as Linkedin, ArrowUpRight, Quotes as Quote } from '@phosphor-icons/react';
 
 interface Testimonial {
   id: string;

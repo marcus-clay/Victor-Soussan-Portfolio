@@ -5,16 +5,16 @@ import CareerCarousel from '../components/CareerCarousel';
 import { careerData } from '../data/careerData';
 import {
   X,
-  ChevronLeft,
-  ChevronRight,
-  Mail,
-  Linkedin,
+  CaretLeft as ChevronLeft,
+  CaretRight as ChevronRight,
+  Envelope as Mail,
+  LinkedinLogo as Linkedin,
   Phone,
-  Download,
+  DownloadSimple as Download,
   Copy,
   Check,
-  Video,
-} from 'lucide-react';
+  VideoCamera as Video,
+} from '@phosphor-icons/react';
 
 // Apple-style spring transition for lightbox
 const springTransition = {

@@ -8,21 +8,21 @@
 import React, { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import {
-  Layers,
+  Stack as Layers,
   Calendar,
   Briefcase,
-  Building2,
-  Quote,
-  Smartphone,
-  Map,
+  Buildings as Building2,
+  Quotes as Quote,
+  DeviceMobile as Smartphone,
+  MapTrifold as Map,
   Users,
   Palette,
   Watch,
-  CheckCircle2,
+  CheckCircle as CheckCircle2,
   ArrowRight,
   Heart,
-  Search
-} from 'lucide-react';
+  MagnifyingGlass as Search
+} from '@phosphor-icons/react';
 
 interface PagesJaunesFullProps {
   systemTheme: 'light' | 'dark';

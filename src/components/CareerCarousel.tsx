@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { ChevronRight, ChevronLeft, Briefcase } from 'lucide-react';
+import { CaretRight as ChevronRight, CaretLeft as ChevronLeft, Briefcase } from '@phosphor-icons/react';
 import { careerData, CareerItem } from '../data/careerData';
 
 interface CareerCarouselProps {

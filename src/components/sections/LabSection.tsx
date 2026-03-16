@@ -1,10 +1,11 @@
 import React from 'react';
 import {
   ArrowUpRight,
-  Smartphone,
-  FlaskConical,
-} from 'lucide-react';
-import { Bot, Palette } from 'lucide-react';
+  DeviceMobile as Smartphone,
+  Flask as FlaskConical,
+  Robot as Bot,
+  Palette,
+} from '@phosphor-icons/react';
 
 interface LabPreview {
   title: string;

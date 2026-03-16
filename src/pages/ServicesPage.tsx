@@ -7,14 +7,14 @@ import { motion } from 'framer-motion';
 import { smoothScrollTo } from '../utils/smoothScroll';
 import {
   X,
-  PenTool,
-  Zap,
-  Settings,
+  PencilSimple as PenTool,
+  Lightning as Zap,
+  Gear as Settings,
   Users,
-  CheckCircle2,
+  CheckCircle as CheckCircle2,
   ArrowRight,
-  Mail
-} from 'lucide-react';
+  Envelope as Mail
+} from '@phosphor-icons/react';
 import CaseStudyTOCSidebar from '../components/CaseStudyTOCSidebar';
 
 type Language = 'en' | 'fr';

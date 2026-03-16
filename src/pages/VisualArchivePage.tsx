@@ -5,7 +5,7 @@
 
 import React, { useState, useCallback, useMemo, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, LayoutGrid, Rows3, ChevronDown } from 'lucide-react';
+import { X, GridFour as LayoutGrid, Rows as Rows3, CaretDown as ChevronDown } from '@phosphor-icons/react';
 import EnhancedLightbox, { LightboxImage } from '../components/media/EnhancedLightbox';
 import CaseStudyTOCSidebar from '../components/CaseStudyTOCSidebar';
 import { smoothScrollTo } from '../utils/smoothScroll';

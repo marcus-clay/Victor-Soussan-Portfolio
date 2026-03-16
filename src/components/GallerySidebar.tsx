@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Monitor, Users, Play } from 'lucide-react';
+import { Monitor, Users, Play } from '@phosphor-icons/react';
 import {
   GALLERY_CATEGORIES,
   PROTOTYPE_MAP,

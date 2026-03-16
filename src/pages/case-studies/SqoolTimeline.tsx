@@ -3,9 +3,9 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Layers, Clock } from 'lucide-react';
+import { CaretLeft as ChevronLeft, CaretRight as ChevronRight, Stack as Layers, Clock } from '@phosphor-icons/react';
 import { PROJECT_SEO, DEFAULT_SEO, updateMetaTags } from '../../utils/seo';
-
+import { SQOOL_TIMELINE_TRANSLATIONS } from '../../data/caseStudyTranslations/sqoolTimelineTranslations';
 
 interface SqoolTimelineProps {
   lang: 'en' | 'fr';
@@ -13,144 +13,7 @@ interface SqoolTimelineProps {
   onImageClick?: (src: string) => void;
 }
 
-const TRANSLATIONS = {
-  en: {
-    timeline: 'Timeline',
-    carousel: 'Phases',
-    viewTimeline: 'View Timeline',
-    viewCarousel: 'View by Phase',
-    phase: 'Phase',
-    of: 'of',
-    phases: [
-      {
-        id: 'legacy',
-        period: '2015-2018',
-        year: '2015',
-        title: 'Legacy Foundation',
-        subtitle: 'The monolithic era',
-        description: 'SQOOL Suite was a native Android launcher designed for shared tablets on classroom carts. Teachers used heavy C++ desktop apps while students were locked into a custom environment.',
-        items: [
-          { title: 'Android Launcher', description: 'Custom locked environment for students' },
-          { title: 'C++ Desktop Apps', description: 'Heavy native applications for teachers' },
-          { title: 'Shared Tablets', description: 'Classroom cart deployment model' },
-          { title: 'On-premise Servers', description: 'School-hosted infrastructure' },
-        ],
-      },
-      {
-        id: 'research',
-        period: '2019-2020',
-        year: '2019',
-        title: 'Finding Our Path',
-        subtitle: 'Web-first exploration',
-        description: 'With 500,000 personal devices deploying, we needed a new approach. Hi-SQOOL tested student engagement while Connect prototype validated web technology, and revealed why dashboards wouldn\'t work.',
-        items: [
-          { title: 'Hi-SQOOL', description: 'Student platform with fresh identity' },
-          { title: 'Connect Prototype', description: 'Vision dashboard with "La Bulle" concept' },
-          { title: 'Cloud Authentication', description: 'New SSO infrastructure' },
-          { title: 'User Research', description: 'Interviews with teachers & students' },
-        ],
-      },
-      {
-        id: 'pivot',
-        period: '2021',
-        year: '2021',
-        title: 'Strategic Pivot',
-        subtitle: 'Simple, Fluid, Magical',
-        description: 'Instead of one big platform, we chose focused apps that do one thing well. A new manifesto guided product direction while the brand system and design system enabled scale.',
-        items: [
-          { title: 'Product Manifesto', description: 'Simple, Fluid, Magical principles' },
-          { title: 'Brand System', description: 'Visual identity for 7+ apps' },
-          { title: 'Design System', description: 'Figma libraries & ZeroHeight docs' },
-          { title: 'Team Scaling', description: '5 designers recruited & managed' },
-        ],
-      },
-      {
-        id: 'delivery',
-        period: '2022-2024',
-        year: '2022',
-        title: 'Suite Delivery',
-        subtitle: 'Specialized applications',
-        description: 'With strategy defined and design system ready, we shipped the specialized apps: Classe for supervision, Partage for file sharing, Applications for discovery, MDM for IT, Protect for parents, Extend for virtual desktops.',
-        items: [
-          { title: 'SQOOL Classe', description: 'Real-time classroom supervision' },
-          { title: 'SQOOL Partage', description: 'One-gesture file sharing' },
-          { title: 'SQOOL Applications', description: 'Educational app discovery' },
-          { title: 'SQOOL MDM', description: 'Device fleet management' },
-          { title: 'SQOOL Protect', description: 'Parental controls via QR' },
-          { title: 'SQOOL Extend', description: 'Virtual desktops for heavy software' },
-        ],
-      },
-    ],
-  },
-  fr: {
-    timeline: 'Timeline',
-    carousel: 'Phases',
-    viewTimeline: 'Voir la timeline',
-    viewCarousel: 'Voir par phase',
-    phase: 'Phase',
-    of: 'sur',
-    phases: [
-      {
-        id: 'legacy',
-        period: '2015-2018',
-        year: '2015',
-        title: 'Fondation Legacy',
-        subtitle: 'L\'ère monolithique',
-        description: 'La suite SQOOL était un launcher Android natif conçu pour des tablettes partagées sur chariots. Les enseignants utilisaient des apps C++ lourdes tandis que les élèves étaient enfermés dans un environnement personnalisé.',
-        items: [
-          { title: 'Launcher Android', description: 'Environnement verrouillé pour les élèves' },
-          { title: 'Apps C++ Desktop', description: 'Applications natives lourdes pour enseignants' },
-          { title: 'Tablettes partagées', description: 'Modèle de déploiement sur chariots' },
-          { title: 'Serveurs on-premise', description: 'Infrastructure hébergée dans les écoles' },
-        ],
-      },
-      {
-        id: 'research',
-        period: '2019-2020',
-        year: '2019',
-        title: 'Trouver notre voie',
-        subtitle: 'Exploration web-first',
-        description: 'Avec 500 000 appareils personnels à déployer, nous avions besoin d\'une nouvelle approche. Hi-SQOOL a testé l\'engagement des élèves tandis que le prototype Connect a validé la technologie web, et révélé pourquoi les dashboards ne marcheraient pas.',
-        items: [
-          { title: 'Hi-SQOOL', description: 'Plateforme élève avec nouvelle identité' },
-          { title: 'Prototype Connect', description: 'Dashboard de vision avec concept "La Bulle"' },
-          { title: 'Authentification Cloud', description: 'Nouvelle infrastructure SSO' },
-          { title: 'Recherche utilisateur', description: 'Entretiens avec enseignants & élèves' },
-        ],
-      },
-      {
-        id: 'pivot',
-        period: '2021',
-        year: '2021',
-        title: 'Pivot stratégique',
-        subtitle: 'Simple, Fluide, Magique',
-        description: 'Au lieu d\'une grande plateforme, nous avons choisi des apps ciblées qui font une seule chose bien. Un nouveau manifeste a guidé la direction produit tandis que le système de marque et le design system ont permis de passer à l\'échelle.',
-        items: [
-          { title: 'Manifeste Produit', description: 'Principes Simple, Fluide, Magique' },
-          { title: 'Système de marque', description: 'Identité visuelle pour 7+ apps' },
-          { title: 'Design System', description: 'Librairies Figma & docs ZeroHeight' },
-          { title: 'Scaling équipe', description: '5 designers recrutés & managés' },
-        ],
-      },
-      {
-        id: 'delivery',
-        period: '2022-2024',
-        year: '2022',
-        title: 'Livraison de la suite',
-        subtitle: 'Applications spécialisées',
-        description: 'Avec la stratégie définie et le design system prêt, nous avons livré les apps spécialisées : Classe pour la supervision, Partage pour les fichiers, Applications pour la découverte, MDM pour l\'IT, Protect pour les parents, Extend pour les bureaux virtuels.',
-        items: [
-          { title: 'SQOOL Classe', description: 'Supervision de classe en temps réel' },
-          { title: 'SQOOL Partage', description: 'Partage de fichiers en un geste' },
-          { title: 'SQOOL Applications', description: 'Découverte d\'apps éducatives' },
-          { title: 'SQOOL MDM', description: 'Gestion de flotte d\'appareils' },
-          { title: 'SQOOL Protect', description: 'Contrôle parental via QR' },
-          { title: 'SQOOL Extend', description: 'Bureaux virtuels pour logiciels lourds' },
-        ],
-      },
-    ],
-  },
-};
+const TRANSLATIONS = SQOOL_TIMELINE_TRANSLATIONS;
 
 const PHASE_COLORS = [
   { color: '#6B7280', colorLight: '#9CA3AF', gradient: 'from-gray-500 to-gray-600' },
