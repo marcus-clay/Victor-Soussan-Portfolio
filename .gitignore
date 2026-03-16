@@ -24,3 +24,10 @@ dist-ssr
 *.sw?
 .vercel
 .env*.local
+
+# Claude Code local config
+.claude/
+
+# Dev artifacts
+screenshots/
+scripts/screenshot-final.mjs
