@@ -37,6 +37,8 @@ import {
   CATEGORY_LABELS,
   EXECUTIVE_PROTOTYPES,
   getPrototypesForSection,
+  getHighlightsForSection,
+  getGalleryCategoryForSection,
   PrototypeCategory,
   PrototypeItem,
 } from '../../data/sqoolPrototypesData';
@@ -876,21 +878,30 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                       {t.grid.description}
                     </p>
 
-                    {/* Grid prototypes carousel */}
+                    {/* Grid prototypes carousel (highlights only) */}
                     {(() => {
-                      const protos = getPrototypesForSection('grid');
+                      const highlights = getHighlightsForSection('grid');
+                      const allProtos = getPrototypesForSection('grid');
                       return (
                         <PrototypeCarousel
-                          prototypes={protos}
+                          prototypes={highlights}
                           isDark={isDark}
                           lang={lang}
-                          onCardClick={(i) => openPrototypeLightbox(protos, i)}
+                          onCardClick={(i) => openPrototypeLightbox(allProtos, i)}
+                          totalCount={allProtos.length}
+                          onSeeAll={() => {
+                            onViewModeChange('gallery');
+                            setTimeout(() => {
+                              const el = document.getElementById(`gallery-cat-${getGalleryCategoryForSection('grid')}`);
+                              if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            }, 300);
+                          }}
                         />
                       );
                     })()}
 
                     {/* Grid features described as cards */}
-                    <div className="grid md:grid-cols-3 gap-6 mt-8">
+                    <div className="grid md:grid-cols-3 gap-6 mt-16 md:mt-20">
                       {[
                         { icon: <Eye size={24} />, title: t.grid.statesTitle, desc: t.grid.statesDesc },
                         { icon: <Lock size={24} />, title: t.grid.lockTitle, desc: t.grid.lockDesc },
@@ -926,21 +937,30 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                       {t.orchestration.description}
                     </p>
 
-                    {/* Orchestration prototypes carousel */}
+                    {/* Orchestration prototypes carousel (highlights only) */}
                     {(() => {
-                      const protos = getPrototypesForSection('orchestration');
+                      const highlights = getHighlightsForSection('orchestration');
+                      const allProtos = getPrototypesForSection('orchestration');
                       return (
                         <PrototypeCarousel
-                          prototypes={protos}
+                          prototypes={highlights}
                           isDark={isDark}
                           lang={lang}
-                          onCardClick={(i) => openPrototypeLightbox(protos, i)}
+                          onCardClick={(i) => openPrototypeLightbox(allProtos, i)}
+                          totalCount={allProtos.length}
+                          onSeeAll={() => {
+                            onViewModeChange('gallery');
+                            setTimeout(() => {
+                              const el = document.getElementById(`gallery-cat-${getGalleryCategoryForSection('orchestration')}`);
+                              if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            }, 300);
+                          }}
                         />
                       );
                     })()}
 
                     {/* Orchestration features described as cards */}
-                    <div className="grid md:grid-cols-3 gap-6 mt-8">
+                    <div className="grid md:grid-cols-3 gap-6 mt-16 md:mt-20">
                       {[
                         { icon: <Users size={24} />, title: t.orchestration.randomTitle, desc: t.orchestration.randomDesc },
                         { icon: <Monitor size={24} />, title: t.orchestration.projectionTitle, desc: t.orchestration.projectionDesc },
@@ -976,21 +996,30 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                       {t.communication.description}
                     </p>
 
-                    {/* Communication prototypes carousel */}
+                    {/* Communication prototypes carousel (highlights only) */}
                     {(() => {
-                      const protos = getPrototypesForSection('communication');
+                      const highlights = getHighlightsForSection('communication');
+                      const allProtos = getPrototypesForSection('communication');
                       return (
                         <PrototypeCarousel
-                          prototypes={protos}
+                          prototypes={highlights}
                           isDark={isDark}
                           lang={lang}
-                          onCardClick={(i) => openPrototypeLightbox(protos, i)}
+                          onCardClick={(i) => openPrototypeLightbox(allProtos, i)}
+                          totalCount={allProtos.length}
+                          onSeeAll={() => {
+                            onViewModeChange('gallery');
+                            setTimeout(() => {
+                              const el = document.getElementById(`gallery-cat-${getGalleryCategoryForSection('communication')}`);
+                              if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            }, 300);
+                          }}
                         />
                       );
                     })()}
 
                     {/* Communication features described as cards */}
-                    <div className="grid md:grid-cols-3 gap-6 mt-8">
+                    <div className="grid md:grid-cols-3 gap-6 mt-16 md:mt-20">
                       {[
                         { icon: <MessageCircle size={24} />, title: t.communication.messagesTitle, desc: t.communication.messagesDesc },
                         { icon: <ArrowRight size={24} />, title: t.communication.replyTitle, desc: t.communication.replyDesc },
@@ -1028,21 +1057,30 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                       {t.sessions.description}
                     </p>
 
-                    {/* Sessions prototypes carousel */}
+                    {/* Sessions prototypes carousel (highlights only) */}
                     {(() => {
-                      const protos = getPrototypesForSection('sessions');
+                      const highlights = getHighlightsForSection('sessions');
+                      const allProtos = getPrototypesForSection('sessions');
                       return (
                         <PrototypeCarousel
-                          prototypes={protos}
+                          prototypes={highlights}
                           isDark={isDark}
                           lang={lang}
-                          onCardClick={(i) => openPrototypeLightbox(protos, i)}
+                          onCardClick={(i) => openPrototypeLightbox(allProtos, i)}
+                          totalCount={allProtos.length}
+                          onSeeAll={() => {
+                            onViewModeChange('gallery');
+                            setTimeout(() => {
+                              const el = document.getElementById(`gallery-cat-${getGalleryCategoryForSection('sessions')}`);
+                              if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            }, 300);
+                          }}
                         />
                       );
                     })()}
 
                     {/* Session & exam features described as cards */}
-                    <div className="grid md:grid-cols-3 gap-6 mt-8">
+                    <div className="grid md:grid-cols-3 gap-6 mt-16 md:mt-20">
                       {[
                         { icon: <Timer size={24} />, title: t.sessions.endTitle, desc: t.sessions.endDesc },
                         { icon: <FileText size={24} />, title: t.sessions.assignmentTitle, desc: t.sessions.assignmentDesc },
@@ -1086,21 +1124,30 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                       {t.students.description}
                     </p>
 
-                    {/* Student prototypes carousel */}
+                    {/* Student prototypes carousel (highlights only) */}
                     {(() => {
-                      const protos = getPrototypesForSection('students');
+                      const highlights = getHighlightsForSection('students');
+                      const allProtos = getPrototypesForSection('students');
                       return (
                         <PrototypeCarousel
-                          prototypes={protos}
+                          prototypes={highlights}
                           isDark={isDark}
                           lang={lang}
-                          onCardClick={(i) => openPrototypeLightbox(protos, i)}
+                          onCardClick={(i) => openPrototypeLightbox(allProtos, i)}
+                          totalCount={allProtos.length}
+                          onSeeAll={() => {
+                            onViewModeChange('gallery');
+                            setTimeout(() => {
+                              const el = document.getElementById(`gallery-cat-${getGalleryCategoryForSection('students')}`);
+                              if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            }, 300);
+                          }}
                         />
                       );
                     })()}
 
                     {/* Student features described as cards */}
-                    <div className="grid md:grid-cols-3 gap-6 mt-8">
+                    <div className="grid md:grid-cols-3 gap-6 mt-16 md:mt-20">
                       {[
                         { icon: <FileText size={24} />, title: t.students.resourcesTitle, desc: t.students.resourcesDesc },
                         { icon: <ArrowRight size={24} />, title: t.students.doneTitle, desc: t.students.doneDesc },
@@ -1139,21 +1186,30 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                       {t.journeys.description}
                     </p>
 
-                    {/* Journeys prototypes carousel */}
+                    {/* Journeys prototypes carousel (highlights only) */}
                     {(() => {
-                      const protos = getPrototypesForSection('journeys');
+                      const highlights = getHighlightsForSection('journeys');
+                      const allProtos = getPrototypesForSection('journeys');
                       return (
                         <PrototypeCarousel
-                          prototypes={protos}
+                          prototypes={highlights}
                           isDark={isDark}
                           lang={lang}
-                          onCardClick={(i) => openPrototypeLightbox(protos, i)}
+                          onCardClick={(i) => openPrototypeLightbox(allProtos, i)}
+                          totalCount={allProtos.length}
+                          onSeeAll={() => {
+                            onViewModeChange('gallery');
+                            setTimeout(() => {
+                              const el = document.getElementById(`gallery-cat-${getGalleryCategoryForSection('journeys')}`);
+                              if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            }, 300);
+                          }}
                         />
                       );
                     })()}
 
                     {/* Other journeys described as cards */}
-                    <div className="grid md:grid-cols-2 gap-6 mt-8">
+                    <div className="grid md:grid-cols-2 gap-6 mt-16 md:mt-20">
                       {[
                         { icon: <Play size={24} />, title: t.journeys.sc1Title, desc: t.journeys.sc1Desc },
                         { icon: <FileText size={24} />, title: t.journeys.sc7Title, desc: t.journeys.sc7Desc },

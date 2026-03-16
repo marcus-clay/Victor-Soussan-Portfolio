@@ -8,6 +8,8 @@ interface PrototypeCarouselProps {
   isDark: boolean;
   lang: 'en' | 'fr';
   onCardClick: (index: number) => void;
+  totalCount?: number;   // total prototypes in this section (for "See all N" label)
+  onSeeAll?: () => void; // callback to open gallery at the right category
 }
 
 // Benefit-focused captions (user value, not UI description)
@@ -241,6 +243,8 @@ const PrototypeCarousel: React.FC<PrototypeCarouselProps> = ({
   isDark,
   lang,
   onCardClick: _onCardClick,
+  totalCount,
+  onSeeAll,
 }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -362,6 +366,25 @@ const PrototypeCarousel: React.FC<PrototypeCarouselProps> = ({
                 : 'bg-gradient-to-l from-white to-transparent'
             }`} />
           )}
+        </div>
+      )}
+
+      {/* "See all N prototypes" link */}
+      {onSeeAll && totalCount && totalCount > prototypes.length && (
+        <div className="mt-4 flex justify-end">
+          <button
+            onClick={onSeeAll}
+            className={`text-sm font-medium inline-flex items-center gap-1.5 transition-colors ${
+              isDark
+                ? 'text-[#2D5CF3] hover:text-[#4B7BF5]'
+                : 'text-[#2D5CF3] hover:text-[#2450d9]'
+            }`}
+          >
+            {lang === 'fr'
+              ? `Voir les ${totalCount} prototypes`
+              : `See all ${totalCount} prototypes`}
+            <ChevronRight size={14} />
+          </button>
         </div>
       )}
     </div>

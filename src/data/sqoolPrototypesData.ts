@@ -77,13 +77,15 @@ export const PROTOTYPES: PrototypeItem[] = [
 export const PROTOTYPE_MAP = new Map(PROTOTYPES.map(p => [p.id, p]));
 
 // Case study section groupings (which prototypes appear in each carousel)
+// highlightIds: 2-3 best prototypes shown in case study (progressive disclosure)
+// prototypeIds: full list for gallery view and lightbox navigation
 export const CASE_STUDY_SECTIONS = [
-  { sectionId: 'grid', prototypeIds: ['T1', 'T3', 'T5', 'T25', 'T2'] },
-  { sectionId: 'orchestration', prototypeIds: ['T9', 'T18', 'T12', 'T7', 'T8', 'T13'] },
-  { sectionId: 'communication', prototypeIds: ['T10', 'T11', 'T4', 'T16', 'T17', 'T6'] },
-  { sectionId: 'sessions', prototypeIds: ['T19', 'T20', 'T21', 'T22', 'T23', 'T24', 'T15'] },
-  { sectionId: 'students', prototypeIds: ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7'] },
-  { sectionId: 'journeys', prototypeIds: ['SC1', 'SC2', 'SC3', 'SC4', 'SC5', 'SC6', 'SC7', 'SC8', 'SC9', 'SC10'] },
+  { sectionId: 'grid', highlightIds: ['T1', 'T3', 'T5'], prototypeIds: ['T1', 'T3', 'T5', 'T25', 'T2'], galleryCategory: 'teacher' as const },
+  { sectionId: 'orchestration', highlightIds: ['T9', 'T18'], prototypeIds: ['T9', 'T18', 'T12', 'T7', 'T8', 'T13'], galleryCategory: 'teacher' as const },
+  { sectionId: 'communication', highlightIds: ['T10', 'T11'], prototypeIds: ['T10', 'T11', 'T4', 'T16', 'T17', 'T6'], galleryCategory: 'teacher' as const },
+  { sectionId: 'sessions', highlightIds: ['T20', 'T22'], prototypeIds: ['T19', 'T20', 'T21', 'T22', 'T23', 'T24', 'T15'], galleryCategory: 'teacher' as const },
+  { sectionId: 'students', highlightIds: ['S1', 'S4'], prototypeIds: ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7'], galleryCategory: 'student' as const },
+  { sectionId: 'journeys', highlightIds: ['SC1', 'SC7', 'SC10'], prototypeIds: ['SC1', 'SC2', 'SC3', 'SC4', 'SC5', 'SC6', 'SC7', 'SC8', 'SC9', 'SC10'], galleryCategory: 'scenario' as const },
 ] as const;
 
 // Gallery categories
@@ -96,11 +98,24 @@ export const GALLERY_CATEGORIES = [
 // Executive summary key prototypes
 export const EXECUTIVE_PROTOTYPES = ['T1', 'SC1', 'SC7', 'SC10'];
 
-// Helper to get prototypes for a section
+// Helper to get ALL prototypes for a section (gallery + lightbox)
 export function getPrototypesForSection(sectionId: string): PrototypeItem[] {
   const section = CASE_STUDY_SECTIONS.find(s => s.sectionId === sectionId);
   if (!section) return [];
   return section.prototypeIds.map(id => PROTOTYPE_MAP.get(id)).filter(Boolean) as PrototypeItem[];
+}
+
+// Helper to get HIGHLIGHT prototypes for case study view (2-3 per section)
+export function getHighlightsForSection(sectionId: string): PrototypeItem[] {
+  const section = CASE_STUDY_SECTIONS.find(s => s.sectionId === sectionId);
+  if (!section) return [];
+  return section.highlightIds.map(id => PROTOTYPE_MAP.get(id)).filter(Boolean) as PrototypeItem[];
+}
+
+// Get gallery category for a section (for "See all" deep linking)
+export function getGalleryCategoryForSection(sectionId: string): string | null {
+  const section = CASE_STUDY_SECTIONS.find(s => s.sectionId === sectionId);
+  return section?.galleryCategory ?? null;
 }
 
 // Helper to build iframe URL (always autoplay=0, controlled via postMessage)
