@@ -413,34 +413,9 @@
       })(window, document, "clarity", "script", "uz9rgl6od9");
     </script>
 
-    <!-- We keep Tailwind CDN for simplicity as per current setup, though a build step for CSS is recommended for production -->
-    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: ['Inter', 'sans-serif'],
-            },
-            colors: {
-              apple: {
-                gray: '#F5F5F7',
-                dark: '#1D1D1F',
-                blue: '#0071E3',
-                glass: 'rgba(255, 255, 255, 0.72)',
-                glassBorder: 'rgba(255, 255, 255, 0.5)',
-              }
-            },
-            backdropBlur: {
-              xs: '2px',
-            }
-          }
-        }
-      }
-    </script>
     <style>
       /* Custom scrollbar for webkit */
       ::-webkit-scrollbar {
