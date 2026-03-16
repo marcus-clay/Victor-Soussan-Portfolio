@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
-import { getIframeSrc } from '../data/sqoolPrototypesData';
+import { getIframeSrc } from '../../data/sqoolPrototypesData';
 
 interface PrototypeLightboxItem {
   id: string;

@@ -3,7 +3,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, useMotionValue, useTransform, useSpring, AnimatePresence } from 'framer-motion';
-import { smoothScrollTo } from './src/utils/smoothScroll';
+import { smoothScrollTo } from '../../utils/smoothScroll';
 import {
   X,
   Play,
@@ -18,9 +18,9 @@ import {
   Smartphone,
   Quote
 } from 'lucide-react';
-import { GalleryItem } from './BentoGallery';
-import EnhancedLightbox from './src/components/EnhancedLightbox';
-import CaseStudyTOCSidebar from './src/components/CaseStudyTOCSidebar';
+import { GalleryItem } from '../../components/BentoGallery';
+import EnhancedLightbox from '../../components/media/EnhancedLightbox';
+import CaseStudyTOCSidebar from '../../components/CaseStudyTOCSidebar';
 
 interface AndroidWearPageProps {
   onClose: () => void;

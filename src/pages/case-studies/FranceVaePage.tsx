@@ -3,13 +3,12 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion';
-import { smoothScrollTo } from './src/utils/smoothScroll';
+import { smoothScrollTo } from '../../utils/smoothScroll';
 import { X } from 'lucide-react';
-import CaseStudyTOCSidebar from './src/components/CaseStudyTOCSidebar';
-import FranceVaeExecutive from './src/components/FranceVaeExecutive';
-import FranceVaeFull from './src/components/FranceVaeFull';
-import StackedCaseStudies from './src/components/StackedCaseStudies';
-import EnhancedLightbox from './src/components/EnhancedLightbox';
+import CaseStudyTOCSidebar from '../../components/CaseStudyTOCSidebar';
+import FranceVaeExecutive from '../../components/case-studies/FranceVaeExecutive';
+import FranceVaeFull from '../../components/case-studies/FranceVaeFull';
+import EnhancedLightbox from '../../components/media/EnhancedLightbox';
 
 // Gallery Card with Apple TV-style 3D tilt effect (same as BentoGallery)
 interface GalleryCardProps {

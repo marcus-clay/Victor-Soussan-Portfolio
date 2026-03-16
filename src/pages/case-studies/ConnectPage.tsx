@@ -3,16 +3,15 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion';
-import { smoothScrollTo } from './src/utils/smoothScroll';
+import { smoothScrollTo } from '../../utils/smoothScroll';
 import {
   X,
   Play
 } from 'lucide-react';
-import { GalleryItem, getConnectGalleryItems } from './BentoGallery';
-import ConnectExecutive from './src/components/ConnectExecutive';
-import StackedCaseStudies from './src/components/StackedCaseStudies';
-import EnhancedLightbox from './src/components/EnhancedLightbox';
-import CaseStudyTOCSidebar from './src/components/CaseStudyTOCSidebar';
+import { GalleryItem, getConnectGalleryItems } from '../../components/BentoGallery';
+import ConnectExecutive from '../../components/case-studies/ConnectExecutive';
+import EnhancedLightbox from '../../components/media/EnhancedLightbox';
+import CaseStudyTOCSidebar from '../../components/CaseStudyTOCSidebar';
 
 interface ConnectPageProps {
   onClose: () => void;

@@ -6,8 +6,8 @@
 import React, { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ArrowRight, Check, Link2 } from 'lucide-react';
-import { SIGNALS, CATEGORY_COLORS, CATEGORY_LABELS } from './src/data/signalsData';
-import type { Signal, SignalCategory } from './src/data/signalsData';
+import { SIGNALS, CATEGORY_COLORS, CATEGORY_LABELS } from '../data/signalsData';
+import type { Signal, SignalCategory } from '../data/signalsData';
 
 type Language = 'en' | 'fr';
 type FilterCategory = SignalCategory | 'all';

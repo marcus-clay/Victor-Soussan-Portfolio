@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { motion, AnimatePresence, LayoutGroup, useScroll, useTransform, useSpring } from 'framer-motion';
-import { EMAILJS_CONFIG } from './emailConfig';
+import { EMAILJS_CONFIG } from './config/emailConfig';
 import {
   ChevronRight,
   Layers,
@@ -52,29 +52,28 @@ import {
   Link2
 } from 'lucide-react';
 import { Rocket, Buildings, HandHeart, ArrowsClockwise, ChatCircleDots, ChartLineUp, Envelope, Phone, LinkedinLogo, Globe } from '@phosphor-icons/react';
-import { SIGNALS, FEATURED_SIGNAL_IDS, CATEGORY_COLORS as SIGNAL_CATEGORY_COLORS, CATEGORY_LABELS as SIGNAL_CATEGORY_LABELS } from './src/data/signalsData';
-import type { Signal } from './src/data/signalsData';
-// InfiniteGrid removed for performance - was causing 60fps JS animation loop
+import { SIGNALS, FEATURED_SIGNAL_IDS, CATEGORY_COLORS as SIGNAL_CATEGORY_COLORS, CATEGORY_LABELS as SIGNAL_CATEGORY_LABELS } from './data/signalsData';
+import type { Signal } from './data/signalsData';
 
 // Lazy load heavy page components for code splitting
-const ToolkitPage = lazy(() => import('./ToolkitPage'));
-const DailymotionPage = lazy(() => import('./DailymotionPage'));
-const ConnectPage = lazy(() => import('./ConnectPage'));
-const SqoolPage = lazy(() => import('./SqoolPage'));
-const SqoolClassePage = lazy(() => import('./SqoolClassePage'));
-const FranceVaePage = lazy(() => import('./FranceVaePage'));
-const PagesJaunesPage = lazy(() => import('./PagesJaunesPage'));
-const AndroidWearPage = lazy(() => import('./AndroidWearPage'));
-const ExecutivePage = lazy(() => import('./ExecutivePage'));
-const WorkPage = lazy(() => import('./WorkPage'));
-const IframeModal = lazy(() => import('./IframeModal'));
-const HomePageV2 = lazy(() => import('./HomePageV2'));
-const ServicesPage = lazy(() => import('./ServicesPage'));
-const VisualArchivePage = lazy(() => import('./VisualArchivePage'));
-const AboutPage = lazy(() => import('./AboutPage'));
-const SignalsPage = lazy(() => import('./SignalsPage'));
-const ConsultingPage = lazy(() => import('./ConsultingPage'));
-const SignalDetailPage = lazy(() => import('./SignalDetailPage'));
+const ToolkitPage = lazy(() => import('./pages/case-studies/ToolkitPage'));
+const DailymotionPage = lazy(() => import('./pages/case-studies/DailymotionPage'));
+const ConnectPage = lazy(() => import('./pages/case-studies/ConnectPage'));
+const SqoolPage = lazy(() => import('./pages/case-studies/SqoolPage'));
+const SqoolClassePage = lazy(() => import('./pages/case-studies/SqoolClassePage'));
+const FranceVaePage = lazy(() => import('./pages/case-studies/FranceVaePage'));
+const PagesJaunesPage = lazy(() => import('./pages/case-studies/PagesJaunesPage'));
+const AndroidWearPage = lazy(() => import('./pages/case-studies/AndroidWearPage'));
+const ExecutivePage = lazy(() => import('./pages/ExecutivePage'));
+const WorkPage = lazy(() => import('./pages/WorkPage'));
+const IframeModal = lazy(() => import('./components/IframeModal'));
+const HomePageV2 = lazy(() => import('./pages/HomePageV2'));
+const ServicesPage = lazy(() => import('./pages/ServicesPage'));
+const VisualArchivePage = lazy(() => import('./pages/VisualArchivePage'));
+const AboutPage = lazy(() => import('./pages/AboutPage'));
+const SignalsPage = lazy(() => import('./pages/SignalsPage'));
+const ConsultingPage = lazy(() => import('./pages/ConsultingPage'));
+const SignalDetailPage = lazy(() => import('./pages/SignalDetailPage'));
 
 // Loading spinner component for lazy loaded pages
 const PageLoader = () => (

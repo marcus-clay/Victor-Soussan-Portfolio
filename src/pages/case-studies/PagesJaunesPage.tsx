@@ -3,13 +3,13 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion';
-import { smoothScrollTo } from './src/utils/smoothScroll';
+import { smoothScrollTo } from '../../utils/smoothScroll';
 import { X, Play } from 'lucide-react';
-import { GalleryItem } from './BentoGallery';
-import EnhancedLightbox from './src/components/EnhancedLightbox';
-import PagesJaunesExecutive from './src/components/PagesJaunesExecutive';
-import PagesJaunesFull from './src/components/PagesJaunesFull';
-import CaseStudyTOCSidebar from './src/components/CaseStudyTOCSidebar';
+import { GalleryItem } from '../../components/BentoGallery';
+import EnhancedLightbox from '../../components/media/EnhancedLightbox';
+import PagesJaunesExecutive from '../../components/case-studies/PagesJaunesExecutive';
+import PagesJaunesFull from '../../components/case-studies/PagesJaunesFull';
+import CaseStudyTOCSidebar from '../../components/CaseStudyTOCSidebar';
 
 // TOC Sections for Full case study
 const TOC_SECTIONS = {

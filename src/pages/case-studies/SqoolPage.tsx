@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion';
-import { smoothScrollTo } from './src/utils/smoothScroll';
+import { smoothScrollTo } from '../../utils/smoothScroll';
 import {
   ChevronRight,
   ChevronLeft,
@@ -16,12 +16,11 @@ import {
   Layers,
   Users
 } from 'lucide-react';
-import { GalleryItem, getSqoolGalleryItems } from './BentoGallery';
+import { GalleryItem, getSqoolGalleryItems } from '../../components/BentoGallery';
 import { SqoolTimeline } from './SqoolTimeline';
-import SqoolExecutive from './src/components/SqoolExecutive';
-import StackedCaseStudies from './src/components/StackedCaseStudies';
-import EnhancedLightbox from './src/components/EnhancedLightbox';
-import CaseStudyTOCSidebar from './src/components/CaseStudyTOCSidebar';
+import SqoolExecutive from '../../components/case-studies/SqoolExecutive';
+import EnhancedLightbox from '../../components/media/EnhancedLightbox';
+import CaseStudyTOCSidebar from '../../components/CaseStudyTOCSidebar';
 
 // TOC Sections for Full case study
 const TOC_SECTIONS = {

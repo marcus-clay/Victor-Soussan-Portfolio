@@ -22,12 +22,12 @@ import {
   Play,
   Maximize2,
 } from 'lucide-react';
-import EnhancedLightbox from './src/components/EnhancedLightbox';
-import CaseStudyTOCSidebar from './src/components/CaseStudyTOCSidebar';
-import PrototypeCard from './src/components/PrototypeCard';
-import PrototypeCarousel from './src/components/PrototypeCarousel';
-import PrototypeLightbox from './src/components/PrototypeLightbox';
-import GallerySidebar from './src/components/GallerySidebar';
+import EnhancedLightbox from '../../components/media/EnhancedLightbox';
+import CaseStudyTOCSidebar from '../../components/CaseStudyTOCSidebar';
+import PrototypeCard from '../../components/prototype/PrototypeCard';
+import PrototypeCarousel from '../../components/prototype/PrototypeCarousel';
+import PrototypeLightbox from '../../components/prototype/PrototypeLightbox';
+import GallerySidebar from '../../components/GallerySidebar';
 import {
   PROTOTYPE_MAP,
   GALLERY_CATEGORIES,
@@ -37,7 +37,7 @@ import {
   getPrototypesForSection,
   PrototypeCategory,
   PrototypeItem,
-} from './src/data/sqoolPrototypesData';
+} from '../../data/sqoolPrototypesData';
 
 interface SqoolClassePageProps {
   onClose: () => void;

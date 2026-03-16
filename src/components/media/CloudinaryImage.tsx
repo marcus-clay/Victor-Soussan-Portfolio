@@ -6,7 +6,7 @@ import {
   localPathToPublicId,
   shouldUseCloudinary,
   type CloudinaryOptions,
-} from '../utils/cloudinary';
+} from '../../utils/cloudinary';
 
 interface CloudinaryImageProps {
   src: string; // Local path like /images/project/image.webp

@@ -2,7 +2,7 @@ import React, { useRef, useState, useCallback, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import PrototypeCard from './PrototypeCard';
-import { PrototypeItem, getIframeSrc } from '../data/sqoolPrototypesData';
+import { PrototypeItem, getIframeSrc } from '../../data/sqoolPrototypesData';
 
 interface PrototypeCarouselProps {
   prototypes: PrototypeItem[];

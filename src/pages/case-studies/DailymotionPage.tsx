@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform, useSpring, PanInfo } from 'framer-motion';
-import { smoothScrollTo } from './src/utils/smoothScroll';
+import { smoothScrollTo } from '../../utils/smoothScroll';
 import {
   X,
   ExternalLink,
@@ -14,10 +14,10 @@ import {
   Building2,
   ArrowRight
 } from 'lucide-react';
-import { GalleryItem, getDailymotionGalleryItems } from './BentoGallery';
-import EnhancedLightbox from './src/components/EnhancedLightbox';
-import DailymotionExecutive from './src/components/DailymotionExecutive';
-import CaseStudyTOCSidebar from './src/components/CaseStudyTOCSidebar';
+import { GalleryItem, getDailymotionGalleryItems } from '../../components/BentoGallery';
+import EnhancedLightbox from '../../components/media/EnhancedLightbox';
+import DailymotionExecutive from '../../components/case-studies/DailymotionExecutive';
+import CaseStudyTOCSidebar from '../../components/CaseStudyTOCSidebar';
 
 interface DailymotionPageProps {
   onClose: () => void;

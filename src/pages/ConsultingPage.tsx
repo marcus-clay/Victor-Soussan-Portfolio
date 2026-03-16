@@ -6,7 +6,7 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { smoothScrollTo } from './src/utils/smoothScroll';
+import { smoothScrollTo } from '../utils/smoothScroll';
 import {
   X,
   Target,
@@ -24,7 +24,7 @@ import {
   ChevronDown,
   ExternalLink,
 } from 'lucide-react';
-import CaseStudyTOCSidebar from './src/components/CaseStudyTOCSidebar';
+import CaseStudyTOCSidebar from '../components/CaseStudyTOCSidebar';
 import {
   LIFECYCLE_PHASES,
   OFFERINGS,
@@ -36,7 +36,7 @@ import {
   type Scenario,
   type Reference,
   type DeliveryMode,
-} from './src/data/consultingData';
+} from '../data/consultingData';
 
 type Language = 'en' | 'fr';
 

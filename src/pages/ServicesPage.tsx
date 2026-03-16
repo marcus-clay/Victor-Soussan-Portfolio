@@ -4,7 +4,7 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { smoothScrollTo } from './src/utils/smoothScroll';
+import { smoothScrollTo } from '../utils/smoothScroll';
 import {
   X,
   PenTool,
@@ -15,7 +15,7 @@ import {
   ArrowRight,
   Mail
 } from 'lucide-react';
-import CaseStudyTOCSidebar from './src/components/CaseStudyTOCSidebar';
+import CaseStudyTOCSidebar from '../components/CaseStudyTOCSidebar';
 
 type Language = 'en' | 'fr';
 

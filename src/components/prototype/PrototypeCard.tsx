@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Play } from 'lucide-react';
-import { PrototypeCategory, CATEGORY_COLORS } from '../data/sqoolPrototypesData';
+import { PrototypeCategory, CATEGORY_COLORS } from '../../data/sqoolPrototypesData';
 
 interface PrototypeCardProps {
   prototypeId: string;

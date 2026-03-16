@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion';
-import { smoothScrollTo } from './src/utils/smoothScroll';
+import { smoothScrollTo } from '../../utils/smoothScroll';
 import {
   ExternalLink,
   Calendar,
@@ -18,10 +18,10 @@ import {
   CheckCircle2,
   ArrowRight
 } from 'lucide-react';
-import { GalleryItem, getToolkitGalleryItems } from './BentoGallery';
-import ToolkitExecutive from './src/components/ToolkitExecutive';
-import EnhancedLightbox from './src/components/EnhancedLightbox';
-import CaseStudyTOCSidebar from './src/components/CaseStudyTOCSidebar';
+import { GalleryItem, getToolkitGalleryItems } from '../../components/BentoGallery';
+import ToolkitExecutive from '../../components/case-studies/ToolkitExecutive';
+import EnhancedLightbox from '../../components/media/EnhancedLightbox';
+import CaseStudyTOCSidebar from '../../components/CaseStudyTOCSidebar';
 
 interface ToolkitPageProps {
   onClose: () => void;

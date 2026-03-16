@@ -63,12 +63,20 @@ All full-page overlays use the same header:
 - Full well-constructed sentences
 
 ## File Structure
-- `App.tsx` - Main app with homepage, routing, translations
-- `src/data/signalsData.ts` - Shared data for Signals section
-- `src/data/galleryData.ts` - Gallery projects and items (organized by project)
-- Page components at root: AboutPage.tsx, ServicesPage.tsx, SignalsPage.tsx, VisualArchivePage.tsx (Gallery), WorkPage.tsx
-- Case study pages at root: DailymotionPage.tsx, ConnectPage.tsx, SqoolPage.tsx, etc.
-- Reusable components in `src/components/`
+- `src/App.tsx` - Main app with homepage, routing, translations
+- `src/index.tsx` - React entry point
+- `src/pages/` - General pages (AboutPage, ServicesPage, SignalsPage, WorkPage, etc.)
+- `src/pages/case-studies/` - Case study pages (DailymotionPage, ConnectPage, SqoolPage, etc.)
+- `src/components/` - Shared components (CaseStudyTOCSidebar, BentoGallery, CareerCarousel, etc.)
+- `src/components/case-studies/` - Executive summary and full case study components
+- `src/components/media/` - Image, video, and lightbox components (EnhancedLightbox, LazyImage, etc.)
+- `src/components/prototype/` - Prototype display components (PrototypeCard, PrototypeCarousel, etc.)
+- `src/components/ui/` - Generic UI primitives (InfiniteGrid, ResponsiveImage)
+- `src/config/` - Configuration files (emailConfig, DESIGN_SYSTEM, styles)
+- `src/data/` - Shared data (signalsData, galleryData, careerData, consultingData, sqoolPrototypesData)
+- `src/hooks/` - Custom React hooks
+- `src/utils/` - Utility functions (cloudinary, smoothScroll)
+- `docs/` - Documentation, case study markdown, reference materials, assets
 
 ## Homepage Flow
 Hero → Projects → About (short bio) → Gallery (preview) → Services + Clients → Signals → Testimonials → Contact/Footer

@@ -6,7 +6,7 @@
 import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { X, ArrowLeft, Clock, Calendar, ArrowRight } from 'lucide-react';
-import { SIGNALS, CATEGORY_COLORS, CATEGORY_LABELS } from './src/data/signalsData';
+import { SIGNALS, CATEGORY_COLORS, CATEGORY_LABELS } from '../data/signalsData';
 
 interface Props {
   signalId: string;

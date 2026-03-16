@@ -6,11 +6,11 @@
 import React, { useState, useCallback, useMemo, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, LayoutGrid, Rows3, ChevronDown } from 'lucide-react';
-import EnhancedLightbox, { LightboxImage } from './src/components/EnhancedLightbox';
-import CaseStudyTOCSidebar from './src/components/CaseStudyTOCSidebar';
-import { smoothScrollTo } from './src/utils/smoothScroll';
-import LazyImage from './src/components/LazyImage';
-import { GALLERY_PROJECTS, ALL_GALLERY_ITEMS, GalleryItem, GalleryProject } from './src/data/galleryData';
+import EnhancedLightbox, { LightboxImage } from '../components/media/EnhancedLightbox';
+import CaseStudyTOCSidebar from '../components/CaseStudyTOCSidebar';
+import { smoothScrollTo } from '../utils/smoothScroll';
+import LazyImage from '../components/media/LazyImage';
+import { GALLERY_PROJECTS, ALL_GALLERY_ITEMS, GalleryItem, GalleryProject } from '../data/galleryData';
 
 type Language = 'en' | 'fr';
 type ViewMode = 'editorial' | 'grid';

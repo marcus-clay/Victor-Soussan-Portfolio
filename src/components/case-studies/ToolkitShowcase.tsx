@@ -11,7 +11,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Play, Quote } from 'lucide-react';
-import EnhancedLightbox, { LightboxImage } from './EnhancedLightbox';
+import EnhancedLightbox, { LightboxImage } from '../media/EnhancedLightbox';
 
 interface ToolkitShowcaseProps {
   systemTheme: 'light' | 'dark';

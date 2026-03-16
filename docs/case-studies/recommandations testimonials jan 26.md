@@ -103,11 +103,9 @@ Product Designer, Brand Designer, Speaker, Otaku et passioné de design.
 
 Passionné et fiable, j'ai énormément apprécié mon experience professionnelle à UNOWHY
 avec Victor. Amoureux des détails, les nombreux échanges, ses retours et recommandations
-m'ont permis d'atteindre un nouveau palier et de renforcer mon expertise et expériences en tant
-que designer.
+m'ont permis d'atteindre un nouveau palier et de renforcer mon expertise et expériences en tant que designer.
 
-Il a la volonté d'être à l'écoute de son équipe, de leur mettre dans les meilleures conditions tant
-sur le plan professionnel que humain, pour garantir le meilleur cadre qui soit.
+Il a la volonté d'être à l'écoute de son équipe, de leur mettre dans les meilleures conditions tant sur le plan professionnel que humain, pour garantir le meilleur cadre qui soit.
 
 Ce fut un énorme plaisir d'avoir pu travailler et d'apprendre avec lui.
 
@@ -122,10 +120,7 @@ had the opportunity to present him several prd and pitch decks on projects, semi
 company programs).
 
 J'ai eu le plaisir de travailler avec Victor durant ses 6 années chez UNOWHY, et c’est une
-personne que je recommande vivement. Très cultivé, curieux et créatif, il apporte toujours des
-idées pertinentes et des perspectives originales à chaque projet. En plus de son talent, Victor
-est quelqu’un de particulièrement sympathique, ce qui rend la collaboration avec lui d’autant
-plus agréable.
+personne que je recommande vivement. Très cultivé, curieux et créatif, il apporte toujours des idées pertinentes et des perspectives originales à chaque projet. En plus de son talent, Victor est quelqu’un de particulièrement sympathique, ce qui rend la collaboration avec lui d’autant plus agréable.
 
 ## —
 
@@ -137,12 +132,7 @@ Marketing Director at UNOWHY
 rebranding, communication and marketing operations on the applications suite, events and
 internal communication initiatives)
 
-J’ai travaillé aux côtés de Victor pendant 5 belles années. Son expertise, sa vision 360 et son
-talent de désigner ont permis la création et la réussite de nombreux projets. Nous avons
-
-
-notamment revu la plateforme des marques de UNOWHY et sans Victor cela n’aurait pas vu le
-jour. Victor est passionné et passionnant.
+J’ai travaillé aux côtés de Victor pendant 5 belles années. Son expertise, sa vision 360 et son talent de désigner ont permis la création et la réussite de nombreux projets. Nous avons notamment revu la plateforme des marques de UNOWHY et sans Victor cela n’aurait pas vu le jour. Victor est passionné et passionnant.
 
 ## —
 
@@ -152,12 +142,9 @@ Justine Le Tellier
 UX Researcher
 J’ai eu le plaisir de collaborer avec Victor pendant près de 2 ans au sein de l’équipe de
 conception des applications SQOOL chez UNOWHY. En tant que Product Lead en UI &
-Interaction Design, il a joué un rôle central dans la définition de la vision produit ainsi que dans
-la conception et l’amélioration continue de produits engageants et cohérents à destination de la
-communauté éducative.
+Interaction Design, il a joué un rôle central dans la définition de la vision produit ainsi que dans la conception et l’amélioration continue de produits engageants et cohérents à destination de la communauté éducative.
 
-Dans cette perspective, Victor a notamment piloté et accompagné l’équipe de product designers
-avec une approche à la fois rigoureuse et inspirante.
+Dans cette perspective, Victor a notamment piloté et accompagné l’équipe de product designers avec une approche à la fois rigoureuse et inspirante.
 
 Son expertise, son leadership et sa collaboration étroite avec les différentes parties prenantes
 ont été essentiels pour concevoir des solutions répondant aux besoins des différents types
@@ -193,7 +180,7 @@ chaque projet auquel il contribue.
 ```
 ## —
 
-## 28/06/
+## 28/06/2025
 
 Boris AIMÉ-BAUDERLIQUE
 Chargé de déploiement du Service Public de la VAE @FranceVAE - beta.gouv.fr
@@ -213,10 +200,10 @@ Bref, un profil ultra complet, impliqué, avec qui je retravaillerais sans hési
 ```
 ## —
 
-## 24/06/
+## 24/06/2025
 
 ```
-Charlotte Rifflet
+### Charlotte Rifflet
 ```
 ```
 CPO | Leadership produit | Scale-up à impact | Vision, stratégie, exécution
@@ -239,7 +226,8 @@ l’impact utilisateur.
 Je le recommande à toute équipe qui cherche un Lead Design à la fois créatif, exigeant, et
 profondément humain.
 ```
-Pierre-Marie NIGAY
+
+### Pierre-Marie NIGAY
 Fondateur de Toolkit, la plateforme tout-en-un pour piloter votre chantierLe 14 novembre 2025,
  Victor a travaillé pour Toolkit en tant que designer UX/UI.
 
@@ -259,7 +247,6 @@ gagner énormément de temps par la suite.
 Et au-delà des compétences, Victor est un super gars : curieux dans le bon sens, toujours
 positif, prêt à challenger pour aller toujours plus loin. C'est la raison pour laquelle notre
 collaboration avec Victor se poursuit 2 ans plus tard, et pour très longtemps encore.
-```
-# P i e r r e - M a r i e N I G A Y
+
 
 

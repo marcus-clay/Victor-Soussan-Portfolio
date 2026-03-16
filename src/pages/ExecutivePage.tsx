@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform, PanInfo } from 'framer-motion';
 import jsPDF from 'jspdf';
-import CareerCarousel from './src/components/CareerCarousel';
-import { careerData } from './src/data/careerData';
+import CareerCarousel from '../components/CareerCarousel';
+import { careerData } from '../data/careerData';
 import {
   X,
   ChevronLeft,
