@@ -1,0 +1,122 @@
+import React from 'react';
+import { ArrowUpRight } from 'lucide-react';
+
+interface HeroSectionProps {
+  systemTheme: 'light' | 'dark';
+  lang: 'en' | 'fr';
+  content: {
+    hero: {
+      availability: string;
+      tagline: string;
+      title: string;
+      subtitle: string;
+      desc: string;
+    };
+  };
+  Avatar: React.FC<{ filename: string; alt: string; className?: string; isDark?: boolean }>;
+  scrollToSection: (id: string) => void;
+  openModalWithUrl: (path: string) => void;
+}
+
+const HeroSection: React.FC<HeroSectionProps> = ({
+  systemTheme,
+  lang,
+  content,
+  Avatar,
+  scrollToSection,
+  openModalWithUrl,
+}) => {
+  return (
+    <header className="relative min-h-[85vh] flex flex-col justify-center px-6 overflow-hidden">
+      {/* Static Background - Performance optimized (no JS animation) */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Gradient blobs only - no animated grid */}
+        <div className={`absolute right-[-10%] top-[-20%] w-[50%] h-[50%] rounded-full blur-[120px] ${
+          systemTheme === 'dark' ? 'bg-blue-600/8' : 'bg-blue-300/20'
+        }`} />
+        <div className={`absolute right-[20%] top-[10%] w-[25%] h-[25%] rounded-full blur-[100px] ${
+          systemTheme === 'dark' ? 'bg-indigo-500/5' : 'bg-indigo-300/15'
+        }`} />
+        <div className={`absolute left-[-15%] bottom-[-10%] w-[45%] h-[45%] rounded-full blur-[120px] ${
+          systemTheme === 'dark' ? 'bg-indigo-600/8' : 'bg-indigo-300/20'
+        }`} />
+        <div className={`absolute left-[30%] bottom-[20%] w-[20%] h-[20%] rounded-full blur-[80px] ${
+          systemTheme === 'dark' ? 'bg-violet-500/5' : 'bg-violet-300/12'
+        }`} />
+        {/* Bottom fade */}
+        <div className={`absolute bottom-0 left-0 right-0 h-40 ${
+          systemTheme === 'dark'
+            ? 'bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/70 to-transparent'
+            : 'bg-gradient-to-t from-[#F9F9F9] via-[#F9F9F9]/70 to-transparent'
+        }`} />
+      </div>
+
+      <div className="relative max-w-4xl mx-auto text-center z-10 pt-2.5">
+        {/* Availability Badge */}
+        <div
+          className={`inline-flex items-center relative z-20 pl-1 pr-3 py-1 rounded-full mb-8 ${
+            systemTheme === 'dark'
+              ? 'bg-white/10 border border-white/20'
+              : 'bg-white/70 border border-gray-200/60'
+          }`}
+          style={{
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
+          }}
+        >
+          <Avatar
+            filename="victor-soussan.webp"
+            alt="Victor Soussan"
+            className="w-7 h-7 rounded-full ring-2 ring-white/20"
+            isDark={systemTheme === 'dark'}
+          />
+          <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse ml-2.5" />
+          <span className={`text-xs font-medium ml-2 ${systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
+            {content.hero.availability}
+          </span>
+        </div>
+
+        {/* Main Tagline - Frame. Design. Ship. */}
+        <h1 className={`text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-[-0.05em] mb-4 md:mb-6 leading-[1.05] ${
+          systemTheme === 'dark' ? 'text-white' : 'text-[#1D1D1F]'
+        }`}>
+          {content.hero.tagline}
+        </h1>
+
+        {/* Subtitle */}
+        <p className={`text-lg sm:text-xl md:text-2xl font-medium mb-3 md:mb-4 ${
+          systemTheme === 'dark' ? 'text-white' : 'text-[#1D1D1F]'
+        }`}>
+          {content.hero.title} <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">{content.hero.subtitle}</span>
+        </p>
+
+        <p className={`text-sm sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-8 md:mb-12 ${
+          systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+        }`}>
+          {content.hero.desc}
+        </p>
+
+        <div className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4">
+          <button
+            onClick={() => scrollToSection('projects')}
+            className="group px-6 py-3 sm:px-8 sm:py-4 rounded-full font-semibold text-sm sm:text-base btn-pill flex items-center justify-center cursor-pointer relative z-20 whitespace-nowrap transition-all duration-200 bg-[#2D5CF3] text-white hover:bg-[#2450d9] shadow-lg shadow-[#2D5CF3]/25 hover:shadow-xl hover:shadow-[#2D5CF3]/30 w-full sm:w-auto"
+          >
+            {lang === 'en' ? 'View work' : 'Voir mes projets'} <ArrowUpRight className="ml-2 flex-shrink-0 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" size={16} />
+          </button>
+          <button
+            onClick={() => openModalWithUrl('/presentation')}
+            className={`group px-6 py-3 sm:px-8 sm:py-4 rounded-full font-semibold text-sm sm:text-base btn-pill flex items-center justify-center cursor-pointer relative z-20 whitespace-nowrap transition-all duration-200 w-full sm:w-auto ${
+              systemTheme === 'dark'
+                ? 'bg-white/10 text-white border border-white/20 hover:bg-white/15'
+                : 'bg-white text-gray-900 border border-gray-200 hover:bg-gray-50 shadow-sm'
+            }`}
+          >
+            {lang === 'en' ? '1-min Presentation' : 'Presentation 1 min'} <ArrowUpRight className="ml-2 flex-shrink-0 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" size={16} />
+          </button>
+        </div>
+      </div>
+    </header>
+  );
+};
+
+export default HeroSection;
