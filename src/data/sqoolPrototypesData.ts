@@ -103,6 +103,7 @@ export function getPrototypesForSection(sectionId: string): PrototypeItem[] {
 }
 
 // Helper to build iframe URL
-export function getIframeSrc(prototypeId: string): string {
-  return `${UI_MOTION_BASE_URL}/?embed=1&speed=0.8&autoplay=0&card=1#${prototypeId.toLowerCase()}`;
+// autoplay=0: shows first frame (paused), autoplay=1: plays animation immediately
+export function getIframeSrc(prototypeId: string, autoplay = false): string {
+  return `${UI_MOTION_BASE_URL}/?embed=1&speed=0.8&autoplay=${autoplay ? '1' : '0'}&card=1#${prototypeId.toLowerCase()}`;
 }

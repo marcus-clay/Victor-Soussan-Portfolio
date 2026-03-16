@@ -1,5 +1,5 @@
 import React, { useRef, useState, useCallback, useEffect } from 'react';
-import { CaretLeft as ChevronLeft, CaretRight as ChevronRight, Play, Pause, ArrowCounterClockwise as RotateCcw } from '@phosphor-icons/react';
+import { CaretLeft as ChevronLeft, CaretRight as ChevronRight, Play, ArrowCounterClockwise as RotateCcw } from '@phosphor-icons/react';
 import { motion } from 'framer-motion';
 import { PrototypeItem, getIframeSrc, CATEGORY_COLORS } from '../../data/sqoolPrototypesData';
 
@@ -58,10 +58,9 @@ const BENEFIT_CAPTIONS: Record<string, { en: string; fr: string }> = {
 
 // Player states:
 // - 'idle': iframe not loaded yet (waiting for viewport)
-// - 'ready': iframe loaded with autoplay=0, showing first frame, NOT playing
-// - 'playing': animation running
-// - 'paused': animation paused by user
-type PlayerState = 'idle' | 'ready' | 'playing' | 'paused';
+// - 'ready': iframe loaded with autoplay=0, showing first frame, NOT animating
+// - 'playing': iframe reloaded with autoplay=1, animation running
+type PlayerState = 'idle' | 'ready' | 'playing';
 
 interface PrototypePlayerProps {
   prototype: PrototypeItem;
@@ -81,11 +80,13 @@ const PrototypePlayer: React.FC<PrototypePlayerProps> = ({
   const [playerState, setPlayerState] = useState<PlayerState>('idle');
   const [iframeLoaded, setIframeLoaded] = useState(false);
   const [shouldLoadIframe, setShouldLoadIframe] = useState(false);
+  // Track current iframe src to control autoplay via URL
+  const [iframeSrc, setIframeSrc] = useState('');
   const colors = CATEGORY_COLORS[prototype.category];
 
   const caption = BENEFIT_CAPTIONS[prototype.id]?.[lang] || prototype.desc[lang];
 
-  // IntersectionObserver: load iframe when entering viewport (once)
+  // IntersectionObserver: load iframe (autoplay=0) when entering viewport (once)
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
@@ -93,66 +94,37 @@ const PrototypePlayer: React.FC<PrototypePlayerProps> = ({
       ([entry]) => {
         if (entry.isIntersecting) {
           setShouldLoadIframe(true);
-          observer.disconnect(); // only trigger once
+          setIframeSrc(getIframeSrc(prototype.id, false)); // autoplay=0
+          observer.disconnect();
         }
       },
-      { rootMargin: '200px 0px' } // preload 200px before entering viewport
+      { rootMargin: '200px 0px' }
     );
     observer.observe(el);
     return () => observer.disconnect();
-  }, []);
+  }, [prototype.id]);
 
-  // When leaving viewport while playing, pause
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el || playerState !== 'playing') return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) {
-          iframeRef.current?.contentWindow?.postMessage('pause', '*');
-          setPlayerState('paused');
-        }
-      },
-      { threshold: 0.1 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [playerState]);
-
+  // Play: reload iframe with autoplay=1
   const handlePlay = useCallback(() => {
-    if (playerState === 'ready' || playerState === 'paused') {
-      iframeRef.current?.contentWindow?.postMessage('play', '*');
-      setPlayerState('playing');
-    }
-  }, [playerState]);
+    setIframeLoaded(false);
+    setIframeSrc(getIframeSrc(prototype.id, true)); // autoplay=1
+    setPlayerState('playing');
+  }, [prototype.id]);
 
-  const handlePause = useCallback(() => {
-    if (playerState === 'playing') {
-      iframeRef.current?.contentWindow?.postMessage('pause', '*');
-      setPlayerState('paused');
-    }
-  }, [playerState]);
-
+  // Restart: reload iframe with autoplay=1 (fresh start)
   const handleRestart = useCallback(() => {
-    if (iframeRef.current) {
-      // Reload the iframe to restart animation from frame 1
-      const src = iframeRef.current.src;
-      iframeRef.current.src = '';
-      setIframeLoaded(false);
-      setPlayerState('idle');
-      requestAnimationFrame(() => {
-        if (iframeRef.current) {
-          iframeRef.current.src = src;
-        }
-      });
-    }
-  }, []);
+    setIframeLoaded(false);
+    // Force re-mount by clearing src first
+    setIframeSrc('');
+    setPlayerState('playing');
+    requestAnimationFrame(() => {
+      setIframeSrc(getIframeSrc(prototype.id, true));
+    });
+  }, [prototype.id]);
 
-  // When iframe loads: mark ready (shows first frame), do NOT auto-play
+  // When iframe loads: update state
   const handleIframeLoad = useCallback(() => {
     setIframeLoaded(true);
-    // If we were restarting and want to play, do it after load
-    // Otherwise just mark as ready (first frame visible, no animation)
     setPlayerState((prev) => (prev === 'idle' ? 'ready' : prev));
   }, []);
 
@@ -161,10 +133,11 @@ const PrototypePlayer: React.FC<PrototypePlayerProps> = ({
     setPlayerState('idle');
     setIframeLoaded(false);
     setShouldLoadIframe(false);
+    setIframeSrc('');
   }, [prototype.id]);
 
-  const showPlayButton = playerState === 'ready' || (playerState === 'idle' && !shouldLoadIframe);
-  const showControls = playerState === 'playing' || playerState === 'paused';
+  const showPlayButton = playerState === 'ready';
+  const showRestartButton = playerState === 'playing' && iframeLoaded;
 
   return (
     <div ref={containerRef} className="flex flex-col">
@@ -179,7 +152,7 @@ const PrototypePlayer: React.FC<PrototypePlayerProps> = ({
       >
         {/* Loading placeholder (before iframe loads) */}
         {!iframeLoaded && (
-          <div className={`absolute inset-0 flex items-center justify-center ${
+          <div className={`absolute inset-0 flex items-center justify-center z-10 ${
             isDark ? 'bg-[#1C1C1E]' : 'bg-[#F2F2F7]'
           }`}>
             {shouldLoadIframe ? (
@@ -194,11 +167,11 @@ const PrototypePlayer: React.FC<PrototypePlayerProps> = ({
           </div>
         )}
 
-        {/* Iframe: loaded when in viewport, with autoplay=0 so it shows first frame */}
-        {shouldLoadIframe && (
+        {/* Iframe */}
+        {shouldLoadIframe && iframeSrc && (
           <iframe
             ref={iframeRef}
-            src={getIframeSrc(prototype.id)}
+            src={iframeSrc}
             className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${
               iframeLoaded ? 'opacity-100' : 'opacity-0'
             }`}
@@ -217,7 +190,7 @@ const PrototypePlayer: React.FC<PrototypePlayerProps> = ({
           {prototype.id}
         </div>
 
-        {/* Play button overlay (visible when ready but not playing) */}
+        {/* Play button overlay (visible when first frame shown, not yet playing) */}
         {showPlayButton && iframeLoaded && (
           <button
             onClick={handlePlay}
@@ -231,27 +204,13 @@ const PrototypePlayer: React.FC<PrototypePlayerProps> = ({
           </button>
         )}
 
-        {/* Pause / Restart controls (bottom-right, visible during playback) */}
-        {showControls && (
+        {/* Restart button (bottom-right, visible during/after playback) */}
+        {showRestartButton && (
           <div className="absolute bottom-3 right-3 z-20 flex items-center gap-1.5">
-            {playerState === 'playing' ? (
-              <button
-                onClick={handlePause}
-                className="p-2 rounded-full bg-black/60 hover:bg-black/80 text-white/80 hover:text-white transition-colors backdrop-blur-sm"
-              >
-                <Pause size={14} weight="fill" />
-              </button>
-            ) : (
-              <button
-                onClick={handlePlay}
-                className="p-2 rounded-full bg-black/60 hover:bg-black/80 text-white/80 hover:text-white transition-colors backdrop-blur-sm"
-              >
-                <Play size={14} weight="fill" className="ml-0.5" />
-              </button>
-            )}
             <button
               onClick={handleRestart}
               className="p-2 rounded-full bg-black/60 hover:bg-black/80 text-white/80 hover:text-white transition-colors backdrop-blur-sm"
+              title={lang === 'fr' ? 'Rejouer' : 'Replay'}
             >
               <RotateCcw size={14} />
             </button>

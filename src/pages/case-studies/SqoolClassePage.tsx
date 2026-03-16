@@ -146,42 +146,32 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
     setPrototypeLightboxOpen(true);
   }, [lang]);
 
-  // Scroll to top on mount + block iframe focus-induced scroll for 2s
+  // Scroll to top on mount + lock scroll for 1.5s to prevent iframe focus stealing
+  const [scrollLocked, setScrollLocked] = useState(true);
+
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
 
-    // Force scroll to top immediately
+    // Force scroll to top and lock overflow
     el.scrollTop = 0;
-    window.scrollTo(0, 0);
+    el.style.overflow = 'hidden';
 
-    // Block any scroll attempts for 2 seconds (iframes loading can steal focus)
-    let locked = true;
-    const lockScroll = () => {
-      if (locked && el.scrollTop > 0) {
-        el.scrollTop = 0;
-      }
-    };
-    el.addEventListener('scroll', lockScroll, { passive: false });
-
-    // Also reset on rAF and timeouts as fallback
-    const raf = requestAnimationFrame(() => { el.scrollTop = 0; });
-    const t1 = setTimeout(() => { el.scrollTop = 0; }, 100);
-    const t2 = setTimeout(() => { el.scrollTop = 0; }, 300);
-    const unlock = setTimeout(() => { locked = false; }, 2000);
+    const unlock = setTimeout(() => {
+      el.style.overflow = '';
+      el.scrollTop = 0; // reset one last time before unlocking
+      setScrollLocked(false);
+    }, 1500);
 
     return () => {
-      locked = false;
-      el.removeEventListener('scroll', lockScroll);
-      cancelAnimationFrame(raf);
-      clearTimeout(t1);
-      clearTimeout(t2);
       clearTimeout(unlock);
+      el.style.overflow = '';
     };
   }, []);
 
-  // Scroll tracking for active section
+  // Scroll tracking for active section (only after scroll lock released)
   useEffect(() => {
+    if (scrollLocked) return;
     const container = containerRef.current;
     if (!container) return;
 
@@ -206,7 +196,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
 
     container.addEventListener('scroll', handleScroll, { passive: true });
     return () => container.removeEventListener('scroll', handleScroll);
-  }, [sections]);
+  }, [sections, scrollLocked]);
 
   // Sync caseStudyMode with viewMode prop and scroll to top on switch
   useEffect(() => {
