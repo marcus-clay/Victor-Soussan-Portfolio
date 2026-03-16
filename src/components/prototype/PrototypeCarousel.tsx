@@ -1,5 +1,5 @@
 import React, { useRef, useState, useCallback, useEffect } from 'react';
-import { CaretLeft as ChevronLeft, CaretRight as ChevronRight, Play, ArrowCounterClockwise as RotateCcw } from '@phosphor-icons/react';
+import { CaretLeft as ChevronLeft, CaretRight as ChevronRight, Play, Pause, ArrowCounterClockwise as RotateCcw } from '@phosphor-icons/react';
 import { motion } from 'framer-motion';
 import { PrototypeItem, getIframeSrc, CATEGORY_COLORS } from '../../data/sqoolPrototypesData';
 
@@ -56,11 +56,12 @@ const BENEFIT_CAPTIONS: Record<string, { en: string; fr: string }> = {
   SC10: { en: 'A full lesson, step by step, as it happens in class', fr: 'Un cours entier, \u00e9tape par \u00e9tape, tel qu\u2019il se vit en classe' },
 };
 
-// Player states:
+// Player states (postMessage-based, same-origin):
 // - 'idle': iframe not loaded yet (waiting for viewport)
-// - 'ready': iframe loaded with autoplay=0, showing first frame, NOT animating
-// - 'playing': iframe reloaded with autoplay=1, animation running
-type PlayerState = 'idle' | 'ready' | 'playing';
+// - 'ready': iframe loaded with autoplay=0, GSAP timeline paused at frame 1
+// - 'playing': postMessage('play') sent, animation running
+// - 'paused': postMessage('pause') sent, animation frozen mid-way
+type PlayerState = 'idle' | 'ready' | 'playing' | 'paused';
 
 interface PrototypePlayerProps {
   prototype: PrototypeItem;
@@ -80,8 +81,6 @@ const PrototypePlayer: React.FC<PrototypePlayerProps> = ({
   const [playerState, setPlayerState] = useState<PlayerState>('idle');
   const [iframeLoaded, setIframeLoaded] = useState(false);
   const [shouldLoadIframe, setShouldLoadIframe] = useState(false);
-  // Track current iframe src to control autoplay via URL
-  const [iframeSrc, setIframeSrc] = useState('');
   const colors = CATEGORY_COLORS[prototype.category];
 
   const caption = BENEFIT_CAPTIONS[prototype.id]?.[lang] || prototype.desc[lang];
@@ -94,7 +93,6 @@ const PrototypePlayer: React.FC<PrototypePlayerProps> = ({
       ([entry]) => {
         if (entry.isIntersecting) {
           setShouldLoadIframe(true);
-          setIframeSrc(getIframeSrc(prototype.id, false)); // autoplay=0
           observer.disconnect();
         }
       },
@@ -104,25 +102,25 @@ const PrototypePlayer: React.FC<PrototypePlayerProps> = ({
     return () => observer.disconnect();
   }, [prototype.id]);
 
-  // Play: reload iframe with autoplay=1
+  // Play: send postMessage to GSAP timeline
   const handlePlay = useCallback(() => {
-    setIframeLoaded(false);
-    setIframeSrc(getIframeSrc(prototype.id, true)); // autoplay=1
+    iframeRef.current?.contentWindow?.postMessage('play', '*');
     setPlayerState('playing');
-  }, [prototype.id]);
+  }, []);
 
-  // Restart: reload iframe with autoplay=1 (fresh start)
+  // Pause: send postMessage to GSAP timeline
+  const handlePause = useCallback(() => {
+    iframeRef.current?.contentWindow?.postMessage('pause', '*');
+    setPlayerState('paused');
+  }, []);
+
+  // Restart: send postMessage to GSAP timeline (restart + resume)
   const handleRestart = useCallback(() => {
-    setIframeLoaded(false);
-    // Force re-mount by clearing src first
-    setIframeSrc('');
+    iframeRef.current?.contentWindow?.postMessage('restart', '*');
     setPlayerState('playing');
-    requestAnimationFrame(() => {
-      setIframeSrc(getIframeSrc(prototype.id, true));
-    });
-  }, [prototype.id]);
+  }, []);
 
-  // When iframe loads: update state
+  // When iframe loads with autoplay=0: mark ready (GSAP paused at frame 1)
   const handleIframeLoad = useCallback(() => {
     setIframeLoaded(true);
     setPlayerState((prev) => (prev === 'idle' ? 'ready' : prev));
@@ -133,11 +131,10 @@ const PrototypePlayer: React.FC<PrototypePlayerProps> = ({
     setPlayerState('idle');
     setIframeLoaded(false);
     setShouldLoadIframe(false);
-    setIframeSrc('');
   }, [prototype.id]);
 
-  const showPlayButton = playerState === 'ready';
-  const showRestartButton = playerState === 'playing' && iframeLoaded;
+  const showPlayButton = playerState === 'ready' || playerState === 'paused';
+  const showControls = playerState === 'playing';
 
   return (
     <div ref={containerRef} className="flex flex-col">
@@ -167,11 +164,11 @@ const PrototypePlayer: React.FC<PrototypePlayerProps> = ({
           </div>
         )}
 
-        {/* Iframe */}
-        {shouldLoadIframe && iframeSrc && (
+        {/* Iframe: loaded with autoplay=0, controlled via postMessage */}
+        {shouldLoadIframe && (
           <iframe
             ref={iframeRef}
-            src={iframeSrc}
+            src={getIframeSrc(prototype.id)}
             className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${
               iframeLoaded ? 'opacity-100' : 'opacity-0'
             }`}
@@ -190,7 +187,7 @@ const PrototypePlayer: React.FC<PrototypePlayerProps> = ({
           {prototype.id}
         </div>
 
-        {/* Play button overlay (visible when first frame shown, not yet playing) */}
+        {/* Play button overlay (visible when paused or ready) */}
         {showPlayButton && iframeLoaded && (
           <button
             onClick={handlePlay}
@@ -204,9 +201,16 @@ const PrototypePlayer: React.FC<PrototypePlayerProps> = ({
           </button>
         )}
 
-        {/* Restart button (bottom-right, visible during/after playback) */}
-        {showRestartButton && (
+        {/* Pause + Restart controls (bottom-right, visible during playback) */}
+        {showControls && (
           <div className="absolute bottom-3 right-3 z-20 flex items-center gap-1.5">
+            <button
+              onClick={handlePause}
+              className="p-2 rounded-full bg-black/60 hover:bg-black/80 text-white/80 hover:text-white transition-colors backdrop-blur-sm"
+              title={lang === 'fr' ? 'Pause' : 'Pause'}
+            >
+              <Pause size={14} weight="fill" />
+            </button>
             <button
               onClick={handleRestart}
               className="p-2 rounded-full bg-black/60 hover:bg-black/80 text-white/80 hover:text-white transition-colors backdrop-blur-sm"

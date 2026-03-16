@@ -1,0 +1,1421 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SQOOL Classe – Complete Experience</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web@2.0.3"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ============================================================
+       Section 3 — SQOOL Classe: 10 Prototype Journeys
+       Full-screen (90×90), TOC nav, no iPad bezels
+       ============================================================ -->
+  <section class="proto-section" id="proto-section">
+
+    <!-- TOC Navigation Bar -->
+    <nav class="proto-toc" id="proto-toc">
+      <div class="proto-toc-header">
+        <svg class="proto-toc-logo" viewBox="0 0 36 36" fill="none"><rect x="2" y="2" width="14" height="14" rx="3" fill="#0ea5e9"/><rect x="20" y="2" width="14" height="14" rx="3" fill="#38bdf8"/><rect x="2" y="20" width="14" height="14" rx="3" fill="#38bdf8"/><rect x="20" y="20" width="14" height="14" rx="3" fill="#0ea5e9"/></svg>
+        <span class="proto-toc-title">Prototypes</span>
+      </div>
+
+
+      <div class="proto-toc-group">
+        <div class="proto-toc-group-label">
+          <i class="ph ph-chalkboard-teacher" style="font-size:14px"></i>
+          Enseignant
+        </div>
+        <button class="proto-toc-item active" data-proto="t1"><span class="proto-toc-num">1</span>Ouvrir la classe (QR code)</button>
+        <button class="proto-toc-item" data-proto="t2"><span class="proto-toc-num">2</span>Activer les interactions</button>
+        <button class="proto-toc-item" data-proto="t3"><span class="proto-toc-num">3</span>Afficher les écrans</button>
+        <button class="proto-toc-item" data-proto="t4"><span class="proto-toc-num">4</span>Consulter les messages</button>
+        <button class="proto-toc-item" data-proto="t5"><span class="proto-toc-num">5</span>Verrouiller les écrans</button>
+        <button class="proto-toc-item" data-proto="t6"><span class="proto-toc-num">6</span>Envoyer une ressource</button>
+        <button class="proto-toc-item" data-proto="t7"><span class="proto-toc-num">7</span>Projeter son écran</button>
+        <button class="proto-toc-item" data-proto="t8"><span class="proto-toc-num">8</span>Prendre la main</button>
+        <button class="proto-toc-item" data-proto="t9"><span class="proto-toc-num">9</span>Créer des groupes</button>
+        <button class="proto-toc-item" data-proto="t10"><span class="proto-toc-num">10</span>Lancer un sondage</button>
+        <button class="proto-toc-item" data-proto="t11"><span class="proto-toc-num">11</span>Répondre à un élève</button>
+        <button class="proto-toc-item" data-proto="t12"><span class="proto-toc-num">12</span>Mettre 3 écrans en avant</button>
+        <button class="proto-toc-item" data-proto="t13"><span class="proto-toc-num">13</span>Annoter un devoir projeté</button>
+        <button class="proto-toc-item" data-proto="t14"><span class="proto-toc-num">14</span>Scanner et envoyer</button>
+        <button class="proto-toc-item" data-proto="t15"><span class="proto-toc-num">15</span>Fin de séance</button>
+        <button class="proto-toc-item" data-proto="t16"><span class="proto-toc-num">16</span>Partager un lien web</button>
+        <button class="proto-toc-item" data-proto="t17"><span class="proto-toc-num">17</span>Lancer un minuteur</button>
+        <button class="proto-toc-item" data-proto="t18"><span class="proto-toc-num">18</span>Groupes aléatoires</button>
+        <button class="proto-toc-item" data-proto="t19"><span class="proto-toc-num">19</span>Accéder aux séances</button>
+        <button class="proto-toc-item" data-proto="t20"><span class="proto-toc-num">20</span>Nouvelle séance</button>
+        <button class="proto-toc-item" data-proto="t21"><span class="proto-toc-num">21</span>Mode devoir</button>
+        <button class="proto-toc-item" data-proto="t22"><span class="proto-toc-num">22</span>Examen officiel — config</button>
+        <button class="proto-toc-item" data-proto="t23"><span class="proto-toc-num">23</span>Examen — surveillance</button>
+        <button class="proto-toc-item" data-proto="t24"><span class="proto-toc-num">24</span>Examen — récap &amp; copies</button>
+        <button class="proto-toc-item" data-proto="t25"><span class="proto-toc-num">25</span>Voir l'écran d'un élève</button>
+      </div>
+
+      <div class="proto-toc-group">
+        <div class="proto-toc-group-label">
+          <i class="ph ph-student" style="font-size:14px"></i>
+          Élève
+        </div>
+        <button class="proto-toc-item" data-proto="s1"><span class="proto-toc-num">25</span>Login + Scanner QR</button>
+        <button class="proto-toc-item" data-proto="s2"><span class="proto-toc-num">26</span>Consulter les ressources</button>
+        <button class="proto-toc-item" data-proto="s3"><span class="proto-toc-num">27</span>Envoyer « J'ai terminé »</button>
+        <button class="proto-toc-item" data-proto="s4"><span class="proto-toc-num">28</span>Poser une question</button>
+        <button class="proto-toc-item" data-proto="s5"><span class="proto-toc-num">29</span>Partager un document</button>
+        <button class="proto-toc-item" data-proto="s6"><span class="proto-toc-num">30</span>Recevoir une ressource</button>
+        <button class="proto-toc-item" data-proto="s7"><span class="proto-toc-num">31</span>Écran verrouillé</button>
+      </div>
+
+      <div class="proto-toc-divider"></div>
+
+      <div class="proto-toc-group">
+        <div class="proto-toc-group-label">
+          <i class="ph ph-play-circle" style="font-size:14px"></i>
+          Scénarios
+        </div>
+        <button class="proto-toc-item proto-toc-scenario" data-proto="sc1"><span class="proto-toc-num"><i class="ph ph-number-circle-one" style="font-size:11px"></i></span>Démarrer et distribuer</button>
+        <button class="proto-toc-item proto-toc-scenario" data-proto="sc2"><span class="proto-toc-num"><i class="ph ph-number-circle-two" style="font-size:11px"></i></span>Observer et intervenir</button>
+        <button class="proto-toc-item proto-toc-scenario" data-proto="sc3"><span class="proto-toc-num"><i class="ph ph-number-circle-three" style="font-size:11px"></i></span>Différencier les parcours</button>
+        <button class="proto-toc-item proto-toc-scenario" data-proto="sc4"><span class="proto-toc-num"><i class="ph ph-number-circle-four" style="font-size:11px"></i></span>Évaluer en direct</button>
+        <button class="proto-toc-item proto-toc-scenario" data-proto="sc5"><span class="proto-toc-num"><i class="ph ph-number-circle-five" style="font-size:11px"></i></span>Collaborer et rendre</button>
+        <button class="proto-toc-item proto-toc-scenario" data-proto="sc6"><span class="proto-toc-num"><i class="ph ph-number-circle-six" style="font-size:11px"></i></span>Scanner et distribuer</button>
+        <button class="proto-toc-item proto-toc-scenario" data-proto="sc7"><span class="proto-toc-num"><i class="ph ph-number-circle-seven" style="font-size:11px"></i></span>Examen officiel complet</button>
+        <button class="proto-toc-item proto-toc-scenario" data-proto="sc8"><span class="proto-toc-num"><i class="ph ph-number-circle-eight" style="font-size:11px"></i></span>Contrôle en classe</button>
+        <button class="proto-toc-item proto-toc-scenario" data-proto="sc9"><span class="proto-toc-num"><i class="ph ph-clipboard-text" style="font-size:11px"></i></span>Valoriser un travail</button>
+        <button class="proto-toc-item proto-toc-scenario" data-proto="sc10"><span class="proto-toc-num"><i class="ph ph-path" style="font-size:11px"></i></span>Séance complète A à Z</button>
+      </div>
+
+      <button class="proto-toc-replay" id="proto-toc-replay">
+        <i class="ph ph-arrow-counter-clockwise" style="font-size:14px"></i>
+        Rejouer
+      </button>
+    </nav>
+
+    <!-- Full-screen Stage -->
+    <div class="proto-stage" id="proto-stage">
+
+      <!-- Main content area (flexes with sidebar) -->
+      <div class="proto-stage-content" id="proto-stage-content">
+
+        <!-- Proto info header (left-aligned, above the screen) -->
+        <div class="proto-info-header" id="proto-info-header">
+          <div class="proto-info-left">
+            <span class="proto-info-badge" id="proto-info-badge"></span>
+            <h2 class="proto-title" id="proto-title"></h2>
+            <p class="proto-subtitle" id="proto-subtitle"></p>
+          </div>
+          <div class="proto-info-right">
+            <button class="proto-replay" id="proto-replay"><i class="ph ph-arrow-counter-clockwise" style="font-size:14px"></i> Rejouer</button>
+          </div>
+        </div>
+
+        <!-- Horizontal scenario step timeline + controls -->
+        <div class="proto-steps-wrapper hidden" id="proto-steps-wrapper">
+          <div class="proto-steps-controls">
+            <button class="proto-nav proto-nav-prev" id="proto-nav-prev" title="Étape précédente">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+            <button class="proto-play-pause" id="proto-play-pause" title="Pause / Lecture">
+              <i class="ph ph-pause" id="proto-play-icon" style="font-size:14px"></i>
+            </button>
+            <button class="proto-nav proto-nav-next" id="proto-nav-next" title="Étape suivante">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="proto-steps-bar" id="proto-steps-bar"></div>
+        </div>
+
+        <!-- Narration card (above viewport, for scenarios) -->
+        <div class="proto-narration-card hidden" id="proto-narration-card">
+          <div class="proto-nc-header">
+            <div class="proto-nc-title-area" id="proto-nc-title-area">
+              <div class="proto-nc-title-row">
+                <span class="proto-nc-label" id="proto-nc-label"></span>
+                <span class="proto-nc-title" id="proto-nc-title"></span>
+              </div>
+              <p class="proto-nc-subtitle" id="proto-nc-subtitle"></p>
+              <span class="proto-nc-expand-hint"><i class="ph ph-caret-down proto-nc-expand-chevron"></i> Détails</span>
+            </div>
+            <div class="proto-nc-controls">
+              <button class="proto-nc-btn" id="proto-nc-prev" title="Étape précédente">
+                <i class="ph ph-caret-left" style="font-size:14px"></i>
+              </button>
+              <button class="proto-nc-btn" id="proto-nc-playpause" title="Lecture / Pause">
+                <i class="ph ph-pause" id="proto-nc-play-icon" style="font-size:14px"></i>
+              </button>
+              <button class="proto-nc-btn" id="proto-nc-next" title="Étape suivante">
+                <i class="ph ph-caret-right" style="font-size:14px"></i>
+              </button>
+              <button class="proto-nc-btn" id="proto-nc-restart" title="Rejouer">
+                <i class="ph ph-arrow-counter-clockwise" style="font-size:14px"></i>
+              </button>
+              <span class="proto-nc-sep"></span>
+              <button class="proto-nc-btn" id="proto-nc-fullscreen" title="Plein écran">
+                <i class="ph ph-corners-out" style="font-size:14px"></i>
+              </button>
+            </div>
+          </div>
+          <div class="proto-nc-steps" id="proto-nc-steps"></div>
+          <div class="proto-nc-body hidden" id="proto-nc-body"></div>
+        </div>
+
+        <!-- Screen viewport -->
+        <div class="proto-viewport" id="proto-viewport">
+
+          <!-- Animated cursor -->
+          <div class="proto-cursor" id="proto-cursor">
+            <svg viewBox="0 0 24 24" fill="#fff" stroke="#1a1a2e" stroke-width="1.5"><path d="M4 4l7.07 17 2.51-7.39L21 11.07z"/></svg>
+          </div>
+
+        <!-- Narrative ellipse overlay (teacher↔student transition) -->
+        <div class="ellipse-overlay hidden" id="ellipse-overlay">
+          <div class="ellipse-from" id="ellipse-from">
+            <div class="ellipse-device-label" id="ellipse-from-label">Enseignant</div>
+            <div class="ellipse-device-icon" id="ellipse-from-icon">
+              <i class="ph ph-desktop"></i>
+            </div>
+            <div class="ellipse-action-text" id="ellipse-action-text">Action</div>
+          </div>
+          <div class="ellipse-connector">
+            <div class="ellipse-arrow" id="ellipse-arrow">
+              <svg viewBox="0 0 120 24" fill="none"><path d="M0 12h110" stroke="#007aff" stroke-width="2" stroke-dasharray="6 4"/><path d="M105 6l10 6-10 6" fill="#007aff"/></svg>
+            </div>
+            <div class="ellipse-pulse" id="ellipse-pulse"></div>
+          </div>
+          <div class="ellipse-to" id="ellipse-to">
+            <div class="ellipse-device-label" id="ellipse-to-label">Tablettes</div>
+            <div class="ellipse-device-icon" id="ellipse-to-icon">
+              <i class="ph ph-device-tablet"></i>
+            </div>
+            <div class="ellipse-result-text" id="ellipse-result-text">Résultat</div>
+          </div>
+        </div>
+
+      <!-- ===== SCREEN: Session Index ===== -->
+      <div class="proto-screen" id="scr-sessions">
+        <div class="sc-topbar">
+          <div class="sc-topbar-left">
+            <img src="images/logo/logo-sqool-classe-horizontal-light.svg" alt="SQOOL Classe" style="height:32px">
+          </div>
+          <div class="sc-topbar-center">
+            <h2 class="sc-session-title">Mes séances</h2>
+          </div>
+          <div class="sc-topbar-right">
+            <button class="sc-btn-help">?</button>
+            <div class="sc-user-pill"><div class="sc-user-av">TD</div><div class="sc-user-info"><span class="sc-user-name">Thomas DAVID</span><span class="sc-user-org">Lycée Clemenceau</span></div></div>
+          </div>
+        </div>
+
+        <!-- Session actions bar -->
+        <div class="sc-sessions-actions">
+          <button class="sc-btn-new-session" id="p-btn-new-session"><i class="ph ph-plus-circle" style="font-size:16px"></i> Nouvelle séance</button>
+          <button class="sc-btn-new-exam" id="p-btn-new-exam"><i class="ph ph-exam" style="font-size:16px"></i> Examen officiel</button>
+          <div class="sc-sessions-filter">
+            <button class="sc-filter-pill active">Toutes</button>
+            <button class="sc-filter-pill">En cours</button>
+            <button class="sc-filter-pill">Terminées</button>
+            <button class="sc-filter-pill">Examens</button>
+          </div>
+        </div>
+
+        <!-- Session list -->
+        <div class="sc-sessions-list" id="p-sessions-list">
+          <!-- Active session -->
+          <div class="sc-session-row active-row" data-session="current">
+            <div class="sc-session-row-status"><span class="sc-dot green"></span></div>
+            <div class="sc-session-row-info">
+              <span class="sc-session-row-title">Physique — Force gravitationnelle</span>
+              <span class="sc-session-row-meta">Classe 2G3 — Aujourd'hui 9:00-10:30 — 23 élèves connectés</span>
+            </div>
+            <div class="sc-session-row-badges">
+              <span class="sc-session-badge green">En cours</span>
+            </div>
+            <button class="sc-session-row-btn" id="p-btn-resume-session">Reprendre</button>
+          </div>
+
+          <!-- Past sessions -->
+          <div class="sc-session-row" data-session="past1">
+            <div class="sc-session-row-status"><span class="sc-dot grey"></span></div>
+            <div class="sc-session-row-info">
+              <span class="sc-session-row-title">Mathématiques — Équations du 2nd degré</span>
+              <span class="sc-session-row-meta">Classe 1S2 — 27/03/2025 14:00-15:30 — 28 élèves</span>
+            </div>
+            <div class="sc-session-row-badges">
+              <span class="sc-session-badge grey">Terminée</span>
+              <span class="sc-session-badge blue">12 documents</span>
+            </div>
+            <button class="sc-session-row-btn outline">Consulter</button>
+          </div>
+          <div class="sc-session-row" data-session="past2">
+            <div class="sc-session-row-status"><span class="sc-dot grey"></span></div>
+            <div class="sc-session-row-info">
+              <span class="sc-session-row-title">Physique — Lois de Newton</span>
+              <span class="sc-session-row-meta">Classe 2G3 — 25/03/2025 9:00-10:30 — 24 élèves</span>
+            </div>
+            <div class="sc-session-row-badges">
+              <span class="sc-session-badge grey">Terminée</span>
+              <span class="sc-session-badge blue">8 documents</span>
+            </div>
+            <button class="sc-session-row-btn outline">Consulter</button>
+          </div>
+          <div class="sc-session-row" data-session="past3">
+            <div class="sc-session-row-status"><span class="sc-dot grey"></span></div>
+            <div class="sc-session-row-info">
+              <span class="sc-session-row-title">SVT — Génétique et hérédité</span>
+              <span class="sc-session-row-meta">Classe TS1 — 24/03/2025 10:00-12:00 — 30 élèves</span>
+            </div>
+            <div class="sc-session-row-badges">
+              <span class="sc-session-badge grey">Terminée</span>
+              <span class="sc-session-badge blue">5 documents</span>
+            </div>
+            <button class="sc-session-row-btn outline">Consulter</button>
+          </div>
+          <div class="sc-session-row exam-row" data-session="exam1">
+            <div class="sc-session-row-status"><i class="ph ph-exam" style="font-size:14px;color:#dc2626"></i></div>
+            <div class="sc-session-row-info">
+              <span class="sc-session-row-title">Baccalauréat Blanc — Physique-Chimie</span>
+              <span class="sc-session-row-meta">Classe TG2 — 20/03/2025 8:00-12:00 — 32 élèves — Salle B204</span>
+            </div>
+            <div class="sc-session-row-badges">
+              <span class="sc-session-badge red">Examen officiel</span>
+              <span class="sc-session-badge grey">Terminé</span>
+              <span class="sc-session-badge purple">Copies envoyées</span>
+            </div>
+            <button class="sc-session-row-btn outline">Consulter</button>
+          </div>
+          <div class="sc-session-row exam-row" data-session="exam2">
+            <div class="sc-session-row-status"><i class="ph ph-exam" style="font-size:14px;color:#f59e0b"></i></div>
+            <div class="sc-session-row-info">
+              <span class="sc-session-row-title">Épreuve Commune — Mathématiques</span>
+              <span class="sc-session-row-meta">Classe 1G1 — 04/04/2025 14:00-17:00 — 35 élèves — Salle A101</span>
+            </div>
+            <div class="sc-session-row-badges">
+              <span class="sc-session-badge orange">Programmé</span>
+              <span class="sc-session-badge red">Examen officiel</span>
+            </div>
+            <button class="sc-session-row-btn">Préparer</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== OVERLAY: New Session Settings ===== -->
+      <div class="sc-newsession-overlay hidden" id="p-newsession-overlay">
+        <div class="sc-newsession-modal">
+          <div class="sc-newsession-header">
+            <h3>Nouvelle séance</h3>
+            <button class="sc-modal-close" id="p-newsession-close"><i class="ph ph-x" style="font-size:16px"></i></button>
+          </div>
+          <div class="sc-newsession-body">
+            <div class="sc-form-row">
+              <label class="sc-form-label">Matière</label>
+              <div class="sc-form-select" id="p-ns-matiere">Physique-Chimie <i class="ph ph-caret-down" style="font-size:12px"></i></div>
+            </div>
+            <div class="sc-form-row">
+              <label class="sc-form-label">Titre de la séance</label>
+              <div class="sc-form-input" id="p-ns-title">Énergie cinétique et potentielle</div>
+            </div>
+            <div class="sc-form-row">
+              <label class="sc-form-label">Classe</label>
+              <div class="sc-form-select" id="p-ns-classe">2G3 — 24 élèves <i class="ph ph-caret-down" style="font-size:12px"></i></div>
+            </div>
+            <div class="sc-form-row">
+              <label class="sc-form-label">Horaire</label>
+              <div class="sc-form-row-inline">
+                <div class="sc-form-input small">09:00</div>
+                <span style="color:#94a3b8">—</span>
+                <div class="sc-form-input small">10:30</div>
+              </div>
+            </div>
+            <div class="sc-form-row">
+              <label class="sc-form-label">Ressources pré-chargées</label>
+              <div class="sc-form-file-list">
+                <div class="sc-form-file"><i class="ph ph-file-pdf" style="color:#ef4444"></i> Cours_Energie.pdf</div>
+                <div class="sc-form-file"><i class="ph ph-file-doc" style="color:#3b82f6"></i> Exercices_Ch5.docx</div>
+                <button class="sc-form-file-add"><i class="ph ph-plus" style="font-size:12px"></i> Ajouter</button>
+              </div>
+            </div>
+            <div class="sc-form-row">
+              <label class="sc-form-label">Options</label>
+              <div class="sc-form-toggles">
+                <label class="sc-toggle-row"><span>Activer les interactions</span><div class="sc-mini-toggle on"></div></label>
+                <label class="sc-toggle-row"><span>Autoriser les messages élèves</span><div class="sc-mini-toggle on"></div></label>
+                <label class="sc-toggle-row"><span>Partage de fichiers par les élèves</span><div class="sc-mini-toggle"></div></label>
+              </div>
+            </div>
+          </div>
+          <div class="sc-newsession-footer">
+            <button class="sc-btn-cancel" id="p-newsession-cancel">Annuler</button>
+            <button class="sc-btn-launch" id="p-newsession-launch"><i class="ph ph-play" style="font-size:14px"></i> Lancer la séance</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== OVERLAY: Assignment Mode ===== -->
+      <div class="sc-assignment-overlay hidden" id="p-assignment-overlay">
+        <div class="sc-assignment-modal">
+          <div class="sc-assignment-header">
+            <div class="sc-assignment-header-icon"><i class="ph ph-notebook" style="font-size:20px;color:#8b5cf6"></i></div>
+            <div>
+              <h3>Mode Devoir</h3>
+              <span class="sc-assignment-subtitle">Configurer un exercice noté à durée limitée</span>
+            </div>
+            <button class="sc-modal-close" id="p-assignment-close"><i class="ph ph-x" style="font-size:16px"></i></button>
+          </div>
+          <div class="sc-assignment-body">
+            <div class="sc-form-row">
+              <label class="sc-form-label">Titre du devoir</label>
+              <div class="sc-form-input" id="p-asgn-title">Contrôle — Lois de Newton</div>
+            </div>
+            <div class="sc-form-row">
+              <label class="sc-form-label">Durée</label>
+              <div class="sc-form-row-inline">
+                <div class="sc-form-input small">45</div>
+                <span style="color:#94a3b8">minutes</span>
+              </div>
+            </div>
+            <div class="sc-form-section-title"><i class="ph ph-shield-check" style="font-size:14px"></i> Restrictions</div>
+            <div class="sc-form-toggles">
+              <label class="sc-toggle-row"><span>Bloquer la navigation internet</span><div class="sc-mini-toggle on"></div></label>
+              <label class="sc-toggle-row"><span>Désactiver les messages entre élèves</span><div class="sc-mini-toggle on"></div></label>
+              <label class="sc-toggle-row"><span>Verrouiller sur l'application du devoir</span><div class="sc-mini-toggle on"></div></label>
+              <label class="sc-toggle-row"><span>Désactiver le copier-coller</span><div class="sc-mini-toggle"></div></label>
+            </div>
+            <div class="sc-form-section-title"><i class="ph ph-files" style="font-size:14px"></i> Ressources autorisées</div>
+            <div class="sc-form-file-list">
+              <div class="sc-form-file"><i class="ph ph-file-pdf" style="color:#ef4444"></i> Sujet_Controle.pdf</div>
+              <div class="sc-form-file"><i class="ph ph-file-pdf" style="color:#ef4444"></i> Formulaire_Physique.pdf</div>
+              <button class="sc-form-file-add"><i class="ph ph-plus" style="font-size:12px"></i> Ajouter une ressource</button>
+            </div>
+            <div class="sc-form-section-title"><i class="ph ph-app-window" style="font-size:14px"></i> Applications autorisées</div>
+            <div class="sc-form-app-chips">
+              <span class="sc-app-chip selected"><i class="ph ph-calculator" style="font-size:12px"></i> Calculatrice</span>
+              <span class="sc-app-chip selected"><i class="ph ph-note" style="font-size:12px"></i> Notes</span>
+              <span class="sc-app-chip"><i class="ph ph-globe" style="font-size:12px"></i> Navigateur</span>
+              <span class="sc-app-chip"><i class="ph ph-book-open" style="font-size:12px"></i> Livres</span>
+            </div>
+          </div>
+          <div class="sc-assignment-footer">
+            <button class="sc-btn-cancel" id="p-assignment-cancel">Annuler</button>
+            <button class="sc-btn-launch purple" id="p-assignment-launch"><i class="ph ph-play" style="font-size:14px"></i> Distribuer le devoir</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== OVERLAY: Official Exam Mode ===== -->
+      <div class="sc-exam-overlay hidden" id="p-exam-overlay">
+        <div class="sc-exam-modal">
+          <div class="sc-exam-header">
+            <div class="sc-exam-header-icon"><i class="ph ph-shield-warning" style="font-size:22px;color:#dc2626"></i></div>
+            <div>
+              <h3>Examen Officiel</h3>
+              <span class="sc-exam-subtitle">Session préparée par l'administration — MDM</span>
+            </div>
+            <button class="sc-modal-close" id="p-exam-close"><i class="ph ph-x" style="font-size:16px"></i></button>
+          </div>
+          <div class="sc-exam-body">
+            <div class="sc-exam-info-banner">
+              <i class="ph ph-info" style="font-size:16px;color:#3b82f6"></i>
+              <span>Cette session a été configurée par l'administration du Lycée Clemenceau et déployée via SQOOL MDM. Les paramètres sont verrouillés.</span>
+            </div>
+            <div class="sc-exam-details-grid">
+              <div class="sc-exam-detail"><span class="sc-exam-detail-label">Examen</span><span class="sc-exam-detail-value" id="p-exam-name">Baccalauréat Blanc — Physique-Chimie</span></div>
+              <div class="sc-exam-detail"><span class="sc-exam-detail-label">Classe</span><span class="sc-exam-detail-value">TG2 — 32 élèves</span></div>
+              <div class="sc-exam-detail"><span class="sc-exam-detail-label">Salle</span><span class="sc-exam-detail-value">B204</span></div>
+              <div class="sc-exam-detail"><span class="sc-exam-detail-label">Durée</span><span class="sc-exam-detail-value">4h00</span></div>
+              <div class="sc-exam-detail"><span class="sc-exam-detail-label">Date</span><span class="sc-exam-detail-value">04/04/2025 — 8:00</span></div>
+              <div class="sc-exam-detail"><span class="sc-exam-detail-label">Académie</span><span class="sc-exam-detail-value">Nantes</span></div>
+            </div>
+
+            <div class="sc-form-section-title"><i class="ph ph-files" style="font-size:14px"></i> Sujets et documents fournis</div>
+            <div class="sc-form-file-list">
+              <div class="sc-form-file"><i class="ph ph-file-pdf" style="color:#ef4444"></i> Sujet_BacBlanc_PC_2025.pdf <span class="sc-file-badge">Chiffré</span></div>
+              <div class="sc-form-file"><i class="ph ph-file-pdf" style="color:#ef4444"></i> Formulaire_officiel.pdf <span class="sc-file-badge">Chiffré</span></div>
+              <div class="sc-form-file"><i class="ph ph-file-pdf" style="color:#ef4444"></i> Annexe_documents_réponse.pdf <span class="sc-file-badge">Chiffré</span></div>
+            </div>
+
+            <div class="sc-form-section-title"><i class="ph ph-shield-check" style="font-size:14px"></i> Restrictions matérielles (MDM)</div>
+            <div class="sc-exam-restrictions">
+              <div class="sc-exam-restrict locked"><i class="ph ph-wifi-slash" style="font-size:13px"></i> WiFi Internet <span class="sc-restrict-status red">Bloqué</span></div>
+              <div class="sc-exam-restrict locked"><i class="ph ph-bluetooth-slash" style="font-size:13px"></i> Bluetooth <span class="sc-restrict-status red">Désactivé</span></div>
+              <div class="sc-exam-restrict locked"><i class="ph ph-globe-x" style="font-size:13px"></i> Navigation web <span class="sc-restrict-status red">Bloquée</span></div>
+              <div class="sc-exam-restrict locked"><i class="ph ph-keyboard" style="font-size:13px"></i> Touches clavier <span class="sc-restrict-status orange">Restreint (pas de Cmd+C/V)</span></div>
+              <div class="sc-exam-restrict locked"><i class="ph ph-speaker-slash" style="font-size:13px"></i> Son <span class="sc-restrict-status red">Muet</span></div>
+              <div class="sc-exam-restrict locked"><i class="ph ph-monitor" style="font-size:13px"></i> Affichage <span class="sc-restrict-status orange">Plein écran forcé</span></div>
+              <div class="sc-exam-restrict locked"><i class="ph ph-app-window" style="font-size:13px"></i> Applications <span class="sc-restrict-status red">Aucune autorisée</span></div>
+              <div class="sc-exam-restrict locked"><i class="ph ph-funnel" style="font-size:13px"></i> URLs <span class="sc-restrict-status red">Whitelist vide</span></div>
+            </div>
+          </div>
+          <div class="sc-exam-footer">
+            <button class="sc-btn-cancel" id="p-exam-cancel">Annuler</button>
+            <button class="sc-btn-launch red" id="p-exam-launch"><i class="ph ph-shield-check" style="font-size:14px"></i> Lancer l'examen</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== OVERLAY: Exam Surveillance ===== -->
+      <div class="sc-exam-surv-overlay hidden" id="p-exam-surv-overlay">
+        <div class="sc-exam-surv-topbar">
+          <div class="sc-exam-surv-left">
+            <i class="ph ph-shield-warning" style="font-size:18px;color:#dc2626"></i>
+            <span class="sc-exam-surv-title">EXAMEN EN COURS — Bac Blanc Physique-Chimie</span>
+          </div>
+          <div class="sc-exam-surv-center">
+            <div class="sc-exam-timer" id="p-exam-timer">
+              <i class="ph ph-timer" style="font-size:14px"></i>
+              <span id="p-exam-timer-text">3:42:15</span>
+            </div>
+            <div class="sc-exam-surv-stats">
+              <span class="sc-exam-stat"><span class="sc-dot green"></span> <span id="p-exam-connected">32</span>/32 connectés</span>
+              <span class="sc-exam-stat"><span class="sc-dot blue"></span> <span id="p-exam-working">30</span> en cours</span>
+              <span class="sc-exam-stat"><span class="sc-dot orange"></span> <span id="p-exam-finished">2</span> terminés</span>
+            </div>
+          </div>
+          <div class="sc-exam-surv-right">
+            <button class="sc-exam-surv-btn" id="p-exam-collect"><i class="ph ph-download" style="font-size:14px"></i> Récupérer les copies</button>
+            <button class="sc-exam-surv-btn danger" id="p-exam-end"><i class="ph ph-stop-circle" style="font-size:14px"></i> Terminer l'examen</button>
+          </div>
+        </div>
+        <div class="sc-exam-surv-grid" id="p-exam-grid">
+          <!-- 32 exam student cards (generated or static) -->
+        </div>
+      </div>
+
+      <!-- ===== OVERLAY: Exam Recap & Copies ===== -->
+      <div class="sc-exam-recap-overlay hidden" id="p-exam-recap-overlay">
+        <div class="sc-exam-recap-modal">
+          <div class="sc-exam-recap-header">
+            <i class="ph ph-shield-check" style="font-size:20px;color:#22c55e"></i>
+            <div>
+              <h3>Examen terminé — Récapitulatif</h3>
+              <span class="sc-exam-recap-sub">Baccalauréat Blanc — Physique-Chimie — TG2</span>
+            </div>
+            <button class="sc-modal-close" id="p-exam-recap-close"><i class="ph ph-x" style="font-size:16px"></i></button>
+          </div>
+          <div class="sc-exam-recap-body">
+            <div class="sc-exam-recap-stats">
+              <div class="sc-recap-stat-card"><span class="sc-recap-stat-num" id="p-er-copies">32</span><span class="sc-recap-stat-label">Copies récupérées</span></div>
+              <div class="sc-recap-stat-card"><span class="sc-recap-stat-num" id="p-er-duration">3h48</span><span class="sc-recap-stat-label">Durée effective</span></div>
+              <div class="sc-recap-stat-card"><span class="sc-recap-stat-num" id="p-er-finished">30</span><span class="sc-recap-stat-label">Terminé dans les temps</span></div>
+              <div class="sc-recap-stat-card"><span class="sc-recap-stat-num" id="p-er-incidents">0</span><span class="sc-recap-stat-label">Incidents signalés</span></div>
+            </div>
+
+            <div class="sc-form-section-title"><i class="ph ph-files" style="font-size:14px"></i> Copies des élèves</div>
+            <div class="sc-exam-copies-list" id="p-exam-copies-list">
+              <div class="sc-exam-copy-row"><span class="sc-exam-copy-name">ALLARD Théo</span><span class="sc-exam-copy-status done">Rendu</span><span class="sc-exam-copy-time">3h42</span></div>
+              <div class="sc-exam-copy-row"><span class="sc-exam-copy-name">BOUCHAMI Aya</span><span class="sc-exam-copy-status done">Rendu</span><span class="sc-exam-copy-time">3h38</span></div>
+              <div class="sc-exam-copy-row"><span class="sc-exam-copy-name">CHEN Wei</span><span class="sc-exam-copy-status done">Rendu</span><span class="sc-exam-copy-time">3h48</span></div>
+              <div class="sc-exam-copy-row"><span class="sc-exam-copy-name">DUPONT Chloé</span><span class="sc-exam-copy-status done">Rendu</span><span class="sc-exam-copy-time">3h15</span></div>
+              <div class="sc-exam-copy-row"><span class="sc-exam-copy-name">FAURE Lucas</span><span class="sc-exam-copy-status done">Rendu</span><span class="sc-exam-copy-time">3h47</span></div>
+              <div class="sc-exam-copy-row"><span class="sc-exam-copy-name">GARNIER Nolan</span><span class="sc-exam-copy-status done">Rendu</span><span class="sc-exam-copy-time">3h44</span></div>
+              <div class="sc-exam-copy-row"><span class="sc-exam-copy-name">MARTIN Léa</span><span class="sc-exam-copy-status late">Hors temps</span><span class="sc-exam-copy-time">4h02</span></div>
+              <div class="sc-exam-copy-row"><span class="sc-exam-copy-name">SINGH Ravi</span><span class="sc-exam-copy-status done">Rendu</span><span class="sc-exam-copy-time">3h30</span></div>
+            </div>
+
+            <div class="sc-exam-recap-actions">
+              <button class="sc-exam-recap-action" id="p-er-download"><i class="ph ph-download" style="font-size:16px"></i> Télécharger toutes les copies (ZIP)</button>
+              <button class="sc-exam-recap-action" id="p-er-drive"><i class="ph ph-google-drive-logo" style="font-size:16px"></i> Sauvegarder sur Google Drive</button>
+              <button class="sc-exam-recap-action" id="p-er-email"><i class="ph ph-envelope" style="font-size:16px"></i> Envoyer par email aux autorités</button>
+              <button class="sc-exam-recap-action" id="p-er-correct"><i class="ph ph-pencil-line" style="font-size:16px"></i> Ouvrir le mode correction</button>
+            </div>
+
+            <!-- Drive notification -->
+            <div class="sc-exam-drive-notif hidden" id="p-er-drive-notif">
+              <i class="ph ph-check-circle" style="font-size:16px;color:#22c55e"></i>
+              <span>32 copies sauvegardées dans Google Drive → <strong>Examens / Bac Blanc PC 2025 / Copies</strong></span>
+            </div>
+
+            <!-- Email draft -->
+            <div class="sc-exam-email-draft hidden" id="p-er-email-draft">
+              <div class="sc-email-header">
+                <span class="sc-email-label">À :</span>
+                <span class="sc-email-value">examens@ac-nantes.fr</span>
+              </div>
+              <div class="sc-email-header">
+                <span class="sc-email-label">Objet :</span>
+                <span class="sc-email-value">Copies Bac Blanc PC — TG2 — Lycée Clemenceau</span>
+              </div>
+              <div class="sc-email-body-preview">
+                Veuillez trouver ci-joint les 32 copies numérisées du Baccalauréat Blanc de Physique-Chimie, session du 04/04/2025...
+              </div>
+              <div class="sc-email-attach">
+                <i class="ph ph-paperclip" style="font-size:13px"></i> Copies_BacBlanc_PC_TG2.zip (32 fichiers)
+              </div>
+              <button class="sc-btn-launch" id="p-er-email-send" style="margin-top:8px;font-size:12px;padding:6px 16px"><i class="ph ph-paper-plane-tilt" style="font-size:12px"></i> Envoyer</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== SCREEN: Teacher Unified (Single Screen) ===== -->
+      <div class="proto-screen active" id="scr-teacher">
+        <!-- Topbar with logo and user -->
+        <div class="sc-topbar">
+          <div class="sc-topbar-left">
+            <img src="images/logo/logo-sqool-classe-horizontal-light.svg" alt="SQOOL Classe" style="height:32px">
+          </div>
+          <div class="sc-topbar-center">
+            <h2 class="sc-session-title">Physique <i class="ph ph-pencil-simple" style="font-size:12px;color:#94a3b8;cursor:pointer"></i></h2>
+            <span class="sc-session-meta">Classe 2G3 — 29/03/2025 — 9:00-10:30</span>
+          </div>
+          <div class="sc-topbar-right">
+            <button class="sc-topbar-icon sc-btn-messages" id="p-btn-messages"><i class="ph ph-chat-circle-dots" style="font-size:16px"></i><span class="sc-msg-badge hidden" id="p-msg-badge">3</span></button>
+            <button class="sc-btn-help">?</button>
+            <button class="sc-topbar-icon"><i class="ph ph-sliders-horizontal" style="font-size:16px"></i></button>
+            <div class="sc-user-pill"><div class="sc-user-av">TD</div><div class="sc-user-info"><span class="sc-user-name">Thomas DAVID</span><span class="sc-user-org">Lycée Clemenceau</span></div></div>
+          </div>
+        </div>
+
+        <!-- Subheader with quit + status + interactions toggle -->
+        <div class="sc-subheader">
+          <div class="sc-sub-left">
+            <button class="sc-btn-end" id="p-btn-quit"><i class="ph ph-sign-out" style="font-size:13px"></i> Terminer</button>
+            <div class="sc-status-bar">
+              <span class="sc-status-pill green-pill"><span class="sc-dot green"></span><span class="p-conn-count">0</span> Connectés</span>
+              <span class="sc-status-pill red-pill"><span class="sc-dot red"></span><span class="p-disconn-count">24</span> Déconnectés</span>
+            </div>
+          </div>
+          <div class="sc-sub-center">
+            <button class="sc-btn-qr" id="p-btn-qr"><i class="ph ph-qr-code" style="font-size:15px"></i> QR Code</button>
+            <button class="sc-btn-show-screens" id="p-btn-show-screens"><i class="ph ph-monitor" style="font-size:15px"></i> Afficher les écrans</button>
+            <button class="sc-btn-timer" id="p-btn-timer"><i class="ph ph-timer" style="font-size:15px"></i> Minuteur</button>
+            <span class="sc-timer-display hidden" id="p-timer-display"><i class="ph ph-timer" style="font-size:13px"></i> <span id="p-timer-countdown">05:00</span></span>
+          </div>
+          <div class="sc-sub-right">
+            <span class="sc-toggle-label">Voir les interactions</span>
+            <div class="sc-toggle off" id="p-toggle"><div class="sc-toggle-knob"></div></div>
+          </div>
+        </div>
+
+        <!-- QR Code overlay (full-screen for projection) -->
+        <div class="sc-qr-overlay hidden" id="p-qr-overlay">
+          <div class="sc-qr-content">
+            <div class="sc-qr-code" id="p-qr-code">
+              <svg viewBox="0 0 200 200" width="200" height="200">
+                <!-- Stylized QR code pattern -->
+                <rect width="200" height="200" fill="#fff" rx="8"/>
+                <!-- Position markers -->
+                <rect x="10" y="10" width="50" height="50" rx="4" fill="#1e293b"/>
+                <rect x="16" y="16" width="38" height="38" rx="2" fill="#fff"/>
+                <rect x="22" y="22" width="26" height="26" rx="2" fill="#1e293b"/>
+                <rect x="140" y="10" width="50" height="50" rx="4" fill="#1e293b"/>
+                <rect x="146" y="16" width="38" height="38" rx="2" fill="#fff"/>
+                <rect x="152" y="22" width="26" height="26" rx="2" fill="#1e293b"/>
+                <rect x="10" y="140" width="50" height="50" rx="4" fill="#1e293b"/>
+                <rect x="16" y="146" width="38" height="38" rx="2" fill="#fff"/>
+                <rect x="22" y="152" width="26" height="26" rx="2" fill="#1e293b"/>
+                <!-- Data modules -->
+                <rect x="70" y="10" width="8" height="8" fill="#1e293b"/><rect x="86" y="10" width="8" height="8" fill="#1e293b"/><rect x="102" y="10" width="8" height="8" fill="#1e293b"/><rect x="118" y="10" width="8" height="8" fill="#1e293b"/>
+                <rect x="70" y="26" width="8" height="8" fill="#1e293b"/><rect x="94" y="26" width="8" height="8" fill="#1e293b"/><rect x="110" y="26" width="8" height="8" fill="#1e293b"/>
+                <rect x="78" y="42" width="8" height="8" fill="#1e293b"/><rect x="94" y="42" width="8" height="8" fill="#1e293b"/><rect x="118" y="42" width="8" height="8" fill="#1e293b"/>
+                <rect x="70" y="58" width="8" height="8" fill="#1e293b"/><rect x="86" y="58" width="8" height="8" fill="#1e293b"/><rect x="110" y="58" width="8" height="8" fill="#1e293b"/>
+                <rect x="10" y="70" width="8" height="8" fill="#1e293b"/><rect x="26" y="70" width="8" height="8" fill="#1e293b"/><rect x="42" y="70" width="8" height="8" fill="#1e293b"/><rect x="70" y="70" width="8" height="8" fill="#1e293b"/><rect x="94" y="70" width="8" height="8" fill="#1e293b"/><rect x="118" y="70" width="8" height="8" fill="#1e293b"/><rect x="148" y="70" width="8" height="8" fill="#1e293b"/><rect x="164" y="70" width="8" height="8" fill="#1e293b"/><rect x="180" y="70" width="8" height="8" fill="#1e293b"/>
+                <rect x="10" y="86" width="8" height="8" fill="#1e293b"/><rect x="34" y="86" width="8" height="8" fill="#1e293b"/><rect x="78" y="86" width="8" height="8" fill="#1e293b"/><rect x="102" y="86" width="8" height="8" fill="#1e293b"/><rect x="140" y="86" width="8" height="8" fill="#1e293b"/><rect x="172" y="86" width="8" height="8" fill="#1e293b"/>
+                <rect x="18" y="102" width="8" height="8" fill="#1e293b"/><rect x="42" y="102" width="8" height="8" fill="#1e293b"/><rect x="70" y="102" width="8" height="8" fill="#1e293b"/><rect x="94" y="102" width="8" height="8" fill="#1e293b"/><rect x="110" y="102" width="8" height="8" fill="#1e293b"/><rect x="148" y="102" width="8" height="8" fill="#1e293b"/><rect x="164" y="102" width="8" height="8" fill="#1e293b"/>
+                <rect x="10" y="118" width="8" height="8" fill="#1e293b"/><rect x="26" y="118" width="8" height="8" fill="#1e293b"/><rect x="50" y="118" width="8" height="8" fill="#1e293b"/><rect x="86" y="118" width="8" height="8" fill="#1e293b"/><rect x="102" y="118" width="8" height="8" fill="#1e293b"/><rect x="140" y="118" width="8" height="8" fill="#1e293b"/><rect x="156" y="118" width="8" height="8" fill="#1e293b"/><rect x="180" y="118" width="8" height="8" fill="#1e293b"/>
+                <rect x="70" y="140" width="8" height="8" fill="#1e293b"/><rect x="94" y="140" width="8" height="8" fill="#1e293b"/><rect x="118" y="140" width="8" height="8" fill="#1e293b"/><rect x="148" y="140" width="8" height="8" fill="#1e293b"/><rect x="164" y="140" width="8" height="8" fill="#1e293b"/>
+                <rect x="78" y="156" width="8" height="8" fill="#1e293b"/><rect x="102" y="156" width="8" height="8" fill="#1e293b"/><rect x="140" y="156" width="8" height="8" fill="#1e293b"/><rect x="172" y="156" width="8" height="8" fill="#1e293b"/>
+                <rect x="70" y="172" width="8" height="8" fill="#1e293b"/><rect x="86" y="172" width="8" height="8" fill="#1e293b"/><rect x="110" y="172" width="8" height="8" fill="#1e293b"/><rect x="148" y="172" width="8" height="8" fill="#1e293b"/><rect x="180" y="172" width="8" height="8" fill="#1e293b"/>
+                <rect x="78" y="188" width="8" height="8" fill="#1e293b"/><rect x="94" y="188" width="8" height="8" fill="#1e293b"/><rect x="118" y="188" width="8" height="8" fill="#1e293b"/><rect x="156" y="188" width="8" height="8" fill="#1e293b"/><rect x="172" y="188" width="8" height="8" fill="#1e293b"/>
+              </svg>
+            </div>
+            <h3 class="sc-qr-title">Rejoindre la classe</h3>
+            <p class="sc-qr-subtitle">Scannez ce QR code avec votre tablette</p>
+            <div class="sc-qr-code-text">sqool.classe/join/2G3-PHY-2025</div>
+            <div class="sc-qr-status">
+              <span class="sc-dot green"></span>
+              <span id="p-qr-count">0</span>/24 élèves connectés
+            </div>
+            <button class="sc-qr-close" id="p-qr-close">Fermer le QR Code</button>
+          </div>
+        </div>
+
+        <!-- Timer picker overlay -->
+        <div class="sc-timer-overlay hidden" id="p-timer-overlay">
+          <div class="sc-timer-modal">
+            <div class="sc-timer-modal-header">
+              <i class="ph ph-timer" style="font-size:18px;color:#0ea5e9"></i>
+              <h3>Minuteur</h3>
+              <button class="sc-modal-close" id="p-timer-close"><i class="ph ph-x" style="font-size:14px"></i></button>
+            </div>
+            <p class="sc-timer-modal-desc">Choisissez une durée pour la classe</p>
+            <div class="sc-timer-options" id="p-timer-options">
+              <button class="sc-timer-option" data-minutes="5">5 min</button>
+              <button class="sc-timer-option" data-minutes="10">10 min</button>
+              <button class="sc-timer-option" data-minutes="15">15 min</button>
+              <button class="sc-timer-option" data-minutes="20">20 min</button>
+              <button class="sc-timer-option" data-minutes="30">30 min</button>
+            </div>
+            <button class="sc-timer-start" id="p-timer-start">Démarrer</button>
+          </div>
+        </div>
+
+        <!-- Timer bar -->
+        <div class="sc-timer-bar">
+          <div class="sc-timer-fill" id="p-timer-fill" style="width:0%"></div>
+        </div>
+
+        <!-- Group bar -->
+        <div class="sc-group-bar" id="p-group-bar">
+          <button class="sc-group-pill active" id="p-group-classe">Groupe Classe</button>
+          <button class="sc-group-add" id="p-btn-group-add"><i class="ph ph-plus" style="font-size:14px"></i></button>
+        </div>
+
+        <!-- Messages overlay panel -->
+        <div class="sc-messages-panel hidden" id="p-messages-panel">
+          <div class="sc-messages-panel-header">
+            <i class="ph ph-chat-circle-dots" style="font-size:16px;color:#0ea5e9"></i>
+            <h3>Messages reçus</h3>
+            <span class="sc-msg-count" id="p-msg-count">3</span>
+            <button class="sc-messages-panel-close" id="p-messages-close"><i class="ph ph-x" style="font-size:14px"></i></button>
+          </div>
+          <div class="sc-messages-panel-body">
+            <div class="sc-msg-row" id="p-msg-emma">
+              <div class="sc-msg-avatar">ED</div>
+              <div class="sc-msg-content"><strong>Emma DURAND</strong><p>J'ai terminé</p><span class="sc-msg-time">il y a 2 min.</span></div>
+              <span class="sc-msg-emoji"><i class="ph-fill ph-thumbs-up" style="font-size:20px;color:#34c759"></i></span>
+            </div>
+            <div class="sc-msg-row" id="p-msg-ravi">
+              <div class="sc-msg-avatar rv">RS</div>
+              <div class="sc-msg-content"><strong>Ravi SINGH</strong><p>J'ai une question</p><span class="sc-msg-time">il y a 5 min.</span></div>
+              <span class="sc-msg-emoji"><i class="ph-fill ph-question" style="font-size:20px;color:#ff9500"></i></span>
+            </div>
+            <div class="sc-msg-row" id="p-msg-chloe">
+              <div class="sc-msg-avatar ch">CD</div>
+              <div class="sc-msg-content"><strong>Chloé DUPONT</strong><p>J'ai compris</p><span class="sc-msg-time">il y a 8 min.</span></div>
+              <span class="sc-msg-emoji"><i class="ph-fill ph-check-circle" style="font-size:20px;color:#34c759"></i></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== UNIFIED GRID (screen cards with full feedback) ===== -->
+        <div class="sc-unified-grid" id="p-grid">
+          <!-- Row 1 -->
+          <div class="sc-ucard" data-student="malik">
+            <div class="sc-ucard-screen"><div class="sc-screen-content wiki-thumb"><div class="sc-screen-urlbar"><span class="sc-screen-dot"></span><span class="sc-screen-url">fr.wikipedia.org</span></div><div class="sc-screen-body"><div class="sc-screen-h">Osiris</div><div class="sc-screen-line"></div><div class="sc-screen-line short"></div></div></div><div class="sc-screen-off"><svg viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" width="20"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><div class="sc-ucard-received hidden"><i class="ph-fill ph-check-circle" style="font-size:16px;color:#34c759"></i></div></div>
+            <div class="sc-ucard-avatar" style="background:#3b82f6">MA</div><div class="sc-ucard-footer"><span class="sc-ucard-app"><i class="ph ph-globe-simple" style="font-size:12px;color:#007aff"></i></span><span class="sc-ucard-name">Malik ABDAL</span><span class="sc-ucard-status active-status">Actif</span></div>
+            <div class="sc-interaction-badge hidden"></div>
+          </div>
+          <div class="sc-ucard" data-student="ines-b">
+            <div class="sc-ucard-screen"><div class="sc-screen-content pdf-thumb"><div class="sc-screen-urlbar"><span class="sc-screen-dot"></span><span class="sc-screen-url">Cours_Egypte.pdf</span></div><div class="sc-screen-body"><div class="sc-screen-h">L'Égypte antique</div><div class="sc-screen-line"></div><div class="sc-screen-line short"></div><div class="sc-screen-img-placeholder"></div></div></div><div class="sc-screen-off"><svg viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" width="20"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><div class="sc-ucard-received hidden"><i class="ph-fill ph-check-circle" style="font-size:16px;color:#34c759"></i></div></div>
+            <div class="sc-ucard-avatar" style="background:#f97316">IB</div><div class="sc-ucard-footer"><span class="sc-ucard-app"><i class="ph ph-file-pdf" style="font-size:12px;color:#ff3b30"></i></span><span class="sc-ucard-name">Inès BOUZID</span><span class="sc-ucard-status active-status">Actif</span></div>
+            <div class="sc-interaction-badge hidden"></div>
+          </div>
+          <div class="sc-ucard" data-student="marius">
+            <div class="sc-ucard-screen"><div class="sc-screen-content wiki-thumb"><div class="sc-screen-urlbar"><span class="sc-screen-dot"></span><span class="sc-screen-url">fr.wikipedia.org</span></div><div class="sc-screen-body"><div class="sc-screen-h">Pharaons</div><div class="sc-screen-line"></div><div class="sc-screen-line short"></div></div></div><div class="sc-screen-off"><svg viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" width="20"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><div class="sc-ucard-received hidden"><i class="ph-fill ph-check-circle" style="font-size:16px;color:#34c759"></i></div></div>
+            <div class="sc-ucard-avatar" style="background:#8b5cf6">MB</div><div class="sc-ucard-footer"><span class="sc-ucard-app"><i class="ph ph-globe-simple" style="font-size:12px;color:#007aff"></i></span><span class="sc-ucard-name">Marius BERTHELOT</span><span class="sc-ucard-status alert-status">Déconnecté</span></div>
+            <div class="sc-interaction-badge hidden"></div>
+          </div>
+          <div class="sc-ucard" data-student="aya">
+            <div class="sc-ucard-screen"><div class="sc-screen-content pearl-thumb"><div class="sc-screen-urlbar"><span class="sc-screen-dot"></span><span class="sc-screen-url">pearltrees.com</span></div><div class="sc-screen-body"><div class="sc-screen-h">Égypte antique</div><div class="sc-screen-circles"><span></span><span></span><span></span></div></div></div><div class="sc-screen-off"><svg viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" width="20"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><div class="sc-ucard-received hidden"><i class="ph-fill ph-check-circle" style="font-size:16px;color:#34c759"></i></div></div>
+            <div class="sc-ucard-avatar" style="background:#ec4899">AB</div><div class="sc-ucard-footer"><span class="sc-ucard-app"><i class="ph ph-tree-structure" style="font-size:12px;color:#8b5cf6"></i></span><span class="sc-ucard-name">Aya BOUCHAMI</span><span class="sc-ucard-status active-status">Actif</span></div>
+            <div class="sc-interaction-badge hidden"></div>
+          </div>
+          <div class="sc-ucard" data-student="chloe">
+            <div class="sc-ucard-screen"><div class="sc-screen-content doc-thumb"><div class="sc-screen-urlbar"><span class="sc-screen-dot"></span><span class="sc-screen-url">Exercices.docx</span></div><div class="sc-screen-body"><div class="sc-screen-h">Exercice 3</div><div class="sc-screen-line"></div><div class="sc-screen-line short"></div></div></div><div class="sc-screen-off"><svg viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" width="20"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><div class="sc-ucard-received hidden"><i class="ph-fill ph-check-circle" style="font-size:16px;color:#34c759"></i></div></div>
+            <div class="sc-ucard-avatar" style="background:#14b8a6">CD</div><div class="sc-ucard-footer"><span class="sc-ucard-app"><i class="ph ph-file-doc" style="font-size:12px;color:#2563eb"></i></span><span class="sc-ucard-name">Chloé DUPONT</span><span class="sc-ucard-status done-status">Terminé</span></div>
+            <div class="sc-interaction-badge hidden"></div>
+          </div>
+          <div class="sc-ucard" data-student="emma">
+            <div class="sc-ucard-screen"><div class="sc-screen-content pdf-thumb"><div class="sc-screen-urlbar"><span class="sc-screen-dot"></span><span class="sc-screen-url">Cours_Egypte.pdf</span></div><div class="sc-screen-body"><div class="sc-screen-h">L'Égypte antique</div><div class="sc-screen-line"></div><div class="sc-screen-line short"></div></div></div><div class="sc-screen-off"><svg viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" width="20"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><div class="sc-ucard-received hidden"><i class="ph-fill ph-check-circle" style="font-size:16px;color:#34c759"></i></div></div>
+            <div class="sc-ucard-avatar" style="background:#ef4444">ED</div><div class="sc-ucard-footer"><span class="sc-ucard-app"><i class="ph ph-file-pdf" style="font-size:12px;color:#ff3b30"></i></span><span class="sc-ucard-name">Emma DURAND</span><span class="sc-ucard-status done-status">Terminé</span></div>
+            <div class="sc-interaction-badge hidden"></div>
+          </div>
+          <!-- Row 2 -->
+          <div class="sc-ucard" data-student="lucas">
+            <div class="sc-ucard-screen"><div class="sc-screen-content app-thumb"><div class="sc-screen-urlbar"><span class="sc-screen-dot"></span><span class="sc-screen-url">GeoGebra</span></div><div class="sc-screen-body"><div class="sc-screen-graph"><svg viewBox="0 0 80 40"><line x1="10" y1="35" x2="70" y2="35" stroke="#e2e8f0" stroke-width="0.5"/><line x1="10" y1="5" x2="10" y2="35" stroke="#e2e8f0" stroke-width="0.5"/><polyline points="15,30 25,20 35,25 50,10 65,18" fill="none" stroke="#007aff" stroke-width="1.5"/></svg></div></div></div><div class="sc-screen-off"><svg viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" width="20"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><div class="sc-ucard-received hidden"><i class="ph-fill ph-check-circle" style="font-size:16px;color:#34c759"></i></div></div>
+            <div class="sc-ucard-avatar" style="background:#f59e0b">LF</div><div class="sc-ucard-footer"><span class="sc-ucard-app"><i class="ph ph-compass-tool" style="font-size:12px;color:#34c759"></i></span><span class="sc-ucard-name">Lucas FAURE</span><span class="sc-ucard-status active-status">Actif</span></div>
+            <div class="sc-interaction-badge hidden"></div>
+          </div>
+          <div class="sc-ucard" data-student="nolan">
+            <div class="sc-ucard-screen"><div class="sc-screen-content wiki-thumb"><div class="sc-screen-urlbar"><span class="sc-screen-dot"></span><span class="sc-screen-url">fr.wikipedia.org</span></div><div class="sc-screen-body"><div class="sc-screen-h">Pyramides</div><div class="sc-screen-line"></div><div class="sc-screen-line short"></div></div></div><div class="sc-screen-off"><svg viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" width="20"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><div class="sc-ucard-received hidden"><i class="ph-fill ph-check-circle" style="font-size:16px;color:#34c759"></i></div></div>
+            <div class="sc-ucard-avatar" style="background:#06b6d4">NG</div><div class="sc-ucard-footer"><span class="sc-ucard-app"><i class="ph ph-globe-simple" style="font-size:12px;color:#007aff"></i></span><span class="sc-ucard-name">Nolan GARNIER</span><span class="sc-ucard-status active-status">Actif</span></div>
+            <div class="sc-interaction-badge hidden"></div>
+          </div>
+          <div class="sc-ucard" data-student="leo">
+            <div class="sc-ucard-screen"><div class="sc-screen-content doc-thumb"><div class="sc-screen-urlbar"><span class="sc-screen-dot"></span><span class="sc-screen-url">Exercices.docx</span></div><div class="sc-screen-body"><div class="sc-screen-h">Exercice 1</div><div class="sc-screen-line"></div><div class="sc-screen-line short"></div></div></div><div class="sc-screen-off"><svg viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" width="20"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><div class="sc-ucard-received hidden"><i class="ph-fill ph-check-circle" style="font-size:16px;color:#34c759"></i></div></div>
+            <div class="sc-ucard-avatar" style="background:#10b981">LM</div><div class="sc-ucard-footer"><span class="sc-ucard-app"><i class="ph ph-file-doc" style="font-size:12px;color:#2563eb"></i></span><span class="sc-ucard-name">Léo MOREAU</span><span class="sc-ucard-status active-status">Actif</span></div>
+            <div class="sc-interaction-badge hidden"></div>
+          </div>
+          <div class="sc-ucard" data-student="ravi">
+            <div class="sc-ucard-screen"><div class="sc-screen-content pdf-thumb"><div class="sc-screen-urlbar"><span class="sc-screen-dot"></span><span class="sc-screen-url">Cours_Egypte.pdf</span></div><div class="sc-screen-body"><div class="sc-screen-h">Chapitre 4</div><div class="sc-screen-line"></div><div class="sc-screen-line short"></div></div></div><div class="sc-screen-off"><svg viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" width="20"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><div class="sc-ucard-received hidden"><i class="ph-fill ph-check-circle" style="font-size:16px;color:#34c759"></i></div></div>
+            <div class="sc-ucard-avatar" style="background:#6366f1">RS</div><div class="sc-ucard-footer"><span class="sc-ucard-app"><i class="ph ph-file-pdf" style="font-size:12px;color:#ff3b30"></i></span><span class="sc-ucard-name">Ravi SINGH</span><span class="sc-ucard-status active-status">Actif</span></div>
+            <div class="sc-interaction-badge hidden"></div>
+          </div>
+          <div class="sc-ucard" data-student="salome">
+            <div class="sc-ucard-screen"><div class="sc-screen-content pearl-thumb"><div class="sc-screen-urlbar"><span class="sc-screen-dot"></span><span class="sc-screen-url">pearltrees.com</span></div><div class="sc-screen-body"><div class="sc-screen-h">Collection</div><div class="sc-screen-circles"><span></span><span></span><span></span></div></div></div><div class="sc-screen-off"><svg viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" width="20"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><div class="sc-ucard-received hidden"><i class="ph-fill ph-check-circle" style="font-size:16px;color:#34c759"></i></div></div>
+            <div class="sc-ucard-avatar" style="background:#e11d48">SR</div><div class="sc-ucard-footer"><span class="sc-ucard-app"><i class="ph ph-tree-structure" style="font-size:12px;color:#8b5cf6"></i></span><span class="sc-ucard-name">Salomé ROUX</span><span class="sc-ucard-status active-status">Actif</span></div>
+            <div class="sc-interaction-badge hidden"></div>
+          </div>
+          <div class="sc-ucard" data-student="ines-r">
+            <div class="sc-ucard-screen"><div class="sc-screen-content scratch-thumb"><div class="sc-screen-urlbar"><span class="sc-screen-dot"></span><span class="sc-screen-url">Scratch</span></div><div class="sc-screen-body"><div class="sc-screen-blocks"><span class="sc-block blue"></span><span class="sc-block purple"></span><span class="sc-block orange"></span></div></div></div><div class="sc-screen-off"><svg viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" width="20"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><div class="sc-ucard-received hidden"><i class="ph-fill ph-check-circle" style="font-size:16px;color:#34c759"></i></div></div>
+            <div class="sc-ucard-avatar" style="background:#84cc16">IR</div><div class="sc-ucard-footer"><span class="sc-ucard-app"><i class="ph ph-puzzle-piece" style="font-size:12px;color:#ff9500"></i></span><span class="sc-ucard-name">Inès RICHARD</span><span class="sc-ucard-status active-status">Actif</span></div>
+            <div class="sc-interaction-badge hidden"></div>
+          </div>
+          <!-- Row 3 -->
+          <div class="sc-ucard" data-student="hugo">
+            <div class="sc-ucard-screen"><div class="sc-screen-content wiki-thumb"><div class="sc-screen-urlbar"><span class="sc-screen-dot"></span><span class="sc-screen-url">fr.wikipedia.org</span></div><div class="sc-screen-body"><div class="sc-screen-h">Hiéroglyphes</div><div class="sc-screen-line"></div><div class="sc-screen-line short"></div></div></div><div class="sc-screen-off"><svg viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" width="20"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><div class="sc-ucard-received hidden"><i class="ph-fill ph-check-circle" style="font-size:16px;color:#34c759"></i></div></div>
+            <div class="sc-ucard-avatar" style="background:#3b82f6">HP</div><div class="sc-ucard-footer"><span class="sc-ucard-app"><i class="ph ph-globe-simple" style="font-size:12px;color:#007aff"></i></span><span class="sc-ucard-name">Hugo PETIT</span><span class="sc-ucard-status active-status">Actif</span></div>
+            <div class="sc-interaction-badge hidden"></div>
+          </div>
+          <div class="sc-ucard" data-student="jade">
+            <div class="sc-ucard-screen"><div class="sc-screen-content pdf-thumb"><div class="sc-screen-urlbar"><span class="sc-screen-dot"></span><span class="sc-screen-url">Cours_Egypte.pdf</span></div><div class="sc-screen-body"><div class="sc-screen-h">Chapitre 2</div><div class="sc-screen-line"></div><div class="sc-screen-line short"></div></div></div><div class="sc-screen-off"><svg viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" width="20"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><div class="sc-ucard-received hidden"><i class="ph-fill ph-check-circle" style="font-size:16px;color:#34c759"></i></div></div>
+            <div class="sc-ucard-avatar" style="background:#f97316">JL</div><div class="sc-ucard-footer"><span class="sc-ucard-app"><i class="ph ph-file-pdf" style="font-size:12px;color:#ff3b30"></i></span><span class="sc-ucard-name">Jade LEMOINE</span><span class="sc-ucard-status active-status">Actif</span></div>
+            <div class="sc-interaction-badge hidden"></div>
+          </div>
+          <div class="sc-ucard" data-student="tom">
+            <div class="sc-ucard-screen"><div class="sc-screen-content app-thumb"><div class="sc-screen-urlbar"><span class="sc-screen-dot"></span><span class="sc-screen-url">GeoGebra</span></div><div class="sc-screen-body"><div class="sc-screen-graph"><svg viewBox="0 0 80 40"><line x1="10" y1="35" x2="70" y2="35" stroke="#e2e8f0" stroke-width="0.5"/><line x1="10" y1="5" x2="10" y2="35" stroke="#e2e8f0" stroke-width="0.5"/><polyline points="15,28 30,15 45,22 60,8" fill="none" stroke="#34c759" stroke-width="1.5"/></svg></div></div></div><div class="sc-screen-off"><svg viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" width="20"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><div class="sc-ucard-received hidden"><i class="ph-fill ph-check-circle" style="font-size:16px;color:#34c759"></i></div></div>
+            <div class="sc-ucard-avatar" style="background:#8b5cf6">TL</div><div class="sc-ucard-footer"><span class="sc-ucard-app"><i class="ph ph-compass-tool" style="font-size:12px;color:#34c759"></i></span><span class="sc-ucard-name">Tom LAURENT</span><span class="sc-ucard-status active-status">Actif</span></div>
+            <div class="sc-interaction-badge hidden"></div>
+          </div>
+          <div class="sc-ucard" data-student="lina">
+            <div class="sc-ucard-screen"><div class="sc-screen-content doc-thumb"><div class="sc-screen-urlbar"><span class="sc-screen-dot"></span><span class="sc-screen-url">Exercices.docx</span></div><div class="sc-screen-body"><div class="sc-screen-h">Exercice 2</div><div class="sc-screen-line"></div><div class="sc-screen-line short"></div></div></div><div class="sc-screen-off"><svg viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" width="20"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><div class="sc-ucard-received hidden"><i class="ph-fill ph-check-circle" style="font-size:16px;color:#34c759"></i></div></div>
+            <div class="sc-ucard-avatar" style="background:#ec4899">LM</div><div class="sc-ucard-footer"><span class="sc-ucard-app"><i class="ph ph-file-doc" style="font-size:12px;color:#2563eb"></i></span><span class="sc-ucard-name">Lina MERCIER</span><span class="sc-ucard-status active-status">Actif</span></div>
+            <div class="sc-interaction-badge hidden"></div>
+          </div>
+          <div class="sc-ucard" data-student="nathan">
+            <div class="sc-ucard-screen"><div class="sc-screen-content wiki-thumb"><div class="sc-screen-urlbar"><span class="sc-screen-dot"></span><span class="sc-screen-url">youtube.com</span></div><div class="sc-screen-body"><div class="sc-screen-h">Video hors-sujet</div><div class="sc-screen-line"></div></div></div><div class="sc-screen-off"><svg viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" width="20"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><div class="sc-ucard-received hidden"><i class="ph-fill ph-check-circle" style="font-size:16px;color:#34c759"></i></div></div>
+            <div class="sc-ucard-avatar" style="background:#14b8a6">NG</div><div class="sc-ucard-footer"><span class="sc-ucard-app"><i class="ph ph-play-circle" style="font-size:12px;color:#ff3b30"></i></span><span class="sc-ucard-name">Nathan GIRARD</span><span class="sc-ucard-status alert-status">Alerte</span></div>
+            <div class="sc-interaction-badge hidden"></div>
+          </div>
+          <div class="sc-ucard" data-student="manon">
+            <div class="sc-ucard-screen"><div class="sc-screen-content pdf-thumb"><div class="sc-screen-urlbar"><span class="sc-screen-dot"></span><span class="sc-screen-url">Cours_Egypte.pdf</span></div><div class="sc-screen-body"><div class="sc-screen-h">Chapitre 5</div><div class="sc-screen-line"></div><div class="sc-screen-line short"></div></div></div><div class="sc-screen-off"><svg viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" width="20"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><div class="sc-ucard-received hidden"><i class="ph-fill ph-check-circle" style="font-size:16px;color:#34c759"></i></div></div>
+            <div class="sc-ucard-avatar" style="background:#ef4444">MB</div><div class="sc-ucard-footer"><span class="sc-ucard-app"><i class="ph ph-file-pdf" style="font-size:12px;color:#ff3b30"></i></span><span class="sc-ucard-name">Manon BONNET</span><span class="sc-ucard-status active-status">Actif</span></div>
+            <div class="sc-interaction-badge hidden"></div>
+          </div>
+          <!-- Row 4 -->
+          <div class="sc-ucard" data-student="paul">
+            <div class="sc-ucard-screen"><div class="sc-screen-content doc-thumb"><div class="sc-screen-urlbar"><span class="sc-screen-dot"></span><span class="sc-screen-url">Exercices.docx</span></div><div class="sc-screen-body"><div class="sc-screen-h">Exercice 4</div><div class="sc-screen-line"></div><div class="sc-screen-line short"></div></div></div><div class="sc-screen-off"><svg viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" width="20"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><div class="sc-ucard-received hidden"><i class="ph-fill ph-check-circle" style="font-size:16px;color:#34c759"></i></div></div>
+            <div class="sc-ucard-avatar" style="background:#f59e0b">PR</div><div class="sc-ucard-footer"><span class="sc-ucard-app"><i class="ph ph-file-doc" style="font-size:12px;color:#2563eb"></i></span><span class="sc-ucard-name">Paul ROUSSEL</span><span class="sc-ucard-status active-status">Actif</span></div>
+            <div class="sc-interaction-badge hidden"></div>
+          </div>
+          <div class="sc-ucard" data-student="sarah">
+            <div class="sc-ucard-screen"><div class="sc-screen-content pearl-thumb"><div class="sc-screen-urlbar"><span class="sc-screen-dot"></span><span class="sc-screen-url">pearltrees.com</span></div><div class="sc-screen-body"><div class="sc-screen-h">Ressources</div><div class="sc-screen-circles"><span></span><span></span><span></span></div></div></div><div class="sc-screen-off"><svg viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" width="20"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><div class="sc-ucard-received hidden"><i class="ph-fill ph-check-circle" style="font-size:16px;color:#34c759"></i></div></div>
+            <div class="sc-ucard-avatar" style="background:#06b6d4">ST</div><div class="sc-ucard-footer"><span class="sc-ucard-app"><i class="ph ph-tree-structure" style="font-size:12px;color:#8b5cf6"></i></span><span class="sc-ucard-name">Sarah THOMAS</span><span class="sc-ucard-status active-status">Actif</span></div>
+            <div class="sc-interaction-badge hidden"></div>
+          </div>
+          <div class="sc-ucard" data-student="jules">
+            <div class="sc-ucard-screen"><div class="sc-screen-content wiki-thumb"><div class="sc-screen-urlbar"><span class="sc-screen-dot"></span><span class="sc-screen-url">fr.wikipedia.org</span></div><div class="sc-screen-body"><div class="sc-screen-h">Toutânkhamon</div><div class="sc-screen-line"></div><div class="sc-screen-line short"></div></div></div><div class="sc-screen-off"><svg viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" width="20"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><div class="sc-ucard-received hidden"><i class="ph-fill ph-check-circle" style="font-size:16px;color:#34c759"></i></div></div>
+            <div class="sc-ucard-avatar" style="background:#10b981">JD</div><div class="sc-ucard-footer"><span class="sc-ucard-app"><i class="ph ph-globe-simple" style="font-size:12px;color:#007aff"></i></span><span class="sc-ucard-name">Jules DUVAL</span><span class="sc-ucard-status active-status">Actif</span></div>
+            <div class="sc-interaction-badge hidden"></div>
+          </div>
+          <div class="sc-ucard" data-student="clara">
+            <div class="sc-ucard-screen"><div class="sc-screen-content scratch-thumb"><div class="sc-screen-urlbar"><span class="sc-screen-dot"></span><span class="sc-screen-url">Scratch</span></div><div class="sc-screen-body"><div class="sc-screen-blocks"><span class="sc-block blue"></span><span class="sc-block orange"></span><span class="sc-block purple"></span></div></div></div><div class="sc-screen-off"><svg viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" width="20"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><div class="sc-ucard-received hidden"><i class="ph-fill ph-check-circle" style="font-size:16px;color:#34c759"></i></div></div>
+            <div class="sc-ucard-avatar" style="background:#6366f1">CM</div><div class="sc-ucard-footer"><span class="sc-ucard-app"><i class="ph ph-puzzle-piece" style="font-size:12px;color:#ff9500"></i></span><span class="sc-ucard-name">Clara MOREL</span><span class="sc-ucard-status active-status">Actif</span></div>
+            <div class="sc-interaction-badge hidden"></div>
+          </div>
+          <div class="sc-ucard" data-student="theo">
+            <div class="sc-ucard-screen"><div class="sc-screen-content pdf-thumb"><div class="sc-screen-urlbar"><span class="sc-screen-dot"></span><span class="sc-screen-url">Cours_Egypte.pdf</span></div><div class="sc-screen-body"><div class="sc-screen-h">Chapitre 1</div><div class="sc-screen-line"></div><div class="sc-screen-line short"></div></div></div><div class="sc-screen-off"><svg viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" width="20"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><div class="sc-ucard-received hidden"><i class="ph-fill ph-check-circle" style="font-size:16px;color:#34c759"></i></div></div>
+            <div class="sc-ucard-avatar" style="background:#e11d48">TB</div><div class="sc-ucard-footer"><span class="sc-ucard-app"><i class="ph ph-file-pdf" style="font-size:12px;color:#ff3b30"></i></span><span class="sc-ucard-name">Théo BLANCHARD</span><span class="sc-ucard-status active-status">Actif</span></div>
+            <div class="sc-interaction-badge hidden"></div>
+          </div>
+          <div class="sc-ucard" data-student="camille">
+            <div class="sc-ucard-screen"><div class="sc-screen-content doc-thumb"><div class="sc-screen-urlbar"><span class="sc-screen-dot"></span><span class="sc-screen-url">Exercices.docx</span></div><div class="sc-screen-body"><div class="sc-screen-h">Exercice 5</div><div class="sc-screen-line"></div><div class="sc-screen-line short"></div></div></div><div class="sc-screen-off"><svg viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" width="20"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><div class="sc-ucard-received hidden"><i class="ph-fill ph-check-circle" style="font-size:16px;color:#34c759"></i></div></div>
+            <div class="sc-ucard-avatar" style="background:#84cc16">CL</div><div class="sc-ucard-footer"><span class="sc-ucard-app"><i class="ph ph-file-doc" style="font-size:12px;color:#2563eb"></i></span><span class="sc-ucard-name">Camille LEROY</span><span class="sc-ucard-status done-status">Terminé</span></div>
+            <div class="sc-interaction-badge hidden"></div>
+          </div>
+        </div>
+
+        <!-- Spotlight view (replaces grid when viewing selected screens) -->
+        <div class="sc-spotlight hidden" id="p-spotlight">
+          <div class="sc-spotlight-cards" id="p-spotlight-cards"></div>
+          <button class="sc-spotlight-close" id="p-spotlight-close"><i class="ph ph-x" style="font-size:16px"></i> Retour à la classe</button>
+        </div>
+
+        <!-- Annotation canvas overlay -->
+        <div class="sc-annotation-overlay hidden" id="p-annotation-overlay">
+          <div class="sc-annotation-toolbar" id="p-annotation-toolbar">
+            <button class="sc-annot-btn active" data-tool="pen"><i class="ph ph-pen" style="font-size:16px"></i></button>
+            <button class="sc-annot-btn" data-tool="highlight"><i class="ph ph-highlighter-circle" style="font-size:16px"></i></button>
+            <button class="sc-annot-btn" data-tool="eraser"><i class="ph ph-eraser" style="font-size:16px"></i></button>
+            <div class="sc-annot-colors">
+              <span class="sc-annot-color active" style="background:#ff3b30"></span>
+              <span class="sc-annot-color" style="background:#007aff"></span>
+              <span class="sc-annot-color" style="background:#34c759"></span>
+            </div>
+            <button class="sc-annot-btn" id="p-annot-close"><i class="ph ph-x" style="font-size:16px"></i> Fermer</button>
+          </div>
+          <svg class="sc-annotation-canvas" id="p-annotation-canvas" viewBox="0 0 800 500"></svg>
+        </div>
+
+        <!-- Full-screen student viewer (carousel) -->
+        <div class="sc-student-viewer hidden" id="p-student-viewer">
+          <div class="sc-sv-header">
+            <div class="sc-sv-student-info">
+              <div class="sc-sv-avatar" id="p-sv-avatar">CD</div>
+              <div class="sc-sv-meta">
+                <span class="sc-sv-name" id="p-sv-name">Chloé DUPONT</span>
+                <span class="sc-sv-app" id="p-sv-app"><i class="ph ph-file-doc" style="font-size:14px;color:#2563eb"></i> Exercices.docx</span>
+              </div>
+            </div>
+            <div class="sc-sv-actions">
+              <button class="sc-sv-lock-btn" id="p-sv-lock"><i class="ph ph-lock-simple" style="font-size:18px"></i></button>
+              <button class="sc-sv-close-btn" id="p-sv-close"><i class="ph ph-x" style="font-size:18px"></i></button>
+            </div>
+          </div>
+          <div class="sc-sv-body">
+            <button class="sc-sv-arrow sc-sv-arrow-left" id="p-sv-prev"><i class="ph ph-caret-left" style="font-size:24px"></i></button>
+            <div class="sc-sv-carousel">
+              <div class="sc-sv-slide sc-sv-slide-prev" id="p-sv-slide-prev"></div>
+              <div class="sc-sv-slide sc-sv-slide-current" id="p-sv-slide-current">
+                <div class="sc-sv-locked-overlay hidden" id="p-sv-locked-overlay">
+                  <i class="ph ph-lock-simple" style="font-size:40px;color:#64748b"></i>
+                  <span>Écran verrouillé</span>
+                </div>
+              </div>
+              <div class="sc-sv-slide sc-sv-slide-next" id="p-sv-slide-next"></div>
+            </div>
+            <button class="sc-sv-arrow sc-sv-arrow-right" id="p-sv-next"><i class="ph ph-caret-right" style="font-size:24px"></i></button>
+          </div>
+          <div class="sc-sv-counter" id="p-sv-counter">5 / 24</div>
+        </div>
+
+        <!-- End session recap overlay -->
+        <div class="sc-recap-overlay hidden" id="p-recap-overlay">
+          <div class="sc-recap-fullscreen">
+            <div class="sc-recap-header">
+              <i class="ph ph-flag-checkered" style="font-size:32px;color:#34c759"></i>
+              <h3>Séance terminée</h3>
+              <p class="sc-recap-meta">Physique — 2G3 — 29/03/2025 — Durée : 1h28</p>
+            </div>
+
+            <div class="sc-recap-body">
+              <div class="sc-recap-left">
+                <div class="sc-recap-stats">
+                  <div class="sc-recap-stat"><span class="sc-recap-stat-val">23</span><span class="sc-recap-stat-label">Élèves connectés</span></div>
+                  <div class="sc-recap-stat"><span class="sc-recap-stat-val">18</span><span class="sc-recap-stat-label">Ont terminé</span></div>
+                  <div class="sc-recap-stat"><span class="sc-recap-stat-val">7</span><span class="sc-recap-stat-label">Questions posées</span></div>
+                  <div class="sc-recap-stat"><span class="sc-recap-stat-val">4</span><span class="sc-recap-stat-label">Documents échangés</span></div>
+                </div>
+
+                <div class="sc-recap-docs">
+                  <h4><i class="ph ph-folder-open" style="font-size:14px"></i> Documents de la séance</h4>
+                  <div class="sc-recap-doc"><span class="sc-res-icon pdf">PDF</span><span>Cours_Egypte.pdf</span><span class="sc-recap-arrow">Envoyé</span><button class="sc-recap-dl"><i class="ph ph-download-simple" style="font-size:14px"></i></button></div>
+                  <div class="sc-recap-doc"><span class="sc-res-icon doc">DOC</span><span>Exercices.docx</span><span class="sc-recap-arrow">Envoyé</span><button class="sc-recap-dl"><i class="ph ph-download-simple" style="font-size:14px"></i></button></div>
+                  <div class="sc-recap-doc"><span class="sc-res-icon pdf">PDF</span><span>Devoir_Chloe.pdf</span><span class="sc-recap-arrow">Reçu</span><button class="sc-recap-dl"><i class="ph ph-download-simple" style="font-size:14px"></i></button></div>
+                  <div class="sc-recap-doc"><span class="sc-res-icon pdf">PDF</span><span>Devoir_Emma.pdf</span><span class="sc-recap-arrow">Reçu</span><button class="sc-recap-dl"><i class="ph ph-download-simple" style="font-size:14px"></i></button></div>
+                </div>
+                <div class="sc-recap-drive hidden" id="p-recap-drive">
+                  <i class="ph-fill ph-google-drive-logo" style="font-size:18px;color:#4285f4"></i>
+                  <span>Tous les documents ont été sauvegardés sur votre Google Drive</span>
+                  <i class="ph-fill ph-check-circle" style="font-size:16px;color:#34c759"></i>
+                </div>
+              </div>
+
+              <div class="sc-recap-right">
+                <div class="sc-recap-disconnect" id="p-recap-disconnect">
+                  <h4><i class="ph ph-power" style="font-size:14px;color:#ef4444"></i> Gestion des tablettes</h4>
+                  <div class="sc-recap-disconnect-options">
+                    <button class="sc-recap-disconnect-btn" id="p-recap-disconnect-btn">
+                      <i class="ph ph-wifi-slash" style="font-size:16px"></i>
+                      <span>Déconnecter les tablettes</span>
+                    </button>
+                    <button class="sc-recap-shutdown-btn" id="p-recap-shutdown-btn">
+                      <i class="ph ph-power" style="font-size:16px"></i>
+                      <span>Éteindre les tablettes</span>
+                    </button>
+                  </div>
+                  <div class="sc-recap-disconnect-status hidden" id="p-recap-disconnect-status">
+                    <i class="ph-fill ph-check-circle" style="font-size:16px;color:#34c759"></i>
+                    <span id="p-recap-disconnect-text">Tablettes déconnectées</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="sc-recap-actions">
+              <button class="sc-btn-cancel" id="p-recap-dl-all"><i class="ph ph-download-simple" style="font-size:14px"></i> Tout télécharger</button>
+              <button class="sc-btn-secondary" id="p-recap-relaunch"><i class="ph ph-arrow-counter-clockwise" style="font-size:14px"></i> Relancer cette séance</button>
+              <button class="sc-btn-confirm" id="p-recap-new-session"><i class="ph ph-plus" style="font-size:14px"></i> Nouvelle séance</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Scan document overlay -->
+        <div class="sc-scan-overlay hidden" id="p-scan-overlay">
+          <div class="sc-scan-modal">
+            <h3><i class="ph ph-camera" style="font-size:18px;color:#007aff"></i> Numériser un document</h3>
+            <div class="sc-scan-viewfinder" id="p-scan-viewfinder">
+              <div class="sc-scan-corners"><span></span><span></span><span></span><span></span></div>
+              <div class="sc-scan-doc-preview hidden" id="p-scan-doc">
+                <div class="sc-scan-page">
+                  <div class="sc-screen-h" style="font-size:11px;padding:12px">Exercice supplémentaire</div>
+                  <div class="sc-screen-line" style="margin:0 12px;height:4px"></div>
+                  <div class="sc-screen-line short" style="margin:4px 12px;height:4px"></div>
+                  <div class="sc-screen-line" style="margin:4px 12px;height:4px"></div>
+                  <div class="sc-screen-line short" style="margin:4px 12px;height:4px"></div>
+                </div>
+              </div>
+              <div class="sc-scan-line hidden" id="p-scan-line"></div>
+            </div>
+            <div class="sc-scan-controls">
+              <button class="sc-scan-ctrl" id="p-scan-capture"><i class="ph ph-camera" style="font-size:20px"></i></button>
+            </div>
+            <div class="sc-scan-steps hidden" id="p-scan-steps">
+              <div class="sc-scan-step" data-step="crop"><i class="ph ph-crop" style="font-size:14px"></i> Recadrer</div>
+              <div class="sc-scan-step" data-step="perspective"><i class="ph ph-perspective" style="font-size:14px"></i> Perspective</div>
+              <div class="sc-scan-step" data-step="enhance"><i class="ph ph-magic-wand" style="font-size:14px"></i> Numériser</div>
+              <div class="sc-scan-step" data-step="pdf"><i class="ph ph-file-pdf" style="font-size:14px"></i> Convertir PDF</div>
+            </div>
+            <div class="sc-scan-progress hidden" id="p-scan-progress">
+              <div class="sc-scan-progress-fill" id="p-scan-progress-fill"></div>
+            </div>
+            <div class="sc-scan-actions hidden" id="p-scan-actions">
+              <button class="sc-btn-cancel" id="p-scan-cancel">Annuler</button>
+              <button class="sc-btn-confirm" id="p-scan-send"><i class="ph ph-paper-plane-right" style="font-size:14px"></i> Envoyer à la classe</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Send resource overlay -->
+        <div class="sc-send-overlay hidden" id="p-send-overlay">
+          <div class="sc-send-modal">
+            <h3>Envoyer une ressource</h3>
+            <div class="sc-send-file-list">
+              <div class="sc-send-file" id="p-send-file"><span class="sc-res-icon pdf">PDF</span><span>Evaluation_Finale.pdf</span><span class="sc-send-check hidden" id="p-send-check"><i class="ph-fill ph-check-circle" style="font-size:18px;color:#34c759"></i></span></div>
+            </div>
+            <div class="sc-send-actions">
+              <button class="sc-btn-cancel" id="p-send-cancel">Annuler</button>
+              <button class="sc-btn-confirm" id="p-send-confirm">Envoyer à la classe</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project source picker overlay -->
+        <div class="sc-project-overlay hidden" id="p-project-overlay">
+          <div class="sc-project-modal" id="p-project-modal">
+            <div class="sc-project-header"><i class="ph ph-monitor" style="font-size:20px;color:#007aff"></i><span>Projeter votre écran</span></div>
+            <p class="sc-project-desc">Choisissez ce que vous souhaitez projeter aux élèves</p>
+            <div class="sc-project-sources" id="p-project-sources">
+              <button class="sc-project-source" data-source="screen">
+                <div class="sc-project-source-icon"><i class="ph ph-desktop" style="font-size:24px"></i></div>
+                <span class="sc-project-source-label">Écran entier</span>
+                <span class="sc-project-source-desc">Moniteur principal</span>
+              </button>
+              <button class="sc-project-source" data-source="window">
+                <div class="sc-project-source-icon"><i class="ph ph-app-window" style="font-size:24px"></i></div>
+                <span class="sc-project-source-label">Fenêtre</span>
+                <span class="sc-project-source-desc">Application ouverte</span>
+              </button>
+              <button class="sc-project-source" data-source="tab">
+                <div class="sc-project-source-icon"><i class="ph ph-browser" style="font-size:24px"></i></div>
+                <span class="sc-project-source-label">Onglet</span>
+                <span class="sc-project-source-desc">Onglet de navigateur</span>
+              </button>
+            </div>
+            <button class="sc-project-cancel" id="p-project-cancel">Annuler</button>
+          </div>
+        </div>
+
+        <!-- Persistent sharing bar (Meet/Teams style) -->
+        <div class="sc-sharing-bar hidden" id="p-sharing-bar">
+          <div class="sc-sharing-bar-left">
+            <span class="sc-sharing-dot"></span>
+            <span class="sc-sharing-label">Vous projetez : <strong id="p-sharing-source-label">Écran entier</strong></span>
+          </div>
+          <div class="sc-sharing-bar-right">
+            <span class="sc-sharing-viewers"><i class="ph ph-users" style="font-size:13px"></i> 23 élèves</span>
+            <button class="sc-btn-stop-project" id="p-btn-stop-project">Arrêter la projection</button>
+          </div>
+        </div>
+
+        <!-- Push overlay -->
+        <div class="sc-push-overlay hidden" id="p-push-overlay">
+          <div class="sc-push-modal">
+            <h3>Prendre la main</h3>
+            <div class="sc-push-options">
+              <div class="sc-push-option active" id="p-push-doc"><i class="ph ph-file-doc" style="font-size:24px;color:#007aff"></i><span>Ouvrir un document</span><span class="sc-push-desc">Word, PDF, exercices...</span></div>
+              <div class="sc-push-option" id="p-push-app"><i class="ph ph-app-window" style="font-size:24px;color:#34c759"></i><span>Lancer une application</span><span class="sc-push-desc">GeoGebra, Scratch...</span></div>
+            </div>
+            <div class="sc-push-file-preview"><span class="sc-res-icon doc">DOC</span><span>Exercices_Physique.docx</span></div>
+            <div class="sc-push-actions">
+              <button class="sc-btn-cancel" id="p-push-cancel">Annuler</button>
+              <button class="sc-btn-confirm" id="p-push-confirm">Envoyer en plein écran</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Group overlay -->
+        <div class="sc-group-overlay hidden" id="p-group-overlay">
+          <div class="sc-group-modal">
+            <h3>Créer un groupe</h3>
+            <div class="sc-group-input-row"><input type="text" class="sc-group-name-input" placeholder="Nom du groupe" value="Groupe A" readonly></div>
+            <div class="sc-group-instruction">Sélectionnez les élèves à ajouter au groupe</div>
+            <div class="sc-group-select-grid" id="p-group-select">
+              <div class="sc-group-chip" data-student="malik"><div class="sc-group-chip-avatar" style="background:#3b82f6">MA</div>Malik</div>
+              <div class="sc-group-chip" data-student="ines-b"><div class="sc-group-chip-avatar" style="background:#ec4899">IB</div>Inès B.</div>
+              <div class="sc-group-chip" data-student="aya"><div class="sc-group-chip-avatar" style="background:#22c55e">AB</div>Aya</div>
+              <div class="sc-group-chip" data-student="chloe"><div class="sc-group-chip-avatar" style="background:#f43f5e">CD</div>Chloé</div>
+              <div class="sc-group-chip" data-student="emma"><div class="sc-group-chip-avatar" style="background:#ef4444">ED</div>Emma</div>
+              <div class="sc-group-chip" data-student="lucas"><div class="sc-group-chip-avatar" style="background:#8b5cf6">LF</div>Lucas</div>
+              <div class="sc-group-chip" data-student="nolan"><div class="sc-group-chip-avatar" style="background:#6366f1">NG</div>Nolan</div>
+              <div class="sc-group-chip" data-student="leo"><div class="sc-group-chip-avatar" style="background:#14b8a6">LM</div>Léo</div>
+              <div class="sc-group-chip" data-student="ravi"><div class="sc-group-chip-avatar" style="background:#f97316">RS</div>Ravi</div>
+              <div class="sc-group-chip" data-student="salome"><div class="sc-group-chip-avatar" style="background:#a855f7">SR</div>Salomé</div>
+              <div class="sc-group-chip" data-student="ines-r"><div class="sc-group-chip-avatar" style="background:#06b6d4">IR</div>Inès R.</div>
+              <div class="sc-group-chip" data-student="hugo"><div class="sc-group-chip-avatar" style="background:#84cc16">HP</div>Hugo</div>
+            </div>
+            <div class="sc-group-actions">
+              <button class="sc-btn-cancel" id="p-group-cancel">Annuler</button>
+              <button class="sc-btn-confirm" id="p-group-confirm">Créer le groupe</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Poll overlay -->
+        <div class="sc-poll-overlay hidden" id="p-poll-overlay">
+          <div class="sc-poll-modal">
+            <h3><i class="ph ph-chart-bar" style="font-size:18px;color:#007aff"></i> Sondage rapide</h3>
+            <div class="sc-poll-question" id="p-poll-question">Avez-vous compris la notion de force gravitationnelle ?</div>
+            <div class="sc-poll-options" id="p-poll-options">
+              <div class="sc-poll-option" data-val="yes"><i class="ph ph-check-circle" style="font-size:16px;color:#34c759"></i><span>Oui, j'ai compris</span><div class="sc-poll-bar"><div class="sc-poll-fill" style="width:0%"></div></div><span class="sc-poll-pct">0%</span></div>
+              <div class="sc-poll-option" data-val="partial"><i class="ph ph-minus-circle" style="font-size:16px;color:#ff9500"></i><span>Partiellement</span><div class="sc-poll-bar"><div class="sc-poll-fill" style="width:0%"></div></div><span class="sc-poll-pct">0%</span></div>
+              <div class="sc-poll-option" data-val="no"><i class="ph ph-x-circle" style="font-size:16px;color:#ff3b30"></i><span>Non, pas du tout</span><div class="sc-poll-bar"><div class="sc-poll-fill" style="width:0%"></div></div><span class="sc-poll-pct">0%</span></div>
+            </div>
+            <div class="sc-poll-status" id="p-poll-status"><span class="sc-dot green"></span> 0/23 réponses</div>
+            <div class="sc-poll-actions">
+              <button class="sc-btn-cancel" id="p-poll-close">Fermer</button>
+              <button class="sc-btn-confirm" id="p-poll-launch">Envoyer le sondage</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reply overlay -->
+        <div class="sc-reply-overlay hidden" id="p-reply-overlay">
+          <div class="sc-reply-modal">
+            <div class="sc-reply-header"><div class="sc-msg-avatar rv">RS</div><div><strong>Ravi Singh</strong><p style="font-size:12px;color:#94a3b8;margin-top:2px">J'ai une question</p></div></div>
+            <div class="sc-reply-input-row"><input type="text" class="sc-reply-input" id="p-reply-input" value="Bien sûr Ravi, regarde la page 12 du cours." readonly></div>
+            <div class="sc-reply-quick-chips">
+              <button class="sc-reply-chip"><i class="ph ph-thumbs-up" style="font-size:12px"></i> OK</button>
+              <button class="sc-reply-chip"><i class="ph ph-clock" style="font-size:12px"></i> Patience</button>
+              <button class="sc-reply-chip active"><i class="ph ph-book-open" style="font-size:12px"></i> Voir le cours</button>
+            </div>
+            <div class="sc-reply-actions">
+              <button class="sc-btn-cancel" id="p-reply-cancel">Annuler</button>
+              <button class="sc-btn-confirm" id="p-reply-send">Envoyer</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interaction badge tooltip (popover on hover) -->
+        <div class="sc-badge-tooltip hidden" id="p-badge-tooltip">
+          <div class="sc-badge-tooltip-header">
+            <div class="sc-badge-tooltip-avatar" id="p-tooltip-avatar">CD</div>
+            <div class="sc-badge-tooltip-info">
+              <span class="sc-badge-tooltip-name" id="p-tooltip-name">Chloé DUPONT</span>
+              <span class="sc-badge-tooltip-time" id="p-tooltip-time">il y a 2 min</span>
+            </div>
+          </div>
+          <div class="sc-badge-tooltip-msg" id="p-tooltip-msg">
+            <i class="ph-fill ph-question" id="p-tooltip-icon" style="font-size:14px"></i>
+            <span id="p-tooltip-text">J'ai une question</span>
+          </div>
+        </div>
+
+        <!-- Bottom action panel -->
+        <div class="sc-action-panel" id="p-action-panel">
+          <div class="sc-action-btns">
+            <button class="sc-action-btn" id="p-btn-share-screen"><i class="ph ph-monitor" style="font-size:18px"></i><span>Projeter</span></button>
+            <button class="sc-action-btn" id="p-btn-share-doc"><i class="ph ph-clipboard-text" style="font-size:18px"></i><span>Envoyer</span></button>
+            <button class="sc-action-btn" id="p-btn-scan"><i class="ph ph-scan" style="font-size:18px"></i><span>Scanner</span></button>
+            <button class="sc-action-btn" id="p-btn-lock"><i class="ph ph-lock-simple" style="font-size:18px"></i><span>Verrouiller</span></button>
+            <button class="sc-action-btn" id="p-btn-push"><i class="ph ph-hand-pointing" style="font-size:18px"></i><span>Prendre la main</span></button>
+            <button class="sc-action-btn" id="p-btn-poll"><i class="ph ph-chart-bar" style="font-size:18px"></i><span>Sondage</span></button>
+            <button class="sc-action-btn" id="p-btn-create-group"><i class="ph ph-users-three" style="font-size:18px"></i><span>Groupes</span></button>
+          </div>
+        </div>
+        <div class="sc-students-grid" id="p-grid-pre">
+          <div class="sc-student-card" data-student="malik"><div class="sc-st-name">Malik<br><strong>ABDAL</strong></div><div class="sc-st-actions"><span class="sc-st-check"><i class="ph ph-square" style="font-size:14px"></i></span><span class="sc-st-icon lock-icon"><i class="ph ph-lock-simple" style="font-size:14px"></i></span><span class="sc-st-icon"><i class="ph ph-monitor" style="font-size:14px"></i></span><span class="sc-st-icon"><i class="ph ph-eye" style="font-size:14px"></i></span></div></div>
+          <div class="sc-student-card" data-student="ines-b"><div class="sc-st-name">Inès<br><strong>BARRE</strong></div><div class="sc-st-actions"><span class="sc-st-check"><i class="ph ph-square" style="font-size:14px"></i></span><span class="sc-st-icon lock-icon"><i class="ph ph-lock-simple" style="font-size:14px"></i></span><span class="sc-st-icon"><i class="ph ph-monitor" style="font-size:14px"></i></span><span class="sc-st-icon"><i class="ph ph-eye" style="font-size:14px"></i></span></div></div>
+          <div class="sc-student-card" data-student="marius"><div class="sc-st-name">Marius<br><strong>BERTHELOT</strong></div><div class="sc-st-actions"><span class="sc-st-check"><i class="ph ph-square" style="font-size:14px"></i></span><span class="sc-st-icon lock-icon"><i class="ph ph-lock-simple" style="font-size:14px"></i></span><span class="sc-st-icon"><i class="ph ph-monitor" style="font-size:14px"></i></span><span class="sc-st-icon"><i class="ph ph-eye" style="font-size:14px"></i></span></div></div>
+          <div class="sc-student-card" data-student="aya"><div class="sc-st-name">Aya<br><strong>BOUCHAMI</strong></div><div class="sc-st-actions"><span class="sc-st-check"><i class="ph ph-square" style="font-size:14px"></i></span><span class="sc-st-icon lock-icon"><i class="ph ph-lock-simple" style="font-size:14px"></i></span><span class="sc-st-icon"><i class="ph ph-monitor" style="font-size:14px"></i></span><span class="sc-st-icon"><i class="ph ph-eye" style="font-size:14px"></i></span></div></div>
+          <div class="sc-student-card" data-student="chloe"><div class="sc-st-name">Chloé<br><strong>DUPONT</strong></div><div class="sc-st-actions"><span class="sc-st-check"><i class="ph ph-square" style="font-size:14px"></i></span><span class="sc-st-icon lock-icon"><i class="ph ph-lock-simple" style="font-size:14px"></i></span><span class="sc-st-icon"><i class="ph ph-monitor" style="font-size:14px"></i></span><span class="sc-st-icon"><i class="ph ph-eye" style="font-size:14px"></i></span></div></div>
+          <div class="sc-student-card" data-student="emma"><div class="sc-st-name">Emma<br><strong>DURAND</strong></div><div class="sc-st-actions"><span class="sc-st-check"><i class="ph ph-square" style="font-size:14px"></i></span><span class="sc-st-icon lock-icon"><i class="ph ph-lock-simple" style="font-size:14px"></i></span><span class="sc-st-icon"><i class="ph ph-monitor" style="font-size:14px"></i></span><span class="sc-st-icon"><i class="ph ph-eye" style="font-size:14px"></i></span></div></div>
+          <div class="sc-student-card" data-student="lucas"><div class="sc-st-name">Lucas<br><strong>FAURE</strong></div><div class="sc-st-actions"><span class="sc-st-check"><i class="ph ph-square" style="font-size:14px"></i></span><span class="sc-st-icon lock-icon"><i class="ph ph-lock-simple" style="font-size:14px"></i></span><span class="sc-st-icon"><i class="ph ph-monitor" style="font-size:14px"></i></span><span class="sc-st-icon"><i class="ph ph-eye" style="font-size:14px"></i></span></div></div>
+          <div class="sc-student-card" data-student="nolan"><div class="sc-st-name">Nolan<br><strong>GARNIER</strong></div><div class="sc-st-actions"><span class="sc-st-check"><i class="ph ph-square" style="font-size:14px"></i></span><span class="sc-st-icon lock-icon"><i class="ph ph-lock-simple" style="font-size:14px"></i></span><span class="sc-st-icon"><i class="ph ph-monitor" style="font-size:14px"></i></span><span class="sc-st-icon"><i class="ph ph-eye" style="font-size:14px"></i></span></div></div>
+          <div class="sc-student-card" data-student="leo"><div class="sc-st-name">Léo<br><strong>GUILLOT</strong></div><div class="sc-st-actions"><span class="sc-st-check"><i class="ph ph-square" style="font-size:14px"></i></span><span class="sc-st-icon lock-icon"><i class="ph ph-lock-simple" style="font-size:14px"></i></span><span class="sc-st-icon"><i class="ph ph-monitor" style="font-size:14px"></i></span><span class="sc-st-icon"><i class="ph ph-eye" style="font-size:14px"></i></span></div></div>
+          <div class="sc-student-card" data-student="ravi"><div class="sc-st-name">Ravi<br><strong>SINGH</strong></div><div class="sc-st-actions"><span class="sc-st-check"><i class="ph ph-square" style="font-size:14px"></i></span><span class="sc-st-icon lock-icon"><i class="ph ph-lock-simple" style="font-size:14px"></i></span><span class="sc-st-icon"><i class="ph ph-monitor" style="font-size:14px"></i></span><span class="sc-st-icon"><i class="ph ph-eye" style="font-size:14px"></i></span></div></div>
+          <div class="sc-student-card" data-student="salome"><div class="sc-st-name">Salomé<br><strong>LEFÈVRE</strong></div><div class="sc-st-actions"><span class="sc-st-check"><i class="ph ph-square" style="font-size:14px"></i></span><span class="sc-st-icon lock-icon"><i class="ph ph-lock-simple" style="font-size:14px"></i></span><span class="sc-st-icon"><i class="ph ph-monitor" style="font-size:14px"></i></span><span class="sc-st-icon"><i class="ph ph-eye" style="font-size:14px"></i></span></div></div>
+          <div class="sc-student-card" data-student="ines-r"><div class="sc-st-name">Inès<br><strong>ROUX</strong></div><div class="sc-st-actions"><span class="sc-st-check"><i class="ph ph-square" style="font-size:14px"></i></span><span class="sc-st-icon lock-icon"><i class="ph ph-lock-simple" style="font-size:14px"></i></span><span class="sc-st-icon"><i class="ph ph-monitor" style="font-size:14px"></i></span><span class="sc-st-icon"><i class="ph ph-eye" style="font-size:14px"></i></span></div></div>
+          <div class="sc-student-card" data-student="hugo"><div class="sc-st-name">Hugo<br><strong>MARTIN</strong></div><div class="sc-st-actions"><span class="sc-st-check"><i class="ph ph-square" style="font-size:14px"></i></span><span class="sc-st-icon lock-icon"><i class="ph ph-lock-simple" style="font-size:14px"></i></span><span class="sc-st-icon"><i class="ph ph-monitor" style="font-size:14px"></i></span><span class="sc-st-icon"><i class="ph ph-eye" style="font-size:14px"></i></span></div></div>
+          <div class="sc-student-card" data-student="jade"><div class="sc-st-name">Jade<br><strong>MOREAU</strong></div><div class="sc-st-actions"><span class="sc-st-check"><i class="ph ph-square" style="font-size:14px"></i></span><span class="sc-st-icon lock-icon"><i class="ph ph-lock-simple" style="font-size:14px"></i></span><span class="sc-st-icon"><i class="ph ph-monitor" style="font-size:14px"></i></span><span class="sc-st-icon"><i class="ph ph-eye" style="font-size:14px"></i></span></div></div>
+          <div class="sc-student-card" data-student="tom"><div class="sc-st-name">Tom<br><strong>PETIT</strong></div><div class="sc-st-actions"><span class="sc-st-check"><i class="ph ph-square" style="font-size:14px"></i></span><span class="sc-st-icon lock-icon"><i class="ph ph-lock-simple" style="font-size:14px"></i></span><span class="sc-st-icon"><i class="ph ph-monitor" style="font-size:14px"></i></span><span class="sc-st-icon"><i class="ph ph-eye" style="font-size:14px"></i></span></div></div>
+          <div class="sc-student-card" data-student="lina"><div class="sc-st-name">Lina<br><strong>RICHARD</strong></div><div class="sc-st-actions"><span class="sc-st-check"><i class="ph ph-square" style="font-size:14px"></i></span><span class="sc-st-icon lock-icon"><i class="ph ph-lock-simple" style="font-size:14px"></i></span><span class="sc-st-icon"><i class="ph ph-monitor" style="font-size:14px"></i></span><span class="sc-st-icon"><i class="ph ph-eye" style="font-size:14px"></i></span></div></div>
+          <div class="sc-student-card" data-student="nathan"><div class="sc-st-name">Nathan<br><strong>ROBERT</strong></div><div class="sc-st-actions"><span class="sc-st-check"><i class="ph ph-square" style="font-size:14px"></i></span><span class="sc-st-icon lock-icon"><i class="ph ph-lock-simple" style="font-size:14px"></i></span><span class="sc-st-icon"><i class="ph ph-monitor" style="font-size:14px"></i></span><span class="sc-st-icon"><i class="ph ph-eye" style="font-size:14px"></i></span></div></div>
+          <div class="sc-student-card" data-student="manon"><div class="sc-st-name">Manon<br><strong>SIMON</strong></div><div class="sc-st-actions"><span class="sc-st-check"><i class="ph ph-square" style="font-size:14px"></i></span><span class="sc-st-icon lock-icon"><i class="ph ph-lock-simple" style="font-size:14px"></i></span><span class="sc-st-icon"><i class="ph ph-monitor" style="font-size:14px"></i></span><span class="sc-st-icon"><i class="ph ph-eye" style="font-size:14px"></i></span></div></div>
+          <div class="sc-student-card" data-student="paul"><div class="sc-st-name">Paul<br><strong>THOMAS</strong></div><div class="sc-st-actions"><span class="sc-st-check"><i class="ph ph-square" style="font-size:14px"></i></span><span class="sc-st-icon lock-icon"><i class="ph ph-lock-simple" style="font-size:14px"></i></span><span class="sc-st-icon"><i class="ph ph-monitor" style="font-size:14px"></i></span><span class="sc-st-icon"><i class="ph ph-eye" style="font-size:14px"></i></span></div></div>
+          <div class="sc-student-card" data-student="sarah"><div class="sc-st-name">Sarah<br><strong>LAURENT</strong></div><div class="sc-st-actions"><span class="sc-st-check"><i class="ph ph-square" style="font-size:14px"></i></span><span class="sc-st-icon lock-icon"><i class="ph ph-lock-simple" style="font-size:14px"></i></span><span class="sc-st-icon"><i class="ph ph-monitor" style="font-size:14px"></i></span><span class="sc-st-icon"><i class="ph ph-eye" style="font-size:14px"></i></span></div></div>
+          <div class="sc-student-card" data-student="jules"><div class="sc-st-name">Jules<br><strong>BERNARD</strong></div><div class="sc-st-actions"><span class="sc-st-check"><i class="ph ph-square" style="font-size:14px"></i></span><span class="sc-st-icon lock-icon"><i class="ph ph-lock-simple" style="font-size:14px"></i></span><span class="sc-st-icon"><i class="ph ph-monitor" style="font-size:14px"></i></span><span class="sc-st-icon"><i class="ph ph-eye" style="font-size:14px"></i></span></div></div>
+          <div class="sc-student-card" data-student="clara"><div class="sc-st-name">Clara<br><strong>DUBOIS</strong></div><div class="sc-st-actions"><span class="sc-st-check"><i class="ph ph-square" style="font-size:14px"></i></span><span class="sc-st-icon lock-icon"><i class="ph ph-lock-simple" style="font-size:14px"></i></span><span class="sc-st-icon"><i class="ph ph-monitor" style="font-size:14px"></i></span><span class="sc-st-icon"><i class="ph ph-eye" style="font-size:14px"></i></span></div></div>
+          <div class="sc-student-card" data-student="theo"><div class="sc-st-name">Théo<br><strong>LEROY</strong></div><div class="sc-st-actions"><span class="sc-st-check"><i class="ph ph-square" style="font-size:14px"></i></span><span class="sc-st-icon lock-icon"><i class="ph ph-lock-simple" style="font-size:14px"></i></span><span class="sc-st-icon"><i class="ph ph-monitor" style="font-size:14px"></i></span><span class="sc-st-icon"><i class="ph ph-eye" style="font-size:14px"></i></span></div></div>
+          <div class="sc-student-card" data-student="camille"><div class="sc-st-name">Camille<br><strong>GARCIA</strong></div><div class="sc-st-actions"><span class="sc-st-check"><i class="ph ph-square" style="font-size:14px"></i></span><span class="sc-st-icon lock-icon"><i class="ph ph-lock-simple" style="font-size:14px"></i></span><span class="sc-st-icon"><i class="ph ph-monitor" style="font-size:14px"></i></span><span class="sc-st-icon"><i class="ph ph-eye" style="font-size:14px"></i></span></div></div>
+        </div>
+        <div class="sc-bottom-bar" id="p-bottom-bar">
+          <span class="sc-bottom-text" id="p-bottom-text"></span>
+        </div>
+        <div class="sc-chat-bubble" id="p-chat-bubble">
+          <svg viewBox="0 0 24 24" fill="#fff" stroke="none"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="sc-chat-badge" id="p-chat-count">0</span>
+        </div>
+      </div>
+
+      <!-- ===== SCREEN: Student View (Screen 3) ===== -->
+      <div class="proto-screen" id="scr-student">
+        <div class="sc-topbar">
+          <div class="sc-topbar-left">
+            <img src="images/logo/logo-sqool-classe-horizontal-light.svg" alt="SQOOL Classe" style="height:32px">
+          </div>
+          <div class="sc-topbar-center">
+            <h2 class="sc-class-name">2G3 – Groupe Sciences – Mardi</h2>
+          </div>
+          <div class="sc-topbar-right">
+            <div class="sc-user-pill"><div class="sc-user-av student-av">CD</div><div class="sc-user-info"><span class="sc-user-name" id="p-student-name">Chloé DUPONT</span><span class="sc-user-connected"><span class="sc-dot green" id="p-student-dot"></span> Connectée</span></div></div>
+          </div>
+        </div>
+        <div class="sc-subheader student-sub-light">
+          <div class="sc-sub-left">
+            <button class="sc-btn-end"><i class="ph ph-sign-out" style="font-size:13px"></i> Terminer</button>
+          </div>
+          <div class="sc-sub-center">
+            <span class="sc-timer-display hidden" id="p-student-timer"><i class="ph ph-timer" style="font-size:13px"></i> <span id="p-student-countdown">05:00</span></span>
+          </div>
+        </div>
+        <div class="sc-student-projection-banner hidden" id="p-student-projection-banner">
+          <span class="sc-sharing-dot"></span>
+          <span>L'enseignant projette son écran</span>
+        </div>
+        <div class="sc-session-progress student-progress"><div class="sc-session-fill" id="p-session-fill"></div></div>
+        <div class="sc-student-panels" id="p-student-panels">
+          <div class="sc-panel" id="p-panel-resources">
+            <h3 class="sc-panel-title">Consulter les ressources de la séance</h3>
+            <div class="sc-resource-list" id="p-resource-list">
+              <div class="sc-resource" data-res="pdf"><span class="sc-res-icon pdf"><i class="ph ph-file-pdf" style="font-size:14px"></i></span><span class="sc-res-name">Consignes séance.pdf</span><i class="ph ph-arrow-square-out sc-res-ext"></i></div>
+              <div class="sc-resource" data-res="doc"><span class="sc-res-icon doc"><i class="ph ph-file-doc" style="font-size:14px"></i></span><span class="sc-res-name">Quizz_à remplir.docx</span><i class="ph ph-arrow-square-out sc-res-ext"></i></div>
+            </div>
+            <div class="sc-resource-divider">PERLE OU LIENS</div>
+            <div class="sc-resource-list">
+              <div class="sc-resource" data-res="wiki"><span class="sc-res-icon wiki"><i class="ph ph-globe-simple" style="font-size:14px"></i></span><span class="sc-res-name">Wikipedia – Osiris</span><i class="ph ph-arrow-square-out sc-res-ext"></i></div>
+              <div class="sc-resource" data-res="pearl"><span class="sc-res-icon pearl"><i class="ph ph-tree-structure" style="font-size:14px"></i></span><span class="sc-res-name">Pearltrees – Égypte antique</span><i class="ph ph-arrow-square-out sc-res-ext"></i></div>
+            </div>
+          </div>
+          <div class="sc-panel" id="p-panel-share">
+            <h3 class="sc-panel-title">Partager un document ou un lien à l'enseignant</h3>
+            <div class="sc-upload-zone" id="p-upload-zone">
+              <div class="sc-upload-icon">
+                <i class="ph ph-file-arrow-up" style="font-size:40px;color:#0ea5e9"></i>
+              </div>
+              <span>Déposer un fichier</span>
+              <span class="sc-upload-or">ou</span>
+              <button class="sc-upload-browse">Parcourir mes documents</button>
+            </div>
+            <div class="sc-dropped-file hidden" id="p-dropped-file">
+              <div class="sc-dropped-file-info">
+                <span class="sc-res-icon doc"><i class="ph ph-file-doc" style="font-size:14px"></i></span>
+                <span class="sc-dropped-name">Mon_devoir.docx</span>
+                <span class="sc-dropped-size">245 Ko</span>
+              </div>
+              <div class="sc-upload-progress-bar hidden" id="p-upload-progress">
+                <div class="sc-upload-progress-fill" id="p-upload-fill"></div>
+              </div>
+              <button class="sc-btn-send-file" id="p-btn-send-file">Envoyer</button>
+            </div>
+            <div class="sc-uploaded-file hidden" id="p-uploaded-file">
+              <span class="sc-res-icon doc"><i class="ph ph-file-doc" style="font-size:14px"></i></span>
+              <span>Mon_devoir.docx</span>
+              <span class="sc-upload-ok">Envoyé <i class="ph-fill ph-check" style="font-size:12px"></i></span>
+            </div>
+          </div>
+          <div class="sc-panel" id="p-panel-messages">
+            <h3 class="sc-panel-title">Envoyer un message à l'enseignant</h3>
+            <div class="sc-msg-chips" id="p-msg-chips">
+              <button class="sc-msg-chip" data-msg="question"><i class="ph-fill ph-hand-waving sc-chip-icon purple"></i> J'ai une question</button>
+              <button class="sc-msg-chip" data-msg="incompris"><i class="ph-fill ph-question sc-chip-icon blue"></i> Je n'ai pas compris</button>
+              <button class="sc-msg-chip" data-msg="compris"><i class="ph-fill ph-thumbs-up sc-chip-icon green"></i> J'ai compris</button>
+              <button class="sc-msg-chip" data-msg="ralentir"><i class="ph-fill ph-fast-forward sc-chip-icon indigo"></i> Ralentir le rythme</button>
+              <button class="sc-msg-chip" data-msg="termine"><i class="ph-fill ph-flag-banner sc-chip-icon red"></i> J'ai terminé</button>
+            </div>
+            <button class="sc-btn-send" id="p-btn-send">Envoyer</button>
+          </div>
+          <div class="sc-panel sc-confirm-panel hidden" id="p-confirm">
+            <div class="sc-confirm-icon"><svg viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="38" fill="#ecfdf5" stroke="#34d399" stroke-width="2"/><path d="M24 40l11 11 21-21" stroke="#22c55e" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <p class="sc-confirm-text">Ton message<br>a bien été envoyé</p>
+          </div>
+        </div>
+
+        <!-- Resource Preview Side Panel -->
+        <div class="sc-res-panel hidden" id="p-res-panel">
+          <div class="sc-res-panel-header">
+            <button class="sc-res-panel-back" id="p-res-panel-back">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+            <span class="sc-res-panel-title" id="p-res-panel-title">Cours_Egypte.pdf</span>
+            <span class="sc-res-panel-badge" id="p-res-panel-badge">PDF</span>
+          </div>
+          <div class="sc-res-panel-body" id="p-res-panel-body">
+            <!-- PDF content -->
+            <div class="sc-res-preview" id="p-res-preview-pdf">
+              <div class="sc-res-doc-header">
+                <h2>L'Égypte antique</h2>
+                <p class="sc-res-doc-subtitle">Cours d'Histoire – Chapitre 4</p>
+              </div>
+              <div class="sc-res-doc-img" style="background: linear-gradient(135deg, #fde68a 0%, #f59e0b 100%);"></div>
+              <p class="sc-res-doc-text">L'Égypte antique est une ancienne civilisation du nord-est de l'Afrique, concentrée le long du cours inférieur du Nil, dans ce qui constitue aujourd'hui l'Égypte.</p>
+              <p class="sc-res-doc-text">La civilisation de l'Égypte antique prend forme autour de −3150 avec l'unification politique de la Haute-Égypte et de la Basse-Égypte sous le règne du premier pharaon.</p>
+              <div class="sc-res-doc-section">
+                <h3>1. Les Pyramides de Gizeh</h3>
+                <p class="sc-res-doc-text">Les pyramides d'Égypte, de tous les vestiges monumentaux que nous ont légués les Égyptiens de l'Antiquité, et notamment les trois grandes pyramides de Gizeh, sont à la fois les plus emblématiques et les plus connus.</p>
+              </div>
+              <div class="sc-res-doc-section">
+                <h3>2. Le Nil et la société égyptienne</h3>
+                <p class="sc-res-doc-text">Le Nil a joué un rôle fondamental dans la formation et le développement de la civilisation égyptienne. Les crues annuelles permettaient l'irrigation des terres agricoles.</p>
+              </div>
+            </div>
+            <!-- DOC content -->
+            <div class="sc-res-preview hidden" id="p-res-preview-doc">
+              <div class="sc-res-doc-header blue-header">
+                <h2>Exercices – Égypte antique</h2>
+                <p class="sc-res-doc-subtitle">À rendre pour mardi prochain</p>
+              </div>
+              <div class="sc-res-doc-section">
+                <h3>Exercice 1 : Chronologie</h3>
+                <p class="sc-res-doc-text">Placez les événements suivants sur la frise chronologique :</p>
+                <ul class="sc-res-doc-list">
+                  <li>Construction de la pyramide de Khéops</li>
+                  <li>Règne de Ramsès II</li>
+                  <li>Conquête d'Alexandre le Grand</li>
+                </ul>
+              </div>
+              <div class="sc-res-doc-section">
+                <h3>Exercice 2 : Vocabulaire</h3>
+                <p class="sc-res-doc-text">Définissez les termes suivants : pharaon, hiéroglyphe, papyrus, sarcophage.</p>
+              </div>
+            </div>
+            <!-- Wikipedia content -->
+            <div class="sc-res-preview hidden" id="p-res-preview-wiki">
+              <div class="sc-res-web-header">
+                <div class="sc-res-web-urlbar">
+                  <span class="sc-res-web-lock"><i class="ph-fill ph-lock-simple" style="font-size:11px;color:#34c759"></i></span>
+                  <span>fr.wikipedia.org/wiki/Osiris</span>
+                </div>
+              </div>
+              <div class="sc-res-web-content">
+                <h2>Osiris</h2>
+                <p class="sc-res-doc-subtitle">Un article de Wikipédia, l'encyclopédie libre.</p>
+                <div class="sc-res-web-infobox">
+                  <div class="sc-res-web-infobox-img" style="background: linear-gradient(135deg, #a78bfa, #7c3aed);"></div>
+                  <div class="sc-res-web-infobox-text">
+                    <strong>Osiris</strong><br>
+                    <span>Dieu de l'au-delà</span><br>
+                    <span>Mythologie égyptienne</span>
+                  </div>
+                </div>
+                <p class="sc-res-doc-text"><strong>Osiris</strong> est le dieu des morts dans la mythologie égyptienne. Il est le fils de Geb (la Terre) et de Nout (le Ciel), frère et époux d'Isis.</p>
+                <p class="sc-res-doc-text">Roi d'Égypte, il est assassiné par son frère Seth, puis ramené à la vie par Isis. Il devient alors le souverain du royaume des morts.</p>
+              </div>
+            </div>
+            <!-- Pearltrees content -->
+            <div class="sc-res-preview hidden" id="p-res-preview-pearl">
+              <div class="sc-res-web-header pearl-header">
+                <div class="sc-res-web-urlbar">
+                  <span class="sc-res-web-lock"><i class="ph-fill ph-lock-simple" style="font-size:11px;color:#34c759"></i></span>
+                  <span>pearltrees.com/egypte-antique</span>
+                </div>
+              </div>
+              <div class="sc-res-web-content">
+                <h2>Égypte antique – Collection</h2>
+                <div class="sc-res-pearl-grid">
+                  <div class="sc-res-pearl-item" style="background: linear-gradient(135deg, #a78bfa, #6d28d9);">
+                    <span>Pyramides</span>
+                  </div>
+                  <div class="sc-res-pearl-item" style="background: linear-gradient(135deg, #60a5fa, #2563eb);">
+                    <span>Pharaons</span>
+                  </div>
+                  <div class="sc-res-pearl-item" style="background: linear-gradient(135deg, #34d399, #059669);">
+                    <span>Hiéroglyphes</span>
+                  </div>
+                  <div class="sc-res-pearl-item" style="background: linear-gradient(135deg, #fb923c, #ea580c);">
+                    <span>Le Nil</span>
+                  </div>
+                  <div class="sc-res-pearl-item" style="background: linear-gradient(135deg, #f472b6, #db2777);">
+                    <span>Art</span>
+                  </div>
+                  <div class="sc-res-pearl-item" style="background: linear-gradient(135deg, #facc15, #ca8a04);">
+                    <span>Sciences</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Student login overlay -->
+        <div class="sc-student-login hidden" id="p-student-login">
+          <div class="sc-login-card">
+            <div class="sc-login-logo">
+              <svg viewBox="0 0 36 36" fill="none" width="48" height="48"><rect x="2" y="2" width="14" height="14" rx="3" fill="#0ea5e9"/><rect x="20" y="2" width="14" height="14" rx="3" fill="#38bdf8"/><rect x="2" y="20" width="14" height="14" rx="3" fill="#38bdf8"/><rect x="20" y="20" width="14" height="14" rx="3" fill="#0ea5e9"/></svg>
+            </div>
+            <h3 class="sc-login-title">SQOOL Classe</h3>
+            <p class="sc-login-subtitle">Connectez-vous pour rejoindre votre classe</p>
+            <div class="sc-login-field" id="p-login-user">
+              <label>Identifiant</label>
+              <div class="sc-login-input">chloe.dupont</div>
+            </div>
+            <div class="sc-login-field" id="p-login-pass">
+              <label>Mot de passe</label>
+              <div class="sc-login-input password">••••••••</div>
+            </div>
+            <button class="sc-login-btn" id="p-login-btn">Se connecter</button>
+          </div>
+        </div>
+
+        <!-- Student QR scan overlay -->
+        <div class="sc-student-qrscan hidden" id="p-student-qrscan">
+          <div class="sc-qrscan-card">
+            <div class="sc-qrscan-viewfinder" id="p-qrscan-viewfinder">
+              <div class="sc-qrscan-corners">
+                <span></span><span></span><span></span><span></span>
+              </div>
+              <div class="sc-qrscan-line" id="p-qrscan-line"></div>
+            </div>
+            <h3 class="sc-qrscan-title">Scanner le QR Code</h3>
+            <p class="sc-qrscan-subtitle">Pointez la caméra vers le QR code affiché par l'enseignant</p>
+            <div class="sc-qrscan-status hidden" id="p-qrscan-status">
+              <i class="ph ph-check-circle" style="font-size:20px;color:#22c55e"></i>
+              <span>Classe rejointe — 2G3 Physique</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Student lock screen overlay -->
+        <div class="sc-student-lock hidden" id="p-student-lock">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" width="48"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <p>Votre écran a été verrouillé par l'enseignant</p>
+        </div>
+        <!-- Resource notification toast -->
+        <div class="sc-toast hidden" id="p-toast">
+          <span class="sc-res-icon pdf">PDF</span>
+          <span>Nouvelle ressource : Evaluation_Finale.pdf</span>
+          <i class="ph ph-x" style="font-size:14px;color:#94a3b8;cursor:pointer;margin-left:8px"></i>
+        </div>
+      </div>
+
+        </div><!-- /.proto-viewport -->
+      </div><!-- /.proto-stage-content -->
+
+    </div>
+
+
+  </section>
+
+  <!-- GSAP + ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="app.js"></script>
+  <script src="prototypes.js"></script>
+</body>
+</html>

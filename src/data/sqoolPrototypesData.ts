@@ -10,7 +10,8 @@ export interface PrototypeItem {
   desc: { en: string; fr: string };
 }
 
-export const UI_MOTION_BASE_URL = 'https://ui-motion-five.vercel.app';
+// Prototypes served locally from public/prototypes/ (no external dependency)
+export const UI_MOTION_BASE_URL = '/prototypes';
 
 export const CATEGORY_COLORS = {
   teacher: { bg: 'bg-blue-600/20', bgLight: 'bg-blue-50', text: 'text-blue-400', textLight: 'text-blue-700', dot: 'bg-blue-500' },
@@ -102,8 +103,7 @@ export function getPrototypesForSection(sectionId: string): PrototypeItem[] {
   return section.prototypeIds.map(id => PROTOTYPE_MAP.get(id)).filter(Boolean) as PrototypeItem[];
 }
 
-// Helper to build iframe URL
-// autoplay=0: shows first frame (paused), autoplay=1: plays animation immediately
-export function getIframeSrc(prototypeId: string, autoplay = false): string {
-  return `${UI_MOTION_BASE_URL}/?embed=1&speed=0.8&autoplay=${autoplay ? '1' : '0'}&card=1#${prototypeId.toLowerCase()}`;
+// Helper to build iframe URL (always autoplay=0, controlled via postMessage)
+export function getIframeSrc(prototypeId: string): string {
+  return `${UI_MOTION_BASE_URL}/?embed=1&speed=0.8&autoplay=0&card=1#${prototypeId.toLowerCase()}`;
 }

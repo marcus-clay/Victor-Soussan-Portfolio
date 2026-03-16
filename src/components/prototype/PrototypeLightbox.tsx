@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, CaretLeft as ChevronLeft, CaretRight as ChevronRight, Play, ArrowCounterClockwise as RotateCcw } from '@phosphor-icons/react';
+import { X, CaretLeft as ChevronLeft, CaretRight as ChevronRight, Play, Pause, ArrowCounterClockwise as RotateCcw } from '@phosphor-icons/react';
 import { getIframeSrc } from '../../data/sqoolPrototypesData';
 
 interface PrototypeLightboxItem {
@@ -17,8 +17,8 @@ interface PrototypeLightboxProps {
   onIndexChange: (index: number) => void;
 }
 
-// States: loading → ready (first frame, autoplay=0) → playing (autoplay=1)
-type PlayerState = 'loading' | 'ready' | 'playing';
+// Same-origin postMessage control: ready (paused at frame 1) → playing → paused
+type PlayerState = 'loading' | 'ready' | 'playing' | 'paused';
 
 const PrototypeLightbox: React.FC<PrototypeLightboxProps> = ({
   isOpen,
@@ -30,21 +30,17 @@ const PrototypeLightbox: React.FC<PrototypeLightboxProps> = ({
   const [direction, setDirection] = useState(0);
   const [playerState, setPlayerState] = useState<PlayerState>('loading');
   const [iframeLoaded, setIframeLoaded] = useState(false);
-  const [iframeSrc, setIframeSrc] = useState('');
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
   const current = prototypes[currentIndex];
   const hasPrev = currentIndex > 0;
   const hasNext = currentIndex < prototypes.length - 1;
 
-  // Set initial src when opening or changing prototype
+  // Reset state when prototype changes
   useEffect(() => {
-    if (current) {
-      setIframeSrc(getIframeSrc(current.id, false)); // autoplay=0
-      setPlayerState('loading');
-      setIframeLoaded(false);
-    }
-  }, [current?.id]);
+    setPlayerState('loading');
+    setIframeLoaded(false);
+  }, [currentIndex]);
 
   const goTo = useCallback((index: number) => {
     if (index < 0 || index >= prototypes.length) return;
@@ -77,13 +73,11 @@ const PrototypeLightbox: React.FC<PrototypeLightboxProps> = ({
     }
   }, [isOpen]);
 
-  // Touch swipe support
+  // Touch swipe
   const [touchStart, setTouchStart] = useState<number | null>(null);
-
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
     setTouchStart(e.touches[0].clientX);
   }, []);
-
   const handleTouchEnd = useCallback((e: React.TouchEvent) => {
     if (touchStart === null) return;
     const diff = e.changedTouches[0].clientX - touchStart;
@@ -94,35 +88,32 @@ const PrototypeLightbox: React.FC<PrototypeLightboxProps> = ({
     setTouchStart(null);
   }, [touchStart, hasPrev, hasNext, goPrev, goNext]);
 
-  // Play: reload iframe with autoplay=1
+  // postMessage controls (same-origin, GSAP timeline)
   const handlePlay = useCallback(() => {
-    if (!current) return;
-    setIframeLoaded(false);
-    setIframeSrc(getIframeSrc(current.id, true)); // autoplay=1
+    iframeRef.current?.contentWindow?.postMessage('play', '*');
     setPlayerState('playing');
-  }, [current]);
+  }, []);
 
-  // Restart: reload iframe with autoplay=1
+  const handlePause = useCallback(() => {
+    iframeRef.current?.contentWindow?.postMessage('pause', '*');
+    setPlayerState('paused');
+  }, []);
+
   const handleRestart = useCallback(() => {
-    if (!current) return;
-    setIframeLoaded(false);
-    setIframeSrc('');
+    iframeRef.current?.contentWindow?.postMessage('restart', '*');
     setPlayerState('playing');
-    requestAnimationFrame(() => {
-      setIframeSrc(getIframeSrc(current.id, true));
-    });
-  }, [current]);
+  }, []);
 
-  // Iframe loaded: mark ready if first load (autoplay=0)
+  // Iframe loaded with autoplay=0: GSAP paused at frame 1
   const handleIframeLoad = useCallback(() => {
     setIframeLoaded(true);
-    setPlayerState((prev) => (prev === 'loading' ? 'ready' : prev));
+    setPlayerState('ready');
   }, []);
 
   if (!current) return null;
 
-  const showPlayOverlay = playerState === 'ready' && iframeLoaded;
-  const showRestartButton = playerState === 'playing' && iframeLoaded;
+  const showPlayOverlay = (playerState === 'ready' || playerState === 'paused') && iframeLoaded;
+  const showControls = playerState === 'playing' && iframeLoaded;
 
   return (
     <AnimatePresence>
@@ -166,7 +157,6 @@ const PrototypeLightbox: React.FC<PrototypeLightboxProps> = ({
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
           >
-            {/* Left arrow */}
             {hasPrev && (
               <button
                 onClick={goPrev}
@@ -176,9 +166,7 @@ const PrototypeLightbox: React.FC<PrototypeLightboxProps> = ({
               </button>
             )}
 
-            {/* Iframe container */}
             <div className="w-full h-full relative rounded-lg overflow-hidden">
-              {/* Loading spinner */}
               {!iframeLoaded && (
                 <div className="absolute inset-0 bg-[#1D1D1F] flex items-center justify-center z-10">
                   <div className="w-8 h-8 border-2 border-white/20 border-t-white/60 rounded-full animate-spin" />
@@ -194,25 +182,19 @@ const PrototypeLightbox: React.FC<PrototypeLightboxProps> = ({
                   transition={{ duration: 0.2 }}
                   className="w-full h-full relative"
                 >
-                  {/* Iframe */}
-                  {iframeSrc && (
-                    <iframe
-                      ref={iframeRef}
-                      src={iframeSrc}
-                      className={`w-full h-full transition-opacity duration-300 ${
-                        iframeLoaded ? 'opacity-100' : 'opacity-0'
-                      }`}
-                      style={{
-                        border: 'none',
-                        pointerEvents: showPlayOverlay ? 'none' : 'auto',
-                      }}
-                      title={current.title}
-                      onLoad={handleIframeLoad}
-                      tabIndex={-1}
-                    />
-                  )}
+                  <iframe
+                    ref={iframeRef}
+                    src={getIframeSrc(current.id)}
+                    className={`w-full h-full transition-opacity duration-300 ${
+                      iframeLoaded ? 'opacity-100' : 'opacity-0'
+                    }`}
+                    style={{ border: 'none', pointerEvents: showPlayOverlay ? 'none' : 'auto' }}
+                    title={current.title}
+                    onLoad={handleIframeLoad}
+                    tabIndex={-1}
+                  />
 
-                  {/* Play button overlay (first frame visible, not yet playing) */}
+                  {/* Play overlay */}
                   {showPlayOverlay && (
                     <button
                       onClick={handlePlay}
@@ -224,9 +206,15 @@ const PrototypeLightbox: React.FC<PrototypeLightboxProps> = ({
                     </button>
                   )}
 
-                  {/* Restart button */}
-                  {showRestartButton && (
+                  {/* Pause + Restart controls */}
+                  {showControls && (
                     <div className="absolute bottom-4 right-4 z-10 flex items-center gap-2">
+                      <button
+                        onClick={handlePause}
+                        className="p-2.5 rounded-full bg-black/60 hover:bg-black/80 text-white/80 hover:text-white transition-colors backdrop-blur-sm"
+                      >
+                        <Pause size={16} weight="fill" />
+                      </button>
                       <button
                         onClick={handleRestart}
                         className="p-2.5 rounded-full bg-black/60 hover:bg-black/80 text-white/80 hover:text-white transition-colors backdrop-blur-sm"
@@ -239,7 +227,6 @@ const PrototypeLightbox: React.FC<PrototypeLightboxProps> = ({
               </AnimatePresence>
             </div>
 
-            {/* Right arrow */}
             {hasNext && (
               <button
                 onClick={goNext}
