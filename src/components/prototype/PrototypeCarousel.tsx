@@ -10,7 +10,7 @@ interface PrototypeCarouselProps {
   onCardClick: (index: number) => void;
 }
 
-// Benefit-focused captions (not UI descriptions, user value)
+// Benefit-focused captions (user value, not UI description)
 const BENEFIT_CAPTIONS: Record<string, { en: string; fr: string }> = {
   T1: { en: 'Students join in seconds, no setup needed', fr: 'Les \u00e9l\u00e8ves rejoignent en quelques secondes, sans configuration' },
   T2: { en: 'The teacher decides what students can do', fr: 'L\u2019enseignant d\u00e9cide ce que les \u00e9l\u00e8ves peuvent faire' },
@@ -56,7 +56,12 @@ const BENEFIT_CAPTIONS: Record<string, { en: string; fr: string }> = {
   SC10: { en: 'A full lesson, step by step, as it happens in class', fr: 'Un cours entier, \u00e9tape par \u00e9tape, tel qu\u2019il se vit en classe' },
 };
 
-type PlayerState = 'idle' | 'loading' | 'playing' | 'paused';
+// Player states:
+// - 'idle': iframe not loaded yet (waiting for viewport)
+// - 'ready': iframe loaded with autoplay=0, showing first frame, NOT playing
+// - 'playing': animation running
+// - 'paused': animation paused by user
+type PlayerState = 'idle' | 'ready' | 'playing' | 'paused';
 
 interface PrototypePlayerProps {
   prototype: PrototypeItem;
@@ -75,18 +80,23 @@ const PrototypePlayer: React.FC<PrototypePlayerProps> = ({
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [playerState, setPlayerState] = useState<PlayerState>('idle');
   const [iframeLoaded, setIframeLoaded] = useState(false);
-  const [isInView, setIsInView] = useState(false);
+  const [shouldLoadIframe, setShouldLoadIframe] = useState(false);
   const colors = CATEGORY_COLORS[prototype.category];
 
   const caption = BENEFIT_CAPTIONS[prototype.id]?.[lang] || prototype.desc[lang];
 
-  // IntersectionObserver for viewport detection
+  // IntersectionObserver: load iframe when entering viewport (once)
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
     const observer = new IntersectionObserver(
-      ([entry]) => setIsInView(entry.isIntersecting),
-      { threshold: 0.3 }
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShouldLoadIframe(true);
+          observer.disconnect(); // only trigger once
+        }
+      },
+      { rootMargin: '200px 0px' } // preload 200px before entering viewport
     );
     observer.observe(el);
     return () => observer.disconnect();
@@ -94,18 +104,23 @@ const PrototypePlayer: React.FC<PrototypePlayerProps> = ({
 
   // When leaving viewport while playing, pause
   useEffect(() => {
-    if (!isInView && playerState === 'playing') {
-      iframeRef.current?.contentWindow?.postMessage('pause', '*');
-      setPlayerState('paused');
-    }
-  }, [isInView, playerState]);
+    const el = containerRef.current;
+    if (!el || playerState !== 'playing') return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) {
+          iframeRef.current?.contentWindow?.postMessage('pause', '*');
+          setPlayerState('paused');
+        }
+      },
+      { threshold: 0.1 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [playerState]);
 
   const handlePlay = useCallback(() => {
-    if (playerState === 'idle') {
-      // First play: load the iframe
-      setPlayerState('loading');
-      setIframeLoaded(false);
-    } else if (playerState === 'paused') {
+    if (playerState === 'ready' || playerState === 'paused') {
       iframeRef.current?.contentWindow?.postMessage('play', '*');
       setPlayerState('playing');
     }
@@ -120,11 +135,11 @@ const PrototypePlayer: React.FC<PrototypePlayerProps> = ({
 
   const handleRestart = useCallback(() => {
     if (iframeRef.current) {
-      // Reload the iframe to restart animation
+      // Reload the iframe to restart animation from frame 1
       const src = iframeRef.current.src;
       iframeRef.current.src = '';
       setIframeLoaded(false);
-      setPlayerState('loading');
+      setPlayerState('idle');
       requestAnimationFrame(() => {
         if (iframeRef.current) {
           iframeRef.current.src = src;
@@ -133,23 +148,23 @@ const PrototypePlayer: React.FC<PrototypePlayerProps> = ({
     }
   }, []);
 
+  // When iframe loads: mark ready (shows first frame), do NOT auto-play
   const handleIframeLoad = useCallback(() => {
     setIframeLoaded(true);
-    // Send play after iframe initializes
-    setTimeout(() => {
-      iframeRef.current?.contentWindow?.postMessage('play', '*');
-      setPlayerState('playing');
-    }, 800);
+    // If we were restarting and want to play, do it after load
+    // Otherwise just mark as ready (first frame visible, no animation)
+    setPlayerState((prev) => (prev === 'idle' ? 'ready' : prev));
   }, []);
 
   // Reset state when prototype changes
   useEffect(() => {
     setPlayerState('idle');
     setIframeLoaded(false);
+    setShouldLoadIframe(false);
   }, [prototype.id]);
 
-  const thumbnailSrc = `/images/prototypes/${prototype.id}.webp`;
-  const showIframe = playerState !== 'idle';
+  const showPlayButton = playerState === 'ready' || (playerState === 'idle' && !shouldLoadIframe);
+  const showControls = playerState === 'playing' || playerState === 'paused';
 
   return (
     <div ref={containerRef} className="flex flex-col">
@@ -162,38 +177,37 @@ const PrototypePlayer: React.FC<PrototypePlayerProps> = ({
         }`}
         style={{ aspectRatio: '4/3' }}
       >
-        {/* Thumbnail poster (always rendered, hidden when playing) */}
-        <img
-          src={thumbnailSrc}
-          alt={prototype.title[lang]}
-          loading="lazy"
-          className={`absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-300 ${
-            showIframe && iframeLoaded ? 'opacity-0 pointer-events-none' : 'opacity-100'
-          }`}
-        />
-
-        {/* Iframe (only rendered after first Play click) */}
-        {showIframe && (
-          <>
-            {!iframeLoaded && (
-              <div className="absolute inset-0 flex items-center justify-center z-10">
-                <div className={`w-8 h-8 rounded-full border-2 border-t-transparent animate-spin ${
-                  isDark ? 'border-white/20' : 'border-black/10'
-                }`} />
+        {/* Loading placeholder (before iframe loads) */}
+        {!iframeLoaded && (
+          <div className={`absolute inset-0 flex items-center justify-center ${
+            isDark ? 'bg-[#1C1C1E]' : 'bg-[#F2F2F7]'
+          }`}>
+            {shouldLoadIframe ? (
+              <div className={`w-8 h-8 rounded-full border-2 border-t-transparent animate-spin ${
+                isDark ? 'border-white/20' : 'border-black/10'
+              }`} />
+            ) : (
+              <div className={`text-xs ${isDark ? 'text-white/20' : 'text-black/10'}`}>
+                {prototype.id}
               </div>
             )}
-            <iframe
-              ref={iframeRef}
-              src={getIframeSrc(prototype.id)}
-              className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${
-                iframeLoaded ? 'opacity-100' : 'opacity-0'
-              }`}
-              style={{ border: 'none' }}
-              onLoad={handleIframeLoad}
-              title={prototype.title[lang]}
-              allow="fullscreen"
-            />
-          </>
+          </div>
+        )}
+
+        {/* Iframe: loaded when in viewport, with autoplay=0 so it shows first frame */}
+        {shouldLoadIframe && (
+          <iframe
+            ref={iframeRef}
+            src={getIframeSrc(prototype.id)}
+            className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${
+              iframeLoaded ? 'opacity-100' : 'opacity-0'
+            }`}
+            style={{ border: 'none', pointerEvents: showPlayButton ? 'none' : 'auto' }}
+            onLoad={handleIframeLoad}
+            title={prototype.title[lang]}
+            allow="fullscreen"
+            tabIndex={-1}
+          />
         )}
 
         {/* Badge */}
@@ -203,11 +217,11 @@ const PrototypePlayer: React.FC<PrototypePlayerProps> = ({
           {prototype.id}
         </div>
 
-        {/* Controls overlay */}
-        {playerState === 'idle' && (
+        {/* Play button overlay (visible when ready but not playing) */}
+        {showPlayButton && iframeLoaded && (
           <button
             onClick={handlePlay}
-            className="absolute inset-0 z-20 flex items-center justify-center bg-black/20 hover:bg-black/30 transition-colors cursor-pointer"
+            className="absolute inset-0 z-20 flex items-center justify-center bg-black/10 hover:bg-black/20 transition-colors cursor-pointer"
           >
             <div className={`flex items-center justify-center rounded-full bg-white/90 shadow-lg transition-transform hover:scale-110 ${
               isFullWidth ? 'w-16 h-16' : 'w-12 h-12'
@@ -217,14 +231,13 @@ const PrototypePlayer: React.FC<PrototypePlayerProps> = ({
           </button>
         )}
 
-        {/* Play/Pause/Restart controls (bottom-right, visible when loaded) */}
-        {playerState !== 'idle' && iframeLoaded && (
+        {/* Pause / Restart controls (bottom-right, visible during playback) */}
+        {showControls && (
           <div className="absolute bottom-3 right-3 z-20 flex items-center gap-1.5">
             {playerState === 'playing' ? (
               <button
                 onClick={handlePause}
                 className="p-2 rounded-full bg-black/60 hover:bg-black/80 text-white/80 hover:text-white transition-colors backdrop-blur-sm"
-                title={lang === 'fr' ? 'Pause' : 'Pause'}
               >
                 <Pause size={14} weight="fill" />
               </button>
@@ -232,7 +245,6 @@ const PrototypePlayer: React.FC<PrototypePlayerProps> = ({
               <button
                 onClick={handlePlay}
                 className="p-2 rounded-full bg-black/60 hover:bg-black/80 text-white/80 hover:text-white transition-colors backdrop-blur-sm"
-                title={lang === 'fr' ? 'Reprendre' : 'Resume'}
               >
                 <Play size={14} weight="fill" className="ml-0.5" />
               </button>
@@ -240,21 +252,9 @@ const PrototypePlayer: React.FC<PrototypePlayerProps> = ({
             <button
               onClick={handleRestart}
               className="p-2 rounded-full bg-black/60 hover:bg-black/80 text-white/80 hover:text-white transition-colors backdrop-blur-sm"
-              title={lang === 'fr' ? 'Recommencer' : 'Restart'}
             >
               <RotateCcw size={14} />
             </button>
-          </div>
-        )}
-
-        {/* Loading state controls */}
-        {playerState === 'loading' && !iframeLoaded && (
-          <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/20">
-            <div className={`flex items-center justify-center rounded-full bg-white/90 shadow-lg ${
-              isFullWidth ? 'w-16 h-16' : 'w-12 h-12'
-            }`}>
-              <div className="w-5 h-5 rounded-full border-2 border-gray-400 border-t-gray-900 animate-spin" />
-            </div>
           </div>
         )}
       </div>

@@ -141,23 +141,37 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
     setPrototypeLightboxOpen(true);
   }, [lang]);
 
-  // Scroll to top on mount
+  // Scroll to top on mount + block iframe focus-induced scroll for 2s
   useEffect(() => {
     const el = containerRef.current;
-    const resetScroll = () => {
-      if (el) el.scrollTop = 0;
-      window.scrollTo(0, 0);
+    if (!el) return;
+
+    // Force scroll to top immediately
+    el.scrollTop = 0;
+    window.scrollTo(0, 0);
+
+    // Block any scroll attempts for 2 seconds (iframes loading can steal focus)
+    let locked = true;
+    const lockScroll = () => {
+      if (locked && el.scrollTop > 0) {
+        el.scrollTop = 0;
+      }
     };
-    resetScroll();
-    const raf = requestAnimationFrame(resetScroll);
-    const t1 = setTimeout(resetScroll, 50);
-    const t2 = setTimeout(resetScroll, 150);
-    const t3 = setTimeout(resetScroll, 300);
+    el.addEventListener('scroll', lockScroll, { passive: false });
+
+    // Also reset on rAF and timeouts as fallback
+    const raf = requestAnimationFrame(() => { el.scrollTop = 0; });
+    const t1 = setTimeout(() => { el.scrollTop = 0; }, 100);
+    const t2 = setTimeout(() => { el.scrollTop = 0; }, 300);
+    const unlock = setTimeout(() => { locked = false; }, 2000);
+
     return () => {
+      locked = false;
+      el.removeEventListener('scroll', lockScroll);
       cancelAnimationFrame(raf);
       clearTimeout(t1);
       clearTimeout(t2);
-      clearTimeout(t3);
+      clearTimeout(unlock);
     };
   }, []);
 

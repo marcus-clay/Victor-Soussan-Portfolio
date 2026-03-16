@@ -17,7 +17,8 @@ interface PrototypeLightboxProps {
   onIndexChange: (index: number) => void;
 }
 
-type PlayerState = 'idle' | 'loading' | 'playing' | 'paused';
+// States: ready = iframe loaded showing first frame, playing = animation running
+type PlayerState = 'loading' | 'ready' | 'playing' | 'paused';
 
 const PrototypeLightbox: React.FC<PrototypeLightboxProps> = ({
   isOpen,
@@ -27,7 +28,7 @@ const PrototypeLightbox: React.FC<PrototypeLightboxProps> = ({
   onIndexChange,
 }) => {
   const [direction, setDirection] = useState(0);
-  const [playerState, setPlayerState] = useState<PlayerState>('idle');
+  const [playerState, setPlayerState] = useState<PlayerState>('loading');
   const [iframeLoaded, setIframeLoaded] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
@@ -38,7 +39,7 @@ const PrototypeLightbox: React.FC<PrototypeLightboxProps> = ({
   const goTo = useCallback((index: number) => {
     if (index < 0 || index >= prototypes.length) return;
     setDirection(index > currentIndex ? 1 : -1);
-    setPlayerState('idle');
+    setPlayerState('loading');
     setIframeLoaded(false);
     onIndexChange(index);
   }, [currentIndex, prototypes.length, onIndexChange]);
@@ -48,7 +49,7 @@ const PrototypeLightbox: React.FC<PrototypeLightboxProps> = ({
 
   // Reset state when prototype changes
   useEffect(() => {
-    setPlayerState('idle');
+    setPlayerState('loading');
     setIframeLoaded(false);
   }, [currentIndex]);
 
@@ -90,10 +91,7 @@ const PrototypeLightbox: React.FC<PrototypeLightboxProps> = ({
   }, [touchStart, hasPrev, hasNext, goPrev, goNext]);
 
   const handlePlay = useCallback(() => {
-    if (playerState === 'idle') {
-      setPlayerState('loading');
-      setIframeLoaded(false);
-    } else if (playerState === 'paused') {
+    if (playerState === 'ready' || playerState === 'paused') {
       iframeRef.current?.contentWindow?.postMessage('play', '*');
       setPlayerState('playing');
     }
@@ -120,18 +118,16 @@ const PrototypeLightbox: React.FC<PrototypeLightboxProps> = ({
     }
   }, []);
 
+  // Iframe loaded: show first frame, do NOT auto-play
   const handleIframeLoad = useCallback(() => {
     setIframeLoaded(true);
-    setTimeout(() => {
-      iframeRef.current?.contentWindow?.postMessage('play', '*');
-      setPlayerState('playing');
-    }, 800);
+    setPlayerState('ready');
   }, []);
 
   if (!current) return null;
 
-  const showIframe = playerState !== 'idle';
-  const thumbnailSrc = `/images/prototypes/${current.id}.webp`;
+  const showPlayOverlay = playerState === 'ready';
+  const showControls = playerState === 'playing' || playerState === 'paused';
 
   return (
     <AnimatePresence>
@@ -187,6 +183,13 @@ const PrototypeLightbox: React.FC<PrototypeLightboxProps> = ({
 
             {/* Iframe container */}
             <div className="w-full h-full relative rounded-lg overflow-hidden">
+              {/* Loading spinner */}
+              {!iframeLoaded && (
+                <div className="absolute inset-0 bg-[#1D1D1F] flex items-center justify-center z-10">
+                  <div className="w-8 h-8 border-2 border-white/20 border-t-white/60 rounded-full animate-spin" />
+                </div>
+              )}
+
               <AnimatePresence mode="wait" initial={false}>
                 <motion.div
                   key={current.id}
@@ -196,34 +199,27 @@ const PrototypeLightbox: React.FC<PrototypeLightboxProps> = ({
                   transition={{ duration: 0.2 }}
                   className="w-full h-full relative"
                 >
-                  {/* Thumbnail poster */}
-                  <img
-                    src={thumbnailSrc}
-                    alt={current.title}
-                    className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-300 ${
-                      showIframe && iframeLoaded ? 'opacity-0 pointer-events-none' : 'opacity-100'
+                  {/* Iframe: always loaded (with autoplay=0, shows first frame) */}
+                  <iframe
+                    ref={iframeRef}
+                    src={getIframeSrc(current.id)}
+                    className={`w-full h-full transition-opacity duration-300 ${
+                      iframeLoaded ? 'opacity-100' : 'opacity-0'
                     }`}
+                    style={{
+                      border: 'none',
+                      pointerEvents: showPlayOverlay ? 'none' : 'auto',
+                    }}
+                    title={current.title}
+                    onLoad={handleIframeLoad}
+                    tabIndex={-1}
                   />
 
-                  {/* Iframe (only after Play) */}
-                  {showIframe && (
-                    <iframe
-                      ref={iframeRef}
-                      src={getIframeSrc(current.id)}
-                      className={`w-full h-full transition-opacity duration-300 ${
-                        iframeLoaded ? 'opacity-100' : 'opacity-0'
-                      }`}
-                      style={{ border: 'none' }}
-                      title={current.title}
-                      onLoad={handleIframeLoad}
-                    />
-                  )}
-
-                  {/* Play button overlay (idle state) */}
-                  {playerState === 'idle' && (
+                  {/* Play button overlay (first frame visible, not yet playing) */}
+                  {showPlayOverlay && (
                     <button
                       onClick={handlePlay}
-                      className="absolute inset-0 z-10 flex items-center justify-center bg-black/20 hover:bg-black/30 transition-colors cursor-pointer"
+                      className="absolute inset-0 z-10 flex items-center justify-center bg-black/10 hover:bg-black/20 transition-colors cursor-pointer"
                     >
                       <div className="flex items-center justify-center w-20 h-20 rounded-full bg-white/90 shadow-lg transition-transform hover:scale-110">
                         <Play size={28} weight="fill" className="ml-1 text-gray-900" />
@@ -231,17 +227,8 @@ const PrototypeLightbox: React.FC<PrototypeLightboxProps> = ({
                     </button>
                   )}
 
-                  {/* Loading state */}
-                  {playerState === 'loading' && !iframeLoaded && (
-                    <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/20">
-                      <div className="flex items-center justify-center w-20 h-20 rounded-full bg-white/90 shadow-lg">
-                        <div className="w-6 h-6 rounded-full border-2 border-gray-400 border-t-gray-900 animate-spin" />
-                      </div>
-                    </div>
-                  )}
-
                   {/* Playback controls */}
-                  {playerState !== 'idle' && iframeLoaded && (
+                  {showControls && (
                     <div className="absolute bottom-4 right-4 z-10 flex items-center gap-2">
                       {playerState === 'playing' ? (
                         <button
