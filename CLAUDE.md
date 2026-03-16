@@ -1,4 +1,4 @@
-# Victor Soussan Portfolio - Project Context
+# Victor Soussan Portfolio
 
 ## Stack
 - React 18 + TypeScript + Vite 5.1.4
@@ -8,75 +8,27 @@
 - SPA with custom URL-based routing (no router library)
 - React.lazy + Suspense for code-split pages
 - Bilingual EN/FR via TRANSLATIONS objects
-
-## Routing
-- `MODAL_ROUTES` in App.tsx maps URL paths to state setters
-- `openModalWithUrl(path)` / `closeModalWithUrl(setterFn)` for page navigation
-- Full-page overlays rendered via AnimatePresence + Suspense
-
-## Design System
-
-### Colors
-- **Brand blue (primary CTA):** `#2D5CF3`, hover: `#2450d9`
-- **Dark background:** `bg-[#0a0a0a]`
-- **Light background:** `bg-[#FCFCFD]`
-- **Dark cards:** `bg-[#1D1D1F]`
-- **Light cards:** `bg-white`
-- **Dark borders:** `border-white/5` to `border-white/10`
-- **Light borders:** `border-gray-100` to `border-gray-200`
-
-### Buttons
-- **Primary CTA:** `bg-[#2D5CF3] text-white hover:bg-[#2450d9] shadow-sm hover:shadow-md`
-- Always blue, both light and dark mode
-- Rounded-full, font-medium, inline-flex with gap-2
-- Never use `bg-gray-900` for CTAs
-
-### Page Header Pattern
-All full-page overlays use the same header:
-```
-<header className="sticky top-0 z-50 backdrop-blur-xl bg-[#0a0a0a]/80 (dark) | bg-[#FCFCFD]/80 (light)">
-  <div className="w-full pl-6 pr-2.5 h-16 flex items-center justify-between">
-    <span className="font-semibold text-lg tracking-[-0.02em]">{title}</span>
-    <button className="relative p-3 rounded-full transition-colors before:absolute before:inset-[-12px] before:content-['']">
-      <X size={24} />
-    </button>
-  </div>
-</header>
-```
-- Title on LEFT, X close button on RIGHT
-- X icon size={24} with enlarged hitbox (before: pseudo-element)
-- Glass effect with backdrop-blur-xl
-
-### Typography
-- Headings: font-bold, tracking-[-0.02em] or tracking-[-0.03em]
-- Body: text-sm to text-base, leading-relaxed
-- Dark mode text: text-white (headings), text-gray-400 (body)
-- Light mode text: text-gray-900 (headings), text-gray-600 (body)
-
-## Writing Rules
-- **No emdashes** (never use the — character anywhere)
-- Use colons, commas, periods, or parentheses instead
-- Apply the `francais-parfait` skill for all French text
-- No "Ce n'est pas X, c'est Y" / "It's not X, it's Y" constructions
-- No LLM tonality, no jargon, no exaggerated comparisons
-- Peer-to-peer, factual, grounded in experience
-- Full well-constructed sentences
+- Deployed on Vercel
 
 ## File Structure
-- `src/App.tsx` - Main app with homepage, routing, translations
-- `src/index.tsx` - React entry point
-- `src/pages/` - General pages (AboutPage, ServicesPage, SignalsPage, WorkPage, etc.)
-- `src/pages/case-studies/` - Case study pages (DailymotionPage, ConnectPage, SqoolPage, etc.)
-- `src/components/` - Shared components (CaseStudyTOCSidebar, BentoGallery, CareerCarousel, etc.)
-- `src/components/case-studies/` - Executive summary and full case study components
-- `src/components/media/` - Image, video, and lightbox components (EnhancedLightbox, LazyImage, etc.)
-- `src/components/prototype/` - Prototype display components (PrototypeCard, PrototypeCarousel, etc.)
-- `src/components/ui/` - Generic UI primitives (InfiniteGrid, ResponsiveImage)
-- `src/config/` - Configuration files (emailConfig, DESIGN_SYSTEM, styles)
-- `src/data/` - Shared data (signalsData, galleryData, careerData, consultingData, sqoolPrototypesData)
-- `src/hooks/` - Custom React hooks
-- `src/utils/` - Utility functions (cloudinary, smoothScroll)
-- `docs/` - Documentation, case study markdown, reference materials, assets
+- `src/App.tsx` : main app, homepage, routing, translations
+- `src/pages/` : full-page modal components (About, Services, Work, Signals, etc.)
+- `src/pages/case-studies/` : 9 case study pages
+- `src/components/` : shared components (media/, prototype/, case-studies/, ui/)
+- `src/data/` : content data (signals, testimonials, career, gallery, prototypes)
+- `src/config/` : design system tokens, email config, style constants
+- `src/hooks/` : custom React hooks
+- `src/utils/` : utilities (SEO, Cloudinary, smooth scroll)
 
 ## Homepage Flow
-Hero → Projects → About (short bio) → Gallery (preview) → Services + Clients → Signals → Testimonials → Contact/Footer
+Hero -> Projects -> About (short bio) -> Gallery (preview) -> Services + Clients -> Signals -> Testimonials -> Contact/Footer
+
+## Rules (auto-loaded from .claude/rules/)
+- `design-system.md` : colors, buttons, headers, typography tokens
+- `routing.md` : custom modal routing conventions
+- `writing-rules.md` : no emdash, peer-to-peer tone, francais-parfait
+
+## Documentation (on-demand, see .claude/docs/)
+- `architecture.md` : technical decisions and patterns
+- `content-map.md` : all content sources, data files, translations
+- `deploy.md` : Vercel config, CI/CD, environment
