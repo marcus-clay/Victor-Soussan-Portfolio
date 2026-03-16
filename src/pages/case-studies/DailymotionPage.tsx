@@ -18,6 +18,7 @@ import { GalleryItem, getDailymotionGalleryItems } from '../../components/BentoG
 import EnhancedLightbox from '../../components/media/EnhancedLightbox';
 import DailymotionExecutive from '../../components/case-studies/DailymotionExecutive';
 import CaseStudyTOCSidebar from '../../components/CaseStudyTOCSidebar';
+import { PROJECT_SEO, DEFAULT_SEO, updateMetaTags } from '../../utils/seo';
 
 interface DailymotionPageProps {
   onClose: () => void;
@@ -515,6 +516,11 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
   lang = 'en',
   onContact,
 }) => {
+  useEffect(() => {
+    updateMetaTags(PROJECT_SEO['dailymotion']);
+    return () => updateMetaTags(DEFAULT_SEO);
+  }, []);
+
   const t = DAILYMOTION_TRANSLATIONS[lang];
   // Load gallery items directly in the component
   const galleryItems = getDailymotionGalleryItems(lang);

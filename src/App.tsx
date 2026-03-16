@@ -1,13 +1,12 @@
 
 import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
+import ErrorBoundary from './components/ErrorBoundary';
 import { motion, AnimatePresence, useScroll, useTransform, useSpring } from 'framer-motion';
 import { EMAILJS_CONFIG } from './config/emailConfig';
 import {
   ChevronRight,
   Layers,
   Users,
-  Briefcase,
-  Figma,
   PenTool,
   ArrowUpRight,
   Mail,
@@ -15,12 +14,9 @@ import {
   CheckCircle2,
   Target,
   Box,
-  Cpu,
-  Smartphone,
   Menu as MenuIcon,
   X,
   Download,
-  ScrollText,
   Zap,
   Settings,
   Lightbulb,
@@ -53,6 +49,9 @@ import type { Language } from './data/translations';
 import { getTestimonials } from './data/testimonialsData';
 import type { Category } from './data/testimonialsData';
 import { LAB_PREVIEWS } from './data/labData';
+import { getResources } from './data/resourcesData';
+import { getProjects } from './data/projectsData';
+import type { Project } from './data/projectsData';
 import { PROJECT_SEO, DEFAULT_SEO, updateMetaTags } from './utils/seo';
 
 // Lazy load heavy page components for code splitting
@@ -85,35 +84,6 @@ const PageLoader = () => (
 // --- Types ---
 
 type AccessibilityMode = 'normal' | 'contrast' | 'dyslexic';
-
-interface Project {
-  id: string;
-  title: string;
-  role: string;
-  period: string;
-  summary: string;
-  missions: string[];
-  system: {
-    title: string;
-    desc: string;
-  };
-  deliverables: string[];
-  icon: React.ReactNode;
-  color: 'blue' | 'gray' | 'indigo' | 'purple';
-  coverImage: string; // Landscape cover image filename
-  hoverImage?: string; // Image to show on hover (with device mockup)
-  externalLink?: string;
-  testimonialId?: string;
-  status?: 'shipped' | 'concept';
-}
-
-interface Resource {
-  title: string;
-  type: string;
-  desc: string;
-  link: string;
-  icon: React.ReactNode;
-}
 
 // --- Utility Functions ---
 
@@ -237,289 +207,6 @@ const ScrollExpandCard: React.FC<{
 };
 
 // --- Lab Preview Data ---
-
-// --- Localized Data Functions ---
-
-const getResources = (lang: Language): Resource[] => {
-  const isEn = lang === 'en';
-  return [
-    // 1. Frame - Discovery/Framing
-    {
-      title: isEn ? "Template: Design Scoping" : "Template : Cadrage Design",
-      type: "Notion",
-      desc: isEn ? "A framework to frame design problems, scope, and goals before starting UI." : "Le document que je remplis avant d'ouvrir Figma pour aligner tout le monde sur le 'Pourquoi'.",
-      link: "https://victor-soussan.notion.site/Template-Id-ation-Cadrage-de-conception-22ea519b0dea810f9d50cf4eeb7f0c48",
-      icon: <Target size={20} className="text-red-600"/>
-    },
-    // 2. Align - Establish rituals with stakeholders
-    {
-      title: isEn ? "Process: PO / Design Sync" : "Rituel : Synchro PO / Design",
-      type: "Notion",
-      desc: isEn ? "Rituals and workflows to align Product Owners and Designers efficiently." : "Comment organiser la collaboration hebdomadaire pour éviter l'effet tunnel.",
-      link: "https://victor-soussan.notion.site/Process-de-synchro-PO-Design-22ea519b0dea815690c0c5e178b61bf7",
-      icon: <Users size={20} className="text-orange-600"/>
-    },
-    // 3. Analyze - Audit existing interfaces
-    {
-      title: "Atelier : Design Teardown",
-      type: "Notion",
-      desc: isEn ? "Workshop template for analyzing and critiquing existing interfaces collectively." : "Template pour auditer une interface existante en équipe et identifier les dettes UX.",
-      link: "https://victor-soussan.notion.site/Template-Id-ation-Atelier-Design-Teardown-22ea519b0dea81b09215c004b04ef56d",
-      icon: <ScrollText size={20} className="text-purple-600"/>
-    },
-    // 4. Design - Execution checklist
-    {
-      title: isEn ? "Checklist: Feature Design" : "Checklist : Design de fonctionnalité",
-      type: "Notion",
-      desc: isEn ? "A granular checklist to ensure quality from kickoff to handoff." : "Rien ne doit être oublié avant le dev : edge cases, états vides, erreurs, responsive.",
-      link: "https://victor-soussan.notion.site/LONG-Checklist-Design-d-une-nouvelle-fonctionnalit-112a519b0dea8119b5ecc4084f3c0e53",
-      icon: <CheckCircle2 size={20} className="text-green-600"/>
-    },
-    // 5. Handoff - Break down UI for developers
-    {
-      title: isEn ? "Process: UI Slicing" : "Méthode : Découpage UI (Slicing)",
-      type: "Notion",
-      desc: isEn ? "Methodology to break down interfaces into atomic components for devs." : "Comment je découpe une interface en composants React/Atomic pour les développeurs.",
-      link: "https://victor-soussan.notion.site/Process-D-couper-finement-une-UI-22ea519b0dea81158739d163fc196f0c",
-      icon: <Layers size={20} className="text-blue-600"/>
-    },
-    // 6. Maintain - Ongoing file organization
-    {
-      title: isEn ? "Figma: File Status" : "Figma : Convention de nommage",
-      type: "Notion",
-      desc: isEn ? "Naming conventions and status tags for keeping Figma files clean." : "Comment je gère les statuts (WIP, Review, Dev Ready) pour qu'on s'y retrouve.",
-      link: "https://victor-soussan.notion.site/Figma-Status-des-maquettes-et-prototypes-22ea519b0dea8121a1acd9e1fd59212f",
-      icon: <Figma size={20} className="text-indigo-600"/>
-    }
-  ];
-};
-
-const getProjects = (lang: Language): Project[] => {
-  const isEn = lang === 'en';
-  return [
-    {
-      id: "toolkit",
-      title: "Toolkit",
-      role: isEn ? "Founding Designer" : "Founding Designer (Premier Designer)",
-      period: "2023 – 2024",
-      summary: isEn 
-        ? "0-to-1 Product Design for a Construction Tech SaaS. From pitch deck to MVP." 
-        : "Création d'un SaaS B2B pour le BTP, de zéro (0 to 1). J'ai traduit la vision des fondateurs en un produit commercialisable.",
-      missions: isEn ? [
-        "Defined the entire product architecture from scratch",
-        "Worked directly with Founders (CEO/CTO) in Lean mode",
-        "Designed Investor Pitch Decks & Marketing Assets",
-        "Conducted field research with construction site managers"
-      ] : [
-        "Architecture de l'information : structurer une app complexe pour le terrain",
-        "Prototypage rapide pour valider les hypothèses avec les conducteurs de travaux",
-        "Création de l'identité visuelle et des supports investisseurs (Pitch Deck)",
-        "Livraison des maquettes prêtes au développement (Dev Handoff)"
-      ],
-      system: {
-        title: isEn ? "Tailwind-ready UI Kit" : "UI Kit optimisé Tailwind",
-        desc: isEn ? "Designed a lightweight, mobile-first system optimized for messy field conditions (high contrast, large touch targets) ready for rapid Tailwind integration." : "J'ai conçu un système simple et robuste (Mobile First), avec de gros contrastes pour l'usage sur chantier, directement aligné sur les classes utilitaires Tailwind."
-      },
-      deliverables: isEn ? [
-        "SaaS Platform (Web & Mobile)",
-        "Planning & Gantt Interaction Model",
-        "Admin & Billing Panels",
-        "Brand Identity & Logo"
-      ] : [
-        "Plateforme SaaS complète (Web & Mobile)",
-        "Module de Gantt/Planning interactif",
-        "Back-office Admin & Facturation",
-        "Identité de marque & Logo"
-      ],
-      icon: <Cpu size={24} />,
-      color: "indigo",
-      coverImage: "/images/thumbnail-toolkit.webp",
-      externalLink: "https://victor-soussan.notion.site/ebd/2b7a519b0dea80d9b40cc730ce4cfc4b",
-      testimonialId: "pierre-marie-nigay"
-    },
-    {
-      id: "dailymotion",
-      title: "Dailymotion Partner",
-      role: isEn ? "Senior Product Designer" : "Senior Product Designer",
-      period: "2017 – 2018",
-      summary: isEn ? "Redesigning the professional video management suite for tier-1 media partners (CBS, Bein Sports)." : "Refonte du back-office vidéo utilisé par les grands médias (CBS, Bein Sports). Un outil métier complexe à fort volume de données.",
-      missions: isEn ? [
-        "Led UX for high-volume upload & livestreaming dashboards",
-        "Mentored junior designers on interaction specs",
-        "Collaborated across Paris, NYC & Marseille teams",
-        "Initiated the internal 'Pattern Library' for consistency"
-      ] : [
-        "Design des features critiques : Upload de masse, Livestreaming",
-        "Simplification de workflows complexes pour les éditeurs vidéo",
-        "Collaboration internationale (Paris, NYC, Marseille)",
-        "Mentorat des designers juniors sur l'UI et les specs"
-      ],
-      system: {
-        title: isEn ? "Storybook UI Kit" : "Pattern Library (Sketch/Storybook)",
-        desc: isEn ? "Created the first atomic component library in Sketch (pre-Figma) and collaborated with frontend to implement it in Storybook for global scalability." : "Création de la première librairie de composants atomiques (à l'époque sous Sketch) pour aligner le design et le code (Storybook)."
-      },
-      deliverables: isEn ? [
-        "Live Dashboard & Clipping Tool",
-        "Batch Upload & Metadata Editor",
-        "Motion Guidelines",
-        "Partner Mobile App (iOS/Android)"
-      ] : [
-        "Dashboard Live & Outil de Clipping",
-        "Éditeur de métadonnées en masse",
-        "App Mobile Partenaire (iOS/Android)",
-        "Guidelines d'animation"
-      ],
-      icon: <Users size={24} />,
-      color: "gray",
-      coverImage: "/images/thumbnail-dailymotion-web-platform.webp",
-      externalLink: "https://victor-soussan.notion.site/ebd/2b7a519b0dea80b99138d4b51a65620b"
-    },
-    {
-      id: "france-vae",
-      title: "France VAE",
-      role: isEn ? "Lead Product Designer" : "Lead Product Designer",
-      period: isEn ? "Dec 2024 – Jul 2025" : "Déc 2024 – Juil 2025",
-      summary: isEn
-        ? "6-month mission structuring product ops for a national public service scaling to 100K+ candidates."
-        : "Mission de 6 mois pour structurer les ops produit d'un service public national servant 100K+ candidats.",
-      missions: isEn ? [
-        "Co-designed prioritization matrix with Lead PM",
-        "Led 10 user interviews for dashboard launch",
-        "Organized 2-day design thinking workshop with field actors",
-        "Restructured Figma architecture & delivery process"
-      ] : [
-        "Co-conception matrice de priorisation avec Lead PM",
-        "10 entretiens utilisateurs pour lancement dashboard",
-        "Organisation atelier design thinking 2 jours avec AAP",
-        "Restructuration architecture Figma & process delivery"
-      ],
-      system: {
-        title: isEn ? "Season-based Workflow" : "Workflow en Saisons",
-        desc: isEn ? "Implemented 1-month seasons with 3 delivery cycles, cross-team prioritization matrix, and weekly discovery rituals." : "Mise en place de saisons d'1 mois avec 3 cycles de livraison, matrice de priorisation cross-équipe et rituels discovery hebdo."
-      },
-      deliverables: isEn ? [
-        "VAE Collective MVP & Employer Journey",
-        "Promotional Video (Screencast)",
-        "User Research Protocol & Synthesis",
-        "Design Ops & Figma Architecture"
-      ] : [
-        "MVP VAE Collective & Parcours Employeur",
-        "Vidéo Promotionnelle (Screencast)",
-        "Protocole Recherche & Synthèses",
-        "Design Ops & Architecture Figma"
-      ],
-      icon: <FileText size={24} />,
-      color: "blue",
-      coverImage: "/images/francevae/thumbnail_france_vae.webp"
-    },
-    {
-      id: "connect",
-      title: "SQOOL Connect",
-      role: isEn ? "Product Design Lead" : "Product Design Lead",
-      period: "2020 – 2021",
-      summary: isEn ? "Designing a web-based dashboard concept and persistent interaction prototype for classroom orchestration." : "Conception d'un dashboard web et d'un prototype d'interaction persistante pour l'orchestration de classe.",
-      missions: isEn ? [
-        "Led the design of a proof-of-concept dashboard platform",
-        "Co-authored the project vision and interaction model",
-        "Created motion prototypes and interaction specifications",
-        "Collaborated daily with React developer on prototype"
-      ] : [
-        "Direction du design d'une plateforme dashboard proof-of-concept",
-        "Co-auteur de la vision projet et du modèle d'interaction",
-        "Création de prototypes motion et spécifications d'interaction",
-        "Collaboration quotidienne avec le développeur React"
-      ],
-      system: {
-        title: isEn ? "Modular Dashboard System" : "Système Dashboard Modulaire",
-        desc: isEn ? "Designed a modular web-based interface replacing the legacy Android launcher, with quick actions, app catalog, and persistent contextual UI ('La Bulle')." : "Conception d'une interface web modulaire remplaçant le launcher Android legacy, avec actions rapides, catalogue d'apps et UI contextuelle persistante ('La Bulle')."
-      },
-      deliverables: isEn ? [
-        "Web Dashboard Prototype",
-        "La Bulle - Persistent UI Module",
-        "Technical Architecture Specs",
-        "Motion & Interaction Guidelines"
-      ] : [
-        "Prototype Dashboard Web",
-        "La Bulle - Module UI Persistant",
-        "Spécifications Architecture Technique",
-        "Guidelines Motion & Interaction"
-      ],
-      icon: <Layers size={24} />,
-      color: "purple",
-      coverImage: "thumbnail-connect.webp",
-      status: "concept"
-    },
-    {
-      id: "sqool",
-      title: "SQOOL Suite (UNOWHY)",
-      role: isEn ? "Product Lead UI & Manager" : "Product Design Manager",
-      period: "2018 – 2024",
-      summary: isEn ? "Leading the design transformation of a hardware company into a comprehensive EdTech SaaS ecosystem." : "Passage d'une boite Hardware à un écosystème SaaS EdTech complet. J'ai structuré le pôle design et piloté la refonte logicielle.",
-      missions: isEn ? [
-        "Managed a team of 4 designers: hiring, annual reviews, career coaching",
-        "Led design strategy workshops for 'Road to 2025' vision",
-        "Structured Design Ops: Figma organization, templates, and rituals",
-        "Bridged Product & Tech: Designed decks for C-Level & All-Hands demos"
-      ] : [
-        "Recrutement et management d'une équipe de 4 Product Designers",
-        "Mise en place des Design Ops (Process, Figma, QA Design)",
-        "Pilotage de la stratégie UX pour la suite logicielle (Roadmap 2025)",
-        "Collaboration étroite avec 30+ développeurs et PMs"
-      ],
-      system: {
-        title: isEn ? "Multi-Brand Design System" : "Design System Multi-Plateforme",
-        desc: isEn ? "Built a centralized Figma system supporting 8+ apps (Web/Android/PC). Created shared libraries for icons, gestures, and device frames to speed up hand-offs." : "Un système centralisé pour 8 applications (Web, Android, PC). J'ai standardisé les composants pour réduire la dette technique et accélérer les développements."
-      },
-      deliverables: [
-        "SQOOL Classe (Gestion de classe)",
-        "SQOOL MDM (Gestion de flotte)",
-        "Documentation Zeroheight",
-        "Présentations Stratégiques (Comex)"
-      ],
-      icon: <Briefcase size={24} />,
-      color: "blue",
-      coverImage: "thumbnail-sqool-suite.webp",
-      testimonialId: "charlotte-rifflet"
-    },
-    {
-      id: "pagesjaunes",
-      title: "PagesJaunes",
-      role: isEn ? "Mobile UI Lead" : "Lead UI Mobile",
-      period: "2014 – 2017",
-      summary: isEn ? "Modernizing a legacy giant. Bringing mobile-first thinking to 22M+ users." : "Modernisation de l'application grand public (22 millions de téléchargements). Le défi : faire simple pour une audience très large.",
-      missions: isEn ? [
-        "Led UI for iOS & Android apps (22M downloads)",
-        "Managed transition to Material Design standards",
-        "Supervised Android Wear prototyping & Motion Design",
-        "Coordinated cross-platform consistency with Engineering"
-      ] : [
-        "Direction artistique des apps iOS & Android",
-        "Passage aux standards Material Design (Google)",
-        "Prototypage innovant (Android Wear, Motion Design)",
-        "Garant de la cohérence visuelle sur toutes les plateformes"
-      ],
-      system: {
-        title: isEn ? "Cross-Platform Foundations" : "Fondations Cross-Platform",
-        desc: isEn ? "Established the first shared design language between iOS, Android, and Responsive Web to unify the brand experience across millions of daily interactions." : "Définition d'un langage visuel commun entre iOS, Android et Web Mobile pour unifier l'expérience utilisateur sur tous les écrans."
-      },
-      deliverables: isEn ? [
-        "Onboarding Redesign (iOS/Android)",
-        "Navigation & Search UI",
-        "Android Wear Prototype",
-        "User Retention Flows"
-      ] : [
-        "Refonte de l'Onboarding",
-        "UI de Recherche & Navigation",
-        "Expériences contextuelles (Wearables)",
-        "Optimisation de l'expérience de cartographie et itinéraires"
-      ],
-      icon: <Smartphone size={24} />,
-      color: "purple",
-      coverImage: "thumbnail-pagesjaunes-multidevices.webp",
-      testimonialId: "nicolas-moulin"
-    }
-  ];
-};
 
 // --- Main App Component ---
 
@@ -1232,14 +919,16 @@ const App: React.FC = () => {
   // If showing HomePageV2, render only that
   if (showHomeV2) {
     return (
-      <Suspense fallback={<PageLoader />}>
-        <HomePageV2
-          onNavigateHome={() => {
-            setShowHomeV2(false);
-            window.history.pushState({}, '', '/');
-          }}
-        />
-      </Suspense>
+      <ErrorBoundary systemTheme={systemTheme}>
+        <Suspense fallback={<PageLoader />}>
+          <HomePageV2
+            onNavigateHome={() => {
+              setShowHomeV2(false);
+              window.history.pushState({}, '', '/');
+            }}
+          />
+        </Suspense>
+      </ErrorBoundary>
     );
   }
 
@@ -2566,15 +2255,17 @@ const App: React.FC = () => {
       {/* About Page */}
       <AnimatePresence>
         {isBioOpen && (
-          <Suspense fallback={<PageLoader />}>
-            <AboutPage
-              systemTheme={systemTheme}
-              lang={lang}
-              onBack={() => closeModalWithUrl(setIsBioOpen)}
-              onContact={() => { closeModalWithUrl(setIsBioOpen); openModalWithUrl('/contact'); }}
-              resources={resources}
-            />
-          </Suspense>
+          <ErrorBoundary systemTheme={systemTheme}>
+            <Suspense fallback={<PageLoader />}>
+              <AboutPage
+                systemTheme={systemTheme}
+                lang={lang}
+                onBack={() => closeModalWithUrl(setIsBioOpen)}
+                onContact={() => { closeModalWithUrl(setIsBioOpen); openModalWithUrl('/contact'); }}
+                resources={resources}
+              />
+            </Suspense>
+          </ErrorBoundary>
         )}
       </AnimatePresence>
 
@@ -3671,19 +3362,21 @@ ${contactForm.message}`;
       {/* Lab Modal - Full screen iframe */}
       <AnimatePresence>
         {selectedLabItem && LAB_PREVIEWS[selectedLabItem as keyof typeof LAB_PREVIEWS] && (
-          <Suspense fallback={<PageLoader />}>
-            <IframeModal
-              key={selectedLabItem}
-              onClose={() => setSelectedLabItem(null)}
-              systemTheme={systemTheme}
-              title={LAB_PREVIEWS[selectedLabItem as keyof typeof LAB_PREVIEWS].title}
-              url={LAB_PREVIEWS[selectedLabItem as keyof typeof LAB_PREVIEWS].link}
-              lang={lang}
-              subtitle={LAB_PREVIEWS[selectedLabItem as keyof typeof LAB_PREVIEWS].subtitle}
-              description={LAB_PREVIEWS[selectedLabItem as keyof typeof LAB_PREVIEWS].highlights.join(' • ')}
-              color={LAB_PREVIEWS[selectedLabItem as keyof typeof LAB_PREVIEWS].color as 'blue' | 'amber' | 'purple' | 'pink'}
-            />
-          </Suspense>
+          <ErrorBoundary systemTheme={systemTheme}>
+            <Suspense fallback={<PageLoader />}>
+              <IframeModal
+                key={selectedLabItem}
+                onClose={() => setSelectedLabItem(null)}
+                systemTheme={systemTheme}
+                title={LAB_PREVIEWS[selectedLabItem as keyof typeof LAB_PREVIEWS].title}
+                url={LAB_PREVIEWS[selectedLabItem as keyof typeof LAB_PREVIEWS].link}
+                lang={lang}
+                subtitle={LAB_PREVIEWS[selectedLabItem as keyof typeof LAB_PREVIEWS].subtitle}
+                description={LAB_PREVIEWS[selectedLabItem as keyof typeof LAB_PREVIEWS].highlights.join(' • ')}
+                color={LAB_PREVIEWS[selectedLabItem as keyof typeof LAB_PREVIEWS].color as 'blue' | 'amber' | 'purple' | 'pink'}
+              />
+            </Suspense>
+          </ErrorBoundary>
         )}
       </AnimatePresence>
 
@@ -6234,288 +5927,318 @@ ${contactForm.message}`;
       {/* Unified Project Modal - Toolkit */}
       <AnimatePresence>
         {openProject?.project === 'toolkit' && (
-          <Suspense fallback={<PageLoader />}>
-            <ToolkitPage
-              onClose={handleProjectClose}
-              systemTheme={systemTheme}
-              onToggleTheme={() => {
-                setThemeMode(prev => prev === 'dark' ? 'light' : 'dark');
-              }}
-              viewMode={openProject.viewMode}
-              onViewModeChange={(mode) => openProjectWithUrl('toolkit', mode)}
-              lang={lang}
-              onContact={() => setIsSimpleContactOpen(true)}
-            />
-          </Suspense>
+          <ErrorBoundary systemTheme={systemTheme}>
+            <Suspense fallback={<PageLoader />}>
+              <ToolkitPage
+                onClose={handleProjectClose}
+                systemTheme={systemTheme}
+                onToggleTheme={() => {
+                  setThemeMode(prev => prev === 'dark' ? 'light' : 'dark');
+                }}
+                viewMode={openProject.viewMode}
+                onViewModeChange={(mode) => openProjectWithUrl('toolkit', mode)}
+                lang={lang}
+                onContact={() => setIsSimpleContactOpen(true)}
+              />
+            </Suspense>
+          </ErrorBoundary>
         )}
       </AnimatePresence>
 
       {/* Unified Project Modal - Dailymotion */}
       <AnimatePresence>
         {openProject?.project === 'dailymotion' && (
-          <Suspense fallback={<PageLoader />}>
-            <DailymotionPage
-              onClose={handleProjectClose}
-              systemTheme={systemTheme}
-              onToggleTheme={() => {
-                setThemeMode(prev => prev === 'dark' ? 'light' : 'dark');
-              }}
-              viewMode={openProject.viewMode}
-              onViewModeChange={(mode) => openProjectWithUrl('dailymotion', mode)}
-              lang={lang}
-              onContact={() => setIsSimpleContactOpen(true)}
-            />
-          </Suspense>
+          <ErrorBoundary systemTheme={systemTheme}>
+            <Suspense fallback={<PageLoader />}>
+              <DailymotionPage
+                onClose={handleProjectClose}
+                systemTheme={systemTheme}
+                onToggleTheme={() => {
+                  setThemeMode(prev => prev === 'dark' ? 'light' : 'dark');
+                }}
+                viewMode={openProject.viewMode}
+                onViewModeChange={(mode) => openProjectWithUrl('dailymotion', mode)}
+                lang={lang}
+                onContact={() => setIsSimpleContactOpen(true)}
+              />
+            </Suspense>
+          </ErrorBoundary>
         )}
       </AnimatePresence>
 
       {/* Unified Project Modal - Connect */}
       <AnimatePresence>
         {openProject?.project === 'connect' && (
-          <Suspense fallback={<PageLoader />}>
-            <ConnectPage
-              onClose={handleProjectClose}
-              systemTheme={systemTheme}
-              onToggleTheme={() => {
-                setThemeMode(prev => prev === 'dark' ? 'light' : 'dark');
-              }}
-              viewMode={openProject.viewMode}
-              onViewModeChange={(mode) => openProjectWithUrl('connect', mode)}
-              lang={lang}
-              onContact={() => setIsSimpleContactOpen(true)}
-            />
-          </Suspense>
+          <ErrorBoundary systemTheme={systemTheme}>
+            <Suspense fallback={<PageLoader />}>
+              <ConnectPage
+                onClose={handleProjectClose}
+                systemTheme={systemTheme}
+                onToggleTheme={() => {
+                  setThemeMode(prev => prev === 'dark' ? 'light' : 'dark');
+                }}
+                viewMode={openProject.viewMode}
+                onViewModeChange={(mode) => openProjectWithUrl('connect', mode)}
+                lang={lang}
+                onContact={() => setIsSimpleContactOpen(true)}
+              />
+            </Suspense>
+          </ErrorBoundary>
         )}
       </AnimatePresence>
 
       {/* Unified Project Modal - SQOOL */}
       <AnimatePresence>
         {openProject?.project === 'sqool' && (
-          <Suspense fallback={<PageLoader />}>
-            <SqoolPage
-              onClose={handleProjectClose}
-              systemTheme={systemTheme}
-              onToggleTheme={() => {
-                setThemeMode(prev => prev === 'dark' ? 'light' : 'dark');
-              }}
-              viewMode={openProject.viewMode}
-              onViewModeChange={(mode) => openProjectWithUrl('sqool', mode)}
-              lang={lang}
-              onContact={() => setIsSimpleContactOpen(true)}
-            />
-          </Suspense>
+          <ErrorBoundary systemTheme={systemTheme}>
+            <Suspense fallback={<PageLoader />}>
+              <SqoolPage
+                onClose={handleProjectClose}
+                systemTheme={systemTheme}
+                onToggleTheme={() => {
+                  setThemeMode(prev => prev === 'dark' ? 'light' : 'dark');
+                }}
+                viewMode={openProject.viewMode}
+                onViewModeChange={(mode) => openProjectWithUrl('sqool', mode)}
+                lang={lang}
+                onContact={() => setIsSimpleContactOpen(true)}
+              />
+            </Suspense>
+          </ErrorBoundary>
         )}
       </AnimatePresence>
 
       {/* Unified Project Modal - SQOOL Classe */}
       <AnimatePresence>
         {openProject?.project === 'sqool-classe' && (
-          <Suspense fallback={<PageLoader />}>
-            <SqoolClassePage
-              onClose={handleProjectClose}
-              systemTheme={systemTheme}
-              onToggleTheme={() => {
-                setThemeMode(prev => prev === 'dark' ? 'light' : 'dark');
-              }}
-              viewMode={openProject.viewMode}
-              onViewModeChange={(mode) => openProjectWithUrl('sqool-classe', mode)}
-              lang={lang}
-              onContact={() => setIsSimpleContactOpen(true)}
-            />
-          </Suspense>
+          <ErrorBoundary systemTheme={systemTheme}>
+            <Suspense fallback={<PageLoader />}>
+              <SqoolClassePage
+                onClose={handleProjectClose}
+                systemTheme={systemTheme}
+                onToggleTheme={() => {
+                  setThemeMode(prev => prev === 'dark' ? 'light' : 'dark');
+                }}
+                viewMode={openProject.viewMode}
+                onViewModeChange={(mode) => openProjectWithUrl('sqool-classe', mode)}
+                lang={lang}
+                onContact={() => setIsSimpleContactOpen(true)}
+              />
+            </Suspense>
+          </ErrorBoundary>
         )}
       </AnimatePresence>
 
       {/* Unified Project Modal - France VAE */}
       <AnimatePresence>
         {openProject?.project === 'france-vae' && (
-          <Suspense fallback={<PageLoader />}>
-            <FranceVaePage
-              onClose={handleProjectClose}
-              systemTheme={systemTheme}
-              onToggleTheme={() => {
-                setThemeMode(prev => prev === 'dark' ? 'light' : 'dark');
-              }}
-              viewMode={openProject.viewMode}
-              onViewModeChange={(mode) => openProjectWithUrl('france-vae', mode)}
-              lang={lang}
-              onContact={() => setIsSimpleContactOpen(true)}
-            />
-          </Suspense>
+          <ErrorBoundary systemTheme={systemTheme}>
+            <Suspense fallback={<PageLoader />}>
+              <FranceVaePage
+                onClose={handleProjectClose}
+                systemTheme={systemTheme}
+                onToggleTheme={() => {
+                  setThemeMode(prev => prev === 'dark' ? 'light' : 'dark');
+                }}
+                viewMode={openProject.viewMode}
+                onViewModeChange={(mode) => openProjectWithUrl('france-vae', mode)}
+                lang={lang}
+                onContact={() => setIsSimpleContactOpen(true)}
+              />
+            </Suspense>
+          </ErrorBoundary>
         )}
       </AnimatePresence>
 
       {/* Unified Project Modal - PagesJaunes */}
       <AnimatePresence>
         {openProject?.project === 'pagesjaunes' && (
-          <Suspense fallback={<PageLoader />}>
-            <PagesJaunesPage
-              onClose={handleProjectClose}
-              systemTheme={systemTheme}
-              onToggleTheme={() => {
-                setThemeMode(prev => prev === 'dark' ? 'light' : 'dark');
-              }}
-              viewMode={openProject.viewMode}
-              onViewModeChange={(mode) => openProjectWithUrl('pagesjaunes', mode)}
-              lang={lang}
-              onContact={() => setIsSimpleContactOpen(true)}
-              onNavigateToProject={(projectId) => openProjectWithUrl(projectId as 'androidwear', 'caseStudy')}
-            />
-          </Suspense>
+          <ErrorBoundary systemTheme={systemTheme}>
+            <Suspense fallback={<PageLoader />}>
+              <PagesJaunesPage
+                onClose={handleProjectClose}
+                systemTheme={systemTheme}
+                onToggleTheme={() => {
+                  setThemeMode(prev => prev === 'dark' ? 'light' : 'dark');
+                }}
+                viewMode={openProject.viewMode}
+                onViewModeChange={(mode) => openProjectWithUrl('pagesjaunes', mode)}
+                lang={lang}
+                onContact={() => setIsSimpleContactOpen(true)}
+                onNavigateToProject={(projectId) => openProjectWithUrl(projectId as 'androidwear', 'caseStudy')}
+              />
+            </Suspense>
+          </ErrorBoundary>
         )}
       </AnimatePresence>
 
       {/* Unified Project Modal - Android Wear */}
       <AnimatePresence>
         {openProject?.project === 'androidwear' && (
-          <Suspense fallback={<PageLoader />}>
-            <AndroidWearPage
-              onClose={handleProjectClose}
-              systemTheme={systemTheme}
-              onToggleTheme={() => {
-                setThemeMode(prev => prev === 'dark' ? 'light' : 'dark');
-              }}
-              viewMode={openProject.viewMode as 'caseStudy' | 'gallery'}
-              onViewModeChange={(mode) => openProjectWithUrl('androidwear', mode)}
-              lang={lang}
-              onContact={() => setIsSimpleContactOpen(true)}
-            />
-          </Suspense>
+          <ErrorBoundary systemTheme={systemTheme}>
+            <Suspense fallback={<PageLoader />}>
+              <AndroidWearPage
+                onClose={handleProjectClose}
+                systemTheme={systemTheme}
+                onToggleTheme={() => {
+                  setThemeMode(prev => prev === 'dark' ? 'light' : 'dark');
+                }}
+                viewMode={openProject.viewMode as 'caseStudy' | 'gallery'}
+                onViewModeChange={(mode) => openProjectWithUrl('androidwear', mode)}
+                lang={lang}
+                onContact={() => setIsSimpleContactOpen(true)}
+              />
+            </Suspense>
+          </ErrorBoundary>
         )}
       </AnimatePresence>
 
       {/* Executive Profile Modal */}
       <AnimatePresence>
         {isExecutiveOpen && (
-          <Suspense fallback={<PageLoader />}>
-            <ExecutivePage
-              language={lang}
-              onClose={() => {
-                closeModalWithUrl(setIsExecutiveOpen);
-                setShowExecutiveFarewell(false);
-              }}
-              onBookCall={() => openModalWithUrl('/contact')}
-              onContact={() => setIsSimpleContactOpen(true)}
-              onOpenResume={(resumeLanguage) => {
-                setResumeLang(resumeLanguage);
-                openModalWithUrl('/resume');
-              }}
-              showFarewell={showExecutiveFarewell}
-              systemTheme={systemTheme}
-            />
-          </Suspense>
+          <ErrorBoundary systemTheme={systemTheme}>
+            <Suspense fallback={<PageLoader />}>
+              <ExecutivePage
+                language={lang}
+                onClose={() => {
+                  closeModalWithUrl(setIsExecutiveOpen);
+                  setShowExecutiveFarewell(false);
+                }}
+                onBookCall={() => openModalWithUrl('/contact')}
+                onContact={() => setIsSimpleContactOpen(true)}
+                onOpenResume={(resumeLanguage) => {
+                  setResumeLang(resumeLanguage);
+                  openModalWithUrl('/resume');
+                }}
+                showFarewell={showExecutiveFarewell}
+                systemTheme={systemTheme}
+              />
+            </Suspense>
+          </ErrorBoundary>
         )}
       </AnimatePresence>
 
       {/* Work Page Modal - All Projects */}
       <AnimatePresence>
         {isWorkOpen && (
-          <Suspense fallback={<PageLoader />}>
-            <WorkPage
-              systemTheme={systemTheme}
-              lang={lang}
-              onProjectClick={(projectId) => {
-                closeModalWithUrl(setIsWorkOpen);
-                setOpenedFromIndex(true);
-                if (projectId === 'toolkit' || projectId === 'dailymotion' || projectId === 'connect' || projectId === 'sqool' || projectId === 'sqool-classe' || projectId === 'france-vae' || projectId === 'pagesjaunes') {
-                  openProjectWithUrl(projectId, 'executive');
-                } else if (projectId === 'androidwear') {
-                  openProjectWithUrl(projectId, 'caseStudy');
-                }
-              }}
-              onBack={() => closeModalWithUrl(setIsWorkOpen)}
-            />
-          </Suspense>
+          <ErrorBoundary systemTheme={systemTheme}>
+            <Suspense fallback={<PageLoader />}>
+              <WorkPage
+                systemTheme={systemTheme}
+                lang={lang}
+                onProjectClick={(projectId) => {
+                  closeModalWithUrl(setIsWorkOpen);
+                  setOpenedFromIndex(true);
+                  if (projectId === 'toolkit' || projectId === 'dailymotion' || projectId === 'connect' || projectId === 'sqool' || projectId === 'sqool-classe' || projectId === 'france-vae' || projectId === 'pagesjaunes') {
+                    openProjectWithUrl(projectId, 'executive');
+                  } else if (projectId === 'androidwear') {
+                    openProjectWithUrl(projectId, 'caseStudy');
+                  }
+                }}
+                onBack={() => closeModalWithUrl(setIsWorkOpen)}
+              />
+            </Suspense>
+          </ErrorBoundary>
         )}
       </AnimatePresence>
 
       {/* Services Page Modal */}
       <AnimatePresence>
         {isServicesPageOpen && (
-          <Suspense fallback={<PageLoader />}>
-            <ServicesPage
-              systemTheme={systemTheme}
-              lang={lang}
-              onBack={() => closeModalWithUrl(setIsServicesPageOpen)}
-              onContact={() => {
-                closeModalWithUrl(setIsServicesPageOpen);
-                openModalWithUrl('/contact');
-              }}
-            />
-          </Suspense>
+          <ErrorBoundary systemTheme={systemTheme}>
+            <Suspense fallback={<PageLoader />}>
+              <ServicesPage
+                systemTheme={systemTheme}
+                lang={lang}
+                onBack={() => closeModalWithUrl(setIsServicesPageOpen)}
+                onContact={() => {
+                  closeModalWithUrl(setIsServicesPageOpen);
+                  openModalWithUrl('/contact');
+                }}
+              />
+            </Suspense>
+          </ErrorBoundary>
         )}
       </AnimatePresence>
 
       {/* Consulting Page Modal */}
       <AnimatePresence>
         {isConsultingOpen && (
-          <Suspense fallback={<PageLoader />}>
-            <ConsultingPage
-              systemTheme={systemTheme}
-              lang={lang}
-              onBack={() => closeModalWithUrl(setIsConsultingOpen)}
-              onContact={() => {
-                closeModalWithUrl(setIsConsultingOpen);
-                openModalWithUrl('/contact');
-              }}
-              onProjectClick={(projectId) => {
-                closeModalWithUrl(setIsConsultingOpen);
-                setOpenedFromIndex(true);
-                openProjectWithUrl(projectId as 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'sqool-classe' | 'france-vae' | 'pagesjaunes' | 'androidwear', 'executive');
-              }}
-            />
-          </Suspense>
+          <ErrorBoundary systemTheme={systemTheme}>
+            <Suspense fallback={<PageLoader />}>
+              <ConsultingPage
+                systemTheme={systemTheme}
+                lang={lang}
+                onBack={() => closeModalWithUrl(setIsConsultingOpen)}
+                onContact={() => {
+                  closeModalWithUrl(setIsConsultingOpen);
+                  openModalWithUrl('/contact');
+                }}
+                onProjectClick={(projectId) => {
+                  closeModalWithUrl(setIsConsultingOpen);
+                  setOpenedFromIndex(true);
+                  openProjectWithUrl(projectId as 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'sqool-classe' | 'france-vae' | 'pagesjaunes' | 'androidwear', 'executive');
+                }}
+              />
+            </Suspense>
+          </ErrorBoundary>
         )}
       </AnimatePresence>
 
       {/* Gallery Page Modal */}
       <AnimatePresence>
         {isVisualArchiveOpen && (
-          <Suspense fallback={<PageLoader />}>
-            <VisualArchivePage
-              systemTheme={systemTheme}
-              lang={lang}
-              onBack={() => closeModalWithUrl(setIsVisualArchiveOpen)}
-            />
-          </Suspense>
+          <ErrorBoundary systemTheme={systemTheme}>
+            <Suspense fallback={<PageLoader />}>
+              <VisualArchivePage
+                systemTheme={systemTheme}
+                lang={lang}
+                onBack={() => closeModalWithUrl(setIsVisualArchiveOpen)}
+              />
+            </Suspense>
+          </ErrorBoundary>
         )}
       </AnimatePresence>
 
       {/* Signals Page Modal */}
       <AnimatePresence>
         {isSignalsOpen && (
-          <Suspense fallback={<PageLoader />}>
-            <SignalsPage
-              systemTheme={systemTheme}
-              lang={lang}
-              onBack={() => closeModalWithUrl(setIsSignalsOpen)}
-              onOpenSignal={(signalId: string) => {
-                setIsSignalsOpen(false);
-                openModalWithUrl(`/signal/${signalId}`);
-              }}
-            />
-          </Suspense>
+          <ErrorBoundary systemTheme={systemTheme}>
+            <Suspense fallback={<PageLoader />}>
+              <SignalsPage
+                systemTheme={systemTheme}
+                lang={lang}
+                onBack={() => closeModalWithUrl(setIsSignalsOpen)}
+                onOpenSignal={(signalId: string) => {
+                  setIsSignalsOpen(false);
+                  openModalWithUrl(`/signal/${signalId}`);
+                }}
+              />
+            </Suspense>
+          </ErrorBoundary>
         )}
       </AnimatePresence>
 
       {/* Signal Detail Page */}
       <AnimatePresence>
         {openSignalId && (
-          <Suspense fallback={<PageLoader />}>
-            <SignalDetailPage
-              signalId={openSignalId}
-              systemTheme={systemTheme}
-              lang={lang}
-              onBack={() => {
-                setOpenSignalId(null);
-                window.history.pushState({ lang }, '', `/?lang=${lang}`);
-                updateMetaTags(DEFAULT_SEO);
-              }}
-              onOpenSignal={(newSignalId: string) => {
-                openModalWithUrl(`/signal/${newSignalId}`);
-              }}
-            />
-          </Suspense>
+          <ErrorBoundary systemTheme={systemTheme}>
+            <Suspense fallback={<PageLoader />}>
+              <SignalDetailPage
+                signalId={openSignalId}
+                systemTheme={systemTheme}
+                lang={lang}
+                onBack={() => {
+                  setOpenSignalId(null);
+                  window.history.pushState({ lang }, '', `/?lang=${lang}`);
+                  updateMetaTags(DEFAULT_SEO);
+                }}
+                onOpenSignal={(newSignalId: string) => {
+                  openModalWithUrl(`/signal/${newSignalId}`);
+                }}
+              />
+            </Suspense>
+          </ErrorBoundary>
         )}
       </AnimatePresence>
 

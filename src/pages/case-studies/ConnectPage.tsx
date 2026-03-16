@@ -12,6 +12,7 @@ import { GalleryItem, getConnectGalleryItems } from '../../components/BentoGalle
 import ConnectExecutive from '../../components/case-studies/ConnectExecutive';
 import EnhancedLightbox from '../../components/media/EnhancedLightbox';
 import CaseStudyTOCSidebar from '../../components/CaseStudyTOCSidebar';
+import { PROJECT_SEO, DEFAULT_SEO, updateMetaTags } from '../../utils/seo';
 
 interface ConnectPageProps {
   onClose: () => void;
@@ -433,6 +434,11 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
   lang = 'en',
   onContact,
 }) => {
+  useEffect(() => {
+    updateMetaTags(PROJECT_SEO['connect']);
+    return () => updateMetaTags(DEFAULT_SEO);
+  }, []);
+
   const t = CONNECT_TRANSLATIONS[lang];
   // Load gallery items directly in the component
   const galleryItems = getConnectGalleryItems(lang);

@@ -18,6 +18,7 @@ import {
 import { GalleryItem } from '../../components/BentoGallery';
 import EnhancedLightbox from '../../components/media/EnhancedLightbox';
 import CaseStudyTOCSidebar from '../../components/CaseStudyTOCSidebar';
+import { PROJECT_SEO, DEFAULT_SEO, updateMetaTags } from '../../utils/seo';
 
 interface AndroidWearPageProps {
   onClose: () => void;
@@ -574,6 +575,11 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
   lang = 'en',
   onContact,
 }) => {
+  useEffect(() => {
+    updateMetaTags(PROJECT_SEO['androidwear']);
+    return () => updateMetaTags(DEFAULT_SEO);
+  }, []);
+
   const isDark = systemTheme === 'dark';
   const t = TRANSLATIONS[lang];
   const galleryItems = getGalleryItems(lang);

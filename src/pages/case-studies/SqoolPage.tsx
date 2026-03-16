@@ -20,6 +20,7 @@ import { SqoolTimeline } from './SqoolTimeline';
 import SqoolExecutive from '../../components/case-studies/SqoolExecutive';
 import EnhancedLightbox from '../../components/media/EnhancedLightbox';
 import CaseStudyTOCSidebar from '../../components/CaseStudyTOCSidebar';
+import { PROJECT_SEO, DEFAULT_SEO, updateMetaTags } from '../../utils/seo';
 
 // TOC Sections for Full case study
 const TOC_SECTIONS = {
@@ -731,6 +732,11 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
   lang = 'en',
   onContact,
 }) => {
+  useEffect(() => {
+    updateMetaTags(PROJECT_SEO['sqool']);
+    return () => updateMetaTags(DEFAULT_SEO);
+  }, []);
+
   const t = SQOOL_TRANSLATIONS[lang];
   // Load gallery items directly in the component
   const galleryItems = getSqoolGalleryItems(lang);

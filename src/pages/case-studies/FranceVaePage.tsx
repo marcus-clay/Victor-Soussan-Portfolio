@@ -9,6 +9,7 @@ import CaseStudyTOCSidebar from '../../components/CaseStudyTOCSidebar';
 import FranceVaeExecutive from '../../components/case-studies/FranceVaeExecutive';
 import FranceVaeFull from '../../components/case-studies/FranceVaeFull';
 import EnhancedLightbox from '../../components/media/EnhancedLightbox';
+import { PROJECT_SEO, DEFAULT_SEO, updateMetaTags } from '../../utils/seo';
 
 // Gallery Card with Apple TV-style 3D tilt effect (same as BentoGallery)
 interface GalleryCardProps {
@@ -221,6 +222,11 @@ const FranceVaePage: React.FC<FranceVaePageProps> = ({
   onViewModeChange,
   onContact,
 }) => {
+  useEffect(() => {
+    updateMetaTags(PROJECT_SEO['france-vae']);
+    return () => updateMetaTags(DEFAULT_SEO);
+  }, []);
+
   const [lang, setLang] = useState<'en' | 'fr'>(propLang || 'fr');
   // Map external viewMode to internal
   const initialViewMode = propViewMode === 'gallery' ? 'gallery' : 'caseStudy';

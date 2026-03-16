@@ -10,6 +10,7 @@ import EnhancedLightbox from '../../components/media/EnhancedLightbox';
 import PagesJaunesExecutive from '../../components/case-studies/PagesJaunesExecutive';
 import PagesJaunesFull from '../../components/case-studies/PagesJaunesFull';
 import CaseStudyTOCSidebar from '../../components/CaseStudyTOCSidebar';
+import { PROJECT_SEO, DEFAULT_SEO, updateMetaTags } from '../../utils/seo';
 
 // TOC Sections for Full case study
 const TOC_SECTIONS = {
@@ -516,6 +517,11 @@ export const PagesJaunesPage: React.FC<PagesJaunesPageProps> = ({
   onContact,
   onNavigateToProject,
 }) => {
+  useEffect(() => {
+    updateMetaTags(PROJECT_SEO['pagesjaunes']);
+    return () => updateMetaTags(DEFAULT_SEO);
+  }, []);
+
   const galleryItems = getPagesJaunesGalleryItems(lang);
   const allImages = getAllImages(lang);
 

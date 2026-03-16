@@ -28,6 +28,7 @@ import PrototypeCard from '../../components/prototype/PrototypeCard';
 import PrototypeCarousel from '../../components/prototype/PrototypeCarousel';
 import PrototypeLightbox from '../../components/prototype/PrototypeLightbox';
 import GallerySidebar from '../../components/GallerySidebar';
+import { PROJECT_SEO, DEFAULT_SEO, updateMetaTags } from '../../utils/seo';
 import {
   PROTOTYPE_MAP,
   GALLERY_CATEGORIES,
@@ -486,6 +487,11 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
   lang = 'fr',
   onContact,
 }) => {
+  useEffect(() => {
+    updateMetaTags(PROJECT_SEO['sqool-classe']);
+    return () => updateMetaTags(DEFAULT_SEO);
+  }, []);
+
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeSection, setActiveSection] = useState('top');
   const [showNav, setShowNav] = useState(true);

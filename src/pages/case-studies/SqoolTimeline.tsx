@@ -4,6 +4,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Layers, Clock } from 'lucide-react';
+import { PROJECT_SEO, DEFAULT_SEO, updateMetaTags } from '../../utils/seo';
 
 
 interface SqoolTimelineProps {
@@ -159,6 +160,11 @@ const PHASE_COLORS = [
 ];
 
 export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang, isDark, onImageClick: _onImageClick }) => {
+  useEffect(() => {
+    updateMetaTags(PROJECT_SEO['sqool']);
+    return () => updateMetaTags(DEFAULT_SEO);
+  }, []);
+
   const [viewMode, setViewMode] = useState<'timeline' | 'carousel'>('timeline');
   const [activePhase, setActivePhase] = useState(0);
   const [hoveredPhase, setHoveredPhase] = useState<number | null>(null);

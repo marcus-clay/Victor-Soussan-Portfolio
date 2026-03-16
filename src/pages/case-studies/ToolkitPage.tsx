@@ -22,6 +22,7 @@ import { GalleryItem, getToolkitGalleryItems } from '../../components/BentoGalle
 import ToolkitExecutive from '../../components/case-studies/ToolkitExecutive';
 import EnhancedLightbox from '../../components/media/EnhancedLightbox';
 import CaseStudyTOCSidebar from '../../components/CaseStudyTOCSidebar';
+import { PROJECT_SEO, DEFAULT_SEO, updateMetaTags } from '../../utils/seo';
 
 interface ToolkitPageProps {
   onClose: () => void;
@@ -1022,6 +1023,11 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
   lang = 'en',
   onContact,
 }) => {
+  useEffect(() => {
+    updateMetaTags(PROJECT_SEO['toolkit']);
+    return () => updateMetaTags(DEFAULT_SEO);
+  }, []);
+
   const t = TOOLKIT_TRANSLATIONS[lang];
   const sections = TOC_SECTIONS[lang];
   const isDark = systemTheme === 'dark';
