@@ -12,7 +12,7 @@ export default defineConfig({
           // Vendor chunks - separate heavy dependencies
           'vendor-react': ['react', 'react-dom'],
           'vendor-framer': ['framer-motion'],
-          'vendor-icons': ['lucide-react', '@phosphor-icons/react'],
+          'vendor-icons': ['@phosphor-icons/react'],
           // Heavy libs are already lazy loaded via dynamic imports
         }
       }
