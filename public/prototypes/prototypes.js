@@ -335,7 +335,9 @@
     // Reset ellipse overlay
     const ell = document.getElementById('ellipse-overlay');
     if (ell) { ell.classList.add('hidden'); gsap.set(ell, { opacity: 0 }); }
-    // Reset nav controls
+    // Reset nav controls (elements may not exist in embed mode)
+    const navPrev = document.getElementById('proto-nav-prev');
+    const navNext = document.getElementById('proto-nav-next');
     if (navPrev) navPrev.disabled = true;
     if (navNext) navNext.disabled = true;
     resetPreScreen();
@@ -4715,11 +4717,23 @@
     gsap.globalTimeline.pause();
   }
   window.addEventListener('message', (e) => {
-    if (e.data === 'play') gsap.globalTimeline.resume();
-    if (e.data === 'pause') gsap.globalTimeline.pause();
-    if (e.data === 'restart') {
-      gsap.globalTimeline.restart();
+    if (e.data === 'play') {
+      // Resume both the global timeline and the current prototype timeline
       gsap.globalTimeline.resume();
+      if (currentTL) currentTL.resume();
+    }
+    if (e.data === 'pause') {
+      gsap.globalTimeline.pause();
+      if (currentTL) currentTL.pause();
+    }
+    if (e.data === 'restart') {
+      // Re-navigate to current prototype for a clean restart
+      if (currentProto) {
+        navigateTo(currentProto);
+      } else {
+        gsap.globalTimeline.restart();
+        gsap.globalTimeline.resume();
+      }
     }
   });
 
