@@ -9,7 +9,9 @@
     { "source": "/contact", "destination": "/" },
     { "source": "/quote", "destination": "/" },
     { "source": "/presentation", "destination": "/" },
-    { "source": "/home-v2", "destination": "/" }
+    { "source": "/home-v2", "destination": "/" },
+    { "source": "/prototypes", "destination": "/prototypes/index.html" },
+    { "source": "/prototypes/", "destination": "/prototypes/index.html" }
   ],
   "headers": [
     {
@@ -41,7 +43,7 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.clarity.ms; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; media-src 'self' https:; frame-src 'self' https://ui-motion-five.vercel.app https://www.youtube.com https://player.vimeo.com; connect-src 'self' https://api.emailjs.com https://res.cloudinary.com"
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.clarity.ms https://cdnjs.cloudflare.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; media-src 'self' https:; frame-src 'self' https://www.youtube.com https://player.vimeo.com; connect-src 'self' https://api.emailjs.com https://res.cloudinary.com"
         }
       ]
     }
