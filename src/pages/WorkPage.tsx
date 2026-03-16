@@ -220,7 +220,10 @@ const ProjectCard: React.FC<{
           </div>
 
           {/* Project Image - Device mockup with zoom effect - larger size */}
-          <img loading="lazy"
+          <img
+            loading={index < 6 ? "eager" : "lazy"}
+            decoding="async"
+            fetchPriority={index < 3 ? "high" : "auto"}
             src={project.hoverImage
               ? project.hoverImage
               : project.coverImage.startsWith('/') ? project.coverImage : `/images/${project.coverImage}`}

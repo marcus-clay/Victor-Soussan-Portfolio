@@ -23,14 +23,9 @@ import {
   Quote,
   User,
   Calendar,
-  FileText,
   Copy,
   Send,
   Images,
-  Upload,
-  CheckSquare,
-  Square,
-  Clock,
   Check,
   ArrowRight,
   Sun,
@@ -41,7 +36,7 @@ import {
   FolderOpen,
   Link2
 } from 'lucide-react';
-import { Rocket, Buildings, HandHeart, ArrowsClockwise, ChatCircleDots, ChartLineUp, Envelope, Phone, LinkedinLogo, Globe } from '@phosphor-icons/react';
+import { Rocket, Buildings, HandHeart, Envelope, Phone, LinkedinLogo, Globe } from '@phosphor-icons/react';
 import { SIGNALS, FEATURED_SIGNAL_IDS, CATEGORY_COLORS as SIGNAL_CATEGORY_COLORS, CATEGORY_LABELS as SIGNAL_CATEGORY_LABELS } from './data/signalsData';
 import type { Signal } from './data/signalsData';
 import { TRANSLATIONS } from './data/translations';
@@ -1771,6 +1766,14 @@ const App: React.FC = () => {
           <div className="mt-12 text-center">
             <button
               onClick={() => openModalWithUrl('/work')}
+              onMouseEnter={() => {
+                import('./pages/WorkPage');
+                // Preload first 3 project thumbnails
+                ['/images/francevae/thumbnail_france_vae_02.webp', '/images/toolkit/thumbnail_toolkit_02.webp', '/images/dailymotion/thubmnail_dailymotion_03.webp'].forEach(src => {
+                  const img = new Image();
+                  img.src = src;
+                });
+              }}
               className="group px-8 py-3 rounded-full font-medium transition-colors inline-flex items-center shadow-sm hover:shadow-md bg-[#2D5CF3] text-white hover:bg-[#2450d9]"
             >
               {content.projects.view_all} <ArrowUpRight size={18} className="ml-2 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
