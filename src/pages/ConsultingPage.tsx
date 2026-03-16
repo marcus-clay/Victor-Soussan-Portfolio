@@ -20,7 +20,6 @@ import {
   CheckCircle2,
   ArrowRight,
   Mail,
-  Clock,
   ChevronDown,
   ExternalLink,
 } from 'lucide-react';
@@ -31,11 +30,6 @@ import {
   SCENARIOS,
   REFERENCES,
   DELIVERY_MODES,
-  type LifecyclePhase,
-  type Offering,
-  type Scenario,
-  type Reference,
-  type DeliveryMode,
 } from '../data/consultingData';
 
 type Language = 'en' | 'fr';
@@ -49,7 +43,7 @@ interface ConsultingPageProps {
 }
 
 // Icon mapping
-const ICON_MAP: Record<string, React.FC<{ size?: number; className?: string }>> = {
+const ICON_MAP: Record<string, React.FC<{ size?: number | string; className?: string }>> = {
   Target, Users, Zap, RefreshCw, Search, Layers, Calendar, Briefcase,
 };
 
@@ -253,8 +247,9 @@ const ConsultingPage: React.FC<ConsultingPageProps> = ({ systemTheme, lang, onBa
   const isEn = lang === 'en';
 
   // Helper to get localized field
-  const l = useCallback(<T extends Record<string, unknown>>(obj: T, field: string): string => {
-    const key = `${field}_${lang}` as keyof T;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const l = useCallback((obj: any, field: string): string => {
+    const key = `${field}_${lang}`;
     return (obj[key] as string) || '';
   }, [lang]);
 

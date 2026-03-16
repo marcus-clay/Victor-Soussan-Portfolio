@@ -2,7 +2,7 @@
 // A focused deep-dive into the wearable design project
 
 import React, { useState, useRef, useEffect } from 'react';
-import { motion, useMotionValue, useTransform, useSpring, AnimatePresence } from 'framer-motion';
+import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import { smoothScrollTo } from '../../utils/smoothScroll';
 import {
   X,
@@ -11,11 +11,8 @@ import {
   Briefcase,
   Layers,
   Building2,
-  Watch,
   CheckCircle2,
   ArrowRight,
-  Users,
-  Smartphone,
   Quote
 } from 'lucide-react';
 import { GalleryItem } from '../../components/BentoGallery';

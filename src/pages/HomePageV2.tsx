@@ -1,31 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
   ChevronRight,
   ArrowUpRight,
   Mail,
   Linkedin,
-  CheckCircle2,
   Calendar,
   Zap,
-  Lightbulb,
   Users,
   Layers,
   Target,
-  Box,
   Cpu,
-  Smartphone,
   PenTool,
-  Figma,
   Quote,
   Star,
-  Play,
   ArrowRight,
   Sparkles,
   Globe,
   Sun,
   Moon,
-  Monitor,
   X
 } from 'lucide-react';
 
@@ -168,7 +161,7 @@ const HomePageV2: React.FC<HomePageV2Props> = ({ onNavigateHome }) => {
   ];
 
   // Testimonials
-  const testimonials = [
+  const testimonials: { author: string; role: string; content: string; image: string; linkedin?: string }[] = [
     {
       author: 'François Khoury',
       role: 'CEO @ Toolkit.ac',

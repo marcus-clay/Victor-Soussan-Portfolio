@@ -7,7 +7,6 @@ import { smoothScrollTo } from '../../utils/smoothScroll';
 import {
   ChevronRight,
   ChevronLeft,
-  ChevronDown,
   X,
   Play,
   Quote,
@@ -752,7 +751,8 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
   const [videoStartTime, setVideoStartTime] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const brandCarouselRef = useRef<HTMLDivElement>(null);
-  const videoRefs = useRef<{ [key: string]: HTMLVideoElement | null }>({});
+  // videoRefs reserved for future use
+  void useRef<{ [key: string]: HTMLVideoElement | null }>({});
   const [canScrollBrandLeft, setCanScrollBrandLeft] = useState(false);
   const [canScrollBrandRight, setCanScrollBrandRight] = useState(true);
   const sections = TOC_SECTIONS[lang];

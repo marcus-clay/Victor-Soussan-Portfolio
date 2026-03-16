@@ -24,14 +24,13 @@ import {
   CheckCircle2,
   Smartphone,
   Map,
-  UserPlus,
   Search,
   Heart,
   Navigation
 } from 'lucide-react';
 
 // TOC Sections for navigation
-const getSections = (lang: 'en' | 'fr') => [
+const getSections = (_lang: 'en' | 'fr') => [
   { id: 'top', label: 'Top', labelFr: 'Haut' },
   { id: 'context', label: 'Context', labelFr: 'Contexte' },
   { id: 'role', label: 'My Role', labelFr: 'Mon Rôle' },
@@ -834,7 +833,7 @@ const PagesJaunesExecutive: React.FC<PagesJaunesExecutiveProps> = ({
   systemTheme,
   lang,
   onImageClick,
-  onViewFull,
+  onViewFull: _onViewFull,
   onContact,
 }) => {
   const isDark = systemTheme === 'dark';

@@ -196,7 +196,7 @@ export const BentoGallery: React.FC<BentoGalleryProps> = ({
   onClose,
   title,
   items,
-  systemTheme,
+  systemTheme: _systemTheme,
   lang = 'en',
   hasCaseStudy = false,
   onOpenCaseStudy,

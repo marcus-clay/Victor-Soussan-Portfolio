@@ -5,22 +5,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Layers, Clock } from 'lucide-react';
 
-interface TimelinePhase {
-  id: string;
-  period: string;
-  year: string;
-  title: string;
-  subtitle: string;
-  description: string;
-  color: string;
-  colorLight: string;
-  items: {
-    title: string;
-    description?: string;
-    icon?: string;
-  }[];
-  images?: string[];
-}
 
 interface SqoolTimelineProps {
   lang: 'en' | 'fr';
@@ -174,7 +158,7 @@ const PHASE_COLORS = [
   { color: '#06B6D4', colorLight: '#22D3EE', gradient: 'from-cyan-500 to-cyan-600' },
 ];
 
-export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang, isDark, onImageClick }) => {
+export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang, isDark, onImageClick: _onImageClick }) => {
   const [viewMode, setViewMode] = useState<'timeline' | 'carousel'>('timeline');
   const [activePhase, setActivePhase] = useState(0);
   const [hoveredPhase, setHoveredPhase] = useState<number | null>(null);

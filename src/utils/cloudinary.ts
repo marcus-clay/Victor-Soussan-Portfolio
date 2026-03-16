@@ -1,3 +1,5 @@
+/// <reference types="vite/client" />
+
 /**
  * Cloudinary Image Optimization Utility
  *

@@ -66,7 +66,7 @@ const ProgressiveVideo: React.FC<ProgressiveVideoProps> = ({
   const [loadProgress, setLoadProgress] = useState(0);
   const [isReady, setIsReady] = useState(false);
   const [hasError, setHasError] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [_isPlaying, setIsPlaying] = useState(false);
   const [showOverlay, setShowOverlay] = useState(!autoPlay && showPlayButton);
 
   // Intersection Observer for lazy loading

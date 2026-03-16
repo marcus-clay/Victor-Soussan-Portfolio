@@ -427,7 +427,7 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick }) => {
 export const ConnectPage: React.FC<ConnectPageProps> = ({
   onClose,
   systemTheme,
-  onToggleTheme,
+  onToggleTheme: _onToggleTheme,
   viewMode,
   onViewModeChange,
   lang = 'en',
@@ -453,7 +453,8 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [videoStartTime, setVideoStartTime] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
-  const videoRefs = useRef<{ [key: string]: HTMLVideoElement | null }>({});
+  // videoRefs reserved for future use
+  void useRef<{ [key: string]: HTMLVideoElement | null }>({});
   const sections = TOC_SECTIONS[lang];
   const isDark = systemTheme === 'dark';
 

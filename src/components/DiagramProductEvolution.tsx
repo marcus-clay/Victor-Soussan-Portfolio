@@ -166,9 +166,9 @@ function FocusView({ activePhase, setActivePhase, handleNext, handlePrev }: any)
       
       {/* Progress Indicator */}
       <div className="flex items-center gap-3 mb-12">
-        {PHASES.map((phase, idx) => (
+        {PHASES.map((_phase, idx) => (
           <div key={idx} className="flex items-center">
-            <button 
+            <button
               onClick={() => setActivePhase(idx)}
               className={`h-2 rounded-full transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] ${idx === activePhase ? 'w-12 bg-[#1D1D1F]' : 'w-2 bg-[#D1D1D6] hover:bg-[#86868B]'}`}
             />
@@ -272,9 +272,9 @@ function FocusView({ activePhase, setActivePhase, handleNext, handlePrev }: any)
 function OverviewView() {
   return (
     <div className="w-full max-w-7xl px-6 flex flex-col md:flex-row gap-6 items-stretch justify-center h-[600px] animate-in fade-in zoom-in-95 duration-700">
-      {PHASES.map((phase, idx) => (
-        <div 
-          key={phase.id} 
+      {PHASES.map((phase, _idx) => (
+        <div
+          key={phase.id}
           className="flex-1 bg-white rounded-[24px] shadow-sm border border-[#E5E5E5] p-8 flex flex-col hover:shadow-xl transition-all duration-500 hover:-translate-y-2 group"
         >
            <div className="mb-6 flex items-center justify-between">

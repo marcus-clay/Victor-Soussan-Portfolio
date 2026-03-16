@@ -2,7 +2,7 @@
 // Displays the Dailymotion project case study with portfolio styling
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { motion, AnimatePresence, useMotionValue, useTransform, useSpring, PanInfo } from 'framer-motion';
+import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import { smoothScrollTo } from '../../utils/smoothScroll';
 import {
   X,
@@ -432,32 +432,6 @@ const allImagesData: MediaItem[] = [
   { src: '/images/dailymotion/design_system_-_component_library2x.webp', captionKey: 'uiKitComponents', type: 'image' },
 ];
 
-// Apple-style spring transition
-const springTransition = {
-  type: 'spring' as const,
-  stiffness: 300,
-  damping: 30,
-  mass: 1,
-};
-
-// Slide transition for carousel
-const slideVariants = {
-  enter: (direction: number) => ({
-    x: direction > 0 ? '100%' : '-100%',
-    opacity: 0,
-    scale: 0.95,
-  }),
-  center: {
-    x: 0,
-    opacity: 1,
-    scale: 1,
-  },
-  exit: (direction: number) => ({
-    x: direction < 0 ? '100%' : '-100%',
-    opacity: 0,
-    scale: 0.95,
-  }),
-};
 
 // Gallery Card component with Apple TV-style 3D tilt effect
 interface GalleryCardProps {
@@ -535,7 +509,7 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick }) => {
 export const DailymotionPage: React.FC<DailymotionPageProps> = ({
   onClose,
   systemTheme,
-  onToggleTheme,
+  onToggleTheme: _onToggleTheme,
   viewMode,
   onViewModeChange,
   lang = 'en',
@@ -560,8 +534,8 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
   const [showNav, setShowNav] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
-  const [lightboxZoomed, setLightboxZoomed] = useState(false);
-  const [[page, direction], setPage] = useState([0, 0]);
+  const [, setLightboxZoomed] = useState(false);
+  const [, setPage] = useState([0, 0]);
   // Sync caseStudyMode with external viewMode
   const initialCaseStudyMode = viewMode === 'executive' ? 'executive' : (viewMode === 'caseStudy' ? 'full' : 'executive');
   const [caseStudyMode, setCaseStudyMode] = useState<'executive' | 'full'>(initialCaseStudyMode);
@@ -578,9 +552,6 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
     }
   }, [viewMode]);
 
-  // Motion values for parallax effect
-  const dragX = useMotionValue(0);
-  const parallaxX = useTransform(dragX, [-300, 0, 300], [30, 0, -30]);
 
   // Scroll to top when mode changes
   useEffect(() => {
@@ -689,17 +660,6 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [lightboxOpen, paginate]);
 
-  // Handle drag end for swipe navigation
-  const handleDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    const swipeThreshold = 50;
-    const swipeVelocity = 500;
-
-    if (info.offset.x < -swipeThreshold || info.velocity.x < -swipeVelocity) {
-      if (lightboxIndex < allImages.length - 1) paginate(1);
-    } else if (info.offset.x > swipeThreshold || info.velocity.x > swipeVelocity) {
-      if (lightboxIndex > 0) paginate(-1);
-    }
-  };
 
   return (
     <motion.div

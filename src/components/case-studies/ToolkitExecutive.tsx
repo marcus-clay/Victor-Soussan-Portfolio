@@ -977,7 +977,7 @@ const ToolkitExecutive: React.FC<ToolkitExecutiveProps> = ({
   systemTheme,
   lang,
   onImageClick,
-  onViewFull,
+  onViewFull: _onViewFull,
   onContact
 }) => {
   const isDark = systemTheme === 'dark';

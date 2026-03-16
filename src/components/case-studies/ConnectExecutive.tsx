@@ -192,6 +192,7 @@ const TRANSLATIONS = {
       role: 'UX Researcher'
     },
     cta: {
+      title: 'Interested in similar results?',
       viewFull: 'View full case study',
       visitUnowhy: 'Visit UNOWHY',
       getInTouch: 'Get in touch'
@@ -352,6 +353,7 @@ const TRANSLATIONS = {
       role: 'UX Researcher'
     },
     cta: {
+      title: 'Intéressé par des résultats similaires ?',
       viewFull: 'Voir l\'étude complète',
       visitUnowhy: 'Visiter UNOWHY',
       getInTouch: 'Me contacter'
@@ -1009,7 +1011,7 @@ const ConnectExecutive: React.FC<ConnectExecutiveProps> = ({
   systemTheme,
   lang,
   onImageClick,
-  onViewFull,
+  onViewFull: _onViewFull,
   onContact,
 }) => {
   const isDark = systemTheme === 'dark';

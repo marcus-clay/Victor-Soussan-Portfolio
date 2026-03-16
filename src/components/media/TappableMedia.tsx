@@ -167,13 +167,13 @@ const TappableMedia = ({
   }, [isOpen, isZoomed, controls]);
 
   // Handle drag for swipe-to-close
-  const handleDrag = useCallback((event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+  const handleDrag = useCallback((_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     if (isZoomed) return;
     setDragY(info.offset.y);
   }, [isZoomed]);
 
   // Handle drag end
-  const handleDragEnd = useCallback((event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+  const handleDragEnd = useCallback((_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     if (isZoomed) return;
 
     const threshold = 100;
@@ -188,7 +188,7 @@ const TappableMedia = ({
   }, [isZoomed, handleClose, controls]);
 
   // Handle pan when zoomed
-  const handlePan = useCallback((event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+  const handlePan = useCallback((_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     if (!isZoomed) return;
     setPosition(prev => ({
       x: prev.x + info.delta.x,

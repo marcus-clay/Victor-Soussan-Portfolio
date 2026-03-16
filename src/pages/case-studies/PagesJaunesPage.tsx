@@ -1,7 +1,7 @@
 // PagesJaunes Case Study Page - Wrapper for PagesJaunesExecutive component
 // Displays the PagesJaunes project case study with portfolio styling
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import { smoothScrollTo } from '../../utils/smoothScroll';
 import { X, Play } from 'lucide-react';
@@ -408,7 +408,7 @@ const getAllImages = (lang: 'en' | 'fr') => {
   }));
 
   // Additional images used in Full case study and Executive that aren't in gallery
-  const additionalImages = [
+  const additionalImages: { src: string; type: 'image' | 'video'; caption: string }[] = [
     { src: '/images/thumbnail_pagesjaunes_sp_tablette.webp', type: 'image', caption: 'PagesJaunes Mobile Apps' },
     { src: '/images/thumbnail-pagesjaunes-multidevices.webp', type: 'image', caption: 'PagesJaunes Multi-devices' },
     // Itinerary images with special characters - need both encoded and regular versions
@@ -509,7 +509,7 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick }) => {
 export const PagesJaunesPage: React.FC<PagesJaunesPageProps> = ({
   onClose,
   systemTheme,
-  onToggleTheme,
+  onToggleTheme: _onToggleTheme,
   viewMode,
   onViewModeChange,
   lang = 'en',

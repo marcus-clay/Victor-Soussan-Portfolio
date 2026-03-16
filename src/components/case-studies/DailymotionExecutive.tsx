@@ -154,6 +154,7 @@ const TRANSLATIONS = {
       ]
     },
     cta: {
+      title: 'Interested in similar results?',
       viewFull: 'View full case study',
       visitDailymotion: 'Visit Dailymotion',
       getInTouch: 'Get in touch'
@@ -275,6 +276,7 @@ const TRANSLATIONS = {
       ]
     },
     cta: {
+      title: 'Intéressé par des résultats similaires ?',
       viewFull: 'Voir l\'étude complète',
       visitDailymotion: 'Visiter Dailymotion',
       getInTouch: 'Me contacter'
@@ -875,7 +877,7 @@ const DailymotionExecutive: React.FC<DailymotionExecutiveProps> = ({
   systemTheme,
   lang,
   onImageClick,
-  onViewFull,
+  onViewFull: _onViewFull,
   onContact,
 }) => {
   const isDark = systemTheme === 'dark';

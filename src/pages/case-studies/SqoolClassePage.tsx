@@ -480,7 +480,7 @@ const TOC_SECTIONS = {
 const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
   onClose,
   systemTheme,
-  onToggleTheme,
+  onToggleTheme: _onToggleTheme,
   viewMode,
   onViewModeChange,
   lang = 'fr',

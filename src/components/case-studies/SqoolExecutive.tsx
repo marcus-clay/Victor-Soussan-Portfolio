@@ -1055,7 +1055,7 @@ const SqoolExecutive: React.FC<SqoolExecutiveProps> = ({
   systemTheme,
   lang,
   onImageClick,
-  onViewFull,
+  onViewFull: _onViewFull,
   onContact,
 }) => {
   const isDark = systemTheme === 'dark';

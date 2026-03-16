@@ -15,7 +15,7 @@ const PrototypeCarousel: React.FC<PrototypeCarouselProps> = ({
   prototypes,
   isDark,
   lang,
-  onCardClick,
+  onCardClick: _onCardClick,
 }) => {
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const [activeIndex, setActiveIndex] = useState<number>(0);

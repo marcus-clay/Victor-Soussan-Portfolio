@@ -28,7 +28,6 @@ import {
   Bot,
   CheckCircle2,
   Target,
-  Zap,
   ChevronDown,
   Search,
   Quote

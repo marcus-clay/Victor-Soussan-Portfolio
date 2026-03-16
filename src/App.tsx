@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
-import { motion, AnimatePresence, LayoutGroup, useScroll, useTransform, useSpring } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform, useSpring } from 'framer-motion';
 import { EMAILJS_CONFIG } from './config/emailConfig';
 import {
   ChevronRight,
@@ -20,18 +20,13 @@ import {
   Menu as MenuIcon,
   X,
   Download,
-  BookOpen,
   ScrollText,
   Zap,
   Settings,
   Lightbulb,
   Quote,
   User,
-  FlaskConical,
-  Bot,
-  Palette,
   Calendar,
-  GraduationCap,
   FileText,
   Copy,
   Send,
@@ -45,7 +40,6 @@ import {
   Sun,
   Moon,
   Monitor,
-  ChevronDown,
   Home,
   MessageCircle,
   FolderOpen,
@@ -57,7 +51,7 @@ import type { Signal } from './data/signalsData';
 import { TRANSLATIONS } from './data/translations';
 import type { Language } from './data/translations';
 import { getTestimonials } from './data/testimonialsData';
-import type { Testimonial, Category } from './data/testimonialsData';
+import type { Category } from './data/testimonialsData';
 import { LAB_PREVIEWS } from './data/labData';
 import { PROJECT_SEO, DEFAULT_SEO, updateMetaTags } from './utils/seo';
 
@@ -195,7 +189,7 @@ const ScrollExpandCard: React.FC<{
   systemTheme: 'light' | 'dark';
   onClick: () => void;
   children: React.ReactNode;
-}> = ({ project, index, shouldAnimate, startScale, systemTheme, onClick, children }) => {
+}> = ({ index, shouldAnimate, startScale, systemTheme, onClick, children }) => {
   const cardRef = useRef<HTMLDivElement>(null);
 
   // Track scroll progress relative to the card's position
@@ -547,7 +541,7 @@ const App: React.FC = () => {
   const projects = getProjects(lang);
   const testimonials = getTestimonials(lang);
 
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [, setIsMenuOpen] = useState(false);
   const [isMobileTabMenuOpen, setIsMobileTabMenuOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
@@ -580,7 +574,7 @@ const App: React.FC = () => {
   const [showExecutiveFarewell, setShowExecutiveFarewell] = useState(false);
   const [themeMode, setThemeMode] = useState<'system' | 'light' | 'dark'>('light');
   const [systemTheme, setSystemTheme] = useState<'light' | 'dark'>('light');
-  const [accessibilityMode, setAccessibilityMode] = useState<AccessibilityMode>('normal');
+  const [accessibilityMode] = useState<AccessibilityMode>('normal');
   const [isResumeOpen, setIsResumeOpen] = useState(initialPath === '/resume');
   const [resumeLang, setResumeLang] = useState<'fr' | 'en'>('fr');
   const [copiedResume, setCopiedResume] = useState(false);
@@ -591,7 +585,7 @@ const App: React.FC = () => {
   const [iframeModalUrl, setIframeModalUrl] = useState<string | null>(null);
   // Unified project modal state: which project is open and which view mode
   // Also tracks initial media index if URL points to specific image/video
-  const [initialMediaIndex, setInitialMediaIndex] = useState<number | null>(null);
+  const [_initialMediaIndex, setInitialMediaIndex] = useState<number | null>(null);
   const [openProject, setOpenProject] = useState<{
     project: 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'sqool-classe' | 'france-vae' | 'pagesjaunes' | 'androidwear';
     viewMode: 'caseStudy' | 'gallery' | 'executive';
@@ -639,8 +633,7 @@ const App: React.FC = () => {
     : null;
   const anyModalOpen = activePageId !== null;
 
-  const [showTooltip, setShowTooltip] = useState(false);
-  const tooltipTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [_showTooltip, setShowTooltip] = useState(false);
   const [isSimpleContactOpen, setIsSimpleContactOpen] = useState(false);
   const [isContactFormOpen, setIsContactFormOpen] = useState(false);
   const [simpleContactForm, setSimpleContactForm] = useState({
@@ -667,7 +660,6 @@ const App: React.FC = () => {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [selectedServiceGallery, setSelectedServiceGallery] = useState<string | null>(null);
-  const [expandedService, setExpandedService] = useState<string | null>('execution');
 
   // Quote Generator State
   const [isQuoteGeneratorOpen, setIsQuoteGeneratorOpen] = useState(initialPath === '/quote');
@@ -694,7 +686,7 @@ const App: React.FC = () => {
   const [quoteSuccess, setQuoteSuccess] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState(0);
+  const [_uploadProgress, setUploadProgress] = useState(0);
 
   // Testimonial Filters
   const [activeCategory, setActiveCategory] = useState<Category>('All');
@@ -6469,7 +6461,7 @@ ${contactForm.message}`;
               onProjectClick={(projectId) => {
                 closeModalWithUrl(setIsConsultingOpen);
                 setOpenedFromIndex(true);
-                openProjectWithUrl(projectId, 'executive');
+                openProjectWithUrl(projectId as 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'sqool-classe' | 'france-vae' | 'pagesjaunes' | 'androidwear', 'executive');
               }}
             />
           </Suspense>

@@ -269,21 +269,6 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
     setDragY(info.offset.y);
   }, [isZoomed, isMobile]);
 
-  // Handle drag end - close if swiped down enough
-  const handleDragYEnd = useCallback((_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    if (isZoomed) return;
-
-    const threshold = 100;
-    const velocity = info.velocity.y;
-
-    if ((info.offset.y > threshold || velocity > 500) && isMobile) {
-      handleClose();
-    } else if (isMobile) {
-      setDragY(0);
-      controls.start({ y: 0 });
-    }
-  }, [isZoomed, isMobile, handleClose, controls]);
-
   // Combined drag end handler for mobile - determines intent from gesture direction
   const handleCombinedDragEnd = useCallback((_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     if (isZoomed) return;
@@ -318,26 +303,6 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
     dragX.set(0);
   }, [isZoomed, currentIndex, images.length, onIndexChange, isMobile, handleClose, controls, dragX]);
 
-  // Handle horizontal drag for navigation (mobile non-zoomed)
-  const handleDragXEnd = useCallback((_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    if (isZoomed) return;
-
-    const threshold = 50;
-    const velocity = 500;
-
-    if (info.offset.x < -threshold || info.velocity.x < -velocity) {
-      if (currentIndex < images.length - 1) {
-        setSlideDirection('left');
-        onIndexChange(currentIndex + 1);
-      }
-    } else if (info.offset.x > threshold || info.velocity.x > velocity) {
-      if (currentIndex > 0) {
-        setSlideDirection('right');
-        onIndexChange(currentIndex - 1);
-      }
-    }
-    dragX.set(0);
-  }, [isZoomed, currentIndex, images.length, onIndexChange, dragX]);
 
   // Handle pan when zoomed (mobile)
   const handlePanWhenZoomed = useCallback((_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {

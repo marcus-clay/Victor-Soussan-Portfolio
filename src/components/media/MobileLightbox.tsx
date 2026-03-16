@@ -153,13 +153,13 @@ const MobileLightbox = ({
   }, [isOpen, isZoomed, controls]);
 
   // Handle drag for swipe-to-close
-  const handleDrag = useCallback((event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+  const handleDrag = useCallback((_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     if (isZoomed) return;
     setDragY(info.offset.y);
   }, [isZoomed]);
 
   // Handle drag end - close if swiped down enough
-  const handleDragEnd = useCallback((event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+  const handleDragEnd = useCallback((_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     if (isZoomed) return;
 
     const threshold = 100;
@@ -174,7 +174,7 @@ const MobileLightbox = ({
   }, [isZoomed, handleClose, controls]);
 
   // Handle pan when zoomed
-  const handlePan = useCallback((event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+  const handlePan = useCallback((_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     if (!isZoomed) return;
     setPosition(prev => ({
       x: prev.x + info.delta.x,
@@ -211,7 +211,7 @@ const MobileLightbox = ({
           type === 'video' ? (
             <video src={src} poster={poster} className={className} playsInline muted />
           ) : (
-            <img loading="lazy" src={src} alt={alt} className={className} loading="lazy" />
+            <img src={src} alt={alt} className={className} loading="lazy" />
           )
         )}
       </div>

@@ -1016,7 +1016,7 @@ const ProductEvolutionDiagram: React.FC<{
 export const ToolkitPage: React.FC<ToolkitPageProps> = ({
   onClose,
   systemTheme,
-  onToggleTheme,
+  onToggleTheme: _onToggleTheme,
   viewMode,
   onViewModeChange,
   lang = 'en',

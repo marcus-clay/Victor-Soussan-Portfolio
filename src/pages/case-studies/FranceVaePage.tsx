@@ -2,7 +2,7 @@
 // Displays the France VAE project case study with portfolio styling
 
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion';
+import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import { smoothScrollTo } from '../../utils/smoothScroll';
 import { X } from 'lucide-react';
 import CaseStudyTOCSidebar from '../../components/CaseStudyTOCSidebar';
@@ -254,7 +254,7 @@ const FranceVaePage: React.FC<FranceVaePageProps> = ({
   const [activeSection, setActiveSection] = useState('top');
   const [showNav, setShowNav] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  const t = FRANCEVAE_TRANSLATIONS[lang];
+  void FRANCEVAE_TRANSLATIONS[lang];
   const sections = TOC_SECTIONS[lang];
   const isDark = systemTheme === 'dark';
 

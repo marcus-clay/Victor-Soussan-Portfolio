@@ -742,7 +742,7 @@ const FranceVaeExecutive: React.FC<FranceVaeExecutiveProps> = ({
   systemTheme,
   lang,
   onImageClick,
-  onViewFull,
+  onViewFull: _onViewFull,
   onContact,
 }) => {
   const isDark = systemTheme === 'dark';
