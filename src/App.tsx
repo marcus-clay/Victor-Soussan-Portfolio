@@ -950,16 +950,16 @@ const App: React.FC = () => {
               {content.nav.bio}
             </button>
 
-            {/* Gallery - Opens modal */}
+            {/* Blog - Opens modal */}
             <button
-              onClick={() => openModalWithUrl('/visual-archive')}
+              onClick={() => openModalWithUrl('/signals')}
               className={`px-3 py-2 transition-colors duration-200 flex items-center whitespace-nowrap ${
-                activePageId === 'visual-archive'
+                activePageId === 'signals'
                   ? systemTheme === 'dark' ? 'text-white' : 'text-black'
                   : systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-black'
               }`}
             >
-              {content.nav.archive}
+              {content.nav.blog}
             </button>
 
             {/* Language Switch */}
