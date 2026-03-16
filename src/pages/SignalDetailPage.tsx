@@ -82,7 +82,6 @@ const SignalDetailPage: React.FC<Props> = ({ signalId, systemTheme, lang, onBack
   const bodyShort = lang === 'en' ? signal.body_en : signal.body_fr;
   const rawContent = bodyLong || `<p>${bodyShort}</p>`;
   const { tocItems, processedHtml } = parseAndInjectTOC(rawContent);
-  const colors = CATEGORY_COLORS[signal.category];
   const gradient = GRADIENT_MAP[signal.category] || GRADIENT_MAP.ai;
 
   const formattedDate = new Date(signal.date + '-01').toLocaleDateString(
@@ -193,27 +192,19 @@ const SignalDetailPage: React.FC<Props> = ({ signalId, systemTheme, lang, onBack
 
           {/* Center column: Article */}
           <article ref={articleRef} className="flex-1 min-w-0 max-w-3xl mx-auto pt-6 md:pt-8">
-            {/* Hero gradient with border-radius inside content */}
-            <div className={`relative w-full h-40 md:h-52 rounded-2xl overflow-hidden bg-gradient-to-br ${gradient} mb-8`}>
+            {/* Hero gradient with title */}
+            <div className={`relative w-full rounded-2xl overflow-hidden bg-gradient-to-br ${gradient} mb-8 px-6 md:px-10 py-10 md:py-14 flex flex-col justify-end`}>
               <div className="absolute -top-1/2 -right-1/4 w-3/4 h-full rounded-full bg-white/15 blur-3xl" />
-              <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-black/20 to-transparent" />
+              <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black/25 to-transparent" />
+              <div className="relative z-10">
+                <span className="inline-block px-3 py-1.5 rounded-full text-xs font-semibold bg-white/20 text-white backdrop-blur-sm mb-4">
+                  {CATEGORY_LABELS[signal.category][lang]}
+                </span>
+                <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-[-0.03em] leading-tight text-white">
+                  {title}
+                </h1>
+              </div>
             </div>
-
-            {/* Category badge */}
-            <div className="mb-5">
-              <span className={`inline-block px-3 py-1.5 rounded-full text-xs font-semibold ${
-                isDark ? colors.bgDark : colors.bg
-              } ${colors.text}`}>
-                {CATEGORY_LABELS[signal.category][lang]}
-              </span>
-            </div>
-
-            {/* Title */}
-            <h1 className={`text-2xl sm:text-3xl md:text-4xl font-bold tracking-[-0.03em] leading-tight mb-5 ${
-              isDark ? 'text-white' : 'text-gray-900'
-            }`}>
-              {title}
-            </h1>
 
             {/* Meta row */}
             <div className={`flex flex-wrap items-center gap-4 mb-8 md:mb-10 pb-8 md:pb-10 border-b ${
@@ -300,33 +291,27 @@ const SignalDetailPage: React.FC<Props> = ({ signalId, systemTheme, lang, onBack
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 {relatedSignals.map(rs => {
-                  const rsGradient = GRADIENT_MAP[rs.category] || GRADIENT_MAP.ai;
                   const rsColors = CATEGORY_COLORS[rs.category];
                   return (
                     <button
                       key={rs.id}
                       onClick={() => onOpenSignal ? onOpenSignal(rs.id) : null}
-                      className={`text-left rounded-xl overflow-hidden transition-all duration-200 hover:shadow-lg cursor-pointer ${
+                      className={`text-left rounded-xl transition-all duration-200 hover:shadow-lg cursor-pointer p-4 ${
                         isDark
                           ? 'bg-[#1D1D1F] ring-1 ring-white/5 hover:ring-white/15'
                           : 'bg-white ring-1 ring-gray-200/60 hover:ring-gray-300/80 shadow-sm'
                       }`}
                     >
-                      <div className={`h-20 bg-gradient-to-br ${rsGradient} relative overflow-hidden`}>
-                        <div className="absolute -top-1/2 -right-1/4 w-3/4 h-full rounded-full bg-white/15 blur-3xl" />
-                      </div>
-                      <div className="p-3">
-                        <span className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-semibold mb-2 ${
-                          isDark ? rsColors.bgDark : rsColors.bg
-                        } ${rsColors.text}`}>
-                          {CATEGORY_LABELS[rs.category][lang]}
-                        </span>
-                        <p className={`text-sm font-bold leading-snug line-clamp-2 ${
-                          isDark ? 'text-white' : 'text-gray-900'
-                        }`}>
-                          {lang === 'en' ? rs.title_en : rs.title_fr}
-                        </p>
-                      </div>
+                      <span className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-semibold mb-2 ${
+                        isDark ? rsColors.bgDark : rsColors.bg
+                      } ${rsColors.text}`}>
+                        {CATEGORY_LABELS[rs.category][lang]}
+                      </span>
+                      <p className={`text-sm font-bold leading-snug line-clamp-2 ${
+                        isDark ? 'text-white' : 'text-gray-900'
+                      }`}>
+                        {lang === 'en' ? rs.title_en : rs.title_fr}
+                      </p>
                     </button>
                   );
                 })}
@@ -355,40 +340,34 @@ const SignalDetailPage: React.FC<Props> = ({ signalId, systemTheme, lang, onBack
               </p>
               <div className="space-y-4">
                 {relatedSignals.map(rs => {
-                  const rsGradient = GRADIENT_MAP[rs.category] || GRADIENT_MAP.ai;
                   const rsColors = CATEGORY_COLORS[rs.category];
                   return (
                     <button
                       key={rs.id}
                       onClick={() => onOpenSignal ? onOpenSignal(rs.id) : null}
-                      className={`group/related text-left w-full rounded-xl overflow-hidden transition-all duration-200 hover:shadow-lg cursor-pointer ${
+                      className={`group/related text-left w-full rounded-xl transition-all duration-200 hover:shadow-lg cursor-pointer p-3 ${
                         isDark
                           ? 'bg-[#1D1D1F] ring-1 ring-white/5 hover:ring-white/15'
                           : 'bg-white ring-1 ring-gray-200/60 hover:ring-gray-300/80 shadow-sm'
                       }`}
                     >
-                      <div className={`h-16 bg-gradient-to-br ${rsGradient} relative overflow-hidden`}>
-                        <div className="absolute -top-1/2 -right-1/4 w-3/4 h-full rounded-full bg-white/15 blur-3xl" />
-                      </div>
-                      <div className="p-3">
-                        <span className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-semibold mb-1.5 ${
-                          isDark ? rsColors.bgDark : rsColors.bg
-                        } ${rsColors.text}`}>
-                          {CATEGORY_LABELS[rs.category][lang]}
-                        </span>
-                        <p className={`text-xs font-bold leading-snug line-clamp-3 transition-colors ${
-                          isDark ? 'text-white group-hover/related:text-blue-400' : 'text-gray-900 group-hover/related:text-[#2D5CF3]'
+                      <span className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-semibold mb-1.5 ${
+                        isDark ? rsColors.bgDark : rsColors.bg
+                      } ${rsColors.text}`}>
+                        {CATEGORY_LABELS[rs.category][lang]}
+                      </span>
+                      <p className={`text-xs font-bold leading-snug line-clamp-3 transition-colors ${
+                        isDark ? 'text-white group-hover/related:text-blue-400' : 'text-gray-900 group-hover/related:text-[#2D5CF3]'
+                      }`}>
+                        {lang === 'en' ? rs.title_en : rs.title_fr}
+                      </p>
+                      <div className="flex items-center gap-1 mt-2">
+                        <span className={`text-[11px] font-medium ${
+                          isDark ? 'text-blue-400' : 'text-[#2D5CF3]'
                         }`}>
-                          {lang === 'en' ? rs.title_en : rs.title_fr}
-                        </p>
-                        <div className="flex items-center gap-1 mt-2">
-                          <span className={`text-[11px] font-medium ${
-                            isDark ? 'text-blue-400' : 'text-[#2D5CF3]'
-                          }`}>
-                            {lang === 'en' ? 'Read' : 'Lire'}
-                          </span>
-                          <ArrowRight size={10} className={isDark ? 'text-blue-400' : 'text-[#2D5CF3]'} />
-                        </div>
+                          {lang === 'en' ? 'Read' : 'Lire'}
+                        </span>
+                        <ArrowRight size={10} className={isDark ? 'text-blue-400' : 'text-[#2D5CF3]'} />
                       </div>
                     </button>
                   );
