@@ -666,6 +666,7 @@ const App: React.FC = () => {
     if (signalMatch) {
       const sId = signalMatch[1];
       Object.values(MODAL_ROUTES).forEach(r => r.setter(false));
+      setGuideView(null);
       setOpenSignalId(sId);
       const signal = SIGNALS.find(s => s.id === sId);
       const signalTitle = signal ? (lang === 'en' ? signal.title_en : signal.title_fr) : 'Signal';
@@ -679,6 +680,7 @@ const App: React.FC = () => {
       // Close all other modals first to prevent stacking
       Object.values(MODAL_ROUTES).forEach(r => r.setter(false));
       setOpenSignalId(null);
+      setGuideView(null);
       route.setter(true);
       const urlWithLang = `${path}?lang=${lang}`;
       window.history.pushState({ modal: path, lang }, '', urlWithLang);
@@ -935,6 +937,8 @@ const App: React.FC = () => {
             onClick={() => {
               if (anyModalOpen) {
                 Object.values(MODAL_ROUTES).forEach(r => r.setter(false));
+                setOpenSignalId(null);
+                setGuideView(null);
                 window.history.pushState({ lang }, '', `/?lang=${lang}`);
                 updateMetaTags(DEFAULT_SEO);
               } else {

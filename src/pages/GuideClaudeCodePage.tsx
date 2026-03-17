@@ -5,6 +5,7 @@
  */
 
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   ArrowLeft, ArrowRight, Clock, Calendar, List,
@@ -227,23 +228,26 @@ const GuideChapter: React.FC<{
 
   return (
     <>
-      {/* Lightbox */}
-      <AnimatePresence>
-        {lightboxSrc && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[200] flex items-center justify-center bg-black/80 backdrop-blur-sm cursor-zoom-out p-4 md:p-10"
-            onClick={() => setLightboxSrc(null)}
-          >
-            <button className="absolute top-4 right-4 p-2 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors" onClick={() => setLightboxSrc(null)}>
-              <X size={24} />
-            </button>
-            <motion.img initial={{ scale: 0.9 }} animate={{ scale: 1 }} exit={{ scale: 0.9 }} src={lightboxSrc} alt="" className="max-w-full max-h-full rounded-xl object-contain" onClick={(e) => e.stopPropagation()} />
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Lightbox — portaled to body to escape z-index stacking context */}
+      {createPortal(
+        <AnimatePresence>
+          {lightboxSrc && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/85 backdrop-blur-sm cursor-zoom-out p-4 md:p-10"
+              onClick={() => setLightboxSrc(null)}
+            >
+              <button className="absolute top-4 right-4 p-2 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors z-10" onClick={() => setLightboxSrc(null)}>
+                <X size={24} />
+              </button>
+              <motion.img initial={{ scale: 0.9 }} animate={{ scale: 1 }} exit={{ scale: 0.9 }} src={lightboxSrc} alt="" className="max-w-full max-h-full rounded-xl object-contain" onClick={(e) => e.stopPropagation()} />
+            </motion.div>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
 
       {/* ─── Left sidebar: CaseStudyTOCSidebar (section TOC) ─── */}
       <CaseStudyTOCSidebar
