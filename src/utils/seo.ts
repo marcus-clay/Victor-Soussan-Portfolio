@@ -80,7 +80,8 @@ export const injectJsonLd = (projectId: string, seo: SeoMeta): (() => void) => {
   return () => script.remove();
 };
 
-export const updateMetaTags = (seo: SeoMeta): void => {
+export const updateMetaTags = (seo: SeoMeta, path?: string): void => {
+  const baseUrl = 'https://www.victorsoussan.fr';
   document.title = seo.title;
 
   const metaDesc = document.querySelector('meta[name="description"]');
@@ -93,7 +94,10 @@ export const updateMetaTags = (seo: SeoMeta): void => {
   if (ogDesc) ogDesc.setAttribute('content', seo.description);
 
   const ogImage = document.querySelector('meta[property="og:image"]');
-  if (ogImage) ogImage.setAttribute('content', `https://www.victorsoussan.fr${seo.image}`);
+  if (ogImage) ogImage.setAttribute('content', `${baseUrl}${seo.image}`);
+
+  const ogUrl = document.querySelector('meta[property="og:url"]');
+  if (ogUrl) ogUrl.setAttribute('content', path ? `${baseUrl}${path}` : baseUrl);
 
   const twTitle = document.querySelector('meta[name="twitter:title"]');
   if (twTitle) twTitle.setAttribute('content', seo.title);
@@ -102,5 +106,18 @@ export const updateMetaTags = (seo: SeoMeta): void => {
   if (twDesc) twDesc.setAttribute('content', seo.description);
 
   const twImage = document.querySelector('meta[name="twitter:image"]');
-  if (twImage) twImage.setAttribute('content', `https://www.victorsoussan.fr${seo.image}`);
+  if (twImage) twImage.setAttribute('content', `${baseUrl}${seo.image}`);
+
+  // Update canonical URL
+  const canonical = document.querySelector('link[rel="canonical"]');
+  if (canonical) canonical.setAttribute('href', path ? `${baseUrl}${path}` : baseUrl);
+
+  // Update hreflang alternates
+  const hreflangEn = document.querySelector('link[hreflang="en"]');
+  const hreflangFr = document.querySelector('link[hreflang="fr"]');
+  const hreflangDefault = document.querySelector('link[hreflang="x-default"]');
+  const currentPath = path || '/';
+  if (hreflangEn) hreflangEn.setAttribute('href', `${baseUrl}${currentPath}?lang=en`);
+  if (hreflangFr) hreflangFr.setAttribute('href', `${baseUrl}${currentPath}?lang=fr`);
+  if (hreflangDefault) hreflangDefault.setAttribute('href', `${baseUrl}${currentPath}`);
 };

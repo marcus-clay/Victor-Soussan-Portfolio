@@ -288,6 +288,9 @@ const WorkPage: React.FC<WorkPageProps> = ({
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.15 }}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="work-page-title"
       className={`fixed inset-0 md:top-16 z-[100] overflow-y-auto ${isDark ? 'bg-[#0a0a0a]' : 'bg-[#FCFCFD]'}`}
     >
       {/* Header - mobile only, desktop uses persistent nav */}
@@ -298,13 +301,14 @@ const WorkPage: React.FC<WorkPageProps> = ({
       }`}>
         <div className="w-full pl-6 pr-2.5 h-16 flex items-center justify-between">
           {/* Title on left - Same style as Homepage nav */}
-          <span className={`font-semibold text-lg tracking-[-0.02em] ${isDark ? 'text-white' : 'text-gray-900'}`}>
+          <span id="work-page-title" className={`font-semibold text-lg tracking-[-0.02em] ${isDark ? 'text-white' : 'text-gray-900'}`}>
             {t.title}
           </span>
 
           {/* Close Button on right - same size as lightbox with larger hitbox */}
           <button
             onClick={onBack}
+            aria-label="Close"
             className={`relative p-3 rounded-full transition-colors before:absolute before:inset-[-12px] before:content-[''] ${
               isDark ? 'text-gray-400 hover:text-white hover:bg-white/10' : 'text-gray-500 hover:text-gray-900 hover:bg-black/5'
             }`}

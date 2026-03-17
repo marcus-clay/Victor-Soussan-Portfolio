@@ -119,6 +119,9 @@ export const IframeModal: React.FC<IframeModalProps> = ({
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="iframe-modal-title"
       className={`fixed inset-0 z-[100] flex flex-col ${isDark ? 'bg-[#0a0a0a]' : 'bg-white'}`}
     >
       {/* Header - Glass effect */}
@@ -131,6 +134,7 @@ export const IframeModal: React.FC<IframeModalProps> = ({
           {/* Left - Title */}
           <div className="flex-1">
             <h1
+              id="iframe-modal-title"
               className={`text-lg md:text-xl font-bold truncate ${
                 isDark ? 'text-white' : 'text-gray-900'
               }`}

@@ -560,7 +560,8 @@ const App: React.FC = () => {
     setOpenProject({ project: projectId, viewMode });
     // Update meta tags for SEO
     const seo = PROJECT_SEO[projectId];
-    if (seo) updateMetaTags(seo);
+    const projectPath = `/project/${projectId}/${viewMode}`;
+    if (seo) updateMetaTags(seo, projectPath);
     if (pushHistory) {
       const url = getProjectUrl(projectId, viewMode);
       window.history.pushState({ project: projectId, viewMode }, '', url);
@@ -647,7 +648,7 @@ const App: React.FC = () => {
       setOpenSignalId(null);
       setGuideView('index');
       window.history.pushState({ guide: 'index', lang }, '', `/guide/claude-code?lang=${lang}`);
-      updateMetaTags({ title: 'Guide Claude Code pour les designers | Victor Soussan', description: 'Guide complet pour les designers : prototypes interactifs, pages déployées, documentation de design system, le tout sans apprendre à coder.', image: '/images/guide-claude-code/hero-cover.png' });
+      updateMetaTags({ title: 'Guide Claude Code pour les designers | Victor Soussan', description: 'Guide complet pour les designers : prototypes interactifs, pages déployées, documentation de design system, le tout sans apprendre à coder.', image: '/images/guide-claude-code/hero-cover.png' }, '/guide/claude-code');
       return;
     }
     const guideChapterMatch = path.match(/^\/guide\/claude-code\/(.+)$/);
@@ -657,7 +658,7 @@ const App: React.FC = () => {
       setOpenSignalId(null);
       setGuideView(slug);
       window.history.pushState({ guide: slug, lang }, '', `${path}?lang=${lang}`);
-      updateMetaTags({ title: `Guide Claude Code | Victor Soussan`, description: 'Guide Claude Code pour les designers.', image: '/images/guide-claude-code/hero-cover.png' });
+      updateMetaTags({ title: `Guide Claude Code | Victor Soussan`, description: 'Guide Claude Code pour les designers.', image: '/images/guide-claude-code/hero-cover.png' }, path);
       return;
     }
 
@@ -671,7 +672,7 @@ const App: React.FC = () => {
       const signal = SIGNALS.find(s => s.id === sId);
       const signalTitle = signal ? (lang === 'en' ? signal.title_en : signal.title_fr) : 'Signal';
       window.history.pushState({ signalId: sId, lang }, '', `${path}?lang=${lang}`);
-      updateMetaTags({ title: `${signalTitle} | Victor Soussan`, description: signal ? (lang === 'en' ? signal.body_en : signal.body_fr).substring(0, 160) : '', image: '/images/og_victor_soussan.webp' });
+      updateMetaTags({ title: `${signalTitle} | Victor Soussan`, description: signal ? (lang === 'en' ? signal.body_en : signal.body_fr).substring(0, 160) : '', image: '/images/og_victor_soussan.webp' }, path);
       return;
     }
 
@@ -684,14 +685,14 @@ const App: React.FC = () => {
       route.setter(true);
       const urlWithLang = `${path}?lang=${lang}`;
       window.history.pushState({ modal: path, lang }, '', urlWithLang);
-      updateMetaTags({ title: route.title, description: route.description, image: '/images/og_victor_soussan.webp' });
+      updateMetaTags({ title: route.title, description: route.description, image: '/images/og_victor_soussan.webp' }, path);
     }
   };
 
   const closeModalWithUrl = (setterFn: (v: boolean) => void) => {
     setterFn(false);
     window.history.pushState({ lang }, '', `/?lang=${lang}`);
-    updateMetaTags(DEFAULT_SEO);
+    updateMetaTags(DEFAULT_SEO, '/');
   };
 
   // Handle browser back/forward buttons
@@ -922,6 +923,13 @@ const App: React.FC = () => {
         ? 'bg-[#0a0a0a] text-white'
         : 'bg-[#F9F9F9] text-[#1D1D1F]'
     }`}>
+      {/* Skip to main content - accessibility */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[9999] focus:bg-[#2D5CF3] focus:text-white focus:px-4 focus:py-2 focus:rounded-lg focus:text-sm focus:font-medium focus:shadow-lg"
+      >
+        Skip to main content
+      </a>
 
       {/* Navigation - Full width with glass effect */}
       {/* z-[150] when a modal page is open (above z-[100] pages), z-50 otherwise (case studies cover it) */}
@@ -1359,6 +1367,9 @@ const App: React.FC = () => {
           </motion.div>
         </motion.div>
       </div>
+
+      {/* Main content area */}
+      <main id="main-content">
 
       {/* Hero Section */}
       <header className="relative min-h-[85vh] flex flex-col justify-center px-4 md:px-10 py-24 md:py-32 overflow-hidden">
@@ -3795,6 +3806,8 @@ ${contactForm.message}`;
           </div>
         </div>
       </section>
+
+      </main>
 
       {/* Footer - Jumpshare Style */}
       <footer className={`py-16 px-6 md:px-10 border-t ${

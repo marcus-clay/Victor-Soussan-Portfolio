@@ -321,6 +321,9 @@ const AboutPage: React.FC<AboutPageProps> = ({ systemTheme, lang, onBack, onCont
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.15 }}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="about-page-title"
       className={`fixed inset-0 md:top-16 z-[100] flex flex-col ${
         isDark ? 'bg-[#0a0a0a]' : 'bg-[#F9F9F9]'
       }`}
@@ -330,13 +333,14 @@ const AboutPage: React.FC<AboutPageProps> = ({ systemTheme, lang, onBack, onCont
         isDark ? 'bg-[#0a0a0a]/80' : 'bg-white/80'
       }`}>
         <div className="w-full px-6 h-16 flex items-center justify-between">
-          <h2 className={`font-semibold text-base sm:text-lg tracking-[-0.02em] ${
+          <h2 id="about-page-title" className={`font-semibold text-base sm:text-lg tracking-[-0.02em] ${
             isDark ? 'text-white' : 'text-gray-900'
           }`}>
             {t.page_title}
           </h2>
           <button
             onClick={onBack}
+            aria-label="Close"
             className={`relative p-3 flex items-center justify-center rounded-full transition-colors cursor-pointer before:absolute before:inset-[-12px] before:content-[''] ${
               isDark
                 ? 'text-gray-400 hover:text-white hover:bg-white/10'

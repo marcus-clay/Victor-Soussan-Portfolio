@@ -288,6 +288,9 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ systemTheme, lang, onBack, 
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.2 }}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="services-page-title"
       className={`fixed inset-0 md:top-16 z-[100] overflow-y-auto ${
         isDark ? 'bg-[#0a0a0a]' : 'bg-[#FCFCFD]'
       }`}
@@ -297,11 +300,12 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ systemTheme, lang, onBack, 
         isDark ? 'bg-[#0a0a0a]/80' : 'bg-[#FCFCFD]/80'
       }`}>
         <div className="w-full pl-6 pr-2.5 h-16 flex items-center justify-between">
-          <span className={`font-semibold text-lg tracking-[-0.02em] ${isDark ? 'text-white' : 'text-gray-900'}`}>
+          <span id="services-page-title" className={`font-semibold text-lg tracking-[-0.02em] ${isDark ? 'text-white' : 'text-gray-900'}`}>
             {t.page_title}
           </span>
           <button
             onClick={onBack}
+            aria-label="Close"
             className={`relative p-3 rounded-full transition-colors cursor-pointer before:absolute before:inset-[-12px] before:content-[''] ${
               isDark ? 'text-gray-400 hover:text-white hover:bg-white/10' : 'text-gray-500 hover:text-gray-900 hover:bg-black/5'
             }`}

@@ -135,7 +135,7 @@ export default function QuoteGeneratorModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[300] flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[300] flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="quote-modal-title">
       {/* Backdrop */}
       <motion.div
         initial={{ opacity: 0 }}
@@ -180,7 +180,7 @@ export default function QuoteGeneratorModal({
 
                 {/* Title & Step */}
                 <div>
-                  <h2 className={`text-xl font-bold ${
+                  <h2 id="quote-modal-title" className={`text-xl font-bold ${
                     systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
                   }`}>
                     {lang === 'en' ? 'Project Estimate' : 'Estimation de Projet'}
@@ -196,6 +196,7 @@ export default function QuoteGeneratorModal({
               {/* Close Button */}
               <button
                 onClick={handleClose}
+                aria-label="Close"
                 className={`relative p-3 rounded-full transition-all duration-200 before:absolute before:inset-[-12px] before:content-[''] ${
                   systemTheme === 'dark'
                     ? 'bg-white/10 hover:bg-white/20 text-white'
