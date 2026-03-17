@@ -12,7 +12,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     : 'Senior Product Design Lead with 15+ years of experience. Specialized in Design Systems, UX Research, and digital transformation.'
 
   return {
-    title: 'Victor Soussan | Product Design Lead',
+    title: { absolute: 'Victor Soussan | Product Design Lead' },
     description,
     alternates: {
       canonical: `https://www.victorsoussan.fr/${lang}`,
@@ -29,12 +29,12 @@ export default async function HomePage({ params }: Props) {
   const lang = langParam === 'fr' ? 'fr' : 'en'
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className="min-h-screen bg-[#F9F9F9]">
       <div className="max-w-4xl mx-auto px-6 py-24">
-        <h1 className="text-4xl font-bold tracking-[-0.03em] mb-6">
+        <h1 className="text-4xl font-bold tracking-[-0.03em] mb-6 text-gray-900">
           Victor Soussan
         </h1>
-        <p className="text-xl text-gray-400 leading-relaxed mb-8">
+        <p className="text-xl text-gray-600 leading-relaxed mb-8">
           {lang === 'fr'
             ? 'Product Design Lead, 15+ ans'
             : 'Product Design Lead, 15+ years'}
