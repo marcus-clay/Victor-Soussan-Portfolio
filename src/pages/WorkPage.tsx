@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, X } from '@phosphor-icons/react';
 
 type Language = 'en' | 'fr';
+type FilterCategory = 'all' | 'product-design' | 'concept' | 'management' | 'mobile';
 
 interface Project {
   id: string;
@@ -20,6 +21,7 @@ interface Project {
   color: 'blue' | 'gray' | 'indigo' | 'purple' | 'green' | 'orange';
   status?: 'coming-soon' | 'active' | 'concept';
   category?: string;
+  categoryKey: FilterCategory;
   baseScale?: number;
 }
 
@@ -45,7 +47,8 @@ const getProjects = (lang: Language): Project[] => {
       coverImage: "/images/francevae/thumbnail_france_vae_02.webp",
       hoverImage: "/images/francevae/thumbnail_france_vae.webp",
       color: "blue",
-      category: isEn ? "Product Design" : "Design Produit"
+      category: isEn ? "Product Design" : "Design Produit",
+      categoryKey: "product-design"
     },
     {
       id: "toolkit",
@@ -58,7 +61,8 @@ const getProjects = (lang: Language): Project[] => {
       coverImage: "/images/toolkit/thumbnail_toolkit_02.webp",
       hoverImage: "/images/thumbnail-toolkit.webp",
       color: "indigo",
-      category: isEn ? "Product Design" : "Design Produit"
+      category: isEn ? "Product Design" : "Design Produit",
+      categoryKey: "product-design"
     },
     {
       id: "dailymotion",
@@ -71,7 +75,8 @@ const getProjects = (lang: Language): Project[] => {
       coverImage: "/images/dailymotion/thubmnail_dailymotion_03.webp",
       hoverImage: "/images/thumbnail-dailymotion-web-platform.webp",
       color: "gray",
-      category: isEn ? "Product Design" : "Design Produit"
+      category: isEn ? "Product Design" : "Design Produit",
+      categoryKey: "product-design"
     },
     {
       id: "sqool-classe",
@@ -83,7 +88,8 @@ const getProjects = (lang: Language): Project[] => {
         : "Conception d\u2019un outil de supervision de classe en temps r\u00e9el pour 465 \u00e9tablissements en \u00cele-de-France.",
       coverImage: "/images/thumbnail_sqool_classe.webp",
       color: "blue",
-      category: isEn ? "Product Design" : "Design Produit"
+      category: isEn ? "Product Design" : "Design Produit",
+      categoryKey: "product-design"
     },
     {
       id: "connect",
@@ -96,7 +102,8 @@ const getProjects = (lang: Language): Project[] => {
       coverImage: "thumbnail-connect.webp",
       color: "purple",
       status: "concept",
-      category: isEn ? "Concept" : "Concept"
+      category: isEn ? "Concept" : "Concept",
+      categoryKey: "concept"
     },
     {
       id: "sqool",
@@ -108,7 +115,8 @@ const getProjects = (lang: Language): Project[] => {
         : "Transformation d'une boite Hardware en écosystème SaaS EdTech.",
       coverImage: "thumbnail-sqool-suite.webp",
       color: "blue",
-      category: isEn ? "Management" : "Management"
+      category: isEn ? "Management" : "Management",
+      categoryKey: "management"
     },
     {
       id: "pagesjaunes",
@@ -122,6 +130,7 @@ const getProjects = (lang: Language): Project[] => {
       hoverImage: "/images/thumbnail-pagesjaunes-multidevices.webp",
       color: "orange",
       category: isEn ? "Product Design" : "Design Produit",
+      categoryKey: "product-design",
       baseScale: 1.15
     },
     {
@@ -135,6 +144,7 @@ const getProjects = (lang: Language): Project[] => {
       coverImage: "/images/pagesjaunes/Android%20wear/android_wear_thumbnail%2002.webp",
       color: "purple",
       category: isEn ? "Mobile" : "Mobile",
+      categoryKey: "mobile",
       baseScale: 1.15
     }
   ];
@@ -149,11 +159,11 @@ const TRANSLATIONS = {
     concept: 'Concept',
     categories: {
       all: 'All',
-      product: 'Product Design',
-      mobile: 'Mobile',
-      systems: 'Systems',
-      management: 'Management'
-    }
+      'product-design': 'Product Design',
+      concept: 'Concept',
+      management: 'Management',
+      mobile: 'Mobile'
+    } as Record<FilterCategory, string>
   },
   fr: {
     title: '\u00c9tudes de cas',
@@ -163,11 +173,11 @@ const TRANSLATIONS = {
     concept: 'Concept',
     categories: {
       all: 'Tous',
-      product: 'Design Produit',
-      mobile: 'Mobile',
-      systems: 'Systèmes',
-      management: 'Management'
-    }
+      'product-design': 'Design Produit',
+      concept: 'Concept',
+      management: 'Management',
+      mobile: 'Mobile'
+    } as Record<FilterCategory, string>
   }
 };
 
@@ -187,9 +197,11 @@ const ProjectCard: React.FC<{
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.03, duration: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
+      layout
+      initial={{ opacity: 0, scale: 0.97 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.97 }}
+      transition={{ duration: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
       className={`group ${isDisabled ? 'cursor-default' : 'cursor-pointer'}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -272,6 +284,8 @@ const ProjectCard: React.FC<{
 };
 
 // Main WorkPage Component
+const FILTERS: FilterCategory[] = ['all', 'product-design', 'concept', 'management', 'mobile'];
+
 const WorkPage: React.FC<WorkPageProps> = ({
   systemTheme,
   lang,
@@ -281,6 +295,11 @@ const WorkPage: React.FC<WorkPageProps> = ({
   const isDark = systemTheme === 'dark';
   const t = TRANSLATIONS[lang];
   const projects = getProjects(lang);
+  const [activeFilter, setActiveFilter] = useState<FilterCategory>('all');
+
+  const filteredProjects = activeFilter === 'all'
+    ? projects
+    : projects.filter(p => p.categoryKey === activeFilter);
 
   return (
     <motion.div
@@ -294,7 +313,7 @@ const WorkPage: React.FC<WorkPageProps> = ({
       className={`fixed inset-0 md:top-16 z-[100] overflow-y-auto ${isDark ? 'bg-[#0a0a0a]' : 'bg-[#FCFCFD]'}`}
     >
       {/* Header - mobile only, desktop uses persistent nav */}
-      <header className={`sticky top-0 z-40 backdrop-blur-xl md:hidden ${
+      <header className={`sticky top-0 z-50 backdrop-blur-xl md:hidden ${
         isDark
           ? 'bg-[#0a0a0a]/80'
           : 'bg-[#FCFCFD]/80'
@@ -335,18 +354,43 @@ const WorkPage: React.FC<WorkPageProps> = ({
               : '\u00c9tudes de cas en design produit, design systems et prototypage assist\u00e9 par IA.'}
           </p>
         </div>
+
+        {/* Category filters */}
+        <div className="flex flex-wrap gap-2 mb-10">
+          {FILTERS.map(f => (
+            <button
+              key={f}
+              onClick={() => setActiveFilter(f)}
+              aria-pressed={activeFilter === f}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 cursor-pointer ${
+                activeFilter === f
+                  ? isDark
+                    ? 'bg-white text-gray-900'
+                    : 'bg-gray-900 text-white'
+                  : isDark
+                    ? 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-gray-900'
+              }`}
+            >
+              {t.categories[f]}
+            </button>
+          ))}
+        </div>
+
         {/* Projects Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-          {projects.map((project, index) => (
-            <ProjectCard
-              key={project.id}
-              project={project}
-              systemTheme={systemTheme}
-              lang={lang}
-              onClick={() => onProjectClick(project.id)}
-              index={index}
-            />
-          ))}
+          <AnimatePresence mode="popLayout">
+            {filteredProjects.map((project, index) => (
+              <ProjectCard
+                key={project.id}
+                project={project}
+                systemTheme={systemTheme}
+                lang={lang}
+                onClick={() => onProjectClick(project.id)}
+                index={index}
+              />
+            ))}
+          </AnimatePresence>
         </div>
       </main>
 
