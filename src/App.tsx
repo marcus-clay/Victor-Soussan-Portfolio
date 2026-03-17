@@ -325,6 +325,7 @@ const App: React.FC = () => {
     : isServicesPageOpen ? 'services'
     : isConsultingOpen ? 'consulting'
     : isVisualArchiveOpen ? 'visual-archive'
+    : isTestimonialsOpen ? 'testimonials'
     : (isSignalsOpen || !!openSignalId || !!guideView) ? 'signals'
     : isWorkOpen ? 'work'
     : null;
@@ -944,59 +945,34 @@ const App: React.FC = () => {
             Victor Soussan
           </div>
 
-          <div className="hidden md:flex items-center gap-2 text-sm font-medium">
-            {/* Scroll-section items */}
+          <div className="hidden md:flex items-center gap-1 text-sm font-medium">
+            {/* Navigation items - all open dedicated pages */}
             {[
-              { id: 'projects', label: content.nav.projects },
-              { id: 'gallery', label: content.nav.archive },
-              { id: 'services', label: content.nav.services },
-              { id: 'testimonials', label: content.nav.testimonials },
-            ].map((item) => (
-              <button
-                key={item.id}
-                onClick={() => {
-                  if (anyModalOpen) {
-                    Object.values(MODAL_ROUTES).forEach(r => r.setter(false));
-                    window.history.pushState({ lang }, '', `/?lang=${lang}`);
-                    updateMetaTags(DEFAULT_SEO);
-                    setTimeout(() => scrollToSection(item.id), 100);
-                  } else {
-                    scrollToSection(item.id);
-                  }
-                }}
-                className={`px-3 py-2 transition-colors duration-200 flex items-center whitespace-nowrap ${
-                  systemTheme === 'dark'
-                    ? 'text-gray-400 hover:text-white'
-                    : 'text-gray-600 hover:text-black'
-                }`}
-              >
-                {item.label}
-              </button>
-            ))}
-
-            {/* About - Opens modal */}
-            <button
-              onClick={() => openModalWithUrl('/about')}
-              className={`px-3 py-2 transition-colors duration-200 flex items-center whitespace-nowrap ${
-                activePageId === 'about'
-                  ? systemTheme === 'dark' ? 'text-white' : 'text-black'
-                  : systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-black'
-              }`}
-            >
-              {content.nav.bio}
-            </button>
-
-            {/* Blog - Opens modal */}
-            <button
-              onClick={() => openModalWithUrl('/signals')}
-              className={`px-3 py-2 transition-colors duration-200 flex items-center whitespace-nowrap ${
-                activePageId === 'signals'
-                  ? systemTheme === 'dark' ? 'text-white' : 'text-black'
-                  : systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-black'
-              }`}
-            >
-              {content.nav.blog}
-            </button>
+              { id: 'work', route: '/work', label: content.nav.projects },
+              { id: 'visual-archive', route: '/visual-archive', label: content.nav.archive },
+              { id: 'services', route: '/services', label: content.nav.services },
+              { id: 'testimonials', route: '/testimonials', label: content.nav.testimonials },
+              { id: 'about', route: '/about', label: content.nav.bio },
+              { id: 'signals', route: '/signals', label: content.nav.blog },
+            ].map((item) => {
+              const isActive = activePageId === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => openModalWithUrl(item.route)}
+                  className={`relative px-3 py-2 transition-colors duration-200 flex items-center whitespace-nowrap cursor-pointer ${
+                    isActive
+                      ? systemTheme === 'dark' ? 'text-white' : 'text-black'
+                      : systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-black'
+                  }`}
+                >
+                  {item.label}
+                  {isActive && (
+                    <span className="absolute bottom-0 left-3 right-3 h-[2px] rounded-full bg-[#2D5CF3]" />
+                  )}
+                </button>
+              );
+            })}
 
             {/* Language Switch */}
             <button
@@ -1381,7 +1357,7 @@ const App: React.FC = () => {
       </div>
 
       {/* Hero Section */}
-      <header className="relative min-h-[85vh] flex flex-col justify-center py-24 md:py-32 overflow-hidden">
+      <header className="relative min-h-[85vh] flex flex-col justify-center px-4 md:px-10 py-24 md:py-32 overflow-hidden">
         {/* Static Background - Performance optimized (no JS animation) */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           {/* Gradient blobs only - no animated grid */}
@@ -1405,7 +1381,7 @@ const App: React.FC = () => {
           }`} />
         </div>
 
-        <div className="relative max-w-[1200px] mx-auto z-10 px-4 md:px-10">
+        <div className="relative max-w-[1200px] mx-auto z-10">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-center">
 
             {/* Left: Text Content (2/3) */}
