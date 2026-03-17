@@ -1,0 +1,175 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom scrollbar for webkit */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #D1D5DB;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #9CA3AF;
+}
+
+/* Hide scrollbar completely */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Global button and interactive styles */
+.btn-pill {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-pill:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-pill:active {
+  transform: scale(0.98) translateY(0);
+  transition: all 0.1s ease;
+}
+
+/* Liquid glass effect */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.glass-dark {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Primary button color */
+.accent-blue {
+  background: #0F0F0F;
+}
+
+.accent-blue:hover {
+  background: #1a1a1a;
+}
+
+/* Accessibility Modes */
+.accessibility-contrast * {
+  font-weight: 500 !important;
+}
+
+.accessibility-contrast p,
+.accessibility-contrast span,
+.accessibility-contrast h1,
+.accessibility-contrast h2,
+.accessibility-contrast h3,
+.accessibility-contrast h4,
+.accessibility-contrast h5,
+.accessibility-contrast h6 {
+  text-shadow: 0 0 0.5px currentColor;
+}
+
+.accessibility-contrast .text-gray-400 {
+  color: #6b7280 !important;
+}
+
+.accessibility-contrast .text-gray-500 {
+  color: #374151 !important;
+}
+
+.accessibility-contrast .text-gray-600 {
+  color: #1f2937 !important;
+}
+
+/* Dyslexic-friendly mode */
+.accessibility-dyslexic {
+  font-family: 'OpenDyslexic', 'Comic Sans MS', 'Arial', sans-serif !important;
+  letter-spacing: 0.05em;
+  word-spacing: 0.1em;
+  line-height: 1.8 !important;
+}
+
+.accessibility-dyslexic * {
+  font-family: inherit !important;
+  letter-spacing: inherit;
+  word-spacing: inherit;
+}
+
+.accessibility-dyslexic p,
+.accessibility-dyslexic span,
+.accessibility-dyslexic li,
+.accessibility-dyslexic td,
+.accessibility-dyslexic div {
+  line-height: 1.8 !important;
+}
+
+.accessibility-dyslexic h1,
+.accessibility-dyslexic h2,
+.accessibility-dyslexic h3 {
+  letter-spacing: 0.08em;
+}
+
+/* Print styles for resume */
+@media print {
+  @page {
+    size: A4;
+    margin: 1.5cm;
+  }
+
+  body * {
+    visibility: hidden;
+  }
+
+  #resume-print-content,
+  #resume-print-content * {
+    visibility: visible;
+  }
+
+  #resume-print-content {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    background: white !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  * {
+    box-shadow: none !important;
+    border-radius: 0 !important;
+  }
+
+  section {
+    page-break-inside: avoid;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+  }
+
+  body {
+    font-size: 11pt;
+    line-height: 1.4;
+  }
+}

@@ -4,31 +4,28 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "prerender": "vite build && node scripts/prerender.mjs",
-    "preview": "vite preview"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
     "@phosphor-icons/react": "^2.1.10",
     "framer-motion": "^12.23.24",
     "jspdf": "^3.0.4",
+    "next": "^16.1.7",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-helmet-async": "^3.0.0",
-    "react-router-dom": "^7.13.1"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.58.2",
+    "@types/node": "25.5.0",
     "@types/react": "^18.2.64",
     "@types/react-dom": "^18.2.21",
-    "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.27",
     "postcss": "^8.5.8",
-    "puppeteer": "^24.36.1",
     "tailwindcss": "^3.4.19",
-    "typescript": "^5.2.2",
-    "vite": "^5.1.4"
+    "typescript": "^5.2.2"
   }
 }

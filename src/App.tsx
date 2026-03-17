@@ -58,25 +58,25 @@ const Mail = Envelope;
 const Linkedin = LinkedinLogo;
 
 // Lazy load heavy page components for code splitting
-const ToolkitPage = lazy(() => import('./pages/case-studies/ToolkitPage'));
-const DailymotionPage = lazy(() => import('./pages/case-studies/DailymotionPage'));
-const ConnectPage = lazy(() => import('./pages/case-studies/ConnectPage'));
-const SqoolPage = lazy(() => import('./pages/case-studies/SqoolPage'));
-const SqoolClassePage = lazy(() => import('./pages/case-studies/SqoolClassePage'));
-const FranceVaePage = lazy(() => import('./pages/case-studies/FranceVaePage'));
-const PagesJaunesPage = lazy(() => import('./pages/case-studies/PagesJaunesPage'));
-const AndroidWearPage = lazy(() => import('./pages/case-studies/AndroidWearPage'));
-const ExecutivePage = lazy(() => import('./pages/ExecutivePage'));
-const WorkPage = lazy(() => import('./pages/WorkPage'));
+const ToolkitPage = lazy(() => import('./views/case-studies/ToolkitPage'));
+const DailymotionPage = lazy(() => import('./views/case-studies/DailymotionPage'));
+const ConnectPage = lazy(() => import('./views/case-studies/ConnectPage'));
+const SqoolPage = lazy(() => import('./views/case-studies/SqoolPage'));
+const SqoolClassePage = lazy(() => import('./views/case-studies/SqoolClassePage'));
+const FranceVaePage = lazy(() => import('./views/case-studies/FranceVaePage'));
+const PagesJaunesPage = lazy(() => import('./views/case-studies/PagesJaunesPage'));
+const AndroidWearPage = lazy(() => import('./views/case-studies/AndroidWearPage'));
+const ExecutivePage = lazy(() => import('./views/ExecutivePage'));
+const WorkPage = lazy(() => import('./views/WorkPage'));
 const IframeModal = lazy(() => import('./components/IframeModal'));
-const HomePageV2 = lazy(() => import('./pages/HomePageV2'));
-const ServicesPage = lazy(() => import('./pages/ServicesPage'));
-const VisualArchivePage = lazy(() => import('./pages/VisualArchivePage'));
-const AboutPage = lazy(() => import('./pages/AboutPage'));
-const SignalsPage = lazy(() => import('./pages/SignalsPage'));
-const ConsultingPage = lazy(() => import('./pages/ConsultingPage'));
-const SignalDetailPage = lazy(() => import('./pages/SignalDetailPage'));
-const GuideClaudeCodePage = lazy(() => import('./pages/GuideClaudeCodePage'));
+const HomePageV2 = lazy(() => import('./views/HomePageV2'));
+const ServicesPage = lazy(() => import('./views/ServicesPage'));
+const VisualArchivePage = lazy(() => import('./views/VisualArchivePage'));
+const AboutPage = lazy(() => import('./views/AboutPage'));
+const SignalsPage = lazy(() => import('./views/SignalsPage'));
+const ConsultingPage = lazy(() => import('./views/ConsultingPage'));
+const SignalDetailPage = lazy(() => import('./views/SignalDetailPage'));
+const GuideClaudeCodePage = lazy(() => import('./views/GuideClaudeCodePage'));
 const QuoteGeneratorModal = lazy(() => import('./components/QuoteGeneratorModal'));
 
 // Loading spinner component for lazy loaded pages
@@ -1902,7 +1902,7 @@ const App: React.FC = () => {
             <button
               onClick={() => openModalWithUrl('/work')}
               onMouseEnter={() => {
-                import('./pages/WorkPage');
+                import('./views/WorkPage');
                 // Preload first 3 project thumbnails
                 ['/images/francevae/thumbnail_france_vae_02.webp', '/images/toolkit/thumbnail_toolkit_02.webp', '/images/dailymotion/thubmnail_dailymotion_03.webp'].forEach(src => {
                   const img = new Image();
