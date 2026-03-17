@@ -38,6 +38,7 @@ const nextConfig: NextConfig = {
             "media-src 'self' https:",
             "frame-src 'self' https://www.youtube.com https://player.vimeo.com",
             "connect-src 'self' https://api.emailjs.com https://res.cloudinary.com",
+            "object-src 'none'",
           ].join('; '),
         },
       ],

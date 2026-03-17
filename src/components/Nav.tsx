@@ -95,7 +95,7 @@ export default function Nav({ lang }: { lang: Lang }) {
             {/* Contact button */}
             <Link
               href={`/${lang}/contact`}
-              className="px-5 py-2 text-sm font-medium rounded-full bg-gray-900 text-white hover:bg-gray-800 transition-all shadow-md hover:shadow-lg"
+              className="px-5 py-2 text-sm font-medium rounded-full bg-[#2D5CF3] text-white hover:bg-[#2450d9] transition-all shadow-sm hover:shadow-md"
             >
               {content.contact}
             </Link>
