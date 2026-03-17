@@ -1381,7 +1381,7 @@ const App: React.FC = () => {
       </div>
 
       {/* Hero Section */}
-      <header className="relative min-h-[85vh] flex flex-col justify-center px-4 md:px-10 py-24 md:py-32 overflow-hidden">
+      <header className="relative min-h-[85vh] flex flex-col justify-center py-24 md:py-32 overflow-hidden">
         {/* Static Background - Performance optimized (no JS animation) */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           {/* Gradient blobs only - no animated grid */}
@@ -1405,7 +1405,7 @@ const App: React.FC = () => {
           }`} />
         </div>
 
-        <div className="relative max-w-[1200px] mx-auto z-10">
+        <div className="relative max-w-[1200px] mx-auto z-10 px-4 md:px-10">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-center">
 
             {/* Left: Text Content (2/3) */}
