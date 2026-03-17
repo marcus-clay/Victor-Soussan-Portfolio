@@ -1,28 +1,29 @@
 import type { Metadata } from 'next'
+import SignalsPageWrapper from '@/components/page-wrappers/SignalsPageWrapper'
 
 type Props = { params: Promise<{ lang: string }> }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { lang } = await params
+  const { lang: langParam } = await params
+  const lang = langParam === 'fr' ? 'fr' : 'en'
   return {
-    title: 'Signals',
+    title: lang === 'fr' ? 'Blog' : 'Blog',
+    description: lang === 'fr'
+      ? 'Articles et reflexions sur le product design, le leadership, l\'IA et les methodes de travail.'
+      : 'Articles and insights on product design, leadership, AI and work methodologies.',
     alternates: {
       canonical: `https://www.victorsoussan.fr/${lang}/signals`,
-      languages: { fr: 'https://www.victorsoussan.fr/fr/signals', en: 'https://www.victorsoussan.fr/en/signals' },
+      languages: {
+        fr: 'https://www.victorsoussan.fr/fr/signals',
+        en: 'https://www.victorsoussan.fr/en/signals',
+      },
     },
   }
 }
 
 export default async function SignalsPage({ params }: Props) {
-  const { lang } = await params
-  return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
-      <div className="max-w-4xl mx-auto px-6 py-24">
-        <h1 className="text-3xl font-bold tracking-[-0.02em]">
-          Signals
-        </h1>
-        <p className="mt-4 text-gray-500">Migration in progress</p>
-      </div>
-    </div>
-  )
+  const { lang: langParam } = await params
+  const lang = (langParam === 'fr' ? 'fr' : 'en') as 'en' | 'fr'
+
+  return <SignalsPageWrapper lang={lang} />
 }

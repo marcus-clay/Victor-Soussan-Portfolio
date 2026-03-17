@@ -1,28 +1,29 @@
 import type { Metadata } from 'next'
+import ConsultingPageWrapper from '@/components/page-wrappers/ConsultingPageWrapper'
 
 type Props = { params: Promise<{ lang: string }> }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { lang } = await params
+  const { lang: langParam } = await params
+  const lang = langParam === 'fr' ? 'fr' : 'en'
   return {
-    title: 'Consulting',
+    title: lang === 'fr' ? 'Consulting' : 'Consulting',
+    description: lang === 'fr'
+      ? 'Victor Soussan, consultant senior en design produit. Accompagnement UX, product design et strategie pour B2B, B2G, B2B2C.'
+      : 'Victor Soussan, senior product design consultant. UX, product design and strategy for B2B, B2G, B2B2C.',
     alternates: {
       canonical: `https://www.victorsoussan.fr/${lang}/consulting`,
-      languages: { fr: 'https://www.victorsoussan.fr/fr/consulting', en: 'https://www.victorsoussan.fr/en/consulting' },
+      languages: {
+        fr: 'https://www.victorsoussan.fr/fr/consulting',
+        en: 'https://www.victorsoussan.fr/en/consulting',
+      },
     },
   }
 }
 
 export default async function ConsultingPage({ params }: Props) {
-  const { lang } = await params
-  return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
-      <div className="max-w-4xl mx-auto px-6 py-24">
-        <h1 className="text-3xl font-bold tracking-[-0.02em]">
-          Consulting
-        </h1>
-        <p className="mt-4 text-gray-500">Migration in progress</p>
-      </div>
-    </div>
-  )
+  const { lang: langParam } = await params
+  const lang = (langParam === 'fr' ? 'fr' : 'en') as 'en' | 'fr'
+
+  return <ConsultingPageWrapper lang={lang} />
 }

@@ -33,3 +33,4 @@ out
 # Dev artifacts
 screenshots/
 scripts/screenshot-final.mjs
+tsconfig.tsbuildinfo

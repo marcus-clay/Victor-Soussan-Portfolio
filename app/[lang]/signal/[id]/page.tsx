@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { SIGNALS } from '@/data/signalsData'
+import SignalDetailPageWrapper from '@/components/page-wrappers/SignalDetailPageWrapper'
 
 type Props = { params: Promise<{ lang: string; id: string }> }
 
@@ -16,11 +17,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const title = signal
     ? (lang === 'fr' ? signal.title_fr : signal.title_en)
     : 'Signal'
+  const description = signal
+    ? (lang === 'fr' ? signal.body_fr : signal.body_en)?.slice(0, 160)
+    : ''
+
   return {
     title,
-    description: signal
-      ? (lang === 'fr' ? signal.body_fr : signal.body_en)
-      : '',
+    description,
     alternates: {
       canonical: `https://www.victorsoussan.fr/${lang}/signal/${id}`,
       languages: {
@@ -32,17 +35,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function SignalPage({ params }: Props) {
-  const { lang, id } = await params
+  const { lang: langParam, id } = await params
+  const lang = (langParam === 'fr' ? 'fr' : 'en') as 'en' | 'fr'
   const signal = SIGNALS.find((s) => s.id === id)
-  if (!signal) return <div>Signal not found</div>
-  const title = lang === 'fr' ? signal.title_fr : signal.title_en
 
-  return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
-      <div className="max-w-3xl mx-auto px-6 py-24">
-        <h1 className="text-3xl font-bold tracking-[-0.02em]">{title}</h1>
-        <p className="mt-4 text-gray-500">Migration in progress</p>
+  if (!signal) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <p className="text-gray-500">Signal not found</p>
       </div>
-    </div>
-  )
+    )
+  }
+
+  return <SignalDetailPageWrapper lang={lang} signalId={id} />
 }
