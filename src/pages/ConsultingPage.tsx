@@ -347,10 +347,10 @@ const ConsultingPage: React.FC<ConsultingPageProps> = ({ systemTheme, lang, onBa
       />
 
       {/* Content */}
-      <div className="max-w-7xl mx-auto px-6 py-16 md:py-24">
+      <div className="max-w-[1200px] mx-auto px-6 py-12 md:py-20">
 
         {/* ========== HERO ========== */}
-        <div className="mb-20 md:mb-28">
+        <div className="mb-10 md:mb-14">
           {/* Availability badge */}
           <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium mb-6 ${
             isDark ? 'bg-green-500/10 text-green-400' : 'bg-green-50 text-green-600'
@@ -365,7 +365,7 @@ const ConsultingPage: React.FC<ConsultingPageProps> = ({ systemTheme, lang, onBa
             {t.page_subtitle}
           </h1>
 
-          <p className={`text-lg md:text-xl leading-relaxed max-w-3xl mb-8 ${
+          <p className={`text-base md:text-lg leading-relaxed max-w-2xl mb-8 ${
             isDark ? 'text-gray-400' : 'text-gray-600'
           }`}>
             {t.page_intro}

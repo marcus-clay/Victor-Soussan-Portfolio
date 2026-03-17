@@ -11,8 +11,6 @@ import {
   BookOpen,
   ArrowUpRight,
   ArrowRight,
-  MapPin,
-  Briefcase,
 } from '@phosphor-icons/react';
 
 type Language = 'en' | 'fr';
@@ -351,62 +349,53 @@ const AboutPage: React.FC<AboutPageProps> = ({ systemTheme, lang, onBack, onCont
       </header>
 
       {/* Scrollable content */}
-      <div className={`flex-1 overflow-y-auto px-6 md:px-12 py-8 md:py-12 ${
+      <div className={`flex-1 overflow-y-auto py-12 md:py-20 ${
         isDark ? 'bg-[#0a0a0a]' : 'bg-[#F9F9F9]'
       }`}>
-        <div className="max-w-4xl mx-auto space-y-8">
+        <div className="max-w-[1200px] mx-auto px-6 space-y-16 md:space-y-20">
 
           {/* ------------------------------------------------------------ */}
-          {/* Hero / Intro */}
+          {/* Page Header */}
           {/* ------------------------------------------------------------ */}
-          <div className={`p-8 md:p-10 rounded-3xl border shadow-sm ${
-            isDark ? 'bg-[#1D1D1F] border-white/10' : 'bg-white border-gray-100'
-          }`}>
-            <div className="flex flex-col md:flex-row gap-8 items-start">
-              {/* Portrait */}
-              <div className="w-28 h-28 md:w-36 md:h-36 rounded-2xl overflow-hidden flex-shrink-0 border shadow-sm"
-                style={{ borderColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)' }}
-              >
-                <img
-                  src="/images/photos victor/image_victor_home.png"
-                  alt="Victor Soussan"
-                  className="w-full h-full object-cover object-[center_15%]"
-                />
-              </div>
-              {/* Text */}
-              <div className="flex-1">
-                <h1 className={`text-2xl md:text-3xl font-bold tracking-[-0.02em] mb-1 ${
-                  isDark ? 'text-white' : 'text-gray-900'
-                }`}>
-                  Victor Soussan
-                </h1>
-                <div className={`flex flex-wrap items-center gap-x-4 gap-y-1 text-sm mb-5 ${
-                  isDark ? 'text-gray-400' : 'text-gray-500'
-                }`}>
-                  <span className="flex items-center gap-1.5">
-                    <Briefcase size={14} />
-                    {t.intro_role}
-                  </span>
-                  <span className="flex items-center gap-1.5">
-                    <MapPin size={14} />
-                    {t.intro_location}
-                  </span>
-                </div>
-                <p className={`text-base leading-relaxed ${
-                  isDark ? 'text-gray-300' : 'text-gray-700'
-                }`}>
-                  {t.intro_text}
-                </p>
-              </div>
+          <div className="mb-10 md:mb-14">
+            <h1 className={`text-3xl sm:text-4xl md:text-5xl font-bold tracking-[-0.03em] mb-4 ${
+              isDark ? 'text-white' : 'text-gray-900'
+            }`}>
+              {lang === 'en' ? 'About' : '\u00c0 propos'}
+            </h1>
+            <p className={`text-base md:text-lg leading-relaxed max-w-2xl ${
+              isDark ? 'text-gray-400' : 'text-gray-600'
+            }`}>
+              {t.intro_role} · {t.intro_location}
+            </p>
+          </div>
+
+          {/* ------------------------------------------------------------ */}
+          {/* Intro */}
+          {/* ------------------------------------------------------------ */}
+          <div className="flex flex-col md:flex-row gap-8 items-start">
+            {/* Portrait */}
+            <div className="w-28 h-28 md:w-36 md:h-36 rounded-2xl overflow-hidden flex-shrink-0">
+              <img
+                src="/images/photos victor/image_victor_home.png"
+                alt="Victor Soussan"
+                className="w-full h-full object-cover object-[center_15%]"
+              />
+            </div>
+            {/* Text */}
+            <div className="flex-1">
+              <p className={`text-base md:text-lg leading-relaxed ${
+                isDark ? 'text-gray-300' : 'text-gray-700'
+              }`}>
+                {t.intro_text}
+              </p>
             </div>
           </div>
 
           {/* ------------------------------------------------------------ */}
           {/* Career Chapters */}
           {/* ------------------------------------------------------------ */}
-          <div className={`p-8 md:p-10 rounded-3xl border shadow-sm ${
-            isDark ? 'bg-[#1D1D1F] border-white/10' : 'bg-white border-gray-100'
-          }`}>
+          <div>
             <h2 className={`text-2xl font-bold mb-8 ${
               isDark ? 'text-white' : 'text-gray-900'
             }`}>{t.career_title}</h2>
@@ -461,11 +450,9 @@ const AboutPage: React.FC<AboutPageProps> = ({ systemTheme, lang, onBack, onCont
           {/* ------------------------------------------------------------ */}
           {/* Current Practice */}
           {/* ------------------------------------------------------------ */}
-          <div className={`p-8 rounded-3xl border shadow-sm ${
-            isDark ? 'bg-[#1D1D1F] border-white/10' : 'bg-white border-gray-100'
-          }`}>
+          <div>
             <div className="flex items-center gap-3 mb-4">
-              <div className={`w-2 h-2 rounded-full bg-green-500 animate-pulse`} />
+              <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
               <h2 className={`text-xl font-bold ${
                 isDark ? 'text-white' : 'text-gray-900'
               }`}>{t.practice_title}</h2>
@@ -480,9 +467,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ systemTheme, lang, onBack, onCont
           {/* ------------------------------------------------------------ */}
           {/* Tools & Stack */}
           {/* ------------------------------------------------------------ */}
-          <div className={`p-8 rounded-3xl border shadow-sm ${
-            isDark ? 'bg-[#1D1D1F] border-white/10' : 'bg-white border-gray-100'
-          }`}>
+          <div>
             <h2 className={`text-xl font-bold mb-6 ${
               isDark ? 'text-white' : 'text-gray-900'
             }`}>{t.tools_title}</h2>
@@ -514,9 +499,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ systemTheme, lang, onBack, onCont
           {/* ------------------------------------------------------------ */}
           {/* Education */}
           {/* ------------------------------------------------------------ */}
-          <div className={`p-8 rounded-3xl border shadow-sm ${
-            isDark ? 'bg-[#1D1D1F] border-white/10' : 'bg-white border-gray-100'
-          }`}>
+          <div>
             <h2 className={`text-xl font-bold mb-6 ${
               isDark ? 'text-white' : 'text-gray-900'
             }`}>{t.education_title}</h2>
@@ -549,9 +532,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ systemTheme, lang, onBack, onCont
           {/* ------------------------------------------------------------ */}
           {/* Resource Toolkit */}
           {/* ------------------------------------------------------------ */}
-          <div className={`p-8 rounded-3xl border shadow-sm ${
-            isDark ? 'bg-[#1D1D1F] border-white/10' : 'bg-white border-gray-100'
-          }`}>
+          <div>
             <div className={`flex items-center mb-6 ${isDark ? 'text-white' : 'text-gray-900'}`}>
               <BookOpen size={24} className="mr-3 text-blue-600" />
               <h2 className="text-xl font-bold">{t.toolkit_title}</h2>
@@ -596,9 +577,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ systemTheme, lang, onBack, onCont
           {/* ------------------------------------------------------------ */}
           {/* CTA */}
           {/* ------------------------------------------------------------ */}
-          <div className={`p-8 md:p-10 rounded-3xl border shadow-sm text-center ${
-            isDark ? 'bg-[#1D1D1F] border-white/10' : 'bg-white border-gray-100'
-          }`}>
+          <div className={`py-12 border-t ${isDark ? 'border-white/10' : 'border-gray-200'}`}>
             <h2 className={`text-2xl font-bold mb-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>
               {t.cta_title}
             </h2>

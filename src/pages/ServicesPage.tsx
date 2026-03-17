@@ -322,17 +322,14 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ systemTheme, lang, onBack, 
       />
 
       {/* Content */}
-      <div className="max-w-[960px] mx-auto px-6 py-16 md:py-24">
+      <div className="max-w-[1200px] mx-auto px-6 py-12 md:py-20">
 
         {/* Header */}
-        <div className="mb-16 md:mb-24">
+        <div className="mb-10 md:mb-14">
           <h1 className={`text-3xl sm:text-4xl md:text-5xl font-bold tracking-[-0.03em] mb-4 ${
             isDark ? 'text-white' : 'text-gray-900'
           }`}>{t.page_title}</h1>
-          <p className={`text-lg md:text-xl font-medium mb-6 ${
-            isDark ? 'text-gray-400' : 'text-gray-500'
-          }`}>{t.page_subtitle}</p>
-          <p className={`text-base leading-relaxed max-w-2xl ${
+          <p className={`text-base md:text-lg leading-relaxed max-w-2xl ${
             isDark ? 'text-gray-400' : 'text-gray-600'
           }`}>{t.page_intro}</p>
         </div>

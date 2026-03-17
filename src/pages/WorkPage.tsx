@@ -142,7 +142,7 @@ const getProjects = (lang: Language): Project[] => {
 
 const TRANSLATIONS = {
   en: {
-    title: 'Index',
+    title: 'Work',
     subtitle: 'Selected projects and case studies',
     viewProject: 'View project',
     shipped: 'Shipped',
@@ -156,8 +156,8 @@ const TRANSLATIONS = {
     }
   },
   fr: {
-    title: 'Index',
-    subtitle: 'Projets sélectionnés et études de cas',
+    title: '\u00c9tudes de cas',
+    subtitle: 'Projets s\u00e9lectionn\u00e9s et \u00e9tudes de cas',
     viewProject: 'Voir le projet',
     shipped: 'En Production',
     concept: 'Concept',
@@ -314,16 +314,25 @@ const WorkPage: React.FC<WorkPageProps> = ({
         </div>
       </header>
 
-      {/* Main Content - Full width with 40px padding */}
-      <main className="p-10">
-        {/* Page title - visible on desktop when header is hidden */}
-        <h1 className={`hidden md:block text-3xl font-bold tracking-[-0.03em] mb-8 ${
-          isDark ? 'text-white' : 'text-gray-900'
-        }`}>
-          {t.title}
-        </h1>
-        {/* Projects Grid - 3 columns, full width, 40px gap */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+      {/* Main Content */}
+      <main className="max-w-[1200px] mx-auto px-6 py-12 md:py-20">
+        {/* Page title */}
+        <div className="mb-10 md:mb-14">
+          <h1 className={`text-3xl sm:text-4xl md:text-5xl font-bold tracking-[-0.03em] mb-4 ${
+            isDark ? 'text-white' : 'text-gray-900'
+          }`}>
+            {t.title}
+          </h1>
+          <p className={`text-base md:text-lg leading-relaxed max-w-2xl ${
+            isDark ? 'text-gray-400' : 'text-gray-600'
+          }`}>
+            {lang === 'en'
+              ? 'Selected projects in product design, design systems, and AI-assisted prototyping.'
+              : '\u00c9tudes de cas en design produit, design systems et prototypage assist\u00e9 par IA.'}
+          </p>
+        </div>
+        {/* Projects Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
           {projects.map((project, index) => (
             <ProjectCard
               key={project.id}

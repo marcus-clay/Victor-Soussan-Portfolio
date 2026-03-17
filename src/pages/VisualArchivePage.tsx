@@ -161,7 +161,7 @@ const VisualArchivePage: React.FC<VisualArchivePageProps> = ({ systemTheme, lang
       />
 
       {/* Content */}
-      <div className="max-w-[1280px] mx-auto px-6 py-12 md:py-20">
+      <div className="max-w-[1200px] mx-auto px-6 py-12 md:py-20">
 
         {/* Title + View toggle */}
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12 md:mb-16">
