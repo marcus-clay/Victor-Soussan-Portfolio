@@ -76,6 +76,7 @@ const AboutPage = lazy(() => import('./pages/AboutPage'));
 const SignalsPage = lazy(() => import('./pages/SignalsPage'));
 const ConsultingPage = lazy(() => import('./pages/ConsultingPage'));
 const SignalDetailPage = lazy(() => import('./pages/SignalDetailPage'));
+const GuideClaudeCodePage = lazy(() => import('./pages/GuideClaudeCodePage'));
 const QuoteGeneratorModal = lazy(() => import('./components/QuoteGeneratorModal'));
 
 // Loading spinner component for lazy loaded pages
@@ -252,6 +253,11 @@ const App: React.FC = () => {
     return match ? match[1] : null;
   });
   const [copiedSignalId, setCopiedSignalId] = useState<string | null>(null);
+  const [guideView, setGuideView] = useState<string | null>(() => {
+    if (initialPath === '/guide/claude-code') return 'index';
+    const guideMatch = initialPath.match(/^\/guide\/claude-code\/(.+)$/);
+    return guideMatch ? guideMatch[1] : null;
+  });
   const [isConsultingOpen, setIsConsultingOpen] = useState(initialPath === '/consulting');
   const [isTestimonialsOpen, setIsTestimonialsOpen] = useState(initialPath === '/testimonials');
   const [isWorkOpen, setIsWorkOpen] = useState(initialPath === '/work');
@@ -319,7 +325,7 @@ const App: React.FC = () => {
     : isServicesPageOpen ? 'services'
     : isConsultingOpen ? 'consulting'
     : isVisualArchiveOpen ? 'visual-archive'
-    : isSignalsOpen ? 'signals'
+    : (isSignalsOpen || !!openSignalId || !!guideView) ? 'signals'
     : isWorkOpen ? 'work'
     : null;
   const anyModalOpen = activePageId !== null;
@@ -362,7 +368,7 @@ const App: React.FC = () => {
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        const hasModalOpen = isBioOpen || isTestimonialsOpen || isWorkOpen || isBookingOpen || isResumeOpen || isExecutiveOpen || isQuoteGeneratorOpen || isServicesPageOpen || isVisualArchiveOpen || isSignalsOpen || !!openSignalId;
+        const hasModalOpen = isBioOpen || isTestimonialsOpen || isWorkOpen || isBookingOpen || isResumeOpen || isExecutiveOpen || isQuoteGeneratorOpen || isServicesPageOpen || isVisualArchiveOpen || isSignalsOpen || !!openSignalId || !!guideView;
 
         setSelectedImage(null);
         setIsBioOpen(false);
@@ -379,6 +385,7 @@ const App: React.FC = () => {
         setIsVisualArchiveOpen(false);
         setIsSignalsOpen(false);
         setOpenSignalId(null);
+        setGuideView(null);
 
         // Quote generator close is handled by the component itself
         if (isQuoteGeneratorOpen) {
@@ -398,7 +405,7 @@ const App: React.FC = () => {
 
   // Prevent body scroll when modals are open
   useEffect(() => {
-    if (selectedImage || isBioOpen || isTestimonialsOpen || isWorkOpen || isBookingOpen || selectedLabItem || isContactFormOpen || isSimpleContactOpen || selectedServiceGallery || isQuoteGeneratorOpen || isExecutiveOpen || isServicesPageOpen || isVisualArchiveOpen || isSignalsOpen || openSignalId) {
+    if (selectedImage || isBioOpen || isTestimonialsOpen || isWorkOpen || isBookingOpen || selectedLabItem || isContactFormOpen || isSimpleContactOpen || selectedServiceGallery || isQuoteGeneratorOpen || isExecutiveOpen || isServicesPageOpen || isVisualArchiveOpen || isSignalsOpen || openSignalId || !!guideView) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
@@ -633,6 +640,26 @@ const App: React.FC = () => {
   };
 
   const openModalWithUrl = (path: string) => {
+    // Handle guide routes
+    if (path === '/guide/claude-code') {
+      Object.values(MODAL_ROUTES).forEach(r => r.setter(false));
+      setOpenSignalId(null);
+      setGuideView('index');
+      window.history.pushState({ guide: 'index', lang }, '', `/guide/claude-code?lang=${lang}`);
+      updateMetaTags({ title: 'Guide Claude Code pour les designers | Victor Soussan', description: 'Guide complet pour les designers : prototypes interactifs, pages déployées, documentation de design system, le tout sans apprendre à coder.', image: '/images/guide-claude-code/hero-cover.png' });
+      return;
+    }
+    const guideChapterMatch = path.match(/^\/guide\/claude-code\/(.+)$/);
+    if (guideChapterMatch) {
+      const slug = guideChapterMatch[1];
+      Object.values(MODAL_ROUTES).forEach(r => r.setter(false));
+      setOpenSignalId(null);
+      setGuideView(slug);
+      window.history.pushState({ guide: slug, lang }, '', `${path}?lang=${lang}`);
+      updateMetaTags({ title: `Guide Claude Code | Victor Soussan`, description: 'Guide Claude Code pour les designers.', image: '/images/guide-claude-code/hero-cover.png' });
+      return;
+    }
+
     // Handle dynamic signal detail routes
     const signalMatch = path.match(/^\/signal\/(.+)$/);
     if (signalMatch) {
@@ -679,6 +706,14 @@ const App: React.FC = () => {
         }
       }
 
+      // Handle guide
+      if (event.state?.guide) {
+        Object.values(MODAL_ROUTES).forEach(r => r.setter(false));
+        setOpenSignalId(null);
+        setGuideView(event.state.guide);
+        return;
+      }
+
       // Handle signal detail
       if (event.state?.signalId) {
         Object.values(MODAL_ROUTES).forEach(r => r.setter(false));
@@ -718,6 +753,7 @@ const App: React.FC = () => {
       Object.values(MODAL_ROUTES).forEach(r => r.setter(false));
       setOpenProject(null);
       setOpenSignalId(null);
+      setGuideView(null);
       updateMetaTags(DEFAULT_SEO);
     };
 
@@ -888,8 +924,8 @@ const App: React.FC = () => {
       {/* z-[150] when a modal page is open (above z-[100] pages), z-50 otherwise (case studies cover it) */}
       <nav className={`fixed top-0 w-full ${anyModalOpen ? 'z-[150]' : 'z-50'} ${
         systemTheme === 'dark'
-          ? 'bg-[#0a0a0a]/80 backdrop-blur-xl'
-          : 'bg-white/80 backdrop-blur-xl'
+          ? anyModalOpen ? 'bg-[#0a0a0a]' : 'bg-[#0a0a0a]/80 backdrop-blur-xl'
+          : anyModalOpen ? 'bg-[#FCFCFD]' : 'bg-white/80 backdrop-blur-xl'
       }`}>
         <div className="w-full px-6 h-16 flex items-center justify-between">
           {/* Logo - click returns home when a modal is open */}
@@ -1369,7 +1405,7 @@ const App: React.FC = () => {
           }`} />
         </div>
 
-        <div className="relative max-w-[1280px] mx-auto z-10 px-6">
+        <div className="relative max-w-[1200px] mx-auto z-10 px-6">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-center">
 
             {/* Left: Text Content (2/3) */}
@@ -1503,11 +1539,111 @@ const App: React.FC = () => {
         }
       `}</style>
 
+      {/* Featured Content - 2 columns */}
+      <section className={`relative z-10 px-4 md:px-10 py-10 md:py-14 ${systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-[#FCFCFD]'}`}>
+        <div className="max-w-[1200px] mx-auto">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className={`text-lg md:text-xl font-bold tracking-[-0.02em] ${systemTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+              {lang === 'en' ? 'Latest' : 'À la une'}
+            </h2>
+            <button
+              onClick={() => openModalWithUrl('/signals')}
+              className={`group flex items-center gap-1.5 text-sm font-medium transition-colors cursor-pointer ${
+                systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-500 hover:text-gray-900'
+              }`}
+            >
+              {lang === 'en' ? 'All articles' : 'Tous les articles'}
+              <ArrowRight size={14} className="transition-transform group-hover:translate-x-0.5" />
+            </button>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
+            {/* Card 1: Guide Claude Code */}
+            <button
+              onClick={() => openModalWithUrl('/guide/claude-code')}
+              className={`group text-left rounded-2xl border transition-all duration-200 cursor-pointer overflow-hidden hover:-translate-y-0.5 ${
+                systemTheme === 'dark'
+                  ? 'bg-[#1D1D1F] border-white/5 hover:border-white/15 hover:shadow-xl'
+                  : 'bg-white border-gray-200 hover:border-gray-300 hover:shadow-lg shadow-sm'
+              }`}
+            >
+              <div className="aspect-[16/9] overflow-hidden">
+                <img
+                  src="/images/guide-claude-code/hero-cover.png"
+                  alt="Guide Claude Code"
+                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+                />
+              </div>
+              <div className="p-5">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-[#D97757]/10 text-[#D97757]">Guide</span>
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-[#2D5CF3]/10 text-[#2D5CF3]">Claude Code</span>
+                  <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold ${systemTheme === 'dark' ? 'bg-white/5 text-gray-400' : 'bg-gray-100 text-gray-500'}`}>9 chapitres</span>
+                </div>
+                <h3 className={`text-base md:text-lg font-bold tracking-[-0.01em] mb-1.5 ${systemTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                  {lang === 'en' ? 'Getting Started with Claude Code' : 'Bien d\u00e9marrer avec Claude Code'}
+                </h3>
+                <p className={`text-sm leading-relaxed line-clamp-2 mb-3 ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
+                  {lang === 'en'
+                    ? 'Complete guide for designers: from setup to deployment, visual quality, skills and Figma MCP.'
+                    : 'Guide complet pour les designers : de l\'installation au d\u00e9ploiement, qualit\u00e9 visuelle, skills et Figma MCP.'}
+                </p>
+                <span className="flex items-center gap-1 text-xs font-medium text-[#2D5CF3]">
+                  {lang === 'en' ? 'Read the guide' : 'Lire le guide'}
+                  <ArrowRight size={12} className="transition-transform group-hover:translate-x-0.5" />
+                </span>
+              </div>
+            </button>
+
+            {/* Card 2: Claude Code & Figma MCP */}
+            {(() => {
+              const figmaMcpSignal = SIGNALS.find(s => s.id === 'claude-code-figma-mcp');
+              if (!figmaMcpSignal) return null;
+              const sColors = SIGNAL_CATEGORY_COLORS[figmaMcpSignal.category];
+              return (
+                <button
+                  onClick={() => openModalWithUrl('/signal/claude-code-figma-mcp')}
+                  className={`group text-left rounded-2xl border transition-all duration-200 cursor-pointer overflow-hidden hover:-translate-y-0.5 flex flex-col ${
+                    systemTheme === 'dark'
+                      ? 'bg-[#1D1D1F] border-white/5 hover:border-white/15 hover:shadow-xl'
+                      : 'bg-white border-gray-200 hover:border-gray-300 hover:shadow-lg shadow-sm'
+                  }`}
+                >
+                  <div className={`aspect-[16/9] flex items-center justify-center ${systemTheme === 'dark' ? 'bg-[#161618]' : 'bg-gray-50'}`}>
+                    <div className="flex items-center gap-4">
+                      <svg width="44" height="44" viewBox="0 0 48 48" fill="none"><path d="M16 8H24V16H16C11.6 16 8 12.4 8 8s3.6-8 8-8z" fill="#F24E1E"/><path d="M24 8h8c4.4 0 8 3.6 8 8s-3.6 8-8 8h-8V8z" fill="#FF7262"/><path d="M24 24h8c4.4 0 8 3.6 8 8s-3.6 8-8 8-8-3.6-8-8v-8z" fill="#1ABCFE"/><path d="M8 24c0-4.4 3.6-8 8-8h8v16h-8c-4.4 0-8-3.6-8-8z" fill="#A259FF"/><path d="M8 40c0-4.4 3.6-8 8-8h8v8c0 4.4-3.6 8-8 8s-8-3.6-8-8z" fill="#0ACF83"/></svg>
+                      <span className={`text-2xl font-light ${systemTheme === 'dark' ? 'text-gray-600' : 'text-gray-300'}`}>+</span>
+                      <span className="text-[28px] font-bold tracking-[-0.03em] text-[#D97757]">Claude</span>
+                    </div>
+                  </div>
+                  <div className="p-5 flex-1 flex flex-col">
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold ${systemTheme === 'dark' ? sColors.bgDark : sColors.bg} ${sColors.text}`}>
+                        {SIGNAL_CATEGORY_LABELS[figmaMcpSignal.category][lang]}
+                      </span>
+                    </div>
+                    <h3 className={`text-base md:text-lg font-bold tracking-[-0.01em] mb-1.5 line-clamp-2 ${systemTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                      {lang === 'en' ? figmaMcpSignal.title_en : figmaMcpSignal.title_fr}
+                    </h3>
+                    <p className={`text-sm leading-relaxed line-clamp-2 flex-1 mb-3 ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
+                      {(lang === 'en' ? figmaMcpSignal.body_en : figmaMcpSignal.body_fr).substring(0, 150)}...
+                    </p>
+                    <span className="flex items-center gap-1 text-xs font-medium text-[#2D5CF3]">
+                      {lang === 'en' ? 'Read' : 'Lire'}
+                      <ArrowRight size={12} className="transition-transform group-hover:translate-x-0.5" />
+                    </span>
+                  </div>
+                </button>
+              );
+            })()}
+          </div>
+        </div>
+      </section>
+
       {/* Case Studies Section - Landscape Banners */}
-      <section id="projects" className={`-mt-[36px] md:-mt-[68px] pt-0 pb-16 md:pb-32 px-4 md:px-10 relative z-10 ${
+      <section id="projects" className={`pt-4 md:pt-8 pb-16 md:pb-32 px-4 md:px-10 relative z-10 ${
         systemTheme === 'dark' ? 'bg-transparent' : 'bg-transparent'
       }`}>
-        <div className="max-w-[1280px] mx-auto">
+        <div className="max-w-[1200px] mx-auto">
           {/* Stacked Landscape Cards - Show only first 3 projects */}
           <div className="flex flex-col gap-6 md:gap-10">
             {projects.slice(0, 3).map((project, index) => {
@@ -1794,7 +1930,7 @@ const App: React.FC = () => {
       <section id="gallery" className={`py-16 md:py-24 px-4 md:px-10 ${
         systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-[#FCFCFD]'
       }`}>
-        <div className="max-w-[1280px] mx-auto">
+        <div className="max-w-[1200px] mx-auto">
           <div className="mb-10 md:mb-14 text-center">
             <h2 className={`text-2xl sm:text-3xl md:text-5xl font-bold tracking-[-0.02em] mb-4 ${
               systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
@@ -1860,7 +1996,7 @@ const App: React.FC = () => {
       <section id="services" className={`py-16 md:py-32 px-4 md:px-10 relative overflow-hidden ${
         systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-[#FCFCFD]'
       }`}>
-        <div className="max-w-[1280px] mx-auto relative z-10">
+        <div className="max-w-[1200px] mx-auto relative z-10">
           <div className="mb-8 md:mb-12 text-center">
              <h2 className={`text-2xl sm:text-3xl md:text-5xl font-bold tracking-[-0.02em] mb-4 md:mb-6 ${
                systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
@@ -2004,7 +2140,7 @@ const App: React.FC = () => {
       <section className={`py-16 md:py-32 px-4 md:px-10 ${
         systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-[#FCFCFD]'
       }`}>
-        <div className="max-w-[1280px] mx-auto">
+        <div className="max-w-[1200px] mx-auto">
           <div className="mb-8 md:mb-12 text-center">
             <h2 className={`text-2xl sm:text-3xl md:text-5xl font-bold tracking-[-0.02em] mb-4 md:mb-6 ${
               systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
@@ -2106,7 +2242,7 @@ const App: React.FC = () => {
           ? 'bg-[#0a0a0a]'
           : 'bg-[#FCFCFD]'
       }`}>
-        <div className="max-w-[1280px] mx-auto">
+        <div className="max-w-[1200px] mx-auto">
           <div className="mb-8 md:mb-12 text-center">
             <h2 className={`text-2xl sm:text-3xl md:text-5xl font-bold tracking-[-0.02em] mb-4 md:mb-6 ${
               systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
@@ -2306,7 +2442,7 @@ const App: React.FC = () => {
           <div className={`px-4 md:px-10 py-8 md:py-12 ${
             systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-gray-50/50'
           }`}>
-            <div className="max-w-[1280px] mx-auto">
+            <div className="max-w-[1200px] mx-auto">
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
                 {filteredTestimonials.map((t, i) => (
                   <motion.div
@@ -2394,7 +2530,7 @@ const App: React.FC = () => {
               ? 'bg-[#0a0a0a]/80 border-white/10'
               : 'bg-white/80 border-gray-200'
           }`}>
-            <div className="max-w-[1280px] mx-auto px-4 md:px-6 py-4 flex flex-col sm:flex-row items-center justify-center gap-3">
+            <div className="max-w-[1200px] mx-auto px-4 md:px-6 py-4 flex flex-col sm:flex-row items-center justify-center gap-3">
               <a
                 href="https://linkedin.com/in/victorsoussan/"
                 target="_blank"
@@ -4669,6 +4805,35 @@ ${contactForm.message}`;
                 onOpenSignal={(signalId: string) => {
                   setIsSignalsOpen(false);
                   openModalWithUrl(`/signal/${signalId}`);
+                }}
+                onOpenGuide={() => {
+                  setIsSignalsOpen(false);
+                  openModalWithUrl('/guide/claude-code');
+                }}
+              />
+            </Suspense>
+          </ErrorBoundary>
+        )}
+      </AnimatePresence>
+
+      {/* Guide Claude Code Page */}
+      <AnimatePresence>
+        {guideView && (
+          <ErrorBoundary systemTheme={systemTheme}>
+            <Suspense fallback={<PageLoader />}>
+              <GuideClaudeCodePage
+                systemTheme={systemTheme}
+                lang={lang}
+                view={guideView}
+                onNavigate={(target: string) => {
+                  if (target === 'blog') {
+                    setGuideView(null);
+                    openModalWithUrl('/signals');
+                  } else if (target === 'index') {
+                    openModalWithUrl('/guide/claude-code');
+                  } else {
+                    openModalWithUrl(`/guide/claude-code/${target}`);
+                  }
                 }}
               />
             </Suspense>

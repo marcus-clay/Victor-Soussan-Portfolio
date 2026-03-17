@@ -12,7 +12,8 @@ export const TRANSLATIONS = {
       lab: "The Lab",
       testimonials: "Testimonials",
       contact: "Contact",
-      archive: "Gallery"
+      archive: "Gallery",
+      blog: "Blog"
     },
     hero: {
       availability: "Available for new projects",
@@ -556,7 +557,8 @@ export const TRANSLATIONS = {
       lab: "Lab",
       testimonials: "T\u00e9moignages",
       contact: "Contact",
-      archive: "Galerie"
+      archive: "Galerie",
+      blog: "Blog"
     },
     hero: {
       availability: "Disponible pour de nouvelles missions",

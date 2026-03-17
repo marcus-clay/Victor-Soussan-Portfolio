@@ -17,6 +17,7 @@ interface SignalsPageProps {
   lang: Language;
   onBack: () => void;
   onOpenSignal: (signalId: string) => void;
+  onOpenGuide?: () => void;
 }
 
 // ---------------------------------------------------------------------------
@@ -46,7 +47,7 @@ const TRANSLATIONS = {
 // Component
 // ---------------------------------------------------------------------------
 
-const SignalsPage: React.FC<SignalsPageProps> = ({ systemTheme, lang, onBack, onOpenSignal }) => {
+const SignalsPage: React.FC<SignalsPageProps> = ({ systemTheme, lang, onBack, onOpenSignal, onOpenGuide }) => {
   const isDark = systemTheme === 'dark';
   const t = TRANSLATIONS[lang];
   const [activeFilter, setActiveFilter] = useState<FilterCategory>('all');
@@ -100,7 +101,7 @@ const SignalsPage: React.FC<SignalsPageProps> = ({ systemTheme, lang, onBack, on
       </header>
 
       {/* Content */}
-      <div className="max-w-[1280px] mx-auto px-6 py-12 md:py-20">
+      <div className="max-w-[1200px] mx-auto px-6 py-12 md:py-20">
 
         {/* Header */}
         <div className="mb-10 md:mb-14">
@@ -132,6 +133,41 @@ const SignalsPage: React.FC<SignalsPageProps> = ({ systemTheme, lang, onBack, on
             </button>
           ))}
         </div>
+
+        {/* Featured Guide card */}
+        {onOpenGuide && (
+          <button
+            onClick={onOpenGuide}
+            className={`w-full text-left mb-8 p-6 md:p-8 rounded-2xl border transition-all duration-200 cursor-pointer overflow-hidden relative group ${
+              isDark
+                ? 'bg-[#1D1D1F] border-white/5 hover:border-white/15 hover:shadow-xl'
+                : 'bg-white border-gray-200 hover:border-gray-300 hover:shadow-xl'
+            }`}
+          >
+            <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-[#7B61FF]/10 via-[#D946EF]/5 to-transparent pointer-events-none" />
+            <div className="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <div className="flex-1">
+                <div className="flex flex-wrap gap-2 mb-3">
+                  <span className="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-[#7B61FF]/10 text-[#7B61FF]">Guide</span>
+                  <span className="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-[#2D5CF3]/10 text-[#2D5CF3]">Claude Code</span>
+                  <span className="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-emerald-500/10 text-emerald-600">Ressources</span>
+                </div>
+                <h3 className={`text-lg md:text-xl font-bold tracking-[-0.02em] mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                  {lang === 'en' ? 'Getting Started with Claude Code' : 'Bien d\u00e9marrer avec Claude Code'}
+                </h3>
+                <p className={`text-sm leading-relaxed max-w-xl ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                  {lang === 'en'
+                    ? 'A complete guide for designers: 9 chapters covering setup, workflows, deployment, visual quality, and skills.'
+                    : 'Guide complet pour les designers : 9 chapitres couvrant installation, workflows, d\u00e9ploiement, qualit\u00e9 visuelle et skills.'}
+                </p>
+              </div>
+              <div className="flex items-center gap-2 text-[#2D5CF3] font-medium text-sm flex-shrink-0">
+                <span>{lang === 'en' ? 'Read' : 'Lire'}</span>
+                <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+              </div>
+            </div>
+          </button>
+        )}
 
         {/* Signals grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">

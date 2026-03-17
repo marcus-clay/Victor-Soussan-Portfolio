@@ -12,6 +12,7 @@ export interface Signal {
   body_fr: string;
   body_long_en?: string;
   body_long_fr?: string;
+  heroImage?: string;
   category: SignalCategory;
   date: string;
 }
