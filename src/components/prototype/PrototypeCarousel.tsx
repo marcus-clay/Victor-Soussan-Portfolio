@@ -1,6 +1,6 @@
 import React, { useRef, useState, useCallback, useEffect } from 'react';
-import { CaretLeft as ChevronLeft, CaretRight as ChevronRight, Play, Pause, ArrowCounterClockwise as RotateCcw } from '@phosphor-icons/react';
-import { motion } from 'framer-motion';
+import { CaretLeft as ChevronLeft, CaretRight as ChevronRight, Play, Pause, ArrowCounterClockwise as RotateCcw, ArrowsOut as Expand } from '@phosphor-icons/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { PrototypeItem, getIframeSrc, CATEGORY_COLORS } from '../../data/sqoolPrototypesData';
 
 interface PrototypeCarouselProps {
@@ -8,8 +8,8 @@ interface PrototypeCarouselProps {
   isDark: boolean;
   lang: 'en' | 'fr';
   onCardClick: (index: number) => void;
-  totalCount?: number;   // total prototypes in this section (for "See all N" label)
-  onSeeAll?: () => void; // callback to open gallery at the right category
+  totalCount?: number;
+  onSeeAll?: () => void;
 }
 
 // Benefit-focused captions (user value, not UI description)
@@ -58,81 +58,91 @@ const BENEFIT_CAPTIONS: Record<string, { en: string; fr: string }> = {
   SC10: { en: 'A full lesson, step by step, as it happens in class', fr: 'Un cours entier, \u00e9tape par \u00e9tape, tel qu\u2019il se vit en classe' },
 };
 
-// Player states (postMessage-based, same-origin):
-// - 'idle': iframe not loaded yet (waiting for viewport)
-// - 'ready': iframe loaded with autoplay=0, GSAP timeline paused at frame 1
-// - 'playing': postMessage('play') sent, animation running
-// - 'paused': postMessage('pause') sent, animation frozen mid-way
+// The UI-motion prototypes render at this native resolution
+const NATIVE_W = 1200;
+const NATIVE_H = 900;
+
 type PlayerState = 'idle' | 'ready' | 'playing' | 'paused';
 
 interface PrototypePlayerProps {
   prototype: PrototypeItem;
   isDark: boolean;
   lang: 'en' | 'fr';
-  isFullWidth?: boolean;
+  isHero?: boolean;
+  onExpand?: () => void;
 }
 
 const PrototypePlayer: React.FC<PrototypePlayerProps> = ({
   prototype,
   isDark,
   lang,
-  isFullWidth = false,
+  isHero = false,
+  onExpand,
 }) => {
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [playerState, setPlayerState] = useState<PlayerState>('idle');
   const [iframeLoaded, setIframeLoaded] = useState(false);
-  const [shouldLoadIframe, setShouldLoadIframe] = useState(false);
+  const scaleRef = useRef(1);
+  const [, forceUpdate] = useState(0);
   const colors = CATEGORY_COLORS[prototype.category];
-
   const caption = BENEFIT_CAPTIONS[prototype.id]?.[lang] || prototype.desc[lang];
 
-  // IntersectionObserver: load iframe (autoplay=0) when entering viewport (once)
+  // Compute scale once on mount, update on resize (no state change = no re-render flicker)
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setShouldLoadIframe(true);
-          observer.disconnect();
+    const compute = () => {
+      const w = el.getBoundingClientRect().width;
+      if (w > 0) {
+        const newScale = w / NATIVE_W;
+        if (Math.abs(newScale - scaleRef.current) > 0.001) {
+          scaleRef.current = newScale;
+          // Update iframe transform directly without React re-render
+          const iframe = iframeRef.current;
+          if (iframe) iframe.style.transform = `scale(${newScale})`;
         }
-      },
-      { rootMargin: '200px 0px' }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [prototype.id]);
+      }
+    };
+    compute();
+    const ro = new ResizeObserver(compute);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
-  // Play: send postMessage to GSAP timeline
   const handlePlay = useCallback(() => {
     iframeRef.current?.contentWindow?.postMessage('play', '*');
     setPlayerState('playing');
   }, []);
 
-  // Pause: send postMessage to GSAP timeline
   const handlePause = useCallback(() => {
     iframeRef.current?.contentWindow?.postMessage('pause', '*');
     setPlayerState('paused');
   }, []);
 
-  // Restart: send postMessage to GSAP timeline (restart + resume)
   const handleRestart = useCallback(() => {
     iframeRef.current?.contentWindow?.postMessage('restart', '*');
     setPlayerState('playing');
   }, []);
 
-  // When iframe loads with autoplay=0: mark ready (GSAP paused at frame 1)
   const handleIframeLoad = useCallback(() => {
     setIframeLoaded(true);
-    setPlayerState((prev) => (prev === 'idle' ? 'ready' : prev));
+    setPlayerState('ready');
+    // Apply correct scale immediately on load
+    const el = containerRef.current;
+    const iframe = iframeRef.current;
+    if (el && iframe) {
+      const w = el.getBoundingClientRect().width;
+      scaleRef.current = w / NATIVE_W;
+      iframe.style.transform = `scale(${scaleRef.current})`;
+    }
   }, []);
 
-  // Reset state when prototype changes
+  // Reset on prototype change
   useEffect(() => {
     setPlayerState('idle');
     setIframeLoaded(false);
-    setShouldLoadIframe(false);
+    forceUpdate(n => n + 1);
   }, [prototype.id]);
 
   const showPlayButton = playerState === 'ready' || playerState === 'paused';
@@ -140,47 +150,47 @@ const PrototypePlayer: React.FC<PrototypePlayerProps> = ({
 
   return (
     <div ref={containerRef} className="flex flex-col">
-      {/* Player container */}
+      {/* Player container: padding-bottom for stable aspect ratio */}
       <div
-        className={`relative overflow-hidden ${isFullWidth ? 'rounded-xl' : 'rounded-lg'} ${
+        className={`relative overflow-hidden ${isHero ? 'rounded-xl' : 'rounded-lg'} ${
           isDark
             ? 'bg-[#1C1C1E] border border-white/[0.08]'
             : 'bg-[#F2F2F7] border border-black/[0.06]'
         }`}
-        style={{ aspectRatio: '4/3' }}
+        style={{ paddingBottom: `${(NATIVE_H / NATIVE_W) * 100}%`, height: 0 }}
       >
-        {/* Loading placeholder (before iframe loads) */}
+        {/* Loading spinner (shown until iframe fires onLoad) */}
         {!iframeLoaded && (
           <div className={`absolute inset-0 flex items-center justify-center z-10 ${
             isDark ? 'bg-[#1C1C1E]' : 'bg-[#F2F2F7]'
           }`}>
-            {shouldLoadIframe ? (
-              <div className={`w-8 h-8 rounded-full border-2 border-t-transparent animate-spin ${
-                isDark ? 'border-white/20' : 'border-black/10'
-              }`} />
-            ) : (
-              <div className={`text-xs ${isDark ? 'text-white/20' : 'text-black/10'}`}>
-                {prototype.id}
-              </div>
-            )}
+            <div className={`w-8 h-8 rounded-full border-2 border-t-transparent animate-spin ${
+              isDark ? 'border-white/20' : 'border-black/10'
+            }`} />
           </div>
         )}
 
-        {/* Iframe: loaded with autoplay=0, controlled via postMessage */}
-        {shouldLoadIframe && (
+        {/* Iframe: always rendered, no lazy loading, no conditional mount */}
+        <div className="absolute inset-0 overflow-hidden">
           <iframe
             ref={iframeRef}
             src={getIframeSrc(prototype.id)}
-            className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${
-              iframeLoaded ? 'opacity-100' : 'opacity-0'
-            }`}
-            style={{ border: 'none', pointerEvents: showPlayButton ? 'none' : 'auto' }}
+            className={`block ${iframeLoaded ? 'opacity-100' : 'opacity-0'}`}
+            style={{
+              border: 'none',
+              width: `${NATIVE_W}px`,
+              height: `${NATIVE_H}px`,
+              transformOrigin: 'top left',
+              transform: `scale(${scaleRef.current})`,
+              pointerEvents: showPlayButton ? 'none' : 'auto',
+            }}
             onLoad={handleIframeLoad}
             title={prototype.title[lang]}
-            allow="fullscreen"
+            loading="lazy"
             tabIndex={-1}
+            sandbox="allow-scripts allow-same-origin"
           />
-        )}
+        </div>
 
         {/* Badge */}
         <div className={`absolute top-2.5 left-2.5 z-20 flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[10px] font-bold tracking-wide backdrop-blur-sm ${
@@ -189,27 +199,42 @@ const PrototypePlayer: React.FC<PrototypePlayerProps> = ({
           {prototype.id}
         </div>
 
-        {/* Play button overlay (visible when paused or ready) */}
+        {/* Expand button (top right) */}
+        {onExpand && iframeLoaded && (
+          <button
+            onClick={(e) => { e.stopPropagation(); onExpand(); }}
+            className={`absolute top-2.5 right-2.5 z-20 p-1.5 rounded-md backdrop-blur-sm transition-colors ${
+              isDark
+                ? 'bg-black/40 hover:bg-black/60 text-white/60 hover:text-white'
+                : 'bg-white/60 hover:bg-white/80 text-gray-500 hover:text-gray-800'
+            }`}
+            title={lang === 'fr' ? 'Agrandir' : 'Expand'}
+          >
+            <Expand size={14} />
+          </button>
+        )}
+
+        {/* Play button overlay */}
         {showPlayButton && iframeLoaded && (
           <button
             onClick={handlePlay}
             className="absolute inset-0 z-20 flex items-center justify-center bg-black/10 hover:bg-black/20 transition-colors cursor-pointer"
           >
             <div className={`flex items-center justify-center rounded-full bg-white/90 shadow-lg transition-transform hover:scale-110 ${
-              isFullWidth ? 'w-16 h-16' : 'w-12 h-12'
+              isHero ? 'w-16 h-16' : 'w-12 h-12'
             }`}>
-              <Play size={isFullWidth ? 24 : 18} weight="fill" className="ml-0.5 text-gray-900" />
+              <Play size={isHero ? 24 : 18} weight="fill" className="ml-0.5 text-gray-900" />
             </div>
           </button>
         )}
 
-        {/* Pause + Restart controls (bottom-right, visible during playback) */}
+        {/* Pause + Restart controls */}
         {showControls && (
           <div className="absolute bottom-3 right-3 z-20 flex items-center gap-1.5">
             <button
               onClick={handlePause}
               className="p-2 rounded-full bg-black/60 hover:bg-black/80 text-white/80 hover:text-white transition-colors backdrop-blur-sm"
-              title={lang === 'fr' ? 'Pause' : 'Pause'}
+              title="Pause"
             >
               <Pause size={14} weight="fill" />
             </button>
@@ -238,6 +263,123 @@ const PrototypePlayer: React.FC<PrototypePlayerProps> = ({
 };
 
 
+// ── Fullscreen Lightbox (opened from Expand button) ──────────────
+const FullscreenPlayer: React.FC<{
+  prototype: PrototypeItem;
+  lang: 'en' | 'fr';
+  onClose: () => void;
+}> = ({ prototype, lang, onClose }) => {
+  const iframeRef = useRef<HTMLIFrameElement | null>(null);
+  const [playerState, setPlayerState] = useState<PlayerState>('idle');
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    document.addEventListener('keydown', handleKey);
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', handleKey);
+      document.body.style.overflow = '';
+    };
+  }, [onClose]);
+
+  const handlePlay = useCallback(() => {
+    iframeRef.current?.contentWindow?.postMessage('play', '*');
+    setPlayerState('playing');
+  }, []);
+  const handlePause = useCallback(() => {
+    iframeRef.current?.contentWindow?.postMessage('pause', '*');
+    setPlayerState('paused');
+  }, []);
+  const handleRestart = useCallback(() => {
+    iframeRef.current?.contentWindow?.postMessage('restart', '*');
+    setPlayerState('playing');
+  }, []);
+
+  const showPlay = (playerState === 'ready' || playerState === 'paused') && loaded;
+  const showControls = playerState === 'playing' && loaded;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[200] flex flex-col bg-black/95 backdrop-blur-sm"
+    >
+      {/* Header */}
+      <div className="flex items-center justify-between px-4 md:px-6 py-3 flex-shrink-0">
+        <div className="flex items-center gap-3">
+          <span className="text-xs font-bold text-blue-400 bg-blue-400/20 px-2 py-0.5 rounded">
+            {prototype.id}
+          </span>
+          <span className="text-sm font-medium text-white truncate">
+            {prototype.title[lang]}
+          </span>
+        </div>
+        <button
+          onClick={onClose}
+          className="p-2 rounded-full hover:bg-white/10 text-gray-300 hover:text-white transition-colors"
+        >
+          <span className="text-lg leading-none">&times;</span>
+        </button>
+      </div>
+
+      {/* Iframe */}
+      <div className="flex-1 relative mx-4 md:mx-16 mb-4 rounded-lg overflow-hidden">
+        {!loaded && (
+          <div className="absolute inset-0 bg-[#1D1D1F] flex items-center justify-center z-10">
+            <div className="w-8 h-8 border-2 border-white/20 border-t-white/60 rounded-full animate-spin" />
+          </div>
+        )}
+        <iframe
+          ref={iframeRef}
+          src={getIframeSrc(prototype.id)}
+          className={`w-full h-full transition-opacity duration-300 ${loaded ? 'opacity-100' : 'opacity-0'}`}
+          style={{ border: 'none' }}
+          onLoad={() => { setLoaded(true); setPlayerState('ready'); }}
+          title={prototype.title[lang]}
+          tabIndex={-1}
+          sandbox="allow-scripts allow-same-origin"
+        />
+
+        {showPlay && (
+          <button
+            onClick={handlePlay}
+            className="absolute inset-0 z-10 flex items-center justify-center bg-black/10 hover:bg-black/20 transition-colors cursor-pointer"
+          >
+            <div className="flex items-center justify-center w-20 h-20 rounded-full bg-white/90 shadow-lg hover:scale-110 transition-transform">
+              <Play size={28} weight="fill" className="ml-1 text-gray-900" />
+            </div>
+          </button>
+        )}
+
+        {showControls && (
+          <div className="absolute bottom-4 right-4 z-10 flex items-center gap-2">
+            <button onClick={handlePause} className="p-2.5 rounded-full bg-black/60 hover:bg-black/80 text-white/80 hover:text-white transition-colors backdrop-blur-sm">
+              <Pause size={16} weight="fill" />
+            </button>
+            <button onClick={handleRestart} className="p-2.5 rounded-full bg-black/60 hover:bg-black/80 text-white/80 hover:text-white transition-colors backdrop-blur-sm">
+              <RotateCcw size={16} />
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* Caption */}
+      <div className="text-center pb-4 px-4">
+        <p className="text-sm text-gray-300">
+          {BENEFIT_CAPTIONS[prototype.id]?.[lang] || prototype.desc[lang]}
+        </p>
+      </div>
+    </motion.div>
+  );
+};
+
+
+// ── Main Carousel ────────────────────────────────────────────────
+const THUMB_WIDTH = 480; // px, fixed width for carousel items
+const SCROLL_AMOUNT = THUMB_WIDTH + 16; // item width + gap
+
 const PrototypeCarousel: React.FC<PrototypeCarouselProps> = ({
   prototypes,
   isDark,
@@ -249,11 +391,11 @@ const PrototypeCarousel: React.FC<PrototypeCarouselProps> = ({
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
+  const [expandedProto, setExpandedProto] = useState<PrototypeItem | null>(null);
 
   const heroProto = prototypes[0];
   const carouselProtos = prototypes.slice(1);
 
-  // Check scroll state
   const updateScrollState = useCallback(() => {
     const el = scrollRef.current;
     if (!el) return;
@@ -277,68 +419,70 @@ const PrototypeCarousel: React.FC<PrototypeCarouselProps> = ({
   const scrollBy = useCallback((dir: number) => {
     const el = scrollRef.current;
     if (!el) return;
-    el.scrollBy({ left: dir * 300, behavior: 'smooth' });
+    el.scrollBy({ left: dir * SCROLL_AMOUNT, behavior: 'smooth' });
   }, []);
 
   if (prototypes.length === 0) return null;
 
   return (
     <div className="relative">
-      {/* Hero: full-width player */}
+      {/* Hero: full-width player with container query for scale */}
       {heroProto && (
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.25 }}
-          className="mb-4"
+          className="mb-6"
         >
           <PrototypePlayer
             prototype={heroProto}
             isDark={isDark}
             lang={lang}
-            isFullWidth
+            isHero
+            onExpand={() => setExpandedProto(heroProto)}
           />
         </motion.div>
       )}
 
-      {/* Horizontal scrollable carousel for remaining prototypes */}
+      {/* Horizontal scrollable strip */}
       {carouselProtos.length > 0 && (
-        <div className="relative group/carousel">
+        <div className="relative">
           {/* Left arrow */}
           {canScrollLeft && (
             <button
               onClick={() => scrollBy(-1)}
-              className={`absolute left-0 top-1/2 -translate-y-1/2 z-10 p-2 rounded-full shadow-lg transition-all opacity-0 group-hover/carousel:opacity-100 ${
+              className={`absolute -left-3 top-[calc(50%-40px)] -translate-y-1/2 z-10 p-2.5 rounded-full shadow-lg transition-all ${
                 isDark
-                  ? 'bg-[#1D1D1F] hover:bg-[#2D2D2F] text-white/60 hover:text-white border border-white/10'
-                  : 'bg-white hover:bg-gray-50 text-gray-400 hover:text-gray-700 border border-gray-200'
+                  ? 'bg-[#1D1D1F] hover:bg-[#2D2D2F] text-white/70 hover:text-white border border-white/10'
+                  : 'bg-white hover:bg-gray-50 text-gray-500 hover:text-gray-800 border border-gray-200 shadow-md'
               }`}
             >
-              <ChevronLeft size={16} />
+              <ChevronLeft size={18} weight="bold" />
             </button>
           )}
 
           {/* Scrollable track */}
           <div
             ref={scrollRef}
-            className="flex gap-4 overflow-x-auto scroll-smooth pb-2 -mx-1 px-1"
+            className="proto-strip flex gap-4 overflow-x-auto scroll-smooth pb-3"
             style={{
               scrollbarWidth: 'none',
               msOverflowStyle: 'none',
               WebkitOverflowScrolling: 'touch',
             }}
           >
-            <style>{`div::-webkit-scrollbar { display: none; }`}</style>
+            <style>{`.proto-strip::-webkit-scrollbar { display: none; }`}</style>
             {carouselProtos.map((proto) => (
               <div
                 key={proto.id}
                 className="flex-shrink-0"
-                style={{ width: 'min(280px, 70vw)' }}
+                style={{ width: `${THUMB_WIDTH}px` }}
               >
                 <PrototypePlayer
                   prototype={proto}
                   isDark={isDark}
                   lang={lang}
+                  onExpand={() => setExpandedProto(proto)}
                 />
               </div>
             ))}
@@ -348,19 +492,19 @@ const PrototypeCarousel: React.FC<PrototypeCarouselProps> = ({
           {canScrollRight && (
             <button
               onClick={() => scrollBy(1)}
-              className={`absolute right-0 top-1/2 -translate-y-1/2 z-10 p-2 rounded-full shadow-lg transition-all opacity-0 group-hover/carousel:opacity-100 ${
+              className={`absolute -right-3 top-[calc(50%-40px)] -translate-y-1/2 z-10 p-2.5 rounded-full shadow-lg transition-all ${
                 isDark
-                  ? 'bg-[#1D1D1F] hover:bg-[#2D2D2F] text-white/60 hover:text-white border border-white/10'
-                  : 'bg-white hover:bg-gray-50 text-gray-400 hover:text-gray-700 border border-gray-200'
+                  ? 'bg-[#1D1D1F] hover:bg-[#2D2D2F] text-white/70 hover:text-white border border-white/10'
+                  : 'bg-white hover:bg-gray-50 text-gray-500 hover:text-gray-800 border border-gray-200 shadow-md'
               }`}
             >
-              <ChevronRight size={16} />
+              <ChevronRight size={18} weight="bold" />
             </button>
           )}
 
-          {/* Scroll hint gradient */}
+          {/* Right fade gradient */}
           {canScrollRight && (
-            <div className={`absolute right-0 top-0 bottom-2 w-12 pointer-events-none ${
+            <div className={`absolute right-0 top-0 bottom-3 w-16 pointer-events-none ${
               isDark
                 ? 'bg-gradient-to-l from-[#0a0a0a] to-transparent'
                 : 'bg-gradient-to-l from-white to-transparent'
@@ -387,6 +531,17 @@ const PrototypeCarousel: React.FC<PrototypeCarouselProps> = ({
           </button>
         </div>
       )}
+
+      {/* Fullscreen lightbox */}
+      <AnimatePresence>
+        {expandedProto && (
+          <FullscreenPlayer
+            prototype={expandedProto}
+            lang={lang}
+            onClose={() => setExpandedProto(null)}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 };

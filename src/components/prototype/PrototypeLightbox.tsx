@@ -192,6 +192,7 @@ const PrototypeLightbox: React.FC<PrototypeLightboxProps> = ({
                     title={current.title}
                     onLoad={handleIframeLoad}
                     tabIndex={-1}
+                    sandbox="allow-scripts allow-same-origin"
                   />
 
                   {/* Play overlay */}

@@ -3606,8 +3606,9 @@ body {
 }
 .sc-newsession-overlay.hidden, .sc-assignment-overlay.hidden, .sc-exam-overlay.hidden { display: none; }
 .sc-newsession-modal, .sc-assignment-modal, .sc-exam-modal {
-  background: #fff; border-radius: 16px; width: 480px; max-height: 92%;
-  overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  background: #fff; border-radius: 16px; width: 480px; max-height: 88vh;
+  display: flex; flex-direction: column;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
 }
 .sc-newsession-header, .sc-assignment-header, .sc-exam-header {
   display: flex; align-items: center; gap: 10px; padding: 16px 20px;
@@ -3628,10 +3629,13 @@ body {
   background: #f1f5f9; cursor: pointer; display: flex;
   align-items: center; justify-content: center; color: #64748b;
 }
-.sc-newsession-body, .sc-assignment-body, .sc-exam-body { padding: 16px 20px; }
+.sc-newsession-body, .sc-assignment-body, .sc-exam-body {
+  padding: 16px 20px; flex: 1; overflow-y: auto; min-height: 0;
+}
 .sc-newsession-footer, .sc-assignment-footer, .sc-exam-footer {
   display: flex; justify-content: flex-end; gap: 8px;
   padding: 12px 20px; border-top: 1px solid #f1f5f9;
+  flex-shrink: 0;
 }
 .sc-form-row { margin-bottom: 14px; }
 .sc-form-label { display: block; font-size: 11px; font-weight: 600; color: #64748b; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.3px; }
@@ -3724,7 +3728,7 @@ body {
 }
 .sc-exam-detail-label { font-size: 10px; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.3px; }
 .sc-exam-detail-value { font-size: 13px; font-weight: 600; color: #1e293b; }
-.sc-exam-restrictions { display: flex; flex-direction: column; gap: 4px; }
+.sc-exam-restrictions { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
 .sc-exam-restrict {
   display: flex; align-items: center; gap: 8px;
   padding: 6px 10px; border-radius: 8px; background: #fafafa;
