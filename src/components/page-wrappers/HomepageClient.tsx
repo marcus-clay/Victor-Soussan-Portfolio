@@ -1,24 +1,23 @@
 'use client'
 
-import React, { useState, useCallback } from 'react'
+import React, { useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import type { Language } from '@/data/translations'
 import { TRANSLATIONS } from '@/data/translations'
 import { getProjects } from '@/data/projectsData'
-import { getResources } from '@/data/resourcesData'
 import { getTestimonials } from '@/data/testimonialsData'
-import { LAB_PREVIEWS } from '@/data/labData'
 import { SIGNALS, FEATURED_SIGNAL_IDS } from '@/data/signalsData'
 import { GUIDE_CHAPTERS } from '@/data/guideClaudeCodeData'
 import Avatar from '@/components/Avatar'
 import ScrollExpandCard from '@/components/ScrollExpandCard'
 import HeroSection from '@/components/sections/HeroSection'
-import ProjectsSection from '@/components/sections/ProjectsSection'
-import BiographySection from '@/components/sections/BiographySection'
-import ServicesSection from '@/components/sections/ServicesSection'
-import TestimonialsSection from '@/components/sections/TestimonialsSection'
-import LabSection from '@/components/sections/LabSection'
 import FeaturedSection from '@/components/sections/FeaturedSection'
+import ProjectsSection from '@/components/sections/ProjectsSection'
+import GalleryPreviewSection from '@/components/sections/GalleryPreviewSection'
+import ExpertisePreviewSection from '@/components/sections/ExpertisePreviewSection'
+import BlogPreviewSection from '@/components/sections/BlogPreviewSection'
+import TestimonialsSection from '@/components/sections/TestimonialsSection'
+import ContactCTASection from '@/components/sections/ContactCTASection'
 
 interface HomepageClientProps {
   lang: Language
@@ -30,9 +29,7 @@ export default function HomepageClient({ lang }: HomepageClientProps) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const content = JSON.parse(JSON.stringify(TRANSLATIONS[lang])) as any
   const projects = getProjects(lang)
-  const resources = getResources(lang)
   const testimonials = getTestimonials(lang)
-  const [expandedService, setExpandedService] = useState<string | null>(null)
   const featuredSignals = FEATURED_SIGNAL_IDS.map(id => SIGNALS.find(s => s.id === id)).filter(Boolean) as typeof SIGNALS
 
   const navigate = useCallback((path: string) => {
@@ -87,28 +84,23 @@ export default function HomepageClient({ lang }: HomepageClientProps) {
         setIframeModalUrl={() => {}}
       />
 
-      <BiographySection
-        systemTheme="light"
+      <GalleryPreviewSection
         lang={lang}
         content={content}
-        resources={resources}
-        Avatar={Avatar}
-        openModalWithUrl={navigate}
+        onNavigate={navigate}
       />
 
-      <ServicesSection
-        systemTheme="light"
+      <ExpertisePreviewSection
         lang={lang}
         content={content}
-        expandedService={expandedService}
-        setExpandedService={setExpandedService}
+        onNavigate={navigate}
       />
 
-      <LabSection
-        systemTheme="light"
+      <BlogPreviewSection
         lang={lang}
         content={content}
-        labPreviews={LAB_PREVIEWS}
+        featuredSignals={featuredSignals}
+        onNavigate={navigate}
       />
 
       <TestimonialsSection
@@ -118,6 +110,11 @@ export default function HomepageClient({ lang }: HomepageClientProps) {
         testimonials={testimonials}
         Avatar={Avatar}
         openModalWithUrl={navigate}
+      />
+
+      <ContactCTASection
+        lang={lang}
+        content={content}
       />
     </div>
   )

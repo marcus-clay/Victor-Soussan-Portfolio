@@ -53,7 +53,7 @@ const FeaturedSection: React.FC<FeaturedSectionProps> = ({
           >
             <div className="aspect-[16/9] overflow-hidden bg-gray-50">
               <img
-                src="/images/signals/guide-claude-code-cover.webp"
+                src="/images/guide-claude-code/hero-cover.png"
                 alt="Guide Claude Code"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 loading="lazy"
