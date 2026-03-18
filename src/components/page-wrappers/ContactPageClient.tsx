@@ -31,19 +31,19 @@ export default function ContactPageClient({ lang }: { lang: 'en' | 'fr' }) {
           {isEn ? "Let's talk" : 'Discutons'}
         </h1>
 
-        <p className="text-lg md:text-xl text-gray-500 leading-relaxed max-w-[55ch] mb-20">
+        <p className="text-lg text-gray-500 leading-relaxed max-w-[55ch] mb-12">
           {isEn
             ? 'Open to product design missions, team leadership roles, and interesting problems where design makes a measurable difference.'
             : 'Ouvert aux missions de design produit, aux rôles de leadership, et aux problèmes intéressants où le design fait une différence mesurable.'}
         </p>
 
         {/* What I can help with */}
-        <div className="rounded-2xl border border-gray-200 bg-white p-8 md:p-10 mb-20">
-          <h2 className="text-base font-bold text-gray-900 mb-6">
+        <div className="rounded-2xl border border-gray-200 bg-white p-7 md:p-8 mb-10">
+          <h2 className="text-sm font-bold text-gray-900 mb-5">
             {isEn ? 'What I can help with' : 'Ce que je peux apporter'}
           </h2>
-          <ul className="space-y-4">
-            <li className="flex items-baseline gap-3 text-base text-gray-600 leading-relaxed">
+          <ul className="space-y-3">
+            <li className="flex items-baseline gap-2.5 text-[15px] text-gray-600 leading-relaxed">
               <span className="w-1.5 h-1.5 rounded-full bg-gray-300 flex-shrink-0 mt-2" />
               <span>
                 <span className="font-semibold text-gray-900">{isEn ? 'Product Design' : 'Design Produit'}</span>
@@ -52,7 +52,7 @@ export default function ContactPageClient({ lang }: { lang: 'en' | 'fr' }) {
                   : ' — UX/UI, design systems, prototypage, du cadrage au handoff dev'}
               </span>
             </li>
-            <li className="flex items-baseline gap-3 text-base text-gray-600 leading-relaxed">
+            <li className="flex items-baseline gap-2.5 text-[15px] text-gray-600 leading-relaxed">
               <span className="w-1.5 h-1.5 rounded-full bg-gray-300 flex-shrink-0 mt-2" />
               <span>
                 <span className="font-semibold text-gray-900">{isEn ? 'Team Leadership' : 'Leadership'}</span>
@@ -61,7 +61,7 @@ export default function ContactPageClient({ lang }: { lang: 'en' | 'fr' }) {
                   : ' — recrutement, mentoring, design ops, cadence de livraison'}
               </span>
             </li>
-            <li className="flex items-baseline gap-3 text-base text-gray-600 leading-relaxed">
+            <li className="flex items-baseline gap-2.5 text-[15px] text-gray-600 leading-relaxed">
               <span className="w-1.5 h-1.5 rounded-full bg-gray-300 flex-shrink-0 mt-2" />
               <span>
                 <span className="font-semibold text-gray-900">{isEn ? 'AI Prototyping' : 'Prototypage IA'}</span>
@@ -74,7 +74,7 @@ export default function ContactPageClient({ lang }: { lang: 'en' | 'fr' }) {
         </div>
 
         {/* Book a call */}
-        <div className="mb-20">
+        <div className="mb-10">
           <a
             href="https://calendar.app.google/Zyp3tRyA2M9QByun6"
             target="_blank"
@@ -87,53 +87,53 @@ export default function ContactPageClient({ lang }: { lang: 'en' | 'fr' }) {
         </div>
 
         {/* Prefer async */}
-        <div className="mb-20">
-          <p className="text-sm text-gray-400 mb-3">
+        <div className="mb-12">
+          <p className="text-sm text-gray-400 mb-2">
             {isEn ? 'Prefer async?' : 'Plutôt par écrit ?'}
           </p>
           <div className="flex items-center gap-3">
             <a
               href={`mailto:${EMAIL}`}
-              className="text-lg font-medium text-gray-900 hover:text-[#2D5CF3] transition-colors"
+              className="text-base font-medium text-gray-900 hover:text-[#2D5CF3] transition-colors"
             >
               {EMAIL}
             </a>
             <button
               onClick={handleCopy}
-              className="p-2 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
+              className="p-1.5 rounded-md hover:bg-gray-100 transition-colors cursor-pointer"
               title={isEn ? 'Copy email' : 'Copier l\'email'}
             >
               {copied ? (
-                <Check size={18} weight="bold" className="text-emerald-500" />
+                <Check size={16} weight="bold" className="text-emerald-500" />
               ) : (
-                <Copy size={18} className="text-gray-400" />
+                <Copy size={16} className="text-gray-400" />
               )}
             </button>
           </div>
         </div>
 
         {/* Connect */}
-        <div className="rounded-2xl border border-gray-200 bg-white px-8 py-6">
-          <p className="text-sm font-semibold text-gray-900 mb-4">
+        <div className="rounded-2xl border border-gray-200 bg-white px-7 py-5">
+          <p className="text-sm font-semibold text-gray-900 mb-3">
             {isEn ? 'Connect' : 'Retrouvez-moi'}
           </p>
-          <div className="flex flex-wrap items-center gap-6">
+          <div className="flex flex-wrap items-center gap-5">
             <a
               href="https://linkedin.com/in/victorsoussan"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-900 transition-colors"
+              className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors"
             >
-              <LinkedinLogo size={20} />
+              <LinkedinLogo size={18} />
               LinkedIn
             </a>
             <a
               href="https://www.condamine.studio/apps"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-900 transition-colors"
+              className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors"
             >
-              <ArrowUpRight size={16} />
+              <ArrowUpRight size={14} />
               Condamine Apps
             </a>
             <a
