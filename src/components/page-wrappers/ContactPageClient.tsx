@@ -52,12 +52,12 @@ export default function ContactPageClient({ lang }: { lang: 'en' | 'fr' }) {
         {/* Header */}
         <div className="mb-20">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-[-0.03em] text-gray-900 leading-[1.08]">
-            Contact
+            {isEn ? "Let's work together" : 'Travaillons ensemble'}
           </h1>
           <p className="mt-5 text-lg md:text-xl text-gray-500 leading-relaxed max-w-[50ch]">
             {isEn
-              ? 'Available for product design consulting, lead roles, and strategic engagements.'
-              : 'Disponible pour des missions de consulting en product design, des rôles de lead, et des engagements stratégiques.'}
+              ? 'I reply within 24 hours. A 30-minute call is enough to frame the need.'
+              : 'Je réponds sous 24h. Un premier échange de 30 minutes suffit pour cadrer le besoin.'}
           </p>
         </div>
 
@@ -132,21 +132,21 @@ export default function ContactPageClient({ lang }: { lang: 'en' | 'fr' }) {
             <CalendarBlank size={26} className="text-gray-500" />
           </div>
           <h2 className="text-2xl font-bold tracking-[-0.02em] text-gray-900 mb-3">
-            {isEn ? 'Book a call' : 'Planifier un appel'}
+            {isEn ? "Let's discuss your project" : 'Discutons de votre projet'}
           </h2>
           <p className="text-base text-gray-500 leading-relaxed mb-8 max-w-[45ch] mx-auto">
             {isEn
-              ? '30 minutes to discuss your project and how I can help.'
-              : '30 minutes pour discuter de votre projet et de comment je peux vous aider.'}
+              ? "30 minutes, no strings attached. We frame the need, I assess if I can help."
+              : "30 minutes, sans engagement. On cadre le besoin, j'estime si je peux aider."}
           </p>
           <a
             href="https://calendar.app.google/Zyp3tRyA2M9QByun6"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-gray-900 text-white font-medium hover:bg-gray-800 transition-colors"
+            className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-[#2D5CF3] text-white font-medium hover:bg-[#2450d9] shadow-sm hover:shadow-md transition-all"
           >
             <CalendarBlank size={18} weight="bold" />
-            {isEn ? 'Book a 30-min call' : 'Réserver un créneau'}
+            {isEn ? 'Book 30 min' : 'Réserver 30 min'}
           </a>
           <p className="mt-4 text-xs text-gray-400">
             {isEn ? 'Free, no commitment' : 'Gratuit, sans engagement'}
