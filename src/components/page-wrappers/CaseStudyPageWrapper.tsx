@@ -2,6 +2,8 @@
 
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/navigation'
+import { getProjects } from '@/data/projectsData'
+import ShortProjectView from '@/components/ShortProjectView'
 
 type ProjectId = 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'sqool-classe' | 'france-vae' | 'pagesjaunes' | 'androidwear'
 type ViewMode = 'caseStudy' | 'gallery' | 'executive'
@@ -41,6 +43,15 @@ export default function CaseStudyPageWrapper({
 }) {
   const router = useRouter()
   const viewMode = VIEW_MAP[view] || 'executive'
+
+  // Check if this is a short-format project
+  const allProjects = getProjects(lang)
+  const project = allProjects.find((p) => p.id === projectId)
+
+  if (project?.format === 'short') {
+    return <ShortProjectView project={project} lang={lang} />
+  }
+
   const CaseStudyComponent = CASE_STUDY_COMPONENTS[projectId as ProjectId]
 
   if (!CaseStudyComponent) {

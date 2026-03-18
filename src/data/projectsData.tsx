@@ -9,12 +9,17 @@ import {
 } from '@phosphor-icons/react';
 import type { Language } from './translations';
 
+export type ProjectFormat = 'case-study' | 'short'
+export type ProjectCategory = 'product-design' | 'ai-experiment' | 'prototype' | 'concept'
+
 export interface Project {
   id: string;
   title: string;
   role: string;
   period: string;
   summary: string;
+  format: ProjectFormat;
+  category: ProjectCategory;
   missions: string[];
   system: {
     title: string;
@@ -23,11 +28,15 @@ export interface Project {
   deliverables: string[];
   icon: React.ReactNode;
   color: 'blue' | 'gray' | 'indigo' | 'purple';
-  coverImage: string; // Landscape cover image filename
-  hoverImage?: string; // Image to show on hover (with device mockup)
+  coverImage: string;
+  hoverImage?: string;
   externalLink?: string;
   testimonialId?: string;
   status?: 'shipped' | 'concept';
+  // Short format fields
+  media?: string[];          // Image/video URLs for short projects
+  shortDescription?: string; // Executive description for short format
+  videoUrl?: string;         // Embedded video URL
 }
 
 export const getProjects = (lang: Language): Project[] => {
@@ -35,6 +44,8 @@ export const getProjects = (lang: Language): Project[] => {
   return [
     {
       id: "toolkit",
+      format: 'case-study',
+      category: 'product-design',
       title: "Toolkit",
       role: isEn ? "Founding Designer" : "Founding Designer (Premier Designer)",
       period: "2023 – 2024",
@@ -75,6 +86,8 @@ export const getProjects = (lang: Language): Project[] => {
     },
     {
       id: "dailymotion",
+      format: 'case-study',
+      category: 'product-design',
       title: "Dailymotion Partner",
       role: isEn ? "Senior Product Designer" : "Senior Product Designer",
       period: "2017 – 2018",
@@ -112,6 +125,8 @@ export const getProjects = (lang: Language): Project[] => {
     },
     {
       id: "france-vae",
+      format: 'case-study',
+      category: 'product-design',
       title: "France VAE",
       role: isEn ? "Lead Product Designer" : "Lead Product Designer",
       period: isEn ? "Dec 2024 – Jul 2025" : "Déc 2024 – Juil 2025",
@@ -150,6 +165,8 @@ export const getProjects = (lang: Language): Project[] => {
     },
     {
       id: "connect",
+      format: 'case-study',
+      category: 'product-design',
       title: "SQOOL Connect",
       role: isEn ? "Product Design Lead" : "Product Design Lead",
       period: "2020 – 2021",
@@ -187,6 +204,8 @@ export const getProjects = (lang: Language): Project[] => {
     },
     {
       id: "sqool",
+      format: 'case-study',
+      category: 'product-design',
       title: "SQOOL Suite (UNOWHY)",
       role: isEn ? "Product Lead UI & Manager" : "Product Design Manager",
       period: "2018 – 2024",
@@ -219,6 +238,8 @@ export const getProjects = (lang: Language): Project[] => {
     },
     {
       id: "pagesjaunes",
+      format: 'case-study',
+      category: 'product-design',
       title: "PagesJaunes",
       role: isEn ? "Mobile UI Lead" : "Lead UI Mobile",
       period: "2014 – 2017",
@@ -253,6 +274,54 @@ export const getProjects = (lang: Language): Project[] => {
       color: "purple",
       coverImage: "thumbnail-pagesjaunes-multidevices.webp",
       testimonialId: "nicolas-moulin"
+    },
+    // --- Short format projects ---
+    {
+      id: "condamine-apps",
+      format: 'short',
+      category: 'ai-experiment',
+      title: "Condamine Apps",
+      role: isEn ? "Solo Designer & Builder" : "Designer & Builder",
+      period: "2025",
+      summary: isEn
+        ? "50+ functional web applications prototyped and deployed with Claude Code and AI-assisted workflows."
+        : "50+ applications web fonctionnelles prototypées et déployées avec Claude Code et des workflows assistés par IA.",
+      shortDescription: isEn
+        ? "A personal lab where I prototype and ship functional web applications using Claude Code, Figma MCP, and Vercel. Each app goes from concept to deployed URL in hours. The goal: prove that a designer can produce and deploy production-grade interfaces without a development team, and use the speed to make better design decisions through rapid iteration."
+        : "Un lab personnel où je prototype et déploie des applications web fonctionnelles avec Claude Code, Figma MCP et Vercel. Chaque app passe du concept à une URL déployée en quelques heures. L'objectif : prouver qu'un designer peut produire et déployer des interfaces de qualité production sans équipe de développement, et utiliser la vitesse pour prendre de meilleures décisions de design par l'itération rapide.",
+      missions: [],
+      system: { title: '', desc: '' },
+      deliverables: isEn
+        ? ["50+ Web Apps", "React/Next.js", "Tailwind CSS", "Vercel Deploys", "Claude Code Workflows"]
+        : ["50+ Apps Web", "React/Next.js", "Tailwind CSS", "Déploiements Vercel", "Workflows Claude Code"],
+      icon: <Cpu size={24} />,
+      color: "indigo",
+      coverImage: "/images/guide-claude-code/hero-cover.png",
+      externalLink: "https://www.condamine.studio/apps",
+      status: "shipped"
+    },
+    {
+      id: "design-system-figma-claude",
+      format: 'short',
+      category: 'ai-experiment',
+      title: isEn ? "Design System with Claude Code" : "Design System avec Claude Code",
+      role: isEn ? "Designer & Implementer" : "Designer & Implémenteur",
+      period: "2025",
+      summary: isEn
+        ? "Designing a complete design system in Figma, then implementing it with Claude Code. Zero drift between design and code."
+        : "Concevoir un design system complet dans Figma, puis l'implémenter avec Claude Code. Zéro écart entre le design et le code.",
+      shortDescription: isEn
+        ? "I designed a complete design system in Figma (foundations, atomic components, composite patterns), then implemented it on a dedicated site in Astro and Tailwind, driven entirely by Claude Code and Figma MCP. The gap between the intended design and the implemented result was near zero on atomic components. This experience confirmed that in an AI-assisted workflow, the design system becomes the interface contract between the designer and the code agent."
+        : "J'ai conçu un design system complet dans Figma (fondations, composants atomiques, patterns composites), puis je l'ai implémenté sur un site dédié en Astro et Tailwind, piloté intégralement par Claude Code et Figma MCP. L'écart entre le design voulu et le résultat implémenté était quasi nul sur les composants atomiques. Cette expérience a confirmé que dans un workflow assisté par IA, le design system devient le contrat d'interface entre le designer et l'agent de code.",
+      missions: [],
+      system: { title: '', desc: '' },
+      deliverables: isEn
+        ? ["Design System", "Figma Tokens", "Astro + Tailwind", "Claude Code", "Figma MCP"]
+        : ["Design System", "Tokens Figma", "Astro + Tailwind", "Claude Code", "Figma MCP"],
+      icon: <Layers size={24} />,
+      color: "blue",
+      coverImage: "/images/guide-claude-code/hero-cover.png",
+      status: "shipped"
     }
   ];
 };

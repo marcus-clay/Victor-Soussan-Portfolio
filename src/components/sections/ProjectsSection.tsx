@@ -7,27 +7,7 @@ import {
   ArrowUpRight,
   Images,
 } from '@phosphor-icons/react';
-
-interface Project {
-  id: string;
-  title: string;
-  role: string;
-  period: string;
-  summary: string;
-  missions: string[];
-  system: {
-    title: string;
-    desc: string;
-  };
-  deliverables: string[];
-  icon: React.ReactNode;
-  color: 'blue' | 'gray' | 'indigo' | 'purple';
-  coverImage: string;
-  hoverImage?: string;
-  externalLink?: string;
-  testimonialId?: string;
-  status?: 'shipped' | 'concept';
-}
+import type { Project } from '@/data/projectsData';
 
 // Generate srcset for images with responsive versions
 const getResponsiveSrcSet = (src: string): string | undefined => {

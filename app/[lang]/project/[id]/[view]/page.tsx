@@ -1,7 +1,8 @@
 import type { Metadata } from 'next'
 import CaseStudyPageWrapper from '@/components/page-wrappers/CaseStudyPageWrapper'
 
-const PROJECT_IDS = ['toolkit', 'dailymotion', 'connect', 'sqool', 'sqool-classe', 'france-vae', 'pagesjaunes', 'androidwear'] as const
+const CASE_STUDY_IDS = ['toolkit', 'dailymotion', 'connect', 'sqool', 'sqool-classe', 'france-vae', 'pagesjaunes', 'androidwear'] as const
+const SHORT_PROJECT_IDS = ['condamine-apps', 'design-system-figma-claude'] as const
 const VIEW_MODES = ['summary', 'full', 'gallery'] as const
 
 const PROJECT_NAMES: Record<string, string> = {
@@ -13,6 +14,8 @@ const PROJECT_NAMES: Record<string, string> = {
   'france-vae': 'France VAE',
   pagesjaunes: 'PagesJaunes',
   androidwear: 'Android Wear',
+  'condamine-apps': 'Condamine Apps',
+  'design-system-figma-claude': 'Design System with Claude Code',
 }
 
 const VIEW_LABELS: Record<string, string> = {
@@ -25,11 +28,16 @@ type Props = { params: Promise<{ lang: string; id: string; view: string }> }
 
 export function generateStaticParams() {
   const langs = ['en', 'fr']
-  return langs.flatMap((lang) =>
-    PROJECT_IDS.flatMap((id) =>
+  const caseStudyParams = langs.flatMap((lang) =>
+    CASE_STUDY_IDS.flatMap((id) =>
       VIEW_MODES.map((view) => ({ lang, id, view }))
     )
   )
+  // Short projects only need 'summary' view
+  const shortParams = langs.flatMap((lang) =>
+    SHORT_PROJECT_IDS.map((id) => ({ lang, id, view: 'summary' }))
+  )
+  return [...caseStudyParams, ...shortParams]
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
