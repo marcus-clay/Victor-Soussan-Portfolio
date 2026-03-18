@@ -119,7 +119,7 @@ export function localPathToPublicId(localPath: string): string {
  */
 export function shouldUseCloudinary(): boolean {
   // Use Cloudinary in production, local images in development for faster iteration
-  return import.meta.env.PROD;
+  return process.env.NODE_ENV === 'production';
 }
 
 /**

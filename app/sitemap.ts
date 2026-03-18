@@ -1,0 +1,115 @@
+import type { MetadataRoute } from 'next'
+
+const BASE_URL = 'https://www.victorsoussan.fr'
+
+const STATIC_ROUTES = [
+  '', 'about', 'projets', 'services', 'consulting', 'ressources',
+  'visual-archive', 'testimonials', 'contact', 'resume', 'quote', 'presentation',
+]
+
+const PROJECT_IDS = [
+  'toolkit', 'dailymotion', 'connect', 'sqool', 'sqool-classe',
+  'france-vae', 'pagesjaunes', 'androidwear',
+]
+
+const VIEW_MODES = ['summary', 'full', 'gallery']
+
+const SIGNAL_IDS = [
+  'hiring-solo-designer', 'design-thinking-public-service', 'roadmap-zero-to-one',
+  'design-system-five-brands', 'ai-prototyping-50-apps', 'scoping-is-the-work',
+  'designer-to-lead', 'designing-for-unwilling-users', 'storybook-negotiation',
+  'ai-training-non-designers', 'delivery-cycles', 'structurer-le-flou',
+  'culture-design-organisation', 'binome-pm-designer', 'claude-code-figma-mcp',
+  'design-system-figma-claude-code', 'claude-code-full-project',
+]
+
+const GUIDE_SLUGS = ['ch1', 'ch2', 'ch3', 'ch4', 'ch5', 'ch6', 'ch7', 'ch8', 'ch9']
+
+const LANGS = ['en', 'fr']
+
+export default function sitemap(): MetadataRoute.Sitemap {
+  const entries: MetadataRoute.Sitemap = []
+
+  // Static routes
+  for (const lang of LANGS) {
+    for (const route of STATIC_ROUTES) {
+      const path = route ? `/${lang}/${route}` : `/${lang}`
+      entries.push({
+        url: `${BASE_URL}${path}`,
+        lastModified: new Date(),
+        changeFrequency: route === '' ? 'weekly' : 'monthly',
+        priority: route === '' ? 1.0 : 0.8,
+        alternates: {
+          languages: {
+            fr: `${BASE_URL}/fr/${route}`,
+            en: `${BASE_URL}/en/${route}`,
+          },
+        },
+      })
+    }
+  }
+
+  // Signal routes
+  for (const lang of LANGS) {
+    for (const id of SIGNAL_IDS) {
+      entries.push({
+        url: `${BASE_URL}/${lang}/signal/${id}`,
+        lastModified: new Date(),
+        changeFrequency: 'monthly',
+        priority: 0.7,
+        alternates: {
+          languages: {
+            fr: `${BASE_URL}/fr/signal/${id}`,
+            en: `${BASE_URL}/en/signal/${id}`,
+          },
+        },
+      })
+    }
+  }
+
+  // Project routes
+  for (const lang of LANGS) {
+    for (const id of PROJECT_IDS) {
+      for (const view of VIEW_MODES) {
+        entries.push({
+          url: `${BASE_URL}/${lang}/project/${id}/${view}`,
+          lastModified: new Date(),
+          changeFrequency: 'monthly',
+          priority: 0.7,
+          alternates: {
+            languages: {
+              fr: `${BASE_URL}/fr/project/${id}/${view}`,
+              en: `${BASE_URL}/en/project/${id}/${view}`,
+            },
+          },
+        })
+      }
+    }
+  }
+
+  // Guide routes
+  for (const lang of LANGS) {
+    entries.push({
+      url: `${BASE_URL}/${lang}/guide/claude-code`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    })
+    for (const slug of GUIDE_SLUGS) {
+      entries.push({
+        url: `${BASE_URL}/${lang}/guide/claude-code/${slug}`,
+        lastModified: new Date(),
+        changeFrequency: 'monthly',
+        priority: 0.6,
+        alternates: {
+          languages: {
+            fr: `${BASE_URL}/fr/guide/claude-code/${slug}`,
+            en: `${BASE_URL}/en/guide/claude-code/${slug}`,
+          },
+        },
+      })
+    }
+  }
+
+  return entries
+}

@@ -142,13 +142,13 @@ export const useMobileLightboxGestures = ({
   }, [isOpen, isMobile, isZoomed, controls]);
 
   // Handle vertical drag for swipe-to-close
-  const handleDragY = useCallback((event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+  const handleDragY = useCallback((_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     if (isZoomed || !isMobile) return;
     setDragY(info.offset.y);
   }, [isZoomed, isMobile]);
 
   // Handle drag end - close if swiped down enough
-  const handleDragYEnd = useCallback((event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+  const handleDragYEnd = useCallback((_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     if (isZoomed || !isMobile) return;
 
     const threshold = 100;
@@ -163,7 +163,7 @@ export const useMobileLightboxGestures = ({
   }, [isZoomed, isMobile, onClose, controls]);
 
   // Handle pan when zoomed
-  const handlePanWhenZoomed = useCallback((event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+  const handlePanWhenZoomed = useCallback((_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     if (!isZoomed || !isMobile) return;
     setPosition(prev => ({
       x: prev.x + info.delta.x,

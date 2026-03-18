@@ -10,6 +10,8 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+.next
+out
 *.local
 
 # Editor directories and files
@@ -24,3 +26,11 @@ dist-ssr
 *.sw?
 .vercel
 .env*.local
+
+# Claude Code local config (keep rules/ and docs/ versioned)
+.claude/settings.local.json
+
+# Dev artifacts
+screenshots/
+scripts/screenshot-final.mjs
+tsconfig.tsbuildinfo

@@ -1,0 +1,401 @@
+/**
+ * WorkPage - Grid view of all projects
+ * Displays all case studies in a 3-column grid layout
+ */
+
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowRight, X } from '@phosphor-icons/react';
+
+type Language = 'en' | 'fr';
+type FilterCategory = 'all' | 'product-design' | 'concept' | 'management' | 'mobile';
+
+interface Project {
+  id: string;
+  title: string;
+  role: string;
+  period: string;
+  summary: string;
+  coverImage: string;
+  hoverImage?: string;
+  color: 'blue' | 'gray' | 'indigo' | 'purple' | 'green' | 'orange';
+  status?: 'coming-soon' | 'active' | 'concept';
+  category?: string;
+  categoryKey: FilterCategory;
+  baseScale?: number;
+}
+
+interface WorkPageProps {
+  systemTheme: 'light' | 'dark';
+  lang: Language;
+  onProjectClick: (projectId: string) => void;
+  onBack: () => void;
+}
+
+// Projects data
+const getProjects = (lang: Language): Project[] => {
+  const isEn = lang === 'en';
+  return [
+    {
+      id: "france-vae",
+      title: "France VAE",
+      role: isEn ? "Lead Product Designer" : "Lead Product Designer",
+      period: "2024 – 2025",
+      summary: isEn
+        ? "6-month mission structuring product ops for a national public service scaling to 100K+ candidates."
+        : "Mission de 6 mois pour structurer les ops produit d'un service public national.",
+      coverImage: "/images/francevae/thumbnail_france_vae_02.webp",
+      hoverImage: "/images/francevae/thumbnail_france_vae.webp",
+      color: "blue",
+      category: isEn ? "Product Design" : "Design Produit",
+      categoryKey: "product-design"
+    },
+    {
+      id: "toolkit",
+      title: "Toolkit",
+      role: isEn ? "Founding Designer" : "Founding Designer",
+      period: "2023 – 2024",
+      summary: isEn
+        ? "0-to-1 Product Design for a Construction Tech SaaS. From pitch deck to MVP."
+        : "Création d'un SaaS B2B pour le BTP, de zéro (0 to 1).",
+      coverImage: "/images/toolkit/thumbnail_toolkit_02.webp",
+      hoverImage: "/images/thumbnail-toolkit.webp",
+      color: "indigo",
+      category: isEn ? "Product Design" : "Design Produit",
+      categoryKey: "product-design"
+    },
+    {
+      id: "dailymotion",
+      title: "Dailymotion Partner",
+      role: isEn ? "Senior Product Designer" : "Senior Product Designer",
+      period: "2017 – 2018",
+      summary: isEn
+        ? "Redesigning the professional video management suite for tier-1 media partners."
+        : "Refonte du back-office vidéo utilisé par les grands médias.",
+      coverImage: "/images/dailymotion/thubmnail_dailymotion_03.webp",
+      hoverImage: "/images/thumbnail-dailymotion-web-platform.webp",
+      color: "gray",
+      category: isEn ? "Product Design" : "Design Produit",
+      categoryKey: "product-design"
+    },
+    {
+      id: "sqool-classe",
+      title: "SQOOL Classe",
+      role: isEn ? "Lead Interaction Designer" : "Lead Interaction Designer",
+      period: "2022",
+      summary: isEn
+        ? "Designing a real-time classroom supervision tool for 465 schools across Île-de-France."
+        : "Conception d\u2019un outil de supervision de classe en temps r\u00e9el pour 465 \u00e9tablissements en \u00cele-de-France.",
+      coverImage: "/images/thumbnail_sqool_classe.webp",
+      color: "blue",
+      category: isEn ? "Product Design" : "Design Produit",
+      categoryKey: "product-design"
+    },
+    {
+      id: "connect",
+      title: "SQOOL Connect",
+      role: isEn ? "Product Design Lead" : "Product Design Lead",
+      period: "2020 – 2021",
+      summary: isEn
+        ? "Designing a web-based dashboard concept for classroom orchestration."
+        : "Conception d'un dashboard web pour l'orchestration de classe.",
+      coverImage: "thumbnail-connect.webp",
+      color: "purple",
+      status: "concept",
+      category: isEn ? "Concept" : "Concept",
+      categoryKey: "concept"
+    },
+    {
+      id: "sqool",
+      title: "SQOOL Suite",
+      role: isEn ? "Product Design Manager" : "Product Design Manager",
+      period: "2018 – 2024",
+      summary: isEn
+        ? "Leading the design transformation of a hardware company into an EdTech SaaS."
+        : "Transformation d'une boite Hardware en écosystème SaaS EdTech.",
+      coverImage: "thumbnail-sqool-suite.webp",
+      color: "blue",
+      category: isEn ? "Management" : "Management",
+      categoryKey: "management"
+    },
+    {
+      id: "pagesjaunes",
+      title: "PagesJaunes",
+      role: isEn ? "Product Designer → UI Team Lead" : "Product Designer → UI Team Lead",
+      period: "2014 – 2016",
+      summary: isEn
+        ? "Redesigning France's most downloaded utility app for 22M users across iOS, Android, and web."
+        : "Refonte de l'app utilitaire la plus téléchargée de France pour 22M d'utilisateurs.",
+      coverImage: "/images/thumbnail_pagesjaunes_sp_tablette.webp",
+      hoverImage: "/images/thumbnail-pagesjaunes-multidevices.webp",
+      color: "orange",
+      category: isEn ? "Product Design" : "Design Produit",
+      categoryKey: "product-design",
+      baseScale: 1.15
+    },
+    {
+      id: "androidwear",
+      title: "PagesJaunes Android Wear",
+      role: isEn ? "Product Designer" : "Product Designer",
+      period: "2015",
+      summary: isEn
+        ? "Designing a glanceable local search experience for wearables in duo with Android developer."
+        : "Conception d'une expérience de recherche locale pour montre connectée en duo designer-dev.",
+      coverImage: "/images/pagesjaunes/Android%20wear/android_wear_thumbnail%2002.webp",
+      color: "purple",
+      category: isEn ? "Mobile" : "Mobile",
+      categoryKey: "mobile",
+      baseScale: 1.15
+    }
+  ];
+};
+
+const TRANSLATIONS = {
+  en: {
+    title: 'Work',
+    subtitle: 'Selected projects and case studies',
+    viewProject: 'View project',
+    shipped: 'Shipped',
+    concept: 'Concept',
+    categories: {
+      all: 'All',
+      'product-design': 'Product Design',
+      concept: 'Concept',
+      management: 'Management',
+      mobile: 'Mobile'
+    } as Record<FilterCategory, string>
+  },
+  fr: {
+    title: '\u00c9tudes de cas',
+    subtitle: 'Projets s\u00e9lectionn\u00e9s et \u00e9tudes de cas',
+    viewProject: 'Voir le projet',
+    shipped: 'En Production',
+    concept: 'Concept',
+    categories: {
+      all: 'Tous',
+      'product-design': 'Design Produit',
+      concept: 'Concept',
+      management: 'Management',
+      mobile: 'Mobile'
+    } as Record<FilterCategory, string>
+  }
+};
+
+// Project Card Component - Minimal style inspired by Gabriel Valdivia
+const ProjectCard: React.FC<{
+  project: Project;
+  systemTheme: 'light' | 'dark';
+  lang: Language;
+  onClick: () => void;
+  index: number;
+}> = ({ project, systemTheme, lang, onClick, index }) => {
+  const [isHovered, setIsHovered] = useState(false);
+  const isDark = systemTheme === 'dark';
+  const isDisabled = project.status === 'coming-soon';
+  const t = TRANSLATIONS[lang];
+  const isConcept = project.status === 'concept';
+
+  return (
+    <motion.div
+      layout
+      initial={{ opacity: 0, scale: 0.97 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.97 }}
+      transition={{ duration: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
+      className={`group ${isDisabled ? 'cursor-default' : 'cursor-pointer'}`}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onClick={() => !isDisabled && onClick()}
+    >
+      {/* Card Container - testimonial card style */}
+      <div
+        className={`relative overflow-hidden rounded-3xl border shadow-sm hover:shadow-md transition-all duration-300 ${
+          isDark
+            ? 'bg-[#1D1D1F] border-white/10'
+            : 'bg-white border-gray-100'
+        } ${isDisabled ? 'opacity-50' : ''}`}
+      >
+        {/* Image Container - Square ratio, larger visuals */}
+        <div className="relative aspect-square flex items-center justify-center overflow-hidden">
+          {/* Status Badge - Top left */}
+          <div className="absolute top-4 left-4 z-20">
+            <span className={`inline-flex items-center text-xs font-medium px-3 py-1.5 rounded-full backdrop-blur-md ${
+              isDark
+                ? 'bg-black/40 text-white border border-white/10'
+                : 'bg-white/70 text-gray-700 border border-gray-200/50'
+            }`}>
+              <span className={`w-2 h-2 rounded-full mr-2 ${
+                isConcept ? 'bg-violet-500' : 'bg-green-500'
+              }`} />
+              {isConcept ? t.concept.toUpperCase() : t.shipped.toUpperCase()}
+            </span>
+          </div>
+
+          {/* Project Image - Device mockup with zoom effect - larger size */}
+          <img
+            loading={index < 6 ? "eager" : "lazy"}
+            decoding="async"
+            fetchPriority={index < 3 ? "high" : "auto"}
+            src={project.hoverImage
+              ? project.hoverImage
+              : project.coverImage.startsWith('/') ? project.coverImage : `/images/${project.coverImage}`}
+            alt={project.title}
+            className={`w-full h-full object-contain transition-transform duration-300 ease-out ${isDisabled ? 'grayscale' : ''}`}
+            style={{
+              transform: `scale(${isHovered && !isDisabled
+                ? (project.baseScale || 1) * 1.05
+                : (project.baseScale || 1)})`
+            }}
+            draggable={false}
+          />
+        </div>
+
+        {/* Text Content - Same style as Homepage */}
+        <div className="px-5 pb-5">
+          <h3 className={`text-xl md:text-2xl font-bold tracking-[-0.02em] ${
+            isDark ? 'text-white' : 'text-gray-900'
+          }`}>
+            {project.title}
+          </h3>
+          <p className={`text-sm mt-1 line-clamp-2 max-w-[75%] ${
+            isDark ? 'text-gray-400' : 'text-gray-500'
+          }`}>
+            {project.summary}
+          </p>
+        </div>
+
+        {/* Arrow button on hover - black circle, white arrow - positioned at card bottom right */}
+        <AnimatePresence>
+          {isHovered && !isDisabled && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              transition={{ duration: 0.15 }}
+              className="absolute bottom-5 right-5 w-10 h-10 rounded-full flex items-center justify-center bg-[#2D5CF3] text-white"
+            >
+              <ArrowRight size={18} />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </motion.div>
+  );
+};
+
+// Main WorkPage Component
+const FILTERS: FilterCategory[] = ['all', 'product-design', 'concept', 'management', 'mobile'];
+
+const WorkPage: React.FC<WorkPageProps> = ({
+  systemTheme,
+  lang,
+  onProjectClick,
+  onBack
+}) => {
+  const isDark = systemTheme === 'dark';
+  const t = TRANSLATIONS[lang];
+  const projects = getProjects(lang);
+  const [activeFilter, setActiveFilter] = useState<FilterCategory>('all');
+
+  const filteredProjects = activeFilter === 'all'
+    ? projects
+    : projects.filter(p => p.categoryKey === activeFilter);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.15 }}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="work-page-title"
+      className={`fixed inset-0 md:top-16 z-[100] overflow-y-auto ${isDark ? 'bg-[#0a0a0a]' : 'bg-[#FCFCFD]'}`}
+    >
+      {/* Header - mobile only, desktop uses persistent nav */}
+      <header className={`sticky top-0 z-50 backdrop-blur-xl md:hidden ${
+        isDark
+          ? 'bg-[#0a0a0a]/80'
+          : 'bg-[#FCFCFD]/80'
+      }`}>
+        <div className="w-full pl-6 pr-2.5 h-16 flex items-center justify-between">
+          {/* Title on left - Same style as Homepage nav */}
+          <span id="work-page-title" className={`font-semibold text-lg tracking-[-0.02em] ${isDark ? 'text-white' : 'text-gray-900'}`}>
+            {t.title}
+          </span>
+
+          {/* Close Button on right - same size as lightbox with larger hitbox */}
+          <button
+            onClick={onBack}
+            aria-label="Close"
+            className={`relative p-3 rounded-full transition-colors before:absolute before:inset-[-12px] before:content-[''] ${
+              isDark ? 'text-gray-400 hover:text-white hover:bg-white/10' : 'text-gray-500 hover:text-gray-900 hover:bg-black/5'
+            }`}
+          >
+            <X size={24} />
+          </button>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="max-w-[1200px] mx-auto px-6 py-12 md:py-20">
+        {/* Page title */}
+        <div className="mb-10 md:mb-14">
+          <h1 className={`text-3xl sm:text-4xl md:text-5xl font-bold tracking-[-0.03em] mb-4 ${
+            isDark ? 'text-white' : 'text-gray-900'
+          }`}>
+            {t.title}
+          </h1>
+          <p className={`text-base md:text-lg leading-relaxed max-w-2xl ${
+            isDark ? 'text-gray-400' : 'text-gray-600'
+          }`}>
+            {lang === 'en'
+              ? 'Selected projects in product design, design systems, and AI-assisted prototyping.'
+              : '\u00c9tudes de cas en design produit, design systems et prototypage assist\u00e9 par IA.'}
+          </p>
+        </div>
+
+        {/* Category filters */}
+        <div className="flex flex-wrap gap-2 mb-10">
+          {FILTERS.map(f => (
+            <button
+              key={f}
+              onClick={() => setActiveFilter(f)}
+              aria-pressed={activeFilter === f}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 cursor-pointer ${
+                activeFilter === f
+                  ? isDark
+                    ? 'bg-white text-gray-900'
+                    : 'bg-gray-900 text-white'
+                  : isDark
+                    ? 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-gray-900'
+              }`}
+            >
+              {t.categories[f]}
+            </button>
+          ))}
+        </div>
+
+        {/* Projects Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+          <AnimatePresence mode="popLayout">
+            {filteredProjects.map((project, index) => (
+              <ProjectCard
+                key={project.id}
+                project={project}
+                systemTheme={systemTheme}
+                lang={lang}
+                onClick={() => onProjectClick(project.id)}
+                index={index}
+              />
+            ))}
+          </AnimatePresence>
+        </div>
+      </main>
+
+    </motion.div>
+  );
+};
+
+export default WorkPage;
