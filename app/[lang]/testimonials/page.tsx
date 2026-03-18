@@ -28,7 +28,7 @@ export default async function TestimonialsPage({ params }: Props) {
 
   return (
     <div className="min-h-screen bg-[#F9F9F9]">
-      <div className="max-w-[1200px] mx-auto px-6 pt-12 pb-16">
+      <div className="max-w-[1200px] mx-auto px-6 pt-20 pb-20">
         <div className="mb-12">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-[-0.03em] text-gray-900 leading-[1.08]">
             {lang === 'fr' ? 'Témoignages' : 'Testimonials'}
