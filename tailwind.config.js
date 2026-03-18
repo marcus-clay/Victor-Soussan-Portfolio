@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
+        sans: ['var(--font-public-sans)', 'Public Sans', 'sans-serif'],
       },
       colors: {
         apple: {

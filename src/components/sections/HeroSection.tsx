@@ -77,7 +77,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
         </div>
 
         {/* Main Tagline - Frame. Design. Ship. */}
-        <h1 className={`text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-[-0.05em] mb-4 md:mb-6 leading-[1.05] ${
+        <h1 className={`text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-[-0.04em] mb-4 md:mb-6 leading-[1.05] ${
           systemTheme === 'dark' ? 'text-white' : 'text-[#1D1D1F]'
         }`}>
           {content.hero.tagline}

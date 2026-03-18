@@ -1,11 +1,11 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Public_Sans } from 'next/font/google'
 import './globals.css'
 
-const inter = Inter({
+const publicSans = Public_Sans({
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-inter',
+  variable: '--font-public-sans',
 })
 
 export const metadata: Metadata = {
@@ -65,7 +65,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="en" className={publicSans.variable}>
       <head>
         <script
           type="application/ld+json"
