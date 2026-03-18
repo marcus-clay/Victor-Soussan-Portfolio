@@ -21,12 +21,14 @@ export default function SignalDetailPageWrapper({
   const router = useRouter()
 
   return (
-    <SignalDetailPage
-      signalId={signalId}
-      systemTheme="light"
-      lang={lang}
-      onBack={() => router.push(`/${lang}/ressources`)}
-      onOpenSignal={(id) => router.push(`/${lang}/signal/${id}`)}
-    />
+    <div className="[&>div]:!relative [&>div]:!inset-auto [&>div]:!z-auto [&>div>div]:!relative [&>div>div]:!inset-auto [&>div>div]:!z-auto min-h-screen">
+      <SignalDetailPage
+        signalId={signalId}
+        systemTheme="light"
+        lang={lang}
+        onBack={() => router.push(`/${lang}/ressources`)}
+        onOpenSignal={(id) => router.push(`/${lang}/signal/${id}`)}
+      />
+    </div>
   )
 }
