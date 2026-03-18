@@ -44,12 +44,12 @@ export default async function TestimonialsPage({ params }: Props) {
           {testimonials.map((t) => (
             <article
               key={t.id}
-              className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm hover:shadow-md transition-shadow"
+              className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm hover:shadow-md transition-shadow flex flex-col"
             >
-              <blockquote className="text-base text-gray-700 leading-relaxed mb-5">
+              <blockquote className="text-base text-gray-700 leading-relaxed mb-5 flex-1">
                 &ldquo;{t.content}&rdquo;
               </blockquote>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 pt-4 border-t border-gray-50 mt-auto">
                 <img
                   src={`/images/${t.image}`}
                   alt={t.author}
