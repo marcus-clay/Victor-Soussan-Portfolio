@@ -20,14 +20,14 @@ const loadingSpinner = () => (
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const CASE_STUDY_COMPONENTS: Record<ProjectId, React.ComponentType<any>> = {
-  toolkit: dynamic(() => import('@/views/case-studies/ToolkitPage'), { ssr: false, loading: loadingSpinner }),
-  dailymotion: dynamic(() => import('@/views/case-studies/DailymotionPage'), { ssr: false, loading: loadingSpinner }),
-  connect: dynamic(() => import('@/views/case-studies/ConnectPage'), { ssr: false, loading: loadingSpinner }),
-  sqool: dynamic(() => import('@/views/case-studies/SqoolPage'), { ssr: false, loading: loadingSpinner }),
-  'sqool-classe': dynamic(() => import('@/views/case-studies/SqoolClassePage'), { ssr: false, loading: loadingSpinner }),
-  'france-vae': dynamic(() => import('@/views/case-studies/FranceVaePage'), { ssr: false, loading: loadingSpinner }),
-  pagesjaunes: dynamic(() => import('@/views/case-studies/PagesJaunesPage'), { ssr: false, loading: loadingSpinner }),
-  androidwear: dynamic(() => import('@/views/case-studies/AndroidWearPage'), { ssr: false, loading: loadingSpinner }),
+  toolkit: dynamic(() => import('@/views/case-studies/ToolkitPage'), { loading: loadingSpinner }),
+  dailymotion: dynamic(() => import('@/views/case-studies/DailymotionPage'), { loading: loadingSpinner }),
+  connect: dynamic(() => import('@/views/case-studies/ConnectPage'), { loading: loadingSpinner }),
+  sqool: dynamic(() => import('@/views/case-studies/SqoolPage'), { loading: loadingSpinner }),
+  'sqool-classe': dynamic(() => import('@/views/case-studies/SqoolClassePage'), { loading: loadingSpinner }),
+  'france-vae': dynamic(() => import('@/views/case-studies/FranceVaePage'), { loading: loadingSpinner }),
+  pagesjaunes: dynamic(() => import('@/views/case-studies/PagesJaunesPage'), { loading: loadingSpinner }),
+  androidwear: dynamic(() => import('@/views/case-studies/AndroidWearPage'), { loading: loadingSpinner }),
 }
 
 export default function CaseStudyPageWrapper({
