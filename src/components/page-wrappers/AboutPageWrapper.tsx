@@ -1,7 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import AboutPage from '@/views/AboutPage'
+import AboutPageRedesign from '@/views/AboutPageRedesign'
 import { getResources } from '@/data/resourcesData'
 
 export default function AboutPageWrapper({ lang }: { lang: 'en' | 'fr' }) {
@@ -9,8 +9,7 @@ export default function AboutPageWrapper({ lang }: { lang: 'en' | 'fr' }) {
   const resources = getResources(lang)
 
   return (
-    <AboutPage
-      systemTheme="light"
+    <AboutPageRedesign
       lang={lang}
       onBack={() => router.back()}
       onContact={() => router.push(`/${lang}/contact`)}
