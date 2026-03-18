@@ -88,13 +88,15 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           </div>
 
           {/* Right: Victor's photo */}
-          <div className="hidden md:block flex-shrink-0">
-            <img
-              src="/images/photos victor/image_victor_home.png"
-              alt="Victor Soussan"
-              className="w-[320px] lg:w-[380px] h-auto rounded-2xl object-cover"
-              loading="eager"
-            />
+          <div className="hidden md:flex flex-shrink-0 items-center">
+            <div className="w-[300px] lg:w-[340px] h-[380px] lg:h-[440px] rounded-3xl bg-gray-100/80 overflow-hidden">
+              <img
+                src="/images/photos victor/image_victor_home.png"
+                alt="Victor Soussan"
+                className="w-full h-full object-cover object-top"
+                loading="eager"
+              />
+            </div>
           </div>
         </div>
       </div>
