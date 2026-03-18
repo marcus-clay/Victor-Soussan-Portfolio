@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
 
 type Props = { params: Promise<{ lang: string }> }
 
@@ -97,28 +96,8 @@ export default async function ContactPage({ params }: Props) {
   const lang = (langParam === 'fr' ? 'fr' : 'en') as 'en' | 'fr'
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Header */}
-      <header className="sticky top-0 z-50 backdrop-blur-xl bg-[#FCFCFD]/80 border-b border-gray-100">
-        <div className="w-full pl-6 pr-2.5 h-16 flex items-center justify-between">
-          <span className="font-semibold text-lg tracking-[-0.02em] text-gray-900">
-            Contact
-          </span>
-          <Link
-            href={`/${lang}`}
-            className="relative p-3 rounded-full transition-colors hover:bg-gray-100 before:absolute before:inset-[-12px] before:content-['']"
-            aria-label="Close"
-          >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-900">
-              <line x1="18" y1="6" x2="6" y2="18" />
-              <line x1="6" y1="6" x2="18" y2="18" />
-            </svg>
-          </Link>
-        </div>
-      </header>
-
-      {/* Content */}
-      <main className="max-w-2xl mx-auto px-6 py-16">
+    <div className="min-h-screen bg-[#F9F9F9]">
+      <div className="max-w-2xl mx-auto px-6 py-16">
         <div className="mb-12">
           <h1 className="text-3xl font-bold tracking-[-0.02em] text-gray-900">
             {lang === 'fr' ? 'Entrons en contact' : 'Get in touch'}
@@ -191,7 +170,7 @@ export default async function ContactPage({ params }: Props) {
             {lang === 'fr' ? 'Reserver un creneau' : 'Book a 30-min call'}
           </a>
         </div>
-      </main>
+      </div>
     </div>
   )
 }
