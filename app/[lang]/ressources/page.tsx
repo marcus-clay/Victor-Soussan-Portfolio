@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import SignalsPageWrapper from '@/components/page-wrappers/SignalsPageWrapper'
+import RessourcesPageClient from '@/components/page-wrappers/RessourcesPageClient'
 
 type Props = { params: Promise<{ lang: string }> }
 
@@ -25,5 +25,5 @@ export default async function RessourcesPage({ params }: Props) {
   const { lang: langParam } = await params
   const lang = (langParam === 'fr' ? 'fr' : 'en') as 'en' | 'fr'
 
-  return <SignalsPageWrapper lang={lang} />
+  return <RessourcesPageClient lang={lang} />
 }
