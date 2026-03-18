@@ -8,6 +8,8 @@ import { getProjects } from '@/data/projectsData'
 import { getResources } from '@/data/resourcesData'
 import { getTestimonials } from '@/data/testimonialsData'
 import { LAB_PREVIEWS } from '@/data/labData'
+import { SIGNALS, FEATURED_SIGNAL_IDS } from '@/data/signalsData'
+import { GUIDE_CHAPTERS } from '@/data/guideClaudeCodeData'
 import Avatar from '@/components/Avatar'
 import ScrollExpandCard from '@/components/ScrollExpandCard'
 import HeroSection from '@/components/sections/HeroSection'
@@ -16,6 +18,7 @@ import BiographySection from '@/components/sections/BiographySection'
 import ServicesSection from '@/components/sections/ServicesSection'
 import TestimonialsSection from '@/components/sections/TestimonialsSection'
 import LabSection from '@/components/sections/LabSection'
+import FeaturedSection from '@/components/sections/FeaturedSection'
 
 interface HomepageClientProps {
   lang: Language
@@ -30,6 +33,7 @@ export default function HomepageClient({ lang }: HomepageClientProps) {
   const resources = getResources(lang)
   const testimonials = getTestimonials(lang)
   const [expandedService, setExpandedService] = useState<string | null>(null)
+  const featuredSignals = FEATURED_SIGNAL_IDS.map(id => SIGNALS.find(s => s.id === id)).filter(Boolean) as typeof SIGNALS
 
   const navigate = useCallback((path: string) => {
     router.push(`/${lang}${path}`)
@@ -63,6 +67,13 @@ export default function HomepageClient({ lang }: HomepageClientProps) {
         Avatar={Avatar}
         scrollToSection={scrollToSection}
         openModalWithUrl={navigate}
+      />
+
+      <FeaturedSection
+        lang={lang}
+        featuredSignals={featuredSignals}
+        guideChapters={GUIDE_CHAPTERS}
+        onNavigate={navigate}
       />
 
       <ProjectsSection
