@@ -97,12 +97,12 @@ export default async function ContactPage({ params }: Props) {
 
   return (
     <div className="min-h-screen bg-[#F9F9F9]">
-      <div className="max-w-2xl mx-auto px-6 py-16">
+      <div className="max-w-[1200px] mx-auto px-6 pt-20 pb-20">
         <div className="mb-12">
-          <h1 className="text-3xl font-bold tracking-[-0.02em] text-gray-900">
-            {lang === 'fr' ? 'Entrons en contact' : 'Get in touch'}
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-[-0.03em] text-gray-900 leading-[1.08]">
+            {lang === 'fr' ? 'Contact' : 'Contact'}
           </h1>
-          <p className="mt-3 text-base text-gray-600 leading-relaxed">
+          <p className="mt-4 text-lg md:text-xl text-gray-500 leading-relaxed max-w-2xl">
             {lang === 'fr'
               ? 'Disponible pour des missions de consulting en product design et UX.'
               : 'Available for consulting engagements in product design and UX.'}
