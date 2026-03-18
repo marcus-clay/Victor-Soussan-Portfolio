@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import WorkPageWrapper from '@/components/page-wrappers/WorkPageWrapper'
+import ProjetsPageClient from '@/components/page-wrappers/ProjetsPageClient'
 
 type Props = { params: Promise<{ lang: string }> }
 
@@ -8,8 +8,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: lang === 'fr' ? 'Projets' : 'Projects',
     description: lang === 'fr'
-      ? 'Études de cas et projets en design produit, design systems et prototypage.'
-      : 'Case studies and projects in product design, design systems, and prototyping.',
+      ? 'Études de cas et projets en design produit, design systems et prototypage assisté par IA.'
+      : 'Case studies and projects in product design, design systems, and AI-assisted prototyping.',
     alternates: {
       canonical: `https://www.victorsoussan.fr/${lang}/projets`,
       languages: {
@@ -22,5 +22,5 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ProjetsPage({ params }: Props) {
   const { lang } = await params
-  return <WorkPageWrapper lang={lang as 'en' | 'fr'} />
+  return <ProjetsPageClient lang={lang as 'en' | 'fr'} />
 }
