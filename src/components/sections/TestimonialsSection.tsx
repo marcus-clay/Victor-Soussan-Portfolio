@@ -41,7 +41,7 @@ const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
         ? 'bg-[#0a0a0a]'
         : 'bg-[#FCFCFD]'
     }`}>
-      <div className="max-w-[1280px] mx-auto">
+      <div className="max-w-[1200px] mx-auto">
         <div className="mb-8 md:mb-12 text-center">
           <h2 className={`text-2xl sm:text-3xl md:text-5xl font-bold tracking-[-0.02em] mb-4 md:mb-6 ${
             systemTheme === 'dark' ? 'text-white' : 'text-gray-900'

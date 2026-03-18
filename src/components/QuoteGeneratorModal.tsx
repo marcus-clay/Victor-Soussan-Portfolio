@@ -864,31 +864,7 @@ export default function QuoteGeneratorModal({
                   </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-base font-semibold text-gray-900 mb-3">
-                      {content.contact.quote_step_5_start_label}
-                    </label>
-                    <input
-                      type="date"
-                      value={quoteData.startDate}
-                      onChange={(e) => setQuoteData({ ...quoteData, startDate: e.target.value })}
-                      className="w-full px-5 py-4 text-base border-2 border-gray-300 rounded-2xl focus:border-blue-600 focus:ring-4 focus:ring-blue-600/20 transition-all duration-200 bg-white/50 backdrop-blur-xl"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-base font-semibold text-gray-900 mb-3">
-                      {content.contact.quote_step_5_end_label}
-                    </label>
-                    <input
-                      type="date"
-                      value={quoteData.endDate}
-                      onChange={(e) => setQuoteData({ ...quoteData, endDate: e.target.value })}
-                      className="w-full px-5 py-4 text-base border-2 border-gray-300 rounded-2xl focus:border-blue-600 focus:ring-4 focus:ring-blue-600/20 transition-all duration-200 bg-white/50 backdrop-blur-xl"
-                    />
-                  </div>
-                </div>
+                {/* Start/End Date fields removed */}
               </motion.div>
             )}
 

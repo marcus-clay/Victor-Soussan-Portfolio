@@ -28,7 +28,7 @@ export default async function TestimonialsPage({ params }: Props) {
 
   return (
     <div className="min-h-screen bg-[#F9F9F9]">
-      <div className="max-w-5xl mx-auto px-6 py-16">
+      <div className="max-w-[1200px] mx-auto px-6 py-16">
         <div className="mb-12">
           <h1 className="text-3xl font-bold tracking-[-0.02em] text-gray-900">
             {lang === 'fr' ? 'Temoignages' : 'Testimonials'}
@@ -40,19 +40,22 @@ export default async function TestimonialsPage({ params }: Props) {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {testimonials.map((t) => (
             <article
               key={t.id}
               className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm hover:shadow-md transition-shadow"
             >
-              <blockquote className="text-sm text-gray-700 leading-relaxed mb-5">
+              <blockquote className="text-base text-gray-700 leading-relaxed mb-5">
                 &ldquo;{t.content}&rdquo;
               </blockquote>
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-sm font-semibold text-gray-500">
-                  {t.author.split(' ').map(n => n[0]).join('')}
-                </div>
+                <img
+                  src={`/images/${t.image}`}
+                  alt={t.author}
+                  className="w-12 h-12 rounded-full object-cover flex-shrink-0 bg-gray-100"
+                  loading="lazy"
+                />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <span className="text-sm font-semibold text-gray-900 truncate">{t.author}</span>

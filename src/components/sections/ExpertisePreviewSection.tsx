@@ -64,7 +64,7 @@ const ExpertisePreviewSection: React.FC<ExpertisePreviewSectionProps> = ({
 
   return (
     <section className="py-16 md:py-32 px-6 md:px-10 bg-[#FCFCFD]">
-      <div className="max-w-[1280px] mx-auto">
+      <div className="max-w-[1200px] mx-auto">
         {/* Section heading */}
         <div className="mb-8 md:mb-12 text-center">
           <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold tracking-[-0.02em] mb-4 md:mb-6 text-gray-900">
@@ -90,7 +90,7 @@ const ExpertisePreviewSection: React.FC<ExpertisePreviewSectionProps> = ({
                 <h3 className="text-lg md:text-xl font-bold tracking-[-0.02em] text-gray-900 mb-3">
                   {pillar.title}
                 </h3>
-                <p className="text-sm md:text-base text-gray-600 leading-relaxed">
+                <p className="text-base md:text-lg text-gray-600 leading-relaxed">
                   {pillar.desc}
                 </p>
               </div>

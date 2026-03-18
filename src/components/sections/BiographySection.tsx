@@ -72,7 +72,7 @@ const BiographySection: React.FC<BiographySectionProps> = ({
     <section id="bio" className={`py-16 md:py-32 px-10 relative ${
       systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white'
     }`}>
-      <div className="max-w-[1280px] mx-auto">
+      <div className="max-w-[1200px] mx-auto">
         <div className="mb-8 md:mb-12 text-center">
           <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold tracking-[-0.02em] mb-4 md:mb-6">{content.bio.title}</h2>
           <p className={`text-sm sm:text-base md:text-lg max-w-2xl mx-auto ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>{content.bio.subtitle}</p>

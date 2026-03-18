@@ -90,10 +90,14 @@ const ProjectsSection: React.FC<ProjectsSectionProps> = ({
   setIframeModalUrl,
 }) => {
   return (
-    <section id="projects" className={`-mt-[36px] md:-mt-[68px] pt-0 pb-16 md:pb-32 px-10 relative z-10 ${
-      systemTheme === 'dark' ? 'bg-transparent' : 'bg-transparent'
-    }`}>
-      <div className="max-w-[1280px] mx-auto">
+    <section id="projects" className="pt-16 md:pt-24 pb-16 md:pb-32 px-10 relative z-10 bg-transparent">
+      <div className="max-w-[1200px] mx-auto">
+        {/* Section title */}
+        <div className="mb-10 md:mb-14">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-[-0.02em] text-gray-900">
+            {lang === 'en' ? 'Case Studies' : 'Etudes de cas'}
+          </h2>
+        </div>
         {/* Stacked Landscape Cards - Show only first 3 projects */}
         <div className="flex flex-col gap-10">
           {projects.slice(0, 3).map((project, index) => {

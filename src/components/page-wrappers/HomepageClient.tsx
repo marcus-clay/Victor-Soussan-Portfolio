@@ -15,7 +15,6 @@ import FeaturedSection from '@/components/sections/FeaturedSection'
 import ProjectsSection from '@/components/sections/ProjectsSection'
 import GalleryPreviewSection from '@/components/sections/GalleryPreviewSection'
 import ExpertisePreviewSection from '@/components/sections/ExpertisePreviewSection'
-import BlogPreviewSection from '@/components/sections/BlogPreviewSection'
 import TestimonialsSection from '@/components/sections/TestimonialsSection'
 import ContactCTASection from '@/components/sections/ContactCTASection'
 
@@ -93,13 +92,6 @@ export default function HomepageClient({ lang }: HomepageClientProps) {
       <ExpertisePreviewSection
         lang={lang}
         content={content}
-        onNavigate={navigate}
-      />
-
-      <BlogPreviewSection
-        lang={lang}
-        content={content}
-        featuredSignals={featuredSignals}
         onNavigate={navigate}
       />
 

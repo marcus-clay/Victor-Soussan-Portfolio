@@ -33,12 +33,12 @@ const ContactCTASection: React.FC<ContactCTASectionProps> = ({
 
   return (
     <section className="py-16 md:py-32 px-6 md:px-10 bg-[#FCFCFD]">
-      <div className="max-w-[1280px] mx-auto">
+      <div className="max-w-[1200px] mx-auto">
         <div className="flex flex-col md:flex-row items-center gap-10 md:gap-16">
           {/* Victor photo */}
           <div className="flex-shrink-0 w-48 h-48 md:w-64 md:h-64 rounded-2xl overflow-hidden">
             <img
-              src="/images/photos victor/image_victor_home.png"
+              src="/images/photos victor/image-victor-linkedin.png"
               alt="Victor Soussan"
               className="w-full h-full object-cover"
               loading="lazy"

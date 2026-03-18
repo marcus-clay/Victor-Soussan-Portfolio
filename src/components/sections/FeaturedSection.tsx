@@ -29,11 +29,11 @@ const FeaturedSection: React.FC<FeaturedSectionProps> = ({
 
   return (
     <section className="py-12 md:py-20 px-6 md:px-10">
-      <div className="max-w-[1280px] mx-auto">
+      <div className="max-w-[1200px] mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <h2 className="text-2xl md:text-3xl font-bold tracking-[-0.02em] text-gray-900">
-            {isEn ? 'Featured' : 'A la une'}
+            {isEn ? 'Resources' : 'Ressources'}
           </h2>
           <button
             onClick={() => onNavigate('/signals')}
@@ -68,7 +68,7 @@ const FeaturedSection: React.FC<FeaturedSectionProps> = ({
               <h3 className="text-lg font-bold tracking-[-0.02em] text-gray-900 mb-2">
                 {isEn ? 'Getting started with Claude Code' : 'Bien demarrer avec Claude Code'}
               </h3>
-              <p className="text-sm text-gray-500 leading-relaxed mb-4 line-clamp-2">
+              <p className="text-base text-gray-500 leading-relaxed mb-4 line-clamp-2">
                 {isEn
                   ? 'Complete guide for designers: from installation to deployment, visual quality, skills, and Figma MCP.'
                   : 'Guide complet pour les designers : de l\'installation au deploiement, qualite visuelle, skills et Figma MCP.'}
@@ -95,7 +95,7 @@ const FeaturedSection: React.FC<FeaturedSectionProps> = ({
               <h3 className="text-lg font-bold tracking-[-0.02em] text-gray-900 mb-3">
                 {isEn ? guideSignal.title_en : guideSignal.title_fr}
               </h3>
-              <p className="text-sm text-gray-500 leading-relaxed mb-4 flex-1 line-clamp-3">
+              <p className="text-base text-gray-500 leading-relaxed mb-4 flex-1 line-clamp-3">
                 {(isEn ? guideSignal.body_en : guideSignal.body_fr).substring(0, 200)}...
               </p>
               <span className="text-sm font-medium text-gray-900 flex items-center gap-1">

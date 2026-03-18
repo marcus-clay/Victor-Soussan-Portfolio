@@ -36,8 +36,8 @@ const HeroSection: React.FC<HeroSectionProps> = ({
         <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-[#F9F9F9] via-[#F9F9F9]/70 to-transparent" />
       </div>
 
-      <div className="relative max-w-[1280px] mx-auto z-10 w-full">
-        <div className="flex flex-col md:flex-row items-center md:items-start gap-10 md:gap-16">
+      <div className="relative max-w-[1200px] mx-auto z-10 w-full">
+        <div className="flex flex-col md:flex-row items-center md:items-start gap-8 md:gap-10">
           {/* Left: Text content */}
           <div className="flex-1 pt-2.5">
             {/* Availability Badge */}
@@ -61,12 +61,12 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             </p>
 
             {/* Positioning */}
-            <p className="text-sm text-gray-500 mb-4">
+            <p className="text-sm md:text-base text-gray-500 mb-4">
               {content.hero.positioning}
             </p>
 
             {/* Description */}
-            <p className="text-sm sm:text-base leading-relaxed mb-8 md:mb-10 text-gray-500 max-w-2xl">
+            <p className="text-base md:text-lg leading-relaxed mb-8 md:mb-10 text-gray-500 max-w-2xl">
               {content.hero.desc}
             </p>
 

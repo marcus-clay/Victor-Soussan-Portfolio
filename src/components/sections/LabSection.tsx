@@ -55,7 +55,7 @@ const LabSection: React.FC<LabSectionProps> = ({
        <div className="absolute top-0 right-0 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-indigo-600/10 rounded-full blur-[100px] pointer-events-none translate-x-1/2 -translate-y-1/2"></div>
        <div className="absolute bottom-0 left-0 w-[250px] md:w-[400px] h-[250px] md:h-[400px] bg-blue-600/10 rounded-full blur-[100px] pointer-events-none -translate-x-1/2 translate-y-1/2"></div>
 
-       <div className="max-w-[1280px] mx-auto relative z-10">
+       <div className="max-w-[1200px] mx-auto relative z-10">
           <div className="mb-8 md:mb-12 text-center">
             <div className="inline-flex items-center px-3 py-1 rounded-full bg-white/10 border border-white/10 text-xs font-medium text-blue-300 mb-3 md:mb-4 backdrop-blur-md">
                <FlaskConical size={14} className="mr-2"/> {content.lab.tag}

@@ -28,6 +28,12 @@
 
 html {
   scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-size: 1rem;
+  line-height: 1.6;
 }
 
 /* Global button and interactive styles */
@@ -125,6 +131,20 @@ html {
 .accessibility-dyslexic h2,
 .accessibility-dyslexic h3 {
   letter-spacing: 0.08em;
+}
+
+/* Logo carousel auto-scroll animation */
+@keyframes logo-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.logo-carousel-track {
+  animation: logo-scroll 30s linear infinite;
+}
+
+.logo-carousel-track:hover {
+  animation-play-state: paused;
 }
 
 /* Print styles for resume */

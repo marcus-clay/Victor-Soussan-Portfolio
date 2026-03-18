@@ -24,7 +24,7 @@ const BlogPreviewSection: React.FC<BlogPreviewSectionProps> = ({
 }) => {
   return (
     <section className="py-16 md:py-32 px-6 md:px-10 bg-white">
-      <div className="max-w-[1280px] mx-auto">
+      <div className="max-w-[1200px] mx-auto">
         <div className="mb-8 md:mb-12 text-center">
           <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold tracking-[-0.02em] mb-4 md:mb-6 text-gray-900">
             {content.signals.title}
@@ -59,7 +59,7 @@ const BlogPreviewSection: React.FC<BlogPreviewSectionProps> = ({
                 </h3>
 
                 {/* Body excerpt */}
-                <p className="text-sm md:text-base text-gray-600 leading-relaxed line-clamp-3 mb-4">
+                <p className="text-base md:text-lg text-gray-600 leading-relaxed line-clamp-3 mb-4">
                   {body}
                 </p>
 

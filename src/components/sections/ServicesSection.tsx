@@ -96,7 +96,7 @@ const ServicesSection: React.FC<ServicesSectionProps> = ({
     <section id="services" className={`py-16 md:py-32 px-10 relative overflow-hidden ${
       systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-[#FCFCFD]'
     }`}>
-      <div className="max-w-[1280px] mx-auto relative z-10">
+      <div className="max-w-[1200px] mx-auto relative z-10">
         <div className="mb-8 md:mb-12 text-center">
            <h2 className={`text-2xl sm:text-3xl md:text-5xl font-bold tracking-[-0.02em] mb-4 md:mb-6 ${
              systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
