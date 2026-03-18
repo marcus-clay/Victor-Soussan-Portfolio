@@ -7,7 +7,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { lang: langParam } = await params
   const lang = langParam === 'fr' ? 'fr' : 'en'
   return {
-    title: lang === 'fr' ? 'Temoignages' : 'Testimonials',
+    title: lang === 'fr' ? 'Témoignages' : 'Testimonials',
     description: lang === 'fr'
       ? 'Ce que disent les collaborateurs, clients et partenaires de Victor Soussan.'
       : 'What collaborators, clients and partners say about Victor Soussan.',
@@ -31,11 +31,11 @@ export default async function TestimonialsPage({ params }: Props) {
       <div className="max-w-[1200px] mx-auto px-6 pt-12 pb-16">
         <div className="mb-12">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-[-0.03em] text-gray-900 leading-[1.08]">
-            {lang === 'fr' ? 'Temoignages' : 'Testimonials'}
+            {lang === 'fr' ? 'Témoignages' : 'Testimonials'}
           </h1>
           <p className="mt-4 text-lg md:text-xl text-gray-500 leading-relaxed max-w-2xl">
             {lang === 'fr'
-              ? 'Ce que disent les personnes avec lesquelles j\'ai travaille.'
+              ? 'Ce que disent les personnes avec lesquelles j\'ai travaillé.'
               : 'What the people I have worked with say.'}
           </p>
         </div>
