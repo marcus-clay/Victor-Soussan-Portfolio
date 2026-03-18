@@ -1,13 +1,18 @@
 'use client'
 
-import React from 'react'
-import { motion } from 'framer-motion'
+import React, { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import {
   GraduationCap,
   BookOpen,
   ArrowUpRight,
   ArrowRight,
-  CheckCircle,
+  Crosshair,
+  TreeStructure,
+  Users,
+  Robot,
+  Strategy,
+  CaretDown,
 } from '@phosphor-icons/react'
 
 type Language = 'en' | 'fr'
@@ -47,6 +52,13 @@ const TRANSLATIONS = {
       'User research embedded in every phase, not tacked on as validation',
       'AI-augmented workflows: Claude Code, Figma MCP, rapid prototyping to production',
       'Team leadership and DesignOps: hiring, mentoring, rituals, delivery cadence',
+    ],
+    bullet_titles: [
+      'End-to-end design',
+      'Design systems at scale',
+      'Embedded research',
+      'AI-augmented workflows',
+      'Leadership & DesignOps',
     ],
     career_title: 'Journey',
     chapters: [
@@ -131,6 +143,13 @@ const TRANSLATIONS = {
       'Recherche utilisateur int\u00e9gr\u00e9e \u00e0 chaque phase, pas ajout\u00e9e en validation',
       'Workflows augment\u00e9s par l\u2019IA : Claude Code, Figma MCP, prototypage rapide en production',
       '\u00c9quipe et DesignOps : recrutement, mentoring, rituels, cadence de livraison',
+    ],
+    bullet_titles: [
+      'Conception end-to-end',
+      'Design systems \u00e0 l\u2019\u00e9chelle',
+      'Recherche int\u00e9gr\u00e9e',
+      'Workflows augment\u00e9s IA',
+      'Leadership & DesignOps',
     ],
     career_title: 'Parcours',
     chapters: [
@@ -348,51 +367,59 @@ const TOOLS = [
 ]
 
 // ---------------------------------------------------------------------------
-// Timeline badge colors
+// Timeline accent colors (left border per position)
 // ---------------------------------------------------------------------------
 
+const TIMELINE_COLORS = [
+  '#2D5CF3', // brand blue
+  '#7C3AED', // purple
+  '#0891B2', // cyan
+  '#059669', // emerald
+  '#D97706', // amber
+  '#DC2626', // red
+  '#6366F1', // indigo
+  '#64748B', // slate
+]
+
 const BADGE_COLORS = [
-  'bg-blue-100 text-blue-700',
-  'bg-indigo-100 text-indigo-700',
-  'bg-purple-100 text-purple-700',
-  'bg-pink-100 text-pink-700',
-  'bg-orange-100 text-orange-700',
-  'bg-teal-100 text-teal-700',
+  'bg-blue-50 text-blue-700',
+  'bg-purple-50 text-purple-700',
+  'bg-cyan-50 text-cyan-700',
+  'bg-emerald-50 text-emerald-700',
+  'bg-amber-50 text-amber-700',
+  'bg-red-50 text-red-700',
+  'bg-indigo-50 text-indigo-700',
   'bg-slate-100 text-slate-700',
-  'bg-amber-100 text-amber-700',
 ]
 
 // ---------------------------------------------------------------------------
-// Shared card animation props
+// Value proposition card config (icons + accent colors)
 // ---------------------------------------------------------------------------
 
-const cardVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0 },
-}
-
-function AnimatedCard({
-  children,
-  className = '',
-  delay = 0,
-}: {
-  children: React.ReactNode
-  className?: string
-  delay?: number
-}) {
-  return (
-    <motion.div
-      variants={cardVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: '-40px' }}
-      transition={{ duration: 0.5, delay, ease: 'easeOut' }}
-      className={`bg-white border border-gray-100 rounded-2xl ${className}`}
-    >
-      {children}
-    </motion.div>
-  )
-}
+const VALUE_ICONS = [Crosshair, TreeStructure, Users, Robot, Strategy]
+const VALUE_ACCENTS = [
+  { border: 'border-l-blue-500', bg: 'bg-blue-50/50', icon: 'text-blue-600' },
+  {
+    border: 'border-l-purple-500',
+    bg: 'bg-purple-50/50',
+    icon: 'text-purple-600',
+  },
+  {
+    border: 'border-l-emerald-500',
+    bg: 'bg-emerald-50/50',
+    icon: 'text-emerald-600',
+  },
+  {
+    border: 'border-l-amber-500',
+    bg: 'bg-amber-50/50',
+    icon: 'text-amber-600',
+  },
+  {
+    border: 'border-l-rose-500',
+    bg: 'bg-rose-50/50',
+    icon: 'text-rose-600',
+  },
+]
 
 // ---------------------------------------------------------------------------
 // Component
@@ -405,41 +432,45 @@ export default function AboutPageRedesign({
   resources,
 }: AboutPageRedesignProps) {
   const t = TRANSLATIONS[lang]
+  const [expandedIndex, setExpandedIndex] = useState<number | null>(null)
+
+  const toggleExpand = (idx: number) => {
+    setExpandedIndex((prev) => (prev === idx ? null : idx))
+  }
 
   return (
     <div className="min-h-screen bg-[#F9F9F9]">
-      <div className="max-w-[1200px] mx-auto px-6 py-20 space-y-6">
+      <div className="max-w-[1200px] mx-auto px-6 py-20">
         {/* ---------------------------------------------------------------- */}
-        {/* Page header                                                       */}
+        {/* Hero intro: large text + photo side by side                      */}
         {/* ---------------------------------------------------------------- */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
-          className="pt-4 pb-8"
+          transition={{ duration: 0.5, ease: 'easeOut' }}
+          className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-white via-white to-gray-50 border border-gray-100/80 shadow-[0_1px_3px_rgba(0,0,0,0.04)] p-8 md:p-12 lg:p-16 mb-16"
         >
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-[-0.03em] text-gray-900 mb-3">
-            {t.page_title}
-          </h1>
-          <p className="text-lg md:text-xl text-gray-500">
-            {t.intro_role} · {t.intro_location}
-          </p>
-        </motion.div>
-
-        {/* ---------------------------------------------------------------- */}
-        {/* Intro card: two columns (text left, photo right)                  */}
-        {/* ---------------------------------------------------------------- */}
-        <AnimatedCard className="p-8 md:p-10" delay={0.05}>
-          <div className="flex flex-col md:flex-row gap-8 md:gap-12 items-start">
-            <div className="flex-1 space-y-4">
-              <p className="text-base md:text-lg leading-relaxed text-gray-600 max-w-[65ch]">
+          <div className="flex flex-col lg:flex-row gap-10 lg:gap-16 items-center">
+            {/* Text side */}
+            <div className="flex-1 space-y-6">
+              <div>
+                <p className="text-xs uppercase tracking-widest text-gray-400 mb-3">
+                  {t.intro_role} · {t.intro_location}
+                </p>
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-[-0.03em] text-gray-900">
+                  {t.page_title}
+                </h1>
+              </div>
+              <p className="text-base md:text-lg leading-relaxed text-gray-600 max-w-[60ch]">
                 {t.intro_p1}
               </p>
-              <p className="text-base md:text-lg leading-relaxed text-gray-600 max-w-[65ch]">
+              <p className="text-base md:text-lg leading-relaxed text-gray-600 max-w-[60ch]">
                 {t.intro_p2}
               </p>
             </div>
-            <div className="w-40 h-40 md:w-52 md:h-52 rounded-2xl overflow-hidden flex-shrink-0 shadow-sm">
+
+            {/* Photo side */}
+            <div className="w-48 h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 rounded-2xl overflow-hidden flex-shrink-0 shadow-lg ring-1 ring-black/5">
               <img
                 src="/images/photos victor/image_victor_home.png"
                 alt="Victor Soussan"
@@ -447,131 +478,269 @@ export default function AboutPageRedesign({
               />
             </div>
           </div>
-        </AnimatedCard>
+        </motion.section>
 
         {/* ---------------------------------------------------------------- */}
-        {/* Value proposition card                                            */}
+        {/* Value proposition: bento grid (2 large + 3 small)                */}
         {/* ---------------------------------------------------------------- */}
-        <AnimatedCard className="p-8 md:p-10" delay={0.1}>
-          <h2 className="text-xl md:text-2xl font-bold tracking-[-0.02em] text-gray-900 mb-6">
+        <section className="mb-16">
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="text-xs uppercase tracking-widest text-gray-400 mb-4"
+          >
             {t.value_prop}
-          </h2>
-          <ul className="space-y-3 max-w-[65ch]">
-            {t.bullets.map((bullet, idx) => (
-              <li key={idx} className="flex items-start gap-3">
-                <CheckCircle
-                  size={22}
-                  weight="fill"
-                  className="text-[#2D5CF3] flex-shrink-0 mt-0.5"
-                />
-                <span className="text-base md:text-lg leading-relaxed text-gray-600">
-                  {bullet}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </AnimatedCard>
+          </motion.p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* First 2 cards: large */}
+            {t.bullets.slice(0, 2).map((bullet, idx) => {
+              const Icon = VALUE_ICONS[idx]
+              const accent = VALUE_ACCENTS[idx]
+              return (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-40px' }}
+                  transition={{ duration: 0.5, delay: idx * 0.08 }}
+                  whileHover={{ y: -4 }}
+                  className={`${accent.bg} border border-gray-100/80 border-l-4 ${accent.border} rounded-2xl p-7 shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition-shadow duration-300`}
+                >
+                  <Icon
+                    size={28}
+                    weight="duotone"
+                    className={`${accent.icon} mb-4`}
+                  />
+                  <h3 className="text-xl font-bold tracking-[-0.02em] text-gray-900 mb-2">
+                    {t.bullet_titles[idx]}
+                  </h3>
+                  <p className="text-base leading-relaxed text-gray-600 max-w-[60ch]">
+                    {bullet}
+                  </p>
+                </motion.div>
+              )
+            })}
+          </div>
+
+          {/* Last 3 cards: smaller, 3-col */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4">
+            {t.bullets.slice(2).map((bullet, rawIdx) => {
+              const idx = rawIdx + 2
+              const Icon = VALUE_ICONS[idx]
+              const accent = VALUE_ACCENTS[idx]
+              return (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-40px' }}
+                  transition={{ duration: 0.5, delay: idx * 0.08 }}
+                  whileHover={{ y: -4 }}
+                  className={`${accent.bg} border border-gray-100/80 border-l-4 ${accent.border} rounded-2xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition-shadow duration-300`}
+                >
+                  <Icon
+                    size={24}
+                    weight="duotone"
+                    className={`${accent.icon} mb-3`}
+                  />
+                  <h3 className="text-lg font-bold tracking-[-0.02em] text-gray-900 mb-1.5">
+                    {t.bullet_titles[idx]}
+                  </h3>
+                  <p className="text-sm leading-relaxed text-gray-600">
+                    {bullet}
+                  </p>
+                </motion.div>
+              )
+            })}
+          </div>
+        </section>
 
         {/* ---------------------------------------------------------------- */}
-        {/* Current Practice card                                             */}
+        {/* Current Practice card                                            */}
         {/* ---------------------------------------------------------------- */}
-        <AnimatedCard className="p-8 md:p-10" delay={0.1}>
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-40px' }}
+          transition={{ duration: 0.5 }}
+          className="bg-white border border-gray-100/80 rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.04)] p-8 md:p-10 mb-16"
+        >
           <div className="flex items-center gap-3 mb-4">
             <div className="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse" />
-            <h2 className="text-xl md:text-2xl font-bold tracking-[-0.02em] text-gray-900">
+            <p className="text-xs uppercase tracking-widest text-gray-400">
               {t.practice_title}
-            </h2>
+            </p>
           </div>
-          <p className="text-base md:text-lg leading-relaxed text-gray-600 max-w-[65ch]">
+          <p className="text-base md:text-lg leading-relaxed text-gray-600 max-w-[60ch]">
             {t.practice_text}
           </p>
-        </AnimatedCard>
+        </motion.section>
 
         {/* ---------------------------------------------------------------- */}
-        {/* Career timeline section                                           */}
+        {/* Career timeline: dark header + collapsible cards                  */}
         {/* ---------------------------------------------------------------- */}
-        <div className="pt-6">
-          <motion.h2
-            initial={{ opacity: 0, y: 12 }}
+        <section className="mb-16">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.4 }}
-            className="text-2xl md:text-3xl font-bold tracking-[-0.02em] text-gray-900 mb-6"
+            transition={{ duration: 0.5 }}
+            className="bg-gray-900 rounded-2xl px-8 py-6 mb-5"
           >
-            {t.career_title}
-          </motion.h2>
+            <h2 className="text-2xl md:text-3xl font-bold tracking-[-0.02em] text-white">
+              {t.career_title}
+            </h2>
+          </motion.div>
 
-          <div className="space-y-4">
-            {t.chapters.map((chapter, idx) => (
-              <AnimatedCard
-                key={idx}
-                className="p-6 md:p-8"
-                delay={idx * 0.04}
-              >
-                <div className="flex flex-col sm:flex-row sm:items-start gap-4">
-                  {/* Period badge */}
-                  <span
-                    className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap self-start ${
-                      BADGE_COLORS[idx % BADGE_COLORS.length]
-                    }`}
+          <div className="space-y-3">
+            {t.chapters.map((chapter, idx) => {
+              const isExpanded = expandedIndex === idx
+              const accentColor = TIMELINE_COLORS[idx % TIMELINE_COLORS.length]
+
+              return (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-30px' }}
+                  transition={{ duration: 0.4, delay: idx * 0.04 }}
+                  className="group"
+                >
+                  <div
+                    onClick={() => toggleExpand(idx)}
+                    className="flex items-stretch bg-white border border-gray-100/80 rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:border-gray-200/80 transition-all duration-300 cursor-pointer overflow-hidden"
                   >
-                    {chapter.period}
-                  </span>
+                    {/* Colored left bar */}
+                    <div
+                      className="w-1 flex-shrink-0 rounded-l-2xl"
+                      style={{ backgroundColor: accentColor }}
+                    />
 
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-lg md:text-xl font-bold tracking-[-0.01em] text-gray-900 mb-0.5">
-                      {chapter.title}
-                    </h3>
-                    <p className="text-sm font-medium text-gray-400 mb-3">
-                      {chapter.company}
-                    </p>
-                    <p className="text-base leading-relaxed text-gray-600 max-w-[65ch]">
-                      {chapter.text}
-                    </p>
+                    <div className="flex-1 p-5 md:p-6">
+                      {/* Header row: always visible */}
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+                        <span
+                          className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap self-start ${
+                            BADGE_COLORS[idx % BADGE_COLORS.length]
+                          }`}
+                        >
+                          {chapter.period}
+                        </span>
+
+                        <div className="flex-1 min-w-0">
+                          <h3 className="text-lg md:text-xl font-bold tracking-[-0.01em] text-gray-900">
+                            {chapter.title}
+                          </h3>
+                          <p className="text-sm font-medium text-gray-400">
+                            {chapter.company}
+                          </p>
+                        </div>
+
+                        <motion.div
+                          animate={{ rotate: isExpanded ? 180 : 0 }}
+                          transition={{
+                            type: 'spring',
+                            stiffness: 300,
+                            damping: 25,
+                          }}
+                          className="flex-shrink-0 self-start sm:self-center"
+                        >
+                          <CaretDown
+                            size={20}
+                            weight="bold"
+                            className="text-gray-300 group-hover:text-gray-500 transition-colors"
+                          />
+                        </motion.div>
+                      </div>
+
+                      {/* Expandable description */}
+                      <AnimatePresence initial={false}>
+                        {isExpanded && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{
+                              height: {
+                                type: 'spring',
+                                stiffness: 250,
+                                damping: 30,
+                              },
+                              opacity: { duration: 0.25 },
+                            }}
+                            className="overflow-hidden"
+                          >
+                            <p className="text-base leading-relaxed text-gray-600 max-w-[60ch] pt-4">
+                              {chapter.text}
+                            </p>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
                   </div>
-                </div>
-              </AnimatedCard>
-            ))}
+                </motion.div>
+              )
+            })}
           </div>
-        </div>
+        </section>
 
         {/* ---------------------------------------------------------------- */}
-        {/* Tools card (iPadOS app grid style)                                */}
+        {/* Tools: compact grid with colored icon backgrounds                */}
         {/* ---------------------------------------------------------------- */}
-        <AnimatedCard className="p-8 md:p-10" delay={0.05}>
-          <h2 className="text-xl md:text-2xl font-bold tracking-[-0.02em] text-gray-900 mb-6">
+        <section className="mb-16">
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="text-xs uppercase tracking-widest text-gray-400 mb-4"
+          >
             {t.tools_title}
-          </h2>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          </motion.p>
+
+          <div className="flex flex-wrap gap-3">
             {TOOLS.map((tool) => (
-              <div
+              <motion.div
                 key={tool.name}
-                className="flex flex-col items-center gap-2.5 p-4 rounded-2xl border border-gray-100 bg-[#F9F9F9] hover:bg-white hover:shadow-md hover:border-gray-200 transition-all duration-200 cursor-default"
+                whileHover={{ scale: 1.06 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+                className="flex items-center gap-3 px-4 py-3 bg-white border border-gray-100/80 rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)] transition-shadow duration-200 cursor-default"
               >
                 <div
-                  className={`w-12 h-12 rounded-xl ${tool.color} flex items-center justify-center shadow-sm border border-gray-200`}
+                  className={`w-10 h-10 rounded-lg ${tool.color} flex items-center justify-center shadow-sm`}
                 >
                   {tool.icon}
                 </div>
                 <span className="text-sm font-medium text-gray-900">
                   {tool.name}
                 </span>
-              </div>
+              </motion.div>
             ))}
           </div>
-        </AnimatedCard>
+        </section>
 
         {/* ---------------------------------------------------------------- */}
-        {/* Education card                                                    */}
+        {/* Education card                                                   */}
         {/* ---------------------------------------------------------------- */}
-        <AnimatedCard className="p-8 md:p-10" delay={0.05}>
-          <h2 className="text-xl md:text-2xl font-bold tracking-[-0.02em] text-gray-900 mb-6">
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-40px' }}
+          transition={{ duration: 0.5 }}
+          className="bg-white border border-gray-100/80 rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.04)] p-8 md:p-10 mb-16"
+        >
+          <p className="text-xs uppercase tracking-widest text-gray-400 mb-6">
             {t.education_title}
-          </h2>
+          </p>
           <div className="space-y-5">
             <div className="flex items-start gap-4">
               <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0">
-                <GraduationCap size={22} weight="fill" className="text-[#2D5CF3]" />
+                <GraduationCap
+                  size={22}
+                  weight="fill"
+                  className="text-[#2D5CF3]"
+                />
               </div>
               <div>
                 <h4 className="font-bold text-gray-900">
@@ -584,7 +753,11 @@ export default function AboutPageRedesign({
             </div>
             <div className="flex items-start gap-4">
               <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0">
-                <BookOpen size={22} weight="fill" className="text-[#2D5CF3]" />
+                <BookOpen
+                  size={22}
+                  weight="fill"
+                  className="text-[#2D5CF3]"
+                />
               </div>
               <div>
                 <h4 className="font-bold text-gray-900">
@@ -596,16 +769,22 @@ export default function AboutPageRedesign({
               </div>
             </div>
           </div>
-        </AnimatedCard>
+        </motion.section>
 
         {/* ---------------------------------------------------------------- */}
-        {/* Toolkit resources card                                            */}
+        {/* Toolkit resources                                                */}
         {/* ---------------------------------------------------------------- */}
-        <AnimatedCard className="p-8 md:p-10" delay={0.05}>
-          <h2 className="text-xl md:text-2xl font-bold tracking-[-0.02em] text-gray-900 mb-2">
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-40px' }}
+          transition={{ duration: 0.5 }}
+          className="bg-white border border-gray-100/80 rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.04)] p-8 md:p-10 mb-16"
+        >
+          <p className="text-xs uppercase tracking-widest text-gray-400 mb-2">
             {t.toolkit_title}
-          </h2>
-          <p className="text-base text-gray-500 mb-6 max-w-[65ch]">
+          </p>
+          <p className="text-base text-gray-500 mb-6 max-w-[60ch]">
             {t.toolkit_desc}
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -635,26 +814,37 @@ export default function AboutPageRedesign({
               </a>
             ))}
           </div>
-        </AnimatedCard>
+        </motion.section>
 
         {/* ---------------------------------------------------------------- */}
-        {/* CTA card                                                          */}
+        {/* CTA: full-width brand blue gradient                              */}
         {/* ---------------------------------------------------------------- */}
-        <AnimatedCard className="p-8 md:p-10 text-center" delay={0.05}>
-          <h2 className="text-2xl md:text-3xl font-bold tracking-[-0.02em] text-gray-900 mb-3">
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-40px' }}
+          transition={{ duration: 0.5 }}
+          className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#2D5CF3] to-[#1E45C0] p-10 md:p-14 text-center"
+        >
+          {/* Subtle radial glow */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(255,255,255,0.15),transparent_60%)] pointer-events-none" />
+
+          <h2 className="relative text-2xl md:text-3xl lg:text-4xl font-bold tracking-[-0.02em] text-white mb-3">
             {t.cta_title}
           </h2>
-          <p className="text-base md:text-lg text-gray-500 mb-6 max-w-lg mx-auto">
+          <p className="relative text-base md:text-lg text-white/80 mb-8 max-w-lg mx-auto">
             {t.cta_desc}
           </p>
-          <button
+          <motion.button
             onClick={onContact}
-            className="inline-flex items-center gap-2 px-7 py-3.5 bg-[#2D5CF3] text-white rounded-full font-medium text-base hover:bg-[#2450d9] transition-colors shadow-sm hover:shadow-md cursor-pointer"
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.98 }}
+            className="relative inline-flex items-center gap-2 px-8 py-4 bg-white text-[#2D5CF3] rounded-full font-semibold text-base hover:bg-gray-50 transition-colors shadow-lg hover:shadow-xl cursor-pointer"
           >
             {t.cta_button}
             <ArrowRight size={18} weight="bold" />
-          </button>
-        </AnimatedCard>
+          </motion.button>
+        </motion.section>
       </div>
     </div>
   )
