@@ -80,7 +80,7 @@ export default function ProjetsPageClient({ lang }: { lang: 'en' | 'fr' }) {
         </div>
 
         {/* Projects grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-16">
           {filtered.map((project) => {
             const imgSrc = project.coverImage.startsWith('/')
               ? project.coverImage
@@ -90,19 +90,19 @@ export default function ProjetsPageClient({ lang }: { lang: 'en' | 'fr' }) {
               <Link
                 key={project.id}
                 href={`/${lang}/project/${project.id}/summary`}
-                className="group"
+                className="group block"
               >
-                {/* Cover image — no overflow-hidden on card, contained in its own box */}
-                <div className="aspect-[16/9] rounded-2xl overflow-hidden bg-gray-50 border border-gray-100 mb-5">
+                {/* Cover image — taller ratio, soft bg, hover scale inside container */}
+                <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-[#F0F0F2] mb-6 ring-1 ring-black/[0.04]">
                   <img
                     src={imgSrc}
                     alt={project.title}
-                    className="w-full h-full object-contain"
+                    className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500 ease-out"
                     loading="lazy"
                   />
                 </div>
 
-                {/* Content — no card wrapper, just content below image */}
+                {/* Content */}
                 <div>
                   {/* Badges — neutral gray, no colors */}
                   <div className="flex items-center gap-2 mb-3">
