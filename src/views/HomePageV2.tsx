@@ -328,7 +328,7 @@ const HomePageV2: React.FC<HomePageV2Props> = ({ onNavigateHome }) => {
                 <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </a>
               <a
-                href="https://calendly.com/victorsoussan/30min"
+                href="https://calendar.app.google/Zyp3tRyA2M9QByun6"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-8 py-4 bg-white text-gray-900 rounded-full font-semibold text-lg flex items-center gap-2 border border-gray-200 hover:border-gray-300 hover:bg-gray-50 transition-all shadow-sm"
@@ -813,7 +813,7 @@ const HomePageV2: React.FC<HomePageV2Props> = ({ onNavigateHome }) => {
                 <li><span className="text-sm text-gray-600">Paris, France</span></li>
                 <li>
                   <a
-                    href="https://calendly.com/victorsoussan/30min"
+                    href="https://calendar.app.google/Zyp3tRyA2M9QByun6"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-sm text-blue-600 hover:text-blue-700 transition-colors"

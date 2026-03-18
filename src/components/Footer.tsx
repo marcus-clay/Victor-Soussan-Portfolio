@@ -147,7 +147,7 @@ export default function Footer({ lang }: { lang: Lang }) {
               </li>
               <li>
                 <a
-                  href="https://calendly.com/victorsoussan/30min"
+                  href="https://calendar.app.google/Zyp3tRyA2M9QByun6"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-sm text-[#2D5CF3] hover:text-[#2450d9] transition-colors"
