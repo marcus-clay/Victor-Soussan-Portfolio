@@ -28,7 +28,7 @@ export default function GuideClaudeCodePageWrapper({
       view={view}
       onNavigate={(target) => {
         if (target === 'blog') {
-          router.push(`/${lang}/signals`)
+          router.push(`/${lang}/ressources`)
         } else if (target === 'index') {
           router.push(`/${lang}/guide/claude-code`)
         } else {

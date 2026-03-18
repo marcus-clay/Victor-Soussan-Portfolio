@@ -22,17 +22,17 @@ import { TRANSLATIONS } from '@/data/translations'
 type Lang = 'en' | 'fr'
 
 const NAV_ITEMS = [
-  { id: 'work', route: 'work', labelKey: 'projects' as const },
+  { id: 'projets', route: 'projets', labelKey: 'projects' as const },
   { id: 'visual-archive', route: 'visual-archive', labelKey: 'archive' as const },
   { id: 'services', route: 'services', labelKey: 'services' as const },
   { id: 'testimonials', route: 'testimonials', labelKey: 'testimonials' as const },
   { id: 'about', route: 'about', labelKey: 'bio' as const },
-  { id: 'signals', route: 'signals', labelKey: 'blog' as const },
+  { id: 'ressources', route: 'ressources', labelKey: 'blog' as const },
 ]
 
 const MOBILE_NAV_ITEMS = [
   { id: 'home', route: '', labelKey: null, icon: Home },
-  { id: 'work', route: 'work', labelKey: 'projects' as const, icon: FolderOpen },
+  { id: 'projets', route: 'projets', labelKey: 'projects' as const, icon: FolderOpen },
   { id: 'visual-archive', route: 'visual-archive', labelKey: 'archive' as const, icon: Images },
   { id: 'services', route: 'services', labelKey: 'services' as const, icon: Layers },
   { id: 'testimonials', route: 'testimonials', labelKey: 'testimonials' as const, icon: MessageCircle },

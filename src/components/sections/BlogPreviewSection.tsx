@@ -76,7 +76,7 @@ const BlogPreviewSection: React.FC<BlogPreviewSectionProps> = ({
         {/* CTA */}
         <div className="text-center">
           <Link
-            href={`/${lang}/signals`}
+            href={`/${lang}/ressources`}
             className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-medium bg-[#2D5CF3] text-white hover:bg-[#2450d9] shadow-sm hover:shadow-md transition-all"
           >
             {content.signals.cta}

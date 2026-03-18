@@ -56,7 +56,7 @@ export default function CaseStudyPageWrapper({
       systemTheme="light"
       lang={lang}
       viewMode={viewMode}
-      onClose={() => router.push(`/${lang}/work`)}
+      onClose={() => router.push(`/${lang}/projets`)}
       onToggleTheme={() => {}}
       onViewModeChange={(mode: ViewMode) => {
         const urlView = mode === 'executive' ? 'summary' : mode === 'caseStudy' ? 'full' : 'gallery'

@@ -36,7 +36,7 @@ const FeaturedSection: React.FC<FeaturedSectionProps> = ({
             {isEn ? 'Resources' : 'Ressources'}
           </h2>
           <button
-            onClick={() => onNavigate('/signals')}
+            onClick={() => onNavigate('/ressources')}
             className="group text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors flex items-center gap-1"
           >
             {isEn ? 'All articles' : 'Tous les articles'}

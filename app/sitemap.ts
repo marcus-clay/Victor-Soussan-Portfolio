@@ -3,7 +3,7 @@ import type { MetadataRoute } from 'next'
 const BASE_URL = 'https://www.victorsoussan.fr'
 
 const STATIC_ROUTES = [
-  '', 'about', 'work', 'services', 'consulting', 'signals',
+  '', 'about', 'projets', 'services', 'consulting', 'ressources',
   'visual-archive', 'testimonials', 'contact', 'resume', 'quote', 'presentation',
 ]
 

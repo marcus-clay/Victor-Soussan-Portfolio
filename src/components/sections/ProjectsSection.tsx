@@ -95,7 +95,7 @@ const ProjectsSection: React.FC<ProjectsSectionProps> = ({
         {/* Section title */}
         <div className="mb-10 md:mb-14">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-[-0.02em] text-gray-900">
-            {lang === 'en' ? 'Case Studies' : 'Etudes de cas'}
+            {lang === 'en' ? 'Projects' : 'Projets'}
           </h2>
         </div>
         {/* Stacked Landscape Cards - Show only first 3 projects */}
@@ -363,7 +363,7 @@ const ProjectsSection: React.FC<ProjectsSectionProps> = ({
         {/* View All Projects Button */}
         <div className="mt-12 text-center">
           <button
-            onClick={() => openModalWithUrl('/work')}
+            onClick={() => openModalWithUrl('/projets')}
             className="group px-8 py-3 rounded-full font-medium transition-colors inline-flex items-center shadow-sm hover:shadow-md bg-[#2D5CF3] text-white hover:bg-[#2450d9]"
           >
             {content.projects.view_all} <ArrowUpRight size={18} className="ml-2 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />

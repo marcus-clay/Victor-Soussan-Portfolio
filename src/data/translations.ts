@@ -8,12 +8,12 @@ export const TRANSLATIONS = {
     nav: {
       services: "Expertise",
       bio: "About",
-      projects: "Work",
+      projects: "Projects",
       lab: "The Lab",
       testimonials: "Testimonials",
       contact: "Contact",
       archive: "Gallery",
-      blog: "Blog"
+      blog: "Resources"
     },
     hero: {
       availability: "Available for new projects",
@@ -553,12 +553,12 @@ export const TRANSLATIONS = {
     nav: {
       services: "Expertises",
       bio: "A propos",
-      projects: "\u00c9tudes de Cas",
+      projects: "Projets",
       lab: "Lab",
       testimonials: "T\u00e9moignages",
       contact: "Contact",
       archive: "Galerie",
-      blog: "Blog"
+      blog: "Ressources"
     },
     hero: {
       availability: "Disponible pour de nouvelles missions",

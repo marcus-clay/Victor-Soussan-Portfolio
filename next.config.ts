@@ -64,6 +64,9 @@ const nextConfig: NextConfig = {
     // Old project routes
     { source: '/project/:id/:view', destination: '/en/project/:id/:view', permanent: true },
     { source: '/project/:id', destination: '/en/project/:id/summary', permanent: true },
+    // Route renames: work -> projets, signals -> ressources
+    { source: '/:lang/work', destination: '/:lang/projets', permanent: true },
+    { source: '/:lang/signals', destination: '/:lang/ressources', permanent: true },
   ],
 }
 

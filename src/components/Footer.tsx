@@ -56,7 +56,7 @@ export default function Footer({ lang }: { lang: Lang }) {
             <h4 className="font-semibold mb-4 text-gray-900">Navigation</h4>
             <ul className="space-y-3">
               <li>
-                <Link href={`/${lang}/work`} className="text-sm text-gray-600 hover:text-gray-900 transition-colors">
+                <Link href={`/${lang}/projets`} className="text-sm text-gray-600 hover:text-gray-900 transition-colors">
                   {content.projects}
                 </Link>
               </li>
@@ -119,10 +119,10 @@ export default function Footer({ lang }: { lang: Lang }) {
               </li>
               <li>
                 <Link
-                  href={`/${lang}/signals`}
+                  href={`/${lang}/ressources`}
                   className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
                 >
-                  Blog
+                  {content.blog}
                 </Link>
               </li>
             </ul>

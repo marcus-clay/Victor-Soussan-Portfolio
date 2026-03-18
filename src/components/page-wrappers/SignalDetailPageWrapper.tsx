@@ -25,7 +25,7 @@ export default function SignalDetailPageWrapper({
       signalId={signalId}
       systemTheme="light"
       lang={lang}
-      onBack={() => router.push(`/${lang}/signals`)}
+      onBack={() => router.push(`/${lang}/ressources`)}
       onOpenSignal={(id) => router.push(`/${lang}/signal/${id}`)}
     />
   )
