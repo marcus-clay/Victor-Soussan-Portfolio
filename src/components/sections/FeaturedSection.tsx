@@ -79,28 +79,30 @@ const FeaturedSection: React.FC<FeaturedSectionProps> = ({
             </div>
           </button>
 
-          {/* Card 2: Featured Signal */}
+          {/* Card 2: Featured Signal - Figma + Claude */}
           {guideSignal && (
             <button
               onClick={() => onNavigate(`/signal/${guideSignal.id}`)}
-              className="group text-left rounded-2xl border border-gray-100 bg-white p-6 hover:shadow-lg hover:border-gray-200 transition-all cursor-pointer flex flex-col"
+              className="group text-left rounded-2xl border border-gray-100 bg-white overflow-hidden hover:shadow-lg hover:border-gray-200 transition-all cursor-pointer flex flex-col"
             >
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-xs font-bold">
-                  +
-                </div>
-                <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-gray-100 text-gray-600">Claude</span>
+              {/* Visual: Figma + Claude icons */}
+              <div className="flex items-center justify-center gap-4 py-16 bg-gray-50">
+                <img src="/images/icons/figma.png" alt="Figma" className="w-12 h-12" />
+                <span className="text-2xl text-gray-300 font-light">+</span>
+                <span className="text-2xl font-semibold text-gray-400 tracking-tight">Claude</span>
               </div>
-              <span className="text-xs font-medium text-blue-600 mb-2">{isEn ? 'AI' : 'IA'}</span>
-              <h3 className="text-lg font-bold tracking-[-0.02em] text-gray-900 mb-3">
-                {isEn ? guideSignal.title_en : guideSignal.title_fr}
-              </h3>
-              <p className="text-base text-gray-500 leading-relaxed mb-4 flex-1 line-clamp-3">
-                {(isEn ? guideSignal.body_en : guideSignal.body_fr).substring(0, 200)}...
-              </p>
-              <span className="text-sm font-medium text-gray-900 flex items-center gap-1">
-                {isEn ? 'Read' : 'Lire'} <ArrowUpRight size={14} />
-              </span>
+              <div className="p-6 flex flex-col flex-1">
+                <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-orange-50 text-orange-600 w-fit mb-3">{isEn ? 'AI' : 'IA'}</span>
+                <h3 className="text-lg font-bold tracking-[-0.02em] text-gray-900 mb-3">
+                  {isEn ? guideSignal.title_en : guideSignal.title_fr}
+                </h3>
+                <p className="text-base text-gray-500 leading-relaxed mb-4 flex-1 line-clamp-3">
+                  {(isEn ? guideSignal.body_en : guideSignal.body_fr).substring(0, 200)}...
+                </p>
+                <span className="text-sm font-medium text-gray-900 flex items-center gap-1">
+                  {isEn ? 'Read' : 'Lire'} <ArrowUpRight size={14} />
+                </span>
+              </div>
             </button>
           )}
         </div>
