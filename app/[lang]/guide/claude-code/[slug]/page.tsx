@@ -7,24 +7,27 @@ type Props = { params: Promise<{ lang: string; slug: string }> }
 export function generateStaticParams() {
   const langs = ['en', 'fr']
   return langs.flatMap((lang) =>
-    GUIDE_CHAPTERS.map((ch) => ({ lang, slug: ch.slug }))
+    GUIDE_CHAPTERS.map((ch) => ({ lang, slug: lang === 'fr' ? ch.slug_fr : ch.slug_en }))
   )
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { lang, slug } = await params
-  const chapter = GUIDE_CHAPTERS.find((ch) => ch.slug === slug)
-  const title = chapter
-    ? `${chapter.title} - ${GUIDE_META.title}`
-    : GUIDE_META.title
+  const l = (lang === 'fr' ? 'fr' : 'en') as 'en' | 'fr'
+  const chapter = GUIDE_CHAPTERS.find((ch) => ch.slug_en === slug || ch.slug_fr === slug)
+  const chapterTitle = chapter ? (l === 'fr' ? chapter.title_fr : chapter.title_en) : null
+  const guideTitle = l === 'fr' ? GUIDE_META.title_fr : GUIDE_META.title_en
+  const title = chapterTitle ? `${chapterTitle} - ${guideTitle}` : guideTitle
+  const chapterIntro = chapter ? (l === 'fr' ? chapter.intro_fr : chapter.intro_en) : null
+  const guideSubtitle = l === 'fr' ? GUIDE_META.subtitle_fr : GUIDE_META.subtitle_en
   return {
     title,
-    description: chapter?.intro || GUIDE_META.subtitle,
+    description: chapterIntro || guideSubtitle,
     alternates: {
       canonical: `https://www.victorsoussan.fr/${lang}/guide/claude-code/${slug}`,
       languages: {
-        fr: `https://www.victorsoussan.fr/fr/guide/claude-code/${slug}`,
-        en: `https://www.victorsoussan.fr/en/guide/claude-code/${slug}`,
+        fr: `https://www.victorsoussan.fr/fr/guide/claude-code/${chapter?.slug_fr ?? slug}`,
+        en: `https://www.victorsoussan.fr/en/guide/claude-code/${chapter?.slug_en ?? slug}`,
       },
     },
   }
@@ -33,7 +36,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function GuideChapterPage({ params }: Props) {
   const { lang: langParam, slug } = await params
   const lang = (langParam === 'fr' ? 'fr' : 'en') as 'en' | 'fr'
-  const chapter = GUIDE_CHAPTERS.find((ch) => ch.slug === slug)
+  const chapter = GUIDE_CHAPTERS.find((ch) => ch.slug_en === slug || ch.slug_fr === slug)
 
   if (!chapter) {
     return (

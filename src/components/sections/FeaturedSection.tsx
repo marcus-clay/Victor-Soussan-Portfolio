@@ -13,7 +13,7 @@ interface Signal {
 interface FeaturedSectionProps {
   lang: 'en' | 'fr';
   featuredSignals: Signal[];
-  guideChapters: { slug: string; title: string }[];
+  guideChapters: { slug_en: string; slug_fr: string; title_en: string; title_fr: string }[];
   onNavigate: (path: string) => void;
 }
 

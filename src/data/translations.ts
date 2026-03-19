@@ -40,7 +40,7 @@ export const TRANSLATIONS = {
           "UX framing, UI design, micro-interactions",
           "Hi-fi prototyping to validate ideas and sell a vision",
           "Rapid MVP development using Claude Code, Gemini & Vercel (auth, DB, GenAI integration)",
-          "Make Fast concept-to-interface workflows in complex domains"
+          "Native mobile design (iOS/Android) and responsive web"
         ],
         utility: [
           "Build new product capabilities and core features",
@@ -251,7 +251,7 @@ export const TRANSLATIONS = {
       linkedin: "linkedin.com/in/victorsoussan",
       portfolio: "https://victorsoussan-portfolio-2026.vercel.app",
       summary_title: "Professional Summary",
-      summary: "Lead Product Design with 15 years of tech experience and 10 years of design leadership for enterprise software, education, media, and public services. Expert in 0-to-1 product design, design systems, team building, and AI-assisted prototyping. Track record: products serving 500K+ users and teams of 5+ designers.",
+      summary: "Product Design Lead with 15 years of tech experience and 10 years of design leadership for enterprise software, education, media, and public services. Expert in 0-to-1 product design, design systems, team building, and AI-assisted prototyping. Track record: products serving 500K+ users and teams of 5+ designers.",
       experience_title: "Professional Experience",
       experience: [
         {
@@ -431,7 +431,7 @@ export const TRANSLATIONS = {
     },
     contact: {
       title: "Looking for a fast and experienced designer?",
-      subtitle: "I'm open to Product Design freelance missions or Lead roles (permanent). Let's talk concretely about your needs.",
+      subtitle: "I'm open to freelance Product Design engagements or Lead roles (permanent). Let's talk specifics.",
       email: "Send an email",
       book: "Book a 30min call",
       shoot_note: "Shoot me a note",
@@ -451,7 +451,7 @@ export const TRANSLATIONS = {
       simple_form_start_date: "Start date",
       simple_form_end_date: "End date",
       simple_form_copy_email: "Copy email",
-      simple_form_copy_intro: "Want to send an email on your own",
+      simple_form_copy_intro: "Prefer to reach out by email?",
       simple_form_submit: "Send",
       simple_form_sending: "Sending...",
       quote_button: "Get an estimate",

@@ -1,4 +1,5 @@
 import type { MetadataRoute } from 'next'
+import { GUIDE_CHAPTERS } from '@/data/guideClaudeCodeData'
 
 const BASE_URL = 'https://www.victorsoussan.fr'
 
@@ -23,9 +24,7 @@ const SIGNAL_IDS = [
   'design-system-figma-claude-code', 'claude-code-full-project',
 ]
 
-const GUIDE_SLUGS = ['ch1', 'ch2', 'ch3', 'ch4', 'ch5', 'ch6', 'ch7', 'ch8', 'ch9']
-
-const LANGS = ['en', 'fr']
+const LANGS = ['en', 'fr'] as const
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const entries: MetadataRoute.Sitemap = []
@@ -87,15 +86,26 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }
   }
 
-  // Guide routes
+  // Guide index
   for (const lang of LANGS) {
     entries.push({
       url: `${BASE_URL}/${lang}/guide/claude-code`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.6,
+      alternates: {
+        languages: {
+          fr: `${BASE_URL}/fr/guide/claude-code`,
+          en: `${BASE_URL}/en/guide/claude-code`,
+        },
+      },
     })
-    for (const slug of GUIDE_SLUGS) {
+  }
+
+  // Guide chapters (bilingual slugs with proper hreflang)
+  for (const ch of GUIDE_CHAPTERS) {
+    for (const lang of LANGS) {
+      const slug = lang === 'en' ? ch.slug_en : ch.slug_fr
       entries.push({
         url: `${BASE_URL}/${lang}/guide/claude-code/${slug}`,
         lastModified: new Date(),
@@ -103,8 +113,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
         priority: 0.6,
         alternates: {
           languages: {
-            fr: `${BASE_URL}/fr/guide/claude-code/${slug}`,
-            en: `${BASE_URL}/en/guide/claude-code/${slug}`,
+            fr: `${BASE_URL}/fr/guide/claude-code/${ch.slug_fr}`,
+            en: `${BASE_URL}/en/guide/claude-code/${ch.slug_en}`,
           },
         },
       })
