@@ -44,8 +44,6 @@ const SignalDetailPage: React.FC<Props> = ({ signalId, systemTheme, lang, onBack
   // Track active section for TOC
   useEffect(() => {
     if (!signal) return;
-    const container = articleRef.current?.closest('[data-scroll-container]') as HTMLElement | null;
-    if (!container) return;
     const handleScroll = () => {
       const headings = document.querySelectorAll('[id^="section-"]');
       let current = '';
@@ -55,8 +53,9 @@ const SignalDetailPage: React.FC<Props> = ({ signalId, systemTheme, lang, onBack
       });
       setActiveSection(current);
     };
-    container.addEventListener('scroll', handleScroll, { passive: true });
-    return () => container.removeEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
   }, [signal]);
 
   const relatedSignals = useMemo(() => {
@@ -112,8 +111,7 @@ const SignalDetailPage: React.FC<Props> = ({ signalId, systemTheme, lang, onBack
       role="dialog"
       aria-modal="true"
       aria-label="Signal detail"
-      data-scroll-container
-      className={`fixed inset-0 md:top-16 z-[100] overflow-y-auto ${isDark ? 'bg-[#0a0a0a]' : 'bg-[#FCFCFD]'}`}
+      className={`min-h-screen ${isDark ? 'bg-[#0a0a0a]' : 'bg-[#FCFCFD]'}`}
     >
       {/* Breadcrumb - sticky */}
       <div className={`sticky top-0 z-10 border-b ${isDark ? 'bg-[#0a0a0a] border-white/5' : 'bg-[#FCFCFD] border-gray-200'}`}>
