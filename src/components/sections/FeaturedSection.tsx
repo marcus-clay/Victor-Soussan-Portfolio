@@ -51,11 +51,11 @@ const FeaturedSection: React.FC<FeaturedSectionProps> = ({
             onClick={() => onNavigate('/guide/claude-code')}
             className="group text-left rounded-2xl border border-gray-100 bg-white overflow-hidden hover:shadow-lg hover:border-gray-200 transition-all cursor-pointer"
           >
-            <div className="aspect-[16/9] overflow-hidden bg-[#E8E8EC]">
+            <div className="aspect-[16/9] overflow-hidden bg-[#F0F0F2]">
               <img
                 src="/images/guide-claude-code/hero-cover.png"
                 alt="Guide Claude Code"
-                className="w-full h-full object-cover object-top scale-[1.5] origin-top group-hover:scale-[1.55] transition-transform duration-500"
+                className="w-full h-auto object-top scale-[1.25] origin-top group-hover:scale-[1.30] transition-transform duration-500"
                 loading="lazy"
               />
             </div>
