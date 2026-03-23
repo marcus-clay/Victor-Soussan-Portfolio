@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { getProjects } from '@/data/projectsData'
 import ShortProjectView from '@/components/ShortProjectView'
 
-type ProjectId = 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'sqool-classe' | 'france-vae' | 'pagesjaunes' | 'androidwear'
+type ProjectId = 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'sqool-classe' | 'france-vae' | 'pagesjaunes' | 'androidwear' | 'riskos'
 type ViewMode = 'caseStudy' | 'gallery' | 'executive'
 
 const VIEW_MAP: Record<string, ViewMode> = {
@@ -30,6 +30,7 @@ const CASE_STUDY_COMPONENTS: Record<ProjectId, React.ComponentType<any>> = {
   'france-vae': dynamic(() => import('@/views/case-studies/FranceVaePage'), { loading: loadingSpinner }),
   pagesjaunes: dynamic(() => import('@/views/case-studies/PagesJaunesPage'), { loading: loadingSpinner }),
   androidwear: dynamic(() => import('@/views/case-studies/AndroidWearPage'), { loading: loadingSpinner }),
+  riskos: dynamic(() => import('@/views/case-studies/RiskOSPage'), { loading: loadingSpinner }),
 }
 
 export default function CaseStudyPageWrapper({

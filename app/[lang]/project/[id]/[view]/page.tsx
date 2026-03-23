@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import CaseStudyPageWrapper from '@/components/page-wrappers/CaseStudyPageWrapper'
 
-const CASE_STUDY_IDS = ['toolkit', 'dailymotion', 'connect', 'sqool', 'sqool-classe', 'france-vae', 'pagesjaunes', 'androidwear'] as const
+const CASE_STUDY_IDS = ['toolkit', 'dailymotion', 'connect', 'sqool', 'sqool-classe', 'france-vae', 'pagesjaunes', 'androidwear', 'riskos'] as const
 const SHORT_PROJECT_IDS = ['condamine-apps', 'design-system-figma-claude'] as const
 const VIEW_MODES = ['summary', 'full', 'gallery'] as const
 
@@ -16,6 +16,7 @@ const PROJECT_NAMES: Record<string, string> = {
   androidwear: 'Android Wear',
   'condamine-apps': 'Condamine Apps',
   'design-system-figma-claude': 'Design System with Claude Code',
+  riskos: 'RiskOS',
 }
 
 const VIEW_LABELS: Record<string, string> = {
@@ -45,9 +46,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const projectName = PROJECT_NAMES[id] || id
   const viewLabel = VIEW_LABELS[view] || view
 
+  const ogImage = id === 'riskos'
+    ? 'https://www.victorsoussan.fr/assets/projets/riskos/screenshots/02-case-detail.png'
+    : undefined
+
   return {
     title: `${projectName} - ${viewLabel}`,
     description: `${projectName} project ${viewLabel.toLowerCase()} by Victor Soussan, Lead Product Designer.`,
+    ...(ogImage && {
+      openGraph: {
+        images: [{ url: ogImage, width: 1920, height: 1080 }],
+      },
+    }),
     alternates: {
       canonical: `https://www.victorsoussan.fr/${lang}/project/${id}/${view}`,
       languages: {

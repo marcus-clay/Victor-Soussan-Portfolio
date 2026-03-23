@@ -6,6 +6,7 @@ import {
   Stack as Layers,
   Briefcase,
   DeviceMobile as Smartphone,
+  ShieldCheck,
 } from '@phosphor-icons/react';
 import type { Language } from './translations';
 
@@ -37,11 +38,48 @@ export interface Project {
   media?: string[];          // Image/video URLs for short projects
   shortDescription?: string; // Executive description for short format
   videoUrl?: string;         // Embedded video URL
+  body?: string;             // Extended description (rendered after media)
 }
 
 export const getProjects = (lang: Language): Project[] => {
   const isEn = lang === 'en';
   return [
+    {
+      id: "riskos",
+      format: 'case-study',
+      category: 'ai-experiment',
+      title: "RiskOS",
+      role: "Product Design",
+      period: "2026",
+      summary: isEn
+        ? "AI-augmented fraud detection. A functional prototype exploring human/AI collaboration under time pressure."
+        : "Détection de fraude augmentée par IA agentique. Un prototype fonctionnel explorant la collaboration humain/IA sous pression temporelle.",
+      missions: isEn ? [
+        "Designed the full interaction model for analyst/AI collaboration",
+        "Built a functional React prototype with streaming AI analysis",
+        "Tested design hypotheses on conditional action gating",
+        "Explored ellipses as proof-of-impact patterns"
+      ] : [
+        "Conception du modèle d'interaction analyste/IA complet",
+        "Construction d'un prototype React fonctionnel avec analyse IA en streaming",
+        "Test d'hypothèses de design sur le conditionnement des actions",
+        "Exploration des ellipses comme preuve d'impact"
+      ],
+      system: {
+        title: isEn ? "Agentic UX Patterns" : "Patterns UX agentiques",
+        desc: isEn
+          ? "Designed interaction patterns where the AI prepares the analyst's cognitive ground without deciding in their place: streaming reasoning, conditional action gating, and ecosystem-level feedback."
+          : "Conception de patterns d'interaction où l'IA prépare le terrain cognitif de l'analyste sans décider à sa place : raisonnement en streaming, conditionnement des actions, et feedback au niveau de l'écosystème."
+      },
+      deliverables: isEn
+        ? ["Functional Prototype", "6 Interaction Flows", "Before/After Comparison", "Data Flow Diagram", "Session Metrics"]
+        : ["Prototype fonctionnel", "6 flux d'interaction", "Comparatif avant/après", "Schéma de flux de données", "Métriques de session"],
+      icon: <ShieldCheck size={24} />,
+      color: "blue",
+      coverImage: "/assets/projets/riskos/screenshots/02-case-detail.png",
+      externalLink: "https://riskos-gulcbxw52-hugos-projects-0ac0cf31.vercel.app",
+      status: "shipped"
+    },
     {
       id: "toolkit",
       format: 'case-study',
@@ -237,6 +275,47 @@ export const getProjects = (lang: Language): Project[] => {
       testimonialId: "charlotte-rifflet"
     },
     {
+      id: "sqool-classe",
+      format: 'case-study',
+      category: 'product-design',
+      title: "SQOOL Classe",
+      role: isEn ? "Lead Interaction Designer" : "Lead Interaction Designer",
+      period: "2022",
+      summary: isEn
+        ? "Designing a real-time classroom supervision tool for 500,000 tablets deployed across 465 high schools in Ile-de-France."
+        : "Conception d'un outil de supervision de classe en temps réel pour 500 000 tablettes déployées dans 465 lycées d'Île-de-France.",
+      missions: isEn ? [
+        "Led interaction design for the product squad",
+        "42 interactive prototypes with GSAP animations",
+        "User research and field observation in schools",
+        "Design team coordination (5 designers)"
+      ] : [
+        "Direction du design d'interaction pour le squad produit",
+        "42 prototypes interactifs avec animations GSAP",
+        "Recherche utilisateur et observation terrain en établissements",
+        "Coordination de l'équipe design (5 designers)"
+      ],
+      system: {
+        title: isEn ? "Calm Supervision System" : "Système de Supervision Serein",
+        desc: isEn ? "Designed a real-time supervision interface where teachers can scan 30 student screens at a glance and act with one tap, without turning the classroom into a control room." : "Conception d'une interface de supervision temps réel permettant aux enseignants de scanner 30 écrans d'élèves d'un coup d'œil et d'agir en un tap, sans transformer la classe en salle de contrôle."
+      },
+      deliverables: isEn ? [
+        "Student Grid with Live Status",
+        "One-Tap Classroom Controls",
+        "Document Distribution System",
+        "42 Interactive Prototypes"
+      ] : [
+        "Grille Élèves avec Statut Temps Réel",
+        "Contrôles de Classe en Un Tap",
+        "Système de Distribution de Documents",
+        "42 Prototypes Interactifs"
+      ],
+      icon: <Smartphone size={24} />,
+      color: "purple",
+      coverImage: "/images/thumbnail_sqool_classe.webp",
+      status: "shipped"
+    },
+    {
       id: "pagesjaunes",
       format: 'case-study',
       category: 'product-design',
@@ -296,7 +375,7 @@ export const getProjects = (lang: Language): Project[] => {
         : ["50+ Apps Web", "React/Next.js", "Tailwind CSS", "Déploiements Vercel", "Workflows Claude Code"],
       icon: <Cpu size={24} />,
       color: "indigo",
-      coverImage: "/images/guide-claude-code/hero-cover.png",
+      coverImage: "/images/thumbnail_condamine_apps.png",
       externalLink: "https://www.condamine.studio/apps",
       status: "shipped"
     },
@@ -308,19 +387,23 @@ export const getProjects = (lang: Language): Project[] => {
       role: isEn ? "Designer & Implementer" : "Designer & Implémenteur",
       period: "2025",
       summary: isEn
-        ? "Designing a complete design system in Figma, then implementing it with Claude Code. Zero drift between design and code."
-        : "Concevoir un design system complet dans Figma, puis l'implémenter avec Claude Code. Zéro écart entre le design et le code.",
+        ? "Using Claude Code and Figma MCP to design, implement, and maintain a design system where tokens, variables, and components stay synchronized between Figma and code."
+        : "Utiliser Claude Code et Figma MCP pour concevoir, implémenter et maintenir un design system où tokens, variables et composants restent synchronisés entre Figma et le code.",
       shortDescription: isEn
-        ? "I designed a complete design system in Figma (foundations, atomic components, composite patterns), then implemented it on a dedicated site in Astro and Tailwind, driven entirely by Claude Code and Figma MCP. The gap between the intended design and the implemented result was near zero on atomic components. This experience confirmed that in an AI-assisted workflow, the design system becomes the interface contract between the designer and the code agent."
-        : "J'ai conçu un design system complet dans Figma (fondations, composants atomiques, patterns composites), puis je l'ai implémenté sur un site dédié en Astro et Tailwind, piloté intégralement par Claude Code et Figma MCP. L'écart entre le design voulu et le résultat implémenté était quasi nul sur les composants atomiques. Cette expérience a confirmé que dans un workflow assisté par IA, le design system devient le contrat d'interface entre le designer et l'agent de code.",
+        ? "Connecting two workflows that never talked to each other: the rigor of a Figma design system and the speed of AI-assisted prototyping. Claude Code now drives both sides through Figma MCP Console."
+        : "Connecter deux workflows qui ne se parlaient pas : la rigueur d'un design system Figma et la vitesse du prototypage assisté par IA. Claude Code pilote désormais les deux via Figma MCP Console.",
+      body: isEn
+        ? "For a year, I worked with two parallel approaches that didn't talk to each other. On one side, the classic Figma workflow: brand library, component library, connected design files, detailed journeys for developer handoff. Rigorous but slow to evolve. On the other, prototyping with Claude Code: realistic HTML interfaces generated in minutes, usable in user testing, but completely disconnected from the design system in Figma. Useful for conversations, useless for production delivery.\n\nFigma MCP Console changed this. Claude Code can now generate a complete Figma file: a design system with its tokens, variables, and components, then implement the screens described in specification, connect user journeys, and set transitions. The output is a self-contained, interactive Figma file with a complete application inside.\n\nI designed a medical mobile application this way: 10 screens, a complete UI kit with styles, tokens, variables, and twenty main components. In two hours. The gap between the intended design and the implemented result was near zero on atomic components.\n\nWhat matters most is not production speed. It's the ability to maintain a design system on the fly, update components and variables by iterating directly with Claude Code, without reworking each screen by hand. And to keep this design system as the shared source of truth, on both the design and development side.\n\nThere are still manual corrections, and the workflow is not yet frictionless. But the direction is clear for designers who build systems and prototype journeys."
+        : "Pendant un an, j'ai travaillé avec deux approches parallèles qui ne se parlaient pas. D'un côté, l'approche classique dans Figma : librairie de marque, librairie de composants, fichiers de conception connectés, parcours détaillés pour le handoff avec les développeurs. Rigoureux, mais complexe à produire et à faire évoluer. De l'autre, le prototypage avec Claude Code : des interfaces HTML réalistes générées en quelques minutes, utilisables en test utilisateur, mais complètement déconnectées du design system en place dans Figma. Utiles pour converser, inutiles pour livrer en production.\n\nFigma MCP Console a changé la donne. Claude Code peut maintenant générer un fichier Figma complet : un design system avec ses tokens, ses variables, ses composants, puis implémenter les écrans décrits en spécification, connecter les parcours entre eux et poser les transitions. En sortie, on récupère un fichier Figma autonome, interactif, avec une application complète à l'intérieur.\n\nJ'ai conçu une application mobile pour le secteur médical de cette façon. 10 écrans, un UI kit complet avec styles, tokens, variables et une vingtaine de composants principaux. En deux heures. L'écart entre le design voulu et le résultat implémenté était quasi nul sur les composants atomiques.\n\nCe qui m'intéresse le plus dans cette évolution, ce n'est pas la vitesse de production. C'est la possibilité de maintenir un design system à jour au fil de l'eau, de mettre à jour les composants et les variables en itérant directement avec Claude Code, sans avoir à reprendre chaque écran à la main. Et de garder ce design system comme source de vérité partagée, côté design et côté développement.\n\nIl reste des corrections manuelles, et l'ensemble n'est pas encore sans friction. Mais la direction est claire pour les designers qui créent des systèmes et prototypent des parcours.",
       missions: [],
       system: { title: '', desc: '' },
       deliverables: isEn
-        ? ["Design System", "Figma Tokens", "Astro + Tailwind", "Claude Code", "Figma MCP"]
-        : ["Design System", "Tokens Figma", "Astro + Tailwind", "Claude Code", "Figma MCP"],
+        ? ["Design System (Tokens + Variables)", "Figma MCP Console", "10-Screen Medical App", "Claude Code Workflow", "Interactive Prototypes"]
+        : ["Design System (Tokens + Variables)", "Figma MCP Console", "App Médicale 10 Écrans", "Workflow Claude Code", "Prototypes Interactifs"],
       icon: <Layers size={24} />,
       color: "blue",
-      coverImage: "/images/guide-claude-code/hero-cover.png",
+      coverImage: "/articles/Experimentation Claude Code - design system, ui, figma, claude/thumnbnail claude code - figma mcp.png",
+      videoUrl: "/articles/Experimentation Claude Code - design system, ui, figma, claude/Claude Code + Figma MCP Console Demo.mp4",
       status: "shipped"
     }
   ];
