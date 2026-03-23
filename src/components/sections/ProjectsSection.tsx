@@ -103,9 +103,12 @@ const ProjectsSection: React.FC<ProjectsSectionProps> = ({
               >
                 <div className="flex flex-col md:flex-row">
                   {/* Image Section - Left on desktop, full width on mobile */}
-                  <div className={`relative w-full md:w-[55%] overflow-hidden ${
-                    systemTheme === 'dark' ? 'bg-[#111111]' : 'bg-gray-50'
-                  }`}>
+                  <div
+                    className={`relative w-full md:w-[55%] overflow-hidden ${
+                      project.cardBg ? '' : (systemTheme === 'dark' ? 'bg-[#111111]' : 'bg-gray-50')
+                    }`}
+                    style={project.cardBg ? { backgroundColor: project.cardBg } : undefined}
+                  >
                     {/* Status Badge - Top left - Hidden on mobile for condensed view */}
                     <div className="absolute top-4 left-4 md:top-6 md:left-6 z-20 hidden md:block">
                       <span className={`inline-flex items-center text-xs font-medium px-3 py-1.5 rounded-full backdrop-blur-md ${
@@ -114,9 +117,9 @@ const ProjectsSection: React.FC<ProjectsSectionProps> = ({
                           : 'bg-white/70 text-gray-700 border border-gray-200/50'
                       }`}>
                         <span className={`w-2 h-2 rounded-full mr-2 ${
-                          project.status === 'concept' ? 'bg-violet-500' : 'bg-green-500'
+                          project.status === 'concept' ? 'bg-violet-500' : project.status === 'experiment' ? 'bg-blue-500' : 'bg-green-500'
                         }`} />
-                        {project.status === 'concept' ? 'CONCEPT' : 'SHIPPED'}
+                        {project.status === 'concept' ? 'CONCEPT' : project.status === 'experiment' ? (lang === 'en' ? 'EXPERIMENT' : 'EXPÉRIMENTATION') : 'SHIPPED'}
                       </span>
                     </div>
 
@@ -294,24 +297,26 @@ const ProjectsSection: React.FC<ProjectsSectionProps> = ({
                       }`} />
 
                       {/* Desktop: Full buttons */}
-                      {(project.id === 'toolkit' || project.id === 'dailymotion' || project.id === 'connect' || project.id === 'sqool' || project.id === 'france-vae') ? (
+                      {(['toolkit', 'dailymotion', 'connect', 'sqool', 'france-vae', 'riskos'] as const).includes(project.id as never) ? (
                         <div className="hidden md:flex items-center gap-2">
-                          {/* Gallery Button */}
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              openProjectWithUrl(project.id as 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'france-vae', 'gallery');
-                            }}
-                            className={`inline-flex items-center text-sm font-medium px-5 py-2.5 rounded-full transition-colors duration-200 ${
-                              systemTheme === 'dark'
-                                ? 'bg-white/5 text-gray-400 border border-white/10 hover:bg-white/10 hover:text-gray-200'
-                                : 'bg-gray-50 text-gray-500 border border-gray-200 hover:bg-gray-100 hover:text-gray-700'
-                            }`}
-                            title={lang === 'en' ? 'View gallery' : 'Voir la galerie'}
-                          >
-                            <Images size={16} className="mr-2" />
-                            {lang === 'en' ? 'Gallery' : 'Galerie'}
-                          </button>
+                          {/* Gallery Button - not for RiskOS (video-only case study) */}
+                          {project.id !== 'riskos' && (
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                openProjectWithUrl(project.id as 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'france-vae', 'gallery');
+                              }}
+                              className={`inline-flex items-center text-sm font-medium px-5 py-2.5 rounded-full transition-colors duration-200 ${
+                                systemTheme === 'dark'
+                                  ? 'bg-white/5 text-gray-400 border border-white/10 hover:bg-white/10 hover:text-gray-200'
+                                  : 'bg-gray-50 text-gray-500 border border-gray-200 hover:bg-gray-100 hover:text-gray-700'
+                              }`}
+                              title={lang === 'en' ? 'View gallery' : 'Voir la galerie'}
+                            >
+                              <Images size={16} className="mr-2" />
+                              {lang === 'en' ? 'Gallery' : 'Galerie'}
+                            </button>
+                          )}
                           {/* Case Study Button */}
                           <div className={`inline-flex items-center text-sm font-medium px-5 py-2.5 rounded-full backdrop-blur-xl transition-colors duration-300 ${
                             systemTheme === 'dark'
@@ -329,7 +334,7 @@ const ProjectsSection: React.FC<ProjectsSectionProps> = ({
                             : 'bg-orange-50 text-orange-600 border border-orange-100'
                         }`}>
                           <span className="w-1.5 h-1.5 rounded-full bg-orange-500 mr-2 animate-pulse" />
-                          {lang === 'en' ? 'Coming Soon' : 'Bientot'}
+                          {lang === 'en' ? 'Coming Soon' : 'Bientôt'}
                         </span>
                       )}
                     </div>

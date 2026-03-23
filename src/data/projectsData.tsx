@@ -33,7 +33,8 @@ export interface Project {
   hoverImage?: string;
   externalLink?: string;
   testimonialId?: string;
-  status?: 'shipped' | 'concept';
+  status?: 'shipped' | 'concept' | 'experiment';
+  cardBg?: string; // Custom background color for card image area
   // Short format fields
   media?: string[];          // Image/video URLs for short projects
   shortDescription?: string; // Executive description for short format
@@ -78,7 +79,8 @@ export const getProjects = (lang: Language): Project[] => {
       color: "blue",
       coverImage: "/assets/projets/riskos/screenshots/02-case-detail.png",
       externalLink: "https://riskos-gulcbxw52-hugos-projects-0ac0cf31.vercel.app",
-      status: "shipped"
+      status: "experiment",
+      cardBg: "#111113"
     },
     {
       id: "toolkit",

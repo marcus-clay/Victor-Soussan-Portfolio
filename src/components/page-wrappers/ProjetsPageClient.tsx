@@ -93,7 +93,10 @@ export default function ProjetsPageClient({ lang }: { lang: 'en' | 'fr' }) {
                 className="group block"
               >
                 {/* Cover image — taller ratio, soft bg, hover scale inside container */}
-                <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-[#F0F0F2] mb-6 ring-1 ring-black/[0.04]">
+                <div
+                  className="aspect-[4/3] rounded-2xl overflow-hidden mb-6 ring-1 ring-black/[0.04]"
+                  style={{ backgroundColor: project.cardBg || '#F0F0F2' }}
+                >
                   <img
                     src={imgSrc}
                     alt={project.title}
@@ -113,6 +116,12 @@ export default function ProjetsPageClient({ lang }: { lang: 'en' | 'fr' }) {
                       <span className="flex items-center gap-1 text-xs text-gray-400">
                         <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
                         {isEn ? 'Shipped' : 'En production'}
+                      </span>
+                    )}
+                    {project.status === 'experiment' && (
+                      <span className="flex items-center gap-1 text-xs text-gray-400">
+                        <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+                        {isEn ? 'Experiment' : 'Expérimentation'}
                       </span>
                     )}
                     {project.status === 'concept' && (
