@@ -44,7 +44,7 @@ export default function HomepageClient({ lang }: HomepageClientProps) {
   }, [])
 
   const openProjectWithUrl = useCallback((
-    projectId: 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'sqool-classe' | 'france-vae' | 'pagesjaunes' | 'androidwear',
+    projectId: 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'sqool-classe' | 'france-vae' | 'pagesjaunes' | 'androidwear' | 'riskos',
     viewMode: 'caseStudy' | 'gallery' | 'executive'
   ) => {
     const viewMap = {

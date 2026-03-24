@@ -54,7 +54,7 @@ interface ProjectsSectionProps {
     onClick: () => void;
     children: React.ReactNode;
   }>;
-  openProjectWithUrl: (projectId: 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'sqool-classe' | 'france-vae' | 'pagesjaunes' | 'androidwear', viewMode: 'caseStudy' | 'gallery' | 'executive') => void;
+  openProjectWithUrl: (projectId: 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'sqool-classe' | 'france-vae' | 'pagesjaunes' | 'androidwear' | 'riskos', viewMode: 'caseStudy' | 'gallery' | 'executive') => void;
   openModalWithUrl: (path: string) => void;
   setIframeModalUrl: (url: string) => void;
 }
@@ -94,8 +94,8 @@ const ProjectsSection: React.FC<ProjectsSectionProps> = ({
                 startScale={startScale}
                 systemTheme={systemTheme}
                 onClick={() => {
-                  if (project.id === 'toolkit' || project.id === 'dailymotion' || project.id === 'connect' || project.id === 'sqool' || project.id === 'france-vae') {
-                    openProjectWithUrl(project.id, 'executive');
+                  if (project.id === 'toolkit' || project.id === 'dailymotion' || project.id === 'connect' || project.id === 'sqool' || project.id === 'france-vae' || project.id === 'riskos') {
+                    openProjectWithUrl(project.id as 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'france-vae', 'executive');
                   } else if (project.externalLink) {
                     setIframeModalUrl(project.externalLink);
                   }

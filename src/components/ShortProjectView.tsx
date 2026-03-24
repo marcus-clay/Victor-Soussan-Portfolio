@@ -65,18 +65,6 @@ export default function ShortProjectView({
         {/* Media grid */}
         {project.media && project.media.length > 0 && (
           <div className="mb-12">
-            {/* Video if present */}
-            {project.videoUrl && (
-              <div className="aspect-video rounded-2xl overflow-hidden bg-gray-100 mb-4">
-                <video
-                  src={project.videoUrl}
-                  controls
-                  className="w-full h-full object-cover"
-                  poster={project.media[0]}
-                />
-              </div>
-            )}
-
             {/* Image grid: adapt layout to number of images */}
             <div className={`grid gap-4 ${
               project.media.length === 1 ? 'grid-cols-1' :
@@ -112,6 +100,30 @@ export default function ShortProjectView({
               <img
                 src={project.coverImage.startsWith('/') ? project.coverImage : `/images/${project.coverImage}`}
                 alt={project.title}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </div>
+        )}
+
+        {/* Body / extended description */}
+        {project.body && (
+          <div className="mb-12 max-w-[65ch]">
+            {project.body.split('\n\n').map((paragraph, idx) => (
+              <p key={idx} className="text-base leading-relaxed text-gray-600 mb-4 last:mb-0">
+                {paragraph}
+              </p>
+            ))}
+          </div>
+        )}
+
+        {/* Video */}
+        {project.videoUrl && (
+          <div className="mb-12">
+            <div className="aspect-video rounded-2xl overflow-hidden bg-gray-100">
+              <video
+                src={project.videoUrl}
+                controls
                 className="w-full h-full object-cover"
               />
             </div>
