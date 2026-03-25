@@ -489,6 +489,13 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
                         controls
                         playsInline
                         autoPlay
+                        onClick={(e) => {
+                          const vid = e.currentTarget;
+                          const wasPlaying = !vid.paused;
+                          setTimeout(() => {
+                            if (wasPlaying && vid.paused) vid.play();
+                          }, 0);
+                        }}
                       />
                     ) : (
                       <img loading="lazy"
@@ -578,6 +585,17 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
                         controls
                         playsInline
                         autoPlay
+                        onClick={(e) => {
+                          // Prevent native click from pausing during zoom toggle
+                          // Resume playback immediately if the click was for zooming
+                          const vid = e.currentTarget;
+                          const wasPlaying = !vid.paused;
+                          setTimeout(() => {
+                            if (wasPlaying && vid.paused) {
+                              vid.play();
+                            }
+                          }, 0);
+                        }}
                       />
                     ) : (
                       <motion.img

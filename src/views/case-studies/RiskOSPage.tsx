@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { X, ArrowUpRight } from '@phosphor-icons/react';
 import { smoothScrollTo } from '../../utils/smoothScroll';
 import CaseStudyTOCSidebar from '../../components/CaseStudyTOCSidebar';
@@ -179,7 +179,7 @@ const CONTENT = {
   },
 };
 
-// ─── Video card with Apple TV 3D tilt + liquid glass ─────────────────────────
+// ─── Video card with hover zoom + shadow lift ────────────────────────────────
 
 const VIDEO_BASE = '/assets/projets/riskos/videos';
 
@@ -200,34 +200,13 @@ function GlassVideoCard({
   benefit?: string;
   lang: 'en' | 'fr';
   index: number;
-  onClick: () => void;
+  onClick: (currentTime: number) => void;
 }) {
-  const cardRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Motion values for 3D tilt
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
-  // Spring smoothing
-  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [6, -6]), { stiffness: 300, damping: 30 });
-  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-6, 6]), { stiffness: 300, damping: 30 });
-
-  // Glow position
-  const glowX = useSpring(useTransform(x, [-0.5, 0.5], [0, 100]), { stiffness: 300, damping: 30 });
-  const glowY = useSpring(useTransform(y, [-0.5, 0.5], [0, 100]), { stiffness: 300, damping: 30 });
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    x.set((e.clientX - centerX) / rect.width);
-    y.set((e.clientY - centerY) / rect.height);
-  };
-
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
+  const handleClick = () => {
+    const time = videoRef.current?.currentTime ?? 0;
+    onClick(time);
   };
 
   return (
@@ -237,50 +216,20 @@ function GlassVideoCard({
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-50px' }}
         transition={{ duration: 0.4, delay: index * 0.05 }}
-        className="group cursor-pointer"
-        onClick={onClick}
-        style={{ perspective: 1200 }}
+        className="group cursor-zoom-in"
+        onClick={handleClick}
       >
-        {/* 3D tilt container */}
-        <motion.div
-          ref={cardRef}
-          onMouseMove={handleMouseMove}
-          onMouseLeave={handleMouseLeave}
-          style={{
-            rotateX,
-            rotateY,
-            transformStyle: 'preserve-3d',
-          }}
-          className="relative rounded-2xl overflow-hidden transition-shadow duration-300 ease-out shadow-lg shadow-black/40 group-hover:shadow-2xl group-hover:shadow-blue-500/20"
-        >
-          {/* Liquid glass glow overlay */}
-          <motion.div
-            className="absolute inset-0 z-10 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-            style={{
-              background: `radial-gradient(circle at ${glowX}% ${glowY}%, rgba(255,255,255,0.12) 0%, transparent 50%)`,
-            }}
-          />
-
-          {/* Shine effect on edges (liquid glass) */}
-          <div
-            className="absolute inset-0 z-10 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"
-            style={{
-              boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.08), inset 0 -1px 1px rgba(0,0,0,0.3)',
-            }}
-          />
-
-          {/* Glass border */}
-          <div className="absolute inset-0 z-10 pointer-events-none rounded-2xl border border-white/[0.06] group-hover:border-white/[0.12] transition-colors duration-300" />
-
+        <div className="relative rounded-2xl overflow-hidden border border-white/[0.06] hover:border-white/[0.12] transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-lg shadow-black/40 hover:shadow-2xl hover:shadow-black/50 group-hover:scale-[1.01]">
           <video
+            ref={videoRef}
             src={src}
             autoPlay
             loop
             muted
             playsInline
-            className="w-full block"
+            className="w-full block transition-transform duration-300 ease-out group-hover:scale-[1.02]"
           />
-        </motion.div>
+        </div>
       </motion.figure>
 
       {/* Caption below */}
@@ -360,9 +309,11 @@ const RiskOSPage: React.FC<RiskOSPageProps> = ({
   // Lightbox state
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
+  const [videoTime, setVideoTime] = useState(0);
   const lightboxItems = buildLightboxItems(lang);
 
-  const openLightbox = (index: number) => {
+  const openLightbox = (index: number, currentTime = 0) => {
+    setVideoTime(currentTime);
     setLightboxIndex(index);
     setLightboxOpen(true);
   };
@@ -449,6 +400,7 @@ const RiskOSPage: React.FC<RiskOSPageProps> = ({
         onIndexChange={setLightboxIndex}
         lang={lang}
         projectId="riskos"
+        videoStartTime={videoTime}
       />
 
       {/* Main scrollable content */}
@@ -457,7 +409,7 @@ const RiskOSPage: React.FC<RiskOSPageProps> = ({
         className="flex-1 overflow-y-auto scroll-smooth"
       >
         {/* Hero */}
-        <div className="max-w-[900px] mx-auto px-6 pt-16 md:pt-24 pb-16">
+        <div className="max-w-[1200px] mx-auto px-6 md:px-10 pt-16 md:pt-24 pb-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -480,12 +432,12 @@ const RiskOSPage: React.FC<RiskOSPageProps> = ({
         </div>
 
         {/* Content sections */}
-        <div className="max-w-[900px] mx-auto px-6 pb-32">
+        <div className="max-w-[1200px] mx-auto px-6 md:px-10 pb-32">
 
           {/* Hero image */}
           <figure className="mb-16 md:mb-24">
             <div
-              className="rounded-2xl overflow-hidden border border-white/10 cursor-pointer group"
+              className="rounded-2xl overflow-hidden border border-white/[0.06] hover:border-white/[0.12] cursor-zoom-in group transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-lg shadow-black/40 hover:shadow-2xl hover:shadow-black/50 hover:scale-[1.01]"
               style={{ backgroundColor: '#0a0a0a' }}
               onClick={() => openLightbox(0)}
             >
@@ -493,7 +445,7 @@ const RiskOSPage: React.FC<RiskOSPageProps> = ({
                 loading="lazy"
                 src="/assets/projets/riskos/thubmnail_riskos_dark.webp"
                 alt="RiskOS — fraud detection dashboard overview"
-                className="w-full h-auto transition-transform duration-[400ms] ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
+                className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
               />
             </div>
           </figure>
@@ -520,7 +472,7 @@ const RiskOSPage: React.FC<RiskOSPageProps> = ({
             description={t.beforeAfterText}
             lang={lang}
             index={1}
-            onClick={() => openLightbox(1)}
+            onClick={(time) => openLightbox(1, time)}
           />
 
           {/* Section: Design Question */}
@@ -545,7 +497,7 @@ const RiskOSPage: React.FC<RiskOSPageProps> = ({
             description={t.dataFlowText}
             lang={lang}
             index={2}
-            onClick={() => openLightbox(2)}
+            onClick={(time) => openLightbox(2, time)}
           />
 
           {/* Section: Triage */}
@@ -560,7 +512,7 @@ const RiskOSPage: React.FC<RiskOSPageProps> = ({
             benefit={t.triageBenefit}
             lang={lang}
             index={3}
-            onClick={() => openLightbox(3)}
+            onClick={(time) => openLightbox(3, time)}
           />
 
           {/* Section: AI Analysis */}
@@ -576,7 +528,7 @@ const RiskOSPage: React.FC<RiskOSPageProps> = ({
             benefit={t.aiBenefit}
             lang={lang}
             index={4}
-            onClick={() => openLightbox(4)}
+            onClick={(time) => openLightbox(4, time)}
           />
 
           {/* Section: Decision */}
@@ -592,7 +544,7 @@ const RiskOSPage: React.FC<RiskOSPageProps> = ({
             benefit={t.decisionBenefit}
             lang={lang}
             index={5}
-            onClick={() => openLightbox(5)}
+            onClick={(time) => openLightbox(5, time)}
           />
 
           {/* Section: False Positive */}
@@ -607,7 +559,7 @@ const RiskOSPage: React.FC<RiskOSPageProps> = ({
             benefit={t.falsePositiveBenefit}
             lang={lang}
             index={6}
-            onClick={() => openLightbox(6)}
+            onClick={(time) => openLightbox(6, time)}
           />
 
           {/* Section: Queue */}
@@ -622,7 +574,7 @@ const RiskOSPage: React.FC<RiskOSPageProps> = ({
             benefit={t.queueBenefit}
             lang={lang}
             index={7}
-            onClick={() => openLightbox(7)}
+            onClick={(time) => openLightbox(7, time)}
           />
 
           {/* Section: Learnings */}

@@ -29,6 +29,34 @@ All full-page overlays use the same header:
 - X icon size={24} with enlarged hitbox (before: pseudo-element)
 - Glass effect with backdrop-blur-xl
 
+## Media Hover Pattern (images, videos, galleries)
+Every clickable image or video on the site uses the same hover treatment:
+- Container: `cursor-zoom-in group` with `transition-[border-color,box-shadow,transform] duration-300 ease-out`
+- Container hover: `hover:scale-[1.01]` (subtle lift on the whole card)
+- Media inside: `transition-transform duration-300 ease-out group-hover:scale-[1.02]` (zoom inside the container)
+- Shadow: `shadow-lg` at rest, `hover:shadow-2xl` on hover
+- Border (dark theme): `border-white/[0.06] hover:border-white/[0.12]`
+- Border (light theme): `border-gray-100 hover:border-gray-200` or `ring-1 ring-black/[0.04]`
+- No 3D tilt, no perspective, no rotateX/rotateY
+- Videos: `autoPlay loop muted playsInline`, hover zoom applied to `<video>` element
+- When clicking to open lightbox: pass `videoRef.current.currentTime` so playback continues from the same position
+
+```
+{/* Light theme example */}
+<div className="rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in group
+  transition-[border-color,box-shadow,transform] duration-300 ease-out
+  shadow-sm hover:shadow-lg hover:scale-[1.01]">
+  <img className="w-full transition-transform duration-300 ease-out group-hover:scale-[1.02]" />
+</div>
+
+{/* Dark theme example */}
+<div className="rounded-2xl overflow-hidden border border-white/[0.06] hover:border-white/[0.12] cursor-zoom-in group
+  transition-[border-color,box-shadow,transform] duration-300 ease-out
+  shadow-lg shadow-black/40 hover:shadow-2xl hover:shadow-black/50 hover:scale-[1.01]">
+  <video className="w-full transition-transform duration-300 ease-out group-hover:scale-[1.02]" autoPlay loop muted playsInline />
+</div>
+```
+
 ## Typography
 - Headings: font-bold, tracking-[-0.02em] or tracking-[-0.03em]
 - Body: text-sm to text-base, leading-relaxed
