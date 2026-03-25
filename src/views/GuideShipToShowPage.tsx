@@ -56,8 +56,8 @@ const GuideShipToShowPage: React.FC<Props> = ({ lang, onNavigate }) => {
       data-scroll-container
       className="min-h-screen bg-[#FCFCFD]"
     >
-      {/* Breadcrumb bar */}
-      <div className="sticky top-0 z-10 border-b bg-[#FCFCFD] border-gray-200">
+      {/* Breadcrumb bar - glass effect */}
+      <div className="sticky top-0 z-10 border-b backdrop-blur-xl bg-[#FCFCFD]/80 border-gray-200">
         <div className="max-w-[1200px] mx-auto px-4 md:px-6 h-10 flex items-center">
           <nav className="flex items-center gap-1.5 text-[13px] min-w-0 overflow-hidden">
             <button
@@ -216,7 +216,14 @@ const GuideShipToShowPage: React.FC<Props> = ({ lang, onNavigate }) => {
                     const Icon = PHASE_ICONS[idx];
                     const color = PHASE_COLORS[idx];
                     return (
-                      <div key={phase.number} className="relative flex gap-4 md:gap-6">
+                      <motion.div
+                        key={phase.number}
+                        initial={{ opacity: 0, y: 16 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, margin: '-40px' }}
+                        transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1], delay: idx * 0.06 }}
+                        className="relative flex gap-4 md:gap-6"
+                      >
                         {/* Phase number circle */}
                         <div className={`relative z-10 flex-shrink-0 w-10 h-10 rounded-xl ${color.bg} ${color.border} border flex items-center justify-center`}>
                           <Icon size={18} weight="bold" className={color.text} />
@@ -261,7 +268,7 @@ const GuideShipToShowPage: React.FC<Props> = ({ lang, onNavigate }) => {
                             ))}
                           </ul>
                         </div>
-                      </div>
+                      </motion.div>
                     );
                   })}
                 </div>
@@ -299,7 +306,8 @@ const GuideShipToShowPage: React.FC<Props> = ({ lang, onNavigate }) => {
               </p>
               <a
                 href={`/${lang}/project/${meta.exampleProject.slug}/summary`}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium bg-[#2D5CF3] text-white hover:bg-[#2450d9] shadow-sm hover:shadow-md transition-all"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium bg-[#2D5CF3] text-white hover:bg-[#2450d9] shadow-sm hover:shadow-md active:scale-[0.97]"
+                style={{ transition: 'background-color 200ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 200ms ease' }}
               >
                 {lang === 'fr' ? 'Voir le case study RiskOS' : 'View the RiskOS case study'}
                 <ArrowSquareOut size={16} />
@@ -326,7 +334,8 @@ const GuideShipToShowPage: React.FC<Props> = ({ lang, onNavigate }) => {
                       href={meta.githubUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium bg-gray-900 text-white hover:bg-gray-800 shadow-sm hover:shadow-md transition-all"
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium bg-gray-900 text-white hover:bg-gray-800 shadow-sm hover:shadow-md active:scale-[0.97]"
+                      style={{ transition: 'background-color 200ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 200ms ease' }}
                     >
                       <GithubLogo size={16} weight="bold" />
                       {lang === 'fr' ? 'Voir sur GitHub' : 'View on GitHub'}
@@ -351,13 +360,15 @@ const GuideShipToShowPage: React.FC<Props> = ({ lang, onNavigate }) => {
                       href={meta.author.linkedin}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium bg-[#2D5CF3] text-white hover:bg-[#2450d9] shadow-sm hover:shadow-md transition-all"
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium bg-[#2D5CF3] text-white hover:bg-[#2450d9] shadow-sm hover:shadow-md active:scale-[0.97]"
+                      style={{ transition: 'background-color 200ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 200ms ease' }}
                     >
                       <LinkedinLogo size={16} weight="bold" /> LinkedIn
                     </a>
                     <a
                       href="mailto:victor@victorsoussan.fr"
-                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium bg-gray-100 text-gray-900 hover:bg-gray-200 transition-all"
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium bg-gray-100 text-gray-900 hover:bg-gray-200 active:scale-[0.97]"
+                      style={{ transition: 'background-color 200ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
                     >
                       <Envelope size={16} /> Email
                     </a>

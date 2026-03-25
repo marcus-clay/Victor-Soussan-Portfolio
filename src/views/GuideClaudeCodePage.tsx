@@ -110,19 +110,24 @@ const GuideIndex: React.FC<{ isDark: boolean; lang: string; onNavigate: (t: stri
           {lang === 'en' ? 'Table of contents' : 'Ce que couvre ce guide'}
         </h2>
         <div className="flex flex-col gap-4 mb-14">
-          {GUIDE_CHAPTERS.map((ch) => {
+          {GUIDE_CHAPTERS.map((ch, idx) => {
             const chSlug = lang === 'fr' ? ch.slug_fr : ch.slug_en;
             const chTitle = lang === 'fr' ? ch.title_fr : ch.title_en;
             const chIntro = lang === 'fr' ? ch.intro_fr : ch.intro_en;
             return (
-            <button
+            <motion.button
               key={chSlug}
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-30px' }}
+              transition={{ duration: 0.35, ease: [0.23, 1, 0.32, 1], delay: idx * 0.05 }}
               onClick={() => onNavigate(chSlug)}
-              className={`group text-left p-4 md:p-5 rounded-xl border transition-all duration-200 cursor-pointer hover:-translate-y-0.5 ${
+              className={`group text-left p-4 md:p-5 rounded-xl border cursor-pointer active:scale-[0.98] ${
                 isDark
                   ? 'bg-[#1D1D1F] border-white/5 hover:border-white/15 hover:shadow-lg'
                   : 'bg-white border-gray-200 hover:border-gray-300 hover:shadow-md'
               }`}
+              style={{ transition: 'transform 160ms cubic-bezier(0.23, 1, 0.32, 1), border-color 200ms ease, box-shadow 200ms ease' }}
             >
               <div className="flex items-start gap-4">
                 <span className={`flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold ${
@@ -138,9 +143,9 @@ const GuideIndex: React.FC<{ isDark: boolean; lang: string; onNavigate: (t: stri
                     {chIntro}
                   </p>
                 </div>
-                <ArrowRight size={16} className={`flex-shrink-0 mt-1.5 transition-transform group-hover:translate-x-1 ${isDark ? 'text-gray-600' : 'text-gray-300'}`} />
+                <ArrowRight size={16} className={`flex-shrink-0 mt-1.5 transition-transform duration-200 group-hover:translate-x-1 ${isDark ? 'text-gray-600' : 'text-gray-300'}`} />
               </div>
-            </button>
+            </motion.button>
             );
           })}
         </div>
@@ -251,7 +256,7 @@ const GuideChapter: React.FC<{
               <button className="absolute top-4 right-4 p-2 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors z-10" onClick={() => setLightboxSrc(null)}>
                 <X size={24} />
               </button>
-              <motion.img initial={{ scale: 0.9 }} animate={{ scale: 1 }} exit={{ scale: 0.9 }} src={lightboxSrc} alt="" className="max-w-full max-h-full rounded-xl object-contain" onClick={(e) => e.stopPropagation()} />
+              <motion.img initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }} transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }} src={lightboxSrc} alt="" className="max-w-full max-h-full rounded-xl object-contain" onClick={(e) => e.stopPropagation()} />
             </motion.div>
           )}
         </AnimatePresence>,
@@ -309,9 +314,10 @@ const GuideChapter: React.FC<{
               {prev ? (
                 <button
                   onClick={() => onNavigate(lang === 'fr' ? prev.slug_fr : prev.slug_en)}
-                  className={`group text-left p-4 rounded-xl border transition-all cursor-pointer hover:-translate-y-0.5 ${
+                  className={`group text-left p-4 rounded-xl border cursor-pointer active:scale-[0.97] ${
                     isDark ? 'bg-[#1D1D1F] border-white/5 hover:border-white/15' : 'bg-white border-gray-200 hover:border-gray-300 hover:shadow-md'
                   }`}
+                  style={{ transition: 'transform 160ms cubic-bezier(0.23, 1, 0.32, 1), border-color 200ms ease, box-shadow 200ms ease' }}
                 >
                   <span className={`text-[11px] font-medium uppercase tracking-wider ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
                     <ArrowLeft size={10} className="inline mr-1" />
@@ -323,9 +329,10 @@ const GuideChapter: React.FC<{
               {next ? (
                 <button
                   onClick={() => onNavigate(lang === 'fr' ? next.slug_fr : next.slug_en)}
-                  className={`group text-left p-4 rounded-xl border transition-all cursor-pointer hover:-translate-y-0.5 ${
+                  className={`group text-left p-4 rounded-xl border cursor-pointer active:scale-[0.97] ${
                     isDark ? 'bg-[#1D1D1F] border-white/5 hover:border-white/15' : 'bg-white border-gray-200 hover:border-gray-300 hover:shadow-md'
                   }`}
+                  style={{ transition: 'transform 160ms cubic-bezier(0.23, 1, 0.32, 1), border-color 200ms ease, box-shadow 200ms ease' }}
                 >
                   <span className={`text-[11px] font-medium uppercase tracking-wider ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
                     {lang === 'en' ? 'Next' : 'Suivant'}
@@ -348,10 +355,10 @@ const GuideChapter: React.FC<{
                     : 'J\'accompagne les équipes design dans l\'intégration de Claude Code : ateliers, sessions en binôme, mise en place de projets.'}
                 </p>
                 <div className="flex flex-wrap gap-3">
-                  <a href={GUIDE_META.author.linkedin} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium bg-[#2D5CF3] text-white hover:bg-[#2450d9] shadow-sm hover:shadow-md transition-all">
+                  <a href={GUIDE_META.author.linkedin} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium bg-[#2D5CF3] text-white hover:bg-[#2450d9] shadow-sm hover:shadow-md active:scale-[0.97]" style={{ transition: 'background-color 200ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 200ms ease' }}>
                     <LinkedinLogo size={16} weight="bold" /> LinkedIn
                   </a>
-                  <a href="mailto:victor@victorsoussan.fr" className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium transition-all ${isDark ? 'bg-white/5 text-white hover:bg-white/10 ring-1 ring-white/10' : 'bg-gray-100 text-gray-900 hover:bg-gray-200'}`}>
+                  <a href="mailto:victor@victorsoussan.fr" className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium active:scale-[0.97] ${isDark ? 'bg-white/5 text-white hover:bg-white/10 ring-1 ring-white/10' : 'bg-gray-100 text-gray-900 hover:bg-gray-200'}`} style={{ transition: 'background-color 200ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}>
                     <Envelope size={16} /> Email
                   </a>
                 </div>
@@ -420,12 +427,12 @@ const GuideClaudeCodePage: React.FC<Props> = ({ systemTheme, lang, view, onNavig
       data-scroll-container
       className={`fixed inset-0 md:top-16 z-[100] overflow-y-auto ${isDark ? 'bg-[#0a0a0a]' : 'bg-[#FCFCFD]'}`}
     >
-      {/* Breadcrumb bar - sticky */}
-      <div className={`sticky top-0 z-10 border-b ${isDark ? 'bg-[#0a0a0a] border-white/5' : 'bg-[#FCFCFD] border-gray-200'}`}>
+      {/* Breadcrumb bar - sticky with glass effect */}
+      <div className={`sticky top-0 z-10 border-b backdrop-blur-xl ${isDark ? 'bg-[#0a0a0a]/80 border-white/5' : 'bg-[#FCFCFD]/80 border-gray-200'}`}>
         <div className={`max-w-[1200px] mx-auto px-4 md:px-6 h-10 flex items-center justify-between ${!isIndex ? 'lg:pl-[216px]' : ''}`}>
           <nav className="flex items-center gap-1.5 text-[13px] min-w-0 overflow-hidden">
             <button onClick={() => onNavigate('blog')} className={`transition-colors cursor-pointer hover:underline flex-shrink-0 ${isDark ? 'text-gray-500 hover:text-white' : 'text-gray-400 hover:text-gray-900'}`}>
-              Blog
+              {lang === 'fr' ? 'Ressources' : 'Resources'}
             </button>
             <CaretRight size={10} className={`flex-shrink-0 ${isDark ? 'text-gray-600' : 'text-gray-300'}`} />
             {isIndex ? (
@@ -502,11 +509,13 @@ const GuideClaudeCodePage: React.FC<Props> = ({ systemTheme, lang, view, onNavig
           max-width: 100%;
           margin: 2.5rem 0;
           cursor: zoom-in;
-          transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+          transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.3s cubic-bezier(0.23, 1, 0.32, 1);
         }
-        .article-body img:hover {
-          transform: scale(1.01);
-          box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+        @media (hover: hover) and (pointer: fine) {
+          .article-body img:hover {
+            transform: scale(1.01);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+          }
         }
 
         /* ── Code blocks ── */

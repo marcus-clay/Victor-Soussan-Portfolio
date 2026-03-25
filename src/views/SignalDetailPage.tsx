@@ -113,15 +113,15 @@ const SignalDetailPage: React.FC<Props> = ({ signalId, systemTheme, lang, onBack
       aria-label="Signal detail"
       className={`min-h-screen ${isDark ? 'bg-[#0a0a0a]' : 'bg-[#FCFCFD]'}`}
     >
-      {/* Breadcrumb - sticky */}
-      <div className={`sticky top-0 z-10 border-b ${isDark ? 'bg-[#0a0a0a] border-white/5' : 'bg-[#FCFCFD] border-gray-200'}`}>
+      {/* Breadcrumb - sticky with glass effect */}
+      <div className={`sticky top-0 z-10 border-b backdrop-blur-xl ${isDark ? 'bg-[#0a0a0a]/80 border-white/5' : 'bg-[#FCFCFD]/80 border-gray-200'}`}>
         <div className="max-w-[1200px] mx-auto px-4 md:px-6 h-10 flex items-center">
           <nav className="flex items-center gap-1.5 text-[13px] min-w-0 overflow-hidden">
             <button
               onClick={onBack}
               className={`transition-colors cursor-pointer hover:underline flex-shrink-0 ${isDark ? 'text-gray-500 hover:text-white' : 'text-gray-400 hover:text-gray-900'}`}
             >
-              Blog
+              {lang === 'fr' ? 'Ressources' : 'Resources'}
             </button>
             <ArrowRight size={10} className={`flex-shrink-0 ${isDark ? 'text-gray-600' : 'text-gray-300'}`} />
             <span className={`truncate font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>
@@ -193,13 +193,18 @@ const SignalDetailPage: React.FC<Props> = ({ signalId, systemTheme, lang, onBack
 
           {/* Hero image (if signal has one) */}
           {signal.heroImage && (
-            <figure className="mb-10">
+            <motion.figure
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1], delay: 0.1 }}
+              className="mb-10"
+            >
               <img
                 src={signal.heroImage}
                 alt={title}
                 className="w-full rounded-xl"
               />
-            </figure>
+            </motion.figure>
           )}
 
           {/* Article body */}
@@ -230,17 +235,22 @@ const SignalDetailPage: React.FC<Props> = ({ signalId, systemTheme, lang, onBack
                 {lang === 'en' ? 'More articles' : 'Autres articles'}
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                {relatedSignals.map(rs => {
+                {relatedSignals.map((rs, idx) => {
                   const rsColors = CATEGORY_COLORS[rs.category];
                   return (
-                    <button
+                    <motion.button
                       key={rs.id}
+                      initial={{ opacity: 0, y: 12 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: '-40px' }}
+                      transition={{ duration: 0.35, ease: [0.23, 1, 0.32, 1], delay: idx * 0.06 }}
                       onClick={() => onOpenSignal ? onOpenSignal(rs.id) : null}
-                      className={`group text-left rounded-xl transition-all duration-200 cursor-pointer p-4 hover:-translate-y-0.5 ${
+                      className={`group text-left rounded-xl cursor-pointer p-4 active:scale-[0.97] ${
                         isDark
                           ? 'bg-[#1D1D1F] ring-1 ring-white/5 hover:ring-white/15 hover:shadow-lg'
                           : 'bg-white ring-1 ring-gray-200/60 hover:ring-gray-300/80 shadow-sm hover:shadow-md'
                       }`}
+                      style={{ transition: 'transform 160ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 200ms cubic-bezier(0.23, 1, 0.32, 1), ring-color 200ms ease' }}
                     >
                       <span className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-semibold mb-2 ${
                         isDark ? rsColors.bgDark : rsColors.bg
@@ -252,22 +262,23 @@ const SignalDetailPage: React.FC<Props> = ({ signalId, systemTheme, lang, onBack
                       </p>
                       <span className={`flex items-center gap-1 text-xs font-medium ${isDark ? 'text-blue-400' : 'text-[#2D5CF3]'}`}>
                         {lang === 'en' ? 'Read' : 'Lire'}
-                        <ArrowRight size={10} className="transition-transform group-hover:translate-x-0.5" />
+                        <ArrowRight size={10} className="transition-transform duration-200 group-hover:translate-x-0.5" />
                       </span>
-                    </button>
+                    </motion.button>
                   );
                 })}
               </div>
             </div>
           )}
 
-          {/* Back to blog */}
+          {/* Back to resources */}
           <div className="mt-14 flex justify-center">
             <button
               onClick={onBack}
-              className="group inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-medium transition-all duration-200 cursor-pointer bg-[#2D5CF3] text-white hover:bg-[#2450d9] shadow-sm hover:shadow-md"
+              className="group inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-medium cursor-pointer bg-[#2D5CF3] text-white hover:bg-[#2450d9] shadow-sm hover:shadow-md active:scale-[0.97]"
+              style={{ transition: 'background-color 200ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 200ms ease' }}
             >
-              <ArrowLeft size={16} className="transition-transform group-hover:-translate-x-1" />
+              <ArrowLeft size={16} className="transition-transform duration-200 group-hover:-translate-x-1" />
               {lang === 'en' ? 'All articles' : 'Tous les articles'}
             </button>
           </div>
@@ -310,8 +321,10 @@ const SignalDetailPage: React.FC<Props> = ({ signalId, systemTheme, lang, onBack
         .article-body li { margin-bottom: 0.75rem; line-height: 1.75; font-size: 1rem; color: #4b5563; }
         .article-body a { color: #2D5CF3; text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 0.2s; }
         .article-body a:hover { border-bottom-color: #2D5CF3; }
-        .article-body img { border-radius: 12px; max-width: 100%; margin: 2.5rem 0; cursor: zoom-in; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease; }
-        .article-body img:hover { transform: scale(1.01); box-shadow: 0 12px 40px rgba(0,0,0,0.1); }
+        .article-body img { border-radius: 12px; max-width: 100%; margin: 2.5rem 0; cursor: zoom-in; transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.3s cubic-bezier(0.23, 1, 0.32, 1); }
+        @media (hover: hover) and (pointer: fine) {
+          .article-body img:hover { transform: scale(1.01); box-shadow: 0 12px 40px rgba(0,0,0,0.1); }
+        }
         .article-body pre { background: #18181b; color: #e4e4e7; padding: 20px 24px; border-radius: 12px; overflow-x: auto; margin: 2rem 0; font-size: 13px; line-height: 1.7; border: 1px solid rgba(255,255,255,0.06); }
         .article-body pre code { background: none; padding: 0; font-size: inherit; color: inherit; }
         .article-body code { background: #f4f4f5; padding: 3px 7px; border-radius: 5px; font-family: ui-monospace, SFMono-Regular, monospace; font-size: 0.8125rem; color: #18181b; }
