@@ -1118,7 +1118,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
                 </div>
                 {/* Play overlay on hover */}
                 <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/10 transition-colors pointer-events-none">
-                  <div className="w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-md transition-all duration-300 opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 bg-white/30">
+                  <div className="w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-md transition-[background-color,color,transform] duration-200 ease-out opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 bg-white/30">
                     <svg width="28" height="28" viewBox="0 0 24 24" fill="white" className="ml-1">
                       <polygon points="5 3 19 12 5 21 5 3" />
                     </svg>
@@ -1203,7 +1203,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
                     autoPlay
                   />
                   <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/20 transition-colors">
-                    <div className="w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-md transition-all duration-300 opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 bg-white/20">
+                    <div className="w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-md transition-[background-color,color,transform] duration-200 ease-out opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 bg-white/20">
                       <svg width="28" height="28" viewBox="0 0 24 24" fill="white" className="ml-1">
                         <polygon points="5 3 19 12 5 21 5 3" />
                       </svg>
@@ -1231,7 +1231,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
                     autoPlay
                   />
                   <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/20 transition-colors">
-                    <div className="w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-md transition-all duration-300 opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 bg-white/20">
+                    <div className="w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-md transition-[background-color,color,transform] duration-200 ease-out opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 bg-white/20">
                       <svg width="28" height="28" viewBox="0 0 24 24" fill="white" className="ml-1">
                         <polygon points="5 3 19 12 5 21 5 3" />
                       </svg>
@@ -1622,7 +1622,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
             {/* CTA to dedicated Android Wear case study */}
             <div
               onClick={() => onNavigateToProject?.('androidwear')}
-              className={`group rounded-2xl overflow-hidden border cursor-pointer transition-all duration-300 hover:scale-[1.005] ${
+              className={`group rounded-2xl overflow-hidden border cursor-pointer transition-[background-color,color,transform] duration-200 ease-out hover:scale-[1.005] ${
                 isDark
                   ? 'bg-white/5 border-white/10 hover:border-white/20'
                   : 'bg-gray-50 border-gray-200 hover:border-gray-300'
@@ -1639,7 +1639,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
                         loading="lazy"
                         src={GALLERY_IMAGES.wear.insituStore}
                         alt="PagesJaunes Android Wear"
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        className="w-full h-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.02]"
                       />
                     </div>
                     {/* Content */}
@@ -1661,7 +1661,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
                   </div>
                   {/* CTA button - full width on mobile, auto on desktop */}
                   <div className="flex-shrink-0 sm:self-center">
-                    <span className="flex sm:inline-flex items-center justify-center px-5 py-2.5 rounded-full bg-[#2D5CF3] text-white text-sm font-semibold transition-transform duration-300 group-hover:scale-105 whitespace-nowrap">
+                    <span className="flex sm:inline-flex items-center justify-center px-5 py-2.5 rounded-full bg-[#2D5CF3] text-white text-sm font-semibold transition-transform duration-200 ease-out group-hover:scale-[1.03] whitespace-nowrap">
                       {lang === 'en' ? 'Read more' : 'Lire la suite'}
                     </span>
                   </div>
@@ -1924,7 +1924,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
             </h2>
             <button
               onClick={onContact}
-              className="inline-flex items-center gap-3 px-10 py-5 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-lg rounded-full transition-colors"
+              className="inline-flex items-center gap-3 px-10 py-5 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-lg rounded-full transition-[background-color,transform] duration-200 ease-out active:scale-[0.97]"
             >
               {t.cta.button}
               <ArrowRight size={22} />

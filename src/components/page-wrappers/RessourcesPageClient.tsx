@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react'
 import Link from 'next/link'
+import { motion } from 'framer-motion'
 import { ArrowUpRight, ArrowRight, BookOpen, FileText, Notebook } from '@phosphor-icons/react'
 import {
   ALL_CONTENT,
@@ -39,7 +40,10 @@ export default function RessourcesPageClient({ lang }: { lang: 'en' | 'fr' }) {
 
   const getHref = (item: ContentItem): string => {
     if (item.type === 'template' && item.link) return item.link
-    if (item.type === 'guide') return `/${lang}/guide/claude-code`
+    if (item.type === 'guide') {
+      if (item.id === 'guide-ship-to-show') return `/${lang}/guide/ship-to-show`
+      return `/${lang}/guide/claude-code`
+    }
     return `/${lang}/signal/${item.id}`
   }
 
@@ -49,36 +53,54 @@ export default function RessourcesPageClient({ lang }: { lang: 'en' | 'fr' }) {
     <div className="min-h-screen bg-[#F9F9F9]">
       <div className="max-w-[1200px] mx-auto px-6 pt-20 pb-20">
         {/* Header */}
-        <div className="mb-12">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-[-0.03em] text-gray-900 leading-[1.08]">
+        <motion.div
+          className="mb-12"
+          initial="hidden"
+          animate="visible"
+          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08 } } }}
+        >
+          <motion.h1
+            variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
+            transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
+            className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-[-0.03em] text-gray-900 leading-[1.08]"
+          >
             {isEn ? 'Resources' : 'Ressources'}
-          </h1>
-          <p className="mt-4 text-lg md:text-xl text-gray-500 leading-relaxed max-w-[55ch]">
+          </motion.h1>
+          <motion.p
+            variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0 } }}
+            transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
+            className="mt-4 text-lg md:text-xl text-gray-500 leading-relaxed max-w-[55ch]"
+          >
             {isEn
               ? 'Articles, guides, templates, and insights on product design and AI.'
               : 'Articles, guides, templates et retours d\'expérience sur le design produit et l\'IA.'}
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
 
         {/* Filters */}
-        <div className="flex flex-wrap gap-2 mb-10">
+        <motion.div
+          className="flex flex-wrap gap-2 mb-10"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.2, ease: [0.23, 1, 0.32, 1] }}
+        >
           {filters.map((f) => (
             <button
               key={f.key}
               onClick={() => setActiveFilter(f.key)}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all cursor-pointer ${
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-[background-color,color,border-color,transform] duration-200 ease-out cursor-pointer active:scale-[0.97] ${
                 activeFilter === f.key
                   ? 'bg-gray-900 text-white'
                   : 'bg-white text-gray-600 border border-gray-200 hover:border-gray-300 hover:bg-gray-50'
               }`}
             >
               {f.label}
-              <span className={`ml-1.5 ${activeFilter === f.key ? 'text-gray-400' : 'text-gray-400'}`}>
+              <span className={`ml-1.5 ${activeFilter === f.key ? 'text-white/60' : 'text-gray-400'}`}>
                 {f.count}
               </span>
             </button>
           ))}
-        </div>
+        </motion.div>
 
         {/* Content grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -90,7 +112,7 @@ export default function RessourcesPageClient({ lang }: { lang: 'en' | 'fr' }) {
             const external = isExternal(item)
 
             const card = (
-              <div className="group bg-white border border-gray-100 rounded-2xl p-6 hover:shadow-md hover:border-gray-200 transition-all h-full flex flex-col">
+              <div className="group bg-white border border-gray-100 rounded-2xl p-6 hover:shadow-md hover:border-gray-200 transition-[box-shadow,border-color] duration-200 ease-out h-full flex flex-col">
                 {/* Type + category badges */}
                 <div className="flex items-center gap-2 mb-4">
                   <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${typeColor.bg} ${typeColor.text}`}>
@@ -110,7 +132,7 @@ export default function RessourcesPageClient({ lang }: { lang: 'en' | 'fr' }) {
                 )}
 
                 {/* Title */}
-                <h3 className="text-base font-bold tracking-[-0.01em] text-gray-900 mb-2 group-hover:text-[#2D5CF3] transition-colors line-clamp-2">
+                <h3 className="text-base font-bold tracking-[-0.01em] text-gray-900 mb-2 group-hover:text-[#2D5CF3] transition-colors duration-200 ease-out line-clamp-2">
                   {isEn ? item.title_en : item.title_fr}
                 </h3>
 

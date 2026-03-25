@@ -334,7 +334,7 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick }) => {
           <div className="relative">
             <video src={item.src} className="w-full h-auto block" muted playsInline preload="metadata" />
             <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/30 transition-colors">
-              <div className="w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-md transition-transform duration-300 group-hover:scale-110 bg-white/20">
+              <div className="w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-md transition-transform duration-200 ease-out group-hover:scale-[1.03] bg-white/20">
                 <Play size={28} className="text-white ml-1" fill="white" />
               </div>
             </div>

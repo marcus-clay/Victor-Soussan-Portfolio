@@ -138,7 +138,7 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick }) => {
           <div className="relative">
             <video src={item.src} className="w-full h-auto block" muted playsInline preload="metadata" />
             <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/30 transition-colors">
-              <div className="w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-md transition-transform duration-300 group-hover:scale-110 bg-white/20">
+              <div className="w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-md transition-transform duration-200 ease-out group-hover:scale-[1.03] bg-white/20">
                 <Play size={28} className="text-white ml-1" fill="white" />
               </div>
             </div>
@@ -1583,7 +1583,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                 </h2>
                 <button
                   onClick={onContact}
-                  className="inline-flex items-center gap-3 px-10 py-5 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-lg rounded-full transition-colors"
+                  className="inline-flex items-center gap-3 px-10 py-5 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-lg rounded-full transition-[background-color,transform] duration-200 ease-out active:scale-[0.97]"
                 >
                   {t.cta.button}
                   <ArrowRight size={22} />

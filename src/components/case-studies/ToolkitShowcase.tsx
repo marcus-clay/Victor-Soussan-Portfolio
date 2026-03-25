@@ -440,7 +440,7 @@ const ShowcaseCard: React.FC<{
 
         {/* Device frame container */}
         <div
-          className={`relative rounded-xl overflow-hidden cursor-pointer transition-all duration-500 ease-out ${
+          className={`relative rounded-xl overflow-hidden cursor-pointer transition-[transform,box-shadow] duration-300 ease-out ease-out ${
             isHovered ? 'scale-[1.015] translate-y-[-2px]' : ''
           }`}
           onClick={() => onMediaClick(section.media, section.mediaType)}

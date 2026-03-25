@@ -634,7 +634,7 @@ const ClickableImage: React.FC<{
     <figure className={className}>
       <div
         onClick={() => onClick(src)}
-        className={`group cursor-pointer rounded-2xl overflow-hidden border transition-all hover:scale-[1.01] ${
+        className={`group cursor-pointer rounded-2xl overflow-hidden border transition-[transform,box-shadow] duration-200 ease-out hover:scale-[1.01] ${
           isDark ? 'border-white/10 hover:border-white/20' : 'border-gray-200 hover:border-gray-300 hover:shadow-lg'
         } ${aspectRatio || ''}`}
       >
@@ -668,7 +668,7 @@ const BentoImageGrid: React.FC<{
       <figure>
         <div
           onClick={() => onClick(large.src)}
-          className={`group cursor-pointer rounded-2xl overflow-hidden border transition-all hover:scale-[1.005] ${
+          className={`group cursor-pointer rounded-2xl overflow-hidden border transition-[transform,box-shadow] duration-200 ease-out hover:scale-[1.005] ${
             isDark ? 'border-white/10 hover:border-white/20' : 'border-gray-200 hover:border-gray-300 hover:shadow-lg'
           }`}
         >
@@ -688,7 +688,7 @@ const BentoImageGrid: React.FC<{
         <figure>
           <div
             onClick={() => onClick(small1.src)}
-            className={`group cursor-pointer rounded-xl overflow-hidden border transition-all hover:scale-[1.01] aspect-[3/2] flex items-center justify-center ${
+            className={`group cursor-pointer rounded-xl overflow-hidden border transition-[transform,box-shadow] duration-200 ease-out hover:scale-[1.01] aspect-[3/2] flex items-center justify-center ${
               isDark
                 ? 'border-white/10 hover:border-white/20 bg-white/5'
                 : 'border-gray-200 hover:border-gray-300 hover:shadow-lg bg-gray-100'
@@ -707,7 +707,7 @@ const BentoImageGrid: React.FC<{
         <figure>
           <div
             onClick={() => onClick(small2.src)}
-            className={`group cursor-pointer rounded-xl overflow-hidden border transition-all hover:scale-[1.01] aspect-[3/2] flex items-center justify-center ${
+            className={`group cursor-pointer rounded-xl overflow-hidden border transition-[transform,box-shadow] duration-200 ease-out hover:scale-[1.01] aspect-[3/2] flex items-center justify-center ${
               isDark
                 ? 'border-white/10 hover:border-white/20 bg-white/5'
                 : 'border-gray-200 hover:border-gray-300 hover:shadow-lg bg-gray-100'
@@ -730,7 +730,7 @@ const BentoImageGrid: React.FC<{
         <figure>
           <div
             onClick={() => onClick(large2.src)}
-            className={`group cursor-pointer rounded-2xl overflow-hidden border transition-all hover:scale-[1.005] ${
+            className={`group cursor-pointer rounded-2xl overflow-hidden border transition-[transform,box-shadow] duration-200 ease-out hover:scale-[1.005] ${
               isDark ? 'border-white/10 hover:border-white/20' : 'border-gray-200 hover:border-gray-300 hover:shadow-lg'
             }`}
           >
@@ -1180,7 +1180,7 @@ const InitiativesDiagram: React.FC<{
         <div className={`inline-flex rounded-full p-1 ${isDark ? 'bg-white/10' : 'bg-gray-100'}`}>
           <button
             onClick={() => setViewMode('focus')}
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-[background-color,color,transform] duration-200 ease-out ${
               viewMode === 'focus'
                 ? isDark ? 'bg-white text-black' : 'bg-gray-900 text-white'
                 : isDark ? 'text-gray-400 hover:text-white' : 'text-gray-500 hover:text-gray-900'
@@ -1190,7 +1190,7 @@ const InitiativesDiagram: React.FC<{
           </button>
           <button
             onClick={() => setViewMode('overview')}
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-[background-color,color,transform] duration-200 ease-out ${
               viewMode === 'overview'
                 ? isDark ? 'bg-white text-black' : 'bg-gray-900 text-white'
                 : isDark ? 'text-gray-400 hover:text-white' : 'text-gray-500 hover:text-gray-900'
@@ -1215,7 +1215,7 @@ const InitiativesDiagram: React.FC<{
               <button
                 key={idx}
                 onClick={() => setActiveInitiative(idx)}
-                className={`h-2 rounded-full transition-all duration-500 ${
+                className={`h-2 rounded-full transition-[transform,box-shadow] duration-300 ease-out ${
                   idx === activeInitiative
                     ? `w-10 ${isDark ? 'bg-white' : 'bg-gray-900'}`
                     : `w-2 ${isDark ? 'bg-white/20 hover:bg-white/40' : 'bg-gray-300 hover:bg-gray-400'}`
@@ -1314,7 +1314,7 @@ const InitiativesDiagram: React.FC<{
             <button
               onClick={handlePrev}
               disabled={activeInitiative === 0}
-              className={`w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center pointer-events-auto transition-all duration-300 hover:scale-110 disabled:opacity-0 disabled:pointer-events-none ${
+              className={`w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center pointer-events-auto transition-[background-color,color,transform] duration-200 ease-out hover:scale-105 disabled:opacity-0 disabled:pointer-events-none ${
                 isDark ? 'bg-white/80 text-black' : 'bg-white shadow-lg text-gray-900'
               }`}
             >
@@ -1323,7 +1323,7 @@ const InitiativesDiagram: React.FC<{
             <button
               onClick={handleNext}
               disabled={activeInitiative === initiatives.length - 1}
-              className={`w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center pointer-events-auto transition-all duration-300 hover:scale-110 disabled:opacity-0 disabled:pointer-events-none ${
+              className={`w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center pointer-events-auto transition-[background-color,color,transform] duration-200 ease-out hover:scale-105 disabled:opacity-0 disabled:pointer-events-none ${
                 isDark ? 'bg-white/80 text-black' : 'bg-white shadow-lg text-gray-900'
               }`}
             >
@@ -1343,7 +1343,7 @@ const InitiativesDiagram: React.FC<{
                   setActiveInitiative(initiative.id - 1);
                   setViewMode('focus');
                 }}
-                className={`group rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1 cursor-pointer ${
+                className={`group rounded-2xl p-6 transition-[background-color,color,transform] duration-200 ease-out hover:-translate-y-1 cursor-pointer ${
                   isDark ? 'bg-white/5 hover:bg-white/10 border border-white/10' : 'bg-white shadow-sm hover:shadow-lg border border-gray-100'
                 }`}
               >
@@ -1670,7 +1670,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
               <figure className="mb-8">
                 <div
                   onClick={() => onImageClick(t.initiative1.bentoImages.large.src)}
-                  className={`group cursor-pointer rounded-2xl overflow-hidden border transition-all hover:scale-[1.01] ${
+                  className={`group cursor-pointer rounded-2xl overflow-hidden border transition-[transform,box-shadow] duration-200 ease-out hover:scale-[1.01] ${
                     isDark ? 'border-white/10 hover:border-white/20' : 'border-gray-200 hover:border-gray-300 hover:shadow-lg'
                   }`}
                 >
@@ -1706,7 +1706,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
                 <figure>
                   <div
                     onClick={() => onImageClick(t.initiative1.bentoImages.small1.src)}
-                    className={`group cursor-pointer rounded-xl overflow-hidden border transition-all hover:scale-[1.01] ${
+                    className={`group cursor-pointer rounded-xl overflow-hidden border transition-[transform,box-shadow] duration-200 ease-out hover:scale-[1.01] ${
                       isDark ? 'border-white/10 hover:border-white/20' : 'border-gray-200 hover:border-gray-300 hover:shadow-lg'
                     }`}
                   >
@@ -1723,7 +1723,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
                 <figure>
                   <div
                     onClick={() => onImageClick(t.initiative1.bentoImages.small2.src)}
-                    className={`group cursor-pointer rounded-xl overflow-hidden border transition-all hover:scale-[1.01] ${
+                    className={`group cursor-pointer rounded-xl overflow-hidden border transition-[transform,box-shadow] duration-200 ease-out hover:scale-[1.01] ${
                       isDark ? 'border-white/10 hover:border-white/20' : 'border-gray-200 hover:border-gray-300 hover:shadow-lg'
                     }`}
                   >

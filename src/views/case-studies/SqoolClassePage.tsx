@@ -497,7 +497,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                   <figure className="mb-24 md:mb-32">
                     <div
                       onClick={() => openImageLightbox('/images/thumbnail_sqool_classe.webp')}
-                      className={`rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 ease-out hover:scale-[1.015] hover:shadow-xl border ${
+                      className={`rounded-2xl overflow-hidden cursor-pointer transition-[background-color,color,transform] duration-200 ease-out ease-out hover:scale-[1.015] hover:shadow-xl border ${
                         isDark ? 'border-white/10 hover:border-white/20' : 'border-gray-200 hover:border-gray-300'
                       } bg-[#E7E7E7]`}
                     >
@@ -536,7 +536,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                               isDark ? 'border-white/10 hover:border-white/20' : 'border-gray-200 hover:border-gray-300'
                             }`}
                           >
-                            <img src={img.src} alt={img.caption} loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                            <img src={img.src} alt={img.caption} loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.02]" />
                           </button>
                         ))}
                       </div>
@@ -599,7 +599,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                           isDark ? 'border-white/10 hover:border-white/20' : 'border-gray-200 hover:border-gray-300'
                         }`}
                       >
-                        <img src={caseImages[6].src} alt={caseImages[6].caption} loading="lazy" className="w-full transition-transform duration-500 group-hover:scale-[1.015]" />
+                        <img src={caseImages[6].src} alt={caseImages[6].caption} loading="lazy" className="w-full transition-transform duration-300 ease-out group-hover:scale-[1.01]" />
                       </button>
                       <figcaption className={`mt-4 text-sm leading-relaxed max-w-2xl ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
                         {t.teacher.gridCaption}
@@ -609,7 +609,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                     {/* CTA: explore teacher prototypes */}
                     <button
                       onClick={() => { setGalleryInitialCategory('teacher'); onViewModeChange('gallery'); }}
-                      className={`mb-16 md:mb-20 w-full text-left rounded-2xl p-8 md:p-10 transition-all group cursor-pointer ${
+                      className={`mb-16 md:mb-20 w-full text-left rounded-2xl p-8 md:p-10 transition-[transform,box-shadow,gap] duration-200 ease-out group cursor-pointer ${
                         isDark ? 'bg-[#2D5CF3] hover:bg-[#3D6AF5]' : 'bg-[#2D5CF3] hover:bg-[#2450d9]'
                       }`}
                     >
@@ -621,7 +621,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                           ? 'Chaque interaction est documentée avec son parti pris de design, sa stratégie UX et son résultat concret. Animations GSAP, navigation par étapes.'
                           : 'Each interaction is documented with its design rationale, UX strategy, and concrete outcome. GSAP animations, step-by-step navigation.'}
                       </p>
-                      <span className="inline-flex items-center gap-2 text-white font-semibold text-base transition-all group-hover:gap-3">
+                      <span className="inline-flex items-center gap-2 text-white font-semibold text-base transition-[gap,color] duration-200 ease-out group-hover:gap-3">
                         {lang === 'fr' ? 'Ouvrir la galerie' : 'Open gallery'}
                         <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
                       </span>
@@ -636,7 +636,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                             isDark ? 'border-white/10 hover:border-white/20' : 'border-gray-200 hover:border-gray-300'
                           }`}
                         >
-                          <img src={caseImages[8].src} alt="" loading="lazy" className="w-full transition-transform duration-500 group-hover:scale-[1.02]" />
+                          <img src={caseImages[8].src} alt="" loading="lazy" className="w-full transition-transform duration-300 ease-out group-hover:scale-[1.01]" />
                         </button>
                         <figcaption className={`mt-4 text-sm leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
                           {t.teacher.screenShareCaption}
@@ -649,7 +649,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                             isDark ? 'border-white/10 hover:border-white/20' : 'border-gray-200 hover:border-gray-300'
                           }`}
                         >
-                          <img src={caseImages[10].src} alt="" loading="lazy" className="w-full transition-transform duration-500 group-hover:scale-[1.02]" />
+                          <img src={caseImages[10].src} alt="" loading="lazy" className="w-full transition-transform duration-300 ease-out group-hover:scale-[1.01]" />
                         </button>
                         <figcaption className={`mt-4 text-sm leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
                           {t.teacher.docSendCaption}
@@ -665,7 +665,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                           isDark ? 'border-white/10 hover:border-white/20' : 'border-gray-200 hover:border-gray-300'
                         }`}
                       >
-                        <img src={caseImages[9].src} alt="" loading="lazy" className="w-full transition-transform duration-500 group-hover:scale-[1.015]" />
+                        <img src={caseImages[9].src} alt="" loading="lazy" className="w-full transition-transform duration-300 ease-out group-hover:scale-[1.01]" />
                       </button>
                       <figcaption className={`mt-4 text-sm leading-relaxed max-w-2xl ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
                         {t.teacher.actionsCaption}
@@ -699,7 +699,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                           isDark ? 'border-white/10 hover:border-white/20' : 'border-gray-200 hover:border-gray-300'
                         }`}
                       >
-                        <img src={caseImages[7].src} alt="" loading="lazy" className="w-full transition-transform duration-500 group-hover:scale-[1.015]" />
+                        <img src={caseImages[7].src} alt="" loading="lazy" className="w-full transition-transform duration-300 ease-out group-hover:scale-[1.01]" />
                       </button>
                       <figcaption className={`mt-4 text-sm leading-relaxed text-center max-w-2xl mx-auto ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
                         {t.students.compositionCaption}
@@ -715,7 +715,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                             isDark ? 'border-white/10 hover:border-white/20' : 'border-gray-200 hover:border-gray-300'
                           }`}
                         >
-                          <img src={caseImages[11].src} alt="" loading="lazy" className="w-full transition-transform duration-500 group-hover:scale-[1.02]" />
+                          <img src={caseImages[11].src} alt="" loading="lazy" className="w-full transition-transform duration-300 ease-out group-hover:scale-[1.01]" />
                         </button>
                         <figcaption className={`mt-4 text-sm leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
                           {t.students.classroomsCaption}
@@ -728,7 +728,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                             isDark ? 'border-white/10 hover:border-white/20' : 'border-gray-200 hover:border-gray-300'
                           }`}
                         >
-                          <img src={caseImages[14].src} alt="" loading="lazy" className="w-full transition-transform duration-500 group-hover:scale-[1.02]" />
+                          <img src={caseImages[14].src} alt="" loading="lazy" className="w-full transition-transform duration-300 ease-out group-hover:scale-[1.01]" />
                         </button>
                         <figcaption className={`mt-4 text-sm leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
                           {t.students.interactionsCaption}
@@ -740,7 +740,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                     <div className="grid md:grid-cols-2 gap-4">
                       <button
                         onClick={() => { setGalleryInitialCategory('student'); onViewModeChange('gallery'); }}
-                        className={`text-left rounded-2xl p-8 transition-all group cursor-pointer ${
+                        className={`text-left rounded-2xl p-8 transition-[transform,box-shadow,gap] duration-200 ease-out group cursor-pointer ${
                           isDark ? 'bg-[#1D1D1F] hover:bg-[#252528]' : 'bg-[#1D1D1F] hover:bg-[#252528]'
                         }`}
                       >
@@ -752,14 +752,14 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                             ? 'Login, ressources, signaux de compréhension, rendu de devoir, écran verrouillé.'
                             : 'Login, resources, comprehension signals, assignment submission, locked screen.'}
                         </p>
-                        <span className="inline-flex items-center gap-2 text-white/80 font-semibold text-sm transition-all group-hover:gap-3 group-hover:text-white">
+                        <span className="inline-flex items-center gap-2 text-white/80 font-semibold text-sm transition-[gap,color] duration-200 ease-out group-hover:gap-3 group-hover:text-white">
                           {lang === 'fr' ? 'Voir les prototypes' : 'View prototypes'}
                           <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
                         </span>
                       </button>
                       <button
                         onClick={() => { setGalleryInitialCategory('scenario'); onViewModeChange('gallery'); }}
-                        className={`text-left rounded-2xl p-8 transition-all group cursor-pointer ${
+                        className={`text-left rounded-2xl p-8 transition-[transform,box-shadow,gap] duration-200 ease-out group cursor-pointer ${
                           isDark ? 'bg-[#1D1D1F] hover:bg-[#252528]' : 'bg-[#1D1D1F] hover:bg-[#252528]'
                         }`}
                       >
@@ -771,7 +771,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                             ? 'Séances de bout en bout : ouverture, supervision, différenciation, examens, clôture.'
                             : 'End-to-end sessions: opening, supervision, differentiation, exams, closing.'}
                         </p>
-                        <span className="inline-flex items-center gap-2 text-white/80 font-semibold text-sm transition-all group-hover:gap-3 group-hover:text-white">
+                        <span className="inline-flex items-center gap-2 text-white/80 font-semibold text-sm transition-[gap,color] duration-200 ease-out group-hover:gap-3 group-hover:text-white">
                           {lang === 'fr' ? 'Voir les scénarios' : 'View scenarios'}
                           <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
                         </span>
@@ -803,7 +803,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                               isDark ? 'border-white/10 hover:border-white/20' : 'border-gray-200 hover:border-gray-300'
                             }`}
                           >
-                            <img src={item.img.src} alt={item.img.caption} loading="lazy" className="w-full transition-transform duration-500 group-hover:scale-[1.02]" />
+                            <img src={item.img.src} alt={item.img.caption} loading="lazy" className="w-full transition-transform duration-300 ease-out group-hover:scale-[1.01]" />
                           </button>
                           <figcaption className={`mt-4 text-sm leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
                             {item.caption}
@@ -845,7 +845,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                       </h2>
                       <button
                         onClick={onContact}
-                        className="inline-flex items-center gap-3 px-10 py-5 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-lg rounded-full transition-colors"
+                        className="inline-flex items-center gap-3 px-10 py-5 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-lg rounded-full transition-[background-color,transform] duration-200 ease-out active:scale-[0.97]"
                       >
                         {t.cta.button}
                         <ArrowRight size={22} />

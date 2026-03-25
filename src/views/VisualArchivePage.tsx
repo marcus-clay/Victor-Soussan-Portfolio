@@ -189,7 +189,7 @@ const VisualArchivePage: React.FC<VisualArchivePageProps> = ({ systemTheme, lang
               <button
                 key={key}
                 onClick={() => setViewMode(key)}
-                className={`p-2 rounded-full transition-all duration-200 cursor-pointer ${
+                className={`p-2 rounded-full transition-[background-color,color] duration-200 ease-out cursor-pointer ${
                   viewMode === key
                     ? isDark
                       ? 'bg-white text-gray-900'
@@ -397,7 +397,7 @@ interface MediaCardProps {
 const MediaCard: React.FC<MediaCardProps> = ({ item, isDark, onClick }) => {
   return (
     <div
-      className={`group rounded-xl overflow-hidden border cursor-pointer transition-all duration-300 hover:shadow-lg ${
+      className={`group rounded-xl overflow-hidden border cursor-pointer transition-[box-shadow,border-color] duration-200 ease-out hover:shadow-lg ${
         isDark
           ? 'border-white/5 hover:border-white/10'
           : 'border-gray-100 hover:border-gray-200'
@@ -411,13 +411,13 @@ const MediaCard: React.FC<MediaCardProps> = ({ item, isDark, onClick }) => {
           muted
           loop
           playsInline
-          className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-[1.01]"
+          className="w-full h-auto object-cover transition-transform duration-300 ease-out group-hover:scale-[1.01]"
         />
       ) : (
         <LazyImage
           src={item.src}
           alt=""
-          className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-[1.01]"
+          className="w-full h-auto object-cover transition-transform duration-300 ease-out group-hover:scale-[1.01]"
         />
       )}
     </div>

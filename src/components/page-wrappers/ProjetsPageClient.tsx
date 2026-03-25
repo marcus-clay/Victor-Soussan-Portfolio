@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react'
 import Link from 'next/link'
+import { motion } from 'framer-motion'
 import { ArrowUpRight } from '@phosphor-icons/react'
 import { getProjects } from '@/data/projectsData'
 import type { ProjectCategory, ProjectFormat } from '@/data/projectsData'
@@ -50,57 +51,81 @@ export default function ProjetsPageClient({ lang }: { lang: 'en' | 'fr' }) {
     <div className="min-h-screen bg-[#F9F9F9]">
       <div className="max-w-[1200px] mx-auto px-6 pt-20 pb-20">
         {/* Header */}
-        <div className="mb-12">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-[-0.03em] text-gray-900 leading-[1.08]">
+        <motion.div
+          className="mb-12"
+          initial="hidden"
+          animate="visible"
+          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08 } } }}
+        >
+          <motion.h1
+            variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
+            transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
+            className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-[-0.03em] text-gray-900 leading-[1.08]"
+          >
             {isEn ? 'Projects' : 'Projets'}
-          </h1>
-          <p className="mt-4 text-lg md:text-xl text-gray-500 leading-relaxed max-w-[55ch]">
+          </motion.h1>
+          <motion.p
+            variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0 } }}
+            transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
+            className="mt-4 text-lg md:text-xl text-gray-500 leading-relaxed max-w-[55ch]"
+          >
             {isEn
               ? 'Case studies in product design, design systems and AI-assisted prototyping.'
               : 'Études de cas en design produit, design systems et prototypage assisté par IA.'}
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
 
         {/* Filters */}
-        <div className="flex flex-wrap gap-2 mb-10">
+        <motion.div
+          className="flex flex-wrap gap-2 mb-10"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.2, ease: [0.23, 1, 0.32, 1] }}
+        >
           {filters.map((f) => (
             <button
               key={f.key}
               onClick={() => setActiveFilter(f.key)}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all cursor-pointer ${
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-[background-color,color,border-color,transform] duration-200 ease-out cursor-pointer active:scale-[0.97] ${
                 activeFilter === f.key
                   ? 'bg-gray-900 text-white'
                   : 'bg-white text-gray-600 border border-gray-200 hover:border-gray-300 hover:bg-gray-50'
               }`}
             >
               {f.label}
-              <span className="ml-1.5 text-gray-400">{f.count}</span>
+              <span className={`ml-1.5 ${activeFilter === f.key ? 'text-white/60' : 'text-gray-400'}`}>{f.count}</span>
             </button>
           ))}
-        </div>
+        </motion.div>
 
         {/* Projects grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-16">
-          {filtered.map((project) => {
+          {filtered.map((project, index) => {
             const imgSrc = project.coverImage.startsWith('/')
               ? project.coverImage
               : `/images/${project.coverImage}`
 
             return (
-              <Link
+              <motion.div
                 key={project.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-60px' }}
+                transition={{ duration: 0.4, delay: (index % 2) * 0.06, ease: [0.23, 1, 0.32, 1] }}
+              >
+              <Link
                 href={`/${lang}/project/${project.id}/summary`}
-                className="group block"
+                className="group block transition-transform duration-200 ease-out hover:-translate-y-1"
               >
                 {/* Cover image — taller ratio, soft bg, hover scale inside container */}
                 <div
-                  className="aspect-[4/3] rounded-2xl overflow-hidden mb-6 ring-1 ring-black/[0.04]"
+                  className="aspect-[4/3] rounded-2xl overflow-hidden mb-6 ring-1 ring-black/[0.04] transition-shadow duration-200 ease-out group-hover:shadow-lg group-hover:shadow-gray-300/40"
                   style={{ backgroundColor: project.cardBg || '#F0F0F2' }}
                 >
                   <img
                     src={imgSrc}
                     alt={project.title}
-                    className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500 ease-out"
+                    className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300 ease-out"
                     loading="lazy"
                   />
                 </div>
@@ -133,7 +158,7 @@ export default function ProjetsPageClient({ lang }: { lang: 'en' | 'fr' }) {
                   </div>
 
                   {/* Title + meta */}
-                  <h2 className="text-xl font-bold tracking-[-0.02em] text-gray-900 mb-1 group-hover:text-[#2D5CF3] transition-colors">
+                  <h2 className="text-xl font-bold tracking-[-0.02em] text-gray-900 mb-1 group-hover:text-[#2D5CF3] transition-colors duration-200 ease-out">
                     {project.title}
                   </h2>
                   <p className="text-sm text-gray-400 mb-3">
@@ -146,6 +171,7 @@ export default function ProjetsPageClient({ lang }: { lang: 'en' | 'fr' }) {
                   </p>
                 </div>
               </Link>
+              </motion.div>
             )
           })}
         </div>

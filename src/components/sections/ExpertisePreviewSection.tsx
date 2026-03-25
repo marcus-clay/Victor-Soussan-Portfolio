@@ -1,5 +1,8 @@
+'use client'
+
 import React from 'react';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 import {
   PencilSimple,
   Compass,
@@ -80,8 +83,12 @@ const ExpertisePreviewSection: React.FC<ExpertisePreviewSectionProps> = ({
           {pillars.map((pillar, index) => {
             const color = PILLAR_COLORS[index] ?? PILLAR_COLORS[0];
             return (
-              <div
+              <motion.div
                 key={index}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-80px' }}
+                transition={{ duration: 0.4, delay: index * 0.08, ease: [0.23, 1, 0.32, 1] }}
                 className="bg-white border border-gray-100 rounded-2xl p-6 md:p-8"
               >
                 <div className={`inline-flex p-3 rounded-xl mb-4 ${color.bg} ${color.text}`}>
@@ -93,7 +100,7 @@ const ExpertisePreviewSection: React.FC<ExpertisePreviewSectionProps> = ({
                 <p className="text-base md:text-lg text-gray-600 leading-relaxed">
                   {pillar.desc}
                 </p>
-              </div>
+              </motion.div>
             );
           })}
         </div>
@@ -102,7 +109,7 @@ const ExpertisePreviewSection: React.FC<ExpertisePreviewSectionProps> = ({
         <div className="text-center mb-24 md:mb-32">
           <Link
             href={`/${lang}/services`}
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-medium bg-[#2D5CF3] text-white hover:bg-[#2450d9] shadow-sm hover:shadow-md transition-all"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-medium bg-[#2D5CF3] text-white hover:bg-[#2450d9] shadow-sm hover:shadow-md transition-[background-color,box-shadow,transform] duration-200 ease-out active:scale-[0.97]"
           >
             {content.services.cta_all}
             <ArrowRight size={18} weight="bold" />
@@ -117,7 +124,13 @@ const ExpertisePreviewSection: React.FC<ExpertisePreviewSectionProps> = ({
             </h3>
           </div>
 
-          <div className="relative overflow-hidden">
+          <motion.div
+            className="relative overflow-hidden"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
+          >
             {/* Fade edges */}
             <div className="absolute left-0 top-0 bottom-0 w-32 z-20 pointer-events-none bg-gradient-to-r from-[#FCFCFD] to-transparent" />
             <div className="absolute right-0 top-0 bottom-0 w-32 z-20 pointer-events-none bg-gradient-to-l from-[#FCFCFD] to-transparent" />
@@ -144,7 +157,7 @@ const ExpertisePreviewSection: React.FC<ExpertisePreviewSectionProps> = ({
                 </div>
               ))}
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

@@ -814,7 +814,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
                       alt={t.captions.legacyLauncher}
                       caption={t.captions.legacyLauncher}
                       onClick={() => openLightbox('/images/sqool/sqool_legacy_launcher_eleve.webp')}
-                      className="aspect-[4/3] object-cover transition-transform duration-500 group-hover:scale-105"
+                      className="aspect-[4/3] object-cover transition-transform duration-300 ease-out group-hover:scale-[1.02]"
                     />
                   </div>
                   <figcaption className={`mt-3 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
@@ -829,7 +829,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
                       alt={t.captions.legacyManager}
                       caption={t.captions.legacyManager}
                       onClick={() => openLightbox('/images/sqool/sqool_legacy_manager_teacher.webp')}
-                      className="aspect-[4/3] object-cover transition-transform duration-500 group-hover:scale-105"
+                      className="aspect-[4/3] object-cover transition-transform duration-300 ease-out group-hover:scale-[1.02]"
                     />
                   </div>
                   <figcaption className={`mt-3 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
@@ -844,7 +844,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
                       alt={t.captions.legacyMdm}
                       caption={t.captions.legacyMdm}
                       onClick={() => openLightbox('/images/sqool/sqool_legacy_mdm.webp')}
-                      className="aspect-[4/3] object-cover transition-transform duration-500 group-hover:scale-105"
+                      className="aspect-[4/3] object-cover transition-transform duration-300 ease-out group-hover:scale-[1.02]"
                     />
                   </div>
                   <figcaption className={`mt-3 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
@@ -1074,7 +1074,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
                   {/* Navigation arrows */}
                   <button
                     onClick={() => scrollBrandCarousel('left')}
-                    className={`absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center transition-all duration-300 ${
+                    className={`absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center transition-[background-color,color,transform] duration-200 ease-out ${
                       canScrollBrandLeft
                         ? `${isDark ? 'bg-white/90 hover:bg-white text-gray-900' : 'bg-gray-900/90 hover:bg-gray-900 text-white'} shadow-lg cursor-pointer`
                         : 'opacity-0 pointer-events-none'
@@ -1084,7 +1084,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
                   </button>
                   <button
                     onClick={() => scrollBrandCarousel('right')}
-                    className={`absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center transition-all duration-300 ${
+                    className={`absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center transition-[background-color,color,transform] duration-200 ease-out ${
                       canScrollBrandRight
                         ? `${isDark ? 'bg-white/90 hover:bg-white text-gray-900' : 'bg-gray-900/90 hover:bg-gray-900 text-white'} shadow-lg cursor-pointer`
                         : 'opacity-0 pointer-events-none'
@@ -1116,7 +1116,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
                         <img loading="lazy"
                           src={item.src}
                           alt={t.captions[item.key as keyof typeof t.captions]}
-                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                          className="w-full h-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.02]"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                         <div className="absolute bottom-3 left-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -1455,7 +1455,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
             <div className={`text-center py-16 border-t ${isDark ? 'border-white/10' : 'border-gray-200'}`}>
               <button
                 onClick={onContact}
-                className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-full text-base font-medium transition-colors"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-full text-base font-medium transition-[background-color,transform] duration-200 ease-out active:scale-[0.97]"
               >
                 {t.contactVictor}
               </button>

@@ -66,7 +66,7 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang, isDark, onIm
         <div className={`inline-flex p-1 rounded-full ${isDark ? 'bg-white/5' : 'bg-gray-100'}`}>
           <button
             onClick={() => setViewMode('timeline')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+            className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-[background-color,color,transform] duration-200 ease-out ${
               viewMode === 'timeline'
                 ? isDark
                   ? 'bg-white/10 text-white'
@@ -81,7 +81,7 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang, isDark, onIm
           </button>
           <button
             onClick={() => setViewMode('carousel')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+            className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-[background-color,color,transform] duration-200 ease-out ${
               viewMode === 'carousel'
                 ? isDark
                   ? 'bg-white/10 text-white'
@@ -161,7 +161,7 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang, isDark, onIm
                         transition={{ type: 'spring', stiffness: 400, damping: 17 }}
                       >
                         <div
-                          className={`w-5 h-5 rounded-full border-[3px] transition-all duration-300 ${
+                          className={`w-5 h-5 rounded-full border-[3px] transition-[background-color,color,transform] duration-200 ease-out ${
                             isDark ? 'bg-[#0a0a0a]' : 'bg-white'
                           }`}
                           style={{
@@ -278,10 +278,10 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang, isDark, onIm
               <button
                 onClick={prevPhase}
                 disabled={activePhase === 0}
-                className={`absolute left-0 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full transition-all duration-300 ${
+                className={`absolute left-0 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full transition-[background-color,color,transform] duration-200 ease-out ${
                   activePhase === 0
                     ? 'opacity-30 cursor-not-allowed'
-                    : 'opacity-100 hover:scale-110'
+                    : 'opacity-100 hover:scale-105'
                 } ${isDark ? 'bg-white/10 hover:bg-white/20' : 'bg-gray-100 hover:bg-gray-200'}`}
               >
                 <ChevronLeft size={24} />
@@ -289,10 +289,10 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang, isDark, onIm
               <button
                 onClick={nextPhase}
                 disabled={activePhase === phases.length - 1}
-                className={`absolute right-0 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full transition-all duration-300 ${
+                className={`absolute right-0 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full transition-[background-color,color,transform] duration-200 ease-out ${
                   activePhase === phases.length - 1
                     ? 'opacity-30 cursor-not-allowed'
-                    : 'opacity-100 hover:scale-110'
+                    : 'opacity-100 hover:scale-105'
                 } ${isDark ? 'bg-white/10 hover:bg-white/20' : 'bg-gray-100 hover:bg-gray-200'}`}
               >
                 <ChevronRight size={24} />
@@ -401,7 +401,7 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang, isDark, onIm
                             initial={{ y: 20, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ delay: 0.4 + index * 0.05 }}
-                            className={`p-4 rounded-2xl border transition-all duration-300 hover:scale-[1.02] ${
+                            className={`p-4 rounded-2xl border transition-[background-color,color,transform] duration-200 ease-out hover:scale-[1.02] ${
                               isDark
                                 ? 'bg-white/5 border-white/5 hover:border-white/10'
                                 : 'bg-white border-gray-100 hover:border-gray-200'
@@ -441,7 +441,7 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang, isDark, onIm
                   <button
                     key={index}
                     onClick={() => goToPhase(index)}
-                    className={`transition-all duration-300 rounded-full ${
+                    className={`transition-[background-color,color,transform] duration-200 ease-out rounded-full ${
                       activePhase === index
                         ? 'w-8 h-2'
                         : 'w-2 h-2 hover:scale-125'
@@ -461,7 +461,7 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang, isDark, onIm
                   <button
                     key={index}
                     onClick={() => goToPhase(index)}
-                    className={`text-xs font-medium transition-all duration-300 ${
+                    className={`text-xs font-medium transition-[background-color,color,transform] duration-200 ease-out ${
                       activePhase === index
                         ? ''
                         : isDark ? 'text-gray-600 hover:text-gray-400' : 'text-gray-400 hover:text-gray-600'

@@ -143,7 +143,7 @@ const ProjectsSection: React.FC<ProjectsSectionProps> = ({
                               project.hoverImage
                                 ? ''
                                 : project.id !== 'toolkit'
-                                  ? 'md:scale-[1.02] md:group-hover:scale-[1.08]'
+                                  ? 'md:scale-[1.02] md:group-hover:scale-[1.04]'
                                   : 'scale-[0.85] group-hover:scale-90'
                             }`}
                           />
@@ -159,7 +159,7 @@ const ProjectsSection: React.FC<ProjectsSectionProps> = ({
                             srcSet={srcSet}
                             sizes={srcSet ? "(max-width: 768px) 100vw, 55vw" : undefined}
                             alt={`${project.title} device mockup`}
-                            className="absolute inset-0 w-full h-full object-cover md:object-contain rounded-none md:rounded-l-2xl transition-all duration-300 ease-out opacity-0 group-hover:opacity-100 scale-100 group-hover:scale-110"
+                            className="absolute inset-0 w-full h-full object-cover md:object-contain rounded-none md:rounded-l-2xl transition-[opacity,transform] duration-300 ease-out opacity-0 group-hover:opacity-100 scale-100 group-hover:scale-[1.04]"
                           />
                         );
                       })()}
@@ -306,7 +306,7 @@ const ProjectsSection: React.FC<ProjectsSectionProps> = ({
                                 e.stopPropagation();
                                 openProjectWithUrl(project.id as 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'france-vae', 'gallery');
                               }}
-                              className={`inline-flex items-center text-sm font-medium px-5 py-2.5 rounded-full transition-colors duration-200 ${
+                              className={`inline-flex items-center text-sm font-medium px-5 py-2.5 rounded-full transition-[background-color,color,transform] duration-200 ease-out active:scale-[0.97] ${
                                 systemTheme === 'dark'
                                   ? 'bg-white/5 text-gray-400 border border-white/10 hover:bg-white/10 hover:text-gray-200'
                                   : 'bg-gray-50 text-gray-500 border border-gray-200 hover:bg-gray-100 hover:text-gray-700'
@@ -318,7 +318,7 @@ const ProjectsSection: React.FC<ProjectsSectionProps> = ({
                             </button>
                           )}
                           {/* Case Study Button */}
-                          <div className={`inline-flex items-center text-sm font-medium px-5 py-2.5 rounded-full backdrop-blur-xl transition-colors duration-300 ${
+                          <div className={`inline-flex items-center text-sm font-medium px-5 py-2.5 rounded-full backdrop-blur-xl transition-[background-color,color,border-color] duration-200 ease-out ${
                             systemTheme === 'dark'
                               ? 'bg-white/10 text-gray-200 border border-white/20 group-hover:bg-[#2D5CF3] group-hover:text-white group-hover:border-[#2D5CF3]'
                               : 'bg-gray-100/80 text-gray-700 border border-gray-200/50 group-hover:bg-[#2D5CF3] group-hover:text-white group-hover:border-[#2D5CF3]'
@@ -349,7 +349,7 @@ const ProjectsSection: React.FC<ProjectsSectionProps> = ({
         <div className="mt-12 text-center">
           <button
             onClick={() => openModalWithUrl('/projets')}
-            className="group px-8 py-3 rounded-full font-medium transition-colors inline-flex items-center shadow-sm hover:shadow-md bg-[#2D5CF3] text-white hover:bg-[#2450d9]"
+            className="group px-8 py-3 rounded-full font-medium transition-[background-color,box-shadow,transform] duration-200 ease-out inline-flex items-center shadow-sm hover:shadow-md bg-[#2D5CF3] text-white hover:bg-[#2450d9] active:scale-[0.97]"
           >
             {content.projects.view_all} <ArrowUpRight size={18} className="ml-2 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
           </button>

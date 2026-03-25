@@ -9,6 +9,7 @@
 import { SIGNALS, CATEGORY_COLORS, CATEGORY_LABELS } from './signalsData'
 import type { Signal, SignalCategory } from './signalsData'
 import { GUIDE_META } from './guideClaudeCodeData'
+import { SHIP_TO_SHOW_META } from './guideShipToShowData'
 
 // --- Content types ---
 
@@ -66,6 +67,18 @@ const GUIDE_ITEM: ContentItem = {
   category: 'ai',
   chapterCount: 9,
   heroImage: '/images/guide-claude-code/hero-cover.png',
+}
+
+// Guide Ship to Show as a single content item
+const GUIDE_SHIP_TO_SHOW_ITEM: ContentItem = {
+  id: 'guide-ship-to-show',
+  type: 'guide',
+  title_en: 'Ship to Show',
+  title_fr: 'Ship to Show',
+  excerpt_en: 'A 7-phase framework to turn a prototype into a portfolio case study with animated videos, bilingual narrative, and an integration pack.',
+  excerpt_fr: 'Framework en 7 phases pour transformer un prototype en case study portfolio avec vidéos animées, contenu narratif bilingue et pack d\'intégration.',
+  date: SHIP_TO_SHOW_META.date,
+  category: 'ai',
 }
 
 // Templates (from resourcesData, converted to ContentItem)
@@ -143,6 +156,7 @@ const TEMPLATES: ContentItem[] = [
 // All content items, sorted by date (newest first)
 export const ALL_CONTENT: ContentItem[] = [
   GUIDE_ITEM,
+  GUIDE_SHIP_TO_SHOW_ITEM,
   ...ARTICLES,
   ...TEMPLATES,
 ].sort((a, b) => b.date.localeCompare(a.date))

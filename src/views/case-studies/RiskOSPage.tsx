@@ -333,6 +333,7 @@ function Paragraph({ children }: { children: React.ReactNode }) {
 function buildLightboxItems(lang: 'en' | 'fr'): LightboxImage[] {
   const t = CONTENT[lang];
   return [
+    { src: '/assets/projets/riskos/thubmnail_riskos_dark.webp', caption: 'RiskOS', type: 'image' },
     { src: `${VIDEO_BASE}/06-before-after.mp4`, caption: t.beforeAfterCaption, type: 'video' },
     { src: `${VIDEO_BASE}/07-data-flow.mp4`, caption: t.dataFlowCaption, type: 'video' },
     { src: `${VIDEO_BASE}/01-hero-triage.mp4`, caption: t.triageCaption, type: 'video' },
@@ -481,6 +482,22 @@ const RiskOSPage: React.FC<RiskOSPageProps> = ({
         {/* Content sections */}
         <div className="max-w-[900px] mx-auto px-6 pb-32">
 
+          {/* Hero image */}
+          <figure className="mb-16 md:mb-24">
+            <div
+              className="rounded-2xl overflow-hidden border border-white/10 cursor-pointer group"
+              style={{ backgroundColor: '#0a0a0a' }}
+              onClick={() => openLightbox(0)}
+            >
+              <img
+                loading="lazy"
+                src="/assets/projets/riskos/thubmnail_riskos_dark.webp"
+                alt="RiskOS — fraud detection dashboard overview"
+                className="w-full h-auto transition-transform duration-[400ms] ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
+              />
+            </div>
+          </figure>
+
           {/* Section: Why */}
           <section id="why" className="mb-24 md:mb-32 scroll-mt-24">
             <SectionTitle>{t.whyTitle}</SectionTitle>
@@ -502,8 +519,8 @@ const RiskOSPage: React.FC<RiskOSPageProps> = ({
             caption={t.beforeAfterCaption}
             description={t.beforeAfterText}
             lang={lang}
-            index={0}
-            onClick={() => openLightbox(0)}
+            index={1}
+            onClick={() => openLightbox(1)}
           />
 
           {/* Section: Design Question */}
@@ -527,8 +544,8 @@ const RiskOSPage: React.FC<RiskOSPageProps> = ({
             caption={t.dataFlowCaption}
             description={t.dataFlowText}
             lang={lang}
-            index={1}
-            onClick={() => openLightbox(1)}
+            index={2}
+            onClick={() => openLightbox(2)}
           />
 
           {/* Section: Triage */}
@@ -542,8 +559,8 @@ const RiskOSPage: React.FC<RiskOSPageProps> = ({
             frustration={t.triageFrustration}
             benefit={t.triageBenefit}
             lang={lang}
-            index={2}
-            onClick={() => openLightbox(2)}
+            index={3}
+            onClick={() => openLightbox(3)}
           />
 
           {/* Section: AI Analysis */}
@@ -558,8 +575,8 @@ const RiskOSPage: React.FC<RiskOSPageProps> = ({
             frustration={t.aiFrustration}
             benefit={t.aiBenefit}
             lang={lang}
-            index={3}
-            onClick={() => openLightbox(3)}
+            index={4}
+            onClick={() => openLightbox(4)}
           />
 
           {/* Section: Decision */}
@@ -574,8 +591,8 @@ const RiskOSPage: React.FC<RiskOSPageProps> = ({
             frustration={t.decisionFrustration}
             benefit={t.decisionBenefit}
             lang={lang}
-            index={4}
-            onClick={() => openLightbox(4)}
+            index={5}
+            onClick={() => openLightbox(5)}
           />
 
           {/* Section: False Positive */}
@@ -589,8 +606,8 @@ const RiskOSPage: React.FC<RiskOSPageProps> = ({
             frustration={t.falsePositiveFrustration}
             benefit={t.falsePositiveBenefit}
             lang={lang}
-            index={5}
-            onClick={() => openLightbox(5)}
+            index={6}
+            onClick={() => openLightbox(6)}
           />
 
           {/* Section: Queue */}
@@ -604,8 +621,8 @@ const RiskOSPage: React.FC<RiskOSPageProps> = ({
             frustration={t.queueFrustration}
             benefit={t.queueBenefit}
             lang={lang}
-            index={6}
-            onClick={() => openLightbox(6)}
+            index={7}
+            onClick={() => openLightbox(7)}
           />
 
           {/* Section: Learnings */}
@@ -645,7 +662,7 @@ const RiskOSPage: React.FC<RiskOSPageProps> = ({
                 href="https://riskos-gulcbxw52-hugos-projects-0ac0cf31.vercel.app"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-medium bg-[#2D5CF3] text-white hover:bg-[#2450d9] shadow-sm hover:shadow-md transition-all text-sm"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-medium bg-[#2D5CF3] text-white hover:bg-[#2450d9] shadow-sm hover:shadow-md transition-[background-color,box-shadow,transform] duration-200 ease-out active:scale-[0.97] text-sm"
               >
                 {t.viewPrototype}
                 <ArrowUpRight size={16} weight="bold" />
@@ -654,7 +671,7 @@ const RiskOSPage: React.FC<RiskOSPageProps> = ({
                 href="https://github.com/marcus-clay/riskos-fraud-detection"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-medium bg-white/10 text-gray-300 hover:bg-white/15 transition-all text-sm"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-medium bg-white/10 text-gray-300 hover:bg-white/15 transition-[background-color,transform] duration-200 ease-out active:scale-[0.97] text-sm"
               >
                 {t.viewGitHub}
                 <ArrowUpRight size={16} weight="bold" />

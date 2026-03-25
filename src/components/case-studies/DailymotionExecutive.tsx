@@ -481,7 +481,7 @@ const ScopeGrid: React.FC<{
             <img loading="lazy"
               src={area.image}
               alt={area.title}
-              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.05]"
+              className="w-full h-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.02]"
             />
           </div>
           <div className="p-5">
@@ -553,7 +553,7 @@ const ProductModulesDiagram: React.FC<{
         <div className={`inline-flex rounded-full p-1 ${isDark ? 'bg-white/10' : 'bg-gray-100'}`}>
           <button
             onClick={() => setViewMode('focus')}
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-[background-color,color,transform] duration-200 ease-out ${
               viewMode === 'focus'
                 ? isDark ? 'bg-white text-black' : 'bg-gray-900 text-white'
                 : isDark ? 'text-gray-400 hover:text-white' : 'text-gray-500 hover:text-gray-900'
@@ -563,7 +563,7 @@ const ProductModulesDiagram: React.FC<{
           </button>
           <button
             onClick={() => setViewMode('overview')}
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-[background-color,color,transform] duration-200 ease-out ${
               viewMode === 'overview'
                 ? isDark ? 'bg-white text-black' : 'bg-gray-900 text-white'
                 : isDark ? 'text-gray-400 hover:text-white' : 'text-gray-500 hover:text-gray-900'
@@ -587,7 +587,7 @@ const ProductModulesDiagram: React.FC<{
               <button
                 key={idx}
                 onClick={() => setActivePhase(idx)}
-                className={`h-2 rounded-full transition-all duration-500 ${
+                className={`h-2 rounded-full transition-[transform,box-shadow] duration-300 ease-out ${
                   idx === activePhase
                     ? `w-12 ${isDark ? 'bg-white' : 'bg-gray-900'}`
                     : `w-2 ${isDark ? 'bg-white/20 hover:bg-white/40' : 'bg-gray-300 hover:bg-gray-400'}`
@@ -686,7 +686,7 @@ const ProductModulesDiagram: React.FC<{
             <button
               onClick={handlePrev}
               disabled={activePhase === 0}
-              className={`w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center pointer-events-auto transition-all duration-300 hover:scale-110 disabled:opacity-0 disabled:pointer-events-none ${
+              className={`w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center pointer-events-auto transition-[background-color,color,transform] duration-200 ease-out hover:scale-105 disabled:opacity-0 disabled:pointer-events-none ${
                 isDark ? 'bg-white/80 text-black' : 'bg-white shadow-lg text-gray-900'
               }`}
             >
@@ -695,7 +695,7 @@ const ProductModulesDiagram: React.FC<{
             <button
               onClick={handleNext}
               disabled={activePhase === phases.length - 1}
-              className={`w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center pointer-events-auto transition-all duration-300 hover:scale-110 disabled:opacity-0 disabled:pointer-events-none ${
+              className={`w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center pointer-events-auto transition-[background-color,color,transform] duration-200 ease-out hover:scale-105 disabled:opacity-0 disabled:pointer-events-none ${
                 isDark ? 'bg-white/80 text-black' : 'bg-white shadow-lg text-gray-900'
               }`}
             >
@@ -711,7 +711,7 @@ const ProductModulesDiagram: React.FC<{
             return (
               <div
                 key={phase.id}
-                className={`group rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1 ${
+                className={`group rounded-2xl p-6 transition-[background-color,color,transform] duration-200 ease-out hover:-translate-y-1 ${
                   isDark ? 'bg-white/5 hover:bg-white/10 border border-white/10' : 'bg-white shadow-sm hover:shadow-lg border border-gray-100'
                 }`}
               >
@@ -1160,7 +1160,7 @@ const DailymotionExecutive: React.FC<DailymotionExecutiveProps> = ({
           <FadeInSection delay={0.1}>
             <button
               onClick={onContact}
-              className="inline-flex items-center gap-3 px-10 py-5 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-lg rounded-full transition-colors"
+              className="inline-flex items-center gap-3 px-10 py-5 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-lg rounded-full transition-[background-color,transform] duration-200 ease-out active:scale-[0.97]"
             >
               {t.cta.getInTouch}
               <ArrowRight size={22} />

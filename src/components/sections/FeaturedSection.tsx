@@ -49,13 +49,13 @@ const FeaturedSection: React.FC<FeaturedSectionProps> = ({
           {/* Card 1: Guide Claude Code */}
           <button
             onClick={() => onNavigate('/guide/claude-code')}
-            className="group text-left rounded-2xl border border-gray-100 bg-white overflow-hidden hover:shadow-lg hover:border-gray-200 transition-all cursor-pointer"
+            className="group text-left rounded-2xl border border-gray-100 bg-white overflow-hidden hover:shadow-lg hover:border-gray-200 transition-[box-shadow,border-color] duration-200 ease-out cursor-pointer"
           >
             <div className="aspect-[16/9] overflow-hidden bg-[#1a1a1e] relative">
               <img
                 src="/images/guide-claude-code/hero-cover.png"
                 alt="Guide Claude Code"
-                className="absolute inset-0 w-[125%] h-[125%] object-cover object-top group-hover:scale-[1.05] transition-transform duration-500 origin-top"
+                className="absolute inset-0 w-[125%] h-[125%] object-cover object-top group-hover:scale-[1.03] transition-transform duration-300 ease-out origin-top"
                 loading="lazy"
               />
             </div>
@@ -83,7 +83,7 @@ const FeaturedSection: React.FC<FeaturedSectionProps> = ({
           {guideSignal && (
             <button
               onClick={() => onNavigate(`/signal/${guideSignal.id}`)}
-              className="group text-left rounded-2xl border border-gray-100 bg-white overflow-hidden hover:shadow-lg hover:border-gray-200 transition-all cursor-pointer flex flex-col"
+              className="group text-left rounded-2xl border border-gray-100 bg-white overflow-hidden hover:shadow-lg hover:border-gray-200 transition-[box-shadow,border-color] duration-200 ease-out cursor-pointer flex flex-col"
             >
               {/* Visual: Figma + Claude icons - same height as guide card */}
               <div className="aspect-[16/9] flex items-center justify-center gap-5 bg-gray-50">

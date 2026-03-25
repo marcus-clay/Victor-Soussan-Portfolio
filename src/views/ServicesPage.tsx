@@ -484,7 +484,7 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ systemTheme, lang, onBack, 
         <div className="text-center pb-16">
           <button
             onClick={onContact}
-            className="inline-flex items-center gap-3 px-8 py-4 rounded-full text-base font-medium transition-all duration-200 cursor-pointer bg-[#2D5CF3] text-white hover:bg-[#2450d9] shadow-sm hover:shadow-md"
+            className="inline-flex items-center gap-3 px-8 py-4 rounded-full text-base font-medium transition-[background-color,box-shadow,transform] duration-200 ease-out cursor-pointer bg-[#2D5CF3] text-white hover:bg-[#2450d9] shadow-sm hover:shadow-md active:scale-[0.97]"
           >
             <Mail size={18} />
             {t.cta_text}

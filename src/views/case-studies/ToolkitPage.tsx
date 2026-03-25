@@ -156,7 +156,7 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick }) => {
           <div className="relative">
             <video src={item.src} className="w-full h-auto block" muted playsInline preload="metadata" />
             <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/30 transition-colors">
-              <div className="w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-md transition-transform duration-300 group-hover:scale-110 bg-white/20">
+              <div className="w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-md transition-transform duration-200 ease-out group-hover:scale-[1.03] bg-white/20">
                 <Play size={28} className="text-white ml-1" fill="white" />
               </div>
             </div>
@@ -330,7 +330,7 @@ const ProductEvolutionDiagram: React.FC<{
         <div className={`inline-flex rounded-full p-1 ${isDark ? 'bg-white/10' : 'bg-gray-100'}`}>
           <button
             onClick={() => setViewMode('focus')}
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-[background-color,color,transform] duration-200 ease-out ${
               viewMode === 'focus'
                 ? isDark ? 'bg-white text-black' : 'bg-gray-900 text-white'
                 : isDark ? 'text-gray-400 hover:text-white' : 'text-gray-500 hover:text-gray-900'
@@ -340,7 +340,7 @@ const ProductEvolutionDiagram: React.FC<{
           </button>
           <button
             onClick={() => setViewMode('overview')}
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-[background-color,color,transform] duration-200 ease-out ${
               viewMode === 'overview'
                 ? isDark ? 'bg-white text-black' : 'bg-gray-900 text-white'
                 : isDark ? 'text-gray-400 hover:text-white' : 'text-gray-500 hover:text-gray-900'
@@ -464,7 +464,7 @@ const ProductEvolutionDiagram: React.FC<{
             <button
               onClick={handlePrev}
               disabled={activePhase === 0}
-              className={`w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center pointer-events-auto transition-all duration-300 hover:scale-110 disabled:opacity-0 disabled:pointer-events-none ${
+              className={`w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center pointer-events-auto transition-[background-color,color,transform] duration-200 ease-out hover:scale-105 disabled:opacity-0 disabled:pointer-events-none ${
                 isDark ? 'bg-white/80 text-black' : 'bg-white shadow-lg text-gray-900'
               }`}
             >
@@ -473,7 +473,7 @@ const ProductEvolutionDiagram: React.FC<{
             <button
               onClick={handleNext}
               disabled={activePhase === phases.length - 1}
-              className={`w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center pointer-events-auto transition-all duration-300 hover:scale-110 disabled:opacity-0 disabled:pointer-events-none ${
+              className={`w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center pointer-events-auto transition-[background-color,color,transform] duration-200 ease-out hover:scale-105 disabled:opacity-0 disabled:pointer-events-none ${
                 isDark ? 'bg-white/80 text-black' : 'bg-white shadow-lg text-gray-900'
               }`}
             >
@@ -489,7 +489,7 @@ const ProductEvolutionDiagram: React.FC<{
             return (
               <div
                 key={phase.id}
-                className={`group rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1 ${
+                className={`group rounded-2xl p-6 transition-[background-color,color,transform] duration-200 ease-out hover:-translate-y-1 ${
                   isDark ? 'bg-white/5 hover:bg-white/10 border border-white/10' : 'bg-white shadow-sm hover:shadow-lg border border-gray-100'
                 }`}
               >
@@ -2313,7 +2313,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
         <div className={`text-center py-16 border-t ${systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'}`}>
           <button
             onClick={onContact}
-            className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-full text-base font-medium transition-colors"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-full text-base font-medium transition-[background-color,transform] duration-200 ease-out active:scale-[0.97]"
           >
             {t.contactVictor}
           </button>

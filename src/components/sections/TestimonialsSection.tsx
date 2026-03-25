@@ -63,7 +63,7 @@ const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.3, delay: i * 0.1 }}
-                className={`p-8 rounded-3xl border shadow-sm hover:shadow-md transition-all h-fit flex flex-col cursor-pointer group/card ${
+                className={`p-8 rounded-3xl border shadow-sm hover:shadow-md transition-[box-shadow,border-color] duration-200 ease-out h-fit flex flex-col cursor-pointer group/card ${
                   systemTheme === 'dark'
                     ? 'bg-[#1D1D1F] border-white/10 hover:border-[#0077b5]/50'
                     : 'bg-white border-gray-100 hover:border-[#0077b5]/30'
@@ -129,7 +129,7 @@ const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
         <div className="mt-12 text-center">
            <button
              onClick={() => openModalWithUrl('/testimonials')}
-             className="group px-8 py-3 rounded-full font-medium transition-colors inline-flex items-center shadow-sm hover:shadow-md bg-[#2D5CF3] text-white hover:bg-[#2450d9]"
+             className="group px-8 py-3 rounded-full font-medium transition-[background-color,box-shadow,transform] duration-200 ease-out inline-flex items-center shadow-sm hover:shadow-md bg-[#2D5CF3] text-white hover:bg-[#2450d9] active:scale-[0.97]"
            >
              {content.testimonials.view_all} <ArrowUpRight size={18} className="ml-2 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
            </button>

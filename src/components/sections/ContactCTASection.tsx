@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import { EnvelopeSimple, Copy, Check } from '@phosphor-icons/react';
 
 interface ContactCTASectionProps {
@@ -23,11 +23,25 @@ const ContactCTASection: React.FC<ContactCTASectionProps> = ({
   content,
 }) => {
   const [copied, setCopied] = useState(false);
+  const [transitioning, setTransitioning] = useState(false);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleCopy = useCallback(() => {
     navigator.clipboard.writeText(EMAIL).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      setTransitioning(true);
+      // Brief blur bridge before swapping icon
+      setTimeout(() => {
+        setCopied(true);
+        setTransitioning(false);
+      }, 80);
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      timeoutRef.current = setTimeout(() => {
+        setTransitioning(true);
+        setTimeout(() => {
+          setCopied(false);
+          setTransitioning(false);
+        }, 80);
+      }, 2000);
     });
   }, []);
 
@@ -58,7 +72,7 @@ const ContactCTASection: React.FC<ContactCTASectionProps> = ({
               {/* Primary: send email */}
               <a
                 href={`mailto:${EMAIL}`}
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-medium bg-[#2D5CF3] text-white hover:bg-[#2450d9] shadow-sm hover:shadow-md transition-all"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-medium bg-[#2D5CF3] text-white hover:bg-[#2450d9] shadow-sm hover:shadow-md transition-[background-color,box-shadow,transform] duration-200 ease-out active:scale-[0.97]"
               >
                 <EnvelopeSimple size={18} weight="bold" />
                 {content.contact.email}
@@ -67,19 +81,21 @@ const ContactCTASection: React.FC<ContactCTASectionProps> = ({
               {/* Secondary: copy email */}
               <button
                 onClick={handleCopy}
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-medium bg-white text-gray-900 border border-gray-200 hover:bg-gray-50 shadow-sm transition-all cursor-pointer"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-medium bg-white text-gray-900 border border-gray-200 hover:bg-gray-50 shadow-sm transition-[background-color,box-shadow,transform] duration-200 ease-out cursor-pointer active:scale-[0.97]"
               >
-                {copied ? (
-                  <>
-                    <Check size={18} weight="bold" className="text-green-600" />
-                    {content.contact.email_copied}
-                  </>
-                ) : (
-                  <>
-                    <Copy size={18} />
-                    {content.contact.copy_email}
-                  </>
-                )}
+                <span className={`inline-flex items-center gap-2 transition-[filter,opacity] duration-100 ease-out ${transitioning ? 'blur-[2px] opacity-70' : ''}`}>
+                  {copied ? (
+                    <>
+                      <Check size={18} weight="bold" className="text-green-600" />
+                      {content.contact.email_copied}
+                    </>
+                  ) : (
+                    <>
+                      <Copy size={18} />
+                      {content.contact.copy_email}
+                    </>
+                  )}
+                </span>
               </button>
             </div>
           </div>

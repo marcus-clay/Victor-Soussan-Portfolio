@@ -221,7 +221,7 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick }) => {
           <div className="relative">
             <video src={item.src} className="w-full h-auto block" muted playsInline preload="metadata" />
             <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/30 transition-colors">
-              <div className="w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-md transition-transform duration-300 group-hover:scale-110 bg-white/20">
+              <div className="w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-md transition-transform duration-200 ease-out group-hover:scale-[1.03] bg-white/20">
                 <Play size={28} className="text-white ml-1" fill="white" />
               </div>
             </div>
@@ -1021,7 +1021,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
                     className="w-full h-full object-cover"
                   />
                   <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/20 transition-colors">
-                    <div className="w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-md transition-all duration-300 opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 bg-white/20">
+                    <div className="w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-md transition-[background-color,color,transform] duration-200 ease-out opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 bg-white/20">
                       <Play size={28} className="text-white ml-1" fill="white" />
                     </div>
                   </div>
@@ -1044,7 +1044,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
                     className="w-full h-full object-cover"
                   />
                   <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/20 transition-colors">
-                    <div className="w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-md transition-all duration-300 opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 bg-white/20">
+                    <div className="w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-md transition-[background-color,color,transform] duration-200 ease-out opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 bg-white/20">
                       <Play size={28} className="text-white ml-1" fill="white" />
                     </div>
                   </div>
@@ -1162,7 +1162,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
               </h2>
               <button
                 onClick={onContact}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#2D5CF3] text-white font-medium hover:bg-[#2450d9] transition-colors"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#2D5CF3] text-white font-medium hover:bg-[#2450d9] transition-[background-color,transform] duration-200 ease-out active:scale-[0.97]"
               >
                 {t.cta.button}
                 <ArrowRight size={18} />

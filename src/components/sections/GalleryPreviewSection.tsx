@@ -46,7 +46,7 @@ const GalleryPreviewSection: React.FC<GalleryPreviewSectionProps> = ({
             {mainImage && (
               <button
                 onClick={() => setLightboxIndex(0)}
-                className="w-full aspect-[16/7] rounded-2xl overflow-hidden border border-gray-100 bg-white mb-4 cursor-pointer hover:ring-2 hover:ring-[#2D5CF3]/30 transition-all"
+                className="w-full aspect-[16/7] rounded-2xl overflow-hidden border border-gray-100 bg-white mb-4 cursor-pointer hover:ring-2 hover:ring-[#2D5CF3]/30 transition-[box-shadow,transform] duration-200 ease-out hover:scale-[1.01]"
               >
                 <img
                   src={mainImage}
@@ -61,7 +61,7 @@ const GalleryPreviewSection: React.FC<GalleryPreviewSectionProps> = ({
                 <button
                   key={index}
                   onClick={() => setLightboxIndex(index + 1)}
-                  className="aspect-[16/10] rounded-xl overflow-hidden border border-gray-100 bg-white cursor-pointer hover:ring-2 hover:ring-[#2D5CF3]/30 transition-all"
+                  className="aspect-[16/10] rounded-xl overflow-hidden border border-gray-100 bg-white cursor-pointer hover:ring-2 hover:ring-[#2D5CF3]/30 transition-[box-shadow,transform] duration-200 ease-out hover:scale-[1.02]"
                 >
                   <img
                     src={src}
@@ -78,7 +78,7 @@ const GalleryPreviewSection: React.FC<GalleryPreviewSectionProps> = ({
           <div className="text-center">
             <Link
               href={`/${lang}/visual-archive`}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-medium bg-[#2D5CF3] text-white hover:bg-[#2450d9] shadow-sm hover:shadow-md transition-all"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-medium bg-[#2D5CF3] text-white hover:bg-[#2450d9] shadow-sm hover:shadow-md transition-[background-color,box-shadow,transform] duration-200 ease-out active:scale-[0.97]"
             >
               {content.homepage_visual_archive.cta}
               <ArrowRight size={18} weight="bold" />
@@ -109,10 +109,10 @@ const GalleryPreviewSection: React.FC<GalleryPreviewSectionProps> = ({
             {/* Image */}
             <motion.img
               key={lightboxIndex}
-              initial={{ scale: 0.9, opacity: 0 }}
+              initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              transition={{ type: 'spring', stiffness: 260, damping: 28 }}
               src={allImages[lightboxIndex]}
               alt="Gallery full view"
               className="max-w-full max-h-[85vh] object-contain rounded-lg"

@@ -1420,6 +1420,26 @@ frontend-design, creative-director</code></pre>`,
 <p>Searches for signals in the UI/UX, product design, AI and assisted workflows, B2B/B2G space. Generates LinkedIn content angles calibrated to Condamine Studio's positioning.</p>
 <p><strong>Use cases:</strong> preparing LinkedIn posts, sector monitoring, positioning on a topic before writing.</p>`,
       },
+      {
+        heading_fr: 'Skills de workflow et méthodologie',
+        heading_en: 'Workflow and methodology skills',
+        content_fr: `<h3>ship-to-show</h3>
+<p>Framework en 7 phases pour transformer un prototype en case study portfolio avec vidéos animées, contenu narratif bilingue et pack d'intégration. Le processus complet prend environ 2h30, du prototype brut à la page publiée.</p>
+<p><strong>Cas d'usage :</strong> documenter un prototype dans un portfolio, produire des vidéos de démonstration d'une interface, créer un case study complet à partir d'un fichier de code.</p>
+<p><strong>Installation :</strong></p>
+<pre><code class="language-plain">mkdir -p ~/.claude/skills/ship-to-show
+curl -o ~/.claude/skills/ship-to-show/SKILL.md https://raw.githubusercontent.com/marcus-clay/ship-to-show/main/SKILL.md</code></pre>
+<p><strong>Invocation :</strong> <code>/ship-to-show</code></p>
+<p><a href="/fr/guide/ship-to-show" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;background:#2D5CF3;color:#fff;font-size:13px;font-weight:500;text-decoration:none">Lire le guide complet</a></p>`,
+        content_en: `<h3>ship-to-show</h3>
+<p>A 7-phase framework to turn a prototype into a portfolio case study with animated videos, bilingual narrative, and an integration pack. The full process takes about 2h30, from raw prototype to published page.</p>
+<p><strong>Use cases:</strong> documenting a prototype in a portfolio, producing interface demo videos, creating a complete case study from a code file.</p>
+<p><strong>Installation:</strong></p>
+<pre><code class="language-plain">mkdir -p ~/.claude/skills/ship-to-show
+curl -o ~/.claude/skills/ship-to-show/SKILL.md https://raw.githubusercontent.com/marcus-clay/ship-to-show/main/SKILL.md</code></pre>
+<p><strong>Invocation:</strong> <code>/ship-to-show</code></p>
+<p><a href="/en/guide/ship-to-show" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;background:#2D5CF3;color:#fff;font-size:13px;font-weight:500;text-decoration:none">Read the full guide</a></p>`,
+      },
     ],
   },
 ];
