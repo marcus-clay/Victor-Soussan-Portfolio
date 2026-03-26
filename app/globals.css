@@ -79,20 +79,52 @@ body {
 /* Dark footer override for dark-themed case studies */
 #site-footer.footer-dark {
   background: #0a0a0a !important;
-  border-color: rgba(255, 255, 255, 0.05) !important;
+  border-color: rgba(255, 255, 255, 0.06) !important;
 }
-#site-footer.footer-dark,
-#site-footer.footer-dark a,
-#site-footer.footer-dark p,
-#site-footer.footer-dark span {
-  color: #9ca3af;
-}
-#site-footer.footer-dark a:hover {
-  color: #ffffff;
-}
+/* Headings */
 #site-footer.footer-dark .font-bold,
-#site-footer.footer-dark .font-semibold {
-  color: #ffffff;
+#site-footer.footer-dark .font-semibold,
+#site-footer.footer-dark h4 {
+  color: #e4e4e7 !important;
+}
+/* Body text + links */
+#site-footer.footer-dark p,
+#site-footer.footer-dark li > a,
+#site-footer.footer-dark li > span {
+  color: #a1a1aa;
+}
+/* Link hover */
+#site-footer.footer-dark a:hover {
+  color: #e4e4e7;
+}
+/* Secondary text (copyright) */
+#site-footer.footer-dark .text-gray-500 {
+  color: #52525b !important;
+}
+/* Social icon buttons */
+#site-footer.footer-dark .bg-gray-100 {
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #a1a1aa !important;
+}
+#site-footer.footer-dark .bg-gray-100:hover,
+#site-footer.footer-dark .hover\:bg-gray-200:hover {
+  background: rgba(255, 255, 255, 0.15) !important;
+  color: #e4e4e7 !important;
+}
+/* Bottom separator */
+#site-footer.footer-dark .border-gray-200 {
+  border-color: rgba(255, 255, 255, 0.06) !important;
+}
+/* Language switch */
+#site-footer.footer-dark .text-gray-600 {
+  color: #71717a;
+}
+/* Keep brand blue on CTA links */
+#site-footer.footer-dark .text-\[\\#2D5CF3\] {
+  color: #5b8af5 !important;
+}
+#site-footer.footer-dark .text-\[\\#2D5CF3\]:hover {
+  color: #7da3f7 !important;
 }
 
 /* Global button and interactive styles */
