@@ -8,6 +8,7 @@ import FranceVaeExecutive from '../../components/case-studies/FranceVaeExecutive
 import FranceVaeFull from '../../components/case-studies/FranceVaeFull';
 import EnhancedLightbox from '../../components/media/EnhancedLightbox';
 import { PROJECT_SEO, DEFAULT_SEO, updateMetaTags, injectJsonLd } from '../../utils/seo';
+import { scrollToElement } from '../../utils/smoothScroll';
 import { FRANCEVAE_TRANSLATIONS } from '../../data/caseStudyTranslations/franceVaeTranslations';
 
 interface GalleryCardProps {
@@ -243,17 +244,7 @@ const FranceVaePage: React.FC<FranceVaePageProps> = ({
     return () => window.removeEventListener('scroll', handleScroll);
   }, [sections]);
 
-  // Scroll to section with proper offset
-  const scrollToSection = (sectionId: string) => {
-    if (sectionId === 'top') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      return;
-    }
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
+  const scrollToSection = scrollToElement;
 
   // Open lightbox
   const openLightbox = (imageSrc: string) => {

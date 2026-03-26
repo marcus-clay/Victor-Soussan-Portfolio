@@ -2,7 +2,8 @@
  * ServicesPage - Expertise page with pillars, approach, and client logos
  */
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
+import { scrollToElement } from '../utils/smoothScroll';
 import { motion } from 'framer-motion';
 import {
   PencilSimple as PenTool,
@@ -242,13 +243,7 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ lang, onContact }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const scrollToSection = useCallback((sectionId: string) => {
-    if (sectionId === 'top') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      return;
-    }
-    document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, []);
+  const scrollToSection = scrollToElement;
 
   return (
     <div className="min-h-screen bg-[#FCFCFD]">

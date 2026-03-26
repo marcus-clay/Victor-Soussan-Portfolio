@@ -7,6 +7,7 @@ import { getProjects } from '@/data/projectsData';
 import { TOOLKIT_TRANSLATIONS } from '@/data/caseStudyTranslations/toolkitTranslations';
 import { TRANSLATIONS } from '@/data/translations';
 import { SIGNALS } from '@/data/signalsData';
+import { scrollToElement } from '@/utils/smoothScroll';
 
 /* ═══ REAL DATA ═══ */
 const PROJECTS = getProjects('en');
@@ -175,7 +176,7 @@ function CaseProgress({ sections }: { sections: string[] }) {
     <div className="sticky top-14 z-30 bg-white/90 backdrop-blur-md border-b border-gray-100 py-2">
       <div className="max-w-[1400px] mx-auto px-6 flex items-center gap-4 overflow-x-auto scrollbar-hide">
         {sections.map((s, i) => (
-          <button key={i} onClick={() => document.getElementById(`cs-${i}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+          <button key={i} onClick={() => scrollToElement(`cs-${i}`)}
             className={`text-[12px] font-semibold whitespace-nowrap transition-colors ${i === activeIdx ? 'text-gray-900' : 'text-gray-300 hover:text-gray-500'}`} style={{ fontFamily: font }}>{s}</button>
         ))}
         <div className="ml-auto flex items-center gap-1 shrink-0">

@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { ArrowUpRight } from '@phosphor-icons/react';
 import CaseStudyTOCSidebar from '../../components/CaseStudyTOCSidebar';
 import EnhancedLightbox, { type LightboxImage } from '../../components/media/EnhancedLightbox';
+import { scrollToElement } from '../../utils/smoothScroll';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -348,16 +349,7 @@ const RiskOSPage: React.FC<RiskOSPageProps> = ({
     return () => window.removeEventListener('scroll', handleScroll);
   }, [sections]);
 
-  const scrollToSection = (sectionId: string) => {
-    if (sectionId === 'top') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      return;
-    }
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
+  const scrollToSection = scrollToElement;
 
   return (
     <div ref={containerRef} className="bg-[#0a0a0a] min-h-screen">

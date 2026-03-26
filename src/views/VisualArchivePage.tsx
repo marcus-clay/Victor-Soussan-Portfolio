@@ -4,6 +4,7 @@
  */
 
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
+import { scrollToElement } from '../utils/smoothScroll';
 import { motion, AnimatePresence } from 'framer-motion';
 import { GridFour as LayoutGrid, Rows as Rows3, CaretDown as ChevronDown } from '@phosphor-icons/react';
 import EnhancedLightbox, { LightboxImage } from '../components/media/EnhancedLightbox';
@@ -84,7 +85,7 @@ const VisualArchivePage: React.FC<VisualArchivePageProps> = ({ lang }) => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
-    document.getElementById(`gallery-${sectionId}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    scrollToElement(`gallery-${sectionId}`);
   }, []);
 
   const toggleExpand = useCallback((projectId: string) => {

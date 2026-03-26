@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useState, useCallback } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -8,16 +8,19 @@ import { CaretRight, ArrowRight } from '@phosphor-icons/react'
 import { getProjects, type Project } from '@/data/projectsData'
 import ShortProjectView from '@/components/ShortProjectView'
 import AuthorContactCard from '@/components/AuthorContactCard'
-import CaseStudyTOCSidebar from '@/components/CaseStudyTOCSidebar'
+import CaseStudyTOCBar from '@/components/CaseStudyTOCBar'
+import { useScrollDirection } from '@/hooks/useScrollDirection'
+import { scrollToElement } from '@/utils/smoothScroll'
 
 type ProjectId = 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'sqool-classe' | 'france-vae' | 'pagesjaunes' | 'androidwear' | 'riskos'
 
 // Projects with dark theme (breadcrumb adapts accordingly)
 const DARK_PROJECTS: string[] = ['riskos']
 
-// TOC sections per project (for summary view sidebar)
+// TOC sections per project
 type TOCSections = { id: string; label_en: string; label_fr: string }[]
 
+// Summary view TOC
 const SUMMARY_TOC: Record<string, TOCSections> = {
   toolkit: [
     { id: 'hero', label_en: 'Top', label_fr: 'Haut' },
@@ -86,6 +89,21 @@ const SUMMARY_TOC: Record<string, TOCSections> = {
   ],
 }
 
+// Full case study view TOC (for now, only toolkit)
+const FULL_TOC: Record<string, TOCSections> = {
+  toolkit: [
+    { id: 'top', label_en: 'Top', label_fr: 'Haut' },
+    { id: 'hero', label_en: 'Intro', label_fr: 'Intro' },
+    { id: 'overview', label_en: 'Overview', label_fr: 'Vue d\'ensemble' },
+    { id: 'context', label_en: 'Context', label_fr: 'Contexte' },
+    { id: 'phase1', label_en: 'Phase 1', label_fr: 'Phase 1' },
+    { id: 'phase2', label_en: 'Phase 2', label_fr: 'Phase 2' },
+    { id: 'phase3', label_en: 'Phase 3', label_fr: 'Phase 3' },
+    { id: 'design-system', label_en: 'Design System', label_fr: 'Design System' },
+    { id: 'impact', label_en: 'Impact', label_fr: 'Impact' },
+  ],
+}
+
 
 const loadingSpinner = () => (
   <div className="min-h-screen bg-white flex items-center justify-center">
@@ -122,6 +140,7 @@ export default function CaseStudyPageWrapper({
 }) {
   const router = useRouter()
   const isDark = DARK_PROJECTS.includes(projectId)
+  const isScrollingDown = useScrollDirection(5)
 
   // Toggle dark theme on nav, footer, and main for dark-themed projects
   useEffect(() => {
@@ -160,29 +179,31 @@ export default function CaseStudyPageWrapper({
   // Map URL view to internal viewMode for backward compatibility
   const viewMode = view === 'full' ? 'caseStudy' : view === 'gallery' ? 'gallery' : 'executive'
 
-  // TOC for summary view
-  const tocSections = SUMMARY_TOC[projectId]
+  // TOC: pick the right sections based on view
+  const tocSource = view === 'full' ? FULL_TOC[projectId] : view === 'summary' ? SUMMARY_TOC[projectId] : null
   const tocItems = useMemo(() => {
-    if (!tocSections || view !== 'summary') return []
-    return tocSections.map(s => ({ id: s.id, label: lang === 'fr' ? s.label_fr : s.label_en }))
-  }, [tocSections, view, lang])
+    if (!tocSource) return []
+    return tocSource.map(s => ({ id: s.id, label: lang === 'fr' ? s.label_fr : s.label_en }))
+  }, [tocSource, lang])
 
-  const [activeSection, setActiveSection] = useState('hero')
+  const firstSectionId = tocItems[0]?.id || 'hero'
+  const [activeSection, setActiveSection] = useState(firstSectionId)
   const [showTOC, setShowTOC] = useState(false)
 
-  // Track scroll for TOC (summary view only)
+  // Track scroll for TOC active section
   useEffect(() => {
     if (tocItems.length === 0) return
+    const topId = tocItems[0]?.id
     const handleScroll = () => {
       const scrollY = window.scrollY
       setShowTOC(scrollY > 300)
 
       if (scrollY < 100) {
-        setActiveSection('hero')
+        setActiveSection(topId)
         return
       }
       const sectionEls = tocItems
-        .filter(s => s.id !== 'hero')
+        .filter(s => s.id !== topId)
         .map(s => ({ id: s.id, el: document.getElementById(s.id) }))
         .filter(s => s.el)
 
@@ -193,36 +214,22 @@ export default function CaseStudyPageWrapper({
           return
         }
       }
-      setActiveSection('hero')
+      setActiveSection(topId)
     }
     window.addEventListener('scroll', handleScroll, { passive: true })
     handleScroll()
     return () => window.removeEventListener('scroll', handleScroll)
   }, [tocItems])
 
-  const scrollToSection = useCallback((sectionId: string) => {
-    if (sectionId === 'hero') {
-      window.scrollTo({ top: 0, behavior: 'smooth' })
-      return
-    }
-    document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-  }, [])
+  const scrollToSection = scrollToElement
+
+  const hasTOC = tocItems.length > 0
+  // Show swap only when TOC is available and user has scrolled past hero
+  const shouldSwap = hasTOC && showTOC && isScrollingDown
 
   return (
     <>
-      {/* TOC sidebar (summary view, projects with sections) */}
-      {tocItems.length > 0 && (
-        <CaseStudyTOCSidebar
-          sections={tocItems}
-          activeSection={activeSection}
-          onSectionClick={scrollToSection}
-          isDark={isDark}
-          isVisible={showTOC}
-          lang={lang}
-        />
-      )}
-
-      {/* Breadcrumb - sticky below Nav, adapts to dark/light theme */}
+      {/* Sticky swap container: breadcrumb <-> TOC bar */}
       <div
         className={`sticky z-10 backdrop-blur-xl ${
           isDark
@@ -231,38 +238,74 @@ export default function CaseStudyPageWrapper({
         }`}
         style={{ top: 'var(--nav-height, 72px)', transition: 'top 250ms cubic-bezier(0.23, 1, 0.32, 1)' }}
       >
-        <div className="max-w-[1200px] mx-auto px-4 md:px-6 h-10 flex items-center">
-          <nav className="flex items-center gap-1.5 text-[13px] min-w-0 overflow-hidden">
-            <Link
-              href={`/${lang}/projets`}
-              className={`transition-colors hover:underline flex-shrink-0 ${
-                isDark ? 'text-gray-500 hover:text-white' : 'text-gray-400 hover:text-gray-900'
-              }`}
-            >
-              {lang === 'fr' ? 'Projets' : 'Projects'}
-            </Link>
-            <CaretRight size={10} className={`flex-shrink-0 ${isDark ? 'text-gray-600' : 'text-gray-300'}`} />
-            {viewLabel ? (
-              <>
+        <div className="relative h-10 overflow-hidden">
+          {/* Breadcrumb layer */}
+          <div
+            className="absolute inset-0 flex items-center"
+            style={{
+              transform: shouldSwap ? 'translateY(-100%)' : 'translateY(0)',
+              opacity: shouldSwap ? 0 : 1,
+              transition: shouldSwap
+                ? 'transform 200ms cubic-bezier(0.23, 1, 0.32, 1), opacity 150ms ease'
+                : 'transform 280ms cubic-bezier(0.23, 1, 0.32, 1), opacity 200ms ease 80ms',
+            }}
+          >
+            <div className="max-w-[1200px] mx-auto px-4 md:px-6 w-full h-10 flex items-center">
+              <nav className="flex items-center gap-1.5 text-[13px] min-w-0 overflow-hidden">
                 <Link
-                  href={`/${lang}/project/${projectId}/summary`}
+                  href={`/${lang}/projets`}
                   className={`transition-colors hover:underline flex-shrink-0 ${
                     isDark ? 'text-gray-500 hover:text-white' : 'text-gray-400 hover:text-gray-900'
                   }`}
                 >
-                  {projectName}
+                  {lang === 'fr' ? 'Projets' : 'Projects'}
                 </Link>
                 <CaretRight size={10} className={`flex-shrink-0 ${isDark ? 'text-gray-600' : 'text-gray-300'}`} />
-                <span className={`truncate font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                  {viewLabel}
-                </span>
-              </>
-            ) : (
-              <span className={`truncate font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                {projectName}
-              </span>
-            )}
-          </nav>
+                {viewLabel ? (
+                  <>
+                    <Link
+                      href={`/${lang}/project/${projectId}/summary`}
+                      className={`transition-colors hover:underline flex-shrink-0 ${
+                        isDark ? 'text-gray-500 hover:text-white' : 'text-gray-400 hover:text-gray-900'
+                      }`}
+                    >
+                      {projectName}
+                    </Link>
+                    <CaretRight size={10} className={`flex-shrink-0 ${isDark ? 'text-gray-600' : 'text-gray-300'}`} />
+                    <span className={`truncate font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                      {viewLabel}
+                    </span>
+                  </>
+                ) : (
+                  <span className={`truncate font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                    {projectName}
+                  </span>
+                )}
+              </nav>
+            </div>
+          </div>
+
+          {/* TOC bar layer */}
+          {hasTOC && (
+            <div
+              className="absolute inset-0"
+              style={{
+                transform: shouldSwap ? 'translateY(0)' : 'translateY(100%)',
+                opacity: shouldSwap ? 1 : 0,
+                transition: shouldSwap
+                  ? 'transform 280ms cubic-bezier(0.23, 1, 0.32, 1), opacity 200ms ease 60ms'
+                  : 'transform 200ms cubic-bezier(0.23, 1, 0.32, 1), opacity 150ms ease',
+              }}
+            >
+              <CaseStudyTOCBar
+                sections={tocItems}
+                activeSection={activeSection}
+                onSectionClick={scrollToSection}
+                isDark={isDark}
+                lang={lang}
+              />
+            </div>
+          )}
         </div>
       </div>
 
@@ -348,7 +391,7 @@ function CaseStudyFooter({
                   }`}
                   style={{ transition: 'transform 160ms cubic-bezier(0.23, 1, 0.32, 1), border-color 200ms ease, box-shadow 200ms ease' }}
                 >
-                  {/* Cover image — uncropped, full thumbnail visible */}
+                  {/* Cover image */}
                   {proj.coverImage && (
                     <div
                       className="relative aspect-[16/9] overflow-hidden flex items-center justify-center p-3"
@@ -383,7 +426,7 @@ function CaseStudyFooter({
           </div>
         )}
 
-        {/* Contact CTA — design system component */}
+        {/* Contact CTA */}
         <div className="mt-10">
           <AuthorContactCard lang={lang} isDark={isDark} />
         </div>

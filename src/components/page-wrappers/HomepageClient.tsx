@@ -2,6 +2,7 @@
 
 import React, { useCallback } from 'react'
 import { useRouter } from 'next/navigation'
+import { scrollToElement } from '@/utils/smoothScroll'
 import type { Language } from '@/data/translations'
 import { TRANSLATIONS } from '@/data/translations'
 import { getProjects } from '@/data/projectsData'
@@ -37,10 +38,7 @@ export default function HomepageClient({ lang }: HomepageClientProps) {
   }, [router, lang])
 
   const scrollToSection = useCallback((id: string) => {
-    const el = document.getElementById(id)
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' })
-    }
+    scrollToElement(id)
   }, [])
 
   const openProjectWithUrl = useCallback((

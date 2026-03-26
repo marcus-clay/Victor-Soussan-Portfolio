@@ -19,7 +19,6 @@ import {
 import { GalleryItem, getToolkitGalleryItems } from '../../components/BentoGallery';
 import ToolkitExecutive from '../../components/case-studies/ToolkitExecutive';
 import EnhancedLightbox from '../../components/media/EnhancedLightbox';
-import CaseStudyTOCSidebar from '../../components/CaseStudyTOCSidebar';
 import { PROJECT_SEO, DEFAULT_SEO, updateMetaTags, injectJsonLd } from '../../utils/seo';
 import { TOOLKIT_TRANSLATIONS } from '../../data/caseStudyTranslations/toolkitTranslations';
 
@@ -33,31 +32,6 @@ interface ToolkitPageProps {
   onContact?: () => void;
 }
 
-// TOC Sections for Full case study
-const TOC_SECTIONS = {
-  en: [
-    { id: 'top', label: 'Top' },
-    { id: 'hero', label: 'Intro' },
-    { id: 'overview', label: 'Overview' },
-    { id: 'context', label: 'Context' },
-    { id: 'phase1', label: 'Phase 1' },
-    { id: 'phase2', label: 'Phase 2' },
-    { id: 'phase3', label: 'Phase 3' },
-    { id: 'design-system', label: 'Design System' },
-    { id: 'impact', label: 'Impact' },
-  ],
-  fr: [
-    { id: 'top', label: 'Haut' },
-    { id: 'hero', label: 'Intro' },
-    { id: 'overview', label: 'Vue d\'ensemble' },
-    { id: 'context', label: 'Contexte' },
-    { id: 'phase1', label: 'Phase 1' },
-    { id: 'phase2', label: 'Phase 2' },
-    { id: 'phase3', label: 'Phase 3' },
-    { id: 'design-system', label: 'Design System' },
-    { id: 'impact', label: 'Impact' },
-  ]
-};
 
 // All media (images + videos) for lightbox navigation
 type MediaItem = { src: string; captionKey: string; type: 'image' | 'video' };
@@ -519,7 +493,6 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
   }, []);
 
   const t = TOOLKIT_TRANSLATIONS[lang];
-  const sections = TOC_SECTIONS[lang];
   const isDark = systemTheme === 'dark';
   // Load gallery items directly in the component
   const galleryItems = getToolkitGalleryItems(lang);
@@ -531,8 +504,6 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
     caption: `${t.captions[item.captionKey as keyof typeof t.captions]} - ${t.captions[`${item.captionKey}Desc` as keyof typeof t.captions] || ''}`
   }));
 
-  const [activeSection, setActiveSection] = useState('hero');
-  const [showNav, setShowNav] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   // Sync caseStudyMode with external viewMode
   const initialCaseStudyMode = viewMode === 'executive' ? 'executive' : (viewMode === 'caseStudy' ? 'full' : 'executive');
@@ -566,48 +537,6 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
     window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
   }, [caseStudyMode, viewMode]);
 
-  // Track scroll position and update active section
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop = window.scrollY;
-
-      // Show nav after scrolling past hero
-      setShowNav(scrollTop > 300);
-
-      // Find active section
-      const sectionElements = sections.map(s => ({
-        id: s.id,
-        element: document.getElementById(s.id)
-      })).filter(s => s.element);
-
-      for (let i = sectionElements.length - 1; i >= 0; i--) {
-        const section = sectionElements[i];
-        if (section.element) {
-          const rect = section.element.getBoundingClientRect();
-          if (rect.top <= 200) {
-            setActiveSection(section.id);
-            break;
-          }
-        }
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // Scroll to section with proper offset for header + sticky mini-nav
-  const scrollToSection = (sectionId: string) => {
-    if (sectionId === 'top') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      return;
-    }
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
-
   // Open lightbox with specific image and optional start time for videos
   const openLightbox = (imageSrc: string, startTime: number = 0) => {
     const index = allImages.findIndex(img => img.src === imageSrc);
@@ -625,17 +554,6 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
 
   return (
     <div ref={containerRef} className={`min-h-screen ${viewMode === 'gallery' ? 'bg-white' : (systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white')}`}>
-      {/* TOC Sidebar - Persistent left navigation for full mode */}
-      <CaseStudyTOCSidebar
-        sections={sections}
-        activeSection={activeSection}
-        onSectionClick={scrollToSection}
-        isDark={isDark}
-        isVisible={showNav && viewMode !== 'gallery' && caseStudyMode === 'full'}
-        lang={lang}
-      />
-
-
       {/* Lightbox Modal - Using EnhancedLightbox */}
       <EnhancedLightbox
         isOpen={lightboxOpen}

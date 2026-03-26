@@ -9,6 +9,7 @@ import { ArrowLeft, Clock, Calendar, ArrowRight } from '@phosphor-icons/react';
 import { SIGNALS, CATEGORY_COLORS, CATEGORY_LABELS } from '../data/signalsData';
 import CaseStudyTOCSidebar from '../components/CaseStudyTOCSidebar';
 import AuthorContactCard from '../components/AuthorContactCard';
+import { scrollToElement } from '../utils/smoothScroll';
 
 interface Props {
   signalId: string;
@@ -138,8 +139,7 @@ const SignalDetailPage: React.FC<Props> = ({ signalId, systemTheme, lang, onBack
           sections={tocItems}
           activeSection={activeSection}
           onSectionClick={(sectionId: string) => {
-            const el = document.getElementById(sectionId);
-            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            scrollToElement(sectionId);
           }}
           isDark={isDark}
           isVisible={true}

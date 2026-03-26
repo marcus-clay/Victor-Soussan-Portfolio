@@ -9,6 +9,7 @@ import PagesJaunesExecutive from '../../components/case-studies/PagesJaunesExecu
 import PagesJaunesFull from '../../components/case-studies/PagesJaunesFull';
 import CaseStudyTOCSidebar from '../../components/CaseStudyTOCSidebar';
 import { PROJECT_SEO, DEFAULT_SEO, updateMetaTags, injectJsonLd } from '../../utils/seo';
+import { scrollToElement } from '../../utils/smoothScroll';
 import { TOC_SECTIONS as PJ_TOC_SECTIONS, PAGESJAUNES_CAPTIONS } from '../../data/caseStudyTranslations/pagesJaunesTranslations';
 
 const TOC_SECTIONS = PJ_TOC_SECTIONS;
@@ -395,17 +396,7 @@ export const PagesJaunesPage: React.FC<PagesJaunesPageProps> = ({
     return () => window.removeEventListener('scroll', handleScroll);
   }, [sections]);
 
-  // Scroll to section with proper offset
-  const scrollToSection = (sectionId: string) => {
-    if (sectionId === 'top') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      return;
-    }
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
+  const scrollToSection = scrollToElement;
 
   // Open lightbox with specific image
   const openLightbox = (imageSrc: string, startTime: number = 0) => {

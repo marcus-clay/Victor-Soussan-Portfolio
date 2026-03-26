@@ -7,6 +7,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { scrollToElement } from '../utils/smoothScroll';
 import {
   ArrowLeft, ArrowRight, Clock, Calendar, List,
   LinkedinLogo, Envelope, BookOpen, CaretRight, X,
@@ -253,8 +254,7 @@ const GuideChapter: React.FC<{
         }))}
         activeSection={activeSection}
         onSectionClick={(sectionId: string) => {
-          const el = document.getElementById(sectionId);
-          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          scrollToElement(sectionId);
         }}
         isDark={isDark}
         isVisible={true}

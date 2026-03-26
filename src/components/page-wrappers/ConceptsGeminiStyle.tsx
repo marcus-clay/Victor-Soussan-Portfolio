@@ -7,6 +7,7 @@ import { getProjects } from '@/data/projectsData';
 import { TOOLKIT_TRANSLATIONS } from '@/data/caseStudyTranslations/toolkitTranslations';
 import { TRANSLATIONS } from '@/data/translations';
 import { SIGNALS } from '@/data/signalsData';
+import { scrollToElement } from '@/utils/smoothScroll';
 
 const ALL_P = getProjects('en');
 const CASES = ALL_P.filter(p => p.format === 'case-study').map(p => ({ ...p, coverImage: p.coverImage.startsWith('/') ? p.coverImage : `/images/${p.coverImage}` }));
@@ -525,7 +526,7 @@ function Case({ go }: { go: (p: PageId) => void }) {
     <div style={{ fontFamily: font }}>
       <div className="sticky top-16 z-30 bg-white/80 backdrop-blur-xl py-2.5" style={{ borderBottom: '1.5px solid rgba(0,0,0,0.04)' }}>
         <div className="max-w-[1100px] mx-auto px-8 flex items-center gap-5 overflow-x-auto scrollbar-hide justify-center">
-          {sections.map((s, i) => <button key={i} onClick={() => document.getElementById(`gv-${i}`)?.scrollIntoView({ behavior: 'smooth' })} className="text-[13px] font-semibold text-gray-400 hover:text-gray-800 whitespace-nowrap transition-colors">{s.label}</button>)}
+          {sections.map((s, i) => <button key={i} onClick={() => scrollToElement(`gv-${i}`)} className="text-[13px] font-semibold text-gray-400 hover:text-gray-800 whitespace-nowrap transition-colors">{s.label}</button>)}
         </div>
       </div>
       <section className="pt-16 pb-12 px-8 text-center" style={{ background: 'linear-gradient(180deg, #F0F4FF 0%, white 100%)' }}>
@@ -745,7 +746,7 @@ function ArticlePage({ go }: { go: (p: PageId) => void }) {
             {/* Section dots */}
             <div className="flex gap-1">
               {articleSections.map((_, i) => (
-                <button key={i} onClick={() => document.getElementById(`art-${i}`)?.scrollIntoView({ behavior: 'smooth' })}
+                <button key={i} onClick={() => scrollToElement(`art-${i}`)}
                   className={`w-2 h-2 rounded-full transition-all ${i === activeSection ? 'bg-gray-900 scale-125' : 'bg-gray-300 hover:bg-gray-400'}`} />
               ))}
             </div>
@@ -774,7 +775,7 @@ function ArticlePage({ go }: { go: (p: PageId) => void }) {
           <div className="sticky top-32">
             <p className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.12em] mb-4">Sections</p>
             {articleSections.map((s, i) => (
-              <button key={i} onClick={() => document.getElementById(`art-${i}`)?.scrollIntoView({ behavior: 'smooth' })}
+              <button key={i} onClick={() => scrollToElement(`art-${i}`)}
                 className={`block w-full text-left py-2 text-[13px] font-medium transition-all border-l-2 pl-3 mb-0.5 ${i === activeSection ? 'border-blue-500 text-gray-900 font-semibold' : 'border-transparent text-gray-400 hover:text-gray-600 hover:border-gray-200'}`}>
                 {s.title}
               </button>

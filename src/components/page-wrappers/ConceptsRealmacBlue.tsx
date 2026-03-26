@@ -7,6 +7,7 @@ import { getProjects } from '@/data/projectsData';
 import { TOOLKIT_TRANSLATIONS } from '@/data/caseStudyTranslations/toolkitTranslations';
 import { TRANSLATIONS } from '@/data/translations';
 import { SIGNALS } from '@/data/signalsData';
+import { scrollToElement } from '@/utils/smoothScroll';
 
 const ALL_PROJECTS = getProjects('en');
 // Fix missing /images/ prefix and filter case studies only
@@ -505,7 +506,7 @@ function Case({ go }: { go: (p: PageId) => void }) {
       {/* Section progress */}
       <div className="sticky top-14 z-30 bg-white/60 backdrop-blur-xl border-b border-white/40 py-2" style={{ boxShadow: 'inset 0 -1px 0 rgba(255,255,255,0.4)' }}>
         <div className="max-w-[1400px] mx-auto px-6 flex items-center gap-4 overflow-x-auto scrollbar-hide">
-          {sections.map((s, i) => <button key={i} onClick={() => document.getElementById(`rb-${i}`)?.scrollIntoView({ behavior: 'smooth' })} className="text-[12px] font-semibold text-gray-300 hover:text-gray-600 whitespace-nowrap transition-colors">{s.label}</button>)}
+          {sections.map((s, i) => <button key={i} onClick={() => scrollToElement(`rb-${i}`)} className="text-[12px] font-semibold text-gray-300 hover:text-gray-600 whitespace-nowrap transition-colors">{s.label}</button>)}
         </div>
       </div>
 
@@ -534,7 +535,7 @@ function Case({ go }: { go: (p: PageId) => void }) {
             <p className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.12em] mb-4">On this page</p>
             <div className="space-y-1">
               {sections.map((s, i) => (
-                <button key={i} onClick={() => document.getElementById(`rb-${i}`)?.scrollIntoView({ behavior: 'smooth' })}
+                <button key={i} onClick={() => scrollToElement(`rb-${i}`)}
                   className="block w-full text-left py-1.5 text-[13px] font-medium text-gray-400 hover:text-gray-700 transition-colors">{s.label}</button>
               ))}
             </div>

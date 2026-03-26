@@ -7,6 +7,7 @@ import { getProjects } from '@/data/projectsData';
 import { TOOLKIT_TRANSLATIONS } from '@/data/caseStudyTranslations/toolkitTranslations';
 import { TRANSLATIONS } from '@/data/translations';
 import { SIGNALS } from '@/data/signalsData';
+import { scrollToElement } from '@/utils/smoothScroll';
 
 /* ═══ DATA ═══ */
 const ALL_PROJECTS = getProjects('en');
@@ -446,7 +447,7 @@ function Case({ go }: { go: (p: PageId) => void }) {
       {/* Section progress */}
       <div className="sticky top-14 z-30 bg-white/90 backdrop-blur-xl border-b border-gray-100 py-2">
         <div className="max-w-[1200px] mx-auto px-6 flex items-center gap-4 overflow-x-auto scrollbar-hide">
-          {sections.map((s, i) => <button key={i} onClick={() => document.getElementById(`mp-${i}`)?.scrollIntoView({ behavior: 'smooth' })} className="text-[12px] font-semibold text-gray-400 hover:text-gray-700 whitespace-nowrap transition-colors">{s.label}</button>)}
+          {sections.map((s, i) => <button key={i} onClick={() => scrollToElement(`mp-${i}`)} className="text-[12px] font-semibold text-gray-400 hover:text-gray-700 whitespace-nowrap transition-colors">{s.label}</button>)}
         </div>
       </div>
 
@@ -475,7 +476,7 @@ function Case({ go }: { go: (p: PageId) => void }) {
         <div className="hidden lg:block">
           <div className="sticky top-24">
             <p className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.12em] mb-4">On this page</p>
-            {sections.map((s, i) => <button key={i} onClick={() => document.getElementById(`mp-${i}`)?.scrollIntoView({ behavior: 'smooth' })} className="block w-full text-left py-1.5 text-[13px] font-medium text-gray-400 hover:text-gray-700 transition-colors">{s.label}</button>)}
+            {sections.map((s, i) => <button key={i} onClick={() => scrollToElement(`mp-${i}`)} className="block w-full text-left py-1.5 text-[13px] font-medium text-gray-400 hover:text-gray-700 transition-colors">{s.label}</button>)}
             <div className="mt-8 pt-6 border-t border-gray-100">
               <p className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.12em] mb-3">Also explore</p>
               <motion.button whileHover={{ x: 2 }} transition={spB} onClick={() => go('gallery')} className="text-[13px] font-semibold text-gray-500 hover:text-blue-600 transition-colors block mb-2">Interface Work</motion.button>

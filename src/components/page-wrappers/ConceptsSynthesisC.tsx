@@ -7,6 +7,7 @@ import { getProjects } from '@/data/projectsData';
 import { TOOLKIT_TRANSLATIONS } from '@/data/caseStudyTranslations/toolkitTranslations';
 import { TRANSLATIONS } from '@/data/translations';
 import { SIGNALS } from '@/data/signalsData';
+import { scrollToElement } from '@/utils/smoothScroll';
 
 const PROJECTS = getProjects('en');
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -264,7 +265,7 @@ function CCase({ go }: { go: (p: PageId) => void }) {
             <div className="sticky top-20">
               <p className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.12em] mb-4">On this page</p>
               {sections.map((s, i) => (
-                <button key={i} onClick={() => document.getElementById(`sec-${i}`)?.scrollIntoView({ behavior: 'smooth' })}
+                <button key={i} onClick={() => scrollToElement(`sec-${i}`)}
                   className={`block w-full text-left py-2 text-[13px] font-medium transition-colors ${expandedSections.has(i) ? 'text-gray-900' : 'text-gray-300 hover:text-gray-500'}`}>{s.title}</button>
               ))}
               <div className="mt-8 pt-6 border-t border-gray-100">

@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence, useInView, useScroll, useMotionValueEvent, useTransform } from 'framer-motion';
 import { ArrowRight, ArrowUpRight, CaretRight, Quotes, X, TreeStructure, MapPin, BookOpen, Article, Layout } from '@phosphor-icons/react';
+import { scrollToElement } from '@/utils/smoothScroll';
 
 const spring = { type: 'spring' as const, stiffness: 300, damping: 26 };
 const springBounce = { type: 'spring' as const, stiffness: 400, damping: 25 };
@@ -42,7 +43,7 @@ export function SectionProgress({ sections, className = '' }: { sections: string
     <div className={`sticky top-16 z-30 bg-white/90 backdrop-blur-md border-b border-gray-100 py-2 ${className}`}>
       <div className="max-w-[1200px] mx-auto px-6 flex items-center gap-4 overflow-x-auto scrollbar-hide">
         {sections.map((s, i) => (
-          <button key={i} onClick={() => document.getElementById(`cs-section-${i}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+          <button key={i} onClick={() => scrollToElement(`cs-section-${i}`)}
             className={`text-[12px] font-semibold whitespace-nowrap transition-colors ${i === activeIdx ? 'text-gray-900' : 'text-gray-300 hover:text-gray-500'}`} style={{ fontFamily }}>
             {s}
           </button>

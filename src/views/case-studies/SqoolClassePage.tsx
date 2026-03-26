@@ -13,6 +13,7 @@ import {
   Monitor,
   Users,
 } from '@phosphor-icons/react';
+import { scrollToElement } from '../../utils/smoothScroll';
 import EnhancedLightbox from '../../components/media/EnhancedLightbox';
 import CaseStudyTOCSidebar from '../../components/CaseStudyTOCSidebar';
 import PrototypeFinderGallery from '../../components/prototype/PrototypeFinderGallery';
@@ -192,16 +193,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
     };
   }, [viewMode]);
 
-  const scrollToSection = useCallback((sectionId: string) => {
-    if (sectionId === 'top') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      return;
-    }
-    const el = document.getElementById(sectionId);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  }, []);
+  const scrollToSection = scrollToElement;
 
   return (
     <div ref={containerRef} className={`min-h-screen ${isDark ? 'bg-[#0a0a0a]' : 'bg-white'}`}>

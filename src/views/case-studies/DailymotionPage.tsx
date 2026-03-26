@@ -12,6 +12,7 @@ import {
   Buildings as Building2,
   ArrowRight
 } from '@phosphor-icons/react';
+import { scrollToElement } from '../../utils/smoothScroll';
 import { GalleryItem, getDailymotionGalleryItems } from '../../components/BentoGallery';
 import EnhancedLightbox from '../../components/media/EnhancedLightbox';
 import DailymotionExecutive from '../../components/case-studies/DailymotionExecutive';
@@ -210,17 +211,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
     return () => window.removeEventListener('scroll', handleScroll);
   }, [sections]);
 
-  // Scroll to section with proper offset for sticky mini-nav
-  const scrollToSection = (sectionId: string) => {
-    if (sectionId === 'top') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      return;
-    }
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
+  const scrollToSection = scrollToElement;
 
   // Open lightbox with specific image and optional start time for videos
   const openLightbox = (imageSrc: string, startTime: number = 0) => {

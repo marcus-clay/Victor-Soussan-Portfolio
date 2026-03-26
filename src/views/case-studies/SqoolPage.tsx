@@ -13,6 +13,7 @@ import {
   Stack as Layers,
   Users
 } from '@phosphor-icons/react';
+import { scrollToElement } from '../../utils/smoothScroll';
 import { GalleryItem, getSqoolGalleryItems } from '../../components/BentoGallery';
 import { SqoolTimeline } from './SqoolTimeline';
 import SqoolExecutive from '../../components/case-studies/SqoolExecutive';
@@ -278,17 +279,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [lightboxOpen, onClose]);
 
-  // Scroll to section with proper offset for sticky mini-nav
-  const scrollToSection = (sectionId: string) => {
-    if (sectionId === 'top') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      return;
-    }
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
+  const scrollToSection = scrollToElement;
 
   // Brand carousel scroll functions
   const checkBrandScroll = useCallback(() => {

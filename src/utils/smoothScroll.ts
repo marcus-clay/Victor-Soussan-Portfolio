@@ -1,8 +1,39 @@
 /**
- * Apple HIG-inspired smooth scroll
- * Uses ease-out quint curve for natural deceleration, similar to iOS scroll behavior.
- * Duration scales with distance (400ms min, 900ms max) for a consistent feel.
+ * Smooth scroll utilities with sticky header offset compensation.
+ *
+ * scrollToElement: scrolls to a DOM element, accounting for sticky nav + subbar.
+ * smoothScrollTo: Apple HIG-inspired JS scroll with ease-out quint (for containers).
  */
+
+/**
+ * Compute the total sticky offset: nav height (CSS var) + sub-bar (40px) + padding.
+ */
+function getStickyOffset(): number {
+  const navHeight = parseInt(
+    getComputedStyle(document.documentElement).getPropertyValue('--nav-height') || '72',
+    10
+  )
+  // 40px for breadcrumb/TOC bar + 24px breathing room
+  return navHeight + 40 + 24
+}
+
+/**
+ * Scroll to a DOM element by ID with proper sticky offset.
+ * Uses native smooth scroll (off-main-thread, best performance).
+ */
+export function scrollToElement(elementId: string): void {
+  if (elementId === 'hero' || elementId === 'top') {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+    return
+  }
+  const el = document.getElementById(elementId)
+  if (!el) return
+
+  const targetY = el.getBoundingClientRect().top + window.scrollY - getStickyOffset()
+  window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' })
+}
+
+// ─── Legacy: JS-animated scroll for non-window containers ───────────────────
 
 const easeOutQuint = (t: number): number => 1 - Math.pow(1 - t, 5);
 

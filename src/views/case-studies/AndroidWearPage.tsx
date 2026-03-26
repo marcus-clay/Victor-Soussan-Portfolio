@@ -13,6 +13,7 @@ import {
   ArrowRight,
   Quotes as Quote
 } from '@phosphor-icons/react';
+import { scrollToElement } from '../../utils/smoothScroll';
 import { GalleryItem } from '../../components/BentoGallery';
 import EnhancedLightbox from '../../components/media/EnhancedLightbox';
 import CaseStudyTOCSidebar from '../../components/CaseStudyTOCSidebar';
@@ -280,17 +281,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
     return () => window.removeEventListener('scroll', handleScroll);
   }, [sections]);
 
-  // Scroll to section with proper offset
-  const scrollToSection = (sectionId: string) => {
-    if (sectionId === 'top') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      return;
-    }
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
+  const scrollToSection = scrollToElement;
 
   const openLightbox = (index: number) => {
     setLightboxIndex(index);
