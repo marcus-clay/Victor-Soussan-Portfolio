@@ -29,7 +29,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   openModalWithUrl,
 }) => {
   return (
-    <header className="relative min-h-[85vh] flex flex-col justify-center px-6 md:px-10 overflow-hidden">
+    <header className="relative min-h-[70vh] flex flex-col justify-center px-6 md:px-10 overflow-hidden">
       {/* Static Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute right-[-10%] top-[-20%] w-[50%] h-[50%] rounded-full blur-[120px] bg-blue-300/20" />
