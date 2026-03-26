@@ -6,51 +6,62 @@ import { usePathname } from 'next/navigation'
 import { X, Lightning, ArrowRight } from '@phosphor-icons/react'
 
 const DISMISS_KEY = 'skills-promo-dismissed'
-const HIDDEN_PATHS = ['/guide/claude-code/skills', '/guide/claude-code']
+const HIDDEN_PATHS = ['/guide/claude-code']
 
 export default function SkillsPromoBanner({ lang }: { lang: string }) {
   const [visible, setVisible] = useState(false)
   const [dismissed, setDismissed] = useState(true)
+  const [mounted, setMounted] = useState(false)
   const pathname = usePathname()
 
+  // Wait for hydration before doing anything
   useEffect(() => {
+    setMounted(true)
     setDismissed(!!sessionStorage.getItem(DISMISS_KEY))
   }, [])
 
+  // Reset visibility on navigation
   useEffect(() => {
-    if (dismissed) return
+    setVisible(false)
+  }, [pathname])
+
+  useEffect(() => {
+    if (!mounted || dismissed) return
     const handleScroll = () => {
-      const pct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)
-      setVisible(pct > 0.3)
+      const total = document.documentElement.scrollHeight - window.innerHeight
+      if (total > 0) setVisible(window.scrollY / total > 0.3)
     }
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [dismissed])
+  }, [mounted, dismissed])
 
-  const dismiss = () => {
+  const dismiss = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
     setDismissed(true)
     setVisible(false)
     sessionStorage.setItem(DISMISS_KEY, '1')
   }
 
+  if (!mounted || dismissed) return null
   if (HIDDEN_PATHS.some(p => pathname.includes(p))) return null
-  if (dismissed || !visible) return null
 
   const isEn = lang === 'en'
 
   return (
     <div
-      className="fixed bottom-6 left-1/2 z-[60]"
+      className="fixed bottom-5 left-1/2 z-[60] max-w-[calc(100%-32px)] sm:max-w-none"
       style={{
         transform: visible ? 'translateX(-50%) translateY(0)' : 'translateX(-50%) translateY(80px)',
         opacity: visible ? 1 : 0,
         transition: 'transform 500ms cubic-bezier(0.23, 1, 0.32, 1), opacity 400ms ease',
+        pointerEvents: visible ? 'auto' : 'none',
       }}
     >
       <div
-        className="relative rounded-full overflow-hidden flex items-center"
+        className="relative flex items-center gap-3 pl-2.5 pr-2 py-2 rounded-full"
         style={{
-          background: 'rgba(255,255,255,0.88)',
+          background: 'rgba(255,255,255,0.92)',
           backdropFilter: 'blur(20px) saturate(180%)',
           WebkitBackdropFilter: 'blur(20px) saturate(180%)',
           border: '1px solid rgba(0,0,0,0.08)',
@@ -59,30 +70,20 @@ export default function SkillsPromoBanner({ lang }: { lang: string }) {
       >
         <Link
           href={`/${lang}/guide/claude-code/skills`}
-          className="flex items-center gap-3 pl-2.5 pr-4 py-2 cursor-pointer"
+          className="flex items-center gap-2.5 cursor-pointer min-w-0"
         >
-          {/* Icon */}
-          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-violet-500 to-blue-500 flex items-center justify-center flex-shrink-0">
-            <Lightning size={16} weight="fill" className="text-white" />
+          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-violet-500 to-blue-500 flex items-center justify-center flex-shrink-0">
+            <Lightning size={14} weight="fill" className="text-white" />
           </div>
-
-          {/* Text */}
-          <div className="min-w-0">
-            <p className="text-[13px] font-semibold text-gray-900 leading-tight">
-              {isEn ? 'Claude Code skills for designers' : 'Skills Claude Code pour designers'}
-            </p>
-            <p className="text-[11px] text-gray-500 leading-tight mt-0.5">
-              {isEn ? 'Free skills to ship better UI, faster' : 'Skills gratuits pour livrer de meilleures UI'}
-            </p>
-          </div>
-
-          <ArrowRight size={14} className="text-gray-400 flex-shrink-0 ml-1" />
+          <span className="text-[13px] font-semibold text-gray-900 whitespace-nowrap">
+            {isEn ? 'Claude Code skills' : 'Skills Claude Code'}
+          </span>
+          <ArrowRight size={12} className="text-gray-400 flex-shrink-0" />
         </Link>
 
-        {/* Dismiss */}
         <button
-          onClick={(e) => { e.preventDefault(); e.stopPropagation(); dismiss() }}
-          className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-gray-400 hover:text-gray-700 hover:bg-black/5 mr-1.5 active:scale-[0.9]"
+          onClick={dismiss}
+          className="flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-gray-400 hover:text-gray-700 hover:bg-black/5 active:scale-[0.9]"
           style={{ transition: 'background-color 150ms ease, color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
           aria-label="Dismiss"
         >

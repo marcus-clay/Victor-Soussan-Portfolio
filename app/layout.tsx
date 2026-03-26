@@ -15,11 +15,12 @@ export const metadata: Metadata = {
     template: '%s | Victor Soussan',
   },
   description:
-    'Senior Product Design Lead avec 15+ ans d\'experience. Specialise en Design System, UX Research, et transformation digitale.',
+    'Lead Product Designer, 15 ans de conception produit. Design systems, interfaces complexes, prototypage assist\u00e9 par IA. SaaS B2B, EdTech, services publics.',
   keywords: [
     'Product Design', 'UX Design', 'UI Design', 'Design System',
     'Design Lead', 'Senior Designer', 'Portfolio', 'Victor Soussan',
-    'France', 'Paris', 'Figma', 'User Research', 'Product Strategy',
+    'France', 'Paris', 'Figma', 'Claude Code', 'AI Prototyping',
+    'User Research', 'Product Strategy', 'SaaS', 'EdTech',
   ],
   authors: [{ name: 'Victor Soussan' }],
   openGraph: {
@@ -29,7 +30,7 @@ export const metadata: Metadata = {
     siteName: 'Victor Soussan Portfolio',
     title: 'Victor Soussan | Product Design Lead',
     description:
-      'Senior Product Design Lead avec 15+ ans d\'experience. Specialise en Design System, UX Research, et transformation digitale.',
+      'Lead Product Designer, 15 ans de conception produit. Design systems, interfaces complexes, prototypage assist\u00e9 par IA.',
     images: [
       {
         url: '/images/og_victor_soussan.webp',
@@ -42,7 +43,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Victor Soussan | Product Design Lead',
     description:
-      'Senior Product Design Lead avec 15+ ans d\'experience. Specialise en Design System, UX Research, et transformation digitale.',
+      'Lead Product Designer, 15 ans de conception produit. Design systems, interfaces complexes, prototypage assist\u00e9 par IA.',
     images: ['/images/og_victor_soussan.webp'],
   },
   icons: {
@@ -81,13 +82,14 @@ export default function RootLayout({
               image: 'https://www.victorsoussan.fr/images/victor-soussan.webp',
               sameAs: [
                 'https://www.linkedin.com/in/victorsoussan',
-                'https://github.com/victorsoussan',
-                'https://www.collective.work/profile/victor-soussan',
+                'https://github.com/marcus-clay',
+                'https://www.condamine.studio',
               ],
-              email: 'victorsoussan@gmail.com',
+              email: 'victor@victorsoussan.fr',
               knowsAbout: [
                 'Product Design', 'UX Research', 'Design Systems',
-                'Digital Transformation', 'AI-Assisted Design',
+                'AI-Assisted Design', 'Claude Code', 'Figma',
+                'SaaS B2B', 'EdTech', 'Public Services',
               ],
             }),
           }}

@@ -10,7 +10,11 @@ const STATIC_ROUTES = [
 
 const PROJECT_IDS = [
   'toolkit', 'dailymotion', 'connect', 'sqool', 'sqool-classe',
-  'france-vae', 'pagesjaunes', 'androidwear',
+  'france-vae', 'pagesjaunes', 'androidwear', 'riskos',
+]
+
+const SHORT_PROJECT_IDS = [
+  'condamine-apps', 'design-system-figma-claude',
 ]
 
 const VIEW_MODES = ['summary', 'full', 'gallery']
@@ -86,7 +90,41 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }
   }
 
-  // Guide index
+  // Short project routes (summary only)
+  for (const lang of LANGS) {
+    for (const id of SHORT_PROJECT_IDS) {
+      entries.push({
+        url: `${BASE_URL}/${lang}/project/${id}/summary`,
+        lastModified: new Date(),
+        changeFrequency: 'monthly',
+        priority: 0.6,
+        alternates: {
+          languages: {
+            fr: `${BASE_URL}/fr/project/${id}/summary`,
+            en: `${BASE_URL}/en/project/${id}/summary`,
+          },
+        },
+      })
+    }
+  }
+
+  // Guide Ship to Show
+  for (const lang of LANGS) {
+    entries.push({
+      url: `${BASE_URL}/${lang}/guide/ship-to-show`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.6,
+      alternates: {
+        languages: {
+          fr: `${BASE_URL}/fr/guide/ship-to-show`,
+          en: `${BASE_URL}/en/guide/ship-to-show`,
+        },
+      },
+    })
+  }
+
+  // Guide Claude Code index
   for (const lang of LANGS) {
     entries.push({
       url: `${BASE_URL}/${lang}/guide/claude-code`,
