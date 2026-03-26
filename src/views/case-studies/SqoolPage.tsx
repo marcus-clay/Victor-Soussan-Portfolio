@@ -2,7 +2,7 @@
 // A trunk case study that synthesizes the SQOOL journey (2018-2024)
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   CaretRight as ChevronRight,
   CaretLeft as ChevronLeft,
@@ -95,7 +95,6 @@ const allImagesData: MediaItem[] = [
   { src: '/images/sqool/sqool_extend.webp', captionKey: 'extend', type: 'image' },
 ];
 
-// Gallery Card Component
 interface GalleryCardProps {
   item: GalleryItem;
   index: number;
@@ -103,52 +102,25 @@ interface GalleryCardProps {
 }
 
 const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick }) => {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [8, -8]), { stiffness: 300, damping: 30 });
-  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-8, 8]), { stiffness: 300, damping: 30 });
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    x.set((e.clientX - rect.left - rect.width / 2) / rect.width);
-    y.set((e.clientY - rect.top - rect.height / 2) / rect.height);
-  };
-
   const isVideo = item.type === 'video' || item.src.match(/\.(mp4|webm|mov)$/i);
-
   return (
     <motion.figure
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.2, delay: index * 0.02 }}
-      className="group cursor-pointer break-inside-avoid mb-8"
+      transition={{ duration: 0.3, delay: index * 0.03 }}
+      className="group cursor-zoom-in break-inside-avoid mb-6"
       onClick={onClick}
     >
-      <motion.div
-        ref={cardRef}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={() => { x.set(0); y.set(0); }}
-        style={{ rotateX, rotateY, transformStyle: 'preserve-3d', perspective: 1000 }}
-        className="relative rounded-2xl overflow-hidden shadow-lg group-hover:shadow-2xl transition-shadow"
-      >
+      <div className="rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 shadow-sm hover:shadow-lg transition-[border-color,box-shadow,transform] duration-300 ease-out hover:scale-[1.01]">
         {isVideo ? (
-          <div className="relative">
-            <video src={item.src} className="w-full h-auto" muted loop playsInline preload="metadata" />
-            <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-              <div className="w-14 h-14 rounded-full bg-black/50 backdrop-blur flex items-center justify-center">
-                <Play className="w-7 h-7 text-white ml-1" fill="white" />
-              </div>
-            </div>
-          </div>
+          <video src={item.src} className="w-full h-auto block transition-transform duration-300 ease-out group-hover:scale-[1.02]" muted playsInline autoPlay loop preload="metadata" />
         ) : (
-          <img loading="lazy" src={item.src} alt={item.caption} className="w-full h-auto" />
+          <img loading="lazy" src={item.src} alt={item.caption} className="w-full h-auto block transition-transform duration-300 ease-out group-hover:scale-[1.02]" />
         )}
-      </motion.div>
-      <figcaption className="mt-3 text-sm text-gray-400">
-        <span className="font-medium text-gray-300">{item.caption}</span>
-        {item.captionDesc && <span className="text-gray-500"> - {item.captionDesc}</span>}
+      </div>
+      <figcaption className="mt-3 text-sm text-gray-500">
+        <strong className="text-gray-700">{item.caption}</strong>
+        {item.captionDesc && <span className="hidden sm:inline"> · {item.captionDesc}</span>}
       </figcaption>
     </motion.figure>
   );
@@ -357,7 +329,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
   ];
 
   return (
-    <div ref={containerRef} className={`min-h-screen ${viewMode === 'gallery' ? 'bg-black' : (isDark ? 'bg-[#0a0a0a]' : 'bg-white')}`}>
+    <div ref={containerRef} className={`min-h-screen ${viewMode === 'gallery' ? 'bg-white' : (isDark ? 'bg-[#0a0a0a]' : 'bg-white')}`}>
 
 
       {/* TOC Sidebar - Persistent left navigation for full mode */}

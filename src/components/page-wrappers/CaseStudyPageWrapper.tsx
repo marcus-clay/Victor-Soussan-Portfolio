@@ -8,11 +8,27 @@ import { CaretRight, ArrowRight } from '@phosphor-icons/react'
 import { getProjects, type Project } from '@/data/projectsData'
 import ShortProjectView from '@/components/ShortProjectView'
 import AuthorContactCard from '@/components/AuthorContactCard'
+import GalleryCarousel from '@/components/GalleryCarousel'
+import {
+  getToolkitGalleryItems,
+  getDailymotionGalleryItems,
+  getConnectGalleryItems,
+  getSqoolGalleryItems,
+  type GalleryItem,
+} from '@/components/BentoGallery'
 
 type ProjectId = 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'sqool-classe' | 'france-vae' | 'pagesjaunes' | 'androidwear' | 'riskos'
 
 // Projects with dark theme (breadcrumb adapts accordingly)
 const DARK_PROJECTS: string[] = ['riskos']
+
+// Gallery items getter per project (for carousel)
+const GALLERY_GETTERS: Record<string, (lang: 'en' | 'fr') => GalleryItem[]> = {
+  toolkit: getToolkitGalleryItems,
+  dailymotion: getDailymotionGalleryItems,
+  connect: getConnectGalleryItems,
+  sqool: getSqoolGalleryItems,
+}
 
 
 const loadingSpinner = () => (
@@ -71,13 +87,10 @@ export default function CaseStudyPageWrapper({
   const allProjects = getProjects(lang)
   const project = allProjects.find((p) => p.id === projectId)
 
-  if (project?.format === 'short') {
-    return <ShortProjectView project={project} lang={lang} />
-  }
+  const isShort = project?.format === 'short'
+  const CaseStudyComponent = !isShort ? CASE_STUDY_COMPONENTS[projectId as ProjectId] : null
 
-  const CaseStudyComponent = CASE_STUDY_COMPONENTS[projectId as ProjectId]
-
-  if (!CaseStudyComponent) {
+  if (!isShort && !CaseStudyComponent) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
         <p className="text-gray-500">Project not found</p>
@@ -133,19 +146,40 @@ export default function CaseStudyPageWrapper({
         </div>
       </div>
 
-      {/* Case study content */}
-      <CaseStudyComponent
-        systemTheme="light"
-        lang={lang}
-        viewMode={viewMode}
-        onClose={() => router.push(`/${lang}/projets`)}
-        onToggleTheme={() => {}}
-        onViewModeChange={(mode: string) => {
-          const urlView = mode === 'executive' ? 'summary' : mode === 'caseStudy' ? 'full' : 'gallery'
-          router.push(`/${lang}/project/${projectId}/${urlView}`)
-        }}
-        onContact={() => router.push(`/${lang}/contact`)}
-      />
+      {/* Content: short project or case study */}
+      {isShort && project ? (
+        <ShortProjectView project={project} lang={lang} />
+      ) : CaseStudyComponent ? (
+        <CaseStudyComponent
+          systemTheme="light"
+          lang={lang}
+          viewMode={viewMode}
+          onClose={() => router.push(`/${lang}/projets`)}
+          onToggleTheme={() => {}}
+          onViewModeChange={(mode: string) => {
+            const urlView = mode === 'executive' ? 'summary' : mode === 'caseStudy' ? 'full' : 'gallery'
+            router.push(`/${lang}/project/${projectId}/${urlView}`)
+          }}
+          onContact={() => router.push(`/${lang}/contact`)}
+        />
+      ) : null}
+
+      {/* Gallery carousel — auto-scrolling preview (summary view, projects with gallery) */}
+      {view === 'summary' && GALLERY_GETTERS[projectId] && (
+        <div className={`py-10 ${isDark ? 'bg-[#0a0a0a]' : 'bg-white'}`}>
+          <div className="max-w-[1200px] mx-auto px-6 mb-4">
+            <p className={`text-[11px] font-semibold uppercase tracking-widest ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
+              {lang === 'fr' ? 'Aperçu galerie' : 'Gallery preview'}
+            </p>
+          </div>
+          <GalleryCarousel
+            items={GALLERY_GETTERS[projectId](lang)}
+            lang={lang}
+            projectId={projectId}
+            isDark={isDark}
+          />
+        </div>
+      )}
 
       {/* Bottom: related projects + Contact CTA */}
       <CaseStudyFooter lang={lang} projectId={projectId} isDark={isDark} allProjects={allProjects} />

@@ -1,8 +1,7 @@
 'use client'
 
 import React from 'react'
-import { useRouter } from 'next/navigation'
-import { ArrowLeft, ArrowUpRight } from '@phosphor-icons/react'
+import { ArrowUpRight } from '@phosphor-icons/react'
 import type { Project } from '@/data/projectsData'
 
 const CATEGORY_LABELS: Record<string, { en: string; fr: string }> = {
@@ -19,21 +18,11 @@ export default function ShortProjectView({
   project: Project
   lang: 'en' | 'fr'
 }) {
-  const router = useRouter()
   const categoryLabel = CATEGORY_LABELS[project.category]?.[lang] || project.category
 
   return (
     <div className="min-h-screen bg-[#F9F9F9]">
-      <div className="max-w-[1200px] mx-auto px-6 pt-20 pb-20">
-        {/* Back button */}
-        <button
-          onClick={() => router.push(`/${lang}/projets`)}
-          className="inline-flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors mb-10 cursor-pointer"
-        >
-          <ArrowLeft size={16} />
-          {lang === 'fr' ? 'Retour aux projets' : 'Back to projects'}
-        </button>
-
+      <div className="max-w-[1200px] mx-auto px-6 pt-8 md:pt-10 pb-20">
         {/* Header */}
         <div className="mb-10">
           <div className="flex items-center gap-3 mb-4">

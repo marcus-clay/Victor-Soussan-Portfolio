@@ -2,11 +2,10 @@
 // Displays the SQOOL Connect project case study with portfolio styling
 
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { smoothScrollTo } from '../../utils/smoothScroll';
 import {
-  X,
-  Play
+  X
 } from '@phosphor-icons/react';
 import { GalleryItem, getConnectGalleryItems } from '../../components/BentoGallery';
 import ConnectExecutive from '../../components/case-studies/ConnectExecutive';
@@ -67,7 +66,6 @@ const allImagesData: MediaItem[] = [
   { src: '/images/connect/connect_design_system.webp', captionKey: 'designSystem', type: 'image' },
 ];
 
-// Gallery Card component with Apple TV-style 3D tilt effect
 interface GalleryCardProps {
   item: GalleryItem;
   index: number;
@@ -75,65 +73,24 @@ interface GalleryCardProps {
 }
 
 const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick }) => {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [8, -8]), { stiffness: 300, damping: 30 });
-  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-8, 8]), { stiffness: 300, damping: 30 });
-  const glowX = useSpring(useTransform(x, [-0.5, 0.5], [0, 100]), { stiffness: 300, damping: 30 });
-  const glowY = useSpring(useTransform(y, [-0.5, 0.5], [0, 100]), { stiffness: 300, damping: 30 });
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    x.set((e.clientX - centerX) / rect.width);
-    y.set((e.clientY - centerY) / rect.height);
-  };
-
-  const handleMouseLeave = () => { x.set(0); y.set(0); };
-
   const isVideo = item.type === 'video' || item.src.match(/\.(mp4|webm|mov)$/i);
-
   return (
     <motion.figure
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.2, delay: index * 0.02 }}
-      className="group cursor-pointer break-inside-avoid mb-8 md:mb-10"
+      transition={{ duration: 0.3, delay: index * 0.03 }}
+      className="group cursor-zoom-in break-inside-avoid mb-6"
       onClick={onClick}
-      style={{ perspective: 1000 }}
     >
-      <motion.div
-        ref={cardRef}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-        style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
-        className="relative rounded-2xl overflow-hidden transition-shadow duration-300 ease-out shadow-lg shadow-black/30 group-hover:shadow-2xl group-hover:shadow-blue-500/20"
-      >
-        <motion.div
-          className="absolute inset-0 z-10 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-          style={{ background: `radial-gradient(circle at ${glowX}% ${glowY}%, rgba(255,255,255,0.15) 0%, transparent 50%)` }}
-        />
-        <div className="absolute inset-0 z-10 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"
-          style={{ boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.1), inset 0 -1px 1px rgba(0,0,0,0.2)' }}
-        />
+      <div className="rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 shadow-sm hover:shadow-lg transition-[border-color,box-shadow,transform] duration-300 ease-out hover:scale-[1.01]">
         {isVideo ? (
-          <div className="relative">
-            <video src={item.src} className="w-full h-auto block" muted playsInline preload="metadata" />
-            <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/30 transition-colors">
-              <div className="w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-md transition-transform duration-200 ease-out group-hover:scale-[1.03] bg-white/20">
-                <Play size={28} className="text-white ml-1" fill="white" />
-              </div>
-            </div>
-          </div>
+          <video src={item.src} className="w-full h-auto block transition-transform duration-300 ease-out group-hover:scale-[1.02]" muted playsInline autoPlay loop preload="metadata" />
         ) : (
-          <img loading="lazy" src={item.src} alt={item.caption} className="w-full h-auto block" />
+          <img loading="lazy" src={item.src} alt={item.caption} className="w-full h-auto block transition-transform duration-300 ease-out group-hover:scale-[1.02]" />
         )}
-      </motion.div>
-      <figcaption className="mt-4 text-sm text-gray-400">
-        <strong className="text-gray-200">{item.caption}</strong>
+      </div>
+      <figcaption className="mt-3 text-sm text-gray-500">
+        <strong className="text-gray-700">{item.caption}</strong>
         {item.captionDesc && <span className="hidden sm:inline"> · {item.captionDesc}</span>}
       </figcaption>
     </motion.figure>
@@ -261,7 +218,7 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
     <div
       ref={containerRef}
       className={`min-h-screen ${
-        viewMode === 'gallery' ? 'bg-black' : (systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white')
+        viewMode === 'gallery' ? 'bg-white' : (systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white')
       }`}
     >
 

@@ -2,7 +2,7 @@
 // Displays the France VAE project case study with portfolio styling
 
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
+import { motion } from 'framer-motion';
 import CaseStudyTOCSidebar from '../../components/CaseStudyTOCSidebar';
 import FranceVaeExecutive from '../../components/case-studies/FranceVaeExecutive';
 import FranceVaeFull from '../../components/case-studies/FranceVaeFull';
@@ -10,7 +10,6 @@ import EnhancedLightbox from '../../components/media/EnhancedLightbox';
 import { PROJECT_SEO, DEFAULT_SEO, updateMetaTags, injectJsonLd } from '../../utils/seo';
 import { FRANCEVAE_TRANSLATIONS } from '../../data/caseStudyTranslations/franceVaeTranslations';
 
-// Gallery Card with Apple TV-style 3D tilt effect (same as BentoGallery)
 interface GalleryCardProps {
   item: { src: string; caption: string; captionFr: string };
   index: number;
@@ -19,84 +18,25 @@ interface GalleryCardProps {
 }
 
 const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick, lang }) => {
-  const cardRef = useRef<HTMLDivElement>(null);
-
-  // Motion values for 3D tilt effect
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
-  // Spring smoothing for natural feel
-  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [8, -8]), { stiffness: 300, damping: 30 });
-  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-8, 8]), { stiffness: 300, damping: 30 });
-
-  // Glow position
-  const glowX = useSpring(useTransform(x, [-0.5, 0.5], [0, 100]), { stiffness: 300, damping: 30 });
-  const glowY = useSpring(useTransform(y, [-0.5, 0.5], [0, 100]), { stiffness: 300, damping: 30 });
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    const mouseX = (e.clientX - centerX) / rect.width;
-    const mouseY = (e.clientY - centerY) / rect.height;
-    x.set(mouseX);
-    y.set(mouseY);
-  };
-
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-  };
-
+  const isVideo = item.src.match(/\.(mp4|webm|mov)$/i);
+  const caption = lang === 'fr' ? item.captionFr : item.caption;
   return (
     <motion.figure
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.2, delay: index * 0.02 }}
-      className="group cursor-pointer break-inside-avoid mb-8 md:mb-10"
+      transition={{ duration: 0.3, delay: index * 0.03 }}
+      className="group cursor-zoom-in break-inside-avoid mb-6"
       onClick={onClick}
-      style={{ perspective: 1000 }}
     >
-      {/* Container with Apple TV 3D tilt effect */}
-      <motion.div
-        ref={cardRef}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-        style={{
-          rotateX,
-          rotateY,
-          transformStyle: 'preserve-3d',
-        }}
-        className="relative rounded-2xl overflow-hidden transition-shadow duration-300 ease-out shadow-lg shadow-black/30 group-hover:shadow-2xl group-hover:shadow-blue-500/20"
-      >
-        {/* Glow overlay - Apple TV style */}
-        <motion.div
-          className="absolute inset-0 z-10 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-          style={{
-            background: `radial-gradient(circle at ${glowX}% ${glowY}%, rgba(255,255,255,0.15) 0%, transparent 50%)`,
-          }}
-        />
-
-        {/* Shine effect on edges */}
-        <div className="absolute inset-0 z-10 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"
-          style={{
-            boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.1), inset 0 -1px 1px rgba(0,0,0,0.2)',
-          }}
-        />
-
-        <img loading="lazy"
-          src={item.src}
-          alt={lang === 'fr' ? item.captionFr : item.caption}
-          className="w-full h-auto block"
-        />
-      </motion.div>
-
-      {/* Caption */}
-      <figcaption className="mt-4 px-1">
-        <strong className="text-sm text-gray-200 font-medium">
-          {lang === 'fr' ? item.captionFr : item.caption}
-        </strong>
+      <div className="rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 shadow-sm hover:shadow-lg transition-[border-color,box-shadow,transform] duration-300 ease-out hover:scale-[1.01]">
+        {isVideo ? (
+          <video src={item.src} className="w-full h-auto block transition-transform duration-300 ease-out group-hover:scale-[1.02]" muted playsInline autoPlay loop preload="metadata" />
+        ) : (
+          <img loading="lazy" src={item.src} alt={caption} className="w-full h-auto block transition-transform duration-300 ease-out group-hover:scale-[1.02]" />
+        )}
+      </div>
+      <figcaption className="mt-3 text-sm text-gray-500">
+        <strong className="text-gray-700">{caption}</strong>
       </figcaption>
     </motion.figure>
   );
@@ -331,7 +271,7 @@ const FranceVaePage: React.FC<FranceVaePageProps> = ({
   };
 
   return (
-    <div ref={containerRef} className={`min-h-screen ${viewMode === 'gallery' ? 'bg-black' : (isDark ? 'bg-[#0a0a0a]' : 'bg-white')}`}>
+    <div ref={containerRef} className={`min-h-screen ${viewMode === 'gallery' ? 'bg-white' : (isDark ? 'bg-[#0a0a0a]' : 'bg-white')}`}>
       {/* TOC Sidebar - Persistent left navigation for full mode */}
       <CaseStudyTOCSidebar
         sections={sections}

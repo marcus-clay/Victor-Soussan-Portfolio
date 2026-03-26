@@ -204,6 +204,20 @@ body {
   animation-play-state: paused;
 }
 
+/* Gallery carousel — continuous auto-scroll, pauses on hover */
+@keyframes gallery-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.gallery-carousel-track {
+  animation: gallery-scroll var(--duration, 30s) linear infinite;
+}
+
+.gallery-carousel-track:hover {
+  animation-play-state: paused;
+}
+
 /* Print styles for resume */
 @media print {
   @page {
