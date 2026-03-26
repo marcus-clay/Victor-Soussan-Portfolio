@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { ArrowUpRight, ArrowRight, BookOpen, FileText, Notebook } from '@phosphor-icons/react'
+import { ArrowUpRight, ArrowRight, BookOpen, FileText, Notebook, Robot, Lightning } from '@phosphor-icons/react'
 import {
   ALL_CONTENT,
   TYPE_LABELS,
@@ -169,6 +169,50 @@ export default function RessourcesPageClient({ lang }: { lang: 'en' | 'fr' }) {
             )
           })}
         </div>
+
+        {/* Agents & Prompts section */}
+        <motion.section
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
+          className="mt-16"
+        >
+          <a
+            href="https://www.condamine.studio/agents-prompts"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group block rounded-2xl border border-gray-100 bg-white p-8 md:p-10 hover:border-gray-200 hover:shadow-md active:scale-[0.995] cursor-pointer"
+            style={{ transition: 'border-color 200ms ease, box-shadow 300ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
+          >
+            <div className="flex flex-col md:flex-row md:items-center gap-6">
+              <div className="flex items-center gap-4 flex-shrink-0">
+                <div className="w-12 h-12 rounded-xl bg-violet-50 flex items-center justify-center">
+                  <Robot size={24} weight="bold" className="text-violet-600" />
+                </div>
+                <div className="w-12 h-12 rounded-xl bg-amber-50 flex items-center justify-center">
+                  <Lightning size={24} weight="bold" className="text-amber-600" />
+                </div>
+              </div>
+              <div className="flex-1 min-w-0">
+                <h3 className="text-xl font-bold tracking-[-0.02em] text-gray-900 mb-1">
+                  {isEn ? 'Agents & Prompts for designers' : 'Agents et prompts pour designers'}
+                </h3>
+                <p className="text-base text-gray-500 leading-relaxed max-w-[55ch]">
+                  {isEn
+                    ? 'Curated collections of AI agents and prompt frameworks to accelerate design work. Research, ideation, writing, prototyping.'
+                    : 'Collections d\'agents IA et de frameworks de prompts pour accélérer le travail de design. Recherche, idéation, rédaction, prototypage.'}
+                </p>
+              </div>
+              <div className="flex-shrink-0">
+                <span className="inline-flex items-center gap-1.5 text-sm font-medium text-[#2D5CF3]">
+                  {isEn ? 'Explore on Condamine Studio' : 'Explorer sur Condamine Studio'}
+                  <ArrowUpRight size={14} className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                </span>
+              </div>
+            </div>
+          </a>
+        </motion.section>
       </div>
     </div>
   )

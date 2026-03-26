@@ -580,6 +580,21 @@ export default function AboutPageRedesign({
                 </a>
               ))}
             </div>
+            {/* CTA to Resources page */}
+            <div className="mt-6 pt-6 border-t border-gray-100">
+              <a
+                href={`/${lang}/ressources`}
+                className="group flex items-center gap-3 text-sm font-medium text-gray-500 hover:text-[#2D5CF3] cursor-pointer"
+                style={{ transition: 'color 150ms ease' }}
+              >
+                <span>
+                  {lang === 'fr'
+                    ? 'Guides, articles et ressources complémentaires'
+                    : 'Guides, articles and complementary resources'}
+                </span>
+                <ArrowRight size={14} className="transition-transform duration-200 group-hover:translate-x-1" />
+              </a>
+            </div>
           </motion.section>
         )}
 
