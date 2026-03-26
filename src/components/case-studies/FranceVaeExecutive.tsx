@@ -25,6 +25,7 @@ import {
   Robot as Bot,
   CheckCircle as CheckCircle2
 } from '@phosphor-icons/react';
+import CaseStudyViewPills from '../CaseStudyViewPills';
 interface FranceVaeExecutiveProps {
   systemTheme: 'light' | 'dark';
   lang: 'en' | 'fr';
@@ -742,7 +743,6 @@ const FranceVaeExecutive: React.FC<FranceVaeExecutiveProps> = ({
   systemTheme,
   lang,
   onImageClick,
-  onViewFull: _onViewFull,
   onContact,
 }) => {
   const isDark = systemTheme === 'dark';
@@ -788,6 +788,8 @@ const FranceVaeExecutive: React.FC<FranceVaeExecutiveProps> = ({
               {t.hero.subtitle}
             </p>
           </FadeInSection>
+
+          <CaseStudyViewPills lang={lang} projectId="france-vae" isDark={isDark} />
 
           {/* Hero Image */}
           <FadeInSection delay={0.3} className="mt-12">

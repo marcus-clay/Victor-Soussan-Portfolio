@@ -5,7 +5,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  X,
   Calendar,
   Briefcase,
   Stack as Layers,
@@ -129,33 +128,28 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
   const [scrollLocked, setScrollLocked] = useState(true);
 
   useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-
     // Force scroll to top and lock overflow
-    el.scrollTop = 0;
-    el.style.overflow = 'hidden';
+    window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
+    document.body.style.overflow = 'hidden';
 
     const unlock = setTimeout(() => {
-      el.style.overflow = '';
-      el.scrollTop = 0; // reset one last time before unlocking
+      document.body.style.overflow = '';
+      window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
       setScrollLocked(false);
     }, 1500);
 
     return () => {
       clearTimeout(unlock);
-      el.style.overflow = '';
+      document.body.style.overflow = '';
     };
   }, []);
 
   // Scroll tracking for active section (only after scroll lock released)
   useEffect(() => {
     if (scrollLocked) return;
-    const container = containerRef.current;
-    if (!container) return;
 
     const handleScroll = () => {
-      const scrollTop = container.scrollTop;
+      const scrollTop = window.scrollY;
       setShowNav(true);
 
       const sectionElements = sections.map(s => ({
@@ -173,8 +167,8 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
       setActiveSection('top');
     };
 
-    container.addEventListener('scroll', handleScroll, { passive: true });
-    return () => container.removeEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, [sections, scrollLocked]);
 
   // Sync caseStudyMode with viewMode prop and scroll to top on switch
@@ -183,7 +177,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
     else if (viewMode === 'caseStudy') setCaseStudyMode('full');
     // Reset scroll immediately and after AnimatePresence exit/enter completes
     const resetScroll = () => {
-      if (containerRef.current) containerRef.current.scrollTop = 0;
+      window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
     };
     resetScroll();
     const raf = requestAnimationFrame(resetScroll);
@@ -199,31 +193,18 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
   }, [viewMode]);
 
   const scrollToSection = useCallback((sectionId: string) => {
-    const container = containerRef.current;
-    if (!container) return;
     if (sectionId === 'top') {
-      container.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
     const el = document.getElementById(sectionId);
     if (el) {
-      const headerHeight = 64;
-      const elTop = el.getBoundingClientRect().top + container.scrollTop - container.getBoundingClientRect().top;
-      container.scrollTo({ top: elTop - headerHeight - 16, behavior: 'smooth' });
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }, []);
 
   return (
-    <motion.div
-      ref={containerRef}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.15 }}
-      className={`fixed inset-0 z-50 overflow-y-auto ${
-        isDark ? 'bg-[#0a0a0a]' : 'bg-white'
-      }`}
-    >
+    <div ref={containerRef} className={`min-h-screen ${isDark ? 'bg-[#0a0a0a]' : 'bg-white'}`}>
       {/* Image Lightbox */}
       <EnhancedLightbox
         isOpen={lightboxOpen}
@@ -245,110 +226,6 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
         isVisible={showNav && viewMode !== 'gallery' && caseStudyMode === 'full'}
         lang={lang}
       />
-
-      {/* Header */}
-      <header
-        className={`sticky top-0 z-40 backdrop-blur-xl ${
-          isDark ? 'bg-[#0a0a0a]/80' : 'bg-white/80'
-        }`}
-      >
-        <div className="w-full px-6 h-16 flex items-center gap-4">
-          <div className="flex-shrink-0">
-            <h1
-              className={`font-semibold text-lg tracking-[-0.02em] ${
-                isDark ? 'text-white' : 'text-gray-900'
-              }`}
-            >
-              SQOOL Classe
-            </h1>
-          </div>
-
-          {/* Center toggle */}
-          <div className="flex-1 flex justify-center">
-            <div
-              className={`relative flex items-center gap-0.5 sm:gap-1 rounded-full p-0.5 sm:p-1 ${
-                isDark ? 'bg-white/10' : 'bg-gray-100'
-              }`}
-            >
-              {/* Summary button */}
-              <button
-                onClick={() => { onViewModeChange('executive'); setCaseStudyMode('executive'); }}
-                className="relative z-10 px-2 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 whitespace-nowrap"
-              >
-                {(viewMode === 'executive' || (viewMode === 'caseStudy' && caseStudyMode === 'executive')) && (
-                  <motion.div
-                    layoutId="sqoolclasse-toggle-pill"
-                    className="absolute inset-0 bg-blue-600 rounded-full shadow-md"
-                    transition={{ type: 'spring', stiffness: 500, damping: 35, mass: 0.8 }}
-                  />
-                )}
-                <span className={`relative z-10 ${
-                  (viewMode === 'executive' || (viewMode === 'caseStudy' && caseStudyMode === 'executive'))
-                    ? 'text-white'
-                    : (isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900')
-                }`}>
-                  <span className="hidden sm:inline">{lang === 'fr' ? 'Resume' : 'Summary'}</span>
-                  <span className="sm:hidden">{lang === 'fr' ? 'Res.' : 'Sum.'}</span>
-                </span>
-              </button>
-              {/* Full case button */}
-              <button
-                onClick={() => { onViewModeChange('caseStudy'); setCaseStudyMode('full'); }}
-                className="relative z-10 px-2 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 whitespace-nowrap"
-              >
-                {viewMode === 'caseStudy' && caseStudyMode === 'full' && (
-                  <motion.div
-                    layoutId="sqoolclasse-toggle-pill"
-                    className="absolute inset-0 bg-blue-600 rounded-full shadow-md"
-                    transition={{ type: 'spring', stiffness: 500, damping: 35, mass: 0.8 }}
-                  />
-                )}
-                <span className={`relative z-10 ${
-                  viewMode === 'caseStudy' && caseStudyMode === 'full'
-                    ? 'text-white'
-                    : (isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900')
-                }`}>
-                  <span className="hidden sm:inline">{lang === 'fr' ? 'Cas complet' : 'Full case'}</span>
-                  <span className="sm:hidden">Full</span>
-                </span>
-              </button>
-              {/* Gallery button */}
-              <button
-                onClick={() => onViewModeChange('gallery')}
-                className="relative z-10 px-2 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 whitespace-nowrap"
-              >
-                {viewMode === 'gallery' && (
-                  <motion.div
-                    layoutId="sqoolclasse-toggle-pill"
-                    className="absolute inset-0 bg-blue-600 rounded-full shadow-md"
-                    transition={{ type: 'spring', stiffness: 500, damping: 35, mass: 0.8 }}
-                  />
-                )}
-                <span className={`relative z-10 ${
-                  viewMode === 'gallery'
-                    ? 'text-white'
-                    : (isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900')
-                }`}>
-                  <span className="hidden sm:inline">{t.gallery}</span>
-                  <span className="sm:hidden">Proto.</span>
-                </span>
-              </button>
-            </div>
-          </div>
-
-          {/* Close button */}
-          <div className="flex-shrink-0">
-            <button
-              onClick={onClose}
-              className={`relative p-3 flex items-center justify-center rounded-full transition-colors before:absolute before:inset-[-12px] before:content-[''] ${
-                isDark ? 'text-gray-400 hover:text-white hover:bg-white/10' : 'text-gray-500 hover:text-gray-900 hover:bg-black/5'
-              }`}
-            >
-              <X size={24} />
-            </button>
-          </div>
-        </div>
-      </header>
 
       {/* Content */}
       <AnimatePresence mode="wait">
@@ -859,7 +736,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.div>
+    </div>
   );
 };
 

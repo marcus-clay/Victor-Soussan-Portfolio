@@ -54,7 +54,7 @@ export default function Nav({ lang }: { lang: Lang }) {
   return (
     <>
       {/* Desktop + Mobile top bar */}
-      <nav className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-xl">
+      <nav id="site-nav" className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-xl transition-colors duration-200">
         <div className="w-full px-6 h-16 flex items-center justify-between">
           {/* Logo */}
           <Link

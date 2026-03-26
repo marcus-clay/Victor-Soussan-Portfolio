@@ -25,6 +25,8 @@ import {
   Briefcase,
   Trophy
 } from '@phosphor-icons/react';
+import CaseStudyViewPills from '../CaseStudyViewPills';
+
 interface ToolkitExecutiveProps {
   systemTheme: 'light' | 'dark';
   lang: 'en' | 'fr';
@@ -977,7 +979,6 @@ const ToolkitExecutive: React.FC<ToolkitExecutiveProps> = ({
   systemTheme,
   lang,
   onImageClick,
-  onViewFull: _onViewFull,
   onContact
 }) => {
   const isDark = systemTheme === 'dark';
@@ -1025,6 +1026,7 @@ const ToolkitExecutive: React.FC<ToolkitExecutiveProps> = ({
             }`}>
               {t.hero.subtitle}
             </p>
+            <CaseStudyViewPills lang={lang} projectId="toolkit" isDark={isDark} />
           </FadeInSection>
 
           {/* Hero Image */}

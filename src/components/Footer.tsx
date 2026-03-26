@@ -16,7 +16,7 @@ export default function Footer({ lang }: { lang: Lang }) {
   const otherLang = lang === 'en' ? 'fr' : 'en'
 
   return (
-    <footer className="py-16 px-6 md:px-10 border-t bg-white border-gray-200">
+    <footer id="site-footer" className="py-16 px-6 md:px-10 border-t bg-white border-gray-200 transition-colors duration-200">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-12">
           {/* Brand Column */}

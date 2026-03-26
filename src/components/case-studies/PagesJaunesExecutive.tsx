@@ -28,6 +28,7 @@ import {
   Heart,
   NavigationArrow as Navigation
 } from '@phosphor-icons/react';
+import CaseStudyViewPills from '../CaseStudyViewPills';
 
 // TOC Sections for navigation
 const getSections = (_lang: 'en' | 'fr') => [
@@ -833,7 +834,6 @@ const PagesJaunesExecutive: React.FC<PagesJaunesExecutiveProps> = ({
   systemTheme,
   lang,
   onImageClick,
-  onViewFull: _onViewFull,
   onContact,
 }) => {
   const isDark = systemTheme === 'dark';
@@ -1029,6 +1029,8 @@ const PagesJaunesExecutive: React.FC<PagesJaunesExecutiveProps> = ({
               {t.hero.subtitle}
             </p>
           </FadeInSection>
+
+          <CaseStudyViewPills lang={lang} projectId="pagesjaunes" isDark={isDark} />
 
           {/* Hero Image */}
           <FadeInSection delay={0.3} className="mt-12">

@@ -53,6 +53,46 @@ body {
   line-height: 1.6;
 }
 
+/* Dark nav override for dark-themed case studies */
+#site-nav.nav-dark {
+  background: rgba(10, 10, 10, 0.95) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+#site-nav.nav-dark a,
+#site-nav.nav-dark button {
+  color: #d1d5db;
+}
+#site-nav.nav-dark a:hover,
+#site-nav.nav-dark button:hover {
+  color: #ffffff;
+}
+#site-nav.nav-dark a.font-semibold {
+  color: #ffffff;
+}
+/* Dark main background to prevent white bleed under Nav blur */
+#main-content.main-dark {
+  background: #0a0a0a;
+}
+
+/* Dark footer override for dark-themed case studies */
+#site-footer.footer-dark {
+  background: #0a0a0a !important;
+  border-color: rgba(255, 255, 255, 0.05) !important;
+}
+#site-footer.footer-dark,
+#site-footer.footer-dark a,
+#site-footer.footer-dark p,
+#site-footer.footer-dark span {
+  color: #9ca3af;
+}
+#site-footer.footer-dark a:hover {
+  color: #ffffff;
+}
+#site-footer.footer-dark .font-bold,
+#site-footer.footer-dark .font-semibold {
+  color: #ffffff;
+}
+
 /* Global button and interactive styles */
 .btn-pill {
   backdrop-filter: blur(20px);

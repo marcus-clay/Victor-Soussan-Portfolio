@@ -3,7 +3,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion';
-import { smoothScrollTo } from '../../utils/smoothScroll';
 import {
   ArrowSquareOut as ExternalLink,
   Calendar,
@@ -11,7 +10,7 @@ import {
   Stack as Layers,
   Rocket,
   Quotes as Quote,
-  X,
+
   Play,
   Lightning as Zap,
   Trophy,
@@ -607,19 +606,13 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
 
   // Scroll to top when mode changes
   useEffect(() => {
-    const container = containerRef.current;
-    if (container) {
-      container.scrollTo({ top: 0, behavior: 'instant' });
-    }
+    window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
   }, [caseStudyMode, viewMode]);
 
   // Track scroll position and update active section
   useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
     const handleScroll = () => {
-      const scrollTop = container.scrollTop;
+      const scrollTop = window.scrollY;
 
       // Show nav after scrolling past hero
       setShowNav(scrollTop > 300);
@@ -642,22 +635,19 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
       }
     };
 
-    container.addEventListener('scroll', handleScroll);
-    return () => container.removeEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   // Scroll to section with proper offset for header + sticky mini-nav
   const scrollToSection = (sectionId: string) => {
-    if (!containerRef.current) return;
     if (sectionId === 'top') {
-      smoothScrollTo(containerRef.current, 0);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
     const element = document.getElementById(sectionId);
     if (element) {
-      const headerOffset = 80 + 56 + 24;
-      const elementPosition = element.offsetTop - headerOffset;
-      smoothScrollTo(containerRef.current, elementPosition);
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
 
@@ -677,16 +667,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
   };
 
   return (
-    <motion.div
-      ref={containerRef}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.15 }}
-      className={`fixed inset-0 z-50 overflow-y-auto ${
-        viewMode === 'gallery' ? 'bg-black' : (systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white')
-      }`}
-    >
+    <div ref={containerRef} className={`min-h-screen ${viewMode === 'gallery' ? 'bg-black' : (systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white')}`}>
       {/* TOC Sidebar - Persistent left navigation for full mode */}
       <CaseStudyTOCSidebar
         sections={sections}
@@ -697,116 +678,6 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
         lang={lang}
       />
 
-      {/* Header - Glass effect */}
-      <header
-        className={`fixed top-0 left-0 right-0 z-40 backdrop-blur-xl ${
-          viewMode === 'gallery'
-            ? 'bg-black/80'
-            : (systemTheme === 'dark' ? 'bg-[#0a0a0a]/80' : 'bg-white/80')
-        }`}
-      >
-        <div className="w-full px-6 h-16 flex items-center gap-4">
-          {/* Left - Title - Same style as Homepage nav */}
-          <div className="flex-shrink-0">
-            <h1
-              className={`font-semibold text-lg tracking-[-0.02em] ${
-                viewMode === 'gallery' ? 'text-white' : (systemTheme === 'dark' ? 'text-white' : 'text-gray-900')
-              }`}
-            >
-              Toolkit
-            </h1>
-          </div>
-
-          {/* Center - Toggle Switch with animated pill (compact on mobile) */}
-          <div className="flex-1 flex justify-center">
-            <div
-              className={`relative flex items-center gap-0.5 sm:gap-1 rounded-full p-0.5 sm:p-1 ${
-                viewMode === 'gallery' ? 'bg-white/10' : (systemTheme === 'dark' ? 'bg-white/10' : 'bg-gray-100')
-              }`}
-            >
-              {/* Summary button */}
-              <button
-                onClick={() => { onViewModeChange('executive'); setCaseStudyMode('executive'); }}
-                className="relative z-10 px-2 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 whitespace-nowrap"
-              >
-                {(viewMode === 'executive' || (viewMode === 'caseStudy' && caseStudyMode === 'executive')) && (
-                  <motion.div
-                    layoutId="toolkit-toggle-pill"
-                    className="absolute inset-0 bg-blue-600 rounded-full shadow-md"
-                    transition={{ type: 'spring', stiffness: 500, damping: 35, mass: 0.8 }}
-                  />
-                )}
-                <span className={`relative z-10 ${
-                  (viewMode === 'executive' || (viewMode === 'caseStudy' && caseStudyMode === 'executive'))
-                    ? 'text-white'
-                    : (viewMode === 'gallery' ? 'text-gray-400 hover:text-white' : (systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'))
-                }`}>
-                  <span className="hidden sm:inline">{lang === 'fr' ? 'Résumé' : 'Summary'}</span>
-                  <span className="sm:hidden">{lang === 'fr' ? 'Rés.' : 'Sum.'}</span>
-                </span>
-              </button>
-              {/* Full case button */}
-              <button
-                onClick={() => { onViewModeChange('caseStudy'); setCaseStudyMode('full'); }}
-                className="relative z-10 px-2 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 whitespace-nowrap"
-              >
-                {viewMode === 'caseStudy' && caseStudyMode === 'full' && (
-                  <motion.div
-                    layoutId="toolkit-toggle-pill"
-                    className="absolute inset-0 bg-blue-600 rounded-full shadow-md"
-                    transition={{ type: 'spring', stiffness: 500, damping: 35, mass: 0.8 }}
-                  />
-                )}
-                <span className={`relative z-10 ${
-                  viewMode === 'caseStudy' && caseStudyMode === 'full'
-                    ? 'text-white'
-                    : (viewMode === 'gallery' ? 'text-gray-400 hover:text-white' : (systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'))
-                }`}>
-                  <span className="hidden sm:inline">{lang === 'fr' ? 'Cas complet' : 'Full case'}</span>
-                  <span className="sm:hidden">{lang === 'fr' ? 'Full' : 'Full'}</span>
-                </span>
-              </button>
-              {/* Gallery button */}
-              <button
-                onClick={() => onViewModeChange('gallery')}
-                className="relative z-10 px-2 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 whitespace-nowrap"
-              >
-                {viewMode === 'gallery' && (
-                  <motion.div
-                    layoutId="toolkit-toggle-pill"
-                    className="absolute inset-0 bg-blue-600 rounded-full shadow-md"
-                    transition={{ type: 'spring', stiffness: 500, damping: 35, mass: 0.8 }}
-                  />
-                )}
-                <span className={`relative z-10 ${
-                  viewMode === 'gallery' ? 'text-white' : (systemTheme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900')
-                }`}>
-                  <span className="hidden sm:inline">{lang === 'fr' ? 'Galerie' : 'Gallery'}</span>
-                  <span className="sm:hidden">{lang === 'fr' ? 'Gal.' : 'Gal.'}</span>
-                </span>
-              </button>
-            </div>
-          </div>
-
-          {/* Right - Close button pill for case study, plain for gallery */}
-          <div className="flex-shrink-0">
-            <button
-              onClick={onClose}
-              className={`relative flex items-center justify-center rounded-full transition-colors before:absolute before:inset-[-12px] before:content-[''] ${
-                viewMode === 'gallery'
-                  ? 'w-8 h-8 text-gray-400 hover:text-white hover:bg-white/10'
-                  : `p-3 backdrop-blur-xl ${
-                      systemTheme === 'dark'
-                        ? 'bg-[#0a0a0a]/80 text-gray-400 hover:text-white border border-white/10'
-                        : 'bg-[#FCFCFD]/80 text-gray-500 hover:text-gray-900 border border-gray-200/50'
-                    }`
-              }`}
-            >
-              <X size={viewMode === 'gallery' ? 18 : 24} />
-            </button>
-          </div>
-        </div>
-      </header>
 
       {/* Lightbox Modal - Using EnhancedLightbox */}
       <EnhancedLightbox
@@ -2326,7 +2197,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
         )}
       </AnimatePresence>
       </div>
-    </motion.div>
+    </div>
   );
 };
 

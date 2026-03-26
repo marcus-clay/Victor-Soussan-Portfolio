@@ -13,6 +13,7 @@ import {
 } from '@phosphor-icons/react';
 import { GUIDE_META, GUIDE_CHAPTERS } from '../data/guideClaudeCodeData';
 import CaseStudyTOCSidebar from '../components/CaseStudyTOCSidebar';
+import AuthorContactCard from '../components/AuthorContactCard';
 
 interface Props {
   systemTheme: 'light' | 'dark';
@@ -150,21 +151,8 @@ const GuideIndex: React.FC<{ isDark: boolean; lang: string; onNavigate: (t: stri
           })}
         </div>
 
-        {/* Author card */}
-        <div className={`p-6 rounded-xl border ${isDark ? 'bg-[#1D1D1F] border-white/5' : 'bg-white border-gray-100'}`}>
-          <div className="flex items-start gap-4">
-            <img src={GUIDE_META.author.image} alt={GUIDE_META.author.name} className="w-14 h-14 rounded-full object-cover" />
-            <div>
-              <p className={`font-bold mb-0.5 ${isDark ? 'text-white' : 'text-gray-900'}`}>{GUIDE_META.author.name}</p>
-              <p className={`text-sm mb-2 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{GUIDE_META.author.role}</p>
-              <p className={`text-sm leading-relaxed mb-3 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>{lang === 'fr' ? GUIDE_META.author.bio_fr : GUIDE_META.author.bio_en}</p>
-              <div className="flex gap-3">
-                <a href={GUIDE_META.author.linkedin} target="_blank" rel="noopener noreferrer" className="text-sm text-[#2D5CF3] hover:underline">LinkedIn</a>
-                <a href={GUIDE_META.author.website} target="_blank" rel="noopener noreferrer" className="text-sm text-[#2D5CF3] hover:underline">Portfolio</a>
-              </div>
-            </div>
-          </div>
-        </div>
+        {/* Author + Contact */}
+        <AuthorContactCard lang={lang as 'en' | 'fr'} isDark={isDark} />
       </div>
     </div>
   </div>
@@ -205,7 +193,7 @@ const GuideChapter: React.FC<{
           if (entry.isIntersecting) setActiveSection(entry.target.id);
         }
       },
-      { rootMargin: '-80px 0px -60% 0px', threshold: 0 }
+      { rootMargin: '-112px 0px -60% 0px', threshold: 0 }
     );
     chapter.sections.forEach((_, i) => {
       const el = document.getElementById(`section-${slug}-${i}`);
@@ -216,13 +204,7 @@ const GuideChapter: React.FC<{
 
   // Scroll to top on chapter change
   useEffect(() => {
-    // Find the scrollable container (the fixed div with overflow-y-auto)
-    const scrollContainer = articleRef.current?.closest('[data-scroll-container]');
-    if (scrollContainer) {
-      scrollContainer.scrollTo({ top: 0 });
-    } else {
-      window.scrollTo({ top: 0 });
-    }
+    window.scrollTo({ top: 0 });
     setActiveSection('');
   }, [slug]);
 
@@ -300,7 +282,7 @@ const GuideChapter: React.FC<{
               <div
                 key={sIdx}
                 id={`section-${slug}-${sIdx}`}
-                className={`mb-14 scroll-mt-20 ${sIdx > 0 ? `pt-10 border-t ${isDark ? 'border-white/5' : 'border-gray-100'}` : ''}`}
+                className={`mb-14 scroll-mt-28 ${sIdx > 0 ? `pt-10 border-t ${isDark ? 'border-white/5' : 'border-gray-100'}` : ''}`}
               >
                 <h2 className={`text-xl md:text-2xl font-bold tracking-[-0.02em] leading-tight mb-5 ${isDark ? 'text-white' : 'text-gray-900'}`}>
                   {lang === 'fr' ? section.heading_fr : section.heading_en}
@@ -345,23 +327,14 @@ const GuideChapter: React.FC<{
 
             {/* Contact CTA (only on last chapter) */}
             {!next && (
-              <div className={`mt-10 p-6 md:p-8 rounded-2xl border ${isDark ? 'bg-[#1D1D1F] border-white/5' : 'bg-white border-gray-100'}`}>
-                <h3 className={`text-lg font-bold tracking-[-0.02em] mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                  {lang === 'en' ? 'Need help getting started?' : 'Besoin d\'accompagnement pour démarrer ?'}
-                </h3>
-                <p className={`text-sm leading-relaxed mb-5 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                  {lang === 'en'
+              <div className="mt-10">
+                <AuthorContactCard
+                  lang={lang as 'en' | 'fr'}
+                  isDark={isDark}
+                  message={lang === 'en'
                     ? 'I help design teams integrate Claude Code into their workflows: workshops, pair sessions, project setup.'
                     : 'J\'accompagne les équipes design dans l\'intégration de Claude Code : ateliers, sessions en binôme, mise en place de projets.'}
-                </p>
-                <div className="flex flex-wrap gap-3">
-                  <a href={GUIDE_META.author.linkedin} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium bg-[#2D5CF3] text-white hover:bg-[#2450d9] shadow-sm hover:shadow-md active:scale-[0.97]" style={{ transition: 'background-color 200ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 200ms ease' }}>
-                    <LinkedinLogo size={16} weight="bold" /> LinkedIn
-                  </a>
-                  <a href="mailto:victor@victorsoussan.fr" className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium active:scale-[0.97] ${isDark ? 'bg-white/5 text-white hover:bg-white/10 ring-1 ring-white/10' : 'bg-gray-100 text-gray-900 hover:bg-gray-200'}`} style={{ transition: 'background-color 200ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}>
-                    <Envelope size={16} /> Email
-                  </a>
-                </div>
+                />
               </div>
             )}
 
@@ -416,19 +389,12 @@ const GuideClaudeCodePage: React.FC<Props> = ({ systemTheme, lang, view, onNavig
   const chapter = !isIndex ? GUIDE_CHAPTERS.find(c => c.slug_en === view || c.slug_fr === view) : null;
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.2 }}
-      role="dialog"
-      aria-modal="true"
-      aria-label="Claude Code Guide"
+    <div
       data-scroll-container
-      className={`fixed inset-0 md:top-16 z-[100] overflow-y-auto ${isDark ? 'bg-[#0a0a0a]' : 'bg-[#FCFCFD]'}`}
+      className={`min-h-screen ${isDark ? 'bg-[#0a0a0a]' : 'bg-[#FCFCFD]'}`}
     >
-      {/* Breadcrumb bar - sticky with glass effect */}
-      <div className={`sticky top-0 z-10 border-b backdrop-blur-xl ${isDark ? 'bg-[#0a0a0a]/80 border-white/5' : 'bg-[#FCFCFD]/80 border-gray-200'}`}>
+      {/* Breadcrumb bar - sticky below Nav */}
+      <div className={`sticky top-16 z-10 border-b backdrop-blur-xl ${isDark ? 'bg-[#0a0a0a]/80 border-white/5' : 'bg-[#FCFCFD]/80 border-gray-200'}`}>
         <div className={`max-w-[1200px] mx-auto px-4 md:px-6 h-10 flex items-center justify-between ${!isIndex ? 'lg:pl-[216px]' : ''}`}>
           <nav className="flex items-center gap-1.5 text-[13px] min-w-0 overflow-hidden">
             <button onClick={() => onNavigate('blog')} className={`transition-colors cursor-pointer hover:underline flex-shrink-0 ${isDark ? 'text-gray-500 hover:text-white' : 'text-gray-400 hover:text-gray-900'}`}>
@@ -591,7 +557,7 @@ const GuideClaudeCodePage: React.FC<Props> = ({ systemTheme, lang, view, onNavig
         .article-body-dark img:hover { box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
         .article-body-dark hr { border-top-color: rgba(255,255,255,0.05); }
       `}</style>
-    </motion.div>
+    </div>
   );
 };
 

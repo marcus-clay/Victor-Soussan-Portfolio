@@ -3,8 +3,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
-import { smoothScrollTo } from '../../utils/smoothScroll';
-import { X } from '@phosphor-icons/react';
 import CaseStudyTOCSidebar from '../../components/CaseStudyTOCSidebar';
 import FranceVaeExecutive from '../../components/case-studies/FranceVaeExecutive';
 import FranceVaeFull from '../../components/case-studies/FranceVaeFull';
@@ -264,19 +262,13 @@ const FranceVaePage: React.FC<FranceVaePageProps> = ({
 
   // Scroll to top when mode changes
   useEffect(() => {
-    const container = containerRef.current;
-    if (container) {
-      container.scrollTo({ top: 0, behavior: 'instant' });
-    }
+    window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
   }, [caseStudyMode, viewMode]);
 
   // Track scroll position and update active section (only in full mode)
   useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
     const handleScroll = () => {
-      const scrollTop = container.scrollTop;
+      const scrollTop = window.scrollY;
 
       // Show nav after scrolling past hero (300px)
       setShowNav(scrollTop > 300);
@@ -307,22 +299,19 @@ const FranceVaePage: React.FC<FranceVaePageProps> = ({
       }
     };
 
-    container.addEventListener('scroll', handleScroll);
-    return () => container.removeEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, [sections]);
 
-  // Scroll to section with proper offset for header + sticky mini-nav
+  // Scroll to section with proper offset
   const scrollToSection = (sectionId: string) => {
-    if (!containerRef.current) return;
     if (sectionId === 'top') {
-      smoothScrollTo(containerRef.current, 0);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
     const element = document.getElementById(sectionId);
     if (element) {
-      const headerOffset = 73 + 56 + 24;
-      const elementPosition = element.offsetTop - headerOffset;
-      smoothScrollTo(containerRef.current, elementPosition);
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
 
@@ -342,127 +331,7 @@ const FranceVaePage: React.FC<FranceVaePageProps> = ({
   };
 
   return (
-    <motion.div
-      ref={containerRef}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.15 }}
-      className={`fixed inset-0 z-50 overflow-y-auto ${
-        viewMode === 'gallery' ? 'bg-black' : (isDark ? 'bg-[#0a0a0a]' : 'bg-white')
-      }`}
-    >
-      {/* Header - Glass effect */}
-      <header
-        className={`sticky top-0 z-40 backdrop-blur-xl ${
-          viewMode === 'gallery'
-            ? 'bg-black/80'
-            : (isDark ? 'bg-[#0a0a0a]/80' : 'bg-white/80')
-        }`}
-      >
-        <div className="w-full px-6 h-16 flex items-center gap-4">
-          {/* Left - Title - Same style as Homepage nav */}
-          <div className="flex-shrink-0">
-            <h1
-              className={`font-semibold text-lg tracking-[-0.02em] ${
-                viewMode === 'gallery' ? 'text-white' : (isDark ? 'text-white' : 'text-gray-900')
-              }`}
-            >
-              France VAE
-            </h1>
-          </div>
-
-          {/* Center - Toggle Switch with animated pill (3 options) */}
-          <div className="flex-1 flex justify-center">
-            <div
-              className={`relative flex items-center gap-0.5 sm:gap-1 rounded-full p-0.5 sm:p-1 ${
-                viewMode === 'gallery' ? 'bg-white/10' : (isDark ? 'bg-white/10' : 'bg-gray-100')
-              }`}
-            >
-              {/* Summary button */}
-              <button
-                onClick={() => { if (onViewModeChange) onViewModeChange('executive'); setViewMode('caseStudy'); setCaseStudyMode('executive'); }}
-                className="relative z-10 px-2 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 whitespace-nowrap"
-              >
-                {(propViewMode === 'executive' || (viewMode === 'caseStudy' && caseStudyMode === 'executive')) && (
-                  <motion.div
-                    layoutId="francevae-toggle-pill"
-                    className="absolute inset-0 bg-blue-600 rounded-full shadow-md"
-                    transition={{ type: 'spring', stiffness: 500, damping: 35, mass: 0.8 }}
-                  />
-                )}
-                <span className={`relative z-10 ${
-                  (propViewMode === 'executive' || (viewMode === 'caseStudy' && caseStudyMode === 'executive'))
-                    ? 'text-white'
-                    : (viewMode === 'gallery' ? 'text-gray-400 hover:text-white' : (isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'))
-                }`}>
-                  <span className="hidden sm:inline">{lang === 'fr' ? 'Résumé' : 'Summary'}</span>
-                  <span className="sm:hidden">{lang === 'fr' ? 'Rés.' : 'Sum.'}</span>
-                </span>
-              </button>
-
-              {/* Full case button */}
-              <button
-                onClick={() => { if (onViewModeChange) onViewModeChange('caseStudy'); setViewMode('caseStudy'); setCaseStudyMode('full'); }}
-                className="relative z-10 px-2 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 whitespace-nowrap"
-              >
-                {viewMode === 'caseStudy' && caseStudyMode === 'full' && (
-                  <motion.div
-                    layoutId="francevae-toggle-pill"
-                    className="absolute inset-0 bg-blue-600 rounded-full shadow-md"
-                    transition={{ type: 'spring', stiffness: 500, damping: 35, mass: 0.8 }}
-                  />
-                )}
-                <span className={`relative z-10 ${
-                  viewMode === 'caseStudy' && caseStudyMode === 'full'
-                    ? 'text-white'
-                    : (viewMode === 'gallery' ? 'text-gray-400 hover:text-white' : (isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'))
-                }`}>
-                  <span className="hidden sm:inline">{lang === 'fr' ? 'Cas complet' : 'Full case'}</span>
-                  <span className="sm:hidden">{lang === 'fr' ? 'Full' : 'Full'}</span>
-                </span>
-              </button>
-
-              {/* Gallery button */}
-              <button
-                onClick={() => { if (onViewModeChange) onViewModeChange('gallery'); setViewMode('gallery'); }}
-                className="relative z-10 px-2 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 whitespace-nowrap"
-              >
-                {viewMode === 'gallery' && (
-                  <motion.div
-                    layoutId="francevae-toggle-pill"
-                    className="absolute inset-0 bg-blue-600 rounded-full shadow-md"
-                    transition={{ type: 'spring', stiffness: 500, damping: 35, mass: 0.8 }}
-                  />
-                )}
-                <span className={`relative z-10 ${
-                  viewMode === 'gallery'
-                    ? 'text-white'
-                    : (isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900')
-                }`}>
-                  <span className="hidden sm:inline">{lang === 'fr' ? 'Galerie' : 'Gallery'}</span>
-                  <span className="sm:hidden">{lang === 'fr' ? 'Gal.' : 'Gal.'}</span>
-                </span>
-              </button>
-            </div>
-          </div>
-
-          {/* Right - Close button */}
-          <div className="flex-shrink-0">
-            <button
-              onClick={onClose}
-              className={`relative p-3 flex items-center justify-center rounded-full transition-colors before:absolute before:inset-[-12px] before:content-[''] ${
-                viewMode === 'gallery'
-                  ? 'text-gray-400 hover:text-white hover:bg-white/10'
-                  : (isDark ? 'text-gray-400 hover:text-white hover:bg-white/10' : 'text-gray-500 hover:text-gray-900 hover:bg-black/5')
-              }`}
-            >
-              <X size={24} />
-            </button>
-          </div>
-        </div>
-      </header>
-
+    <div ref={containerRef} className={`min-h-screen ${viewMode === 'gallery' ? 'bg-black' : (isDark ? 'bg-[#0a0a0a]' : 'bg-white')}`}>
       {/* TOC Sidebar - Persistent left navigation for full mode */}
       <CaseStudyTOCSidebar
         sections={sections}
@@ -530,7 +399,7 @@ const FranceVaePage: React.FC<FranceVaePageProps> = ({
         projectId="france-vae"
         updateUrl={true}
       />
-    </motion.div>
+    </div>
   );
 };
 

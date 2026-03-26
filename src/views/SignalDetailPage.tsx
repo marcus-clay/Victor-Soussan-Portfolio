@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, Clock, Calendar, ArrowRight } from '@phosphor-icons/react';
 import { SIGNALS, CATEGORY_COLORS, CATEGORY_LABELS } from '../data/signalsData';
 import CaseStudyTOCSidebar from '../components/CaseStudyTOCSidebar';
+import AuthorContactCard from '../components/AuthorContactCard';
 
 interface Props {
   signalId: string;
@@ -113,8 +114,8 @@ const SignalDetailPage: React.FC<Props> = ({ signalId, systemTheme, lang, onBack
       aria-label="Signal detail"
       className={`min-h-screen ${isDark ? 'bg-[#0a0a0a]' : 'bg-[#FCFCFD]'}`}
     >
-      {/* Breadcrumb - sticky with glass effect */}
-      <div className={`sticky top-0 z-10 border-b backdrop-blur-xl ${isDark ? 'bg-[#0a0a0a]/80 border-white/5' : 'bg-[#FCFCFD]/80 border-gray-200'}`}>
+      {/* Breadcrumb - sticky below Nav */}
+      <div className={`sticky top-16 z-10 border-b backdrop-blur-xl ${isDark ? 'bg-[#0a0a0a]/80 border-white/5' : 'bg-[#FCFCFD]/80 border-gray-200'}`}>
         <div className="max-w-[1200px] mx-auto px-4 md:px-6 h-10 flex items-center">
           <nav className="flex items-center gap-1.5 text-[13px] min-w-0 overflow-hidden">
             <button
@@ -213,19 +214,9 @@ const SignalDetailPage: React.FC<Props> = ({ signalId, systemTheme, lang, onBack
             dangerouslySetInnerHTML={{ __html: processedHtml }}
           />
 
-          {/* Author card */}
-          <div className={`mt-14 p-6 rounded-2xl border ${isDark ? 'bg-[#1D1D1F] border-white/5' : 'bg-white border-gray-100'}`}>
-            <div className="flex items-center gap-4">
-              <img
-                src="/images/photos victor/image_victor_home.png"
-                alt="Victor Soussan"
-                className="w-12 h-12 rounded-full object-cover"
-              />
-              <div>
-                <p className={`font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>Victor Soussan</p>
-                <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Lead Product Designer</p>
-              </div>
-            </div>
+          {/* Author + Contact */}
+          <div className="mt-14">
+            <AuthorContactCard lang={lang} isDark={isDark} />
           </div>
 
           {/* Related articles (inline, below author) */}
@@ -307,7 +298,7 @@ const SignalDetailPage: React.FC<Props> = ({ signalId, systemTheme, lang, onBack
           margin-bottom: 1rem;
           padding-top: 1.5rem;
           border-top: 1px solid #f3f4f6;
-          scroll-margin-top: 5rem;
+          scroll-margin-top: 7rem;
         }
         .article-body h2:first-child { margin-top: 0; padding-top: 0; border-top: none; }
         .article-body h3 {

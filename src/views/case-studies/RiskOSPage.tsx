@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { X, ArrowUpRight } from '@phosphor-icons/react';
-import { smoothScrollTo } from '../../utils/smoothScroll';
+import { ArrowUpRight } from '@phosphor-icons/react';
 import CaseStudyTOCSidebar from '../../components/CaseStudyTOCSidebar';
 import EnhancedLightbox, { type LightboxImage } from '../../components/media/EnhancedLightbox';
 
@@ -296,7 +295,6 @@ function buildLightboxItems(lang: 'en' | 'fr'): LightboxImage[] {
 // ─── Main Component ──────────────────────────────────────────────────────────
 
 const RiskOSPage: React.FC<RiskOSPageProps> = ({
-  onClose,
   lang: propLang,
 }) => {
   const lang = propLang || 'fr';
@@ -318,13 +316,10 @@ const RiskOSPage: React.FC<RiskOSPageProps> = ({
     setLightboxOpen(true);
   };
 
-  // Track scroll position and update active section
+  // Track scroll position and update active section (window scroll)
   useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
     const handleScroll = () => {
-      const scrollTop = container.scrollTop;
+      const scrollTop = window.scrollY;
       setShowNav(scrollTop > 300);
 
       if (scrollTop < 100) {
@@ -349,38 +344,23 @@ const RiskOSPage: React.FC<RiskOSPageProps> = ({
       }
     };
 
-    container.addEventListener('scroll', handleScroll);
-    return () => container.removeEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, [sections]);
 
   const scrollToSection = (sectionId: string) => {
-    if (!containerRef.current) return;
     if (sectionId === 'top') {
-      smoothScrollTo(containerRef.current, 0);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
     const element = document.getElementById(sectionId);
     if (element) {
-      const offset = element.offsetTop - 80;
-      smoothScrollTo(containerRef.current, offset);
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-[#0a0a0a] flex flex-col overflow-hidden">
-      {/* Header */}
-      <header className="sticky top-0 z-50 backdrop-blur-xl bg-[#0a0a0a]/80 border-b border-white/5">
-        <div className="w-full pl-6 pr-2.5 h-16 flex items-center justify-between">
-          <span className="font-semibold text-lg tracking-[-0.02em] text-white">RiskOS</span>
-          <button
-            onClick={onClose}
-            className="relative p-3 rounded-full transition-colors hover:bg-white/10 before:absolute before:inset-[-12px] before:content-[''] cursor-pointer"
-          >
-            <X size={24} className="text-white" />
-          </button>
-        </div>
-      </header>
-
+    <div ref={containerRef} className="bg-[#0a0a0a] min-h-screen">
       {/* TOC Sidebar */}
       <CaseStudyTOCSidebar
         sections={sections}
@@ -402,12 +382,6 @@ const RiskOSPage: React.FC<RiskOSPageProps> = ({
         projectId="riskos"
         videoStartTime={videoTime}
       />
-
-      {/* Main scrollable content */}
-      <div
-        ref={containerRef}
-        className="flex-1 overflow-y-auto scroll-smooth"
-      >
         {/* Hero */}
         <div className="max-w-[1200px] mx-auto px-6 md:px-10 pt-16 md:pt-24 pb-16">
           <motion.div
@@ -451,7 +425,7 @@ const RiskOSPage: React.FC<RiskOSPageProps> = ({
           </figure>
 
           {/* Section: Why */}
-          <section id="why" className="mb-24 md:mb-32 scroll-mt-24">
+          <section id="why" className="mb-24 md:mb-32 scroll-mt-28">
             <SectionTitle>{t.whyTitle}</SectionTitle>
             <Paragraph>{t.whyP1}</Paragraph>
             <Paragraph>{t.whyP2}</Paragraph>
@@ -459,7 +433,7 @@ const RiskOSPage: React.FC<RiskOSPageProps> = ({
           </section>
 
           {/* Section: Insight */}
-          <section id="insight" className="mb-24 md:mb-32 scroll-mt-24">
+          <section id="insight" className="mb-24 md:mb-32 scroll-mt-28">
             <SectionTitle>{t.insightTitle}</SectionTitle>
             <Paragraph>{t.insightP1}</Paragraph>
             <Paragraph>{t.insightP2}</Paragraph>
@@ -476,7 +450,7 @@ const RiskOSPage: React.FC<RiskOSPageProps> = ({
           />
 
           {/* Section: Design Question */}
-          <section id="design-question" className="mb-24 md:mb-32 scroll-mt-24">
+          <section id="design-question" className="mb-24 md:mb-32 scroll-mt-28">
             <SectionTitle>{t.designQuestionTitle}</SectionTitle>
             <Paragraph>{t.designQuestionP1}</Paragraph>
             <Paragraph>{t.designQuestionP2}</Paragraph>
@@ -501,7 +475,7 @@ const RiskOSPage: React.FC<RiskOSPageProps> = ({
           />
 
           {/* Section: Triage */}
-          <section id="triage" className="mb-8 scroll-mt-24">
+          <section id="triage" className="mb-8 scroll-mt-28">
             <SectionTitle>{t.triageTitle}</SectionTitle>
             <Paragraph>{t.triageText}</Paragraph>
           </section>
@@ -516,7 +490,7 @@ const RiskOSPage: React.FC<RiskOSPageProps> = ({
           />
 
           {/* Section: AI Analysis */}
-          <section id="ai-analysis" className="mb-8 scroll-mt-24">
+          <section id="ai-analysis" className="mb-8 scroll-mt-28">
             <SectionTitle>{t.aiTitle}</SectionTitle>
             <Paragraph>{t.aiP1}</Paragraph>
             <Paragraph>{t.aiP2}</Paragraph>
@@ -532,7 +506,7 @@ const RiskOSPage: React.FC<RiskOSPageProps> = ({
           />
 
           {/* Section: Decision */}
-          <section id="decision" className="mb-8 scroll-mt-24">
+          <section id="decision" className="mb-8 scroll-mt-28">
             <SectionTitle>{t.decisionTitle}</SectionTitle>
             <Paragraph>{t.decisionP1}</Paragraph>
             <Paragraph>{t.decisionP2}</Paragraph>
@@ -548,7 +522,7 @@ const RiskOSPage: React.FC<RiskOSPageProps> = ({
           />
 
           {/* Section: False Positive */}
-          <section id="false-positive" className="mb-8 scroll-mt-24">
+          <section id="false-positive" className="mb-8 scroll-mt-28">
             <SectionTitle>{t.falsePositiveTitle}</SectionTitle>
             <Paragraph>{t.falsePositiveText}</Paragraph>
           </section>
@@ -563,7 +537,7 @@ const RiskOSPage: React.FC<RiskOSPageProps> = ({
           />
 
           {/* Section: Queue */}
-          <section id="queue" className="mb-8 scroll-mt-24">
+          <section id="queue" className="mb-8 scroll-mt-28">
             <SectionTitle>{t.queueTitle}</SectionTitle>
             <Paragraph>{t.queueText}</Paragraph>
           </section>
@@ -578,7 +552,7 @@ const RiskOSPage: React.FC<RiskOSPageProps> = ({
           />
 
           {/* Section: Learnings */}
-          <section id="learnings" className="mb-24 md:mb-32 scroll-mt-24">
+          <section id="learnings" className="mb-24 md:mb-32 scroll-mt-28">
             <SectionTitle>{t.learningsTitle}</SectionTitle>
             <Paragraph>{t.learningsIntro}</Paragraph>
 
@@ -631,7 +605,6 @@ const RiskOSPage: React.FC<RiskOSPageProps> = ({
             </div>
           </section>
         </div>
-      </div>
     </div>
   );
 };

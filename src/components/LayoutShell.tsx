@@ -4,7 +4,7 @@ import { usePathname } from 'next/navigation'
 import type { ReactNode } from 'react'
 
 // Routes that use their own full-screen layout (no Nav/Footer)
-const BARE_ROUTES = ['/project/', '/presentation', '/quote']
+const BARE_ROUTES = ['/presentation', '/quote']
 
 export default function LayoutShell({
   lang,

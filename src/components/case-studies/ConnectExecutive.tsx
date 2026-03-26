@@ -24,6 +24,7 @@ import {
   Lightning as Zap,
   Trophy
 } from '@phosphor-icons/react';
+import CaseStudyViewPills from '../CaseStudyViewPills';
 interface ConnectExecutiveProps {
   systemTheme: 'light' | 'dark';
   lang: 'en' | 'fr';
@@ -1011,7 +1012,6 @@ const ConnectExecutive: React.FC<ConnectExecutiveProps> = ({
   systemTheme,
   lang,
   onImageClick,
-  onViewFull: _onViewFull,
   onContact,
 }) => {
   const isDark = systemTheme === 'dark';
@@ -1060,6 +1060,8 @@ const ConnectExecutive: React.FC<ConnectExecutiveProps> = ({
               {t.hero.subtitle}
             </p>
           </FadeInSection>
+
+          <CaseStudyViewPills lang={lang} projectId="connect" isDark={isDark} />
 
           {/* Hero Image */}
           <FadeInSection delay={0.3} className="mt-12">

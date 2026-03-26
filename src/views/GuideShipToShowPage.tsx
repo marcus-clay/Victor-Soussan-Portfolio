@@ -7,9 +7,10 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import {
   ArrowLeft, Clock, Calendar, CaretRight, Check,
-  LinkedinLogo, Envelope, GithubLogo, ArrowSquareOut,
+  GithubLogo, ArrowSquareOut,
   Terminal, Package, FilmStrip, PencilLine, Rocket, Crosshair, TreeStructure,
 } from '@phosphor-icons/react';
+import AuthorContactCard from '../components/AuthorContactCard';
 import {
   SHIP_TO_SHOW_META,
   SHIP_TO_SHOW_PHASES,
@@ -56,8 +57,8 @@ const GuideShipToShowPage: React.FC<Props> = ({ lang, onNavigate }) => {
       data-scroll-container
       className="min-h-screen bg-[#FCFCFD]"
     >
-      {/* Breadcrumb bar - glass effect */}
-      <div className="sticky top-0 z-10 border-b backdrop-blur-xl bg-[#FCFCFD]/80 border-gray-200">
+      {/* Breadcrumb bar - sticky below Nav */}
+      <div className="sticky top-16 z-10 border-b backdrop-blur-xl bg-[#FCFCFD]/80 border-gray-200">
         <div className="max-w-[1200px] mx-auto px-4 md:px-6 h-10 flex items-center">
           <nav className="flex items-center gap-1.5 text-[13px] min-w-0 overflow-hidden">
             <button
@@ -182,7 +183,7 @@ const GuideShipToShowPage: React.FC<Props> = ({ lang, onNavigate }) => {
           {/* Main content */}
           <div className="flex-1 min-w-0">
             {/* ─── The Problem ─── */}
-            <section id="problem" className="mb-14 scroll-mt-20">
+            <section id="problem" className="mb-14 scroll-mt-28">
               <h2 className="text-2xl md:text-[1.75rem] font-bold tracking-[-0.02em] mb-5 text-gray-900">
                 {lang === 'fr' ? 'Le problème' : 'The problem'}
               </h2>
@@ -192,7 +193,7 @@ const GuideShipToShowPage: React.FC<Props> = ({ lang, onNavigate }) => {
             </section>
 
             {/* ─── The Framework ─── */}
-            <section className="mb-14 scroll-mt-20">
+            <section className="mb-14 scroll-mt-28">
               <div className="p-6 rounded-xl border-l-4 border-[#2D5CF3] bg-blue-50/50 mb-8">
                 <p className="text-[15px] leading-[1.8] text-gray-700">
                   {lang === 'fr' ? SHIP_TO_SHOW_SOLUTION.fr : SHIP_TO_SHOW_SOLUTION.en}
@@ -201,7 +202,7 @@ const GuideShipToShowPage: React.FC<Props> = ({ lang, onNavigate }) => {
             </section>
 
             {/* ─── The 7 Phases ─── */}
-            <section id="phases" className="mb-14 scroll-mt-20">
+            <section id="phases" className="mb-14 scroll-mt-28">
               <h2 className="text-2xl md:text-[1.75rem] font-bold tracking-[-0.02em] mb-8 text-gray-900">
                 {lang === 'fr' ? 'Les 7 phases' : 'The 7 phases'}
               </h2>
@@ -276,7 +277,7 @@ const GuideShipToShowPage: React.FC<Props> = ({ lang, onNavigate }) => {
             </section>
 
             {/* ─── Installation ─── */}
-            <section id="install" className="mb-14 scroll-mt-20 pt-10 border-t border-gray-100">
+            <section id="install" className="mb-14 scroll-mt-28 pt-10 border-t border-gray-100">
               <h2 className="text-2xl md:text-[1.75rem] font-bold tracking-[-0.02em] mb-5 text-gray-900">
                 {lang === 'fr' ? 'Installation comme skill Claude Code' : 'Install as a Claude Code skill'}
               </h2>
@@ -295,7 +296,7 @@ const GuideShipToShowPage: React.FC<Props> = ({ lang, onNavigate }) => {
             </section>
 
             {/* ─── Example: RiskOS ─── */}
-            <section id="example" className="mb-14 scroll-mt-20 pt-10 border-t border-gray-100">
+            <section id="example" className="mb-14 scroll-mt-28 pt-10 border-t border-gray-100">
               <h2 className="text-2xl md:text-[1.75rem] font-bold tracking-[-0.02em] mb-5 text-gray-900">
                 {lang === 'fr' ? 'Exemple : RiskOS' : 'Example: RiskOS'}
               </h2>
@@ -315,7 +316,7 @@ const GuideShipToShowPage: React.FC<Props> = ({ lang, onNavigate }) => {
             </section>
 
             {/* ─── GitHub CTA ─── */}
-            <section className="mb-14 scroll-mt-20 pt-10 border-t border-gray-100">
+            <section className="mb-14 scroll-mt-28 pt-10 border-t border-gray-100">
               <div className="p-6 md:p-8 rounded-2xl border bg-white border-gray-100">
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 rounded-xl bg-gray-900 flex items-center justify-center flex-shrink-0">
@@ -346,36 +347,7 @@ const GuideShipToShowPage: React.FC<Props> = ({ lang, onNavigate }) => {
             </section>
 
             {/* ─── Author + Contact CTA ─── */}
-            <div className="p-6 md:p-8 rounded-2xl border bg-white border-gray-100">
-              <div className="flex items-start gap-4">
-                <img src={meta.author.image} alt={meta.author.name} className="w-14 h-14 rounded-full object-cover" />
-                <div>
-                  <p className="font-bold mb-0.5 text-gray-900">{meta.author.name}</p>
-                  <p className="text-sm mb-2 text-gray-500">{meta.author.role}</p>
-                  <p className="text-sm leading-relaxed mb-3 text-gray-400">
-                    {lang === 'fr' ? meta.author.bio_fr : meta.author.bio_en}
-                  </p>
-                  <div className="flex flex-wrap gap-3">
-                    <a
-                      href={meta.author.linkedin}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium bg-[#2D5CF3] text-white hover:bg-[#2450d9] shadow-sm hover:shadow-md active:scale-[0.97]"
-                      style={{ transition: 'background-color 200ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 200ms ease' }}
-                    >
-                      <LinkedinLogo size={16} weight="bold" /> LinkedIn
-                    </a>
-                    <a
-                      href="mailto:victor@victorsoussan.fr"
-                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium bg-gray-100 text-gray-900 hover:bg-gray-200 active:scale-[0.97]"
-                      style={{ transition: 'background-color 200ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
-                    >
-                      <Envelope size={16} /> Email
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <AuthorContactCard lang={lang} />
 
             {/* Back to resources */}
             <div className="mt-10 flex justify-center">

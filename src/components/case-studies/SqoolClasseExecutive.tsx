@@ -25,6 +25,7 @@ import {
   Briefcase,
   Trophy
 } from '@phosphor-icons/react';
+import CaseStudyViewPills from '../CaseStudyViewPills';
 
 interface SqoolClasseExecutiveProps {
   systemTheme: 'light' | 'dark';
@@ -907,7 +908,6 @@ const SqoolClasseExecutive: React.FC<SqoolClasseExecutiveProps> = ({
   systemTheme,
   lang,
   onImageClick,
-  onViewFull: _onViewFull,
   onContact,
   onViewPrototypes
 }) => {
@@ -954,6 +954,8 @@ const SqoolClasseExecutive: React.FC<SqoolClasseExecutiveProps> = ({
               {t.hero.subtitle}
             </p>
           </FadeInSection>
+
+          <CaseStudyViewPills lang={lang} projectId="sqool-classe" isDark={isDark} />
 
           {/* Hero Image */}
           <FadeInSection delay={0.3} className="mt-12">
