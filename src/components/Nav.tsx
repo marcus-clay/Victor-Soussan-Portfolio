@@ -94,7 +94,7 @@ export default function Nav({ lang }: { lang: Lang }) {
                 <Link
                   key={item.id}
                   href={`/${lang}/${item.route}`}
-                  className={`px-3 py-1.5 rounded-lg text-[13px] whitespace-nowrap ${
+                  className={`px-3 py-1.5 rounded-full text-[13px] whitespace-nowrap ${
                     active
                       ? 'text-gray-900 font-semibold'
                       : 'text-gray-500 font-medium hover:text-gray-900 hover:bg-black/[0.04]'
@@ -112,7 +112,7 @@ export default function Nav({ lang }: { lang: Lang }) {
             {/* Language switch */}
             <Link
               href={`/${otherLang}${pathname.replace(`/${lang}`, '')}`}
-              className="px-2.5 py-1.5 text-[13px] font-medium rounded-lg text-gray-400 hover:text-gray-900 hover:bg-black/[0.04] whitespace-nowrap"
+              className="px-2.5 py-1.5 text-[13px] font-medium rounded-full text-gray-400 hover:text-gray-900 hover:bg-black/[0.04] whitespace-nowrap"
               style={{ transition: 'background-color 150ms ease, color 150ms ease' }}
             >
               {lang === 'en' ? 'FR' : 'EN'}
@@ -121,7 +121,7 @@ export default function Nav({ lang }: { lang: Lang }) {
             {/* Contact button */}
             <Link
               href={`/${lang}/contact`}
-              className="ml-1.5 px-4 py-1.5 text-[13px] font-medium rounded-lg bg-gray-900 text-white hover:bg-gray-800 active:scale-[0.97]"
+              className="ml-1.5 px-4 py-1.5 text-[13px] font-medium rounded-full bg-gray-900 text-white hover:bg-gray-800 active:scale-[0.97]"
               style={{ transition: 'background-color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
             >
               {content.contact}
