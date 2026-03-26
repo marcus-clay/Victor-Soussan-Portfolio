@@ -33,7 +33,7 @@ export default function LayoutShell({
         Skip to content
       </a>
       {nav}
-      <main id="main-content" className="pt-16">
+      <main id="main-content" style={{ paddingTop: 'var(--nav-height, 72px)', transition: 'padding-top 250ms cubic-bezier(0.23, 1, 0.32, 1)' }}>
         {children}
       </main>
       {footer}

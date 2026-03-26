@@ -13,19 +13,27 @@
 - Rounded-full, font-medium, inline-flex with gap-2
 - Never use `bg-gray-900` for CTAs
 
-## Page Header Pattern
-All full-page overlays use the same header:
+## Site Header (Nav)
+- Default height: 64px, reduces to 56px on scroll (transition 250ms ease-out)
+- Logo: "Victor Soussan" at text-base (16px), font-semibold, tracking-[-0.02em]
+- Nav items: text-sm, rounded-full pills with hover bg-black/[0.04]
+- Active indicator: 2px blue underline inside pill
+- Contact button: bg-gray-900 text-white, rounded-full, same height as nav pills
+- Glass effect: bg-white/80 backdrop-blur-xl border-b border-gray-100/80
+- Scrollbar gutter: `scrollbar-gutter: stable` on html to prevent layout shift
+
+## Page Header Pattern (overlays)
 ```
 <header className="sticky top-0 z-50 backdrop-blur-xl bg-[#0a0a0a]/80 (dark) | bg-[#FCFCFD]/80 (light)">
   <div className="w-full pl-6 pr-2.5 h-16 flex items-center justify-between">
-    <span className="font-semibold text-lg tracking-[-0.02em]">{title}</span>
+    <span className="font-semibold text-base tracking-[-0.02em]">{title}</span>
     <button className="relative p-3 rounded-full transition-colors before:absolute before:inset-[-12px] before:content-['']">
       <X size={24} />
     </button>
   </div>
 </header>
 ```
-- Title on LEFT, X close button on RIGHT
+- Title on LEFT at 16px (text-base), X close button on RIGHT
 - X icon size={24} with enlarged hitbox (before: pseudo-element)
 - Glass effect with backdrop-blur-xl
 

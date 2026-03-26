@@ -115,7 +115,7 @@ const SignalDetailPage: React.FC<Props> = ({ signalId, systemTheme, lang, onBack
       className={`min-h-screen ${isDark ? 'bg-[#0a0a0a]' : 'bg-[#FCFCFD]'}`}
     >
       {/* Breadcrumb - sticky below Nav */}
-      <div className={`sticky top-16 z-10 border-b backdrop-blur-xl ${isDark ? 'bg-[#0a0a0a]/80 border-white/5' : 'bg-[#FCFCFD]/80 border-gray-200'}`}>
+      <div className={`sticky z-10 border-b backdrop-blur-xl ${isDark ? 'bg-[#0a0a0a]/80 border-white/5' : 'bg-[#FCFCFD]/80 border-gray-200'}`} style={{ top: 'var(--nav-height, 72px)', transition: 'top 250ms cubic-bezier(0.23, 1, 0.32, 1)' }}>
         <div className="max-w-[1200px] mx-auto px-4 md:px-6 h-10 flex items-center">
           <nav className="flex items-center gap-1.5 text-[13px] min-w-0 overflow-hidden">
             <button
