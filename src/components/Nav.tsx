@@ -80,42 +80,40 @@ export default function Nav({ lang }: { lang: Lang }) {
           {/* Logo — 16px, comfortable hitbox */}
           <Link
             href={`/${lang}`}
-            className="font-semibold text-base tracking-[-0.02em] text-gray-900 whitespace-nowrap py-2 -my-2 pr-4 -mr-2"
-            style={{ transition: 'opacity 200ms ease' }}
-            onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.7' }}
-            onMouseLeave={(e) => { e.currentTarget.style.opacity = '1' }}
+            className="font-semibold text-[15px] tracking-[-0.02em] text-gray-900 whitespace-nowrap py-2 -my-2 pr-4 -mr-2 hover:opacity-70"
+            style={{ transition: 'opacity 150ms ease' }}
           >
             Victor Soussan
           </Link>
 
           {/* Desktop nav */}
-          <div className="hidden md:flex items-center gap-0.5 text-sm font-medium">
+          <div className="hidden md:flex items-center gap-0.5">
             {NAV_ITEMS.map((item) => {
               const active = isActive(item.route)
               return (
                 <Link
                   key={item.id}
                   href={`/${lang}/${item.route}`}
-                  className={`relative px-3 py-2 rounded-full whitespace-nowrap ${
+                  className={`px-3 py-1.5 rounded-lg text-[13px] whitespace-nowrap ${
                     active
-                      ? 'text-gray-900 bg-black/[0.04]'
-                      : 'text-gray-500 hover:text-gray-900 hover:bg-black/[0.04]'
+                      ? 'text-gray-900 font-semibold'
+                      : 'text-gray-500 font-medium hover:text-gray-900 hover:bg-black/[0.04]'
                   }`}
-                  style={{ transition: 'background-color 200ms ease, color 200ms ease' }}
+                  style={{ transition: 'background-color 150ms ease, color 150ms ease' }}
                 >
                   {content[item.labelKey]}
-                  {active && (
-                    <span className="absolute bottom-0.5 left-3 right-3 h-[2px] rounded-full bg-[#2D5CF3]" />
-                  )}
                 </Link>
               )
             })}
 
-            {/* Language switch — same pill size as nav items */}
+            {/* Separator */}
+            <div className="w-px h-4 bg-gray-200 mx-1" />
+
+            {/* Language switch */}
             <Link
               href={`/${otherLang}${pathname.replace(`/${lang}`, '')}`}
-              className="px-3 py-2 text-sm font-medium rounded-full text-gray-500 hover:text-gray-900 hover:bg-black/[0.04] whitespace-nowrap"
-              style={{ transition: 'background-color 200ms ease, color 200ms ease' }}
+              className="px-2.5 py-1.5 text-[13px] font-medium rounded-lg text-gray-400 hover:text-gray-900 hover:bg-black/[0.04] whitespace-nowrap"
+              style={{ transition: 'background-color 150ms ease, color 150ms ease' }}
             >
               {lang === 'en' ? 'FR' : 'EN'}
             </Link>
@@ -123,8 +121,8 @@ export default function Nav({ lang }: { lang: Lang }) {
             {/* Contact button */}
             <Link
               href={`/${lang}/contact`}
-              className="ml-1 px-5 py-2 text-sm font-medium rounded-full bg-gray-900 text-white hover:bg-gray-800 shadow-sm hover:shadow-md active:scale-[0.97]"
-              style={{ transition: 'background-color 200ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 200ms ease' }}
+              className="ml-1.5 px-4 py-1.5 text-[13px] font-medium rounded-lg bg-gray-900 text-white hover:bg-gray-800 active:scale-[0.97]"
+              style={{ transition: 'background-color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
             >
               {content.contact}
             </Link>
