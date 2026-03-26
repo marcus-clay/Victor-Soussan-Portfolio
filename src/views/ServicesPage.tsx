@@ -3,6 +3,7 @@
  */
 
 import React, { useState, useEffect, useCallback } from 'react';
+import { motion } from 'framer-motion';
 import {
   PencilSimple as PenTool,
   Lightning as Zap,
@@ -262,17 +263,30 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ lang, onContact }) => {
       />
 
       {/* Content */}
-      <div className="max-w-[1200px] mx-auto px-6 py-12 md:py-20">
+      <div className="max-w-[1200px] mx-auto px-6 pt-20 pb-20">
 
-        {/* Header */}
-        <div className="mb-10 md:mb-14">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-[-0.03em] mb-4 text-gray-900">
+        {/* Header — stagger entrance matching Projects page */}
+        <motion.div
+          className="mb-12"
+          initial="hidden"
+          animate="visible"
+          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08 } } }}
+        >
+          <motion.h1
+            variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
+            transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
+            className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-[-0.03em] text-gray-900 leading-[1.08]"
+          >
             {t.page_title}
-          </h1>
-          <p className="text-base md:text-lg leading-relaxed max-w-2xl text-gray-600">
+          </motion.h1>
+          <motion.p
+            variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0 } }}
+            transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
+            className="mt-4 text-lg md:text-xl text-gray-500 leading-relaxed max-w-[55ch]"
+          >
             {t.page_intro}
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
 
         {/* Service Pillars */}
         <div className="space-y-12 md:space-y-16 mb-24">
@@ -280,9 +294,13 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ lang, onContact }) => {
             const config = PILLAR_CONFIG[i];
 
             return (
-              <div
+              <motion.div
                 key={i}
                 id={PILLAR_IDS[i]}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-60px' }}
+                transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
                 className="scroll-mt-28 rounded-2xl border bg-white border-gray-100 overflow-hidden"
               >
                 <div className="p-6 md:p-8">
@@ -330,13 +348,20 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ lang, onContact }) => {
                     </div>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>
 
         {/* Approach Section */}
-        <div id="approach" className="scroll-mt-28 mb-24">
+        <motion.div
+          id="approach"
+          className="scroll-mt-28 mb-24"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
+        >
           <h2 className="text-2xl md:text-3xl font-bold tracking-[-0.02em] mb-10 text-gray-900">
             {t.approach_title}
           </h2>
@@ -364,10 +389,17 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ lang, onContact }) => {
               </div>
             ))}
           </div>
-        </div>
+        </motion.div>
 
         {/* Trusted By */}
-        <div id="clients" className="scroll-mt-28 mb-24">
+        <motion.div
+          id="clients"
+          className="scroll-mt-28 mb-24"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
+        >
           <h3 className="text-xl md:text-2xl font-bold tracking-[-0.02em] mb-8 text-center text-gray-900">
             {t.trusted_by}
           </h3>
@@ -398,7 +430,7 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ lang, onContact }) => {
               ))}
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* CTA */}
         <div className="text-center pb-16">
