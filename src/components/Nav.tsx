@@ -44,11 +44,18 @@ const MOBILE_NAV_ITEMS = [
 export default function Nav({ lang }: { lang: Lang }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
+  const [isDarkNav, setIsDarkNav] = useState(false)
   const [pageTitle, setPageTitle] = useState<string | null>(null)
   const [showPageTitle, setShowPageTitle] = useState(false)
   const pathname = usePathname()
   const content = TRANSLATIONS[lang].nav
   const otherLang = lang === 'en' ? 'fr' : 'en'
+
+  // Scroll to top on every navigation
+  useEffect(() => {
+    window.scrollTo(0, 0)
+    setIsMobileMenuOpen(false)
+  }, [pathname])
 
   // Track scroll for header height transition + update CSS variable
   useEffect(() => {
@@ -61,6 +68,17 @@ export default function Nav({ lang }: { lang: Lang }) {
     handleScroll()
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+  // Detect dark nav mode (set by CaseStudyPageWrapper via DOM class)
+  useEffect(() => {
+    const nav = document.getElementById('site-nav')
+    if (!nav) return
+    const check = () => setIsDarkNav(nav.classList.contains('nav-dark'))
+    check()
+    const observer = new MutationObserver(check)
+    observer.observe(nav, { attributes: true, attributeFilter: ['class'] })
+    return () => observer.disconnect()
+  }, [pathname])
 
   // Observe the first h1 on the page for contextual title
   useEffect(() => {
@@ -220,7 +238,11 @@ export default function Nav({ lang }: { lang: Lang }) {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-              className="fixed left-0 right-0 z-50 bg-white border-b border-gray-100 shadow-xl md:hidden"
+              className={`fixed left-0 right-0 z-50 shadow-xl md:hidden ${
+                isDarkNav
+                  ? 'bg-[#1D1D1F] border-b border-white/5'
+                  : 'bg-white border-b border-gray-100'
+              }`}
               style={{ top: isScrolled ? 56 : 72, transition: 'top 250ms cubic-bezier(0.23, 1, 0.32, 1)' }}
             >
               <div className="px-4 py-3">
@@ -237,21 +259,23 @@ export default function Nav({ lang }: { lang: Lang }) {
                       href={`/${lang}/${item.route}`}
                       onClick={() => setIsMobileMenuOpen(false)}
                       className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all ${
-                        index < arr.length - 1 ? 'border-b border-gray-50' : ''
+                        index < arr.length - 1 ? (isDarkNav ? 'border-b border-white/5' : 'border-b border-gray-50') : ''
                       }`}
                     >
                       <div
                         className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
                           active
                             ? 'bg-[#2D5CF3] text-white shadow-md shadow-blue-500/25'
-                            : 'bg-gray-100 text-gray-500'
+                            : isDarkNav ? 'bg-white/10 text-gray-400' : 'bg-gray-100 text-gray-500'
                         }`}
                       >
                         <Icon size={18} weight={active ? 'bold' : 'regular'} />
                       </div>
                       <span
                         className={`text-[15px] tracking-[-0.02em] ${
-                          active ? 'text-gray-900 font-semibold' : 'text-gray-600'
+                          active
+                            ? (isDarkNav ? 'text-white font-semibold' : 'text-gray-900 font-semibold')
+                            : (isDarkNav ? 'text-gray-400' : 'text-gray-600')
                         }`}
                       >
                         {label}
@@ -266,11 +290,13 @@ export default function Nav({ lang }: { lang: Lang }) {
 
               {/* Language row */}
               <div className="px-3 pb-3 pt-1">
-                <div className="flex items-center gap-2 rounded-xl bg-gray-50 p-1">
+                <div className={`flex items-center gap-2 rounded-xl p-1 ${isDarkNav ? 'bg-white/5' : 'bg-gray-50'}`}>
                   <Link
                     href={`/${otherLang}${pathname.replace(`/${lang}`, '')}`}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="flex-1 flex items-center justify-center gap-2 py-3 rounded-lg text-gray-800 bg-white/60 hover:bg-white/80 shadow-sm transition-all"
+                    className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-lg shadow-sm transition-all ${
+                      isDarkNav ? 'text-gray-300 bg-white/10 hover:bg-white/15' : 'text-gray-800 bg-white/60 hover:bg-white/80'
+                    }`}
                   >
                     <Globe size={18} weight="regular" />
                     <span className="text-sm font-medium">
