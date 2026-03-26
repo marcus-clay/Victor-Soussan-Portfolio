@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState, useCallback } from 'react'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -8,26 +8,82 @@ import { CaretRight, ArrowRight } from '@phosphor-icons/react'
 import { getProjects, type Project } from '@/data/projectsData'
 import ShortProjectView from '@/components/ShortProjectView'
 import AuthorContactCard from '@/components/AuthorContactCard'
-import GalleryCarousel from '@/components/GalleryCarousel'
-import {
-  getToolkitGalleryItems,
-  getDailymotionGalleryItems,
-  getConnectGalleryItems,
-  getSqoolGalleryItems,
-  type GalleryItem,
-} from '@/components/BentoGallery'
+import CaseStudyTOCSidebar from '@/components/CaseStudyTOCSidebar'
 
 type ProjectId = 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'sqool-classe' | 'france-vae' | 'pagesjaunes' | 'androidwear' | 'riskos'
 
 // Projects with dark theme (breadcrumb adapts accordingly)
 const DARK_PROJECTS: string[] = ['riskos']
 
-// Gallery items getter per project (for carousel)
-const GALLERY_GETTERS: Record<string, (lang: 'en' | 'fr') => GalleryItem[]> = {
-  toolkit: getToolkitGalleryItems,
-  dailymotion: getDailymotionGalleryItems,
-  connect: getConnectGalleryItems,
-  sqool: getSqoolGalleryItems,
+// TOC sections per project (for summary view sidebar)
+type TOCSections = { id: string; label_en: string; label_fr: string }[]
+
+const SUMMARY_TOC: Record<string, TOCSections> = {
+  toolkit: [
+    { id: 'hero', label_en: 'Top', label_fr: 'Haut' },
+    { id: 'role', label_en: 'Role', label_fr: 'Rôle' },
+    { id: 'scope', label_en: 'Scope', label_fr: 'Périmètre' },
+    { id: 'journey', label_en: 'Journey', label_fr: 'Parcours' },
+    { id: 'highlights', label_en: 'Highlights', label_fr: 'Points clés' },
+    { id: 'outcome', label_en: 'Outcome', label_fr: 'Résultats' },
+    { id: 'testimonial', label_en: 'Testimonial', label_fr: 'Témoignage' },
+  ],
+  connect: [
+    { id: 'hero', label_en: 'Top', label_fr: 'Haut' },
+    { id: 'context', label_en: 'Context', label_fr: 'Contexte' },
+    { id: 'role', label_en: 'Role', label_fr: 'Rôle' },
+    { id: 'journey', label_en: 'Journey', label_fr: 'Parcours' },
+    { id: 'scope', label_en: 'Scope', label_fr: 'Périmètre' },
+    { id: 'highlights', label_en: 'Highlights', label_fr: 'Points clés' },
+    { id: 'user-testing', label_en: 'User testing', label_fr: 'Tests utilisateurs' },
+    { id: 'outcome', label_en: 'Outcome', label_fr: 'Résultats' },
+    { id: 'testimonial', label_en: 'Testimonial', label_fr: 'Témoignage' },
+  ],
+  dailymotion: [
+    { id: 'hero', label_en: 'Top', label_fr: 'Haut' },
+    { id: 'context', label_en: 'Context', label_fr: 'Contexte' },
+    { id: 'role', label_en: 'Role', label_fr: 'Rôle' },
+    { id: 'journey', label_en: 'Modules', label_fr: 'Modules' },
+    { id: 'scope', label_en: 'Scope', label_fr: 'Périmètre' },
+    { id: 'highlights', label_en: 'Highlights', label_fr: 'Points clés' },
+    { id: 'outcome', label_en: 'Outcome', label_fr: 'Résultats' },
+  ],
+  sqool: [
+    { id: 'hero', label_en: 'Top', label_fr: 'Haut' },
+    { id: 'role', label_en: 'Role', label_fr: 'Rôle' },
+    { id: 'scope', label_en: 'Scope', label_fr: 'Périmètre' },
+    { id: 'journey', label_en: 'Journey', label_fr: 'Parcours' },
+    { id: 'highlights', label_en: 'Highlights', label_fr: 'Points clés' },
+    { id: 'insights', label_en: 'Insights', label_fr: 'Enseignements' },
+    { id: 'outcome', label_en: 'Outcome', label_fr: 'Résultats' },
+    { id: 'testimonial', label_en: 'Testimonial', label_fr: 'Témoignage' },
+  ],
+  'sqool-classe': [
+    { id: 'hero', label_en: 'Top', label_fr: 'Haut' },
+    { id: 'context', label_en: 'Context', label_fr: 'Contexte' },
+    { id: 'role', label_en: 'Role', label_fr: 'Rôle' },
+    { id: 'modules', label_en: 'Modules', label_fr: 'Modules' },
+    { id: 'scope', label_en: 'Scope', label_fr: 'Périmètre' },
+    { id: 'highlights', label_en: 'Highlights', label_fr: 'Points clés' },
+    { id: 'outcome', label_en: 'Outcome', label_fr: 'Résultats' },
+    { id: 'testimonial', label_en: 'Testimonial', label_fr: 'Témoignage' },
+  ],
+  'france-vae': [
+    { id: 'hero', label_en: 'Top', label_fr: 'Haut' },
+    { id: 'initiatives', label_en: 'Initiatives', label_fr: 'Initiatives' },
+    { id: 'role', label_en: 'Role', label_fr: 'Rôle' },
+    { id: 'outcome', label_en: 'Outcome', label_fr: 'Résultats' },
+    { id: 'testimonial', label_en: 'Testimonial', label_fr: 'Témoignage' },
+  ],
+  pagesjaunes: [
+    { id: 'hero', label_en: 'Top', label_fr: 'Haut' },
+    { id: 'context', label_en: 'Context', label_fr: 'Contexte' },
+    { id: 'role', label_en: 'Role', label_fr: 'Rôle' },
+    { id: 'journey', label_en: 'Journey', label_fr: 'Parcours' },
+    { id: 'scope', label_en: 'Scope', label_fr: 'Périmètre' },
+    { id: 'insights', label_en: 'Insights', label_fr: 'Enseignements' },
+    { id: 'outcome', label_en: 'Outcome', label_fr: 'Résultats' },
+  ],
 }
 
 
@@ -103,8 +159,69 @@ export default function CaseStudyPageWrapper({
 
   // Map URL view to internal viewMode for backward compatibility
   const viewMode = view === 'full' ? 'caseStudy' : view === 'gallery' ? 'gallery' : 'executive'
+
+  // TOC for summary view
+  const tocSections = SUMMARY_TOC[projectId]
+  const tocItems = useMemo(() => {
+    if (!tocSections || view !== 'summary') return []
+    return tocSections.map(s => ({ id: s.id, label: lang === 'fr' ? s.label_fr : s.label_en }))
+  }, [tocSections, view, lang])
+
+  const [activeSection, setActiveSection] = useState('hero')
+  const [showTOC, setShowTOC] = useState(false)
+
+  // Track scroll for TOC (summary view only)
+  useEffect(() => {
+    if (tocItems.length === 0) return
+    const handleScroll = () => {
+      const scrollY = window.scrollY
+      setShowTOC(scrollY > 300)
+
+      if (scrollY < 100) {
+        setActiveSection('hero')
+        return
+      }
+      const sectionEls = tocItems
+        .filter(s => s.id !== 'hero')
+        .map(s => ({ id: s.id, el: document.getElementById(s.id) }))
+        .filter(s => s.el)
+
+      for (let i = sectionEls.length - 1; i >= 0; i--) {
+        const rect = sectionEls[i].el!.getBoundingClientRect()
+        if (rect.top <= 200) {
+          setActiveSection(sectionEls[i].id)
+          return
+        }
+      }
+      setActiveSection('hero')
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    handleScroll()
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [tocItems])
+
+  const scrollToSection = useCallback((sectionId: string) => {
+    if (sectionId === 'hero') {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+      return
+    }
+    document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }, [])
+
   return (
     <>
+      {/* TOC sidebar (summary view, projects with sections) */}
+      {tocItems.length > 0 && (
+        <CaseStudyTOCSidebar
+          sections={tocItems}
+          activeSection={activeSection}
+          onSectionClick={scrollToSection}
+          isDark={isDark}
+          isVisible={showTOC}
+          lang={lang}
+        />
+      )}
+
       {/* Breadcrumb - sticky below Nav, adapts to dark/light theme */}
       <div className={`sticky top-16 z-10 border-b backdrop-blur-xl ${
         isDark
@@ -163,23 +280,6 @@ export default function CaseStudyPageWrapper({
           onContact={() => router.push(`/${lang}/contact`)}
         />
       ) : null}
-
-      {/* Gallery carousel — auto-scrolling preview (summary view, projects with gallery) */}
-      {view === 'summary' && GALLERY_GETTERS[projectId] && (
-        <div className={`py-10 ${isDark ? 'bg-[#0a0a0a]' : 'bg-white'}`}>
-          <div className="max-w-[1200px] mx-auto px-6 mb-4">
-            <p className={`text-[11px] font-semibold uppercase tracking-widest ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
-              {lang === 'fr' ? 'Aperçu galerie' : 'Gallery preview'}
-            </p>
-          </div>
-          <GalleryCarousel
-            items={GALLERY_GETTERS[projectId](lang)}
-            lang={lang}
-            projectId={projectId}
-            isDark={isDark}
-          />
-        </div>
-      )}
 
       {/* Bottom: related projects + Contact CTA */}
       <CaseStudyFooter lang={lang} projectId={projectId} isDark={isDark} allProjects={allProjects} />

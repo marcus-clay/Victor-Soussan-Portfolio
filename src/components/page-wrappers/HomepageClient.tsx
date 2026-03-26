@@ -18,6 +18,7 @@ import GalleryPreviewSection from '@/components/sections/GalleryPreviewSection'
 import ExpertisePreviewSection from '@/components/sections/ExpertisePreviewSection'
 import TestimonialsSection from '@/components/sections/TestimonialsSection'
 import ContactCTASection from '@/components/sections/ContactCTASection'
+import ProjectVideoCarousel from '@/components/sections/ProjectVideoCarousel'
 
 interface HomepageClientProps {
   lang: Language
@@ -65,6 +66,8 @@ export default function HomepageClient({ lang }: HomepageClientProps) {
         scrollToSection={scrollToSection}
         openModalWithUrl={navigate}
       />
+
+      <ProjectVideoCarousel />
 
       <FeaturedSection
         lang={lang}

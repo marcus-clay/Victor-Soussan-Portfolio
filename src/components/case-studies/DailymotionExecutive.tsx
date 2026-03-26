@@ -889,7 +889,7 @@ const DailymotionExecutive: React.FC<DailymotionExecutiveProps> = ({
       {/* ================================================================== */}
       {/* HERO SECTION */}
       {/* ================================================================== */}
-      <section className="min-h-[85vh] flex flex-col justify-center px-10 py-20">
+      <section id="hero" className="min-h-[85vh] flex flex-col justify-center px-10 py-20">
         <div className="max-w-[1200px] mx-auto w-full">
           {/* Logo */}
           <FadeInSection>
@@ -964,7 +964,7 @@ const DailymotionExecutive: React.FC<DailymotionExecutiveProps> = ({
       {/* ================================================================== */}
       {/* CONTEXT SECTION */}
       {/* ================================================================== */}
-      <section className={`py-20 md:py-28 px-10 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
+      <section id="context" className={`scroll-mt-28 py-20 md:py-28 px-10 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
         <div className="max-w-[1200px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
@@ -995,7 +995,7 @@ const DailymotionExecutive: React.FC<DailymotionExecutiveProps> = ({
       {/* ================================================================== */}
       {/* ROLE SECTION */}
       {/* ================================================================== */}
-      <section className="py-20 md:py-28 px-10">
+      <section id="role" className="scroll-mt-28 py-20 md:py-28 px-10">
         <div className="max-w-[1200px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
@@ -1036,7 +1036,7 @@ const DailymotionExecutive: React.FC<DailymotionExecutiveProps> = ({
       {/* ================================================================== */}
       {/* MODULES SECTION */}
       {/* ================================================================== */}
-      <section className={`py-20 md:py-28 px-10 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
+      <section id="journey" className={`scroll-mt-28 py-20 md:py-28 px-10 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
         <div className="max-w-[1200px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
@@ -1063,7 +1063,7 @@ const DailymotionExecutive: React.FC<DailymotionExecutiveProps> = ({
       {/* ================================================================== */}
       {/* SCOPE SECTION */}
       {/* ================================================================== */}
-      <section className="py-20 md:py-28 px-10">
+      <section id="scope" className="scroll-mt-28 py-20 md:py-28 px-10">
         <div className="max-w-[1200px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
@@ -1096,7 +1096,7 @@ const DailymotionExecutive: React.FC<DailymotionExecutiveProps> = ({
       {/* ================================================================== */}
       {/* HIGHLIGHTS SECTION */}
       {/* ================================================================== */}
-      <section className={`py-20 md:py-28 px-10 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
+      <section id="highlights" className={`scroll-mt-28 py-20 md:py-28 px-10 ${isDark ? 'bg-white/[0.02]' : 'bg-gray-50'}`}>
         <div className="max-w-[1200px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
@@ -1127,7 +1127,7 @@ const DailymotionExecutive: React.FC<DailymotionExecutiveProps> = ({
       {/* ================================================================== */}
       {/* OUTCOME SECTION */}
       {/* ================================================================== */}
-      <section className="py-20 md:py-28 px-10">
+      <section id="outcome" className="scroll-mt-28 py-20 md:py-28 px-10">
         <div className="max-w-[1200px] mx-auto">
           <FadeInSection>
             <span className={`text-sm font-medium tracking-wide ${
