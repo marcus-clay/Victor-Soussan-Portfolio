@@ -106,7 +106,7 @@ export default function Nav({ lang }: { lang: Lang }) {
           <div className="flex items-baseline gap-0 min-w-0 flex-shrink-0">
             <Link
               href={`/${lang}`}
-              className="font-semibold text-[15px] tracking-[-0.02em] text-gray-900 whitespace-nowrap hover:opacity-70 flex-shrink-0"
+              className="relative z-10 font-semibold text-[15px] tracking-[-0.02em] text-gray-900 whitespace-nowrap hover:opacity-70 flex-shrink-0 py-2 -my-2 pr-1"
               style={{ transition: 'opacity 150ms ease' }}
             >
               Victor Soussan
