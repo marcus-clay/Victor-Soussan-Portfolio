@@ -120,10 +120,10 @@ body {
   color: #71717a;
 }
 /* Keep brand blue on CTA links */
-#site-footer.footer-dark .text-\[\\#2D5CF3\] {
+#site-footer.footer-dark a[href*="calendar"] {
   color: #5b8af5 !important;
 }
-#site-footer.footer-dark .text-\[\\#2D5CF3\]:hover {
+#site-footer.footer-dark a[href*="calendar"]:hover {
   color: #7da3f7 !important;
 }
 
