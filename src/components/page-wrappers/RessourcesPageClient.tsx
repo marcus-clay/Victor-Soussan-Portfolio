@@ -170,7 +170,7 @@ export default function RessourcesPageClient({ lang }: { lang: 'en' | 'fr' }) {
           })}
         </div>
 
-        {/* Agents & Prompts — floating push block with screenshot */}
+        {/* Agents & Prompts — light block with browser-framed screenshot */}
         <motion.section
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -182,51 +182,60 @@ export default function RessourcesPageClient({ lang }: { lang: 'en' | 'fr' }) {
             href="https://www.condamine.studio/agents-prompts"
             target="_blank"
             rel="noopener noreferrer"
-            className="group block rounded-2xl overflow-hidden bg-gradient-to-br from-gray-900 to-gray-800 cursor-pointer active:scale-[0.995]"
-            style={{ transition: 'transform 160ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 300ms ease', boxShadow: '0 8px 30px rgba(0,0,0,0.12)' }}
-            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = '0 16px 50px rgba(0,0,0,0.2)' }}
-            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = '0 8px 30px rgba(0,0,0,0.12)' }}
+            className="group block rounded-2xl border border-gray-200 bg-white overflow-hidden cursor-pointer active:scale-[0.998] hover:border-gray-300 hover:shadow-lg"
+            style={{ transition: 'border-color 200ms ease, box-shadow 300ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
           >
             <div className="flex flex-col md:flex-row">
               {/* Text content */}
               <div className="flex-1 p-8 md:p-10 flex flex-col justify-center">
-                <div className="flex items-center gap-2 mb-4">
-                  <div className="w-8 h-8 rounded-lg bg-violet-500/20 flex items-center justify-center">
-                    <Robot size={16} weight="bold" className="text-violet-400" />
+                <div className="flex items-center gap-2 mb-5">
+                  <div className="w-8 h-8 rounded-lg bg-violet-50 flex items-center justify-center">
+                    <Robot size={16} weight="bold" className="text-violet-600" />
                   </div>
-                  <div className="w-8 h-8 rounded-lg bg-amber-500/20 flex items-center justify-center">
-                    <Lightning size={16} weight="bold" className="text-amber-400" />
+                  <div className="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center">
+                    <Lightning size={16} weight="bold" className="text-amber-600" />
                   </div>
-                  <span className="ml-2 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <span className="ml-1 text-[11px] font-semibold text-gray-400 uppercase tracking-wider">
                     Condamine Studio
                   </span>
                 </div>
 
-                <h3 className="text-xl md:text-2xl font-bold tracking-[-0.02em] text-white mb-2">
+                <h3 className="text-xl md:text-2xl font-bold tracking-[-0.02em] text-gray-900 mb-2">
                   {isEn ? 'AI Agents & Prompts' : 'Agents IA et prompts'}
                 </h3>
-                <p className="text-sm md:text-base text-gray-400 leading-relaxed mb-6 max-w-[45ch]">
+                <p className="text-sm md:text-base text-gray-500 leading-relaxed mb-6 max-w-[45ch]">
                   {isEn
                     ? '32 curated agents and prompt frameworks for design, development, marketing, and productivity.'
                     : '32 agents et frameworks de prompts pour le design, le développement, le marketing et la productivité.'}
                 </p>
 
-                <span className="inline-flex items-center gap-1.5 text-sm font-medium text-white/80 group-hover:text-white">
+                <span className="inline-flex items-center gap-1.5 text-sm font-medium text-[#2D5CF3]">
                   {isEn ? 'Explore the collection' : 'Explorer la collection'}
                   <ArrowUpRight size={14} className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </span>
               </div>
 
-              {/* Screenshot preview */}
-              <div className="md:w-[340px] lg:w-[400px] flex-shrink-0 relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-r from-gray-900 to-transparent z-10 w-16 pointer-events-none" />
-                <img
-                  src="/images/agents-prompts-preview.png"
-                  alt="AI Agents & Prompts Library"
-                  className="w-full h-full object-cover object-left-top opacity-70 group-hover:opacity-90 group-hover:scale-[1.02]"
-                  style={{ transition: 'opacity 300ms ease, transform 500ms cubic-bezier(0.23, 1, 0.32, 1)' }}
-                  loading="lazy"
-                />
+              {/* Screenshot in browser chrome frame */}
+              <div className="md:w-[360px] lg:w-[420px] flex-shrink-0 p-4 md:p-6 md:pl-0">
+                <div className="rounded-xl overflow-hidden border border-gray-200 shadow-sm group-hover:shadow-md"
+                  style={{ transition: 'box-shadow 300ms ease' }}
+                >
+                  {/* Browser chrome dots */}
+                  <div className="flex items-center gap-1.5 px-3 py-2 bg-gray-50 border-b border-gray-100">
+                    <div className="w-2 h-2 rounded-full bg-gray-300" />
+                    <div className="w-2 h-2 rounded-full bg-gray-300" />
+                    <div className="w-2 h-2 rounded-full bg-gray-300" />
+                    <span className="ml-2 text-[10px] text-gray-400 truncate">condamine.studio/agents-prompts</span>
+                  </div>
+                  {/* Screenshot */}
+                  <img
+                    src="/images/agents-prompts-preview.png"
+                    alt="AI Agents & Prompts Library"
+                    className="w-full object-cover object-top group-hover:scale-[1.02]"
+                    style={{ transition: 'transform 500ms cubic-bezier(0.23, 1, 0.32, 1)', maxHeight: 280 }}
+                    loading="lazy"
+                  />
+                </div>
               </div>
             </div>
           </a>
