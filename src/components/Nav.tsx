@@ -222,28 +222,28 @@ export default function Nav({ lang }: { lang: Lang }) {
                       key={item.id}
                       href={`/${lang}/${item.route}`}
                       onClick={() => setIsMobileMenuOpen(false)}
-                      className={`flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all ${
+                      className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all ${
                         index < arr.length - 1 ? 'border-b border-gray-50' : ''
                       }`}
                     >
                       <div
-                        className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all ${
+                        className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
                           active
-                            ? 'bg-[#2D5CF3] text-white shadow-lg shadow-blue-500/30'
+                            ? 'bg-[#2D5CF3] text-white shadow-md shadow-blue-500/25'
                             : 'bg-gray-100 text-gray-500'
                         }`}
                       >
-                        <Icon size={20} weight={active ? 'bold' : 'regular'} />
+                        <Icon size={18} weight={active ? 'bold' : 'regular'} />
                       </div>
                       <span
-                        className={`text-base tracking-[-0.02em] ${
+                        className={`text-[15px] tracking-[-0.02em] ${
                           active ? 'text-gray-900 font-semibold' : 'text-gray-600'
                         }`}
                       >
                         {label}
                       </span>
                       {active && (
-                        <div className="ml-auto w-2 h-2 rounded-full bg-[#2D5CF3]" />
+                        <div className="ml-auto w-1.5 h-1.5 rounded-full bg-[#2D5CF3]" />
                       )}
                     </Link>
                   )
@@ -251,12 +251,12 @@ export default function Nav({ lang }: { lang: Lang }) {
               </div>
 
               {/* Language row */}
-              <div className="px-4 pb-4 pt-1">
-                <div className="flex items-center gap-2 rounded-2xl bg-gray-50 p-1.5">
+              <div className="px-3 pb-3 pt-1">
+                <div className="flex items-center gap-2 rounded-xl bg-gray-50 p-1">
                   <Link
                     href={`/${otherLang}${pathname.replace(`/${lang}`, '')}`}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="flex-1 flex items-center justify-center gap-2 py-3.5 rounded-xl text-gray-800 bg-white/60 hover:bg-white/80 shadow-sm transition-all"
+                    className="flex-1 flex items-center justify-center gap-2 py-3 rounded-lg text-gray-800 bg-white/60 hover:bg-white/80 shadow-sm transition-all"
                   >
                     <Globe size={18} weight="regular" />
                     <span className="text-sm font-medium">

@@ -29,7 +29,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   openModalWithUrl,
 }) => {
   return (
-    <header className="relative min-h-[70vh] flex flex-col justify-center px-6 md:px-10 overflow-hidden">
+    <header className="relative min-h-[60vh] md:min-h-[70vh] flex flex-col justify-center px-6 md:px-10 overflow-hidden">
       {/* Static Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute right-[-10%] top-[-20%] w-[50%] h-[50%] rounded-full blur-[120px] bg-blue-300/20" />
@@ -77,25 +77,25 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             <motion.p
               variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0 } }}
               transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
-              className="text-lg sm:text-xl md:text-2xl font-medium mb-3 text-[#1D1D1F]"
+              className="text-lg sm:text-xl md:text-2xl font-medium mb-6 md:mb-3 text-[#1D1D1F]"
             >
               {content.hero.title} <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">{content.hero.subtitle}</span>
             </motion.p>
 
-            {/* Positioning */}
+            {/* Positioning — hidden on mobile to reduce verbosity */}
             <motion.p
               variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
               transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
-              className="text-sm md:text-base text-gray-500 mb-4"
+              className="hidden md:block text-base text-gray-500 mb-4"
             >
               {content.hero.positioning}
             </motion.p>
 
-            {/* Description */}
+            {/* Description — hidden on mobile, shown on desktop */}
             <motion.p
               variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
               transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
-              className="text-base md:text-lg leading-relaxed mb-8 md:mb-10 text-gray-500 max-w-2xl"
+              className="hidden md:block text-lg leading-relaxed mb-10 text-gray-500 max-w-2xl"
             >
               {content.hero.desc}
             </motion.p>
@@ -108,13 +108,13 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             >
               <button
                 onClick={() => scrollToSection('projects')}
-                className="group px-6 py-3 sm:px-8 sm:py-4 rounded-full font-semibold text-sm sm:text-base flex items-center justify-center cursor-pointer relative z-20 whitespace-nowrap transition-[background-color,box-shadow,transform] duration-200 ease-out bg-[#2D5CF3] text-white hover:bg-[#2450d9] shadow-lg shadow-[#2D5CF3]/25 hover:shadow-xl hover:shadow-[#2D5CF3]/30 active:scale-[0.97] w-full sm:w-auto"
+                className="group px-7 py-3.5 sm:px-8 sm:py-4 rounded-full font-semibold text-[15px] sm:text-base flex items-center justify-center cursor-pointer relative z-20 whitespace-nowrap transition-[background-color,box-shadow,transform] duration-200 ease-out bg-[#2D5CF3] text-white hover:bg-[#2450d9] shadow-lg shadow-[#2D5CF3]/25 hover:shadow-xl hover:shadow-[#2D5CF3]/30 active:scale-[0.97] w-full sm:w-auto"
               >
                 {lang === 'en' ? 'View work' : 'Voir mes projets'} <ArrowUpRight className="ml-2 flex-shrink-0 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" size={16} />
               </button>
               <button
                 onClick={() => openModalWithUrl('/presentation')}
-                className="group px-6 py-3 sm:px-8 sm:py-4 rounded-full font-semibold text-sm sm:text-base flex items-center justify-center cursor-pointer relative z-20 whitespace-nowrap transition-[background-color,box-shadow,transform] duration-200 ease-out w-full sm:w-auto bg-white text-gray-900 border border-gray-200 hover:bg-gray-50 shadow-sm active:scale-[0.97]"
+                className="group px-7 py-3.5 sm:px-8 sm:py-4 rounded-full font-semibold text-[15px] sm:text-base flex items-center justify-center cursor-pointer relative z-20 whitespace-nowrap transition-[background-color,box-shadow,transform] duration-200 ease-out w-full sm:w-auto bg-white text-gray-900 border border-gray-200 hover:bg-gray-50 shadow-sm active:scale-[0.97]"
               >
                 {lang === 'en' ? '1-min Presentation' : 'Presentation 1 min'} <ArrowUpRight className="ml-2 flex-shrink-0 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" size={16} />
               </button>
