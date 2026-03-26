@@ -67,11 +67,9 @@ export default function HomepageClient({ lang }: HomepageClientProps) {
         openModalWithUrl={navigate}
       />
 
-      <div className="py-8 md:py-12">
+      <div className="pt-2 pb-6">
         <ProjectVideoCarousel lang={lang} />
       </div>
-
-      <div className="h-8 md:h-12" />
 
       <FeaturedSection
         lang={lang}

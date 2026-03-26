@@ -25,14 +25,8 @@ const SHOWCASE_VIDEOS: CarouselVideo[] = [
   { src: '/images/pagesjaunes/micro-interactions/anim_favoris.mp4', label: 'PagesJaunes', projectId: 'pagesjaunes' },
 ]
 
-const CARD_HEIGHT = 600
+const CARD_HEIGHT = 480
 
-/**
- * ProjectVideoCarousel — 600px tall auto-scrolling video showcase.
- * Pause/play per video with liquid glass button.
- * Hover: only hovered video plays, others pause.
- * Click: open in lightbox.
- */
 export default function ProjectVideoCarousel({ lang = 'fr' }: { lang?: 'en' | 'fr' }) {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null)
   const [pausedVideos, setPausedVideos] = useState<Set<number>>(new Set())
@@ -40,46 +34,56 @@ export default function ProjectVideoCarousel({ lang = 'fr' }: { lang?: 'en' | 'f
   const [lightboxIndex, setLightboxIndex] = useState(0)
   const [videoStartTime, setVideoStartTime] = useState(0)
   const videoRefs = useRef<Record<number, HTMLVideoElement | null>>({})
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [isVisible, setIsVisible] = useState(false)
 
-  // Card width derived from height to maintain 16:9
   const cardW = Math.round(CARD_HEIGHT * (16 / 9))
   const gap = 20
   const totalWidth = SHOWCASE_VIDEOS.length * (cardW + gap)
   const duration = totalWidth / 25
 
-  // Pause/play videos based on hover + manual pause state
+  // Lazy loading: only start videos when carousel is in viewport
+  useEffect(() => {
+    const el = containerRef.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsVisible(entry.isIntersecting),
+      { rootMargin: '200px' }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
+  // Pause/play videos based on visibility + hover + manual pause
   useEffect(() => {
     Object.entries(videoRefs.current).forEach(([idxStr, video]) => {
       if (!video) return
       const idx = Number(idxStr)
       const originalIdx = idx % SHOWCASE_VIDEOS.length
 
-      // Manually paused: always pause
-      if (pausedVideos.has(originalIdx)) {
+      // Not visible or manually paused: pause
+      if (!isVisible || pausedVideos.has(originalIdx)) {
         video.pause()
         return
       }
 
       if (hoveredIdx === null) {
         video.play().catch(() => {})
-      } else if (idx % SHOWCASE_VIDEOS.length === hoveredIdx % SHOWCASE_VIDEOS.length) {
+      } else if (originalIdx === hoveredIdx % SHOWCASE_VIDEOS.length) {
         video.play().catch(() => {})
       } else {
         video.pause()
       }
     })
-  }, [hoveredIdx, pausedVideos])
+  }, [hoveredIdx, pausedVideos, isVisible])
 
   const togglePause = useCallback((e: React.MouseEvent, idx: number) => {
     e.stopPropagation()
     const originalIdx = idx % SHOWCASE_VIDEOS.length
     setPausedVideos(prev => {
       const next = new Set(prev)
-      if (next.has(originalIdx)) {
-        next.delete(originalIdx)
-      } else {
-        next.add(originalIdx)
-      }
+      if (next.has(originalIdx)) next.delete(originalIdx)
+      else next.add(originalIdx)
       return next
     })
   }, [])
@@ -111,7 +115,7 @@ export default function ProjectVideoCarousel({ lang = 'fr' }: { lang?: 'en' | 'f
         videoStartTime={videoStartTime}
       />
 
-      <div className="w-full overflow-hidden">
+      <div ref={containerRef} className="w-full overflow-hidden">
         <div
           className="gallery-carousel-track flex"
           style={{
@@ -129,51 +133,44 @@ export default function ProjectVideoCarousel({ lang = 'fr' }: { lang?: 'en' | 'f
             return (
               <div
                 key={`${video.src}-${idx}`}
-                className="flex-shrink-0 rounded-2xl overflow-hidden relative"
+                className="flex-shrink-0 rounded-2xl overflow-hidden relative cursor-zoom-in"
                 style={{
                   width: `${cardW}px`,
                   height: `${CARD_HEIGHT}px`,
                   transition: 'transform 300ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 300ms cubic-bezier(0.23, 1, 0.32, 1)',
-                  transform: isHovered ? 'scale(1.01)' : 'scale(1)',
+                  transform: isHovered ? 'scale(1.015)' : 'scale(1)',
                   boxShadow: isHovered
                     ? '0 24px 48px rgba(0,0,0,0.18), 0 0 0 1px rgba(0,0,0,0.06)'
                     : '0 2px 8px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04)',
                 }}
                 onMouseEnter={() => setHoveredIdx(idx)}
                 onMouseLeave={() => setHoveredIdx(null)}
+                onClick={() => openLightbox(idx)}
               >
-                {/* Video */}
-                <button
-                  onClick={() => openLightbox(idx)}
-                  className="w-full h-full cursor-zoom-in block bg-[#0a0a0a]"
-                >
-                  <video
-                    ref={el => { videoRefs.current[idx] = el }}
-                    src={video.src}
-                    muted
-                    playsInline
-                    autoPlay
-                    loop
-                    preload="metadata"
-                    className="w-full h-full object-contain"
-                    style={{
-                      transition: 'transform 300ms cubic-bezier(0.23, 1, 0.32, 1)',
-                      transform: isHovered ? 'scale(1.03)' : 'scale(1)',
-                    }}
-                  />
-                </button>
+                <video
+                  ref={el => { videoRefs.current[idx] = el }}
+                  src={video.src}
+                  muted
+                  playsInline
+                  autoPlay={false}
+                  loop
+                  preload="none"
+                  className="w-full h-full object-cover"
+                />
 
-                {/* Hover overlay: gradient + label + lightbox icon */}
+                {/* Hover overlay */}
                 <div
                   className="absolute inset-0 pointer-events-none"
                   style={{
                     opacity: isHovered ? 1 : 0,
                     transition: 'opacity 200ms ease',
-                    background: 'linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.08) 40%, transparent 100%)',
+                    background: 'linear-gradient(to top, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.05) 40%, transparent 100%)',
                   }}
                 />
+
+                {/* Label — hover only */}
                 <div
-                  className="absolute bottom-5 left-5 flex items-center gap-2 pointer-events-none"
+                  className="absolute bottom-5 left-5 pointer-events-none"
                   style={{
                     opacity: isHovered ? 1 : 0,
                     transform: isHovered ? 'translateY(0)' : 'translateY(4px)',
@@ -205,13 +202,11 @@ export default function ProjectVideoCarousel({ lang = 'fr' }: { lang?: 'en' | 'f
                   </div>
                 </div>
 
-                {/* Pause/Play button — always visible, liquid glass */}
+                {/* Pause/Play — always visible, liquid glass */}
                 <button
                   onClick={(e) => togglePause(e, idx)}
                   className="absolute bottom-5 right-5 z-10 active:scale-[0.9]"
-                  style={{
-                    transition: 'transform 160ms cubic-bezier(0.23, 1, 0.32, 1)',
-                  }}
+                  style={{ transition: 'transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
                   aria-label={isPaused ? 'Play' : 'Pause'}
                 >
                   <div
