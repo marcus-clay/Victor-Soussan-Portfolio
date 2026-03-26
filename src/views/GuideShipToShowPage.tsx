@@ -58,7 +58,7 @@ const GuideShipToShowPage: React.FC<Props> = ({ lang, onNavigate }) => {
       className="min-h-screen bg-[#FCFCFD]"
     >
       {/* Breadcrumb bar - sticky below Nav */}
-      <div className="sticky z-10 border-b backdrop-blur-xl bg-[#FCFCFD]/80 border-gray-200" style={{ top: 'var(--nav-height, 72px)', transition: 'top 250ms cubic-bezier(0.23, 1, 0.32, 1)' }}>
+      <div className="sticky z-10 backdrop-blur-xl bg-[#FCFCFD]/80 border-gray-200" style={{ top: 'var(--nav-height, 72px)', transition: 'top 250ms cubic-bezier(0.23, 1, 0.32, 1)' }}>
         <div className="max-w-[1200px] mx-auto px-4 md:px-6 h-10 flex items-center">
           <nav className="flex items-center gap-1.5 text-[13px] min-w-0 overflow-hidden">
             <button

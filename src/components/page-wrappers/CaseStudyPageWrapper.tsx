@@ -224,7 +224,7 @@ export default function CaseStudyPageWrapper({
 
       {/* Breadcrumb - sticky below Nav, adapts to dark/light theme */}
       <div
-        className={`sticky z-10 border-b backdrop-blur-xl ${
+        className={`sticky z-10 backdrop-blur-xl ${
           isDark
             ? 'bg-[#0a0a0a]/80 border-white/5'
             : 'bg-[#FCFCFD]/80 border-gray-200'

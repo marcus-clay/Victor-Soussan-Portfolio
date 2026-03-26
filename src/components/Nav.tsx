@@ -44,6 +44,8 @@ const MOBILE_NAV_ITEMS = [
 export default function Nav({ lang }: { lang: Lang }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
+  const [pageTitle, setPageTitle] = useState<string | null>(null)
+  const [showPageTitle, setShowPageTitle] = useState(false)
   const pathname = usePathname()
   const content = TRANSLATIONS[lang].nav
   const otherLang = lang === 'en' ? 'fr' : 'en'
@@ -60,6 +62,29 @@ export default function Nav({ lang }: { lang: Lang }) {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  // Observe the first h1 on the page for contextual title
+  useEffect(() => {
+    setShowPageTitle(false)
+    setPageTitle(null)
+
+    // Wait for DOM to settle after navigation
+    const timer = setTimeout(() => {
+      const h1 = document.querySelector('h1')
+      if (!h1) return
+
+      setPageTitle(h1.textContent?.trim() || null)
+
+      const observer = new IntersectionObserver(
+        ([entry]) => setShowPageTitle(!entry.isIntersecting),
+        { threshold: 0, rootMargin: '-72px 0px 0px 0px' }
+      )
+      observer.observe(h1)
+      return () => observer.disconnect()
+    }, 100)
+
+    return () => clearTimeout(timer)
+  }, [pathname])
+
   const isActive = (route: string) => {
     if (route === '') return pathname === `/${lang}`
     return pathname.startsWith(`/${lang}/${route}`)
@@ -70,21 +95,42 @@ export default function Nav({ lang }: { lang: Lang }) {
       {/* Desktop + Mobile top bar */}
       <nav
         id="site-nav"
-        className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-xl border-b border-gray-100/80"
+        className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-xl"
         style={{
           transition: 'height 250ms cubic-bezier(0.23, 1, 0.32, 1)',
           height: isScrolled ? 56 : 72,
         }}
       >
         <div className="w-full px-6 h-full flex items-center justify-between">
-          {/* Logo — 16px, comfortable hitbox */}
-          <Link
-            href={`/${lang}`}
-            className="font-semibold text-[15px] tracking-[-0.02em] text-gray-900 whitespace-nowrap py-2 -my-2 pr-4 -mr-2 hover:opacity-70"
-            style={{ transition: 'opacity 150ms ease' }}
-          >
-            Victor Soussan
-          </Link>
+          {/* Logo + contextual page title */}
+          <div className="flex items-center gap-0 min-w-0 flex-shrink-0">
+            <Link
+              href={`/${lang}`}
+              className="font-semibold text-[15px] tracking-[-0.02em] text-gray-900 whitespace-nowrap py-2 -my-2 hover:opacity-70 flex-shrink-0"
+              style={{ transition: 'opacity 150ms ease' }}
+            >
+              Victor Soussan
+            </Link>
+
+            {/* Page title — fades in when h1 scrolls behind header */}
+            {pageTitle && (
+              <div
+                className="flex items-center gap-0 min-w-0 overflow-hidden"
+                style={{
+                  opacity: showPageTitle ? 1 : 0,
+                  transform: showPageTitle ? 'translateY(0)' : 'translateY(4px)',
+                  transition: 'opacity 250ms ease, transform 300ms cubic-bezier(0.23, 1, 0.32, 1)',
+                  maxWidth: showPageTitle ? 300 : 0,
+                  pointerEvents: showPageTitle ? 'auto' : 'none',
+                }}
+              >
+                <span className="text-gray-300 mx-2 flex-shrink-0">/</span>
+                <span className="text-[13px] font-medium text-gray-500 truncate">
+                  {pageTitle}
+                </span>
+              </div>
+            )}
+          </div>
 
           {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-0.5">
