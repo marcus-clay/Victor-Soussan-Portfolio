@@ -15,6 +15,7 @@ interface HeroSectionProps {
       subtitle: string;
       positioning: string;
       desc: string;
+      descShort?: string;
     };
   };
   Avatar: React.FC<{ filename: string; alt: string; className?: string; isDark?: boolean }>;
@@ -82,16 +83,23 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               {content.hero.title} <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">{content.hero.subtitle}</span>
             </motion.p>
 
-            {/* Positioning — hidden on mobile to reduce verbosity */}
+            {/* Positioning */}
             <motion.p
               variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
               transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
-              className="hidden md:block text-base text-gray-500 mb-4"
+              className="text-xs md:text-sm text-gray-400 mb-4 md:mb-4"
             >
               {content.hero.positioning}
             </motion.p>
 
-            {/* Description — hidden on mobile, shown on desktop */}
+            {/* Description — short on mobile, full on desktop */}
+            <motion.p
+              variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
+              transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
+              className="text-sm leading-relaxed mb-6 text-gray-500 max-w-2xl md:hidden"
+            >
+              {content.hero.descShort || content.hero.desc}
+            </motion.p>
             <motion.p
               variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
               transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
