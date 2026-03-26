@@ -106,7 +106,7 @@ export default function Nav({ lang }: { lang: Lang }) {
           <div className="flex items-baseline gap-0 min-w-0 flex-shrink-0">
             <Link
               href={`/${lang}`}
-              className="relative z-10 font-semibold text-[15px] tracking-[-0.02em] text-gray-900 whitespace-nowrap hover:opacity-70 flex-shrink-0 py-2 -my-2 pr-1"
+              className="relative z-10 font-semibold text-base tracking-[-0.02em] text-gray-900 whitespace-nowrap hover:opacity-70 flex-shrink-0 py-2 -my-2 pr-1"
               style={{ transition: 'opacity 150ms ease' }}
             >
               Victor Soussan
@@ -139,7 +139,7 @@ export default function Nav({ lang }: { lang: Lang }) {
                 <Link
                   key={item.id}
                   href={`/${lang}/${item.route}`}
-                  className={`px-3 py-1.5 rounded-full text-[13px] whitespace-nowrap ${
+                  className={`px-3 py-1.5 rounded-full text-sm whitespace-nowrap ${
                     active
                       ? 'text-gray-900 font-semibold'
                       : 'text-gray-500 font-medium hover:text-gray-900 hover:bg-black/[0.04]'
@@ -157,7 +157,7 @@ export default function Nav({ lang }: { lang: Lang }) {
             {/* Language switch */}
             <Link
               href={`/${otherLang}${pathname.replace(`/${lang}`, '')}`}
-              className="px-2.5 py-1.5 text-[13px] font-medium rounded-full text-gray-400 hover:text-gray-900 hover:bg-black/[0.04] whitespace-nowrap"
+              className="px-2.5 py-1.5 text-sm font-medium rounded-full text-gray-400 hover:text-gray-900 hover:bg-black/[0.04] whitespace-nowrap"
               style={{ transition: 'background-color 150ms ease, color 150ms ease' }}
             >
               {lang === 'en' ? 'FR' : 'EN'}
@@ -166,7 +166,7 @@ export default function Nav({ lang }: { lang: Lang }) {
             {/* Contact button */}
             <Link
               href={`/${lang}/contact`}
-              className="ml-1.5 px-4 py-1.5 text-[13px] font-medium rounded-full bg-gray-900 text-white hover:bg-gray-800 active:scale-[0.97]"
+              className="ml-1.5 px-5 py-2 text-sm font-medium rounded-full bg-gray-900 text-white hover:bg-gray-800 active:scale-[0.97]"
               style={{ transition: 'background-color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
             >
               {content.contact}
