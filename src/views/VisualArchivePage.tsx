@@ -3,12 +3,11 @@
  * Features: TOC sidebar, collapsed sections, editorial/grid views
  */
 
-import React, { useState, useCallback, useMemo, useRef, useEffect } from 'react';
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, GridFour as LayoutGrid, Rows as Rows3, CaretDown as ChevronDown } from '@phosphor-icons/react';
+import { GridFour as LayoutGrid, Rows as Rows3, CaretDown as ChevronDown } from '@phosphor-icons/react';
 import EnhancedLightbox, { LightboxImage } from '../components/media/EnhancedLightbox';
 import CaseStudyTOCSidebar from '../components/CaseStudyTOCSidebar';
-import { smoothScrollTo } from '../utils/smoothScroll';
 import LazyImage from '../components/media/LazyImage';
 import { GALLERY_PROJECTS, ALL_GALLERY_ITEMS, GalleryItem, GalleryProject } from '../data/galleryData';
 
@@ -36,15 +35,13 @@ const TRANSLATIONS = {
   }
 };
 
-const VisualArchivePage: React.FC<VisualArchivePageProps> = ({ systemTheme, lang, onBack }) => {
-  const isDark = systemTheme === 'dark';
+const VisualArchivePage: React.FC<VisualArchivePageProps> = ({ lang }) => {
   const t = TRANSLATIONS[lang];
   const [viewMode, setViewMode] = useState<ViewMode>('editorial');
   const [lightboxIndex, setLightboxIndex] = useState(-1);
   const [activeSection, setActiveSection] = useState(GALLERY_PROJECTS[0]?.id || '');
   const [showTOC, setShowTOC] = useState(false);
   const [expandedProjects, setExpandedProjects] = useState<Set<string>>(new Set());
-  const scrollRef = useRef<HTMLDivElement>(null);
 
   // TOC sections from gallery projects
   const tocSections = useMemo(() => [
@@ -56,22 +53,15 @@ const VisualArchivePage: React.FC<VisualArchivePageProps> = ({ systemTheme, lang
   const lightboxImages: LightboxImage[] = useMemo(() =>
     ALL_GALLERY_ITEMS.map(item => {
       const project = GALLERY_PROJECTS.find(p => p.items.includes(item));
-      return {
-        src: item.src,
-        caption: project?.name || '',
-        type: item.type,
-      };
+      return { src: item.src, caption: project?.name || '', type: item.type };
     }),
     []
   );
 
-  // Scroll detection for active section and TOC visibility
+  // Scroll detection — window-based
   useEffect(() => {
-    const container = scrollRef.current;
-    if (!container) return;
-
     const handleScroll = () => {
-      setShowTOC(container.scrollTop > 400);
+      setShowTOC(window.scrollY > 400);
 
       for (let i = GALLERY_PROJECTS.length - 1; i >= 0; i--) {
         const el = document.getElementById(`gallery-${GALLERY_PROJECTS[i].id}`);
@@ -85,21 +75,16 @@ const VisualArchivePage: React.FC<VisualArchivePageProps> = ({ systemTheme, lang
       }
     };
 
-    container.addEventListener('scroll', handleScroll, { passive: true });
-    return () => container.removeEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const scrollToSection = useCallback((sectionId: string) => {
-    if (!scrollRef.current) return;
     if (sectionId === 'top') {
-      smoothScrollTo(scrollRef.current, 0);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
-    const el = document.getElementById(`gallery-${sectionId}`);
-    if (el) {
-      const offset = el.offsetTop - 80;
-      smoothScrollTo(scrollRef.current, offset);
-    }
+    document.getElementById(`gallery-${sectionId}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, []);
 
   const toggleExpand = useCallback((projectId: string) => {
@@ -116,50 +101,14 @@ const VisualArchivePage: React.FC<VisualArchivePageProps> = ({ systemTheme, lang
     if (globalIndex >= 0) setLightboxIndex(globalIndex);
   }, []);
 
-  const closeLightbox = useCallback(() => {
-    setLightboxIndex(-1);
-  }, []);
-
   return (
-    <motion.div
-      ref={scrollRef}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.2 }}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="visual-archive-page-title"
-      className={`fixed inset-0 md:top-16 z-[100] overflow-y-auto ${
-        isDark ? 'bg-[#0a0a0a]' : 'bg-[#FCFCFD]'
-      }`}
-    >
-      {/* Header - mobile only, desktop uses persistent nav */}
-      <header className={`sticky top-0 z-50 backdrop-blur-xl md:hidden ${
-        isDark ? 'bg-[#0a0a0a]/80' : 'bg-[#FCFCFD]/80'
-      }`}>
-        <div className="w-full pl-6 pr-2.5 h-16 flex items-center justify-between">
-          <span id="visual-archive-page-title" className={`font-semibold text-lg tracking-[-0.02em] ${isDark ? 'text-white' : 'text-gray-900'}`}>
-            {t.title}
-          </span>
-          <button
-            onClick={onBack}
-            aria-label="Close"
-            className={`relative p-3 rounded-full transition-colors cursor-pointer before:absolute before:inset-[-12px] before:content-[''] ${
-              isDark ? 'text-gray-400 hover:text-white hover:bg-white/10' : 'text-gray-500 hover:text-gray-900 hover:bg-black/5'
-            }`}
-          >
-            <X size={24} />
-          </button>
-        </div>
-      </header>
-
+    <div className="min-h-screen bg-[#FCFCFD]">
       {/* TOC Sidebar - only in editorial mode */}
       <CaseStudyTOCSidebar
         sections={tocSections}
         activeSection={activeSection}
         onSectionClick={scrollToSection}
-        isDark={isDark}
+        isDark={false}
         isVisible={showTOC && viewMode === 'editorial'}
         lang={lang}
       />
@@ -170,18 +119,16 @@ const VisualArchivePage: React.FC<VisualArchivePageProps> = ({ systemTheme, lang
         {/* Title + View toggle */}
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12 md:mb-16">
           <div>
-            <h1 className={`text-3xl sm:text-4xl md:text-5xl font-bold tracking-[-0.03em] mb-4 ${
-              isDark ? 'text-white' : 'text-gray-900'
-            }`}>{t.title}</h1>
-            <p className={`text-base md:text-lg max-w-xl ${
-              isDark ? 'text-gray-400' : 'text-gray-500'
-            }`}>{t.subtitle}</p>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-[-0.03em] mb-4 text-gray-900">
+              {t.title}
+            </h1>
+            <p className="text-base md:text-lg max-w-xl text-gray-500">
+              {t.subtitle}
+            </p>
           </div>
 
           {/* View mode toggle */}
-          <div className={`hidden sm:flex items-center rounded-full p-1 flex-shrink-0 ${
-            isDark ? 'bg-white/5' : 'bg-gray-100'
-          }`}>
+          <div className="hidden sm:flex items-center rounded-full p-1 flex-shrink-0 bg-gray-100">
             {([
               { key: 'editorial' as ViewMode, Icon: Rows3 },
               { key: 'grid' as ViewMode, Icon: LayoutGrid },
@@ -189,15 +136,12 @@ const VisualArchivePage: React.FC<VisualArchivePageProps> = ({ systemTheme, lang
               <button
                 key={key}
                 onClick={() => setViewMode(key)}
-                className={`p-2 rounded-full transition-[background-color,color] duration-200 ease-out cursor-pointer ${
+                className={`p-2 rounded-full cursor-pointer active:scale-[0.95] ${
                   viewMode === key
-                    ? isDark
-                      ? 'bg-white text-gray-900'
-                      : 'bg-gray-900 text-white'
-                    : isDark
-                      ? 'text-gray-500 hover:text-white'
-                      : 'text-gray-400 hover:text-gray-900'
+                    ? 'bg-gray-900 text-white'
+                    : 'text-gray-400 hover:text-gray-900'
                 }`}
+                style={{ transition: 'background-color 200ms ease, color 200ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
               >
                 <Icon size={16} />
               </button>
@@ -209,7 +153,6 @@ const VisualArchivePage: React.FC<VisualArchivePageProps> = ({ systemTheme, lang
         {viewMode === 'editorial' ? (
           <EditorialView
             projects={GALLERY_PROJECTS}
-            isDark={isDark}
             lang={lang}
             onItemClick={openLightbox}
             expandedProjects={expandedProjects}
@@ -218,7 +161,6 @@ const VisualArchivePage: React.FC<VisualArchivePageProps> = ({ systemTheme, lang
         ) : (
           <GridView
             items={ALL_GALLERY_ITEMS}
-            isDark={isDark}
             onItemClick={openLightbox}
           />
         )}
@@ -227,61 +169,52 @@ const VisualArchivePage: React.FC<VisualArchivePageProps> = ({ systemTheme, lang
       {/* Lightbox */}
       <EnhancedLightbox
         isOpen={lightboxIndex >= 0}
-        onClose={closeLightbox}
+        onClose={() => setLightboxIndex(-1)}
         images={lightboxImages}
         currentIndex={Math.max(0, lightboxIndex)}
         onIndexChange={setLightboxIndex}
         lang={lang}
       />
-    </motion.div>
-  );
-};
-
-// ---------------------------------------------------------------------------
-// Editorial View - grouped by project
-// ---------------------------------------------------------------------------
-
-interface EditorialViewProps {
-  projects: GalleryProject[];
-  isDark: boolean;
-  lang: Language;
-  onItemClick: (item: GalleryItem) => void;
-  expandedProjects: Set<string>;
-  onToggleExpand: (projectId: string) => void;
-}
-
-const EditorialView: React.FC<EditorialViewProps> = ({ projects, isDark, lang, onItemClick, expandedProjects, onToggleExpand }) => {
-  return (
-    <div className="space-y-20 md:space-y-28">
-      {projects.map((project) => (
-        <ProjectSection
-          key={project.id}
-          project={project}
-          isDark={isDark}
-          lang={lang}
-          onItemClick={onItemClick}
-          isExpanded={expandedProjects.has(project.id)}
-          onToggleExpand={() => onToggleExpand(project.id)}
-        />
-      ))}
     </div>
   );
 };
 
 // ---------------------------------------------------------------------------
-// Project Section - with collapsible items
+// Editorial View
 // ---------------------------------------------------------------------------
 
-interface ProjectSectionProps {
+const EditorialView: React.FC<{
+  projects: GalleryProject[];
+  lang: Language;
+  onItemClick: (item: GalleryItem) => void;
+  expandedProjects: Set<string>;
+  onToggleExpand: (projectId: string) => void;
+}> = ({ projects, lang, onItemClick, expandedProjects, onToggleExpand }) => (
+  <div className="space-y-20 md:space-y-28">
+    {projects.map((project) => (
+      <ProjectSection
+        key={project.id}
+        project={project}
+        lang={lang}
+        onItemClick={onItemClick}
+        isExpanded={expandedProjects.has(project.id)}
+        onToggleExpand={() => onToggleExpand(project.id)}
+      />
+    ))}
+  </div>
+);
+
+// ---------------------------------------------------------------------------
+// Project Section
+// ---------------------------------------------------------------------------
+
+const ProjectSection: React.FC<{
   project: GalleryProject;
-  isDark: boolean;
   lang: Language;
   onItemClick: (item: GalleryItem) => void;
   isExpanded: boolean;
   onToggleExpand: () => void;
-}
-
-const ProjectSection: React.FC<ProjectSectionProps> = ({ project, isDark, lang, onItemClick, isExpanded, onToggleExpand }) => {
+}> = ({ project, lang, onItemClick, isExpanded, onToggleExpand }) => {
   const description = lang === 'en' ? project.descriptionEn : project.descriptionFr;
   const showMoreLabel = lang === 'en'
     ? (n: number) => `Show ${n} more`
@@ -294,34 +227,34 @@ const ProjectSection: React.FC<ProjectSectionProps> = ({ project, isDark, lang, 
   const hasHidden = hiddenItems.length > 0;
 
   return (
-    <section id={`gallery-${project.id}`} style={{ scrollMarginTop: '136px' }}>
+    <section id={`gallery-${project.id}`} className="scroll-mt-28">
       {/* Project header */}
       <div className="mb-6 md:mb-8">
-        <h2 className={`text-xl md:text-2xl font-bold tracking-[-0.02em] mb-1 ${
-          isDark ? 'text-white' : 'text-gray-900'
-        }`}>{project.name}</h2>
-        <p className={`text-sm md:text-base ${
-          isDark ? 'text-gray-500' : 'text-gray-400'
-        }`}>{description}</p>
+        <h2 className="text-xl md:text-2xl font-bold tracking-[-0.02em] mb-1 text-gray-900">
+          {project.name}
+        </h2>
+        <p className="text-sm md:text-base text-gray-400">
+          {description}
+        </p>
       </div>
 
-      {/* Hero image (full width) */}
+      {/* Hero image */}
       {heroItem && (
         <div className="mb-3 md:mb-4">
-          <MediaCard item={heroItem} isDark={isDark} onClick={() => onItemClick(heroItem)} />
+          <MediaCard item={heroItem} onClick={() => onItemClick(heroItem)} />
         </div>
       )}
 
-      {/* First 2 items in 2-col grid */}
+      {/* First 2 items */}
       {visibleRest.length > 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
           {visibleRest.map(item => (
-            <MediaCard key={item.id} item={item} isDark={isDark} onClick={() => onItemClick(item)} />
+            <MediaCard key={item.id} item={item} onClick={() => onItemClick(item)} />
           ))}
         </div>
       )}
 
-      {/* Collapsed items with expand/collapse */}
+      {/* Collapsed items */}
       {hasHidden && (
         <>
           <AnimatePresence>
@@ -330,12 +263,12 @@ const ProjectSection: React.FC<ProjectSectionProps> = ({ project, isDark, lang, 
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: 'auto', opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
+                transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
                 className="overflow-hidden"
               >
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 mt-3 md:mt-4">
                   {hiddenItems.map(item => (
-                    <MediaCard key={item.id} item={item} isDark={isDark} onClick={() => onItemClick(item)} />
+                    <MediaCard key={item.id} item={item} onClick={() => onItemClick(item)} />
                   ))}
                 </div>
               </motion.div>
@@ -344,11 +277,8 @@ const ProjectSection: React.FC<ProjectSectionProps> = ({ project, isDark, lang, 
 
           <button
             onClick={onToggleExpand}
-            className={`mt-4 flex items-center gap-2 text-sm font-medium transition-colors cursor-pointer ${
-              isDark
-                ? 'text-gray-500 hover:text-white'
-                : 'text-gray-400 hover:text-gray-900'
-            }`}
+            className="mt-4 flex items-center gap-2 text-sm font-medium text-gray-400 hover:text-gray-900 cursor-pointer active:scale-[0.97]"
+            style={{ transition: 'color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
           >
             <motion.div
               animate={{ rotate: isExpanded ? 180 : 0 }}
@@ -365,63 +295,48 @@ const ProjectSection: React.FC<ProjectSectionProps> = ({ project, isDark, lang, 
 };
 
 // ---------------------------------------------------------------------------
-// Grid View - flat dense grid
+// Grid View
 // ---------------------------------------------------------------------------
 
-interface GridViewProps {
+const GridView: React.FC<{
   items: GalleryItem[];
-  isDark: boolean;
   onItemClick: (item: GalleryItem) => void;
-}
-
-const GridView: React.FC<GridViewProps> = ({ items, isDark, onItemClick }) => {
-  return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
-      {items.map(item => (
-        <MediaCard key={item.id} item={item} isDark={isDark} onClick={() => onItemClick(item)} />
-      ))}
-    </div>
-  );
-};
+}> = ({ items, onItemClick }) => (
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
+    {items.map(item => (
+      <MediaCard key={item.id} item={item} onClick={() => onItemClick(item)} />
+    ))}
+  </div>
+);
 
 // ---------------------------------------------------------------------------
-// Media Card (image or video)
+// Media Card — design system hover pattern
 // ---------------------------------------------------------------------------
 
-interface MediaCardProps {
-  item: GalleryItem;
-  isDark: boolean;
-  onClick: () => void;
-}
-
-const MediaCard: React.FC<MediaCardProps> = ({ item, isDark, onClick }) => {
-  return (
-    <div
-      className={`group rounded-xl overflow-hidden border cursor-pointer transition-[box-shadow,border-color] duration-200 ease-out hover:shadow-lg ${
-        isDark
-          ? 'border-white/5 hover:border-white/10'
-          : 'border-gray-100 hover:border-gray-200'
-      }`}
-      onClick={onClick}
-    >
-      {item.type === 'video' ? (
-        <video
-          src={item.src}
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="w-full h-auto object-cover transition-transform duration-300 ease-out group-hover:scale-[1.01]"
-        />
-      ) : (
-        <LazyImage
-          src={item.src}
-          alt=""
-          className="w-full h-auto object-cover transition-transform duration-300 ease-out group-hover:scale-[1.01]"
-        />
-      )}
-    </div>
-  );
-};
+const MediaCard: React.FC<{ item: GalleryItem; onClick: () => void }> = ({ item, onClick }) => (
+  <div
+    className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in shadow-sm hover:shadow-lg hover:scale-[1.01]"
+    style={{ transition: 'border-color 200ms ease, box-shadow 300ms ease, transform 300ms cubic-bezier(0.23, 1, 0.32, 1)' }}
+    onClick={onClick}
+  >
+    {item.type === 'video' ? (
+      <video
+        src={item.src}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        className="w-full h-auto object-cover transition-transform duration-300 ease-out group-hover:scale-[1.02]"
+      />
+    ) : (
+      <LazyImage
+        src={item.src}
+        alt=""
+        className="w-full h-auto object-cover transition-transform duration-300 ease-out group-hover:scale-[1.02]"
+      />
+    )}
+  </div>
+);
 
 export default VisualArchivePage;
