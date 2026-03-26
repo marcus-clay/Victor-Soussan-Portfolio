@@ -2,6 +2,7 @@
 
 import { usePathname } from 'next/navigation'
 import type { ReactNode } from 'react'
+import SkillsPromoBanner from './SkillsPromoBanner'
 
 // Routes that use their own full-screen layout (no Nav/Footer)
 const BARE_ROUTES = ['/presentation', '/quote']
@@ -37,6 +38,7 @@ export default function LayoutShell({
         {children}
       </main>
       {footer}
+      <SkillsPromoBanner lang={lang} />
     </>
   )
 }
