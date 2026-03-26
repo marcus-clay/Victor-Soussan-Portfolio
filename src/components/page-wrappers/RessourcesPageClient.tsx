@@ -137,7 +137,7 @@ export default function RessourcesPageClient({ lang }: { lang: 'en' | 'fr' }) {
                 </h3>
 
                 {/* Excerpt */}
-                <p className="text-sm text-gray-500 leading-relaxed line-clamp-3 mb-4 flex-1">
+                <p className="text-[15px] md:text-sm text-gray-500 leading-relaxed line-clamp-3 mb-4 flex-1">
                   {isEn ? item.excerpt_en : item.excerpt_fr}
                 </p>
 

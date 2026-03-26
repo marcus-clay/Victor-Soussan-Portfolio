@@ -87,7 +87,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             <motion.p
               variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
               transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
-              className="text-xs md:text-sm text-gray-400 mb-4 md:mb-4"
+              className="text-[13px] md:text-sm text-gray-500 mb-4"
             >
               {content.hero.positioning}
             </motion.p>
@@ -96,7 +96,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             <motion.p
               variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
               transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
-              className="text-sm leading-relaxed mb-6 text-gray-500 max-w-2xl md:hidden"
+              className="text-[15px] leading-relaxed mb-6 text-gray-500 max-w-2xl md:hidden"
             >
               {content.hero.descShort || content.hero.desc}
             </motion.p>
