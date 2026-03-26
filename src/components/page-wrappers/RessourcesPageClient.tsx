@@ -170,45 +170,63 @@ export default function RessourcesPageClient({ lang }: { lang: 'en' | 'fr' }) {
           })}
         </div>
 
-        {/* Agents & Prompts section */}
+        {/* Agents & Prompts — floating push block with screenshot */}
         <motion.section
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
-          className="mt-16"
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
+          className="mt-20"
         >
           <a
             href="https://www.condamine.studio/agents-prompts"
             target="_blank"
             rel="noopener noreferrer"
-            className="group block rounded-2xl border border-gray-100 bg-white p-8 md:p-10 hover:border-gray-200 hover:shadow-md active:scale-[0.995] cursor-pointer"
-            style={{ transition: 'border-color 200ms ease, box-shadow 300ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
+            className="group block rounded-2xl overflow-hidden bg-gradient-to-br from-gray-900 to-gray-800 cursor-pointer active:scale-[0.995]"
+            style={{ transition: 'transform 160ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 300ms ease', boxShadow: '0 8px 30px rgba(0,0,0,0.12)' }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = '0 16px 50px rgba(0,0,0,0.2)' }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = '0 8px 30px rgba(0,0,0,0.12)' }}
           >
-            <div className="flex flex-col md:flex-row md:items-center gap-6">
-              <div className="flex items-center gap-4 flex-shrink-0">
-                <div className="w-12 h-12 rounded-xl bg-violet-50 flex items-center justify-center">
-                  <Robot size={24} weight="bold" className="text-violet-600" />
+            <div className="flex flex-col md:flex-row">
+              {/* Text content */}
+              <div className="flex-1 p-8 md:p-10 flex flex-col justify-center">
+                <div className="flex items-center gap-2 mb-4">
+                  <div className="w-8 h-8 rounded-lg bg-violet-500/20 flex items-center justify-center">
+                    <Robot size={16} weight="bold" className="text-violet-400" />
+                  </div>
+                  <div className="w-8 h-8 rounded-lg bg-amber-500/20 flex items-center justify-center">
+                    <Lightning size={16} weight="bold" className="text-amber-400" />
+                  </div>
+                  <span className="ml-2 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Condamine Studio
+                  </span>
                 </div>
-                <div className="w-12 h-12 rounded-xl bg-amber-50 flex items-center justify-center">
-                  <Lightning size={24} weight="bold" className="text-amber-600" />
-                </div>
-              </div>
-              <div className="flex-1 min-w-0">
-                <h3 className="text-xl font-bold tracking-[-0.02em] text-gray-900 mb-1">
-                  {isEn ? 'Agents & Prompts for designers' : 'Agents et prompts pour designers'}
+
+                <h3 className="text-xl md:text-2xl font-bold tracking-[-0.02em] text-white mb-2">
+                  {isEn ? 'AI Agents & Prompts' : 'Agents IA et prompts'}
                 </h3>
-                <p className="text-base text-gray-500 leading-relaxed max-w-[55ch]">
+                <p className="text-sm md:text-base text-gray-400 leading-relaxed mb-6 max-w-[45ch]">
                   {isEn
-                    ? 'Curated collections of AI agents and prompt frameworks to accelerate design work. Research, ideation, writing, prototyping.'
-                    : 'Collections d\'agents IA et de frameworks de prompts pour accélérer le travail de design. Recherche, idéation, rédaction, prototypage.'}
+                    ? '32 curated agents and prompt frameworks for design, development, marketing, and productivity.'
+                    : '32 agents et frameworks de prompts pour le design, le développement, le marketing et la productivité.'}
                 </p>
-              </div>
-              <div className="flex-shrink-0">
-                <span className="inline-flex items-center gap-1.5 text-sm font-medium text-[#2D5CF3]">
-                  {isEn ? 'Explore on Condamine Studio' : 'Explorer sur Condamine Studio'}
+
+                <span className="inline-flex items-center gap-1.5 text-sm font-medium text-white/80 group-hover:text-white">
+                  {isEn ? 'Explore the collection' : 'Explorer la collection'}
                   <ArrowUpRight size={14} className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </span>
+              </div>
+
+              {/* Screenshot preview */}
+              <div className="md:w-[340px] lg:w-[400px] flex-shrink-0 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-r from-gray-900 to-transparent z-10 w-16 pointer-events-none" />
+                <img
+                  src="/images/agents-prompts-preview.png"
+                  alt="AI Agents & Prompts Library"
+                  className="w-full h-full object-cover object-left-top opacity-70 group-hover:opacity-90 group-hover:scale-[1.02]"
+                  style={{ transition: 'opacity 300ms ease, transform 500ms cubic-bezier(0.23, 1, 0.32, 1)' }}
+                  loading="lazy"
+                />
               </div>
             </div>
           </a>
