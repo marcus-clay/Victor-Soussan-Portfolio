@@ -145,7 +145,7 @@ export default function ProjectVideoCarousel({ lang = 'fr' }: { lang?: 'en' | 'f
                 {/* Video */}
                 <button
                   onClick={() => openLightbox(idx)}
-                  className="w-full h-full cursor-zoom-in block"
+                  className="w-full h-full cursor-zoom-in block bg-[#0a0a0a]"
                 >
                   <video
                     ref={el => { videoRefs.current[idx] = el }}
@@ -155,7 +155,7 @@ export default function ProjectVideoCarousel({ lang = 'fr' }: { lang?: 'en' | 'f
                     autoPlay
                     loop
                     preload="metadata"
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-contain"
                     style={{
                       transition: 'transform 300ms cubic-bezier(0.23, 1, 0.32, 1)',
                       transform: isHovered ? 'scale(1.03)' : 'scale(1)',
