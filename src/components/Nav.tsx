@@ -103,10 +103,10 @@ export default function Nav({ lang }: { lang: Lang }) {
       >
         <div className="w-full px-6 h-full flex items-center justify-between">
           {/* Logo + contextual page title */}
-          <div className="flex items-center gap-0 min-w-0 flex-shrink-0">
+          <div className="flex items-baseline gap-0 min-w-0 flex-shrink-0">
             <Link
               href={`/${lang}`}
-              className="font-semibold text-[15px] tracking-[-0.02em] text-gray-900 whitespace-nowrap py-2 -my-2 hover:opacity-70 flex-shrink-0"
+              className="font-semibold text-[15px] tracking-[-0.02em] text-gray-900 whitespace-nowrap hover:opacity-70 flex-shrink-0"
               style={{ transition: 'opacity 150ms ease' }}
             >
               Victor Soussan
@@ -115,16 +115,15 @@ export default function Nav({ lang }: { lang: Lang }) {
             {/* Page title — fades in when h1 scrolls behind header */}
             {pageTitle && (
               <div
-                className="flex items-center gap-0 min-w-0 overflow-hidden"
+                className="flex items-baseline gap-0 min-w-0 overflow-hidden"
                 style={{
                   opacity: showPageTitle ? 1 : 0,
-                  transform: showPageTitle ? 'translateY(0)' : 'translateY(4px)',
-                  transition: 'opacity 250ms ease, transform 300ms cubic-bezier(0.23, 1, 0.32, 1)',
+                  transition: 'opacity 250ms ease',
                   maxWidth: showPageTitle ? 300 : 0,
                   pointerEvents: showPageTitle ? 'auto' : 'none',
                 }}
               >
-                <span className="text-gray-300 mx-2 flex-shrink-0">/</span>
+                <span className="text-gray-300 mx-2 text-[13px] flex-shrink-0">/</span>
                 <span className="text-[13px] font-medium text-gray-500 truncate">
                   {pageTitle}
                 </span>
