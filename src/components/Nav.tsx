@@ -67,20 +67,34 @@ export default function Nav({ lang }: { lang: Lang }) {
     setShowPageTitle(false)
     setPageTitle(null)
 
-    // Wait for DOM to settle after navigation
+    // Delay observer setup so it doesn't fire during page transition
     const timer = setTimeout(() => {
       const h1 = document.querySelector('h1')
       if (!h1) return
 
       setPageTitle(h1.textContent?.trim() || null)
 
+      // Only show title after user has scrolled past the h1
+      // Start with hidden, let scroll reveal it
+      let hasScrolled = false
+      const onScroll = () => { hasScrolled = true }
+      window.addEventListener('scroll', onScroll, { once: true, passive: true })
+
       const observer = new IntersectionObserver(
-        ([entry]) => setShowPageTitle(!entry.isIntersecting),
+        ([entry]) => {
+          // Don't show on initial observation (page load), only after scroll
+          if (!hasScrolled && !entry.isIntersecting) return
+          setShowPageTitle(!entry.isIntersecting)
+        },
         { threshold: 0, rootMargin: '-72px 0px 0px 0px' }
       )
       observer.observe(h1)
-      return () => observer.disconnect()
-    }, 100)
+
+      return () => {
+        observer.disconnect()
+        window.removeEventListener('scroll', onScroll)
+      }
+    }, 300)
 
     return () => clearTimeout(timer)
   }, [pathname])
