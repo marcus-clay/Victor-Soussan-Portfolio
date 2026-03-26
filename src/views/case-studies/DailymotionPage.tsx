@@ -12,11 +12,11 @@ import {
   Buildings as Building2,
   ArrowRight
 } from '@phosphor-icons/react';
-import { scrollToElement } from '../../utils/smoothScroll';
+
 import { GalleryItem, getDailymotionGalleryItems } from '../../components/BentoGallery';
 import EnhancedLightbox from '../../components/media/EnhancedLightbox';
 import DailymotionExecutive from '../../components/case-studies/DailymotionExecutive';
-import CaseStudyTOCSidebar from '../../components/CaseStudyTOCSidebar';
+
 import { PROJECT_SEO, DEFAULT_SEO, updateMetaTags, injectJsonLd } from '../../utils/seo';
 import { DAILYMOTION_TRANSLATIONS } from '../../data/caseStudyTranslations/dailymotionTranslations';
 
@@ -30,29 +30,6 @@ interface DailymotionPageProps {
   onContact?: () => void;
 }
 
-// TOC Sections for Full case study
-const TOC_SECTIONS = {
-  en: [
-    { id: 'top', label: 'Top' },
-    { id: 'hero', label: 'Intro' },
-    { id: 'overview', label: 'Overview' },
-    { id: 'modules', label: 'Key Modules' },
-    { id: 'upload', label: 'Upload & Management' },
-    { id: 'live', label: 'Live Console' },
-    { id: 'player', label: 'Player Manager' },
-    { id: 'design-system', label: 'Design System' },
-  ],
-  fr: [
-    { id: 'top', label: 'Haut' },
-    { id: 'hero', label: 'Intro' },
-    { id: 'overview', label: 'Vue d\'ensemble' },
-    { id: 'modules', label: 'Modules clés' },
-    { id: 'upload', label: 'Upload & Gestion' },
-    { id: 'live', label: 'Console Live' },
-    { id: 'player', label: 'Gestionnaire Player' },
-    { id: 'design-system', label: 'Design System' },
-  ]
-};
 
 // All media (images + videos) for lightbox navigation
 type MediaItem = { src: string; captionKey: string; type: 'image' | 'video' };
@@ -142,12 +119,8 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
     caption: `${t.captions[item.captionKey as keyof typeof t.captions]} - ${t.captions[`${item.captionKey}Desc` as keyof typeof t.captions] || ''}`
   }));
 
-  // TOC sections for current language
-  const sections = TOC_SECTIONS[lang];
   const isDark = systemTheme === 'dark';
 
-  const [activeSection, setActiveSection] = useState('top');
-  const [showNav, setShowNav] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [, setLightboxZoomed] = useState(false);
@@ -172,46 +145,6 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
   }, [caseStudyMode, viewMode]);
-
-  // Track scroll position and update active section (only in full mode)
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop = window.scrollY;
-
-      // Show nav after scrolling past hero (300px)
-      setShowNav(scrollTop > 300);
-
-      // If at the very top, set 'top' as active
-      if (scrollTop < 100) {
-        setActiveSection('top');
-        return;
-      }
-
-      // Find active section (skip 'top' which has no DOM element)
-      const sectionElements = sections
-        .filter(s => s.id !== 'top')
-        .map(s => ({
-          id: s.id,
-          element: document.getElementById(s.id)
-        })).filter(s => s.element);
-
-      for (let i = sectionElements.length - 1; i >= 0; i--) {
-        const section = sectionElements[i];
-        if (section.element) {
-          const rect = section.element.getBoundingClientRect();
-          if (rect.top <= 200) {
-            setActiveSection(section.id);
-            break;
-          }
-        }
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [sections]);
-
-  const scrollToSection = scrollToElement;
 
   // Open lightbox with specific image and optional start time for videos
   const openLightbox = (imageSrc: string, startTime: number = 0) => {
@@ -256,17 +189,6 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
 
   return (
     <div ref={containerRef} className={`min-h-screen ${viewMode === 'gallery' ? 'bg-white' : (systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white')}`}>
-      {/* TOC Sidebar - Persistent left navigation for full mode */}
-      <CaseStudyTOCSidebar
-        sections={sections}
-        activeSection={activeSection}
-        onSectionClick={scrollToSection}
-        isDark={isDark}
-        isVisible={showNav && viewMode !== 'gallery' && caseStudyMode === 'full'}
-        lang={lang}
-      />
-
-
       {/* Enhanced Lightbox with mobile gestures */}
       <EnhancedLightbox
         isOpen={lightboxOpen}

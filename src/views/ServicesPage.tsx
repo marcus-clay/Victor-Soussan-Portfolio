@@ -14,7 +14,7 @@ import {
   ArrowRight,
   Envelope as Mail
 } from '@phosphor-icons/react';
-import CaseStudyTOCSidebar from '../components/CaseStudyTOCSidebar';
+import CaseStudyTOCBar from '../components/CaseStudyTOCBar';
 
 type Language = 'en' | 'fr';
 
@@ -247,15 +247,21 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ lang, onContact }) => {
 
   return (
     <div className="min-h-screen bg-[#FCFCFD]">
-      {/* TOC Sidebar */}
-      <CaseStudyTOCSidebar
-        sections={sections}
-        activeSection={activeSection}
-        onSectionClick={scrollToSection}
-        isDark={false}
-        isVisible={showTOC}
-        lang={lang}
-      />
+      {/* Sticky TOC bar */}
+      {showTOC && (
+        <div
+          className="sticky z-10 backdrop-blur-xl bg-[#FCFCFD]/80"
+          style={{ top: 'var(--nav-height, 72px)', transition: 'top 250ms cubic-bezier(0.23, 1, 0.32, 1)' }}
+        >
+          <CaseStudyTOCBar
+            sections={sections}
+            activeSection={activeSection}
+            onSectionClick={scrollToSection}
+            isDark={false}
+            lang={lang}
+          />
+        </div>
+      )}
 
       {/* Content */}
       <div className="max-w-[1200px] mx-auto px-6 pt-20 pb-20">

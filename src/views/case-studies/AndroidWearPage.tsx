@@ -13,10 +13,10 @@ import {
   ArrowRight,
   Quotes as Quote
 } from '@phosphor-icons/react';
-import { scrollToElement } from '../../utils/smoothScroll';
+
 import { GalleryItem } from '../../components/BentoGallery';
 import EnhancedLightbox from '../../components/media/EnhancedLightbox';
-import CaseStudyTOCSidebar from '../../components/CaseStudyTOCSidebar';
+
 import { PROJECT_SEO, DEFAULT_SEO, updateMetaTags, injectJsonLd } from '../../utils/seo';
 import { ANDROID_WEAR_TRANSLATIONS } from '../../data/caseStudyTranslations/androidWearTranslations';
 
@@ -199,27 +199,6 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick }) => {
   );
 };
 
-// TOC Sections for navigation
-const TOC_SECTIONS = {
-  en: [
-    { id: 'top', label: 'Top' },
-    { id: 'overview', label: 'Overview' },
-    { id: 'research', label: 'Research' },
-    { id: 'design', label: 'Screen Design' },
-    { id: 'specs', label: 'Specifications' },
-    { id: 'implementation', label: 'Implementation' },
-    { id: 'results', label: 'Results' },
-  ],
-  fr: [
-    { id: 'top', label: 'Haut' },
-    { id: 'overview', label: 'Vue d\'ensemble' },
-    { id: 'research', label: 'Recherche' },
-    { id: 'design', label: 'Design' },
-    { id: 'specs', label: 'Spécifications' },
-    { id: 'implementation', label: 'Implémentation' },
-    { id: 'results', label: 'Résultats' },
-  ]
-};
 
 // Main Component
 const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
@@ -243,45 +222,10 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
   const isDark = systemTheme === 'dark';
   const t = TRANSLATIONS[lang];
   const galleryItems = getGalleryItems(lang);
-  const sections = TOC_SECTIONS[lang];
   const containerRef = useRef<HTMLDivElement>(null);
 
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
-  const [activeSection, setActiveSection] = useState('top');
-  const [showNav, setShowNav] = useState(false);
-
-  // Track scroll position and update active section
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop = window.scrollY;
-
-      // Show nav after scrolling past hero
-      setShowNav(scrollTop > 300);
-
-      // Find active section
-      const sectionElements = sections.map(s => ({
-        id: s.id,
-        element: document.getElementById(s.id)
-      })).filter(s => s.element);
-
-      for (let i = sectionElements.length - 1; i >= 0; i--) {
-        const section = sectionElements[i];
-        if (section.element) {
-          const rect = section.element.getBoundingClientRect();
-          if (rect.top <= 200) {
-            setActiveSection(section.id);
-            break;
-          }
-        }
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [sections]);
-
-  const scrollToSection = scrollToElement;
 
   const openLightbox = (index: number) => {
     setLightboxIndex(index);
@@ -307,16 +251,6 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
 
   return (
     <div ref={containerRef} className={`min-h-screen ${viewMode === 'gallery' ? 'bg-white' : (isDark ? 'bg-[#0a0a0a]' : 'bg-white')}`}>
-      {/* TOC Sidebar */}
-      <CaseStudyTOCSidebar
-        sections={sections}
-        activeSection={activeSection}
-        onSectionClick={scrollToSection}
-        isDark={isDark}
-        isVisible={showNav && viewMode === 'caseStudy'}
-        lang={lang}
-      />
-
       {/* Content */}
       {viewMode === 'caseStudy' ? (
         <div id="top" className="max-w-[1200px] mx-auto px-10 py-12">

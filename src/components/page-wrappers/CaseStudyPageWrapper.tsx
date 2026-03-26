@@ -87,9 +87,21 @@ const SUMMARY_TOC: Record<string, TOCSections> = {
     { id: 'insights', label_en: 'Insights', label_fr: 'Enseignements' },
     { id: 'outcome', label_en: 'Outcome', label_fr: 'Résultats' },
   ],
+  riskos: [
+    { id: 'top', label_en: 'Top', label_fr: 'Haut' },
+    { id: 'why', label_en: 'Context', label_fr: 'Contexte' },
+    { id: 'insight', label_en: 'Observation', label_fr: 'Observation' },
+    { id: 'design-question', label_en: 'Approach', label_fr: 'Approche' },
+    { id: 'triage', label_en: 'Triage', label_fr: 'Triage' },
+    { id: 'ai-analysis', label_en: 'AI analysis', label_fr: 'Analyse IA' },
+    { id: 'decision', label_en: 'Decision', label_fr: 'Décision' },
+    { id: 'false-positive', label_en: 'False alarms', label_fr: 'Fausses alertes' },
+    { id: 'queue', label_en: 'Queue', label_fr: 'File d\'attente' },
+    { id: 'learnings', label_en: 'Observations', label_fr: 'Observations' },
+  ],
 }
 
-// Full case study view TOC (for now, only toolkit)
+// Full case study view TOC
 const FULL_TOC: Record<string, TOCSections> = {
   toolkit: [
     { id: 'top', label_en: 'Top', label_fr: 'Haut' },
@@ -101,6 +113,89 @@ const FULL_TOC: Record<string, TOCSections> = {
     { id: 'phase3', label_en: 'Phase 3', label_fr: 'Phase 3' },
     { id: 'design-system', label_en: 'Design System', label_fr: 'Design System' },
     { id: 'impact', label_en: 'Impact', label_fr: 'Impact' },
+  ],
+  connect: [
+    { id: 'top', label_en: 'Top', label_fr: 'Haut' },
+    { id: 'hero', label_en: 'Intro', label_fr: 'Intro' },
+    { id: 'overview', label_en: 'Overview', label_fr: 'Aperçu' },
+    { id: 'dashboard', label_en: 'Dashboard', label_fr: 'Dashboard' },
+    { id: 'bulle', label_en: 'La Bulle', label_fr: 'La Bulle' },
+  ],
+  dailymotion: [
+    { id: 'top', label_en: 'Top', label_fr: 'Haut' },
+    { id: 'hero', label_en: 'Intro', label_fr: 'Intro' },
+    { id: 'overview', label_en: 'Overview', label_fr: 'Vue d\'ensemble' },
+    { id: 'modules', label_en: 'Key Modules', label_fr: 'Modules clés' },
+    { id: 'upload', label_en: 'Upload & Management', label_fr: 'Upload & Gestion' },
+    { id: 'live', label_en: 'Live Console', label_fr: 'Console Live' },
+    { id: 'player', label_en: 'Player Manager', label_fr: 'Gestionnaire Player' },
+    { id: 'design-system', label_en: 'Design System', label_fr: 'Design System' },
+  ],
+  sqool: [
+    { id: 'top', label_en: 'Top', label_fr: 'Haut' },
+    { id: 'hero', label_en: 'Intro', label_fr: 'Intro' },
+    { id: 'context', label_en: 'Context', label_fr: 'Contexte' },
+    { id: 'phase1', label_en: '2019-2020', label_fr: '2019-2020' },
+    { id: 'phase2', label_en: '2021', label_fr: '2021' },
+    { id: 'phase3', label_en: '2022-2024', label_fr: '2022-2024' },
+    { id: 'apps', label_en: 'Apps', label_fr: 'Apps' },
+    { id: 'impact', label_en: 'Impact', label_fr: 'Impact' },
+  ],
+  'sqool-classe': [
+    { id: 'top', label_en: 'Top', label_fr: 'Haut' },
+    { id: 'hero', label_en: 'Intro', label_fr: 'Intro' },
+    { id: 'context', label_en: 'Context', label_fr: 'Contexte' },
+    { id: 'approach', label_en: 'Approach', label_fr: 'Approche' },
+    { id: 'teacher', label_en: 'Teacher', label_fr: 'Enseignant' },
+    { id: 'students', label_en: 'Students', label_fr: 'Élèves' },
+    { id: 'impact', label_en: 'Impact', label_fr: 'Impact' },
+  ],
+  'france-vae': [
+    { id: 'top', label_en: 'Top', label_fr: 'Haut' },
+    { id: 'context', label_en: 'Context', label_fr: 'Contexte' },
+    { id: 'initiative-1', label_en: 'VAE Collective', label_fr: 'VAE Collective' },
+    { id: 'initiative-2', label_en: 'Product Ops', label_fr: 'Product Ops' },
+    { id: 'initiative-3', label_en: 'Research', label_fr: 'Recherche' },
+    { id: 'initiative-4', label_en: 'Workshops', label_fr: 'Ateliers' },
+    { id: 'initiative-5', label_en: 'AI', label_fr: 'IA' },
+    { id: 'ui-delivery', label_en: 'UI & Delivery', label_fr: 'UI & Livraison' },
+    { id: 'learnings', label_en: 'Learnings', label_fr: 'Apprentissages' },
+  ],
+  pagesjaunes: [
+    { id: 'top', label_en: 'Top', label_fr: 'Haut' },
+    { id: 'overview', label_en: 'Overview', label_fr: 'Aperçu' },
+    { id: 'homepage', label_en: 'Homepage', label_fr: 'Homepage' },
+    { id: 'search', label_en: 'Search Engine', label_fr: 'Moteur' },
+    { id: 'onboarding', label_en: 'Onboarding', label_fr: 'Onboarding' },
+    { id: 'navigation', label_en: 'Navigation', label_fr: 'Navigation' },
+    { id: 'account', label_en: 'Account', label_fr: 'Compte' },
+    { id: 'micro-interactions', label_en: 'Motion', label_fr: 'Motion' },
+    { id: 'wear', label_en: 'Android Wear', label_fr: 'Android Wear' },
+    { id: 'design-system', label_en: 'Design System', label_fr: 'Design System' },
+    { id: 'team', label_en: 'Team', label_fr: 'Équipe' },
+    { id: 'impact', label_en: 'Impact', label_fr: 'Impact' },
+    { id: 'learnings', label_en: 'Learnings', label_fr: 'Apprentissages' },
+  ],
+  androidwear: [
+    { id: 'top', label_en: 'Top', label_fr: 'Haut' },
+    { id: 'overview', label_en: 'Overview', label_fr: 'Vue d\'ensemble' },
+    { id: 'research', label_en: 'Research', label_fr: 'Recherche' },
+    { id: 'design', label_en: 'Screen Design', label_fr: 'Design' },
+    { id: 'specs', label_en: 'Specifications', label_fr: 'Spécifications' },
+    { id: 'implementation', label_en: 'Implementation', label_fr: 'Implémentation' },
+    { id: 'results', label_en: 'Results', label_fr: 'Résultats' },
+  ],
+  riskos: [
+    { id: 'top', label_en: 'Top', label_fr: 'Haut' },
+    { id: 'why', label_en: 'Context', label_fr: 'Contexte' },
+    { id: 'insight', label_en: 'Observation', label_fr: 'Observation' },
+    { id: 'design-question', label_en: 'Approach', label_fr: 'Approche' },
+    { id: 'triage', label_en: 'Triage', label_fr: 'Triage' },
+    { id: 'ai-analysis', label_en: 'AI analysis', label_fr: 'Analyse IA' },
+    { id: 'decision', label_en: 'Decision', label_fr: 'Décision' },
+    { id: 'false-positive', label_en: 'False alarms', label_fr: 'Fausses alertes' },
+    { id: 'queue', label_en: 'Queue', label_fr: 'File d\'attente' },
+    { id: 'learnings', label_en: 'Observations', label_fr: 'Observations' },
   ],
 }
 
@@ -229,7 +324,7 @@ export default function CaseStudyPageWrapper({
 
   return (
     <>
-      {/* Sticky swap container: breadcrumb <-> TOC bar */}
+      {/* Sticky sub-bar: swaps between breadcrumb and TOC */}
       <div
         className={`sticky z-10 backdrop-blur-xl ${
           isDark
@@ -238,8 +333,8 @@ export default function CaseStudyPageWrapper({
         }`}
         style={{ top: 'var(--nav-height, 72px)', transition: 'top 250ms cubic-bezier(0.23, 1, 0.32, 1)' }}
       >
+        {/* Breadcrumb (clipped container for swap animation) */}
         <div className="relative h-10 overflow-hidden">
-          {/* Breadcrumb layer */}
           <div
             className="absolute inset-0 flex items-center"
             style={{
@@ -285,7 +380,7 @@ export default function CaseStudyPageWrapper({
             </div>
           </div>
 
-          {/* TOC bar layer */}
+          {/* TOC bar (slides up from below, stays in clipped area) */}
           {hasTOC && (
             <div
               className="absolute inset-0"
@@ -395,7 +490,7 @@ function CaseStudyFooter({
                   {proj.coverImage && (
                     <div
                       className="relative aspect-[16/9] overflow-hidden flex items-center justify-center p-3"
-                      style={{ backgroundColor: proj.cardBg || (isDark ? '#111113' : '#f4f4f5') }}
+                      style={{ backgroundColor: proj.cardBg || (isDark ? '#111111' : '#f4f4f5') }}
                     >
                       <img
                         src={proj.coverImage.startsWith('/') ? proj.coverImage : `/images/${proj.coverImage}`}
@@ -415,7 +510,7 @@ function CaseStudyFooter({
                     <p className={`text-sm leading-relaxed line-clamp-2 mb-3 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
                       {proj.summary}
                     </p>
-                    <span className={`inline-flex items-center gap-1.5 text-sm font-medium ${isDark ? 'text-blue-400' : 'text-[#2D5CF3]'}`}>
+                    <span className={`inline-flex items-center gap-1.5 text-sm font-medium text-[#2D5CF3]`}>
                       {lang === 'fr' ? 'Voir le projet' : 'View project'}
                       <ArrowRight size={14} className="transition-transform duration-200 group-hover:translate-x-1" />
                     </span>

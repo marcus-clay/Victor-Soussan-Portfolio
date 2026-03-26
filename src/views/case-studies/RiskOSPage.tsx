@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowUpRight } from '@phosphor-icons/react';
-import CaseStudyTOCSidebar from '../../components/CaseStudyTOCSidebar';
+
 import EnhancedLightbox, { type LightboxImage } from '../../components/media/EnhancedLightbox';
-import { scrollToElement } from '../../utils/smoothScroll';
+
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -17,34 +17,6 @@ interface RiskOSPageProps {
   onContact?: () => void;
 }
 
-// ─── TOC ─────────────────────────────────────────────────────────────────────
-
-const TOC_SECTIONS = {
-  en: [
-    { id: 'top', label: 'Top' },
-    { id: 'why', label: 'Context' },
-    { id: 'insight', label: 'Observation' },
-    { id: 'design-question', label: 'Approach' },
-    { id: 'triage', label: 'Triage' },
-    { id: 'ai-analysis', label: 'AI analysis' },
-    { id: 'decision', label: 'Decision' },
-    { id: 'false-positive', label: 'False alarms' },
-    { id: 'queue', label: 'Queue' },
-    { id: 'learnings', label: 'Observations' },
-  ],
-  fr: [
-    { id: 'top', label: 'Haut' },
-    { id: 'why', label: 'Contexte' },
-    { id: 'insight', label: 'Observation' },
-    { id: 'design-question', label: 'Approche' },
-    { id: 'triage', label: 'Triage' },
-    { id: 'ai-analysis', label: 'Analyse IA' },
-    { id: 'decision', label: 'Décision' },
-    { id: 'false-positive', label: 'Fausses alertes' },
-    { id: 'queue', label: 'File d\'attente' },
-    { id: 'learnings', label: 'Observations' },
-  ],
-};
 
 // ─── Content ─────────────────────────────────────────────────────────────────
 
@@ -300,10 +272,7 @@ const RiskOSPage: React.FC<RiskOSPageProps> = ({
 }) => {
   const lang = propLang || 'fr';
   const t = CONTENT[lang];
-  const sections = TOC_SECTIONS[lang];
   const containerRef = useRef<HTMLDivElement>(null);
-  const [activeSection, setActiveSection] = useState('top');
-  const [showNav, setShowNav] = useState(false);
 
   // Lightbox state
   const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -317,52 +286,8 @@ const RiskOSPage: React.FC<RiskOSPageProps> = ({
     setLightboxOpen(true);
   };
 
-  // Track scroll position and update active section (window scroll)
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop = window.scrollY;
-      setShowNav(scrollTop > 300);
-
-      if (scrollTop < 100) {
-        setActiveSection('top');
-        return;
-      }
-
-      const sectionElements = sections
-        .filter(s => s.id !== 'top')
-        .map(s => ({ id: s.id, element: document.getElementById(s.id) }))
-        .filter(s => s.element);
-
-      for (let i = sectionElements.length - 1; i >= 0; i--) {
-        const section = sectionElements[i];
-        if (section.element) {
-          const rect = section.element.getBoundingClientRect();
-          if (rect.top <= 200) {
-            setActiveSection(section.id);
-            break;
-          }
-        }
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [sections]);
-
-  const scrollToSection = scrollToElement;
-
   return (
     <div ref={containerRef} className="bg-[#0a0a0a] min-h-screen">
-      {/* TOC Sidebar */}
-      <CaseStudyTOCSidebar
-        sections={sections}
-        activeSection={activeSection}
-        onSectionClick={scrollToSection}
-        isDark={true}
-        isVisible={showNav}
-        lang={lang}
-      />
-
       {/* Lightbox */}
       <EnhancedLightbox
         isOpen={lightboxOpen}

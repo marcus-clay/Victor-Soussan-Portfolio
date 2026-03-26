@@ -13,9 +13,9 @@ import {
   Monitor,
   Users,
 } from '@phosphor-icons/react';
-import { scrollToElement } from '../../utils/smoothScroll';
+
 import EnhancedLightbox from '../../components/media/EnhancedLightbox';
-import CaseStudyTOCSidebar from '../../components/CaseStudyTOCSidebar';
+
 import PrototypeFinderGallery from '../../components/prototype/PrototypeFinderGallery';
 import SqoolClasseExecutive from '../../components/case-studies/SqoolClasseExecutive';
 import { PROJECT_SEO, DEFAULT_SEO, updateMetaTags, injectJsonLd } from '../../utils/seo';
@@ -33,27 +33,6 @@ interface SqoolClassePageProps {
 
 const TRANSLATIONS = SQOOL_CLASSE_TRANSLATIONS;
 
-// TOC Sections
-const TOC_SECTIONS = {
-  en: [
-    { id: 'top', label: 'Top' },
-    { id: 'hero', label: 'Intro' },
-    { id: 'context', label: 'Context' },
-    { id: 'approach', label: 'Approach' },
-    { id: 'teacher', label: 'Teacher' },
-    { id: 'students', label: 'Students' },
-    { id: 'impact', label: 'Impact' },
-  ],
-  fr: [
-    { id: 'top', label: 'Haut' },
-    { id: 'hero', label: 'Intro' },
-    { id: 'context', label: 'Contexte' },
-    { id: 'approach', label: 'Approche' },
-    { id: 'teacher', label: 'Enseignant' },
-    { id: 'students', label: '\u00c9l\u00e8ves' },
-    { id: 'impact', label: 'Impact' },
-  ],
-};
 
 const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
   onClose,
@@ -75,8 +54,6 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
   }, []);
 
   const containerRef = useRef<HTMLDivElement>(null);
-  const [activeSection, setActiveSection] = useState('top');
-  const [showNav, setShowNav] = useState(true);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
 
@@ -122,7 +99,6 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
 
   const isDark = systemTheme === 'dark';
   const t = TRANSLATIONS[lang] || TRANSLATIONS.fr;
-  const sections = TOC_SECTIONS[lang] || TOC_SECTIONS.fr;
 
 
   // Scroll to top on mount + lock scroll for 1.5s to prevent iframe focus stealing
@@ -145,33 +121,6 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
     };
   }, []);
 
-  // Scroll tracking for active section (only after scroll lock released)
-  useEffect(() => {
-    if (scrollLocked) return;
-
-    const handleScroll = () => {
-      const scrollTop = window.scrollY;
-      setShowNav(true);
-
-      const sectionElements = sections.map(s => ({
-        id: s.id,
-        el: document.getElementById(s.id),
-      }));
-
-      for (let i = sectionElements.length - 1; i >= 0; i--) {
-        const { id, el } = sectionElements[i];
-        if (el && el.offsetTop - 200 <= scrollTop) {
-          setActiveSection(id);
-          return;
-        }
-      }
-      setActiveSection('top');
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [sections, scrollLocked]);
-
   // Sync caseStudyMode with viewMode prop and scroll to top on switch
   useEffect(() => {
     if (viewMode === 'executive') setCaseStudyMode('executive');
@@ -193,8 +142,6 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
     };
   }, [viewMode]);
 
-  const scrollToSection = scrollToElement;
-
   return (
     <div ref={containerRef} className={`min-h-screen ${isDark ? 'bg-[#0a0a0a]' : 'bg-white'}`}>
       {/* Image Lightbox */}
@@ -208,16 +155,6 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
         projectId="sqool-classe"
       />
 
-
-      {/* TOC Sidebar */}
-      <CaseStudyTOCSidebar
-        sections={sections}
-        activeSection={activeSection}
-        onSectionClick={scrollToSection}
-        isDark={isDark}
-        isVisible={showNav && viewMode !== 'gallery' && caseStudyMode === 'full'}
-        lang={lang}
-      />
 
       {/* Content */}
       <AnimatePresence mode="wait">

@@ -1,13 +1,13 @@
 /**
  * SignalDetailPage - Blog article view for a single signal
- * Layout unified with GuideClaudeCodePage: CaseStudyTOCSidebar, breadcrumb, article-body styles
+ * Layout unified with GuideClaudeCodePage: CaseStudyTOCBar, breadcrumb, article-body styles
  */
 
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Clock, Calendar, ArrowRight } from '@phosphor-icons/react';
 import { SIGNALS, CATEGORY_COLORS, CATEGORY_LABELS } from '../data/signalsData';
-import CaseStudyTOCSidebar from '../components/CaseStudyTOCSidebar';
+import CaseStudyTOCBar from '../components/CaseStudyTOCBar';
 import AuthorContactCard from '../components/AuthorContactCard';
 import { scrollToElement } from '../utils/smoothScroll';
 
@@ -42,11 +42,13 @@ const SignalDetailPage: React.FC<Props> = ({ signalId, systemTheme, lang, onBack
   const isDark = systemTheme === 'dark';
   const articleRef = useRef<HTMLDivElement>(null);
   const [activeSection, setActiveSection] = useState<string>('');
+  const [showTOC, setShowTOC] = useState(false);
 
   // Track active section for TOC
   useEffect(() => {
     if (!signal) return;
     const handleScroll = () => {
+      setShowTOC(window.scrollY > 300);
       const headings = document.querySelectorAll('[id^="section-"]');
       let current = '';
       headings.forEach((heading) => {
@@ -133,22 +135,24 @@ const SignalDetailPage: React.FC<Props> = ({ signalId, systemTheme, lang, onBack
         </div>
       </div>
 
-      {/* Left TOC sidebar (CaseStudyTOCSidebar) */}
-      {hasTOC && (
-        <CaseStudyTOCSidebar
-          sections={tocItems}
-          activeSection={activeSection}
-          onSectionClick={(sectionId: string) => {
-            scrollToElement(sectionId);
-          }}
-          isDark={isDark}
-          isVisible={true}
-          lang={lang}
-        />
+      {/* Sticky TOC bar */}
+      {hasTOC && showTOC && (
+        <div
+          className="sticky z-10 backdrop-blur-xl bg-[#FCFCFD]/80"
+          style={{ top: 'var(--nav-height, 72px)', transition: 'top 250ms cubic-bezier(0.23, 1, 0.32, 1)' }}
+        >
+          <CaseStudyTOCBar
+            sections={tocItems}
+            activeSection={activeSection}
+            onSectionClick={scrollToElement}
+            isDark={false}
+            lang={lang}
+          />
+        </div>
       )}
 
       {/* Main content */}
-      <div className={`max-w-[1200px] mx-auto px-6 ${hasTOC ? 'lg:pl-[216px]' : ''} pb-20`}>
+      <div className="max-w-[1200px] mx-auto px-6 pb-20">
         <article ref={articleRef} className="flex-1 min-w-0 pt-8 md:pt-10">
 
           {/* Hero: content-first (matches guide layout) */}

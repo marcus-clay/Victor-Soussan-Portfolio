@@ -3,14 +3,14 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { scrollToElement } from '../../utils/smoothScroll';
+
 import {
   X
 } from '@phosphor-icons/react';
 import { GalleryItem, getConnectGalleryItems } from '../../components/BentoGallery';
 import ConnectExecutive from '../../components/case-studies/ConnectExecutive';
 import EnhancedLightbox from '../../components/media/EnhancedLightbox';
-import CaseStudyTOCSidebar from '../../components/CaseStudyTOCSidebar';
+
 import { PROJECT_SEO, DEFAULT_SEO, updateMetaTags, injectJsonLd } from '../../utils/seo';
 import { CONNECT_TRANSLATIONS } from '../../data/caseStudyTranslations/connectTranslations';
 
@@ -24,23 +24,6 @@ interface ConnectPageProps {
   onContact?: () => void;
 }
 
-// TOC Sections for Full case study
-const TOC_SECTIONS = {
-  en: [
-    { id: 'top', label: 'Top' },
-    { id: 'hero', label: 'Intro' },
-    { id: 'overview', label: 'Overview' },
-    { id: 'dashboard', label: 'Dashboard' },
-    { id: 'bulle', label: 'La Bulle' },
-  ],
-  fr: [
-    { id: 'top', label: 'Haut' },
-    { id: 'hero', label: 'Intro' },
-    { id: 'overview', label: 'Aperçu' },
-    { id: 'dashboard', label: 'Dashboard' },
-    { id: 'bulle', label: 'La Bulle' },
-  ]
-};
 
 // All images for lightbox navigation with caption keys
 type MediaItem = { src: string; captionKey: string; type: 'image' | 'video' };
@@ -127,8 +110,6 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
     caption: `${t.captions[item.captionKey as keyof typeof t.captions]} - ${t.captions[`${item.captionKey}Desc` as keyof typeof t.captions] || ''}`
   }));
 
-  const [activeSection, setActiveSection] = useState('top');
-  const [showNav, setShowNav] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   // Sync caseStudyMode with external viewMode
   const initialCaseStudyMode = viewMode === 'executive' ? 'executive' : (viewMode === 'caseStudy' ? 'full' : 'executive');
@@ -138,7 +119,6 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
   const containerRef = useRef<HTMLDivElement>(null);
   // videoRefs reserved for future use
   void useRef<{ [key: string]: HTMLVideoElement | null }>({});
-  const sections = TOC_SECTIONS[lang];
   const isDark = systemTheme === 'dark';
 
   // Sync caseStudyMode when viewMode changes from outside
@@ -154,40 +134,6 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
   }, [caseStudyMode, viewMode]);
-
-  // Track scroll position and update active section (window scroll)
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop = window.scrollY;
-      setShowNav(scrollTop > 300);
-
-      if (scrollTop < 100) {
-        setActiveSection('top');
-        return;
-      }
-
-      const sectionElements = sections
-        .filter(s => s.id !== 'top')
-        .map(s => ({ id: s.id, element: document.getElementById(s.id) }))
-        .filter(s => s.element);
-
-      for (let i = sectionElements.length - 1; i >= 0; i--) {
-        const section = sectionElements[i];
-        if (section.element) {
-          const rect = section.element.getBoundingClientRect();
-          if (rect.top <= 200) {
-            setActiveSection(section.id);
-            break;
-          }
-        }
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [sections]);
-
-  const scrollToSection = scrollToElement;
 
   // Open lightbox with specific image and optional start time for videos
   const openLightbox = (imageSrc: string, startTime: number = 0) => {
@@ -211,16 +157,6 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
         viewMode === 'gallery' ? 'bg-white' : (systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white')
       }`}
     >
-
-      {/* TOC Sidebar - Persistent left navigation for full mode */}
-      <CaseStudyTOCSidebar
-        sections={sections}
-        activeSection={activeSection}
-        onSectionClick={scrollToSection}
-        isDark={isDark}
-        isVisible={showNav && viewMode !== 'gallery' && caseStudyMode === 'full'}
-        lang={lang}
-      />
 
       {/* Lightbox Modal - Using EnhancedLightbox */}
       <EnhancedLightbox

@@ -13,38 +13,15 @@ import {
   Stack as Layers,
   Users
 } from '@phosphor-icons/react';
-import { scrollToElement } from '../../utils/smoothScroll';
+
 import { GalleryItem, getSqoolGalleryItems } from '../../components/BentoGallery';
 import { SqoolTimeline } from './SqoolTimeline';
 import SqoolExecutive from '../../components/case-studies/SqoolExecutive';
 import EnhancedLightbox from '../../components/media/EnhancedLightbox';
-import CaseStudyTOCSidebar from '../../components/CaseStudyTOCSidebar';
+
 import { PROJECT_SEO, DEFAULT_SEO, updateMetaTags, injectJsonLd } from '../../utils/seo';
 import { SQOOL_TRANSLATIONS } from '../../data/caseStudyTranslations/sqoolTranslations';
 
-// TOC Sections for Full case study
-const TOC_SECTIONS = {
-  en: [
-    { id: 'top', label: 'Top' },
-    { id: 'hero', label: 'Intro' },
-    { id: 'context', label: 'Context' },
-    { id: 'phase1', label: '2019-2020' },
-    { id: 'phase2', label: '2021' },
-    { id: 'phase3', label: '2022-2024' },
-    { id: 'apps', label: 'Apps' },
-    { id: 'impact', label: 'Impact' },
-  ],
-  fr: [
-    { id: 'top', label: 'Haut' },
-    { id: 'hero', label: 'Intro' },
-    { id: 'context', label: 'Contexte' },
-    { id: 'phase1', label: '2019-2020' },
-    { id: 'phase2', label: '2021' },
-    { id: 'phase3', label: '2022-2024' },
-    { id: 'apps', label: 'Apps' },
-    { id: 'impact', label: 'Impact' },
-  ]
-};
 
 interface SqoolPageProps {
   onClose: () => void;
@@ -190,8 +167,6 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
     caption: `${t.captions[item.captionKey as keyof typeof t.captions]} - ${t.captions[`${item.captionKey}Desc` as keyof typeof t.captions] || ''}`
   }));
 
-  const [activeSection, setActiveSection] = useState('top');
-  const [showNav, setShowNav] = useState(false);
   // Sync caseStudyMode with external viewMode
   const initialCaseStudyMode = viewMode === 'executive' ? 'executive' : (viewMode === 'caseStudy' ? 'full' : 'executive');
   const [caseStudyMode, setCaseStudyMode] = useState<'executive' | 'full'>(initialCaseStudyMode);
@@ -204,7 +179,6 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
   void useRef<{ [key: string]: HTMLVideoElement | null }>({});
   const [canScrollBrandLeft, setCanScrollBrandLeft] = useState(false);
   const [canScrollBrandRight, setCanScrollBrandRight] = useState(true);
-  const sections = TOC_SECTIONS[lang];
   const isDark = systemTheme === 'dark';
 
   // Sync caseStudyMode when viewMode changes from outside
@@ -215,44 +189,6 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
       setCaseStudyMode('full');
     }
   }, [viewMode]);
-
-  // Track scroll position and update active section (only in full mode)
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop = window.scrollY;
-
-      // Show nav after scrolling past hero (300px)
-      setShowNav(scrollTop > 300);
-
-      // If at the very top, set 'top' as active
-      if (scrollTop < 100) {
-        setActiveSection('top');
-        return;
-      }
-
-      // Find active section (skip 'top' which has no DOM element)
-      const sectionElements = sections
-        .filter(s => s.id !== 'top')
-        .map(s => ({
-          id: s.id,
-          element: document.getElementById(s.id)
-        })).filter(s => s.element);
-
-      for (let i = sectionElements.length - 1; i >= 0; i--) {
-        const section = sectionElements[i];
-        if (section.element) {
-          const rect = section.element.getBoundingClientRect();
-          if (rect.top <= 200) {
-            setActiveSection(section.id);
-            break;
-          }
-        }
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [sections]);
 
   // Lightbox functions with video start time support
   const openLightbox = (imageSrc: string, startTime: number = 0) => {
@@ -278,8 +214,6 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [lightboxOpen, onClose]);
-
-  const scrollToSection = scrollToElement;
 
   // Brand carousel scroll functions
   const checkBrandScroll = useCallback(() => {
@@ -322,16 +256,6 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
   return (
     <div ref={containerRef} className={`min-h-screen ${viewMode === 'gallery' ? 'bg-white' : (isDark ? 'bg-[#0a0a0a]' : 'bg-white')}`}>
 
-
-      {/* TOC Sidebar - Persistent left navigation for full mode */}
-      <CaseStudyTOCSidebar
-        sections={sections}
-        activeSection={activeSection}
-        onSectionClick={scrollToSection}
-        isDark={isDark}
-        isVisible={showNav && viewMode !== 'gallery' && caseStudyMode === 'full'}
-        lang={lang}
-      />
 
       {/* Content - Switch between Gallery, Executive, and Full Case Study */}
       <AnimatePresence mode="wait">

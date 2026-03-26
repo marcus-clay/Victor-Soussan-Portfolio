@@ -3,12 +3,12 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import CaseStudyTOCSidebar from '../../components/CaseStudyTOCSidebar';
+
 import FranceVaeExecutive from '../../components/case-studies/FranceVaeExecutive';
 import FranceVaeFull from '../../components/case-studies/FranceVaeFull';
 import EnhancedLightbox from '../../components/media/EnhancedLightbox';
 import { PROJECT_SEO, DEFAULT_SEO, updateMetaTags, injectJsonLd } from '../../utils/seo';
-import { scrollToElement } from '../../utils/smoothScroll';
+
 import { FRANCEVAE_TRANSLATIONS } from '../../data/caseStudyTranslations/franceVaeTranslations';
 
 interface GalleryCardProps {
@@ -53,31 +53,6 @@ interface FranceVaePageProps {
   onContact?: () => void;
 }
 
-// TOC Sections for Full case study
-const TOC_SECTIONS = {
-  en: [
-    { id: 'top', label: 'Top' },
-    { id: 'context', label: 'Context' },
-    { id: 'initiative-1', label: 'VAE Collective' },
-    { id: 'initiative-2', label: 'Product Ops' },
-    { id: 'initiative-3', label: 'Research' },
-    { id: 'initiative-4', label: 'Workshops' },
-    { id: 'initiative-5', label: 'AI' },
-    { id: 'ui-delivery', label: 'UI & Delivery' },
-    { id: 'learnings', label: 'Learnings' }
-  ],
-  fr: [
-    { id: 'top', label: 'Haut' },
-    { id: 'context', label: 'Contexte' },
-    { id: 'initiative-1', label: 'VAE Collective' },
-    { id: 'initiative-2', label: 'Product Ops' },
-    { id: 'initiative-3', label: 'Recherche' },
-    { id: 'initiative-4', label: 'Ateliers' },
-    { id: 'initiative-5', label: 'IA' },
-    { id: 'ui-delivery', label: 'UI & Livraison' },
-    { id: 'learnings', label: 'Apprentissages' }
-  ]
-};
 
 // All media for lightbox - ordered to follow case study narrative
 const ALL_MEDIA = [
@@ -182,11 +157,8 @@ const FranceVaePage: React.FC<FranceVaePageProps> = ({
   };
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
-  const [activeSection, setActiveSection] = useState('top');
-  const [showNav, setShowNav] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   void FRANCEVAE_TRANSLATIONS[lang];
-  const sections = TOC_SECTIONS[lang];
   const isDark = systemTheme === 'dark';
 
   // Sync with prop lang
@@ -206,46 +178,6 @@ const FranceVaePage: React.FC<FranceVaePageProps> = ({
     window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
   }, [caseStudyMode, viewMode]);
 
-  // Track scroll position and update active section (only in full mode)
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop = window.scrollY;
-
-      // Show nav after scrolling past hero (300px)
-      setShowNav(scrollTop > 300);
-
-      // If at the very top, set 'top' as active
-      if (scrollTop < 100) {
-        setActiveSection('top');
-        return;
-      }
-
-      // Find active section (skip 'top' which has no DOM element)
-      const sectionElements = sections
-        .filter(s => s.id !== 'top')
-        .map(s => ({
-          id: s.id,
-          element: document.getElementById(s.id)
-        })).filter(s => s.element);
-
-      for (let i = sectionElements.length - 1; i >= 0; i--) {
-        const section = sectionElements[i];
-        if (section.element) {
-          const rect = section.element.getBoundingClientRect();
-          if (rect.top <= 200) {
-            setActiveSection(section.id);
-            break;
-          }
-        }
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [sections]);
-
-  const scrollToSection = scrollToElement;
-
   // Open lightbox
   const openLightbox = (imageSrc: string) => {
     const index = ALL_MEDIA.findIndex(m => m.src === imageSrc);
@@ -263,16 +195,6 @@ const FranceVaePage: React.FC<FranceVaePageProps> = ({
 
   return (
     <div ref={containerRef} className={`min-h-screen ${viewMode === 'gallery' ? 'bg-white' : (isDark ? 'bg-[#0a0a0a]' : 'bg-white')}`}>
-      {/* TOC Sidebar - Persistent left navigation for full mode */}
-      <CaseStudyTOCSidebar
-        sections={sections}
-        activeSection={activeSection}
-        onSectionClick={scrollToSection}
-        isDark={isDark}
-        isVisible={showNav && viewMode !== 'gallery' && caseStudyMode === 'full'}
-        lang={lang}
-      />
-
       {/* Main Content */}
       {viewMode === 'caseStudy' ? (
         caseStudyMode === 'executive' ? (

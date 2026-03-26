@@ -8,7 +8,7 @@ import { scrollToElement } from '../utils/smoothScroll';
 import { motion, AnimatePresence } from 'framer-motion';
 import { GridFour as LayoutGrid, Rows as Rows3, CaretDown as ChevronDown } from '@phosphor-icons/react';
 import EnhancedLightbox, { LightboxImage } from '../components/media/EnhancedLightbox';
-import CaseStudyTOCSidebar from '../components/CaseStudyTOCSidebar';
+import CaseStudyTOCBar from '../components/CaseStudyTOCBar';
 import LazyImage from '../components/media/LazyImage';
 import { GALLERY_PROJECTS, ALL_GALLERY_ITEMS, GalleryItem, GalleryProject } from '../data/galleryData';
 
@@ -104,15 +104,21 @@ const VisualArchivePage: React.FC<VisualArchivePageProps> = ({ lang }) => {
 
   return (
     <div className="min-h-screen bg-[#FCFCFD]">
-      {/* TOC Sidebar - only in editorial mode */}
-      <CaseStudyTOCSidebar
-        sections={tocSections}
-        activeSection={activeSection}
-        onSectionClick={scrollToSection}
-        isDark={false}
-        isVisible={showTOC && viewMode === 'editorial'}
-        lang={lang}
-      />
+      {/* Sticky TOC bar - only in editorial mode */}
+      {showTOC && viewMode === 'editorial' && (
+        <div
+          className="sticky z-10 backdrop-blur-xl bg-[#FCFCFD]/80"
+          style={{ top: 'var(--nav-height, 72px)', transition: 'top 250ms cubic-bezier(0.23, 1, 0.32, 1)' }}
+        >
+          <CaseStudyTOCBar
+            sections={tocSections}
+            activeSection={activeSection}
+            onSectionClick={scrollToSection}
+            isDark={false}
+            lang={lang}
+          />
+        </div>
+      )}
 
       {/* Content */}
       <div className="max-w-[1200px] mx-auto px-6 py-12 md:py-20">

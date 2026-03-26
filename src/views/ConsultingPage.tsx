@@ -23,7 +23,8 @@ import {
   CaretDown as ChevronDown,
   ArrowSquareOut as ExternalLink,
 } from '@phosphor-icons/react';
-import CaseStudyTOCSidebar from '../components/CaseStudyTOCSidebar';
+import CaseStudyTOCBar from '../components/CaseStudyTOCBar';
+import { scrollToElement } from '../utils/smoothScroll';
 import {
   LIFECYCLE_PHASES,
   OFFERINGS,
@@ -340,15 +341,21 @@ const ConsultingPage: React.FC<ConsultingPageProps> = ({ systemTheme, lang, onBa
         </div>
       </header>
 
-      {/* TOC Sidebar */}
-      <CaseStudyTOCSidebar
-        sections={sections}
-        activeSection={activeSection}
-        onSectionClick={scrollToSection}
-        isDark={isDark}
-        isVisible={showTOC}
-        lang={lang}
-      />
+      {/* Sticky TOC bar */}
+      {showTOC && (
+        <div
+          className={`sticky z-10 backdrop-blur-xl ${isDark ? 'bg-[#0a0a0a]/80' : 'bg-[#FCFCFD]/80'}`}
+          style={{ top: 'var(--nav-height, 72px)', transition: 'top 250ms cubic-bezier(0.23, 1, 0.32, 1)' }}
+        >
+          <CaseStudyTOCBar
+            sections={sections}
+            activeSection={activeSection}
+            onSectionClick={scrollToSection}
+            isDark={isDark}
+            lang={lang}
+          />
+        </div>
+      )}
 
       {/* Content */}
       <div className="max-w-[1200px] mx-auto px-6 py-12 md:py-20">

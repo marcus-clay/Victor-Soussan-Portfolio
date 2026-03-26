@@ -13,7 +13,7 @@ import {
   LinkedinLogo, Envelope, BookOpen, CaretRight, X,
 } from '@phosphor-icons/react';
 import { GUIDE_META, GUIDE_CHAPTERS } from '../data/guideClaudeCodeData';
-import CaseStudyTOCSidebar from '../components/CaseStudyTOCSidebar';
+import CaseStudyTOCBar from '../components/CaseStudyTOCBar';
 import AuthorContactCard from '../components/AuthorContactCard';
 
 interface Props {
@@ -168,6 +168,7 @@ const GuideChapter: React.FC<{
   const chapter = GUIDE_CHAPTERS[chapterIdx];
   const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
   const [activeSection, setActiveSection] = useState<string>('');
+  const [showTOC, setShowTOC] = useState(false);
   const articleRef = useRef<HTMLDivElement>(null);
 
   // Image lightbox via event delegation
@@ -202,6 +203,14 @@ const GuideChapter: React.FC<{
     });
     return () => observer.disconnect();
   }, [chapter, slug]);
+
+  // Show TOC bar after scrolling 300px
+  useEffect(() => {
+    const handleScroll = () => setShowTOC(window.scrollY > 300);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Scroll to top on chapter change
   useEffect(() => {
@@ -246,22 +255,26 @@ const GuideChapter: React.FC<{
         document.body
       )}
 
-      {/* ─── Left sidebar: CaseStudyTOCSidebar (section TOC) ─── */}
-      <CaseStudyTOCSidebar
-        sections={chapter.sections.map((sec, i) => ({
-          id: `section-${slug}-${i}`,
-          label: lang === 'fr' ? sec.heading_fr : sec.heading_en,
-        }))}
-        activeSection={activeSection}
-        onSectionClick={(sectionId: string) => {
-          scrollToElement(sectionId);
-        }}
-        isDark={isDark}
-        isVisible={true}
-        lang={lang as 'en' | 'fr'}
-      />
+      {/* Sticky TOC bar */}
+      {showTOC && (
+        <div
+          className={`sticky z-10 backdrop-blur-xl ${isDark ? 'bg-[#0a0a0a]/80' : 'bg-[#FCFCFD]/80'}`}
+          style={{ top: 'var(--nav-height, 72px)', transition: 'top 250ms cubic-bezier(0.23, 1, 0.32, 1)' }}
+        >
+          <CaseStudyTOCBar
+            sections={chapter.sections.map((sec, i) => ({
+              id: `section-${slug}-${i}`,
+              label: lang === 'fr' ? sec.heading_fr : sec.heading_en,
+            }))}
+            activeSection={activeSection}
+            onSectionClick={scrollToElement}
+            isDark={isDark}
+            lang={lang as 'en' | 'fr'}
+          />
+        </div>
+      )}
 
-      <div className="max-w-[1200px] mx-auto px-6 lg:pl-[216px] pb-20">
+      <div className="max-w-[1200px] mx-auto px-6 pb-20">
           {/* ─── Article content ─── */}
           <article ref={articleRef} className="flex-1 min-w-0 pt-8 md:pt-10">
             {/* Chapter header */}

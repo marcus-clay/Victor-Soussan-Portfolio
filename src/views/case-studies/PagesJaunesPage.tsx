@@ -7,12 +7,10 @@ import { GalleryItem } from '../../components/BentoGallery';
 import EnhancedLightbox from '../../components/media/EnhancedLightbox';
 import PagesJaunesExecutive from '../../components/case-studies/PagesJaunesExecutive';
 import PagesJaunesFull from '../../components/case-studies/PagesJaunesFull';
-import CaseStudyTOCSidebar from '../../components/CaseStudyTOCSidebar';
-import { PROJECT_SEO, DEFAULT_SEO, updateMetaTags, injectJsonLd } from '../../utils/seo';
-import { scrollToElement } from '../../utils/smoothScroll';
-import { TOC_SECTIONS as PJ_TOC_SECTIONS, PAGESJAUNES_CAPTIONS } from '../../data/caseStudyTranslations/pagesJaunesTranslations';
 
-const TOC_SECTIONS = PJ_TOC_SECTIONS;
+import { PROJECT_SEO, DEFAULT_SEO, updateMetaTags, injectJsonLd } from '../../utils/seo';
+
+import { PAGESJAUNES_CAPTIONS } from '../../data/caseStudyTranslations/pagesJaunesTranslations';
 
 interface PagesJaunesPageProps {
   onClose: () => void;
@@ -339,9 +337,6 @@ export const PagesJaunesPage: React.FC<PagesJaunesPageProps> = ({
   const initialCaseStudyMode = viewMode === 'executive' ? 'executive' : (viewMode === 'caseStudy' ? 'full' : 'executive');
   const [caseStudyMode, setCaseStudyMode] = useState<'executive' | 'full'>(initialCaseStudyMode);
   const containerRef = useRef<HTMLDivElement>(null);
-  const [activeSection, setActiveSection] = useState('top');
-  const [showNav, setShowNav] = useState(false);
-  const sections = TOC_SECTIONS[lang];
   const isDark = systemTheme === 'dark';
 
   // Sync caseStudyMode when viewMode changes from outside
@@ -357,46 +352,6 @@ export const PagesJaunesPage: React.FC<PagesJaunesPageProps> = ({
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
   }, [caseStudyMode, viewMode]);
-
-  // Track scroll position and update active section (only in full mode)
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop = window.scrollY;
-
-      // Show nav after scrolling past hero (300px)
-      setShowNav(scrollTop > 300);
-
-      // If at the very top, set 'top' as active
-      if (scrollTop < 100) {
-        setActiveSection('top');
-        return;
-      }
-
-      // Find active section (skip 'top' which has no DOM element)
-      const sectionElements = sections
-        .filter(s => s.id !== 'top')
-        .map(s => ({
-          id: s.id,
-          element: document.getElementById(s.id)
-        })).filter(s => s.element);
-
-      for (let i = sectionElements.length - 1; i >= 0; i--) {
-        const section = sectionElements[i];
-        if (section.element) {
-          const rect = section.element.getBoundingClientRect();
-          if (rect.top <= 200) {
-            setActiveSection(section.id);
-            break;
-          }
-        }
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [sections]);
-
-  const scrollToSection = scrollToElement;
 
   // Open lightbox with specific image
   const openLightbox = (imageSrc: string, startTime: number = 0) => {
@@ -423,16 +378,6 @@ export const PagesJaunesPage: React.FC<PagesJaunesPageProps> = ({
 
   return (
     <div ref={containerRef} className={`min-h-screen ${viewMode === 'gallery' ? 'bg-white' : (systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white')}`}>
-      {/* TOC Sidebar - Persistent left navigation for full mode */}
-      <CaseStudyTOCSidebar
-        sections={sections}
-        activeSection={activeSection}
-        onSectionClick={scrollToSection}
-        isDark={isDark}
-        isVisible={showNav && viewMode !== 'gallery' && caseStudyMode === 'full'}
-        lang={lang}
-      />
-
       {/* Main content */}
       <div>
         <AnimatePresence mode="wait">

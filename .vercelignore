@@ -12,6 +12,12 @@ public/francevae/20250701 - Video ministre - revision Audrey P.mp4
 public/videos/connect/Video-demo-bulle-interactions-02.mp4
 public/videos/connect/connect-dashboard-prototype_complet_4k.mp4
 
+# Large MP4 in articles (124MB)
+public/articles/Experimentation Claude Code - design system, ui, figma, claude/Claude Code + Figma MCP Console Demo.mp4
+
+# Playwright MCP screenshots (dev only)
+.playwright-mcp
+
 # Ignore git folder
 .git
 
