@@ -59,7 +59,7 @@ export default function SkillsPromoBanner({ lang }: { lang: string }) {
       >
         <Link
           href={`/${lang}/guide/claude-code/skills`}
-          className="flex items-center gap-3 pl-2 pr-5 py-2 cursor-pointer whitespace-nowrap"
+          className="flex items-center gap-3 pl-2.5 pr-4 py-2 cursor-pointer"
         >
           {/* Icon */}
           <div className="w-9 h-9 rounded-full bg-gradient-to-br from-violet-500 to-blue-500 flex items-center justify-center flex-shrink-0">
@@ -67,11 +67,16 @@ export default function SkillsPromoBanner({ lang }: { lang: string }) {
           </div>
 
           {/* Text */}
-          <span className="text-[13px] font-semibold text-gray-900">
-            {isEn ? 'Free skills for designers' : 'Skills gratuits pour designers'}
-          </span>
+          <div className="min-w-0">
+            <p className="text-[13px] font-semibold text-gray-900 leading-tight">
+              {isEn ? 'Claude Code skills for designers' : 'Skills Claude Code pour designers'}
+            </p>
+            <p className="text-[11px] text-gray-500 leading-tight mt-0.5">
+              {isEn ? 'Free skills to ship better UI, faster' : 'Skills gratuits pour livrer de meilleures UI'}
+            </p>
+          </div>
 
-          <ArrowRight size={14} className="text-gray-400 flex-shrink-0" />
+          <ArrowRight size={14} className="text-gray-400 flex-shrink-0 ml-1" />
         </Link>
 
         {/* Dismiss */}
