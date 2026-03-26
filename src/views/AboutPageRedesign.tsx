@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowUpRight, ArrowRight, CaretDown } from '@phosphor-icons/react'
+import { ArrowUpRight, ArrowRight, CaretDown, LinkedinLogo, DownloadSimple, X, FileText } from '@phosphor-icons/react'
 
 type Language = 'en' | 'fr'
 
@@ -213,6 +213,7 @@ export default function AboutPageRedesign({
   const t = TRANSLATIONS[lang]
   const metrics = METRICS[lang]
   const [expandedEra, setExpandedEra] = useState<number | null>(0)
+  const [cvModalOpen, setCvModalOpen] = useState(false)
 
   const toggleEra = (idx: number) => {
     setExpandedEra((prev) => (prev === idx ? null : idx))
@@ -399,6 +400,115 @@ export default function AboutPageRedesign({
             </div>
           </div>
         </motion.section>
+
+        {/* ================================================================ */}
+        {/* 3b. LINKEDIN + CV BLOCK                                          */}
+        {/* ================================================================ */}
+        <motion.section
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.5, ease: EASE_OUT }}
+          className="mb-6"
+        >
+          <div className="flex flex-col sm:flex-row gap-3">
+            {/* LinkedIn */}
+            <a
+              href="https://www.linkedin.com/in/victorsoussan/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex-1 flex items-center gap-4 p-5 rounded-2xl border border-gray-100 bg-white hover:border-gray-200 hover:shadow-md active:scale-[0.98] cursor-pointer"
+              style={{ transition: 'border-color 200ms ease, box-shadow 300ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
+            >
+              <div className="w-10 h-10 rounded-xl bg-[#0A66C2]/10 flex items-center justify-center flex-shrink-0">
+                <LinkedinLogo size={20} weight="bold" className="text-[#0A66C2]" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-semibold text-gray-900">LinkedIn</p>
+                <p className="text-xs text-gray-400">
+                  {lang === 'fr' ? 'Parcours complet et recommandations' : 'Full background and recommendations'}
+                </p>
+              </div>
+              <ArrowUpRight size={16} className="text-gray-300 group-hover:text-gray-500 transition-colors flex-shrink-0" />
+            </a>
+
+            {/* CV — View + Download */}
+            <button
+              onClick={() => setCvModalOpen(true)}
+              className="group flex-1 flex items-center gap-4 p-5 rounded-2xl border border-gray-100 bg-white hover:border-gray-200 hover:shadow-md active:scale-[0.98] cursor-pointer text-left"
+              style={{ transition: 'border-color 200ms ease, box-shadow 300ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
+            >
+              <div className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center flex-shrink-0">
+                <FileText size={20} weight="bold" className="text-gray-500" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-semibold text-gray-900">
+                  {lang === 'fr' ? 'Curriculum vitae' : 'Resume'}
+                </p>
+                <p className="text-xs text-gray-400">
+                  {lang === 'fr' ? 'Consulter ou télécharger' : 'View or download'}
+                </p>
+              </div>
+              <ArrowRight size={16} className="text-gray-300 group-hover:text-gray-500 transition-colors flex-shrink-0" />
+            </button>
+          </div>
+        </motion.section>
+
+        {/* CV Modal */}
+        <AnimatePresence>
+          {cvModalOpen && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
+              onClick={() => setCvModalOpen(false)}
+            >
+              <motion.div
+                initial={{ scale: 0.95, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.95, opacity: 0 }}
+                transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }}
+                className="relative bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] flex flex-col overflow-hidden"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Modal header */}
+                <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+                  <h3 className="text-base font-semibold text-gray-900">
+                    {lang === 'fr' ? 'Curriculum vitae' : 'Resume'}
+                  </h3>
+                  <div className="flex items-center gap-2">
+                    <a
+                      href="/cv/CV-Victor-Soussan-2026-FR.pdf"
+                      download
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[13px] font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 active:scale-[0.97]"
+                      style={{ transition: 'background-color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
+                    >
+                      <DownloadSimple size={14} />
+                      {lang === 'fr' ? 'Télécharger' : 'Download'}
+                    </a>
+                    <button
+                      onClick={() => setCvModalOpen(false)}
+                      className="p-2 rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-900 active:scale-[0.95]"
+                      style={{ transition: 'background-color 150ms ease, color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
+                    >
+                      <X size={20} />
+                    </button>
+                  </div>
+                </div>
+                {/* PDF viewer */}
+                <div className="flex-1 overflow-auto bg-gray-50">
+                  <iframe
+                    src="/cv/CV-Victor-Soussan-2026-FR.pdf"
+                    className="w-full h-full min-h-[70vh]"
+                    title="CV Victor Soussan"
+                  />
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* ================================================================ */}
         {/* 4. PRACTICE + EDUCATION SECTION                                  */}
