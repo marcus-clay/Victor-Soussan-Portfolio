@@ -79,7 +79,7 @@ const CaseStudyTOCSidebar: React.FC<CaseStudyTOCSidebarProps> = ({
             ? 'bg-[#0a0a0a]/80'
             : 'bg-white/80'
         }`}
-        style={{ top: 'var(--nav-height, 72px)' }}
+        style={{ top: 'var(--nav-height, 72px)', transition: 'top 250ms cubic-bezier(0.23, 1, 0.32, 1)' }}
       >
         {/* Collapsed state - shows current section */}
         <div className="w-full px-6">
@@ -174,7 +174,7 @@ const CaseStudyTOCSidebar: React.FC<CaseStudyTOCSidebarProps> = ({
         exit={{ opacity: 0, x: -20 }}
         transition={{ duration: 0.2 }}
         className="fixed left-0 z-30 flex"
-        style={{ top: 'var(--nav-height, 72px)', height: 'calc(100vh - var(--nav-height, 72px))' }}
+        style={{ top: 'var(--nav-height, 72px)', height: 'calc(100vh - var(--nav-height, 72px))', transition: 'top 250ms cubic-bezier(0.23, 1, 0.32, 1), height 250ms cubic-bezier(0.23, 1, 0.32, 1)' }}
       >
         {/* Sidebar Container */}
         <motion.div

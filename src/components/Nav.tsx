@@ -208,7 +208,7 @@ export default function Nav({ lang }: { lang: Lang }) {
               exit={{ opacity: 0, y: -10 }}
               transition={{ type: 'spring', stiffness: 400, damping: 30 }}
               className="fixed left-0 right-0 z-50 bg-white border-b border-gray-100 shadow-xl md:hidden"
-              style={{ top: isScrolled ? 56 : 64 }}
+              style={{ top: isScrolled ? 56 : 72, transition: 'top 250ms cubic-bezier(0.23, 1, 0.32, 1)' }}
             >
               <div className="px-4 py-3">
                 {MOBILE_NAV_ITEMS.map((item, index, arr) => {
