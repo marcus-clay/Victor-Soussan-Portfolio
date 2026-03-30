@@ -11,15 +11,15 @@ interface CarouselVideo {
 }
 
 const SHOWCASE_VIDEOS: CarouselVideo[] = [
-  { src: '/assets/projets/riskos/videos/01-hero-triage.mp4', label: 'RiskOS', projectId: 'riskos' },
+  { src: '/videos/riskos/01-hero-triage.mp4', label: 'RiskOS', projectId: 'riskos' },
   { src: '/videos/connect/connect-dashboard-prototype-compressed.mp4', label: 'SQOOL Connect', projectId: 'connect' },
-  { src: '/assets/projets/riskos/videos/02-ai-insight.mp4', label: 'RiskOS', projectId: 'riskos' },
+  { src: '/videos/riskos/02-ai-insight.mp4', label: 'RiskOS', projectId: 'riskos' },
   { src: '/videos/connect/interaction-bulle-connect-compressed.mp4', label: 'La Bulle', projectId: 'connect' },
   { src: '/videos/dailymotion/Dailymotion_-_video_manager_-_Embed_code_TOP_v6.mp4', label: 'Dailymotion', projectId: 'dailymotion' },
-  { src: '/assets/projets/riskos/videos/03-decision-ellipses.mp4', label: 'RiskOS', projectId: 'riskos' },
+  { src: '/videos/riskos/03-decision-ellipses.mp4', label: 'RiskOS', projectId: 'riskos' },
   { src: '/videos/connect/connect-design-sprint-compressed.mp4', label: 'Connect Sprint', projectId: 'connect' },
   { src: '/images/pagesjaunes/micro-interactions/Anim_remarketing_historique.mp4', label: 'PagesJaunes', projectId: 'pagesjaunes' },
-  { src: '/assets/projets/riskos/videos/05-false-positive.mp4', label: 'RiskOS', projectId: 'riskos' },
+  { src: '/videos/riskos/05-false-positive.mp4', label: 'RiskOS', projectId: 'riskos' },
   { src: '/videos/dailymotion/video_2025-11-10_02.26.48.mp4', label: 'Dailymotion', projectId: 'dailymotion' },
   { src: '/videos/connect/Video-demo-bulle-interactions-compressed.mp4', label: 'La Bulle', projectId: 'connect' },
   { src: '/images/pagesjaunes/micro-interactions/anim_favoris.mp4', label: 'PagesJaunes', projectId: 'pagesjaunes' },

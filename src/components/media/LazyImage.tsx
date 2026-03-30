@@ -5,6 +5,7 @@ interface LazyImageProps {
   alt: string;
   className?: string;
   placeholderClassName?: string;
+  style?: React.CSSProperties;
   onClick?: () => void;
   draggable?: boolean;
 }
@@ -21,6 +22,7 @@ const LazyImage: React.FC<LazyImageProps> = ({
   alt,
   className = '',
   placeholderClassName = '',
+  style,
   onClick,
   draggable = true
 }) => {
@@ -68,6 +70,7 @@ const LazyImage: React.FC<LazyImageProps> = ({
           draggable={draggable}
           onClick={onClick}
           onLoad={() => setIsLoaded(true)}
+          style={style}
           className={`transition-opacity duration-300 ${
             isLoaded ? 'opacity-100' : 'opacity-0'
           } ${className}`}

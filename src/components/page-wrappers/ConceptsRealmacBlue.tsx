@@ -29,9 +29,9 @@ const VIDEOS = [
 ];
 const LOGOS = ['Beta.gouv', 'UNOWHY', 'Toolkit', 'Airbus', 'Orange', 'Dailymotion', 'Vinci', 'Bouygues'];
 const TESTIMONIALS = [
-  { author: TK.testimonial.author, role: TK.testimonial.role, content: TK.testimonial.quote, avatar: '/images/pierre-marie-nigay.webp' },
-  { author: 'Charlotte Rifflet', role: 'Product Manager, UNOWHY', content: "His ability to structure design ops while keeping the creative quality high was exactly what we needed at scale.", avatar: '/images/charlotte-rifflet.webp' },
-  { author: 'Nicolas Moulin', role: 'Director of Innovation, PagesJaunes', content: "Victor brought a level of visual precision and interaction thinking that elevated the entire mobile experience for our 22 million users.", avatar: '/images/nicolas-moulin.webp' },
+  { author: TK.testimonial.author, role: TK.testimonial.role, content: TK.testimonial.quote, avatar: '/images/people/pierre-marie-nigay.webp' },
+  { author: 'Charlotte Rifflet', role: 'Product Manager, UNOWHY', content: "His ability to structure design ops while keeping the creative quality high was exactly what we needed at scale.", avatar: '/images/people/charlotte-rifflet.webp' },
+  { author: 'Nicolas Moulin', role: 'Director of Innovation, PagesJaunes', content: "Victor brought a level of visual precision and interaction thinking that elevated the entire mobile experience for our 22 million users.", avatar: '/images/people/nicolas-moulin.webp' },
 ];
 
 type PageId = 'home' | 'work' | 'case' | 'about' | 'blog' | 'article' | 'gallery';

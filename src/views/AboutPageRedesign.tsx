@@ -1,8 +1,10 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowUpRight, ArrowRight, CaretDown, LinkedinLogo, DownloadSimple, X, FileText } from '@phosphor-icons/react'
+import { ArrowUpRight, ArrowRight, CaretDown, LinkedinLogo, DownloadSimple, X, FileText, Quotes as Quote } from '@phosphor-icons/react'
+import { getTestimonials } from '@/data/testimonialsData'
+import Avatar from '@/components/Avatar'
 
 type Language = 'en' | 'fr'
 
@@ -214,6 +216,7 @@ export default function AboutPageRedesign({
   const metrics = METRICS[lang]
   const [expandedEra, setExpandedEra] = useState<number | null>(0)
   const [cvModalOpen, setCvModalOpen] = useState(false)
+  const [expandedTestimonial, setExpandedTestimonial] = useState<string | null>(null)
 
   const toggleEra = (idx: number) => {
     setExpandedEra((prev) => (prev === idx ? null : idx))
@@ -227,7 +230,7 @@ export default function AboutPageRedesign({
         {/* 1. PAGE HEADER                                                   */}
         {/* ================================================================ */}
         <motion.div
-          className="mb-10"
+          className="mb-14"
           initial="hidden"
           animate="visible"
           variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08 } } }}
@@ -249,39 +252,56 @@ export default function AboutPageRedesign({
         </motion.div>
 
         {/* ================================================================ */}
-        {/* 2. INTRO - full width, two-column text layout                   */}
+        {/* 2. INTRO - photo left + text right                              */}
         {/* ================================================================ */}
         <motion.section
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2, ease: EASE_OUT }}
-          className="mb-12"
+          className="mb-20"
         >
-          <p className="text-xl md:text-2xl leading-relaxed text-gray-600 mb-8 max-w-[800px]">
-            {t.intro}
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-14 gap-y-4 mb-8">
-            <p className="text-base leading-relaxed text-gray-600">
-              {t.bio_p1}
-            </p>
-            <p className="text-base leading-relaxed text-gray-600">
-              {t.bio_p2}
-            </p>
-          </div>
-
-          {/* Availability + CTA */}
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-              <span className="text-sm text-gray-500">{t.availability}</span>
+          <div className="flex flex-col md:flex-row gap-10 md:gap-14 mb-10">
+            {/* Photo */}
+            <div className="flex-shrink-0">
+              <div className="w-full md:w-[280px] lg:w-[320px] aspect-square rounded-2xl overflow-hidden bg-gray-100">
+                <img
+                  src="/images/photos victor/image-victor-linkedin.png"
+                  alt="Victor Soussan"
+                  className="w-full h-full object-cover object-top"
+                  loading="eager"
+                />
+              </div>
             </div>
-            <button
-              onClick={onContact}
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#2D5CF3] text-white rounded-full font-medium text-sm hover:bg-[#2450d9] transition-[background-color,box-shadow,transform] duration-200 ease-out shadow-sm hover:shadow-md active:scale-[0.97] cursor-pointer"
-            >
-              {t.cta_inline}
-              <ArrowRight size={14} weight="bold" />
-            </button>
+
+            {/* Text */}
+            <div className="flex-1">
+              <p className="text-xl md:text-2xl leading-relaxed text-gray-600 mb-8">
+                {t.intro}
+              </p>
+              <div className="space-y-4 mb-8">
+                <p className="text-base leading-relaxed text-gray-600">
+                  {t.bio_p1}
+                </p>
+                <p className="text-base leading-relaxed text-gray-600">
+                  {t.bio_p2}
+                </p>
+              </div>
+
+              {/* Availability + CTA */}
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                  <span className="text-sm text-gray-500">{t.availability}</span>
+                </div>
+                <button
+                  onClick={onContact}
+                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#2D5CF3] text-white rounded-full font-medium text-sm hover:bg-[#2450d9] transition-[background-color,box-shadow,transform] duration-200 ease-out shadow-sm hover:shadow-md active:scale-[0.97] cursor-pointer"
+                >
+                  {t.cta_inline}
+                  <ArrowRight size={14} weight="bold" />
+                </button>
+              </div>
+            </div>
           </div>
         </motion.section>
 
@@ -295,7 +315,7 @@ export default function AboutPageRedesign({
           transition={{ duration: 0.5, ease: EASE_OUT }}
           className="mb-20"
         >
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
             {metrics.map((m, idx) => (
               <div key={idx} className="bg-white border border-gray-100 rounded-2xl px-4 py-6 text-center">
                 <span className="block text-3xl md:text-4xl font-bold text-gray-900 tracking-[-0.02em]">
@@ -306,14 +326,82 @@ export default function AboutPageRedesign({
             ))}
           </div>
 
-          <blockquote className="bg-white border border-gray-100 rounded-2xl px-8 py-6">
-            <p className="text-xl md:text-2xl italic text-gray-500 leading-relaxed mb-3">
-              &ldquo;{t.quote_text}&rdquo;
-            </p>
-            <cite className="text-sm text-gray-400 not-italic">
-              {t.quote_author}
-            </cite>
-          </blockquote>
+          {/* Testimonial cards (top 3) */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {getTestimonials(lang).slice(0, 3).map((testimonial, i) => {
+              const needsTruncation = testimonial.content.length > 160
+              const isExpanded = expandedTestimonial === testimonial.id
+              const displayText = isExpanded || !needsTruncation
+                ? testimonial.content
+                : testimonial.content.substring(0, 160) + '\u2026'
+
+              return (
+                <motion.div
+                  key={testimonial.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-60px' }}
+                  transition={{ duration: 0.4, delay: i * 0.08, ease: EASE_OUT }}
+                  onClick={() => needsTruncation && setExpandedTestimonial(isExpanded ? null : testimonial.id)}
+                  className={`p-7 rounded-2xl border border-gray-100 bg-white shadow-sm h-fit flex flex-col hover:border-gray-200 ${
+                    needsTruncation ? 'cursor-pointer' : ''
+                  }`}
+                  style={{ transition: 'border-color 200ms ease-out, box-shadow 300ms ease-out' }}
+                >
+                  <div className="flex items-center mb-5">
+                    <Avatar filename={testimonial.image} alt={testimonial.author} className="w-12 h-12 rounded-full mr-3.5 border-2 border-white shadow-sm" />
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <span className="font-semibold text-[15px] leading-tight text-gray-900 truncate">
+                          {testimonial.author}
+                        </span>
+                        {testimonial.linkedin && (
+                          <a
+                            href={testimonial.linkedin}
+                            target="_blank"
+                            rel="noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            className="flex-shrink-0 text-gray-400 hover:text-[#0077b5] active:scale-[0.9]"
+                            style={{ transition: 'color 150ms ease-out, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
+                          >
+                            <LinkedinLogo size={15} />
+                          </a>
+                        )}
+                      </div>
+                      <span className="text-xs text-gray-500 mt-0.5 block">{testimonial.role}</span>
+                    </div>
+                  </div>
+
+                  <div className="relative flex-1 mb-4">
+                    <Quote size={20} className="absolute -top-2 -left-1 transform -scale-x-100 text-gray-100" />
+                    <p className="leading-relaxed text-[14.5px] relative z-10 pt-1 text-gray-600">
+                      &ldquo;{displayText}&rdquo;
+                    </p>
+                    {needsTruncation && (
+                      <span className="inline-block mt-2 text-xs font-medium text-gray-400">
+                        {isExpanded ? 'Show less' : 'Read more'}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="border-t border-gray-100 pt-3.5 mt-auto flex justify-between items-center">
+                    <span className="text-[11px] font-medium text-gray-400">{testimonial.date}</span>
+                    <span className="text-[10px] uppercase tracking-wider font-semibold px-2 py-0.5 rounded text-gray-400 bg-gray-50">{testimonial.category}</span>
+                  </div>
+                </motion.div>
+              )
+            })}
+          </div>
+
+          <div className="mt-8 text-center">
+            <a
+              href={`/${lang}/testimonials`}
+              className="group inline-flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-[#2D5CF3] transition-colors duration-200"
+            >
+              {lang === 'fr' ? 'Voir tous les t\u00e9moignages' : 'View all testimonials'}
+              <ArrowRight size={14} className="transition-transform duration-200 group-hover:translate-x-1" />
+            </a>
+          </div>
         </motion.section>
 
         {/* ================================================================ */}
@@ -409,7 +497,7 @@ export default function AboutPageRedesign({
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.5, ease: EASE_OUT }}
-          className="mb-6"
+          className="mb-10"
         >
           <div className="flex flex-col sm:flex-row gap-3">
             {/* LinkedIn */}
@@ -518,7 +606,7 @@ export default function AboutPageRedesign({
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.5, ease: EASE_OUT }}
-          className="mb-6 bg-white border border-gray-100 rounded-2xl p-8 md:p-10"
+          className="mb-10 bg-white border border-gray-100 rounded-2xl p-8 md:p-10"
         >
           <h2 className="text-2xl font-bold text-gray-900 mb-6">{t.practice_title}</h2>
           <p className="text-base md:text-lg leading-relaxed text-gray-600 max-w-[720px] mb-8">
@@ -551,7 +639,7 @@ export default function AboutPageRedesign({
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.5, ease: EASE_OUT }}
-            className="mt-10 bg-white border border-gray-100 rounded-2xl p-8 md:p-10"
+            className="bg-white border border-gray-100 rounded-2xl p-8 md:p-10"
           >
             <h2 className="text-2xl font-bold text-gray-900 mb-6">
               {t.toolkit_title}
@@ -601,7 +689,7 @@ export default function AboutPageRedesign({
         {/* ================================================================ */}
         {/* 6. CTA                                                           */}
         {/* ================================================================ */}
-        <section className="py-24 text-center">
+        <section className="py-28 text-center">
           <p className="text-2xl md:text-3xl font-bold tracking-[-0.02em] text-gray-900 mb-6">
             {t.cta_text}
           </p>

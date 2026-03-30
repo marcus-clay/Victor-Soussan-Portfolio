@@ -34,4 +34,10 @@ out
 screenshots/
 scripts/screenshot-final.mjs
 tsconfig.tsbuildinfo
+test-results/
 public/articles/Experimentation Claude Code - design system, ui, figma, claude/Claude Code + Figma MCP Console Demo.mp4
+
+# Plugin/tool caches
+.superpowers/
+.playwright-mcp/
+.claude/skills/humanizer

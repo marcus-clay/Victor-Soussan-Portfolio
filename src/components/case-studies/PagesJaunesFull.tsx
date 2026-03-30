@@ -736,7 +736,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
                 <div className="flex items-center space-x-3">
                   <img
                     loading="lazy"
-                    src="/images/simon-white.webp"
+                    src="/images/people/simon-white.webp"
                     alt={t.testimonial.author}
                     className="w-10 h-10 rounded-full object-cover"
                   />

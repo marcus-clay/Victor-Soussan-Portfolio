@@ -1453,7 +1453,7 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
                       <div className="flex items-center mb-4 sm:mb-5">
                         {testimonial.image ? (
                           <img loading="lazy"
-                            src={`/images/${testimonial.image}`}
+                            src={`/images/people/${testimonial.image}`}
                             alt={testimonial.author}
                             className="w-10 h-10 sm:w-12 sm:h-12 rounded-full mr-3 sm:mr-4 border-2 border-white shadow-sm object-cover"
                           />

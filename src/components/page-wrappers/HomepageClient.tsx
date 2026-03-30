@@ -59,7 +59,6 @@ export default function HomepageClient({ lang }: HomepageClientProps) {
         systemTheme="light"
         lang={lang}
         content={content}
-        Avatar={Avatar}
         scrollToSection={scrollToSection}
         openModalWithUrl={navigate}
       />

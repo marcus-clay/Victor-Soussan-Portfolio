@@ -46,12 +46,14 @@ const GalleryPreviewSection: React.FC<GalleryPreviewSectionProps> = ({
             {mainImage && (
               <button
                 onClick={() => setLightboxIndex(0)}
-                className="w-full aspect-[16/7] rounded-2xl overflow-hidden border border-gray-100 bg-white mb-4 cursor-pointer hover:ring-2 hover:ring-[#2D5CF3]/30 transition-[box-shadow,transform] duration-200 ease-out hover:scale-[1.01]"
+                className="group w-full aspect-[16/7] rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 bg-white mb-4 cursor-zoom-in hover:shadow-lg hover:scale-[1.01]"
+                style={{ transition: 'border-color 200ms ease, box-shadow 300ms ease, transform 300ms cubic-bezier(0.23, 1, 0.32, 1)' }}
               >
                 <img
                   src={mainImage}
                   alt="Gallery featured"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover scale-[2] transition-transform duration-300 ease-out group-hover:scale-[2.05]"
+                  style={{ transformOrigin: 'top left' }}
                   loading="lazy"
                 />
               </button>
@@ -61,12 +63,14 @@ const GalleryPreviewSection: React.FC<GalleryPreviewSectionProps> = ({
                 <button
                   key={index}
                   onClick={() => setLightboxIndex(index + 1)}
-                  className="aspect-[16/10] rounded-xl overflow-hidden border border-gray-100 bg-white cursor-pointer hover:ring-2 hover:ring-[#2D5CF3]/30 transition-[box-shadow,transform] duration-200 ease-out hover:scale-[1.02]"
+                  className="group aspect-[3/2] rounded-xl overflow-hidden border border-gray-100 hover:border-gray-200 bg-white cursor-zoom-in hover:shadow-lg hover:scale-[1.01]"
+                  style={{ transition: 'border-color 200ms ease, box-shadow 300ms ease, transform 300ms cubic-bezier(0.23, 1, 0.32, 1)' }}
                 >
                   <img
                     src={src}
                     alt={`Gallery preview ${index + 2}`}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover scale-[2] transition-transform duration-300 ease-out group-hover:scale-[2.05]"
+                    style={{ transformOrigin: 'top left' }}
                     loading="lazy"
                   />
                 </button>

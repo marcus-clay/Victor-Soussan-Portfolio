@@ -1332,7 +1332,7 @@ const ConnectExecutive: React.FC<ConnectExecutiveProps> = ({
               </blockquote>
               <div className="mt-8 flex items-center gap-4">
                 <img loading="lazy"
-                  src="/images/justine-le-tellier.webp"
+                  src="/images/people/justine-le-tellier.webp"
                   alt={t.testimonial.author}
                   className="w-12 h-12 rounded-full object-cover"
                 />

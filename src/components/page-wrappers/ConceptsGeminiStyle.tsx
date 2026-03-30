@@ -28,9 +28,9 @@ const VIDEOS = [
 ];
 const LOGOS = ['Beta.gouv', 'UNOWHY', 'Toolkit', 'Airbus', 'Orange', 'Dailymotion', 'Vinci', 'Bouygues'];
 const TESTIMONIALS = [
-  { author: 'Pierre-Marie Nigay', role: 'Founder, Toolkit', content: TK.testimonial.quote, avatar: '/images/pierre-marie-nigay.webp' },
-  { author: 'Charlotte Rifflet', role: 'Product Manager, UNOWHY', content: "His ability to structure design ops while keeping the creative quality high was exactly what we needed at scale.", avatar: '/images/charlotte-rifflet.webp' },
-  { author: 'Nicolas Moulin', role: 'Director of Innovation, PagesJaunes', content: "Victor brought a level of visual precision and interaction thinking that elevated the entire mobile experience for our 22 million users.", avatar: '/images/nicolas-moulin.webp' },
+  { author: 'Pierre-Marie Nigay', role: 'Founder, Toolkit', content: TK.testimonial.quote, avatar: '/images/people/pierre-marie-nigay.webp' },
+  { author: 'Charlotte Rifflet', role: 'Product Manager, UNOWHY', content: "His ability to structure design ops while keeping the creative quality high was exactly what we needed at scale.", avatar: '/images/people/charlotte-rifflet.webp' },
+  { author: 'Nicolas Moulin', role: 'Director of Innovation, PagesJaunes', content: "Victor brought a level of visual precision and interaction thinking that elevated the entire mobile experience for our 22 million users.", avatar: '/images/people/nicolas-moulin.webp' },
 ];
 
 type PageId = 'home' | 'work' | 'case' | 'about' | 'blog' | 'article' | 'gallery';
@@ -583,7 +583,7 @@ function Case({ go }: { go: (p: PageId) => void }) {
         <div className="max-w-[700px] mx-auto text-center"><F>
           <Quotes size={24} weight="fill" className="mx-auto mb-5 text-pink-300" />
           <blockquote className="text-[20px] text-gray-700 leading-[1.6] italic mb-5">{TK.testimonial.quote}</blockquote>
-          <div className="flex items-center gap-3 justify-center"><img src="/images/pierre-marie-nigay.webp" alt="" className="w-11 h-11 rounded-full object-cover shadow-sm border-2 border-white" /><div className="text-left"><p className="text-[14px] font-bold text-gray-900">{TK.testimonial.author}</p><p className="text-[12px] text-gray-400">{TK.testimonial.role}</p></div></div>
+          <div className="flex items-center gap-3 justify-center"><img src="/images/people/pierre-marie-nigay.webp" alt="" className="w-11 h-11 rounded-full object-cover shadow-sm border-2 border-white" /><div className="text-left"><p className="text-[14px] font-bold text-gray-900">{TK.testimonial.author}</p><p className="text-[12px] text-gray-400">{TK.testimonial.role}</p></div></div>
         </F></div>
       </section>
       <Wave color="#FFF0F6" flip />
