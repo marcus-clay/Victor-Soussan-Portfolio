@@ -4,8 +4,8 @@ import { GUIDE_CHAPTERS } from '@/data/guideClaudeCodeData'
 const BASE_URL = 'https://www.victorsoussan.fr'
 
 const STATIC_ROUTES = [
-  '', 'about', 'approche', 'projets', 'services', 'ressources',
-  'contact', 'interventions',
+  '', 'about', 'approche', 'projets', 'services', 'consulting', 'ressources',
+  'visual-archive', 'testimonials', 'contact', 'interventions', 'resume', 'quote', 'presentation',
 ]
 
 const PROJECT_IDS = [
