@@ -14,6 +14,7 @@ import {
   ArrowRight,
   Envelope as Mail
 } from '@phosphor-icons/react';
+import Link from 'next/link';
 import CaseStudyTOCBar from '../components/CaseStudyTOCBar';
 
 type Language = 'en' | 'fr';
@@ -390,6 +391,19 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ lang, onContact }) => {
               </div>
             ))}
           </div>
+
+          <Link
+            href={`/${lang}/approche`}
+            className="group inline-flex items-center gap-2 mt-8 text-sm font-medium text-gray-900 hover:text-[#2D5CF3] active:scale-[0.97]"
+            style={{ transition: 'color 200ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
+          >
+            {lang === 'en' ? 'Learn more about my approach' : 'En savoir plus sur mon approche'}
+            <ArrowRight
+              size={14}
+              weight="bold"
+              className="transition-transform duration-200 ease-out group-hover:translate-x-1"
+            />
+          </Link>
         </motion.div>
 
         {/* Trusted By */}
