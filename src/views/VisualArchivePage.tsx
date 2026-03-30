@@ -4,12 +4,14 @@
  */
 
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
+import Link from 'next/link';
 import { scrollToElement } from '../utils/smoothScroll';
 import { motion, AnimatePresence } from 'framer-motion';
-import { GridFour as LayoutGrid, Rows as Rows3, CaretDown as ChevronDown } from '@phosphor-icons/react';
+import { GridFour as LayoutGrid, Rows as Rows3, CaretDown as ChevronDown, CaretRight } from '@phosphor-icons/react';
 import EnhancedLightbox, { LightboxImage } from '../components/media/EnhancedLightbox';
 import CaseStudyTOCBar from '../components/CaseStudyTOCBar';
 import LazyImage from '../components/media/LazyImage';
+import { useScrollDirection } from '../hooks/useScrollDirection';
 import { GALLERY_PROJECTS, ALL_GALLERY_ITEMS, GalleryItem, GalleryProject } from '../data/galleryData';
 
 type Language = 'en' | 'fr';
@@ -43,6 +45,7 @@ const VisualArchivePage: React.FC<VisualArchivePageProps> = ({ lang }) => {
   const [activeSection, setActiveSection] = useState(GALLERY_PROJECTS[0]?.id || '');
   const [showTOC, setShowTOC] = useState(false);
   const [expandedProjects, setExpandedProjects] = useState<Set<string>>(new Set());
+  const isScrollingDown = useScrollDirection();
 
   // TOC sections from gallery projects
   const tocSections = useMemo(() => [
@@ -104,21 +107,69 @@ const VisualArchivePage: React.FC<VisualArchivePageProps> = ({ lang }) => {
 
   return (
     <div className="min-h-screen bg-[#FCFCFD]">
-      {/* Sticky TOC bar - only in editorial mode */}
-      {showTOC && viewMode === 'editorial' && (
-        <div
-          className="sticky z-10 backdrop-blur-xl bg-[#FCFCFD]/80"
-          style={{ top: 'var(--nav-height, 72px)', transition: 'top 250ms cubic-bezier(0.23, 1, 0.32, 1)' }}
-        >
-          <CaseStudyTOCBar
-            sections={tocSections}
-            activeSection={activeSection}
-            onSectionClick={scrollToSection}
-            isDark={false}
-            lang={lang}
-          />
+      {/* Sticky sub-bar: swaps between breadcrumb and TOC */}
+      <div
+        className="sticky z-10 backdrop-blur-xl bg-[#FCFCFD]/80 border-gray-200"
+        style={{ top: 'var(--nav-height, 72px)', transition: 'top 250ms cubic-bezier(0.23, 1, 0.32, 1)' }}
+      >
+        {/* Breadcrumb / TOC swap container */}
+        <div className="relative h-10 overflow-hidden">
+          {/* Breadcrumb layer */}
+          {(() => {
+            const hasTOC = showTOC && viewMode === 'editorial';
+            const shouldSwap = hasTOC && isScrollingDown;
+            return (
+              <div
+                className="absolute inset-0 flex items-center"
+                style={{
+                  transform: shouldSwap ? 'translateY(-100%)' : 'translateY(0)',
+                  opacity: shouldSwap ? 0 : 1,
+                  transition: shouldSwap
+                    ? 'transform 200ms cubic-bezier(0.23, 1, 0.32, 1), opacity 150ms ease'
+                    : 'transform 280ms cubic-bezier(0.23, 1, 0.32, 1), opacity 200ms ease 80ms',
+                }}
+              >
+                <div className="max-w-[1200px] mx-auto px-4 md:px-6 w-full h-10 flex items-center">
+                  <nav className="flex items-center gap-1.5 text-[13px] min-w-0 overflow-hidden">
+                    <Link
+                      href={`/${lang}/projets`}
+                      className="transition-colors hover:underline flex-shrink-0 text-gray-400 hover:text-gray-900"
+                    >
+                      {lang === 'fr' ? 'Projets' : 'Projects'}
+                    </Link>
+                    <CaretRight size={10} className="flex-shrink-0 text-gray-300" />
+                    <span className="truncate font-medium text-gray-900">
+                      {lang === 'fr' ? 'Galerie' : 'Gallery'}
+                    </span>
+                  </nav>
+                </div>
+              </div>
+            );
+          })()}
+
+          {/* TOC layer (editorial mode only) */}
+          {showTOC && viewMode === 'editorial' && (
+            <div
+              className="absolute inset-0"
+              style={{
+                transform: isScrollingDown ? 'translateY(0)' : 'translateY(100%)',
+                opacity: isScrollingDown ? 1 : 0,
+                transition: isScrollingDown
+                  ? 'transform 200ms cubic-bezier(0.23, 1, 0.32, 1), opacity 150ms ease'
+                  : 'transform 280ms cubic-bezier(0.23, 1, 0.32, 1), opacity 200ms ease 80ms',
+              }}
+            >
+              <CaseStudyTOCBar
+                sections={tocSections}
+                activeSection={activeSection}
+                onSectionClick={scrollToSection}
+                isDark={false}
+                lang={lang}
+              />
+            </div>
+          )}
         </div>
-      )}
+      </div>
 
       {/* Content */}
       <div className="max-w-[1200px] mx-auto px-6 py-12 md:py-20">

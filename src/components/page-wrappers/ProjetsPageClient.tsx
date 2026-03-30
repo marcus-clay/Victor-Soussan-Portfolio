@@ -3,8 +3,9 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { ArrowUpRight } from '@phosphor-icons/react'
+import { ArrowRight } from '@phosphor-icons/react'
 import { getProjects } from '@/data/projectsData'
+import { HOMEPAGE_GALLERY_ITEMS } from '@/data/galleryData'
 import type { ProjectCategory, ProjectFormat } from '@/data/projectsData'
 
 type FilterKey = 'all' | ProjectCategory
@@ -175,6 +176,56 @@ export default function ProjetsPageClient({ lang }: { lang: 'en' | 'fr' }) {
             )
           })}
         </div>
+
+        {/* Visual Gallery teaser */}
+        <motion.div
+          className="mt-20 pt-16 border-t border-gray-200"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
+        >
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
+            <div>
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-[-0.02em] text-gray-900 mb-2">
+                {isEn ? 'Interface gallery' : 'Galerie d\u2019interfaces'}
+              </h2>
+              <p className="text-base text-gray-500 max-w-[50ch] leading-relaxed">
+                {isEn
+                  ? 'Screens and prototypes from enterprise apps, SaaS platforms and design systems I\u2019ve worked on over the years.'
+                  : '\u00c9crans et prototypes d\u2019applications m\u00e9tier, de plateformes SaaS et de design systems sur lesquels j\u2019ai travaill\u00e9 au fil du temps.'}
+              </p>
+            </div>
+            <Link
+              href={`/${lang}/visual-archive`}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium bg-[#2D5CF3] text-white hover:bg-[#2450d9] shadow-sm hover:shadow-md transition-[background-color,box-shadow,transform] duration-200 ease-out active:scale-[0.97] shrink-0"
+            >
+              {isEn ? 'Browse gallery' : 'Parcourir la galerie'}
+              <ArrowRight size={16} weight="bold" />
+            </Link>
+          </div>
+
+          <Link
+            href={`/${lang}/visual-archive`}
+            className="group block"
+          >
+            <div className="grid grid-cols-3 gap-3">
+              {HOMEPAGE_GALLERY_ITEMS.slice(0, 3).map((src, i) => (
+                <div
+                  key={i}
+                  className="aspect-[16/10] rounded-xl overflow-hidden ring-1 ring-black/[0.04] transition-[box-shadow,transform] duration-300 ease-out group-hover:shadow-lg group-hover:shadow-gray-300/30 group-hover:scale-[1.005]"
+                >
+                  <img
+                    src={src}
+                    alt={isEn ? `UI gallery preview ${i + 1}` : `Aperçu galerie UI ${i + 1}`}
+                    className="w-full h-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.03]"
+                    loading="lazy"
+                  />
+                </div>
+              ))}
+            </div>
+          </Link>
+        </motion.div>
       </div>
     </div>
   )
