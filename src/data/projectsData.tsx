@@ -239,7 +239,7 @@ export const getProjects = (lang: Language): Project[] => {
       ],
       icon: <Layers size={24} />,
       color: "purple",
-      coverImage: "thumbnail-connect.webp",
+      coverImage: "/images/thumbnail-connect.webp",
       status: "concept"
     },
     {
