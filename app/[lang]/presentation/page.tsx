@@ -7,6 +7,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { lang: langParam } = await params
   const lang = langParam === 'fr' ? 'fr' : 'en'
   return {
+    robots: { index: false, follow: false },
     title: lang === 'fr' ? 'Presentation Executive' : 'Executive Presentation',
     description: lang === 'fr'
       ? 'Presentation executive de Victor Soussan, Lead Product Designer avec 15+ ans d\'experience.'

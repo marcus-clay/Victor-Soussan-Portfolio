@@ -4,8 +4,8 @@ import { GUIDE_CHAPTERS } from '@/data/guideClaudeCodeData'
 const BASE_URL = 'https://www.victorsoussan.fr'
 
 const STATIC_ROUTES = [
-  '', 'about', 'approche', 'projets', 'services', 'consulting', 'ressources',
-  'visual-archive', 'testimonials', 'contact', 'resume', 'quote', 'presentation',
+  '', 'about', 'approche', 'projets', 'services', 'ressources',
+  'contact', 'interventions',
 ]
 
 const PROJECT_IDS = [
@@ -17,7 +17,7 @@ const SHORT_PROJECT_IDS = [
   'condamine-apps', 'design-system-figma-claude',
 ]
 
-const VIEW_MODES = ['summary', 'full', 'gallery']
+const VIEW_MODES = ['summary', 'full']
 
 const SIGNAL_IDS = [
   'hiring-solo-designer', 'design-thinking-public-service', 'roadmap-zero-to-one',

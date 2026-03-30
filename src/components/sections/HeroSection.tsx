@@ -21,7 +21,6 @@ interface HeroSectionProps {
       cta_guide: string;
     };
   };
-  Avatar: React.FC<{ filename: string; alt: string; className?: string; isDark?: boolean }>;
   scrollToSection: (id: string) => void;
   openModalWithUrl: (path: string) => void;
 }
@@ -55,10 +54,10 @@ const HeroSection: React.FC<HeroSectionProps> = ({
       </div>
 
       <div className="relative max-w-[1200px] mx-auto z-10 w-full">
-        <div className="flex flex-col md:flex-row items-center md:items-start gap-8 md:gap-10">
-          {/* Left: Text content */}
+        <div className="flex flex-col">
+          {/* Text content — full width, minimal */}
           <motion.div
-            className="flex-1 pt-2.5"
+            className="max-w-3xl pt-2.5"
             initial="hidden"
             animate="visible"
             variants={{
@@ -144,45 +143,6 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             </motion.div>
           </motion.div>
 
-          {/* Right: Victor's photo with contact overlay */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.96 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.3, ease: EASE_OUT }}
-            className="hidden md:flex flex-shrink-0 items-center"
-          >
-            <div className="w-[300px] lg:w-[340px] h-[380px] lg:h-[440px] rounded-3xl bg-gray-100/80 overflow-hidden relative group">
-              <img
-                src="/images/photos victor/image_victor_home.png"
-                alt="Victor Soussan"
-                className="w-full h-full object-cover object-top will-change-transform transition-transform duration-[600ms] group-hover:scale-[1.03]"
-                style={{ transitionTimingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)' }}
-                loading="eager"
-              />
-              {/* Apple-style overlay */}
-              <div
-                className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/15 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-[350ms] rounded-3xl flex flex-col justify-end items-start p-6 pointer-events-none group-hover:pointer-events-auto"
-                style={{ transitionTimingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)' }}
-              >
-                <p className="text-white/80 text-[13px] mb-2.5 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-[transform,opacity] duration-[300ms]"
-                  style={{ transitionTimingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)' }}
-                >
-                  {lang === 'en' ? 'Need a senior designer on a project?' : 'Besoin d\u2019un regard senior sur un projet\u00a0?'}
-                </p>
-                <a
-                  href="https://calendar.app.google/h22c1RRu7JWuK92J9"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={(e) => e.stopPropagation()}
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 backdrop-blur-xl border border-white/20 text-white text-sm font-medium translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 hover:bg-white/25 active:scale-[0.97] transition-[transform,opacity,background-color] duration-[300ms]"
-                  style={{ transitionTimingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)', transitionDelay: '50ms' }}
-                >
-                  {lang === 'en' ? 'Book a call' : 'On en parle\u00a0?'}
-                  <ArrowUpRight size={14} weight="bold" className="transition-transform duration-200 group-hover/cta:translate-x-0.5" />
-                </a>
-              </div>
-            </div>
-          </motion.div>
         </div>
       </div>
     </header>

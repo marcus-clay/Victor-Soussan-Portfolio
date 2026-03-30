@@ -9,7 +9,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { lang } = await params
-  return { title: `Design Concepts – ${lang.toUpperCase()}` }
+  return { robots: { index: false, follow: false }, title: `Design Concepts – ${lang.toUpperCase()}` }
 }
 
 export default async function TestConceptsPage({ params }: Props) {

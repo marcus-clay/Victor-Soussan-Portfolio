@@ -47,10 +47,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const viewLabel = VIEW_LABELS[view] || view
 
   const ogImage = id === 'riskos'
-    ? 'https://www.victorsoussan.fr/assets/projets/riskos/screenshots/02-case-detail.png'
+    ? 'https://www.victorsoussan.fr/images/riskos/02-case-detail.png'
     : undefined
 
   return {
+    ...(view === 'gallery' && { robots: { index: false, follow: true } }),
     title: `${projectName} - ${viewLabel}`,
     description: `${projectName} project ${viewLabel.toLowerCase()} by Victor Soussan, Lead Product Designer.`,
     ...(ogImage && {

@@ -299,15 +299,15 @@ const ProjectSection: React.FC<{
       {/* Hero image */}
       {heroItem && (
         <div className="mb-3 md:mb-4">
-          <MediaCard item={heroItem} onClick={() => onItemClick(heroItem)} />
+          <MediaCard item={heroItem} index={0} onClick={() => onItemClick(heroItem)} />
         </div>
       )}
 
       {/* First 2 items */}
       {visibleRest.length > 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
-          {visibleRest.map(item => (
-            <MediaCard key={item.id} item={item} onClick={() => onItemClick(item)} />
+          {visibleRest.map((item, i) => (
+            <MediaCard key={item.id} item={item} index={i + 1} onClick={() => onItemClick(item)} />
           ))}
         </div>
       )}
@@ -325,8 +325,8 @@ const ProjectSection: React.FC<{
                 className="overflow-hidden"
               >
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 mt-3 md:mt-4">
-                  {hiddenItems.map(item => (
-                    <MediaCard key={item.id} item={item} onClick={() => onItemClick(item)} />
+                  {hiddenItems.map((item, i) => (
+                    <MediaCard key={item.id} item={item} index={i + 3} onClick={() => onItemClick(item)} />
                   ))}
                 </div>
               </motion.div>
@@ -361,40 +361,57 @@ const GridView: React.FC<{
   onItemClick: (item: GalleryItem) => void;
 }> = ({ items, onItemClick }) => (
   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
-    {items.map(item => (
-      <MediaCard key={item.id} item={item} onClick={() => onItemClick(item)} />
+    {items.map((item, i) => (
+      <MediaCard key={item.id} item={item} index={i} onClick={() => onItemClick(item)} />
     ))}
   </div>
 );
 
 // ---------------------------------------------------------------------------
-// Media Card — design system hover pattern
+// Media Card — zoomed thumbnails, offset 150/150 from top-left
 // ---------------------------------------------------------------------------
 
-const MediaCard: React.FC<{ item: GalleryItem; onClick: () => void }> = ({ item, onClick }) => (
-  <div
-    className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in shadow-sm hover:shadow-lg hover:scale-[1.01]"
-    style={{ transition: 'border-color 200ms ease, box-shadow 300ms ease, transform 300ms cubic-bezier(0.23, 1, 0.32, 1)' }}
-    onClick={onClick}
-  >
-    {item.type === 'video' ? (
-      <video
-        src={item.src}
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="metadata"
-        className="w-full h-auto object-cover transition-transform duration-300 ease-out group-hover:scale-[1.02]"
-      />
-    ) : (
-      <LazyImage
-        src={item.src}
-        alt=""
-        className="w-full h-auto object-cover transition-transform duration-300 ease-out group-hover:scale-[1.02]"
-      />
-    )}
-  </div>
-);
+// Per-image crop overrides: [scale, transformOrigin]
+const CARD_OVERRIDES: Record<string, [number, string]> = {
+  'dm-platform':      [1.5, 'top right'],
+  'connect-overview': [2,   'top right'],
+};
+
+const DEFAULT_SCALE = 2;
+const DEFAULT_ORIGIN = 'top left';
+
+const MediaCard: React.FC<{ item: GalleryItem; onClick: () => void; index?: number }> = ({ item, onClick }) => {
+  const isVideo = item.type === 'video';
+  const [scale, origin] = CARD_OVERRIDES[item.id] || [DEFAULT_SCALE, DEFAULT_ORIGIN];
+
+  return (
+    <div
+      className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in hover:shadow-lg hover:scale-[1.01]"
+      style={{ transition: 'border-color 200ms ease, box-shadow 300ms ease, transform 300ms cubic-bezier(0.23, 1, 0.32, 1)' }}
+      onClick={onClick}
+    >
+      {isVideo ? (
+        <video
+          src={item.src}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          className="w-full h-auto object-cover transition-transform duration-300 ease-out group-hover:scale-[1.02]"
+        />
+      ) : (
+        <div className="aspect-[3/2] overflow-hidden">
+          <LazyImage
+            src={item.src}
+            alt=""
+            className="w-full h-full object-cover transition-transform duration-300 ease-out"
+            style={{ transform: `scale(${scale})`, transformOrigin: origin }}
+          />
+        </div>
+      )}
+    </div>
+  );
+};
 
 export default VisualArchivePage;

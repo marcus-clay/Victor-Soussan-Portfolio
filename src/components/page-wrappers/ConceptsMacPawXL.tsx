@@ -26,9 +26,9 @@ const VIDEOS = [
 ];
 const LOGOS = ['Beta.gouv', 'UNOWHY', 'Toolkit', 'Airbus', 'Orange', 'Dailymotion', 'Vinci', 'Bouygues'];
 const TESTIMONIALS = [
-  { author: 'Pierre-Marie Nigay', role: 'Founder, Toolkit', content: TK.testimonial.quote, avatar: '/images/pierre-marie-nigay.webp' },
-  { author: 'Charlotte Rifflet', role: 'Product Manager, UNOWHY', content: "His ability to structure design ops while keeping the creative quality high was exactly what we needed at scale.", avatar: '/images/charlotte-rifflet.webp' },
-  { author: 'Nicolas Moulin', role: 'Director of Innovation, PagesJaunes', content: "Victor brought a level of visual precision and interaction thinking that elevated the entire mobile experience for our 22 million users.", avatar: '/images/nicolas-moulin.webp' },
+  { author: 'Pierre-Marie Nigay', role: 'Founder, Toolkit', content: TK.testimonial.quote, avatar: '/images/people/pierre-marie-nigay.webp' },
+  { author: 'Charlotte Rifflet', role: 'Product Manager, UNOWHY', content: "His ability to structure design ops while keeping the creative quality high was exactly what we needed at scale.", avatar: '/images/people/charlotte-rifflet.webp' },
+  { author: 'Nicolas Moulin', role: 'Director of Innovation, PagesJaunes', content: "Victor brought a level of visual precision and interaction thinking that elevated the entire mobile experience for our 22 million users.", avatar: '/images/people/nicolas-moulin.webp' },
 ];
 
 type PageId = 'home' | 'work' | 'case' | 'about' | 'blog' | 'article' | 'gallery';
@@ -527,7 +527,7 @@ function Case({ go }: { go: (p: PageId) => void }) {
           <Quotes size={18} weight="fill" className="text-blue-200 mb-4" />
           <blockquote className="text-[22px] text-gray-600 leading-[1.7] italic mb-4">{TK.testimonial.quote}</blockquote>
           <div className="flex items-center gap-3">
-            <img src="/images/pierre-marie-nigay.webp" alt="" className="w-10 h-10 rounded-full object-cover" />
+            <img src="/images/people/pierre-marie-nigay.webp" alt="" className="w-10 h-10 rounded-full object-cover" />
             <div><p className="text-[19px] font-semibold">{TK.testimonial.author}</p><p className="text-[19px] text-gray-400">{TK.testimonial.role}</p></div>
           </div>
         </div>

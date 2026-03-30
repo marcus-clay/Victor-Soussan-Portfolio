@@ -1,0 +1,12 @@
+{
+  "name": "ship-to-show",
+  "version": "1.0.0",
+  "description": "Transform prototypes into portfolio case studies with animated videos, narrative content, and integration packs. 7-phase framework: Cadrer, Structurer, Enrichir, Filmer, Raconter, Empaqueter, Publier.",
+  "author": "Victor Soussan / Condamine Studio",
+  "skills": [
+    {
+      "name": "ship-to-show",
+      "path": "SKILL.md"
+    }
+  ]
+}

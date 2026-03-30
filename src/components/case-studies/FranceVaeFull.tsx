@@ -1479,7 +1479,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
                 </p>
                 <div className="flex items-center space-x-3">
                   <img loading="lazy"
-                    src="/images/boris-aime-bauderlique.webp"
+                    src="/images/people/boris-aime-bauderlique.webp"
                     alt={t.testimonial.author}
                     className="w-10 h-10 rounded-full object-cover"
                   />
@@ -2131,7 +2131,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
                 <div className="flex flex-col md:flex-row gap-8 items-center">
                   <div className="flex-shrink-0">
                     <img loading="lazy"
-                      src="/images/boris-aime-bauderlique.webp"
+                      src="/images/people/boris-aime-bauderlique.webp"
                       alt={t.testimonial.author}
                       className="w-24 h-24 md:w-28 md:h-28 rounded-full object-cover"
                     />

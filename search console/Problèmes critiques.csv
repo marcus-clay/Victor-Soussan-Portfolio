@@ -1,0 +1,12 @@
+Raison,Source,Validation,Pages
+Introuvable (404),Site Web,Non commencé,79
+Page avec redirection,Site Web,Non commencé,31
+Autre page avec balise canonique correcte,Site Web,Non commencé,17
+"Exclue par la balise ""noindex""",Site Web,Non commencé,14
+Bloquée en raison d'une interdiction d'accès (403),Site Web,Non commencé,3
+"Explorée, actuellement non indexée",Systèmes Google,Non commencé,68
+Page en double : Google n'a pas choisi la même URL canonique que l'utilisateur,Systèmes Google,Non commencé,1
+Bloquée en raison d'un autre problème de type 4xx,Site Web,Sans objet,0
+Erreur serveur (5xx),Site Web,Sans objet,0
+Bloquée par le fichier robots.txt,Site Web,Sans objet,0
+"Détectée, actuellement non indexée",Systèmes Google,Sans objet,0

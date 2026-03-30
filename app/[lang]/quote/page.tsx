@@ -6,6 +6,7 @@ type Props = { params: Promise<{ lang: string }> }
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { lang } = await params
   return {
+    robots: { index: false, follow: false },
     title: lang === 'fr' ? 'Devis' : 'Quote',
     alternates: {
       canonical: `https://www.victorsoussan.fr/${lang}/quote`,

@@ -380,7 +380,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
                     </p>
                     <div className="flex items-center space-x-3">
                       <img loading="lazy"
-                        src="/images/charlotte-rifflet.webp"
+                        src="/images/people/charlotte-rifflet.webp"
                         alt={t.testimonial.author}
                         className="w-10 h-10 rounded-full object-cover"
                       />

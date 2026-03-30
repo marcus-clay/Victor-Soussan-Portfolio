@@ -724,7 +724,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                 </p>
                 <div className="flex items-center space-x-3">
                   <img loading="lazy"
-                    src="/images/pierre-marie-nigay.webp"
+                    src="/images/people/pierre-marie-nigay.webp"
                     alt={t.testimonial.author}
                     className="w-10 h-10 rounded-full object-cover"
                   />

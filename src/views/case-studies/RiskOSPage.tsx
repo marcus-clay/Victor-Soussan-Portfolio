@@ -153,7 +153,7 @@ const CONTENT = {
 
 // ─── Video card with hover zoom + shadow lift ────────────────────────────────
 
-const VIDEO_BASE = '/assets/projets/riskos/videos';
+const VIDEO_BASE = '/videos/riskos';
 
 function GlassVideoCard({
   src,
@@ -254,7 +254,7 @@ function Paragraph({ children }: { children: React.ReactNode }) {
 function buildLightboxItems(lang: 'en' | 'fr'): LightboxImage[] {
   const t = CONTENT[lang];
   return [
-    { src: '/assets/projets/riskos/thubmnail_riskos_dark.webp', caption: 'RiskOS', type: 'image' },
+    { src: '/images/riskos/thubmnail_riskos_dark.webp', caption: 'RiskOS', type: 'image' },
     { src: `${VIDEO_BASE}/06-before-after.mp4`, caption: t.beforeAfterCaption, type: 'video' },
     { src: `${VIDEO_BASE}/07-data-flow.mp4`, caption: t.dataFlowCaption, type: 'video' },
     { src: `${VIDEO_BASE}/01-hero-triage.mp4`, caption: t.triageCaption, type: 'video' },
@@ -334,7 +334,7 @@ const RiskOSPage: React.FC<RiskOSPageProps> = ({
             >
               <img
                 loading="lazy"
-                src="/assets/projets/riskos/thubmnail_riskos_dark.webp"
+                src="/images/riskos/thubmnail_riskos_dark.webp"
                 alt="RiskOS — fraud detection dashboard overview"
                 className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
               />
