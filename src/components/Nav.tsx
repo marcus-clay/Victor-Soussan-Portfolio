@@ -16,6 +16,8 @@ import {
   Envelope as Mail,
   Globe,
   BookOpen,
+  Compass,
+  Microphone,
 } from '@phosphor-icons/react'
 import { TRANSLATIONS } from '@/data/translations'
 
@@ -23,8 +25,8 @@ type Lang = 'en' | 'fr'
 
 const NAV_ITEMS = [
   { id: 'projets', route: 'projets', labelKey: 'projects' as const },
-  { id: 'visual-archive', route: 'visual-archive', labelKey: 'archive' as const },
   { id: 'services', route: 'services', labelKey: 'services' as const },
+  { id: 'approche', route: 'approche', labelKey: 'approach' as const },
   { id: 'testimonials', route: 'testimonials', labelKey: 'testimonials' as const },
   { id: 'about', route: 'about', labelKey: 'bio' as const },
   { id: 'ressources', route: 'ressources', labelKey: 'blog' as const },
@@ -33,8 +35,8 @@ const NAV_ITEMS = [
 const MOBILE_NAV_ITEMS = [
   { id: 'home', route: '', labelKey: null, icon: Home },
   { id: 'projets', route: 'projets', labelKey: 'projects' as const, icon: FolderOpen },
-  { id: 'visual-archive', route: 'visual-archive', labelKey: 'archive' as const, icon: Images },
   { id: 'services', route: 'services', labelKey: 'services' as const, icon: Layers },
+  { id: 'approche', route: 'approche', labelKey: 'approach' as const, icon: Compass },
   { id: 'testimonials', route: 'testimonials', labelKey: 'testimonials' as const, icon: MessageCircle },
   { id: 'about', route: 'about', labelKey: 'bio' as const, icon: User },
   { id: 'ressources', route: 'ressources', labelKey: 'blog' as const, icon: BookOpen },

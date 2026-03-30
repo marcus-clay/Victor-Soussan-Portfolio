@@ -65,6 +65,10 @@ Every clickable image or video on the site uses the same hover treatment:
 </div>
 ```
 
+## Forbidden patterns
+- No colored accent borders on cards or containers (colored border-l, border-t, border-left). Use uniform `border-gray-100` on all sides.
+- No colored accent bars inside cards (e.g. colored div as visual separator). Keep cards clean.
+
 ## Typography
 - Headings: font-bold, tracking-[-0.02em] or tracking-[-0.03em]
 - Body: text-sm to text-base, leading-relaxed

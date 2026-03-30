@@ -125,6 +125,14 @@ export default function Footer({ lang }: { lang: Lang }) {
                   {content.blog}
                 </Link>
               </li>
+              <li>
+                <Link
+                  href={`/${lang}/interventions`}
+                  className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
+                >
+                  Interventions
+                </Link>
+              </li>
             </ul>
           </div>
 
