@@ -1,18 +1,9 @@
 // SQOOL Classe Case Study Page - Real-Time Classroom Supervision
-// Dedicated case study for the classroom management application
-// Embeds interactive prototypes from the UI Motion project
+// Minimalist rewrite: bg-[#FDFDFC], no dark mode, no cards, no shadows, no blue CTA
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import {
-  Calendar,
-  Briefcase,
-  Stack as Layers,
-  Buildings as Building2,
-  ArrowRight,
-  Monitor,
-  Users,
-} from '@phosphor-icons/react';
+import { ArrowRight } from '@phosphor-icons/react';
 
 import EnhancedLightbox from '../../components/media/EnhancedLightbox';
 
@@ -97,7 +88,6 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
     viewMode === 'executive' ? 'executive' : 'full'
   );
 
-  const isDark = systemTheme === 'dark';
   const t = TRANSLATIONS[lang] || TRANSLATIONS.fr;
 
 
@@ -143,7 +133,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
   }, [viewMode]);
 
   return (
-    <div ref={containerRef} className={`min-h-screen ${isDark ? 'bg-[#0a0a0a]' : 'bg-white'}`}>
+    <div ref={containerRef} className="min-h-screen bg-[#FDFDFC]">
       {/* Image Lightbox */}
       <EnhancedLightbox
         isOpen={lightboxOpen}
@@ -167,8 +157,8 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
           >
-            <div className="w-full px-4 md:px-6 lg:px-8 pt-4 md:pt-6 pb-8">
-              <PrototypeFinderGallery isDark={isDark} lang={lang} initialCategory={galleryInitialCategory} />
+            <div className="max-w-[960px] mx-auto px-6 pt-4 md:pt-6 pb-8">
+              <PrototypeFinderGallery isDark={false} lang={lang} initialCategory={galleryInitialCategory} />
             </div>
           </motion.div>
         ) : caseStudyMode === 'executive' ? (
@@ -186,7 +176,6 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
               onImageClick={(src) => openImageLightbox(src)}
               onViewFull={() => { onViewModeChange('caseStudy'); setCaseStudyMode('full'); }}
               onContact={() => onContact?.()}
-              onViewPrototypes={() => { setGalleryInitialCategory(undefined); onViewModeChange('gallery'); }}
             />
           </motion.div>
         ) : (
@@ -198,266 +187,197 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
           >
-            <div className="max-w-[1200px] mx-auto px-10 py-12 md:py-16">
-              <div>
-                <main className="w-full">
+            <div className="pt-16 md:pt-24 pb-12 md:pb-16">
+              <main className="w-full">
 
-                  {/* ==================== HERO ==================== */}
-                  <section id="hero" className="mb-24 md:mb-32">
+                {/* ==================== HERO ==================== */}
+                <section id="hero" className="mb-24 md:mb-32">
+                  <div className="max-w-[740px] mx-auto px-6">
                     {/* Logo */}
                     <img
                       loading="lazy"
                       src="/images/sqool/logo-sqool.svg"
                       alt="SQOOL"
-                      className="h-8 w-auto mb-8"
+                      className="h-6 w-auto mb-8 opacity-60"
                     />
-                    <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-10 lg:gap-12 items-start">
-                      {/* Left: Hero text */}
-                      <div>
-                        <div className="flex flex-wrap gap-2 mb-4">
-                          <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{t.hero.role}</span>
-                          <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>-</span>
-                          <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{t.hero.scope}</span>
-                          <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>-</span>
-                          <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{t.hero.period}</span>
-                        </div>
 
-                        <h1 className={`text-3xl md:text-4xl font-bold mb-4 leading-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                          {t.hero.title}
-                        </h1>
-
-                        <h2 className={`text-xl md:text-2xl font-bold mb-6 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-                          {t.hero.subtitle}
-                        </h2>
-
-                        <p className={`text-base leading-relaxed ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
-                          {t.hero.description}
-                        </p>
-                      </div>
-
-                      {/* Right: Charlotte Rifflet testimonial */}
-                      <blockquote className={`p-6 rounded-2xl border ${isDark ? 'bg-[#1D1D1F] border-white/10' : 'bg-gray-50 border-gray-200'}`}>
-                        <div className={`mb-4 ${isDark ? 'text-blue-400' : 'text-blue-600'}`}>
-                          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z"/></svg>
-                        </div>
-                        <p className={`text-sm leading-relaxed mb-4 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
-                          {t.heroTestimonial.quote}
-                        </p>
-                        <footer className="flex items-center gap-3">
-                          <div>
-                            <p className={`text-sm font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                              {t.heroTestimonial.author}
-                            </p>
-                            <p className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                              {t.heroTestimonial.role}
-                            </p>
-                          </div>
-                        </footer>
-                      </blockquote>
+                    {/* Meta */}
+                    <div className="flex flex-wrap gap-x-3 gap-y-1 mb-6">
+                      <span className="text-xs text-gray-400">{t.hero.role}</span>
+                      <span className="text-xs text-gray-300">/</span>
+                      <span className="text-xs text-gray-400">{t.hero.scope}</span>
+                      <span className="text-xs text-gray-300">/</span>
+                      <span className="text-xs text-gray-400">{t.hero.period}</span>
                     </div>
-                  </section>
 
-                  {/* Project Meta Card */}
-                  <div className={`p-6 rounded-3xl border mb-12 ${isDark ? 'bg-[#1D1D1F] border-white/10' : 'bg-gray-50 border-gray-200'}`}>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                      <div className="flex items-center space-x-3">
-                        <div className={`p-2 rounded-xl ${isDark ? 'bg-blue-600/20' : 'bg-blue-50'}`}>
-                          <Layers size={20} className={isDark ? 'text-blue-400' : 'text-blue-600'} />
+                    <h1 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+                      {t.hero.title}
+                    </h1>
+
+                    <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-10">
+                      {t.hero.description}
+                    </p>
+
+                    {/* Project meta row */}
+                    <div className="divide-y divide-gray-100">
+                      {[
+                        { label: t.metaLabels.type, value: t.meta.type },
+                        { label: t.metaLabels.scope, value: t.meta.scope },
+                        { label: t.metaLabels.period, value: t.meta.period },
+                        { label: t.metaLabels.company, value: t.meta.company },
+                      ].map((item, i) => (
+                        <div key={i} className="flex items-center justify-between py-3">
+                          <span className="text-xs text-gray-400">{item.label}</span>
+                          <span className="text-sm font-medium text-gray-900">{item.value}</span>
                         </div>
-                        <div>
-                          <p className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{t.metaLabels.type}</p>
-                          <p className={`text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>{t.meta.type}</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center space-x-3">
-                        <div className={`p-2 rounded-xl ${isDark ? 'bg-purple-500/20' : 'bg-purple-50'}`}>
-                          <Briefcase size={20} className={isDark ? 'text-purple-400' : 'text-purple-600'} />
-                        </div>
-                        <div>
-                          <p className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{t.metaLabels.scope}</p>
-                          <p className={`text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>{t.meta.scope}</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center space-x-3">
-                        <div className={`p-2 rounded-xl ${isDark ? 'bg-green-500/20' : 'bg-green-50'}`}>
-                          <Calendar size={20} className={isDark ? 'text-green-400' : 'text-green-600'} />
-                        </div>
-                        <div>
-                          <p className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{t.metaLabels.period}</p>
-                          <p className={`text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>{t.meta.period}</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center space-x-3">
-                        <div className={`p-2 rounded-xl ${isDark ? 'bg-orange-500/20' : 'bg-orange-50'}`}>
-                          <Building2 size={20} className={isDark ? 'text-orange-400' : 'text-orange-600'} />
-                        </div>
-                        <div>
-                          <p className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{t.metaLabels.company}</p>
-                          <p className={`text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>{t.meta.company}</p>
-                        </div>
-                      </div>
+                      ))}
                     </div>
                   </div>
+                </section>
 
-                  {/* Hero Image */}
-                  <figure className="mb-24 md:mb-32">
-                    <div
+                {/* Hero Image */}
+                <figure className="mb-24 md:mb-32">
+                  <div className="max-w-[960px] mx-auto px-6">
+                    <button
                       onClick={() => openImageLightbox('/images/thumbnail_sqool_classe.webp')}
-                      className={`rounded-2xl overflow-hidden cursor-pointer transition-[background-color,color,transform] duration-200 ease-out ease-out hover:scale-[1.015] hover:shadow-xl border ${
-                        isDark ? 'border-white/10 hover:border-white/20' : 'border-gray-200 hover:border-gray-300'
-                      } bg-[#E7E7E7]`}
+                      className="group relative w-full rounded-xl overflow-hidden cursor-zoom-in ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
                     >
                       <img
                         loading="lazy"
                         src="/images/thumbnail_sqool_classe.webp"
-                        alt="SQOOL Classe - Supervision de classe en temps réel"
-                        className="w-full h-auto"
+                        alt="SQOOL Classe"
+                        className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
                       />
-                    </div>
-                  </figure>
+                    </button>
+                  </div>
+                </figure>
 
-                  {/* ==================== CONTEXT ==================== */}
-                  <section id="context" className="mb-32 md:mb-40">
-                    <h1 className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-8 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                {/* ==================== CONTEXT ==================== */}
+                <section id="context" className="mb-24 md:mb-32">
+                  <div className="max-w-[740px] mx-auto px-6">
+                    <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
                       {t.context.title}
-                    </h1>
-                    <p className={`text-lg leading-relaxed max-w-3xl ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                    </h2>
+                    <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">
                       {t.context.description}
                     </p>
+                  </div>
 
-                    {/* Field observation photos */}
-                    <div className="mt-16 md:mt-20">
-                      <h3 className={`text-base font-semibold mb-2 ${isDark ? 'text-white/60' : 'text-gray-400'} uppercase tracking-wider`}>
-                        {t.context.fieldObsTitle}
-                      </h3>
-                      <p className={`text-sm mb-8 max-w-2xl ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                        {t.context.fieldObsDesc}
-                      </p>
-                      <div className="grid grid-cols-2 gap-4">
-                        {caseImages.slice(2, 4).map((img, i) => (
-                          <button
-                            key={i}
-                            onClick={() => openImageLightbox(img.src)}
-                            className={`group relative aspect-[3/2] rounded-xl overflow-hidden border cursor-pointer ${
-                              isDark ? 'border-white/10 hover:border-white/20' : 'border-gray-200 hover:border-gray-300'
-                            }`}
-                          >
-                            <img src={img.src} alt={img.caption} loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.02]" />
-                          </button>
-                        ))}
-                      </div>
+                  {/* Field observation photos */}
+                  <div className="max-w-[960px] mx-auto px-6 mt-16">
+                    <p className="text-xs text-gray-400 mb-2 uppercase tracking-wider">
+                      {t.context.fieldObsTitle}
+                    </p>
+                    <p className="text-base text-gray-500 leading-relaxed mb-8 max-w-[65ch]">
+                      {t.context.fieldObsDesc}
+                    </p>
+                    <div className="space-y-4">
+                      {caseImages.slice(2, 4).map((img, i) => (
+                        <button
+                          key={i}
+                          onClick={() => openImageLightbox(img.src)}
+                          className="group relative aspect-[3/2] rounded-xl overflow-hidden cursor-zoom-in ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99] w-full block"
+                        >
+                          <img src={img.src} alt={img.caption} loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" />
+                        </button>
+                      ))}
                     </div>
+                  </div>
 
-                    {/* Problem question */}
-                    <div className={`mt-16 md:mt-20 p-8 md:p-10 rounded-2xl border-l-4 ${
-                      isDark ? 'border-l-blue-500 bg-blue-500/10' : 'border-l-blue-600 bg-blue-50'
-                    }`}>
-                      <p className={`text-xl md:text-2xl font-bold italic leading-snug ${
-                        isDark ? 'text-white' : 'text-gray-900'
-                      }`}>
-                        {t.context.problemQuestion}
-                      </p>
-                    </div>
-                  </section>
+                  {/* Problem question */}
+                  <div className="max-w-[740px] mx-auto px-6 mt-16">
+                    <p className="text-sm font-medium text-gray-900 leading-relaxed max-w-[65ch]">
+                      {t.context.problemQuestion}
+                    </p>
+                  </div>
+                </section>
 
-                  {/* ==================== APPROACH ==================== */}
-                  <section id="approach" className="mb-32 md:mb-40">
-                    <h1 className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-12 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                {/* ==================== APPROACH ==================== */}
+                <section id="approach" className="mb-24 md:mb-32">
+                  <div className="max-w-[740px] mx-auto px-6">
+                    <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-8">
                       {t.approach.title}
-                    </h1>
-                    <div className="grid md:grid-cols-3 gap-8">
+                    </h2>
+                    <div className="divide-y divide-gray-100">
                       {[
                         { title: t.approach.pillar1Title, desc: t.approach.pillar1Desc },
                         { title: t.approach.pillar2Title, desc: t.approach.pillar2Desc },
                         { title: t.approach.pillar3Title, desc: t.approach.pillar3Desc },
                       ].map((p, i) => (
-                        <div key={i}>
-                          <h3 className={`text-lg font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>{p.title}</h3>
-                          <p className={`text-sm leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{p.desc}</p>
+                        <div key={i} className="py-6 first:pt-0 last:pb-0">
+                          <p className="text-sm font-medium text-gray-900 mb-1">{p.title}</p>
+                          <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">{p.desc}</p>
                         </div>
                       ))}
                     </div>
-                  </section>
+                  </div>
+                </section>
 
-                  <hr className={`my-8 ${isDark ? 'border-white/10' : 'border-gray-200'}`} />
+                <div className="max-w-[740px] mx-auto px-6">
+                  <hr className="border-gray-100" />
+                </div>
 
-                  {/* ==================== TEACHER EXPERIENCE ==================== */}
-                  <section id="teacher" className="mb-32 md:mb-40 pt-8">
-                    <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold mb-8 ${
-                      isDark ? 'bg-blue-600/20 text-blue-400' : 'bg-blue-50 text-blue-700'
-                    }`}>
-                      <Monitor size={12} />
+                {/* ==================== TEACHER EXPERIENCE ==================== */}
+                <section id="teacher" className="mb-24 md:mb-32 pt-12">
+                  <div className="max-w-[740px] mx-auto px-6">
+                    <p className="text-xs text-gray-400 mb-4">
                       {lang === 'fr' ? 'Côté enseignant' : 'Teacher side'}
-                    </span>
-
-                    <h1 className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-8 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                      {t.teacher.title}
-                    </h1>
-                    <p className={`text-lg leading-relaxed max-w-3xl mb-16 md:mb-20 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
-                      {t.teacher.description}
                     </p>
 
-                    {/* Hero visual: teacher grid screenshot */}
-                    <figure className="mb-16 md:mb-20">
-                      <button
-                        onClick={() => openImageLightbox(caseImages[6].src)}
-                        className={`group relative w-full rounded-2xl overflow-hidden border cursor-pointer ${
-                          isDark ? 'border-white/10 hover:border-white/20' : 'border-gray-200 hover:border-gray-300'
-                        }`}
-                      >
-                        <img src={caseImages[6].src} alt={caseImages[6].caption} loading="lazy" className="w-full transition-transform duration-300 ease-out group-hover:scale-[1.01]" />
-                      </button>
-                      <figcaption className={`mt-4 text-sm leading-relaxed max-w-2xl ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                        {t.teacher.gridCaption}
-                      </figcaption>
-                    </figure>
+                    <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+                      {t.teacher.title}
+                    </h2>
+                    <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">
+                      {t.teacher.description}
+                    </p>
+                  </div>
 
-                    {/* CTA: explore teacher prototypes */}
+                  {/* Hero visual: teacher grid screenshot */}
+                  <figure className="max-w-[960px] mx-auto px-6 mt-12 mb-12">
+                    <button
+                      onClick={() => openImageLightbox(caseImages[6].src)}
+                      className="group relative w-full rounded-xl overflow-hidden cursor-zoom-in ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
+                    >
+                      <img src={caseImages[6].src} alt={caseImages[6].caption} loading="lazy" className="w-full transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" />
+                    </button>
+                    <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed max-w-[65ch]">
+                      {t.teacher.gridCaption}
+                    </figcaption>
+                  </figure>
+
+                  {/* CTA: explore teacher prototypes */}
+                  <div className="max-w-[740px] mx-auto px-6 mb-12">
                     <button
                       onClick={() => { setGalleryInitialCategory('teacher'); onViewModeChange('gallery'); }}
-                      className={`mb-16 md:mb-20 w-full text-left rounded-2xl p-8 md:p-10 transition-[transform,box-shadow,gap] duration-200 ease-out group cursor-pointer ${
-                        isDark ? 'bg-[#2D5CF3] hover:bg-[#3D6AF5]' : 'bg-[#2D5CF3] hover:bg-[#2450d9]'
-                      }`}
+                      className="group inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-900 transition-colors duration-200"
                     >
-                      <p className="text-lg md:text-xl font-bold mb-2 text-white">
-                        {lang === 'fr' ? '25 prototypes enseignant à explorer' : '25 teacher prototypes to explore'}
-                      </p>
-                      <p className="text-base leading-relaxed mb-6 text-white/70">
-                        {lang === 'fr'
-                          ? 'Chaque interaction est documentée avec son parti pris de design, sa stratégie UX et son résultat concret. Animations GSAP, navigation par étapes.'
-                          : 'Each interaction is documented with its design rationale, UX strategy, and concrete outcome. GSAP animations, step-by-step navigation.'}
-                      </p>
-                      <span className="inline-flex items-center gap-2 text-white font-semibold text-base transition-[gap,color] duration-200 ease-out group-hover:gap-3">
-                        {lang === 'fr' ? 'Ouvrir la galerie' : 'Open gallery'}
-                        <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
-                      </span>
+                      {lang === 'fr' ? '25 prototypes enseignant a explorer' : '25 teacher prototypes to explore'}
+                      <ArrowRight size={14} className="transition-transform duration-200 group-hover:translate-x-0.5" />
                     </button>
+                  </div>
 
-                    {/* Screen sharing + Document sending */}
-                    <div className="grid md:grid-cols-2 gap-6 mb-16 md:mb-20">
+                  {/* Screen sharing + Document sending */}
+                  <div className="max-w-[960px] mx-auto px-6">
+                    <div className="space-y-4 mb-12">
                       <figure>
                         <button
                           onClick={() => openImageLightbox(caseImages[8].src)}
-                          className={`group relative w-full rounded-xl overflow-hidden border cursor-pointer ${
-                            isDark ? 'border-white/10 hover:border-white/20' : 'border-gray-200 hover:border-gray-300'
-                          }`}
+                          className="group relative w-full rounded-xl overflow-hidden cursor-zoom-in ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
                         >
-                          <img src={caseImages[8].src} alt="" loading="lazy" className="w-full transition-transform duration-300 ease-out group-hover:scale-[1.01]" />
+                          <img src={caseImages[8].src} alt="" loading="lazy" className="w-full transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" />
                         </button>
-                        <figcaption className={`mt-4 text-sm leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                        <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
                           {t.teacher.screenShareCaption}
                         </figcaption>
                       </figure>
                       <figure>
                         <button
                           onClick={() => openImageLightbox(caseImages[10].src)}
-                          className={`group relative w-full rounded-xl overflow-hidden border cursor-pointer ${
-                            isDark ? 'border-white/10 hover:border-white/20' : 'border-gray-200 hover:border-gray-300'
-                          }`}
+                          className="group relative w-full rounded-xl overflow-hidden cursor-zoom-in ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
                         >
-                          <img src={caseImages[10].src} alt="" loading="lazy" className="w-full transition-transform duration-300 ease-out group-hover:scale-[1.01]" />
+                          <img src={caseImages[10].src} alt="" loading="lazy" className="w-full transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" />
                         </button>
-                        <figcaption className={`mt-4 text-sm leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                        <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
                           {t.teacher.docSendCaption}
                         </figcaption>
                       </figure>
@@ -467,137 +387,114 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                     <figure>
                       <button
                         onClick={() => openImageLightbox(caseImages[9].src)}
-                        className={`group relative w-full rounded-2xl overflow-hidden border cursor-pointer ${
-                          isDark ? 'border-white/10 hover:border-white/20' : 'border-gray-200 hover:border-gray-300'
-                        }`}
+                        className="group relative w-full rounded-xl overflow-hidden cursor-zoom-in ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
                       >
-                        <img src={caseImages[9].src} alt="" loading="lazy" className="w-full transition-transform duration-300 ease-out group-hover:scale-[1.01]" />
+                        <img src={caseImages[9].src} alt="" loading="lazy" className="w-full transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" />
                       </button>
-                      <figcaption className={`mt-4 text-sm leading-relaxed max-w-2xl ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                      <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed max-w-[65ch]">
                         {t.teacher.actionsCaption}
                       </figcaption>
                     </figure>
-                  </section>
+                  </div>
+                </section>
 
-                  <hr className={`my-8 ${isDark ? 'border-white/10' : 'border-gray-200'}`} />
+                <div className="max-w-[740px] mx-auto px-6">
+                  <hr className="border-gray-100" />
+                </div>
 
-                  {/* ==================== STUDENT EXPERIENCE ==================== */}
-                  <section id="students" className="mb-32 md:mb-40 pt-8">
-                    <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold mb-8 ${
-                      isDark ? 'bg-green-600/20 text-green-400' : 'bg-green-50 text-green-700'
-                    }`}>
-                      <Users size={12} />
+                {/* ==================== STUDENT EXPERIENCE ==================== */}
+                <section id="students" className="mb-24 md:mb-32 pt-12">
+                  <div className="max-w-[740px] mx-auto px-6">
+                    <p className="text-xs text-gray-400 mb-4">
                       {lang === 'fr' ? 'Côté élève' : 'Student side'}
-                    </span>
-
-                    <h1 className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-8 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                      {t.students.title}
-                    </h1>
-                    <p className={`text-lg leading-relaxed max-w-3xl mb-16 md:mb-20 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
-                      {t.students.description}
                     </p>
 
-                    {/* iPad composition (hero visual) */}
-                    <figure className="mb-16 md:mb-20">
-                      <button
-                        onClick={() => openImageLightbox(caseImages[7].src)}
-                        className={`group relative w-full md:w-3/4 mx-auto block rounded-2xl overflow-hidden border cursor-pointer ${
-                          isDark ? 'border-white/10 hover:border-white/20' : 'border-gray-200 hover:border-gray-300'
-                        }`}
-                      >
-                        <img src={caseImages[7].src} alt="" loading="lazy" className="w-full transition-transform duration-300 ease-out group-hover:scale-[1.01]" />
-                      </button>
-                      <figcaption className={`mt-4 text-sm leading-relaxed text-center max-w-2xl mx-auto ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                        {t.students.compositionCaption}
-                      </figcaption>
-                    </figure>
+                    <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+                      {t.students.title}
+                    </h2>
+                    <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">
+                      {t.students.description}
+                    </p>
+                  </div>
 
-                    {/* Student screens: classrooms + interactions */}
-                    <div className="grid md:grid-cols-2 gap-6 mb-16 md:mb-20">
+                  {/* iPad composition (hero visual) */}
+                  <figure className="max-w-[960px] mx-auto px-6 mt-12 mb-12">
+                    <button
+                      onClick={() => openImageLightbox(caseImages[7].src)}
+                      className="group relative w-full md:w-3/4 mx-auto block rounded-xl overflow-hidden cursor-zoom-in ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
+                    >
+                      <img src={caseImages[7].src} alt="" loading="lazy" className="w-full transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" />
+                    </button>
+                    <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed text-center max-w-[65ch] mx-auto">
+                      {t.students.compositionCaption}
+                    </figcaption>
+                  </figure>
+
+                  {/* Student screens: classrooms + interactions */}
+                  <div className="max-w-[960px] mx-auto px-6 mb-12">
+                    <div className="space-y-4">
                       <figure>
                         <button
                           onClick={() => openImageLightbox(caseImages[11].src)}
-                          className={`group relative w-full rounded-xl overflow-hidden border cursor-pointer ${
-                            isDark ? 'border-white/10 hover:border-white/20' : 'border-gray-200 hover:border-gray-300'
-                          }`}
+                          className="group relative w-full rounded-xl overflow-hidden cursor-zoom-in ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
                         >
-                          <img src={caseImages[11].src} alt="" loading="lazy" className="w-full transition-transform duration-300 ease-out group-hover:scale-[1.01]" />
+                          <img src={caseImages[11].src} alt="" loading="lazy" className="w-full transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" />
                         </button>
-                        <figcaption className={`mt-4 text-sm leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                        <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
                           {t.students.classroomsCaption}
                         </figcaption>
                       </figure>
                       <figure>
                         <button
                           onClick={() => openImageLightbox(caseImages[14].src)}
-                          className={`group relative w-full rounded-xl overflow-hidden border cursor-pointer ${
-                            isDark ? 'border-white/10 hover:border-white/20' : 'border-gray-200 hover:border-gray-300'
-                          }`}
+                          className="group relative w-full rounded-xl overflow-hidden cursor-zoom-in ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
                         >
-                          <img src={caseImages[14].src} alt="" loading="lazy" className="w-full transition-transform duration-300 ease-out group-hover:scale-[1.01]" />
+                          <img src={caseImages[14].src} alt="" loading="lazy" className="w-full transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" />
                         </button>
-                        <figcaption className={`mt-4 text-sm leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                        <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
                           {t.students.interactionsCaption}
                         </figcaption>
                       </figure>
                     </div>
+                  </div>
 
-                    {/* CTA: explore student + scenario prototypes */}
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <button
-                        onClick={() => { setGalleryInitialCategory('student'); onViewModeChange('gallery'); }}
-                        className={`text-left rounded-2xl p-8 transition-[transform,box-shadow,gap] duration-200 ease-out group cursor-pointer ${
-                          isDark ? 'bg-[#1D1D1F] hover:bg-[#252528]' : 'bg-[#1D1D1F] hover:bg-[#252528]'
-                        }`}
-                      >
-                        <p className="text-lg font-bold mb-2 text-white">
-                          {lang === 'fr' ? '7 prototypes élève' : '7 student prototypes'}
-                        </p>
-                        <p className="text-sm leading-relaxed mb-5 text-white/50">
-                          {lang === 'fr'
-                            ? 'Login, ressources, signaux de compréhension, rendu de devoir, écran verrouillé.'
-                            : 'Login, resources, comprehension signals, assignment submission, locked screen.'}
-                        </p>
-                        <span className="inline-flex items-center gap-2 text-white/80 font-semibold text-sm transition-[gap,color] duration-200 ease-out group-hover:gap-3 group-hover:text-white">
-                          {lang === 'fr' ? 'Voir les prototypes' : 'View prototypes'}
-                          <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
-                        </span>
-                      </button>
-                      <button
-                        onClick={() => { setGalleryInitialCategory('scenario'); onViewModeChange('gallery'); }}
-                        className={`text-left rounded-2xl p-8 transition-[transform,box-shadow,gap] duration-200 ease-out group cursor-pointer ${
-                          isDark ? 'bg-[#1D1D1F] hover:bg-[#252528]' : 'bg-[#1D1D1F] hover:bg-[#252528]'
-                        }`}
-                      >
-                        <p className="text-lg font-bold mb-2 text-white">
-                          {lang === 'fr' ? '10 scénarios complets' : '10 complete scenarios'}
-                        </p>
-                        <p className="text-sm leading-relaxed mb-5 text-white/50">
-                          {lang === 'fr'
-                            ? 'Séances de bout en bout : ouverture, supervision, différenciation, examens, clôture.'
-                            : 'End-to-end sessions: opening, supervision, differentiation, exams, closing.'}
-                        </p>
-                        <span className="inline-flex items-center gap-2 text-white/80 font-semibold text-sm transition-[gap,color] duration-200 ease-out group-hover:gap-3 group-hover:text-white">
-                          {lang === 'fr' ? 'Voir les scénarios' : 'View scenarios'}
-                          <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
-                        </span>
-                      </button>
-                    </div>
-                  </section>
+                  {/* CTA: explore student + scenario prototypes */}
+                  <div className="max-w-[740px] mx-auto px-6 flex flex-col sm:flex-row gap-4">
+                    <button
+                      onClick={() => { setGalleryInitialCategory('student'); onViewModeChange('gallery'); }}
+                      className="group inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-900 transition-colors duration-200"
+                    >
+                      {lang === 'fr' ? '7 prototypes élève' : '7 student prototypes'}
+                      <ArrowRight size={14} className="transition-transform duration-200 group-hover:translate-x-0.5" />
+                    </button>
+                    <button
+                      onClick={() => { setGalleryInitialCategory('scenario'); onViewModeChange('gallery'); }}
+                      className="group inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-900 transition-colors duration-200"
+                    >
+                      {lang === 'fr' ? '10 scénarios complets' : '10 complete scenarios'}
+                      <ArrowRight size={14} className="transition-transform duration-200 group-hover:translate-x-0.5" />
+                    </button>
+                  </div>
+                </section>
 
-                  <hr className={`my-8 ${isDark ? 'border-white/10' : 'border-gray-200'}`} />
+                <div className="max-w-[740px] mx-auto px-6">
+                  <hr className="border-gray-100" />
+                </div>
 
-                  {/* ==================== IMPACT ==================== */}
-                  <section id="impact" className="mb-24 md:mb-32 pt-8">
-                    <h1 className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-4 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                {/* ==================== IMPACT ==================== */}
+                <section id="impact" className="mb-24 md:mb-32 pt-12">
+                  <div className="max-w-[740px] mx-auto px-6">
+                    <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
                       {t.impact.title}
-                    </h1>
-                    <p className={`text-lg leading-relaxed max-w-3xl mb-12 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                    </h2>
+                    <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-12">
                       {t.impact.intro}
                     </p>
+                  </div>
 
-                    {/* Marketing visuals */}
-                    <div className="grid md:grid-cols-2 gap-6 mb-16 md:mb-20">
+                  {/* Marketing visuals */}
+                  <div className="max-w-[960px] mx-auto px-6 mb-16">
+                    <div className="space-y-4">
                       {[
                         { img: caseImages[16], caption: t.marketingCaptions?.inviteCode },
                         { img: caseImages[15], caption: t.marketingCaptions?.linkShare },
@@ -605,62 +502,78 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                         <figure key={i}>
                           <button
                             onClick={() => openImageLightbox(item.img.src)}
-                            className={`group relative w-full rounded-xl overflow-hidden border cursor-pointer ${
-                              isDark ? 'border-white/10 hover:border-white/20' : 'border-gray-200 hover:border-gray-300'
-                            }`}
+                            className="group relative w-full rounded-xl overflow-hidden cursor-zoom-in ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
                           >
-                            <img src={item.img.src} alt={item.img.caption} loading="lazy" className="w-full transition-transform duration-300 ease-out group-hover:scale-[1.01]" />
+                            <img src={item.img.src} alt={item.img.caption} loading="lazy" className="w-full transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" />
                           </button>
-                          <figcaption className={`mt-4 text-sm leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                          <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
                             {item.caption}
                           </figcaption>
                         </figure>
                       ))}
                     </div>
+                  </div>
 
-                    {/* Stats */}
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
+                  {/* Stats */}
+                  <div className="max-w-[740px] mx-auto px-6 mb-16">
+                    <div className="divide-y divide-gray-100">
                       {[
                         { value: t.impact.stat1, label: t.impact.stat1Desc },
                         { value: t.impact.stat2, label: t.impact.stat2Desc },
                         { value: t.impact.stat3, label: t.impact.stat3Desc },
                         { value: t.impact.stat4, label: t.impact.stat4Desc },
                       ].map((stat, i) => (
-                        <div key={i} className={`p-6 rounded-2xl border ${isDark ? 'bg-[#1D1D1F] border-white/10' : 'bg-gray-50 border-gray-200'}`}>
-                          <p className={`text-3xl font-bold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>{stat.value}</p>
-                          <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{stat.label}</p>
+                        <div key={i} className="flex items-baseline justify-between py-4">
+                          <span className="text-sm text-gray-500">{stat.label}</span>
+                          <span className="text-base font-semibold text-gray-900 tabular-nums">{stat.value}</span>
                         </div>
                       ))}
                     </div>
+                  </div>
 
-                    {/* Testimonial */}
-                    <blockquote className={`p-8 rounded-2xl border ${isDark ? 'bg-[#1D1D1F] border-white/10' : 'bg-gray-50 border-gray-200'}`}>
-                      <p className={`text-lg italic mb-4 ${isDark ? 'text-gray-200' : 'text-gray-700'}`}>
+                  {/* Testimonial */}
+                  <div className="max-w-[740px] mx-auto px-6">
+                    <blockquote>
+                      <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-3">
                         &laquo;{t.testimonial.quote}&raquo;
                       </p>
-                      <footer className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                      <footer className="text-xs text-gray-400">
                         {t.testimonial.author}, {t.testimonial.role}
                       </footer>
                     </blockquote>
-                  </section>
-                  {/* ==================== CTA ==================== */}
-                  <section className="py-24 md:py-32 px-10">
-                    <div className="max-w-[800px] mx-auto text-center">
-                      <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-8 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                        {t.cta.title}
-                      </h2>
-                      <button
-                        onClick={onContact}
-                        className="inline-flex items-center gap-3 px-10 py-5 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-lg rounded-full transition-[background-color,transform] duration-200 ease-out active:scale-[0.97]"
-                      >
-                        {t.cta.button}
-                        <ArrowRight size={22} />
-                      </button>
-                    </div>
-                  </section>
+                  </div>
 
-                </main>
-              </div>
+                  {/* Hero testimonial (Charlotte Rifflet) */}
+                  <div className="max-w-[740px] mx-auto px-6 mt-12">
+                    <blockquote>
+                      <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-3">
+                        &laquo;{t.heroTestimonial.quote}&raquo;
+                      </p>
+                      <footer>
+                        <p className="text-sm font-medium text-gray-900">{t.heroTestimonial.author}</p>
+                        <p className="text-xs text-gray-400">{t.heroTestimonial.role}</p>
+                      </footer>
+                    </blockquote>
+                  </div>
+                </section>
+
+                {/* ==================== CTA ==================== */}
+                <section className="mb-24 md:mb-32">
+                  <div className="max-w-[740px] mx-auto px-6 text-center">
+                    <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-6">
+                      {t.cta.title}
+                    </h2>
+                    <button
+                      onClick={onContact}
+                      className="group inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-900 transition-colors duration-200"
+                    >
+                      {t.cta.button}
+                      <ArrowRight size={14} className="transition-transform duration-200 group-hover:translate-x-0.5" />
+                    </button>
+                  </div>
+                </section>
+
+              </main>
             </div>
           </motion.div>
         )}

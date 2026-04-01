@@ -76,6 +76,7 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
   const lastTap = useRef<number>(0);
   const doubleTapTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const savedScrollY = useRef(0);
 
   // Set video start time when lightbox opens with a video
   useEffect(() => {
@@ -105,21 +106,26 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Lock body scroll when open
+  // Lock body scroll when open — preserves scroll position on close
   useEffect(() => {
     if (isOpen) {
+      savedScrollY.current = window.scrollY;
       document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${savedScrollY.current}px`;
+      document.body.style.width = '100%';
       const timer = setTimeout(() => setShowHint(false), 2500);
       return () => clearTimeout(timer);
     } else {
       document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      window.scrollTo(0, savedScrollY.current);
       setShowHint(true);
       resetState();
     }
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [isOpen]);
+  }, [isOpen]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Reset zoom when changing images
   useEffect(() => {

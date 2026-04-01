@@ -13,6 +13,7 @@
  */
 
 import React, { useRef, useState } from 'react';
+import VideoPlayer from '@/components/VideoPlayer';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 import {
   Stack as Layers,
@@ -610,9 +611,9 @@ const FadeInSection: React.FC<{
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 20 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-      transition={{ duration: 0.25, delay: delay * 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+      initial={{ opacity: 0, y: 12 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
+      transition={{ duration: 0.28, delay: delay * 0.5, ease: [0.23, 1, 0.32, 1] }}
       className={className}
     >
       {children}
@@ -634,118 +635,24 @@ const ClickableImage: React.FC<{
     <figure className={className}>
       <div
         onClick={() => onClick(src)}
-        className={`group cursor-pointer rounded-2xl overflow-hidden border transition-[transform,box-shadow] duration-200 ease-out hover:scale-[1.01] ${
-          isDark ? 'border-white/10 hover:border-white/20' : 'border-gray-200 hover:border-gray-300 hover:shadow-lg'
-        } ${aspectRatio || ''}`}
+        className={`cursor-zoom-in group rounded-2xl overflow-hidden ring-1 transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99] ${aspectRatio || ''} ${
+          isDark
+            ? 'ring-white/[0.06] hover:ring-white/[0.12]'
+            : 'ring-black/[0.06] hover:ring-black/[0.10]'
+        }`}
       >
         <img loading="lazy"
           src={src}
           alt={alt}
-          className={`w-full h-full transition-transform group-hover:scale-[1.02] ${aspectRatio ? 'object-cover object-top' : 'object-cover'}`}
+          className={`w-full transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02] ${aspectRatio ? 'h-full object-cover object-top' : 'h-auto'}`}
         />
       </div>
       {caption && (
-        <figcaption className={`mt-3 text-sm text-center ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
+        <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed max-w-[740px] mx-auto">
           {caption}
         </figcaption>
       )}
     </figure>
-  );
-};
-
-// Bento Image Grid - Landscape priority: 1 large full-width on top + 2 thumbnails below with 3:2 ratio + optional large2 at bottom
-const BentoImageGrid: React.FC<{
-  large: { src: string; caption: string };
-  small1: { src: string; caption: string };
-  small2: { src: string; caption: string };
-  large2?: { src: string; caption: string };
-  isDark: boolean;
-  onClick: (src: string) => void;
-}> = ({ large, small1, small2, large2, isDark, onClick }) => {
-  return (
-    <div className="space-y-6">
-      {/* Large landscape image - full width on top */}
-      <figure>
-        <div
-          onClick={() => onClick(large.src)}
-          className={`group cursor-pointer rounded-2xl overflow-hidden border transition-[transform,box-shadow] duration-200 ease-out hover:scale-[1.005] ${
-            isDark ? 'border-white/10 hover:border-white/20' : 'border-gray-200 hover:border-gray-300 hover:shadow-lg'
-          }`}
-        >
-          <img loading="lazy"
-            src={large.src}
-            alt={large.caption}
-            className="w-full h-auto object-cover object-left-top transition-transform group-hover:scale-[1.01]"
-          />
-        </div>
-        <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
-          {large.caption}
-        </figcaption>
-      </figure>
-
-      {/* Two smaller thumbnails side by side below - 3:2 aspect ratio with background */}
-      <div className="grid grid-cols-2 gap-6 items-start">
-        <figure>
-          <div
-            onClick={() => onClick(small1.src)}
-            className={`group cursor-pointer rounded-xl overflow-hidden border transition-[transform,box-shadow] duration-200 ease-out hover:scale-[1.01] aspect-[3/2] flex items-center justify-center ${
-              isDark
-                ? 'border-white/10 hover:border-white/20 bg-white/5'
-                : 'border-gray-200 hover:border-gray-300 hover:shadow-lg bg-gray-100'
-            }`}
-          >
-            <img loading="lazy"
-              src={small1.src}
-              alt={small1.caption}
-              className="w-full h-full object-contain transition-transform group-hover:scale-[1.02]"
-            />
-          </div>
-          <figcaption className={`mt-2 text-xs leading-relaxed ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
-            {small1.caption}
-          </figcaption>
-        </figure>
-        <figure>
-          <div
-            onClick={() => onClick(small2.src)}
-            className={`group cursor-pointer rounded-xl overflow-hidden border transition-[transform,box-shadow] duration-200 ease-out hover:scale-[1.01] aspect-[3/2] flex items-center justify-center ${
-              isDark
-                ? 'border-white/10 hover:border-white/20 bg-white/5'
-                : 'border-gray-200 hover:border-gray-300 hover:shadow-lg bg-gray-100'
-            }`}
-          >
-            <img loading="lazy"
-              src={small2.src}
-              alt={small2.caption}
-              className="w-full h-full object-contain transition-transform group-hover:scale-[1.02]"
-            />
-          </div>
-          <figcaption className={`mt-2 text-xs leading-relaxed ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
-            {small2.caption}
-          </figcaption>
-        </figure>
-      </div>
-
-      {/* Optional second large image at the bottom */}
-      {large2 && (
-        <figure>
-          <div
-            onClick={() => onClick(large2.src)}
-            className={`group cursor-pointer rounded-2xl overflow-hidden border transition-[transform,box-shadow] duration-200 ease-out hover:scale-[1.005] ${
-              isDark ? 'border-white/10 hover:border-white/20' : 'border-gray-200 hover:border-gray-300 hover:shadow-lg'
-            }`}
-          >
-            <img loading="lazy"
-              src={large2.src}
-              alt={large2.caption}
-              className="w-full h-auto object-cover object-left-top transition-transform group-hover:scale-[1.01]"
-            />
-          </div>
-          <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
-            {large2.caption}
-          </figcaption>
-        </figure>
-      )}
-    </div>
   );
 };
 
@@ -754,17 +661,17 @@ const BulletSection: React.FC<{
   title: string;
   items: string[];
   isDark: boolean;
-}> = ({ title, items, isDark }) => {
+}> = ({ title, items }) => {
   return (
     <div className="mb-8">
-      <h4 className={`text-lg font-semibold mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+      <h4 className="text-sm font-medium mb-3 text-gray-700">
         {title}
       </h4>
-      <ul className="space-y-3">
+      <ul className="space-y-2">
         {items.map((item, idx) => (
           <li key={idx} className="flex items-start gap-3">
-            <div className={`w-1.5 h-1.5 rounded-full mt-2.5 flex-shrink-0 ${isDark ? 'bg-blue-400' : 'bg-blue-600'}`} />
-            <span className={`text-base leading-relaxed ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+            <div className="w-1 h-1 rounded-full mt-2 flex-shrink-0 bg-gray-300" />
+            <span className="text-sm text-gray-500 leading-relaxed">
               {item}
             </span>
           </li>
@@ -780,13 +687,7 @@ const ImpactBlock: React.FC<{
   isDark: boolean;
 }> = ({ text, isDark }) => {
   return (
-    <div className={`p-6 rounded-2xl border-l-4 ${
-      isDark
-        ? 'bg-emerald-500/10 border-emerald-500 text-emerald-300'
-        : 'bg-emerald-50 border-emerald-500 text-emerald-800'
-    }`}>
-      <p className="font-medium">{text}</p>
-    </div>
+    <p className="text-base text-gray-600 leading-relaxed max-w-[65ch]">{text}</p>
   );
 };
 
@@ -845,7 +746,7 @@ const BeforeAfterSlider: React.FC<{
     <div
       ref={containerRef}
       className={`relative rounded-2xl overflow-hidden border cursor-ew-resize select-none ${
-        isDark ? 'border-white/10' : 'border-gray-200'
+        'border-gray-200'
       }`}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
@@ -896,12 +797,12 @@ const BeforeAfterSlider: React.FC<{
 
       {/* Labels */}
       <div className={`absolute top-4 left-4 px-3 py-1.5 rounded-full text-xs font-semibold z-10 ${
-        isDark ? 'bg-black/70 text-white' : 'bg-white/90 text-gray-900 shadow-md'
+        'bg-white/90 text-gray-900 shadow-md'
       }`}>
         {beforeLabel}
       </div>
       <div className={`absolute top-4 right-4 px-3 py-1.5 rounded-full text-xs font-semibold z-10 ${
-        isDark ? 'bg-black/70 text-white' : 'bg-white/90 text-gray-900 shadow-md'
+        'bg-white/90 text-gray-900 shadow-md'
       }`}>
         {afterLabel}
       </div>
@@ -919,60 +820,43 @@ const ExpandableSection: React.FC<{
   isDark: boolean;
   expandLabel?: string;
   collapseLabel?: string;
-}> = ({ children, previewLines = 3, isDark, expandLabel = 'Read more', collapseLabel = 'Show less' }) => {
+}> = ({ children, previewLines = 3, expandLabel = 'Read more', collapseLabel = 'Show less' }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const contentRef = useRef<HTMLDivElement>(null);
 
   return (
     <div className="relative">
-      <AnimatePresence mode="wait">
-        {!isExpanded ? (
-          <motion.div
-            key="collapsed"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="relative"
-          >
-            <div
-              className="overflow-hidden"
-              style={{ maxHeight: `${previewLines * 1.75}rem` }}
-            >
-              {children}
-            </div>
-            {/* Gradient fade */}
-            <div className={`absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t pointer-events-none ${
-              isDark ? 'from-[#0a0a0a]' : 'from-white'
-            }`} />
-          </motion.div>
-        ) : (
-          <motion.div
-            key="expanded"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            ref={contentRef}
-          >
-            {children}
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <div className="relative">
+        <div
+          style={{
+            maxHeight: isExpanded ? '1200px' : `${previewLines * 1.75}rem`,
+            overflow: 'hidden',
+            transition: isExpanded
+              ? 'max-height 600ms cubic-bezier(0.23, 1, 0.32, 1)'
+              : 'max-height 350ms cubic-bezier(0.23, 1, 0.32, 1)',
+          }}
+        >
+          {children}
+        </div>
+        {/* Gradient fade — only visible when collapsed */}
+        <div
+          className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-[#FDFDFC] pointer-events-none"
+          style={{
+            opacity: isExpanded ? 0 : 1,
+            transition: 'opacity 200ms ease',
+          }}
+        />
+      </div>
 
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className={`mt-3 inline-flex items-center gap-1.5 text-sm font-medium transition-colors ${
-          isDark
-            ? 'text-blue-400 hover:text-blue-300'
-            : 'text-blue-600 hover:text-blue-700'
-        }`}
+        className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors duration-150"
       >
         {isExpanded ? collapseLabel : expandLabel}
-        <motion.div
-          animate={{ rotate: isExpanded ? 180 : 0 }}
-          transition={{ duration: 0.2 }}
-        >
-          <ChevronDown size={16} />
-        </motion.div>
+        <ChevronDown
+          size={14}
+          className="transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)]"
+          style={{ transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)' }}
+        />
       </button>
     </div>
   );
@@ -1177,13 +1061,13 @@ const InitiativesDiagram: React.FC<{
     <div className="mt-8">
       {/* View Toggle */}
       <div className="flex justify-center mb-8">
-        <div className={`inline-flex rounded-full p-1 ${isDark ? 'bg-white/10' : 'bg-gray-100'}`}>
+        <div className={`inline-flex rounded-full p-1 bg-gray-100`}>
           <button
             onClick={() => setViewMode('focus')}
             className={`px-4 py-2 rounded-full text-sm font-medium transition-[background-color,color,transform] duration-200 ease-out ${
               viewMode === 'focus'
-                ? isDark ? 'bg-white text-black' : 'bg-gray-900 text-white'
-                : isDark ? 'text-gray-400 hover:text-white' : 'text-gray-500 hover:text-gray-900'
+                ? 'bg-gray-900 text-white'
+                : 'text-gray-500 hover:text-gray-900'
             }`}
           >
             {texts.focus}
@@ -1192,8 +1076,8 @@ const InitiativesDiagram: React.FC<{
             onClick={() => setViewMode('overview')}
             className={`px-4 py-2 rounded-full text-sm font-medium transition-[background-color,color,transform] duration-200 ease-out ${
               viewMode === 'overview'
-                ? isDark ? 'bg-white text-black' : 'bg-gray-900 text-white'
-                : isDark ? 'text-gray-400 hover:text-white' : 'text-gray-500 hover:text-gray-900'
+                ? 'bg-gray-900 text-white'
+                : 'text-gray-500 hover:text-gray-900'
             }`}
           >
             {texts.overview}
@@ -1217,8 +1101,8 @@ const InitiativesDiagram: React.FC<{
                 onClick={() => setActiveInitiative(idx)}
                 className={`h-2 rounded-full transition-[transform,box-shadow] duration-300 ease-out ${
                   idx === activeInitiative
-                    ? `w-10 ${isDark ? 'bg-white' : 'bg-gray-900'}`
-                    : `w-2 ${isDark ? 'bg-white/20 hover:bg-white/40' : 'bg-gray-300 hover:bg-gray-400'}`
+                    ? `w-10 bg-gray-900`
+                    : `w-2 bg-gray-300 hover:bg-gray-400`
                 }`}
               />
             ))}
@@ -1241,37 +1125,33 @@ const InitiativesDiagram: React.FC<{
                     ${isNext ? 'opacity-0 scale-95 translate-x-12 z-10 pointer-events-none' : ''}
                   `}
                 >
-                  <div className={`rounded-3xl overflow-hidden h-full flex flex-col md:flex-row ${
-                    isDark ? 'bg-white/5 border border-white/10' : 'bg-white shadow-xl border border-gray-100'
-                  }`}>
+                  <div className="rounded-xl overflow-hidden h-full flex flex-col md:flex-row border border-gray-100">
                     {/* Left: Identity */}
                     <div className={`md:w-1/3 p-8 md:p-10 flex flex-col justify-between ${
-                      isDark ? 'bg-white/5 border-b md:border-b-0 md:border-r border-white/10' : 'bg-gray-50 border-b md:border-b-0 md:border-r border-gray-100'
+                      'bg-gray-50 border-b md:border-b-0 md:border-r border-gray-100'
                     }`}>
                       <div>
                         <div className={`inline-flex items-center justify-center w-14 h-14 rounded-2xl mb-6 ${
-                          isDark ? 'bg-white text-black' : 'bg-blue-600 text-white'
+                          'bg-gray-100 text-gray-600'
                         }`}>
                           <InitiativeIcon size={26} strokeWidth={2} />
                         </div>
-                        <div className={`uppercase tracking-widest text-[10px] font-bold mb-2 ${
-                          isDark ? 'text-gray-500' : 'text-gray-400'
+                        <div className={`text-xs uppercase font-medium tracking-wider text-gray-400 mb-2 ${
+                          'text-gray-400'
                         }`}>
                           {texts.initiative} {initiative.id}
                         </div>
-                        <h3 className={`text-2xl md:text-3xl font-bold leading-tight mb-2 ${
-                          isDark ? 'text-white' : 'text-gray-900'
-                        }`}>
+                        <h3 className="text-base font-semibold tracking-[-0.01em] leading-tight mb-2 text-gray-900">
                           {initiative.title}
                         </h3>
                         <div className={`inline-block px-3 py-1 rounded-md text-xs font-semibold ${
-                          isDark ? 'bg-white/10 text-gray-300' : 'bg-blue-100 text-blue-700'
+                          'bg-gray-100 text-gray-600'
                         }`}>
                           {initiative.duration}
                         </div>
                       </div>
-                      <p className={`text-sm leading-relaxed mt-6 ${
-                        isDark ? 'text-gray-400' : 'text-gray-500'
+                      <p className={`text-base leading-relaxed mt-6 ${
+                        'text-gray-500'
                       }`}>
                         {initiative.description}
                       </p>
@@ -1280,7 +1160,7 @@ const InitiativesDiagram: React.FC<{
                     {/* Right: Features */}
                     <div className="md:w-2/3 p-8 md:p-10 overflow-y-auto">
                       <h4 className={`text-xs font-semibold uppercase tracking-wider mb-6 ${
-                        isDark ? 'text-gray-500' : 'text-gray-400'
+                        'text-gray-400'
                       }`}>
                         {texts.keyDeliverables}
                       </h4>
@@ -1293,9 +1173,9 @@ const InitiativesDiagram: React.FC<{
                             transition={{ delay: isActive ? 0.2 + fIdx * 0.08 : 0, duration: 0.4 }}
                             className="flex items-start gap-3"
                           >
-                            <CheckCircle2 size={18} className="text-emerald-500 mt-0.5 flex-shrink-0" strokeWidth={2.5} />
+                            <CheckCircle2 size={18} className="text-gray-500 mt-0.5 flex-shrink-0" strokeWidth={2.5} />
                             <span className={`text-sm md:text-base font-medium leading-relaxed ${
-                              isDark ? 'text-gray-200' : 'text-gray-800'
+                              'text-gray-800'
                             }`}>
                               {feature}
                             </span>
@@ -1315,7 +1195,7 @@ const InitiativesDiagram: React.FC<{
               onClick={handlePrev}
               disabled={activeInitiative === 0}
               className={`w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center pointer-events-auto transition-[background-color,color,transform] duration-200 ease-out hover:scale-105 disabled:opacity-0 disabled:pointer-events-none ${
-                isDark ? 'bg-white/80 text-black' : 'bg-white shadow-lg text-gray-900'
+                'bg-white shadow-lg text-gray-900'
               }`}
             >
               <ArrowRight size={20} className="rotate-180" />
@@ -1324,7 +1204,7 @@ const InitiativesDiagram: React.FC<{
               onClick={handleNext}
               disabled={activeInitiative === initiatives.length - 1}
               className={`w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center pointer-events-auto transition-[background-color,color,transform] duration-200 ease-out hover:scale-105 disabled:opacity-0 disabled:pointer-events-none ${
-                isDark ? 'bg-white/80 text-black' : 'bg-white shadow-lg text-gray-900'
+                'bg-white shadow-lg text-gray-900'
               }`}
             >
               <ArrowRight size={20} />
@@ -1332,8 +1212,8 @@ const InitiativesDiagram: React.FC<{
           </div>
         </div>
       ) : (
-        /* Overview View - Grid of all initiatives */
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        /* Overview View - Stacked list of all initiatives */
+        <div className="space-y-4">
           {initiatives.map((initiative) => {
             const InitiativeIcon = initiative.icon;
             return (
@@ -1343,35 +1223,31 @@ const InitiativesDiagram: React.FC<{
                   setActiveInitiative(initiative.id - 1);
                   setViewMode('focus');
                 }}
-                className={`group rounded-2xl p-6 transition-[background-color,color,transform] duration-200 ease-out hover:-translate-y-1 cursor-pointer ${
-                  isDark ? 'bg-white/5 hover:bg-white/10 border border-white/10' : 'bg-white shadow-sm hover:shadow-lg border border-gray-100'
-                }`}
+                className="group rounded-xl p-5 transition-[background-color,transform] duration-200 ease-out hover:-translate-y-0.5 cursor-pointer border border-gray-100 hover:border-gray-200"
               >
                 <div className="flex items-center gap-3 mb-4">
                   <div className={`p-3 rounded-xl transition-colors duration-300 ${
-                    isDark
-                      ? 'bg-white/10 text-white group-hover:bg-white group-hover:text-black'
-                      : 'bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white'
+                    'bg-gray-100 text-gray-500'
                   }`}>
                     <InitiativeIcon size={20} strokeWidth={2} />
                   </div>
                   <div>
-                    <div className={`text-[10px] uppercase font-bold tracking-wider ${
-                      isDark ? 'text-gray-500' : 'text-gray-400'
+                    <div className={`text-xs uppercase font-medium tracking-wider text-gray-400 ${
+                      'text-gray-400'
                     }`}>
                       {texts.initiative} {initiative.id}
                     </div>
-                    <div className={`text-xs font-semibold ${isDark ? 'text-gray-300' : 'text-blue-600'}`}>
+                    <div className={`text-xs font-semibold text-gray-500`}>
                       {initiative.duration}
                     </div>
                   </div>
                 </div>
 
-                <h4 className={`text-lg font-bold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                <h4 className={`text-sm font-semibold mb-2 text-gray-900`}>
                   {initiative.title}
                 </h4>
 
-                <p className={`text-sm leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                <p className={`text-base leading-relaxed text-gray-500`}>
                   {initiative.description}
                 </p>
               </div>
@@ -1393,168 +1269,85 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
   onImageClick,
   onContact
 }) => {
-  const isDark = systemTheme === 'dark';
   const t = TRANSLATIONS[lang];
+  const isDark = false;
 
   // State for modals
   const [prototypeModalOpen, setPrototypeModalOpen] = useState(false);
   const [reportModalOpen, setReportModalOpen] = useState(false);
 
   return (
-    <div className={`min-h-screen ${isDark ? 'bg-[#0a0a0a]' : 'bg-white'}`}>
+    <div className="min-h-screen bg-[#FDFDFC]">
 
-      {/* HERO - Grid with Testimonial Card */}
-      <section className="px-10 pt-8 pb-12">
-        <div className="max-w-[1200px] mx-auto">
-          <div className="grid md:grid-cols-5 gap-10 items-start">
-            {/* Left Column - Title and Description */}
-            <div className="md:col-span-3">
-              {/* Logo */}
-              <img loading="lazy"
-                src="/images/francevae/logo fvae.webp"
-                alt="France VAE"
-                className="h-10 w-auto mb-6"
-              />
+      {/* HERO */}
+      <section className="px-6 pt-8 pb-10">
+        <div className="max-w-[740px] mx-auto">
+          {/* Logo */}
+          <img loading="lazy"
+            src="/images/francevae/logo fvae.webp"
+            alt="France VAE"
+            className="h-8 w-auto mb-8"
+          />
 
-              {/* Meta tags */}
-              <div className="flex flex-wrap gap-2 mb-4">
-                <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                  {t.meta.role}
-                </span>
-                <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>•</span>
-                <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                  {t.meta.scope}
-                </span>
-                <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>•</span>
-                <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                  {t.meta.period}
-                </span>
-              </div>
+          {/* Meta */}
+          <div className="flex flex-wrap gap-x-3 gap-y-1 mb-4">
+            <span className="text-xs text-gray-400">{t.meta.role}</span>
+            <span className="text-xs text-gray-300">·</span>
+            <span className="text-xs text-gray-400">{t.meta.scope}</span>
+            <span className="text-xs text-gray-300">·</span>
+            <span className="text-xs text-gray-400">{t.meta.period}</span>
+          </div>
 
-              {/* Title */}
-              <h1 className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-4 leading-tight tracking-[-0.02em] ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                {t.hero.title}
-              </h1>
+          {/* Title */}
+          <h1 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-3">
+            {t.hero.title}
+          </h1>
 
-              {/* Subtitle */}
-              <p className={`text-lg md:text-xl leading-relaxed mb-6 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
-                {t.hero.subtitle}
-              </p>
+          {/* Subtitle */}
+          <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-6">
+            {t.hero.subtitle}
+          </p>
 
-              {/* Visit button */}
-              <a
-                href="https://vae.gouv.fr"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                  isDark
-                    ? 'bg-white/10 hover:bg-white/20 text-white'
-                    : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
-                }`}
-              >
-                <ExternalLink size={16} className="mr-2" />
-                {t.hero.visitSite}
-              </a>
+          {/* Visit link */}
+          <a
+            href="https://vae.gouv.fr"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors duration-150"
+          >
+            <ExternalLink size={14} />
+            {t.hero.visitSite}
+          </a>
+        </div>
+      </section>
+
+      {/* Meta */}
+      <section className="px-6 pb-10">
+        <div className="max-w-[740px] mx-auto">
+          <div className="divide-y divide-gray-100">
+            <div className="flex items-baseline justify-between py-3">
+              <span className="text-sm text-gray-500">Type</span>
+              <span className="text-xs text-gray-400 tabular-nums">Product Design</span>
             </div>
-
-            {/* Right Column - Testimonial Card */}
-            <div className="md:col-span-2 md:pt-16">
-              <div
-                className={`p-6 rounded-2xl border ${
-                  isDark
-                    ? 'bg-blue-900/20 border-blue-500/20'
-                    : 'bg-blue-50 border-blue-200'
-                }`}
-              >
-                <Quote
-                  size={24}
-                  className={`mb-4 ${isDark ? 'text-blue-400' : 'text-blue-600'}`}
-                />
-                <p
-                  className={`text-sm italic leading-relaxed mb-4 ${
-                    isDark ? 'text-gray-300' : 'text-gray-600'
-                  }`}
-                >
-                  {t.testimonial.quote}
-                </p>
-                <div className="flex items-center space-x-3">
-                  <img loading="lazy"
-                    src="/images/people/boris-aime-bauderlique.webp"
-                    alt={t.testimonial.author}
-                    className="w-10 h-10 rounded-full object-cover"
-                  />
-                  <div>
-                    <p
-                      className={`text-sm font-semibold ${
-                        isDark ? 'text-white' : 'text-gray-900'
-                      }`}
-                    >
-                      {t.testimonial.author}
-                    </p>
-                    <p
-                      className={`text-xs ${
-                        isDark ? 'text-gray-400' : 'text-gray-500'
-                      }`}
-                    >
-                      {t.testimonial.role}
-                    </p>
-                  </div>
-                </div>
-              </div>
+            <div className="flex items-baseline justify-between py-3">
+              <span className="text-sm text-gray-500">Scope</span>
+              <span className="text-xs text-gray-400 tabular-nums">{t.meta.scope}</span>
+            </div>
+            <div className="flex items-baseline justify-between py-3">
+              <span className="text-sm text-gray-500">Period</span>
+              <span className="text-xs text-gray-400 tabular-nums">{t.meta.period}</span>
+            </div>
+            <div className="flex items-baseline justify-between py-3">
+              <span className="text-sm text-gray-500">Company</span>
+              <span className="text-xs text-gray-400 tabular-nums">{t.meta.company}</span>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Meta Card - Full width */}
-      <section className="px-10 pb-8">
-        <div className="max-w-[1200px] mx-auto">
-          <div className={`p-6 rounded-2xl border ${isDark ? 'bg-[#1D1D1F] border-white/10' : 'bg-gray-50 border-gray-200'}`}>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="flex items-center space-x-3">
-                <div className={`p-2 rounded-xl ${isDark ? 'bg-blue-600/20' : 'bg-blue-50'}`}>
-                  <Layers size={20} className={isDark ? 'text-blue-400' : 'text-blue-600'} />
-                </div>
-                <div>
-                  <p className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Type</p>
-                  <p className={`text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>Product Design</p>
-                </div>
-              </div>
-              <div className="flex items-center space-x-3">
-                <div className={`p-2 rounded-xl ${isDark ? 'bg-purple-500/20' : 'bg-purple-50'}`}>
-                  <Briefcase size={20} className={isDark ? 'text-purple-400' : 'text-purple-600'} />
-                </div>
-                <div>
-                  <p className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Scope</p>
-                  <p className={`text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>{t.meta.scope}</p>
-                </div>
-              </div>
-              <div className="flex items-center space-x-3">
-                <div className={`p-2 rounded-xl ${isDark ? 'bg-green-500/20' : 'bg-green-50'}`}>
-                  <Calendar size={20} className={isDark ? 'text-green-400' : 'text-green-600'} />
-                </div>
-                <div>
-                  <p className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Period</p>
-                  <p className={`text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>{t.meta.period}</p>
-                </div>
-              </div>
-              <div className="flex items-center space-x-3">
-                <div className={`p-2 rounded-xl ${isDark ? 'bg-orange-500/20' : 'bg-orange-50'}`}>
-                  <Building2 size={20} className={isDark ? 'text-orange-400' : 'text-orange-600'} />
-                </div>
-                <div>
-                  <p className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Company</p>
-                  <p className={`text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>{t.meta.company}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Hero Image - 2:3 aspect ratio aligned top */}
-      <section className="px-10 pb-8">
-        <div className="max-w-[1200px] mx-auto">
+      {/* Hero Image */}
+      <section className="px-6 pb-10">
+        <div className="max-w-[960px] mx-auto">
           <FadeInSection>
             <ClickableImage
               src="/images/francevae/france_vae_home.webp"
@@ -1569,17 +1362,15 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
       </section>
 
       {/* INTERACTIVE INITIATIVES DIAGRAM */}
-      <section className="px-10 py-16">
-        <div className="max-w-[1200px] mx-auto">
+      <section className="px-6 py-16">
+        <div className="max-w-[740px] mx-auto">
           <FadeInSection>
-            <span className={`text-sm font-medium tracking-wide ${isDark ? 'text-blue-400' : 'text-blue-600'}`}>
+            <span className="text-xs text-gray-400 uppercase tracking-wide">
               {t.initiatives.eyebrow}
             </span>
           </FadeInSection>
           <FadeInSection delay={0.1}>
-            <h2 className={`mt-4 text-3xl sm:text-4xl md:text-5xl font-bold leading-tight tracking-tight whitespace-pre-line ${
-              isDark ? 'text-white' : 'text-gray-900'
-            }`}>
+            <h2 className="mt-3 mb-8 text-base font-semibold tracking-[-0.01em] text-gray-900">
               {t.initiatives.title}
             </h2>
           </FadeInSection>
@@ -1590,38 +1381,38 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
       </section>
 
       {/* MAIN CONTENT */}
-      <div className="px-6 md:px-10 py-16 md:py-24">
-        <div className="max-w-[1200px] mx-auto">
+      <div className="px-6 py-16 md:py-24">
+        <div className="max-w-[740px] mx-auto">
 
           {/* CONTEXT */}
-          <section id="context" className="mb-40 md:mb-48">
+          <section id="context" className="mb-24 md:mb-32">
             <FadeInSection>
-              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-4 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <h2 className={`text-base font-semibold tracking-[-0.01em] mb-4 tracking-tight text-gray-900`}>
                 {t.context.title}
               </h2>
-              <hr className={`mb-10 ${isDark ? 'border-white/10' : 'border-gray-200'}`} />
+              <hr className={`mb-10 border-gray-200`} />
             </FadeInSection>
 
             <FadeInSection delay={0.1}>
-              <p className={`text-lg md:text-xl leading-relaxed mb-12 max-w-4xl ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+              <p className={`text-base text-gray-500 leading-relaxed mb-12 max-w-[65ch] text-gray-500`}>
                 {t.context.intro}
               </p>
             </FadeInSection>
 
-            <div className="grid md:grid-cols-2 gap-8 md:gap-12">
+            <div className="space-y-8">
               <FadeInSection delay={0.2}>
-                <h3 className={`text-xl md:text-2xl font-semibold mb-4 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                <h3 className={`text-base font-semibold mb-4 tracking-tight text-gray-900`}>
                   {t.context.challenge}
                 </h3>
-                <p className={`text-base md:text-lg leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                <p className={`text-base md:text-sm text-gray-500 leading-relaxed max-w-[65ch] text-gray-500`}>
                   {t.context.challengeText}
                 </p>
               </FadeInSection>
               <FadeInSection delay={0.3}>
-                <h3 className={`text-xl md:text-2xl font-semibold mb-4 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                <h3 className={`text-base font-semibold mb-4 tracking-tight text-gray-900`}>
                   {t.context.myScope}
                 </h3>
-                <p className={`text-base md:text-lg leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                <p className={`text-base md:text-sm text-gray-500 leading-relaxed max-w-[65ch] text-gray-500`}>
                   {t.context.myScopeText}
                 </p>
               </FadeInSection>
@@ -1629,148 +1420,122 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
           </section>
 
           {/* INITIATIVE 1: VAE COLLECTIVE */}
-          <section id="initiative-1" className="mb-40 md:mb-48">
+          <section id="initiative-1" className="mb-24 md:mb-32">
             <FadeInSection>
-              <span className={`text-sm md:text-base font-medium tracking-wide ${isDark ? 'text-orange-400' : 'text-orange-600'}`}>
+              <span className={`text-sm font-medium tracking-wide text-gray-500`}>
                 {t.initiative1.eyebrow}
               </span>
-              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold mt-3 mb-2 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <h2 className={`text-base font-semibold tracking-[-0.01em] mt-3 mb-2 tracking-tight text-gray-900`}>
                 {t.initiative1.title}
               </h2>
-              <p className={`text-lg md:text-xl mb-4 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+              <p className={`text-sm text-gray-500 mb-4`}>
                 {t.initiative1.subtitle}
               </p>
-              <hr className={`mb-10 ${isDark ? 'border-white/10' : 'border-gray-200'}`} />
+              <hr className={`mb-10 border-gray-200`} />
             </FadeInSection>
 
             {/* Problem */}
             <FadeInSection delay={0.1}>
-              <h3 className={`text-xl md:text-2xl font-semibold mb-4 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <h3 className="text-base font-semibold mb-4 tracking-tight text-gray-900">
                 {t.initiative1.problem}
               </h3>
-              <p className={`text-base md:text-lg leading-relaxed mb-12 max-w-4xl ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+              <p className="text-sm text-gray-500 leading-relaxed mb-8 max-w-[65ch]">
                 {t.initiative1.problemText}
               </p>
             </FadeInSection>
 
+            {/* Key visual — employer dashboard prototype */}
+            <FadeInSection delay={0.15} className="mb-12">
+              <ClickableImage
+                src={t.initiative1.bentoImages.large.src}
+                alt={t.initiative1.bentoImages.large.caption}
+                caption={t.initiative1.bentoImages.large.caption}
+                isDark={isDark}
+                onClick={onImageClick}
+              />
+            </FadeInSection>
+
             {/* What I did */}
             <FadeInSection delay={0.2}>
-              <h3 className={`text-xl md:text-2xl font-semibold mb-8 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <h3 className="text-base font-semibold mb-8 tracking-tight text-gray-900">
                 {t.initiative1.whatIDid}
               </h3>
-              <div className="grid md:grid-cols-2 gap-8 mb-10">
+              <div className="space-y-8 mb-10">
                 <BulletSection title={t.initiative1.discovery.title} items={t.initiative1.discovery.items} isDark={isDark} />
                 <BulletSection title={t.initiative1.design.title} items={t.initiative1.design.items} isDark={isDark} />
               </div>
               <BulletSection title={t.initiative1.deliverables.title} items={t.initiative1.deliverables.items} isDark={isDark} />
-            </FadeInSection>
-
-            {/* Prototype image with CTA below */}
-            <FadeInSection delay={0.3} className="mt-12">
-              <figure className="mb-8">
-                <div
-                  onClick={() => onImageClick(t.initiative1.bentoImages.large.src)}
-                  className={`group cursor-pointer rounded-2xl overflow-hidden border transition-[transform,box-shadow] duration-200 ease-out hover:scale-[1.01] ${
-                    isDark ? 'border-white/10 hover:border-white/20' : 'border-gray-200 hover:border-gray-300 hover:shadow-lg'
-                  }`}
-                >
-                  <img
-                    loading="lazy"
-                    src={t.initiative1.bentoImages.large.src}
-                    alt={t.initiative1.bentoImages.large.caption}
-                    className="w-full h-auto object-cover transition-transform group-hover:scale-[1.02]"
-                  />
-                </div>
-                <figcaption className={`mt-4 text-sm ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
-                  {t.initiative1.bentoImages.large.caption}
-                </figcaption>
-              </figure>
-
-              {/* CTA Button - directly under prototype */}
-              <div className="text-center my-12">
+              <div className="mt-6">
                 <button
                   onClick={() => setPrototypeModalOpen(true)}
-                  className={`inline-flex items-center gap-2 px-6 py-3 font-semibold rounded-full transition-colors ${
-                    isDark
-                      ? 'bg-orange-500 hover:bg-orange-400 text-white'
-                      : 'bg-orange-500 hover:bg-orange-600 text-white'
-                  }`}
+                  className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors duration-150"
                 >
                   {t.initiative1.prototypeButton}
-                  <ArrowRight size={18} />
+                  <ArrowRight size={14} />
                 </button>
               </div>
+            </FadeInSection>
 
-              {/* Presentation slides - two thumbnails side by side */}
-              <div className="grid grid-cols-2 gap-6">
-                <figure>
-                  <div
-                    onClick={() => onImageClick(t.initiative1.bentoImages.small1.src)}
-                    className={`group cursor-pointer rounded-xl overflow-hidden border transition-[transform,box-shadow] duration-200 ease-out hover:scale-[1.01] ${
-                      isDark ? 'border-white/10 hover:border-white/20' : 'border-gray-200 hover:border-gray-300 hover:shadow-lg'
-                    }`}
-                  >
-                    <img loading="lazy"
-                      src={t.initiative1.bentoImages.small1.src}
-                      alt={t.initiative1.bentoImages.small1.caption}
-                      className="w-full h-auto object-cover object-left-top transition-transform group-hover:scale-[1.02]"
-                    />
-                  </div>
-                  <figcaption className={`mt-2 text-xs ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
-                    {t.initiative1.bentoImages.small1.caption}
-                  </figcaption>
-                </figure>
-                <figure>
-                  <div
-                    onClick={() => onImageClick(t.initiative1.bentoImages.small2.src)}
-                    className={`group cursor-pointer rounded-xl overflow-hidden border transition-[transform,box-shadow] duration-200 ease-out hover:scale-[1.01] ${
-                      isDark ? 'border-white/10 hover:border-white/20' : 'border-gray-200 hover:border-gray-300 hover:shadow-lg'
-                    }`}
-                  >
-                    <img loading="lazy"
-                      src={t.initiative1.bentoImages.small2.src}
-                      alt={t.initiative1.bentoImages.small2.caption}
-                      className="w-full h-auto object-cover object-left-top transition-transform group-hover:scale-[1.02]"
-                    />
-                  </div>
-                  <figcaption className={`mt-2 text-xs ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
-                    {t.initiative1.bentoImages.small2.caption}
-                  </figcaption>
-                </figure>
-              </div>
+            {/* Presentation slides */}
+            <FadeInSection delay={0.3} className="mt-10 space-y-6">
+              <ClickableImage
+                src={t.initiative1.bentoImages.small1.src}
+                alt={t.initiative1.bentoImages.small1.caption}
+                caption={t.initiative1.bentoImages.small1.caption}
+                isDark={isDark}
+                onClick={onImageClick}
+              />
+              <ClickableImage
+                src={t.initiative1.bentoImages.small2.src}
+                alt={t.initiative1.bentoImages.small2.caption}
+                caption={t.initiative1.bentoImages.small2.caption}
+                isDark={isDark}
+                onClick={onImageClick}
+              />
             </FadeInSection>
 
             {/* Impact */}
-            <FadeInSection delay={0.4}>
+            <FadeInSection delay={0.4} className="mt-10">
               <ImpactBlock text={t.initiative1.impact} isDark={isDark} />
             </FadeInSection>
           </section>
 
           {/* INITIATIVE 2: PRODUCT OPS */}
-          <section id="initiative-2" className="mb-40 md:mb-48">
+          <section id="initiative-2" className="mb-24 md:mb-32">
             <FadeInSection>
-              <span className={`text-sm md:text-base font-medium tracking-wide ${isDark ? 'text-cyan-400' : 'text-cyan-600'}`}>
+              <span className="text-xs font-medium text-gray-400 uppercase tracking-wide">
                 {t.initiative2.eyebrow}
               </span>
-              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold mt-3 mb-2 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <h2 className={`text-base font-semibold tracking-[-0.01em] mt-3 mb-2 tracking-tight text-gray-900`}>
                 {t.initiative2.title}
               </h2>
-              <hr className={`mb-10 ${isDark ? 'border-white/10' : 'border-gray-200'}`} />
+              <hr className={`mb-10 border-gray-200`} />
             </FadeInSection>
 
             {/* Problem */}
             <FadeInSection delay={0.1}>
-              <h3 className={`text-xl md:text-2xl font-semibold mb-4 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <h3 className="text-base font-semibold mb-4 tracking-tight text-gray-900">
                 {t.initiative2.problem}
               </h3>
-              <p className={`text-base md:text-lg leading-relaxed mb-12 max-w-4xl ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+              <p className="text-sm text-gray-500 leading-relaxed mb-8 max-w-[65ch]">
                 {t.initiative2.problemText}
               </p>
             </FadeInSection>
 
+            {/* Key visual — seasons framework */}
+            <FadeInSection delay={0.15} className="mb-12">
+              <ClickableImage
+                src={t.initiative2.bentoImages.large.src}
+                alt={t.initiative2.bentoImages.large.caption}
+                caption={t.initiative2.bentoImages.large.caption}
+                isDark={isDark}
+                onClick={onImageClick}
+              />
+            </FadeInSection>
+
             {/* What I did */}
             <FadeInSection delay={0.2}>
-              <h3 className={`text-xl md:text-2xl font-semibold mb-8 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <h3 className="text-base font-semibold mb-8 tracking-tight text-gray-900">
                 {t.initiative2.whatIDid}
               </h3>
               <ExpandableSection
@@ -1788,52 +1553,82 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
               </ExpandableSection>
             </FadeInSection>
 
-            {/* Bento image grid */}
-            <FadeInSection delay={0.3} className="my-12">
-              <BentoImageGrid
-                large={t.initiative2.bentoImages.large}
-                small1={t.initiative2.bentoImages.small1}
-                small2={t.initiative2.bentoImages.small2}
-                large2={t.initiative2.bentoImages.large2}
+            {/* Team org: before/after */}
+            <FadeInSection delay={0.3} className="mt-10 space-y-6">
+              <ClickableImage
+                src={t.initiative2.bentoImages.small1.src}
+                alt={t.initiative2.bentoImages.small1.caption}
+                caption={t.initiative2.bentoImages.small1.caption}
+                isDark={isDark}
+                onClick={onImageClick}
+              />
+              <ClickableImage
+                src={t.initiative2.bentoImages.small2.src}
+                alt={t.initiative2.bentoImages.small2.caption}
+                caption={t.initiative2.bentoImages.small2.caption}
                 isDark={isDark}
                 onClick={onImageClick}
               />
             </FadeInSection>
 
+            {/* Initiative lifecycle */}
+            {t.initiative2.bentoImages.large2 && (
+              <FadeInSection delay={0.35} className="mt-6">
+                <ClickableImage
+                  src={t.initiative2.bentoImages.large2.src}
+                  alt={t.initiative2.bentoImages.large2.caption}
+                  caption={t.initiative2.bentoImages.large2.caption}
+                  isDark={isDark}
+                  onClick={onImageClick}
+                />
+              </FadeInSection>
+            )}
+
             {/* Impact */}
-            <FadeInSection delay={0.4}>
+            <FadeInSection delay={0.4} className="mt-10">
               <ImpactBlock text={t.initiative2.impact} isDark={isDark} />
             </FadeInSection>
           </section>
 
           {/* INITIATIVE 3: USER RESEARCH */}
-          <section id="initiative-3" className="mb-40 md:mb-48">
+          <section id="initiative-3" className="mb-24 md:mb-32">
             <FadeInSection>
-              <span className={`text-sm md:text-base font-medium tracking-wide ${isDark ? 'text-pink-400' : 'text-pink-600'}`}>
+              <span className="text-xs font-medium text-gray-400 uppercase tracking-wide">
                 {t.initiative3.eyebrow}
               </span>
-              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold mt-3 mb-2 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <h2 className={`text-base font-semibold tracking-[-0.01em] mt-3 mb-2 tracking-tight text-gray-900`}>
                 {t.initiative3.title}
               </h2>
-              <p className={`text-lg md:text-xl mb-4 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+              <p className={`text-sm text-gray-500 mb-4`}>
                 {t.initiative3.subtitle}
               </p>
-              <hr className={`mb-10 ${isDark ? 'border-white/10' : 'border-gray-200'}`} />
+              <hr className={`mb-10 border-gray-200`} />
             </FadeInSection>
 
             {/* Problem */}
             <FadeInSection delay={0.1}>
-              <h3 className={`text-xl md:text-2xl font-semibold mb-4 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <h3 className="text-base font-semibold mb-4 tracking-tight text-gray-900">
                 {t.initiative3.problem}
               </h3>
-              <p className={`text-base md:text-lg leading-relaxed mb-12 max-w-4xl ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+              <p className="text-sm text-gray-500 leading-relaxed mb-8 max-w-[65ch]">
                 {t.initiative3.problemText}
               </p>
             </FadeInSection>
 
+            {/* Key visual — synthesis report */}
+            <FadeInSection delay={0.15} className="mb-12">
+              <ClickableImage
+                src={t.initiative3.bentoImages.large.src}
+                alt={t.initiative3.bentoImages.large.caption}
+                caption={t.initiative3.bentoImages.large.caption}
+                isDark={isDark}
+                onClick={onImageClick}
+              />
+            </FadeInSection>
+
             {/* What I did */}
             <FadeInSection delay={0.2}>
-              <h3 className={`text-xl md:text-2xl font-semibold mb-8 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <h3 className="text-base font-semibold mb-8 tracking-tight text-gray-900">
                 {t.initiative3.whatIDid}
               </h3>
               <ExpandableSection
@@ -1848,117 +1643,160 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
                   <BulletSection title={t.initiative3.presentation.title} items={t.initiative3.presentation.items} isDark={isDark} />
                 </div>
               </ExpandableSection>
-            </FadeInSection>
-
-            {/* Bento image grid */}
-            <FadeInSection delay={0.3} className="my-12">
-              <BentoImageGrid
-                large={t.initiative3.bentoImages.large}
-                small1={t.initiative3.bentoImages.small1}
-                small2={t.initiative3.bentoImages.small2}
-                isDark={isDark}
-                onClick={onImageClick}
-              />
-              <div className="mt-10 text-center">
+              <div className="mt-6">
                 <button
                   onClick={() => setReportModalOpen(true)}
-                  className={`inline-flex items-center gap-2 px-6 py-3 font-semibold rounded-full transition-colors ${
-                    isDark
-                      ? 'bg-pink-500 hover:bg-pink-400 text-white'
-                      : 'bg-pink-500 hover:bg-pink-600 text-white'
-                  }`}
+                  className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors duration-150"
                 >
                   {t.initiative3.reportButton}
-                  <ExternalLink size={18} />
+                  <ExternalLink size={14} />
                 </button>
               </div>
             </FadeInSection>
 
+            {/* Research artifacts */}
+            <FadeInSection delay={0.3} className="mt-10 space-y-6">
+              <ClickableImage
+                src={t.initiative3.bentoImages.small1.src}
+                alt={t.initiative3.bentoImages.small1.caption}
+                caption={t.initiative3.bentoImages.small1.caption}
+                isDark={isDark}
+                onClick={onImageClick}
+              />
+              <ClickableImage
+                src={t.initiative3.bentoImages.small2.src}
+                alt={t.initiative3.bentoImages.small2.caption}
+                caption={t.initiative3.bentoImages.small2.caption}
+                isDark={isDark}
+                onClick={onImageClick}
+              />
+            </FadeInSection>
+
             {/* Impact */}
-            <FadeInSection delay={0.4}>
+            <FadeInSection delay={0.4} className="mt-10">
               <ImpactBlock text={t.initiative3.impact} isDark={isDark} />
             </FadeInSection>
           </section>
 
           {/* INITIATIVE 4: WORKSHOPS */}
-          <section id="initiative-4" className="mb-40 md:mb-48">
+          <section id="initiative-4" className="mb-24 md:mb-32">
             <FadeInSection>
-              <span className={`text-sm md:text-base font-medium tracking-wide ${isDark ? 'text-amber-400' : 'text-amber-600'}`}>
+              <span className="text-xs font-medium text-gray-400 uppercase tracking-wide">
                 {t.initiative4.eyebrow}
               </span>
-              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold mt-3 mb-2 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <h2 className={`text-base font-semibold tracking-[-0.01em] mt-3 mb-2 tracking-tight text-gray-900`}>
                 {t.initiative4.title}
               </h2>
-              <p className={`text-lg md:text-xl mb-4 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+              <p className={`text-sm text-gray-500 mb-4`}>
                 {t.initiative4.subtitle}
               </p>
-              <hr className={`mb-10 ${isDark ? 'border-white/10' : 'border-gray-200'}`} />
+              <hr className={`mb-10 border-gray-200`} />
             </FadeInSection>
 
             {/* Problem */}
             <FadeInSection delay={0.1}>
-              <h3 className={`text-xl md:text-2xl font-semibold mb-4 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <h3 className="text-base font-semibold mb-4 tracking-tight text-gray-900">
                 {t.initiative4.problem}
               </h3>
-              <p className={`text-base md:text-lg leading-relaxed mb-12 max-w-4xl ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+              <p className="text-sm text-gray-500 leading-relaxed mb-8 max-w-[65ch]">
                 {t.initiative4.problemText}
               </p>
             </FadeInSection>
 
+            {/* Key visual — workshop in session */}
+            <FadeInSection delay={0.15} className="mb-12">
+              <ClickableImage
+                src={t.initiative4.bentoImages.large.src}
+                alt={t.initiative4.bentoImages.large.caption}
+                caption={t.initiative4.bentoImages.large.caption}
+                isDark={isDark}
+                onClick={onImageClick}
+              />
+            </FadeInSection>
+
             {/* What I did */}
             <FadeInSection delay={0.2}>
-              <h3 className={`text-xl md:text-2xl font-semibold mb-8 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <h3 className="text-base font-semibold mb-8 tracking-tight text-gray-900">
                 {t.initiative4.whatIDid}
               </h3>
-              <div className="grid md:grid-cols-2 gap-8 mb-10">
+              <div className="space-y-8 mb-10">
                 <BulletSection title={t.initiative4.preparation.title} items={t.initiative4.preparation.items} isDark={isDark} />
                 <BulletSection title={t.initiative4.facilitation.title} items={t.initiative4.facilitation.items} isDark={isDark} />
               </div>
               <BulletSection title={t.initiative4.internal.title} items={t.initiative4.internal.items} isDark={isDark} />
             </FadeInSection>
 
-            {/* Bento image grid */}
-            <FadeInSection delay={0.3} className="my-12">
-              <BentoImageGrid
-                large={t.initiative4.bentoImages.large}
-                small1={t.initiative4.bentoImages.small1}
-                small2={t.initiative4.bentoImages.small2}
+            {/* Workshop slides */}
+            <FadeInSection delay={0.3} className="mt-10 space-y-6">
+              <ClickableImage
+                src={t.initiative4.bentoImages.small1.src}
+                alt={t.initiative4.bentoImages.small1.caption}
+                caption={t.initiative4.bentoImages.small1.caption}
+                isDark={isDark}
+                onClick={onImageClick}
+              />
+              <ClickableImage
+                src={t.initiative4.bentoImages.small2.src}
+                alt={t.initiative4.bentoImages.small2.caption}
+                caption={t.initiative4.bentoImages.small2.caption}
                 isDark={isDark}
                 onClick={onImageClick}
               />
             </FadeInSection>
 
             {/* Impact */}
-            <FadeInSection delay={0.4}>
+            <FadeInSection delay={0.4} className="mt-10">
               <ImpactBlock text={t.initiative4.impact} isDark={isDark} />
             </FadeInSection>
           </section>
 
           {/* INITIATIVE 5: AI */}
-          <section id="initiative-5" className="mb-40 md:mb-48">
+          <section id="initiative-5" className="mb-24 md:mb-32">
             <FadeInSection>
-              <span className={`text-sm md:text-base font-medium tracking-wide ${isDark ? 'text-purple-400' : 'text-purple-600'}`}>
+              <span className={`text-sm font-medium tracking-wide text-gray-500`}>
                 {t.initiative5.eyebrow}
               </span>
-              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold mt-3 mb-2 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <h2 className={`text-base font-semibold tracking-[-0.01em] mt-3 mb-2 tracking-tight text-gray-900`}>
                 {t.initiative5.title}
               </h2>
-              <p className={`text-lg md:text-xl mb-4 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+              <p className={`text-sm text-gray-500 mb-4`}>
                 {t.initiative5.subtitle}
               </p>
-              <hr className={`mb-10 ${isDark ? 'border-white/10' : 'border-gray-200'}`} />
+              <hr className={`mb-10 border-gray-200`} />
             </FadeInSection>
 
             {/* Context */}
             <FadeInSection delay={0.1}>
-              <p className={`text-base md:text-lg leading-relaxed mb-12 italic max-w-4xl ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+              <p className="text-sm text-gray-500 leading-relaxed mb-8 max-w-[65ch]">
                 {t.initiative5.context}
               </p>
             </FadeInSection>
 
+            {/* Key visual — chatbot prototype */}
+            <FadeInSection delay={0.15} className="mb-4">
+              <ClickableImage
+                src="/images/francevae/proto IA - chatbot de positionnement.webp"
+                alt="AI Chatbot Prototype"
+                caption={t.initiative5.chatbotCaption}
+                isDark={isDark}
+                onClick={onImageClick}
+              />
+            </FadeInSection>
+            <FadeInSection delay={0.17} className="mb-12">
+              <a
+                href="https://joyful-unicorn-489a7b.netlify.app"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors duration-150"
+              >
+                <Play size={14} />
+                {t.initiative5.tryDemo}
+              </a>
+            </FadeInSection>
+
             {/* What I did */}
             <FadeInSection delay={0.2}>
-              <h3 className={`text-xl md:text-2xl font-semibold mb-8 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <h3 className="text-base font-semibold mb-8 tracking-tight text-gray-900">
                 {t.initiative5.whatIDid}
               </h3>
               <ExpandableSection
@@ -1975,87 +1813,55 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
               </ExpandableSection>
             </FadeInSection>
 
-            {/* Prototype images */}
-            <FadeInSection delay={0.3} className="my-12">
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <ClickableImage
-                    src="/images/francevae/proto IA - chatbot de positionnement.webp"
-                    alt="AI Chatbot Prototype"
-                    caption={t.initiative5.chatbotCaption}
-                    isDark={isDark}
-                    onClick={onImageClick}
-                  />
-                  <div className="mt-3 text-center">
-                    <a
-                      href="https://joyful-unicorn-489a7b.netlify.app"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-full transition-colors ${
-                        isDark
-                          ? 'bg-purple-500/20 text-purple-400 hover:bg-purple-500/30'
-                          : 'bg-purple-100 text-purple-700 hover:bg-purple-200'
-                      }`}
-                    >
-                      <Play size={14} />
-                      {t.initiative5.tryDemo}
-                    </a>
-                  </div>
-                </div>
-                <div>
-                  <ClickableImage
-                    src="/images/francevae/proto IA - orientation professionnelle assistee par IA.webp"
-                    alt="AI Skills Radar Prototype"
-                    caption={t.initiative5.radarCaption}
-                    isDark={isDark}
-                    onClick={onImageClick}
-                  />
-                  <div className="mt-3 text-center">
-                    <a
-                      href="https://flourishing-cascaron-0d6509.netlify.app"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-full transition-colors ${
-                        isDark
-                          ? 'bg-purple-500/20 text-purple-400 hover:bg-purple-500/30'
-                          : 'bg-purple-100 text-purple-700 hover:bg-purple-200'
-                      }`}
-                    >
-                      <Play size={14} />
-                      {t.initiative5.tryDemo}
-                    </a>
-                  </div>
-                </div>
-              </div>
+            {/* Second prototype — skills radar */}
+            <FadeInSection delay={0.3} className="mt-10 mb-4">
+              <ClickableImage
+                src="/images/francevae/proto IA - orientation professionnelle assistee par IA.webp"
+                alt="AI Skills Radar Prototype"
+                caption={t.initiative5.radarCaption}
+                isDark={isDark}
+                onClick={onImageClick}
+              />
+            </FadeInSection>
+            <FadeInSection delay={0.32} className="mb-0">
+              <a
+                href="https://flourishing-cascaron-0d6509.netlify.app"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors duration-150"
+              >
+                <Play size={14} />
+                {t.initiative5.tryDemo}
+              </a>
             </FadeInSection>
 
             {/* Impact */}
-            <FadeInSection delay={0.4}>
+            <FadeInSection delay={0.4} className="mt-10">
               <ImpactBlock text={t.initiative5.impact} isDark={isDark} />
             </FadeInSection>
           </section>
 
           {/* UI & DELIVERY */}
-          <section id="ui-delivery" className="mb-40 md:mb-48">
+          <section id="ui-delivery" className="mb-24 md:mb-32">
             <FadeInSection>
-              <span className={`text-sm md:text-base font-medium tracking-wide ${isDark ? 'text-teal-400' : 'text-teal-600'}`}>
+              <span className="text-xs font-medium text-gray-400 uppercase tracking-wide">
                 {t.uiDelivery.eyebrow}
               </span>
-              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold mt-3 mb-2 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <h2 className={`text-base font-semibold tracking-[-0.01em] mt-3 mb-2 tracking-tight text-gray-900`}>
                 {t.uiDelivery.title}
               </h2>
-              <p className={`text-lg md:text-xl mb-4 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+              <p className={`text-sm text-gray-500 mb-4`}>
                 {t.uiDelivery.subtitle}
               </p>
-              <hr className={`mb-10 ${isDark ? 'border-white/10' : 'border-gray-200'}`} />
+              <hr className={`mb-10 border-gray-200`} />
             </FadeInSection>
 
             {/* Homepage Before/After */}
             <FadeInSection delay={0.1} className="mb-16">
-              <h3 className={`text-xl md:text-2xl font-semibold mb-4 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <h3 className={`text-base font-semibold mb-4 tracking-tight text-gray-900`}>
                 {t.uiDelivery.homepageTitle}
               </h3>
-              <p className={`text-base md:text-lg leading-relaxed mb-8 max-w-4xl ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+              <p className={`text-base md:text-sm text-gray-500 leading-relaxed mb-8 max-w-[65ch] text-gray-500`}>
                 {t.uiDelivery.homepageDescription}
               </p>
               <figure>
@@ -2067,7 +1873,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
                   isDark={isDark}
                   onImageClick={onImageClick}
                 />
-                <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
+                <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
                   {t.uiDelivery.homepageCaption}
                 </figcaption>
               </figure>
@@ -2075,34 +1881,25 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
 
             {/* Search Engine - Text description */}
             <FadeInSection delay={0.15} className="mb-16">
-              <div className={`p-8 rounded-2xl border ${isDark ? 'bg-white/5 border-white/10' : 'bg-gray-50 border-gray-200'}`}>
-                <div className="flex items-start gap-5">
-                  <div className={`flex-shrink-0 p-3 rounded-xl ${isDark ? 'bg-teal-500/20' : 'bg-teal-100'}`}>
-                    <Search size={24} className={isDark ? 'text-teal-400' : 'text-teal-600'} />
-                  </div>
-                  <div>
-                    <h4 className={`text-lg font-semibold mb-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                      {t.uiDelivery.searchEngineTitle}
-                    </h4>
-                    <p className={`text-base leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                      {t.uiDelivery.searchEngineDescription}
-                    </p>
-                  </div>
-                </div>
-              </div>
+              <h3 className="text-sm font-medium mb-3 text-gray-700">
+                {t.uiDelivery.searchEngineTitle}
+              </h3>
+              <p className="text-sm text-gray-500 leading-relaxed max-w-[65ch]">
+                {t.uiDelivery.searchEngineDescription}
+              </p>
             </FadeInSection>
 
             {/* Video Section */}
             <FadeInSection delay={0.2}>
-              <h3 className={`text-xl md:text-2xl font-semibold mb-4 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <h3 className={`text-base font-semibold mb-4 tracking-tight text-gray-900`}>
                 {t.uiDelivery.videoTitle}
               </h3>
-              <p className={`text-base md:text-lg leading-relaxed mb-8 max-w-4xl ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+              <p className={`text-base md:text-sm text-gray-500 leading-relaxed mb-8 max-w-[65ch] text-gray-500`}>
                 {t.uiDelivery.videoSubtitle}
               </p>
               <figure>
                 <div className={`rounded-2xl overflow-hidden border ${
-                  isDark ? 'border-white/10' : 'border-gray-200'
+                  'border-gray-200'
                 }`}>
                   <video
                     controls
@@ -2112,7 +1909,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
                     Your browser does not support the video tag.
                   </video>
                 </div>
-                <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
+                <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
                   {t.uiDelivery.videoCaption}
                 </figcaption>
               </figure>
@@ -2120,34 +1917,26 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
           </section>
 
           {/* TESTIMONIAL */}
-          <section className="mb-40 md:mb-48">
+          <section className="mb-24 md:mb-32">
             <FadeInSection>
-              <span className={`text-sm md:text-base font-medium tracking-wide ${isDark ? 'text-rose-400' : 'text-rose-600'}`}>
+              <span className="text-xs font-medium text-gray-400 uppercase tracking-wide">
                 {t.testimonial.eyebrow}
               </span>
             </FadeInSection>
             <FadeInSection delay={0.1}>
-              <div className={`mt-8 p-8 md:p-10 rounded-2xl ${isDark ? 'bg-white/5 border border-white/10' : 'bg-gray-50 border border-gray-100'}`}>
-                <div className="flex flex-col md:flex-row gap-8 items-center">
-                  <div className="flex-shrink-0">
-                    <img loading="lazy"
-                      src="/images/people/boris-aime-bauderlique.webp"
-                      alt={t.testimonial.author}
-                      className="w-24 h-24 md:w-28 md:h-28 rounded-full object-cover"
-                    />
-                  </div>
-                  <div className="flex-1 text-center md:text-left">
-                    <blockquote className={`text-lg md:text-xl leading-relaxed italic ${isDark ? 'text-gray-200' : 'text-gray-700'}`}>
-                      "{t.testimonial.quote}"
-                    </blockquote>
-                    <div className="mt-5">
-                      <p className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                        {t.testimonial.author}
-                      </p>
-                      <p className={`text-base ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                        {t.testimonial.role}
-                      </p>
-                    </div>
+              <div className="mt-8 pt-8 border-t border-gray-100">
+                <blockquote className="text-base text-gray-600 leading-relaxed mb-6 max-w-[65ch]">
+                  "{t.testimonial.quote}"
+                </blockquote>
+                <div className="flex items-center gap-3">
+                  <img loading="lazy"
+                    src="/images/people/boris-aime-bauderlique.webp"
+                    alt={t.testimonial.author}
+                    className="w-8 h-8 rounded-full object-cover flex-shrink-0"
+                  />
+                  <div>
+                    <p className="text-sm font-medium text-gray-900">{t.testimonial.author}</p>
+                    <p className="text-xs text-gray-500">{t.testimonial.role}</p>
                   </div>
                 </div>
               </div>
@@ -2155,25 +1944,25 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
           </section>
 
           {/* LEARNINGS */}
-          <section id="learnings" className="mb-40 md:mb-48">
+          <section id="learnings" className="mb-24 md:mb-32">
             <FadeInSection>
-              <span className={`text-sm md:text-base font-medium tracking-wide ${isDark ? 'text-indigo-400' : 'text-indigo-600'}`}>
+              <span className="text-xs font-medium text-gray-400 uppercase tracking-wide">
                 {t.learnings.eyebrow}
               </span>
-              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold mt-3 mb-4 tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <h2 className={`text-base font-semibold tracking-[-0.01em] mt-3 mb-4 tracking-tight text-gray-900`}>
                 {t.learnings.title}
               </h2>
-              <hr className={`mb-10 ${isDark ? 'border-white/10' : 'border-gray-200'}`} />
+              <hr className={`mb-10 border-gray-200`} />
             </FadeInSection>
 
-            <div className="grid md:grid-cols-2 gap-8">
+            <div className="divide-y divide-gray-100">
               {t.learnings.items.map((item, idx) => (
                 <FadeInSection key={idx} delay={0.1 + idx * 0.05}>
-                  <div className={`p-8 rounded-xl ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}>
-                    <h4 className={`text-lg font-semibold mb-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                  <div className="py-6">
+                    <h4 className="text-sm font-medium mb-2 text-gray-900">
                       {item.title}
                     </h4>
-                    <p className={`text-base leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                    <p className="text-sm leading-relaxed max-w-[65ch] text-gray-500">
                       {item.text}
                     </p>
                   </div>
@@ -2183,19 +1972,15 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
           </section>
 
           {/* CTA */}
-          <section className="text-center pb-16 md:pb-24">
+          <section className="pb-16 md:pb-24">
             <FadeInSection>
-              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                {t.cta.title}
-              </h2>
-            </FadeInSection>
-            <FadeInSection delay={0.1}>
+              <p className="text-sm text-gray-500 mb-4">{t.cta.title}</p>
               <button
                 onClick={onContact}
-                className="inline-flex items-center gap-2 mt-8 px-8 py-4 text-lg font-semibold rounded-full transition-colors bg-blue-600 hover:bg-blue-700 text-white"
+                className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors duration-150"
               >
                 {t.cta.button}
-                <ArrowRight size={20} />
+                <ArrowRight size={14} />
               </button>
             </FadeInSection>
           </section>

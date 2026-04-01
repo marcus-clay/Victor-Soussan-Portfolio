@@ -30,46 +30,46 @@ const GalleryPreviewSection: React.FC<GalleryPreviewSectionProps> = ({
 
   return (
     <>
-      <section className="py-16 md:py-28 px-6 md:px-10 bg-[#F9F9F9]">
-        <div className="max-w-[1200px] mx-auto">
-          <div className="mb-8 md:mb-12">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-[-0.02em] mb-3 text-gray-900">
+      <section className="py-24 md:py-40 px-6">
+        <div className="max-w-[692px] mx-auto">
+          <div className="mb-10 md:mb-14">
+            <h2 className="text-base font-semibold tracking-[-0.01em] mb-3 text-gray-900">
               {content.homepage_visual_archive.title}
             </h2>
-            <p className="text-base md:text-lg max-w-2xl text-gray-500">
+            <p className="text-sm md:text-base text-gray-500">
               {content.homepage_visual_archive.subtitle}
             </p>
           </div>
 
           {/* Grid: 1 full-width + 3 thumbnails */}
-          <div className="mb-8 md:mb-12">
+          <div className="mb-10 md:mb-14">
             {mainImage && (
               <button
                 onClick={() => setLightboxIndex(0)}
-                className="group w-full aspect-[16/7] rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 bg-white mb-4 cursor-zoom-in hover:shadow-lg hover:scale-[1.01]"
-                style={{ transition: 'border-color 200ms ease, box-shadow 300ms ease, transform 300ms cubic-bezier(0.23, 1, 0.32, 1)' }}
+                className="group w-full aspect-[16/7] rounded-xl overflow-hidden mb-3 cursor-zoom-in active:scale-[0.99]"
+                style={{ transition: 'transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
               >
                 <img
                   src={mainImage}
                   alt="Gallery featured"
-                  className="w-full h-full object-cover scale-[2] transition-transform duration-300 ease-out group-hover:scale-[2.05]"
+                  className="w-full h-full object-cover scale-[2] transition-transform duration-300 ease-out group-hover:scale-[2.03]"
                   style={{ transformOrigin: 'top left' }}
                   loading="lazy"
                 />
               </button>
             )}
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-3 gap-3">
               {thumbs.map((src, index) => (
                 <button
                   key={index}
                   onClick={() => setLightboxIndex(index + 1)}
-                  className="group aspect-[3/2] rounded-xl overflow-hidden border border-gray-100 hover:border-gray-200 bg-white cursor-zoom-in hover:shadow-lg hover:scale-[1.01]"
-                  style={{ transition: 'border-color 200ms ease, box-shadow 300ms ease, transform 300ms cubic-bezier(0.23, 1, 0.32, 1)' }}
+                  className="group aspect-[3/2] rounded-lg overflow-hidden cursor-zoom-in active:scale-[0.98]"
+                  style={{ transition: 'transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
                 >
                   <img
                     src={src}
                     alt={`Gallery preview ${index + 2}`}
-                    className="w-full h-full object-cover scale-[2] transition-transform duration-300 ease-out group-hover:scale-[2.05]"
+                    className="w-full h-full object-cover scale-[2] transition-transform duration-300 ease-out group-hover:scale-[2.03]"
                     style={{ transformOrigin: 'top left' }}
                     loading="lazy"
                   />
@@ -79,15 +79,13 @@ const GalleryPreviewSection: React.FC<GalleryPreviewSectionProps> = ({
           </div>
 
           {/* CTA */}
-          <div className="text-center">
-            <Link
-              href={`/${lang}/visual-archive`}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-medium bg-[#2D5CF3] text-white hover:bg-[#2450d9] shadow-sm hover:shadow-md transition-[background-color,box-shadow,transform] duration-200 ease-out active:scale-[0.97]"
-            >
-              {content.homepage_visual_archive.cta}
-              <ArrowRight size={18} weight="bold" />
-            </Link>
-          </div>
+          <Link
+            href={`/${lang}/visual-archive`}
+            className="group text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors duration-150 inline-flex items-center gap-1.5"
+          >
+            {content.homepage_visual_archive.cta}
+            <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform duration-150" />
+          </Link>
         </div>
       </section>
 
@@ -105,7 +103,7 @@ const GalleryPreviewSection: React.FC<GalleryPreviewSectionProps> = ({
             {/* Close button */}
             <button
               onClick={() => setLightboxIndex(null)}
-              className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors cursor-pointer"
+              className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-[background-color,transform] duration-150 cursor-pointer active:scale-[0.9]"
             >
               <X size={24} className="text-white" />
             </button>

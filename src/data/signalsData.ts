@@ -18,11 +18,11 @@ export interface Signal {
 }
 
 export const CATEGORY_COLORS: Record<SignalCategory, { bg: string; bgDark: string; text: string }> = {
-  leadership: { bg: 'bg-teal-50', bgDark: 'bg-teal-900/20', text: 'text-teal-700' },
-  methodology: { bg: 'bg-blue-50', bgDark: 'bg-blue-900/20', text: 'text-blue-700' },
-  strategy: { bg: 'bg-purple-50', bgDark: 'bg-purple-900/20', text: 'text-purple-700' },
-  craft: { bg: 'bg-pink-50', bgDark: 'bg-pink-900/20', text: 'text-pink-700' },
-  ai: { bg: 'bg-orange-50', bgDark: 'bg-orange-900/20', text: 'text-orange-700' },
+  leadership: { bg: 'bg-gray-100', bgDark: 'bg-white/5', text: 'text-gray-500' },
+  methodology: { bg: 'bg-gray-100', bgDark: 'bg-white/5', text: 'text-gray-500' },
+  strategy: { bg: 'bg-gray-100', bgDark: 'bg-white/5', text: 'text-gray-500' },
+  craft: { bg: 'bg-gray-100', bgDark: 'bg-white/5', text: 'text-gray-500' },
+  ai: { bg: 'bg-gray-100', bgDark: 'bg-white/5', text: 'text-gray-500' },
 };
 
 export const CATEGORY_LABELS: Record<SignalCategory | 'all', { en: string; fr: string }> = {

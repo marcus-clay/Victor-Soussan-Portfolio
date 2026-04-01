@@ -1,20 +1,13 @@
 'use client'
 
-import React, { useEffect, useState, useRef } from 'react'
-import { motion, AnimatePresence, useReducedMotion, useInView } from 'framer-motion'
+import React, { useEffect, useState } from 'react'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import Link from 'next/link'
-import {
-  ArrowRight,
-  ArrowLeft,
-  Handshake,
-  Code,
-  Lightbulb,
-  CaretDown,
-  Image as ImageIcon,
-} from '@phosphor-icons/react'
+import { ArrowRight, ArrowLeft, CaretDown } from '@phosphor-icons/react'
 import AuthorContactCard from '@/components/AuthorContactCard'
 import {
   type Language,
+  type Deliverable,
   HERO,
   PROCESS_PHASES,
   PROCESS_SECTION,
@@ -23,7 +16,6 @@ import {
   DELIVERABLES_SECTION,
   DELIVERABLES,
   CTA_SECTION,
-  SECTION_IMAGES,
 } from '@/data/approcheData'
 
 // ---------------------------------------------------------------------------
@@ -39,30 +31,10 @@ interface ApprochePageProps {
 }
 
 // ---------------------------------------------------------------------------
-// Easing + animation
+// Easing
 // ---------------------------------------------------------------------------
 
 const EASE_OUT = [0.23, 1, 0.32, 1] as const
-
-const staggerParent = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.08 } },
-}
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 16 },
-  visible: { opacity: 1, y: 0 },
-}
-
-const fadeUpBlur = {
-  hidden: { opacity: 0, y: 12, filter: 'blur(4px)' },
-  visible: { opacity: 1, y: 0, filter: 'blur(0px)' },
-}
-
-const staggerInView = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.06 } },
-}
 
 // ---------------------------------------------------------------------------
 // Reading progress bar
@@ -87,7 +59,7 @@ function ReadingProgressBar() {
   return (
     <div className="fixed top-0 left-0 right-0 z-[60] h-[2px] pointer-events-none">
       <div
-        className="h-full bg-[#2D5CF3] origin-left"
+        className="h-full bg-gray-900 origin-left"
         style={{
           transform: `scaleX(${progress})`,
           transition: 'transform 80ms linear',
@@ -114,10 +86,10 @@ function RevealSection({
   return (
     <motion.div
       className={className}
-      initial={prefersReduced ? false : { opacity: 0, y: 20, filter: 'blur(4px)' }}
-      whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-      viewport={{ once: true, margin: '-80px' }}
-      transition={{ duration: 0.5, delay, ease: EASE_OUT }}
+      initial={prefersReduced ? false : { opacity: 0, y: 14 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-40px' }}
+      transition={{ duration: 0.4, delay, ease: EASE_OUT }}
     >
       {children}
     </motion.div>
@@ -125,113 +97,54 @@ function RevealSection({
 }
 
 // ---------------------------------------------------------------------------
-// Collapsible image (progressive disclosure for artifacts)
-// ---------------------------------------------------------------------------
-
-function CollapsibleImage({
-  src,
-  alt,
-  label,
-  className = '',
-}: {
-  src: string
-  alt: string
-  label: string
-  className?: string
-}) {
-  const [isOpen, setIsOpen] = useState(false)
-  const prefersReduced = useReducedMotion()
-
-  return (
-    <div className="mt-10">
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="group flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-gray-700
-          transition-colors duration-150 ease-out active:scale-[0.98]"
-      >
-        <ImageIcon size={16} weight="bold" />
-        <span>{label}</span>
-        <motion.span
-          animate={{ rotate: isOpen ? 180 : 0 }}
-          transition={{ duration: prefersReduced ? 0 : 0.2, ease: EASE_OUT }}
-        >
-          <CaretDown size={12} weight="bold" />
-        </motion.span>
-      </button>
-      <AnimatePresence initial={false}>
-        {isOpen && (
-          <motion.div
-            initial={prefersReduced ? false : { height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: prefersReduced ? 0 : 0.35, ease: EASE_OUT }}
-            className="overflow-hidden"
-          >
-            <div className={`mt-4 rounded-2xl border border-gray-100 p-5 sm:p-8 ${className || 'bg-gray-50'}`}>
-              <img src={src} alt={alt} className="w-full h-auto rounded-xl" loading="lazy" />
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  )
-}
-
-// ---------------------------------------------------------------------------
-// Accordion item
+// Shared accordion item — used in all four sections
 // ---------------------------------------------------------------------------
 
 function AccordionItem({
   isOpen,
   onToggle,
-  title,
-  icon,
+  trigger,
   children,
+  id,
 }: {
   isOpen: boolean
   onToggle: () => void
-  title: React.ReactNode
-  icon?: React.ReactNode
+  trigger: React.ReactNode
   children: React.ReactNode
+  id?: string
 }) {
   const prefersReduced = useReducedMotion()
+  const bodyId = id ? `${id}-body` : undefined
 
   return (
-    <div
-      className={`border border-gray-100 rounded-xl bg-white overflow-hidden transition-[border-color,box-shadow] duration-200 ease-out ${
-        isOpen ? 'shadow-sm' : ''
-      }`}
-    >
+    <div>
       <button
         onClick={onToggle}
-        className="w-full flex items-center gap-3 px-5 py-4 text-left group
-          transition-colors duration-150 ease-out hover:bg-gray-50/50 active:scale-[0.995]"
+        className="w-full flex items-center justify-between gap-4 py-5 text-left
+          transition-colors duration-150 ease-out hover:bg-black/[.04] active:bg-black/[.06] -mx-3 px-3 rounded-lg"
         aria-expanded={isOpen}
+        aria-controls={bodyId}
       >
-        {icon && <span className="shrink-0">{icon}</span>}
-        <span className="flex-1 text-[15px] font-semibold text-gray-900 leading-snug">
-          {title}
-        </span>
+        {trigger}
         <motion.span
           animate={{ rotate: isOpen ? 180 : 0 }}
           transition={{ duration: prefersReduced ? 0 : 0.2, ease: EASE_OUT }}
           className="shrink-0 text-gray-400"
         >
-          <CaretDown size={16} weight="bold" />
+          <CaretDown size={14} weight="bold" />
         </motion.span>
       </button>
       <AnimatePresence initial={false}>
         {isOpen && (
           <motion.div
+            id={bodyId}
             initial={prefersReduced ? false : { height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: prefersReduced ? 0 : 0.25, ease: EASE_OUT }}
+            transition={{ duration: prefersReduced ? 0 : 0.18, ease: EASE_OUT }}
             className="overflow-hidden"
           >
-            <div className="px-5 pb-5 pt-0">
-              {children}
-            </div>
+            {children}
           </motion.div>
         )}
       </AnimatePresence>
@@ -240,269 +153,354 @@ function AccordionItem({
 }
 
 // ---------------------------------------------------------------------------
-// Deliverable card illustrations (minimalist SVG, 1.5px stroke, gray + blue accent)
+// Phase SVG illustrations
 // ---------------------------------------------------------------------------
 
-const DELIVERABLE_ILLUSTRATIONS: React.ReactNode[] = [
-  // 01 Framing workshop — board with post-its
-  <svg viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto">
-    <rect x="20" y="10" width="160" height="100" rx="8" stroke="#D1D5DB" strokeWidth="1.5" />
-    <rect x="36" y="26" width="32" height="24" rx="4" stroke="#D1D5DB" strokeWidth="1.5" />
-    <rect x="84" y="26" width="32" height="24" rx="4" stroke="#2D5CF3" strokeWidth="1.5" fill="#2D5CF3" fillOpacity="0.06" />
-    <rect x="132" y="26" width="32" height="24" rx="4" stroke="#D1D5DB" strokeWidth="1.5" />
-    <rect x="36" y="64" width="32" height="24" rx="4" stroke="#D1D5DB" strokeWidth="1.5" />
-    <rect x="84" y="64" width="32" height="24" rx="4" stroke="#D1D5DB" strokeWidth="1.5" />
-    <line x1="52" y1="50" x2="100" y2="64" stroke="#D1D5DB" strokeWidth="1" strokeDasharray="3 3" />
-    <line x1="100" y1="50" x2="100" y2="64" stroke="#2D5CF3" strokeWidth="1" strokeDasharray="3 3" />
-  </svg>,
+function IllustrationFraming() {
+  return (
+    <svg viewBox="0 0 200 120" fill="none" className="w-full h-auto" aria-hidden="true">
+      <rect x="18" y="18" width="48" height="36" rx="6" stroke="#D1D5DB" strokeWidth="1.5" />
+      <rect x="76" y="18" width="52" height="36" rx="6" stroke="#374151" strokeWidth="1.5" fill="#F3F4F6" />
+      <rect x="140" y="18" width="42" height="36" rx="6" stroke="#D1D5DB" strokeWidth="1.5" />
+      <rect x="46" y="70" width="48" height="32" rx="6" stroke="#D1D5DB" strokeWidth="1.5" />
+      <rect x="106" y="70" width="48" height="32" rx="6" stroke="#D1D5DB" strokeWidth="1.5" />
+      <path d="M66 36 L74 36" stroke="#D1D5DB" strokeWidth="1" strokeDasharray="3 2" />
+      <path d="M130 36 L138 36" stroke="#D1D5DB" strokeWidth="1" strokeDasharray="3 2" />
+      <path d="M102 54 L70 70" stroke="#374151" strokeWidth="1.5" />
+      <path d="M102 54 L130 70" stroke="#D1D5DB" strokeWidth="1.5" />
+      <circle cx="102" cy="54" r="3" fill="#374151" />
+    </svg>
+  )
+}
 
-  // 02 Exploration — wireframes fanned out
-  <svg viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto">
-    <rect x="50" y="18" width="80" height="56" rx="6" stroke="#D1D5DB" strokeWidth="1.5" transform="rotate(-6 50 18)" />
-    <rect x="55" y="22" width="80" height="56" rx="6" stroke="#D1D5DB" strokeWidth="1.5" fill="white" />
-    <rect x="60" y="26" width="80" height="56" rx="6" stroke="#2D5CF3" strokeWidth="1.5" fill="white" />
-    <line x1="68" y1="38" x2="108" y2="38" stroke="#E5E7EB" strokeWidth="2" strokeLinecap="round" />
-    <line x1="68" y1="46" x2="128" y2="46" stroke="#E5E7EB" strokeWidth="2" strokeLinecap="round" />
-    <line x1="68" y1="54" x2="96" y2="54" stroke="#E5E7EB" strokeWidth="2" strokeLinecap="round" />
-    <rect x="68" y="62" width="24" height="10" rx="5" stroke="#2D5CF3" strokeWidth="1.5" />
-    <circle cx="158" cy="100" r="3" fill="#D1D5DB" />
-    <circle cx="168" cy="100" r="3" fill="#D1D5DB" />
-    <circle cx="178" cy="100" r="3" fill="#2D5CF3" />
-  </svg>,
+function IllustrationExploration() {
+  return (
+    <svg viewBox="0 0 200 120" fill="none" className="w-full h-auto" aria-hidden="true">
+      <rect x="12" y="22" width="68" height="76" rx="8" stroke="#E5E7EB" strokeWidth="1.5" fill="white" />
+      <rect x="30" y="16" width="68" height="76" rx="8" stroke="#D1D5DB" strokeWidth="1.5" fill="white" />
+      <rect x="52" y="20" width="68" height="76" rx="8" stroke="#374151" strokeWidth="1.5" fill="white" />
+      <line x1="64" y1="44" x2="108" y2="44" stroke="#D1D5DB" strokeWidth="1.5" />
+      <line x1="64" y1="56" x2="96" y2="56" stroke="#D1D5DB" strokeWidth="1" />
+      <rect x="64" y="68" width="36" height="14" rx="4" stroke="#374151" strokeWidth="1.5" />
+      <circle cx="82" cy="106" r="3" fill="#E5E7EB" />
+      <circle cx="96" cy="106" r="3" fill="#E5E7EB" />
+      <circle cx="110" cy="106" r="4" fill="#374151" />
+    </svg>
+  )
+}
 
-  // 03 Design — prototype flow (3 screens + arrows)
-  <svg viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto">
-    <rect x="12" y="24" width="44" height="72" rx="6" stroke="#D1D5DB" strokeWidth="1.5" />
-    <line x1="20" y1="40" x2="48" y2="40" stroke="#E5E7EB" strokeWidth="2" strokeLinecap="round" />
-    <line x1="20" y1="48" x2="40" y2="48" stroke="#E5E7EB" strokeWidth="2" strokeLinecap="round" />
-    <rect x="20" y="56" width="32" height="16" rx="3" fill="#F3F4F6" />
-    <path d="M64 60 L76 60" stroke="#2D5CF3" strokeWidth="1.5" markerEnd="url(#arrowBlue)" />
-    <rect x="78" y="24" width="44" height="72" rx="6" stroke="#2D5CF3" strokeWidth="1.5" />
-    <line x1="86" y1="40" x2="114" y2="40" stroke="#BFDBFE" strokeWidth="2" strokeLinecap="round" />
-    <line x1="86" y1="48" x2="106" y2="48" stroke="#BFDBFE" strokeWidth="2" strokeLinecap="round" />
-    <rect x="86" y="56" width="32" height="16" rx="3" fill="#2D5CF3" fillOpacity="0.08" stroke="#2D5CF3" strokeWidth="1" />
-    <path d="M130 60 L142 60" stroke="#D1D5DB" strokeWidth="1.5" markerEnd="url(#arrowGray)" />
-    <rect x="144" y="24" width="44" height="72" rx="6" stroke="#D1D5DB" strokeWidth="1.5" />
-    <line x1="152" y1="40" x2="180" y2="40" stroke="#E5E7EB" strokeWidth="2" strokeLinecap="round" />
-    <line x1="152" y1="48" x2="172" y2="48" stroke="#E5E7EB" strokeWidth="2" strokeLinecap="round" />
-    <rect x="152" y="56" width="32" height="16" rx="3" fill="#F3F4F6" />
-    <defs>
-      <marker id="arrowBlue" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-        <path d="M0 0 L6 3 L0 6" fill="none" stroke="#2D5CF3" strokeWidth="1.5" />
-      </marker>
-      <marker id="arrowGray" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-        <path d="M0 0 L6 3 L0 6" fill="none" stroke="#D1D5DB" strokeWidth="1.5" />
-      </marker>
-    </defs>
-  </svg>,
+function IllustrationDesign() {
+  return (
+    <svg viewBox="0 0 200 120" fill="none" className="w-full h-auto" aria-hidden="true">
+      <rect x="8" y="32" width="44" height="56" rx="6" stroke="#D1D5DB" strokeWidth="1.5" />
+      <line x1="16" y1="48" x2="44" y2="48" stroke="#E5E7EB" strokeWidth="1" />
+      <line x1="16" y1="58" x2="36" y2="58" stroke="#E5E7EB" strokeWidth="1" />
+      <rect x="76" y="22" width="52" height="68" rx="6" stroke="#374151" strokeWidth="1.5" />
+      <line x1="86" y1="42" x2="118" y2="42" stroke="#D1D5DB" strokeWidth="1.5" />
+      <line x1="86" y1="54" x2="108" y2="54" stroke="#D1D5DB" strokeWidth="1" />
+      <rect x="86" y="64" width="30" height="16" rx="4" fill="#F3F4F6" stroke="#374151" strokeWidth="1" />
+      <rect x="150" y="32" width="42" height="56" rx="6" stroke="#D1D5DB" strokeWidth="1.5" />
+      <line x1="158" y1="48" x2="184" y2="48" stroke="#E5E7EB" strokeWidth="1" />
+      <line x1="158" y1="58" x2="176" y2="58" stroke="#E5E7EB" strokeWidth="1" />
+      <path d="M54 60 L73 60" stroke="#374151" strokeWidth="1.5" />
+      <path d="M69 55 L74 60 L69 65" stroke="#374151" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M130 60 L147 60" stroke="#D1D5DB" strokeWidth="1.5" />
+      <path d="M143 55 L148 60 L143 65" stroke="#D1D5DB" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
 
-  // 04 Validation — report with checkmarks
-  <svg viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto">
-    <rect x="48" y="12" width="104" height="96" rx="8" stroke="#D1D5DB" strokeWidth="1.5" />
-    <circle cx="68" cy="36" r="5" stroke="#16A34A" strokeWidth="1.5" />
-    <path d="M65 36 L67 38.5 L71 33.5" stroke="#16A34A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-    <line x1="82" y1="36" x2="132" y2="36" stroke="#E5E7EB" strokeWidth="2" strokeLinecap="round" />
-    <circle cx="68" cy="56" r="5" stroke="#16A34A" strokeWidth="1.5" />
-    <path d="M65 56 L67 58.5 L71 53.5" stroke="#16A34A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-    <line x1="82" y1="56" x2="120" y2="56" stroke="#E5E7EB" strokeWidth="2" strokeLinecap="round" />
-    <circle cx="68" cy="76" r="5" stroke="#2D5CF3" strokeWidth="1.5" />
-    <path d="M65 76 L67 78.5 L71 73.5" stroke="#2D5CF3" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-    <line x1="82" y1="76" x2="140" y2="76" stroke="#E5E7EB" strokeWidth="2" strokeLinecap="round" />
-    <circle cx="68" cy="92" r="5" stroke="#D1D5DB" strokeWidth="1.5" />
-    <line x1="82" y1="92" x2="110" y2="92" stroke="#E5E7EB" strokeWidth="2" strokeLinecap="round" />
-  </svg>,
+function IllustrationValidation() {
+  return (
+    <svg viewBox="0 0 200 120" fill="none" className="w-full h-auto" aria-hidden="true">
+      <rect x="40" y="15" width="120" height="90" rx="8" stroke="#D1D5DB" strokeWidth="1.5" fill="white" />
+      <circle cx="60" cy="40" r="8" stroke="#9CA3AF" strokeWidth="1.5" />
+      <path d="M56 40 L59 43 L64 37" stroke="#9CA3AF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <line x1="76" y1="40" x2="148" y2="40" stroke="#D1D5DB" strokeWidth="1" />
+      <circle cx="60" cy="62" r="8" stroke="#9CA3AF" strokeWidth="1.5" />
+      <path d="M56 62 L59 65 L64 59" stroke="#9CA3AF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <line x1="76" y1="62" x2="136" y2="62" stroke="#D1D5DB" strokeWidth="1" />
+      <circle cx="60" cy="84" r="8" stroke="#9CA3AF" strokeWidth="1.5" />
+      <path d="M56 84 L59 87 L64 81" stroke="#9CA3AF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <line x1="76" y1="84" x2="148" y2="84" stroke="#D1D5DB" strokeWidth="1" />
+      <circle cx="148" cy="84" r="6" fill="#F3F4F6" stroke="#9CA3AF" strokeWidth="1" />
+    </svg>
+  )
+}
 
-  // 05 Handoff — annotated screen
-  <svg viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto">
-    <rect x="30" y="14" width="100" height="92" rx="8" stroke="#D1D5DB" strokeWidth="1.5" />
-    <line x1="40" y1="30" x2="80" y2="30" stroke="#E5E7EB" strokeWidth="2" strokeLinecap="round" />
-    <rect x="40" y="40" width="80" height="32" rx="4" fill="#F3F4F6" />
-    <line x1="40" y1="82" x2="100" y2="82" stroke="#E5E7EB" strokeWidth="2" strokeLinecap="round" />
-    <line x1="40" y1="90" x2="74" y2="90" stroke="#E5E7EB" strokeWidth="2" strokeLinecap="round" />
-    {/* Annotation pins */}
-    <circle cx="120" cy="36" r="8" fill="#2D5CF3" fillOpacity="0.1" stroke="#2D5CF3" strokeWidth="1.5" />
-    <circle cx="120" cy="36" r="2" fill="#2D5CF3" />
-    <line x1="128" y1="36" x2="170" y2="36" stroke="#2D5CF3" strokeWidth="1" strokeDasharray="3 3" />
-    <line x1="146" y1="32" x2="170" y2="32" stroke="#D1D5DB" strokeWidth="1.5" strokeLinecap="round" />
-    <line x1="146" y1="40" x2="164" y2="40" stroke="#D1D5DB" strokeWidth="1.5" strokeLinecap="round" />
-    <circle cx="120" cy="70" r="8" fill="#EA580C" fillOpacity="0.1" stroke="#EA580C" strokeWidth="1.5" />
-    <circle cx="120" cy="70" r="2" fill="#EA580C" />
-    <line x1="128" y1="70" x2="170" y2="70" stroke="#EA580C" strokeWidth="1" strokeDasharray="3 3" />
-    <line x1="146" y1="66" x2="168" y2="66" stroke="#D1D5DB" strokeWidth="1.5" strokeLinecap="round" />
-    <line x1="146" y1="74" x2="160" y2="74" stroke="#D1D5DB" strokeWidth="1.5" strokeLinecap="round" />
-  </svg>,
+function IllustrationHandoff() {
+  return (
+    <svg viewBox="0 0 200 120" fill="none" className="w-full h-auto" aria-hidden="true">
+      <rect x="24" y="16" width="100" height="88" rx="8" stroke="#D1D5DB" strokeWidth="1.5" fill="white" />
+      <rect x="34" y="32" width="80" height="8" rx="2" fill="#F3F4F6" />
+      <rect x="34" y="48" width="60" height="6" rx="2" fill="#F3F4F6" />
+      <rect x="34" y="60" width="72" height="6" rx="2" fill="#F3F4F6" />
+      <rect x="34" y="72" width="50" height="6" rx="2" fill="#F3F4F6" />
+      <line x1="124" y1="38" x2="155" y2="38" stroke="#374151" strokeWidth="1" strokeDasharray="3 2" />
+      <line x1="124" y1="51" x2="162" y2="51" stroke="#374151" strokeWidth="1" strokeDasharray="3 2" />
+      <line x1="124" y1="63" x2="158" y2="63" stroke="#374151" strokeWidth="1" strokeDasharray="3 2" />
+      <rect x="152" y="32" width="28" height="12" rx="4" stroke="#374151" strokeWidth="1.5" fill="#F3F4F6" />
+      <rect x="159" y="45" width="28" height="12" rx="4" stroke="#D1D5DB" strokeWidth="1.5" />
+      <rect x="155" y="58" width="28" height="12" rx="4" stroke="#D1D5DB" strokeWidth="1.5" />
+    </svg>
+  )
+}
 
-  // 06 Deployment — screen with progress bar and status
-  <svg viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto">
-    <rect x="30" y="14" width="140" height="92" rx="8" stroke="#D1D5DB" strokeWidth="1.5" />
-    <line x1="30" y1="32" x2="170" y2="32" stroke="#E5E7EB" strokeWidth="1" />
-    <circle cx="44" cy="23" r="3" fill="#F87171" />
-    <circle cx="54" cy="23" r="3" fill="#FBBF24" />
-    <circle cx="64" cy="23" r="3" fill="#34D399" />
-    <line x1="46" y1="48" x2="100" y2="48" stroke="#E5E7EB" strokeWidth="2" strokeLinecap="round" />
-    <line x1="46" y1="56" x2="80" y2="56" stroke="#E5E7EB" strokeWidth="2" strokeLinecap="round" />
-    {/* Progress bar */}
-    <rect x="46" y="70" width="108" height="6" rx="3" fill="#F3F4F6" />
-    <rect x="46" y="70" width="84" height="6" rx="3" fill="#2D5CF3" />
-    {/* Status badge */}
-    <rect x="46" y="86" width="48" height="12" rx="6" fill="#16A34A" fillOpacity="0.1" stroke="#16A34A" strokeWidth="1" />
-    <circle cx="56" cy="92" r="2" fill="#16A34A" />
-    <line x1="62" y1="92" x2="86" y2="92" stroke="#16A34A" strokeWidth="1.5" strokeLinecap="round" />
-  </svg>,
+function IllustrationDeployment() {
+  return (
+    <svg viewBox="0 0 200 120" fill="none" className="w-full h-auto" aria-hidden="true">
+      <rect x="20" y="20" width="160" height="80" rx="8" stroke="#D1D5DB" strokeWidth="1.5" fill="white" />
+      <rect x="20" y="20" width="160" height="28" rx="8" stroke="#D1D5DB" strokeWidth="1.5" fill="#F9FAFB" />
+      <rect x="20" y="36" width="160" height="12" fill="#F9FAFB" />
+      <circle cx="36" cy="34" r="5" fill="#E5E7EB" />
+      <circle cx="52" cy="34" r="5" fill="#E5E7EB" />
+      <circle cx="68" cy="34" r="5" fill="#E5E7EB" />
+      <rect x="32" y="58" width="136" height="6" rx="3" fill="#F3F4F6" />
+      <rect x="32" y="58" width="88" height="6" rx="3" fill="#374151" />
+      <rect x="32" y="72" width="60" height="8" rx="3" fill="#F3F4F6" />
+      <rect x="100" y="72" width="68" height="8" rx="3" fill="#F3F4F6" />
+      <circle cx="156" cy="76" r="6" fill="#F3F4F6" stroke="#9CA3AF" strokeWidth="1.5" />
+      <path d="M153 76 L155.5 78.5 L159 73.5" stroke="#9CA3AF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
+const PHASE_ILLUSTRATIONS = [
+  IllustrationFraming,
+  IllustrationExploration,
+  IllustrationDesign,
+  IllustrationValidation,
+  IllustrationHandoff,
+  IllustrationDeployment,
 ]
 
 // ---------------------------------------------------------------------------
-// Deliverables carousel (snap-scroll, glass cards, arrow nav)
+// Deliverable carousel — horizontal scroll, multiple cards visible
+// Exposes prev/next via ref so the section header can host the arrow buttons
 // ---------------------------------------------------------------------------
 
-function DeliverablesCarousel({
-  lang,
-  deliverablesT,
-}: {
-  lang: Language
-  deliverablesT: typeof DELIVERABLES_SECTION['en']
-}) {
-  const scrollRef = useRef<HTMLDivElement>(null)
-  const [canScrollLeft, setCanScrollLeft] = useState(false)
-  const [canScrollRight, setCanScrollRight] = useState(true)
+const DeliverableCarousel = React.forwardRef<
+  { prev: () => void; next: () => void },
+  { items: Deliverable[]; lang: Language }
+>(function DeliverableCarousel({ items, lang }, ref) {
+  const scrollRef = React.useRef<HTMLDivElement>(null)
   const [activeIndex, setActiveIndex] = useState(0)
 
-  const updateScrollState = () => {
-    const el = scrollRef.current
-    if (!el) return
-    setCanScrollLeft(el.scrollLeft > 10)
-    setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 10)
-
-    // Determine active card based on scroll position
-    const cardWidth = el.firstElementChild
-      ? (el.firstElementChild as HTMLElement).offsetWidth + 16
-      : 300
-    setActiveIndex(Math.round(el.scrollLeft / cardWidth))
+  const scrollTo = (index: number) => {
+    const container = scrollRef.current
+    if (!container) return
+    const card = container.children[index] as HTMLElement
+    if (!card) return
+    // Offset relative to container, not document — reliable across layouts
+    container.scrollTo({
+      left: card.offsetLeft - container.offsetLeft,
+      behavior: 'smooth',
+    })
+    setActiveIndex(index)
   }
 
-  useEffect(() => {
-    const el = scrollRef.current
-    if (!el) return
-    el.addEventListener('scroll', updateScrollState, { passive: true })
-    updateScrollState()
-    return () => el.removeEventListener('scroll', updateScrollState)
-  }, [])
+  const prev = () => scrollTo(Math.max(0, activeIndex - 1))
+  const next = () => scrollTo(Math.min(items.length - 1, activeIndex + 1))
 
-  const scroll = (direction: 'left' | 'right') => {
-    const el = scrollRef.current
-    if (!el) return
-    const cardWidth = el.firstElementChild
-      ? (el.firstElementChild as HTMLElement).offsetWidth + 16
-      : 300
-    el.scrollBy({
-      left: direction === 'right' ? cardWidth : -cardWidth,
-      behavior: 'smooth',
+  // Expose controls to parent (section header arrows)
+  React.useImperativeHandle(ref, () => ({ prev, next }))
+
+  // Sync dot with scroll — use requestAnimationFrame to debounce
+  const rafRef = React.useRef<number | null>(null)
+  const onScroll = () => {
+    if (rafRef.current) cancelAnimationFrame(rafRef.current)
+    rafRef.current = requestAnimationFrame(() => {
+      const container = scrollRef.current
+      if (!container) return
+      const cards = Array.from(container.children) as HTMLElement[]
+      const mid = container.scrollLeft + container.clientWidth / 2
+      let closest = 0
+      let minDist = Infinity
+      cards.forEach((card, i) => {
+        const dist = Math.abs(card.offsetLeft + card.offsetWidth / 2 - mid)
+        if (dist < minDist) { minDist = dist; closest = i }
+      })
+      setActiveIndex(closest)
     })
   }
 
   return (
-    <section className="mb-32" id="deliverables">
-      <RevealSection>
-        {/* Header with arrows */}
-        <div className="flex items-end justify-between mb-6">
-          <div>
-            <h2 className="text-2xl font-bold tracking-[-0.02em] text-gray-900 mb-1">
-              {deliverablesT.title}
-            </h2>
-            <p className="text-sm text-gray-500">
-              {deliverablesT.subtitle}
-            </p>
-          </div>
-          <div className="hidden sm:flex items-center gap-2">
-            <button
-              onClick={() => scroll('left')}
-              disabled={!canScrollLeft}
-              className="p-2 rounded-full bg-white border border-gray-100 text-gray-500
-                hover:border-gray-200 hover:bg-gray-50 disabled:opacity-30 disabled:cursor-default
-                transition-all duration-150 ease-out active:scale-[0.92]"
-              aria-label="Previous"
-            >
-              <ArrowLeft size={16} weight="bold" />
-            </button>
-            <button
-              onClick={() => scroll('right')}
-              disabled={!canScrollRight}
-              className="p-2 rounded-full bg-white border border-gray-100 text-gray-500
-                hover:border-gray-200 hover:bg-gray-50 disabled:opacity-30 disabled:cursor-default
-                transition-all duration-150 ease-out active:scale-[0.92]"
-              aria-label="Next"
-            >
-              <ArrowRight size={16} weight="bold" />
-            </button>
-          </div>
-        </div>
-      </RevealSection>
-
-      {/* Scrollable track */}
-      <div className="-mx-6 px-6">
-        <div
-          ref={scrollRef}
-          className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4
-            scrollbar-none [-ms-overflow-style:none] [scrollbar-width:none]
-            [&::-webkit-scrollbar]:hidden"
-        >
-          {DELIVERABLES.map((item, i) => (
+    <div>
+      {/* Track — bleeds past parent's px-6 */}
+      <div
+        ref={scrollRef}
+        onScroll={onScroll}
+        className="flex gap-3 overflow-x-auto snap-x snap-mandatory pb-3 -mx-6 px-6
+          [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+      >
+        {items.map((item, i) => {
+          const Illustration = PHASE_ILLUSTRATIONS[i]
+          return (
             <div
               key={i}
-              className="snap-start shrink-0 w-[280px] sm:w-[320px]"
+              className="snap-start shrink-0 w-[248px] sm:w-[288px]"
             >
               <div
-                className="h-full rounded-2xl p-6 border border-white/60 bg-white/70 backdrop-blur-xl
-                  shadow-[0_1px_3px_rgba(0,0,0,0.04),0_8px_24px_rgba(0,0,0,0.03)]
-                  transition-[box-shadow,transform] duration-300 ease-out
-                  hover:shadow-[0_2px_8px_rgba(0,0,0,0.06),0_12px_32px_rgba(0,0,0,0.05)]
-                  hover:scale-[1.01] flex flex-col"
+                className="h-full rounded-2xl border border-gray-100 bg-white p-5 flex flex-col
+                  transition-[border-color,box-shadow,transform]
+                  duration-[220ms] [transition-timing-function:cubic-bezier(0.23,1,0.32,1)]
+                  [@media(hover:hover)]:hover:border-gray-200
+                  [@media(hover:hover)]:hover:shadow-[0_1px_8px_rgba(0,0,0,0.05),0_4px_16px_rgba(0,0,0,0.03)]
+                  [@media(hover:hover)]:hover:scale-[1.005]"
               >
                 {/* Illustration */}
-                <div className="mb-4 px-2">
-                  {DELIVERABLE_ILLUSTRATIONS[i]}
+                <div className="mb-4 rounded-xl overflow-hidden bg-[#F9FAFB] p-3">
+                  <Illustration />
                 </div>
-                <span className="text-xs font-semibold text-gray-300 tabular-nums">
+                {/* Number */}
+                <span className="text-[11px] tabular-nums text-gray-300 font-medium mb-1">
                   {String(i + 1).padStart(2, '0')}
                 </span>
-                <h3 className="text-base font-bold text-gray-900 mt-2 mb-3">
+                {/* Title */}
+                <h3 className="text-sm font-semibold tracking-[-0.01em] text-gray-900 mb-2 leading-snug">
                   {item.activity[lang]}
                 </h3>
-                <p className="text-sm text-gray-600 leading-relaxed mb-4 flex-1">
+                {/* Output */}
+                <p className="text-xs text-gray-500 leading-relaxed flex-1">
                   {item.output[lang]}
                 </p>
-                <p className="text-xs text-gray-400 leading-relaxed">
+                {/* Format */}
+                <p className="text-[11px] text-gray-400 leading-relaxed mt-3 pt-3 border-t border-gray-50">
                   {item.format[lang]}
                 </p>
               </div>
             </div>
-          ))}
-        </div>
+          )
+        })}
       </div>
 
-      {/* Dot indicators (mobile) */}
-      <div className="flex sm:hidden items-center justify-center gap-1.5 mt-3">
-        {DELIVERABLES.map((_, i) => (
-          <div
+      {/* Dot indicators */}
+      <div className="flex items-center gap-1.5 mt-4">
+        {items.map((_, i) => (
+          <button
             key={i}
-            className={`w-1.5 h-1.5 rounded-full transition-all duration-200 ease-out ${
-              activeIndex === i ? 'bg-gray-900 w-4' : 'bg-gray-300'
-            }`}
-          />
+            onClick={() => scrollTo(i)}
+            aria-label={items[i].activity[lang]}
+            className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-400 rounded-full"
+          >
+            <span
+              className="block rounded-full bg-gray-900"
+              style={{
+                width: i === activeIndex ? 16 : 6,
+                height: 6,
+                opacity: i === activeIndex ? 1 : 0.15,
+                transition: 'width 200ms cubic-bezier(0.23,1,0.32,1), opacity 200ms ease',
+              }}
+            />
+          </button>
         ))}
       </div>
-    </section>
+    </div>
   )
+})
+
+// ---------------------------------------------------------------------------
+// Weekly rhythm grid — from deck (Discovery + Delivery modes, Mon→Fri)
+// ---------------------------------------------------------------------------
+
+const RHYTHM = {
+  en: {
+    label: 'Weekly rhythm',
+    modes: ['Discovery', 'Delivery'],
+    // Desktop: 4 cols
+    days4: ['Mon', 'Tue – Wed', 'Thu', 'Fri'],
+    cells4: [
+      ['Frame hypotheses. Who to talk to. Protocol.', 'User interviews. Observations. Data analysis.', 'Map insights. Emerging patterns. Reframe.', 'Restitution. Validate or pivot. Decision.'],
+      ['Sync PM/Designer. Sprint goal. Review hypotheses.', 'Exploration or iteration. Async exchanges.', 'Pattern coherence. Prep refinement or demo.', 'Prototype presented. Backlog prioritised.'],
+    ],
+    // Mobile: 3 cols
+    days3: ['Mon', 'Midweek', 'Fri'],
+    cells3: [
+      ['Frame & hypotheses', 'Terrain + analysis', 'Share & decide'],
+      ['Sync PM/Designer', 'Exploration or craft', 'Sprint review'],
+    ],
+    footer: 'Monday: align. Midweek: deep work. Friday: share and decide. Rhythm is set together in the first week.',
+  },
+  fr: {
+    label: 'Rythme hebdomadaire',
+    modes: ['Discovery', 'Delivery'],
+    days4: ['Lun', 'Mar – Mer', 'Jeu', 'Ven'],
+    cells4: [
+      ['Cadrage hypothèses. Qui on va voir. Protocole.', 'Entretiens utilisateurs. Observations. Analyse données.', 'Cartographie insights. Patterns. Reformulation.', 'Restitution. Validation ou pivot. Décision.'],
+      ['Sync PM/Designer. Objectif sprint. Revue hypothèses.', 'Exploration ou itération. Échanges asynchrones.', 'Cohérence patterns. Préparation refinement ou démo.', 'Prototype présenté. Priorisation backlog.'],
+    ],
+    days3: ['Lun', 'Milieu', 'Ven'],
+    cells3: [
+      ['Cadrage & hypothèses', 'Terrain + analyse', 'Partager & décider'],
+      ['Sync PM/Designer', 'Exploration ou craft', 'Sprint review'],
+    ],
+    footer: 'Lundi\u00a0: s\u2019aligner. Milieu de semaine\u00a0: travail de fond. Vendredi\u00a0: partager et décider. Le rythme se construit ensemble dès la première semaine.',
+  },
 }
 
-// ---------------------------------------------------------------------------
-// Collaboration icons
-// ---------------------------------------------------------------------------
+function WeeklyRhythmGrid({ lang }: { lang: Language }) {
+  const r = RHYTHM[lang]
+  return (
+    <div className="mt-10 rounded-xl border border-gray-100 overflow-hidden">
+      {/* Label */}
+      <div className="px-4 py-2.5 border-b border-gray-100 bg-[#FAFAFA]">
+        <span className="text-[11px] text-gray-400 uppercase tracking-wide font-medium">{r.label}</span>
+      </div>
 
-const COLLAB_ICONS: Record<string, React.ReactNode> = {
-  pm: <Handshake size={18} weight="bold" className="text-[#2D5CF3]" />,
-  devs: <Code size={18} weight="bold" className="text-[#16A34A]" />,
-  culture: <Lightbulb size={18} weight="bold" className="text-[#EA580C]" />,
+      {/* ── Mobile: 3-column simplified ─────────────────────────────── */}
+      <div className="sm:hidden">
+        <div className="grid grid-cols-[60px_repeat(3,1fr)] border-b border-gray-100">
+          <div className="px-2 py-2" />
+          {r.days3.map((day) => (
+            <div key={day} className="px-2 py-2 border-l border-gray-100">
+              <span className="text-[10px] text-gray-400 font-medium">{day}</span>
+            </div>
+          ))}
+        </div>
+        {r.modes.map((mode, modeIdx) => (
+          <div key={mode} className={`grid grid-cols-[60px_repeat(3,1fr)] ${modeIdx === 0 ? 'border-b border-gray-100' : ''}`}>
+            <div className="px-2 py-3 flex items-start">
+              <span className="text-[10px] font-medium text-gray-500">{mode}</span>
+            </div>
+            {r.cells3[modeIdx].map((cell, dayIdx) => (
+              <div key={dayIdx} className="px-2 py-3 border-l border-gray-100">
+                <p className="text-[10px] text-gray-400 leading-relaxed">{cell}</p>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+
+      {/* ── Desktop: 4-column full ───────────────────────────────────── */}
+      <div className="hidden sm:block">
+        <div className="grid grid-cols-[80px_repeat(4,1fr)] border-b border-gray-100">
+          <div className="px-3 py-2" />
+          {r.days4.map((day) => (
+            <div key={day} className="px-3 py-2 border-l border-gray-100">
+              <span className="text-[11px] text-gray-400 font-medium">{day}</span>
+            </div>
+          ))}
+        </div>
+        {r.modes.map((mode, modeIdx) => (
+          <div key={mode} className={`grid grid-cols-[80px_repeat(4,1fr)] ${modeIdx === 0 ? 'border-b border-gray-100' : ''}`}>
+            <div className="px-3 py-3 flex items-start">
+              <span className="text-[11px] font-medium text-gray-500">{mode}</span>
+            </div>
+            {r.cells4[modeIdx].map((cell, dayIdx) => (
+              <div key={dayIdx} className="px-3 py-3 border-l border-gray-100">
+                <p className="text-[11px] text-gray-400 leading-relaxed">{cell}</p>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+
+      {/* Footer note */}
+      <div className="px-4 py-2.5 border-t border-gray-100 bg-[#FAFAFA]">
+        <p className="text-[11px] text-gray-400 leading-relaxed">{r.footer}</p>
+      </div>
+    </div>
+  )
 }
 
 // ---------------------------------------------------------------------------
@@ -524,269 +522,333 @@ export default function ApprochePage({
   const ctaT = CTA_SECTION[lang]
   const prefersReduced = useReducedMotion()
 
-  const [activePhase, setActivePhase] = useState(0)
-  const [openLesson, setOpenLesson] = useState(0)
-  const [openCollab, setOpenCollab] = useState(0)
+  // Each section independently tracks which item is open (null = all closed)
+  const [openPhase, setOpenPhase] = useState<number | null>(0)
+  const [openLesson, setOpenLesson] = useState<number | null>(0)
+  const [openCollab, setOpenCollab] = useState<number | null>(0)
+  const carouselRef = React.useRef<{ prev: () => void; next: () => void }>(null)
 
   return (
     <>
       <ReadingProgressBar />
 
-      <div className="min-h-screen bg-[#F9F9F9]">
-        <div className="max-w-[1200px] mx-auto px-6 pt-20 pb-20">
+      <div className="min-h-screen bg-[#FDFDFC]">
+        <div className="max-w-[740px] mx-auto px-6 pt-32 md:pt-40 pb-20">
 
           {/* ============================================================= */}
           {/* HERO                                                          */}
           {/* ============================================================= */}
           <motion.div
-            className="mb-20"
-            initial="hidden"
-            animate="visible"
-            variants={staggerParent}
+            className="pb-20 md:pb-28"
+            initial={prefersReduced ? false : { opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, ease: EASE_OUT }}
           >
-            <motion.h1
-              variants={fadeUp}
-              transition={{ duration: 0.5, ease: EASE_OUT }}
-              className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-[-0.03em] text-gray-900 leading-[1.08]"
-            >
+            <h1 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-3">
               {hero.title}
-            </motion.h1>
-            <motion.div
-              variants={fadeUp}
-              transition={{ duration: 0.4, ease: EASE_OUT }}
-              className="mt-6 max-w-[720px] space-y-4"
-            >
+            </h1>
+            <div className="space-y-4 max-w-[65ch]">
               {hero.paragraphs.map((p, i) => (
-                <p
-                  key={i}
-                  className={`text-base sm:text-lg leading-relaxed ${
-                    i === 0 ? 'text-gray-600' : 'text-gray-500'
-                  }`}
-                >
+                <p key={i} className="text-base text-gray-500 leading-relaxed">
                   {p}
                 </p>
               ))}
-            </motion.div>
+            </div>
           </motion.div>
 
           {/* ============================================================= */}
           {/* PROCESS                                                       */}
           {/* ============================================================= */}
-          <section className="mb-32" id="process">
+          <section className="py-16 md:py-24 border-t border-gray-100" id="process">
             <RevealSection className="mb-8">
-              <h2 className="text-2xl font-bold tracking-[-0.02em] text-gray-900 mb-2">
+              <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-2">
                 {processT.title}
               </h2>
-              <p className="text-base text-gray-500">
+              <p className="text-sm text-gray-500 max-w-[55ch]">
                 {processT.subtitle}
               </p>
             </RevealSection>
 
             <RevealSection>
-              <div className="flex flex-wrap gap-2 mb-6">
+              <div className="divide-y divide-gray-100">
                 {PROCESS_PHASES.map((phase, i) => (
-                  <button
+                  <AccordionItem
                     key={phase.id}
-                    onClick={() => setActivePhase(i)}
-                    className={`relative px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ease-out active:scale-[0.96]
-                      ${activePhase === i
-                        ? 'text-white shadow-sm'
-                        : 'text-gray-600 bg-white border border-gray-100 hover:border-gray-200 hover:bg-gray-50'
-                      }`}
-                    style={activePhase === i ? { backgroundColor: phase.color } : undefined}
+                    id={`phase-${i}`}
+                    isOpen={openPhase === i}
+                    onToggle={() => setOpenPhase(openPhase === i ? null : i)}
+                    trigger={
+                      <div className="flex items-baseline gap-2.5">
+                        <span className="text-xs tabular-nums text-gray-400 flex-shrink-0">
+                          {String(i + 1).padStart(2, '0')}
+                        </span>
+                        <span className="text-sm font-medium text-gray-900 leading-snug">
+                          {phase.title[lang]}
+                        </span>
+                      </div>
+                    }
                   >
-                    {phase.title[lang]}
-                  </button>
+                    <div className="pb-5 space-y-4">
+                      <p className="text-sm text-gray-500 leading-relaxed max-w-[60ch]">
+                        {phase.description[lang]}
+                      </p>
+                      <div className="flex flex-col sm:flex-row sm:items-start gap-4 pt-3 border-t border-gray-100">
+                        <div className="flex-1">
+                          <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">Output</p>
+                          <p className="text-sm text-gray-500 leading-relaxed">{phase.output[lang]}</p>
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">
+                            {lang === 'fr' ? 'Exemple' : 'Example'}
+                          </p>
+                          <p className="text-sm text-gray-500 leading-relaxed">{phase.example[lang]}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </AccordionItem>
                 ))}
               </div>
-
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activePhase}
-                  initial={prefersReduced ? false : { opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -4 }}
-                  transition={{ duration: 0.2, ease: EASE_OUT }}
-                  className="bg-white rounded-2xl border border-gray-100 p-6 sm:p-8"
-                >
-                  <h3 className="text-lg font-bold text-gray-900 mb-2">
-                    {PROCESS_PHASES[activePhase].title[lang]}
-                  </h3>
-                  <p className="text-base text-gray-500 leading-relaxed mb-4">
-                    {PROCESS_PHASES[activePhase].description[lang]}
-                  </p>
-                  <p className="text-sm text-gray-600 leading-relaxed mb-5 max-w-[680px]">
-                    {PROCESS_PHASES[activePhase].detail[lang]}
-                  </p>
-                  <div className="flex flex-col sm:flex-row sm:items-start gap-4 pt-4 border-t border-gray-50">
-                    <div className="flex-1">
-                      <p className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-1">Output</p>
-                      <p className="text-sm text-gray-500">{PROCESS_PHASES[activePhase].output[lang]}</p>
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-1">
-                        {lang === 'fr' ? 'Exemple' : 'Example'}
-                      </p>
-                      <p className="text-sm text-gray-500 italic">{PROCESS_PHASES[activePhase].example[lang]}</p>
-                    </div>
-                  </div>
-                </motion.div>
-              </AnimatePresence>
             </RevealSection>
 
-            <CollapsibleImage
-              src={SECTION_IMAGES.process}
-              alt={lang === 'fr' ? 'Diagramme Double Diamant' : 'Double Diamond diagram'}
-              label={lang === 'fr' ? 'Voir le diagramme de processus' : 'View process diagram'}
-              className="bg-white"
-            />
           </section>
 
           {/* ============================================================= */}
           {/* PRINCIPLES                                                    */}
           {/* ============================================================= */}
-          <section className="mb-32" id="lessons">
+          <section className="py-16 md:py-24 border-t border-gray-100" id="lessons">
             <RevealSection>
-              <h2 className="text-2xl font-bold tracking-[-0.02em] text-gray-900 mb-2">
+              <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-2">
                 {lessons.title}
               </h2>
-              <p className="text-base text-gray-500 mb-6">
+              <p className="text-sm text-gray-500 mb-6 max-w-[55ch]">
                 {lessons.intro}
               </p>
             </RevealSection>
 
-            <RevealSection className="space-y-3 max-w-[800px]">
-              {lessons.blocks.map((block, i) => (
-                <AccordionItem
-                  key={i}
-                  isOpen={openLesson === i}
-                  onToggle={() => setOpenLesson(openLesson === i ? -1 : i)}
-                  title={block.heading}
-                >
-                  <p className="text-base text-gray-600 leading-relaxed">
-                    {block.body}
-                  </p>
-                </AccordionItem>
-              ))}
+            <RevealSection>
+              <div className="divide-y divide-gray-100">
+                {lessons.blocks.map((block, i) => (
+                  <AccordionItem
+                    key={i}
+                    id={`lesson-${i}`}
+                    isOpen={openLesson === i}
+                    onToggle={() => setOpenLesson(openLesson === i ? null : i)}
+                    trigger={
+                      <span className="text-sm font-medium text-gray-900 leading-snug">
+                        {block.heading}
+                      </span>
+                    }
+                  >
+                    <p className="text-sm text-gray-500 leading-relaxed mb-4 max-w-[60ch]">
+                      {block.body}
+                    </p>
+                    {block.link && (
+                      <Link
+                        href={`/${lang}${block.link.href}`}
+                        className="group flex items-center gap-3 mb-5 p-3
+                          rounded-xl border border-gray-100 bg-white
+                          [@media(hover:hover)]:hover:border-gray-200
+                          [@media(hover:hover)]:hover:shadow-[0_1px_6px_rgba(0,0,0,0.04),0_2px_12px_rgba(0,0,0,0.03)]
+                          active:scale-[0.99]
+                          transition-[border-color,box-shadow,transform]
+                          duration-[180ms] [transition-timing-function:cubic-bezier(0.23,1,0.32,1)]"
+                      >
+                        {/* Thumbnail */}
+                        <div className="shrink-0 w-[72px] h-[48px] rounded-lg overflow-hidden bg-gray-50">
+                          <img
+                            src={block.link.thumbnail}
+                            alt={block.link.label}
+                            loading="lazy"
+                            className="w-full h-full object-cover transition-transform duration-[300ms] cubic-bezier(0.23,1,0.32,1) group-hover:scale-[1.04]"
+                          />
+                        </div>
+                        {/* Text */}
+                        <div className="min-w-0 flex-1">
+                          <p className="text-[11px] text-gray-400 mb-0.5 uppercase tracking-wide font-medium">
+                            {lang === 'en' ? 'Case study' : 'Étude de cas'}
+                          </p>
+                          <p className="text-sm font-medium text-gray-900 leading-snug mb-0.5 group-hover:text-black transition-colors duration-150">
+                            {block.link.label}
+                          </p>
+                          <p className="text-xs text-gray-500 leading-snug line-clamp-1">
+                            {block.link.description[lang]}
+                          </p>
+                        </div>
+                        <ArrowRight
+                          size={12}
+                          weight="bold"
+                          className="shrink-0 text-gray-400 transition-transform duration-200 ease-out group-hover:translate-x-0.5"
+                        />
+                      </Link>
+                    )}
+                  </AccordionItem>
+                ))}
+              </div>
             </RevealSection>
 
-            <CollapsibleImage
-              src={SECTION_IMAGES.lessons}
-              alt={lang === 'fr' ? 'Persona et parcours utilisateur' : 'Persona and user journey'}
-              label={lang === 'fr' ? 'Voir un exemple de persona et journey map' : 'View persona and journey map example'}
-              className="bg-white"
-            />
           </section>
 
           {/* ============================================================= */}
           {/* COLLABORATION                                                 */}
           {/* ============================================================= */}
-          <section className="mb-32" id="collaboration">
+          <section className="py-16 md:py-24 border-t border-gray-100" id="collaboration">
             <RevealSection>
-              <h2 className="text-2xl font-bold tracking-[-0.02em] text-gray-900 mb-8">
+              <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-6">
                 {collab.title}
               </h2>
             </RevealSection>
 
-            <RevealSection className="space-y-3 max-w-[800px]">
-              {collab.blocks.map((block, i) => (
-                <AccordionItem
-                  key={block.id}
-                  isOpen={openCollab === i}
-                  onToggle={() => setOpenCollab(openCollab === i ? -1 : i)}
-                  title={block.label}
-                  icon={COLLAB_ICONS[block.id]}
-                >
-                  <p className="text-base text-gray-600 leading-relaxed">
-                    {block.body}
-                  </p>
-                </AccordionItem>
-              ))}
+            <RevealSection>
+              <div className="divide-y divide-gray-100">
+                {collab.blocks.map((block, i) => (
+                  <AccordionItem
+                    key={block.id}
+                    id={`collab-${block.id}`}
+                    isOpen={openCollab === i}
+                    onToggle={() => setOpenCollab(openCollab === i ? null : i)}
+                    trigger={
+                      <span className="text-sm font-medium text-gray-900 leading-snug">
+                        {block.label}
+                      </span>
+                    }
+                  >
+                    <p className="text-sm text-gray-500 leading-relaxed pb-5 max-w-[60ch]">
+                      {block.body}
+                    </p>
+                  </AccordionItem>
+                ))}
+              </div>
             </RevealSection>
 
-            <CollapsibleImage
-              src={SECTION_IMAGES.collaboration}
-              alt={lang === 'fr' ? 'Atelier Design Teardown' : 'Design Teardown workshop'}
-              label={lang === 'fr' ? 'Voir un exemple d\'atelier Design Teardown' : 'View Design Teardown workshop example'}
-              className="bg-white"
-            />
+            <RevealSection delay={0.05}>
+              <WeeklyRhythmGrid lang={lang} />
+            </RevealSection>
+
+            <RevealSection delay={0.08} className="mt-8">
+              <div className="rounded-xl overflow-hidden border border-gray-100">
+                <img
+                  src="/images/approche/design-teardown.png"
+                  alt={lang === 'fr' ? 'Atelier Design Teardown — exemple réel' : 'Design Teardown workshop — real example'}
+                  loading="lazy"
+                  className="w-full h-auto"
+                />
+              </div>
+              <p className="mt-2 text-[11px] text-gray-400">
+                {lang === 'fr'
+                  ? 'Design Teardown\u00a0: en 3h, générer et valider des solutions concrètes sur une feature identifiée.'
+                  : 'Design Teardown: in 3h, generate and validate concrete solutions on a specific feature.'}
+              </p>
+            </RevealSection>
           </section>
 
           {/* ============================================================= */}
-          {/* DELIVERABLES CAROUSEL                                         */}
+          {/* DELIVERABLES                                                  */}
           {/* ============================================================= */}
-          <DeliverablesCarousel lang={lang} deliverablesT={deliverablesT} />
+          <section className="py-16 md:py-24 border-t border-gray-100" id="deliverables">
+            <RevealSection className="mb-8">
+              {/* Header row: title/subtitle left, arrows right */}
+              <div className="flex items-end justify-between gap-4">
+                <div>
+                  <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-2">
+                    {deliverablesT.title}
+                  </h2>
+                  <p className="text-sm text-gray-500 max-w-[50ch]">
+                    {deliverablesT.subtitle}
+                  </p>
+                </div>
+                {/* Arrow buttons — visible on sm+ */}
+                <div className="hidden sm:flex items-center gap-1 shrink-0">
+                  <button
+                    onClick={() => carouselRef.current?.prev()}
+                    aria-label="Previous"
+                    className="p-2 rounded-full text-gray-400 hover:text-gray-900 hover:bg-black/[0.04]
+                      active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-400
+                      transition-[color,background-color,transform] duration-[160ms] ease-out"
+                  >
+                    <ArrowLeft size={14} weight="bold" />
+                  </button>
+                  <button
+                    onClick={() => carouselRef.current?.next()}
+                    aria-label="Next"
+                    className="p-2 rounded-full text-gray-400 hover:text-gray-900 hover:bg-black/[0.04]
+                      active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-400
+                      transition-[color,background-color,transform] duration-[160ms] ease-out"
+                  >
+                    <ArrowRight size={14} weight="bold" />
+                  </button>
+                </div>
+              </div>
+            </RevealSection>
+
+            <RevealSection>
+              <DeliverableCarousel ref={carouselRef} items={DELIVERABLES} lang={lang} />
+            </RevealSection>
+          </section>
 
           {/* ============================================================= */}
           {/* CTA                                                           */}
           {/* ============================================================= */}
-          <RevealSection>
-            <section>
-              <h2 className="text-2xl font-bold tracking-[-0.02em] text-gray-900 mb-8">
+          <section className="py-16 md:py-24 border-t border-gray-100" id="contact">
+            <RevealSection>
+              <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-8">
                 {ctaT.title}
               </h2>
 
               {relatedProjects.length > 0 && (
-                <motion.div
-                  className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10"
-                  variants={staggerInView}
-                  initial={prefersReduced ? false : 'hidden'}
-                  whileInView="visible"
-                  viewport={{ once: true, margin: '-40px' }}
-                >
-                  {relatedProjects.map((project) => (
-                    <motion.div key={project.id} variants={fadeUpBlur} transition={{ duration: 0.4, ease: EASE_OUT }}>
+                <div className="mb-10">
+                  <div className="divide-y divide-gray-100">
+                    {relatedProjects.map((project) => (
                       <Link
+                        key={project.id}
                         href={`/${lang}/project/${project.id}/full`}
-                        className="group block bg-white rounded-2xl border border-gray-100 hover:border-gray-200 p-5
-                          transition-[border-color,box-shadow,transform] duration-300 ease-out
-                          hover:shadow-lg hover:scale-[1.01] active:scale-[0.98]"
+                        className="group flex items-center justify-between gap-4 py-4
+                          transition-colors duration-150 ease-out hover:bg-black/[.04] active:bg-black/[.06] -mx-3 px-3 rounded-lg"
                       >
-                        {project.cover && (
-                          <div className="rounded-lg overflow-hidden mb-4 bg-gray-50 aspect-[16/10]">
-                            <img
-                              src={project.cover}
-                              alt={project.title}
-                              className="w-full h-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.02]"
-                            />
-                          </div>
-                        )}
-                        <h3 className="text-sm font-semibold text-gray-900 mb-1">
-                          {project.title}
-                        </h3>
-                        <p className="text-xs text-gray-500 leading-relaxed line-clamp-2">
-                          {project.summary}
-                        </p>
-                        <span className="inline-flex items-center gap-1 mt-3 text-xs font-medium text-[#2D5CF3] transition-transform duration-200 ease-out group-hover:translate-x-0.5">
-                          {lang === 'fr' ? 'Voir le projet' : 'View project'}
-                          <ArrowRight size={12} weight="bold" />
-                        </span>
+                        <div className="min-w-0">
+                          <h3 className="text-sm font-medium text-gray-900 mb-0.5">
+                            {project.title}
+                          </h3>
+                          <p className="text-sm text-gray-500 truncate">
+                            {project.summary}
+                          </p>
+                        </div>
+                        <ArrowRight
+                          size={14}
+                          weight="bold"
+                          className="shrink-0 text-gray-400 transition-transform duration-200 ease-out group-hover:translate-x-0.5"
+                        />
                       </Link>
-                    </motion.div>
-                  ))}
-                </motion.div>
+                    ))}
+                  </div>
+                </div>
               )}
 
               {relatedArticles.length > 0 && (
                 <div className="mb-10">
-                  <h3 className="text-base font-semibold text-gray-900 mb-4">
+                  <h3 className="text-sm font-medium text-gray-900 mb-4">
                     {ctaT.articles_title}
                   </h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="divide-y divide-gray-100">
                     {relatedArticles.map((article) => (
                       <Link
                         key={article.id}
                         href={`/${lang}/signal/${article.id}`}
-                        className="group bg-white rounded-xl border border-gray-100 hover:border-gray-200 p-5
-                          transition-[border-color,box-shadow,transform] duration-300 ease-out
-                          hover:shadow-md active:scale-[0.98]"
+                        className="group flex items-center justify-between gap-4 py-4
+                          transition-colors duration-150 ease-out hover:bg-black/[.04] active:bg-black/[.06] -mx-3 px-3 rounded-lg"
                       >
-                        <h4 className="text-sm font-semibold text-gray-900 mb-1 group-hover:text-[#2D5CF3] transition-colors duration-200">
-                          {article.title}
-                        </h4>
-                        <p className="text-xs text-gray-500 leading-relaxed line-clamp-2">
-                          {article.summary}
-                        </p>
+                        <div className="min-w-0">
+                          <h3 className="text-sm font-medium text-gray-900 mb-0.5">
+                            {article.title}
+                          </h3>
+                          <p className="text-sm text-gray-500 truncate">
+                            {article.summary}
+                          </p>
+                        </div>
+                        <ArrowRight
+                          size={14}
+                          weight="bold"
+                          className="shrink-0 text-gray-400 transition-transform duration-200 ease-out group-hover:translate-x-0.5"
+                        />
                       </Link>
                     ))}
                   </div>
@@ -794,8 +856,8 @@ export default function ApprochePage({
               )}
 
               <AuthorContactCard lang={lang} message={ctaT.contact_message} />
-            </section>
-          </RevealSection>
+            </RevealSection>
+          </section>
 
         </div>
       </div>

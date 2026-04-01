@@ -183,7 +183,7 @@ export const TYPE_LABELS: Record<ContentType, { en: string; fr: string }> = {
 }
 
 export const TYPE_COLORS: Record<ContentType, { bg: string; text: string }> = {
-  article: { bg: 'bg-blue-50', text: 'text-blue-700' },
-  guide: { bg: 'bg-purple-50', text: 'text-purple-700' },
-  template: { bg: 'bg-emerald-50', text: 'text-emerald-700' },
+  article: { bg: 'bg-gray-100', text: 'text-gray-500' },
+  guide: { bg: 'bg-gray-100', text: 'text-gray-500' },
+  template: { bg: 'bg-gray-100', text: 'text-gray-500' },
 }

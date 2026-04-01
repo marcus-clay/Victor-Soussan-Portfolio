@@ -1,19 +1,12 @@
 /**
  * ServicesPage - Expertise page with pillars, approach, and client logos
+ * Minimalist Emil Kowalski aesthetic
  */
 
 import React, { useState, useEffect } from 'react';
 import { scrollToElement } from '../utils/smoothScroll';
 import { motion } from 'framer-motion';
-import {
-  PencilSimple as PenTool,
-  Lightning as Zap,
-  Gear as Settings,
-  Users,
-  CheckCircle as CheckCircle2,
-  ArrowRight,
-  Envelope as Mail
-} from '@phosphor-icons/react';
+import { ArrowRight } from '@phosphor-icons/react';
 import Link from 'next/link';
 import CaseStudyTOCBar from '../components/CaseStudyTOCBar';
 
@@ -172,29 +165,6 @@ const TRANSLATIONS = {
   }
 };
 
-const PILLAR_CONFIG = [
-  {
-    icon: <PenTool size={24} />,
-    color: { bg: 'bg-pink-50', text: 'text-pink-600', check: 'text-pink-500' },
-    image: '/images/sketches services/gifs/01_image_hand_on_execution.gif'
-  },
-  {
-    icon: <Zap size={24} />,
-    color: { bg: 'bg-blue-50', text: 'text-blue-600', check: 'text-blue-500' },
-    image: '/images/sketches services/gifs/02_workshop_product_vision.gif'
-  },
-  {
-    icon: <Settings size={24} />,
-    color: { bg: 'bg-orange-50', text: 'text-orange-600', check: 'text-orange-500' },
-    image: '/images/sketches services/gifs/03 - product_vision_workshop_facilitation.gif'
-  },
-  {
-    icon: <Users size={24} />,
-    color: { bg: 'bg-teal-50', text: 'text-teal-600', check: 'text-teal-500' },
-    image: '/images/sketches services/gifs/04_organisationtal_impact_workshop_alignment.gif'
-  }
-];
-
 const LOGOS = [
   { src: '/logos/LOGO UNOWHY.svg', alt: 'Unowhy' },
   { src: '/logos/LOGO BETAGOUV.svg', alt: 'Beta.gouv' },
@@ -216,13 +186,23 @@ const LOGOS = [
 
 const SECTION_IDS = ['design-prototyping', 'product-strategy', 'design-ops', 'leadership', 'approach', 'clients'];
 
+const ulVariants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.04 } },
+};
+
+const liVariants = {
+  hidden: { opacity: 0, x: -6 },
+  visible: { opacity: 1, x: 0 },
+};
+
 const ServicesPage: React.FC<ServicesPageProps> = ({ lang, onContact }) => {
   const t = TRANSLATIONS[lang];
   const [activeSection, setActiveSection] = useState('top');
   const [showTOC, setShowTOC] = useState(false);
+  const [hoveredPillar, setHoveredPillar] = useState<number | null>(null);
   const sections = TOC_SECTIONS[lang];
 
-  // Window-based scroll detection
   useEffect(() => {
     const handleScroll = () => {
       setShowTOC(window.scrollY > 300);
@@ -247,11 +227,11 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ lang, onContact }) => {
   const scrollToSection = scrollToElement;
 
   return (
-    <div className="min-h-screen bg-[#FCFCFD]">
+    <div className="min-h-screen bg-[#FDFDFC]">
       {/* Sticky TOC bar */}
       {showTOC && (
         <div
-          className="sticky z-10 backdrop-blur-xl bg-[#FCFCFD]/80"
+          className="sticky z-10 backdrop-blur-xl bg-[#FDFDFC]/80"
           style={{ top: 'var(--nav-height, 72px)', transition: 'top 250ms cubic-bezier(0.23, 1, 0.32, 1)' }}
         >
           <CaseStudyTOCBar
@@ -265,11 +245,11 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ lang, onContact }) => {
       )}
 
       {/* Content */}
-      <div className="max-w-[1200px] mx-auto px-6 pt-20 pb-20">
+      <div className="max-w-[740px] mx-auto px-6 pt-32 md:pt-40 pb-24 md:pb-40">
 
-        {/* Header — stagger entrance matching Projects page */}
+        {/* Header */}
         <motion.div
-          className="mb-12"
+          className="mb-16"
           initial="hidden"
           animate="visible"
           variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08 } } }}
@@ -277,131 +257,107 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ lang, onContact }) => {
           <motion.h1
             variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
             transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
-            className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-[-0.03em] text-gray-900 leading-[1.08]"
+            className="text-base font-semibold tracking-[-0.01em] text-gray-900 leading-[1.08]"
           >
             {t.page_title}
           </motion.h1>
           <motion.p
             variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0 } }}
             transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
-            className="mt-4 text-lg md:text-xl text-gray-500 leading-relaxed max-w-[55ch]"
+            className="mt-4 text-base text-gray-500 leading-relaxed"
           >
             {t.page_intro}
           </motion.p>
         </motion.div>
 
-        {/* Service Pillars */}
-        <div className="space-y-12 md:space-y-16 mb-24">
-          {t.pillars.map((pillar, i) => {
-            const config = PILLAR_CONFIG[i];
-
-            return (
-              <motion.div
-                key={i}
-                id={PILLAR_IDS[i]}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-60px' }}
-                transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
-                className="scroll-mt-28 rounded-2xl border bg-white border-gray-100 overflow-hidden"
+        {/* Service Pillars as divide-y list */}
+        <div
+          className="divide-y divide-gray-100 mb-24"
+          onMouseLeave={() => setHoveredPillar(null)}
+        >
+          {t.pillars.map((pillar, i) => (
+            <motion.div
+              key={i}
+              id={PILLAR_IDS[i]}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
+              className="scroll-mt-28 py-10 first:pt-0 -mx-3 px-3 rounded-lg"
+              onMouseEnter={() => setHoveredPillar(i)}
+              style={{
+                opacity: hoveredPillar === null ? 1 : hoveredPillar === i ? 1 : 0.4,
+                transition: 'opacity 200ms ease',
+              }}
+            >
+              <div className="flex items-baseline gap-3 mb-3">
+                <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900">
+                  {pillar.title}
+                </h2>
+                <span
+                  className="text-xs text-gray-400"
+                  style={{
+                    opacity: hoveredPillar === i ? 1 : 0,
+                    transform: hoveredPillar === i ? 'translateX(0)' : 'translateX(-6px)',
+                    transition: 'opacity 200ms cubic-bezier(0.23, 1, 0.32, 1), transform 200ms cubic-bezier(0.23, 1, 0.32, 1)',
+                  }}
+                >
+                  {`→ ${pillar.deliverables.length} deliverables`}
+                </span>
+              </div>
+              <p className="text-base text-gray-500 leading-relaxed mb-5">
+                {pillar.desc}
+              </p>
+              <motion.ul
+                className="space-y-2"
+                variants={ulVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: '-40px' }}
               >
-                <div className="p-6 md:p-8">
-                  {/* Title row */}
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className={`p-3 rounded-xl ${config.color.bg} ${config.color.text}`}>
-                      {config.icon}
-                    </div>
-                    <h2 className="text-2xl md:text-3xl font-bold tracking-[-0.02em] text-gray-900">
-                      {pillar.title}
-                    </h2>
-                  </div>
-
-                  {/* Description */}
-                  <p className="text-base leading-relaxed mb-6 max-w-2xl text-gray-600">
-                    {pillar.desc}
-                  </p>
-
-                  {/* Content: image + deliverables */}
-                  <div className="flex flex-col md:flex-row gap-6">
-                    {/* Image */}
-                    <div className="md:w-1/3 flex-shrink-0">
-                      <div className="rounded-xl overflow-hidden border border-gray-200">
-                        <img
-                          src={config.image}
-                          alt={pillar.title}
-                          className="w-full h-auto object-cover"
-                          loading="lazy"
-                        />
-                      </div>
-                    </div>
-
-                    {/* Deliverables */}
-                    <div className="md:w-2/3">
-                      <ul className="space-y-3">
-                        {pillar.deliverables.map((item, j) => (
-                          <li key={j} className="flex items-start">
-                            <CheckCircle2 size={18} className={`mr-3 mt-0.5 flex-shrink-0 ${config.color.check}`} />
-                            <span className="text-base leading-relaxed text-gray-700">
-                              {item}
-                            </span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            );
-          })}
+                {pillar.deliverables.map((item, j) => (
+                  <motion.li
+                    key={j}
+                    className="text-base text-gray-500 leading-relaxed pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[9px] before:w-1 before:h-1 before:rounded-full before:bg-gray-300"
+                    variants={liVariants}
+                    transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
+                  >
+                    {item}
+                  </motion.li>
+                ))}
+              </motion.ul>
+            </motion.div>
+          ))}
         </div>
 
-        {/* Approach Section */}
+        {/* Approach Section — CTA to Approach page */}
         <motion.div
           id="approach"
-          className="scroll-mt-28 mb-24"
+          className="scroll-mt-28 py-24 md:py-40"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
         >
-          <h2 className="text-2xl md:text-3xl font-bold tracking-[-0.02em] mb-10 text-gray-900">
+          <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
             {t.approach_title}
           </h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            {t.approach_steps.map((step, i) => (
-              <div key={i} className="p-5 rounded-2xl border bg-white border-gray-100">
-                <div className="text-xs font-mono uppercase tracking-wider mb-3 text-blue-600">
-                  {String(i + 1).padStart(2, '0')}
-                </div>
-                <h3 className="text-lg font-bold mb-2 text-gray-900">
-                  {step.title}
-                </h3>
-                <p className="text-sm leading-relaxed text-gray-600">
-                  {step.desc}
-                </p>
-                {step.deliverable && (
-                  <div className="mt-3 pt-3 border-t border-gray-100 text-xs leading-relaxed text-gray-400">
-                    <span className="font-semibold text-gray-500">
-                      {lang === 'en' ? 'What you get:' : 'Ce que vous obtenez :'}
-                    </span>{' '}
-                    {step.deliverable}
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
+          <p className="text-base text-gray-500 leading-relaxed mb-8 max-w-[50ch]">
+            {lang === 'en'
+              ? 'Frame the problem, build in short cycles, decide from evidence. The full process is documented on the Approach page.'
+              : 'Cadrer le problème, construire en cycles courts, décider par les faits. Le processus complet est documenté sur la page Approche.'}
+          </p>
 
           <Link
             href={`/${lang}/approche`}
-            className="group inline-flex items-center gap-2 mt-8 text-sm font-medium text-gray-900 hover:text-[#2D5CF3] active:scale-[0.97]"
-            style={{ transition: 'color 200ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
+            className="group inline-flex items-center gap-2 px-6 py-3 rounded-full border border-gray-200 text-sm font-medium text-gray-700 hover:border-gray-900 hover:text-gray-900 active:scale-[0.97]"
+            style={{ transition: 'border-color 200ms ease, color 200ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
           >
-            {lang === 'en' ? 'Learn more about my approach' : 'En savoir plus sur mon approche'}
+            {lang === 'en' ? 'See my approach' : 'Voir mon approche'}
             <ArrowRight
               size={14}
-              weight="bold"
-              className="transition-transform duration-200 ease-out group-hover:translate-x-1"
+              className="transition-transform duration-200 ease-out group-hover:translate-x-0.5"
             />
           </Link>
         </motion.div>
@@ -409,19 +365,19 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ lang, onContact }) => {
         {/* Trusted By */}
         <motion.div
           id="clients"
-          className="scroll-mt-28 mb-24"
+          className="scroll-mt-28 py-24 md:py-40"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
         >
-          <h3 className="text-xl md:text-2xl font-bold tracking-[-0.02em] mb-8 text-center text-gray-900">
+          <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-10">
             {t.trusted_by}
-          </h3>
+          </h2>
 
           <div className="relative overflow-hidden">
-            <div className="absolute left-0 top-0 bottom-0 w-24 z-20 pointer-events-none bg-gradient-to-r from-[#FCFCFD] to-transparent" />
-            <div className="absolute right-0 top-0 bottom-0 w-24 z-20 pointer-events-none bg-gradient-to-l from-[#FCFCFD] to-transparent" />
+            <div className="absolute left-0 top-0 bottom-0 w-16 z-20 pointer-events-none bg-gradient-to-r from-[#FDFDFC] to-transparent" />
+            <div className="absolute right-0 top-0 bottom-0 w-16 z-20 pointer-events-none bg-gradient-to-l from-[#FDFDFC] to-transparent" />
 
             <div className="logo-carousel-track flex hover:[animation-play-state:paused]">
               {[...Array(2)].map((_, setIndex) => (
@@ -429,15 +385,15 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ lang, onContact }) => {
                   {LOGOS.map((logo, index) => (
                     <div
                       key={`${setIndex}-${index}`}
-                      className="flex items-center justify-center mx-2 md:mx-3 flex-shrink-0"
+                      className="flex items-center justify-center mx-3 flex-shrink-0"
                     >
                       <img
                         src={logo.src}
                         alt={logo.alt}
                         width="80"
                         height="80"
-                        className="h-[50px] sm:h-[60px] md:h-[80px] w-auto grayscale opacity-80 hover:grayscale-0 hover:opacity-100"
-                        style={{ transition: 'filter 300ms ease, opacity 300ms ease' }}
+                        className="h-[50px] sm:h-[60px] md:h-[70px] w-auto grayscale opacity-50 hover:grayscale-0 hover:opacity-75"
+                        style={{ transition: 'filter 250ms ease, opacity 250ms ease' }}
                       />
                     </div>
                   ))}
@@ -447,16 +403,19 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ lang, onContact }) => {
           </div>
         </motion.div>
 
-        {/* CTA */}
-        <div className="text-center pb-16">
+        {/* CTA as text link */}
+        <div className="pb-16">
           <button
             onClick={onContact}
-            className="inline-flex items-center gap-3 px-8 py-4 rounded-full text-base font-medium cursor-pointer bg-[#2D5CF3] text-white hover:bg-[#2450d9] shadow-sm hover:shadow-md active:scale-[0.97]"
-            style={{ transition: 'background-color 200ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 200ms ease' }}
+            className="group inline-flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-gray-900 cursor-pointer active:scale-[0.97]"
+            style={{ transition: 'color 200ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
           >
-            <Mail size={18} />
             {t.cta_text}
-            <ArrowRight size={16} />
+            <ArrowRight
+              size={14}
+              weight="bold"
+              className="transition-transform duration-200 ease-out group-hover:translate-x-1"
+            />
           </button>
         </div>
       </div>

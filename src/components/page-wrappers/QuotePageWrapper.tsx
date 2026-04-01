@@ -9,8 +9,8 @@ const QuoteGeneratorModal = dynamic(
   () => import('@/components/QuoteGeneratorModal'),
   {
     loading: () => (
-      <div className="min-h-screen bg-[#F9F9F9] flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-gray-200 border-t-[#2D5CF3] rounded-full animate-spin" />
+      <div className="min-h-screen bg-[#FDFDFC] flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-gray-200 border-t-gray-900 rounded-full animate-spin" />
       </div>
     ),
   }

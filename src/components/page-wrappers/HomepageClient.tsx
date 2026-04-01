@@ -15,7 +15,6 @@ import ScrollExpandCard from '@/components/ScrollExpandCard'
 import HeroSection from '@/components/sections/HeroSection'
 import FeaturedSection from '@/components/sections/FeaturedSection'
 import ProjectsSection from '@/components/sections/ProjectsSection'
-import GalleryPreviewSection from '@/components/sections/GalleryPreviewSection'
 import ExpertisePreviewSection from '@/components/sections/ExpertisePreviewSection'
 import TestimonialsSection from '@/components/sections/TestimonialsSection'
 import ContactCTASection from '@/components/sections/ContactCTASection'
@@ -54,20 +53,13 @@ export default function HomepageClient({ lang }: HomepageClientProps) {
   }, [router, lang])
 
   return (
-    <div className="min-h-screen bg-[#F9F9F9]">
+    <div className="min-h-screen bg-[#FDFDFC]">
       <HeroSection
         systemTheme="light"
         lang={lang}
         content={content}
         scrollToSection={scrollToSection}
         openModalWithUrl={navigate}
-      />
-
-      <FeaturedSection
-        lang={lang}
-        featuredSignals={featuredSignals}
-        guideChapters={GUIDE_CHAPTERS}
-        onNavigate={navigate}
       />
 
       <ProjectsSection
@@ -79,12 +71,6 @@ export default function HomepageClient({ lang }: HomepageClientProps) {
         openProjectWithUrl={openProjectWithUrl}
         openModalWithUrl={navigate}
         setIframeModalUrl={() => {}}
-      />
-
-      <GalleryPreviewSection
-        lang={lang}
-        content={content}
-        onNavigate={navigate}
       />
 
       <ExpertisePreviewSection
@@ -105,6 +91,13 @@ export default function HomepageClient({ lang }: HomepageClientProps) {
       <ContactCTASection
         lang={lang}
         content={content}
+      />
+
+      <FeaturedSection
+        lang={lang}
+        featuredSignals={featuredSignals}
+        guideChapters={GUIDE_CHAPTERS}
+        onNavigate={navigate}
       />
     </div>
   )

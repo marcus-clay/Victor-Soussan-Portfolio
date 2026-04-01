@@ -21,7 +21,7 @@ export default function ShortProjectView({
   const categoryLabel = CATEGORY_LABELS[project.category]?.[lang] || project.category
 
   return (
-    <div className="min-h-screen bg-[#F9F9F9]">
+    <div className="min-h-screen bg-[#FDFDFC]">
       <div className="max-w-[1200px] mx-auto px-6 pt-8 md:pt-10 pb-20">
         {/* Header */}
         <div className="mb-10">
@@ -144,7 +144,7 @@ export default function ShortProjectView({
             href={project.externalLink}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-medium bg-[#2D5CF3] text-white hover:bg-[#2450d9] shadow-sm hover:shadow-md transition-all"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-medium bg-gray-900 text-white hover:bg-gray-800 active:scale-[0.97] ring-1 ring-black shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition-[background-color,transform] duration-150"
           >
             {lang === 'fr' ? 'Voir le projet' : 'View project'}
             <ArrowUpRight size={18} weight="bold" />

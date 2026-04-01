@@ -61,7 +61,7 @@ export default function ResumePageWrapper({ lang }: { lang: 'en' | 'fr' }) {
   const copiedLabel = resumeLang === 'fr' ? 'Copie !' : 'Copied!'
 
   return (
-    <div className="min-h-screen bg-[#F9F9F9]">
+    <div className="min-h-screen bg-[#FDFDFC]">
       {/* Header */}
       <header className="sticky top-0 z-50 bg-[#FCFCFD]/80 backdrop-blur-xl border-b border-gray-100">
         <div className="w-full max-w-5xl mx-auto px-6 sm:px-8 py-5">

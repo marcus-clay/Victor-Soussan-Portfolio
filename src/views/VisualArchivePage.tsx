@@ -1,6 +1,6 @@
 /**
- * Gallery - Editorial layout grouped by project
- * Features: TOC sidebar, collapsed sections, editorial/grid views
+ * Gallery - Minimalist editorial layout grouped by project
+ * Emil Kowalski aesthetic: restrained, typographically precise, no decorative elements
  */
 
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
@@ -62,7 +62,7 @@ const VisualArchivePage: React.FC<VisualArchivePageProps> = ({ lang }) => {
     []
   );
 
-  // Scroll detection — window-based
+  // Scroll detection
   useEffect(() => {
     const handleScroll = () => {
       setShowTOC(window.scrollY > 400);
@@ -106,13 +106,12 @@ const VisualArchivePage: React.FC<VisualArchivePageProps> = ({ lang }) => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#FCFCFD]">
+    <div className="min-h-screen bg-[#FDFDFC]">
       {/* Sticky sub-bar: swaps between breadcrumb and TOC */}
       <div
-        className="sticky z-10 backdrop-blur-xl bg-[#FCFCFD]/80 border-gray-200"
+        className="sticky z-10 backdrop-blur-xl bg-[#FDFDFC]/80"
         style={{ top: 'var(--nav-height, 72px)', transition: 'top 250ms cubic-bezier(0.23, 1, 0.32, 1)' }}
       >
-        {/* Breadcrumb / TOC swap container */}
         <div className="relative h-10 overflow-hidden">
           {/* Breadcrumb layer */}
           {(() => {
@@ -129,7 +128,7 @@ const VisualArchivePage: React.FC<VisualArchivePageProps> = ({ lang }) => {
                     : 'transform 280ms cubic-bezier(0.23, 1, 0.32, 1), opacity 200ms ease 80ms',
                 }}
               >
-                <div className="max-w-[1200px] mx-auto px-4 md:px-6 w-full h-10 flex items-center">
+                <div className="max-w-[740px] mx-auto px-6 w-full h-10 flex items-center">
                   <nav className="flex items-center gap-1.5 text-[13px] min-w-0 overflow-hidden">
                     <Link
                       href={`/${lang}/projets`}
@@ -171,57 +170,59 @@ const VisualArchivePage: React.FC<VisualArchivePageProps> = ({ lang }) => {
         </div>
       </div>
 
-      {/* Content */}
-      <div className="max-w-[1200px] mx-auto px-6 py-12 md:py-20">
+      {/* Header section */}
+      <div className="pt-32 md:pt-40">
+        <div className="max-w-[740px] mx-auto px-6">
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16 md:mb-20">
+            <div>
+              <h1 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-3">
+                {t.title}
+              </h1>
+              <p className="text-base text-gray-500 max-w-md">
+                {t.subtitle}
+              </p>
+            </div>
 
-        {/* Title + View toggle */}
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12 md:mb-16">
-          <div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-[-0.03em] mb-4 text-gray-900">
-              {t.title}
-            </h1>
-            <p className="text-base md:text-lg max-w-xl text-gray-500">
-              {t.subtitle}
-            </p>
-          </div>
-
-          {/* View mode toggle */}
-          <div className="hidden sm:flex items-center rounded-full p-1 flex-shrink-0 bg-gray-100">
-            {([
-              { key: 'editorial' as ViewMode, Icon: Rows3 },
-              { key: 'grid' as ViewMode, Icon: LayoutGrid },
-            ]).map(({ key, Icon }) => (
-              <button
-                key={key}
-                onClick={() => setViewMode(key)}
-                className={`p-2 rounded-full cursor-pointer active:scale-[0.95] ${
-                  viewMode === key
-                    ? 'bg-gray-900 text-white'
-                    : 'text-gray-400 hover:text-gray-900'
-                }`}
-                style={{ transition: 'background-color 200ms ease, color 200ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
-              >
-                <Icon size={16} />
-              </button>
-            ))}
+            {/* View mode toggle */}
+            <div className="hidden sm:flex items-center gap-1 flex-shrink-0">
+              {([
+                { key: 'editorial' as ViewMode, Icon: Rows3 },
+                { key: 'grid' as ViewMode, Icon: LayoutGrid },
+              ]).map(({ key, Icon }) => (
+                <button
+                  key={key}
+                  onClick={() => setViewMode(key)}
+                  className={`p-2 rounded-full cursor-pointer active:scale-[0.95] ${
+                    viewMode === key
+                      ? 'bg-gray-900 text-white'
+                      : 'text-gray-500 hover:text-gray-900'
+                  }`}
+                  style={{ transition: 'background-color 200ms ease, color 200ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
+                >
+                  <Icon size={16} />
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
-        {/* Content */}
-        {viewMode === 'editorial' ? (
-          <EditorialView
-            projects={GALLERY_PROJECTS}
-            lang={lang}
-            onItemClick={openLightbox}
-            expandedProjects={expandedProjects}
-            onToggleExpand={toggleExpand}
-          />
-        ) : (
-          <GridView
-            items={ALL_GALLERY_ITEMS}
-            onItemClick={openLightbox}
-          />
-        )}
+        {/* Gallery content */}
+        <div className="max-w-[960px] mx-auto px-6 pb-24 md:pb-40">
+          {viewMode === 'editorial' ? (
+            <EditorialView
+              projects={GALLERY_PROJECTS}
+              lang={lang}
+              onItemClick={openLightbox}
+              expandedProjects={expandedProjects}
+              onToggleExpand={toggleExpand}
+            />
+          ) : (
+            <GridView
+              items={ALL_GALLERY_ITEMS}
+              onItemClick={openLightbox}
+            />
+          )}
+        </div>
       </div>
 
       {/* Lightbox */}
@@ -248,7 +249,7 @@ const EditorialView: React.FC<{
   expandedProjects: Set<string>;
   onToggleExpand: (projectId: string) => void;
 }> = ({ projects, lang, onItemClick, expandedProjects, onToggleExpand }) => (
-  <div className="space-y-20 md:space-y-28">
+  <div className="space-y-24 md:space-y-32">
     {projects.map((project) => (
       <ProjectSection
         key={project.id}
@@ -286,26 +287,31 @@ const ProjectSection: React.FC<{
 
   return (
     <section id={`gallery-${project.id}`} className="scroll-mt-28">
-      {/* Project header */}
-      <div className="mb-6 md:mb-8">
-        <h2 className="text-xl md:text-2xl font-bold tracking-[-0.02em] mb-1 text-gray-900">
+      {/* Project header — aligned with the 740px text column */}
+      {/* clamp(0px, (100vw - 740px) / 2, 110px) matches the centering offset between the
+          max-w-[960px] image container and the max-w-[740px] text containers elsewhere */}
+      <div
+        className="max-w-[740px] mb-6"
+        style={{ marginLeft: 'clamp(0px, calc((100vw - 740px) / 2), 110px)' }}
+      >
+        <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-1">
           {project.name}
         </h2>
-        <p className="text-sm md:text-base text-gray-400">
+        <p className="text-sm text-gray-500">
           {description}
         </p>
       </div>
 
       {/* Hero image */}
       {heroItem && (
-        <div className="mb-3 md:mb-4">
+        <div className="mb-3">
           <MediaCard item={heroItem} index={0} onClick={() => onItemClick(heroItem)} />
         </div>
       )}
 
       {/* First 2 items */}
       {visibleRest.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {visibleRest.map((item, i) => (
             <MediaCard key={item.id} item={item} index={i + 1} onClick={() => onItemClick(item)} />
           ))}
@@ -324,7 +330,7 @@ const ProjectSection: React.FC<{
                 transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
                 className="overflow-hidden"
               >
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 mt-3 md:mt-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
                   {hiddenItems.map((item, i) => (
                     <MediaCard key={item.id} item={item} index={i + 3} onClick={() => onItemClick(item)} />
                   ))}
@@ -336,7 +342,10 @@ const ProjectSection: React.FC<{
           <button
             onClick={onToggleExpand}
             className="mt-4 flex items-center gap-2 text-sm font-medium text-gray-400 hover:text-gray-900 cursor-pointer active:scale-[0.97]"
-            style={{ transition: 'color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
+            style={{
+              marginLeft: 'clamp(0px, calc((100vw - 740px) / 2), 110px)',
+              transition: 'color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)',
+            }}
           >
             <motion.div
               animate={{ rotate: isExpanded ? 180 : 0 }}
@@ -360,7 +369,7 @@ const GridView: React.FC<{
   items: GalleryItem[];
   onItemClick: (item: GalleryItem) => void;
 }> = ({ items, onItemClick }) => (
-  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
     {items.map((item, i) => (
       <MediaCard key={item.id} item={item} index={i} onClick={() => onItemClick(item)} />
     ))}
@@ -368,7 +377,7 @@ const GridView: React.FC<{
 );
 
 // ---------------------------------------------------------------------------
-// Media Card — zoomed thumbnails, offset 150/150 from top-left
+// Media Card — clean, no borders, no shadows, minimal hover
 // ---------------------------------------------------------------------------
 
 // Per-image crop overrides: [scale, transformOrigin]
@@ -386,8 +395,7 @@ const MediaCard: React.FC<{ item: GalleryItem; onClick: () => void; index?: numb
 
   return (
     <div
-      className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in hover:shadow-lg hover:scale-[1.01]"
-      style={{ transition: 'border-color 200ms ease, box-shadow 300ms ease, transform 300ms cubic-bezier(0.23, 1, 0.32, 1)' }}
+      className="group rounded-xl overflow-hidden cursor-zoom-in"
       onClick={onClick}
     >
       {isVideo ? (
@@ -405,7 +413,7 @@ const MediaCard: React.FC<{ item: GalleryItem; onClick: () => void; index?: numb
           <LazyImage
             src={item.src}
             alt=""
-            className="w-full h-full object-cover transition-transform duration-300 ease-out"
+            className="w-full h-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.02]"
             style={{ transform: `scale(${scale})`, transformOrigin: origin }}
           />
         </div>

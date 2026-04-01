@@ -286,21 +286,21 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick }) => {
   const isVideo = item.type === 'video' || item.src.match(/\.(mp4|webm|mov)$/i);
   return (
     <motion.figure
-      initial={{ opacity: 0, y: 16 }}
+      initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3, delay: index * 0.03 }}
+      transition={{ duration: 0.28, delay: index * 0.03, ease: [0.23, 1, 0.32, 1] }}
       className="group cursor-zoom-in break-inside-avoid mb-6"
       onClick={onClick}
     >
-      <div className="rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 shadow-sm hover:shadow-lg transition-[border-color,box-shadow,transform] duration-300 ease-out hover:scale-[1.01]">
+      <div className="rounded-xl overflow-hidden ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]">
         {isVideo ? (
-          <video src={item.src} className="w-full h-auto block transition-transform duration-300 ease-out group-hover:scale-[1.02]" muted playsInline autoPlay loop preload="metadata" />
+          <video src={item.src} className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" muted playsInline autoPlay loop preload="metadata" />
         ) : (
-          <img loading="lazy" src={item.src} alt={item.caption} className="w-full h-auto block transition-transform duration-300 ease-out group-hover:scale-[1.02]" />
+          <img loading="lazy" src={item.src} alt={item.caption} className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" />
         )}
       </div>
-      <figcaption className="mt-3 text-sm text-gray-500">
-        <strong className="text-gray-700">{item.caption}</strong>
+      <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
+        {item.caption}
         {item.captionDesc && <span className="hidden sm:inline"> · {item.captionDesc}</span>}
       </figcaption>
     </motion.figure>
@@ -360,24 +360,19 @@ export const PagesJaunesPage: React.FC<PagesJaunesPageProps> = ({
       setLightboxIndex(index);
       setVideoStartTime(startTime);
       setLightboxOpen(true);
-      document.body.style.overflow = 'hidden';
     } else {
-      // Image not in list - fallback to first image
       setLightboxIndex(0);
       setVideoStartTime(startTime);
       setLightboxOpen(true);
-      document.body.style.overflow = 'hidden';
     }
   };
 
-  // Close lightbox
   const closeLightbox = () => {
     setLightboxOpen(false);
-    document.body.style.overflow = '';
   };
 
   return (
-    <div ref={containerRef} className={`min-h-screen ${viewMode === 'gallery' ? 'bg-white' : (systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white')}`}>
+    <div ref={containerRef} className="min-h-screen bg-[#FDFDFC]">
       {/* Main content */}
       <div>
         <AnimatePresence mode="wait">
@@ -388,13 +383,13 @@ export const PagesJaunesPage: React.FC<PagesJaunesPageProps> = ({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="min-h-full bg-white"
+              className="min-h-full bg-[#FDFDFC]"
             >
-              <div className="max-w-[1600px] mx-auto px-6 py-12">
-                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8">
+              <div className="max-w-[960px] mx-auto px-6 py-16 md:py-24">
+                <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-10">
                   {lang === 'fr' ? 'Galerie du projet' : 'Project Gallery'}
                 </h2>
-                <div className="columns-1 md:columns-2 lg:columns-3 gap-6 md:gap-8">
+                <div className="columns-1 md:columns-2 lg:columns-3 gap-4">
                   {galleryItems.map((item, idx) => (
                     <GalleryCard
                       key={item.src}

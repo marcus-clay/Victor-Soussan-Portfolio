@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { CaretRight, ArrowRight } from '@phosphor-icons/react'
+import { CaretRight } from '@phosphor-icons/react'
 import { getProjects, type Project } from '@/data/projectsData'
 import ShortProjectView from '@/components/ShortProjectView'
 import AuthorContactCard from '@/components/AuthorContactCard'
@@ -14,8 +14,8 @@ import { scrollToElement } from '@/utils/smoothScroll'
 
 type ProjectId = 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'sqool-classe' | 'france-vae' | 'pagesjaunes' | 'androidwear' | 'riskos'
 
-// Projects with dark theme (breadcrumb adapts accordingly)
-const DARK_PROJECTS: string[] = ['riskos']
+// Dark theme disabled — all projects render light
+const DARK_PROJECTS: string[] = []
 
 // TOC sections per project
 type TOCSections = { id: string; label_en: string; label_fr: string }[]
@@ -29,22 +29,18 @@ const SUMMARY_TOC: Record<string, TOCSections> = {
     { id: 'journey', label_en: 'Journey', label_fr: 'Parcours' },
     { id: 'highlights', label_en: 'Highlights', label_fr: 'Points clés' },
     { id: 'outcome', label_en: 'Outcome', label_fr: 'Résultats' },
-    { id: 'testimonial', label_en: 'Testimonial', label_fr: 'Témoignage' },
   ],
   connect: [
     { id: 'hero', label_en: 'Top', label_fr: 'Haut' },
     { id: 'context', label_en: 'Context', label_fr: 'Contexte' },
     { id: 'role', label_en: 'Role', label_fr: 'Rôle' },
-    { id: 'journey', label_en: 'Journey', label_fr: 'Parcours' },
     { id: 'scope', label_en: 'Scope', label_fr: 'Périmètre' },
     { id: 'highlights', label_en: 'Highlights', label_fr: 'Points clés' },
     { id: 'user-testing', label_en: 'User testing', label_fr: 'Tests utilisateurs' },
     { id: 'outcome', label_en: 'Outcome', label_fr: 'Résultats' },
-    { id: 'testimonial', label_en: 'Testimonial', label_fr: 'Témoignage' },
   ],
   dailymotion: [
     { id: 'hero', label_en: 'Top', label_fr: 'Haut' },
-    { id: 'context', label_en: 'Context', label_fr: 'Contexte' },
     { id: 'role', label_en: 'Role', label_fr: 'Rôle' },
     { id: 'journey', label_en: 'Modules', label_fr: 'Modules' },
     { id: 'scope', label_en: 'Scope', label_fr: 'Périmètre' },
@@ -59,30 +55,25 @@ const SUMMARY_TOC: Record<string, TOCSections> = {
     { id: 'highlights', label_en: 'Highlights', label_fr: 'Points clés' },
     { id: 'insights', label_en: 'Insights', label_fr: 'Enseignements' },
     { id: 'outcome', label_en: 'Outcome', label_fr: 'Résultats' },
-    { id: 'testimonial', label_en: 'Testimonial', label_fr: 'Témoignage' },
   ],
   'sqool-classe': [
     { id: 'hero', label_en: 'Top', label_fr: 'Haut' },
-    { id: 'context', label_en: 'Context', label_fr: 'Contexte' },
     { id: 'role', label_en: 'Role', label_fr: 'Rôle' },
     { id: 'modules', label_en: 'Modules', label_fr: 'Modules' },
     { id: 'scope', label_en: 'Scope', label_fr: 'Périmètre' },
     { id: 'highlights', label_en: 'Highlights', label_fr: 'Points clés' },
     { id: 'outcome', label_en: 'Outcome', label_fr: 'Résultats' },
-    { id: 'testimonial', label_en: 'Testimonial', label_fr: 'Témoignage' },
   ],
   'france-vae': [
     { id: 'hero', label_en: 'Top', label_fr: 'Haut' },
-    { id: 'initiatives', label_en: 'Initiatives', label_fr: 'Initiatives' },
+    { id: 'initiatives', label_en: 'Overview', label_fr: 'Aperçu' },
     { id: 'role', label_en: 'Role', label_fr: 'Rôle' },
     { id: 'outcome', label_en: 'Outcome', label_fr: 'Résultats' },
-    { id: 'testimonial', label_en: 'Testimonial', label_fr: 'Témoignage' },
   ],
   pagesjaunes: [
     { id: 'hero', label_en: 'Top', label_fr: 'Haut' },
     { id: 'context', label_en: 'Context', label_fr: 'Contexte' },
     { id: 'role', label_en: 'Role', label_fr: 'Rôle' },
-    { id: 'journey', label_en: 'Journey', label_fr: 'Parcours' },
     { id: 'scope', label_en: 'Scope', label_fr: 'Périmètre' },
     { id: 'insights', label_en: 'Insights', label_fr: 'Enseignements' },
     { id: 'outcome', label_en: 'Outcome', label_fr: 'Résultats' },
@@ -130,6 +121,7 @@ const FULL_TOC: Record<string, TOCSections> = {
     { id: 'live', label_en: 'Live Console', label_fr: 'Console Live' },
     { id: 'player', label_en: 'Player Manager', label_fr: 'Gestionnaire Player' },
     { id: 'design-system', label_en: 'Design System', label_fr: 'Design System' },
+    { id: 'impact', label_en: 'Impact', label_fr: 'Impact' },
   ],
   sqool: [
     { id: 'top', label_en: 'Top', label_fr: 'Haut' },
@@ -138,7 +130,6 @@ const FULL_TOC: Record<string, TOCSections> = {
     { id: 'phase1', label_en: '2019-2020', label_fr: '2019-2020' },
     { id: 'phase2', label_en: '2021', label_fr: '2021' },
     { id: 'phase3', label_en: '2022-2024', label_fr: '2022-2024' },
-    { id: 'apps', label_en: 'Apps', label_fr: 'Apps' },
     { id: 'impact', label_en: 'Impact', label_fr: 'Impact' },
   ],
   'sqool-classe': [
@@ -202,7 +193,7 @@ const FULL_TOC: Record<string, TOCSections> = {
 
 const loadingSpinner = () => (
   <div className="min-h-screen bg-white flex items-center justify-center">
-    <div className="w-8 h-8 border-2 border-gray-200 border-t-[#2D5CF3] rounded-full animate-spin" />
+    <div className="w-8 h-8 border-2 border-gray-200 border-t-gray-900 rounded-full animate-spin" />
   </div>
 )
 
@@ -234,24 +225,7 @@ export default function CaseStudyPageWrapper({
   view: string
 }) {
   const router = useRouter()
-  const isDark = DARK_PROJECTS.includes(projectId)
   const isScrollingDown = useScrollDirection(5)
-
-  // Toggle dark theme on nav, footer, and main for dark-themed projects
-  useEffect(() => {
-    if (!isDark) return
-    const nav = document.getElementById('site-nav')
-    const footer = document.getElementById('site-footer')
-    const main = document.getElementById('main-content')
-    nav?.classList.add('nav-dark')
-    footer?.classList.add('footer-dark')
-    main?.classList.add('main-dark')
-    return () => {
-      nav?.classList.remove('nav-dark')
-      footer?.classList.remove('footer-dark')
-      main?.classList.remove('main-dark')
-    }
-  }, [isDark])
 
   // Check if this is a short-format project
   const allProjects = getProjects(lang)
@@ -326,11 +300,7 @@ export default function CaseStudyPageWrapper({
     <>
       {/* Sticky sub-bar: swaps between breadcrumb and TOC */}
       <div
-        className={`sticky z-10 backdrop-blur-xl ${
-          isDark
-            ? 'bg-[#0a0a0a]/80 border-white/5'
-            : 'bg-[#FCFCFD]/80 border-gray-200'
-        }`}
+        className="sticky z-10 backdrop-blur-xl bg-[#FDFDFC]/80"
         style={{ top: 'var(--nav-height, 72px)', transition: 'top 250ms cubic-bezier(0.23, 1, 0.32, 1)' }}
       >
         {/* Breadcrumb (clipped container for swap animation) */}
@@ -345,34 +315,30 @@ export default function CaseStudyPageWrapper({
                 : 'transform 280ms cubic-bezier(0.23, 1, 0.32, 1), opacity 200ms ease 80ms',
             }}
           >
-            <div className="max-w-[1200px] mx-auto px-4 md:px-6 w-full h-10 flex items-center">
+            <div className="max-w-[740px] mx-auto px-6 w-full h-10 flex items-center">
               <nav className="flex items-center gap-1.5 text-[13px] min-w-0 overflow-hidden">
                 <Link
                   href={`/${lang}/projets`}
-                  className={`transition-colors hover:underline flex-shrink-0 ${
-                    isDark ? 'text-gray-500 hover:text-white' : 'text-gray-400 hover:text-gray-900'
-                  }`}
+                  className="text-gray-400 hover:text-gray-900 transition-colors hover:underline flex-shrink-0"
                 >
                   {lang === 'fr' ? 'Projets' : 'Projects'}
                 </Link>
-                <CaretRight size={10} className={`flex-shrink-0 ${isDark ? 'text-gray-600' : 'text-gray-300'}`} />
+                <CaretRight size={10} className="flex-shrink-0 text-gray-300" />
                 {viewLabel ? (
                   <>
                     <Link
                       href={`/${lang}/project/${projectId}/summary`}
-                      className={`transition-colors hover:underline flex-shrink-0 ${
-                        isDark ? 'text-gray-500 hover:text-white' : 'text-gray-400 hover:text-gray-900'
-                      }`}
+                      className="text-gray-400 hover:text-gray-900 transition-colors hover:underline flex-shrink-0"
                     >
                       {projectName}
                     </Link>
-                    <CaretRight size={10} className={`flex-shrink-0 ${isDark ? 'text-gray-600' : 'text-gray-300'}`} />
-                    <span className={`truncate font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                    <CaretRight size={10} className="flex-shrink-0 text-gray-300" />
+                    <span className="truncate font-medium text-gray-900">
                       {viewLabel}
                     </span>
                   </>
                 ) : (
-                  <span className={`truncate font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                  <span className="truncate font-medium text-gray-900">
                     {projectName}
                   </span>
                 )}
@@ -396,7 +362,7 @@ export default function CaseStudyPageWrapper({
                 sections={tocItems}
                 activeSection={activeSection}
                 onSectionClick={scrollToSection}
-                isDark={isDark}
+                isDark={false}
                 lang={lang}
               />
             </div>
@@ -423,12 +389,12 @@ export default function CaseStudyPageWrapper({
       ) : null}
 
       {/* Bottom: related projects + Contact CTA */}
-      <CaseStudyFooter lang={lang} projectId={projectId} isDark={isDark} allProjects={allProjects} />
+      <CaseStudyFooter lang={lang} projectId={projectId} allProjects={allProjects} />
     </>
   )
 }
 
-// ─── Smart related projects: same category first, then different ─────────────
+// Smart related projects: same category first, then different
 
 function getRelatedProjects(current: Project, allProjects: Project[]): Project[] {
   const others = allProjects.filter((p) => p.id !== current.id && p.format === 'case-study')
@@ -446,17 +412,15 @@ function getRelatedProjects(current: Project, allProjects: Project[]): Project[]
   return scored.slice(0, 2).map((s) => s.project)
 }
 
-// ─── Footer: related projects + contact CTA ──────────────────────────────────
+// Footer: related projects + contact CTA
 
 function CaseStudyFooter({
   lang,
   projectId,
-  isDark,
   allProjects,
 }: {
   lang: 'en' | 'fr'
   projectId: string
-  isDark: boolean
   allProjects: Project[]
 }) {
   const currentProject = allProjects.find((p) => p.id === projectId)
@@ -466,55 +430,32 @@ function CaseStudyFooter({
   }, [currentProject, allProjects])
 
   return (
-    <div className={`${isDark ? 'bg-[#111113]' : 'bg-[#F5F5F7]'}`}>
-      <div className="max-w-[1200px] mx-auto px-6 py-20">
+    <div className="bg-[#FDFDFC]">
+      <div className="max-w-[740px] mx-auto px-6 py-24 md:py-40">
         {/* Related projects */}
         {suggestions.length > 0 && (
           <div>
-            <p className={`text-[11px] font-semibold uppercase tracking-widest mb-5 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
+            <p className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
               {lang === 'fr' ? 'Projets similaires' : 'Related projects'}
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="divide-y divide-gray-100">
               {suggestions.map((proj) => (
                 <Link
                   key={proj.id}
                   href={`/${lang}/project/${proj.id}/summary`}
-                  className={`group block rounded-xl border cursor-pointer active:scale-[0.98] overflow-hidden ${
-                    isDark
-                      ? 'bg-[#1D1D1F] border-white/5 hover:border-white/15 hover:shadow-lg'
-                      : 'bg-white border-gray-200 hover:border-gray-300 hover:shadow-md'
-                  }`}
-                  style={{ transition: 'transform 160ms cubic-bezier(0.23, 1, 0.32, 1), border-color 200ms ease, box-shadow 200ms ease' }}
+                  className="py-5 -mx-3 px-3 rounded-lg hover:bg-black/[.04] active:bg-black/[.06] transition-colors duration-150 cursor-pointer flex items-center justify-between gap-4"
                 >
-                  {/* Cover image */}
-                  {proj.coverImage && (
-                    <div
-                      className="relative aspect-[16/9] overflow-hidden flex items-center justify-center p-3"
-                      style={{ backgroundColor: proj.cardBg || (isDark ? '#111111' : '#f4f4f5') }}
-                    >
-                      <img
-                        src={proj.coverImage.startsWith('/') ? proj.coverImage : `/images/${proj.coverImage}`}
-                        alt={proj.title}
-                        className="max-w-full max-h-full object-contain transition-transform duration-300 ease-out group-hover:scale-[1.03] rounded-lg"
-                      />
-                    </div>
-                  )}
-                  {/* Text content */}
-                  <div className="p-5">
-                    <p className={`text-[11px] font-medium uppercase tracking-wider mb-2 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
-                      {proj.role} · {proj.period}
-                    </p>
-                    <p className={`text-base font-semibold mb-1.5 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                  <div className="min-w-0">
+                    <p className="text-base font-medium text-gray-900">
                       {proj.title}
                     </p>
-                    <p className={`text-sm leading-relaxed line-clamp-2 mb-3 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                      {proj.summary}
+                    <p className="text-sm text-gray-500 mt-0.5">
+                      {proj.role}
                     </p>
-                    <span className={`inline-flex items-center gap-1.5 text-sm font-medium text-[#2D5CF3]`}>
-                      {lang === 'fr' ? 'Voir le projet' : 'View project'}
-                      <ArrowRight size={14} className="transition-transform duration-200 group-hover:translate-x-1" />
-                    </span>
                   </div>
+                  <span className="text-xs text-gray-500 flex-shrink-0">
+                    {proj.period}
+                  </span>
                 </Link>
               ))}
             </div>
@@ -523,7 +464,7 @@ function CaseStudyFooter({
 
         {/* Contact CTA */}
         <div className="mt-10">
-          <AuthorContactCard lang={lang} isDark={isDark} />
+          <AuthorContactCard lang={lang} />
         </div>
       </div>
     </div>

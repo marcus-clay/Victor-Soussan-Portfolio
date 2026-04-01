@@ -69,7 +69,7 @@ export default function InterventionsPageClient({ lang }: { lang: 'en' | 'fr' })
   const articles = getArticles().slice(0, 3)
 
   return (
-    <div className="min-h-screen bg-[#F9F9F9]">
+    <div className="min-h-screen bg-[#FDFDFC]">
       <div className="max-w-[1200px] mx-auto px-6 pt-20 pb-28">
 
         {/* Header */}
@@ -94,7 +94,7 @@ export default function InterventionsPageClient({ lang }: { lang: 'en' | 'fr' })
                 className="rounded-2xl border border-gray-200 bg-white p-6"
               >
                 <h3 className="text-base font-semibold text-gray-900 mb-2">{topic.title}</h3>
-                <p className="text-sm text-gray-500 leading-relaxed">{topic.desc}</p>
+                <p className="text-base text-gray-500 leading-relaxed">{topic.desc}</p>
               </div>
             ))}
           </div>
@@ -166,7 +166,7 @@ export default function InterventionsPageClient({ lang }: { lang: 'en' | 'fr' })
             <h2 className="text-xl font-semibold text-gray-900 mb-2">
               {isEn ? 'Propose an engagement' : 'Proposer une intervention'}
             </h2>
-            <p className="text-sm text-gray-500 mb-6 max-w-[50ch]">
+            <p className="text-base text-gray-500 mb-6 max-w-[50ch]">
               {isEn
                 ? 'Tell me about the format, topic, and context. I\u2019ll get back to you within 48h.'
                 : 'Dites-moi quel format vous int\u00e9resse, le sujet, et le contexte. R\u00e9ponse sous 48h.'}
@@ -174,7 +174,7 @@ export default function InterventionsPageClient({ lang }: { lang: 'en' | 'fr' })
             <div className="flex flex-col sm:flex-row gap-3">
               <a
                 href={`mailto:${EMAIL}?subject=${encodeURIComponent(isEn ? 'Speaking engagement inquiry' : 'Demande d\u2019intervention')}`}
-                className="group inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#2D5CF3] text-white font-medium text-[15px] hover:bg-[#2450d9] shadow-sm hover:shadow-md active:scale-[0.97] transition-[background-color,box-shadow,transform] duration-200 ease-out"
+                className="group inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gray-900 text-white font-medium text-[15px] hover:bg-gray-800 ring-1 ring-black shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] active:scale-[0.97] transition-[background-color,transform] duration-200 ease-out"
               >
                 {isEn ? 'Send an email' : 'Envoyer un email'}
                 <ArrowUpRight size={15} weight="bold" className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200 ease-out" />
@@ -214,7 +214,7 @@ export default function InterventionsPageClient({ lang }: { lang: 'en' | 'fr' })
                   href={`/${lang}/signal/${article.id}`}
                   className="group rounded-2xl border border-gray-200 bg-white p-5 hover:border-gray-300 hover:shadow-sm active:scale-[0.99] transition-[border-color,box-shadow,transform] duration-200 ease-out"
                 >
-                  <p className="text-sm font-semibold text-gray-900 mb-1 group-hover:text-[#2D5CF3] transition-colors duration-200">
+                  <p className="text-sm font-semibold text-gray-900 mb-1 group-hover:text-gray-900 transition-colors duration-200">
                     {isEn ? article.title_en : article.title_fr}
                   </p>
                   <p className="text-xs text-gray-500 line-clamp-2">

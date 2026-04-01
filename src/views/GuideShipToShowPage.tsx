@@ -27,21 +27,21 @@ interface Props {
 }
 
 const TAG_STYLES: Record<string, string> = {
-  'Méthodologie': 'bg-emerald-500/10 text-emerald-600',
-  'Methodology': 'bg-emerald-500/10 text-emerald-600',
-  'Claude Code': 'bg-[#7B61FF]/10 text-[#7B61FF]',
+  'Méthodologie': 'bg-gray-100 text-gray-500',
+  'Methodology': 'bg-gray-100 text-gray-500',
+  'Claude Code': 'bg-gray-100 text-gray-500',
 };
 
 const PHASE_ICONS = [Crosshair, TreeStructure, Package, FilmStrip, PencilLine, Terminal, Rocket];
 
 const PHASE_COLORS = [
-  { bg: 'bg-blue-50', text: 'text-blue-600', border: 'border-blue-200' },
-  { bg: 'bg-violet-50', text: 'text-violet-600', border: 'border-violet-200' },
-  { bg: 'bg-amber-50', text: 'text-amber-600', border: 'border-amber-200' },
-  { bg: 'bg-rose-50', text: 'text-rose-600', border: 'border-rose-200' },
-  { bg: 'bg-teal-50', text: 'text-teal-600', border: 'border-teal-200' },
-  { bg: 'bg-indigo-50', text: 'text-indigo-600', border: 'border-indigo-200' },
-  { bg: 'bg-emerald-50', text: 'text-emerald-600', border: 'border-emerald-200' },
+  { bg: 'bg-gray-50', text: 'text-gray-500', border: 'border-gray-200' },
+  { bg: 'bg-gray-50', text: 'text-gray-500', border: 'border-gray-200' },
+  { bg: 'bg-gray-50', text: 'text-gray-500', border: 'border-gray-200' },
+  { bg: 'bg-gray-50', text: 'text-gray-500', border: 'border-gray-200' },
+  { bg: 'bg-gray-50', text: 'text-gray-500', border: 'border-gray-200' },
+  { bg: 'bg-gray-50', text: 'text-gray-500', border: 'border-gray-200' },
+  { bg: 'bg-gray-50', text: 'text-gray-500', border: 'border-gray-200' },
 ];
 
 const GuideShipToShowPage: React.FC<Props> = ({ lang, onNavigate }) => {
@@ -134,14 +134,14 @@ const GuideShipToShowPage: React.FC<Props> = ({ lang, onNavigate }) => {
                     href={meta.githubUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-sm text-[#2D5CF3] hover:underline"
+                    className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-900 hover:underline"
                   >
                     <GithubLogo size={14} weight="bold" /> GitHub
                   </a>
                   <a
                     href={`/${lang}/project/${meta.exampleProject.slug}/summary`}
                     onClick={(e) => { e.preventDefault(); onNavigate(`project-${meta.exampleProject.slug}`); }}
-                    className="inline-flex items-center gap-2 text-sm text-[#2D5CF3] hover:underline"
+                    className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-900 hover:underline"
                   >
                     <ArrowSquareOut size={14} />
                     {lang === 'fr' ? 'Exemple : ' : 'Example: '}{meta.exampleProject.name}
@@ -194,7 +194,7 @@ const GuideShipToShowPage: React.FC<Props> = ({ lang, onNavigate }) => {
 
             {/* ─── The Framework ─── */}
             <section className="mb-14 scroll-mt-28">
-              <div className="p-6 rounded-xl border-l-4 border-[#2D5CF3] bg-blue-50/50 mb-8">
+              <div className="p-6 rounded-xl border-l-2 border-gray-200 bg-gray-50/50 mb-8">
                 <p className="text-[15px] leading-[1.8] text-gray-700">
                   {lang === 'fr' ? SHIP_TO_SHOW_SOLUTION.fr : SHIP_TO_SHOW_SOLUTION.en}
                 </p>
@@ -307,8 +307,8 @@ const GuideShipToShowPage: React.FC<Props> = ({ lang, onNavigate }) => {
               </p>
               <a
                 href={`/${lang}/project/${meta.exampleProject.slug}/summary`}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium bg-[#2D5CF3] text-white hover:bg-[#2450d9] shadow-sm hover:shadow-md active:scale-[0.97]"
-                style={{ transition: 'background-color 200ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 200ms ease' }}
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium bg-gray-900 text-white hover:bg-gray-800 active:scale-[0.97] ring-1 ring-black shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]"
+                style={{ transition: 'background-color 200ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
               >
                 {lang === 'fr' ? 'Voir le case study RiskOS' : 'View the RiskOS case study'}
                 <ArrowSquareOut size={16} />
@@ -335,8 +335,8 @@ const GuideShipToShowPage: React.FC<Props> = ({ lang, onNavigate }) => {
                       href={meta.githubUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium bg-gray-900 text-white hover:bg-gray-800 shadow-sm hover:shadow-md active:scale-[0.97]"
-                      style={{ transition: 'background-color 200ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 200ms ease' }}
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium bg-gray-900 text-white hover:bg-gray-800 active:scale-[0.97] ring-1 ring-black shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]"
+                      style={{ transition: 'background-color 200ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
                     >
                       <GithubLogo size={16} weight="bold" />
                       {lang === 'fr' ? 'Voir sur GitHub' : 'View on GitHub'}

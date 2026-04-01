@@ -6,22 +6,10 @@
  */
 
 import React, { useRef } from 'react';
+import VideoPlayer from '@/components/VideoPlayer';
 import { motion, useInView } from 'framer-motion';
 import {
-  Stack as Layers,
-  Calendar,
-  Briefcase,
-  Buildings as Building2,
-  Quotes as Quote,
-  DeviceMobile as Smartphone,
-  MapTrifold as Map,
-  Users,
-  Palette,
-  Watch,
-  CheckCircle as CheckCircle2,
   ArrowRight,
-  Heart,
-  MagnifyingGlass as Search
 } from '@phosphor-icons/react';
 
 interface PagesJaunesFullProps {
@@ -669,280 +657,199 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
   onContact,
   onNavigateToProject
 }) => {
-  const isDark = systemTheme === 'dark';
   const t = TRANSLATIONS[lang];
 
   return (
-    <div className={`${isDark ? 'bg-[#0a0a0a]' : 'bg-white'}`}>
-      <div className="max-w-[1200px] mx-auto px-6 md:px-10 py-12 md:py-16">
+    <div className="bg-[#FDFDFC]">
 
-        {/* ================================================================ */}
-        {/* HERO SECTION */}
-        {/* ================================================================ */}
-        <section className="mb-16 md:mb-24">
-          <div className="grid md:grid-cols-5 gap-8 items-start">
-            {/* Left Column - Main Content */}
-            <div className="md:col-span-3">
-              {/* Role Badge */}
-              <div className="flex flex-wrap items-center gap-3 mb-6 text-sm">
-                <span className={`px-3 py-1 rounded-full font-medium ${
-                  isDark ? 'bg-yellow-500/20 text-yellow-400' : 'bg-yellow-100 text-yellow-700'
-                }`}>
-                  {t.hero.role}
-                </span>
-                <span className={isDark ? 'text-gray-400' : 'text-gray-500'}>
-                  {t.hero.scope}
-                </span>
-                <span className={isDark ? 'text-gray-400' : 'text-gray-500'}>
-                  {t.hero.period}
-                </span>
-              </div>
+      {/* ================================================================ */}
+      {/* HERO SECTION */}
+      {/* ================================================================ */}
+      <section className="mb-16 md:mb-24">
+        <div className="max-w-[740px] mx-auto px-6 pt-16 md:pt-24">
+          {/* Meta */}
+          <p className="text-xs text-gray-400 mb-4">
+            {t.hero.role} · {t.hero.scope} · {t.hero.period}
+          </p>
 
-              {/* Main Title */}
-              <h1 className={`text-3xl md:text-4xl font-bold mb-4 leading-tight ${
-                isDark ? 'text-white' : 'text-gray-900'
-              }`}>
-                {t.hero.title}
-              </h1>
+          {/* Main Title */}
+          <h1 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-3">
+            {t.hero.title}
+          </h1>
 
-              {/* Subtitle */}
-              <h2 className={`text-xl md:text-2xl font-bold mb-6 ${
-                isDark ? 'text-gray-300' : 'text-gray-700'
-              }`}>
-                {t.hero.subtitle}
-              </h2>
+          {/* Subtitle */}
+          <p className="text-base text-gray-500 leading-relaxed mb-3">
+            {t.hero.subtitle}
+          </p>
 
-              {/* Description */}
-              <p className={`text-base leading-relaxed mb-6 ${
-                isDark ? 'text-gray-300' : 'text-gray-600'
-              }`}>
-                {t.hero.description}
-              </p>
-            </div>
+          {/* Description */}
+          <p className="text-base text-gray-500 leading-relaxed mb-8">
+            {t.hero.description}
+          </p>
 
-            {/* Right Column - Testimonial */}
-            <div className="md:col-span-2">
-              <div className={`p-6 rounded-2xl border ${
-                isDark
-                  ? 'bg-yellow-900/20 border-yellow-500/20'
-                  : 'bg-yellow-50 border-yellow-200'
-              }`}>
-                <Quote size={24} className={isDark ? 'text-yellow-400 mb-4' : 'text-yellow-600 mb-4'} />
-                <p className={`text-sm italic leading-relaxed mb-4 ${
-                  isDark ? 'text-gray-300' : 'text-gray-600'
-                }`}>
-                  {t.testimonial.quote}
+          {/* Testimonial */}
+          <div className="py-6 border-t border-gray-100">
+            <p className="text-base text-gray-500 leading-relaxed italic mb-4">
+              "{t.testimonial.quote}"
+            </p>
+            <div className="flex items-center gap-3">
+              <img
+                loading="lazy"
+                src="/images/people/simon-white.webp"
+                alt={t.testimonial.author}
+                className="w-8 h-8 rounded-full object-cover"
+              />
+              <div>
+                <p className="text-sm font-medium text-gray-900">
+                  {t.testimonial.author}
                 </p>
-                <div className="flex items-center space-x-3">
-                  <img
-                    loading="lazy"
-                    src="/images/people/simon-white.webp"
-                    alt={t.testimonial.author}
-                    className="w-10 h-10 rounded-full object-cover"
-                  />
-                  <div>
-                    <p className={`text-sm font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                      {t.testimonial.author}
-                    </p>
-                    <p className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                      {t.testimonial.role}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ================================================================ */}
-        {/* META CARD */}
-        {/* ================================================================ */}
-        <div className={`p-6 rounded-3xl border mb-12 ${
-          isDark ? 'bg-[#1D1D1F] border-white/10' : 'bg-gray-50 border-gray-200'
-        }`}>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="flex items-center space-x-3">
-              <div className={`p-2 rounded-xl ${isDark ? 'bg-blue-600/20' : 'bg-blue-50'}`}>
-                <Layers size={20} className={isDark ? 'text-blue-400' : 'text-blue-600'} />
-              </div>
-              <div>
-                <p className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{t.meta.typeLabel}</p>
-                <p className={`text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>{t.meta.type}</p>
-              </div>
-            </div>
-
-            <div className="flex items-center space-x-3">
-              <div className={`p-2 rounded-xl ${isDark ? 'bg-purple-500/20' : 'bg-purple-50'}`}>
-                <Briefcase size={20} className={isDark ? 'text-purple-400' : 'text-purple-600'} />
-              </div>
-              <div>
-                <p className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{t.meta.scopeLabel}</p>
-                <p className={`text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>{t.meta.scope}</p>
-              </div>
-            </div>
-
-            <div className="flex items-center space-x-3">
-              <div className={`p-2 rounded-xl ${isDark ? 'bg-green-500/20' : 'bg-green-50'}`}>
-                <Calendar size={20} className={isDark ? 'text-green-400' : 'text-green-600'} />
-              </div>
-              <div>
-                <p className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{t.meta.periodLabel}</p>
-                <p className={`text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>{t.meta.period}</p>
-              </div>
-            </div>
-
-            <div className="flex items-center space-x-3">
-              <div className={`p-2 rounded-xl ${isDark ? 'bg-orange-500/20' : 'bg-orange-50'}`}>
-                <Building2 size={20} className={isDark ? 'text-orange-400' : 'text-orange-600'} />
-              </div>
-              <div>
-                <p className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{t.meta.companyLabel}</p>
-                <p className={`text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>{t.meta.company}</p>
+                <p className="text-xs text-gray-400">
+                  {t.testimonial.role}
+                </p>
               </div>
             </div>
           </div>
         </div>
+      </section>
 
-        {/* ================================================================ */}
-        {/* HERO IMAGE */}
-        {/* ================================================================ */}
+      {/* ================================================================ */}
+      {/* HERO IMAGE */}
+      {/* ================================================================ */}
+      <div className="max-w-[960px] mx-auto px-6">
         <figure className="mb-24 md:mb-32">
           <div
             onClick={() => onImageClick('/images/thumbnail_pagesjaunes_sp_tablette.webp')}
-            className={`rounded-2xl overflow-hidden border cursor-pointer ${
-              isDark ? 'border-white/10' : 'border-gray-200'
-            }`}
+            className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
           >
             <img
               loading="lazy"
               src="/images/thumbnail_pagesjaunes_sp_tablette.webp"
               alt="PagesJaunes Mobile Apps"
-              className="w-full h-auto"
+              className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
             />
           </div>
+          <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
+            {lang === 'en' ? 'PagesJaunes redesigned apps across iOS, Android and tablet' : 'Applications PagesJaunes redessinées sur iOS, Android et tablette'}
+          </figcaption>
         </figure>
+      </div>
 
-        {/* ================================================================ */}
-        {/* OVERVIEW SECTION */}
-        {/* ================================================================ */}
-        <FadeInSection>
-          <section id="overview" className="mb-24 md:mb-32">
-            <h1 className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-4 tracking-tight ${
-              isDark ? 'text-white' : 'text-gray-900'
-            }`}>
+      {/* ================================================================ */}
+      {/* OVERVIEW SECTION */}
+      {/* ================================================================ */}
+      <FadeInSection>
+        <section id="overview" className="mb-24 md:mb-32">
+          <div className="max-w-[740px] mx-auto px-6">
+            <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
               {t.overview.title}
-            </h1>
-            <hr className={`mb-8 ${isDark ? 'border-white/10' : 'border-gray-200'}`} />
+            </h2>
 
-            <div className="grid md:grid-cols-3 gap-8">
+            <div className="space-y-8">
               <div>
-                <h2 className={`text-xl md:text-2xl font-semibold mb-5 tracking-tight ${
-                  isDark ? 'text-white' : 'text-gray-900'
-                }`}>
+                <p className="text-sm font-medium text-gray-900 mb-2">
                   {t.overview.introTitle}
-                </h2>
-                <p className={`text-base leading-relaxed ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                </p>
+                <p className="text-base text-gray-500 leading-relaxed">
                   {t.overview.introDesc}
                 </p>
               </div>
 
               <div>
-                <h2 className={`text-xl md:text-2xl font-semibold mb-5 tracking-tight ${
-                  isDark ? 'text-white' : 'text-gray-900'
-                }`}>
+                <p className="text-sm font-medium text-gray-900 mb-2">
                   {t.overview.roleTitle}
-                </h2>
-                <p className={`text-base leading-relaxed ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                </p>
+                <p className="text-base text-gray-500 leading-relaxed">
                   {t.overview.roleDesc}
                 </p>
               </div>
 
               <div>
-                <h2 className={`text-xl md:text-2xl font-semibold mb-5 tracking-tight ${
-                  isDark ? 'text-white' : 'text-gray-900'
-                }`}>
+                <p className="text-sm font-medium text-gray-900 mb-2">
                   {t.overview.goalsTitle}
-                </h2>
-                <ul className={`text-base leading-relaxed space-y-2 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                </p>
+                <ul className="space-y-1.5">
                   {t.overview.goals.map((goal, idx) => (
-                    <li key={idx} className="flex items-start gap-2">
-                      <CheckCircle2 size={16} className="text-yellow-500 mt-1 flex-shrink-0" />
-                      <span>{goal}</span>
+                    <li key={idx} className="text-base text-gray-500 leading-relaxed">
+                      <span className="text-gray-300 mr-2">&#8226;</span>{goal}
                     </li>
                   ))}
                 </ul>
               </div>
             </div>
-          </section>
-        </FadeInSection>
 
-        {/* ================================================================ */}
-        {/* HOMEPAGE SECTION */}
-        {/* ================================================================ */}
-        <FadeInSection>
-          <section id="homepage" className="mb-24 md:mb-32">
-            <div className="flex items-center gap-3 mb-4">
-              <div className={`p-2 rounded-xl ${isDark ? 'bg-yellow-500/20' : 'bg-yellow-100'}`}>
-                <Smartphone size={20} className={isDark ? 'text-yellow-400' : 'text-yellow-600'} />
+            {/* Meta */}
+            <div className="mt-12 divide-y divide-gray-100">
+              <div className="flex justify-between py-3">
+                <span className="text-xs text-gray-400">{t.meta.typeLabel}</span>
+                <span className="text-sm text-gray-900">{t.meta.type}</span>
               </div>
-              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                {t.homepage.sectionTitle}
-              </h2>
+              <div className="flex justify-between py-3">
+                <span className="text-xs text-gray-400">{t.meta.scopeLabel}</span>
+                <span className="text-sm text-gray-900">{t.meta.scope}</span>
+              </div>
+              <div className="flex justify-between py-3">
+                <span className="text-xs text-gray-400">{t.meta.periodLabel}</span>
+                <span className="text-sm text-gray-900">{t.meta.period}</span>
+              </div>
+              <div className="flex justify-between py-3">
+                <span className="text-xs text-gray-400">{t.meta.companyLabel}</span>
+                <span className="text-sm text-gray-900">{t.meta.company}</span>
+              </div>
             </div>
+          </div>
+        </section>
+      </FadeInSection>
 
-            <p className={`text-lg italic mb-6 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-              {t.homepage.question}
-            </p>
+      {/* ================================================================ */}
+      {/* HOMEPAGE SECTION */}
+      {/* ================================================================ */}
+      <FadeInSection>
+        <section id="homepage" className="mb-24 md:mb-32">
+          <div className="max-w-[740px] mx-auto px-6">
+            <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-3">
+              {t.homepage.sectionTitle}
+            </h2>
 
-            <p className={`text-base leading-relaxed mb-8 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+            <p className="text-base text-gray-500 leading-relaxed mb-8">
               {t.homepage.intro}
             </p>
 
-            <div className="grid md:grid-cols-3 gap-6 mb-8">
-              <div className={`p-5 rounded-2xl ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}>
-                <p className={`text-lg font-semibold mb-2 ${isDark ? 'text-yellow-400' : 'text-yellow-600'}`}>
-                  "{t.homepage.greeting}"
-                </p>
-                <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                  {t.homepage.greetingDesc}
-                </p>
-              </div>
-
-              <div className={`p-5 rounded-2xl ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}>
-                <p className={`text-base font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+            <div className="divide-y divide-gray-100 mb-12">
+              <div className="py-4">
+                <p className="text-sm font-medium text-gray-900 mb-2">
                   {t.homepage.imagery}
                 </p>
-                <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                <p className="text-base text-gray-500 leading-relaxed">
                   {t.homepage.imageryDesc}
                 </p>
               </div>
 
-              <div className={`p-5 rounded-2xl ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}>
-                <p className={`text-base font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <div className="py-4">
+                <p className="text-sm font-medium text-gray-900 mb-2">
                   {t.homepage.simplification}
                 </p>
-                <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                <p className="text-base text-gray-500 leading-relaxed">
                   {t.homepage.simplificationDesc}
                 </p>
               </div>
             </div>
+          </div>
 
-            {/* Homepage iOS & Android */}
+          {/* Homepage iOS & Android */}
+          <div className="max-w-[960px] mx-auto px-6">
             <figure className="mb-8">
               <div
                 onClick={() => onImageClick(GALLERY_IMAGES.homepage.main)}
-                className={`group rounded-2xl overflow-hidden border cursor-pointer transition-transform duration-300 hover:scale-[1.01] ${
-                  isDark ? 'border-white/10' : 'border-gray-200'
-                }`}
+                className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
               >
                 <img
                   loading="lazy"
                   src={GALLERY_IMAGES.homepage.main}
                   alt="PagesJaunes Homepage iOS & Android"
-                  className="w-full h-auto transition-transform duration-300 group-hover:scale-[1.03]"
+                  className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
                 />
               </div>
-              <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+              <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
                 {CAPTIONS[lang].homepage.main}
               </figcaption>
             </figure>
@@ -951,39 +858,35 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
             <figure className="mb-8">
               <div
                 onClick={() => onImageClick(GALLERY_IMAGES.homepage.variations)}
-                className={`group rounded-2xl overflow-hidden border cursor-pointer transition-transform duration-300 hover:scale-[1.01] ${
-                  isDark ? 'border-white/10' : 'border-gray-200'
-                }`}
+                className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
               >
                 <img
                   loading="lazy"
                   src={GALLERY_IMAGES.homepage.variations}
                   alt="PagesJaunes Homepage Variations"
-                  className="w-full h-auto transition-transform duration-300 group-hover:scale-[1.03]"
+                  className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
                 />
               </div>
-              <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+              <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
                 {CAPTIONS[lang].homepage.variations}
               </figcaption>
             </figure>
 
             {/* iPad Homepage */}
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="space-y-6">
               <figure>
                 <div
                   onClick={() => onImageClick(GALLERY_IMAGES.homepageIpad.main)}
-                  className={`rounded-2xl overflow-hidden border cursor-pointer ${
-                    isDark ? 'border-white/10' : 'border-gray-200'
-                  }`}
+                  className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
                 >
                   <img
                     loading="lazy"
                     src={GALLERY_IMAGES.homepageIpad.main}
                     alt="PagesJaunes iPad Homepage"
-                    className="w-full h-auto transition-transform duration-300 group-hover:scale-[1.03]"
+                    className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
                   />
                 </div>
-                <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
                   {CAPTIONS[lang].homepageIpad.main}
                 </figcaption>
               </figure>
@@ -991,226 +894,188 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
               <figure>
                 <div
                   onClick={() => onImageClick(GALLERY_IMAGES.homepageIpad.variations)}
-                  className={`rounded-2xl overflow-hidden border cursor-pointer ${
-                    isDark ? 'border-white/10' : 'border-gray-200'
-                  }`}
+                  className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
                 >
                   <img
                     loading="lazy"
                     src={GALLERY_IMAGES.homepageIpad.variations}
                     alt="PagesJaunes iPad Homepage Variations"
-                    className="w-full h-auto transition-transform duration-300 group-hover:scale-[1.03]"
+                    className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
                   />
                 </div>
-                <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
                   {CAPTIONS[lang].homepageIpad.variations}
                 </figcaption>
               </figure>
             </div>
-          </section>
-        </FadeInSection>
+          </div>
+        </section>
+      </FadeInSection>
 
-        {/* ================================================================ */}
-        {/* SEARCH ENGINE EVOLUTION SECTION */}
-        {/* ================================================================ */}
-        <FadeInSection>
-          <section id="search" className="mb-24 md:mb-32">
-            <div className="flex items-center gap-3 mb-4">
-              <div className={`p-2 rounded-xl ${isDark ? 'bg-yellow-500/20' : 'bg-yellow-100'}`}>
-                <Search size={20} className={isDark ? 'text-yellow-400' : 'text-yellow-600'} />
-              </div>
-              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                {t.searchEngine.sectionTitle}
-              </h2>
-            </div>
+      {/* ================================================================ */}
+      {/* SEARCH ENGINE EVOLUTION SECTION */}
+      {/* ================================================================ */}
+      <FadeInSection>
+        <section id="search" className="mb-24 md:mb-32">
+          <div className="max-w-[740px] mx-auto px-6">
+            <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-3">
+              {t.searchEngine.sectionTitle}
+            </h2>
 
-            <p className={`text-lg italic mb-6 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-              {t.searchEngine.question}
-            </p>
-
-            <p className={`text-base leading-relaxed mb-8 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+            <p className="text-base text-gray-500 leading-relaxed mb-8">
               {t.searchEngine.intro}
             </p>
 
-            {/* Key Points Grid */}
-            <div className="grid md:grid-cols-2 gap-6 mb-8">
-              <div className={`p-5 rounded-2xl ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}>
-                <p className={`text-base font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+            <div className="divide-y divide-gray-100 mb-12">
+              <div className="py-4">
+                <p className="text-sm font-medium text-gray-900 mb-2">
                   {t.searchEngine.stakes}
                 </p>
-                <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                <p className="text-base text-gray-500 leading-relaxed">
                   {t.searchEngine.stakesDesc}
                 </p>
               </div>
 
-              <div className={`p-5 rounded-2xl ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}>
-                <p className={`text-base font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <div className="py-4">
+                <p className="text-sm font-medium text-gray-900 mb-2">
                   {t.searchEngine.model}
                 </p>
-                <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                <p className="text-base text-gray-500 leading-relaxed">
                   {t.searchEngine.modelDesc}
                 </p>
               </div>
             </div>
+          </div>
 
-            {/* Search Flow Image */}
+          {/* Search Flow Image */}
+          <div className="max-w-[960px] mx-auto px-6">
             <figure className="mb-8">
               <div
                 onClick={() => onImageClick(GALLERY_IMAGES.search.flow)}
-                className={`group rounded-2xl overflow-hidden border cursor-pointer transition-transform duration-300 hover:scale-[1.01] ${
-                  isDark ? 'border-white/10' : 'border-gray-200'
-                }`}
+                className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
               >
                 <img
                   loading="lazy"
                   src={GALLERY_IMAGES.search.flow}
                   alt="PagesJaunes Search Flow"
-                  className="w-full h-auto transition-transform duration-300 group-hover:scale-[1.03]"
+                  className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
                 />
               </div>
-              <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+              <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
                 {CAPTIONS[lang].search.flow}
               </figcaption>
             </figure>
+          </div>
 
-            {/* Material Design Implementation */}
-            <div className="grid md:grid-cols-2 gap-6 mb-8">
-              <div className={`p-5 rounded-2xl ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}>
-                <p className={`text-base font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+          <div className="max-w-[740px] mx-auto px-6">
+            <div className="divide-y divide-gray-100 mb-12">
+              <div className="py-4">
+                <p className="text-sm font-medium text-gray-900 mb-2">
                   {t.searchEngine.materialDesign}
                 </p>
-                <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                <p className="text-base text-gray-500 leading-relaxed">
                   {t.searchEngine.materialDesignDesc}
                 </p>
               </div>
 
-              <div className={`p-5 rounded-2xl ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}>
-                <p className={`text-base font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <div className="py-4">
+                <p className="text-sm font-medium text-gray-900 mb-2">
                   {t.searchEngine.shipped}
                 </p>
-                <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                <p className="text-base text-gray-500 leading-relaxed">
                   {t.searchEngine.shippedDesc}
                 </p>
               </div>
             </div>
+          </div>
 
-            {/* Search Engine Prototype Video */}
+          {/* Search Engine Prototype Video */}
+          <div className="max-w-[960px] mx-auto px-6">
             <figure className="mb-8">
               <div
                 onClick={() => onImageClick(GALLERY_IMAGES.search.prototype)}
-                className={`group rounded-2xl overflow-hidden border cursor-pointer transition-transform duration-300 hover:scale-[1.01] relative ${
-                  isDark ? 'border-white/10' : 'border-gray-200'
-                }`}
+                className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01] relative"
                 style={{ backgroundColor: '#C8C8C8', width: '100%', height: 0, paddingTop: '66.67%', position: 'relative' }}
               >
                 <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  {/* Video with drop shadow */}
                   <div className="relative rounded-lg overflow-hidden" style={{ maxWidth: '384px', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.35)' }}>
-                    <video
+                    <VideoPlayer
                       src={GALLERY_IMAGES.search.prototype}
-                      className="w-full h-auto"
-                      muted
-                      playsInline
-                      loop
-                      autoPlay
+                      className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
                     />
                   </div>
                 </div>
-                {/* Play overlay on hover */}
-                <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/10 transition-colors pointer-events-none">
-                  <div className="w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-md transition-[background-color,color,transform] duration-200 ease-out opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 bg-white/30">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="white" className="ml-1">
-                      <polygon points="5 3 19 12 5 21 5 3" />
-                    </svg>
-                  </div>
-                </div>
               </div>
-              <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+              <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
                 {CAPTIONS[lang].search.prototype}
               </figcaption>
             </figure>
-          </section>
-        </FadeInSection>
+          </div>
+        </section>
+      </FadeInSection>
 
-        {/* ================================================================ */}
-        {/* ONBOARDING SECTION */}
-        {/* ================================================================ */}
-        <FadeInSection>
-          <section id="onboarding" className="mb-24 md:mb-32">
-            <div className="flex items-center gap-3 mb-4">
-              <div className={`p-2 rounded-xl ${isDark ? 'bg-blue-500/20' : 'bg-blue-100'}`}>
-                <Users size={20} className={isDark ? 'text-blue-400' : 'text-blue-600'} />
-              </div>
-              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                {t.onboarding.sectionTitle}
-              </h2>
-            </div>
+      {/* ================================================================ */}
+      {/* ONBOARDING SECTION */}
+      {/* ================================================================ */}
+      <FadeInSection>
+        <section id="onboarding" className="mb-24 md:mb-32">
+          <div className="max-w-[740px] mx-auto px-6">
+            <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-3">
+              {t.onboarding.sectionTitle}
+            </h2>
 
-            <p className={`text-lg italic mb-6 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-              {t.onboarding.question}
-            </p>
-
-            <p className={`text-base leading-relaxed mb-8 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+            <p className="text-base text-gray-500 leading-relaxed mb-8">
               {t.onboarding.intro}
             </p>
 
-            <div className="grid md:grid-cols-3 gap-6 mb-8">
-              <div className={`p-5 rounded-2xl ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}>
-                <p className={`text-base font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+            <div className="divide-y divide-gray-100 mb-12">
+              <div className="py-4">
+                <p className="text-sm font-medium text-gray-900 mb-2">
                   {t.onboarding.ios}
                 </p>
-                <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                <p className="text-base text-gray-500 leading-relaxed">
                   {t.onboarding.iosDesc}
                 </p>
               </div>
 
-              <div className={`p-5 rounded-2xl ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}>
-                <p className={`text-base font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <div className="py-4">
+                <p className="text-sm font-medium text-gray-900 mb-2">
                   {t.onboarding.android}
                 </p>
-                <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                <p className="text-base text-gray-500 leading-relaxed">
                   {t.onboarding.androidDesc}
                 </p>
               </div>
 
-              <div className={`p-5 rounded-2xl ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}>
-                <p className={`text-base font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <div className="py-4">
+                <p className="text-sm font-medium text-gray-900 mb-2">
                   {t.onboarding.goals}
                 </p>
-                <ul className={`text-sm space-y-1 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                <ul className="space-y-1">
                   {t.onboarding.goalsList.map((goal, idx) => (
-                    <li key={idx}>• {goal}</li>
+                    <li key={idx} className="text-base text-gray-500 leading-relaxed">
+                      <span className="text-gray-300 mr-2">&#8226;</span>{goal}
+                    </li>
                   ))}
                 </ul>
               </div>
             </div>
+          </div>
 
-            {/* Onboarding Videos */}
-            <div className="grid md:grid-cols-2 gap-6">
+          {/* Onboarding Videos */}
+          <div className="max-w-[960px] mx-auto px-6">
+            <div className="space-y-6">
               <figure>
                 <div
                   onClick={() => onImageClick('/images/pj-ios-app-onboarding-animation.mp4')}
-                  className={`rounded-2xl overflow-hidden border cursor-pointer group relative ${
-                    isDark ? 'border-white/10' : 'border-gray-200'
-                  }`}
+                  className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
                 >
-                  <video
+                  <VideoPlayer
                     src="/images/pj-ios-app-onboarding-animation.mp4"
-                    className="w-full h-auto"
-                    muted
-                    playsInline
-                    loop
-                    autoPlay
+                    className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
                   />
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/20 transition-colors">
-                    <div className="w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-md transition-[background-color,color,transform] duration-200 ease-out opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 bg-white/20">
-                      <svg width="28" height="28" viewBox="0 0 24 24" fill="white" className="ml-1">
-                        <polygon points="5 3 19 12 5 21 5 3" />
-                      </svg>
-                    </div>
-                  </div>
                 </div>
-                <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
                   {t.onboarding.ios}
                 </figcaption>
               </figure>
@@ -1218,97 +1083,77 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
               <figure>
                 <div
                   onClick={() => onImageClick('/images/pj-and-app-onboarding-animation.mp4')}
-                  className={`rounded-2xl overflow-hidden border cursor-pointer group relative ${
-                    isDark ? 'border-white/10' : 'border-gray-200'
-                  }`}
+                  className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
                 >
-                  <video
+                  <VideoPlayer
                     src="/images/pj-and-app-onboarding-animation.mp4"
-                    className="w-full h-auto"
-                    muted
-                    playsInline
-                    loop
-                    autoPlay
+                    className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
                   />
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/20 transition-colors">
-                    <div className="w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-md transition-[background-color,color,transform] duration-200 ease-out opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 bg-white/20">
-                      <svg width="28" height="28" viewBox="0 0 24 24" fill="white" className="ml-1">
-                        <polygon points="5 3 19 12 5 21 5 3" />
-                      </svg>
-                    </div>
-                  </div>
                 </div>
-                <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
                   {t.onboarding.android}
                 </figcaption>
               </figure>
             </div>
-          </section>
-        </FadeInSection>
+          </div>
+        </section>
+      </FadeInSection>
 
-        {/* ================================================================ */}
-        {/* NAVIGATION SECTION */}
-        {/* ================================================================ */}
-        <FadeInSection>
-          <section id="navigation" className="mb-24 md:mb-32">
-            <div className="flex items-center gap-3 mb-4">
-              <div className={`p-2 rounded-xl ${isDark ? 'bg-green-500/20' : 'bg-green-100'}`}>
-                <Map size={20} className={isDark ? 'text-green-400' : 'text-green-600'} />
-              </div>
-              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                {t.navigation.sectionTitle}
-              </h2>
-            </div>
+      {/* ================================================================ */}
+      {/* NAVIGATION SECTION */}
+      {/* ================================================================ */}
+      <FadeInSection>
+        <section id="navigation" className="mb-24 md:mb-32">
+          <div className="max-w-[740px] mx-auto px-6">
+            <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-3">
+              {t.navigation.sectionTitle}
+            </h2>
 
-            <p className={`text-lg italic mb-6 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-              {t.navigation.question}
-            </p>
-
-            <p className={`text-base leading-relaxed mb-8 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+            <p className="text-base text-gray-500 leading-relaxed mb-8">
               {t.navigation.intro}
             </p>
 
-            <div className="grid md:grid-cols-2 gap-6 mb-8">
-              <div className={`p-5 rounded-2xl ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}>
-                <p className={`text-base font-semibold mb-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+            <div className="divide-y divide-gray-100 mb-12">
+              <div className="py-4">
+                <p className="text-sm font-medium text-gray-900 mb-2">
                   {t.navigation.features}
                 </p>
-                <ul className={`text-sm space-y-2 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                <ul className="space-y-1.5">
                   {t.navigation.featuresList.map((feature, idx) => (
-                    <li key={idx} className="flex items-start gap-2">
-                      <CheckCircle2 size={14} className="text-green-500 mt-0.5 flex-shrink-0" />
-                      <span>{feature}</span>
+                    <li key={idx} className="text-base text-gray-500 leading-relaxed">
+                      <span className="text-gray-300 mr-2">&#8226;</span>{feature}
                     </li>
                   ))}
                 </ul>
               </div>
 
-              <div className={`p-5 rounded-2xl ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}>
-                <p className={`text-base font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <div className="py-4">
+                <p className="text-sm font-medium text-gray-900 mb-2">
                   {t.navigation.tablet}
                 </p>
-                <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                <p className="text-base text-gray-500 leading-relaxed">
                   {t.navigation.tabletDesc}
                 </p>
               </div>
             </div>
+          </div>
 
+          {/* Navigation images */}
+          <div className="max-w-[960px] mx-auto px-6">
             {/* Transit System Components */}
             <figure className="mb-8">
               <div
                 onClick={() => onImageClick(GALLERY_IMAGES.maps.system)}
-                className={`group rounded-2xl overflow-hidden border cursor-pointer transition-transform duration-300 hover:scale-[1.01] ${
-                  isDark ? 'border-white/10' : 'border-gray-200'
-                }`}
+                className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
               >
                 <img
                   loading="lazy"
                   src={GALLERY_IMAGES.maps.system}
                   alt="PagesJaunes Transit System Components"
-                  className="w-full h-auto transition-transform duration-300 group-hover:scale-[1.03]"
+                  className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
                 />
               </div>
-              <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+              <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
                 {CAPTIONS[lang].maps.system}
               </figcaption>
             </figure>
@@ -1317,18 +1162,16 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
             <figure className="mb-8">
               <div
                 onClick={() => onImageClick(GALLERY_IMAGES.maps.multidevice)}
-                className={`group rounded-2xl overflow-hidden border cursor-pointer transition-transform duration-300 hover:scale-[1.01] ${
-                  isDark ? 'border-white/10' : 'border-gray-200'
-                }`}
+                className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
               >
                 <img
                   loading="lazy"
                   src={GALLERY_IMAGES.maps.multidevice}
                   alt="PagesJaunes Multi-device Navigation"
-                  className="w-full h-auto transition-transform duration-300 group-hover:scale-[1.03]"
+                  className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
                 />
               </div>
-              <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+              <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
                 {CAPTIONS[lang].maps.multidevice}
               </figcaption>
             </figure>
@@ -1337,18 +1180,16 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
             <figure className="mb-8">
               <div
                 onClick={() => onImageClick(GALLERY_IMAGES.maps.iphoneFlows)}
-                className={`group rounded-2xl overflow-hidden border cursor-pointer transition-transform duration-300 hover:scale-[1.01] ${
-                  isDark ? 'border-white/10' : 'border-gray-200'
-                }`}
+                className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
               >
                 <img
                   loading="lazy"
                   src={GALLERY_IMAGES.maps.iphoneFlows}
                   alt="PagesJaunes iPhone Navigation Flows"
-                  className="w-full h-auto transition-transform duration-300 group-hover:scale-[1.03]"
+                  className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
                 />
               </div>
-              <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+              <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
                 {CAPTIONS[lang].maps.iphoneFlows}
               </figcaption>
             </figure>
@@ -1357,62 +1198,53 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
             <figure className="mb-8">
               <div
                 onClick={() => onImageClick(GALLERY_IMAGES.maps.ipadItinerary)}
-                className={`group rounded-2xl overflow-hidden border cursor-pointer transition-transform duration-300 hover:scale-[1.01] ${
-                  isDark ? 'border-white/10' : 'border-gray-200'
-                }`}
+                className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
               >
                 <img
                   loading="lazy"
                   src={GALLERY_IMAGES.maps.ipadItinerary}
                   alt="PagesJaunes iPad Itinerary"
-                  className="w-full h-auto transition-transform duration-300 group-hover:scale-[1.03]"
+                  className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
                 />
               </div>
-              <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+              <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
                 {CAPTIONS[lang].maps.ipadPedestrian}
               </figcaption>
             </figure>
-          </section>
-        </FadeInSection>
+          </div>
+        </section>
+      </FadeInSection>
 
-        {/* ================================================================ */}
-        {/* ACCOUNT SECTION */}
-        {/* ================================================================ */}
-        <FadeInSection>
-          <section id="account" className="mb-24 md:mb-32">
-            <div className="flex items-center gap-3 mb-4">
-              <div className={`p-2 rounded-xl ${isDark ? 'bg-cyan-500/20' : 'bg-cyan-100'}`}>
-                <Users size={20} className={isDark ? 'text-cyan-400' : 'text-cyan-600'} />
-              </div>
-              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                {t.account.sectionTitle}
-              </h2>
-            </div>
+      {/* ================================================================ */}
+      {/* ACCOUNT SECTION */}
+      {/* ================================================================ */}
+      <FadeInSection>
+        <section id="account" className="mb-24 md:mb-32">
+          <div className="max-w-[740px] mx-auto px-6">
+            <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-3">
+              {t.account.sectionTitle}
+            </h2>
 
-            <p className={`text-lg italic mb-6 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-              {t.account.question}
-            </p>
-
-            <p className={`text-base leading-relaxed mb-8 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+            <p className="text-base text-gray-500 leading-relaxed mb-12">
               {t.account.intro}
             </p>
+          </div>
 
+          <div className="max-w-[960px] mx-auto px-6">
             {/* Account Flow */}
             <figure className="mb-8">
               <div
                 onClick={() => onImageClick(GALLERY_IMAGES.account.flow)}
-                className={`group rounded-2xl overflow-hidden border cursor-pointer transition-transform duration-300 hover:scale-[1.01] ${
-                  isDark ? 'border-white/10' : 'border-gray-200'
-                }`}
+                className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
               >
                 <img
                   loading="lazy"
                   src={GALLERY_IMAGES.account.flow}
                   alt="PagesJaunes Account Flow"
-                  className="w-full h-auto transition-transform duration-300 group-hover:scale-[1.03]"
+                  className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
                 />
               </div>
-              <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+              <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
                 {CAPTIONS[lang].account.flow}
               </figcaption>
             </figure>
@@ -1421,18 +1253,16 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
             <figure className="mb-8">
               <div
                 onClick={() => onImageClick(GALLERY_IMAGES.account.engagement)}
-                className={`group rounded-2xl overflow-hidden border cursor-pointer transition-transform duration-300 hover:scale-[1.01] ${
-                  isDark ? 'border-white/10' : 'border-gray-200'
-                }`}
+                className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
               >
                 <img
                   loading="lazy"
                   src={GALLERY_IMAGES.account.engagement}
                   alt="PagesJaunes Engagement Features"
-                  className="w-full h-auto transition-transform duration-300 group-hover:scale-[1.03]"
+                  className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
                 />
               </div>
-              <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+              <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
                 {CAPTIONS[lang].account.engagement}
               </figcaption>
             </figure>
@@ -1441,51 +1271,46 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
             <figure className="mb-8">
               <div
                 onClick={() => onImageClick(GALLERY_IMAGES.contributions.desktopReview)}
-                className={`group rounded-2xl overflow-hidden border cursor-pointer transition-transform duration-300 hover:scale-[1.01] ${
-                  isDark ? 'border-white/10' : 'border-gray-200'
-                }`}
+                className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
               >
                 <img
                   loading="lazy"
                   src={GALLERY_IMAGES.contributions.desktopReview}
                   alt="PagesJaunes Desktop Review Editing"
-                  className="w-full h-auto transition-transform duration-300 group-hover:scale-[1.03]"
+                  className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
                 />
               </div>
-              <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+              <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
                 {CAPTIONS[lang].contributions.desktopReview}
               </figcaption>
             </figure>
-          </section>
-        </FadeInSection>
+          </div>
+        </section>
+      </FadeInSection>
 
-        {/* ================================================================ */}
-        {/* MICRO-INTERACTIONS SECTION */}
-        {/* ================================================================ */}
-        <FadeInSection>
-          <section id="micro-interactions" className="mb-24 md:mb-32">
-            <div className="flex items-center gap-3 mb-4">
-              <div className={`p-2 rounded-xl ${isDark ? 'bg-pink-500/20' : 'bg-pink-100'}`}>
-                <Heart size={20} className={isDark ? 'text-pink-400' : 'text-pink-600'} />
-              </div>
-              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                {CAPTIONS[lang].microInteractions.sectionTitle}
-              </h2>
-            </div>
+      {/* ================================================================ */}
+      {/* MICRO-INTERACTIONS SECTION */}
+      {/* ================================================================ */}
+      <FadeInSection>
+        <section id="micro-interactions" className="mb-24 md:mb-32">
+          <div className="max-w-[740px] mx-auto px-6">
+            <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-3">
+              {CAPTIONS[lang].microInteractions.sectionTitle}
+            </h2>
 
-            <p className={`text-base leading-relaxed mb-8 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+            <p className="text-base text-gray-500 leading-relaxed mb-12">
               {CAPTIONS[lang].microInteractions.intro}
             </p>
+          </div>
 
-            {/* Micro-interactions Grid - 3 columns, 2:3 aspect ratio */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Micro-interactions - stacked, 2:3 aspect ratio */}
+          <div className="max-w-[960px] mx-auto px-6">
+            <div className="space-y-6">
               {/* Navigation Drawer */}
               <figure>
                 <div
                   onClick={() => onImageClick(GALLERY_IMAGES.microInteractions.navDrawer)}
-                  className={`group rounded-2xl overflow-hidden border cursor-pointer transition-transform duration-300 hover:scale-[1.01] ${
-                    isDark ? 'border-white/10' : 'border-gray-200'
-                  }`}
+                  className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
                 >
                   <div
                     className="aspect-[2/3] flex items-center justify-center"
@@ -1499,7 +1324,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
                     />
                   </div>
                 </div>
-                <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
                   {CAPTIONS[lang].microInteractions.navDrawer}
                 </figcaption>
               </figure>
@@ -1508,25 +1333,19 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
               <figure>
                 <div
                   onClick={() => onImageClick(GALLERY_IMAGES.microInteractions.favorites)}
-                  className={`group rounded-2xl overflow-hidden border cursor-pointer transition-transform duration-300 hover:scale-[1.01] relative ${
-                    isDark ? 'border-white/10' : 'border-gray-200'
-                  }`}
+                  className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
                 >
                   <div
                     className="aspect-[2/3] flex items-center justify-center"
                     style={{ backgroundColor: '#C8C8C8' }}
                   >
-                    <video
+                    <VideoPlayer
                       src={GALLERY_IMAGES.microInteractions.favorites}
-                      className="w-full h-full object-contain"
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
+                      className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
                     />
                   </div>
                 </div>
-                <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
                   {CAPTIONS[lang].microInteractions.favorites}
                 </figcaption>
               </figure>
@@ -1535,105 +1354,89 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
               <figure>
                 <div
                   onClick={() => onImageClick(GALLERY_IMAGES.microInteractions.historyRemarketing)}
-                  className={`group rounded-2xl overflow-hidden border cursor-pointer transition-transform duration-300 hover:scale-[1.01] relative ${
-                    isDark ? 'border-white/10' : 'border-gray-200'
-                  }`}
+                  className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
                 >
                   <div
                     className="aspect-[2/3] flex items-center justify-center"
                     style={{ backgroundColor: '#C8C8C8' }}
                   >
-                    <video
+                    <VideoPlayer
                       src={GALLERY_IMAGES.microInteractions.historyRemarketing}
-                      className="w-full h-full object-contain"
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
+                      className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
                     />
                   </div>
                 </div>
-                <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
                   {CAPTIONS[lang].microInteractions.historyRemarketing}
                 </figcaption>
               </figure>
             </div>
-          </section>
-        </FadeInSection>
+          </div>
+        </section>
+      </FadeInSection>
 
-        {/* ================================================================ */}
-        {/* ANDROID WEAR SECTION */}
-        {/* ================================================================ */}
-        <FadeInSection>
-          <section id="wear" className="mb-24 md:mb-32">
-            <div className="flex items-center gap-3 mb-4">
-              <div className={`p-2 rounded-xl ${isDark ? 'bg-white/10' : 'bg-gray-100'}`}>
-                <Watch size={20} className={isDark ? 'text-gray-300' : 'text-gray-600'} />
-              </div>
-              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                {t.wear.sectionTitle}
-              </h2>
-            </div>
+      {/* ================================================================ */}
+      {/* ANDROID WEAR SECTION */}
+      {/* ================================================================ */}
+      <FadeInSection>
+        <section id="wear" className="mb-24 md:mb-32">
+          <div className="max-w-[740px] mx-auto px-6">
+            <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-3">
+              {t.wear.sectionTitle}
+            </h2>
 
-            <p className={`text-base leading-relaxed mb-8 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+            <p className="text-base text-gray-500 leading-relaxed mb-12">
               {t.wear.intro}
             </p>
+          </div>
 
-            {/* Key visuals - 2-column grid with square aspect ratio */}
-            <div className="grid grid-cols-2 gap-6 mb-8">
+          {/* Key visuals - stacked with square aspect ratio */}
+          <div className="max-w-[960px] mx-auto px-6">
+            <div className="space-y-6 mb-8">
               <figure>
                 <div
                   onClick={() => onImageClick(GALLERY_IMAGES.wear.thumbnail)}
-                  className={`group rounded-2xl overflow-hidden border cursor-pointer transition-transform duration-300 hover:scale-[1.01] aspect-square ${
-                    isDark ? 'border-white/10' : 'border-gray-200'
-                  }`}
+                  className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01] aspect-square"
                 >
                   <img
                     loading="lazy"
                     src={GALLERY_IMAGES.wear.thumbnail}
                     alt="PagesJaunes Android Wear"
-                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+                    className="w-full h-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.02]"
                   />
                 </div>
-                <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
                   {CAPTIONS[lang].wear.thumbnail}
                 </figcaption>
               </figure>
               <figure>
                 <div
                   onClick={() => onImageClick(GALLERY_IMAGES.wear.yAllerBtn)}
-                  className={`group rounded-2xl overflow-hidden border cursor-pointer transition-transform duration-300 hover:scale-[1.01] aspect-square ${
-                    isDark ? 'border-white/10' : 'border-gray-200'
-                  }`}
+                  className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01] aspect-square"
                 >
                   <img
                     loading="lazy"
                     src={GALLERY_IMAGES.wear.yAllerBtn}
                     alt="Y Aller navigation button"
-                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+                    className="w-full h-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.02]"
                   />
                 </div>
-                <figcaption className={`mt-3 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
                   {CAPTIONS[lang].wear.yAllerBtn}
                 </figcaption>
               </figure>
             </div>
+          </div>
 
-            {/* CTA to dedicated Android Wear case study */}
+          {/* CTA to dedicated Android Wear case study */}
+          <div className="max-w-[740px] mx-auto px-6">
             <div
               onClick={() => onNavigateToProject?.('androidwear')}
-              className={`group rounded-2xl overflow-hidden border cursor-pointer transition-[background-color,color,transform] duration-200 ease-out hover:scale-[1.005] ${
-                isDark
-                  ? 'bg-white/5 border-white/10 hover:border-white/20'
-                  : 'bg-gray-50 border-gray-200 hover:border-gray-300'
-              }`}
+              className="group rounded-xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-pointer transition-[border-color,transform] duration-200 ease-out hover:scale-[1.005]"
             >
               <div className="p-5">
-                {/* Mobile: Stack vertically / Desktop: Horizontal */}
                 <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
-                  {/* Thumbnail + Content row on mobile */}
                   <div className="flex items-start sm:items-center gap-4 flex-1 min-w-0">
-                    {/* Square thumbnail */}
                     <div className="w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0 rounded-xl overflow-hidden">
                       <img
                         loading="lazy"
@@ -1642,111 +1445,101 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
                         className="w-full h-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.02]"
                       />
                     </div>
-                    {/* Content */}
                     <div className="flex-1 min-w-0">
-                      <p className={`text-xs font-semibold uppercase tracking-wider mb-1 ${isDark ? 'text-blue-400' : 'text-blue-600'}`}>
+                      <p className="text-xs font-medium uppercase tracking-wide mb-1 text-gray-400">
                         {lang === 'en' ? 'Case Study' : 'Case Study'}
                       </p>
-                      <h3 className={`text-base font-bold mb-1 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                      <h3 className="text-sm font-semibold mb-1 text-gray-900">
                         {lang === 'en'
                           ? 'PagesJaunes on your wrist'
                           : 'PagesJaunes au poignet'}
                       </h3>
-                      <p className={`text-sm line-clamp-2 sm:line-clamp-none ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                      <p className="text-sm line-clamp-2 sm:line-clamp-none text-gray-600">
                         {lang === 'en'
                           ? 'When users need a plumber now, can a watch be faster than pulling out a phone?'
                           : 'Quand l\'utilisateur a besoin d\'un plombier maintenant, une montre peut-elle être plus rapide qu\'un téléphone ?'}
                       </p>
                     </div>
                   </div>
-                  {/* CTA button - full width on mobile, auto on desktop */}
                   <div className="flex-shrink-0 sm:self-center">
-                    <span className="flex sm:inline-flex items-center justify-center px-5 py-2.5 rounded-full bg-[#2D5CF3] text-white text-sm font-semibold transition-transform duration-200 ease-out group-hover:scale-[1.03] whitespace-nowrap">
+                    <span className="text-sm text-gray-500 group-hover:text-gray-900 transition-colors duration-150 whitespace-nowrap">
                       {lang === 'en' ? 'Read more' : 'Lire la suite'}
                     </span>
                   </div>
                 </div>
               </div>
             </div>
-          </section>
-        </FadeInSection>
+          </div>
+        </section>
+      </FadeInSection>
 
-        {/* ================================================================ */}
-        {/* DESIGN SYSTEM SECTION */}
-        {/* ================================================================ */}
-        <FadeInSection>
-          <section id="design-system" className="mb-24 md:mb-32">
-            <div className="flex items-center gap-3 mb-4">
-              <div className={`p-2 rounded-xl ${isDark ? 'bg-orange-500/20' : 'bg-orange-100'}`}>
-                <Palette size={20} className={isDark ? 'text-orange-400' : 'text-orange-600'} />
-              </div>
-              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                {t.system.sectionTitle}
-              </h2>
-            </div>
+      {/* ================================================================ */}
+      {/* DESIGN SYSTEM SECTION */}
+      {/* ================================================================ */}
+      <FadeInSection>
+        <section id="design-system" className="mb-24 md:mb-32">
+          <div className="max-w-[740px] mx-auto px-6">
+            <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-3">
+              {t.system.sectionTitle}
+            </h2>
 
-            <p className={`text-base leading-relaxed mb-8 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+            <p className="text-base text-gray-500 leading-relaxed mb-8">
               {t.system.intro}
             </p>
 
-            <div className="grid md:grid-cols-2 gap-6 mb-6">
-              <div className={`p-5 rounded-2xl ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}>
-                <p className={`text-base font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+            <div className="divide-y divide-gray-100 mb-6">
+              <div className="py-4">
+                <p className="text-sm font-medium text-gray-900 mb-2">
                   {t.system.audit}
                 </p>
-                <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                <p className="text-base text-gray-500 leading-relaxed">
                   {t.system.auditDesc}
                 </p>
               </div>
 
-              <div className={`p-5 rounded-2xl ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}>
-                <p className={`text-base font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <div className="py-4">
+                <p className="text-sm font-medium text-gray-900 mb-2">
                   {t.system.roadmap}
                 </p>
-                <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                <p className="text-base text-gray-500 leading-relaxed">
                   {t.system.roadmapDesc}
                 </p>
               </div>
             </div>
 
-            <p className={`text-sm italic ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
+            <p className="text-sm italic text-gray-400">
               {t.system.note}
             </p>
-          </section>
-        </FadeInSection>
+          </div>
+        </section>
+      </FadeInSection>
 
-        {/* ================================================================ */}
-        {/* TEAM SECTION */}
-        {/* ================================================================ */}
-        <FadeInSection>
-          <section id="team" className="mb-24 md:mb-32">
-            <div className="flex items-center gap-3 mb-4">
-              <div className={`p-2 rounded-xl ${isDark ? 'bg-cyan-500/20' : 'bg-cyan-100'}`}>
-                <Users size={20} className={isDark ? 'text-cyan-400' : 'text-cyan-600'} />
-              </div>
-              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                {t.team.sectionTitle}
-              </h2>
-            </div>
+      {/* ================================================================ */}
+      {/* TEAM SECTION */}
+      {/* ================================================================ */}
+      <FadeInSection>
+        <section id="team" className="mb-24 md:mb-32">
+          <div className="max-w-[740px] mx-auto px-6">
+            <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-3">
+              {t.team.sectionTitle}
+            </h2>
 
-            <p className={`text-base leading-relaxed mb-8 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+            <p className="text-base text-gray-500 leading-relaxed mb-8">
               {t.team.intro}
             </p>
 
             {/* Phase 1: 2014-2015 - UX Core Team */}
-            <div className={`p-6 rounded-2xl border mb-6 ${isDark ? 'bg-white/[0.02] border-white/10' : 'bg-gray-50 border-gray-200'}`}>
-              <div className="flex flex-wrap items-center gap-3 mb-4">
-                <span className={`px-3 py-1 rounded-full text-xs font-semibold ${isDark ? 'bg-yellow-500/20 text-yellow-400' : 'bg-yellow-100 text-yellow-700'}`}>
-                  2014–2015
-                </span>
-                <h3 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+            <div className="pt-6 pb-8 border-t border-gray-100 mb-2">
+              <div className="flex flex-wrap items-baseline gap-3 mb-4">
+                <span className="text-xs tabular-nums text-gray-400">2014–2015</span>
+                <h3 className="text-sm font-medium text-gray-900">
                   {lang === 'en' ? 'UX Core Team' : 'Équipe UX centrale'}
                 </h3>
-                <span className={`ml-auto px-3 py-1 rounded-full text-xs font-medium ${isDark ? 'bg-white/10 text-white' : 'bg-gray-200 text-gray-700'}`}>
-                  {lang === 'en' ? 'My role: Product Designer' : 'Mon rôle : Product Designer'}
+                <span className="ml-auto text-xs text-gray-400">
+                  {lang === 'en' ? 'Product Designer' : 'Product Designer'}
                 </span>
               </div>
-              <p className={`text-sm mb-4 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+              <p className={`text-sm mb-4 text-gray-600`}>
                 {lang === 'en'
                   ? 'Integrated within the central UX team, working on cross-platform design strategy and visual direction.'
                   : 'Intégré à l\'équipe UX centrale, travail sur la stratégie design cross-plateforme et la direction visuelle.'}
@@ -1770,26 +1563,15 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
                       href={person.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm transition-colors ${
-                        isDark
-                          ? 'bg-white/5 hover:bg-white/10 text-gray-300'
-                          : 'bg-white hover:bg-gray-100 text-gray-700 border border-gray-200'
-                      }`}
+                      className="text-sm text-gray-700 hover:text-gray-900 hover:underline transition-colors duration-150"
                     >
-                      <span className="font-medium">{person.name}</span>
-                      <span className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>{person.role}</span>
+                      {person.name}
+                      <span className="text-xs text-gray-400 ml-1">{person.role}</span>
                     </a>
                   ) : (
-                    <span
-                      key={idx}
-                      className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm ${
-                        isDark
-                          ? 'bg-white/5 text-gray-400'
-                          : 'bg-gray-100 text-gray-600'
-                      }`}
-                    >
-                      <span className="font-medium">{person.name}</span>
-                      <span className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>{person.role}</span>
+                    <span key={idx} className="text-sm text-gray-500">
+                      {person.name}
+                      <span className="text-xs text-gray-400 ml-1">{person.role}</span>
                     </span>
                   )
                 ))}
@@ -1797,19 +1579,17 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
             </div>
 
             {/* Phase 2: 2015-2016 - Feature Team */}
-            <div className={`p-6 rounded-2xl border mb-6 ${isDark ? 'bg-white/[0.02] border-white/10' : 'bg-gray-50 border-gray-200'}`}>
-              <div className="flex flex-wrap items-center gap-3 mb-4">
-                <span className={`px-3 py-1 rounded-full text-xs font-semibold ${isDark ? 'bg-blue-500/20 text-blue-400' : 'bg-blue-100 text-blue-700'}`}>
-                  2015–2016
-                </span>
-                <h3 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+            <div className="pt-6 pb-8 border-t border-gray-100 mb-2">
+              <div className="flex flex-wrap items-baseline gap-3 mb-4">
+                <span className="text-xs tabular-nums text-gray-400">2015–2016</span>
+                <h3 className="text-sm font-medium text-gray-900">
                   {lang === 'en' ? 'Feature Team' : 'Feature Team'}
                 </h3>
-                <span className={`ml-auto px-3 py-1 rounded-full text-xs font-medium ${isDark ? 'bg-white/10 text-white' : 'bg-gray-200 text-gray-700'}`}>
-                  {lang === 'en' ? 'My role: Product Designer → UI Team Lead' : 'Mon rôle : Product Designer → UI Team Lead'}
+                <span className="ml-auto text-xs text-gray-400">
+                  {lang === 'en' ? 'Product Designer → UI Team Lead' : 'Product Designer → UI Team Lead'}
                 </span>
               </div>
-              <p className={`text-sm mb-4 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+              <p className={`text-sm mb-4 text-gray-600`}>
                 {lang === 'en'
                   ? 'Dedicated squad for homepage redesign, Material Design integration, user accounts, favorites, and history.'
                   : 'Squad dédiée à la refonte homepage, intégration Material Design, compte utilisateur, favoris et historique.'}
@@ -1831,108 +1611,97 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
                       href={person.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm transition-colors ${
-                        isDark
-                          ? 'bg-white/5 hover:bg-white/10 text-gray-300'
-                          : 'bg-white hover:bg-gray-100 text-gray-700 border border-gray-200'
-                      }`}
+                      className="text-sm text-gray-700 hover:text-gray-900 hover:underline transition-colors duration-150"
                     >
-                      <span className="font-medium">{person.name}</span>
-                      <span className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>{person.role}</span>
+                      {person.name}
+                      <span className="text-xs text-gray-400 ml-1">{person.role}</span>
                     </a>
                   ) : (
-                    <span
-                      key={idx}
-                      className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm ${
-                        isDark
-                          ? 'bg-white/5 text-gray-400'
-                          : 'bg-gray-100 text-gray-600'
-                      }`}
-                    >
-                      <span className="font-medium">{person.name}</span>
-                      <span className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>{person.role}</span>
+                    <span key={idx} className="text-sm text-gray-500">
+                      {person.name}
+                      <span className="text-xs text-gray-400 ml-1">{person.role}</span>
                     </span>
                   )
                 ))}
               </div>
             </div>
 
-            <p className={`text-sm italic ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
+            <p className="text-sm italic text-gray-400">
               {t.team.rituals}
             </p>
-          </section>
-        </FadeInSection>
+          </div>
+        </section>
+      </FadeInSection>
 
-        {/* ================================================================ */}
-        {/* IMPACT SECTION */}
-        {/* ================================================================ */}
-        <FadeInSection>
-          <section id="impact" className="mb-24 md:mb-32">
-            <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-8 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+      {/* ================================================================ */}
+      {/* IMPACT SECTION */}
+      {/* ================================================================ */}
+      <FadeInSection>
+        <section id="impact" className="mb-24 md:mb-32">
+          <div className="max-w-[740px] mx-auto px-6">
+            <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-8">
               {t.impact.sectionTitle}
             </h2>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="divide-y divide-gray-100">
               {t.impact.metrics.map((metric, idx) => (
-                <div key={idx} className="text-center">
-                  <p className={`text-4xl md:text-5xl font-bold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                    {metric.value}
-                  </p>
-                  <p className={`text-base font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                <div key={idx} className="flex items-baseline justify-between py-4">
+                  <span className="text-sm text-gray-500">
                     {metric.label}
-                  </p>
-                  <p className={`text-sm ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
-                    {metric.sublabel}
-                  </p>
+                    {metric.sublabel && <span className="ml-1 text-gray-400"> · {metric.sublabel}</span>}
+                  </span>
+                  <span className="text-sm text-gray-500 tabular-nums">
+                    {metric.value}
+                  </span>
                 </div>
               ))}
             </div>
-          </section>
-        </FadeInSection>
+          </div>
+        </section>
+      </FadeInSection>
 
-        {/* ================================================================ */}
-        {/* LEARNINGS SECTION */}
-        {/* ================================================================ */}
-        <FadeInSection>
-          <section id="learnings" className="mb-24 md:mb-32">
-            <h2 className={`text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-8 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+      {/* ================================================================ */}
+      {/* LEARNINGS SECTION */}
+      {/* ================================================================ */}
+      <FadeInSection>
+        <section id="learnings" className="mb-24 md:mb-32">
+          <div className="max-w-[740px] mx-auto px-6">
+            <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-8">
               {t.learnings.sectionTitle}
             </h2>
 
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="divide-y divide-gray-100">
               {t.learnings.items.map((item, idx) => (
-                <div key={idx} className={`p-5 rounded-2xl ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}>
-                  <p className={`text-base font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                <div key={idx} className="py-4">
+                  <p className="text-sm font-medium text-gray-900 mb-2">
                     {item.title}
                   </p>
-                  <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                  <p className="text-base text-gray-500 leading-relaxed">
                     {item.description}
                   </p>
                 </div>
               ))}
             </div>
-          </section>
-        </FadeInSection>
+          </div>
+        </section>
+      </FadeInSection>
 
-        {/* ================================================================ */}
-        {/* CTA SECTION */}
-        {/* ================================================================ */}
-        <FadeInSection>
-          <section className="text-center py-16">
-            <h2 className={`text-3xl md:text-4xl font-bold mb-8 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-              {t.cta.title}
-            </h2>
-            <button
-              onClick={onContact}
-              className="inline-flex items-center gap-3 px-10 py-5 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-lg rounded-full transition-[background-color,transform] duration-200 ease-out active:scale-[0.97]"
-            >
-              {t.cta.button}
-              <ArrowRight size={22} />
-            </button>
-          </section>
-        </FadeInSection>
+      {/* ================================================================ */}
+      {/* CTA SECTION */}
+      {/* ================================================================ */}
+      <FadeInSection>
+        <div className="max-w-[740px] mx-auto px-6 py-16">
+          <p className="text-sm text-gray-500 mb-4">{t.cta.title}</p>
+          <button
+            onClick={onContact}
+            className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors duration-150"
+          >
+            {t.cta.button}
+            <ArrowRight size={14} />
+          </button>
+        </div>
+      </FadeInSection>
 
-      </div>
     </div>
   );
 };

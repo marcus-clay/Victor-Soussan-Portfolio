@@ -44,8 +44,8 @@ export default function AuthorContactCard({ lang, isDark = false, message }: Aut
               href="https://www.linkedin.com/in/victorsoussan/"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium bg-[#2D5CF3] text-white hover:bg-[#2450d9] shadow-sm hover:shadow-md active:scale-[0.97]"
-              style={{ transition: 'background-color 200ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 200ms ease' }}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium bg-gray-900 text-white hover:bg-gray-800 active:scale-[0.97] ring-1 ring-black shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]"
+              style={{ transition: 'background-color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
             >
               <LinkedinLogo size={16} weight="bold" /> LinkedIn
             </a>
@@ -54,7 +54,7 @@ export default function AuthorContactCard({ lang, isDark = false, message }: Aut
               className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium active:scale-[0.97] ${
                 isDark
                   ? 'bg-white/5 text-white hover:bg-white/10 ring-1 ring-white/10'
-                  : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
+                  : 'bg-gray-100 text-gray-900 hover:bg-gray-200 ring-1 ring-black/[0.06]'
               }`}
               style={{ transition: 'background-color 200ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
             >
