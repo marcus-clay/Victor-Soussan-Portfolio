@@ -329,7 +329,7 @@ const SqoolClasseExecutive: React.FC<SqoolClasseExecutiveProps> = ({
             {...fadeIn}
             transition={{ duration: 0.4, delay: 0.15, ease: [0.23, 1, 0.32, 1] }}
           >
-            <CaseStudyViewPills lang={lang} projectId="sqool-classe" isDark={false} />
+            <CaseStudyViewPills lang={lang} projectId="sqool-classe" isDark={false} showGallery={false} />
           </motion.div>
 
           {/* Testimonial */}
@@ -430,28 +430,16 @@ const SqoolClasseExecutive: React.FC<SqoolClasseExecutiveProps> = ({
           >
             {t.scope.intro}
           </motion.p>
-          <motion.div
-            {...fadeIn}
-            transition={{ duration: 0.4, delay: 0.1, ease: [0.23, 1, 0.32, 1] }}
-            className="divide-y divide-gray-100"
-          >
-            {t.scope.areas.map((area, idx) => (
-              <div key={idx} className="py-5 -mx-3 px-3 rounded-lg transition-colors duration-150 hover:bg-black/[.04] active:bg-black/[.06]">
-                <h3 className="text-sm font-medium text-gray-900 mb-1">{area.title}</h3>
-                <p className="text-sm text-gray-500 leading-relaxed">{area.description}</p>
-              </div>
-            ))}
-          </motion.div>
         </div>
-        <motion.div
-          {...fadeIn}
-          transition={{ duration: 0.4, delay: 0.15, ease: [0.23, 1, 0.32, 1] }}
-          className="max-w-[960px] mx-auto px-6 mt-10"
-        >
-          <div className="space-y-4">
-            {t.scope.areas.map((area, idx) => (
+
+        {t.scope.areas.map((area, idx) => (
+          <React.Fragment key={idx}>
+            <motion.div {...fadeIn} className="max-w-[740px] mx-auto px-6 mb-6">
+              <h3 className="text-sm font-medium text-gray-900 mb-2">{area.title}</h3>
+              <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">{area.description}</p>
+            </motion.div>
+            <motion.div {...fadeIn} className="max-w-[960px] mx-auto px-6 mb-24 md:mb-32">
               <div
-                key={idx}
                 onClick={() => onImageClick(area.image)}
                 className="rounded-xl overflow-hidden cursor-zoom-in group ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
               >
@@ -462,9 +450,10 @@ const SqoolClasseExecutive: React.FC<SqoolClasseExecutiveProps> = ({
                   className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
                 />
               </div>
-            ))}
-          </div>
-        </motion.div>
+              <p className="mt-3 text-xs font-medium text-gray-400">{area.title}</p>
+            </motion.div>
+          </React.Fragment>
+        ))}
       </section>
 
       {/* HIGHLIGHTS / PROTOTYPES */}
@@ -477,15 +466,14 @@ const SqoolClasseExecutive: React.FC<SqoolClasseExecutiveProps> = ({
             <p className="text-xs text-gray-400 mb-4">{t.highlights.subtitle}</p>
           </motion.div>
         </div>
-        <motion.div
-          {...fadeIn}
-          transition={{ duration: 0.4, delay: 0.05, ease: [0.23, 1, 0.32, 1] }}
-          className="max-w-[960px] mx-auto px-6 mt-6"
-        >
-          <div className="space-y-4">
-            {t.highlights.items.map((item, idx) => (
+        {t.highlights.items.map((item, idx) => (
+          <React.Fragment key={idx}>
+            <motion.div {...fadeIn} className="max-w-[740px] mx-auto px-6 mb-6">
+              <h3 className="text-sm font-medium text-gray-900 mb-2">{item.title}</h3>
+              <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">{item.description}</p>
+            </motion.div>
+            <motion.div {...fadeIn} className="max-w-[960px] mx-auto px-6 mb-24 md:mb-32">
               <div
-                key={idx}
                 onClick={() => onImageClick(item.media)}
                 className="rounded-xl overflow-hidden cursor-zoom-in group ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
               >
@@ -496,9 +484,10 @@ const SqoolClasseExecutive: React.FC<SqoolClasseExecutiveProps> = ({
                   className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
                 />
               </div>
-            ))}
-          </div>
-        </motion.div>
+              <p className="mt-3 text-xs font-medium text-gray-400">{item.title}</p>
+            </motion.div>
+          </React.Fragment>
+        ))}
       </section>
 
       {/* IMPACT */}

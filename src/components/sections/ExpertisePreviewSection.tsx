@@ -23,8 +23,8 @@ interface ExpertisePreviewSectionProps {
   onNavigate: (path: string) => void;
 }
 
-// Maps 1:1 with the 4 pillars in TRANSLATIONS
-const PILLAR_SLUGS = ['design-prototyping', 'product-strategy', 'design-ops', 'leadership'];
+// Maps 1:1 with the 3 homepage pillars → anchors on /services
+const PILLAR_SLUGS = ['design-prototyping', 'product-strategy', 'design-ops'];
 
 const EASE_OUT: [number, number, number, number] = [0.23, 1, 0.32, 1];
 
@@ -48,7 +48,7 @@ const ExpertisePreviewSection: React.FC<ExpertisePreviewSectionProps> = ({
           </p>
         </div>
 
-        {/* Pillars — spotlight dim + hover delight */}
+        {/* Pillars — spotlight dim focuses reading, light bg confirms clickability */}
         <div
           className="flex flex-col divide-y divide-gray-100 mb-10 md:mb-14"
           onMouseLeave={() => setHoveredIndex(null)}
@@ -67,58 +67,41 @@ const ExpertisePreviewSection: React.FC<ExpertisePreviewSectionProps> = ({
             >
               <Link
                 href={`/${lang}/services#${PILLAR_SLUGS[index]}`}
-                className="group flex flex-col py-5 -mx-3 px-3 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300"
+                className="group flex items-start justify-between gap-3 py-5 -mx-3 px-3 rounded-lg hover:bg-gray-100/60 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300"
                 onMouseEnter={() => setHoveredIndex(index)}
               >
-                {/* Title row */}
-                <div className="flex items-center justify-between gap-3 mb-1.5">
-                  <div className="flex items-baseline gap-2.5 min-w-0">
-                    {/* Step number — slides in on hover */}
-                    <span
-                      className="text-xs text-gray-400 tabular-nums flex-shrink-0"
-                      style={{
-                        opacity: hoveredIndex === index ? 1 : 0,
-                        transform: hoveredIndex === index ? 'translateX(0)' : 'translateX(-5px)',
-                        transition: 'opacity 150ms ease, transform 220ms cubic-bezier(0.23, 1, 0.32, 1)',
-                      }}
-                      aria-hidden="true"
-                    >
-                      {String(index + 1).padStart(2, '0')}
-                    </span>
-                    <h3 className="text-base font-medium text-gray-900">
-                      {pillar.title}
-                    </h3>
-                  </div>
-
-                  {/* Arrow — slides in diagonally on hover */}
-                  <ArrowRight
-                    size={13}
-                    className="flex-shrink-0 text-gray-400"
+                <div className="min-w-0 flex-1">
+                  <h3 className="text-base font-medium text-gray-900 mb-1.5">
+                    {pillar.title}
+                  </h3>
+                  <p
+                    className="text-base leading-relaxed"
                     style={{
-                      opacity: hoveredIndex === index ? 1 : 0,
-                      transform: hoveredIndex === index ? 'translate(0, 0)' : 'translate(-4px, 3px)',
-                      transition: 'opacity 150ms ease, transform 220ms cubic-bezier(0.23, 1, 0.32, 1)',
+                      color: hoveredIndex === index ? '#374151' : '#6B7280',
+                      transition: 'color 200ms ease',
                     }}
-                    aria-hidden="true"
-                  />
+                  >
+                    {pillar.desc}
+                  </p>
                 </div>
 
-                {/* Description — warms on hover */}
-                <p
-                  className="text-base leading-relaxed"
+                {/* Arrow — appears on hover to signal navigation */}
+                <ArrowRight
+                  size={13}
+                  className="flex-shrink-0 mt-1.5 text-gray-400"
                   style={{
-                    color: hoveredIndex === index ? '#374151' : '#6B7280',
-                    transition: 'color 200ms ease',
+                    opacity: hoveredIndex === index ? 1 : 0,
+                    transform: hoveredIndex === index ? 'translateX(0)' : 'translateX(-4px)',
+                    transition: 'opacity 150ms ease, transform 220ms cubic-bezier(0.23, 1, 0.32, 1)',
                   }}
-                >
-                  {pillar.desc}
-                </p>
+                  aria-hidden="true"
+                />
               </Link>
             </motion.div>
           ))}
         </div>
 
-        {/* CTA */}
+        {/* CTA — single strong arrow for the full expertise page */}
         <Link
           href={`/${lang}/services`}
           className="group text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors duration-150 inline-flex items-center gap-1.5"

@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowDown } from '@phosphor-icons/react';
 
 interface HeroSectionProps {
   systemTheme: 'light' | 'dark';
@@ -26,10 +25,22 @@ interface HeroSectionProps {
 
 const EASE_OUT: [number, number, number, number] = [0.23, 1, 0.32, 1];
 
+function ArrowDiag({ size = 12 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M7 17L17 7M17 7H7M17 7v10" />
+    </svg>
+  )
+}
+
 const HeroSection: React.FC<HeroSectionProps> = ({
   content,
-  scrollToSection,
+  lang,
+  openModalWithUrl,
 }) => {
+  const isEn = lang === 'en';
+
   return (
     <header className="px-6 pt-32 sm:pt-40 md:pt-48 pb-24 md:pb-32">
       <div className="max-w-[692px] mx-auto w-full">
@@ -41,7 +52,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             visible: { transition: { staggerChildren: 0.08 } },
           }}
         >
-          {/* Name — like Emil's bold name at top */}
+          {/* Name */}
           <motion.h1
             variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
             transition={{ duration: 0.5, ease: EASE_OUT }}
@@ -50,7 +61,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             {content.hero.tagline}
           </motion.h1>
 
-          {/* Role — lighter, right below, like Emil's "Design Engineer" */}
+          {/* Role */}
           <motion.p
             variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0 } }}
             transition={{ duration: 0.4, ease: EASE_OUT }}
@@ -59,7 +70,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             Lead Product Designer
           </motion.p>
 
-          {/* Description */}
+          {/* Description — mobile */}
           <motion.p
             variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
             transition={{ duration: 0.4, ease: EASE_OUT }}
@@ -67,6 +78,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           >
             {content.hero.descShort || content.hero.desc}
           </motion.p>
+          {/* Description — desktop */}
           <motion.p
             variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
             transition={{ duration: 0.4, ease: EASE_OUT }}
@@ -75,17 +87,31 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             {content.hero.desc}
           </motion.p>
 
-          {/* Single text CTA */}
+          {/* CTAs — approach first, contact second */}
           <motion.div
             variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
             transition={{ duration: 0.4, ease: EASE_OUT }}
+            className="flex items-center gap-6"
           >
+            {/* Approach */}
             <button
-              onClick={() => scrollToSection('projects')}
-              className="group text-sm font-medium text-gray-500 hover:text-gray-900 active:opacity-60 transition-[color,opacity] duration-150 flex items-center gap-2 cursor-pointer"
+              onClick={() => openModalWithUrl('/approche')}
+              className="text-sm text-gray-500 hover:text-gray-900 active:opacity-60 transition-[color,opacity] duration-150 inline-flex items-center gap-1.5 cursor-pointer"
             >
-              {content.hero.cta_projects}
-              <ArrowDown size={14} className="group-hover:translate-y-0.5 transition-transform duration-150" />
+              {isEn ? 'My approach' : 'Mon approche'}
+              <ArrowDiag />
+            </button>
+
+            {/* Separator */}
+            <span className="text-gray-200 select-none" aria-hidden="true">·</span>
+
+            {/* Contact */}
+            <button
+              onClick={() => openModalWithUrl('/contact')}
+              className="text-sm font-medium text-gray-900 hover:text-gray-500 active:opacity-60 transition-[color,opacity] duration-150 inline-flex items-center gap-1.5 cursor-pointer"
+            >
+              {isEn ? "Let's talk" : 'Parlons-en'}
+              <ArrowDiag />
             </button>
           </motion.div>
         </motion.div>

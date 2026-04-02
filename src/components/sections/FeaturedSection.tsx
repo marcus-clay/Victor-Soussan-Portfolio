@@ -69,7 +69,7 @@ const FeaturedSection: React.FC<FeaturedSectionProps> = ({
             href={`/${lang}/guide/claude-code`}
             onMouseEnter={() => setHoveredGuide(true)}
             onMouseLeave={() => setHoveredGuide(false)}
-            className="group -mx-3 px-3 py-5 rounded-xl text-left w-full block"
+            className="group -mx-3 px-3 py-5 rounded-xl text-left w-full block hover:bg-gray-100 transition-colors duration-150"
           >
             <div className="flex items-center gap-2 mb-2">
               <span className="text-[11px] font-medium text-gray-400 uppercase tracking-wide">Guide</span>
@@ -122,7 +122,7 @@ const FeaturedSection: React.FC<FeaturedSectionProps> = ({
               href={`/${lang}/signal/${guideSignal.id}`}
               onMouseEnter={() => setHoveredSignal(true)}
               onMouseLeave={() => setHoveredSignal(false)}
-              className="group -mx-3 px-3 py-5 rounded-xl text-left w-full block"
+              className="group -mx-3 px-3 py-5 rounded-xl text-left w-full block hover:bg-gray-100 transition-colors duration-150"
             >
               <div className="flex items-center gap-2 mb-2">
                 <span className="text-[11px] font-medium text-gray-400 uppercase tracking-wide">

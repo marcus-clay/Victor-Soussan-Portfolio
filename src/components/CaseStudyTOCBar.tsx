@@ -124,12 +124,12 @@ const CaseStudyTOCBar: React.FC<CaseStudyTOCBarProps> = ({
       id={DROPDOWN_ID}
       role="menu"
       aria-label="Table of contents"
-      className="fixed left-0 right-0 z-50 bg-[#FDFDFC]"
+      className="fixed left-0 right-0 z-50 bg-white/90 backdrop-blur-xl"
       style={{
         top: dropdownTop,
         clipPath: isExpanded ? 'inset(0 0 0 0)' : 'inset(0 0 100% 0)',
         opacity: isExpanded ? 1 : 0,
-        boxShadow: '0 6px 24px rgba(0, 0, 0, 0.07)',
+        boxShadow: '0 8px 24px rgba(0, 0, 0, 0.06)',
         transition: isExpanded
           ? 'clip-path 220ms cubic-bezier(0.23, 1, 0.32, 1), opacity 160ms ease 20ms'
           : 'clip-path 160ms cubic-bezier(0.23, 1, 0.32, 1), opacity 100ms ease',
@@ -182,13 +182,13 @@ const CaseStudyTOCBar: React.FC<CaseStudyTOCBarProps> = ({
                       : 'text-gray-500'
                     }
                     ${isPressed
-                      ? 'bg-gray-100'
+                      ? 'bg-black/[0.06]'
                       : isActive
-                        ? 'bg-gray-50 hover:bg-gray-100'
-                        : 'hover:bg-gray-50 hover:text-gray-900'
+                        ? 'bg-black/[0.04] hover:bg-black/[0.06]'
+                        : 'hover:bg-black/[0.04] hover:text-gray-900'
                     }`}
                   style={{
-                    transition: 'color 100ms ease, background-color 100ms ease, transform 80ms cubic-bezier(0.23, 1, 0.32, 1)',
+                    transition: 'color 60ms ease, background-color 60ms ease, transform 80ms cubic-bezier(0.23, 1, 0.32, 1)',
                     transform: isPressed ? 'scale(0.98)' : 'scale(1)',
                     opacity: isExpanded ? 1 : 0,
                     transitionDelay: isExpanded ? `${index * 20}ms` : '0ms',
@@ -196,7 +196,7 @@ const CaseStudyTOCBar: React.FC<CaseStudyTOCBarProps> = ({
                 >
                   {/* Dot on progress line */}
                   <div
-                    className={`relative z-10 flex-shrink-0 rounded-full ring-2 ring-[#FDFDFC] transition-all duration-200 ${
+                    className={`relative z-10 flex-shrink-0 rounded-full ring-2 ring-white/80 transition-all duration-200 ${
                       isActive
                         ? 'w-2 h-2 bg-gray-900'
                         : isPast
@@ -226,10 +226,10 @@ const CaseStudyTOCBar: React.FC<CaseStudyTOCBarProps> = ({
             aria-expanded={isExpanded}
             aria-controls={DROPDOWN_ID}
             aria-haspopup="menu"
-            className={`w-full h-full flex items-center justify-between rounded-lg
+            className={`w-full h-full flex items-center justify-between rounded-lg pl-1 pr-[10px]
               focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-900 focus-visible:ring-offset-1
               active:scale-[0.98]
-              ${isExpanded ? 'bg-gray-50' : 'hover:bg-gray-50'}`}
+              ${isExpanded ? 'bg-black/[0.06]' : 'hover:bg-black/[0.04]'}`}
             style={{
               transition: 'background-color 100ms ease, transform 80ms cubic-bezier(0.23, 1, 0.32, 1)',
             }}

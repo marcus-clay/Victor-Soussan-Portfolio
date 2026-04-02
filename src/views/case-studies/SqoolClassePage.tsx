@@ -91,45 +91,15 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
   const t = TRANSLATIONS[lang] || TRANSLATIONS.fr;
 
 
-  // Scroll to top on mount + lock scroll for 1.5s to prevent iframe focus stealing
-  const [scrollLocked, setScrollLocked] = useState(true);
-
-  useEffect(() => {
-    // Force scroll to top and lock overflow
-    window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
-    document.body.style.overflow = 'hidden';
-
-    const unlock = setTimeout(() => {
-      document.body.style.overflow = '';
-      window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
-      setScrollLocked(false);
-    }, 1500);
-
-    return () => {
-      clearTimeout(unlock);
-      document.body.style.overflow = '';
-    };
-  }, []);
-
-  // Sync caseStudyMode with viewMode prop and scroll to top on switch
+  // Sync caseStudyMode with viewMode prop and scroll to top on view switch
   useEffect(() => {
     if (viewMode === 'executive') setCaseStudyMode('executive');
     else if (viewMode === 'caseStudy') setCaseStudyMode('full');
-    // Reset scroll immediately and after AnimatePresence exit/enter completes
-    const resetScroll = () => {
+    // Single scroll reset when switching views — no delayed repeats
+    // (delayed repeats interfere with gallery interactions that happen soon after navigation)
+    if (viewMode !== 'gallery') {
       window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
-    };
-    resetScroll();
-    const raf = requestAnimationFrame(resetScroll);
-    const t1 = setTimeout(resetScroll, 50);
-    const t2 = setTimeout(resetScroll, 200);
-    const t3 = setTimeout(resetScroll, 400);
-    return () => {
-      cancelAnimationFrame(raf);
-      clearTimeout(t1);
-      clearTimeout(t2);
-      clearTimeout(t3);
-    };
+    }
   }, [viewMode]);
 
   return (
@@ -157,7 +127,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
           >
-            <div className="max-w-[960px] mx-auto px-6 pt-4 md:pt-6 pb-8">
+            <div className="w-full px-8 pt-4 md:pt-6 pb-8">
               <PrototypeFinderGallery isDark={false} lang={lang} initialCategory={galleryInitialCategory} />
             </div>
           </motion.div>

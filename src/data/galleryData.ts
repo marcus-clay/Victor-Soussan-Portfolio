@@ -199,10 +199,132 @@ export const GALLERY_PROJECTS: GalleryProject[] = [
 // Flat list of all items (for lightbox indexing)
 export const ALL_GALLERY_ITEMS = GALLERY_PROJECTS.flatMap(p => p.items);
 
-// Featured items for homepage teaser (hand-picked for visual impact)
-export const HOMEPAGE_GALLERY_ITEMS = [
-  '/images/visuels UI/100_1_5x.webp',
-  '/images/visuels UI/800_1_5x.webp',
-  '/images/visuels UI/200_1_5x.webp',
-  '/images/visuels UI/1102_1_5x.webp',
+// ~77 thumbnails for the Projets page horizontal scroll grid (4 rows × ~20 cols).
+// Ordered by project for visual rhythm. Uses object-fit: cover — no positioning math.
+export const PROJETS_GRID_ITEMS: { src: string; projectId: string }[] = [
+  // SCRIM (5)
+  { src: '/images/visuels UI/100_1_5x.webp', projectId: 'scrim' },
+  { src: '/images/visuels UI/101_1_5x.webp', projectId: 'scrim' },
+  { src: '/images/visuels UI/102_1_5x.webp', projectId: 'scrim' },
+  { src: '/images/visuels UI/103_1_5x.webp', projectId: 'scrim' },
+  { src: '/images/visuels UI/104_1_5x.webp', projectId: 'scrim' },
+  // Dailymotion (5)
+  { src: '/images/dailymotion/thumbnail_dailymotion_-_web_platform2x.webp', projectId: 'dailymotion' },
+  { src: '/images/dailymotion/design_system_-_component_library2x.webp',   projectId: 'dailymotion' },
+  { src: '/images/dailymotion/dailymotion_-_upload2x.webp',                 projectId: 'dailymotion' },
+  { src: '/images/dailymotion/dailymotion_-_livestream2x.webp',             projectId: 'dailymotion' },
+  { src: '/images/dailymotion/design_system_-_Styles2x.webp',               projectId: 'dailymotion' },
+  // SQOOL Connect (6)
+  { src: '/images/visuels UI/800_1_5x.webp',  projectId: 'sqool-connect' },
+  { src: '/images/visuels UI/801_1_5x.webp',  projectId: 'sqool-connect' },
+  { src: '/images/visuels UI/900_1_5x.webp',  projectId: 'sqool-connect' },
+  { src: '/images/visuels UI/901_1_5x.webp',  projectId: 'sqool-connect' },
+  { src: '/images/connect/connect_overview.webp',                            projectId: 'sqool-connect' },
+  { src: '/images/connect/connect_dashboard_home_light_full-scaled.webp',   projectId: 'sqool-connect' },
+  // SQOOL Classe (3)
+  { src: '/images/visuels UI/1000_1_5x.webp', projectId: 'sqool-classe' },
+  { src: '/images/visuels UI/1001_1_5x.webp', projectId: 'sqool-classe' },
+  { src: '/images/visuels UI/1002_1_5x.webp', projectId: 'sqool-classe' },
+  // SQOOL Ecosystem (5)
+  { src: '/images/visuels UI/1700_1_5x.webp', projectId: 'sqool-ecosystem' },
+  { src: '/images/visuels UI/1701_1_5x.webp', projectId: 'sqool-ecosystem' },
+  { src: '/images/visuels UI/1702_1_5x.webp', projectId: 'sqool-ecosystem' },
+  { src: '/images/visuels UI/1703_1_5x.webp', projectId: 'sqool-ecosystem' },
+  { src: '/images/visuels UI/1704_1_5x.webp', projectId: 'sqool-ecosystem' },
+  // SQOOL Extend (5)
+  { src: '/images/visuels UI/1600_1_5x.webp', projectId: 'sqool-extend' },
+  { src: '/images/visuels UI/1601_1_5x.webp', projectId: 'sqool-extend' },
+  { src: '/images/visuels UI/1602_1_5x.webp', projectId: 'sqool-extend' },
+  { src: '/images/visuels UI/1603_1_5x.webp', projectId: 'sqool-extend' },
+  { src: '/images/visuels UI/1604_1_5x.webp', projectId: 'sqool-extend' },
+  // SQOOL Brand (5)
+  { src: '/images/sqool/systeme de marque/visuels_systeme_de_marque_01_2x.webp', projectId: 'sqool-brand' },
+  { src: '/images/sqool/systeme de marque/visuels_systeme_de_marque_02_2x.webp', projectId: 'sqool-brand' },
+  { src: '/images/sqool/systeme de marque/visuels_systeme_de_marque_03_2x.webp', projectId: 'sqool-brand' },
+  { src: '/images/sqool/systeme de marque/visuels_systeme_de_marque_04_2x.webp', projectId: 'sqool-brand' },
+  { src: '/images/sqool/systeme de marque/visuels_systeme_de_marque_05_2x.webp', projectId: 'sqool-brand' },
+  // Hi SQOOL (5)
+  { src: '/images/visuels UI/1500_1_5x.webp', projectId: 'hi-sqool' },
+  { src: '/images/visuels UI/1501_1_5x.webp', projectId: 'hi-sqool' },
+  { src: '/images/visuels UI/1502_1_5x.webp', projectId: 'hi-sqool' },
+  { src: '/images/visuels UI/1503_1_5x.webp', projectId: 'hi-sqool' },
+  { src: '/images/visuels UI/1504_1_5x.webp', projectId: 'hi-sqool' },
+  // Komète (6)
+  { src: '/images/visuels UI/200_1_5x.webp', projectId: 'komete' },
+  { src: '/images/visuels UI/201_1_5x.webp', projectId: 'komete' },
+  { src: '/images/visuels UI/202_1_5x.webp', projectId: 'komete' },
+  { src: '/images/visuels UI/300_1_5x.webp', projectId: 'komete' },
+  { src: '/images/visuels UI/301_1_5x.webp', projectId: 'komete' },
+  { src: '/images/visuels UI/302_1_5x.webp', projectId: 'komete' },
+  // Toolkit (6)
+  { src: '/images/visuels UI/1100_1_5x.webp', projectId: 'toolkit' },
+  { src: '/images/visuels UI/1101_1_5x.webp', projectId: 'toolkit' },
+  { src: '/images/visuels UI/1102_1_5x.webp', projectId: 'toolkit' },
+  { src: '/images/visuels UI/1103_1_5x.webp', projectId: 'toolkit' },
+  { src: '/images/visuels UI/1104_1_5x.webp', projectId: 'toolkit' },
+  { src: '/images/visuels UI/1105_1_5x.webp', projectId: 'toolkit' },
+  // Vinci (6)
+  { src: '/images/visuels UI/600_1_5x.webp', projectId: 'vinci' },
+  { src: '/images/visuels UI/601_1_5x.webp', projectId: 'vinci' },
+  { src: '/images/visuels UI/500_1_5x.webp', projectId: 'vinci' },
+  { src: '/images/visuels UI/501_1_5x.webp', projectId: 'vinci' },
+  { src: '/images/visuels UI/400_1_5x.webp', projectId: 'vinci' },
+  { src: '/images/visuels UI/401_1_5x.webp', projectId: 'vinci' },
+  // PagesJaunes (5)
+  { src: '/images/visuels UI/1300_1_5x.webp', projectId: 'pagesjaunes' },
+  { src: '/images/visuels UI/1301_1_5x.webp', projectId: 'pagesjaunes' },
+  { src: '/images/visuels UI/1302_1_5x.webp', projectId: 'pagesjaunes' },
+  { src: '/images/visuels UI/1303_1_5x.webp', projectId: 'pagesjaunes' },
+  { src: '/images/visuels UI/1304_1_5x.webp', projectId: 'pagesjaunes' },
+  // Ogury (5)
+  { src: '/images/visuels UI/1200_1_5x.webp', projectId: 'ogury' },
+  { src: '/images/visuels UI/1201_1_5x.webp', projectId: 'ogury' },
+  { src: '/images/visuels UI/1202_1_5x.webp', projectId: 'ogury' },
+  { src: '/images/visuels UI/1203_1_5x.webp', projectId: 'ogury' },
+  { src: '/images/visuels UI/1204_1_5x.webp', projectId: 'ogury' },
+  // EADS (5)
+  { src: '/images/visuels UI/700_1_5x.webp', projectId: 'eads' },
+  { src: '/images/visuels UI/701_1_5x.webp', projectId: 'eads' },
+  { src: '/images/visuels UI/702_1_5x.webp', projectId: 'eads' },
+  { src: '/images/visuels UI/703_1_5x.webp', projectId: 'eads' },
+  { src: '/images/visuels UI/704_1_5x.webp', projectId: 'eads' },
+  // UpTrade (5)
+  { src: '/images/visuels UI/1400_1_5x.webp', projectId: 'uptrade' },
+  { src: '/images/visuels UI/1401_1_5x.webp', projectId: 'uptrade' },
+  { src: '/images/visuels UI/1402_1_5x.webp', projectId: 'uptrade' },
+  { src: '/images/visuels UI/1403_1_5x.webp', projectId: 'uptrade' },
+  { src: '/images/visuels UI/1404_1_5x.webp', projectId: 'uptrade' },
+];
+
+// Featured items for the gallery teaser strip (hand-picked for visual diversity)
+// projectId        → links to #gallery-{projectId} on the Galerie page
+//
+// backgroundPosition → CSS background-position for the 200%-scaled base image.
+//
+//   HOW PERCENTAGES WORK at backgroundSize: '200%':
+//     Container = 692px, rendered image = 1384px, overflow = 692px.
+//     X% horizontal shift = X% × 692px into the rendered image from its left edge.
+//     Y% vertical shift   = Y% × rendered_height into the image from its top edge.
+//     → '0% 0%'   = strict top-left corner
+//     → '15% 6%'  = skip ~104px left (typical narrow sidebar) + ~6% nav height
+//     → 'center 4%' = centre horizontally, slight top inset (device mockups)
+//
+//   TO TUNE: open the browser, inspect the card's background div, and adjust
+//   backgroundPosition live in DevTools. Paste the final value here.
+//
+export const HOMEPAGE_GALLERY_ITEMS: { src: string; projectId: string; backgroundPosition?: string }[] = [
+  // SCRIM — risk dashboard: left filter panel ~200px rendered, skip it, show task grid
+  { src: '/images/visuels UI/100_1_5x.webp',  projectId: 'scrim',         backgroundPosition: '28% 6%' },
+  // SQOOL Connect — dark tablet device mockup: centre the device in the frame
+  { src: '/images/visuels UI/800_1_5x.webp',  projectId: 'sqool-connect', backgroundPosition: 'center 3%' },
+  // Komète — KPI data table: show from near-left edge, skip nav bar height
+  { src: '/images/visuels UI/200_1_5x.webp',  projectId: 'komete',        backgroundPosition: '5% 8%' },
+  // Toolkit — planning grid: slight left inset, skip top toolbar
+  { src: '/images/visuels UI/1102_1_5x.webp', projectId: 'toolkit',       backgroundPosition: '12% 6%' },
+  // PagesJaunes — mobile app: centre the phone, anchor at top
+  { src: '/images/visuels UI/1300_1_5x.webp', projectId: 'pagesjaunes',   backgroundPosition: 'center top' },
+  // Vinci — enterprise forms: slight left inset, show form content
+  { src: '/images/visuels UI/500_1_5x.webp',  projectId: 'vinci',         backgroundPosition: '10% 6%' },
+  // Ogury — analytics: slight left inset, show chart zone
+  { src: '/images/visuels UI/1200_1_5x.webp', projectId: 'ogury',         backgroundPosition: '10% 8%' },
 ];

@@ -8,7 +8,7 @@ export const TRANSLATIONS = {
     nav: {
       services: "Expertise",
       bio: "About",
-      projects: "Projects",
+      projects: "Work",
       lab: "The Lab",
       testimonials: "Testimonials",
       contact: "Contact",

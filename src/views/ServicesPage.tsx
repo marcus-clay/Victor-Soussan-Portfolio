@@ -57,46 +57,51 @@ const TOC_SECTIONS = {
 const TRANSLATIONS = {
   en: {
     page_title: "Expertise",
-    page_intro: "I work with product teams, startups and public services to reduce risk through design. Whether you need an end-to-end designer, a strategic partner, or someone to structure your design practice, here is what I bring.",
+    page_intro: "I work with product teams, startups, and public services to reduce risk through design. Whether you need an end-to-end designer, a strategic partner, or someone to structure your design practice — here is what I bring.",
     pillars: [
       {
         title: "Design & Prototyping",
-        desc: "I design interfaces from wireframe to pixel-perfect screens, then prototype them at high fidelity to validate ideas before a single line of code is written. When speed matters, I build functional MVPs using Claude Code, Gemini and Vercel.",
+        desc: "I design interfaces from first wireframe to production-ready screens, then prototype at high fidelity so decisions get made on real artifacts instead of assumptions. When the timeline is tight, I build functional MVPs directly — auth, database, GenAI integration, shipped to Vercel. At Toolkit.ac, this approach took a product from first concepts to 2,000 paying users.",
         deliverables: [
-          "UX framing, UI design, micro-interactions",
-          "Hi-fi prototyping to validate ideas and sell a vision",
-          "Rapid MVP development (auth, DB, GenAI integration)",
+          "UX framing, UI design, micro-interactions, and motion",
+          "High-fidelity prototyping to validate ideas and align stakeholders before engineering commits",
+          "AI-assisted prototyping: Figma to deployed prototype via Claude Code and Figma MCP",
+          "Functional MVP development: auth, database, GenAI integration, shipped to Vercel",
           "Mobile native (iOS/Android) and responsive web design",
-          "Concept-to-interface workflows in complex domains"
+          "Product design in complex domains: B2B SaaS, EdTech, enterprise software, public services"
         ]
       },
       {
         title: "Product Strategy",
-        desc: "Before designing screens, I help clarify what the product should be, alongside the product manager. I facilitate workshops, structure hypotheses, define feature scope, and shape the vision through interaction-first thinking.",
+        desc: "Before a single screen, I help teams agree on what they are building and why. I run workshops to surface assumptions, structure hypotheses, and align stakeholders around a shared direction. At beta.gouv for France VAE, ten user interviews and a two-day design thinking workshop reshaped the scope of the entire MVP before any design was produced.",
         deliverables: [
-          "Feature scoping (0 to 1) and product roadmap input",
-          "Product vision clarification through key user journeys",
+          "Feature scoping from 0 to 1, with roadmap contribution",
+          "Product vision clarification through key user journey mapping",
           "Ideation and vision workshops with users and stakeholders",
+          "User research: interviews, observation sessions, synthesis into actionable insights",
           "Accessibility strategy and inclusive UX standards"
         ]
       },
       {
         title: "Design Ops",
-        desc: "A design system gains value when every team member treats it as the shared language of the product. I set up the tools, documentation and rituals that make collaboration between design, product and engineering efficient and sustainable.",
+        desc: "A design system is only valuable when the whole team uses it without friction. At UNOWHY, I built a unified system across five product brands that cut design production time by 60% and made developer handoff predictable. The work was not just components — it was structure, shared language, and the rituals that keep it alive.",
         deliverables: [
-          "Scalable design systems and reusable component libraries",
-          "Technical documentation for developer handoff",
-          "Collaboration rituals between design, product and engineering"
+          "Design systems built across multiple brands and product surfaces",
+          "Reusable component libraries with Figma tokens and documentation",
+          "Structured developer handoff: interaction specs, assets, annotation standards",
+          "Design-engineering rituals: weekly reviews, shared standards, alignment syncs",
+          "Figma workspace organization: templates, libraries, onboarding guides"
         ]
       },
       {
         title: "Leadership & Organisation",
-        desc: "I have recruited, managed and mentored design teams of up to five people. I build the rituals, documentation, and cross-functional habits that make design a shared practice across the organization.",
+        desc: "I have built design teams from the ground up. At UNOWHY, I hired, managed, and mentored five designers over six years — annual reviews, mid-year check-ins, design challenges, and a culture built around critique and shared learning. At PagesJaunes, I introduced the weekly design review that became the team's core ritual.",
         deliverables: [
-          "Team leadership, hiring and onboarding of designers",
-          "Design workshops for collaboration and creativity",
-          "Stakeholder alignment (C-Level, PM, Engineering)",
-          "Mentoring and skill development for junior designers"
+          "Team building: hiring, onboarding, and structured performance reviews",
+          "Career development and mentoring for junior and mid-level designers",
+          "Design culture: peer critiques, design challenges, shared learning rituals",
+          "Stakeholder alignment across C-Level, Product, and Engineering",
+          "Cross-functional workshops: design thinking, product ideation, retrospectives"
         ]
       }
     ] as Pillar[],
@@ -115,42 +120,47 @@ const TRANSLATIONS = {
     pillars: [
       {
         title: "Design & Prototypage",
-        desc: "Je conçois les interfaces du wireframe à l'écran pixel-perfect, puis je les prototype en haute fidélité pour valider les idées avant la moindre ligne de code. Quand la vitesse compte, je construis des MVP fonctionnels avec Claude Code, Gemini et Vercel.",
+        desc: "Je conçois les interfaces du premier wireframe à l'écran prêt pour l'implémentation, puis je les prototype en haute fidélité pour que les décisions s'appuient sur des artefacts concrets plutôt que sur des suppositions. Quand le calendrier est serré, je construis des MVP fonctionnels directement : authentification, base de données, intégration GenAI, déployés sur Vercel. Chez Toolkit.ac, cette approche a conduit un produit du concept à 2 000 utilisateurs payants.",
         deliverables: [
-          "Cadrage UX, design UI, micro-interactions",
-          "Prototypage haute fidélité pour valider et vendre une vision",
-          "Développement MVP rapide (auth, BDD, intégration GenAI)",
+          "Cadrage UX, design UI, micro-interactions et motion",
+          "Prototypage haute fidélité pour valider les idées et aligner les parties prenantes avant l'engagement engineering",
+          "Prototypage assisté IA : de Figma à prototype déployé via Claude Code et Figma MCP",
+          "Développement MVP fonctionnel : auth, BDD, intégration GenAI, déployé sur Vercel",
           "Design mobile natif (iOS/Android) et responsive web",
-          "Workflows concept-to-interface dans des domaines complexes"
+          "Design produit dans des domaines complexes : SaaS B2B, EdTech, logiciels d'entreprise, services publics"
         ]
       },
       {
         title: "Stratégie Produit",
-        desc: "Avant de dessiner des écrans, j'aide à clarifier ce que le produit doit être, aux côtés du product manager. J'anime des ateliers, je structure les hypothèses, je définis le scope des fonctionnalités et je façonne la vision par le design d'interaction.",
+        desc: "Avant le premier écran, j'aide les équipes à s'aligner sur ce qu'elles construisent et pourquoi. J'anime des ateliers pour faire émerger les hypothèses, structurer le scope et aligner les parties prenantes sur une direction commune. Pour France VAE chez beta.gouv, dix entretiens utilisateurs et un atelier design thinking de deux jours ont reconfiguré le périmètre de l'ensemble du MVP avant la moindre production design.",
         deliverables: [
-          "Cadrage de fonctionnalités (0 to 1) et contribution à la roadmap",
+          "Cadrage fonctionnel 0-to-1 et contribution à la roadmap produit",
           "Clarification de la vision produit par les parcours utilisateurs clés",
           "Ateliers d'idéation et de vision avec utilisateurs et parties prenantes",
+          "Recherche utilisateurs : entretiens, observations, synthèse en insights actionnables",
           "Stratégie d'accessibilité et standards UX inclusifs"
         ]
       },
       {
         title: "Design Ops",
-        desc: "Un design system prend de la valeur quand chaque membre de l'équipe le traite comme le langage partagé du produit. Je mets en place les outils, la documentation et les rituels qui rendent la collaboration efficace et durable.",
+        desc: "Un design system n'a de valeur que lorsque toute l'équipe l'utilise sans friction. Chez UNOWHY, j'ai construit un système unifié sur cinq marques produit qui a réduit le temps de production design de 60% et rendu le handoff développeur prévisible. Le travail n'était pas qu'une bibliothèque de composants : c'était une structure, un langage partagé et les rituels qui le font vivre.",
         deliverables: [
-          "Design systems scalables et bibliothèques de composants réutilisables",
-          "Documentation technique pour le handoff développeur",
-          "Rituels de collaboration entre design, produit et engineering"
+          "Design systems construits sur plusieurs marques et surfaces produit",
+          "Bibliothèques de composants réutilisables avec tokens Figma et documentation",
+          "Handoff développeur structuré : specs d'interaction, assets, standards d'annotation",
+          "Rituels design-engineering : reviews hebdomadaires, standards partagés, syncs d'alignement",
+          "Organisation du workspace Figma : templates, librairies, guides d'onboarding"
         ]
       },
       {
         title: "Leadership & Organisation",
-        desc: "J'ai recruté, managé et mentoré des équipes design jusqu'à cinq personnes. Je mets en place les rituels, la documentation et les habitudes cross-fonctionnelles qui font du design une pratique partagée dans l'organisation.",
+        desc: "J'ai construit des équipes design de zéro. Chez UNOWHY, j'ai recruté, managé et fait grandir cinq designers sur six ans : entretiens annuels, points mi-année, design challenges et une culture construite autour de la critique et de l'apprentissage partagé. Chez PagesJaunes, j'ai introduit la design review hebdomadaire qui est devenue le rituel central de l'équipe.",
         deliverables: [
-          "Leadership d'équipe, recrutement et onboarding de designers",
-          "Ateliers design pour la collaboration et la créativité",
-          "Alignement des parties prenantes (C-Level, PM, Engineering)",
-          "Mentorat et montée en compétence des juniors"
+          "Construction d'équipe : recrutement, onboarding et entretiens de performance structurés",
+          "Développement de carrière et mentorat pour designers juniors et confirmés",
+          "Culture design : critiques entre pairs, design challenges, rituels d'apprentissage partagé",
+          "Alignement des parties prenantes : C-Level, Produit, Engineering",
+          "Ateliers cross-fonctionnels : design thinking, idéation produit, rétrospectives"
         ]
       }
     ] as Pillar[],
@@ -203,6 +213,20 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ lang, onContact }) => {
   const [hoveredPillar, setHoveredPillar] = useState<number | null>(null);
   const sections = TOC_SECTIONS[lang];
 
+  // Scroll to anchor on initial load — Next.js App Router doesn't handle
+  // cross-page hash navigation natively; we do it after the first paint.
+  // 'instant' matches native browser anchor behavior (no scroll animation).
+  useEffect(() => {
+    const hash = window.location.hash
+    if (!hash) return
+    const id = hash.slice(1)
+    const timer = setTimeout(() => {
+      const el = document.getElementById(id)
+      if (el) el.scrollIntoView({ behavior: 'instant' })
+    }, 150)
+    return () => clearTimeout(timer)
+  }, [])
+
   useEffect(() => {
     const handleScroll = () => {
       setShowTOC(window.scrollY > 300);
@@ -245,7 +269,7 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ lang, onContact }) => {
       )}
 
       {/* Content */}
-      <div className="max-w-[740px] mx-auto px-6 pt-32 md:pt-40 pb-24 md:pb-40">
+      <div className="max-w-[740px] mx-auto px-6 pt-32 sm:pt-40 md:pt-48 pb-24 md:pb-40">
 
         {/* Header */}
         <motion.div

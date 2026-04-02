@@ -97,6 +97,8 @@ const nextConfig: NextConfig = {
     { source: '/portfolio/toolkit/:path*', destination: '/fr/project/toolkit/summary', permanent: true },
     { source: '/portfolio/sqool/:path*', destination: '/fr/project/sqool/summary', permanent: true },
     { source: '/portfolio/sqool-classe-2022-2024', destination: '/fr/project/sqool-classe/summary', permanent: true },
+    // Gallery disabled (scroll bug with iframe loading) — redirect to summary until rework
+    { source: '/:lang/project/sqool-classe/gallery', destination: '/:lang/project/sqool-classe/summary', permanent: false },
     { source: '/portfolio/sqool-software-ecosystem-evolution-2018-2024', destination: '/fr/project/sqool/summary', permanent: true },
     { source: '/portfolio/sqool-extend-2024/:path*', destination: '/fr/project/sqool/summary', permanent: true },
     { source: '/portfolio/pagesjaunes/:path*', destination: '/fr/project/pagesjaunes/summary', permanent: true },
