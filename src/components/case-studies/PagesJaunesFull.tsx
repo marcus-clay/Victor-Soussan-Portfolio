@@ -8,6 +8,8 @@
 import React, { useRef } from 'react';
 import VideoPlayer from '@/components/VideoPlayer';
 import { motion, useInView } from 'framer-motion';
+import ReadMoreList from './ReadMoreList';
+import CaseStudyTestimonialBlock from './CaseStudyTestimonialBlock';
 import {
   ArrowRight,
 } from '@phosphor-icons/react';
@@ -688,26 +690,14 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
           </p>
 
           {/* Testimonial */}
-          <div className="py-6 border-t border-gray-100">
-            <p className="text-base text-gray-500 leading-relaxed italic mb-4">
-              "{t.testimonial.quote}"
-            </p>
-            <div className="flex items-center gap-3">
-              <img
-                loading="lazy"
-                src="/images/people/simon-white.webp"
-                alt={t.testimonial.author}
-                className="w-8 h-8 rounded-full object-cover"
-              />
-              <div>
-                <p className="text-sm font-medium text-gray-900">
-                  {t.testimonial.author}
-                </p>
-                <p className="text-xs text-gray-400">
-                  {t.testimonial.role}
-                </p>
-              </div>
-            </div>
+          <div className="border-t border-gray-100">
+            <CaseStudyTestimonialBlock
+              quote={t.testimonial.quote}
+              author={t.testimonial.author}
+              role={t.testimonial.role}
+              image="simon-white.webp"
+              lang={lang}
+            />
           </div>
         </div>
       </section>
@@ -836,78 +826,87 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
           </div>
 
           {/* Homepage iOS & Android */}
-          <div className="max-w-[960px] mx-auto px-6">
-            <figure className="mb-8">
-              <div
-                onClick={() => onImageClick(GALLERY_IMAGES.homepage.main)}
-                className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
-              >
-                <img
-                  loading="lazy"
-                  src={GALLERY_IMAGES.homepage.main}
-                  alt="PagesJaunes Homepage iOS & Android"
-                  className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
-                />
-              </div>
-              <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
-                {CAPTIONS[lang].homepage.main}
-              </figcaption>
-            </figure>
-
-            {/* Homepage Variations */}
-            <figure className="mb-8">
-              <div
-                onClick={() => onImageClick(GALLERY_IMAGES.homepage.variations)}
-                className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
-              >
-                <img
-                  loading="lazy"
-                  src={GALLERY_IMAGES.homepage.variations}
-                  alt="PagesJaunes Homepage Variations"
-                  className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
-                />
-              </div>
-              <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
-                {CAPTIONS[lang].homepage.variations}
-              </figcaption>
-            </figure>
-
-            {/* iPad Homepage */}
-            <div className="space-y-6">
-              <figure>
-                <div
-                  onClick={() => onImageClick(GALLERY_IMAGES.homepageIpad.main)}
-                  className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
-                >
-                  <img
-                    loading="lazy"
-                    src={GALLERY_IMAGES.homepageIpad.main}
-                    alt="PagesJaunes iPad Homepage"
-                    className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
-                  />
-                </div>
-                <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
-                  {CAPTIONS[lang].homepageIpad.main}
-                </figcaption>
-              </figure>
-
-              <figure>
-                <div
-                  onClick={() => onImageClick(GALLERY_IMAGES.homepageIpad.variations)}
-                  className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
-                >
-                  <img
-                    loading="lazy"
-                    src={GALLERY_IMAGES.homepageIpad.variations}
-                    alt="PagesJaunes iPad Homepage Variations"
-                    className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
-                  />
-                </div>
-                <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
-                  {CAPTIONS[lang].homepageIpad.variations}
-                </figcaption>
-              </figure>
+          <div className="max-w-[740px] mx-auto px-6 mb-4">
+            <p className="text-base text-gray-500 leading-relaxed">{CAPTIONS[lang].homepage.main}</p>
+          </div>
+          <div className="max-w-[960px] mx-auto px-6 mb-16">
+            <div
+              onClick={() => onImageClick(GALLERY_IMAGES.homepage.main)}
+              className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
+            >
+              <img
+                loading="lazy"
+                src={GALLERY_IMAGES.homepage.main}
+                alt="PagesJaunes Homepage iOS & Android"
+                className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
+              />
             </div>
+            <p className="mt-3 text-xs font-medium text-gray-400">
+              {lang === 'en' ? 'PagesJaunes — iOS & Android homepage' : 'PagesJaunes — Page d\'accueil iOS & Android'}
+            </p>
+          </div>
+
+          {/* Homepage Variations */}
+          <div className="max-w-[740px] mx-auto px-6 mb-4">
+            <p className="text-base text-gray-500 leading-relaxed">{CAPTIONS[lang].homepage.variations}</p>
+          </div>
+          <div className="max-w-[960px] mx-auto px-6 mb-16">
+            <div
+              onClick={() => onImageClick(GALLERY_IMAGES.homepage.variations)}
+              className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
+            >
+              <img
+                loading="lazy"
+                src={GALLERY_IMAGES.homepage.variations}
+                alt="PagesJaunes Homepage Variations"
+                className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
+              />
+            </div>
+            <p className="mt-3 text-xs font-medium text-gray-400">
+              {lang === 'en' ? 'PagesJaunes — Hero image variations' : 'PagesJaunes — Variations image hero'}
+            </p>
+          </div>
+
+          {/* iPad Homepage */}
+          <div className="max-w-[740px] mx-auto px-6 mb-4">
+            <p className="text-base text-gray-500 leading-relaxed">{CAPTIONS[lang].homepageIpad.main}</p>
+          </div>
+          <div className="max-w-[960px] mx-auto px-6 mb-16">
+            <div
+              onClick={() => onImageClick(GALLERY_IMAGES.homepageIpad.main)}
+              className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
+            >
+              <img
+                loading="lazy"
+                src={GALLERY_IMAGES.homepageIpad.main}
+                alt="PagesJaunes iPad Homepage"
+                className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
+              />
+            </div>
+            <p className="mt-3 text-xs font-medium text-gray-400">
+              {lang === 'en' ? 'PagesJaunes — iPad homepage' : 'PagesJaunes — Page d\'accueil iPad'}
+            </p>
+          </div>
+
+          {/* iPad Homepage Variations */}
+          <div className="max-w-[740px] mx-auto px-6 mb-4">
+            <p className="text-base text-gray-500 leading-relaxed">{CAPTIONS[lang].homepageIpad.variations}</p>
+          </div>
+          <div className="max-w-[960px] mx-auto px-6">
+            <div
+              onClick={() => onImageClick(GALLERY_IMAGES.homepageIpad.variations)}
+              className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
+            >
+              <img
+                loading="lazy"
+                src={GALLERY_IMAGES.homepageIpad.variations}
+                alt="PagesJaunes iPad Homepage Variations"
+                className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
+              />
+            </div>
+            <p className="mt-3 text-xs font-medium text-gray-400">
+              {lang === 'en' ? 'PagesJaunes — Multi-device responsive' : 'PagesJaunes — Responsive multi-device'}
+            </p>
           </div>
         </section>
       </FadeInSection>
@@ -1028,7 +1027,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
               {t.onboarding.intro}
             </p>
 
-            <div className="divide-y divide-gray-100 mb-12">
+            <ReadMoreList className="divide-y divide-gray-100 mb-12" initialCount={2}>
               <div className="py-4">
                 <p className="text-sm font-medium text-gray-900 mb-2">
                   {t.onboarding.ios}
@@ -1059,42 +1058,39 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
                   ))}
                 </ul>
               </div>
-            </div>
+            </ReadMoreList>
           </div>
 
-          {/* Onboarding Videos */}
-          <div className="max-w-[960px] mx-auto px-6">
-            <div className="space-y-6">
-              <figure>
-                <div
-                  onClick={() => onImageClick('/images/pj-ios-app-onboarding-animation.mp4')}
-                  className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
-                >
-                  <VideoPlayer
-                    src="/images/pj-ios-app-onboarding-animation.mp4"
-                    className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
-                  />
-                </div>
-                <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
-                  {t.onboarding.ios}
-                </figcaption>
-              </figure>
-
-              <figure>
-                <div
-                  onClick={() => onImageClick('/images/pj-and-app-onboarding-animation.mp4')}
-                  className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
-                >
-                  <VideoPlayer
-                    src="/images/pj-and-app-onboarding-animation.mp4"
-                    className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
-                  />
-                </div>
-                <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
-                  {t.onboarding.android}
-                </figcaption>
-              </figure>
+          {/* iOS Onboarding Video */}
+          <div className="max-w-[960px] mx-auto px-6 mb-16">
+            <div
+              onClick={() => onImageClick('/images/pj-ios-app-onboarding-animation.mp4')}
+              className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
+            >
+              <VideoPlayer
+                src="/images/pj-ios-app-onboarding-animation.mp4"
+                className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
+              />
             </div>
+            <p className="mt-3 text-xs font-medium text-gray-400">{t.onboarding.ios}</p>
+          </div>
+
+          {/* Android Onboarding Video */}
+          <div className="max-w-[740px] mx-auto px-6 mb-4">
+            <p className="text-sm font-medium text-gray-900 mb-1">{t.onboarding.android}</p>
+            <p className="text-base text-gray-500 leading-relaxed">{t.onboarding.androidDesc}</p>
+          </div>
+          <div className="max-w-[960px] mx-auto px-6">
+            <div
+              onClick={() => onImageClick('/images/pj-and-app-onboarding-animation.mp4')}
+              className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
+            >
+              <VideoPlayer
+                src="/images/pj-and-app-onboarding-animation.mp4"
+                className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
+              />
+            </div>
+            <p className="mt-3 text-xs font-medium text-gray-400">{t.onboarding.android}</p>
           </div>
         </section>
       </FadeInSection>
@@ -1303,73 +1299,74 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
             </p>
           </div>
 
-          {/* Micro-interactions - stacked, 2:3 aspect ratio */}
+          {/* Micro-interactions */}
           <div className="max-w-[960px] mx-auto px-6">
-            <div className="space-y-6">
-              {/* Navigation Drawer */}
-              <figure>
+            {/* Navigation Drawer */}
+            <p className="text-base text-gray-500 leading-relaxed mb-4">{CAPTIONS[lang].microInteractions.navDrawer}</p>
+            <div className="mb-16">
+              <div
+                onClick={() => onImageClick(GALLERY_IMAGES.microInteractions.navDrawer)}
+                className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
+              >
                 <div
-                  onClick={() => onImageClick(GALLERY_IMAGES.microInteractions.navDrawer)}
-                  className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
+                  className="aspect-[2/3] flex items-center justify-center"
+                  style={{ backgroundColor: '#C8C8C8' }}
                 >
-                  <div
-                    className="aspect-[2/3] flex items-center justify-center"
-                    style={{ backgroundColor: '#C8C8C8' }}
-                  >
-                    <img
-                      loading="lazy"
-                      src={GALLERY_IMAGES.microInteractions.navDrawer}
-                      alt="Material Design Navigation Drawer"
-                      className="w-full h-full object-contain"
-                    />
-                  </div>
+                  <img
+                    loading="lazy"
+                    src={GALLERY_IMAGES.microInteractions.navDrawer}
+                    alt="Material Design Navigation Drawer"
+                    className="w-full h-full object-contain"
+                  />
                 </div>
-                <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
-                  {CAPTIONS[lang].microInteractions.navDrawer}
-                </figcaption>
-              </figure>
+              </div>
+              <p className="mt-3 text-xs font-medium text-gray-400">
+                {lang === 'en' ? 'Navigation Drawer' : 'Navigation Drawer'}
+              </p>
+            </div>
 
-              {/* Favorites Animation */}
-              <figure>
+            {/* Favorites Animation */}
+            <p className="text-base text-gray-500 leading-relaxed mb-4">{CAPTIONS[lang].microInteractions.favorites}</p>
+            <div className="mb-16">
+              <div
+                onClick={() => onImageClick(GALLERY_IMAGES.microInteractions.favorites)}
+                className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
+              >
                 <div
-                  onClick={() => onImageClick(GALLERY_IMAGES.microInteractions.favorites)}
-                  className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
+                  className="aspect-[2/3] flex items-center justify-center"
+                  style={{ backgroundColor: '#C8C8C8' }}
                 >
-                  <div
-                    className="aspect-[2/3] flex items-center justify-center"
-                    style={{ backgroundColor: '#C8C8C8' }}
-                  >
-                    <VideoPlayer
-                      src={GALLERY_IMAGES.microInteractions.favorites}
-                      className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
-                    />
-                  </div>
+                  <VideoPlayer
+                    src={GALLERY_IMAGES.microInteractions.favorites}
+                    className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
+                  />
                 </div>
-                <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
-                  {CAPTIONS[lang].microInteractions.favorites}
-                </figcaption>
-              </figure>
+              </div>
+              <p className="mt-3 text-xs font-medium text-gray-400">
+                {lang === 'en' ? 'Favorites animation' : 'Animation Favoris'}
+              </p>
+            </div>
 
-              {/* History Remarketing Animation */}
-              <figure>
+            {/* History Remarketing Animation */}
+            <p className="text-base text-gray-500 leading-relaxed mb-4">{CAPTIONS[lang].microInteractions.historyRemarketing}</p>
+            <div>
+              <div
+                onClick={() => onImageClick(GALLERY_IMAGES.microInteractions.historyRemarketing)}
+                className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
+              >
                 <div
-                  onClick={() => onImageClick(GALLERY_IMAGES.microInteractions.historyRemarketing)}
-                  className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
+                  className="aspect-[2/3] flex items-center justify-center"
+                  style={{ backgroundColor: '#C8C8C8' }}
                 >
-                  <div
-                    className="aspect-[2/3] flex items-center justify-center"
-                    style={{ backgroundColor: '#C8C8C8' }}
-                  >
-                    <VideoPlayer
-                      src={GALLERY_IMAGES.microInteractions.historyRemarketing}
-                      className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
-                    />
-                  </div>
+                  <VideoPlayer
+                    src={GALLERY_IMAGES.microInteractions.historyRemarketing}
+                    className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
+                  />
                 </div>
-                <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
-                  {CAPTIONS[lang].microInteractions.historyRemarketing}
-                </figcaption>
-              </figure>
+              </div>
+              <p className="mt-3 text-xs font-medium text-gray-400">
+                {lang === 'en' ? 'History & remarketing' : 'Historique & remarketing'}
+              </p>
             </div>
           </div>
         </section>
@@ -1390,41 +1387,44 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
             </p>
           </div>
 
-          {/* Key visuals - stacked with square aspect ratio */}
+          {/* Key visuals */}
           <div className="max-w-[960px] mx-auto px-6">
-            <div className="space-y-6 mb-8">
-              <figure>
-                <div
-                  onClick={() => onImageClick(GALLERY_IMAGES.wear.thumbnail)}
-                  className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01] aspect-square"
-                >
-                  <img
-                    loading="lazy"
-                    src={GALLERY_IMAGES.wear.thumbnail}
-                    alt="PagesJaunes Android Wear"
-                    className="w-full h-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.02]"
-                  />
-                </div>
-                <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
-                  {CAPTIONS[lang].wear.thumbnail}
-                </figcaption>
-              </figure>
-              <figure>
-                <div
-                  onClick={() => onImageClick(GALLERY_IMAGES.wear.yAllerBtn)}
-                  className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01] aspect-square"
-                >
-                  <img
-                    loading="lazy"
-                    src={GALLERY_IMAGES.wear.yAllerBtn}
-                    alt="Y Aller navigation button"
-                    className="w-full h-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.02]"
-                  />
-                </div>
-                <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
-                  {CAPTIONS[lang].wear.yAllerBtn}
-                </figcaption>
-              </figure>
+            {/* Watch face thumbnail */}
+            <p className="text-base text-gray-500 leading-relaxed mb-4">{CAPTIONS[lang].wear.thumbnail}</p>
+            <div className="mb-16">
+              <div
+                onClick={() => onImageClick(GALLERY_IMAGES.wear.thumbnail)}
+                className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01] aspect-square"
+              >
+                <img
+                  loading="lazy"
+                  src={GALLERY_IMAGES.wear.thumbnail}
+                  alt="PagesJaunes Android Wear"
+                  className="w-full h-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.02]"
+                />
+              </div>
+              <p className="mt-3 text-xs font-medium text-gray-400">
+                {lang === 'en' ? 'PagesJaunes Android Wear' : 'PagesJaunes Android Wear'}
+              </p>
+            </div>
+
+            {/* Y Aller navigation button */}
+            <p className="text-base text-gray-500 leading-relaxed mb-4">{CAPTIONS[lang].wear.yAllerBtn}</p>
+            <div className="mb-8">
+              <div
+                onClick={() => onImageClick(GALLERY_IMAGES.wear.yAllerBtn)}
+                className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01] aspect-square"
+              >
+                <img
+                  loading="lazy"
+                  src={GALLERY_IMAGES.wear.yAllerBtn}
+                  alt="Y Aller navigation button"
+                  className="w-full h-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.02]"
+                />
+              </div>
+              <p className="mt-3 text-xs font-medium text-gray-400">
+                {lang === 'en' ? '"Y Aller" — navigation action' : '"Y Aller" — action de navigation'}
+              </p>
             </div>
           </div>
 
@@ -1670,7 +1670,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
               {t.learnings.sectionTitle}
             </h2>
 
-            <div className="divide-y divide-gray-100">
+            <ReadMoreList className="divide-y divide-gray-100" initialCount={2}>
               {t.learnings.items.map((item, idx) => (
                 <div key={idx} className="py-4">
                   <p className="text-sm font-medium text-gray-900 mb-2">
@@ -1681,7 +1681,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
                   </p>
                 </div>
               ))}
-            </div>
+            </ReadMoreList>
           </div>
         </section>
       </FadeInSection>

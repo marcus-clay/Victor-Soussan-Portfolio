@@ -119,7 +119,7 @@ const SignalDetailPage: React.FC<Props> = ({ signalId, systemTheme, lang, onBack
     >
       {/* Breadcrumb - sticky below Nav */}
       <div className={`sticky z-10 backdrop-blur-xl ${isDark ? 'bg-[#0a0a0a]/80 border-white/5' : 'bg-[#FCFCFD]/80 border-gray-200'}`} style={{ top: 'var(--nav-height, 72px)', transition: 'top 250ms cubic-bezier(0.23, 1, 0.32, 1)' }}>
-        <div className="max-w-[1200px] mx-auto px-4 md:px-6 h-10 flex items-center">
+        <div className="max-w-[740px] mx-auto px-4 md:px-6 h-10 flex items-center">
           <nav className="flex items-center gap-1.5 text-[13px] min-w-0 overflow-hidden">
             <button
               onClick={onBack}
@@ -152,7 +152,7 @@ const SignalDetailPage: React.FC<Props> = ({ signalId, systemTheme, lang, onBack
       )}
 
       {/* Main content */}
-      <div className="max-w-[1200px] mx-auto px-6 pb-20">
+      <div className="max-w-[740px] mx-auto px-6 pb-20">
         <article ref={articleRef} className="flex-1 min-w-0 pt-8 md:pt-10">
 
           {/* Hero: content-first (matches guide layout) */}
@@ -165,33 +165,31 @@ const SignalDetailPage: React.FC<Props> = ({ signalId, systemTheme, lang, onBack
             </span>
 
             {/* Title */}
-            <h1 className={`text-3xl sm:text-4xl md:text-[2.5rem] font-bold tracking-[-0.03em] leading-[1.15] mb-4 ${
+            <h1 className={`text-base font-semibold tracking-[-0.01em] mb-4 ${
               isDark ? 'text-white' : 'text-gray-900'
             }`}>
               {title}
             </h1>
 
             {/* Meta row with author */}
-            <div className={`flex items-center gap-3 pb-6 mb-6 border-b ${isDark ? 'border-white/10' : 'border-gray-200'}`}>
+            <div className={`flex items-center gap-3 pb-6 mb-6 border-b ${isDark ? 'border-white/10' : 'border-gray-100'}`}>
               <img
                 src="/images/photos victor/image_victor_home.png"
                 alt="Victor Soussan"
-                className="w-10 h-10 rounded-full object-cover flex-shrink-0"
+                className="w-9 h-9 rounded-full object-cover flex-shrink-0"
               />
-              <div className="min-w-0">
-                <p className={`text-sm font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                  Victor Soussan
-                </p>
-                <div className={`flex flex-wrap items-center gap-3 text-xs ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
-                  <span className="flex items-center gap-1">
-                    <Calendar size={12} />
-                    {formattedDate}
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <Clock size={12} />
-                    {readingTime} min {lang === 'en' ? 'read' : 'de lecture'}
-                  </span>
-                </div>
+              <div className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-400'}`}>
+                <span className={`font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>Victor Soussan</span>
+                <span className="mx-2 text-gray-300">·</span>
+                <span className="inline-flex items-center gap-1">
+                  <Calendar size={12} />
+                  {formattedDate}
+                </span>
+                <span className="mx-2 text-gray-300">·</span>
+                <span className="inline-flex items-center gap-1">
+                  <Clock size={12} />
+                  {readingTime} min {lang === 'en' ? 'read' : 'de lecture'}
+                </span>
               </div>
             </div>
           </div>
@@ -287,17 +285,16 @@ const SignalDetailPage: React.FC<Props> = ({ signalId, systemTheme, lang, onBack
           line-height: 1.85;
           font-size: 1rem;
           color: #4b5563;
-          max-width: 65ch;
         }
         .article-body strong { font-weight: 600; color: #1f2937; }
         .article-body h2, .article-body h3 {
-          font-weight: 700;
-          letter-spacing: -0.02em;
-          line-height: 1.3;
+          font-size: 1rem;
+          font-weight: 600;
+          letter-spacing: -0.01em;
+          line-height: 1.4;
           color: #111827;
         }
         .article-body h2 {
-          font-size: 1.375rem;
           margin-top: 3rem;
           margin-bottom: 1rem;
           padding-top: 1.5rem;
@@ -306,7 +303,6 @@ const SignalDetailPage: React.FC<Props> = ({ signalId, systemTheme, lang, onBack
         }
         .article-body h2:first-child { margin-top: 0; padding-top: 0; border-top: none; }
         .article-body h3 {
-          font-size: 1.125rem;
           margin-top: 2rem;
           margin-bottom: 0.75rem;
         }
@@ -330,8 +326,6 @@ const SignalDetailPage: React.FC<Props> = ({ signalId, systemTheme, lang, onBack
         .article-body tr:nth-child(even) td { background: #fafafa; }
         @media (min-width: 768px) {
           .article-body p, .article-body li { font-size: 1.0625rem; }
-          .article-body h2 { font-size: 1.5rem; margin-top: 3.5rem; }
-          .article-body h3 { font-size: 1.25rem; }
         }
         .article-body-dark p, .article-body-dark li { color: #a1a1aa; }
         .article-body-dark strong { color: #e4e4e7; }

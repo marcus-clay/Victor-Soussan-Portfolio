@@ -12,6 +12,19 @@ import { TRANSLATIONS } from '@/data/translations'
 
 type Lang = 'en' | 'fr'
 
+const EASE_OUT: [number, number, number, number] = [0.23, 1, 0.32, 1]
+
+const backdropVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 0.12 } },
+  exit: { opacity: 0, transition: { duration: 0.14 } },
+}
+
+const panelVariants = {
+  hidden: { opacity: 0, y: -12 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.22, ease: EASE_OUT } },
+  exit: { opacity: 0, y: -4, transition: { duration: 0.14, ease: 'easeIn' } },
+}
 
 const MENU_ITEMS = [
   { id: 'home', route: '', labelKey: null },
@@ -26,6 +39,9 @@ const MENU_ITEMS = [
 
 export default function Nav({ lang }: { lang: Lang }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  // Stays true while menu is open OR animating out — drives nav background
+  // to avoid backdrop-blur clipping the still-visible panel during exit
+  const [isMenuMounted, setIsMenuMounted] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const [isDarkNav, setIsDarkNav] = useState(false)
   const [pageTitle, setPageTitle] = useState<string | null>(null)
@@ -38,7 +54,12 @@ export default function Nav({ lang }: { lang: Lang }) {
   useEffect(() => {
     window.scrollTo(0, 0)
     setIsMobileMenuOpen(false)
+    // isMenuMounted cleared by onExitComplete after panel finishes exiting
   }, [pathname])
+
+  const openMenu = () => { setIsMenuMounted(true); setIsMobileMenuOpen(true) }
+  const closeMenu = () => { setIsMobileMenuOpen(false) }
+  const toggleMenu = () => { isMobileMenuOpen ? closeMenu() : openMenu() }
 
   // Track scroll for header height transition + update CSS variable
   useEffect(() => {
@@ -115,14 +136,14 @@ export default function Nav({ lang }: { lang: Lang }) {
       {/* Top bar — content-width, always burger */}
       <nav
         id="site-nav"
-        className={`fixed top-0 w-full z-50 transition-[background-color] duration-300 ${
-          isMobileMenuOpen
+        className={`fixed top-0 w-full z-50 backdrop-blur-xl ${
+          isMenuMounted
             ? 'bg-[#FDFDFC]'
-            : isScrolled ? 'bg-[#FDFDFC]/80 backdrop-blur-xl' : 'bg-transparent'
+            : isScrolled ? 'bg-[#FDFDFC]/80' : 'bg-transparent'
         }`}
         style={{
-          transition: 'height 250ms cubic-bezier(0.23, 1, 0.32, 1)',
           height: isScrolled ? 56 : 64,
+          transition: 'height 250ms cubic-bezier(0.23, 1, 0.32, 1), background-color 200ms ease',
         }}
       >
         <div className="max-w-[740px] mx-auto px-6 h-full flex items-center justify-between">
@@ -182,17 +203,27 @@ export default function Nav({ lang }: { lang: Lang }) {
               {isMobileMenuOpen && (
                 <motion.div
                   initial={{ opacity: 0, width: 0 }}
-                  animate={{ opacity: 1, width: 'auto' }}
-                  exit={{ opacity: 0, width: 0 }}
-                  transition={{
-                    width: { duration: 0.25, ease: [0.23, 1, 0.32, 1] },
-                    opacity: { duration: 0.15, delay: 0.08 },
+                  animate={{
+                    opacity: 1,
+                    width: 'auto',
+                    transition: {
+                      width: { duration: 0.25, ease: EASE_OUT },
+                      opacity: { duration: 0.15, delay: 0.08 },
+                    },
+                  }}
+                  exit={{
+                    opacity: 0,
+                    width: 0,
+                    transition: {
+                      opacity: { duration: 0.1 },
+                      width: { duration: 0.18, ease: EASE_OUT, delay: 0.06 },
+                    },
                   }}
                   style={{ overflow: 'hidden', flexShrink: 0 }}
                 >
                   <Link
                     href={`/${lang}/contact`}
-                    onClick={() => setIsMobileMenuOpen(false)}
+                    onClick={closeMenu}
                     className="inline-flex px-3.5 py-1.5 text-sm font-medium rounded-full bg-gray-900 text-white hover:bg-gray-800 active:scale-[0.97] whitespace-nowrap"
                     style={{ transition: 'background-color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
                   >
@@ -205,36 +236,63 @@ export default function Nav({ lang }: { lang: Lang }) {
             <button
               className="relative p-2 rounded-full hover:bg-black/[0.04] active:scale-[0.95]"
               style={{ transition: 'background-color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              onClick={toggleMenu}
               aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
               aria-expanded={isMobileMenuOpen}
             >
-              {isMobileMenuOpen ? <X size={20} /> : <MenuIcon size={20} />}
+              {/* Fixed-size container so button never reflows during icon transition */}
+              <div style={{ position: 'relative', width: 20, height: 20 }}>
+                <AnimatePresence initial={false}>
+                  {isMobileMenuOpen ? (
+                    <motion.span
+                      key="x"
+                      initial={{ opacity: 0, rotate: -45, scale: 0.8 }}
+                      animate={{ opacity: 1, rotate: 0, scale: 1 }}
+                      exit={{ opacity: 0, rotate: 45, scale: 0.8 }}
+                      transition={{ duration: 0.15, ease: EASE_OUT }}
+                      style={{ display: 'flex', position: 'absolute', inset: 0, alignItems: 'center', justifyContent: 'center' }}
+                    >
+                      <X size={20} />
+                    </motion.span>
+                  ) : (
+                    <motion.span
+                      key="menu"
+                      initial={{ opacity: 0, rotate: 45, scale: 0.8 }}
+                      animate={{ opacity: 1, rotate: 0, scale: 1 }}
+                      exit={{ opacity: 0, rotate: -45, scale: 0.8 }}
+                      transition={{ duration: 0.15, ease: EASE_OUT }}
+                      style={{ display: 'flex', position: 'absolute', inset: 0, alignItems: 'center', justifyContent: 'center' }}
+                    >
+                      <MenuIcon size={20} />
+                    </motion.span>
+                  )}
+                </AnimatePresence>
+              </div>
             </button>
           </div>
         </div>
       </nav>
 
       {/* Menu overlay — shared for all breakpoints */}
-      <AnimatePresence>
+      <AnimatePresence onExitComplete={() => setIsMenuMounted(false)}>
         {isMobileMenuOpen && (
           <>
             {/* Backdrop */}
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.15 }}
-              className="fixed inset-0 z-40 bg-black/20 backdrop-blur-[2px]"
-              onClick={() => setIsMobileMenuOpen(false)}
+              variants={backdropVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              className="fixed inset-0 z-40 bg-black/20"
+              onClick={closeMenu}
             />
 
             {/* Menu panel — drops from header, same content width */}
             <motion.div
-              initial={{ opacity: 0, transform: 'translateY(-8px)' }}
-              animate={{ opacity: 1, transform: 'translateY(0px)' }}
-              exit={{ opacity: 0, transform: 'translateY(-8px)' }}
-              transition={{ duration: 0.2, ease: [0.23, 1, 0.32, 1] }}
+              variants={panelVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
               className={`fixed left-0 right-0 z-50 ${
                 isDarkNav
                   ? 'bg-[#1D1D1F]'
@@ -244,25 +302,40 @@ export default function Nav({ lang }: { lang: Lang }) {
             >
               <div className="max-w-[740px] mx-auto px-6 py-4">
                 <div className="flex flex-col">
-                  {MENU_ITEMS.map((item) => {
+                  {MENU_ITEMS.map((item, index) => {
                     const active = isActive(item.route)
                     const label = item.labelKey
                       ? content[item.labelKey]
                       : lang === 'en' ? 'Home' : 'Accueil'
 
                     return (
-                      <Link
+                      <motion.div
                         key={item.id}
-                        href={`/${lang}/${item.route}`}
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className={`-mx-3 px-3 py-2.5 rounded-lg transition-colors duration-150 ${
-                          active
-                            ? (isDarkNav ? 'text-white font-medium' : 'text-gray-900 font-medium')
-                            : (isDarkNav ? 'text-gray-400 hover:text-white hover:bg-white/5' : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50')
-                        }`}
+                        initial={{ opacity: 0 }}
+                        animate={{
+                          opacity: 1,
+                          transition: {
+                            duration: 0.15,
+                            delay: 0.05 + index * 0.02,
+                          },
+                        }}
+                        exit={{
+                          opacity: 0,
+                          transition: { duration: 0.08 },
+                        }}
                       >
-                        <span className="text-sm">{label}</span>
-                      </Link>
+                        <Link
+                          href={`/${lang}/${item.route}`}
+                          onClick={closeMenu}
+                          className={`-mx-3 px-3 py-2.5 rounded-lg transition-colors duration-150 block ${
+                            active
+                              ? (isDarkNav ? 'text-white font-medium' : 'text-gray-900 font-medium')
+                              : (isDarkNav ? 'text-gray-400 hover:text-white hover:bg-white/[0.08]' : 'text-gray-500 hover:text-gray-900 hover:bg-gray-100')
+                          }`}
+                        >
+                          <span className="text-sm">{label}</span>
+                        </Link>
+                      </motion.div>
                     )
                   })}
                 </div>

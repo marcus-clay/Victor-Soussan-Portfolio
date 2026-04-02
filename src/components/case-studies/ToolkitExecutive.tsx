@@ -34,6 +34,8 @@ const TRANSLATIONS = {
       role: 'Sole Product Designer',
       title: 'Construction software that works',
       subtitle: 'From concept to 2,000 paying customers as the only designer on a three-person team.',
+      imageCaption: 'Toolkit — 12 months, 120+ screens, one designer',
+      imageDesc: 'The starting point was an investor pitch, not a research lab. The founder needed a credible prototype to raise funds, so we built one. What that process surfaced was a sharper question: why were construction managers still running sites on spreadsheets and group chats? Not because they lacked discipline. Because the software built for them started from a database schema, not from a job site. A site manager coordinating six trades across three buildings, absorbing last-minute supplier changes with incomplete information, cannot afford a five-step flow to update a task. We went back to the terrain: how decisions actually get made on a site, how information moves between field and office, how a lean three-person team delivers 120 coherent screens without losing the thread. Three major iterations over twelve months. Each one narrowed the gap between what someone needed to do and how fast they could do it. Two thousand paying customers by 2025.',
     },
     role: {
       title: 'My role',
@@ -76,12 +78,6 @@ const TRANSLATIONS = {
           image: '/images/toolkit/evolution_mobile_menu.svg',
         },
         {
-          id: 'admin',
-          title: 'Administration',
-          description: 'User management, subscriptions, enterprise features.',
-          image: '/images/toolkit/desktop_-_chantier_-_index_-_v3.svg',
-        },
-        {
           id: 'system',
           title: 'Design System',
           description: 'Tailwind UI kit, tokens, Figma organization. Scalable to 120+ screens.',
@@ -91,6 +87,7 @@ const TRANSLATIONS = {
     },
     journey: {
       title: '12-month journey',
+      diagramCaption: 'Product evolution — three phases to market fit',
       phases: [
         {
           id: 1,
@@ -195,6 +192,8 @@ const TRANSLATIONS = {
       role: 'Seul Product Designer',
       title: 'Un logiciel de chantier\nqui fonctionne',
       subtitle: 'Du concept a 2 000 clients payants, seul designer dans une equipe de trois.',
+      imageCaption: 'Toolkit — 12 mois, 120+ écrans, un seul designer',
+      imageDesc: 'Le point de départ, c\'était une levée de fonds, pas un laboratoire de recherche. Le fondateur avait besoin d\'un prototype crédible pour convaincre ses investisseurs, on en a construit un. Ce que ce travail a mis en évidence, c\'est une question plus précise : pourquoi les conducteurs de travaux géraient-ils encore leurs chantiers avec des tableurs et des chats de groupe ? Pas par manque de rigueur. Parce que les logiciels conçus pour eux partaient d\'un schéma de base de données, pas d\'une logique de terrain. Un conducteur qui coordonne six corps d\'état sur trois bâtiments, qui absorbe des changements de dernière minute avec une information incomplète, ne peut pas se permettre cinq étapes pour mettre à jour une tâche. On est repartis du terrain : comment les décisions se prennent réellement sur un chantier, comment l\'information circule entre le terrain et le bureau, comment une équipe de trois livre 120 écrans cohérents sans perdre le fil. Trois grandes itérations en douze mois. Chacune a réduit l\'écart entre ce que quelqu\'un devait faire et la vitesse à laquelle il pouvait le faire. Deux mille clients payants en 2025.',
     },
     role: {
       title: 'Mon role',
@@ -237,12 +236,6 @@ const TRANSLATIONS = {
           image: '/images/toolkit/evolution_mobile_menu.svg',
         },
         {
-          id: 'admin',
-          title: 'Administration',
-          description: 'Gestion utilisateurs, abonnements, fonctionnalites entreprise.',
-          image: '/images/toolkit/desktop_-_chantier_-_index_-_v3.svg',
-        },
-        {
           id: 'system',
           title: 'Design System',
           description: 'UI kit Tailwind, tokens, organisation Figma. Scalable a 120+ ecrans.',
@@ -252,6 +245,7 @@ const TRANSLATIONS = {
     },
     journey: {
       title: 'Parcours 12 mois',
+      diagramCaption: 'Évolution produit — trois phases vers le product-market fit',
       phases: [
         {
           id: 1,
@@ -415,21 +409,23 @@ const ToolkitExecutive: React.FC<ToolkitExecutiveProps> = ({
         </div>
 
         {/* Hero image */}
-        <div className="max-w-[960px] mx-auto px-6 mt-12">
-          <motion.div {...fadeIn(0.2)}>
-            <div
-              onClick={() => onImageClick('/images/toolkit/toolkit_app_v3.webp')}
-              className="rounded-xl overflow-hidden cursor-zoom-in group ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,ring-color] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
-            >
-              <img
-                loading="lazy"
-                src="/images/toolkit/toolkit_app_v3.webp"
-                alt="Toolkit App"
-                className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
-              />
-            </div>
-          </motion.div>
-        </div>
+        <motion.div {...fadeIn(0.2)} className="max-w-[960px] mx-auto px-6 mt-12">
+          <div
+            onClick={() => onImageClick('/images/toolkit/toolkit_app_v3.webp')}
+            className="rounded-xl overflow-hidden cursor-zoom-in group ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,ring-color] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
+          >
+            <img
+              loading="lazy"
+              src="/images/toolkit/toolkit_app_v3.webp"
+              alt="Toolkit App"
+              className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
+            />
+          </div>
+          <div className="mt-4 max-w-[740px] mx-auto">
+            <p className="text-xs font-medium text-gray-400 mb-1">{t.hero.imageCaption}</p>
+            <p className="text-base text-gray-500 leading-relaxed">{t.hero.imageDesc}</p>
+          </div>
+        </motion.div>
       </section>
 
       {/* ================================================================ */}
@@ -470,41 +466,34 @@ const ToolkitExecutive: React.FC<ToolkitExecutiveProps> = ({
             {t.scope.title}
           </motion.h2>
 
-          <motion.p {...fadeIn(0.05)} className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-4">
+          <motion.p {...fadeIn(0.05)} className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-12">
             {t.scope.intro}
           </motion.p>
-
-          <motion.div {...fadeIn(0.08)} className="divide-y divide-gray-100">
-            {t.scope.areas.map((area) => (
-              <div key={area.id} className="py-5 -mx-3 px-3 rounded-lg transition-colors duration-150 hover:bg-gray-50">
-                <h3 className="text-sm font-medium text-gray-900 mb-1">{area.title}</h3>
-                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">{area.description}</p>
-              </div>
-            ))}
-          </motion.div>
         </div>
 
-        {/* Scope images */}
-        <motion.div {...fadeIn(0.15)} className="mt-10">
-          <div className="max-w-[960px] mx-auto px-6">
-            <div className="space-y-4">
-              {t.scope.areas.map((area) => (
-                <div
-                  key={area.id}
-                  onClick={() => onImageClick(area.image)}
-                  className="rounded-xl overflow-hidden cursor-zoom-in group ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,ring-color] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
-                >
-                  <img
-                    loading="lazy"
-                    src={area.image}
-                    alt={area.title}
-                    className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-        </motion.div>
+        {/* One text block + image per scope area */}
+        {t.scope.areas.map((area) => (
+          <React.Fragment key={area.id}>
+            <motion.div {...fadeIn()} className="max-w-[740px] mx-auto px-6 mb-6">
+              <h3 className="text-sm font-medium text-gray-900 mb-2">{area.title}</h3>
+              <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">{area.description}</p>
+            </motion.div>
+            <motion.div {...fadeIn()} className="max-w-[960px] mx-auto px-6 mb-24 md:mb-32">
+              <div
+                onClick={() => onImageClick(area.image)}
+                className="rounded-xl overflow-hidden cursor-zoom-in group ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,ring-color] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
+              >
+                <img
+                  loading="lazy"
+                  src={area.image}
+                  alt={area.title}
+                  className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
+                />
+              </div>
+              <p className="mt-3 text-xs font-medium text-gray-400">{area.title}</p>
+            </motion.div>
+          </React.Fragment>
+        ))}
       </section>
 
       {/* ================================================================ */}
@@ -520,6 +509,22 @@ const ToolkitExecutive: React.FC<ToolkitExecutiveProps> = ({
             <PhaseAccordion phases={t.journey.phases} />
           </motion.div>
         </div>
+
+        {/* Evolution diagram */}
+        <motion.div {...fadeIn()} className="max-w-[960px] mx-auto px-6 mt-16">
+          <div
+            onClick={() => onImageClick('/images/toolkit/Diagram_00_-_Product_Evolution___12_months.svg')}
+            className="rounded-xl overflow-hidden cursor-zoom-in group ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,ring-color] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
+          >
+            <img
+              loading="lazy"
+              src="/images/toolkit/Diagram_00_-_Product_Evolution___12_months.svg"
+              alt="Product evolution over 12 months"
+              className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
+            />
+          </div>
+          <p className="mt-3 text-xs font-medium text-gray-400">{t.journey.diagramCaption}</p>
+        </motion.div>
       </section>
 
       {/* ================================================================ */}
@@ -527,42 +532,40 @@ const ToolkitExecutive: React.FC<ToolkitExecutiveProps> = ({
       {/* ================================================================ */}
       <section id="highlights" className="mb-24 md:mb-32">
         <div className="max-w-[740px] mx-auto px-6">
-          <motion.h2 {...fadeIn()} className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-10">
+          <motion.h2 {...fadeIn()} className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-12">
             {t.highlights.title}
           </motion.h2>
         </div>
 
-        <div className="max-w-[960px] mx-auto px-6">
-          <div className="space-y-4">
-            {t.highlights.items.map((item, idx) => (
-              <motion.div key={item.id} {...fadeIn(0.05 * idx)}>
-                {/* Media */}
-                <div
-                  onClick={() => onImageClick(item.media)}
-                  className="rounded-xl overflow-hidden cursor-zoom-in group ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,ring-color] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
-                >
-                  {item.type === 'video' ? (
-                    <VideoPlayer src={item.media} className="w-full h-auto block" />
-                  ) : (
-                    <img
-                      loading="lazy"
-                      src={item.media}
-                      alt={item.title}
-                      className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
-                    />
-                  )}
-                </div>
-
-                {/* Text */}
-                <div className="max-w-[740px] mx-auto mt-3">
-                  <span className="text-xs text-gray-400 mb-1 block">{item.subtitle}</span>
-                  <h3 className="text-sm font-medium text-gray-900 mb-1">{item.title}</h3>
-                  <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">{item.description}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
+        {t.highlights.items.map((item) => (
+          <React.Fragment key={item.id}>
+            {/* Text first */}
+            <motion.div {...fadeIn()} className="max-w-[740px] mx-auto px-6 mb-6">
+              <p className="text-xs text-gray-400 mb-1">{item.subtitle}</p>
+              <h3 className="text-sm font-medium text-gray-900 mb-2">{item.title}</h3>
+              <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">{item.description}</p>
+            </motion.div>
+            {/* Media second */}
+            <motion.div {...fadeIn()} className="max-w-[960px] mx-auto px-6 mb-24 md:mb-32">
+              <div
+                onClick={() => onImageClick(item.media)}
+                className="rounded-xl overflow-hidden cursor-zoom-in group ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,ring-color] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
+              >
+                {item.type === 'video' ? (
+                  <VideoPlayer src={item.media} className="w-full h-auto block" />
+                ) : (
+                  <img
+                    loading="lazy"
+                    src={item.media}
+                    alt={item.title}
+                    className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
+                  />
+                )}
+              </div>
+              <p className="mt-3 text-xs font-medium text-gray-400">{item.title}</p>
+            </motion.div>
+          </React.Fragment>
+        ))}
       </section>
 
       {/* ================================================================ */}

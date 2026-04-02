@@ -185,22 +185,40 @@ export default function ProjectsSection({
                           />
                         </div>
 
-                        {/* Thumbnail: opacity + scale, no height change */}
+                        {/* Thumbnail: opacity + scale, no height change.
+                            Connect gets the bulle demo video — motion is the content. */}
                         <div
                           className="w-full rounded-lg overflow-hidden"
                           style={{ aspectRatio: '4/3' }}
                         >
-                          <img
-                            src={src}
-                            alt={project.title}
-                            loading="lazy"
-                            className="w-full h-full object-cover"
-                            style={{
-                              opacity: isActive ? 1 : 0,
-                              transform: isActive ? 'scale(1)' : 'scale(1.05)',
-                              transition: 'opacity 260ms ease, transform 400ms cubic-bezier(0.23,1,0.32,1)',
-                            }}
-                          />
+                          {project.id === 'connect' ? (
+                            <video
+                              autoPlay
+                              loop
+                              muted
+                              playsInline
+                              preload="none"
+                              className="w-full h-full object-cover"
+                              style={{
+                                opacity: isActive ? 1 : 0,
+                                transform: isActive ? 'scale(1)' : 'scale(1.05)',
+                                transition: 'opacity 260ms ease, transform 400ms cubic-bezier(0.23,1,0.32,1)',
+                              }}
+                              src="/videos/connect/Video-demo-bulle-interactions-02-compressed.mp4"
+                            />
+                          ) : (
+                            <img
+                              src={src}
+                              alt={project.title}
+                              loading="lazy"
+                              className="w-full h-full object-cover"
+                              style={{
+                                opacity: isActive ? 1 : 0,
+                                transform: isActive ? 'scale(1)' : 'scale(1.05)',
+                                transition: 'opacity 260ms ease, transform 400ms cubic-bezier(0.23,1,0.32,1)',
+                              }}
+                            />
+                          )}
                         </div>
                       </div>
 

@@ -365,7 +365,7 @@ const DailymotionExecutive: React.FC<DailymotionExecutiveProps> = ({
           </motion.h2>
           <div className="space-y-10">
             {t.modules.phases.map((phase, idx) => (
-              <motion.div key={idx} {...fadeIn(0.05 + idx * 0.06)}>
+              <motion.div key={idx} {...fadeIn()}>
                 <div className="flex items-baseline gap-3 mb-3">
                   <span className="text-sm font-medium text-gray-900">{phase.title}</span>
                   <span className="text-xs text-gray-400">{phase.period}</span>
@@ -390,35 +390,30 @@ const DailymotionExecutive: React.FC<DailymotionExecutiveProps> = ({
           <motion.p {...fadeIn(0.05)} className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-4">
             {t.scope.intro}
           </motion.p>
-          <motion.div {...fadeIn(0.08)} className="divide-y divide-gray-100">
-            {t.scope.areas.map((area, idx) => (
-              <div key={idx} className="py-5 -mx-3 px-3 rounded-lg transition-colors duration-150 hover:bg-gray-50">
-                <h3 className="text-sm font-medium text-gray-900 mb-1">{area.title}</h3>
-                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">{area.description}</p>
-              </div>
-            ))}
-          </motion.div>
         </div>
-        <motion.div {...fadeIn(0.15)} className="mt-10">
-          <div className="max-w-[960px] mx-auto px-6">
-            <div className="space-y-4">
-              {t.scope.areas.map((area, idx) => (
-                <div
-                  key={idx}
-                  onClick={() => onImageClick(area.image)}
-                  className="rounded-xl overflow-hidden cursor-zoom-in group ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,ring-color] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
-                >
-                  <img
-                    loading="lazy"
-                    src={area.image}
-                    alt={area.title}
-                    className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-        </motion.div>
+
+        {t.scope.areas.map((area, idx) => (
+          <React.Fragment key={idx}>
+            <motion.div {...fadeIn()} className="max-w-[740px] mx-auto px-6 mb-6">
+              <h3 className="text-sm font-medium text-gray-900 mb-2">{area.title}</h3>
+              <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">{area.description}</p>
+            </motion.div>
+            <motion.div {...fadeIn()} className="max-w-[960px] mx-auto px-6 mb-24 md:mb-32">
+              <div
+                onClick={() => onImageClick(area.image)}
+                className="rounded-xl overflow-hidden cursor-zoom-in group ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,ring-color] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
+              >
+                <img
+                  loading="lazy"
+                  src={area.image}
+                  alt={area.title}
+                  className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
+                />
+              </div>
+              <p className="mt-3 text-xs font-medium text-gray-400">{area.title}</p>
+            </motion.div>
+          </React.Fragment>
+        ))}
       </section>
 
       {/* KEY INTERACTIONS */}
@@ -428,33 +423,32 @@ const DailymotionExecutive: React.FC<DailymotionExecutiveProps> = ({
             {t.highlights.title}
           </motion.h2>
         </div>
-        <div className="max-w-[960px] mx-auto px-6">
-          <div className="space-y-4 mt-6">
-            {t.highlights.items.map((item, idx) => (
-              <motion.div key={idx} {...fadeIn(0.05 + idx * 0.04)}>
-                <div
-                  onClick={() => onImageClick(item.media)}
-                  className="rounded-xl overflow-hidden cursor-zoom-in group ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,ring-color] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
-                >
-                  {item.type === 'video' ? (
-                    <VideoPlayer src={item.media} className="w-full h-auto block" />
-                  ) : (
-                    <img
-                      loading="lazy"
-                      src={item.media}
-                      alt={item.title}
-                      className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
-                    />
-                  )}
-                </div>
-                <div className="max-w-[740px] mx-auto mt-3">
-                  <h3 className="text-sm font-medium text-gray-900 mb-1">{item.title}</h3>
-                  <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">{item.description}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
+        {t.highlights.items.map((item, idx) => (
+          <React.Fragment key={idx}>
+            <motion.div {...fadeIn()} className="max-w-[740px] mx-auto px-6 mb-6">
+              <h3 className="text-sm font-medium text-gray-900 mb-2">{item.title}</h3>
+              <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">{item.description}</p>
+            </motion.div>
+            <motion.div {...fadeIn()} className="max-w-[960px] mx-auto px-6 mb-24 md:mb-32">
+              <div
+                onClick={() => onImageClick(item.media)}
+                className="rounded-xl overflow-hidden cursor-zoom-in group ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,ring-color] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
+              >
+                {item.type === 'video' ? (
+                  <VideoPlayer src={item.media} className="w-full h-auto block" />
+                ) : (
+                  <img
+                    loading="lazy"
+                    src={item.media}
+                    alt={item.title}
+                    className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
+                  />
+                )}
+              </div>
+              <p className="mt-3 text-xs font-medium text-gray-400">{item.title}</p>
+            </motion.div>
+          </React.Fragment>
+        ))}
       </section>
 
       {/* IMPACT */}

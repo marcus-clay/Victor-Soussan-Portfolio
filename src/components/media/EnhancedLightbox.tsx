@@ -64,7 +64,6 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
   const [dragY, setDragY] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [showHint, setShowHint] = useState(true);
-  const [slideDirection, setSlideDirection] = useState<'left' | 'right' | null>(null);
 
   // Animation controls
   const controls = useAnimation();
@@ -77,6 +76,7 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
   const doubleTapTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const savedScrollY = useRef(0);
+  const savedUrl = useRef('');
 
   // Set video start time when lightbox opens with a video
   useEffect(() => {
@@ -110,27 +110,43 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
   useEffect(() => {
     if (isOpen) {
       savedScrollY.current = window.scrollY;
+      savedUrl.current = window.location.href;
       document.body.style.overflow = 'hidden';
       document.body.style.position = 'fixed';
       document.body.style.top = `-${savedScrollY.current}px`;
       document.body.style.width = '100%';
+      // Default to zoomed on desktop
+      setIsZoomed(!isMobile);
       const timer = setTimeout(() => setShowHint(false), 2500);
       return () => clearTimeout(timer);
     } else {
+      const scrollY = savedScrollY.current;
       document.body.style.overflow = '';
       document.body.style.position = '';
       document.body.style.top = '';
       document.body.style.width = '';
-      window.scrollTo(0, savedScrollY.current);
+      requestAnimationFrame(() => {
+        window.scrollTo(0, scrollY);
+      });
       setShowHint(true);
       resetState();
     }
-  }, [isOpen]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [isOpen, isMobile]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Reset zoom when changing images
+  // On image change: reset position always; on desktop preserve zoom state
   useEffect(() => {
-    resetState();
-  }, [currentIndex]);
+    if (isMobile) {
+      resetState();
+    } else {
+      setScale(1);
+      setPosition({ x: 0, y: 0 });
+      setDragY(0);
+      controls.start({ scale: 1, x: 0, y: 0 });
+      if (scrollContainerRef.current) {
+        scrollContainerRef.current.scrollTop = 0;
+      }
+    }
+  }, [currentIndex]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Update URL when image changes (for SEO and shareability)
   useEffect(() => {
@@ -150,16 +166,11 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
 
   // Restore URL when lightbox closes
   const handleClose = useCallback(() => {
-    if (updateUrl && projectId) {
-      // Restore the gallery URL when closing
-      window.history.replaceState(
-        { project: projectId, viewMode: 'gallery' },
-        '',
-        `/project/${projectId}/gallery`
-      );
+    if (updateUrl && savedUrl.current) {
+      window.history.replaceState({}, '', savedUrl.current);
     }
     onClose();
-  }, [onClose, updateUrl, projectId]);
+  }, [onClose, updateUrl]);
 
   // Keyboard navigation - capture phase prevents App.tsx global Escape from closing parent modal
   useEffect(() => {
@@ -167,19 +178,13 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
       if (!isOpen) return;
       if (e.key === 'Escape') {
         e.stopImmediatePropagation();
-        if (isZoomed) {
-          resetState();
-        } else {
-          handleClose();
-        }
+        handleClose();
         return;
       }
-      if (e.key === 'ArrowRight' && currentIndex < images.length - 1 && !isZoomed) {
-        setSlideDirection('left');
+      if (e.key === 'ArrowRight' && currentIndex < images.length - 1 && (!isZoomed || !isMobile)) {
         onIndexChange(currentIndex + 1);
       }
-      if (e.key === 'ArrowLeft' && currentIndex > 0 && !isZoomed) {
-        setSlideDirection('right');
+      if (e.key === 'ArrowLeft' && currentIndex > 0 && (!isZoomed || !isMobile)) {
         onIndexChange(currentIndex - 1);
       }
     };
@@ -187,9 +192,9 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
     return () => window.removeEventListener('keydown', handleKeyDown, true);
   }, [isOpen, currentIndex, images.length, handleClose, onIndexChange, isZoomed]);
 
-  // Reset all state
+  // Reset all state — desktop defaults to zoomed, mobile defaults to unzoomed
   const resetState = useCallback(() => {
-    setIsZoomed(false);
+    setIsZoomed(!isMobile);
     setScale(1);
     setPosition({ x: 0, y: 0 });
     setDragY(0);
@@ -198,7 +203,7 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollTop = 0;
     }
-  }, [controls]);
+  }, [controls, isMobile]);
 
   // Desktop: Single click to toggle zoom
   const handleDesktopClick = useCallback((e: React.MouseEvent) => {
@@ -252,7 +257,7 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
         const x = clientX - rect.left - rect.width / 2;
         const y = clientY - rect.top - rect.height / 2;
 
-        const newScale = 2.5;
+        const newScale = 2.0;
         const newX = -x * (newScale - 1);
         const newY = -y * (newScale - 1);
 
@@ -287,12 +292,10 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
       const threshold = 50;
       if (info.offset.x < -threshold || info.velocity.x < -500) {
         if (currentIndex < images.length - 1) {
-          setSlideDirection('left');
           onIndexChange(currentIndex + 1);
         }
       } else if (info.offset.x > threshold || info.velocity.x > 500) {
         if (currentIndex > 0) {
-          setSlideDirection('right');
           onIndexChange(currentIndex - 1);
         }
       }
@@ -300,6 +303,7 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
       // Vertical swipe → close lightbox
       const threshold = 100;
       if ((info.offset.y > threshold || info.velocity.y > 500) && isMobile) {
+        setDragY(0);
         handleClose();
       } else if (isMobile) {
         setDragY(0);
@@ -325,44 +329,36 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
   // Navigate functions
   const goNext = useCallback(() => {
     if (currentIndex < images.length - 1) {
-      setSlideDirection('left');
-      resetState();
       onIndexChange(currentIndex + 1);
     }
-  }, [currentIndex, images.length, onIndexChange, resetState]);
+  }, [currentIndex, images.length, onIndexChange]);
 
   const goPrev = useCallback(() => {
     if (currentIndex > 0) {
-      setSlideDirection('right');
-      resetState();
       onIndexChange(currentIndex - 1);
     }
-  }, [currentIndex, onIndexChange, resetState]);
+  }, [currentIndex, onIndexChange]);
 
-  // Slide animation variants with parallax effect (iOS Photos style)
+  // Centered scale animation — fast sync enter, fast ease-out exit
   const slideVariants = {
-    enter: (direction: 'left' | 'right' | null) => ({
-      x: direction === 'left' ? 500 : direction === 'right' ? -500 : 0,
+    enter: () => ({
       opacity: 0,
-      scale: 0.95
+      scale: 0.98
     }),
     center: {
-      x: 0,
       opacity: 1,
       scale: 1
     },
-    exit: (direction: 'left' | 'right' | null) => ({
-      x: direction === 'left' ? -500 : direction === 'right' ? 500 : 0,
+    exit: () => ({
       opacity: 0,
-      scale: 0.95
+      scale: 0.97,
+      transition: { duration: 0.18, ease: [0.23, 1, 0.32, 1] }
     })
   };
 
   const slideTransition = {
-    type: 'spring' as const,
-    stiffness: 300,
-    damping: 28,
-    mass: 0.8
+    duration: 0.2,
+    ease: [0.23, 1, 0.32, 1]
   };
 
   const currentImage = images[currentIndex];
@@ -375,16 +371,34 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
-          className="fixed inset-0 z-[200] flex items-center justify-center"
-          style={{ touchAction: 'none' }}
+          transition={{ duration: 0.2, ease: [0.23, 1, 0.32, 1] }}
+          className="fixed inset-0 z-[200]"
         >
-          {/* Background */}
+          {/* Background - fades fast so content scale-down reads against the page */}
           <motion.div
             className="absolute inset-0 bg-black"
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.12, ease: [0.23, 1, 0.32, 1] }}
             style={{ opacity: backgroundOpacity }}
             onClick={!isZoomed ? handleClose : undefined}
           />
+
+          {/* Content wrapper - fast sync open, ease-out close */}
+          <motion.div
+            initial={{ scale: 0.98, opacity: 0 }}
+            animate={{
+              scale: 1,
+              opacity: 1,
+              transition: { duration: 0.2, ease: [0.23, 1, 0.32, 1] }
+            }}
+            exit={{
+              scale: 0.88,
+              opacity: 0,
+              transition: { duration: 0.28, ease: [0.23, 1, 0.32, 1] }
+            }}
+            className="absolute inset-0 flex items-center justify-center"
+            style={{ touchAction: 'none' }}
+          >
 
           {/* Close button */}
           <motion.button
@@ -417,8 +431,8 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
             </motion.button>
           )}
 
-          {/* Navigation arrows - hidden on mobile or when zoomed */}
-          {!isMobile && !isZoomed && (
+          {/* Navigation arrows - hidden on mobile only */}
+          {!isMobile && (
             <>
               {currentIndex > 0 && (
                 <motion.button
@@ -464,10 +478,10 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
               animate={controls}
               style={{ y: isZoomed ? 0 : dragY }}
             >
-              <AnimatePresence mode="popLayout" custom={slideDirection}>
+              <AnimatePresence mode="popLayout" custom={null}>
                 <motion.div
                   key={currentIndex}
-                  custom={slideDirection}
+                  custom={null}
                   variants={slideVariants}
                   initial="enter"
                   animate="center"
@@ -556,10 +570,10 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
                 }
               }}
             >
-              <AnimatePresence mode="popLayout" custom={slideDirection}>
+              <AnimatePresence mode="popLayout" custom={null}>
                 <motion.div
                   key={currentIndex}
-                  custom={slideDirection}
+                  custom={null}
                   variants={slideVariants}
                   initial="enter"
                   animate="center"
@@ -621,38 +635,54 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
                     )}
                   </motion.div>
 
-                  {/* Caption below media - only visible when not zoomed */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{
-                      opacity: isZoomed ? 0 : 1,
-                      y: isZoomed ? 10 : 0
-                    }}
-                    transition={{ duration: 0.2, delay: isZoomed ? 0 : 0.15 }}
-                    className="mt-6 text-center max-w-3xl px-4"
-                  >
-                    {currentImage.caption && (
-                      <p className="text-white/90 text-sm md:text-base font-medium leading-relaxed mb-2">
-                        {currentImage.caption}
-                      </p>
-                    )}
-                    <p className="text-white/40 text-xs tracking-wide">
-                      {t.counter(currentIndex, images.length)}
-                      {!isZoomed && (
-                        <span className="ml-2">
-                          • {t.clickToZoom}
-                        </span>
-                      )}
-                    </p>
-                  </motion.div>
+                  {/* Caption handled by the persistent desktop bottom bar */}
                 </motion.div>
               </AnimatePresence>
             </div>
           )}
           </LayoutGroup>
 
-          {/* Navigation indicator - dots for small sets, counter for large sets */}
-          {images.length > 1 && !isZoomed && (
+          {/* Desktop: persistent bottom bar with gradient backdrop */}
+          {!isMobile && (
+            <div className="absolute bottom-0 left-0 right-0 z-20 pointer-events-none">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/20 to-transparent" />
+              <div className="relative flex flex-col items-center gap-3 px-8 pb-6 pt-10">
+                {/* Dots navigation */}
+                {images.length > 1 && images.length <= 20 && (
+                  <div className="flex items-center gap-2 pointer-events-auto">
+                    {images.map((_, idx) => (
+                      <button
+                        key={idx}
+                        onClick={(e) => { e.stopPropagation(); onIndexChange(idx); }}
+                        className={`rounded-full transition-all duration-200 ${
+                          idx === currentIndex
+                            ? 'bg-white w-6 h-2'
+                            : 'bg-white/30 hover:bg-white/50 w-2 h-2'
+                        }`}
+                      />
+                    ))}
+                  </div>
+                )}
+                {/* Caption + counter + hint */}
+                <div className="text-center max-w-2xl">
+                  {currentImage.caption && (
+                    <p className="text-white/90 text-sm md:text-base font-medium leading-relaxed mb-1">
+                      {currentImage.caption}
+                    </p>
+                  )}
+                  <p className="text-white/45 text-xs tracking-wide">
+                    {t.counter(currentIndex, images.length)}
+                    <span className="ml-2">
+                      {isZoomed ? `• ${t.clickToShrink}` : `• ${t.clickToZoom}`}
+                    </span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Navigation indicator - dots for small sets on mobile only */}
+          {isMobile && images.length > 1 && !isZoomed && (
             <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10">
               {images.length <= 20 ? (
                 <div className="flex items-center gap-2">
@@ -698,6 +728,7 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
               </motion.div>
             )}
           </AnimatePresence>
+          </motion.div>{/* end content wrapper */}
         </motion.div>
       )}
     </AnimatePresence>

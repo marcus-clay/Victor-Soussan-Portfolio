@@ -528,12 +528,25 @@ export default function ApprochePage({
   const [openCollab, setOpenCollab] = useState<number | null>(0)
   const carouselRef = React.useRef<{ prev: () => void; next: () => void }>(null)
 
+  // Scroll to anchor on initial load — Next.js App Router doesn't handle
+  // cross-page hash navigation natively; 'instant' matches native anchor behavior.
+  useEffect(() => {
+    const hash = window.location.hash
+    if (!hash) return
+    const id = hash.slice(1)
+    const timer = setTimeout(() => {
+      const el = document.getElementById(id)
+      if (el) el.scrollIntoView({ behavior: 'instant' })
+    }, 150)
+    return () => clearTimeout(timer)
+  }, [])
+
   return (
     <>
       <ReadingProgressBar />
 
       <div className="min-h-screen bg-[#FDFDFC]">
-        <div className="max-w-[740px] mx-auto px-6 pt-32 md:pt-40 pb-20">
+        <div className="max-w-[740px] mx-auto px-6 pt-32 sm:pt-40 md:pt-48 pb-20">
 
           {/* ============================================================= */}
           {/* HERO                                                          */}

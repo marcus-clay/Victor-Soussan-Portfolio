@@ -390,10 +390,16 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
   };
 
   // Reusable media figure component
-  const MediaFigure = ({ src, alt, caption, captionDesc, type = 'image', className = '' }: {
-    src: string; alt: string; caption: string; captionDesc?: string; type?: 'image' | 'video'; className?: string;
+  const MediaFigure = ({ src, alt, caption, captionDesc, description, type = 'image', className = '' }: {
+    src: string; alt: string; caption: string; captionDesc?: string; description?: string; type?: 'image' | 'video'; className?: string;
   }) => (
-    <figure className={className}>
+    <motion.figure
+      initial={{ opacity: 0, transform: 'translateY(12px)' }}
+      whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
+      viewport={{ once: true, margin: '-60px' }}
+      transition={{ duration: 0.35, ease: [0.23, 1, 0.32, 1] }}
+      className={className}
+    >
       <div
         onClick={() => openLightbox(src)}
         className="group rounded-xl overflow-hidden cursor-zoom-in ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
@@ -409,17 +415,25 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
           />
         )}
       </div>
-      <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
-        {caption}{captionDesc && ` · ${captionDesc}`}
-      </figcaption>
-    </figure>
+      <div className="mt-4 max-w-[740px] mx-auto">
+        <p className="text-xs font-medium text-gray-400 mb-1">{caption}</p>
+        {captionDesc && <p className="text-base text-gray-500 leading-relaxed">{captionDesc}</p>}
+        {description && <p className="text-base text-gray-500 leading-relaxed mt-2">{description}</p>}
+      </div>
+    </motion.figure>
   );
 
   // Reusable video figure with ref tracking
-  const VideoFigure = ({ src, refKey, caption, captionDesc, className = '' }: {
-    src: string; refKey: string; caption: string; captionDesc?: string; className?: string;
+  const VideoFigure = ({ src, refKey, caption, captionDesc, description, className = '' }: {
+    src: string; refKey: string; caption: string; captionDesc?: string; description?: string; className?: string;
   }) => (
-    <figure className={className}>
+    <motion.figure
+      initial={{ opacity: 0, transform: 'translateY(12px)' }}
+      whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
+      viewport={{ once: true, margin: '-60px' }}
+      transition={{ duration: 0.35, ease: [0.23, 1, 0.32, 1] }}
+      className={className}
+    >
       <div
         onClick={() => {
           const currentTime = videoRefs.current[refKey]?.currentTime || 0;
@@ -432,10 +446,12 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
           className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
         />
       </div>
-      <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
-        {caption}{captionDesc && ` · ${captionDesc}`}
-      </figcaption>
-    </figure>
+      <div className="mt-4 max-w-[740px] mx-auto">
+        <p className="text-xs font-medium text-gray-400 mb-1">{caption}</p>
+        {captionDesc && <p className="text-base text-gray-500 leading-relaxed">{captionDesc}</p>}
+        {description && <p className="text-base text-gray-500 leading-relaxed mt-2">{description}</p>}
+      </div>
+    </motion.figure>
   );
 
   return (
@@ -642,43 +658,69 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                 <ProductEvolutionDiagram lang={lang} />
               </div>
 
-              {/* Diagrams */}
-              <div className="max-w-[960px] mx-auto px-6 mt-16">
-                <div className="space-y-8 mb-12">
-                  <MediaFigure
-                    src="/images/toolkit/Diagram_01_-_Problem.svg"
-                    alt="Core Design Challenge"
-                    caption={t.context.coreChallenge}
-                    captionDesc={t.context.coreChallengeDesc}
-                  />
-                  <MediaFigure
-                    src="/images/toolkit/Diagram_02_-_Research.svg"
-                    alt="Research process"
-                    caption={t.context.research}
-                    captionDesc={t.context.researchDesc}
-                  />
-                  <MediaFigure
-                    src="/images/toolkit/Diagram_03_-_Foundation.svg"
-                    alt="Foundation"
-                    caption={t.context.foundation}
-                    captionDesc={t.context.foundationDesc}
-                  />
-                </div>
+              {/* Diagram 01 - Core Challenge */}
+              <div className="max-w-[740px] mx-auto px-6 mt-16 mb-6">
+                <p className="text-sm font-medium text-gray-900 mb-2">{t.context.coreChallenge}</p>
+                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">{t.context.coreChallengeDesc}</p>
+              </div>
+              <div className="max-w-[960px] mx-auto px-6 mb-24 md:mb-32">
+                <MediaFigure
+                  src="/images/toolkit/Diagram_01_-_Problem.svg"
+                  alt="Core Design Challenge"
+                  caption={t.context.coreChallenge}
+                />
+              </div>
 
-                <div className="space-y-8">
-                  <MediaFigure
-                    src="/images/toolkit/Diagram_04_-_Project_creation_workflow.svg"
-                    alt="Project Creation Workflow"
-                    caption={t.context.creationWorkflow}
-                    captionDesc={t.context.creationWorkflowDesc}
-                  />
-                  <MediaFigure
-                    src="/images/toolkit/Diagram_05_-_Core_interaction_principles.svg"
-                    alt="Core Interaction Principles"
-                    caption={t.context.interactionPrinciples}
-                    captionDesc={t.context.interactionPrinciplesDesc}
-                  />
-                </div>
+              {/* Diagram 02 - Research */}
+              <div className="max-w-[740px] mx-auto px-6 mb-6">
+                <p className="text-sm font-medium text-gray-900 mb-2">{t.context.research}</p>
+                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">{t.context.researchDesc}</p>
+              </div>
+              <div className="max-w-[960px] mx-auto px-6 mb-24 md:mb-32">
+                <MediaFigure
+                  src="/images/toolkit/Diagram_02_-_Research.svg"
+                  alt="Research process"
+                  caption={t.context.research}
+                />
+              </div>
+
+              {/* Diagram 03 - Foundation */}
+              <div className="max-w-[740px] mx-auto px-6 mb-6">
+                <p className="text-sm font-medium text-gray-900 mb-2">{t.context.foundation}</p>
+                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">{t.context.foundationDesc}</p>
+              </div>
+              <div className="max-w-[960px] mx-auto px-6 mb-24 md:mb-32">
+                <MediaFigure
+                  src="/images/toolkit/Diagram_03_-_Foundation.svg"
+                  alt="Foundation"
+                  caption={t.context.foundation}
+                />
+              </div>
+
+              {/* Diagram 04 - Creation Workflow */}
+              <div className="max-w-[740px] mx-auto px-6 mb-6">
+                <p className="text-sm font-medium text-gray-900 mb-2">{t.context.creationWorkflow}</p>
+                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">{t.context.creationWorkflowDesc}</p>
+              </div>
+              <div className="max-w-[960px] mx-auto px-6 mb-24 md:mb-32">
+                <MediaFigure
+                  src="/images/toolkit/Diagram_04_-_Project_creation_workflow.svg"
+                  alt="Project Creation Workflow"
+                  caption={t.context.creationWorkflow}
+                />
+              </div>
+
+              {/* Diagram 05 - Interaction Principles */}
+              <div className="max-w-[740px] mx-auto px-6 mb-6">
+                <p className="text-sm font-medium text-gray-900 mb-2">{t.context.interactionPrinciples}</p>
+                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">{t.context.interactionPrinciplesDesc}</p>
+              </div>
+              <div className="max-w-[960px] mx-auto px-6 mb-24 md:mb-32">
+                <MediaFigure
+                  src="/images/toolkit/Diagram_05_-_Core_interaction_principles.svg"
+                  alt="Core Interaction Principles"
+                  caption={t.context.interactionPrinciples}
+                />
               </div>
             </section>
 
@@ -694,46 +736,68 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                 </p>
               </div>
 
-              {/* Authentication & Empty State */}
-              <div className="max-w-[960px] mx-auto px-6">
-                <div className="space-y-8 mb-12">
-                  <MediaFigure
-                    src="/images/toolkit/authentication_-_magic_link.svg"
-                    alt="Passwordless authentication"
-                    caption={t.captions.passwordlessAuth as string}
-                    captionDesc={t.captions.passwordlessAuthDesc as string}
-                  />
-                  <MediaFigure
-                    src="/images/toolkit/desktop_-_chantier_-_create_-_empty.svg"
-                    alt={t.captions.emptyState as string}
-                    caption={t.captions.emptyState as string}
-                    captionDesc={t.captions.emptyStateDesc as string}
-                  />
-                </div>
+              {/* Passwordless authentication */}
+              <div className="max-w-[740px] mx-auto px-6 mb-6">
+                <p className="text-sm font-medium text-gray-900 mb-2">{t.captions.passwordlessAuth}</p>
+                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">{t.captions.passwordlessAuthDesc}</p>
+              </div>
+              <div className="max-w-[960px] mx-auto px-6 mb-24 md:mb-32">
+                <MediaFigure
+                  src="/images/toolkit/authentication_-_magic_link.svg"
+                  alt="Passwordless authentication"
+                  caption={t.captions.passwordlessAuth as string}
+                />
+              </div>
 
-                {/* Form & Detail v1 */}
-                <div className="space-y-8 mb-12">
-                  <MediaFigure
-                    src="/images/toolkit/desktop_-_chantier_-_create_-_modal.svg"
-                    alt="Form design pattern"
-                    caption={t.captions.formPattern as string}
-                    captionDesc={t.captions.formPatternDesc as string}
-                  />
-                  <MediaFigure
-                    src="/images/toolkit/desktop_-_chantier_-_details_-_v1.svg"
-                    alt="Chantier Detail v1"
-                    caption={t.captions.chantierV1 as string}
-                    captionDesc={t.captions.chantierV1Desc as string}
-                  />
-                </div>
+              {/* Empty state */}
+              <div className="max-w-[740px] mx-auto px-6 mb-6">
+                <p className="text-sm font-medium text-gray-900 mb-2">{t.captions.emptyState}</p>
+                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">{t.captions.emptyStateDesc}</p>
+              </div>
+              <div className="max-w-[960px] mx-auto px-6 mb-24 md:mb-32">
+                <MediaFigure
+                  src="/images/toolkit/desktop_-_chantier_-_create_-_empty.svg"
+                  alt="Empty state"
+                  caption={t.captions.emptyState as string}
+                />
+              </div>
 
-                {/* Chantier Detail v2 - Full width */}
+              {/* Form design pattern */}
+              <div className="max-w-[740px] mx-auto px-6 mb-6">
+                <p className="text-sm font-medium text-gray-900 mb-2">{t.captions.formPattern}</p>
+                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">{t.captions.formPatternDesc}</p>
+              </div>
+              <div className="max-w-[960px] mx-auto px-6 mb-24 md:mb-32">
+                <MediaFigure
+                  src="/images/toolkit/desktop_-_chantier_-_create_-_modal.svg"
+                  alt="Form design pattern"
+                  caption={t.captions.formPattern as string}
+                />
+              </div>
+
+              {/* Chantier Detail v1 */}
+              <div className="max-w-[740px] mx-auto px-6 mb-6">
+                <p className="text-sm font-medium text-gray-900 mb-2">{t.captions.chantierV1}</p>
+                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">{t.captions.chantierV1Desc}</p>
+              </div>
+              <div className="max-w-[960px] mx-auto px-6 mb-24 md:mb-32">
+                <MediaFigure
+                  src="/images/toolkit/desktop_-_chantier_-_details_-_v1.svg"
+                  alt="Chantier Detail v1"
+                  caption={t.captions.chantierV1 as string}
+                />
+              </div>
+
+              {/* Chantier Detail v2 */}
+              <div className="max-w-[740px] mx-auto px-6 mb-6">
+                <p className="text-sm font-medium text-gray-900 mb-2">{t.captions.chantierV2}</p>
+                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">{t.captions.chantierV2Desc}</p>
+              </div>
+              <div className="max-w-[960px] mx-auto px-6 mb-24 md:mb-32">
                 <MediaFigure
                   src="/images/toolkit/desktop_-_chantier_-_details_-_v2.svg"
                   alt="Chantier Detail v2"
                   caption={t.captions.chantierV2 as string}
-                  captionDesc={t.captions.chantierV2Desc as string}
-                  className="mb-16"
                 />
               </div>
 
@@ -753,14 +817,17 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   refKey="nav-show-hide"
                   caption={t.captions.navShowHide as string}
                   captionDesc={t.captions.navShowHideDesc as string}
-                  className="mb-16"
+                  className="mb-24 md:mb-32"
                 />
               </div>
 
               {/* Tasks */}
               <div className="max-w-[740px] mx-auto px-6">
-                <p className="text-sm font-medium text-gray-900 mb-8">
+                <p className="text-sm font-medium text-gray-900 mb-2">
                   Tasks
+                </p>
+                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-8">
+                  Reusable templates with title, estimated duration, and responsible trade. Grouped in libraries by site type, they reduce repetitive data entry and ensure consistent information across projects.
                 </p>
               </div>
 
@@ -770,14 +837,17 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   alt="Task creation interface"
                   caption={t.captions.taskCreation as string}
                   captionDesc={t.captions.taskCreationDesc as string}
-                  className="mb-16"
+                  className="mb-24 md:mb-32"
                 />
               </div>
 
               {/* Sequences */}
               <div className="max-w-[740px] mx-auto px-6">
-                <p className="text-sm font-medium text-gray-900 mb-8">
+                <p className="text-sm font-medium text-gray-900 mb-2">
                   Sequences
+                </p>
+                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-8">
+                  Ordered sets of tasks that populate the planning automatically when applied to a project. Sequences encode team expertise into repeatable workflows, cutting setup time significantly.
                 </p>
               </div>
 
@@ -787,72 +857,105 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   alt="Tasks sequences interface"
                   caption={t.captions.taskSequences as string}
                   captionDesc={t.captions.taskSequencesDesc as string}
-                  className="mb-16"
+                  className="mb-24 md:mb-32"
                 />
               </div>
 
               {/* Planning */}
               <div className="max-w-[740px] mx-auto px-6">
-                <p className="text-sm font-medium text-gray-900 mb-8">
+                <p className="text-sm font-medium text-gray-900 mb-2">
                   Planning
+                </p>
+                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-8">
+                  Gantt-style canvas organized by trade or zone. The initial version used colorful task cards for quick visual parsing. Later iterations refined the task component design and the interaction model around scheduling and multi-select.
                 </p>
               </div>
 
-              <div className="max-w-[960px] mx-auto px-6">
+              <div className="max-w-[960px] mx-auto px-6 mb-24 md:mb-32">
                 <MediaFigure
                   src="/images/toolkit/planning_-_v1.svg"
                   alt="Planning interface v1"
                   caption={t.captions.planningV1 as string}
                   captionDesc={t.captions.planningV1Desc as string}
-                  className="mb-12"
                 />
+              </div>
 
-                {/* Task Components v1 & v2 */}
-                <div className="space-y-8 mb-12">
-                  <MediaFigure
-                    src="/images/toolkit/Component_Task_v1.svg"
-                    alt="Task component v1"
-                    caption={t.captions.taskComponentV1 as string}
-                    captionDesc={t.captions.taskComponentV1Desc as string}
-                  />
-                  <MediaFigure
-                    src="/images/toolkit/Component_Task_v2.svg"
-                    alt="Task component v2"
-                    caption={t.captions.taskComponentV2 as string}
-                    captionDesc={t.captions.taskComponentV2Desc as string}
-                  />
-                </div>
+              {/* Task component v1 */}
+              <div className="max-w-[740px] mx-auto px-6 mb-6">
+                <p className="text-sm font-medium text-gray-900 mb-2">{t.captions.taskComponentV1}</p>
+                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">{t.captions.taskComponentV1Desc}</p>
+              </div>
+              <div className="max-w-[960px] mx-auto px-6 mb-24 md:mb-32">
+                <MediaFigure
+                  src="/images/toolkit/Component_Task_v1.svg"
+                  alt="Task component v1"
+                  caption={t.captions.taskComponentV1 as string}
+                />
+              </div>
 
-                {/* Planning v2 */}
+              {/* Task component v2 */}
+              <div className="max-w-[740px] mx-auto px-6 mb-6">
+                <p className="text-sm font-medium text-gray-900 mb-2">{t.captions.taskComponentV2}</p>
+                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">{t.captions.taskComponentV2Desc}</p>
+              </div>
+              <div className="max-w-[960px] mx-auto px-6 mb-24 md:mb-32">
+                <MediaFigure
+                  src="/images/toolkit/Component_Task_v2.svg"
+                  alt="Task component v2"
+                  caption={t.captions.taskComponentV2 as string}
+                />
+              </div>
+
+              {/* Planning v2 */}
+              <div className="max-w-[740px] mx-auto px-6 mb-6">
+                <p className="text-sm font-medium text-gray-900 mb-2">{t.captions.planningV2}</p>
+                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">{t.captions.planningV2Desc}</p>
+              </div>
+              <div className="max-w-[960px] mx-auto px-6 mb-24 md:mb-32">
                 <MediaFigure
                   src="/images/toolkit/planning_-_v2.svg"
                   alt="Planning interface v2"
                   caption={t.captions.planningV2 as string}
-                  captionDesc={t.captions.planningV2Desc as string}
-                  className="mb-12"
                 />
+              </div>
 
-                {/* Planning Interactions */}
-                <div className="space-y-8 mb-12">
-                  <MediaFigure
-                    src="/images/toolkit/planning_-_mouse_-_selection_rectangle.svg"
-                    alt="Multi-select"
-                    caption={t.captions.multiSelect as string}
-                    captionDesc={t.captions.multiSelectDesc as string}
-                  />
-                  <MediaFigure
-                    src="/images/toolkit/planning_-_mouse_-_right_click.svg"
-                    alt="Context menu"
-                    caption={t.captions.contextMenu as string}
-                    captionDesc={t.captions.contextMenuDesc as string}
-                  />
-                  <MediaFigure
-                    src="/images/toolkit/planning_-_selection_tache_dynamic_menu.svg"
-                    alt="Adaptive zoom"
-                    caption={t.captions.adaptiveZoom as string}
-                    captionDesc={t.captions.adaptiveZoomDesc as string}
-                  />
-                </div>
+              {/* Multi-select */}
+              <div className="max-w-[740px] mx-auto px-6 mb-6">
+                <p className="text-sm font-medium text-gray-900 mb-2">{t.captions.multiSelect}</p>
+                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">{t.captions.multiSelectDesc}</p>
+              </div>
+              <div className="max-w-[960px] mx-auto px-6 mb-24 md:mb-32">
+                <MediaFigure
+                  src="/images/toolkit/planning_-_mouse_-_selection_rectangle.svg"
+                  alt="Multi-select"
+                  caption={t.captions.multiSelect as string}
+                />
+              </div>
+
+              {/* Context menu */}
+              <div className="max-w-[740px] mx-auto px-6 mb-6">
+                <p className="text-sm font-medium text-gray-900 mb-2">{t.captions.contextMenu}</p>
+                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">{t.captions.contextMenuDesc}</p>
+              </div>
+              <div className="max-w-[960px] mx-auto px-6 mb-24 md:mb-32">
+                <MediaFigure
+                  src="/images/toolkit/planning_-_mouse_-_right_click.svg"
+                  alt="Context menu"
+                  caption={t.captions.contextMenu as string}
+                />
+              </div>
+
+              {/* Adaptive zoom */}
+              <div className="max-w-[740px] mx-auto px-6 mb-6">
+                <p className="text-sm font-medium text-gray-900 mb-2">{t.captions.adaptiveZoom}</p>
+                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">{t.captions.adaptiveZoomDesc}</p>
+              </div>
+              <div className="max-w-[960px] mx-auto px-6 mb-24 md:mb-32">
+                <MediaFigure
+                  src="/images/toolkit/planning_-_selection_tache_dynamic_menu.svg"
+                  alt="Adaptive zoom"
+                  caption={t.captions.adaptiveZoom as string}
+                />
               </div>
 
               {/* Expand layout */}
@@ -871,6 +974,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   refKey="planning-zoom"
                   caption={t.captions.expandLayout as string}
                   captionDesc={t.captions.expandLayoutDesc as string}
+                  className="mb-24 md:mb-32"
                 />
               </div>
             </section>
@@ -900,7 +1004,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   alt="Dynamic island menu - task modification"
                   caption={t.captions.dynamicIsland as string}
                   captionDesc={t.captions.dynamicIslandDesc as string}
-                  className="mb-16"
+                  className="mb-24 md:mb-32"
                 />
               </div>
 
@@ -920,7 +1024,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   refKey="task-manipulation"
                   caption={t.captions.taskManipulation as string}
                   captionDesc={t.captions.taskManipulationDesc as string}
-                  className="mb-16"
+                  className="mb-24 md:mb-32"
                 />
               </div>
 
@@ -940,22 +1044,33 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   refKey="batch-edition"
                   caption={t.captions.batchEdition as string}
                   captionDesc={t.captions.batchEditionDesc as string}
-                  className="mb-12"
+                  className="mb-24 md:mb-32"
                 />
+              </div>
 
+              {/* Interface System */}
+              <div className="max-w-[740px] mx-auto px-6 mb-6">
+                <p className="text-sm font-medium text-gray-900 mb-2">{t.captions.interfaceSystem}</p>
+                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">{t.captions.interfaceSystemDesc}</p>
+              </div>
+              <div className="max-w-[960px] mx-auto px-6 mb-24 md:mb-32">
                 <MediaFigure
                   src="/images/toolkit/dynamic_menu_-_components_and_interface_system.svg"
                   alt="Dynamic menu components and interface system"
                   caption={t.captions.interfaceSystem as string}
-                  captionDesc={t.captions.interfaceSystemDesc as string}
-                  className="mb-12"
                 />
+              </div>
 
+              {/* Activity Section */}
+              <div className="max-w-[740px] mx-auto px-6 mb-6">
+                <p className="text-sm font-medium text-gray-900 mb-2">{t.captions.activitySection}</p>
+                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">{t.captions.activitySectionDesc}</p>
+              </div>
+              <div className="max-w-[960px] mx-auto px-6">
                 <MediaFigure
                   src="/images/toolkit/cars_detail_tache_-_dynamic_menu_-_comportement_section_activite.svg"
                   alt="Task detail with activity section"
                   caption={t.captions.activitySection as string}
-                  captionDesc={t.captions.activitySectionDesc as string}
                 />
               </div>
             </section>
@@ -985,7 +1100,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   alt="Project hub - construction site index v3"
                   caption={t.captions.projectHubV3 as string}
                   captionDesc={t.captions.projectHubV3Desc as string}
-                  className="mb-16"
+                  className="mb-24 md:mb-32"
                 />
               </div>
 
@@ -1026,14 +1141,19 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   alt="Design system overview"
                   caption={t.designSystem.ds}
                   captionDesc={t.designSystem.dsDesc}
-                  className="mb-12"
+                  className="mb-24 md:mb-32"
                 />
+              </div>
 
+              <div className="max-w-[740px] mx-auto px-6 mb-6">
+                <p className="text-sm font-medium text-gray-900 mb-2">{t.designSystem.iconSystem}</p>
+                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">{t.designSystem.iconSystemDesc}</p>
+              </div>
+              <div className="max-w-[960px] mx-auto px-6">
                 <MediaFigure
                   src="/images/toolkit/system_-_icons_-_files_and_folders.svg"
                   alt="Icon system - files and folders"
                   caption={t.designSystem.iconSystem}
-                  captionDesc={t.designSystem.iconSystemDesc}
                 />
               </div>
             </section>
@@ -1055,22 +1175,22 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   alt="Impact diagram"
                   caption={t.impact.projectImpact}
                   captionDesc={t.impact.projectImpactDesc}
-                  className="mb-12"
+                  className="mb-24 md:mb-32"
                 />
               </div>
 
               {/* Key Results - inline metrics */}
               <div className="max-w-[740px] mx-auto px-6">
                 <div className="divide-y divide-gray-100">
-                  <div className="py-4 -mx-3 px-3 rounded-lg transition-colors duration-150 hover:bg-gray-50">
+                  <div className="py-4 -mx-3 px-3 rounded-lg transition-colors duration-150 hover:bg-gray-100">
                     <p className="text-2xl font-semibold text-gray-900">{t.impact.customers}</p>
                     <p className="text-xs text-gray-400 mt-1">{t.impact.customersDesc}</p>
                   </div>
-                  <div className="py-4 -mx-3 px-3 rounded-lg transition-colors duration-150 hover:bg-gray-50">
+                  <div className="py-4 -mx-3 px-3 rounded-lg transition-colors duration-150 hover:bg-gray-100">
                     <p className="text-2xl font-semibold text-gray-900">{t.impact.seriesA}</p>
                     <p className="text-xs text-gray-400 mt-1">{t.impact.seriesADesc}</p>
                   </div>
-                  <div className="py-4 -mx-3 px-3 rounded-lg transition-colors duration-150 hover:bg-gray-50">
+                  <div className="py-4 -mx-3 px-3 rounded-lg transition-colors duration-150 hover:bg-gray-100">
                     <p className="text-2xl font-semibold text-gray-900">{t.impact.enterprise}</p>
                     <p className="text-xs text-gray-400 mt-1">{t.impact.enterpriseDesc}</p>
                   </div>

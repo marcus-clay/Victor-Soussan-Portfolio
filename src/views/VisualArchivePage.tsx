@@ -62,6 +62,18 @@ const VisualArchivePage: React.FC<VisualArchivePageProps> = ({ lang }) => {
     []
   );
 
+  // Scroll to hash section on initial load (e.g. /visual-archive#gallery-scrim)
+  useEffect(() => {
+    const hash = window.location.hash
+    if (!hash) return
+    const id = hash.slice(1)
+    // rAF ensures React has painted the DOM before we try to scroll
+    requestAnimationFrame(() => {
+      const el = document.getElementById(id)
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    })
+  }, [])
+
   // Scroll detection
   useEffect(() => {
     const handleScroll = () => {
@@ -72,7 +84,9 @@ const VisualArchivePage: React.FC<VisualArchivePageProps> = ({ lang }) => {
         if (el) {
           const rect = el.getBoundingClientRect();
           if (rect.top <= 200) {
-            setActiveSection(GALLERY_PROJECTS[i].id);
+            const id = GALLERY_PROJECTS[i].id;
+            setActiveSection(id);
+            history.replaceState(null, '', `#gallery-${id}`);
             break;
           }
         }
@@ -171,7 +185,7 @@ const VisualArchivePage: React.FC<VisualArchivePageProps> = ({ lang }) => {
       </div>
 
       {/* Header section */}
-      <div className="pt-32 md:pt-40">
+      <div className="pt-32 sm:pt-40 md:pt-48">
         <div className="max-w-[740px] mx-auto px-6">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16 md:mb-20">
             <div>
@@ -286,7 +300,10 @@ const ProjectSection: React.FC<{
   const hasHidden = hiddenItems.length > 0;
 
   return (
-    <section id={`gallery-${project.id}`} className="scroll-mt-28">
+    <section
+      id={`gallery-${project.id}`}
+      style={{ scrollMarginTop: 'calc(var(--nav-height, 72px) + 40px + 32px)' }}
+    >
       {/* Project header — aligned with the 740px text column */}
       {/* clamp(0px, (100vw - 740px) / 2, 110px) matches the centering offset between the
           max-w-[960px] image container and the max-w-[740px] text containers elsewhere */}

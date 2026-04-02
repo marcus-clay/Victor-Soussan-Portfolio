@@ -65,6 +65,14 @@ Every clickable image or video on the site uses the same hover treatment:
 </div>
 ```
 
+## List and block hover pattern
+For interactive rows in lists, menus, accordions, and divide-y blocks:
+- Light mode: `hover:bg-gray-100` (Tailwind #F3F4F6) — visually distinct on `#FDFDFC`/`#F9F9F9` backgrounds
+- Dark mode: `hover:bg-white/[0.08]` — equivalent contrast on dark surfaces
+- Always pair with `-mx-3 px-3 rounded-lg` to create a pill-shaped hit area that bleeds into margins
+- Transition: `transition-colors duration-150`
+- Never use `hover:bg-gray-50` (#F9FAFB) for list items — too close to the page background to read as interactive
+
 ## Forbidden patterns
 - No colored accent borders on cards or containers (colored border-l, border-t, border-left). Use uniform `border-gray-100` on all sides.
 - No colored accent bars inside cards (e.g. colored div as visual separator). Keep cards clean.

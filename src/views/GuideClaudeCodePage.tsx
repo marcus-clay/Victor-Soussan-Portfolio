@@ -10,7 +10,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { scrollToElement } from '../utils/smoothScroll';
 import {
   ArrowLeft, ArrowRight, Clock, Calendar, List,
-  LinkedinLogo, Envelope, BookOpen, CaretRight, X,
+  LinkedinLogo, Envelope, CaretRight, X,
 } from '@phosphor-icons/react';
 import { GUIDE_META, GUIDE_CHAPTERS } from '../data/guideClaudeCodeData';
 import CaseStudyTOCBar from '../components/CaseStudyTOCBar';
@@ -32,7 +32,7 @@ const TAG_STYLES: Record<string, string> = {
 // ─── Index Page ───────────────────────────────────────────────────────────────
 
 const GuideIndex: React.FC<{ isDark: boolean; lang: string; onNavigate: (t: string) => void }> = ({ isDark, lang, onNavigate }) => (
-  <div className="max-w-[1200px] mx-auto px-6 pb-20 pt-8 md:pt-10">
+  <div className="max-w-[740px] mx-auto px-6 pb-20 pt-8 md:pt-10">
     {/* Title + meta : full width, left-aligned */}
     <div className="mb-6">
       <div className="flex flex-wrap gap-2 mb-4">
@@ -42,10 +42,10 @@ const GuideIndex: React.FC<{ isDark: boolean; lang: string; onNavigate: (t: stri
           </span>
         ))}
       </div>
-      <h1 className={`text-3xl sm:text-4xl md:text-5xl font-bold tracking-[-0.03em] leading-[1.08] mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+      <h1 className={`text-base font-semibold tracking-[-0.01em] mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
         {lang === 'fr' ? GUIDE_META.title_fr : GUIDE_META.title_en}
       </h1>
-      <p className={`text-lg md:text-xl leading-relaxed mb-6 max-w-[55ch] ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+      <p className={`text-base leading-relaxed mb-6 max-w-[55ch] ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
         {lang === 'fr' ? GUIDE_META.subtitle_fr : GUIDE_META.subtitle_en}
       </p>
       <div className={`flex items-center gap-3 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
@@ -60,44 +60,16 @@ const GuideIndex: React.FC<{ isDark: boolean; lang: string; onNavigate: (t: stri
       </div>
     </div>
 
-    {/* Hero image : full 1200px width */}
     <figure className="mb-10">
       <img src={GUIDE_META.heroImage} alt={lang === 'fr' ? GUIDE_META.heroAlt_fr : GUIDE_META.heroAlt_en} className="w-full rounded-xl" />
-      <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed max-w-3xl">
+      <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
         {lang === 'en'
           ? 'Claude Code gives designers the ability to design, produce, and deploy real, usable deliverables. A link to share with your team, to present to stakeholders, to put in front of users to define scope and refine a solution. With a bit of method and strong design opinions, the cycle between a design decision and something testable shrinks to the essentials.'
           : 'Claude Code ouvre aux designers la possibilité de concevoir, produire et déployer des livrables réels, directement utilisables. Un lien à partager à son équipe, à présenter à ses décideurs, à faire tester à ses usagers pour délimiter un scope et raffiner une solution. Avec un peu de méthode et des partis pris affirmés, le cycle entre une décision de design et quelque chose de testable se réduit à l\'essentiel.'}
       </figcaption>
     </figure>
 
-    {/* 2-column layout: sidebar info + main content — matches chapter pages */}
-    <div className="flex gap-8 xl:gap-12">
-      {/* Left column: guide info (matches TOC column width) */}
-      <aside className="hidden lg:block w-48 xl:w-56 flex-shrink-0">
-        <div className="sticky top-14">
-          <p className={`text-xs font-semibold uppercase tracking-widest mb-4 flex items-center gap-2 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
-            <BookOpen size={14} />
-            {lang === 'en' ? 'About this guide' : 'À propos'}
-          </p>
-          <div className={`text-sm leading-relaxed mb-6 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-            <p className="mb-3">{lang === 'en' ? '9 chapters covering installation, workflows, deployment, visual quality, and skills.' : '9 chapitres couvrant l\'installation, les workflows, le déploiement, la qualité visuelle et les skills.'}</p>
-            <p>{lang === 'en' ? 'For designers who work in Figma and want to produce functional deliverables.' : 'Pour designers qui travaillent dans Figma et veulent produire des livrables fonctionnels.'}</p>
-          </div>
-          <div className={`pt-4 border-t ${isDark ? 'border-white/5' : 'border-gray-100'}`}>
-            <p className={`text-xs font-semibold uppercase tracking-widest mb-3 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
-              {lang === 'en' ? 'Prerequisites' : 'Prérequis'}
-            </p>
-            <ul className={`text-sm space-y-1.5 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-              <li>{lang === 'en' ? 'Claude Pro or Max' : 'Claude Pro ou Max'}</li>
-              <li>{lang === 'en' ? 'Claude Desktop app' : 'App Desktop Claude'}</li>
-              <li>{lang === 'en' ? 'VSCode (optional)' : 'VSCode (optionnel)'}</li>
-            </ul>
-          </div>
-        </div>
-      </aside>
-
-      {/* Right column: main content */}
-      <div className="flex-1 min-w-0">
+    <div>
         {/* Intro callout */}
         <div className={`p-6 rounded-xl border-l-4 border-amber-400 mb-14 ${isDark ? 'bg-amber-900/10' : 'bg-amber-50'}`}>
           <p className={`text-[15px] leading-[1.8] ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
@@ -108,7 +80,7 @@ const GuideIndex: React.FC<{ isDark: boolean; lang: string; onNavigate: (t: stri
         </div>
 
         {/* Chapter cards */}
-        <h2 className={`text-2xl md:text-[1.75rem] font-bold tracking-[-0.02em] mb-8 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+        <h2 className={`text-base font-semibold tracking-[-0.01em] mb-8 ${isDark ? 'text-white' : 'text-gray-900'}`}>
           {lang === 'en' ? 'Table of contents' : 'Ce que couvre ce guide'}
         </h2>
         <div className="flex flex-col gap-4 mb-14">
@@ -154,7 +126,6 @@ const GuideIndex: React.FC<{ isDark: boolean; lang: string; onNavigate: (t: stri
 
         {/* Author + Contact */}
         <AuthorContactCard lang={lang as 'en' | 'fr'} isDark={isDark} />
-      </div>
     </div>
   </div>
 );
@@ -274,7 +245,7 @@ const GuideChapter: React.FC<{
         </div>
       )}
 
-      <div className="max-w-[1200px] mx-auto px-6 pb-20">
+      <div className="max-w-[740px] mx-auto px-6 pb-20">
           {/* ─── Article content ─── */}
           <article ref={articleRef} className="flex-1 min-w-0 pt-8 md:pt-10">
             {/* Chapter header */}
@@ -282,10 +253,10 @@ const GuideChapter: React.FC<{
               <span className={`text-[11px] font-semibold uppercase tracking-widest ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
                 {lang === 'en' ? 'Chapter' : 'Chapitre'} {chapter.number} / {GUIDE_CHAPTERS.length}
               </span>
-              <h1 className={`text-3xl sm:text-4xl md:text-[2.5rem] font-bold tracking-[-0.03em] leading-[1.15] mt-3 mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <h1 className={`text-base font-semibold tracking-[-0.01em] mt-3 mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
                 {lang === 'fr' ? chapter.title_fr : chapter.title_en}
               </h1>
-              <p className={`text-base md:text-lg leading-relaxed max-w-[65ch] ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+              <p className={`text-base leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
                 {lang === 'fr' ? chapter.intro_fr : chapter.intro_en}
               </p>
             </div>
@@ -297,7 +268,7 @@ const GuideChapter: React.FC<{
                 id={`section-${slug}-${sIdx}`}
                 className={`mb-14 scroll-mt-28 ${sIdx > 0 ? `pt-10 border-t ${isDark ? 'border-white/5' : 'border-gray-100'}` : ''}`}
               >
-                <h2 className={`text-xl md:text-2xl font-bold tracking-[-0.02em] leading-tight mb-5 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                <h2 className={`text-base font-semibold tracking-[-0.01em] mb-5 ${isDark ? 'text-white' : 'text-gray-900'}`}>
                   {lang === 'fr' ? section.heading_fr : section.heading_en}
                 </h2>
                 <div className={`article-body ${isDark ? 'article-body-dark' : ''}`} dangerouslySetInnerHTML={{ __html: lang === 'fr' ? section.content_fr : section.content_en }} />
@@ -408,7 +379,7 @@ const GuideClaudeCodePage: React.FC<Props> = ({ systemTheme, lang, view, onNavig
     >
       {/* Breadcrumb bar - sticky below Nav */}
       <div className={`sticky z-10 backdrop-blur-xl ${isDark ? 'bg-[#0a0a0a]/80 border-white/5' : 'bg-[#FCFCFD]/80 border-gray-200'}`} style={{ top: 'var(--nav-height, 72px)', transition: 'top 250ms cubic-bezier(0.23, 1, 0.32, 1)' }}>
-        <div className={`max-w-[1200px] mx-auto px-4 md:px-6 h-10 flex items-center justify-between ${!isIndex ? 'lg:pl-[216px]' : ''}`}>
+        <div className="max-w-[740px] mx-auto px-4 md:px-6 h-10 flex items-center justify-between">
           <nav className="flex items-center gap-1.5 text-[13px] min-w-0 overflow-hidden">
             <button onClick={() => onNavigate('blog')} className={`transition-colors cursor-pointer hover:underline flex-shrink-0 ${isDark ? 'text-gray-500 hover:text-white' : 'text-gray-400 hover:text-gray-900'}`}>
               {lang === 'fr' ? 'Ressources' : 'Resources'}
@@ -454,21 +425,20 @@ const GuideClaudeCodePage: React.FC<Props> = ({ systemTheme, lang, view, onNavig
           line-height: 1.85;
           font-size: 1rem;
           color: #4b5563;
-          max-width: 65ch;
         }
         .article-body strong { font-weight: 600; color: #1f2937; }
 
-        /* ── Headings: strong contrast with body ── */
+        /* ── Headings: consistent with design system ── */
         .article-body h3 {
-          font-size: 1.375rem;
-          font-weight: 700;
-          letter-spacing: -0.02em;
+          font-size: 1rem;
+          font-weight: 600;
+          letter-spacing: -0.01em;
           margin-top: 3rem;
           margin-bottom: 1rem;
           padding-top: 1.5rem;
           border-top: 1px solid #f3f4f6;
           color: #111827;
-          line-height: 1.3;
+          line-height: 1.4;
         }
         .article-body h3:first-child { margin-top: 0; padding-top: 0; border-top: none; }
 
@@ -554,13 +524,12 @@ const GuideClaudeCodePage: React.FC<Props> = ({ systemTheme, lang, view, onNavig
         /* ── Desktop refinements ── */
         @media (min-width: 768px) {
           .article-body p, .article-body li { font-size: 1.0625rem; }
-          .article-body h3 { font-size: 1.5rem; margin-top: 3.5rem; }
         }
 
         /* ── Dark mode ── */
         .article-body-dark p, .article-body-dark li { color: #a1a1aa; }
         .article-body-dark strong { color: #e4e4e7; }
-        .article-body-dark h3 { color: #ffffff; border-top-color: rgba(255,255,255,0.05); }
+        .article-body-dark h3 { color: #f4f4f5; border-top-color: rgba(255,255,255,0.05); }
         .article-body-dark blockquote { color: #71717a; background: rgba(255,255,255,0.03); }
         .article-body-dark code { background: rgba(255,255,255,0.08); color: #e2e8f0; }
         .article-body-dark th { background: rgba(255,255,255,0.05); color: #fff; }

@@ -473,18 +473,35 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
                   caption={t.bulle.interactionDemo}
                   captionDesc={t.bulle.interactionDemoDesc}
                   type="video"
-                  className="mb-12"
+                  className="mb-16"
                 />
+              </div>
 
-                {/* Bulle Demo Video */}
-                <MediaFigure
-                  src="/videos/connect/Video-demo-bulle-interactions-02-compressed.mp4"
-                  alt={t.bulle.bulleDemo}
-                  caption={t.bulle.bulleDemo}
-                  captionDesc={t.bulle.bulleDemoDesc}
-                  type="video"
-                  className="mb-12"
-                />
+              {/* Bulle Demo — dark stage, rupture éditoriale.
+                  Autoplay silencieux : le mouvement est le contenu.
+                  Pas de lightbox, pas de hover-zoom — c'est une démonstration, pas un artefact de galerie. */}
+              <div className="mt-4 bg-[#111113] py-16 md:py-20">
+                <div className="max-w-[840px] mx-auto px-6">
+                  <p className="text-[11px] font-medium text-white/35 uppercase tracking-[0.08em] mb-8">
+                    Prototype d'interaction
+                  </p>
+                  <div className="rounded-2xl overflow-hidden">
+                    <video
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      preload="auto"
+                      className="w-full h-auto block"
+                      src="/videos/connect/Video-demo-bulle-interactions-02-compressed.mp4"
+                    />
+                  </div>
+                  {t.bulle.bulleDemoDesc && (
+                    <p className="mt-5 text-[12px] text-white/35 leading-relaxed max-w-[60ch]">
+                      {t.bulle.bulleDemoDesc}
+                    </p>
+                  )}
+                </div>
               </div>
             </section>
 

@@ -1,212 +1,428 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useRef, useCallback, useEffect } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { getProjects } from '@/data/projectsData'
-import { HOMEPAGE_GALLERY_ITEMS } from '@/data/galleryData'
-import type { ProjectCategory, ProjectFormat } from '@/data/projectsData'
+import { PROJETS_GRID_ITEMS, GALLERY_PROJECTS } from '@/data/galleryData'
+import type { Project } from '@/data/projectsData'
+
+const EASE: [number, number, number, number] = [0.23, 1, 0.32, 1]
+
+// Matches max-w-[740px] mx-auto px-6 — first card left-aligns with h1
+const CONTENT_LEFT = 'max(24px, calc(50vw - 346px))'
+// Smaller right padding: lets the next card bleed in and signals scrollability
+const CONTENT_RIGHT = '48px'
+
+
+const CARD_WIDTH_PX = 380
+const CARD_GAP_PX = 28
+// 300ms feels instant without being jarring. 500ms was the main source of perceived lag.
+const SCROLL_DURATION = 300
+
+function easeInOutCubic(t: number): number {
+  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
+}
 
 function ArrowDiag({ style }: { style?: React.CSSProperties }) {
   return (
     <svg width={12} height={12} viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-      style={style} aria-hidden="true">
+      strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={style} aria-hidden="true">
       <path d="M7 17L17 7M17 7H7M17 7v10" />
     </svg>
   )
 }
 
-function ArrowDiagMd({ style }: { style?: React.CSSProperties }) {
+function ArrowDiagMd() {
   return (
     <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-      style={style} aria-hidden="true">
+      strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M7 17L17 7M17 7H7M17 7v10" />
     </svg>
   )
 }
 
-type FilterKey = 'all' | ProjectCategory
 
-const CATEGORY_LABELS: Record<FilterKey, { en: string; fr: string }> = {
-  all: { en: 'All', fr: 'Tous' },
-  'product-design': { en: 'Product Design', fr: 'Design Produit' },
-  'ai-experiment': { en: 'AI Experiment', fr: 'Expérimentation IA' },
-  prototype: { en: 'Prototype', fr: 'Prototype' },
-  concept: { en: 'Concept', fr: 'Concept' },
+function coverSrc(project: Project): string {
+  return project.coverImage.startsWith('/')
+    ? project.coverImage
+    : `/images/${project.coverImage}`
 }
 
-const FORMAT_LABELS: Record<ProjectFormat, { en: string; fr: string }> = {
-  'case-study': { en: 'Case Study', fr: 'Étude de cas' },
-  short: { en: 'Project', fr: 'Projet' },
+function projectHref(project: Project, lang: string): string {
+  return `/${lang}/project/${project.id}/summary`
 }
 
-const EASE: [number, number, number, number] = [0.23, 1, 0.32, 1]
+const THUMB_W = 132
+const THUMB_H = 88
 
-const CASE_STUDY_IDS = ['toolkit', 'dailymotion', 'connect', 'sqool', 'france-vae', 'riskos']
+const GALLERY_GRID_DATA = PROJETS_GRID_ITEMS.map(item => {
+  const p = GALLERY_PROJECTS.find(g => g.id === item.projectId)
+  return { src: item.src, projectId: item.projectId, name: p?.name ?? item.projectId }
+})
 
-export default function ProjetsPageClient({ lang }: { lang: 'en' | 'fr' }) {
-  const isEn = lang === 'en'
-  const projects = getProjects(lang)
-  const [activeFilter, setActiveFilter] = useState<FilterKey>('all')
-  const [hoveredId, setHoveredId] = useState<string | null>(null)
+function GalleryGrid({ lang }: { lang: 'en' | 'fr' }) {
+  const gridRef = useRef<HTMLDivElement>(null)
+  const [canScrollLeft, setCanScrollLeft] = useState(false)
+  const [canScrollRight, setCanScrollRight] = useState(true)
 
-  const filtered = activeFilter === 'all'
-    ? projects
-    : projects.filter((p) => p.category === activeFilter)
-
-  const activeCategories = [...new Set(projects.map((p) => p.category))]
-  const filters: { key: FilterKey; label: string; count: number }[] = [
-    { key: 'all', label: CATEGORY_LABELS.all[lang], count: projects.length },
-    ...activeCategories.map((cat) => ({
-      key: cat as FilterKey,
-      label: CATEGORY_LABELS[cat]?.[lang] || cat,
-      count: projects.filter((p) => p.category === cat).length,
-    })),
-  ]
-
-  const handleFilterChange = useCallback((key: FilterKey) => {
-    setHoveredId(null)
-    setActiveFilter(key)
+  useEffect(() => {
+    const el = gridRef.current
+    if (!el) return
+    const check = () => {
+      setCanScrollLeft(el.scrollLeft > 8)
+      setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 8)
+    }
+    el.addEventListener('scroll', check, { passive: true })
+    check()
+    return () => el.removeEventListener('scroll', check)
   }, [])
 
-  function projectHref(project: ReturnType<typeof getProjects>[0]) {
-    if (CASE_STUDY_IDS.includes(project.id)) {
-      return `/${lang}/project/${project.id}/summary`
-    }
-    return `/${lang}/project/${project.id}/full`
-  }
+  return (
+    <div className="relative">
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-24 z-10"
+        style={{ background: 'linear-gradient(to right, #FDFDFC 20%, transparent)', opacity: canScrollLeft ? 1 : 0, transition: 'opacity 200ms ease' }} />
+      <div className="pointer-events-none absolute inset-y-0 right-0 w-32 z-10"
+        style={{ background: 'linear-gradient(to left, #FDFDFC 20%, transparent)', opacity: canScrollRight ? 1 : 0, transition: 'opacity 200ms ease' }} />
 
-  function coverSrc(project: ReturnType<typeof getProjects>[0]) {
-    return project.coverImage.startsWith('/')
-      ? project.coverImage
-      : `/images/${project.coverImage}`
-  }
+      <div
+        ref={gridRef}
+        className="[&::-webkit-scrollbar]:hidden"
+        style={{
+          display: 'grid',
+          gridAutoFlow: 'column',
+          gridTemplateRows: `repeat(4, ${THUMB_H}px)`,
+          gridAutoColumns: `${THUMB_W}px`,
+          gap: '10px',
+          overflowX: 'auto',
+          scrollbarWidth: 'none',
+          paddingLeft: CONTENT_LEFT,
+          paddingRight: '48px',
+          paddingTop: '12px',
+          paddingBottom: '12px',
+        }}
+      >
+        {GALLERY_GRID_DATA.map((item, i) => (
+          <Link
+            key={i}
+            href={`/${lang}/visual-archive#gallery-${item.projectId}`}
+            className="block rounded-lg overflow-hidden bg-[#F0F0EF] cursor-pointer"
+          >
+            <img
+              src={item.src}
+              alt={`${item.name} — UI`}
+              loading="lazy"
+              draggable={false}
+              className="w-full h-full object-cover"
+            />
+          </Link>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+interface CarouselSectionProps {
+  title: string
+  projects: Project[]
+  lang: 'en' | 'fr'
+  animationDelay?: number
+}
+
+function CarouselSection({ title, projects, lang, animationDelay = 0 }: CarouselSectionProps) {
+  const isEn = lang === 'en'
+  const trackRef = useRef<HTMLDivElement>(null)
+  const rafRef = useRef<number>(0)
+
+  // React state — updated only at rest (snap settle), never during scroll/drag/animation
+  const [hoveredId, setHoveredId] = useState<string | null>(null)
+  const [activeIndex, setActiveIndex] = useState(0)
+  const [canScrollLeft, setCanScrollLeft] = useState(false)
+  const [canScrollRight, setCanScrollRight] = useState(true)
+
+  // Refs — mutated directly to avoid re-renders during hot paths
+  const dragging = useRef(false)   // true while pointer is held
+  const animating = useRef(false)  // true while RAF scroll is running
+  const hasMoved = useRef(false)
+  const pointerId = useRef<number | null>(null) // stored to defer setPointerCapture
+  const dragStartX = useRef(0)
+  const dragStartScrollLeft = useRef(0)
+  const dragLastX = useRef(0)
+  const dragLastTime = useRef(0)
+  const dragVelocity = useRef(0)
+
+  // ── State sync ────────────────────────────────────────────────────────────
+  // Only runs when nothing is in motion. Called once after animation/drag settles.
+  const detectActive = useCallback(() => {
+    if (dragging.current || animating.current) return
+    const track = trackRef.current
+    if (!track) return
+    const pl = parseFloat(getComputedStyle(track).paddingLeft)
+    const cards = track.querySelectorAll<HTMLElement>('[data-card]')
+    let closest = 0
+    let minDist = Infinity
+    cards.forEach((card, i) => {
+      const dist = Math.abs(card.offsetLeft - pl - track.scrollLeft)
+      if (dist < minDist) { minDist = dist; closest = i }
+    })
+    setActiveIndex(closest)
+    setCanScrollLeft(track.scrollLeft > 8)
+    setCanScrollRight(track.scrollLeft < track.scrollWidth - track.clientWidth - 8)
+  }, [])
+
+  // Native scroll (touch/trackpad) — safe to sync since no RAF is running
+  useEffect(() => {
+    const track = trackRef.current
+    if (!track) return
+    track.addEventListener('scroll', detectActive, { passive: true })
+    detectActive()
+    return () => track.removeEventListener('scroll', detectActive)
+  }, [detectActive])
+
+  useEffect(() => { return () => cancelAnimationFrame(rafRef.current) }, [])
+
+  // ── Programmatic scroll ───────────────────────────────────────────────────
+  // Sets animating = true so detectActive skips during the RAF loop.
+  // Re-enables snap and syncs state on the final frame.
+  const smoothScrollTo = useCallback((el: HTMLElement, target: number) => {
+    cancelAnimationFrame(rafRef.current)
+    const start = el.scrollLeft
+    const diff = target - start
+    if (Math.abs(diff) < 1) return
+    animating.current = true
+    const prevSnap = el.style.scrollSnapType
+    el.style.scrollSnapType = 'none'
+    const t0 = performance.now()
+    function frame(now: number) {
+      const t = Math.min((now - t0) / SCROLL_DURATION, 1)
+      el.scrollLeft = start + diff * easeInOutCubic(t)
+      if (t < 1) {
+        rafRef.current = requestAnimationFrame(frame)
+      } else {
+        animating.current = false
+        el.style.scrollSnapType = prevSnap || ''
+        detectActive() // single state sync at settle
+      }
+    }
+    rafRef.current = requestAnimationFrame(frame)
+  }, [detectActive])
+
+  const goTo = useCallback((index: number) => {
+    const track = trackRef.current
+    if (!track) return
+    const pl = parseFloat(getComputedStyle(track).paddingLeft)
+    const cards = track.querySelectorAll<HTMLElement>('[data-card]')
+    const card = cards[index]
+    if (!card) return
+    smoothScrollTo(track, card.offsetLeft - pl)
+    setActiveIndex(index) // optimistic update so opacity shifts immediately
+  }, [smoothScrollTo])
+
+  // ── Drag / swipe ──────────────────────────────────────────────────────────
+  const onPointerDown = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.button !== 0) return
+    const track = trackRef.current
+    if (!track) return
+    dragging.current = true
+    hasMoved.current = false
+    pointerId.current = e.pointerId
+    dragStartX.current = e.clientX
+    dragStartScrollLeft.current = track.scrollLeft
+    dragLastX.current = e.clientX
+    dragLastTime.current = performance.now()
+    dragVelocity.current = 0
+    // Do NOT call setPointerCapture here — capturing immediately prevents
+    // click events from reaching child <Link> elements on a plain tap.
+    // Capture is set lazily in onPointerMove once drag is confirmed (>4px).
+    cancelAnimationFrame(rafRef.current)
+    animating.current = false
+    track.style.cursor = 'grabbing'
+  }, [])
+
+  const onPointerMove = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+    if (!dragging.current) return
+    const track = trackRef.current
+    if (!track) return
+    const dx = e.clientX - dragStartX.current
+    if (Math.abs(dx) > 4) {
+      if (!hasMoved.current && pointerId.current !== null) {
+        // Capture only after confirmed drag so plain taps reach child <Link>
+        track.setPointerCapture(pointerId.current)
+      }
+      hasMoved.current = true
+    }
+    track.style.scrollSnapType = 'none'
+    track.scrollLeft = dragStartScrollLeft.current - dx
+    // velocity only — no React setState
+    const now = performance.now()
+    const dt = now - dragLastTime.current
+    if (dt > 0) dragVelocity.current = (dragLastX.current - e.clientX) / dt
+    dragLastX.current = e.clientX
+    dragLastTime.current = now
+  }, [])
+
+  const onPointerUp = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+    if (!dragging.current) return
+    dragging.current = false
+    const track = trackRef.current
+    if (!track) return
+    track.style.cursor = 'grab'
+    if (!hasMoved.current) {
+      track.style.scrollSnapType = 'x mandatory'
+      return
+    }
+    const dx = dragStartX.current - e.clientX
+    const velocity = dragVelocity.current
+    const threshold = CARD_WIDTH_PX * 0.28
+    let target = activeIndex
+    if (velocity > 0.4 || dx > threshold) {
+      target = Math.min(projects.length - 1, activeIndex + 1)
+    } else if (velocity < -0.4 || dx < -threshold) {
+      target = Math.max(0, activeIndex - 1)
+    }
+    goTo(target)
+  }, [activeIndex, projects.length, goTo])
+
+  const onClickCapture = useCallback((e: React.MouseEvent) => {
+    if (hasMoved.current) {
+      e.preventDefault()
+      e.stopPropagation()
+      hasMoved.current = false
+    }
+  }, [])
 
   return (
-    <div className="min-h-screen bg-[#FDFDFC]">
-      <div className="max-w-[740px] mx-auto px-6 pt-32 md:pt-40 pb-24 md:pb-40">
+    <section>
+      {/* Section header — symmetric margins, only the track bleeds to 48px */}
+      <motion.div
+        className="mb-8"
+        style={{ paddingLeft: CONTENT_LEFT, paddingRight: CONTENT_LEFT }}
+        initial={{ opacity: 0, y: 8 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-40px' }}
+        transition={{ duration: 0.4, delay: animationDelay, ease: EASE }}
+      >
+        <div className="flex items-baseline gap-2.5">
+          <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900">{title}</h2>
+          <span className="text-[11px] tabular-nums text-gray-400">{projects.length}</span>
+        </div>
+      </motion.div>
 
-        {/* Header */}
-        <motion.div
-          className="mb-12"
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45, ease: EASE }}
-        >
-          <h1 className="text-base font-semibold tracking-[-0.01em] text-gray-900">
-            {isEn ? 'Projects' : 'Projets'}
-          </h1>
-          <p className="mt-1 text-base text-gray-500 leading-relaxed max-w-[52ch]">
-            {isEn
-              ? 'Product design, design systems and AI-assisted prototyping.'
-              : 'Design produit, design systems et prototypage assisté par IA.'}
-          </p>
-        </motion.div>
-
-        {/* Filters */}
-        <motion.div
-          className="flex flex-wrap gap-2 mb-12"
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.35, delay: 0.1, ease: EASE }}
-        >
-          {filters.map((f) => (
-            <button
-              key={f.key}
-              onClick={() => handleFilterChange(f.key)}
-              className={`px-4 py-1.5 rounded-full text-sm font-medium cursor-pointer active:scale-[0.97] ${
-                activeFilter === f.key
-                  ? 'bg-gray-900 text-white'
-                  : 'text-gray-500 hover:text-gray-900'
-              }`}
-              style={{ transition: 'background-color 180ms ease, color 180ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
-            >
-              {f.label}
-              <span className={`ml-1.5 text-xs ${activeFilter === f.key ? 'text-white/50' : 'text-gray-400'}`}>
-                {f.count}
-              </span>
-            </button>
-          ))}
-        </motion.div>
-
-        {/* Projects grid */}
+      {/* Scroll track — enters 120ms after section header for layered disclosure */}
+      <motion.div
+        className="relative"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true, margin: '-40px' }}
+        transition={{ duration: 0.4, delay: animationDelay + 0.12, ease: EASE }}
+      >
         <div
-          className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-10"
-          onMouseLeave={() => setHoveredId(null)}
+          ref={trackRef}
+          className="flex [&::-webkit-scrollbar]:hidden"
+          style={{
+            gap: `${CARD_GAP_PX}px`,
+            overflowX: 'auto',
+            scrollSnapType: 'x mandatory',
+            scrollPaddingLeft: CONTENT_LEFT,
+            paddingLeft: CONTENT_LEFT,
+            paddingRight: CONTENT_RIGHT,
+            scrollbarWidth: 'none',
+            WebkitOverflowScrolling: 'touch',
+            cursor: 'grab',
+            userSelect: 'none',
+            paddingBottom: '12px',
+          } as React.CSSProperties}
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={onPointerUp}
+          onPointerCancel={onPointerUp}
+          onClickCapture={onClickCapture}
+          onMouseLeave={() => { if (!dragging.current) setHoveredId(null) }}
         >
-          {filtered.map((project, index) => {
-            const isActive = hoveredId === project.id
-            const isDimmed = hoveredId !== null && !isActive
+          {projects.map((project, index) => {
+            const isHovered = hoveredId === project.id
+            const isPast = index < activeIndex
+            const opacity = isHovered ? 1 : isPast ? 0.3 : hoveredId !== null ? 0.4 : 1
             const src = coverSrc(project)
             const year = project.period.split(' – ')[0]
 
             return (
-              <motion.div
+              <div
                 key={project.id}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-40px' }}
-                transition={{ duration: 0.28, delay: (index % 2) * 0.05, ease: EASE }}
+                data-card=""
+                className="flex-shrink-0"
                 style={{
-                  opacity: isDimmed ? 0.45 : 1,
-                  transition: 'opacity 200ms ease',
+                  width: `min(${CARD_WIDTH_PX}px, calc(100vw - 48px))`,
+                  scrollSnapAlign: 'start',
+                  opacity,
+                  // Opacity-only transition — stays on compositor, never triggers layout
+                  transition: 'opacity 260ms ease',
+                  willChange: 'opacity',
                 }}
+                onMouseEnter={() => setHoveredId(project.id)}
               >
-                <Link
-                  href={projectHref(project)}
-                  className="group block"
-                  onMouseEnter={() => setHoveredId(project.id)}
-                >
-                  {/* Thumbnail */}
+                <Link href={projectHref(project, lang)} className="block" draggable={false}>
+                  {/* Cover */}
                   <div
-                    className="w-full rounded-xl overflow-hidden mb-4"
+                    className="relative w-full rounded-2xl overflow-hidden mb-4"
                     style={{
                       aspectRatio: '16/10',
-                      outline: isActive ? '1px solid rgba(0,0,0,0.07)' : '1px solid rgba(0,0,0,0.04)',
-                      boxShadow: isActive
-                        ? '0 2px 8px rgba(0,0,0,0.05), 0 8px 24px rgba(0,0,0,0.04)'
-                        : 'none',
-                      transition: 'outline-color 200ms ease, box-shadow 220ms ease',
+                      boxShadow: isHovered
+                        ? '0 0 0 1px rgba(0,0,0,0.07), 0 4px 16px rgba(0,0,0,0.06)'
+                        : '0 0 0 1px rgba(0,0,0,0.04)',
+                      transform: isHovered ? 'scale(1.01)' : 'scale(1)',
+                      // Only transform + box-shadow — GPU composited, no layout
+                      transition: 'box-shadow 220ms ease, transform 300ms cubic-bezier(0.23,1,0.32,1)',
                     }}
                   >
                     <img
                       src={src}
                       alt={project.title}
-                      loading="lazy"
+                      loading={index < 2 ? 'eager' : 'lazy'}
+                      draggable={false}
                       className="w-full h-full object-cover"
                       style={{
-                        transform: isActive ? 'scale(1.03)' : 'scale(1)',
-                        transition: 'transform 420ms cubic-bezier(0.23,1,0.32,1)',
+                        transform: isHovered ? 'scale(1.03)' : 'scale(1)',
+                        transition: 'transform 400ms cubic-bezier(0.23,1,0.32,1)',
+                        // Promote to GPU layer — prevents repaint during transform
+                        willChange: 'transform',
                       }}
                     />
+                    {project.videoUrl && (
+                      <div
+                        className="absolute bottom-3 left-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full"
+                        style={{
+                          background: 'rgba(255,255,255,0.8)',
+                          backdropFilter: 'blur(8px)',
+                          WebkitBackdropFilter: 'blur(8px)',
+                          border: '1px solid rgba(255,255,255,0.9)',
+                          boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
+                          opacity: isHovered ? 1 : 0,
+                          transform: isHovered ? 'translateY(0)' : 'translateY(3px)',
+                          transition: 'opacity 180ms ease, transform 220ms cubic-bezier(0.23,1,0.32,1)',
+                        }}
+                      >
+                        <svg width={8} height={8} viewBox="0 0 10 10" fill="rgba(0,0,0,0.6)" aria-hidden="true">
+                          <path d="M2 1.5l6 3.5-6 3.5V1.5z" />
+                        </svg>
+                        <span style={{ fontSize: 11, fontWeight: 500, color: 'rgba(0,0,0,0.55)', lineHeight: 1 }}>
+                          Video
+                        </span>
+                      </div>
+                    )}
                   </div>
 
                   {/* Meta row */}
-                  <div className="flex items-center justify-between gap-2 mb-2">
-                    <div className="flex items-center gap-2">
-                      <span
-                        className="text-[11px] tabular-nums font-medium"
-                        style={{ color: isActive ? '#9CA3AF' : '#D1D5DB', transition: 'color 200ms ease' }}
-                        aria-hidden="true"
-                      >
-                        {String(index + 1).padStart(2, '0')}
-                      </span>
-                      <span
-                        className="text-[11px] px-1.5 py-0.5 rounded-full border"
-                        style={{
-                          color: isActive ? '#6B7280' : '#9CA3AF',
-                          borderColor: isActive ? '#D1D5DB' : '#F3F4F6',
-                          transition: 'color 180ms ease, border-color 180ms ease',
-                        }}
-                      >
-                        {FORMAT_LABELS[project.format][lang]}
-                      </span>
-                    </div>
+                  <div className="flex items-center justify-between gap-2 mb-1.5">
                     <span
-                      className="text-[11px] tabular-nums"
-                      style={{ color: isActive ? '#6B7280' : '#9CA3AF', transition: 'color 200ms ease' }}
+                      className="text-[11px] truncate max-w-[65%]"
+                      style={{ color: isHovered ? '#6B7280' : '#9CA3AF', transition: 'color 160ms ease' }}
+                    >
+                      {project.role}
+                    </span>
+                    <span
+                      className="text-[11px] tabular-nums flex-shrink-0"
+                      style={{ color: isHovered ? '#6B7280' : '#9CA3AF', transition: 'color 160ms ease' }}
                     >
                       {year}
                     </span>
@@ -216,9 +432,9 @@ export default function ProjetsPageClient({ lang }: { lang: 'en' | 'fr' }) {
                   <h2
                     className="text-[15px] leading-snug tracking-[-0.01em] mb-1.5"
                     style={{
-                      fontWeight: isActive ? 500 : 400,
-                      color: isActive ? '#000000' : '#111827',
-                      transition: 'color 180ms ease',
+                      fontWeight: isHovered ? 500 : 400,
+                      color: isHovered ? '#000' : '#111827',
+                      transition: 'color 160ms ease',
                     }}
                   >
                     {project.title}
@@ -227,10 +443,7 @@ export default function ProjetsPageClient({ lang }: { lang: 'en' | 'fr' }) {
                   {/* Summary */}
                   <p
                     className="text-sm leading-relaxed line-clamp-2 mb-3"
-                    style={{
-                      color: isActive ? '#4B5563' : '#6B7280',
-                      transition: 'color 180ms ease',
-                    }}
+                    style={{ color: isHovered ? '#4B5563' : '#6B7280', transition: 'color 160ms ease' }}
                   >
                     {project.summary}
                   </p>
@@ -239,90 +452,135 @@ export default function ProjetsPageClient({ lang }: { lang: 'en' | 'fr' }) {
                   <div className="flex items-center gap-1">
                     <span
                       className="text-xs"
-                      style={{
-                        color: isActive ? '#374151' : '#9CA3AF',
-                        transition: 'color 180ms ease',
-                      }}
+                      style={{ color: isHovered ? '#374151' : '#9CA3AF', transition: 'color 160ms ease' }}
                     >
                       {isEn ? 'View project' : 'Voir le projet'}
                     </span>
                     <ArrowDiag
                       style={{
-                        color: isActive ? '#374151' : '#9CA3AF',
-                        transform: isActive ? 'translate(1px,-1px)' : 'translate(0,0)',
-                        transition: 'color 180ms ease, transform 220ms cubic-bezier(0.23,1,0.32,1)',
+                        color: isHovered ? '#374151' : '#9CA3AF',
+                        transform: isHovered ? 'translate(1px,-1px)' : 'translate(0,0)',
+                        transition: 'color 160ms ease, transform 200ms cubic-bezier(0.23,1,0.32,1)',
                       }}
                     />
                   </div>
                 </Link>
-              </motion.div>
+              </div>
             )
           })}
         </div>
 
-        {/* ── Visual gallery teaser ─────────────────────────────────── */}
+        {/* Left fade — 60ms delay prevents flicker on micro-scroll */}
+        <div
+          className="pointer-events-none absolute inset-y-0 left-0 w-28"
+          style={{
+            background: 'linear-gradient(to left, transparent, #FDFDFC 80%)',
+            opacity: canScrollLeft ? 1 : 0,
+            transition: 'opacity 200ms ease',
+            transitionDelay: canScrollLeft ? '60ms' : '0ms',
+          }}
+        />
+
+        {/* Right fade */}
+        <div
+          className="pointer-events-none absolute inset-y-0 right-0 w-28"
+          style={{
+            background: 'linear-gradient(to right, transparent, #FDFDFC 80%)',
+            opacity: canScrollRight ? 1 : 0,
+            transition: 'opacity 200ms ease',
+          }}
+        />
+      </motion.div>
+    </section>
+  )
+}
+
+export default function ProjetsPageClient({ lang }: { lang: 'en' | 'fr' }) {
+  const isEn = lang === 'en'
+  const projects = getProjects(lang)
+
+  const workProjects = projects.filter(p => p.category === 'product-design')
+  const experimentProjects = projects.filter(p => p.category === 'ai-experiment')
+
+  return (
+    <div className="min-h-screen bg-[#FDFDFC]">
+
+      {/* Page header — top offset matches homepage h1 at every breakpoint */}
+      <motion.div
+        style={{ paddingLeft: CONTENT_LEFT, paddingRight: CONTENT_LEFT }}
+        className="pt-32 sm:pt-40 md:pt-48 mb-16 md:mb-20"
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: EASE }}
+      >
+        <h1 className="text-base font-semibold tracking-[-0.01em] text-gray-900">
+          {isEn ? 'Work' : 'Projets'}
+        </h1>
+        <p className="mt-1 text-base text-gray-500 leading-relaxed max-w-[52ch]">
+          {isEn
+            ? 'Product design, design systems and AI-assisted prototyping.'
+            : 'Design produit, design systems et prototypage assisté par IA.'}
+        </p>
+      </motion.div>
+
+      <CarouselSection
+        title={isEn ? 'Work' : 'Travaux'}
+        projects={workProjects}
+        lang={lang}
+        animationDelay={0.08}
+      />
+
+      <div className="mt-24 md:mt-32">
+        <CarouselSection
+          title={isEn ? 'Experiments' : 'Expérimentations'}
+          projects={experimentProjects}
+          lang={lang}
+          animationDelay={0.12}
+        />
+      </div>
+
+      {/* Visual gallery teaser */}
+      <div className="pb-24 md:pb-40">
+
+        {/* Header — stays within the content column, same alignment as carousels */}
         <motion.div
-          className="mt-24 pt-16 border-t border-gray-100"
-          initial={{ opacity: 0, y: 20 }}
+          className="mt-32 pt-16 md:pt-20 border-t border-gray-100 mb-8"
+          style={{ paddingLeft: CONTENT_LEFT, paddingRight: CONTENT_LEFT }}
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.5, ease: EASE }}
+          transition={{ duration: 0.4, ease: EASE }}
         >
-          <div className="mb-8">
-            <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-2">
-              {isEn ? 'Interface gallery' : 'Galerie d\u2019interfaces'}
-            </h2>
-            <p className="text-base text-gray-500 max-w-[50ch] leading-relaxed mb-4">
-              {isEn
-                ? 'Screens and prototypes from enterprise apps, SaaS platforms and design systems I\u2019ve worked on.'
-                : '\u00c9crans et prototypes d\u2019applications m\u00e9tier, plateformes SaaS et design systems.'}
-            </p>
-            <Link
-              href={`/${lang}/visual-archive`}
-              className="group inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900"
-              style={{ transition: 'color 150ms ease' }}
-            >
-              {isEn ? 'Browse gallery' : 'Parcourir la galerie'}
-              <ArrowDiagMd
-                style={{
-                  transition: 'transform 200ms cubic-bezier(0.23, 1, 0.32, 1)',
-                }}
-              />
-            </Link>
-          </div>
-
-          <Link href={`/${lang}/visual-archive`} className="group block">
-            <div className="grid grid-cols-3 gap-3">
-              {HOMEPAGE_GALLERY_ITEMS.slice(0, 3).map((src, i) => (
-                <div
-                  key={i}
-                  className="aspect-[16/10] rounded-xl overflow-hidden"
-                  style={{
-                    outline: '1px solid rgba(0,0,0,0.06)',
-                  }}
-                >
-                  <img
-                    src={src}
-                    alt={isEn ? `UI gallery preview ${i + 1}` : `Aperçu galerie UI ${i + 1}`}
-                    className="w-full h-full object-cover"
-                    style={{
-                      transition: 'transform 400ms cubic-bezier(0.23,1,0.32,1)',
-                    }}
-                    loading="lazy"
-                  />
-                </div>
-              ))}
-            </div>
-            {/* Gallery hover: all three images lift together */}
-            <style>{`
-              .group:hover img {
-                transform: scale(1.03);
-              }
-            `}</style>
+          <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-1.5">
+            {isEn ? 'Interface gallery' : 'Galerie d\u2019interfaces'}
+          </h2>
+          <p className="text-sm text-gray-500 max-w-[50ch] leading-relaxed mb-4">
+            {isEn
+              ? 'Screens and prototypes from enterprise apps, SaaS platforms and design systems I\u2019ve worked on.'
+              : '\u00c9crans et prototypes d\u2019applications m\u00e9tier, plateformes SaaS et design systems.'}
+          </p>
+          <Link
+            href={`/${lang}/visual-archive#gallery-scrim`}
+            className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900"
+            style={{ transition: 'color 140ms ease' }}
+          >
+            {isEn ? 'Design details' : 'Détails design'}
+            <ArrowDiagMd />
           </Link>
         </motion.div>
 
+        {/* Horizontal scroll grid — bleeds off-canvas right, handles own padding */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, margin: '-40px' }}
+          transition={{ duration: 0.4, delay: 0.1, ease: EASE }}
+        >
+          <GalleryGrid lang={lang} />
+        </motion.div>
+
       </div>
+
     </div>
   )
 }

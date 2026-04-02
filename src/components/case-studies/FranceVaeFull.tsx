@@ -13,6 +13,8 @@
  */
 
 import React, { useRef, useState } from 'react';
+import ExpandableSection from './ExpandableSection';
+import CaseStudyTestimonialBlock from './CaseStudyTestimonialBlock';
 import VideoPlayer from '@/components/VideoPlayer';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 import {
@@ -810,57 +812,6 @@ const BeforeAfterSlider: React.FC<{
   );
 };
 
-// ============================================================================
-// EXPANDABLE SECTION - Progressive Disclosure
-// ============================================================================
-
-const ExpandableSection: React.FC<{
-  children: React.ReactNode;
-  previewLines?: number;
-  isDark: boolean;
-  expandLabel?: string;
-  collapseLabel?: string;
-}> = ({ children, previewLines = 3, expandLabel = 'Read more', collapseLabel = 'Show less' }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
-
-  return (
-    <div className="relative">
-      <div className="relative">
-        <div
-          style={{
-            maxHeight: isExpanded ? '1200px' : `${previewLines * 1.75}rem`,
-            overflow: 'hidden',
-            transition: isExpanded
-              ? 'max-height 600ms cubic-bezier(0.23, 1, 0.32, 1)'
-              : 'max-height 350ms cubic-bezier(0.23, 1, 0.32, 1)',
-          }}
-        >
-          {children}
-        </div>
-        {/* Gradient fade — only visible when collapsed */}
-        <div
-          className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-[#FDFDFC] pointer-events-none"
-          style={{
-            opacity: isExpanded ? 0 : 1,
-            transition: 'opacity 200ms ease',
-          }}
-        />
-      </div>
-
-      <button
-        onClick={() => setIsExpanded(!isExpanded)}
-        className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors duration-150"
-      >
-        {isExpanded ? collapseLabel : expandLabel}
-        <ChevronDown
-          size={14}
-          className="transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)]"
-          style={{ transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)' }}
-        />
-      </button>
-    </div>
-  );
-};
 
 // ============================================================================
 // INTERACTIVE INITIATIVE DIAGRAM - Apple Keynote style
@@ -1477,7 +1428,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
             </FadeInSection>
 
             {/* Presentation slides */}
-            <FadeInSection delay={0.3} className="mt-10 space-y-6">
+            <FadeInSection delay={0.3} className="mt-10">
               <ClickableImage
                 src={t.initiative1.bentoImages.small1.src}
                 alt={t.initiative1.bentoImages.small1.caption}
@@ -1485,10 +1436,15 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
                 isDark={isDark}
                 onClick={onImageClick}
               />
+            </FadeInSection>
+
+            <FadeInSection className="mt-10">
+              <p className="text-sm text-gray-500 leading-relaxed mb-6 max-w-[65ch]">
+                {t.initiative1.bentoImages.small2.caption}
+              </p>
               <ClickableImage
                 src={t.initiative1.bentoImages.small2.src}
                 alt={t.initiative1.bentoImages.small2.caption}
-                caption={t.initiative1.bentoImages.small2.caption}
                 isDark={isDark}
                 onClick={onImageClick}
               />
@@ -1539,8 +1495,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
                 {t.initiative2.whatIDid}
               </h3>
               <ExpandableSection
-                isDark={isDark}
-                previewLines={8}
+                previewRem={14}
                 expandLabel={t.progressive.readMore}
                 collapseLabel={t.progressive.showLess}
               >
@@ -1554,7 +1509,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
             </FadeInSection>
 
             {/* Team org: before/after */}
-            <FadeInSection delay={0.3} className="mt-10 space-y-6">
+            <FadeInSection delay={0.3} className="mt-10">
               <ClickableImage
                 src={t.initiative2.bentoImages.small1.src}
                 alt={t.initiative2.bentoImages.small1.caption}
@@ -1562,10 +1517,15 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
                 isDark={isDark}
                 onClick={onImageClick}
               />
+            </FadeInSection>
+
+            <FadeInSection className="mt-10">
+              <p className="text-sm text-gray-500 leading-relaxed mb-6 max-w-[65ch]">
+                {t.initiative2.bentoImages.small2.caption}
+              </p>
               <ClickableImage
                 src={t.initiative2.bentoImages.small2.src}
                 alt={t.initiative2.bentoImages.small2.caption}
-                caption={t.initiative2.bentoImages.small2.caption}
                 isDark={isDark}
                 onClick={onImageClick}
               />
@@ -1632,8 +1592,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
                 {t.initiative3.whatIDid}
               </h3>
               <ExpandableSection
-                isDark={isDark}
-                previewLines={6}
+                previewRem={10.5}
                 expandLabel={t.progressive.readMore}
                 collapseLabel={t.progressive.showLess}
               >
@@ -1655,7 +1614,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
             </FadeInSection>
 
             {/* Research artifacts */}
-            <FadeInSection delay={0.3} className="mt-10 space-y-6">
+            <FadeInSection delay={0.3} className="mt-10">
               <ClickableImage
                 src={t.initiative3.bentoImages.small1.src}
                 alt={t.initiative3.bentoImages.small1.caption}
@@ -1663,10 +1622,15 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
                 isDark={isDark}
                 onClick={onImageClick}
               />
+            </FadeInSection>
+
+            <FadeInSection className="mt-10">
+              <p className="text-sm text-gray-500 leading-relaxed mb-6 max-w-[65ch]">
+                {t.initiative3.bentoImages.small2.caption}
+              </p>
               <ClickableImage
                 src={t.initiative3.bentoImages.small2.src}
                 alt={t.initiative3.bentoImages.small2.caption}
-                caption={t.initiative3.bentoImages.small2.caption}
                 isDark={isDark}
                 onClick={onImageClick}
               />
@@ -1727,7 +1691,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
             </FadeInSection>
 
             {/* Workshop slides */}
-            <FadeInSection delay={0.3} className="mt-10 space-y-6">
+            <FadeInSection delay={0.3} className="mt-10">
               <ClickableImage
                 src={t.initiative4.bentoImages.small1.src}
                 alt={t.initiative4.bentoImages.small1.caption}
@@ -1735,10 +1699,15 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
                 isDark={isDark}
                 onClick={onImageClick}
               />
+            </FadeInSection>
+
+            <FadeInSection className="mt-10">
+              <p className="text-sm text-gray-500 leading-relaxed mb-6 max-w-[65ch]">
+                {t.initiative4.bentoImages.small2.caption}
+              </p>
               <ClickableImage
                 src={t.initiative4.bentoImages.small2.src}
                 alt={t.initiative4.bentoImages.small2.caption}
-                caption={t.initiative4.bentoImages.small2.caption}
                 isDark={isDark}
                 onClick={onImageClick}
               />
@@ -1800,8 +1769,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
                 {t.initiative5.whatIDid}
               </h3>
               <ExpandableSection
-                isDark={isDark}
-                previewLines={6}
+                previewRem={10.5}
                 expandLabel={t.progressive.readMore}
                 collapseLabel={t.progressive.showLess}
               >
@@ -1923,24 +1891,13 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
                 {t.testimonial.eyebrow}
               </span>
             </FadeInSection>
-            <FadeInSection delay={0.1}>
-              <div className="mt-8 pt-8 border-t border-gray-100">
-                <blockquote className="text-base text-gray-600 leading-relaxed mb-6 max-w-[65ch]">
-                  "{t.testimonial.quote}"
-                </blockquote>
-                <div className="flex items-center gap-3">
-                  <img loading="lazy"
-                    src="/images/people/boris-aime-bauderlique.webp"
-                    alt={t.testimonial.author}
-                    className="w-8 h-8 rounded-full object-cover flex-shrink-0"
-                  />
-                  <div>
-                    <p className="text-sm font-medium text-gray-900">{t.testimonial.author}</p>
-                    <p className="text-xs text-gray-500">{t.testimonial.role}</p>
-                  </div>
-                </div>
-              </div>
-            </FadeInSection>
+            <CaseStudyTestimonialBlock
+            quote={t.testimonial.quote}
+            author={t.testimonial.author}
+            role={t.testimonial.role}
+            image="boris-aime-bauderlique.webp"
+            lang={lang}
+          />
           </section>
 
           {/* LEARNINGS */}

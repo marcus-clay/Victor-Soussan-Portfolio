@@ -63,7 +63,7 @@ export default function ContactPageClient({ lang }: { lang: 'en' | 'fr' }) {
 
   return (
     <div className="min-h-screen bg-[#FDFDFC]">
-      <div className="max-w-[740px] mx-auto px-6 pt-32 md:pt-40 pb-24 md:pb-40">
+      <div className="max-w-[740px] mx-auto px-6 pt-32 sm:pt-40 md:pt-48 pb-24 md:pb-40">
 
         {/* ============================================ */}
         {/* SECTION 1: Contact                          */}

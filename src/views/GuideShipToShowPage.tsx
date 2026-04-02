@@ -59,7 +59,7 @@ const GuideShipToShowPage: React.FC<Props> = ({ lang, onNavigate }) => {
     >
       {/* Breadcrumb bar - sticky below Nav */}
       <div className="sticky z-10 backdrop-blur-xl bg-[#FCFCFD]/80 border-gray-200" style={{ top: 'var(--nav-height, 72px)', transition: 'top 250ms cubic-bezier(0.23, 1, 0.32, 1)' }}>
-        <div className="max-w-[1200px] mx-auto px-4 md:px-6 h-10 flex items-center">
+        <div className="max-w-[740px] mx-auto px-4 md:px-6 h-10 flex items-center">
           <nav className="flex items-center gap-1.5 text-[13px] min-w-0 overflow-hidden">
             <button
               onClick={() => onNavigate('ressources')}
@@ -76,7 +76,7 @@ const GuideShipToShowPage: React.FC<Props> = ({ lang, onNavigate }) => {
       </div>
 
       {/* Content */}
-      <div className="max-w-[1200px] mx-auto px-6 pb-20 pt-8 md:pt-10">
+      <div className="max-w-[740px] mx-auto px-6 pb-20 pt-8 md:pt-10">
         {/* ─── Hero ─── */}
         <div className="mb-12">
           <div className="flex flex-wrap gap-2 mb-4">
@@ -86,10 +86,10 @@ const GuideShipToShowPage: React.FC<Props> = ({ lang, onNavigate }) => {
               </span>
             ))}
           </div>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-[-0.03em] leading-[1.08] mb-4 text-gray-900">
+          <h1 className="text-base font-semibold tracking-[-0.01em] mb-4 text-gray-900">
             {meta.title_fr}
           </h1>
-          <p className="text-lg md:text-xl leading-relaxed mb-6 max-w-[55ch] text-gray-500">
+          <p className="text-base leading-relaxed mb-6 max-w-[55ch] text-gray-500">
             {lang === 'fr' ? meta.subtitle_fr : meta.subtitle_en}
           </p>
           <div className="flex items-center gap-3 text-gray-400">
@@ -109,82 +109,11 @@ const GuideShipToShowPage: React.FC<Props> = ({ lang, onNavigate }) => {
           </div>
         </div>
 
-        {/* ─── 2-column layout ─── */}
-        <div className="flex gap-8 xl:gap-12">
-          {/* Left sidebar */}
-          <aside className="hidden lg:block w-48 xl:w-56 flex-shrink-0">
-            <div className="sticky top-14">
-              {/* Prerequisites */}
-              <p className="text-xs font-semibold uppercase tracking-widest mb-4 text-gray-400">
-                {lang === 'en' ? 'Prerequisites' : 'Prérequis'}
-              </p>
-              <ul className="text-sm space-y-1.5 text-gray-500 mb-6">
-                {(lang === 'fr' ? SHIP_TO_SHOW_PREREQUISITES.fr : SHIP_TO_SHOW_PREREQUISITES.en).map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-
-              {/* Links */}
-              <div className="pt-4 border-t border-gray-100">
-                <p className="text-xs font-semibold uppercase tracking-widest mb-3 text-gray-400">
-                  {lang === 'en' ? 'Links' : 'Liens'}
-                </p>
-                <div className="flex flex-col gap-2">
-                  <a
-                    href={meta.githubUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-900 hover:underline"
-                  >
-                    <GithubLogo size={14} weight="bold" /> GitHub
-                  </a>
-                  <a
-                    href={`/${lang}/project/${meta.exampleProject.slug}/summary`}
-                    onClick={(e) => { e.preventDefault(); onNavigate(`project-${meta.exampleProject.slug}`); }}
-                    className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-900 hover:underline"
-                  >
-                    <ArrowSquareOut size={14} />
-                    {lang === 'fr' ? 'Exemple : ' : 'Example: '}{meta.exampleProject.name}
-                  </a>
-                </div>
-              </div>
-
-              {/* Quick nav */}
-              <div className="pt-4 mt-4 border-t border-gray-100">
-                <p className="text-xs font-semibold uppercase tracking-widest mb-3 text-gray-400">
-                  {lang === 'en' ? 'On this page' : 'Sur cette page'}
-                </p>
-                <ul className="space-y-1">
-                  <li>
-                    <a href="#problem" className="text-[12px] text-gray-400 hover:text-gray-700 transition-colors">
-                      {lang === 'fr' ? 'Le problème' : 'The problem'}
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#phases" className="text-[12px] text-gray-400 hover:text-gray-700 transition-colors">
-                      {lang === 'fr' ? 'Les 7 phases' : 'The 7 phases'}
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#install" className="text-[12px] text-gray-400 hover:text-gray-700 transition-colors">
-                      {lang === 'fr' ? 'Installation' : 'Installation'}
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#example" className="text-[12px] text-gray-400 hover:text-gray-700 transition-colors">
-                      {lang === 'fr' ? 'Exemple' : 'Example'}
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </aside>
-
-          {/* Main content */}
-          <div className="flex-1 min-w-0">
+        {/* Main content */}
+        <div>
             {/* ─── The Problem ─── */}
             <section id="problem" className="mb-14 scroll-mt-28">
-              <h2 className="text-2xl md:text-[1.75rem] font-bold tracking-[-0.02em] mb-5 text-gray-900">
+              <h2 className="text-base font-semibold tracking-[-0.01em] mb-5 text-gray-900">
                 {lang === 'fr' ? 'Le problème' : 'The problem'}
               </h2>
               <p className="text-base md:text-[1.0625rem] leading-[1.85] text-gray-600 max-w-[65ch]">
@@ -203,7 +132,7 @@ const GuideShipToShowPage: React.FC<Props> = ({ lang, onNavigate }) => {
 
             {/* ─── The 7 Phases ─── */}
             <section id="phases" className="mb-14 scroll-mt-28">
-              <h2 className="text-2xl md:text-[1.75rem] font-bold tracking-[-0.02em] mb-8 text-gray-900">
+              <h2 className="text-base font-semibold tracking-[-0.01em] mb-8 text-gray-900">
                 {lang === 'fr' ? 'Les 7 phases' : 'The 7 phases'}
               </h2>
 
@@ -234,7 +163,7 @@ const GuideShipToShowPage: React.FC<Props> = ({ lang, onNavigate }) => {
                         <div className="flex-1 min-w-0 pb-2">
                           {/* Header */}
                           <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-2">
-                            <h3 className="text-lg font-bold tracking-[-0.02em] text-gray-900">
+                            <h3 className="text-base font-semibold tracking-[-0.01em] text-gray-900">
                               {phase.number}. {lang === 'fr' ? phase.name_fr : phase.name_en}
                             </h3>
                             <span className="text-[13px] text-gray-400 flex items-center gap-1">
@@ -243,7 +172,7 @@ const GuideShipToShowPage: React.FC<Props> = ({ lang, onNavigate }) => {
                           </div>
 
                           {/* Description */}
-                          <p className="text-[15px] leading-[1.75] text-gray-600 mb-3 max-w-[60ch]">
+                          <p className="text-sm text-gray-500 leading-relaxed mb-3 max-w-[60ch]">
                             {lang === 'fr' ? phase.description_fr : phase.description_en}
                           </p>
 
@@ -278,7 +207,7 @@ const GuideShipToShowPage: React.FC<Props> = ({ lang, onNavigate }) => {
 
             {/* ─── Installation ─── */}
             <section id="install" className="mb-14 scroll-mt-28 pt-10 border-t border-gray-100">
-              <h2 className="text-2xl md:text-[1.75rem] font-bold tracking-[-0.02em] mb-5 text-gray-900">
+              <h2 className="text-base font-semibold tracking-[-0.01em] mb-5 text-gray-900">
                 {lang === 'fr' ? 'Installation comme skill Claude Code' : 'Install as a Claude Code skill'}
               </h2>
               <p className="text-[15px] leading-[1.75] text-gray-600 mb-4 max-w-[60ch]">
@@ -297,7 +226,7 @@ const GuideShipToShowPage: React.FC<Props> = ({ lang, onNavigate }) => {
 
             {/* ─── Example: RiskOS ─── */}
             <section id="example" className="mb-14 scroll-mt-28 pt-10 border-t border-gray-100">
-              <h2 className="text-2xl md:text-[1.75rem] font-bold tracking-[-0.02em] mb-5 text-gray-900">
+              <h2 className="text-base font-semibold tracking-[-0.01em] mb-5 text-gray-900">
                 {lang === 'fr' ? 'Exemple : RiskOS' : 'Example: RiskOS'}
               </h2>
               <p className="text-[15px] leading-[1.75] text-gray-600 mb-5 max-w-[60ch]">
@@ -323,7 +252,7 @@ const GuideShipToShowPage: React.FC<Props> = ({ lang, onNavigate }) => {
                     <GithubLogo size={24} weight="bold" className="text-white" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold tracking-[-0.02em] mb-1 text-gray-900">
+                    <h3 className="text-base font-semibold tracking-[-0.01em] mb-1 text-gray-900">
                       {lang === 'fr' ? 'Code source et documentation' : 'Source code and documentation'}
                     </h3>
                     <p className="text-sm leading-relaxed mb-4 text-gray-500 max-w-[50ch]">
@@ -359,7 +288,6 @@ const GuideShipToShowPage: React.FC<Props> = ({ lang, onNavigate }) => {
                 {lang === 'fr' ? 'Retour aux ressources' : 'Back to resources'}
               </button>
             </div>
-          </div>
         </div>
       </div>
     </motion.div>

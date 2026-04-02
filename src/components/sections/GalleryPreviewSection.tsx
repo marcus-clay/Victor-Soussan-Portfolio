@@ -23,9 +23,9 @@ const GalleryPreviewSection: React.FC<GalleryPreviewSectionProps> = ({
   content,
 }) => {
   const items = HOMEPAGE_GALLERY_ITEMS;
-  const mainImage = items[0];
-  const thumbs = items.slice(1, 4);
-  const allImages = [mainImage, ...thumbs].filter(Boolean);
+  const mainImage = items[0]?.src;
+  const thumbs = items.slice(1, 4).map(i => i.src);
+  const allImages = [mainImage, ...thumbs].filter(Boolean) as string[];
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   return (
