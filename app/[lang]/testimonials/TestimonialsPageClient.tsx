@@ -1,7 +1,7 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { ArrowUpRight, LinkedinLogo } from '@phosphor-icons/react'
+import { motion, useReducedMotion } from 'framer-motion'
+import { ArrowUpRight, LinkedinLogoIcon } from '@phosphor-icons/react'
 import { getTestimonials } from '@/data/testimonialsData'
 import { TRANSLATIONS } from '@/data/translations'
 import Link from 'next/link'
@@ -12,6 +12,7 @@ const easeOut = [0.23, 1, 0.32, 1] as const
 export default function TestimonialsPageClient({ lang }: { lang: 'en' | 'fr' }) {
   const testimonials = getTestimonials(lang)
   const t = TRANSLATIONS[lang].testimonials
+  const prefersReduced = useReducedMotion()
 
   const crosslinks = [
     { title: t.crosslink_approach_title, href: `/${lang}/approche` },
@@ -73,42 +74,61 @@ export default function TestimonialsPageClient({ lang }: { lang: 'en' | 'fr' }) 
               {/* Attribution row — full row is a link when linkedin exists */}
               <div className="mt-5">
                 {item.linkedin ? (
-                  <a
+                  <motion.a
                     href={item.linkedin}
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={`${item.author} — ${item.role} on LinkedIn`}
-                    className="group flex items-center gap-3 -mx-3 px-3 py-2 rounded-lg
-                      hover:bg-black/[.04] active:bg-black/[.06]
-                      transition-colors duration-150
+                    className="flex items-center py-2 rounded cursor-pointer
                       focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300 focus-visible:ring-offset-1"
+                    initial="rest"
+                    whileHover="hover"
+                    animate="rest"
+                    whileTap={{ scale: 0.98 }}
+                    transition={{ scale: { duration: 0.1, ease: easeOut } }}
                   >
-                    <Avatar
-                      filename={item.image}
-                      alt={item.author}
-                      className="w-9 h-9 rounded-full bg-gray-100 flex-shrink-0"
-                    />
+                    {/* Avatar — width + opacity together */}
+                    <motion.div
+                      variants={{
+                        rest: { width: 0, opacity: 0 },
+                        hover: { width: 48, opacity: 1 },
+                      }}
+                      transition={{ duration: prefersReduced ? 0 : 0.2, ease: easeOut }}
+                      className="overflow-hidden flex-shrink-0"
+                    >
+                      <Avatar
+                        filename={item.image}
+                        alt={item.author}
+                        className="w-9 h-9 rounded-full bg-gray-100 mr-3 flex-shrink-0"
+                      />
+                    </motion.div>
+
+                    {/* Name + role */}
                     <div className="min-w-0 flex-1">
                       <span className="text-sm font-medium text-gray-900 block">{item.author}</span>
                       <span className="text-sm text-gray-500">{item.role}</span>
                     </div>
-                    <LinkedinLogo
-                      size={16}
-                      weight="fill"
-                      className="flex-shrink-0 text-gray-400 group-hover:text-[#0A66C2] transition-colors duration-200"
-                    />
-                  </a>
+
+                    {/* View profile — opacity only, always visible on touch */}
+                    <motion.div
+                      variants={{
+                        rest: { opacity: 0 },
+                        hover: { opacity: 1 },
+                      }}
+                      transition={{ duration: prefersReduced ? 0 : 0.15, ease: easeOut }}
+                      className="flex items-center gap-1 flex-shrink-0 pl-2 [@media(hover:none)]:!opacity-100"
+                    >
+                      <LinkedinLogoIcon size={14} weight="fill" className="text-[#0A66C2] flex-shrink-0" />
+                      <span className="text-sm font-medium text-[#0A66C2] whitespace-nowrap">
+                        {lang === 'fr' ? 'Voir le profil' : 'View profile'}
+                      </span>
+                    </motion.div>
+                  </motion.a>
                 ) : (
-                  <div className="flex items-center gap-3 py-2">
-                    <Avatar
-                      filename={item.image}
-                      alt={item.author}
-                      className="w-9 h-9 rounded-full bg-gray-100 flex-shrink-0"
-                    />
-                    <div className="min-w-0">
-                      <span className="text-sm font-medium text-gray-900 block">{item.author}</span>
-                      <span className="text-sm text-gray-500">{item.role}</span>
-                    </div>
+                  <div className="flex items-center gap-2 py-2">
+                    <span className="text-sm font-medium text-gray-900">{item.author}</span>
+                    <span className="w-1 h-1 rounded-full bg-gray-300 flex-shrink-0" aria-hidden="true" />
+                    <span className="text-sm text-gray-500">{item.role}</span>
                   </div>
                 )}
               </div>

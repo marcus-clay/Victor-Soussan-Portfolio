@@ -2,8 +2,8 @@
 
 import React, { useState } from 'react'
 import Link from 'next/link'
-import { motion } from 'framer-motion'
-import { LinkedinLogo, CaretDown } from '@phosphor-icons/react'
+import { motion, useReducedMotion } from 'framer-motion'
+import { LinkedinLogoIcon, CaretDownIcon } from '@phosphor-icons/react'
 
 interface Testimonial {
   id: string
@@ -34,17 +34,18 @@ interface TestimonialsSectionProps {
 const EASE_OUT: [number, number, number, number] = [0.23, 1, 0.32, 1]
 // text-base (16px) × leading-relaxed (1.625) × 4 lines = 104px ≈ 6.5rem
 const COLLAPSED_MAX_HEIGHT = '6.5rem'
-const LONG_THRESHOLD = 220
+// 300 chars ≈ ~3–4 sentences — below this threshold the expand adds no value
+const LONG_THRESHOLD = 300
 
 const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
   content,
   lang,
   testimonials,
-  openModalWithUrl,
   Avatar,
 }) => {
   const top3 = testimonials.slice(0, 3)
   const [expandedId, setExpandedId] = useState<string | null>(null)
+  const prefersReduced = useReducedMotion()
 
   return (
     <section id="testimonials" className="py-24 md:py-40 px-6">
@@ -66,106 +67,127 @@ const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-60px' }}
                 transition={{ duration: 0.35, delay: i * 0.06, ease: EASE_OUT }}
-                className="py-8 first:pt-0"
+                className="py-8 first:pt-0 group/card"
               >
-                {/* Opening quote mark */}
-                <div
-                  className="text-3xl text-gray-200 leading-none mb-3 select-none"
-                  aria-hidden="true"
-                  style={{ fontFamily: 'Georgia, serif', lineHeight: 1 }}
+                {/* Quote area — full area is clickable when long */}
+                <button
+                  type="button"
+                  onClick={() => isLong ? setExpandedId(isExpanded ? null : t.id) : undefined}
+                  aria-expanded={isLong ? isExpanded : undefined}
+                  aria-controls={isLong ? contentId : undefined}
+                  className="w-full text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300 focus-visible:ring-offset-2 rounded-lg"
+                  style={{ cursor: isLong ? 'pointer' : 'default' }}
                 >
-                  &ldquo;
-                </div>
-
-                {/* Quote content — clipped when collapsed */}
-                <div className="relative">
+                  {/* Opening quote mark */}
                   <div
-                    id={contentId}
-                    style={{
-                      maxHeight: isExpanded ? '1200px' : COLLAPSED_MAX_HEIGHT,
-                      overflow: 'hidden',
-                      transition: isExpanded
-                        ? 'max-height 600ms cubic-bezier(0.23, 1, 0.32, 1)'
-                        : 'max-height 350ms cubic-bezier(0.23, 1, 0.32, 1)',
-                    }}
+                    className="text-3xl text-gray-200 leading-none mb-3 select-none"
+                    aria-hidden="true"
+                    style={{ fontFamily: 'Georgia, serif', lineHeight: 1 }}
                   >
-                    <p className="text-base text-gray-700 leading-relaxed">{t.content}</p>
+                    &ldquo;
                   </div>
 
-                  {/* Fade mask — signals more content below */}
-                  {isLong && !isExpanded && (
-                    <div
-                      className="absolute bottom-0 left-0 right-0 h-10 pointer-events-none"
-                      style={{ background: 'linear-gradient(to top, #FDFDFC 0%, transparent 100%)' }}
-                    />
+                  {/* Quote content — clipped when collapsed */}
+                  <div className="relative">
+                    <motion.div
+                      id={contentId}
+                      initial={{ height: COLLAPSED_MAX_HEIGHT }}
+                      animate={{ height: isExpanded ? 'auto' : COLLAPSED_MAX_HEIGHT }}
+                      transition={{ duration: prefersReduced ? 0 : 0.18, ease: EASE_OUT }}
+                      className="overflow-hidden"
+                    >
+                      <p className="text-base text-gray-700 leading-relaxed group-hover/card:text-gray-900 transition-colors duration-150">
+                        {t.content}
+                      </p>
+                    </motion.div>
+
+                    {/* Fade mask — fades out on hover to avoid background mismatch */}
+                    {isLong && !isExpanded && (
+                      <div
+                        className="absolute bottom-0 left-0 right-0 h-10 pointer-events-none group-hover/card:opacity-0 transition-opacity duration-150"
+                        style={{ background: 'linear-gradient(to top, #FDFDFC 0%, transparent 100%)' }}
+                      />
+                    )}
+                  </div>
+
+                  {/* Caret indicator — always visible on mobile, hover-only on desktop */}
+                  {isLong && (
+                    <div className="mt-3 flex items-center gap-1 text-sm text-gray-400 opacity-100 md:opacity-0 md:group-hover/card:opacity-100 transition-opacity duration-150">
+                      <span>
+                        {isExpanded
+                          ? (lang === 'fr' ? 'Réduire' : 'Read less')
+                          : (lang === 'fr' ? 'Lire la suite' : 'Read more')}
+                      </span>
+                      <motion.span
+                        animate={{ rotate: isExpanded ? 180 : 0 }}
+                        transition={{ duration: prefersReduced ? 0 : 0.2, ease: EASE_OUT }}
+                        className="inline-flex"
+                      >
+                        <CaretDownIcon size={12} weight="bold" />
+                      </motion.span>
+                    </div>
                   )}
-                </div>
+                </button>
 
-                {/* Expand / collapse toggle */}
-                {isLong && (
-                  <button
-                    onClick={() => setExpandedId(isExpanded ? null : t.id)}
-                    aria-expanded={isExpanded}
-                    aria-controls={contentId}
-                    className="mt-3 flex items-center gap-1 text-sm text-gray-400 hover:text-gray-700
-                      transition-colors duration-150
-                      focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300 focus-visible:ring-offset-1 rounded"
-                  >
-                    <span>
-                      {isExpanded
-                        ? (lang === 'fr' ? 'Réduire' : 'Read less')
-                        : (lang === 'fr' ? 'Lire la suite' : 'Read more')}
-                    </span>
-                    <CaretDown
-                      size={12}
-                      weight="bold"
-                      className="transition-transform duration-300 ease-out"
-                      style={{ transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)' }}
-                    />
-                  </button>
-                )}
-
-                {/* Attribution row — full row is a link when linkedin exists */}
+                {/* Attribution row */}
                 <div className="mt-4">
                   {t.linkedin ? (
-                    <a
+                    <motion.a
                       href={t.linkedin}
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={`${t.author} — ${t.role} on LinkedIn`}
-                      className="group flex items-center gap-3 -mx-3 px-3 py-2 rounded-lg
-                        hover:bg-black/[.04] active:bg-black/[.06]
-                        transition-colors duration-150
+                      className="flex items-center py-2 rounded cursor-pointer
                         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300 focus-visible:ring-offset-1"
+                      initial="rest"
+                      whileHover="hover"
+                      animate="rest"
+                      whileTap={{ scale: 0.98 }}
+                      transition={{ scale: { duration: 0.1, ease: EASE_OUT } }}
                     >
-                      <Avatar
-                        filename={t.image}
-                        alt={t.author}
-                        className="w-8 h-8 rounded-full bg-gray-100 flex-shrink-0"
-                      />
+                      {/* Avatar — width + opacity together */}
+                      <motion.div
+                        variants={{
+                          rest: { width: 0, opacity: 0 },
+                          hover: { width: 44, opacity: 1 },
+                        }}
+                        transition={{ duration: prefersReduced ? 0 : 0.2, ease: EASE_OUT }}
+                        className="overflow-hidden flex-shrink-0"
+                      >
+                        <Avatar
+                          filename={t.image}
+                          alt={t.author}
+                          className="w-8 h-8 rounded-full bg-gray-100 mr-3 flex-shrink-0"
+                        />
+                      </motion.div>
+
+                      {/* Name + role */}
                       <div className="flex items-center gap-2 min-w-0 flex-1">
                         <span className="text-sm font-medium text-gray-900 flex-shrink-0">{t.author}</span>
                         <span className="w-1 h-1 rounded-full bg-gray-300 flex-shrink-0" aria-hidden="true" />
                         <span className="text-sm text-gray-500 truncate">{t.role}</span>
                       </div>
-                      <LinkedinLogo
-                        size={18}
-                        weight="fill"
-                        className="flex-shrink-0 text-gray-400 group-hover:text-[#0A66C2] transition-colors duration-200"
-                      />
-                    </a>
+
+                      {/* View profile — opacity only, always visible on touch */}
+                      <motion.div
+                        variants={{
+                          rest: { opacity: 0 },
+                          hover: { opacity: 1 },
+                        }}
+                        transition={{ duration: prefersReduced ? 0 : 0.15, ease: EASE_OUT }}
+                        className="flex items-center gap-1 flex-shrink-0 pl-2 [@media(hover:none)]:!opacity-100"
+                      >
+                        <LinkedinLogoIcon size={14} weight="fill" className="text-[#0A66C2] flex-shrink-0" />
+                        <span className="text-sm font-medium text-[#0A66C2] whitespace-nowrap">
+                          {lang === 'fr' ? 'Voir le profil' : 'View profile'}
+                        </span>
+                      </motion.div>
+                    </motion.a>
                   ) : (
-                    <div className="flex items-center gap-3 py-2">
-                      <Avatar
-                        filename={t.image}
-                        alt={t.author}
-                        className="w-8 h-8 rounded-full bg-gray-100 flex-shrink-0"
-                      />
-                      <div className="flex items-center gap-2 min-w-0">
-                        <span className="text-sm font-medium text-gray-900 flex-shrink-0">{t.author}</span>
-                        <span className="w-1 h-1 rounded-full bg-gray-300 flex-shrink-0" aria-hidden="true" />
-                        <span className="text-sm text-gray-500 truncate">{t.role}</span>
-                      </div>
+                    <div className="flex items-center gap-2 py-2">
+                      <span className="text-sm font-medium text-gray-900 flex-shrink-0">{t.author}</span>
+                      <span className="w-1 h-1 rounded-full bg-gray-300 flex-shrink-0" aria-hidden="true" />
+                      <span className="text-sm text-gray-500 truncate">{t.role}</span>
                     </div>
                   )}
                 </div>

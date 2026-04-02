@@ -3,6 +3,8 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
+
+const EASE_OUT = [0.23, 1, 0.32, 1] as const
 import { ArrowUpRight, ArrowRight } from '@phosphor-icons/react'
 import {
   ALL_CONTENT,
@@ -45,7 +47,12 @@ export default function RessourcesPageClient({ lang }: { lang: 'en' | 'fr' }) {
     const title = isEn ? item.title_en : item.title_fr
 
     const row = (
-      <div className="py-5 -mx-3 px-3 rounded-lg hover:bg-gray-100/60 active:bg-gray-100 transition-colors duration-150 cursor-pointer group">
+      <motion.div
+        initial="rest"
+        whileHover="hover"
+        animate="rest"
+        className="py-5 -mx-3 px-3 rounded-lg hover:bg-gray-100/60 active:bg-gray-100 transition-colors duration-150 cursor-pointer"
+      >
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0 flex-1">
             <span className="text-xs text-gray-400">{typeLabel}</span>
@@ -56,11 +63,18 @@ export default function RessourcesPageClient({ lang }: { lang: 'en' | 'fr' }) {
               {isEn ? item.excerpt_en : item.excerpt_fr}
             </p>
           </div>
-          <span className="flex-shrink-0 mt-5 text-gray-400 group-hover:text-gray-900 transition-colors duration-150">
+          <motion.span
+            variants={external
+              ? { rest: { x: 0, y: 0, color: '#9CA3AF' }, hover: { x: 2, y: -2, color: '#111827' } }
+              : { rest: { x: 0, color: '#9CA3AF' }, hover: { x: 3, color: '#111827' } }
+            }
+            transition={{ duration: 0.15, ease: EASE_OUT }}
+            className="flex-shrink-0 mt-5"
+          >
             {external ? <ArrowUpRight size={16} /> : <ArrowRight size={16} />}
-          </span>
+          </motion.span>
         </div>
-      </div>
+      </motion.div>
     )
 
     if (external) {
@@ -80,7 +94,7 @@ export default function RessourcesPageClient({ lang }: { lang: 'en' | 'fr' }) {
 
   return (
     <div className="min-h-screen bg-[#FDFDFC]">
-      <div className="max-w-[740px] mx-auto px-6 pt-32 md:pt-40 pb-24 md:pb-40">
+      <div className="max-w-[740px] mx-auto px-6 pt-32 sm:pt-40 md:pt-48 pb-24 md:pb-40">
         {/* Header */}
         <motion.div
           className="mb-12"
