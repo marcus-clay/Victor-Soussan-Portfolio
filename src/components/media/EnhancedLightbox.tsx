@@ -352,13 +352,13 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
     exit: () => ({
       opacity: 0,
       scale: 0.97,
-      transition: { duration: 0.18, ease: [0.23, 1, 0.32, 1] }
+      transition: { duration: 0.18, ease: [0.23, 1, 0.32, 1] as [number, number, number, number] }
     })
   };
 
   const slideTransition = {
     duration: 0.2,
-    ease: [0.23, 1, 0.32, 1]
+    ease: [0.23, 1, 0.32, 1] as [number, number, number, number]
   };
 
   const currentImage = images[currentIndex];
