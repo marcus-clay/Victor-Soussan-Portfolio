@@ -543,7 +543,7 @@ function V3() {
                     <span className="font-mono text-[10px] text-gray-300 uppercase tracking-wider">{p.period}</span>
                     <h3 className="text-xl md:text-2xl font-bold tracking-[-0.02em] mt-2 mb-3 group-hover:text-gray-600 transition-colors">{p.title}</h3>
                     <p className="text-sm text-gray-400 leading-relaxed mb-2">{p.role}</p>
-                    <p className="text-sm text-gray-500 leading-relaxed">{p.summary}</p>
+                    <p className="text-base text-gray-500 leading-relaxed">{p.summary}</p>
                     <div className="mt-4 flex items-center gap-2 text-sm font-medium text-gray-900 group-hover:text-gray-600 transition-colors">
                       Read case study <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform" />
                     </div>
@@ -693,7 +693,7 @@ function V4() {
                               <img src={p.cover} alt={p.title} className="w-full h-full object-cover" />
                             </div>
                             <div>
-                              <p className="text-sm text-gray-500 leading-relaxed mb-4 max-w-md">{p.summary}</p>
+                              <p className="text-base text-gray-500 leading-relaxed mb-4 max-w-md">{p.summary}</p>
                               <button className="text-sm font-medium text-gray-900 flex items-center gap-1.5 hover:text-gray-600 transition-colors">
                                 Read case study <ArrowRight size={12} />
                               </button>

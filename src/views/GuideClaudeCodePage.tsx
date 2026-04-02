@@ -24,9 +24,9 @@ interface Props {
 }
 
 const TAG_STYLES: Record<string, string> = {
-  'Claude Code': 'bg-[#7B61FF]/10 text-[#7B61FF]',
-  'Guide': 'bg-[#2D5CF3]/10 text-[#2D5CF3]',
-  'Ressources': 'bg-emerald-500/10 text-emerald-600',
+  'Claude Code': 'bg-gray-100 text-gray-500',
+  'Guide': 'bg-gray-100 text-gray-500',
+  'Ressources': 'bg-gray-100 text-gray-500',
 };
 
 // ─── Index Page ───────────────────────────────────────────────────────────────
@@ -63,7 +63,7 @@ const GuideIndex: React.FC<{ isDark: boolean; lang: string; onNavigate: (t: stri
     {/* Hero image : full 1200px width */}
     <figure className="mb-10">
       <img src={GUIDE_META.heroImage} alt={lang === 'fr' ? GUIDE_META.heroAlt_fr : GUIDE_META.heroAlt_en} className="w-full rounded-xl" />
-      <figcaption className={`mt-3 text-[13px] leading-relaxed max-w-3xl ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
+      <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed max-w-3xl">
         {lang === 'en'
           ? 'Claude Code gives designers the ability to design, produce, and deploy real, usable deliverables. A link to share with your team, to present to stakeholders, to put in front of users to define scope and refine a solution. With a bit of method and strong design opinions, the cycle between a design decision and something testable shrinks to the essentials.'
           : 'Claude Code ouvre aux designers la possibilité de concevoir, produire et déployer des livrables réels, directement utilisables. Un lien à partager à son équipe, à présenter à ses décideurs, à faire tester à ses usagers pour délimiter un scope et raffiner une solution. Avec un peu de méthode et des partis pris affirmés, le cycle entre une décision de design et quelque chose de testable se réduit à l\'essentiel.'}
@@ -222,7 +222,7 @@ const GuideChapter: React.FC<{
     return (
       <div className="max-w-[900px] mx-auto px-6 py-20 text-center">
         <p className={`text-lg mb-4 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{lang === 'en' ? 'Chapter not found' : 'Chapitre introuvable'}</p>
-        <button onClick={() => onNavigate('index')} className="text-[#2D5CF3] font-medium hover:underline">
+        <button onClick={() => onNavigate('index')} className="text-gray-500 hover:text-gray-900 font-medium hover:underline">
           {lang === 'en' ? 'Back to guide' : 'Retour au guide'}
         </button>
       </div>
@@ -479,8 +479,8 @@ const GuideClaudeCodePage: React.FC<Props> = ({ systemTheme, lang, view, onNavig
         .article-body li { margin-bottom: 0.75rem; line-height: 1.75; font-size: 1rem; color: #4b5563; }
 
         /* ── Links ── */
-        .article-body a { color: #2D5CF3; text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 0.2s; }
-        .article-body a:hover { border-bottom-color: #2D5CF3; }
+        .article-body a { color: #111827; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: #d1d5db; transition: text-decoration-color 0.15s; }
+        .article-body a:hover { text-decoration-color: #6b7280; }
 
         /* ── Images: generous vertical breathing room ── */
         .article-body img {
@@ -521,7 +521,7 @@ const GuideClaudeCodePage: React.FC<Props> = ({ systemTheme, lang, view, onNavig
 
         /* ── Blockquotes ── */
         .article-body blockquote {
-          border-left: 3px solid #2D5CF3;
+          border-left: 2px solid #d1d5db;
           padding: 1rem 1.25rem;
           margin: 2rem 0;
           font-style: italic;

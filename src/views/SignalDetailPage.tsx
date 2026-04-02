@@ -80,7 +80,7 @@ const SignalDetailPage: React.FC<Props> = ({ signalId, systemTheme, lang, onBack
         <div className="flex items-center justify-center h-full">
           <div className="text-center">
             <p className="text-lg mb-4">{lang === 'en' ? 'Signal not found' : 'Signal introuvable'}</p>
-            <button onClick={onBack} className="text-[#2D5CF3] font-medium">
+            <button onClick={onBack} className="text-gray-500 hover:text-gray-900 font-medium">
               {lang === 'en' ? 'Go back' : 'Retour'}
             </button>
           </div>
@@ -255,7 +255,7 @@ const SignalDetailPage: React.FC<Props> = ({ signalId, systemTheme, lang, onBack
                       <p className={`text-sm font-bold leading-snug line-clamp-2 mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
                         {lang === 'en' ? rs.title_en : rs.title_fr}
                       </p>
-                      <span className={`flex items-center gap-1 text-xs font-medium ${isDark ? 'text-blue-400' : 'text-[#2D5CF3]'}`}>
+                      <span className={`flex items-center gap-1 text-xs font-medium ${isDark ? 'text-blue-400' : 'text-gray-500 hover:text-gray-900'}`}>
                         {lang === 'en' ? 'Read' : 'Lire'}
                         <ArrowRight size={10} className="transition-transform duration-200 group-hover:translate-x-0.5" />
                       </span>
@@ -270,8 +270,8 @@ const SignalDetailPage: React.FC<Props> = ({ signalId, systemTheme, lang, onBack
           <div className="mt-14 flex justify-center">
             <button
               onClick={onBack}
-              className="group inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-medium cursor-pointer bg-[#2D5CF3] text-white hover:bg-[#2450d9] shadow-sm hover:shadow-md active:scale-[0.97]"
-              style={{ transition: 'background-color 200ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 200ms ease' }}
+              className="group inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-medium cursor-pointer bg-gray-900 text-white hover:bg-gray-800 active:scale-[0.97] ring-1 ring-black shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]"
+              style={{ transition: 'background-color 200ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
             >
               <ArrowLeft size={16} className="transition-transform duration-200 group-hover:-translate-x-1" />
               {lang === 'en' ? 'All articles' : 'Tous les articles'}
@@ -314,8 +314,8 @@ const SignalDetailPage: React.FC<Props> = ({ signalId, systemTheme, lang, onBack
         .article-body ul { list-style-type: disc; }
         .article-body ol { list-style-type: decimal; }
         .article-body li { margin-bottom: 0.75rem; line-height: 1.75; font-size: 1rem; color: #4b5563; }
-        .article-body a { color: #2D5CF3; text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 0.2s; }
-        .article-body a:hover { border-bottom-color: #2D5CF3; }
+        .article-body a { color: #111827; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: #d1d5db; transition: text-decoration-color 0.15s; }
+        .article-body a:hover { text-decoration-color: #6b7280; }
         .article-body img { border-radius: 12px; max-width: 100%; margin: 2.5rem 0; cursor: zoom-in; transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.3s cubic-bezier(0.23, 1, 0.32, 1); }
         @media (hover: hover) and (pointer: fine) {
           .article-body img:hover { transform: scale(1.01); box-shadow: 0 12px 40px rgba(0,0,0,0.1); }
@@ -323,7 +323,7 @@ const SignalDetailPage: React.FC<Props> = ({ signalId, systemTheme, lang, onBack
         .article-body pre { background: #18181b; color: #e4e4e7; padding: 20px 24px; border-radius: 12px; overflow-x: auto; margin: 2rem 0; font-size: 13px; line-height: 1.7; border: 1px solid rgba(255,255,255,0.06); }
         .article-body pre code { background: none; padding: 0; font-size: inherit; color: inherit; }
         .article-body code { background: #f4f4f5; padding: 3px 7px; border-radius: 5px; font-family: ui-monospace, SFMono-Regular, monospace; font-size: 0.8125rem; color: #18181b; }
-        .article-body blockquote { border-left: 3px solid #2D5CF3; padding: 1rem 1.25rem; margin: 2rem 0; font-style: italic; color: #6b7280; background: #f9fafb; border-radius: 0 8px 8px 0; line-height: 1.7; }
+        .article-body blockquote { border-left: 2px solid #d1d5db; padding: 1rem 1.25rem; margin: 2rem 0; font-style: italic; color: #6b7280; border-radius: 0; line-height: 1.7; }
         .article-body table { width: 100%; border-collapse: collapse; margin: 2rem 0; font-size: 0.875rem; }
         .article-body th { font-weight: 600; padding: 12px 16px; text-align: left; background: #f4f4f5; color: #111827; font-size: 0.8125rem; text-transform: uppercase; letter-spacing: 0.04em; }
         .article-body td { padding: 12px 16px; border-bottom: 1px solid #f4f4f5; color: #4b5563; }

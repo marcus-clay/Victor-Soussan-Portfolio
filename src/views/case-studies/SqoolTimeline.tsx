@@ -15,11 +15,12 @@ interface SqoolTimelineProps {
 
 const TRANSLATIONS = SQOOL_TIMELINE_TRANSLATIONS;
 
+// Neutral palette — all phases use the same gray tone
 const PHASE_COLORS = [
-  { color: '#6B7280', colorLight: '#9CA3AF', gradient: 'from-gray-500 to-gray-600' },
-  { color: '#3B82F6', colorLight: '#60A5FA', gradient: 'from-blue-500 to-blue-600' },
-  { color: '#8B5CF6', colorLight: '#A78BFA', gradient: 'from-violet-500 to-violet-600' },
-  { color: '#06B6D4', colorLight: '#22D3EE', gradient: 'from-cyan-500 to-cyan-600' },
+  { color: '#6B7280', colorLight: '#9CA3AF' },
+  { color: '#6B7280', colorLight: '#9CA3AF' },
+  { color: '#6B7280', colorLight: '#9CA3AF' },
+  { color: '#6B7280', colorLight: '#9CA3AF' },
 ];
 
 export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang, isDark, onImageClick: _onImageClick }) => {
@@ -60,19 +61,15 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang, isDark, onIm
   }, [viewMode, activePhase]);
 
   return (
-    <div className={`w-full ${isDark ? 'text-white' : 'text-gray-900'}`}>
+    <div className="w-full text-gray-900">
       {/* View Toggle */}
       <div className="flex justify-center mb-8">
-        <div className={`inline-flex p-1 rounded-full ${isDark ? 'bg-white/5' : 'bg-gray-100'}`}>
+        <div className="inline-flex p-1 rounded-full bg-gray-100">
           <button
             onClick={() => setViewMode('timeline')}
             className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-[background-color,color,transform] duration-200 ease-out ${
               viewMode === 'timeline'
-                ? isDark
-                  ? 'bg-white/10 text-white'
-                  : 'bg-white text-gray-900 shadow-sm'
-                : isDark
-                ? 'text-gray-400 hover:text-white'
+                ? 'bg-white text-gray-900 shadow-sm'
                 : 'text-gray-500 hover:text-gray-900'
             }`}
           >
@@ -83,11 +80,7 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang, isDark, onIm
             onClick={() => setViewMode('carousel')}
             className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-[background-color,color,transform] duration-200 ease-out ${
               viewMode === 'carousel'
-                ? isDark
-                  ? 'bg-white/10 text-white'
-                  : 'bg-white text-gray-900 shadow-sm'
-                : isDark
-                ? 'text-gray-400 hover:text-white'
+                ? 'bg-white text-gray-900 shadow-sm'
                 : 'text-gray-500 hover:text-gray-900'
             }`}
           >
@@ -111,15 +104,11 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang, isDark, onIm
               {/* Timeline Line */}
               <div className="relative px-4 md:px-8">
                 {/* Background line */}
-                <div
-                  className={`absolute top-[60px] left-0 right-0 h-[2px] ${
-                    isDark ? 'bg-white/10' : 'bg-gray-200'
-                  }`}
-                />
+                <div className="absolute top-[60px] left-0 right-0 h-[2px] bg-gray-200" />
 
                 {/* Progress line */}
                 <motion.div
-                  className="absolute top-[60px] left-0 h-[2px] bg-gradient-to-r from-gray-500 via-blue-500 via-violet-500 to-cyan-500"
+                  className="absolute top-[60px] left-0 h-[2px] bg-gray-300"
                   initial={{ width: '0%' }}
                   animate={{ width: '100%' }}
                   transition={{ duration: 1.5, ease: 'easeOut', delay: 0.3 }}
@@ -143,59 +132,27 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang, isDark, onIm
                       }}
                     >
                       {/* Year Label */}
-                      <motion.span
-                        className={`text-xs font-medium mb-3 transition-colors ${
-                          hoveredPhase === index
-                            ? 'text-current'
-                            : isDark ? 'text-gray-500' : 'text-gray-400'
-                        }`}
-                        style={{ color: hoveredPhase === index ? PHASE_COLORS[index].color : undefined }}
-                      >
+                      <span className="text-xs text-gray-400 mb-3">
                         {phase.period}
-                      </motion.span>
+                      </span>
 
                       {/* Point */}
                       <motion.div
                         className="relative z-10"
-                        whileHover={{ scale: 1.2 }}
+                        whileHover={{ scale: 1.15 }}
                         transition={{ type: 'spring', stiffness: 400, damping: 17 }}
                       >
                         <div
-                          className={`w-5 h-5 rounded-full border-[3px] transition-[background-color,color,transform] duration-200 ease-out ${
-                            isDark ? 'bg-[#0a0a0a]' : 'bg-white'
-                          }`}
-                          style={{
-                            borderColor: PHASE_COLORS[index].color,
-                            boxShadow: hoveredPhase === index
-                              ? `0 0 20px ${PHASE_COLORS[index].color}40`
-                              : 'none'
-                          }}
+                          className="w-4 h-4 rounded-full bg-white border-[2px] border-gray-300 transition-[border-color] duration-150 group-hover:border-gray-600"
                         />
-                        {/* Pulse effect on hover */}
-                        {hoveredPhase === index && (
-                          <motion.div
-                            className="absolute inset-0 rounded-full"
-                            style={{ backgroundColor: PHASE_COLORS[index].color }}
-                            initial={{ scale: 1, opacity: 0.5 }}
-                            animate={{ scale: 2, opacity: 0 }}
-                            transition={{ duration: 1, repeat: Infinity }}
-                          />
-                        )}
                       </motion.div>
 
                       {/* Phase Content */}
-                      <div className="mt-6 text-center px-2">
-                        <motion.h3
-                          className={`text-sm md:text-base font-semibold mb-1 transition-colors ${
-                            hoveredPhase === index
-                              ? ''
-                              : isDark ? 'text-white' : 'text-gray-900'
-                          }`}
-                          style={{ color: hoveredPhase === index ? PHASE_COLORS[index].color : undefined }}
-                        >
+                      <div className="mt-5 text-center px-2">
+                        <h3 className="text-xs font-medium text-gray-900 mb-0.5">
                           {phase.title}
-                        </motion.h3>
-                        <p className={`text-xs md:text-sm ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>
+                        </h3>
+                        <p className="text-xs text-gray-500">
                           {phase.subtitle}
                         </p>
                       </div>
@@ -208,39 +165,27 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang, isDark, onIm
                             animate={{ opacity: 1, y: 0, scale: 1 }}
                             exit={{ opacity: 0, y: 10, scale: 0.95 }}
                             transition={{ duration: 0.2 }}
-                            className={`absolute top-full mt-4 w-64 md:w-80 p-4 rounded-2xl border backdrop-blur-xl z-20 ${
-                              isDark
-                                ? 'bg-[#1D1D1F]/95 border-white/10'
-                                : 'bg-white/95 border-gray-200'
-                            }`}
+                            className="absolute top-full mt-4 w-64 md:w-72 p-4 rounded-xl border border-gray-200 bg-white/95 backdrop-blur-xl z-20"
                             style={{
                               left: '50%',
                               transform: 'translateX(-50%)',
-                              boxShadow: isDark
-                                ? `0 20px 40px rgba(0,0,0,0.5), 0 0 0 1px ${PHASE_COLORS[index].color}20`
-                                : '0 20px 40px rgba(0,0,0,0.1)'
+                              boxShadow: '0 8px 24px rgba(0,0,0,0.08)'
                             }}
                           >
-                            <p className={`text-sm mb-3 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                            <p className="text-base text-gray-600 mb-3">
                               {phase.description}
                             </p>
                             <div className="flex flex-wrap gap-2">
                               {phase.items.slice(0, 3).map((item, i) => (
                                 <span
                                   key={i}
-                                  className={`text-xs px-2 py-1 rounded-full ${
-                                    isDark ? 'bg-white/10' : 'bg-gray-100'
-                                  }`}
-                                  style={{
-                                    backgroundColor: `${PHASE_COLORS[index].color}15`,
-                                    color: PHASE_COLORS[index].color
-                                  }}
+                                  className="text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-600"
                                 >
                                   {item.title}
                                 </span>
                               ))}
                               {phase.items.length > 3 && (
-                                <span className={`text-xs px-2 py-1 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
+                                <span className="text-xs px-2 py-1 text-gray-400">
                                   +{phase.items.length - 3}
                                 </span>
                               )}
@@ -258,7 +203,7 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang, isDark, onIm
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 1.5 }}
-                className={`text-center mt-12 text-sm ${isDark ? 'text-gray-600' : 'text-gray-400'}`}
+                className="text-center mt-12 text-sm text-gray-400"
               >
                 {lang === 'fr' ? 'Cliquez sur une phase pour voir les détails' : 'Click on a phase to see details'}
               </motion.p>
@@ -282,7 +227,7 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang, isDark, onIm
                   activePhase === 0
                     ? 'opacity-30 cursor-not-allowed'
                     : 'opacity-100 hover:scale-105'
-                } ${isDark ? 'bg-white/10 hover:bg-white/20' : 'bg-gray-100 hover:bg-gray-200'}`}
+                } bg-gray-100 hover:bg-gray-200`}
               >
                 <ChevronLeft size={24} />
               </button>
@@ -293,7 +238,7 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang, isDark, onIm
                   activePhase === phases.length - 1
                     ? 'opacity-30 cursor-not-allowed'
                     : 'opacity-100 hover:scale-105'
-                } ${isDark ? 'bg-white/10 hover:bg-white/20' : 'bg-gray-100 hover:bg-gray-200'}`}
+                } bg-gray-100 hover:bg-gray-200`}
               >
                 <ChevronRight size={24} />
               </button>
@@ -309,67 +254,51 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang, isDark, onIm
                     transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                     className="w-full"
                   >
-                    <div className={`p-8 md:p-12 rounded-3xl border ${
-                      isDark ? 'bg-[#1D1D1F] border-white/10' : 'bg-gray-50 border-gray-200'
-                    }`}>
+                    <div className="p-8 md:p-10 rounded-2xl border border-gray-100 bg-gray-50">
                       {/* Phase Header */}
                       <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6 mb-8">
                         <div className="flex-1">
-                          {/* Phase Number - Large Apple Style */}
+                          {/* Phase Number */}
                           <motion.div
-                            initial={{ scale: 0.8, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
+                            initial={{ opacity: 0, y: 8 }}
+                            animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.1 }}
-                            className="flex items-baseline gap-3 mb-4"
+                            className="flex items-baseline gap-2 mb-4"
                           >
-                            <span
-                              className="text-6xl md:text-8xl font-bold tracking-tight"
-                              style={{
-                                color: PHASE_COLORS[activePhase].color,
-                                textShadow: isDark ? `0 0 60px ${PHASE_COLORS[activePhase].color}30` : 'none'
-                              }}
-                            >
+                            <span className="text-2xl font-semibold tracking-[-0.01em] text-gray-900">
                               {String(activePhase + 1).padStart(2, '0')}
                             </span>
-                            <span className={`text-lg ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
+                            <span className="text-sm text-gray-400">
                               / {String(phases.length).padStart(2, '0')}
                             </span>
                           </motion.div>
 
-                          {/* Period Badge */}
-                          <motion.div
-                            initial={{ y: 10, opacity: 0 }}
+                          {/* Period */}
+                          <motion.p
+                            initial={{ y: 8, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ delay: 0.15 }}
-                            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full mb-4"
-                            style={{
-                              backgroundColor: `${PHASE_COLORS[activePhase].color}15`,
-                              color: PHASE_COLORS[activePhase].color
-                            }}
+                            className="text-xs text-gray-400 mb-3"
                           >
-                            <Clock size={14} />
-                            <span className="text-sm font-medium">{phases[activePhase].period}</span>
-                          </motion.div>
+                            {phases[activePhase].period}
+                          </motion.p>
 
                           {/* Title */}
                           <motion.h2
-                            initial={{ y: 10, opacity: 0 }}
+                            initial={{ y: 8, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ delay: 0.2 }}
-                            className={`text-3xl md:text-4xl font-bold mb-2 ${
-                              isDark ? 'text-white' : 'text-gray-900'
-                            }`}
+                            className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-1"
                           >
                             {phases[activePhase].title}
                           </motion.h2>
 
                           {/* Subtitle */}
                           <motion.p
-                            initial={{ y: 10, opacity: 0 }}
+                            initial={{ y: 8, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ delay: 0.25 }}
-                            className="text-lg"
-                            style={{ color: PHASE_COLORS[activePhase].colorLight }}
+                            className="text-sm text-gray-500"
                           >
                             {phases[activePhase].subtitle}
                           </motion.p>
@@ -378,52 +307,34 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang, isDark, onIm
 
                       {/* Description */}
                       <motion.p
-                        initial={{ y: 10, opacity: 0 }}
+                        initial={{ y: 8, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ delay: 0.3 }}
-                        className={`text-lg leading-relaxed mb-8 max-w-3xl ${
-                          isDark ? 'text-gray-300' : 'text-gray-600'
-                        }`}
+                        className="text-base text-gray-500 leading-relaxed mb-8 max-w-[65ch]"
                       >
                         {phases[activePhase].description}
                       </motion.p>
 
-                      {/* Items Grid */}
+                      {/* Items List */}
                       <motion.div
-                        initial={{ y: 20, opacity: 0 }}
+                        initial={{ y: 12, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ delay: 0.35 }}
-                        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+                        className="divide-y divide-gray-100"
                       >
                         {phases[activePhase].items.map((item, index) => (
                           <motion.div
                             key={index}
-                            initial={{ y: 20, opacity: 0 }}
+                            initial={{ y: 12, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ delay: 0.4 + index * 0.05 }}
-                            className={`p-4 rounded-2xl border transition-[background-color,color,transform] duration-200 ease-out hover:scale-[1.02] ${
-                              isDark
-                                ? 'bg-white/5 border-white/5 hover:border-white/10'
-                                : 'bg-white border-gray-100 hover:border-gray-200'
-                            }`}
-                            style={{
-                              boxShadow: `0 0 0 1px ${PHASE_COLORS[activePhase].color}10`
-                            }}
+                            className="py-3 border-b border-gray-100 last:border-0"
                           >
-                            <div
-                              className="w-8 h-8 rounded-lg flex items-center justify-center mb-3"
-                              style={{ backgroundColor: `${PHASE_COLORS[activePhase].color}15` }}
-                            >
-                              <div
-                                className="w-2 h-2 rounded-full"
-                                style={{ backgroundColor: PHASE_COLORS[activePhase].color }}
-                              />
-                            </div>
-                            <h4 className={`font-semibold mb-1 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                            <h4 className="text-sm font-medium text-gray-900 mb-0.5">
                               {item.title}
                             </h4>
                             {item.description && (
-                              <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                              <p className="text-xs text-gray-500 leading-relaxed">
                                 {item.description}
                               </p>
                             )}
@@ -448,8 +359,8 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang, isDark, onIm
                     }`}
                     style={{
                       backgroundColor: activePhase === index
-                        ? PHASE_COLORS[index].color
-                        : isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)'
+                        ? '#111827'
+                        : 'rgba(0,0,0,0.15)'
                     }}
                   />
                 ))}
@@ -461,12 +372,11 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang, isDark, onIm
                   <button
                     key={index}
                     onClick={() => goToPhase(index)}
-                    className={`text-xs font-medium transition-[background-color,color,transform] duration-200 ease-out ${
+                    className={`text-xs font-medium transition-colors duration-150 ${
                       activePhase === index
-                        ? ''
-                        : isDark ? 'text-gray-600 hover:text-gray-400' : 'text-gray-400 hover:text-gray-600'
+                        ? 'text-gray-900'
+                        : 'text-gray-400 hover:text-gray-600'
                     }`}
-                    style={{ color: activePhase === index ? PHASE_COLORS[index].color : undefined }}
                   >
                     {phase.period}
                   </button>

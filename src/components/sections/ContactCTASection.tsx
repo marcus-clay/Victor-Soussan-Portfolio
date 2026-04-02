@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useCallback, useRef } from 'react';
-import { EnvelopeSimple, Copy, Check } from '@phosphor-icons/react';
+import { Copy, Check } from '@phosphor-icons/react';
 
 interface ContactCTASectionProps {
   lang: 'en' | 'fr';
@@ -46,59 +46,41 @@ const ContactCTASection: React.FC<ContactCTASectionProps> = ({
   }, []);
 
   return (
-    <section className="py-16 md:py-32 px-6 md:px-10 bg-[#FCFCFD]">
-      <div className="max-w-[1200px] mx-auto">
-        <div className="flex flex-col md:flex-row items-center gap-10 md:gap-16">
-          {/* Victor photo */}
-          <div className="flex-shrink-0 w-48 h-48 md:w-64 md:h-64 rounded-2xl overflow-hidden">
-            <img
-              src="/images/photos victor/image-victor-linkedin.png"
-              alt="Victor Soussan"
-              className="w-full h-full object-cover"
-              loading="lazy"
-            />
-          </div>
+    <section className="py-24 md:py-40 px-6">
+      <div className="max-w-[692px] mx-auto">
+        <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+          {content.contact.title}
+        </h2>
+        <p className="text-sm md:text-base text-gray-500 leading-relaxed mb-8">
+          {content.contact.subtitle}
+        </p>
 
-          {/* Text + buttons */}
-          <div className="flex-1 text-center md:text-left">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-[-0.02em] text-gray-900 mb-4">
-              {content.contact.title}
-            </h2>
-            <p className="text-base md:text-lg text-gray-600 leading-relaxed mb-8 max-w-xl">
-              {content.contact.subtitle}
-            </p>
+        <div className="flex items-center gap-6">
+          <a
+            href={`mailto:${EMAIL}`}
+            className="text-sm font-medium text-gray-900 hover:text-gray-600 transition-colors duration-150 underline underline-offset-4 decoration-gray-300 hover:decoration-gray-500"
+          >
+            {content.contact.email}
+          </a>
 
-            <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
-              {/* Primary: send email */}
-              <a
-                href={`mailto:${EMAIL}`}
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-medium bg-[#2D5CF3] text-white hover:bg-[#2450d9] shadow-sm hover:shadow-md transition-[background-color,box-shadow,transform] duration-200 ease-out active:scale-[0.97]"
-              >
-                <EnvelopeSimple size={18} weight="bold" />
-                {content.contact.email}
-              </a>
-
-              {/* Secondary: copy email */}
-              <button
-                onClick={handleCopy}
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-medium bg-white text-gray-900 border border-gray-200 hover:bg-gray-50 shadow-sm transition-[background-color,box-shadow,transform] duration-200 ease-out cursor-pointer active:scale-[0.97]"
-              >
-                <span className={`inline-flex items-center gap-2 transition-[filter,opacity] duration-100 ease-out ${transitioning ? 'blur-[2px] opacity-70' : ''}`}>
-                  {copied ? (
-                    <>
-                      <Check size={18} weight="bold" className="text-green-600" />
-                      {content.contact.email_copied}
-                    </>
-                  ) : (
-                    <>
-                      <Copy size={18} />
-                      {content.contact.copy_email}
-                    </>
-                  )}
-                </span>
-              </button>
-            </div>
-          </div>
+          <button
+            onClick={handleCopy}
+            className="text-sm text-gray-400 hover:text-gray-900 transition-colors duration-150 cursor-pointer"
+          >
+            <span className={`inline-flex items-center gap-1.5 transition-[filter,opacity] duration-100 ease-out ${transitioning ? 'blur-[2px] opacity-70' : ''}`}>
+              {copied ? (
+                <>
+                  <Check size={14} className="text-gray-900" />
+                  {content.contact.email_copied}
+                </>
+              ) : (
+                <>
+                  <Copy size={14} />
+                  {content.contact.copy_email}
+                </>
+              )}
+            </span>
+          </button>
         </div>
       </div>
     </section>

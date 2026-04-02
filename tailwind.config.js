@@ -6,6 +6,9 @@ export default {
       fontFamily: {
         sans: ['var(--font-public-sans)', 'Public Sans', 'sans-serif'],
       },
+      fontSize: {
+        sm: ['0.9375rem', { lineHeight: '1.5' }],
+      },
       colors: {
         apple: {
           gray: '#F5F5F7',

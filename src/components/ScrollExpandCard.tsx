@@ -44,20 +44,20 @@ const ScrollExpandCard: React.FC<ScrollExpandCardProps> = ({
   return (
     <motion.div
       ref={cardRef}
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-100px' }}
-      transition={{ duration: 0.3, delay: index * 0.05, ease: [0.25, 0.46, 0.45, 0.94] }}
+      initial={{ opacity: 0, transform: 'translateY(24px)' }}
+      whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
+      viewport={{ once: true, margin: '-80px' }}
+      transition={{ duration: 0.35, delay: index * 0.05, ease: [0.23, 1, 0.32, 1] }}
       onClick={onClick}
       style={
         shouldAnimate
           ? { scale, transformOrigin: 'center top' }
           : undefined
       }
-      className={`group cursor-pointer rounded-2xl md:rounded-3xl border overflow-hidden ${
+      className={`group cursor-pointer overflow-hidden rounded-2xl ${
         systemTheme === 'dark'
-          ? 'bg-[#1D1D1F] border-white/5 shadow-xl shadow-black/20'
-          : 'bg-white border-gray-200 shadow-lg shadow-gray-300/40'
+          ? 'bg-[#1D1D1F]'
+          : ''
       }`}
     >
       {children}

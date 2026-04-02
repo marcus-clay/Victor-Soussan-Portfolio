@@ -23,9 +23,9 @@ export const TRANSLATIONS = {
       title: "Lead Product Designer",
       subtitle: "end-to-end",
       positioning: "Product Builder \u00b7 SaaS B2B & B2G \u00b7 Design Systems \u00b7 AI-driven design & prototyping \u00b7 Claude Code \u00b7 Figma MCP",
-      desc: "You have a product to frame, design, or evolve. I work from strategic framing through to production code, including user research, interface design and design systems. With Claude Code and Figma MCP, the deployed prototype arrives in hours, not weeks.",
-      descShort: "You have a product to frame, design, or ship. I take it from strategy to deployed prototype.",
-      cta_projects: "View projects",
+      desc: "You have a product to frame, design, or evolve. I work with product teams across the full process: from early research and problem framing through to production-ready interfaces and design systems.",
+      descShort: "You have a product to frame, design, or evolve. I work with product teams across the full process: from early research and problem framing through to production-ready interfaces and design systems.",
+      cta_projects: "See the work",
       cta_guide: "Explore the Claude Code guide",
       cta_book: "Book a 30min Call",
       tooltip_title: "Need a Design Partner?",
@@ -34,7 +34,7 @@ export const TRANSLATIONS = {
     },
     services: {
       title: "Expertise",
-      subtitle: "From early ambiguity to clear form, I partner with product teams to define what the product should be, its logic, its look, and the way people experience it.",
+      subtitle: "Each engagement looks different. Some teams need a strategic partner from the start; others need someone who can come in and design. I adapt to what's most useful.",
       execution: "Hands-on Execution",
       utility: "Product Utility",
       efficiency: "Operational Efficiency",
@@ -66,15 +66,15 @@ export const TRANSLATIONS = {
       homepage_pillars: [
         {
           title: "Design & Prototyping",
-          desc: "Interface design, hi-fi prototyping, and rapid MVP development. From concept to tested screens, with AI-assisted workflows."
+          desc: "Interface design, high-fidelity prototyping, and rapid product development. From first concepts through to screens that are ready to build and test with users."
         },
         {
           title: "Product Strategy",
-          desc: "Product vision, feature scoping, ideation workshops. Working alongside PMs to move from ambiguity to a clear, validated direction."
+          desc: "Product vision, feature scoping, and ideation workshops. Helping teams clarify what they are building before committing to how they will build it."
         },
         {
           title: "Leadership & Ops",
-          desc: "Design team building, design systems, dev handoff rituals. Practices that scale and stick."
+          desc: "Design team building, design systems, and developer handoff. Structures that keep working as the team and product grow."
         }
       ],
       cta_all: "Explore my expertise"
@@ -444,8 +444,8 @@ export const TRANSLATIONS = {
       crosslink_expertise_desc: "The skills and capabilities I bring to product teams."
     },
     contact: {
-      title: "Looking for a fast and experienced designer?",
-      subtitle: "I'm open to freelance Product Design engagements or Lead roles (permanent). Let's talk specifics.",
+      title: "Let's work together",
+      subtitle: "I'm available for freelance and consulting work. If you have a product to design or a design challenge to work through, get in touch.",
       email: "Send an email",
       book: "Book a 30min call",
       shoot_note: "Shoot me a note",
@@ -582,8 +582,8 @@ export const TRANSLATIONS = {
       title: "Lead Product Designer",
       subtitle: "end-to-end",
       positioning: "Product Builder \u00b7 SaaS B2B & B2G \u00b7 Design Systems \u00b7 Design et prototypage IA \u00b7 Claude Code \u00b7 Figma MCP",
-      desc: "Vous avez un produit \u00e0 cadrer, \u00e0 concevoir ou \u00e0 faire \u00e9voluer. J\u2019interviens du cadrage strat\u00e9gique jusqu\u2019au code de production, en passant par la recherche utilisateur, le design d\u2019interface et les design systems. Avec Claude Code et Figma MCP, le prototype d\u00e9ploy\u00e9 arrive en heures, pas en semaines.",
-      descShort: "Vous avez un produit \u00e0 cadrer, concevoir ou livrer. Je l\u2019emm\u00e8ne de la strat\u00e9gie au prototype d\u00e9ploy\u00e9.",
+      desc: "Vous avez un produit \u00e0 cadrer, concevoir ou faire \u00e9voluer. Je travaille avec les \u00e9quipes produit sur l\u2019ensemble du processus : de la recherche et du cadrage initial jusqu\u2019aux interfaces et syst\u00e8mes de design pr\u00eats pour la production.",
+      descShort: "Vous avez un produit \u00e0 cadrer, concevoir ou faire \u00e9voluer. Je travaille avec les \u00e9quipes produit sur l\u2019ensemble du processus : de la recherche et du cadrage initial jusqu\u2019aux interfaces et syst\u00e8mes de design pr\u00eats pour la production.",
       cta_projects: "Voir les projets",
       cta_guide: "Explorer le guide Claude Code",
       cta_book: "Planifier un appel de 30min",
@@ -593,7 +593,7 @@ export const TRANSLATIONS = {
     },
     services: {
       title: "Expertises",
-      subtitle: "Du flou initial \u00e0 la forme claire, je travaille avec les \u00e9quipes produit pour d\u00e9finir ce que le produit doit \u00eatre, sa logique, son apparence, et la mani\u00e8re dont les gens l\u2019utilisent.",
+      subtitle: "Chaque mission prend une forme diff\u00e9rente. Certaines \u00e9quipes ont besoin d\u2019un partenaire strat\u00e9gique d\u00e8s le d\u00e9part, d\u2019autres d\u2019un designer op\u00e9rationnel. Je m\u2019adapte \u00e0 ce qui est le plus utile.",
       execution: "Ex\u00e9cution & Craft",
       utility: "Strat\u00e9gie Produit",
       efficiency: "Efficacit\u00e9 & Ops",
@@ -626,15 +626,15 @@ export const TRANSLATIONS = {
       homepage_pillars: [
         {
           title: "Design & Prototypage",
-          desc: "Design d\u2019interface, prototypage haute fid\u00e9lit\u00e9 et d\u00e9veloppement MVP rapide. Du concept aux \u00e9crans test\u00e9s, avec des workflows assist\u00e9s par IA."
+          desc: "Design d\u2019interface, prototypage haute fid\u00e9lit\u00e9 et d\u00e9veloppement produit rapide. Des premi\u00e8res esquisses aux \u00e9crans pr\u00eats \u00e0 impl\u00e9menter et \u00e0 tester avec les utilisateurs."
         },
         {
           title: "Strat\u00e9gie Produit",
-          desc: "Vision produit, cadrage fonctionnel, ateliers d\u2019id\u00e9ation. En bin\u00f4me avec les PM pour passer de l\u2019ambigu\u00eft\u00e9 \u00e0 une direction claire et valid\u00e9e."
+          desc: "Vision produit, cadrage fonctionnel et ateliers d\u2019id\u00e9ation. Aider les \u00e9quipes \u00e0 clarifier ce qu\u2019elles construisent avant de s\u2019engager sur le comment."
         },
         {
           title: "Leadership & Ops",
-          desc: "Construction d\u2019\u00e9quipe design, design systems, rituels de handoff. Des pratiques qui tiennent et qui passent \u00e0 l\u2019\u00e9chelle."
+          desc: "Construction d\u2019\u00e9quipe design, syst\u00e8mes de design et handoff d\u00e9veloppeurs. Des structures qui tiennent quand l\u2019\u00e9quipe et le produit grandissent."
         }
       ],
       cta_all: "Voir toutes les expertises"
@@ -908,8 +908,8 @@ export const TRANSLATIONS = {
       crosslink_expertise_desc: "Les compétences et savoir-faire que j'apporte aux équipes produit."
     },
     contact: {
-      title: "Vous recherchez un designer rapide et expérimenté ?",
-      subtitle: "Je suis ouvert aux missions de Product Design (Freelance) ou r\u00f4les de Lead (CDI). Discutons concr\u00e8tement de vos besoins.",
+      title: "Travaillons ensemble",
+      subtitle: "Je suis disponible pour des missions freelance et du conseil. Si vous avez un produit \u00e0 concevoir ou un d\u00e9fi design \u00e0 relever, contactez-moi.",
       email: "Envoyer un email",
       book: "R\u00e9server un appel de 30min",
       shoot_note: "Envoyer un message",

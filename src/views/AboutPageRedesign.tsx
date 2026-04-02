@@ -1,10 +1,8 @@
 'use client'
 
-import React, { useState, useCallback } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowUpRight, ArrowRight, CaretDown, LinkedinLogo, DownloadSimple, X, FileText, Quotes as Quote } from '@phosphor-icons/react'
-import { getTestimonials } from '@/data/testimonialsData'
-import Avatar from '@/components/Avatar'
+import { ArrowUpRight, ArrowRight, X, DownloadSimple, Copy, Check } from '@phosphor-icons/react'
 
 type Language = 'en' | 'fr'
 
@@ -74,10 +72,16 @@ const TRANSLATIONS = {
     education_line1: 'Master Communication & Multimedia \u2014 ISCOM Paris (2001\u20132005)',
     education_line2: 'UX/UI Design & Prototyping \u2014 UXcel/Udemy (2021)',
     toolkit_title: 'Toolkit',
+    toolkit_items: 'Figma, Notion, Linear, VS Code, Claude Code, Framer Motion, Google Slides, Midjourney',
     cta_text: 'Want to work together?',
-    cta_button: 'Get in touch',
-    cta_inline: 'Let\'s talk',
+    cta_email: 'victorsoussan@gmail.com',
     availability: 'Available for new projects',
+    linkedin_label: 'Full background and recommendations',
+    cv_label: 'View or download resume',
+    testimonials_link: 'View all testimonials',
+    resources_section_title: 'Resources',
+    resources_section_desc: 'Templates, checklists and process docs I use in my day-to-day practice.',
+    resources_link: 'Guides, articles and complementary resources',
   },
   fr: {
     page_title: '\u00c0 propos',
@@ -125,10 +129,16 @@ const TRANSLATIONS = {
     education_line1: 'Master Communication & Multim\u00e9dia \u2014 ISCOM Paris (2001\u20132005)',
     education_line2: 'UX/UI Design & Prototypage \u2014 UXcel/Udemy (2021)',
     toolkit_title: 'Bo\u00eete \u00e0 outils',
+    toolkit_items: 'Figma, Notion, Linear, VS Code, Claude Code, Framer Motion, Google Slides, Midjourney',
     cta_text: 'Envie de travailler ensemble ?',
-    cta_button: 'Me contacter',
-    cta_inline: 'Discutons',
+    cta_email: 'victorsoussan@gmail.com',
     availability: 'Disponible pour de nouveaux projets',
+    linkedin_label: 'Parcours complet et recommandations',
+    cv_label: 'Consulter ou t\u00e9l\u00e9charger le CV',
+    testimonials_link: 'Voir tous les t\u00e9moignages',
+    resources_section_title: 'Ressources',
+    resources_section_desc: 'Templates, checklists et documents de processus que j\u2019utilise au quotidien.',
+    resources_link: 'Guides, articles et ressources compl\u00e9mentaires',
   },
 }
 
@@ -152,55 +162,73 @@ const METRICS = {
 }
 
 // ---------------------------------------------------------------------------
-// Tool icons (grayscale, no labels, no backgrounds)
+// Featured quotes (rotating)
 // ---------------------------------------------------------------------------
 
-const TOOL_ICONS = [
-  <svg key="figma" width="32" height="32" viewBox="0 0 38 57" fill="none" className="opacity-50 hover:opacity-100 transition-opacity duration-200 ease-out">
-    <path d="M19 28.5C19 23.2533 23.2533 19 28.5 19C33.7467 19 38 23.2533 38 28.5C38 33.7467 33.7467 38 28.5 38C23.2533 38 19 33.7467 19 28.5Z" fill="#999" />
-    <path d="M0 47.5C0 42.2533 4.25329 38 9.5 38H19V47.5C19 52.7467 14.7467 57 9.5 57C4.25329 57 0 52.7467 0 47.5Z" fill="#999" />
-    <path d="M19 0V19H28.5C33.7467 19 38 14.7467 38 9.5C38 4.25329 33.7467 0 28.5 0H19Z" fill="#BBB" />
-    <path d="M0 9.5C0 14.7467 4.25329 19 9.5 19H19V0H9.5C4.25329 0 0 4.25329 0 9.5Z" fill="#AAA" />
-    <path d="M0 28.5C0 33.7467 4.25329 38 9.5 38H19V19H9.5C4.25329 19 0 23.2533 0 28.5Z" fill="#BBB" />
-  </svg>,
-  <svg key="notion" width="32" height="32" viewBox="0 0 100 100" fill="none" className="opacity-50 hover:opacity-100 transition-opacity duration-200 ease-out">
-    <path d="M6.017 4.313l55.333 -4.087c6.797 -0.583 8.543 -0.19 12.817 2.917l17.663 12.443c2.913 2.14 3.883 2.723 3.883 5.053v68.243c0 4.277 -1.553 6.807 -6.99 7.193L24.467 99.967c-4.08 0.193 -6.023 -0.39 -8.16 -3.113L3.3 79.94c-2.333 -3.113 -3.3 -5.443 -3.3 -8.167V11.113c0 -3.497 1.553 -6.413 6.017 -6.8z" fill="#e5e5e5" />
-    <path fillRule="evenodd" clipRule="evenodd" d="M61.35 0.227l-55.333 4.087C1.553 4.7 0 7.617 0 11.113v60.66c0 2.723 0.967 5.053 3.3 8.167l13.007 16.913c2.137 2.723 4.08 3.307 8.16 3.113l64.257 -3.89c5.433 -0.387 6.99 -2.917 6.99 -7.193V20.64c0 -2.21 -0.873 -2.847 -3.443 -4.733L74.167 3.143c-4.273 -3.107 -6.02 -3.5 -12.817 -2.917zM25.92 19.523c-5.247 0.353 -6.437 0.433 -9.417 -1.99L8.927 11.507c-0.77 -0.78 -0.383 -1.753 1.557 -1.947l53.193 -3.887c4.467 -0.39 6.793 1.167 8.54 2.527l9.123 6.61c0.39 0.197 1.36 1.36 0.193 1.36l-54.933 3.307 -0.68 0.047zM19.803 88.3V30.367c0 -2.53 0.777 -3.697 3.103 -3.893L86 22.78c2.14 -0.193 3.107 1.167 3.107 3.693v57.547c0 2.53 -0.39 4.67 -3.883 4.863l-60.377 3.5c-3.493 0.193 -5.043 -0.97 -5.043 -4.083zm59.6 -54.827c0.387 1.75 0 3.5 -1.75 3.7l-2.91 0.577v42.773c-2.527 1.36 -4.853 2.137 -6.797 2.137 -3.107 0 -3.883 -0.973 -6.21 -3.887l-19.03 -29.94v28.967l6.02 1.363s0 3.5 -4.857 3.5l-13.39 0.777c-0.39 -0.78 0 -2.723 1.357 -3.11l3.497 -0.97v-38.3L30.48 40.667c-0.39 -1.75 0.58 -4.277 3.3 -4.473l14.367 -0.967 19.8 30.327v-26.83l-5.047 -0.58c-0.39 -2.143 1.163 -3.7 3.103 -3.89l13.4 -0.78z" fill="#666" />
-  </svg>,
-  <svg key="linear" width="32" height="32" viewBox="0 0 100 100" fill="none" className="opacity-50 hover:opacity-100 transition-opacity duration-200 ease-out">
-    <path d="M1.22541 61.5228c-.2225-.9485.90748-1.5459 1.59638-.8437L39.3228 98.1789c.7025.7025.1051 1.819-.8437 1.5765C17.0253 95.5923 4.40835 82.9753 1.22541 61.5228zM.00189135 46.8891c-.01764375.2833.08887005.5599.29588765.7646L52.3503 99.7051c.2047.2069.4813.3134.7645.2958 7.5283-.4677 14.4607-2.7622 20.4387-6.4864L6.48678 26.4479C2.76259 32.4258.469551 39.3582.00189135 46.8891zM12.6431 20.0547 79.9461 87.3577c4.7849-4.3428 8.5962-9.7434 11.0885-15.8046L27.4478 11.9662C21.3866 14.4584 16.9859 18.2698 12.6431 20.0547zM33.5765 8.50513 91.4963 66.4249C93.4164 60.7089 94.4946 54.5765 94.4946 48.2016 94.4946 22.4839 73.5107 1.5 47.793 1.5c-6.3749 0-12.5073 1.07819-18.2231 2.99827L33.5765 8.50513z" fill="#888" />
-  </svg>,
-  <svg key="vscode" width="32" height="32" viewBox="0 0 100 100" fill="none" className="opacity-50 hover:opacity-100 transition-opacity duration-200 ease-out">
-    <path d="M71.564 2.754L29.358 38.96 12.326 25.894 5.5 28.93v42.14l6.826 3.036 17.032-13.066 42.206 36.206L94.5 89.73V10.27L71.564 2.754zM71.5 72.1L42.466 50 71.5 27.9V72.1zM12.326 50l12.2-9.5v19l-12.2-9.5z" fill="#999" />
-  </svg>,
-  <svg key="claude" width="32" height="32" viewBox="0 0 24 24" fill="none" className="opacity-50 hover:opacity-100 transition-opacity duration-200 ease-out">
-    <path d="M15.1 3.2L12.7 9.8L18.9 7.2L15.1 3.2Z" fill="#999" />
-    <path d="M12.7 9.8L6.5 12.3L12.7 14.8L12.7 9.8Z" fill="#888" />
-    <path d="M12.7 14.8L18.9 17.3L15.1 21.3L12.7 14.8Z" fill="#999" />
-    <path d="M12.7 14.8L6.5 12.3L9 20.8L12.7 14.8Z" fill="#AAA" />
-    <path d="M12.7 9.8L6.5 12.3L9 3.8L12.7 9.8Z" fill="#AAA" />
-    <path d="M18.9 7.2L12.7 9.8L18.9 12.3L18.9 7.2Z" fill="#888" />
-    <path d="M18.9 12.3L12.7 14.8L18.9 17.3L18.9 12.3Z" fill="#888" />
-  </svg>,
-  <svg key="framer" width="32" height="32" viewBox="0 0 14 21" fill="none" className="opacity-50 hover:opacity-100 transition-opacity duration-200 ease-out">
-    <path d="M0 14H7L14 21H0V14Z" fill="#999" />
-    <path d="M0 7H14L7 14H0V7Z" fill="#888" />
-    <path d="M0 0H14V7H7L0 0Z" fill="#777" />
-  </svg>,
-  <svg key="gslides" width="32" height="32" viewBox="0 0 48 48" fill="none" className="opacity-50 hover:opacity-100 transition-opacity duration-200 ease-out">
-    <path d="M37 45H11c-2.209 0-4-1.791-4-4V7c0-2.209 1.791-4 4-4h18l12 12v26c0 2.209-1.791 4-4 4z" fill="#BBB" />
-    <path d="M29 3L29 15 41 15z" fill="#DDD" />
-    <path d="M15 23H33V35H15z" fill="#DDD" />
-    <path d="M15 27H33V31H15z" fill="#BBB" />
-  </svg>,
-  <svg key="midjourney" width="32" height="32" viewBox="0 0 24 24" fill="none" className="opacity-50 hover:opacity-100 transition-opacity duration-200 ease-out">
-    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" fill="#CCC" />
-    <path d="M8 8h8v2H8V8zm0 3h8v2H8v-2zm0 3h5v2H8v-2z" fill="#888" />
-  </svg>,
-]
+const FEATURED_QUOTES = {
+  en: [
+    { text: 'Victor combines overflowing creativity with impressive rigor.', author: 'Charlotte Rifflet, CPO UNOWHY' },
+    { text: 'He transformed business requirements into perfectly adapted user journeys, ideal for a startup like ours.', author: 'Pierre-Marie Nigay, Founder of Toolkit' },
+    { text: 'He was a real driver of progress within the design team, fostering a collaborative and stimulating work environment.', author: 'Justine Le Tellier, UX Researcher @UNOWHY' },
+  ],
+  fr: [
+    { text: 'Victor allie une créativité débordante à une rigueur de travail impressionnante.', author: 'Charlotte Rifflet, CPO UNOWHY' },
+    { text: 'Il a transformé les besoins métiers en parcours utilisateurs parfaitement adaptés, idéal pour une startup comme la nôtre.', author: 'Pierre-Marie Nigay, Fondateur de Toolkit' },
+    { text: "Il a été un véritable moteur de progrès au sein de l'équipe de conception.", author: 'Justine Le Tellier, UX Researcher @UNOWHY' },
+  ],
+}
 
 // Shared ease
 const EASE_OUT: [number, number, number, number] = [0.23, 1, 0.32, 1]
+
+// ---------------------------------------------------------------------------
+// CountUp helper component
+// ---------------------------------------------------------------------------
+
+function CountUp({ value, delay = 0 }: { value: string; delay?: number }) {
+  const [displayed, setDisplayed] = useState('0')
+  const [started, setStarted] = useState(false)
+  const ref = useRef<HTMLSpanElement>(null)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setStarted(true); observer.disconnect() } },
+      { threshold: 0.5 }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    if (!started) return
+    // Parse: "15+" → { num: 15, suffix: '+' }, "500K+" → { num: 500, suffix: 'K+' }, "5" → { num: 5, suffix: '' }
+    const match = value.match(/^(\d+)(.*$)/)
+    if (!match) { setDisplayed(value); return }
+    const target = parseInt(match[1])
+    const suffix = match[2]
+    const duration = 800
+    const startDelay = delay
+    const startTime = performance.now() + startDelay
+    let raf: number
+
+    const animate = (now: number) => {
+      if (now < startTime) { raf = requestAnimationFrame(animate); return }
+      const elapsed = now - startTime
+      const progress = Math.min(elapsed / duration, 1)
+      const eased = 1 - Math.pow(1 - progress, 3) // ease-out cubic
+      const current = Math.round(eased * target)
+      setDisplayed(`${current}${suffix}`)
+      if (progress < 1) raf = requestAnimationFrame(animate)
+    }
+
+    raf = requestAnimationFrame(animate)
+    return () => cancelAnimationFrame(raf)
+  }, [started, value, delay])
+
+  return <span ref={ref}>{displayed}</span>
+}
 
 // ---------------------------------------------------------------------------
 // Component
@@ -214,494 +242,506 @@ export default function AboutPageRedesign({
 }: AboutPageRedesignProps) {
   const t = TRANSLATIONS[lang]
   const metrics = METRICS[lang]
-  const [expandedEra, setExpandedEra] = useState<number | null>(0)
   const [cvModalOpen, setCvModalOpen] = useState(false)
-  const [expandedTestimonial, setExpandedTestimonial] = useState<string | null>(null)
+  const [copied, setCopied] = useState(false)
+  const [ctaHovered, setCtaHovered] = useState(false)
+  const [quoteIndex, setQuoteIndex] = useState(0)
+  const quotes = FEATURED_QUOTES[lang]
+  const currentQuote = quotes[quoteIndex]
 
-  const toggleEra = (idx: number) => {
-    setExpandedEra((prev) => (prev === idx ? null : idx))
+  const copyEmail = () => {
+    navigator.clipboard.writeText('victorsoussan@gmail.com')
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
   }
 
   return (
-    <div className="min-h-screen bg-[#F9F9F9]">
-      <div className="max-w-[1200px] mx-auto px-6 py-20">
+    <div className="min-h-screen bg-[#FDFDFC]">
 
-        {/* ================================================================ */}
-        {/* 1. PAGE HEADER                                                   */}
-        {/* ================================================================ */}
-        <motion.div
-          className="mb-14"
-          initial="hidden"
-          animate="visible"
-          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08 } } }}
-        >
-          <motion.h1
-            variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
-            transition={{ duration: 0.5, ease: EASE_OUT }}
-            className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-[-0.03em] text-gray-900 leading-[1.08]"
+      {/* ================================================================ */}
+      {/* 1. HEADER + INTRO                                                */}
+      {/* ================================================================ */}
+      <section className="py-24 md:py-40">
+        <div className="max-w-[740px] mx-auto px-6">
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08 } } }}
           >
-            {t.page_title}
-          </motion.h1>
-          <motion.p
-            variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0 } }}
-            transition={{ duration: 0.4, ease: EASE_OUT }}
-            className="mt-4 text-lg md:text-xl text-gray-500 leading-relaxed"
+            <motion.h1
+              variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
+              transition={{ duration: 0.5, ease: EASE_OUT }}
+              className="text-base font-semibold tracking-[-0.01em] text-gray-900"
+            >
+              {t.page_title}
+            </motion.h1>
+            <motion.p
+              variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0 } }}
+              transition={{ duration: 0.4, ease: EASE_OUT }}
+              className="mt-2 text-sm text-gray-500"
+            >
+              {t.role}
+            </motion.p>
+          </motion.div>
+
+          {/* Photo */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.15, ease: EASE_OUT }}
+            className="mt-10 mb-10"
           >
-            {t.role}
-          </motion.p>
-        </motion.div>
-
-        {/* ================================================================ */}
-        {/* 2. INTRO - photo left + text right                              */}
-        {/* ================================================================ */}
-        <motion.section
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2, ease: EASE_OUT }}
-          className="mb-20"
-        >
-          <div className="flex flex-col md:flex-row gap-10 md:gap-14 mb-10">
-            {/* Photo */}
-            <div className="flex-shrink-0">
-              <div className="w-full md:w-[280px] lg:w-[320px] aspect-square rounded-2xl overflow-hidden bg-gray-100">
-                <img
-                  src="/images/photos victor/image-victor-linkedin.png"
-                  alt="Victor Soussan"
-                  className="w-full h-full object-cover object-top"
-                  loading="eager"
-                />
-              </div>
+            <div
+              className="group w-full max-w-[280px] aspect-square rounded-2xl overflow-hidden bg-gray-100"
+              style={{ cursor: 'zoom-in' }}
+            >
+              <img
+                src="/images/photos victor/image-victor-linkedin.png"
+                alt="Victor Soussan"
+                className="w-full h-full object-cover object-top group-hover:scale-[1.02] transition-transform duration-300 ease-out"
+                loading="eager"
+              />
             </div>
+          </motion.div>
 
-            {/* Text */}
-            <div className="flex-1">
-              <p className="text-xl md:text-2xl leading-relaxed text-gray-600 mb-8">
-                {t.intro}
-              </p>
-              <div className="space-y-4 mb-8">
-                <p className="text-base leading-relaxed text-gray-600">
-                  {t.bio_p1}
-                </p>
-                <p className="text-base leading-relaxed text-gray-600">
-                  {t.bio_p2}
-                </p>
-              </div>
+          {/* Intro + Bio */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.25, ease: EASE_OUT }}
+            className="space-y-6"
+          >
+            <p className="text-base leading-relaxed text-gray-500">
+              {t.intro}
+            </p>
+            <p className="text-sm leading-relaxed text-gray-500">
+              {t.bio_p1}
+            </p>
+            <p className="text-sm leading-relaxed text-gray-500">
+              {t.bio_p2}
+            </p>
+          </motion.div>
 
-              {/* Availability + CTA */}
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                  <span className="text-sm text-gray-500">{t.availability}</span>
-                </div>
-                <button
-                  onClick={onContact}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#2D5CF3] text-white rounded-full font-medium text-sm hover:bg-[#2450d9] transition-[background-color,box-shadow,transform] duration-200 ease-out shadow-sm hover:shadow-md active:scale-[0.97] cursor-pointer"
-                >
-                  {t.cta_inline}
-                  <ArrowRight size={14} weight="bold" />
-                </button>
-              </div>
-            </div>
-          </div>
-        </motion.section>
+          {/* Availability */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4, delay: 0.35, ease: EASE_OUT }}
+            className="mt-8 flex items-center gap-2"
+          >
+            <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
+            <span className="text-xs text-gray-400">{t.availability}</span>
+          </motion.div>
+        </div>
+      </section>
 
-        {/* ================================================================ */}
-        {/* 3. METRICS (4 cols) + QUOTE (full width)                        */}
-        {/* ================================================================ */}
-        <motion.section
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.5, ease: EASE_OUT }}
-          className="mb-20"
-        >
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+      {/* ================================================================ */}
+      {/* 2. METRICS                                                       */}
+      {/* ================================================================ */}
+      <section className="py-24 md:py-40 border-t border-gray-100">
+        <div className="max-w-[740px] mx-auto px-6">
+          <motion.div
+            className="flex flex-wrap gap-x-12 gap-y-8"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-80px' }}
+            variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08 } } }}
+          >
             {metrics.map((m, idx) => (
-              <div key={idx} className="bg-white border border-gray-100 rounded-2xl px-4 py-6 text-center">
-                <span className="block text-3xl md:text-4xl font-bold text-gray-900 tracking-[-0.02em]">
-                  {m.value}
+              <motion.div
+                key={idx}
+                variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
+                transition={{ duration: 0.4, ease: EASE_OUT }}
+              >
+                <span className="block text-2xl font-semibold text-gray-900 tracking-[-0.01em]">
+                  <CountUp value={m.value} delay={idx * 100} />
                 </span>
-                <span className="text-sm text-gray-500 mt-1">{m.label}</span>
-              </div>
+                <span className="text-xs text-gray-400 mt-1 block">{m.label}</span>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
+        </div>
+      </section>
 
-          {/* Testimonial cards (top 3) */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {getTestimonials(lang).slice(0, 3).map((testimonial, i) => {
-              const needsTruncation = testimonial.content.length > 160
-              const isExpanded = expandedTestimonial === testimonial.id
-              const displayText = isExpanded || !needsTruncation
-                ? testimonial.content
-                : testimonial.content.substring(0, 160) + '\u2026'
-
-              return (
-                <motion.div
-                  key={testimonial.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: '-60px' }}
-                  transition={{ duration: 0.4, delay: i * 0.08, ease: EASE_OUT }}
-                  onClick={() => needsTruncation && setExpandedTestimonial(isExpanded ? null : testimonial.id)}
-                  className={`p-7 rounded-2xl border border-gray-100 bg-white shadow-sm h-fit flex flex-col hover:border-gray-200 ${
-                    needsTruncation ? 'cursor-pointer' : ''
-                  }`}
-                  style={{ transition: 'border-color 200ms ease-out, box-shadow 300ms ease-out' }}
-                >
-                  <div className="flex items-center mb-5">
-                    <Avatar filename={testimonial.image} alt={testimonial.author} className="w-12 h-12 rounded-full mr-3.5 border-2 border-white shadow-sm" />
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2">
-                        <span className="font-semibold text-[15px] leading-tight text-gray-900 truncate">
-                          {testimonial.author}
-                        </span>
-                        {testimonial.linkedin && (
-                          <a
-                            href={testimonial.linkedin}
-                            target="_blank"
-                            rel="noreferrer"
-                            onClick={(e) => e.stopPropagation()}
-                            className="flex-shrink-0 text-gray-400 hover:text-[#0077b5] active:scale-[0.9]"
-                            style={{ transition: 'color 150ms ease-out, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
-                          >
-                            <LinkedinLogo size={15} />
-                          </a>
-                        )}
-                      </div>
-                      <span className="text-xs text-gray-500 mt-0.5 block">{testimonial.role}</span>
-                    </div>
-                  </div>
-
-                  <div className="relative flex-1 mb-4">
-                    <Quote size={20} className="absolute -top-2 -left-1 transform -scale-x-100 text-gray-100" />
-                    <p className="leading-relaxed text-[14.5px] relative z-10 pt-1 text-gray-600">
-                      &ldquo;{displayText}&rdquo;
-                    </p>
-                    {needsTruncation && (
-                      <span className="inline-block mt-2 text-xs font-medium text-gray-400">
-                        {isExpanded ? 'Show less' : 'Read more'}
-                      </span>
-                    )}
-                  </div>
-
-                  <div className="border-t border-gray-100 pt-3.5 mt-auto flex justify-between items-center">
-                    <span className="text-[11px] font-medium text-gray-400">{testimonial.date}</span>
-                    <span className="text-[10px] uppercase tracking-wider font-semibold px-2 py-0.5 rounded text-gray-400 bg-gray-50">{testimonial.category}</span>
-                  </div>
-                </motion.div>
-              )
-            })}
-          </div>
-
-          <div className="mt-8 text-center">
+      {/* ================================================================ */}
+      {/* 3. QUOTE                                                         */}
+      {/* ================================================================ */}
+      <section className="py-24 md:py-40 border-t border-gray-100">
+        <div className="max-w-[740px] mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-80px' }}
+            transition={{ duration: 0.5, ease: EASE_OUT }}
+          >
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={quoteIndex}
+                initial={{ opacity: 0, filter: 'blur(4px)', y: 4 }}
+                animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
+                exit={{ opacity: 0, filter: 'blur(4px)', y: -4 }}
+                transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
+              >
+                <p className="text-lg italic text-gray-500 leading-relaxed">
+                  &ldquo;{currentQuote.text}&rdquo;
+                </p>
+                <p className="mt-4 text-xs text-gray-400">
+                  {currentQuote.author}
+                </p>
+              </motion.div>
+            </AnimatePresence>
+            <button
+              onClick={() => setQuoteIndex((quoteIndex + 1) % quotes.length)}
+              className="mt-5 flex items-center gap-1.5 text-xs text-gray-400 hover:text-gray-700 transition-colors duration-150 group"
+              aria-label="Next testimonial"
+            >
+              <span>{lang === 'fr' ? 'Voir un autre' : 'Next'}</span>
+              <span className="flex gap-1">
+                {quotes.map((_, i) => (
+                  <span
+                    key={i}
+                    className="block w-1 h-1 rounded-full transition-colors duration-150"
+                    style={{ backgroundColor: i === quoteIndex ? '#374151' : '#D1D5DB' }}
+                  />
+                ))}
+              </span>
+            </button>
             <a
               href={`/${lang}/testimonials`}
-              className="group inline-flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-[#2D5CF3] transition-colors duration-200"
+              className="group inline-flex items-center gap-1.5 mt-6 text-sm text-gray-500 hover:text-gray-900 transition-colors duration-200"
             >
-              {lang === 'fr' ? 'Voir tous les t\u00e9moignages' : 'View all testimonials'}
-              <ArrowRight size={14} className="transition-transform duration-200 group-hover:translate-x-1" />
+              {t.testimonials_link}
+              <ArrowRight size={13} className="transition-transform duration-200 group-hover:translate-x-0.5" />
             </a>
-          </div>
-        </motion.section>
+          </motion.div>
+        </div>
+      </section>
 
-        {/* ================================================================ */}
-        {/* 3. CAREER SECTION (timeline with eras)                           */}
-        {/* ================================================================ */}
-        <motion.section
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.5, ease: EASE_OUT }}
-          className="mb-20"
-        >
-          <div className="flex items-center gap-4 mb-10">
-            <h2 className="text-2xl font-bold text-gray-900 flex-shrink-0">
+      {/* ================================================================ */}
+      {/* 4. CAREER                                                        */}
+      {/* ================================================================ */}
+      <section className="py-24 md:py-40 border-t border-gray-100">
+        <div className="max-w-[740px] mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-80px' }}
+            transition={{ duration: 0.5, ease: EASE_OUT }}
+          >
+            <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-8">
               {t.career_title}
             </h2>
-            <div className="flex-1 h-px bg-gray-200" />
-          </div>
 
-          <div className="relative pl-8">
-            {/* Vertical timeline line */}
-            <div className="absolute left-[11px] top-2 bottom-2 w-px bg-gray-200" />
-
-            <div className="space-y-1">
-              {t.eras.map((era, idx) => {
-                const isExpanded = expandedEra === idx
-                return (
-                  <div key={idx} className="relative">
-                    {/* Dot on timeline */}
-                    <div
-                      className={`absolute left-[-25px] top-[18px] w-[7px] h-[7px] rounded-full border-2 transition-colors duration-200 ${
-                        isExpanded
-                          ? 'bg-gray-900 border-gray-900'
-                          : 'bg-white border-gray-300'
-                      }`}
-                    />
-
-                    {/* Clickable header */}
-                    <button
-                      onClick={() => toggleEra(idx)}
-                      className="w-full text-left py-3 px-3 -mx-3 flex items-center gap-4 group cursor-pointer rounded-xl transition-[background-color] duration-200 ease-out hover:bg-white active:scale-[0.995]"
-                    >
-                      <span className="text-sm text-gray-400 font-medium whitespace-nowrap min-w-[100px] md:min-w-[140px]">
-                        {era.period}
-                      </span>
-                      <span className="text-lg font-semibold text-gray-900 flex-1">
-                        {era.title}
-                      </span>
-                      <motion.div
-                        animate={{ rotate: isExpanded ? 180 : 0 }}
-                        transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-                        className="flex-shrink-0"
-                      >
-                        <CaretDown
-                          size={16}
-                          weight="bold"
-                          className="text-gray-300 group-hover:text-gray-500 transition-colors duration-200"
-                        />
-                      </motion.div>
-                    </button>
-
-                    {/* Expandable description */}
-                    <AnimatePresence initial={false}>
-                      {isExpanded && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: 'auto', opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{
-                            height: { type: 'spring', stiffness: 250, damping: 30 },
-                            opacity: { duration: 0.25 },
-                          }}
-                          className="overflow-hidden"
-                        >
-                          <p className="text-base leading-relaxed text-gray-600 max-w-[720px] pb-4 pl-0 md:pl-[156px]">
-                            {era.description}
-                          </p>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                )
-              })}
+            <div className="divide-y divide-gray-100">
+              {t.eras.map((era, idx) => (
+                <div
+                  key={idx}
+                  className="group py-6 first:pt-0 last:pb-0 -mx-3 px-3 rounded-lg hover:bg-black/[.02] transition-colors duration-200 cursor-default"
+                >
+                  <span className="text-xs text-gray-400 block mb-1 group-hover:text-gray-500 transition-colors duration-200">
+                    {era.period}
+                  </span>
+                  <span className="text-base font-medium text-gray-900 block mb-2">
+                    {era.title}
+                  </span>
+                  <p className="text-sm leading-relaxed text-gray-500 group-hover:text-gray-600 transition-colors duration-200">
+                    {era.description}
+                  </p>
+                </div>
+              ))}
             </div>
-          </div>
-        </motion.section>
+          </motion.div>
 
-        {/* ================================================================ */}
-        {/* 3b. LINKEDIN + CV BLOCK                                          */}
-        {/* ================================================================ */}
-        <motion.section
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.5, ease: EASE_OUT }}
-          className="mb-10"
-        >
-          <div className="flex flex-col sm:flex-row gap-3">
-            {/* LinkedIn */}
-            <a
-              href="https://www.linkedin.com/in/victorsoussan/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group flex-1 flex items-center gap-4 p-5 rounded-2xl border border-gray-100 bg-white hover:border-gray-200 hover:shadow-md active:scale-[0.98] cursor-pointer"
-              style={{ transition: 'border-color 200ms ease, box-shadow 300ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
-            >
-              <div className="w-10 h-10 rounded-xl bg-[#0A66C2]/10 flex items-center justify-center flex-shrink-0">
-                <LinkedinLogo size={20} weight="bold" className="text-[#0A66C2]" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-gray-900">LinkedIn</p>
-                <p className="text-xs text-gray-400">
-                  {lang === 'fr' ? 'Parcours complet et recommandations' : 'Full background and recommendations'}
-                </p>
-              </div>
-              <ArrowUpRight size={16} className="text-gray-300 group-hover:text-gray-500 transition-colors flex-shrink-0" />
-            </a>
-
-            {/* CV — View + Download */}
-            <button
-              onClick={() => setCvModalOpen(true)}
-              className="group flex-1 flex items-center gap-4 p-5 rounded-2xl border border-gray-100 bg-white hover:border-gray-200 hover:shadow-md active:scale-[0.98] cursor-pointer text-left"
-              style={{ transition: 'border-color 200ms ease, box-shadow 300ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
-            >
-              <div className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center flex-shrink-0">
-                <FileText size={20} weight="bold" className="text-gray-500" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-gray-900">
-                  {lang === 'fr' ? 'Curriculum vitae' : 'Resume'}
-                </p>
-                <p className="text-xs text-gray-400">
-                  {lang === 'fr' ? 'Consulter ou télécharger' : 'View or download'}
-                </p>
-              </div>
-              <ArrowRight size={16} className="text-gray-300 group-hover:text-gray-500 transition-colors flex-shrink-0" />
-            </button>
-          </div>
-        </motion.section>
-
-        {/* CV Modal */}
-        <AnimatePresence>
-          {cvModalOpen && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
-              onClick={() => setCvModalOpen(false)}
-            >
-              <motion.div
-                initial={{ scale: 0.95, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.95, opacity: 0 }}
-                transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }}
-                className="relative bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] flex flex-col overflow-hidden"
-                onClick={(e) => e.stopPropagation()}
-              >
-                {/* Modal header */}
-                <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-                  <h3 className="text-base font-semibold text-gray-900">
-                    {lang === 'fr' ? 'Curriculum vitae' : 'Resume'}
-                  </h3>
-                  <div className="flex items-center gap-2">
-                    <a
-                      href="/cv/CV-Victor-Soussan-2026-FR.pdf"
-                      download
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[13px] font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 active:scale-[0.97]"
-                      style={{ transition: 'background-color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
-                    >
-                      <DownloadSimple size={14} />
-                      {lang === 'fr' ? 'Télécharger' : 'Download'}
-                    </a>
-                    <button
-                      onClick={() => setCvModalOpen(false)}
-                      className="p-2 rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-900 active:scale-[0.95]"
-                      style={{ transition: 'background-color 150ms ease, color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
-                    >
-                      <X size={20} />
-                    </button>
-                  </div>
-                </div>
-                {/* PDF viewer */}
-                <div className="flex-1 overflow-auto bg-gray-50">
-                  <iframe
-                    src="/cv/CV-Victor-Soussan-2026-FR.pdf"
-                    className="w-full h-full min-h-[70vh]"
-                    title="CV Victor Soussan"
-                  />
-                </div>
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* ================================================================ */}
-        {/* 4. PRACTICE + EDUCATION SECTION                                  */}
-        {/* ================================================================ */}
-        <motion.section
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.5, ease: EASE_OUT }}
-          className="mb-10 bg-white border border-gray-100 rounded-2xl p-8 md:p-10"
-        >
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">{t.practice_title}</h2>
-          <p className="text-base md:text-lg leading-relaxed text-gray-600 max-w-[720px] mb-8">
-            {t.practice_text}
-          </p>
-
-          {/* Tool icons row */}
-          <div className="flex items-center gap-5 flex-wrap mb-10">
-            {TOOL_ICONS.map((icon, idx) => (
-              <div key={idx} className="w-8 h-8 flex items-center justify-center">
-                {icon}
-              </div>
-            ))}
-          </div>
-
-          {/* Education - visually anchored inside the practice card */}
-          <div className="pt-6 border-t border-gray-100">
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-3">{t.education_title}</h3>
-            <p className="text-sm text-gray-500">{t.education_line1}</p>
-            <p className="text-sm text-gray-500 mt-1">{t.education_line2}</p>
-          </div>
-        </motion.section>
-
-        {/* ================================================================ */}
-        {/* 5. TOOLKIT RESOURCES                                             */}
-        {/* ================================================================ */}
-        {resources.length > 0 && (
-          <motion.section
+          {/* LinkedIn + CV links */}
+          <motion.div
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.5, ease: EASE_OUT }}
-            className="bg-white border border-gray-100 rounded-2xl p-8 md:p-10"
+            className="mt-10 divide-y divide-gray-100"
           >
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">
-              {t.toolkit_title}
+            <a
+              href="https://www.linkedin.com/in/victorsoussan/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center justify-between py-4 -mx-3 px-3 rounded-lg hover:bg-black/[.04] active:bg-black/[.06] transition-colors duration-150"
+            >
+              <div>
+                <span className="text-sm font-medium text-gray-900 block">LinkedIn</span>
+                <span className="text-sm text-gray-500">{t.linkedin_label}</span>
+              </div>
+              <ArrowUpRight size={14} className="text-gray-400 group-hover:text-gray-700 transition-colors duration-200 flex-shrink-0" />
+            </a>
+            <button
+              onClick={() => setCvModalOpen(true)}
+              className="group flex items-center justify-between py-4 -mx-3 px-3 rounded-lg hover:bg-black/[.04] active:bg-black/[.06] transition-colors duration-150 w-full text-left cursor-pointer"
+            >
+              <div>
+                <span className="text-sm font-medium text-gray-900 block">
+                  {lang === 'fr' ? 'Curriculum vitae' : 'Resume'}
+                </span>
+                <span className="text-sm text-gray-500">{t.cv_label}</span>
+              </div>
+              <ArrowRight size={14} className="text-gray-400 group-hover:text-gray-700 transition-colors duration-200 flex-shrink-0" />
+            </button>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* CV Modal */}
+      <AnimatePresence>
+        {cvModalOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
+            onClick={() => setCvModalOpen(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              transition={{ duration: 0.25, ease: EASE_OUT }}
+              className="relative bg-white rounded-2xl w-full max-w-3xl max-h-[90vh] flex flex-col overflow-hidden"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Modal header */}
+              <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+                <h3 className="text-base font-semibold text-gray-900">
+                  {lang === 'fr' ? 'Curriculum vitae' : 'Resume'}
+                </h3>
+                <div className="flex items-center gap-2">
+                  <a
+                    href="/cv/CV-Victor-Soussan-2026-FR.pdf"
+                    download
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[13px] font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 active:scale-[0.97]"
+                    style={{ transition: 'background-color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
+                  >
+                    <DownloadSimple size={14} />
+                    {lang === 'fr' ? 'T\u00e9l\u00e9charger' : 'Download'}
+                  </a>
+                  <button
+                    onClick={() => setCvModalOpen(false)}
+                    className="p-2 rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-900 active:scale-[0.95]"
+                    style={{ transition: 'background-color 150ms ease, color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
+                  >
+                    <X size={20} />
+                  </button>
+                </div>
+              </div>
+              {/* PDF viewer */}
+              <div className="flex-1 overflow-auto bg-gray-50">
+                <iframe
+                  src="/cv/CV-Victor-Soussan-2026-FR.pdf"
+                  className="w-full h-full min-h-[70vh]"
+                  title="CV Victor Soussan"
+                />
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ================================================================ */}
+      {/* 5. PRACTICE + EDUCATION                                          */}
+      {/* ================================================================ */}
+      <section className="py-24 md:py-40 border-t border-gray-100">
+        <div className="max-w-[740px] mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-80px' }}
+            transition={{ duration: 0.5, ease: EASE_OUT }}
+          >
+            <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-6">
+              {t.practice_title}
             </h2>
-            <div className="divide-y divide-gray-100">
-              {resources.map((res, idx) => (
-                <a
-                  key={idx}
-                  href={res.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center py-4 group transition-[background-color,transform] duration-200 ease-out hover:bg-gray-50 hover:-translate-y-px -mx-4 px-4 rounded-lg"
-                >
-                  <div className="mr-4 flex-shrink-0 text-gray-400 group-hover:text-gray-600 transition-colors duration-200">
-                    {res.icon}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <span className="text-sm font-medium text-gray-900 group-hover:text-[#2D5CF3] transition-colors duration-200">
+            <p className="text-sm leading-relaxed text-gray-500 mb-10">
+              {t.practice_text}
+            </p>
+
+            {/* Toolkit as animated pills */}
+            <div className="mb-10">
+              <h3 className="text-xs font-medium uppercase tracking-wider text-gray-400 mb-2">
+                {t.toolkit_title}
+              </h3>
+              <motion.div
+                className="flex flex-wrap gap-2"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: '-40px' }}
+                variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.05 } } }}
+              >
+                {t.toolkit_items.split(', ').map((tool, i) => (
+                  <motion.span
+                    key={i}
+                    variants={{ hidden: { opacity: 0, scale: 0.88, y: 4 }, visible: { opacity: 1, scale: 1, y: 0 } }}
+                    transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }}
+                    className="inline-block text-xs text-gray-500 bg-gray-100 px-2.5 py-1 rounded-full"
+                  >
+                    {tool}
+                  </motion.span>
+                ))}
+              </motion.div>
+            </div>
+
+            {/* Education */}
+            <div className="pt-6 border-t border-gray-100">
+              <h3 className="text-xs font-medium uppercase tracking-wider text-gray-400 mb-2">
+                {t.education_title}
+              </h3>
+              <p className="text-sm text-gray-500">{t.education_line1}</p>
+              <p className="text-sm text-gray-500 mt-1">{t.education_line2}</p>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ================================================================ */}
+      {/* 6. TOOLKIT RESOURCES                                             */}
+      {/* ================================================================ */}
+      {resources.length > 0 && (
+        <section className="py-24 md:py-40 border-t border-gray-100">
+          <div className="max-w-[740px] mx-auto px-6">
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.5, ease: EASE_OUT }}
+            >
+              <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-2">
+                {t.resources_section_title}
+              </h2>
+              <p className="text-sm text-gray-500 mb-8">
+                {t.resources_section_desc}
+              </p>
+
+              <div className="divide-y divide-gray-100">
+                {resources.map((res, idx) => (
+                  <a
+                    key={idx}
+                    href={res.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex items-center justify-between py-4 -mx-3 px-3 rounded-lg hover:bg-black/[.04] active:bg-black/[.06] transition-colors duration-150"
+                  >
+                    <span className="text-sm text-gray-900 group-hover:text-gray-700 transition-colors duration-200">
                       {res.title}
                     </span>
-                  </div>
-                  <ArrowUpRight
-                    size={16}
-                    className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-gray-400 flex-shrink-0 ml-2"
-                  />
-                </a>
-              ))}
-            </div>
-            {/* CTA to Resources page */}
-            <div className="mt-6 pt-6 border-t border-gray-100">
+                    <ArrowUpRight
+                      size={14}
+                      className="text-gray-400 group-hover:text-gray-600 transition-colors duration-200 flex-shrink-0 ml-4"
+                    />
+                  </a>
+                ))}
+              </div>
+
               <a
                 href={`/${lang}/ressources`}
-                className="group flex items-center gap-3 text-sm font-medium text-gray-500 hover:text-[#2D5CF3] cursor-pointer"
-                style={{ transition: 'color 150ms ease' }}
+                className="group inline-flex items-center gap-1.5 mt-6 text-sm text-gray-500 hover:text-gray-900 transition-colors duration-200"
               >
-                <span>
-                  {lang === 'fr'
-                    ? 'Guides, articles et ressources complémentaires'
-                    : 'Guides, articles and complementary resources'}
-                </span>
-                <ArrowRight size={14} className="transition-transform duration-200 group-hover:translate-x-1" />
+                {t.resources_link}
+                <ArrowRight size={13} className="transition-transform duration-200 group-hover:translate-x-0.5" />
               </a>
-            </div>
-          </motion.section>
-        )}
-
-        {/* ================================================================ */}
-        {/* 6. CTA                                                           */}
-        {/* ================================================================ */}
-        <section className="py-28 text-center">
-          <p className="text-2xl md:text-3xl font-bold tracking-[-0.02em] text-gray-900 mb-6">
-            {t.cta_text}
-          </p>
-          <button
-            onClick={onContact}
-            className="inline-flex items-center gap-2 px-8 py-4 bg-[#2D5CF3] text-white rounded-full font-medium text-base hover:bg-[#2450d9] transition-[background-color,box-shadow,transform] duration-200 ease-out shadow-sm hover:shadow-md cursor-pointer active:scale-[0.97]"
-          >
-            {t.cta_button}
-            <ArrowRight size={18} weight="bold" />
-          </button>
+            </motion.div>
+          </div>
         </section>
-      </div>
+      )}
+
+      {/* ================================================================ */}
+      {/* 7. CONTACT CTA                                                   */}
+      {/* ================================================================ */}
+      <section className="py-24 md:py-40 border-t border-gray-100">
+        <div className="max-w-[740px] mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-80px' }}
+            transition={{ duration: 0.5, ease: EASE_OUT }}
+          >
+            {/* Progressive disclosure CTA — email appears on hover */}
+            <div
+              onMouseEnter={() => setCtaHovered(true)}
+              onMouseLeave={() => setCtaHovered(false)}
+              className="-mx-4 px-4 py-4 rounded-xl transition-colors duration-250"
+              style={{
+                backgroundColor: ctaHovered ? 'rgba(0,0,0,0.025)' : 'transparent',
+                cursor: 'default',
+              }}
+            >
+              {/* Title row — shows a hint arrow on hover */}
+              <div className="flex items-center gap-2 mb-4">
+                <p className="text-base font-semibold tracking-[-0.01em] text-gray-900">
+                  {t.cta_text}
+                </p>
+                <motion.span
+                  animate={ctaHovered ? { opacity: 0 } : { opacity: 1 }}
+                  transition={{ duration: 0.2 }}
+                  className="text-xs text-gray-300 select-none"
+                  aria-hidden="true"
+                >
+                  ↓
+                </motion.span>
+              </div>
+
+              {/* Email + copy — revealed on hover */}
+              <motion.div
+                className="flex items-center gap-3"
+                initial={false}
+                animate={ctaHovered
+                  ? { opacity: 1, y: 0, pointerEvents: 'auto' as const }
+                  : { opacity: 0, y: 5, pointerEvents: 'none' as const }
+                }
+                transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }}
+              >
+                <a
+                  href={`mailto:${t.cta_email}`}
+                  className="text-sm text-gray-500 hover:text-gray-900 underline underline-offset-4 decoration-gray-300 hover:decoration-gray-500 transition-colors duration-200"
+                  tabIndex={ctaHovered ? 0 : -1}
+                >
+                  {t.cta_email}
+                </a>
+                <button
+                  onClick={copyEmail}
+                  aria-label={copied ? (lang === 'fr' ? 'Copié' : 'Copied') : (lang === 'fr' ? 'Copier l\u2019adresse' : 'Copy address')}
+                  className="p-1.5 rounded-md text-gray-400 hover:text-gray-700 hover:bg-black/[.04] active:scale-[0.95]"
+                  style={{ transition: 'color 150ms ease, background-color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
+                  tabIndex={ctaHovered ? 0 : -1}
+                >
+                  <AnimatePresence mode="wait" initial={false}>
+                    {copied ? (
+                      <motion.span
+                        key="check"
+                        initial={{ scale: 0.7, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        exit={{ scale: 0.7, opacity: 0 }}
+                        transition={{ duration: 0.15, ease: [0.23, 1, 0.32, 1] }}
+                        style={{ display: 'flex', color: '#22c55e' }}
+                      >
+                        <Check size={14} weight="bold" />
+                      </motion.span>
+                    ) : (
+                      <motion.span
+                        key="copy"
+                        initial={{ scale: 0.7, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        exit={{ scale: 0.7, opacity: 0 }}
+                        transition={{ duration: 0.15, ease: [0.23, 1, 0.32, 1] }}
+                        style={{ display: 'flex' }}
+                      >
+                        <Copy size={14} />
+                      </motion.span>
+                    )}
+                  </AnimatePresence>
+                </button>
+              </motion.div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
     </div>
   )
 }

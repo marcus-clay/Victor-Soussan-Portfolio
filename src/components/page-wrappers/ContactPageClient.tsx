@@ -3,7 +3,6 @@
 import React, { useState, useCallback } from 'react'
 import Link from 'next/link'
 import {
-  CalendarBlank,
   Copy,
   Check,
   LinkedinLogo,
@@ -14,7 +13,7 @@ import { getProjects } from '@/data/projectsData'
 import { getArticles } from '@/data/contentData'
 
 const EMAIL = 'victorsoussan@gmail.com'
-const CALENDAR_URL = 'https://calendar.app.google/h22c1RRu7JWuK92J9'
+const CALENDAR_URL = 'https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ1FzJJuVF3V2pu95ctzbbztxczeq8yQf0ZxbTL_JBrFsuu4iWORqpflL14N8NHM-sR5v1Az4Tew'
 const FEATURED_PROJECT_IDS = ['riskos', 'toolkit', 'francevae']
 
 const TOPICS = {
@@ -63,149 +62,143 @@ export default function ContactPageClient({ lang }: { lang: 'en' | 'fr' }) {
   }, [])
 
   return (
-    <div className="min-h-screen bg-[#F9F9F9]">
-      <div className="max-w-[1200px] mx-auto px-6 pt-20 pb-28">
+    <div className="min-h-screen bg-[#FDFDFC]">
+      <div className="max-w-[740px] mx-auto px-6 pt-32 md:pt-40 pb-24 md:pb-40">
 
         {/* ============================================ */}
         {/* SECTION 1: Contact                          */}
         {/* ============================================ */}
 
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-[-0.03em] text-gray-900 leading-[1.08] mb-5">
-          {isEn ? "Let's talk" : 'Discutons'}
-        </h1>
+        <section className="pb-24 md:pb-40">
+          <h1 className="text-base font-semibold tracking-[-0.01em] text-gray-900 leading-tight mb-4">
+            {isEn ? "Let's talk" : 'Discutons'}
+          </h1>
 
-        <p className="text-lg text-gray-500 leading-relaxed max-w-[55ch] mb-14">
-          {isEn
-            ? 'Open to product design missions, team leadership roles, and interesting problems where design makes a measurable difference.'
-            : 'Ouvert aux missions de design produit, aux r\u00f4les de leadership, et aux probl\u00e8mes int\u00e9ressants o\u00f9 le design fait une diff\u00e9rence mesurable.'}
-        </p>
+          <p className="text-base text-gray-500 leading-relaxed mb-10">
+            {isEn
+              ? 'Open to product design missions, team leadership roles, and interesting problems where design makes a measurable difference.'
+              : 'Ouvert aux missions de design produit, aux r\u00f4les de leadership, et aux probl\u00e8mes int\u00e9ressants o\u00f9 le design fait une diff\u00e9rence mesurable.'}
+          </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
-          {/* Left: CTA + async + connect */}
-          <div>
-            <div className="mb-10">
-              <a
-                href={CALENDAR_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group inline-flex items-center gap-2.5 px-8 py-4 rounded-full bg-[#2D5CF3] text-white font-semibold text-base hover:bg-[#2450d9] shadow-sm hover:shadow-md active:scale-[0.97] transition-[background-color,box-shadow,transform] duration-200 ease-out"
-              >
-                <CalendarBlank size={20} weight="bold" />
-                {isEn ? 'Book a call' : 'R\u00e9server un appel'}
+          {/* Primary CTA */}
+          <div className="mb-8">
+            <a
+              href={CALENDAR_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full bg-gray-900 text-white font-medium text-[15px] hover:bg-gray-800 active:scale-[0.97] ring-1 ring-black shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition-[background-color,transform] duration-200 ease-out"
+            >
+              {isEn ? 'Book a call' : 'R\u00e9server un appel'}
+            </a>
+          </div>
+
+          {/* Email + copy */}
+          <div className="mb-8">
+            <p className="text-sm text-gray-400 mb-1.5">
+              {isEn ? 'Prefer async?' : 'Plut\u00f4t par \u00e9crit\u00a0?'}
+            </p>
+            <div className="flex items-center gap-3">
+              <a href={`mailto:${EMAIL}`} className="text-base font-medium text-gray-900 hover:text-gray-600 transition-colors duration-200">
+                {EMAIL}
               </a>
-            </div>
-
-            <div className="mb-10">
-              <p className="text-sm text-gray-400 mb-2">
-                {isEn ? 'Prefer async?' : 'Plut\u00f4t par \u00e9crit\u00a0?'}
-              </p>
-              <div className="flex items-center gap-3">
-                <a href={`mailto:${EMAIL}`} className="text-base font-medium text-gray-900 hover:text-[#2D5CF3] transition-colors duration-200">
-                  {EMAIL}
-                </a>
-                <button
-                  onClick={handleCopy}
-                  className="p-1.5 rounded-md hover:bg-gray-100 active:scale-[0.95] transition-[background-color,transform] duration-150 ease-out cursor-pointer"
-                  title={isEn ? 'Copy email' : 'Copier l\'email'}
-                >
-                  {copied
-                    ? <Check size={16} weight="bold" className="text-emerald-500" />
-                    : <Copy size={16} className="text-gray-400" />
-                  }
-                </button>
-              </div>
-            </div>
-
-            <div className="rounded-2xl border border-gray-200 bg-white px-7 py-5">
-              <p className="text-sm font-semibold text-gray-900 mb-3">
-                {isEn ? 'Connect' : 'Retrouvez-moi'}
-              </p>
-              <div className="flex flex-wrap items-center gap-5">
-                <a href="https://linkedin.com/in/victorsoussan" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors duration-200">
-                  <LinkedinLogo size={18} /> LinkedIn
-                </a>
-                <a href="https://www.condamine.studio/apps" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors duration-200">
-                  <ArrowUpRight size={14} /> Condamine Apps
-                </a>
-                <a href="tel:+33615989400" className="text-sm text-gray-500 hover:text-gray-900 transition-colors duration-200">
-                  +33 6 15 98 94 00
-                </a>
-              </div>
+              <button
+                onClick={handleCopy}
+                className="relative p-1.5 rounded-md hover:bg-gray-100 active:scale-[0.95] transition-[background-color,transform] duration-150 ease-out cursor-pointer"
+                title={isEn ? 'Copy email' : 'Copier l\'email'}
+              >
+                <span className={`inline-flex transition-opacity duration-200 ${copied ? 'opacity-0' : 'opacity-100'}`}>
+                  <Copy size={16} className="text-gray-400" />
+                </span>
+                <span className={`absolute inset-0 flex items-center justify-center transition-opacity duration-200 ${copied ? 'opacity-100' : 'opacity-0'}`}>
+                  <Check size={16} weight="bold" className="text-gray-900" />
+                </span>
+              </button>
             </div>
           </div>
 
-          {/* Right: What I can help with */}
-          <div className="rounded-2xl border border-gray-200 bg-white p-7 md:p-8 h-fit">
-            <h2 className="text-sm font-bold text-gray-900 mb-5">
-              {isEn ? 'What I can help with' : 'Ce que je peux apporter'}
-            </h2>
-            <ul className="space-y-3">
-              <li className="flex items-baseline gap-2.5 text-[15px] text-gray-600 leading-relaxed">
-                <span className="w-1.5 h-1.5 rounded-full bg-gray-300 flex-shrink-0 mt-2" />
-                <span>
-                  <span className="font-semibold text-gray-900">{isEn ? 'Product Design' : 'Design Produit'}</span>
-                  {isEn ? ' — UX/UI, design systems, prototyping, from framing to dev handoff' : ' — UX/UI, design systems, prototypage, du cadrage au handoff dev'}
-                </span>
-              </li>
-              <li className="flex items-baseline gap-2.5 text-[15px] text-gray-600 leading-relaxed">
-                <span className="w-1.5 h-1.5 rounded-full bg-gray-300 flex-shrink-0 mt-2" />
-                <span>
-                  <span className="font-semibold text-gray-900">{isEn ? 'Team Leadership' : 'Leadership'}</span>
-                  {isEn ? ' — hiring, mentoring, design ops, delivery cadence' : ' — recrutement, mentoring, design ops, cadence de livraison'}
-                </span>
-              </li>
-              <li className="flex items-baseline gap-2.5 text-[15px] text-gray-600 leading-relaxed">
-                <span className="w-1.5 h-1.5 rounded-full bg-gray-300 flex-shrink-0 mt-2" />
-                <span>
-                  <span className="font-semibold text-gray-900">{isEn ? 'AI Prototyping' : 'Prototypage IA'}</span>
-                  {isEn ? ' — Claude Code, Figma MCP, concept to deployed prototype in hours' : ' — Claude Code, Figma MCP, du concept au prototype d\u00e9ploy\u00e9 en quelques heures'}
-                </span>
-              </li>
-            </ul>
+          {/* Connect */}
+          <div className="flex flex-wrap items-center gap-5">
+            <a href="https://linkedin.com/in/victorsoussan" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-sm text-gray-400 hover:text-gray-900 transition-colors duration-200">
+              <LinkedinLogo size={18} /> LinkedIn
+            </a>
+            <a href="https://www.condamine.studio/apps" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-sm text-gray-400 hover:text-gray-900 transition-colors duration-200">
+              <ArrowUpRight size={14} /> Condamine Apps
+            </a>
+            <a href="tel:+33615989400" className="text-sm text-gray-400 hover:text-gray-900 transition-colors duration-200">
+              +33 6 15 98 94 00
+            </a>
           </div>
-        </div>
+        </section>
+
+        {/* ============================================ */}
+        {/* What I can help with                        */}
+        {/* ============================================ */}
+
+        <section className="py-24 md:py-40 border-t border-gray-100">
+          <h2 className="text-lg font-semibold tracking-[-0.04em] text-gray-900 mb-6">
+            {isEn ? 'What I can help with' : 'Ce que je peux apporter'}
+          </h2>
+          <div className="divide-y divide-gray-100">
+            <div className="py-4 first:pt-0">
+              <p className="text-[15px] text-gray-900 font-medium mb-1">{isEn ? 'Product Design' : 'Design Produit'}</p>
+              <p className="text-base text-gray-500 leading-relaxed">
+                {isEn ? 'UX/UI, design systems, prototyping, from framing to dev handoff' : 'UX/UI, design systems, prototypage, du cadrage au handoff dev'}
+              </p>
+            </div>
+            <div className="py-4">
+              <p className="text-[15px] text-gray-900 font-medium mb-1">{isEn ? 'Team Leadership' : 'Leadership'}</p>
+              <p className="text-base text-gray-500 leading-relaxed">
+                {isEn ? 'Hiring, mentoring, design ops, delivery cadence' : 'Recrutement, mentoring, design ops, cadence de livraison'}
+              </p>
+            </div>
+            <div className="py-4 last:pb-0">
+              <p className="text-[15px] text-gray-900 font-medium mb-1">{isEn ? 'AI Prototyping' : 'Prototypage IA'}</p>
+              <p className="text-base text-gray-500 leading-relaxed">
+                {isEn ? 'Claude Code, Figma MCP, concept to deployed prototype in hours' : 'Claude Code, Figma MCP, du concept au prototype d\u00e9ploy\u00e9 en quelques heures'}
+              </p>
+            </div>
+          </div>
+        </section>
 
         {/* ============================================ */}
         {/* SECTION 2: Interventions                    */}
         {/* ============================================ */}
 
-        <div id="interventions" className="mt-20 pt-16 border-t border-gray-200 scroll-mt-24">
-          <h2 className="text-2xl sm:text-3xl font-bold tracking-[-0.02em] text-gray-900 mb-3">
+        <section id="interventions" className="py-24 md:py-40 border-t border-gray-100 scroll-mt-24">
+          <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-3">
             {isEn ? 'Speaking & Workshops' : 'Interventions'}
           </h2>
-          <p className="text-base text-gray-500 leading-relaxed max-w-[55ch] mb-12">
+          <p className="text-base text-gray-500 leading-relaxed mb-12">
             {isEn
               ? 'Conferences, workshops and training. Product design, design systems, AI tools.'
               : 'Conf\u00e9rences, workshops et formations. Conception produit, design systems, outils IA.'}
           </p>
 
           {/* Topics */}
-          <div className="mb-12">
-            <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wider mb-5">
+          <div className="mb-14">
+            <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-5">
               {isEn ? 'Topics' : 'Sujets'}
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="divide-y divide-gray-100">
               {topics.map((topic) => (
-                <div key={topic.title} className="rounded-2xl border border-gray-200 bg-white p-6">
-                  <h4 className="text-base font-semibold text-gray-900 mb-2">{topic.title}</h4>
-                  <p className="text-sm text-gray-500 leading-relaxed">{topic.desc}</p>
+                <div key={topic.title} className="py-5 first:pt-0 last:pb-0">
+                  <h4 className="text-[15px] font-medium text-gray-900 mb-1.5">{topic.title}</h4>
+                  <p className="text-base text-gray-500 leading-relaxed">{topic.desc}</p>
                 </div>
               ))}
             </div>
           </div>
 
           {/* Formats */}
-          <div className="mb-12">
-            <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wider mb-5">
+          <div className="mb-14">
+            <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-5">
               {isEn ? 'Formats' : 'Formats'}
             </h3>
-            <div className="rounded-2xl border border-gray-200 bg-white overflow-hidden">
-              {formats.map((format, i) => (
+            <div className="divide-y divide-gray-100">
+              {formats.map((format) => (
                 <div
                   key={format.name}
-                  className={`flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-6 px-6 py-4 ${
-                    i < formats.length - 1 ? 'border-b border-gray-100' : ''
-                  }`}
+                  className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-6 py-4 first:pt-0 last:pb-0"
                 >
                   <div className="flex items-baseline gap-3 sm:w-[200px] flex-shrink-0">
                     <span className="text-[15px] font-medium text-gray-900">{format.name}</span>
@@ -218,68 +211,59 @@ export default function ContactPageClient({ lang }: { lang: 'en' | 'fr' }) {
           </div>
 
           {/* Intervention CTA */}
-          <div className="rounded-2xl border border-gray-200 bg-white p-7 md:p-8">
+          <div>
             <p className="text-[15px] text-gray-500 mb-5 max-w-[50ch]">
               {isEn
                 ? 'Tell me about the format, topic, and context. I\u2019ll get back to you within 48h.'
                 : 'Dites-moi quel format vous int\u00e9resse, le sujet, et le contexte. R\u00e9ponse sous 48h.'}
             </p>
-            <div className="flex flex-col sm:flex-row gap-3">
+            <div className="flex flex-col sm:flex-row gap-4 items-start">
               <a
                 href={`mailto:${EMAIL}?subject=${encodeURIComponent(isEn ? 'Speaking engagement inquiry' : 'Demande d\u2019intervention')}`}
-                className="group inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#2D5CF3] text-white font-medium text-[15px] hover:bg-[#2450d9] shadow-sm hover:shadow-md active:scale-[0.97] transition-[background-color,box-shadow,transform] duration-200 ease-out"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gray-900 text-white font-medium text-[15px] hover:bg-gray-800 active:scale-[0.97] ring-1 ring-black shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition-[background-color,transform] duration-200 ease-out"
               >
                 {isEn ? 'Send an email' : 'Envoyer un email'}
-                <ArrowUpRight size={15} weight="bold" className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200 ease-out" />
+                <ArrowUpRight size={15} weight="bold" />
               </a>
               <a
                 href={CALENDAR_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center gap-2 px-6 py-3 rounded-full border border-gray-200 text-gray-700 font-medium text-[15px] hover:bg-gray-50 hover:border-gray-300 active:scale-[0.97] transition-[background-color,border-color,transform] duration-200 ease-out"
+                className="text-sm text-gray-500 hover:text-gray-900 underline underline-offset-4 decoration-gray-300 transition-colors duration-200 py-3"
               >
-                {isEn ? 'Book a call' : 'R\u00e9server un appel'}
-                <ArrowUpRight size={15} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200 ease-out" />
+                {isEn ? 'Or book a call' : 'Ou r\u00e9server un appel'}
               </a>
             </div>
           </div>
-        </div>
+        </section>
 
         {/* ============================================ */}
         {/* SECTION 3: Discovery                        */}
         {/* ============================================ */}
 
-        <div className="mt-20 pt-16 border-t border-gray-200">
+        <section className="py-24 md:py-40 border-t border-gray-100">
           {/* Featured projects */}
-          <div className="mb-16">
-            <div className="flex items-baseline justify-between mb-6">
-              <h2 className="text-lg font-semibold text-gray-900">
+          <div className="mb-14">
+            <div className="flex items-baseline justify-between mb-5">
+              <h2 className="text-lg font-semibold tracking-[-0.04em] text-gray-900">
                 {isEn ? 'Recent work' : 'Projets r\u00e9cents'}
               </h2>
-              <Link href={`/${lang}/projets`} className="text-sm text-gray-500 hover:text-gray-900 transition-colors duration-200 flex items-center gap-1">
+              <Link href={`/${lang}/projets`} className="text-sm text-gray-400 hover:text-gray-900 transition-colors duration-200 flex items-center gap-1">
                 {isEn ? 'All projects' : 'Tous les projets'} <ArrowRight size={14} />
               </Link>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="divide-y divide-gray-100">
               {projects.map((project) => (
                 <Link
                   key={project.id}
                   href={`/${lang}/project/${project.id}/full`}
-                  className="group rounded-2xl border border-gray-200 bg-white overflow-hidden hover:border-gray-300 hover:shadow-sm active:scale-[0.99] transition-[border-color,box-shadow,transform] duration-200 ease-out"
+                  className="group flex items-baseline justify-between py-3.5 first:pt-0 last:pb-0 transition-colors duration-200"
                 >
-                  <div className="aspect-[16/10] overflow-hidden bg-gray-50">
-                    <img
-                      src={project.coverImage}
-                      alt={project.title}
-                      className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
-                      style={{ transitionTimingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)' }}
-                      loading="lazy"
-                    />
+                  <div className="flex items-baseline gap-3">
+                    <span className="text-[15px] font-medium text-gray-900 group-hover:text-gray-600 transition-colors duration-200">{project.title}</span>
+                    <span className="text-xs text-gray-400">{project.role}</span>
                   </div>
-                  <div className="p-4">
-                    <p className="text-sm font-semibold text-gray-900 mb-0.5">{project.title}</p>
-                    <p className="text-xs text-gray-500">{project.role} \u00b7 {project.period}</p>
-                  </div>
+                  <span className="text-xs text-gray-400">{project.period}</span>
                 </Link>
               ))}
             </div>
@@ -288,25 +272,25 @@ export default function ContactPageClient({ lang }: { lang: 'en' | 'fr' }) {
           {/* Featured articles */}
           {articles.length > 0 && (
             <div>
-              <div className="flex items-baseline justify-between mb-6">
-                <h2 className="text-lg font-semibold text-gray-900">
+              <div className="flex items-baseline justify-between mb-5">
+                <h2 className="text-lg font-semibold tracking-[-0.04em] text-gray-900">
                   {isEn ? 'Recent writing' : '\u00c0 lire'}
                 </h2>
-                <Link href={`/${lang}/ressources`} className="text-sm text-gray-500 hover:text-gray-900 transition-colors duration-200 flex items-center gap-1">
+                <Link href={`/${lang}/ressources`} className="text-sm text-gray-400 hover:text-gray-900 transition-colors duration-200 flex items-center gap-1">
                   {isEn ? 'All articles' : 'Toutes les ressources'} <ArrowRight size={14} />
                 </Link>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="divide-y divide-gray-100">
                 {articles.map((article) => (
                   <Link
                     key={article.id}
                     href={`/${lang}/signal/${article.id}`}
-                    className="group rounded-2xl border border-gray-200 bg-white p-5 hover:border-gray-300 hover:shadow-sm active:scale-[0.99] transition-[border-color,box-shadow,transform] duration-200 ease-out"
+                    className="group block py-3.5 first:pt-0 last:pb-0 transition-colors duration-200"
                   >
-                    <p className="text-sm font-semibold text-gray-900 mb-1 group-hover:text-[#2D5CF3] transition-colors duration-200">
+                    <p className="text-[15px] font-medium text-gray-900 group-hover:text-gray-600 transition-colors duration-200 mb-0.5">
                       {isEn ? article.title_en : article.title_fr}
                     </p>
-                    <p className="text-xs text-gray-500 line-clamp-2">
+                    <p className="text-sm text-gray-400 line-clamp-1">
                       {isEn ? article.excerpt_en : article.excerpt_fr}
                     </p>
                   </Link>
@@ -314,7 +298,7 @@ export default function ContactPageClient({ lang }: { lang: 'en' | 'fr' }) {
               </div>
             </div>
           )}
-        </div>
+        </section>
 
       </div>
     </div>

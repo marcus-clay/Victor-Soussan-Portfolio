@@ -13,7 +13,6 @@ export const HERO = {
     paragraphs: [
       "La plupart des produits B2B qui \u00e9chouent ne sont pas mal con\u00e7us. Ils sont con\u00e7us sans avoir pos\u00e9 la bonne question au d\u00e9part, ou sans avoir v\u00e9rifi\u00e9 la r\u00e9ponse assez t\u00f4t. Le prototype arrive trop tard, apr\u00e8s les sp\u00e9cifications, apr\u00e8s les arbitrages budg\u00e9taires, quand il ne peut plus rien changer.",
       "Je con\u00e7ois des outils m\u00e9tiers denses en donn\u00e9es, en bin\u00f4me avec un responsable produit. EdTech, construction, civic tech, m\u00e9dia. Ma m\u00e9thode repose sur un principe simple\u00a0: cadrer le probl\u00e8me, mat\u00e9rialiser une r\u00e9ponse testable en une semaine, et arbitrer sur la base de ce qu\u2019on observe, pas de ce qu\u2019on suppose.",
-      "Ce qui suit d\u00e9crit ce syst\u00e8me de travail. Il s\u2019adapte \u00e0 chaque contexte. Les principes restent les m\u00eames.",
     ],
   },
   en: {
@@ -21,7 +20,6 @@ export const HERO = {
     paragraphs: [
       "Most B2B products that fail are not poorly designed. They are designed without asking the right question early enough, or without verifying the answer soon enough. The prototype arrives too late, after the specs, after the budget decisions, when it can no longer change anything.",
       "I design data-dense business tools in partnership with a product lead. EdTech, construction, civic tech, media. My method rests on a simple principle: frame the problem, build a testable answer within a week, and decide based on what we observe, not what we assume.",
-      "What follows describes this working system. It adapts to each context. The principles stay the same.",
     ],
   },
 }
@@ -133,14 +131,32 @@ export const LESSONS = {
       {
         heading: 'Un prototype fait avancer un projet plus vite qu\u2019un document.',
         body: "Chez UNOWHY, le prototype du dashboard Connect a montr\u00e9 que les enseignants avaient besoin d\u2019applications sp\u00e9cialis\u00e9es, pas d\u2019un tableau de bord unifi\u00e9. On a chang\u00e9 de direction. Ce prototype qui montrait la \u00ab\u00a0mauvaise\u00a0\u00bb direction a fait gagner six mois au projet, parce qu\u2019il a pos\u00e9 la bonne question au bon moment. Chez Toolkit, le prototype V2 a permis au CEO de s\u00e9curiser la deuxi\u00e8me lev\u00e9e de fonds. Dans les deux cas, le prototype a fait ce qu\u2019un document de sp\u00e9cifications n\u2019aurait jamais fait\u00a0: il a rendu la d\u00e9cision tangible.",
+        link: {
+          href: '/project/connect/summary',
+          label: 'SQOOL Connect',
+          thumbnail: '/images/thumbnail-connect.webp',
+          description: { en: 'How prototyping the wrong direction saved six months and redefined the product.', fr: 'Comment prototyper la mauvaise direction a économisé six mois et redéfini le produit.' },
+        },
       },
       {
         heading: 'On construit une vision cible, on la d\u00e9coupe en incr\u00e9ments testables.',
         body: "Chez UNOWHY, la suite SQOOL est pass\u00e9e de z\u00e9ro \u00e0 cinq applications en deux ans, livr\u00e9es trimestre par trimestre. Chaque incr\u00e9ment \u00e9tait con\u00e7u, test\u00e9, \u00e9valu\u00e9, puis le suivant int\u00e9grait ce qu\u2019on avait appris. SQOOL Extend a \u00e9t\u00e9 d\u00e9ploy\u00e9e dans cinq lyc\u00e9es pilotes avant d\u2019\u00eatre industrialis\u00e9e.",
+        link: {
+          href: '/project/sqool-classe/summary',
+          label: 'SQOOL Classe',
+          thumbnail: '/images/thumbnail_sqool_classe.webp',
+          description: { en: 'Real-time classroom supervision for 500,000 tablets across 465 high schools.', fr: 'Supervision de classe temps réel pour 500\u00a0000 tablettes dans 465 lycées.' },
+        },
       },
       {
         heading: 'L\u2019utilisateur sait ce qui ne fonctionne pas, m\u00eame sans le formuler.',
         body: "Les entretiens servent \u00e0 comprendre les comportements r\u00e9els. Le prototype sert \u00e0 confronter les hypoth\u00e8ses qu\u2019on en tire. Les deux sont n\u00e9cessaires, et les faire dans cet ordre change la qualit\u00e9 de ce qu\u2019on construit. Chez la Banque des Territoires, les tests sur Aquagir ont montr\u00e9 un d\u00e9calage entre le parcours con\u00e7u et le moment r\u00e9el du besoin utilisateur. Chez France VAE, dix entretiens terrain ont suffi \u00e0 r\u00e9ordonner les priorit\u00e9s d\u2019un MVP entier. Je pratique la recherche utilisateur en continu\u00a0: observation sur site, calls avec les \u00e9quipes sales et support, analyse des tickets. La recherche n\u2019est pas une phase, c\u2019est un flux permanent qui alimente les d\u00e9cisions.",
+        link: {
+          href: '/project/france-vae/full#initiative-3',
+          label: 'France VAE',
+          thumbnail: '/images/francevae/thumbnail_france_vae.webp',
+          description: { en: 'Ten field interviews that reordered the priorities of an entire MVP.', fr: 'Dix entretiens terrain qui ont réordonné les priorités d\u2019un MVP entier.' },
+        },
       },
     ],
   },
@@ -151,14 +167,32 @@ export const LESSONS = {
       {
         heading: 'A prototype moves a project forward faster than a document.',
         body: "At UNOWHY, the Connect dashboard prototype showed that teachers needed specialized applications, not a unified dashboard. We changed direction. That prototype showing the \"wrong\" direction saved the project six months, because it asked the right question at the right time. At Toolkit, the V2 prototype helped the CEO secure the second funding round. In both cases, the prototype did what a specification document never could: it made the decision tangible.",
+        link: {
+          href: '/project/connect/summary',
+          label: 'SQOOL Connect',
+          thumbnail: '/images/thumbnail-connect.webp',
+          description: { en: 'How prototyping the wrong direction saved six months and redefined the product.', fr: 'Comment prototyper la mauvaise direction a économisé six mois et redéfini le produit.' },
+        },
       },
       {
         heading: 'Build a target vision, break it down into testable increments.',
         body: "At UNOWHY, the SQOOL suite went from zero to five applications in two years, shipped quarter by quarter. Each increment was designed, tested, evaluated, and the next one incorporated what we had learned. SQOOL Extend was deployed in five pilot schools before being industrialized.",
+        link: {
+          href: '/project/sqool-classe/summary',
+          label: 'SQOOL Classe',
+          thumbnail: '/images/thumbnail_sqool_classe.webp',
+          description: { en: 'Real-time classroom supervision for 500,000 tablets across 465 high schools.', fr: 'Supervision de classe temps réel pour 500 000 tablettes dans 465 lycées.' },
+        },
       },
       {
         heading: 'The user knows what does not work, even without saying it.',
         body: "Interviews help understand real behaviors. The prototype helps confront the hypotheses we draw from them. Both are necessary, and doing them in this order changes the quality of what gets built. At Banque des Territoires, tests on Aquagir showed a gap between the designed journey and the actual moment of user need. At France VAE, ten field interviews were enough to reorder the priorities of an entire MVP. I practice user research continuously: on-site observation, calls with sales and support teams, ticket analysis. Research is not a phase, it is an ongoing stream that feeds decisions.",
+        link: {
+          href: '/project/france-vae/full#initiative-3',
+          label: 'France VAE',
+          thumbnail: '/images/francevae/thumbnail_france_vae.webp',
+          description: { en: 'Ten field interviews that reordered the priorities of an entire MVP.', fr: 'Dix entretiens terrain qui ont réordonné les priorités d\'un MVP entier.' },
+        },
       },
     ],
   },
@@ -175,7 +209,7 @@ export const COLLABORATION = {
       {
         id: 'pm',
         label: 'Avec le PM',
-        body: "Je fonctionne en bin\u00f4me avec un responsable produit. Trois principes cadrent cette collaboration\u00a0: chaque atelier est pr\u00e9par\u00e9 avec un sc\u00e9nario et un livrable d\u00e9fini, le PM voit l\u2019avancement au fil de l\u2019eau, et chaque arbitrage est document\u00e9 pour qu\u2019on ne refasse pas les m\u00eames d\u00e9bats. C\u00f4t\u00e9 r\u00e9partition, les specs produit sont la responsabilit\u00e9 du PM. Je produis les maquettes annot\u00e9es et les parcours document\u00e9s qui les alimentent. On s\u2019aligne sur les priorit\u00e9s en amont, et on les porte ensemble devant les parties prenantes. Le PM a une visibilit\u00e9 continue sur la conception\u00a0: on ne pr\u00e9sente pas le design \u00ab\u00a0quand il est pr\u00eat\u00a0\u00bb, il est visible d\u00e8s les premi\u00e8res explorations.",
+        body: "Trois principes\u00a0: chaque atelier a un livrable d\u00e9fini, le PM voit l\u2019avancement en continu, et chaque arbitrage est document\u00e9. Les specs sont la responsabilit\u00e9 du PM. Je produis les maquettes annot\u00e9es et les parcours document\u00e9s qui les alimentent. La conception est visible d\u00e8s les premi\u00e8res explorations.",
       },
       {
         id: 'devs',
@@ -195,7 +229,7 @@ export const COLLABORATION = {
       {
         id: 'pm',
         label: 'With the PM',
-        body: "I work in partnership with a product lead. Three principles frame this collaboration: every workshop is prepared with a scenario and a defined deliverable, the PM sees progress as it happens, and every tradeoff is documented so we do not revisit the same debates. On the split, product specs are the PM's responsibility. I produce annotated mockups and documented flows that feed them. We align on priorities upstream, and carry them together in front of stakeholders. The PM has continuous visibility on the design work: we do not present design \"when it is ready\", it is visible from the first explorations.",
+        body: "Three principles: every workshop has a defined deliverable, the PM sees progress as it happens, and every tradeoff is documented. Product specs are the PM's responsibility. I produce annotated mockups and documented flows that feed them. Design is visible from the first explorations.",
       },
       {
         id: 'devs',
@@ -236,6 +270,7 @@ export interface Deliverable {
   activity: { en: string; fr: string }
   output: { en: string; fr: string }
   format: { en: string; fr: string }
+  image?: string
 }
 
 export const DELIVERABLES: Deliverable[] = [
@@ -243,6 +278,7 @@ export const DELIVERABLES: Deliverable[] = [
     activity: { en: 'Framing workshop', fr: 'Atelier de cadrage' },
     output: { en: 'Structured problem, hypotheses, success criteria', fr: 'Probl\u00e8me structur\u00e9, hypoth\u00e8ses, crit\u00e8res de succ\u00e8s' },
     format: { en: 'FigJam board, Notion/Confluence doc, restitution deck', fr: 'Board FigJam, doc Notion/Confluence, deck de restitution' },
+    image: '/images/approche/double-diamond.png',
   },
   {
     activity: { en: 'Exploration', fr: 'Exploration' },
@@ -253,11 +289,13 @@ export const DELIVERABLES: Deliverable[] = [
     activity: { en: 'Design', fr: 'Conception' },
     output: { en: 'Complete flows, states, edge cases', fr: 'Parcours complets, \u00e9tats, cas limites' },
     format: { en: 'Interactive Figma or HTML prototype', fr: 'Prototype interactif Figma ou HTML' },
+    image: '/images/approche/design-teardown.png',
   },
   {
     activity: { en: 'Validation', fr: 'Validation' },
     output: { en: 'Documented field insights, recommendations', fr: 'Insights terrain document\u00e9s, recommandations' },
     format: { en: 'Test report (Notion), annotated videos', fr: 'Rapport de test (Notion), vid\u00e9os annot\u00e9es' },
+    image: '/images/approche/persona-journey.png',
   },
   {
     activity: { en: 'Handoff', fr: 'Handoff' },

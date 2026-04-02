@@ -1,12 +1,11 @@
-// Connect Case Study Page - Static content with instant loading
-// Displays the SQOOL Connect project case study with portfolio styling
+// Connect Case Study Page - Minimalist aesthetic
+// Displays the SQOOL Connect project case study
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-import {
-  X
-} from '@phosphor-icons/react';
+import { ArrowRight } from '@phosphor-icons/react';
+import VideoPlayer from '@/components/VideoPlayer';
 import { GalleryItem, getConnectGalleryItems } from '../../components/BentoGallery';
 import ConnectExecutive from '../../components/case-studies/ConnectExecutive';
 import EnhancedLightbox from '../../components/media/EnhancedLightbox';
@@ -23,7 +22,6 @@ interface ConnectPageProps {
   lang?: 'en' | 'fr';
   onContact?: () => void;
 }
-
 
 // All images for lightbox navigation with caption keys
 type MediaItem = { src: string; captionKey: string; type: 'image' | 'video' };
@@ -59,21 +57,21 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick }) => {
   const isVideo = item.type === 'video' || item.src.match(/\.(mp4|webm|mov)$/i);
   return (
     <motion.figure
-      initial={{ opacity: 0, y: 16 }}
+      initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3, delay: index * 0.03 }}
-      className="group cursor-zoom-in break-inside-avoid mb-6"
+      transition={{ duration: 0.28, delay: index * 0.03, ease: [0.23, 1, 0.32, 1] }}
+      className="group cursor-zoom-in break-inside-avoid mb-4"
       onClick={onClick}
     >
-      <div className="rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 shadow-sm hover:shadow-lg transition-[border-color,box-shadow,transform] duration-300 ease-out hover:scale-[1.01]">
+      <div className="rounded-xl overflow-hidden ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]">
         {isVideo ? (
-          <video src={item.src} className="w-full h-auto block transition-transform duration-300 ease-out group-hover:scale-[1.02]" muted playsInline autoPlay loop preload="metadata" />
+          <VideoPlayer src={item.src} className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" />
         ) : (
-          <img loading="lazy" src={item.src} alt={item.caption} className="w-full h-auto block transition-transform duration-300 ease-out group-hover:scale-[1.02]" />
+          <img loading="lazy" src={item.src} alt={item.caption} className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" />
         )}
       </div>
-      <figcaption className="mt-3 text-sm text-gray-500">
-        <strong className="text-gray-700">{item.caption}</strong>
+      <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
+        {item.caption}
         {item.captionDesc && <span className="hidden sm:inline"> · {item.captionDesc}</span>}
       </figcaption>
     </motion.figure>
@@ -100,7 +98,6 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
   }, []);
 
   const t = CONNECT_TRANSLATIONS[lang];
-  // Load gallery items directly in the component
   const galleryItems = getConnectGalleryItems(lang);
 
   // Build allImages with translated captions
@@ -111,17 +108,13 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
   }));
 
   const [lightboxOpen, setLightboxOpen] = useState(false);
-  // Sync caseStudyMode with external viewMode
   const initialCaseStudyMode = viewMode === 'executive' ? 'executive' : (viewMode === 'caseStudy' ? 'full' : 'executive');
   const [caseStudyMode, setCaseStudyMode] = useState<'executive' | 'full'>(initialCaseStudyMode);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [videoStartTime, setVideoStartTime] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
-  // videoRefs reserved for future use
   void useRef<{ [key: string]: HTMLVideoElement | null }>({});
-  const isDark = systemTheme === 'dark';
 
-  // Sync caseStudyMode when viewMode changes from outside
   useEffect(() => {
     if (viewMode === 'executive') {
       setCaseStudyMode('executive');
@@ -130,12 +123,10 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
     }
   }, [viewMode]);
 
-  // Scroll to top when mode changes
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
   }, [caseStudyMode, viewMode]);
 
-  // Open lightbox with specific image and optional start time for videos
   const openLightbox = (imageSrc: string, startTime: number = 0) => {
     const index = allImages.findIndex(img => img.src === imageSrc);
     if (index !== -1) {
@@ -145,20 +136,43 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
     }
   };
 
-  // Close lightbox
   const closeLightbox = () => {
     setLightboxOpen(false);
   };
 
+  // Reusable media figure component
+  const MediaFigure = ({ src, alt, caption, captionDesc, type = 'image', className = '' }: {
+    src: string; alt: string; caption: string; captionDesc?: string; type?: 'image' | 'video'; className?: string;
+  }) => (
+    <figure className={className}>
+      <div
+        onClick={() => openLightbox(src)}
+        className="group rounded-xl overflow-hidden cursor-zoom-in ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
+      >
+        {type === 'video' ? (
+          <VideoPlayer
+            src={src}
+            className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
+          />
+        ) : (
+          <img loading="lazy" src={src} alt={alt}
+            className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
+          />
+        )}
+      </div>
+      <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
+        {caption}{captionDesc && ` · ${captionDesc}`}
+      </figcaption>
+    </figure>
+  );
+
   return (
     <div
       ref={containerRef}
-      className={`min-h-screen ${
-        viewMode === 'gallery' ? 'bg-white' : (systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white')
-      }`}
+      className="min-h-screen bg-[#FDFDFC]"
     >
 
-      {/* Lightbox Modal - Using EnhancedLightbox */}
+      {/* Lightbox */}
       <EnhancedLightbox
         isOpen={lightboxOpen}
         onClose={closeLightbox}
@@ -175,7 +189,7 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
         updateUrl={true}
       />
 
-      {/* Content - Switch between Case Study and Gallery */}
+      {/* Content */}
       <AnimatePresence mode="wait">
         {viewMode === 'gallery' ? (
           /* Gallery View */
@@ -185,9 +199,9 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
-            className="w-full px-6 md:px-10 lg:px-12 py-8 md:py-12"
+            className="max-w-[960px] mx-auto px-6 py-8 md:py-12"
           >
-            <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 md:gap-8">
+            <div className="columns-1 sm:columns-2 lg:columns-3 gap-4">
               {galleryItems.map((item, index) => (
                 <GalleryCard
                   key={index}
@@ -224,609 +238,268 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
           >
-      <div className="max-w-[1200px] mx-auto px-10 py-12 md:py-16">
-        <div>
-          {/* Main Content */}
-          <main className="w-full">
             {/* Hero Section */}
             <section id="hero" className="mb-24 md:mb-32">
-              <div className="md:col-span-3">
-                {/* Meta tags */}
-                <div className="flex flex-wrap gap-2 mb-4">
-                  <span className={`text-sm ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
-                    {t.hero.role}
-                  </span>
-                  <span className={`text-sm ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
-                    -
-                  </span>
-                  <span className={`text-sm ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
-                    {t.hero.scope}
-                  </span>
-                  <span className={`text-sm ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
-                    -
-                  </span>
-                  <span className={`text-sm ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
-                    {t.hero.period}
-                  </span>
-                </div>
+              <div className="max-w-[740px] mx-auto px-6 pt-16 md:pt-24">
+                {/* Meta */}
+                <p className="text-xs text-gray-400 mb-4">
+                  {t.hero.role} · {t.hero.scope} · {t.hero.period}
+                </p>
 
-                {/* Main Title */}
-                <h1
-                  className={`text-3xl md:text-4xl font-bold mb-4 leading-tight ${
-                    systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                  }`}
-                >
+                {/* Title */}
+                <h1 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-3">
                   {t.hero.title}
                 </h1>
 
                 {/* Subtitle */}
-                <h2
-                  className={`text-xl md:text-2xl font-bold mb-6 ${
-                    systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-700'
-                  }`}
-                >
+                <p className="text-sm font-medium text-gray-900 mb-4">
                   {t.hero.subtitle}
-                </h2>
+                </p>
 
                 {/* Description */}
-                <p
-                  className={`text-base leading-relaxed mb-6 ${
-                    systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
-                  }`}
-                >
+                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">
                   {t.hero.description}
                 </p>
               </div>
             </section>
 
             {/* Hero Image */}
-            <figure className="mb-24 md:mb-32">
-              <div
-                onClick={() => openLightbox('/images/connect/connect_overview.webp')}
-                className={`rounded-2xl overflow-hidden border cursor-pointer ${
-                  systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-                }`}
-              >
-                <img loading="lazy"
-                  src="/images/connect/connect_overview.webp"
-                  alt="SQOOL Connect Overview"
-                  className="w-full h-auto"
-                />
-              </div>
-              <figcaption
-                className={`mt-3 text-sm ${
-                  systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                }`}
-              >
-                <strong>{t.captions.thumbnail}</strong> - {t.captions.thumbnailDesc}
-              </figcaption>
-            </figure>
+            <div className="max-w-[960px] mx-auto px-6">
+              <MediaFigure
+                src="/images/connect/connect_overview.webp"
+                alt="SQOOL Connect Overview"
+                caption={t.captions.thumbnail}
+                captionDesc={t.captions.thumbnailDesc}
+                className="mb-24 md:mb-32"
+              />
+            </div>
 
             {/* Overview Section */}
             <section id="overview" className="mb-24 md:mb-32">
-              <h1
-                className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-4 tracking-tight ${
-                  systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                }`}
-              >
-                {t.overview.title}
-              </h1>
-              <hr
-                className={`mb-8 ${
-                  systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-                }`}
-              />
+              <div className="max-w-[740px] mx-auto px-6">
+                <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+                  {t.overview.title}
+                </h2>
 
-              <div className="grid md:grid-cols-3 gap-8">
-                {/* Introduction */}
-                <div className="md:col-span-2">
-                  <h2
-                    className={`text-xl md:text-2xl font-semibold mb-5 tracking-tight ${
-                      systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                    }`}
-                  >
-                    {t.overview.introTitle}
-                  </h2>
-                  <p
-                    className={`text-base leading-relaxed ${
-                      systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
-                    }`}
-                  >
-                    {t.overview.introDesc}
+                <div className="space-y-8">
+                  {/* Introduction */}
+                  <div>
+                    <p className="text-sm font-medium text-gray-900 mb-2">
+                      {t.overview.introTitle}
+                    </p>
+                    <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">
+                      {t.overview.introDesc}
+                    </p>
+                  </div>
+
+                  {/* Goals */}
+                  <div>
+                    <p className="text-sm font-medium text-gray-900 mb-2">
+                      {t.overview.goalsTitle}
+                    </p>
+                    <ul className="space-y-1.5">
+                      {t.overview.goals.map((goal, idx) => (
+                        <li key={idx} className="text-base text-gray-500 leading-relaxed">
+                          <span className="text-gray-300 mr-2">&#8226;</span>{goal}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+                {/* Role */}
+                <div className="mt-8">
+                  <p className="text-sm font-medium text-gray-900 mb-2">
+                    {t.overview.roleTitle}
+                  </p>
+                  <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">
+                    {t.overview.roleDesc}
                   </p>
                 </div>
-
-                {/* Goals */}
-                <div>
-                  <h2
-                    className={`text-xl md:text-2xl font-semibold mb-5 tracking-tight ${
-                      systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                    }`}
-                  >
-                    {t.overview.goalsTitle}
-                  </h2>
-                  <ul
-                    className={`text-base leading-relaxed space-y-2 ${
-                      systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
-                    }`}
-                  >
-                    {t.overview.goals.map((goal, idx) => (
-                      <li key={idx}>- {goal}</li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-
-              {/* Role Section */}
-              <div className="mt-8">
-                <h2
-                  className={`text-xl md:text-2xl font-semibold mb-5 tracking-tight ${
-                    systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                  }`}
-                >
-                  {t.overview.roleTitle}
-                </h2>
-                <p
-                  className={`text-base leading-relaxed ${
-                    systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
-                  }`}
-                >
-                  {t.overview.roleDesc}
-                </p>
               </div>
             </section>
-
-            {/* Divider */}
-            <hr
-              className={`my-12 ${
-                systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-              }`}
-            />
 
             {/* Dashboard Section */}
             <section id="dashboard" className="mb-24 md:mb-32">
-              <h1
-                className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-6 tracking-tight ${
-                  systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                }`}
-              >
-                {t.dashboard.title}
-              </h1>
-
-              <p
-                className={`text-base leading-relaxed mb-8 ${
-                  systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
-                }`}
-              >
-                {t.dashboard.intro}
-              </p>
-
-              {/* Dashboard Home Dark */}
-              <figure className="my-12">
-                <div
-                  onClick={() => openLightbox('/images/connect/connect_dashboard_home_dark_full_smartphone-scaled.webp')}
-                  className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
-                    systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-                  }`}
-                >
-                  <img loading="lazy"
-                    src="/images/connect/connect_dashboard_home_dark_full_smartphone-scaled.webp"
-                    alt={t.dashboard.homeDark}
-                    className="w-full h-auto"
-                  />
-                </div>
-                <figcaption
-                  className={`mt-3 text-sm ${
-                    systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                  }`}
-                >
-                  <strong>{t.dashboard.homeDark}</strong> - {t.dashboard.homeDarkDesc}
-                </figcaption>
-              </figure>
-
-              {/* Dashboard Home Light & Applications */}
-              <div className="grid md:grid-cols-2 gap-6 mb-8">
-                <figure>
-                  <div
-                    onClick={() => openLightbox('/images/connect/connect_dashboard_home_light_full-scaled.webp')}
-                    className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
-                      systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-                    }`}
-                  >
-                    <img loading="lazy"
-                      src="/images/connect/connect_dashboard_home_light_full-scaled.webp"
-                      alt={t.dashboard.homeLight}
-                      className="w-full h-auto"
-                    />
-                  </div>
-                  <figcaption
-                    className={`mt-3 text-sm ${
-                      systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                    }`}
-                  >
-                    <strong>{t.dashboard.homeLight}</strong> - {t.dashboard.homeLightDesc}
-                  </figcaption>
-                </figure>
-
-                <figure>
-                  <div
-                    onClick={() => openLightbox('/images/connect/connect_dashboard_applications_full-scaled.webp')}
-                    className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
-                      systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-                    }`}
-                  >
-                    <img loading="lazy"
-                      src="/images/connect/connect_dashboard_applications_full-scaled.webp"
-                      alt={t.dashboard.applications}
-                      className="w-full h-auto"
-                    />
-                  </div>
-                  <figcaption
-                    className={`mt-3 text-sm ${
-                      systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                    }`}
-                  >
-                    <strong>{t.dashboard.applications}</strong> - {t.dashboard.applicationsDesc}
-                  </figcaption>
-                </figure>
+              <div className="max-w-[740px] mx-auto px-6">
+                <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+                  {t.dashboard.title}
+                </h2>
+                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-12">
+                  {t.dashboard.intro}
+                </p>
               </div>
 
-              {/* Loading & Auth Video */}
-              <figure className="my-12">
-                <div
-                  onClick={() => openLightbox('/videos/connect/connect-loading-user-authent-app-launch-study.mp4')}
-                  className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
-                    systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-                  }`}
-                >
-                  <video
-                    src="/videos/connect/connect-loading-user-authent-app-launch-study.mp4"
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    className="w-full h-auto pointer-events-none"
+              <div className="max-w-[960px] mx-auto px-6">
+                {/* Dashboard Home Dark */}
+                <MediaFigure
+                  src="/images/connect/connect_dashboard_home_dark_full_smartphone-scaled.webp"
+                  alt={t.dashboard.homeDark}
+                  caption={t.dashboard.homeDark}
+                  captionDesc={t.dashboard.homeDarkDesc}
+                  className="mb-12"
+                />
+
+                {/* Dashboard Home Light & Applications */}
+                <div className="space-y-8 mb-12">
+                  <MediaFigure
+                    src="/images/connect/connect_dashboard_home_light_full-scaled.webp"
+                    alt={t.dashboard.homeLight}
+                    caption={t.dashboard.homeLight}
+                    captionDesc={t.dashboard.homeLightDesc}
+                  />
+                  <MediaFigure
+                    src="/images/connect/connect_dashboard_applications_full-scaled.webp"
+                    alt={t.dashboard.applications}
+                    caption={t.dashboard.applications}
+                    captionDesc={t.dashboard.applicationsDesc}
                   />
                 </div>
-                <figcaption
-                  className={`mt-3 text-sm ${
-                    systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                  }`}
-                >
-                  <strong>{t.dashboard.loadingAuth}</strong> - {t.dashboard.loadingAuthDesc}
-                </figcaption>
-              </figure>
 
-              {/* Complete Dashboard Prototype Video */}
-              <figure className="my-12">
-                <div
-                  onClick={() => openLightbox('/videos/connect/connect-dashboard-prototype_complet_4k-compressed.mp4')}
-                  className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
-                    systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-                  }`}
-                >
-                  <video
-                    src="/videos/connect/connect-dashboard-prototype_complet_4k-compressed.mp4"
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    className="w-full h-auto pointer-events-none"
+                {/* Loading & Auth Video */}
+                <MediaFigure
+                  src="/videos/connect/connect-loading-user-authent-app-launch-study.mp4"
+                  alt={t.dashboard.loadingAuth}
+                  caption={t.dashboard.loadingAuth}
+                  captionDesc={t.dashboard.loadingAuthDesc}
+                  type="video"
+                  className="mb-12"
+                />
+
+                {/* Complete Dashboard Prototype Video */}
+                <MediaFigure
+                  src="/videos/connect/connect-dashboard-prototype_complet_4k-compressed.mp4"
+                  alt={t.dashboard.prototype}
+                  caption={t.dashboard.prototype}
+                  captionDesc={t.dashboard.prototypeDesc}
+                  type="video"
+                  className="mb-12"
+                />
+
+                {/* Tech Architecture */}
+                <MediaFigure
+                  src="/images/connect/connect_tech_architecture-1-scaled.webp"
+                  alt={t.dashboard.techArch}
+                  caption={t.dashboard.techArch}
+                  captionDesc={t.dashboard.techArchDesc}
+                  className="mb-12"
+                />
+
+                {/* Specifications */}
+                <div className="space-y-8 mb-12">
+                  <MediaFigure
+                    src="/images/connect/connect_specifications_implem_01-scaled.webp"
+                    alt={t.dashboard.specsImplem}
+                    caption={t.dashboard.specsImplem}
+                    captionDesc={t.dashboard.specsImplDesc}
+                  />
+                  <MediaFigure
+                    src="/images/connect/connect_specifications_content_02-scaled.webp"
+                    alt={t.dashboard.specsContent}
+                    caption={t.dashboard.specsContent}
+                    captionDesc={t.dashboard.specsContentDesc}
                   />
                 </div>
-                <figcaption
-                  className={`mt-3 text-sm ${
-                    systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                  }`}
-                >
-                  <strong>{t.dashboard.prototype}</strong> - {t.dashboard.prototypeDesc}
-                </figcaption>
-              </figure>
 
-              {/* Tech Architecture */}
-              <figure className="my-12">
-                <div
-                  onClick={() => openLightbox('/images/connect/connect_tech_architecture-1-scaled.webp')}
-                  className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
-                    systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-                  }`}
-                >
-                  <img loading="lazy"
-                    src="/images/connect/connect_tech_architecture-1-scaled.webp"
-                    alt={t.dashboard.techArch}
-                    className="w-full h-auto"
-                  />
-                </div>
-                <figcaption
-                  className={`mt-3 text-sm ${
-                    systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                  }`}
-                >
-                  <strong>{t.dashboard.techArch}</strong> - {t.dashboard.techArchDesc}
-                </figcaption>
-              </figure>
-
-              {/* Specifications */}
-              <div className="grid md:grid-cols-2 gap-6 mb-8">
-                <figure>
-                  <div
-                    onClick={() => openLightbox('/images/connect/connect_specifications_implem_01-scaled.webp')}
-                    className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
-                      systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-                    }`}
-                  >
-                    <img loading="lazy"
-                      src="/images/connect/connect_specifications_implem_01-scaled.webp"
-                      alt={t.dashboard.specsImplem}
-                      className="w-full h-auto"
-                    />
-                  </div>
-                  <figcaption
-                    className={`mt-3 text-sm ${
-                      systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                    }`}
-                  >
-                    <strong>{t.dashboard.specsImplem}</strong> - {t.dashboard.specsImplDesc}
-                  </figcaption>
-                </figure>
-
-                <figure>
-                  <div
-                    onClick={() => openLightbox('/images/connect/connect_specifications_content_02-scaled.webp')}
-                    className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
-                      systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-                    }`}
-                  >
-                    <img loading="lazy"
-                      src="/images/connect/connect_specifications_content_02-scaled.webp"
-                      alt={t.dashboard.specsContent}
-                      className="w-full h-auto"
-                    />
-                  </div>
-                  <figcaption
-                    className={`mt-3 text-sm ${
-                      systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                    }`}
-                  >
-                    <strong>{t.dashboard.specsContent}</strong> - {t.dashboard.specsContentDesc}
-                  </figcaption>
-                </figure>
+                {/* App Loading Choreography */}
+                <MediaFigure
+                  src="/videos/connect/connect-specs-app-loading-choregraphy.mp4"
+                  alt={t.dashboard.appLoading}
+                  caption={t.dashboard.appLoading}
+                  captionDesc={t.dashboard.appLoadingDesc}
+                  type="video"
+                  className="mb-12"
+                />
               </div>
-
-              {/* App Loading Choreography */}
-              <figure className="my-12">
-                <div
-                  onClick={() => openLightbox('/videos/connect/connect-specs-app-loading-choregraphy.mp4')}
-                  className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
-                    systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-                  }`}
-                >
-                  <video
-                    src="/videos/connect/connect-specs-app-loading-choregraphy.mp4"
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    className="w-full h-auto pointer-events-none"
-                  />
-                </div>
-                <figcaption
-                  className={`mt-3 text-sm ${
-                    systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                  }`}
-                >
-                  <strong>{t.dashboard.appLoading}</strong> - {t.dashboard.appLoadingDesc}
-                </figcaption>
-              </figure>
             </section>
-
-            {/* Divider */}
-            <hr
-              className={`my-12 ${
-                systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-              }`}
-            />
 
             {/* La Bulle Section */}
             <section id="bulle" className="mb-24 md:mb-32">
-              <h1
-                className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-6 tracking-tight ${
-                  systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                }`}
-              >
-                {t.bulle.title}
-              </h1>
-
-              <p
-                className={`text-base leading-relaxed mb-8 ${
-                  systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
-                }`}
-              >
-                {t.bulle.intro}
-              </p>
-
-              {/* Bulle Wireframes */}
-              <figure className="my-12">
-                <div
-                  onClick={() => openLightbox('/images/connect/connect_bulle_ui_wireframes_concept-scaled.webp')}
-                  className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
-                    systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-                  }`}
-                >
-                  <img loading="lazy"
-                    src="/images/connect/connect_bulle_ui_wireframes_concept-scaled.webp"
-                    alt={t.bulle.wireframes}
-                    className="w-full h-auto"
-                  />
-                </div>
-                <figcaption
-                  className={`mt-3 text-sm ${
-                    systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                  }`}
-                >
-                  <strong>{t.bulle.wireframes}</strong> - {t.bulle.wireframesDesc}
-                </figcaption>
-              </figure>
-
-              {/* UI Focus & Icons */}
-              <div className="grid md:grid-cols-2 gap-6 mb-8">
-                <figure>
-                  <div
-                    onClick={() => openLightbox('/images/connect/connect_bulle_ui_focus-scaled.webp')}
-                    className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
-                      systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-                    }`}
-                  >
-                    <img loading="lazy"
-                      src="/images/connect/connect_bulle_ui_focus-scaled.webp"
-                      alt={t.bulle.uiFocus}
-                      className="w-full h-auto"
-                    />
-                  </div>
-                  <figcaption
-                    className={`mt-3 text-sm ${
-                      systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                    }`}
-                  >
-                    <strong>{t.bulle.uiFocus}</strong> - {t.bulle.uiFocusDesc}
-                  </figcaption>
-                </figure>
-
-                <figure>
-                  <div
-                    onClick={() => openLightbox('/images/connect/connect_bulle_icons-1-scaled.webp')}
-                    className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
-                      systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-                    }`}
-                  >
-                    <img loading="lazy"
-                      src="/images/connect/connect_bulle_icons-1-scaled.webp"
-                      alt={t.bulle.icons}
-                      className="w-full h-auto"
-                    />
-                  </div>
-                  <figcaption
-                    className={`mt-3 text-sm ${
-                      systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                    }`}
-                  >
-                    <strong>{t.bulle.icons}</strong> - {t.bulle.iconsDesc}
-                  </figcaption>
-                </figure>
+              <div className="max-w-[740px] mx-auto px-6">
+                <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+                  {t.bulle.title}
+                </h2>
+                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-12">
+                  {t.bulle.intro}
+                </p>
               </div>
 
-              {/* Behaviour documentation */}
-              <div className="grid md:grid-cols-2 gap-6 mb-8">
-                <figure>
-                  <div
-                    onClick={() => openLightbox('/images/connect/connect_bulle_behaviour_square_01-scaled.webp')}
-                    className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
-                      systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-                    }`}
-                  >
-                    <img loading="lazy"
-                      src="/images/connect/connect_bulle_behaviour_square_01-scaled.webp"
-                      alt={t.bulle.behaviour1}
-                      className="w-full h-auto"
-                    />
-                  </div>
-                  <figcaption
-                    className={`mt-3 text-sm ${
-                      systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                    }`}
-                  >
-                    <strong>{t.bulle.behaviour1}</strong> - {t.bulle.behaviour1Desc}
-                  </figcaption>
-                </figure>
+              <div className="max-w-[960px] mx-auto px-6">
+                {/* Bulle Wireframes */}
+                <MediaFigure
+                  src="/images/connect/connect_bulle_ui_wireframes_concept-scaled.webp"
+                  alt={t.bulle.wireframes}
+                  caption={t.bulle.wireframes}
+                  captionDesc={t.bulle.wireframesDesc}
+                  className="mb-12"
+                />
 
-                <figure>
-                  <div
-                    onClick={() => openLightbox('/images/connect/connect_bulle_behaviour_square_02-scaled.webp')}
-                    className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
-                      systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-                    }`}
-                  >
-                    <img loading="lazy"
-                      src="/images/connect/connect_bulle_behaviour_square_02-scaled.webp"
-                      alt={t.bulle.behaviour2}
-                      className="w-full h-auto"
-                    />
-                  </div>
-                  <figcaption
-                    className={`mt-3 text-sm ${
-                      systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                    }`}
-                  >
-                    <strong>{t.bulle.behaviour2}</strong> - {t.bulle.behaviour2Desc}
-                  </figcaption>
-                </figure>
+                {/* UI Focus & Icons */}
+                <div className="space-y-8 mb-12">
+                  <MediaFigure
+                    src="/images/connect/connect_bulle_ui_focus-scaled.webp"
+                    alt={t.bulle.uiFocus}
+                    caption={t.bulle.uiFocus}
+                    captionDesc={t.bulle.uiFocusDesc}
+                  />
+                  <MediaFigure
+                    src="/images/connect/connect_bulle_icons-1-scaled.webp"
+                    alt={t.bulle.icons}
+                    caption={t.bulle.icons}
+                    captionDesc={t.bulle.iconsDesc}
+                  />
+                </div>
+
+                {/* Behaviour documentation */}
+                <div className="space-y-8 mb-12">
+                  <MediaFigure
+                    src="/images/connect/connect_bulle_behaviour_square_01-scaled.webp"
+                    alt={t.bulle.behaviour1}
+                    caption={t.bulle.behaviour1}
+                    captionDesc={t.bulle.behaviour1Desc}
+                  />
+                  <MediaFigure
+                    src="/images/connect/connect_bulle_behaviour_square_02-scaled.webp"
+                    alt={t.bulle.behaviour2}
+                    caption={t.bulle.behaviour2}
+                    captionDesc={t.bulle.behaviour2Desc}
+                  />
+                </div>
+
+                {/* Interaction Demo Video */}
+                <MediaFigure
+                  src="/videos/connect/interaction-bulle-connect-compressed.mp4"
+                  alt={t.bulle.interactionDemo}
+                  caption={t.bulle.interactionDemo}
+                  captionDesc={t.bulle.interactionDemoDesc}
+                  type="video"
+                  className="mb-12"
+                />
+
+                {/* Bulle Demo Video */}
+                <MediaFigure
+                  src="/videos/connect/Video-demo-bulle-interactions-02-compressed.mp4"
+                  alt={t.bulle.bulleDemo}
+                  caption={t.bulle.bulleDemo}
+                  captionDesc={t.bulle.bulleDemoDesc}
+                  type="video"
+                  className="mb-12"
+                />
               </div>
-
-              {/* Interaction Demo Video */}
-              <figure className="my-12">
-                <div
-                  onClick={() => openLightbox('/videos/connect/interaction-bulle-connect-compressed.mp4')}
-                  className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
-                    systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-                  }`}
-                >
-                  <video
-                    src="/videos/connect/interaction-bulle-connect-compressed.mp4"
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    className="w-full h-auto pointer-events-none"
-                  />
-                </div>
-                <figcaption
-                  className={`mt-3 text-sm ${
-                    systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                  }`}
-                >
-                  <strong>{t.bulle.interactionDemo}</strong> - {t.bulle.interactionDemoDesc}
-                </figcaption>
-              </figure>
-
-              {/* Bulle Demo Video */}
-              <figure className="my-12">
-                <div
-                  onClick={() => openLightbox('/videos/connect/Video-demo-bulle-interactions-02-compressed.mp4')}
-                  className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
-                    systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-                  }`}
-                >
-                  <video
-                    src="/videos/connect/Video-demo-bulle-interactions-02-compressed.mp4"
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    className="w-full h-auto pointer-events-none"
-                  />
-                </div>
-                <figcaption
-                  className={`mt-3 text-sm ${
-                    systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                  }`}
-                >
-                  <strong>{t.bulle.bulleDemo}</strong> - {t.bulle.bulleDemoDesc}
-                </figcaption>
-              </figure>
             </section>
 
             {/* Footer CTA */}
-            <div className={`text-center py-16 border-t ${systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'}`}>
-              <button
-                onClick={onContact}
-                className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-full text-base font-medium transition-[background-color,transform] duration-200 ease-out active:scale-[0.97]"
-              >
-                {t.contactVictor}
-              </button>
+            <div className="max-w-[740px] mx-auto px-6 pb-16">
+              <div className="pt-8 border-t border-gray-100">
+                <button
+                  onClick={onContact}
+                  className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors duration-200"
+                >
+                  {t.contactVictor}
+                  <ArrowRight size={14} />
+                </button>
+              </div>
             </div>
-          </main>
-        </div>
-      </div>
           </motion.div>
         )}
       </AnimatePresence>

@@ -613,7 +613,7 @@ export default function QuoteGeneratorModal({
                       <p className="text-lg font-semibold text-gray-900 mb-1">
                         {lang === 'en' ? 'Drag & drop your file here' : 'Glissez-déposez votre fichier ici'}
                       </p>
-                      <p className="text-sm text-gray-600 mb-5">
+                      <p className="text-base text-gray-600 mb-5">
                         {lang === 'en' ? 'or browse from your computer' : 'ou parcourez depuis votre ordinateur'}
                       </p>
                       <label className="inline-block">

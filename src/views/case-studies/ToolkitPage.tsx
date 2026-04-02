@@ -1,21 +1,11 @@
-// Toolkit Case Study Page - Static content with instant loading
-// Displays the Toolkit project case study with portfolio styling
+// Toolkit Case Study Page - Minimalist aesthetic
+// Displays the Toolkit project case study
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import {
-  ArrowSquareOut as ExternalLink,
-  Calendar,
-  Briefcase,
-  Stack as Layers,
-  Rocket,
-  Quotes as Quote,
 
-  Lightning as Zap,
-  Trophy,
-  CheckCircle as CheckCircle2,
-  ArrowRight
-} from '@phosphor-icons/react';
+import { ArrowRight } from '@phosphor-icons/react';
+import VideoPlayer from '@/components/VideoPlayer';
 import { GalleryItem, getToolkitGalleryItems } from '../../components/BentoGallery';
 import ToolkitExecutive from '../../components/case-studies/ToolkitExecutive';
 import EnhancedLightbox from '../../components/media/EnhancedLightbox';
@@ -31,7 +21,6 @@ interface ToolkitPageProps {
   lang?: 'en' | 'fr';
   onContact?: () => void;
 }
-
 
 // All media (images + videos) for lightbox navigation
 type MediaItem = { src: string; captionKey: string; type: 'image' | 'video' };
@@ -82,21 +71,24 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick }) => {
   const isVideo = item.type === 'video' || item.src.match(/\.(mp4|webm|mov)$/i);
   return (
     <motion.figure
-      initial={{ opacity: 0, y: 16 }}
+      initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3, delay: index * 0.03 }}
-      className="group cursor-zoom-in break-inside-avoid mb-6"
+      transition={{ duration: 0.28, delay: index * 0.03, ease: [0.23, 1, 0.32, 1] }}
+      className="group cursor-zoom-in break-inside-avoid mb-4"
       onClick={onClick}
     >
-      <div className="rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 shadow-sm hover:shadow-lg transition-[border-color,box-shadow,transform] duration-300 ease-out hover:scale-[1.01]">
+      <div className="rounded-xl overflow-hidden ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]">
         {isVideo ? (
-          <video src={item.src} className="w-full h-auto block transition-transform duration-300 ease-out group-hover:scale-[1.02]" muted playsInline autoPlay loop preload="metadata" />
+          <VideoPlayer
+            src={item.src}
+            className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
+          />
         ) : (
-          <img loading="lazy" src={item.src} alt={item.caption} className="w-full h-auto block transition-transform duration-300 ease-out group-hover:scale-[1.02]" />
+          <img loading="lazy" src={item.src} alt={item.caption} className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" />
         )}
       </div>
-      <figcaption className="mt-3 text-sm text-gray-500">
-        <strong className="text-gray-700">{item.caption}</strong>
+      <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
+        {item.caption}
         {item.captionDesc && <span className="hidden sm:inline"> · {item.captionDesc}</span>}
       </figcaption>
     </motion.figure>
@@ -113,7 +105,6 @@ const PHASES_DATA = {
       id: 1,
       title: "Foundation",
       duration: "Months 1-3",
-      icon: Layers,
       description: "Establishing the core architecture and essential workflows.",
       features: [
         "Core authentication & navigation architecture",
@@ -128,7 +119,6 @@ const PHASES_DATA = {
       id: 2,
       title: "Feature Expansion",
       duration: "Months 4-8",
-      icon: Zap,
       description: "Enhancing interactivity and visual systems.",
       features: [
         "Advanced planning interactions (multi-select)",
@@ -143,7 +133,6 @@ const PHASES_DATA = {
       id: 3,
       title: "Platform Maturity",
       duration: "Months 9-12",
-      icon: Trophy,
       description: "Scalability, mobile strategy, and refinement.",
       features: [
         "Visual complexity management (hierarchy)",
@@ -160,14 +149,13 @@ const PHASES_DATA = {
       id: 1,
       title: "Fondation",
       duration: "Mois 1-3",
-      icon: Layers,
       description: "Architecture core et workflows essentiels.",
       features: [
         "Architecture authentification & navigation",
-        "Workflows création & gestion projet",
-        "Bibliothèque tâches avec séquences drag-drop",
-        "Planning V1 avec cartes colorées",
-        "Système abonnement (individuel + entreprise)",
+        "Workflows creation & gestion projet",
+        "Bibliotheque taches avec sequences drag-drop",
+        "Planning V1 avec cartes colorees",
+        "Systeme abonnement (individuel + entreprise)",
         "Export PDF"
       ]
     },
@@ -175,48 +163,43 @@ const PHASES_DATA = {
       id: 2,
       title: "Expansion Features",
       duration: "Mois 4-8",
-      icon: Zap,
-      description: "Interactions enrichies et systèmes visuels.",
+      description: "Interactions enrichies et systemes visuels.",
       features: [
-        "Interactions planning avancées (multi-sélection)",
-        "Système menu adaptatif dynamic island",
-        "Esthétique cartes tâches affinée (V2)",
-        "Zoom fluide timeline (jour à trimestre)",
+        "Interactions planning avancees (multi-selection)",
+        "Systeme menu adaptatif dynamic island",
+        "Esthetique cartes taches affinee (V2)",
+        "Zoom fluide timeline (jour a trimestre)",
         "Hub projet pour managers multi-sites",
         "Gestion des parties prenantes"
       ]
     },
     {
       id: 3,
-      title: "Maturité Plateforme",
+      title: "Maturite Plateforme",
       duration: "Mois 9-12",
-      icon: Trophy,
-      description: "Scalabilité, stratégie mobile et raffinement.",
+      description: "Scalabilite, strategie mobile et raffinement.",
       features: [
-        "Gestion complexité visuelle (hiérarchie)",
-        "Stratégie mobile platform-specific",
-        "Évolution navigation (accès direct)",
-        "Navigation mobile consolidée (4 groupes)",
-        "Enrichissement activité (annotation photo)",
-        "Scalabilité design system (120+ écrans)"
+        "Gestion complexite visuelle (hierarchie)",
+        "Strategie mobile platform-specific",
+        "Evolution navigation (acces direct)",
+        "Navigation mobile consolidee (4 groupes)",
+        "Enrichissement activite (annotation photo)",
+        "Scalabilite design system (120+ ecrans)"
       ]
     }
   ]
 };
 
 // ============================================================================
-// PRODUCT EVOLUTION DIAGRAM - Interactive carousel
+// PRODUCT EVOLUTION DIAGRAM - Minimalist
 // ============================================================================
 
 const ProductEvolutionDiagram: React.FC<{
-  isDark: boolean;
   lang: 'en' | 'fr';
-}> = ({ isDark, lang }) => {
+}> = ({ lang }) => {
   const [activePhase, setActivePhase] = useState(0);
-  const [viewMode, setViewMode] = useState<'focus' | 'overview'>('focus');
   const phases = PHASES_DATA[lang];
 
-  // Swipe logic for mobile
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const minSwipeDistance = 50;
@@ -246,229 +229,99 @@ const ProductEvolutionDiagram: React.FC<{
   };
 
   const texts = {
-    focus: lang === 'fr' ? 'Focus' : 'Focus',
-    overview: lang === 'fr' ? 'Vue d\'ensemble' : 'Overview',
-    keyDeliverables: lang === 'fr' ? 'Livrables clés' : 'Key Deliverables',
+    keyDeliverables: lang === 'fr' ? 'Livrables cles' : 'Key Deliverables',
     phase: lang === 'fr' ? 'Phase' : 'Phase',
-    more: lang === 'fr' ? 'de plus' : 'more'
   };
 
   return (
     <div className="mt-8">
-      {/* View Toggle */}
-      <div className="flex justify-center mb-8">
-        <div className={`inline-flex rounded-full p-1 ${isDark ? 'bg-white/10' : 'bg-gray-100'}`}>
+      {/* Phase tabs */}
+      <div className="flex gap-1 mb-8">
+        {phases.map((phase, idx) => (
           <button
-            onClick={() => setViewMode('focus')}
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-[background-color,color,transform] duration-200 ease-out ${
-              viewMode === 'focus'
-                ? isDark ? 'bg-white text-black' : 'bg-gray-900 text-white'
-                : isDark ? 'text-gray-400 hover:text-white' : 'text-gray-500 hover:text-gray-900'
+            key={idx}
+            onClick={() => setActivePhase(idx)}
+            className={`px-3 py-1.5 rounded-full text-xs transition-colors duration-200 ${
+              idx === activePhase
+                ? 'bg-gray-900 text-white'
+                : 'text-gray-400 hover:text-gray-600'
             }`}
           >
-            {texts.focus}
+            {texts.phase} {phase.id}
+          </button>
+        ))}
+      </div>
+
+      {/* Active phase card */}
+      <div
+        className="relative touch-pan-y"
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
+      >
+        <AnimatePresence mode="wait">
+          {phases.map((phase, idx) => {
+            if (idx !== activePhase) return null;
+            return (
+              <motion.div
+                key={phase.id}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.25 }}
+              >
+                <div className="space-y-8">
+                  {/* Identity */}
+                  <div>
+                    <p className="text-xs text-gray-400 mb-1">{texts.phase} {phase.id} · {phase.duration}</p>
+                    <p className="text-sm font-medium text-gray-900 mb-2">{phase.title}</p>
+                    <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">{phase.description}</p>
+                  </div>
+
+                  {/* Features */}
+                  <div>
+                    <p className="text-xs text-gray-400 mb-4">{texts.keyDeliverables}</p>
+                    <div className="divide-y divide-gray-100">
+                      {phase.features.map((feature, fIdx) => (
+                        <motion.div
+                          key={fIdx}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ delay: 0.1 + fIdx * 0.05, duration: 0.3 }}
+                          className="py-2.5 flex items-start gap-2"
+                        >
+                          <span className="text-gray-300 mt-0.5">&#8226;</span>
+                          <span className="text-base text-gray-500 leading-relaxed">{feature}</span>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            );
+          })}
+        </AnimatePresence>
+
+        {/* Navigation Arrows */}
+        <div className="flex items-center justify-between mt-6">
+          <button
+            onClick={handlePrev}
+            disabled={activePhase === 0}
+            className="text-sm text-gray-400 hover:text-gray-900 transition-colors disabled:opacity-0 disabled:pointer-events-none flex items-center gap-1"
+          >
+            <ArrowRight size={14} className="rotate-180" />
+            <span>{lang === 'fr' ? 'Precedent' : 'Previous'}</span>
           </button>
           <button
-            onClick={() => setViewMode('overview')}
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-[background-color,color,transform] duration-200 ease-out ${
-              viewMode === 'overview'
-                ? isDark ? 'bg-white text-black' : 'bg-gray-900 text-white'
-                : isDark ? 'text-gray-400 hover:text-white' : 'text-gray-500 hover:text-gray-900'
-            }`}
+            onClick={handleNext}
+            disabled={activePhase === phases.length - 1}
+            className="text-sm text-gray-400 hover:text-gray-900 transition-colors disabled:opacity-0 disabled:pointer-events-none flex items-center gap-1"
           >
-            {texts.overview}
+            <span>{lang === 'fr' ? 'Suivant' : 'Next'}</span>
+            <ArrowRight size={14} />
           </button>
         </div>
       </div>
-
-      {viewMode === 'focus' ? (
-        /* Focus View */
-        <div
-          className="relative touch-pan-y"
-          onTouchStart={onTouchStart}
-          onTouchMove={onTouchMove}
-          onTouchEnd={onTouchEnd}
-        >
-          {/* Progress Indicator */}
-          <div className="flex items-center justify-center gap-3 mb-8">
-            {phases.map((_, idx) => (
-              <button
-                key={idx}
-                onClick={() => setActivePhase(idx)}
-                className={`h-2 rounded-full transition-all duration-500 ${
-                  idx === activePhase
-                    ? `w-12 ${isDark ? 'bg-white' : 'bg-gray-900'}`
-                    : `w-2 ${isDark ? 'bg-white/20 hover:bg-white/40' : 'bg-gray-300 hover:bg-gray-400'}`
-                }`}
-              />
-            ))}
-          </div>
-
-          {/* Card Container */}
-          <div className="relative h-[480px] md:h-[420px]">
-            {phases.map((phase, idx) => {
-              const isActive = idx === activePhase;
-              const isPrev = idx < activePhase;
-              const isNext = idx > activePhase;
-              const PhaseIcon = phase.icon;
-
-              return (
-                <div
-                  key={phase.id}
-                  className={`absolute inset-0 w-full h-full transition-all duration-700 ease-out origin-bottom
-                    ${isActive ? 'opacity-100 scale-100 translate-x-0 z-20' : ''}
-                    ${isPrev ? 'opacity-0 scale-95 -translate-x-12 z-10 pointer-events-none' : ''}
-                    ${isNext ? 'opacity-0 scale-95 translate-x-12 z-10 pointer-events-none' : ''}
-                  `}
-                >
-                  <div className={`rounded-3xl overflow-hidden h-full flex flex-col md:flex-row ${
-                    isDark ? 'bg-white/5 border border-white/10' : 'bg-white shadow-xl border border-gray-100'
-                  }`}>
-                    {/* Left: Identity */}
-                    <div className={`md:w-1/3 p-8 md:p-10 flex flex-col justify-between ${
-                      isDark ? 'bg-white/5 border-b md:border-b-0 md:border-r border-white/10' : 'bg-gray-50 border-b md:border-b-0 md:border-r border-gray-100'
-                    }`}>
-                      <div>
-                        <div className={`inline-flex items-center justify-center w-14 h-14 rounded-2xl mb-6 ${
-                          isDark ? 'bg-white text-black' : 'bg-gray-900 text-white'
-                        }`}>
-                          <PhaseIcon size={26} strokeWidth={2} />
-                        </div>
-                        <div className={`uppercase tracking-widest text-[10px] font-bold mb-2 ${
-                          isDark ? 'text-gray-500' : 'text-gray-400'
-                        }`}>
-                          {texts.phase} {phase.id}
-                        </div>
-                        <h3 className={`text-2xl md:text-3xl font-bold leading-tight mb-2 ${
-                          isDark ? 'text-white' : 'text-gray-900'
-                        }`}>
-                          {phase.title}
-                        </h3>
-                        <div className={`inline-block px-3 py-1 rounded-md text-xs font-semibold ${
-                          isDark ? 'bg-white/10 text-gray-300' : 'bg-gray-200 text-gray-700'
-                        }`}>
-                          {phase.duration}
-                        </div>
-                      </div>
-                      <p className={`text-base leading-relaxed mt-6 ${
-                        isDark ? 'text-gray-400' : 'text-gray-500'
-                      }`}>
-                        {phase.description}
-                      </p>
-                    </div>
-
-                    {/* Right: Features */}
-                    <div className="md:w-2/3 p-8 md:p-10 overflow-y-auto">
-                      <h4 className={`text-xs font-semibold uppercase tracking-wider mb-6 ${
-                        isDark ? 'text-gray-500' : 'text-gray-400'
-                      }`}>
-                        {texts.keyDeliverables}
-                      </h4>
-                      <ul className="space-y-4">
-                        {phase.features.map((feature, fIdx) => (
-                          <motion.li
-                            key={fIdx}
-                            initial={{ opacity: 0, x: 10 }}
-                            animate={isActive ? { opacity: 1, x: 0 } : { opacity: 0, x: 10 }}
-                            transition={{ delay: isActive ? 0.2 + fIdx * 0.08 : 0, duration: 0.4 }}
-                            className="flex items-start gap-3"
-                          >
-                            <CheckCircle2 size={18} className="text-emerald-500 mt-0.5 flex-shrink-0" strokeWidth={2.5} />
-                            <span className={`text-sm md:text-base font-medium leading-relaxed ${
-                              isDark ? 'text-gray-200' : 'text-gray-800'
-                            }`}>
-                              {feature}
-                            </span>
-                          </motion.li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Navigation Arrows */}
-          <div className="absolute top-1/2 -translate-y-1/2 w-full flex justify-between pointer-events-none px-2 md:-mx-4 z-50">
-            <button
-              onClick={handlePrev}
-              disabled={activePhase === 0}
-              className={`w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center pointer-events-auto transition-[background-color,color,transform] duration-200 ease-out hover:scale-105 disabled:opacity-0 disabled:pointer-events-none ${
-                isDark ? 'bg-white/80 text-black' : 'bg-white shadow-lg text-gray-900'
-              }`}
-            >
-              <ArrowRight size={20} className="rotate-180" />
-            </button>
-            <button
-              onClick={handleNext}
-              disabled={activePhase === phases.length - 1}
-              className={`w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center pointer-events-auto transition-[background-color,color,transform] duration-200 ease-out hover:scale-105 disabled:opacity-0 disabled:pointer-events-none ${
-                isDark ? 'bg-white/80 text-black' : 'bg-white shadow-lg text-gray-900'
-              }`}
-            >
-              <ArrowRight size={20} />
-            </button>
-          </div>
-        </div>
-      ) : (
-        /* Overview View */
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {phases.map((phase) => {
-            const PhaseIcon = phase.icon;
-            return (
-              <div
-                key={phase.id}
-                className={`group rounded-2xl p-6 transition-[background-color,color,transform] duration-200 ease-out hover:-translate-y-1 ${
-                  isDark ? 'bg-white/5 hover:bg-white/10 border border-white/10' : 'bg-white shadow-sm hover:shadow-lg border border-gray-100'
-                }`}
-              >
-                <div className="flex items-center gap-3 mb-4">
-                  <div className={`p-3 rounded-xl transition-colors duration-300 ${
-                    isDark
-                      ? 'bg-white/10 text-white group-hover:bg-white group-hover:text-black'
-                      : 'bg-gray-100 text-gray-700 group-hover:bg-gray-900 group-hover:text-white'
-                  }`}>
-                    <PhaseIcon size={20} strokeWidth={2} />
-                  </div>
-                  <div>
-                    <div className={`text-[10px] uppercase font-bold tracking-wider ${
-                      isDark ? 'text-gray-500' : 'text-gray-400'
-                    }`}>
-                      {texts.phase} {phase.id}
-                    </div>
-                    <div className={`text-xs font-semibold ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
-                      {phase.duration}
-                    </div>
-                  </div>
-                </div>
-
-                <h4 className={`text-lg font-bold mb-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                  {phase.title}
-                </h4>
-
-                <div className="space-y-2">
-                  {phase.features.slice(0, 4).map((f, i) => (
-                    <div key={i} className="flex items-center gap-2">
-                      <div className={`w-1.5 h-1.5 rounded-full transition-colors duration-300 ${
-                        isDark ? 'bg-white/30 group-hover:bg-emerald-400' : 'bg-gray-300 group-hover:bg-emerald-500'
-                      }`} />
-                      <span className={`text-sm truncate ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                        {f}
-                      </span>
-                    </div>
-                  ))}
-                  {phase.features.length > 4 && (
-                    <div className={`text-xs italic pl-3.5 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
-                      + {phase.features.length - 4} {texts.more}
-                    </div>
-                  )}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
     </div>
   );
 };
@@ -493,8 +346,6 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
   }, []);
 
   const t = TOOLKIT_TRANSLATIONS[lang];
-  const isDark = systemTheme === 'dark';
-  // Load gallery items directly in the component
   const galleryItems = getToolkitGalleryItems(lang);
 
   // Build allImages with translated captions
@@ -505,14 +356,12 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
   }));
 
   const [lightboxOpen, setLightboxOpen] = useState(false);
-  // Sync caseStudyMode with external viewMode
   const initialCaseStudyMode = viewMode === 'executive' ? 'executive' : (viewMode === 'caseStudy' ? 'full' : 'executive');
   const [caseStudyMode, setCaseStudyMode] = useState<'executive' | 'full'>(initialCaseStudyMode);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [videoStartTime, setVideoStartTime] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Sync caseStudyMode when viewMode changes from outside
   useEffect(() => {
     if (viewMode === 'executive') {
       setCaseStudyMode('executive');
@@ -521,23 +370,12 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
     }
   }, [viewMode]);
 
-  // Video refs for tracking currentTime
   const videoRefs = useRef<{ [key: string]: HTMLVideoElement | null }>({});
 
-  // Project metadata
-  const projectMeta = {
-    type: 'Product Design',
-    scope: 'Web, App, Branding',
-    phase: 'Zero to One',
-    period: '2023-2025',
-  };
-
-  // Scroll to top when mode changes
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
   }, [caseStudyMode, viewMode]);
 
-  // Open lightbox with specific image and optional start time for videos
   const openLightbox = (imageSrc: string, startTime: number = 0) => {
     const index = allImages.findIndex(img => img.src === imageSrc);
     if (index !== -1) {
@@ -547,14 +385,66 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
     }
   };
 
-  // Close lightbox
   const closeLightbox = () => {
     setLightboxOpen(false);
   };
 
+  // Reusable media figure component
+  const MediaFigure = ({ src, alt, caption, captionDesc, type = 'image', className = '' }: {
+    src: string; alt: string; caption: string; captionDesc?: string; type?: 'image' | 'video'; className?: string;
+  }) => (
+    <figure className={className}>
+      <div
+        onClick={() => openLightbox(src)}
+        className="group rounded-xl overflow-hidden cursor-zoom-in ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
+      >
+        {type === 'video' ? (
+          <VideoPlayer
+            src={src}
+            className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
+          />
+        ) : (
+          <img loading="lazy" src={src} alt={alt}
+            className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
+          />
+        )}
+      </div>
+      <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
+        {caption}{captionDesc && ` · ${captionDesc}`}
+      </figcaption>
+    </figure>
+  );
+
+  // Reusable video figure with ref tracking
+  const VideoFigure = ({ src, refKey, caption, captionDesc, className = '' }: {
+    src: string; refKey: string; caption: string; captionDesc?: string; className?: string;
+  }) => (
+    <figure className={className}>
+      <div
+        onClick={() => {
+          const currentTime = videoRefs.current[refKey]?.currentTime || 0;
+          openLightbox(src, currentTime);
+        }}
+        className="group rounded-xl overflow-hidden cursor-zoom-in ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
+      >
+        <VideoPlayer
+          src={src}
+          className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
+        />
+      </div>
+      <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
+        {caption}{captionDesc && ` · ${captionDesc}`}
+      </figcaption>
+    </figure>
+  );
+
   return (
-    <div ref={containerRef} className={`min-h-screen ${viewMode === 'gallery' ? 'bg-white' : (systemTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white')}`}>
-      {/* Lightbox Modal - Using EnhancedLightbox */}
+    <div
+      ref={containerRef}
+      className="min-h-screen bg-[#FDFDFC]"
+    >
+
+      {/* Lightbox */}
       <EnhancedLightbox
         isOpen={lightboxOpen}
         onClose={closeLightbox}
@@ -571,8 +461,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
         updateUrl={true}
       />
 
-      {/* Content - Switch between Case Study and Gallery */}
-      <div className="pt-16">
+      {/* Content */}
       <AnimatePresence mode="wait">
         {viewMode === 'gallery' ? (
           /* Gallery View */
@@ -582,9 +471,9 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
-            className="w-full px-6 md:px-10 lg:px-12 py-8 md:py-12"
+            className="max-w-[960px] mx-auto px-6 py-8 md:py-12"
           >
-            <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 md:gap-10">
+            <div className="columns-1 sm:columns-2 lg:columns-3 gap-4">
               {galleryItems.map((item, index) => (
                 <GalleryCard
                   key={index}
@@ -621,1457 +510,590 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
           >
-      <div className="max-w-[1200px] mx-auto px-10 py-12 md:py-16">
-            {/* Hero Section - Title + Logo + Testimonial */}
+            {/* Hero Section */}
             <section id="hero" className="mb-24 md:mb-32">
-          {/* Logo at top-left */}
-          <img loading="lazy"
-            src={systemTheme === 'dark'
-              ? '/images/toolkit/Logo toolkit - dark bg - large - horizontal.svg'
-              : '/images/toolkit/Logo toolkit - light bg - large - horizontal.svg'
-            }
-            alt="Toolkit"
-            className="h-8 md:h-10 w-auto mb-8"
-          />
+              <div className="max-w-[740px] mx-auto px-6 pt-16 md:pt-24">
+                {/* Meta */}
+                <p className="text-xs text-gray-400 mb-4">
+                  {t.hero.tags} · {t.hero.zeroToOne} · {t.meta.period}
+                </p>
 
-          <div className="grid md:grid-cols-5 gap-10 items-start">
-            {/* Left Column - Title and Description */}
-            <div className="md:col-span-3">
-              {/* Meta tags */}
-              <div className="flex flex-wrap gap-2 mb-4">
-                <span className={`text-sm ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
-                  {t.hero.tags}
-                </span>
-                <span className={`text-sm ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
-                  -
-                </span>
-                <span className={`text-sm ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
-                  {t.hero.zeroToOne}
-                </span>
-                <span className={`text-sm ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
-                  -
-                </span>
-                <span className={`text-sm ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
-                  {t.meta.period}
-                </span>
+                {/* Title */}
+                <h1 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-3">
+                  {t.hero.title}
+                </h1>
+
+                {/* Subtitle */}
+                <p className="text-sm font-medium text-gray-900 mb-4">
+                  {t.hero.subtitle}
+                </p>
+
+                {/* Description */}
+                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-6">
+                  {t.hero.description}
+                </p>
+
+                {/* Visit Website */}
+                <a
+                  href="https://toolkit-app.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-gray-500 hover:text-gray-900 transition-colors inline-flex items-center gap-1"
+                >
+                  {t.visitToolkit}
+                  <ArrowRight size={14} />
+                </a>
               </div>
 
-              {/* Main Title */}
-              <h1
-                className={`text-3xl md:text-4xl font-bold mb-4 leading-tight ${
-                  systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                }`}
-              >
-                {t.hero.title}
-              </h1>
+              {/* Testimonial */}
+              <div className="max-w-[740px] mx-auto px-6 mt-10">
+                <div className="py-6 border-t border-gray-100">
+                  <p className="text-base text-gray-500 leading-relaxed italic max-w-[65ch] mb-4">
+                    "{t.testimonial.quote}"
+                  </p>
+                  <div className="flex items-center gap-3">
+                    <img loading="lazy"
+                      src="/images/people/pierre-marie-nigay.webp"
+                      alt={t.testimonial.author}
+                      className="w-8 h-8 rounded-full object-cover"
+                    />
+                    <div>
+                      <p className="text-sm font-medium text-gray-900">
+                        {t.testimonial.author}
+                      </p>
+                      <p className="text-xs text-gray-400">
+                        {t.testimonial.role}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
 
-              {/* Subtitle */}
-              <h2
-                className={`text-xl md:text-2xl font-bold mb-6 ${
-                  systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-700'
-                }`}
-              >
-                {t.hero.subtitle}
-              </h2>
-
-              {/* Description */}
-              <p
-                className={`text-base leading-relaxed mb-6 ${
-                  systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
-                }`}
-              >
-                {t.hero.description}
-              </p>
-
-              {/* Visit Website Button */}
-              <a
-                href="https://toolkit-app.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                  systemTheme === 'dark'
-                    ? 'bg-white/10 hover:bg-white/20 text-white'
-                    : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
-                }`}
-              >
-                <ExternalLink size={16} className="mr-2" />
-                {t.visitToolkit}
-              </a>
+            {/* Hero Image */}
+            <div className="max-w-[960px] mx-auto px-6">
+              <MediaFigure
+                src="/images/toolkit/hero.webp"
+                alt="Toolkit App Overview"
+                caption={t.captions.hero as string}
+                captionDesc={t.captions.heroDesc as string}
+                className="mb-24 md:mb-32"
+              />
             </div>
 
-            {/* Right Column - Testimonial */}
-            <div className="md:col-span-2">
-              {/* Testimonial Card */}
-              <div
-                className={`p-6 rounded-2xl border ${
-                  systemTheme === 'dark'
-                    ? 'bg-yellow-900/20 border-yellow-500/20'
-                    : 'bg-yellow-50 border-yellow-200'
-                }`}
-              >
-                <Quote
-                  size={24}
-                  className={`mb-4 ${
-                    systemTheme === 'dark' ? 'text-yellow-400' : 'text-yellow-600'
-                  }`}
-                />
-                <p
-                  className={`text-sm italic leading-relaxed mb-4 ${
-                    systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
-                  }`}
-                >
-                  {t.testimonial.quote}
-                </p>
-                <div className="flex items-center space-x-3">
-                  <img loading="lazy"
-                    src="/images/people/pierre-marie-nigay.webp"
-                    alt={t.testimonial.author}
-                    className="w-10 h-10 rounded-full object-cover"
-                  />
+            {/* Overview Section */}
+            <section id="overview" className="mb-24 md:mb-32">
+              <div className="max-w-[740px] mx-auto px-6">
+                <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+                  {t.overview.title}
+                </h2>
+
+                <div className="space-y-8">
+                  {/* Introduction */}
                   <div>
-                    <p
-                      className={`text-sm font-semibold ${
-                        systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                      }`}
-                    >
-                      {t.testimonial.author}
+                    <p className="text-sm font-medium text-gray-900 mb-2">
+                      {t.overview.introTitle}
                     </p>
-                    <p
-                      className={`text-xs ${
-                        systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                      }`}
-                    >
-                      {t.testimonial.role}
+                    <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">
+                      {t.overview.introP1}
+                    </p>
+                    <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mt-3">
+                      {t.overview.introP2}
+                    </p>
+                  </div>
+
+                  {/* My Role */}
+                  <div>
+                    <p className="text-sm font-medium text-gray-900 mb-2">
+                      {t.overview.roleTitle}
+                    </p>
+                    <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">
+                      {t.overview.roleDesc}
+                    </p>
+                  </div>
+
+                  {/* Project and Impact */}
+                  <div>
+                    <p className="text-sm font-medium text-gray-900 mb-2">
+                      {t.overview.projectTitle}
+                    </p>
+                    <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">
+                      {t.overview.projectP1}
+                    </p>
+                    <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mt-3">
+                      {t.overview.projectP2}
                     </p>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </section>
+            </section>
 
-        {/* Project Meta Card - Synthesis */}
-        <div
-          className={`p-6 rounded-3xl border mb-12 ${
-            systemTheme === 'dark'
-              ? 'bg-[#1D1D1F] border-white/10'
-              : 'bg-gray-50 border-gray-200'
-          }`}
-        >
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="flex items-center space-x-3">
-              <div
-                className={`p-2 rounded-xl ${
-                  systemTheme === 'dark' ? 'bg-blue-600/20' : 'bg-blue-50'
-                }`}
-              >
-                <Layers
-                  size={20}
-                  className={systemTheme === 'dark' ? 'text-blue-400' : 'text-blue-600'}
-                />
-              </div>
-              <div>
-                <p className={`text-xs ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
-                  Type
+            {/* Context and Approach Section */}
+            <section id="context" className="mb-24 md:mb-32">
+              <div className="max-w-[740px] mx-auto px-6">
+                <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+                  {t.context.title}
+                </h2>
+                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-12">
+                  {t.context.intro}
                 </p>
-                <p className={`text-sm font-medium ${systemTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                  {projectMeta.type}
-                </p>
-              </div>
-            </div>
 
-            <div className="flex items-center space-x-3">
-              <div
-                className={`p-2 rounded-xl ${
-                  systemTheme === 'dark' ? 'bg-purple-500/20' : 'bg-purple-50'
-                }`}
-              >
-                <Briefcase
-                  size={20}
-                  className={systemTheme === 'dark' ? 'text-purple-400' : 'text-purple-600'}
-                />
+                {/* Three phases interactive */}
+                <ProductEvolutionDiagram lang={lang} />
               </div>
-              <div>
-                <p className={`text-xs ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
-                  Scope
-                </p>
-                <p className={`text-sm font-medium ${systemTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                  {projectMeta.scope}
-                </p>
-              </div>
-            </div>
 
-            <div className="flex items-center space-x-3">
-              <div
-                className={`p-2 rounded-xl ${
-                  systemTheme === 'dark' ? 'bg-green-500/20' : 'bg-green-50'
-                }`}
-              >
-                <Calendar
-                  size={20}
-                  className={systemTheme === 'dark' ? 'text-green-400' : 'text-green-600'}
-                />
+              {/* Diagrams */}
+              <div className="max-w-[960px] mx-auto px-6 mt-16">
+                <div className="space-y-8 mb-12">
+                  <MediaFigure
+                    src="/images/toolkit/Diagram_01_-_Problem.svg"
+                    alt="Core Design Challenge"
+                    caption={t.context.coreChallenge}
+                    captionDesc={t.context.coreChallengeDesc}
+                  />
+                  <MediaFigure
+                    src="/images/toolkit/Diagram_02_-_Research.svg"
+                    alt="Research process"
+                    caption={t.context.research}
+                    captionDesc={t.context.researchDesc}
+                  />
+                  <MediaFigure
+                    src="/images/toolkit/Diagram_03_-_Foundation.svg"
+                    alt="Foundation"
+                    caption={t.context.foundation}
+                    captionDesc={t.context.foundationDesc}
+                  />
+                </div>
+
+                <div className="space-y-8">
+                  <MediaFigure
+                    src="/images/toolkit/Diagram_04_-_Project_creation_workflow.svg"
+                    alt="Project Creation Workflow"
+                    caption={t.context.creationWorkflow}
+                    captionDesc={t.context.creationWorkflowDesc}
+                  />
+                  <MediaFigure
+                    src="/images/toolkit/Diagram_05_-_Core_interaction_principles.svg"
+                    alt="Core Interaction Principles"
+                    caption={t.context.interactionPrinciples}
+                    captionDesc={t.context.interactionPrinciplesDesc}
+                  />
+                </div>
               </div>
-              <div>
-                <p className={`text-xs ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
-                  Period
-                </p>
-                <p className={`text-sm font-medium ${systemTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                  {projectMeta.period}
+            </section>
+
+            {/* Phase 1 - Foundation */}
+            <section id="phase1" className="mb-24 md:mb-32">
+              <div className="max-w-[740px] mx-auto px-6">
+                <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+                  {t.phase1.title}
+                </h2>
+
+                <p className="text-sm font-medium text-gray-900 mb-8">
+                  {t.phase1.firstTimeExp}
                 </p>
               </div>
-            </div>
 
-            <div className="flex items-center space-x-3">
-              <div
-                className={`p-2 rounded-xl ${
-                  systemTheme === 'dark' ? 'bg-orange-500/20' : 'bg-orange-50'
-                }`}
-              >
-                <Rocket
-                  size={20}
-                  className={systemTheme === 'dark' ? 'text-orange-400' : 'text-orange-600'}
+              {/* Authentication & Empty State */}
+              <div className="max-w-[960px] mx-auto px-6">
+                <div className="space-y-8 mb-12">
+                  <MediaFigure
+                    src="/images/toolkit/authentication_-_magic_link.svg"
+                    alt="Passwordless authentication"
+                    caption={t.captions.passwordlessAuth as string}
+                    captionDesc={t.captions.passwordlessAuthDesc as string}
+                  />
+                  <MediaFigure
+                    src="/images/toolkit/desktop_-_chantier_-_create_-_empty.svg"
+                    alt={t.captions.emptyState as string}
+                    caption={t.captions.emptyState as string}
+                    captionDesc={t.captions.emptyStateDesc as string}
+                  />
+                </div>
+
+                {/* Form & Detail v1 */}
+                <div className="space-y-8 mb-12">
+                  <MediaFigure
+                    src="/images/toolkit/desktop_-_chantier_-_create_-_modal.svg"
+                    alt="Form design pattern"
+                    caption={t.captions.formPattern as string}
+                    captionDesc={t.captions.formPatternDesc as string}
+                  />
+                  <MediaFigure
+                    src="/images/toolkit/desktop_-_chantier_-_details_-_v1.svg"
+                    alt="Chantier Detail v1"
+                    caption={t.captions.chantierV1 as string}
+                    captionDesc={t.captions.chantierV1Desc as string}
+                  />
+                </div>
+
+                {/* Chantier Detail v2 - Full width */}
+                <MediaFigure
+                  src="/images/toolkit/desktop_-_chantier_-_details_-_v2.svg"
+                  alt="Chantier Detail v2"
+                  caption={t.captions.chantierV2 as string}
+                  captionDesc={t.captions.chantierV2Desc as string}
+                  className="mb-16"
                 />
               </div>
-              <div>
-                <p className={`text-xs ${systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
-                  Phase
+
+              {/* Show and Hide navigation */}
+              <div className="max-w-[740px] mx-auto px-6">
+                <p className="text-sm font-medium text-gray-900 mb-2">
+                  Show and Hide navigation
                 </p>
-                <p className={`text-sm font-medium ${systemTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                  {projectMeta.phase}
+                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-8">
+                  Secondary sidebar collapsing and expanding on demand. Setup sections (zones, companies, task libraries) prominent during project creation, collapsing once project active. Operations sections (planning, documents, observations) surfacing as primary navigation. Progressive disclosure: complexity hidden until relevant, interface adapting to project lifecycle stage.
                 </p>
               </div>
-            </div>
-          </div>
-        </div>
 
-        {/* Hero Image */}
-        <figure className="mb-16">
-          <div
-            onClick={() => openLightbox('/images/toolkit/hero.webp')}
-            className={`rounded-2xl overflow-hidden border cursor-pointer ${
-              systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-            }`}
-          >
-            <img loading="lazy"
-              src="/images/toolkit/hero.webp"
-              alt="Toolkit App Overview"
-              className="w-full h-auto"
-            />
-          </div>
-        </figure>
-
-        {/* Overview Section */}
-        <section id="overview" className="mb-24 md:mb-32">
-          <h1
-            className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-4 tracking-tight ${
-              systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-            }`}
-          >
-            {t.overview.title}
-          </h1>
-          <hr
-            className={`mb-10 ${
-              systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-            }`}
-          />
-
-          <div className="grid md:grid-cols-3 gap-10">
-            {/* Introduction */}
-            <div>
-              <h2
-                className={`text-xl md:text-2xl font-semibold mb-5 tracking-tight ${
-                  systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                }`}
-              >
-                {t.overview.introTitle}
-              </h2>
-              <p
-                className={`text-base leading-relaxed mb-5 ${
-                  systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
-                }`}
-              >
-                {t.overview.introP1}
-              </p>
-              <p
-                className={`text-base leading-relaxed ${
-                  systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
-                }`}
-              >
-                {t.overview.introP2}
-              </p>
-            </div>
-
-            {/* My Role */}
-            <div>
-              <h2
-                className={`text-xl md:text-2xl font-semibold mb-5 tracking-tight ${
-                  systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                }`}
-              >
-                {t.overview.roleTitle}
-              </h2>
-              <p
-                className={`text-base leading-relaxed ${
-                  systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
-                }`}
-              >
-                {t.overview.roleDesc}
-              </p>
-            </div>
-
-            {/* Project and Impact */}
-            <div>
-              <h2
-                className={`text-xl md:text-2xl font-semibold mb-5 tracking-tight ${
-                  systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                }`}
-              >
-                {t.overview.projectTitle}
-              </h2>
-              <p
-                className={`text-base leading-relaxed mb-4 ${
-                  systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
-                }`}
-              >
-                {t.overview.projectP1}
-              </p>
-              <p
-                className={`text-base leading-relaxed ${
-                  systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
-                }`}
-              >
-                {t.overview.projectP2}
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* Context and Approach Section */}
-        <section id="context" className="mb-24 md:mb-32">
-          <h1
-            className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-6 tracking-tight ${
-              systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-            }`}
-          >
-            {t.context.title}
-          </h1>
-
-          <p
-            className={`text-base leading-relaxed mb-8 ${
-              systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
-            }`}
-          >
-            {t.context.intro}
-          </p>
-
-          {/* Interactive Three Phases to Market-Fit */}
-          <div className="mb-12">
-            <ProductEvolutionDiagram isDark={systemTheme === 'dark'} lang={lang} />
-          </div>
-
-          {/* Core Design Challenge, Research, Foundation */}
-          <div className="grid md:grid-cols-3 gap-6 mb-12">
-            <figure>
-              <div
-                onClick={() => openLightbox('/images/toolkit/Diagram_01_-_Problem.svg')}
-                className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] aspect-square ${
-                  systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-                }`}
-              >
-                <img loading="lazy"
-                  src="/images/toolkit/Diagram_01_-_Problem.svg"
-                  alt="Core Design Challenge"
-                  className="w-full h-full object-cover"
+              <div className="max-w-[960px] mx-auto px-6">
+                <VideoFigure
+                  src="/videos/toolkit/video_-_navigation_-_show_hide.mp4"
+                  refKey="nav-show-hide"
+                  caption={t.captions.navShowHide as string}
+                  captionDesc={t.captions.navShowHideDesc as string}
+                  className="mb-16"
                 />
               </div>
-              <figcaption
-                className={`mt-3 text-sm ${
-                  systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                }`}
-              >
-                <strong>{t.context.coreChallenge}</strong> - {t.context.coreChallengeDesc}
-              </figcaption>
-            </figure>
 
-            <figure>
-              <div
-                onClick={() => openLightbox('/images/toolkit/Diagram_02_-_Research.svg')}
-                className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] aspect-square ${
-                  systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-                }`}
-              >
-                <img loading="lazy"
-                  src="/images/toolkit/Diagram_02_-_Research.svg"
-                  alt="Research process"
-                  className="w-full h-full object-cover"
+              {/* Tasks */}
+              <div className="max-w-[740px] mx-auto px-6">
+                <p className="text-sm font-medium text-gray-900 mb-8">
+                  Tasks
+                </p>
+              </div>
+
+              <div className="max-w-[960px] mx-auto px-6">
+                <MediaFigure
+                  src="/images/toolkit/daktop_-_site_setup_-_tasks_list.svg"
+                  alt="Task creation interface"
+                  caption={t.captions.taskCreation as string}
+                  captionDesc={t.captions.taskCreationDesc as string}
+                  className="mb-16"
                 />
               </div>
-              <figcaption
-                className={`mt-3 text-sm ${
-                  systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                }`}
-              >
-                <strong>{t.context.research}</strong> - {t.context.researchDesc}
-              </figcaption>
-            </figure>
 
-            <figure>
-              <div
-                onClick={() => openLightbox('/images/toolkit/Diagram_03_-_Foundation.svg')}
-                className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] aspect-square ${
-                  systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-                }`}
-              >
-                <img loading="lazy"
-                  src="/images/toolkit/Diagram_03_-_Foundation.svg"
-                  alt="Foundation"
-                  className="w-full h-full object-cover"
+              {/* Sequences */}
+              <div className="max-w-[740px] mx-auto px-6">
+                <p className="text-sm font-medium text-gray-900 mb-8">
+                  Sequences
+                </p>
+              </div>
+
+              <div className="max-w-[960px] mx-auto px-6">
+                <MediaFigure
+                  src="/images/toolkit/daktop_-_site_setup_-_tasks_sequence.svg"
+                  alt="Tasks sequences interface"
+                  caption={t.captions.taskSequences as string}
+                  captionDesc={t.captions.taskSequencesDesc as string}
+                  className="mb-16"
                 />
               </div>
-              <figcaption
-                className={`mt-3 text-sm ${
-                  systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                }`}
-              >
-                <strong>{t.context.foundation}</strong> - {t.context.foundationDesc}
-              </figcaption>
-            </figure>
-          </div>
 
-          {/* Project Creation Workflow, Core Interaction Principles */}
-          <div className="grid md:grid-cols-2 gap-6 mb-8">
-            <figure>
-              <div
-                onClick={() => openLightbox('/images/toolkit/Diagram_04_-_Project_creation_workflow.svg')}
-                className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
-                  systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-                }`}
-              >
-                <img loading="lazy"
-                  src="/images/toolkit/Diagram_04_-_Project_creation_workflow.svg"
-                  alt="Project Creation Workflow"
-                  className="w-full h-auto"
+              {/* Planning */}
+              <div className="max-w-[740px] mx-auto px-6">
+                <p className="text-sm font-medium text-gray-900 mb-8">
+                  Planning
+                </p>
+              </div>
+
+              <div className="max-w-[960px] mx-auto px-6">
+                <MediaFigure
+                  src="/images/toolkit/planning_-_v1.svg"
+                  alt="Planning interface v1"
+                  caption={t.captions.planningV1 as string}
+                  captionDesc={t.captions.planningV1Desc as string}
+                  className="mb-12"
+                />
+
+                {/* Task Components v1 & v2 */}
+                <div className="space-y-8 mb-12">
+                  <MediaFigure
+                    src="/images/toolkit/Component_Task_v1.svg"
+                    alt="Task component v1"
+                    caption={t.captions.taskComponentV1 as string}
+                    captionDesc={t.captions.taskComponentV1Desc as string}
+                  />
+                  <MediaFigure
+                    src="/images/toolkit/Component_Task_v2.svg"
+                    alt="Task component v2"
+                    caption={t.captions.taskComponentV2 as string}
+                    captionDesc={t.captions.taskComponentV2Desc as string}
+                  />
+                </div>
+
+                {/* Planning v2 */}
+                <MediaFigure
+                  src="/images/toolkit/planning_-_v2.svg"
+                  alt="Planning interface v2"
+                  caption={t.captions.planningV2 as string}
+                  captionDesc={t.captions.planningV2Desc as string}
+                  className="mb-12"
+                />
+
+                {/* Planning Interactions */}
+                <div className="space-y-8 mb-12">
+                  <MediaFigure
+                    src="/images/toolkit/planning_-_mouse_-_selection_rectangle.svg"
+                    alt="Multi-select"
+                    caption={t.captions.multiSelect as string}
+                    captionDesc={t.captions.multiSelectDesc as string}
+                  />
+                  <MediaFigure
+                    src="/images/toolkit/planning_-_mouse_-_right_click.svg"
+                    alt="Context menu"
+                    caption={t.captions.contextMenu as string}
+                    captionDesc={t.captions.contextMenuDesc as string}
+                  />
+                  <MediaFigure
+                    src="/images/toolkit/planning_-_selection_tache_dynamic_menu.svg"
+                    alt="Adaptive zoom"
+                    caption={t.captions.adaptiveZoom as string}
+                    captionDesc={t.captions.adaptiveZoomDesc as string}
+                  />
+                </div>
+              </div>
+
+              {/* Expand layout */}
+              <div className="max-w-[740px] mx-auto px-6">
+                <p className="text-sm font-medium text-gray-900 mb-2">
+                  Expand layout on planning view
+                </p>
+                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-8">
+                  To enhance ease of use on the planning we implemented a way to expand the layout to focus on task management, without getting confusion with navigation panel.
+                </p>
+              </div>
+
+              <div className="max-w-[960px] mx-auto px-6">
+                <VideoFigure
+                  src="/videos/toolkit/video_-_planning_-_zoom_dezoom.mp4"
+                  refKey="planning-zoom"
+                  caption={t.captions.expandLayout as string}
+                  captionDesc={t.captions.expandLayoutDesc as string}
                 />
               </div>
-              <figcaption
-                className={`mt-3 text-sm ${
-                  systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                }`}
-              >
-                <strong>{t.context.creationWorkflow}</strong> - {t.context.creationWorkflowDesc}
-              </figcaption>
-            </figure>
+            </section>
 
-            <figure>
-              <div
-                onClick={() => openLightbox('/images/toolkit/Diagram_05_-_Core_interaction_principles.svg')}
-                className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
-                  systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-                }`}
-              >
-                <img loading="lazy"
-                  src="/images/toolkit/Diagram_05_-_Core_interaction_principles.svg"
-                  alt="Core Interaction Principles"
-                  className="w-full h-auto"
+            {/* Phase 2 - Feature expansion */}
+            <section id="phase2" className="mb-24 md:mb-32">
+              <div className="max-w-[740px] mx-auto px-6">
+                <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+                  {t.phase2.title}
+                </h2>
+                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-12">
+                  {t.phase2.intro}
+                </p>
+
+                {/* Dynamic Menu */}
+                <p className="text-sm font-medium text-gray-900 mb-2">
+                  {t.phase2.dynamicMenu}
+                </p>
+                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-8">
+                  {t.phase2.dynamicMenuDesc}
+                </p>
+              </div>
+
+              <div className="max-w-[960px] mx-auto px-6">
+                <MediaFigure
+                  src="/images/toolkit/dynamic_island_menu_-_modifier_tache.svg"
+                  alt="Dynamic island menu - task modification"
+                  caption={t.captions.dynamicIsland as string}
+                  captionDesc={t.captions.dynamicIslandDesc as string}
+                  className="mb-16"
                 />
               </div>
-              <figcaption
-                className={`mt-3 text-sm ${
-                  systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                }`}
-              >
-                <strong>{t.context.interactionPrinciples}</strong> - {t.context.interactionPrinciplesDesc}
-              </figcaption>
-            </figure>
-          </div>
-        </section>
 
-        {/* Divider */}
-        <hr
-          className={`my-12 ${
-            systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-          }`}
-        />
+              {/* Task manipulation video */}
+              <div className="max-w-[740px] mx-auto px-6">
+                <p className="text-sm font-medium text-gray-900 mb-2">
+                  Task manipulation in planning
+                </p>
+                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-8">
+                  Edit duration and task information on the fly directly from the planning canvas.
+                </p>
+              </div>
 
-        {/* Phase 1 - Foundation */}
-        <section id="phase1" className="mb-24 md:mb-32">
-          <h1
-            className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-8 tracking-tight ${
-              systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-            }`}
-          >
-            {t.phase1.title}
-          </h1>
-
-          {/* 1st Time Experience */}
-          <h2
-            className={`text-xl md:text-2xl font-bold mb-6 ${
-              systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-            }`}
-          >
-            {t.phase1.firstTimeExp}
-          </h2>
-
-          {/* Authentication & Empty State */}
-          <div className="grid md:grid-cols-2 gap-6 mb-8">
-            <figure>
-              <div
-                onClick={() => openLightbox('/images/toolkit/authentication_-_magic_link.svg')}
-                className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
-                  systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-                }`}
-              >
-                <img loading="lazy"
-                  src="/images/toolkit/authentication_-_magic_link.svg"
-                  alt="Passwordless authentication"
-                  className="w-full h-auto"
+              <div className="max-w-[960px] mx-auto px-6">
+                <VideoFigure
+                  src="/videos/toolkit/video_-_task_manipulation.mp4"
+                  refKey="task-manipulation"
+                  caption={t.captions.taskManipulation as string}
+                  captionDesc={t.captions.taskManipulationDesc as string}
+                  className="mb-16"
                 />
               </div>
-              <figcaption
-                className={`mt-3 text-sm ${
-                  systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                }`}
-              >
-                <strong>{t.captions.passwordlessAuth}</strong> - {t.captions.passwordlessAuthDesc}
-              </figcaption>
-            </figure>
 
-            <figure>
-              <div
-                onClick={() => openLightbox('/images/toolkit/desktop_-_chantier_-_create_-_empty.svg')}
-                className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
-                  systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-                }`}
-              >
-                <img loading="lazy"
-                  src="/images/toolkit/desktop_-_chantier_-_create_-_empty.svg"
-                  alt={t.captions.emptyState}
-                  className="w-full h-auto"
+              {/* Batch edition video */}
+              <div className="max-w-[740px] mx-auto px-6">
+                <p className="text-sm font-medium text-gray-900 mb-2">
+                  Batch edition
+                </p>
+                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-8">
+                  Select a zone or multiple tasks on the canvas, apply parameters in 20 seconds. Users managing 50-100+ tasks need efficient ways to apply changes across groups.
+                </p>
+              </div>
+
+              <div className="max-w-[960px] mx-auto px-6">
+                <VideoFigure
+                  src="/videos/toolkit/video_-_batch_edition.mp4"
+                  refKey="batch-edition"
+                  caption={t.captions.batchEdition as string}
+                  captionDesc={t.captions.batchEditionDesc as string}
+                  className="mb-12"
+                />
+
+                <MediaFigure
+                  src="/images/toolkit/dynamic_menu_-_components_and_interface_system.svg"
+                  alt="Dynamic menu components and interface system"
+                  caption={t.captions.interfaceSystem as string}
+                  captionDesc={t.captions.interfaceSystemDesc as string}
+                  className="mb-12"
+                />
+
+                <MediaFigure
+                  src="/images/toolkit/cars_detail_tache_-_dynamic_menu_-_comportement_section_activite.svg"
+                  alt="Task detail with activity section"
+                  caption={t.captions.activitySection as string}
+                  captionDesc={t.captions.activitySectionDesc as string}
                 />
               </div>
-              <figcaption
-                className={`mt-3 text-sm ${
-                  systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                }`}
-              >
-                <strong>{t.captions.emptyState}</strong> - {t.captions.emptyStateDesc}
-              </figcaption>
-            </figure>
-          </div>
+            </section>
 
-          {/* Form & Detail v1 */}
-          <div className="grid md:grid-cols-2 gap-6 mb-8">
-            <figure>
-              <div
-                onClick={() => openLightbox('/images/toolkit/desktop_-_chantier_-_create_-_modal.svg')}
-                className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
-                  systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-                }`}
-              >
-                <img loading="lazy"
-                  src="/images/toolkit/desktop_-_chantier_-_create_-_modal.svg"
-                  alt="Form design pattern"
-                  className="w-full h-auto"
+            {/* Phase 3 - Platform maturity */}
+            <section id="phase3" className="mb-24 md:mb-32">
+              <div className="max-w-[740px] mx-auto px-6">
+                <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+                  {t.phase3.title}
+                </h2>
+                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-12">
+                  {t.phase3.intro}
+                </p>
+
+                {/* Project Hub */}
+                <p className="text-sm font-medium text-gray-900 mb-2">
+                  {t.phase3.projectHub}
+                </p>
+                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-8">
+                  {t.phase3.projectHubDesc}
+                </p>
+              </div>
+
+              <div className="max-w-[960px] mx-auto px-6">
+                <MediaFigure
+                  src="/images/toolkit/desktop_-_chantier_-_index_-_v3.svg"
+                  alt="Project hub - construction site index v3"
+                  caption={t.captions.projectHubV3 as string}
+                  captionDesc={t.captions.projectHubV3Desc as string}
+                  className="mb-16"
                 />
               </div>
-              <figcaption
-                className={`mt-3 text-sm ${
-                  systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                }`}
-              >
-                <strong>{t.captions.formPattern}</strong> - {t.captions.formPatternDesc}
-              </figcaption>
-            </figure>
 
-            <figure>
-              <div
-                onClick={() => openLightbox('/images/toolkit/desktop_-_chantier_-_details_-_v1.svg')}
-                className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
-                  systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-                }`}
-              >
-                <img loading="lazy"
-                  src="/images/toolkit/desktop_-_chantier_-_details_-_v1.svg"
-                  alt="Chantier Detail v1"
-                  className="w-full h-auto"
+              {/* Mobile Evolution */}
+              <div className="max-w-[740px] mx-auto px-6">
+                <p className="text-sm font-medium text-gray-900 mb-2">
+                  Mobile evolution
+                </p>
+                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-8">
+                  Construction happens on-site, often in challenging conditions. The mobile experience needed to be robust, fast, and usable with gloves. We redesigned the navigation system for touch-first interaction while maintaining feature parity with desktop.
+                </p>
+              </div>
+
+              <div className="max-w-[960px] mx-auto px-6">
+                <MediaFigure
+                  src="/images/toolkit/evolution_mobile_menu.svg"
+                  alt="Mobile menu evolution"
+                  caption={t.captions.mobileNav as string}
+                  captionDesc={t.captions.mobileNavDesc as string}
                 />
               </div>
-              <figcaption
-                className={`mt-3 text-sm ${
-                  systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                }`}
-              >
-                <strong>{t.captions.chantierV1}</strong> - {t.captions.chantierV1Desc}
-              </figcaption>
-            </figure>
-          </div>
+            </section>
 
-          {/* Chantier Detail v2 - Full width */}
-          <figure className="my-12">
-            <div
-              onClick={() => openLightbox('/images/toolkit/desktop_-_chantier_-_details_-_v2.svg')}
-              className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
-                systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-              }`}
-            >
-              <img loading="lazy"
-                src="/images/toolkit/desktop_-_chantier_-_details_-_v2.svg"
-                alt="Chantier Detail v2"
-                className="w-full h-auto"
-              />
-            </div>
-            <figcaption
-              className={`mt-3 text-sm ${
-                systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-              }`}
-            >
-              <strong>{t.captions.chantierV2}</strong> - {t.captions.chantierV2Desc}
-            </figcaption>
-          </figure>
+            {/* Design System Foundation */}
+            <section id="design-system" className="mb-24 md:mb-32">
+              <div className="max-w-[740px] mx-auto px-6">
+                <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+                  {t.designSystem.title}
+                </h2>
+                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-12">
+                  {t.designSystem.intro}
+                </p>
+              </div>
 
-          {/* Show and Hide navigation */}
-          <h3
-            className={`text-xl md:text-2xl font-semibold mb-5 tracking-tight ${
-              systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-            }`}
-          >
-            Show and Hide navigation
-          </h3>
-          <p
-            className={`text-base leading-relaxed mb-6 ${
-              systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
-            }`}
-          >
-            Secondary sidebar collapsing and expanding on demand. Setup sections (zones, companies, task libraries) prominent during project creation, collapsing once project active. Operations sections (planning, documents, observations) surfacing as primary navigation. Progressive disclosure: complexity hidden until relevant, interface adapting to project lifecycle stage.
-          </p>
+              <div className="max-w-[960px] mx-auto px-6">
+                <MediaFigure
+                  src="/images/toolkit/Design_system.svg"
+                  alt="Design system overview"
+                  caption={t.designSystem.ds}
+                  captionDesc={t.designSystem.dsDesc}
+                  className="mb-12"
+                />
 
-          <figure className="my-12">
-            <div
-              onClick={() => {
-                const currentTime = videoRefs.current['nav-show-hide']?.currentTime || 0;
-                openLightbox('/videos/toolkit/video_-_navigation_-_show_hide.mp4', currentTime);
-              }}
-              className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
-                systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-              }`}
-            >
-              <video
-                ref={(el) => { videoRefs.current['nav-show-hide'] = el; }}
-                src="/videos/toolkit/video_-_navigation_-_show_hide.mp4"
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="w-full h-auto pointer-events-none"
-              />
-            </div>
-            <figcaption
-              className={`mt-3 text-sm ${
-                systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-              }`}
-            >
-              <strong>{t.captions.navShowHide}</strong> - {t.captions.navShowHideDesc}
-            </figcaption>
-          </figure>
-
-          {/* Divider */}
-          <hr
-            className={`my-12 ${
-              systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-            }`}
-          />
-
-          {/* Tasks */}
-          <h2
-            className={`text-xl md:text-2xl font-bold mb-6 ${
-              systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-            }`}
-          >
-            Tasks
-          </h2>
-
-          <figure className="my-12">
-            <div
-              onClick={() => openLightbox('/images/toolkit/daktop_-_site_setup_-_tasks_list.svg')}
-              className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
-                systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-              }`}
-            >
-              <img loading="lazy"
-                src="/images/toolkit/daktop_-_site_setup_-_tasks_list.svg"
-                alt="Task creation interface"
-                className="w-full h-auto"
-              />
-            </div>
-            <figcaption
-              className={`mt-3 text-sm ${
-                systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-              }`}
-            >
-              <strong>{t.captions.taskCreation}</strong> - {t.captions.taskCreationDesc}
-            </figcaption>
-          </figure>
-
-          {/* Sequences */}
-          <h2
-            className={`text-xl md:text-2xl font-bold mb-6 ${
-              systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-            }`}
-          >
-            Sequences
-          </h2>
-
-          <figure className="my-12">
-            <div
-              onClick={() => openLightbox('/images/toolkit/daktop_-_site_setup_-_tasks_sequence.svg')}
-              className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
-                systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-              }`}
-            >
-              <img loading="lazy"
-                src="/images/toolkit/daktop_-_site_setup_-_tasks_sequence.svg"
-                alt="Tasks sequences interface"
-                className="w-full h-auto"
-              />
-            </div>
-            <figcaption
-              className={`mt-3 text-sm ${
-                systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-              }`}
-            >
-              <strong>{t.captions.taskSequences}</strong> - {t.captions.taskSequencesDesc}
-            </figcaption>
-          </figure>
-
-          {/* Divider */}
-          <hr
-            className={`my-12 ${
-              systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-            }`}
-          />
-
-          {/* Planning */}
-          <h2
-            className={`text-xl md:text-2xl font-bold mb-6 ${
-              systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-            }`}
-          >
-            Planning
-          </h2>
-
-          <figure className="my-12">
-            <div
-              onClick={() => openLightbox('/images/toolkit/planning_-_v1.svg')}
-              className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
-                systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-              }`}
-            >
-              <img loading="lazy"
-                src="/images/toolkit/planning_-_v1.svg"
-                alt="Planning interface v1"
-                className="w-full h-auto"
-              />
-            </div>
-            <figcaption
-              className={`mt-3 text-sm ${
-                systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-              }`}
-            >
-              <strong>{t.captions.planningV1}</strong> - {t.captions.planningV1Desc}
-            </figcaption>
-          </figure>
-
-          {/* Task Components v1 & v2 */}
-          <div className="grid md:grid-cols-2 gap-6 mb-8">
-            <figure>
-              <div
-                onClick={() => openLightbox('/images/toolkit/Component_Task_v1.svg')}
-                className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
-                  systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-                }`}
-              >
-                <img loading="lazy"
-                  src="/images/toolkit/Component_Task_v1.svg"
-                  alt="Task component v1"
-                  className="w-full h-auto"
+                <MediaFigure
+                  src="/images/toolkit/system_-_icons_-_files_and_folders.svg"
+                  alt="Icon system - files and folders"
+                  caption={t.designSystem.iconSystem}
+                  captionDesc={t.designSystem.iconSystemDesc}
                 />
               </div>
-              <figcaption
-                className={`mt-3 text-sm ${
-                  systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                }`}
-              >
-                <strong>{t.captions.taskComponentV1}</strong> - {t.captions.taskComponentV1Desc}
-              </figcaption>
-            </figure>
+            </section>
 
-            <figure>
-              <div
-                onClick={() => openLightbox('/images/toolkit/Component_Task_v2.svg')}
-                className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
-                  systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-                }`}
-              >
-                <img loading="lazy"
-                  src="/images/toolkit/Component_Task_v2.svg"
-                  alt="Task component v2"
-                  className="w-full h-auto"
+            {/* Impact */}
+            <section id="impact" className="mb-24 md:mb-32">
+              <div className="max-w-[740px] mx-auto px-6">
+                <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+                  {t.impact.title}
+                </h2>
+                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-12">
+                  {t.impact.intro}
+                </p>
+              </div>
+
+              <div className="max-w-[960px] mx-auto px-6">
+                <MediaFigure
+                  src="/images/toolkit/Diagram_06_-_Impact.svg"
+                  alt="Impact diagram"
+                  caption={t.impact.projectImpact}
+                  captionDesc={t.impact.projectImpactDesc}
+                  className="mb-12"
                 />
               </div>
-              <figcaption
-                className={`mt-3 text-sm ${
-                  systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                }`}
-              >
-                <strong>{t.captions.taskComponentV2}</strong> - {t.captions.taskComponentV2Desc}
-              </figcaption>
-            </figure>
-          </div>
 
-          {/* Planning v2 */}
-          <figure className="my-12">
-            <div
-              onClick={() => openLightbox('/images/toolkit/planning_-_v2.svg')}
-              className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
-                systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-              }`}
-            >
-              <img loading="lazy"
-                src="/images/toolkit/planning_-_v2.svg"
-                alt="Planning interface v2"
-                className="w-full h-auto"
-              />
-            </div>
-            <figcaption
-              className={`mt-3 text-sm ${
-                systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-              }`}
-            >
-              <strong>{t.captions.planningV2}</strong> - {t.captions.planningV2Desc}
-            </figcaption>
-          </figure>
-
-          {/* Planning Interactions */}
-          <div className="grid md:grid-cols-3 gap-6 mb-8">
-            <figure>
-              <div
-                onClick={() => openLightbox('/images/toolkit/planning_-_mouse_-_selection_rectangle.svg')}
-                className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
-                  systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-                }`}
-              >
-                <img loading="lazy"
-                  src="/images/toolkit/planning_-_mouse_-_selection_rectangle.svg"
-                  alt="Multi-select"
-                  className="w-full h-auto"
-                />
+              {/* Key Results - inline metrics */}
+              <div className="max-w-[740px] mx-auto px-6">
+                <div className="divide-y divide-gray-100">
+                  <div className="py-4 -mx-3 px-3 rounded-lg transition-colors duration-150 hover:bg-gray-50">
+                    <p className="text-2xl font-semibold text-gray-900">{t.impact.customers}</p>
+                    <p className="text-xs text-gray-400 mt-1">{t.impact.customersDesc}</p>
+                  </div>
+                  <div className="py-4 -mx-3 px-3 rounded-lg transition-colors duration-150 hover:bg-gray-50">
+                    <p className="text-2xl font-semibold text-gray-900">{t.impact.seriesA}</p>
+                    <p className="text-xs text-gray-400 mt-1">{t.impact.seriesADesc}</p>
+                  </div>
+                  <div className="py-4 -mx-3 px-3 rounded-lg transition-colors duration-150 hover:bg-gray-50">
+                    <p className="text-2xl font-semibold text-gray-900">{t.impact.enterprise}</p>
+                    <p className="text-xs text-gray-400 mt-1">{t.impact.enterpriseDesc}</p>
+                  </div>
+                </div>
               </div>
-              <figcaption
-                className={`mt-3 text-sm ${
-                  systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                }`}
+            </section>
+
+            {/* Footer CTA */}
+            <div className="max-w-[740px] mx-auto px-6 py-16 border-t border-gray-100">
+              <button
+                onClick={onContact}
+                className="text-sm text-gray-500 hover:text-gray-900 transition-colors inline-flex items-center gap-1"
               >
-                <strong>{t.captions.multiSelect}</strong> - {t.captions.multiSelectDesc}
-              </figcaption>
-            </figure>
-
-            <figure>
-              <div
-                onClick={() => openLightbox('/images/toolkit/planning_-_mouse_-_right_click.svg')}
-                className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
-                  systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-                }`}
-              >
-                <img loading="lazy"
-                  src="/images/toolkit/planning_-_mouse_-_right_click.svg"
-                  alt="Context menu"
-                  className="w-full h-auto"
-                />
-              </div>
-              <figcaption
-                className={`mt-3 text-sm ${
-                  systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                }`}
-              >
-                <strong>{t.captions.contextMenu}</strong> - {t.captions.contextMenuDesc}
-              </figcaption>
-            </figure>
-
-            <figure>
-              <div
-                onClick={() => openLightbox('/images/toolkit/planning_-_selection_tache_dynamic_menu.svg')}
-                className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
-                  systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-                }`}
-              >
-                <img loading="lazy"
-                  src="/images/toolkit/planning_-_selection_tache_dynamic_menu.svg"
-                  alt="Adaptive zoom"
-                  className="w-full h-auto"
-                />
-              </div>
-              <figcaption
-                className={`mt-3 text-sm ${
-                  systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                }`}
-              >
-                <strong>{t.captions.adaptiveZoom}</strong> - {t.captions.adaptiveZoomDesc}
-              </figcaption>
-            </figure>
-          </div>
-
-          <h3
-            className={`text-xl md:text-2xl font-semibold mb-5 tracking-tight ${
-              systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-            }`}
-          >
-            Expand layout on planning view
-          </h3>
-          <p
-            className={`text-base leading-relaxed mb-6 ${
-              systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
-            }`}
-          >
-            To enhance ease of use on the planning we implemented a way to expand the layout to focus on task management, without getting confusion with navigation panel.
-          </p>
-
-          <figure className="my-12">
-            <div
-              onClick={() => {
-                const currentTime = videoRefs.current['planning-zoom']?.currentTime || 0;
-                openLightbox('/videos/toolkit/video_-_planning_-_zoom_dezoom.mp4', currentTime);
-              }}
-              className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
-                systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-              }`}
-            >
-              <video
-                ref={(el) => { videoRefs.current['planning-zoom'] = el; }}
-                src="/videos/toolkit/video_-_planning_-_zoom_dezoom.mp4"
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="w-full h-auto pointer-events-none"
-              />
-            </div>
-            <figcaption
-              className={`mt-3 text-sm ${
-                systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-              }`}
-            >
-              <strong>{t.captions.expandLayout}</strong> - {t.captions.expandLayoutDesc}
-            </figcaption>
-          </figure>
-        </section>
-
-        {/* Divider */}
-        <hr
-          className={`my-12 ${
-            systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-          }`}
-        />
-
-        {/* Phase 2 - Feature expansion */}
-        <section id="phase2" className="mb-24 md:mb-32">
-          <h1
-            className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-4 tracking-tight ${
-              systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-            }`}
-          >
-            {t.phase2.title}
-          </h1>
-          <p
-            className={`text-base leading-relaxed mb-8 ${
-              systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
-            }`}
-          >
-            {t.phase2.intro}
-          </p>
-
-          {/* Dynamic Menu */}
-          <h2
-            className={`text-xl md:text-2xl font-bold mb-6 ${
-              systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-            }`}
-          >
-            {t.phase2.dynamicMenu}
-          </h2>
-
-          <p
-            className={`text-base leading-relaxed mb-8 ${
-              systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
-            }`}
-          >
-            {t.phase2.dynamicMenuDesc}
-          </p>
-
-          <figure className="mb-12">
-            <div
-              onClick={() => openLightbox('/images/toolkit/dynamic_island_menu_-_modifier_tache.svg')}
-              className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
-                systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-              }`}
-            >
-              <img loading="lazy"
-                src="/images/toolkit/dynamic_island_menu_-_modifier_tache.svg"
-                alt="Dynamic island menu - task modification"
-                className="w-full h-auto"
-              />
-            </div>
-            <figcaption
-              className={`mt-3 text-sm ${
-                systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-              }`}
-            >
-              <strong>{t.captions.dynamicIsland}</strong> - {t.captions.dynamicIslandDesc}
-            </figcaption>
-          </figure>
-
-          {/* Task manipulation video */}
-          <h3
-            className={`text-xl md:text-2xl font-semibold mb-5 tracking-tight ${
-              systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-            }`}
-          >
-            Task manipulation in planning
-          </h3>
-          <p
-            className={`text-base leading-relaxed mb-6 ${
-              systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
-            }`}
-          >
-            Edit duration and task information on the fly directly from the planning canvas.
-          </p>
-
-          <figure className="mb-12">
-            <div
-              onClick={() => {
-                const currentTime = videoRefs.current['task-manipulation']?.currentTime || 0;
-                openLightbox('/videos/toolkit/video_-_task_manipulation.mp4', currentTime);
-              }}
-              className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
-                systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-              }`}
-            >
-              <video
-                ref={(el) => { videoRefs.current['task-manipulation'] = el; }}
-                src="/videos/toolkit/video_-_task_manipulation.mp4"
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="w-full h-auto pointer-events-none"
-              />
-            </div>
-            <figcaption
-              className={`mt-3 text-sm ${
-                systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-              }`}
-            >
-              <strong>{t.captions.taskManipulation}</strong> - {t.captions.taskManipulationDesc}
-            </figcaption>
-          </figure>
-
-          {/* Batch edition video */}
-          <h3
-            className={`text-xl md:text-2xl font-semibold mb-5 tracking-tight ${
-              systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-            }`}
-          >
-            Batch edition
-          </h3>
-          <p
-            className={`text-base leading-relaxed mb-6 ${
-              systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
-            }`}
-          >
-            Select a zone or multiple tasks on the canvas, apply parameters in 20 seconds. Users managing 50-100+ tasks need efficient ways to apply changes across groups.
-          </p>
-
-          <figure className="mb-12">
-            <div
-              onClick={() => {
-                const currentTime = videoRefs.current['batch-edition']?.currentTime || 0;
-                openLightbox('/videos/toolkit/video_-_batch_edition.mp4', currentTime);
-              }}
-              className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
-                systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-              }`}
-            >
-              <video
-                ref={(el) => { videoRefs.current['batch-edition'] = el; }}
-                src="/videos/toolkit/video_-_batch_edition.mp4"
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="w-full h-auto pointer-events-none"
-              />
-            </div>
-            <figcaption
-              className={`mt-3 text-sm ${
-                systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-              }`}
-            >
-              <strong>{t.captions.batchEdition}</strong> - {t.captions.batchEditionDesc}
-            </figcaption>
-          </figure>
-
-          <figure className="mb-12">
-            <div
-              onClick={() => openLightbox('/images/toolkit/dynamic_menu_-_components_and_interface_system.svg')}
-              className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
-                systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-              }`}
-            >
-              <img loading="lazy"
-                src="/images/toolkit/dynamic_menu_-_components_and_interface_system.svg"
-                alt="Dynamic menu components and interface system"
-                className="w-full h-auto"
-              />
-            </div>
-            <figcaption
-              className={`mt-3 text-sm ${
-                systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-              }`}
-            >
-              <strong>{t.captions.interfaceSystem}</strong> - {t.captions.interfaceSystemDesc}
-            </figcaption>
-          </figure>
-
-          <figure className="my-12">
-            <div
-              onClick={() => openLightbox('/images/toolkit/cars_detail_tache_-_dynamic_menu_-_comportement_section_activite.svg')}
-              className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
-                systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-              }`}
-            >
-              <img loading="lazy"
-                src="/images/toolkit/cars_detail_tache_-_dynamic_menu_-_comportement_section_activite.svg"
-                alt="Task detail with activity section"
-                className="w-full h-auto"
-              />
-            </div>
-            <figcaption
-              className={`mt-3 text-sm ${
-                systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-              }`}
-            >
-              <strong>{t.captions.activitySection}</strong> - {t.captions.activitySectionDesc}
-            </figcaption>
-          </figure>
-        </section>
-
-        {/* Divider */}
-        <hr
-          className={`my-12 ${
-            systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-          }`}
-        />
-
-        {/* Phase 3 - Platform maturity */}
-        <section id="phase3" className="mb-24 md:mb-32">
-          <h1
-            className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-4 tracking-tight ${
-              systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-            }`}
-          >
-            {t.phase3.title}
-          </h1>
-          <p
-            className={`text-base leading-relaxed mb-8 ${
-              systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
-            }`}
-          >
-            {t.phase3.intro}
-          </p>
-
-          {/* Project Hub */}
-          <h2
-            className={`text-xl md:text-2xl font-bold mb-6 ${
-              systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-            }`}
-          >
-            {t.phase3.projectHub}
-          </h2>
-
-          <p
-            className={`text-base leading-relaxed mb-8 ${
-              systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
-            }`}
-          >
-            {t.phase3.projectHubDesc}
-          </p>
-
-          <figure className="mb-12">
-            <div
-              onClick={() => openLightbox('/images/toolkit/desktop_-_chantier_-_index_-_v3.svg')}
-              className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
-                systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-              }`}
-            >
-              <img loading="lazy"
-                src="/images/toolkit/desktop_-_chantier_-_index_-_v3.svg"
-                alt="Project hub - construction site index v3"
-                className="w-full h-auto"
-              />
-            </div>
-            <figcaption
-              className={`mt-3 text-sm ${
-                systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-              }`}
-            >
-              <strong>{t.captions.projectHubV3}</strong> - {t.captions.projectHubV3Desc}
-            </figcaption>
-          </figure>
-
-          {/* Mobile Evolution */}
-          <h2
-            className={`text-xl md:text-2xl font-bold mb-6 ${
-              systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-            }`}
-          >
-            Mobile evolution
-          </h2>
-
-          <p
-            className={`text-base leading-relaxed mb-8 ${
-              systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
-            }`}
-          >
-            Construction happens on-site, often in challenging conditions. The mobile experience needed to be robust, fast, and usable with gloves. We redesigned the navigation system for touch-first interaction while maintaining feature parity with desktop.
-          </p>
-
-          <figure className="my-12">
-            <div
-              onClick={() => openLightbox('/images/toolkit/evolution_mobile_menu.svg')}
-              className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
-                systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-              }`}
-            >
-              <img loading="lazy"
-                src="/images/toolkit/evolution_mobile_menu.svg"
-                alt="Mobile menu evolution"
-                className="w-full h-auto"
-              />
-            </div>
-            <figcaption
-              className={`mt-3 text-sm ${
-                systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-              }`}
-            >
-              <strong>{t.captions.mobileNav}</strong> - {t.captions.mobileNavDesc}
-            </figcaption>
-          </figure>
-        </section>
-
-        {/* Divider */}
-        <hr
-          className={`my-12 ${
-            systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-          }`}
-        />
-
-        {/* Design System Foundation */}
-        <section id="design-system" className="mb-24 md:mb-32">
-          <h1
-            className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-4 tracking-tight ${
-              systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-            }`}
-          >
-            {t.designSystem.title}
-          </h1>
-          <p
-            className={`text-base leading-relaxed mb-8 ${
-              systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
-            }`}
-          >
-            {t.designSystem.intro}
-          </p>
-
-          <figure className="mb-12">
-            <div
-              onClick={() => openLightbox('/images/toolkit/Design_system.svg')}
-              className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
-                systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-              }`}
-            >
-              <img loading="lazy"
-                src="/images/toolkit/Design_system.svg"
-                alt="Design system overview"
-                className="w-full h-auto"
-              />
-            </div>
-            <figcaption
-              className={`mt-3 text-sm ${
-                systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-              }`}
-            >
-              <strong>{t.designSystem.ds}</strong> - {t.designSystem.dsDesc}
-            </figcaption>
-          </figure>
-
-          <figure className="my-12">
-            <div
-              onClick={() => openLightbox('/images/toolkit/system_-_icons_-_files_and_folders.svg')}
-              className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
-                systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-              }`}
-            >
-              <img loading="lazy"
-                src="/images/toolkit/system_-_icons_-_files_and_folders.svg"
-                alt="Icon system - files and folders"
-                className="w-full h-auto"
-              />
-            </div>
-            <figcaption
-              className={`mt-3 text-sm ${
-                systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-              }`}
-            >
-              <strong>{t.designSystem.iconSystem}</strong> - {t.designSystem.iconSystemDesc}
-            </figcaption>
-          </figure>
-        </section>
-
-        {/* Divider */}
-        <hr
-          className={`my-12 ${
-            systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-          }`}
-        />
-
-        {/* Impact */}
-        <section id="impact" className="mb-24 md:mb-32">
-          <h1
-            className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-4 tracking-tight ${
-              systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-            }`}
-          >
-            {t.impact.title}
-          </h1>
-          <p
-            className={`text-base leading-relaxed mb-8 ${
-              systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
-            }`}
-          >
-            {t.impact.intro}
-          </p>
-
-          <figure className="mb-12">
-            <div
-              onClick={() => openLightbox('/images/toolkit/Diagram_06_-_Impact.svg')}
-              className={`rounded-2xl overflow-hidden border cursor-pointer transition-transform hover:scale-[1.01] ${
-                systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'
-              }`}
-            >
-              <img loading="lazy"
-                src="/images/toolkit/Diagram_06_-_Impact.svg"
-                alt="Impact diagram"
-                className="w-full h-auto"
-              />
-            </div>
-            <figcaption
-              className={`mt-3 text-sm ${
-                systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-              }`}
-            >
-              <strong>{t.impact.projectImpact}</strong> - {t.impact.projectImpactDesc}
-            </figcaption>
-          </figure>
-
-          {/* Key Results */}
-          <div className="grid md:grid-cols-3 gap-6">
-            <div
-              className={`p-6 rounded-2xl border ${
-                systemTheme === 'dark'
-                  ? 'bg-[#1D1D1F] border-white/10'
-                  : 'bg-gray-50 border-gray-200'
-              }`}
-            >
-              <p
-                className={`text-3xl font-bold mb-2 ${
-                  systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                }`}
-              >
-                {t.impact.customers}
-              </p>
-              <p
-                className={`text-sm ${
-                  systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                }`}
-              >
-                {t.impact.customersDesc}
-              </p>
+                {t.contactVictor}
+                <ArrowRight size={14} />
+              </button>
             </div>
 
-            <div
-              className={`p-6 rounded-2xl border ${
-                systemTheme === 'dark'
-                  ? 'bg-[#1D1D1F] border-white/10'
-                  : 'bg-gray-50 border-gray-200'
-              }`}
-            >
-              <p
-                className={`text-3xl font-bold mb-2 ${
-                  systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                }`}
-              >
-                {t.impact.seriesA}
-              </p>
-              <p
-                className={`text-sm ${
-                  systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                }`}
-              >
-                {t.impact.seriesADesc}
-              </p>
-            </div>
-
-            <div
-              className={`p-6 rounded-2xl border ${
-                systemTheme === 'dark'
-                  ? 'bg-[#1D1D1F] border-white/10'
-                  : 'bg-gray-50 border-gray-200'
-              }`}
-            >
-              <p
-                className={`text-3xl font-bold mb-2 ${
-                  systemTheme === 'dark' ? 'text-white' : 'text-gray-900'
-                }`}
-              >
-                {t.impact.enterprise}
-              </p>
-              <p
-                className={`text-sm ${
-                  systemTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                }`}
-              >
-                {t.impact.enterpriseDesc}
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* Footer CTA */}
-        <div className={`text-center py-16 border-t ${systemTheme === 'dark' ? 'border-white/10' : 'border-gray-200'}`}>
-          <button
-            onClick={onContact}
-            className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-full text-base font-medium transition-[background-color,transform] duration-200 ease-out active:scale-[0.97]"
-          >
-            {t.contactVictor}
-          </button>
-        </div>
-
-        {/* Bottom spacing for mobile nav */}
-        <div className="h-20 md:h-0" />
-      </div>
+            {/* Bottom spacing for mobile nav */}
+            <div className="h-20 md:h-0" />
           </motion.div>
         )}
       </AnimatePresence>
-      </div>
     </div>
   );
 };
