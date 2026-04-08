@@ -256,7 +256,7 @@ export default function ContactPageClient({ lang }: { lang: 'en' | 'fr' }) {
               {projects.map((project) => (
                 <Link
                   key={project.id}
-                  href={`/${lang}/project/${project.id}/full`}
+                  href={`/${lang}/project/${project.id}/summary`}
                   className="group flex items-baseline justify-between py-3.5 first:pt-0 last:pb-0 transition-colors duration-200"
                 >
                   <div className="flex items-baseline gap-3">

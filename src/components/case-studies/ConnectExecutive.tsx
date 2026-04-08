@@ -141,27 +141,27 @@ const TRANSLATIONS = {
   fr: {
     hero: {
       eyebrow: 'Product Design Lead, UNOWHY, 2020-2021',
-      title: 'L\'orchestration de classe reinventee',
-      subtitle: 'Un prototype de vision qui a catalyse le pivot produit d\'UNOWHY.',
+      title: 'L\'orchestration de classe réinventée',
+      subtitle: 'Un prototype de vision qui a catalysé le pivot produit d\'UNOWHY.',
     },
     context: {
       title: 'Contexte',
-      description: 'En 2020, le lanceur Android d\'UNOWHY etait techniquement obsolete et visuellement depasse. L\'acceleration numerique COVID-19 rendait le besoin encore plus critique. Connect etait le proof-of-concept pour un dashboard web moderne concu pour centraliser le controle de classe, l\'acces aux apps et les notifications pour plus de 500 000 eleves en France.',
+      description: 'En 2020, le lanceur Android d\'UNOWHY était techniquement obsolète et visuellement dépassé. L\'accélération numérique COVID-19 rendait le besoin encore plus critique. Connect était le proof-of-concept pour un dashboard web moderne conçu pour centraliser le contrôle de classe, l\'accès aux apps et les notifications pour plus de 500 000 élèves en France.',
     },
     role: {
-      title: 'Role',
-      subtitle: 'De la vision strategique au demonstrateur fonctionnel.',
+      title: 'Rôle',
+      subtitle: 'De la vision stratégique au démonstrateur fonctionnel.',
       items: [
-        { label: 'Product Design Lead', detail: 'Strategie UX & design UI' },
+        { label: 'Product Design Lead', detail: 'Stratégie UX & design UI' },
         { label: 'Initiateur de vision', detail: 'Co-auteur du PRD' },
-        { label: 'Design prototype', detail: 'Demo React fonctionnelle' },
-        { label: 'Design systeme', detail: 'Fondations UI kit' },
+        { label: 'Design prototype', detail: 'Démo React fonctionnelle' },
+        { label: 'Design système', detail: 'Fondations UI kit' },
         { label: 'Transversal', detail: 'Alignement dev & C-level' },
       ],
-      context: 'J\'ai initie la vision Connect avec le Head of Product, designe toutes les interfaces, et travaille directement avec un developpeur React pour construire un prototype fonctionnel qui a convaincu les dirigeants de la direction strategique.',
+      context: 'J\'ai initié la vision Connect avec le Head of Product, conçu toutes les interfaces, et travaillé directement avec un développeur React pour construire un prototype fonctionnel qui a convaincu les dirigeants de la direction stratégique.',
     },
     scope: {
-      title: 'Perimetre',
+      title: 'Périmètre',
       areas: [
         {
           title: 'Dashboard (Clair)',
@@ -170,38 +170,38 @@ const TRANSLATIONS = {
         },
         {
           title: 'Dashboard (Sombre)',
-          description: 'Variante theme sombre optimisee pour la projection en classe et le confort visuel.',
+          description: 'Variante thème sombre optimisée pour la projection en classe et le confort visuel.',
           image: '/images/connect/connect_dashboard_home_dark_full_smartphone-scaled.webp',
         },
         {
           title: 'Catalogue d\'Apps',
-          description: 'Acces recherchable et filtre aux apps educatives avec integration politique MDM.',
+          description: 'Accès recherchable et filtré aux apps éducatives avec intégration politique MDM.',
           image: '/images/connect/connect_dashboard_applications_full-scaled.webp',
         },
         {
           title: 'La Bulle, Concept',
-          description: 'UI flottante persistante pour actions contextuelles rapides, inspiree des overlays gaming.',
+          description: 'UI flottante persistante pour actions contextuelles rapides, inspirée des overlays gaming.',
           image: '/images/connect/connect_bulle_ui_wireframes_concept-scaled.webp',
         },
         {
           title: 'La Bulle, UI',
-          description: 'Systeme visuel affine avec menu radial et raccourcis contextuels.',
+          description: 'Système visuel affiné avec menu radial et raccourcis contextuels.',
           image: '/images/connect/connect_bulle_ui_focus-scaled.webp',
         },
         {
           title: 'Architecture Technique',
-          description: 'Vue d\'ensemble systeme montrant l\'integration du dashboard web avec l\'infrastructure Android existante.',
+          description: 'Vue d\'ensemble système montrant l\'intégration du dashboard web avec l\'infrastructure Android existante.',
           image: '/images/connect/connect_tech_architecture-1-scaled.webp',
         },
         {
           title: 'Design System',
-          description: 'Bibliotheque de composants et fondation du langage visuel pour l\'ecosysteme Connect.',
+          description: 'Bibliothèque de composants et fondation du langage visuel pour l\'écosystème Connect.',
           image: '/images/connect/connect_design_system.webp',
         },
       ],
     },
     videos: {
-      title: 'Interactions cles',
+      title: 'Interactions clés',
       items: [
         {
           title: 'Parcours Design Sprint',
@@ -210,12 +210,12 @@ const TRANSLATIONS = {
         },
         {
           title: 'Prototype Dashboard',
-          description: 'Walkthrough complet demontrant les capacites modulaires et le comportement responsive.',
+          description: 'Walkthrough complet démontrant les capacités modulaires et le comportement responsive.',
           media: '/videos/connect/connect-dashboard-prototype_complet_4k-compressed.mp4',
         },
         {
-          title: 'Demo La Bulle',
-          description: 'Demonstration complete des raccourcis, recherche et partage.',
+          title: 'Démo La Bulle',
+          description: 'Démonstration complète des raccourcis, recherche et partage.',
           media: '/videos/connect/Video-demo-bulle-interactions-02-compressed.mp4',
         },
         {
@@ -228,30 +228,30 @@ const TRANSLATIONS = {
     userTesting: {
       title: 'Ce que les enseignants nous ont dit',
       insights: [
-        { quote: 'L\'interface est claire, pas surchargee. Les categories sont bien nommees. On sait de quoi on parle.', author: 'Solveig T., Enseignante' },
-        { quote: 'La personnalisation des widgets est regulierement demandee par les clients SQOOL. Bien de laisser le choix a l\'utilisateur d\'agencer son interface.', author: 'Solveig T., Enseignante' },
+        { quote: 'L\'interface est claire, pas surchargée. Les catégories sont bien nommées. On sait de quoi on parle.', author: 'Solveig T., Enseignante' },
+        { quote: 'La personnalisation des widgets est régulièrement demandée par les clients SQOOL. Bien de laisser le choix à l\'utilisateur d\'agencer son interface.', author: 'Solveig T., Enseignante' },
         { quote: 'Intuitif, moderne, mieux que l\'existant. Le pilotage est une vraie plus-value de notre solution.', author: 'Kevin C., Enseignant' },
       ],
       keyFindings: [
-        'Onboarding : Les utilisateurs veulent skipper et decouvrir seuls',
-        'Actions rapides : Le pilotage de classe est la fonctionnalite #1',
-        'Messages : Inquietudes sur le chevauchement avec la messagerie ENT',
-        'Personnalisation : Forte demande de rearrangement des widgets',
-        'Navigation : Besoin d\'un retour a l\'accueil plus clair',
+        'Onboarding : Les utilisateurs veulent skipper et découvrir seuls',
+        'Actions rapides : Le pilotage de classe est la fonctionnalité #1',
+        'Messages : Inquiétudes sur le chevauchement avec la messagerie ENT',
+        'Personnalisation : Forte demande de réarrangement des widgets',
+        'Navigation : Besoin d\'un retour à l\'accueil plus clair',
       ],
     },
     metrics: [
-      { value: 'Pivot', label: 'Catalyseur strategique' },
-      { value: 'React', label: 'Tech validee' },
+      { value: 'Pivot', label: 'Catalyseur stratégique' },
+      { value: 'React', label: 'Tech validée' },
       { value: 'UI Kit', label: 'Fondation design' },
     ],
     testimonial: {
-      quote: 'J\'ai eu le plaisir de collaborer avec Victor pendant pres de 2 ans chez UNOWHY. En tant que Product Lead, il a joue un role central dans la definition de la vision produit. Son expertise, son leadership et sa collaboration etroite avec les parties prenantes ont ete essentiels pour concevoir des solutions repondant aux besoins utilisateurs et aux enjeux strategiques.',
+      quote: 'J\'ai eu le plaisir de collaborer avec Victor pendant près de 2 ans chez UNOWHY. En tant que Product Lead, il a joué un rôle central dans la définition de la vision produit. Son expertise, son leadership et sa collaboration étroite avec les parties prenantes ont été essentiels pour concevoir des solutions répondant aux besoins utilisateurs et aux enjeux stratégiques.',
       author: 'Justine Le Tellier',
       role: 'UX Researcher',
     },
     cta: {
-      viewFull: 'Voir l\'etude complete',
+      viewFull: 'Voir l\'étude complète',
       contact: 'Me contacter',
     },
   },

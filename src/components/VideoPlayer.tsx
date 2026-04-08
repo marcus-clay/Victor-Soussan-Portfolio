@@ -73,8 +73,7 @@ export default function VideoPlayer({
         playsInline
         preload="metadata"
         className={className}
-        onClick={toggle}
-        style={{ cursor: 'pointer', display: 'block' }}
+        style={{ display: 'block' }}
       />
 
       {/* Play / Pause button — bottom-right */}

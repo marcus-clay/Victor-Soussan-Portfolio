@@ -99,45 +99,45 @@ const TRANSLATIONS = {
     hero: {
       eyebrow: 'Product Designer puis UI Lead, PagesJaunes, 2014-2016',
       title: 'Refonte des apps PagesJaunes',
-      subtitle: 'Deux ans a moderniser l\'app utilitaire la plus telechargee de France. Homepage, onboarding, cartes, et les bases d\'un design system.',
+      subtitle: 'Deux ans à moderniser l\'app utilitaire la plus téléchargée de France. Homepage, onboarding, cartes, et les bases d\'un design system.',
     },
     context: {
       title: 'Contexte',
-      description: 'En 2014, PagesJaunes servait 15M+ de visiteurs mensuels mais restait ancre dans une logique d\'annuaire web. Les apps mobiles existaient, avaient des millions de telechargements, mais l\'experience etait lourde. La navigation datee. Le defi : rendre tout ca plus rapide, plus clair, plus utile, sans casser ce qui marchait pour les utilisateurs existants.',
+      description: 'En 2014, PagesJaunes servait 15M+ de visiteurs mensuels mais restait ancré dans une logique d\'annuaire web. Les apps mobiles existaient, avaient des millions de téléchargements, mais l\'expérience était lourde. La navigation datée. Le défi : rendre tout ça plus rapide, plus clair, plus utile, sans casser ce qui marchait pour les utilisateurs existants.',
     },
     role: {
-      title: 'Role',
+      title: 'Rôle',
       subtitle: 'Product Designer en 2014, puis UI Team Lead avec 4 designers.',
       items: [
         { label: 'UI Team Lead', detail: '4 designers, 2015-2016' },
         { label: 'Refonte homepage', detail: 'Nouvelle recherche' },
-        { label: 'iOS & Android', detail: 'Onboarding premiere ouverture' },
-        { label: 'Cartes & itineraires', detail: 'Navigation pieton' },
-        { label: 'Audit systeme', detail: 'Roadmap Yellowstrap' },
+        { label: 'iOS & Android', detail: 'Onboarding première ouverture' },
+        { label: 'Cartes & itinéraires', detail: 'Navigation piéton' },
+        { label: 'Audit système', detail: 'Roadmap Yellowstrap' },
       ],
       context: 'J\'ai rejoint comme Product Designer sur le web, les partenariats (TheFork, Renault R-Link), et les flows de login. En 2015, je suis devenu UI Team Lead : coordination de 4 designers, ownership de la refonte mobile, et syncs hebdo avec les devs iOS/Android.',
     },
     scope: {
-      title: 'Perimetre',
+      title: 'Périmètre',
       areas: [
         {
           title: 'Refonte Homepage',
-          description: 'Une accroche conversationnelle transforme la recherche d\'annuaire en resolution de probleme. Les utilisateurs agissent plus vite quand l\'interface est personnelle.',
+          description: 'Une accroche conversationnelle transforme la recherche d\'annuaire en résolution de problème. Les utilisateurs agissent plus vite quand l\'interface est personnelle.',
           image: '/images/pagesjaunes/pagesjaunes homepage.webp',
         },
         {
-          title: 'Onboarding Premiere Ouverture',
-          description: 'Animations non-bloquantes au premier lancement. CAAnimation sur iOS, transitions Material sur Android. Teste au labo UX Paris.',
+          title: 'Onboarding Première Ouverture',
+          description: 'Animations non-bloquantes au premier lancement. CAAnimation sur iOS, transitions Material sur Android. Testé au labo UX Paris.',
           image: '/images/pagesjaunes/pj 01@2x.webp',
         },
         {
-          title: 'Itineraire Pieton',
-          description: 'Trois modes : marche, voiture, transports. L\'interface s\'adapte au choix de l\'utilisateur. Base sur l\'API Mappy avec handoff vers les apps de navigation.',
+          title: 'Itinéraire Piéton',
+          description: 'Trois modes : marche, voiture, transports. L\'interface s\'adapte au choix de l\'utilisateur. Basé sur l\'API Mappy avec handoff vers les apps de navigation.',
           image: '/images/pagesjaunes/pj 08@2x.webp',
         },
         {
           title: 'Mon PagesJaunes',
-          description: 'Historique et Favoris transforment les recherches ponctuelles en valeur conservee. Chaque etablissement sauvegarde est une raison de revenir.',
+          description: 'Historique et Favoris transforment les recherches ponctuelles en valeur conservée. Chaque établissement sauvegardé est une raison de revenir.',
           image: '/images/pagesjaunes/pj 06@2x.webp',
         },
         {
@@ -146,8 +146,8 @@ const TRANSLATIONS = {
           image: '/images/pagesjaunes/Android wear/pj android wear ui.webp',
         },
         {
-          title: 'Strategie Design System',
-          description: 'Audit de composants sur iOS, Android et web. Identification des incoherences, documentation des patterns, construction de la roadmap "Yellowstrap".',
+          title: 'Stratégie Design System',
+          description: 'Audit de composants sur iOS, Android et web. Identification des incohérences, documentation des patterns, construction de la roadmap "Yellowstrap".',
           image: '/images/pagesjaunes/Android wear/screens/cover_yellow strap apps.webp',
         },
       ],
@@ -155,16 +155,16 @@ const TRANSLATIONS = {
     insights: {
       title: 'Ce que j\'ai appris',
       items: [
-        { title: 'Ne pas casser les habitudes', description: '22M d\'utilisateurs ont une memoire musculaire. Les changements radicaux les perdent. Des ameliorations petites et claires marchent mieux.' },
+        { title: 'Ne pas casser les habitudes', description: '22M d\'utilisateurs ont une mémoire musculaire. Les changements radicaux les perdent. Des améliorations petites et claires marchent mieux.' },
         { title: 'L\'utilitaire exige la vitesse', description: 'Les gens cherchent un plombier quand ils ont une fuite. Chaque milliseconde compte. Surtout en 3G.' },
-        { title: 'La coherence, c\'est dur', description: 'iOS, Android, web, Wear : chaque plateforme a ses contraintes. Les patterns partages demandent une negociation constante.' },
-        { title: 'La politique ralentit', description: 'Grande boite, beaucoup de stakeholders. Parfois le plus dur n\'est pas le design, c\'est l\'alignement.' },
+        { title: 'La cohérence, c\'est dur', description: 'iOS, Android, web, Wear : chaque plateforme a ses contraintes. Les patterns partagés demandent une négociation constante.' },
+        { title: 'La politique ralentit', description: 'Grande boîte, beaucoup de stakeholders. Parfois le plus dur n\'est pas le design, c\'est l\'alignement.' },
       ],
     },
     metrics: [
-      { value: '22M+', label: 'Telechargements' },
+      { value: '22M+', label: 'Téléchargements' },
       { value: '300K', label: 'Utilisateurs/jour au pic' },
-      { value: '4', label: 'Designers manages' },
+      { value: '4', label: 'Designers managés' },
     ],
     cta: {
       viewFull: 'Voir le case study complet',

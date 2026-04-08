@@ -35,6 +35,7 @@ export interface Project {
   testimonialId?: string;
   status?: 'shipped' | 'concept' | 'experiment';
   cardBg?: string; // Custom background color for card image area
+  navTitle?: string; // Short name shown in the site header (falls back to title)
   // Short format fields
   media?: string[];          // Image/video URLs for short projects
   shortDescription?: string; // Executive description for short format
@@ -87,7 +88,7 @@ export const getProjects = (lang: Language): Project[] => {
       format: 'case-study',
       category: 'product-design',
       title: "Toolkit",
-      role: isEn ? "Founding Designer" : "Founding Designer (Premier Designer)",
+      role: isEn ? "Founding Designer" : "Premier Designer",
       period: "2023 – 2024",
       summary: isEn
         ? "0-to-1 Product Design for a Construction Tech SaaS. From pitch deck to MVP."
@@ -161,7 +162,8 @@ export const getProjects = (lang: Language): Project[] => {
       icon: <Users size={24} />,
       color: "gray",
       coverImage: "/images/thumbnail-dailymotion-web-platform.webp",
-      externalLink: "https://victor-soussan.notion.site/ebd/2b7a519b0dea80b99138d4b51a65620b"
+      externalLink: "https://victor-soussan.notion.site/ebd/2b7a519b0dea80b99138d4b51a65620b",
+      navTitle: "Dailymotion"
     },
     {
       id: "france-vae",
@@ -273,8 +275,9 @@ export const getProjects = (lang: Language): Project[] => {
       ],
       icon: <Briefcase size={24} />,
       color: "blue",
-      coverImage: "thumbnail-sqool-suite.webp",
-      testimonialId: "charlotte-rifflet"
+      coverImage: "/images/thumbnail-sqool-suite.webp",
+      testimonialId: "charlotte-rifflet",
+      navTitle: "SQOOL Suite"
     },
     {
       id: "sqool-classe",
@@ -353,8 +356,43 @@ export const getProjects = (lang: Language): Project[] => {
       ],
       icon: <Smartphone size={24} />,
       color: "purple",
-      coverImage: "thumbnail-pagesjaunes-multidevices.webp",
+      coverImage: "/images/thumbnail-pagesjaunes-multidevices.webp",
       testimonialId: "nicolas-moulin"
+    },
+    {
+      id: "androidwear",
+      format: 'case-study',
+      category: 'product-design',
+      title: "Android Wear",
+      role: isEn ? "Mobile UI Lead" : "Lead UI Mobile",
+      period: "2015",
+      summary: isEn
+        ? "Designing PagesJaunes for wrist: local search on Android Wear, shipped on Google Play."
+        : "PagesJaunes sur montre connectée : recherche locale sur Android Wear, disponible sur Google Play.",
+      missions: isEn ? [
+        "Designed the full interaction model for a 280dp circular display",
+        "Defined active and ambient mode screens for battery efficiency",
+        "Collaborated daily with developer Thibault Fighiera on device builds",
+        "Shipped on Google Play within 3 months"
+      ] : [
+        "Conception du modèle d'interaction pour un écran circulaire de 280dp",
+        "Définition des écrans actifs et mode ambiant pour l'autonomie batterie",
+        "Collaboration quotidienne avec le développeur Thibault Fighiera",
+        "Mis en ligne sur Google Play en 3 mois"
+      ],
+      system: {
+        title: isEn ? "Wearable Design System" : "Design System Wearables",
+        desc: isEn
+          ? "Built a component library covering both round and square watch variants, with systematic active/ambient mode equivalents for every screen."
+          : "Bibliothèque de composants couvrant les variantes rondes et carrées, avec équivalents actif/ambiant systématiques pour chaque écran."
+      },
+      deliverables: isEn
+        ? ["Android Wear App (Google Play)", "Active & Ambient Mode Specs", "Component Library", "Interaction Flows"]
+        : ["App Android Wear (Google Play)", "Spécifications Actif/Ambiant", "Bibliothèque Composants", "Flux d'interaction"],
+      icon: <Smartphone size={24} />,
+      color: "purple",
+      coverImage: "/images/pagesjaunes/Android%20wear/pj%20android%20wear%20ui%20modes.webp",
+      status: "shipped"
     },
     // --- Short format projects ---
     {

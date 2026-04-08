@@ -243,6 +243,17 @@ const RiskOSPage: React.FC<RiskOSPageProps> = ({ lang: propLang }) => {
             {t.subtitle}
           </p>
           <p className="text-xs text-gray-400">{t.author}</p>
+
+          <div className="mt-5">
+            <a
+              href="https://riskos-gulcbxw52-hugos-projects-0ac0cf31.vercel.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium rounded-full bg-gray-900 text-white hover:bg-gray-700 active:scale-[0.97] transition-[background-color,transform] duration-150"
+            >
+              {t.viewPrototype} <ArrowUpRight size={14} />
+            </a>
+          </div>
         </motion.div>
       </div>
 

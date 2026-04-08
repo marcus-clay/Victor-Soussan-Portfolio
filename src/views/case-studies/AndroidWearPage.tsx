@@ -19,8 +19,8 @@ interface AndroidWearPageProps {
   onClose: () => void;
   systemTheme: 'light' | 'dark';
   onToggleTheme: () => void;
-  viewMode: 'caseStudy' | 'gallery';
-  onViewModeChange: (mode: 'caseStudy' | 'gallery') => void;
+  viewMode: 'caseStudy' | 'gallery' | 'executive';
+  onViewModeChange: (mode: 'caseStudy' | 'gallery' | 'executive') => void;
   lang?: 'en' | 'fr';
   onContact?: () => void;
 }
@@ -247,7 +247,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
   return (
     <div ref={containerRef} className="min-h-screen bg-[#FDFDFC]">
       {/* Content */}
-      {viewMode === 'caseStudy' ? (
+      {viewMode !== 'gallery' ? (
         <div id="top">
           {/* Hero Section */}
           <section id="overview" className="mb-24 md:mb-32">
@@ -579,36 +579,109 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
               </figure>
             </div>
 
-            {/* Screen Inventory */}
+            {/* Screen Inventory - Grid */}
+            <div className="max-w-[960px] mx-auto px-6 mb-4">
+              <p className="text-sm text-gray-500 leading-relaxed max-w-[65ch]">
+                {lang === 'fr'
+                  ? 'Le syst\u00e8me compte 8 \u00e9tats distincts. Chaque \u00e9cran devait communiquer son propos en autonomie compl\u00e8te, lisible d\'un coup d\'\u0153il sur 280dp circulaire.'
+                  : 'The system spans 8 distinct states. Each screen communicates its purpose independently, readable at a glance on a 280dp circular display.'}
+              </p>
+            </div>
             <div className="max-w-[960px] mx-auto px-6 mb-12">
-              <figure>
-                <div className="divide-y divide-gray-100">
+              <div className="rounded-2xl bg-[#111113] px-8 pt-8 pb-6">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-8">
                   {[
-                    { src: '/images/pagesjaunes/Android%20wear/screens/00%20Loading.webp', alt: 'Loading' },
-                    { src: '/images/pagesjaunes/Android%20wear/screens/02%20App%20list.webp', alt: 'App List' },
-                    { src: '/images/pagesjaunes/Android%20wear/screens/03%20Rubriques%20list.webp', alt: 'Categories' },
-                    { src: '/images/pagesjaunes/Android%20wear/screens/04%20LR%2001.webp', alt: 'Result 1' },
-                    { src: '/images/pagesjaunes/Android%20wear/screens/05%20LR%2002.webp', alt: 'Result 2' },
-                    { src: '/images/pagesjaunes/Android%20wear/screens/06%20LR%2003.webp', alt: 'Result 3' },
-                    { src: '/images/pagesjaunes/Android%20wear/screens/07%20FD.webp', alt: 'Detail Card' },
-                    { src: '/images/pagesjaunes/Android%20wear/screens/01%20Time.webp', alt: 'Watch Face' },
+                    {
+                      src: '/images/pagesjaunes/Android%20wear/screens/01%20Time.webp',
+                      captionFr: 'Cadran montre. Point d\'entr\u00e9e et retour rapide.',
+                      captionEn: 'Watch face. Entry point and quick return.',
+                    },
+                    {
+                      src: '/images/pagesjaunes/Android%20wear/screens/00%20Loading.webp',
+                      captionFr: 'Chargement. Feedback imm\u00e9diat au lancement.',
+                      captionEn: 'Loading. Immediate feedback on launch.',
+                    },
+                    {
+                      src: '/images/pagesjaunes/Android%20wear/screens/02%20App%20list.webp',
+                      captionFr: 'Apps. Navigation contextuelle par cat\u00e9gorie.',
+                      captionEn: 'App list. Category-first navigation.',
+                    },
+                    {
+                      src: '/images/pagesjaunes/Android%20wear/screens/03%20Rubriques%20list.webp',
+                      captionFr: 'Rubriques PagesJaunes sur le poignet.',
+                      captionEn: 'PagesJaunes categories on the wrist.',
+                    },
+                    {
+                      src: '/images/pagesjaunes/Android%20wear/screens/04%20LR%2001.webp',
+                      captionFr: 'R\u00e9sultat 1/3. Nom et distance en priorit\u00e9.',
+                      captionEn: 'Result 1/3. Name and distance first.',
+                    },
+                    {
+                      src: '/images/pagesjaunes/Android%20wear/screens/05%20LR%2002.webp',
+                      captionFr: 'R\u00e9sultat 2/3. Swipe pour parcourir.',
+                      captionEn: 'Result 2/3. Swipe to browse.',
+                    },
+                    {
+                      src: '/images/pagesjaunes/Android%20wear/screens/06%20LR%2003.webp',
+                      captionFr: 'R\u00e9sultat 3/3. Fin de liste.',
+                      captionEn: 'Result 3/3. End of list.',
+                    },
+                    {
+                      src: '/images/pagesjaunes/Android%20wear/screens/07%20FD.webp',
+                      captionFr: 'Fiche d\u00e9tail. Appel ou itin\u00e9raire en un tap.',
+                      captionEn: 'Detail card. Call or directions in one tap.',
+                    },
                   ].map((screen, idx) => (
-                    <div
-                      key={idx}
-                      onClick={() => handleImageClick(screen.src)}
-                      className="py-4 cursor-pointer rounded-xl overflow-hidden group"
-                    >
-                      <img
-                        loading="lazy"
-                        src={screen.src}
-                        alt={screen.alt}
-                        className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
-                      />
+                    <div key={idx} className="flex flex-col items-center gap-3">
+                      <div
+                        onClick={() => handleImageClick(screen.src)}
+                        className="w-full max-w-[140px] mx-auto cursor-zoom-in group transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.05] active:scale-[0.97]"
+                      >
+                        <img
+                          loading="lazy"
+                          src={screen.src}
+                          alt={lang === 'fr' ? screen.captionFr.split('.')[0] : screen.captionEn.split('.')[0]}
+                          className="w-full h-auto block"
+                        />
+                      </div>
+                      <p className="text-[11px] text-gray-500 text-center leading-relaxed">
+                        {lang === 'fr' ? screen.captionFr : screen.captionEn}
+                      </p>
                     </div>
                   ))}
                 </div>
+                <p className="mt-6 text-[11px] text-gray-600 text-center">
+                  {lang === 'fr' ? 'Inventaire des \u00e9crans. 8 \u00e9tats, du chargement \u00e0 la fiche d\u00e9tail.' : 'Screen inventory. 8 states, from loading to detail card.'}
+                </p>
+              </div>
+            </div>
+
+            {/* In-situ ambient — app en situation */}
+            <div className="max-w-[740px] mx-auto px-6 mb-4">
+              <p className="text-sm text-gray-500 leading-relaxed max-w-[65ch]">
+                {lang === 'fr'
+                  ? 'Visualiser les \u00e9crans sur un vrai poignet r\u00e9v\u00e8le les conditions r\u00e9elles : lisibilit\u00e9 en plein soleil, angles de lecture, confort du tap.'
+                  : 'Visualizing screens on an actual wrist reveals real-world conditions: readability in sunlight, viewing angles, tap comfort.'}
+              </p>
+            </div>
+            <div className="max-w-[960px] mx-auto px-6 mb-12">
+              <figure>
+                <div
+                  onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/maquette_insitu_FD_03%20(1).webp')}
+                  className="rounded-2xl overflow-hidden cursor-zoom-in group bg-[#E7E7E7] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] shadow-sm hover:shadow-lg"
+                >
+                  <div className="w-full flex items-center justify-center py-10 px-12">
+                    <img
+                      loading="lazy"
+                      src="/images/pagesjaunes/Android%20wear/maquette_insitu_FD_03%20(1).webp"
+                      alt={lang === 'fr' ? 'Fiche d\u00e9tail sur le poignet' : 'Detail card on the wrist'}
+                      className="max-w-full max-h-[480px] object-contain transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
+                      style={{ transform: 'rotate(-4deg)' }}
+                    />
+                  </div>
+                </div>
                 <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
-                  {lang === 'fr' ? 'Inventaire des \u00c9crans' : 'Screen Inventory'}. {lang === 'fr' ? 'Catalogue de chaque \u00e9tat d\'\u00e9cran. Du chargement \u00e0 la fiche d\u00e9tail, chaque transition pens\u00e9e pour une lecture rapide sur 280dp.' : 'Catalog of every screen state. From loading to detail card, each transition designed for quick scanning on 280dp.'}
+                  {lang === 'fr' ? 'App en situation.' : 'App in context.'} {lang === 'fr' ? 'La fiche d\u00e9tail sur un vrai poignet. Le design circulaire tire parti du cadre de la montre.' : 'The detail card on an actual wrist. The circular design works with the watch frame, not against it.'}
                 </figcaption>
               </figure>
             </div>
@@ -841,46 +914,24 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
               </figure>
             </div>
 
-            {/* Stacked - Final Mockups */}
+            {/* Final Mockup - Play Store */}
             <div className="max-w-[960px] mx-auto px-6">
-              <div className="space-y-8">
-                <figure>
-                  <div
-                    onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/android_wear_insitu_store_01.webp')}
-                    className="rounded-xl overflow-hidden cursor-pointer group ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
-                  >
-                    <img
-                      loading="lazy"
-                      src="/images/pagesjaunes/Android%20wear/android_wear_insitu_store_01.webp"
-                      alt={lang === 'fr' ? 'Pr\u00e9sence Google Play' : 'Google Play Presence'}
-                      className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
-                    />
-                  </div>
-                  <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
-                    {lang === 'fr' ? 'Visuel Play Store' : 'Play Store Visual'}. {lang === 'fr' ? 'Le visuel promotionnel pour le listing Google Play. Les premi\u00e8res impressions comptent.' : 'The promotional visual for Google Play listing. First impressions matter.'}
-                  </figcaption>
-                </figure>
-                <figure>
-                  <div
-                    onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/maquette_insitu_FD_03%20(1).webp')}
-                    className="rounded-xl overflow-hidden cursor-pointer group ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
-                    style={{ backgroundColor: '#E7E7E7' }}
-                  >
-                    <div className="w-full flex items-center justify-center p-6">
-                      <img
-                        loading="lazy"
-                        src="/images/pagesjaunes/Android%20wear/maquette_insitu_FD_03%20(1).webp"
-                        alt={lang === 'fr' ? 'Fiche Pro sur Poignet' : 'Business Card on Wrist'}
-                        className="max-w-full object-contain transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
-                        style={{ transform: 'rotate(-5deg)' }}
-                      />
-                    </div>
-                  </div>
-                  <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
-                    {lang === 'fr' ? 'Mockup In-situ' : 'In-situ Mockup'}. {lang === 'fr' ? 'Visualiser la fiche sur un vrai poignet r\u00e9v\u00e8le les conditions de lecture r\u00e9elles.' : 'Visualizing the card on an actual wrist reveals real-world reading conditions.'}
-                  </figcaption>
-                </figure>
-              </div>
+              <figure>
+                <div
+                  onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/android_wear_insitu_store_01.webp')}
+                  className="rounded-xl overflow-hidden cursor-pointer group ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
+                >
+                  <img
+                    loading="lazy"
+                    src="/images/pagesjaunes/Android%20wear/android_wear_insitu_store_01.webp"
+                    alt={lang === 'fr' ? 'Pr\u00e9sence Google Play' : 'Google Play Presence'}
+                    className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
+                  />
+                </div>
+                <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
+                  {lang === 'fr' ? 'Visuel Play Store' : 'Play Store Visual'}. {lang === 'fr' ? 'Le visuel promotionnel pour le listing Google Play. Les premi\u00e8res impressions comptent.' : 'The promotional visual for Google Play listing. First impressions matter.'}
+                </figcaption>
+              </figure>
             </div>
           </section>
 

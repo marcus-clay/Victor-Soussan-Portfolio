@@ -90,6 +90,15 @@ const SUMMARY_TOC: Record<string, TOCSections> = {
     { id: 'queue', label_en: 'Queue', label_fr: 'File d\'attente' },
     { id: 'learnings', label_en: 'Observations', label_fr: 'Observations' },
   ],
+  androidwear: [
+    { id: 'top', label_en: 'Top', label_fr: 'Haut' },
+    { id: 'overview', label_en: 'Overview', label_fr: 'Vue d\'ensemble' },
+    { id: 'research', label_en: 'Research', label_fr: 'Recherche' },
+    { id: 'design', label_en: 'Screen Design', label_fr: 'Design' },
+    { id: 'specs', label_en: 'Specifications', label_fr: 'Spécifications' },
+    { id: 'implementation', label_en: 'Implementation', label_fr: 'Implémentation' },
+    { id: 'results', label_en: 'Results', label_fr: 'Résultats' },
+  ],
 }
 
 // Full case study view TOC
@@ -298,6 +307,9 @@ export default function CaseStudyPageWrapper({
 
   return (
     <>
+      {/* Nav title override: Nav.tsx reads [data-nav-title] before falling back to h1 */}
+      <span data-nav-title className="sr-only">{project?.navTitle ?? projectName}</span>
+
       {/* Sticky sub-bar: swaps between breadcrumb and TOC */}
       <div
         className="sticky z-10 backdrop-blur-xl bg-[#FDFDFC]/80"
@@ -430,30 +442,37 @@ function CaseStudyFooter({
   }, [currentProject, allProjects])
 
   return (
-    <div className="bg-[#FDFDFC]">
-      <div className="max-w-[740px] mx-auto px-6 py-24 md:py-40">
+    <div className="bg-[#F5F5F7]">
+      <div className="max-w-[740px] mx-auto px-6 pt-12 pb-16 md:pt-16 md:pb-24">
         {/* Related projects */}
         {suggestions.length > 0 && (
           <div>
-            <p className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+            <p className="text-sm font-semibold tracking-[-0.01em] text-gray-500 mb-4">
               {lang === 'fr' ? 'Projets similaires' : 'Related projects'}
             </p>
-            <div className="divide-y divide-gray-100">
+            <div className="divide-y divide-gray-200">
               {suggestions.map((proj) => (
                 <Link
                   key={proj.id}
                   href={`/${lang}/project/${proj.id}/summary`}
-                  className="py-5 -mx-3 px-3 rounded-lg hover:bg-black/[.04] active:bg-black/[.06] transition-colors duration-150 cursor-pointer flex items-center justify-between gap-4"
+                  className="py-4 -mx-3 px-3 rounded-xl hover:bg-black/[.04] active:scale-[0.99] transition-[background-color,transform] duration-150 cursor-pointer flex items-center gap-4"
                 >
-                  <div className="min-w-0">
-                    <p className="text-base font-medium text-gray-900">
+                  <div className="w-16 h-11 rounded-lg overflow-hidden flex-shrink-0 bg-gray-200">
+                    <img
+                      src={proj.coverImage}
+                      alt={proj.title}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-medium text-gray-900 leading-tight">
                       {proj.title}
                     </p>
-                    <p className="text-sm text-gray-500 mt-0.5">
+                    <p className="text-xs text-gray-500 mt-0.5">
                       {proj.role}
                     </p>
                   </div>
-                  <span className="text-xs text-gray-500 flex-shrink-0">
+                  <span className="text-xs text-gray-400 flex-shrink-0">
                     {proj.period}
                   </span>
                 </Link>
@@ -463,7 +482,7 @@ function CaseStudyFooter({
         )}
 
         {/* Contact CTA */}
-        <div className="mt-10">
+        <div className="mt-8">
           <AuthorContactCard lang={lang} />
         </div>
       </div>

@@ -361,7 +361,7 @@ function CarouselSection({ title, projects, lang, animationDelay = 0 }: Carousel
                 }}
                 onMouseEnter={() => setHoveredId(project.id)}
               >
-                <Link href={projectHref(project, lang)} className="block" draggable={false}>
+                <Link href={projectHref(project, lang)} className="block active:scale-[0.98] transition-transform duration-150" draggable={false}>
                   {/* Cover */}
                   <div
                     className="relative w-full rounded-2xl overflow-hidden mb-4"
@@ -472,9 +472,9 @@ function CarouselSection({ title, projects, lang, animationDelay = 0 }: Carousel
 
         {/* Left fade — 60ms delay prevents flicker on micro-scroll */}
         <div
-          className="pointer-events-none absolute inset-y-0 left-0 w-28"
+          className="pointer-events-none absolute inset-y-0 left-0 w-16"
           style={{
-            background: 'linear-gradient(to left, transparent, #FDFDFC 80%)',
+            background: 'linear-gradient(to left, transparent, rgba(253,253,252,0.7) 60%, #FDFDFC 100%)',
             opacity: canScrollLeft ? 1 : 0,
             transition: 'opacity 200ms ease',
             transitionDelay: canScrollLeft ? '60ms' : '0ms',
@@ -483,14 +483,41 @@ function CarouselSection({ title, projects, lang, animationDelay = 0 }: Carousel
 
         {/* Right fade */}
         <div
-          className="pointer-events-none absolute inset-y-0 right-0 w-28"
+          className="pointer-events-none absolute inset-y-0 right-0 w-16"
           style={{
-            background: 'linear-gradient(to right, transparent, #FDFDFC 80%)',
+            background: 'linear-gradient(to right, transparent, rgba(253,253,252,0.7) 60%, #FDFDFC 100%)',
             opacity: canScrollRight ? 1 : 0,
             transition: 'opacity 200ms ease',
           }}
         />
       </motion.div>
+
+      {/* Navigation dots */}
+      {projects.length > 1 && (
+        <div
+          className="flex items-center justify-center gap-1.5 mt-5"
+          style={{ paddingLeft: CONTENT_LEFT, paddingRight: CONTENT_LEFT }}
+        >
+          {projects.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => goTo(i)}
+              aria-label={`Go to project ${i + 1}`}
+              style={{
+                width: i === activeIndex ? 16 : 5,
+                height: 5,
+                borderRadius: 3,
+                background: i === activeIndex ? '#111827' : '#D1D5DB',
+                border: 'none',
+                padding: 0,
+                cursor: 'pointer',
+                transition: 'width 240ms cubic-bezier(0.23,1,0.32,1), background-color 180ms ease',
+                flexShrink: 0,
+              }}
+            />
+          ))}
+        </div>
+      )}
     </section>
   )
 }

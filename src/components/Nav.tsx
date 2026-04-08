@@ -98,7 +98,10 @@ export default function Nav({ lang }: { lang: Lang }) {
       if (isHomepage) {
         setPageTitle('Lead Product Designer')
       } else {
-        setPageTitle(h1.textContent?.trim() || null)
+        // Prefer explicit nav title override (e.g. client name on case studies)
+        const navTitleEl = document.querySelector('[data-nav-title]')
+        const titleText = navTitleEl?.textContent?.trim() || h1.textContent?.trim() || null
+        setPageTitle(titleText)
       }
 
       // Only show title after user has scrolled past the h1
@@ -148,7 +151,7 @@ export default function Nav({ lang }: { lang: Lang }) {
       >
         <div className="max-w-[740px] mx-auto px-6 h-full flex items-center justify-between">
           {/* Logo + contextual page title */}
-          <div className="flex items-baseline gap-0 min-w-0 flex-shrink-0">
+          <div className="flex items-baseline gap-0 min-w-0 overflow-hidden">
             {(() => {
               const isHomepage = pathname === `/${lang}` || pathname === `/${lang}/` || pathname === `/${lang}/v2` || pathname === `/${lang}/v2/`
               return (
@@ -171,7 +174,7 @@ export default function Nav({ lang }: { lang: Lang }) {
                     style={{
                       opacity: (showPageTitle || isMobileMenuOpen) ? 1 : 0,
                       transition: 'opacity 250ms ease',
-                      maxWidth: (showPageTitle || isMobileMenuOpen) ? 300 : 0,
+                      maxWidth: (showPageTitle || isMobileMenuOpen) ? 'min(300px, calc(100vw - 220px))' : 0,
                       pointerEvents: (showPageTitle || isMobileMenuOpen) ? 'auto' : 'none',
                     }}
                   >

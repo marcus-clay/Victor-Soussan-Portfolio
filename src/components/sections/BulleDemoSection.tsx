@@ -31,7 +31,7 @@ export default function BulleDemoSection({ lang, onNavigate }: BulleDemoSectionP
 
         {/* Video card — dark bg matches the app UI, motion is the content */}
         <button
-          onClick={() => onNavigate('/project/connect/full')}
+          onClick={() => onNavigate('/project/connect/summary')}
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
           className="w-full text-left rounded-2xl overflow-hidden block"
@@ -62,7 +62,7 @@ export default function BulleDemoSection({ lang, onNavigate }: BulleDemoSectionP
             {isEn ? 'Connect — Messaging interface' : 'Connect — Interface de messagerie'}
           </p>
           <button
-            onClick={() => onNavigate('/project/connect/full')}
+            onClick={() => onNavigate('/project/connect/summary')}
             className="flex items-center gap-1.5 text-sm text-gray-400 hover:text-gray-900 transition-colors duration-150"
           >
             {isEn ? 'View case study' : 'Voir l\u2019étude de cas'}
