@@ -72,6 +72,11 @@ function GalleryGrid({ lang }: { lang: 'en' | 'fr' }) {
   const pointerId = useRef<number | null>(null)
   const dragStartX = useRef(0)
   const dragStartScrollLeft = useRef(0)
+  const dragLastX = useRef(0)
+  const dragLastTime = useRef(0)
+  const dragVelocity = useRef(0)
+
+  useEffect(() => { return () => {} }, []) // no cleanup needed — scrollBy is native
 
   const syncBounds = useCallback(() => {
     const el = gridRef.current
@@ -85,7 +90,7 @@ function GalleryGrid({ lang }: { lang: 'en' | 'fr' }) {
     const el = gridRef.current
     if (!el) return
     let timer: ReturnType<typeof setTimeout>
-    const onScroll = () => { clearTimeout(timer); timer = setTimeout(syncBounds, 120) }
+    const onScroll = () => { clearTimeout(timer); timer = setTimeout(syncBounds, 80) }
     el.addEventListener('scrollend', syncBounds, { passive: true })
     el.addEventListener('scroll', onScroll, { passive: true })
     syncBounds()
@@ -106,6 +111,9 @@ function GalleryGrid({ lang }: { lang: 'en' | 'fr' }) {
     pointerId.current = e.pointerId
     dragStartX.current = e.clientX
     dragStartScrollLeft.current = el.scrollLeft
+    dragLastX.current = e.clientX
+    dragLastTime.current = performance.now()
+    dragVelocity.current = 0
     el.style.cursor = 'grabbing'
   }, [])
 
@@ -119,6 +127,11 @@ function GalleryGrid({ lang }: { lang: 'en' | 'fr' }) {
       hasMoved.current = true
     }
     el.scrollLeft = dragStartScrollLeft.current - dx
+    const now = performance.now()
+    const dt = now - dragLastTime.current
+    if (dt > 0) dragVelocity.current = (dragLastX.current - e.clientX) / dt
+    dragLastX.current = e.clientX
+    dragLastTime.current = now
   }, [])
 
   const onPointerUp = useCallback(() => {
@@ -127,6 +140,10 @@ function GalleryGrid({ lang }: { lang: 'en' | 'fr' }) {
     const el = gridRef.current
     if (!el) return
     el.style.cursor = 'grab'
+    // Fling: scrollBy with behavior:'smooth' triggers native momentum + CSS snap settle
+    if (hasMoved.current && Math.abs(dragVelocity.current) > 0.15) {
+      el.scrollBy({ left: dragVelocity.current * 250, behavior: 'smooth' })
+    }
     syncBounds()
   }, [syncBounds])
 

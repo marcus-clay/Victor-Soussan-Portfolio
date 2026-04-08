@@ -110,7 +110,7 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
     if (!track) return
     let timer: ReturnType<typeof setTimeout>
     // Debounced scroll = fallback for Safari <17 which lacks scrollend
-    const onScroll = () => { clearTimeout(timer); timer = setTimeout(detectActive, 120) }
+    const onScroll = () => { clearTimeout(timer); timer = setTimeout(detectActive, 60) }
     track.addEventListener('scrollend', detectActive, { passive: true })
     track.addEventListener('scroll', onScroll, { passive: true })
     detectActive()
@@ -305,6 +305,9 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
                   width: 'min(692px, calc(100vw - 48px))',
                   scrollSnapAlign: 'start',
                   cursor: 'pointer',
+                  // Dimming adjacent cards only — no transition delay on active reveal
+                  opacity: isActive ? 1 : Math.abs(index - activeIndex) === 1 ? 0.72 : 1,
+                  transition: 'opacity 80ms ease',
                 }}
                 onClick={() => {
                   if (index !== activeIndex) goTo(index)
@@ -364,19 +367,18 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
                     style={{
                       fontWeight: 500,
                       color: isActive ? '#111827' : '#6B7280',
-                      transition: 'color 200ms ease',
+                      transition: 'color 80ms ease',
                     }}
                   >
                     {item.title}
                   </p>
 
-                  {/* Summary — only shown on active card */}
+                  {/* Summary — instant reveal, no transition delay */}
                   <p
                     className="text-sm leading-relaxed line-clamp-2 mb-3"
                     style={{
                       color: '#6B7280',
                       opacity: isActive ? 1 : 0,
-                      transition: 'opacity 200ms ease',
                     }}
                   >
                     {item.summary}
