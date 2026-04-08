@@ -66,16 +66,76 @@ function GalleryGrid({ lang }: { lang: 'en' | 'fr' }) {
   const [canScrollLeft, setCanScrollLeft] = useState(false)
   const [canScrollRight, setCanScrollRight] = useState(true)
 
+  // Drag state — refs to avoid re-renders on hot path
+  const dragging = useRef(false)
+  const hasMoved = useRef(false)
+  const pointerId = useRef<number | null>(null)
+  const dragStartX = useRef(0)
+  const dragStartScrollLeft = useRef(0)
+
+  const syncBounds = useCallback(() => {
+    const el = gridRef.current
+    if (!el) return
+    setCanScrollLeft(el.scrollLeft > 8)
+    setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 8)
+  }, [])
+
+  // scrollend fires once after snap/momentum settles; debounced scroll = Safari <17 fallback
   useEffect(() => {
     const el = gridRef.current
     if (!el) return
-    const check = () => {
-      setCanScrollLeft(el.scrollLeft > 8)
-      setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 8)
+    let timer: ReturnType<typeof setTimeout>
+    const onScroll = () => { clearTimeout(timer); timer = setTimeout(syncBounds, 120) }
+    el.addEventListener('scrollend', syncBounds, { passive: true })
+    el.addEventListener('scroll', onScroll, { passive: true })
+    syncBounds()
+    return () => {
+      clearTimeout(timer)
+      el.removeEventListener('scrollend', syncBounds)
+      el.removeEventListener('scroll', onScroll)
     }
-    el.addEventListener('scroll', check, { passive: true })
-    check()
-    return () => el.removeEventListener('scroll', check)
+  }, [syncBounds])
+
+  const onPointerDown = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.button !== 0) return
+    if (e.pointerType === 'touch') return
+    const el = gridRef.current
+    if (!el) return
+    dragging.current = true
+    hasMoved.current = false
+    pointerId.current = e.pointerId
+    dragStartX.current = e.clientX
+    dragStartScrollLeft.current = el.scrollLeft
+    el.style.cursor = 'grabbing'
+  }, [])
+
+  const onPointerMove = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+    if (!dragging.current) return
+    const el = gridRef.current
+    if (!el) return
+    const dx = e.clientX - dragStartX.current
+    if (Math.abs(dx) > 4 && !hasMoved.current && pointerId.current !== null) {
+      el.setPointerCapture(pointerId.current)
+      hasMoved.current = true
+    }
+    el.scrollLeft = dragStartScrollLeft.current - dx
+  }, [])
+
+  const onPointerUp = useCallback(() => {
+    if (!dragging.current) return
+    dragging.current = false
+    const el = gridRef.current
+    if (!el) return
+    el.style.cursor = 'grab'
+    syncBounds()
+  }, [syncBounds])
+
+  const onClickCapture = useCallback((e: React.MouseEvent) => {
+    if (hasMoved.current) {
+      e.preventDefault()
+      e.stopPropagation()
+      hasMoved.current = false
+    }
   }, [])
 
   return (
@@ -100,7 +160,14 @@ function GalleryGrid({ lang }: { lang: 'en' | 'fr' }) {
           paddingRight: '48px',
           paddingTop: '12px',
           paddingBottom: '12px',
+          cursor: 'grab',
+          userSelect: 'none',
         }}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerCancel={onPointerUp}
+        onClickCapture={onClickCapture}
       >
         {GALLERY_GRID_DATA.map((item, i) => (
           <Link
@@ -170,13 +237,20 @@ function CarouselSection({ title, projects, lang, animationDelay = 0 }: Carousel
     setCanScrollRight(track.scrollLeft < track.scrollWidth - track.clientWidth - 8)
   }, [])
 
-  // Native scroll (touch/trackpad) — safe to sync since no RAF is running
+  // Sync active state only at scroll settle — scrollend (modern) + debounced scroll (Safari <17)
   useEffect(() => {
     const track = trackRef.current
     if (!track) return
-    track.addEventListener('scroll', detectActive, { passive: true })
+    let timer: ReturnType<typeof setTimeout>
+    const onScroll = () => { clearTimeout(timer); timer = setTimeout(detectActive, 120) }
+    track.addEventListener('scrollend', detectActive, { passive: true })
+    track.addEventListener('scroll', onScroll, { passive: true })
     detectActive()
-    return () => track.removeEventListener('scroll', detectActive)
+    return () => {
+      clearTimeout(timer)
+      track.removeEventListener('scrollend', detectActive)
+      track.removeEventListener('scroll', onScroll)
+    }
   }, [detectActive])
 
   useEffect(() => { return () => cancelAnimationFrame(rafRef.current) }, [])
@@ -274,11 +348,11 @@ function CarouselSection({ title, projects, lang, animationDelay = 0 }: Carousel
     }
     const dx = dragStartX.current - e.clientX
     const velocity = dragVelocity.current
-    const threshold = CARD_WIDTH_PX * 0.28
+    const threshold = CARD_WIDTH_PX * 0.18
     let target = activeIndex
-    if (velocity > 0.4 || dx > threshold) {
+    if (velocity > 0.25 || dx > threshold) {
       target = Math.min(projects.length - 1, activeIndex + 1)
-    } else if (velocity < -0.4 || dx < -threshold) {
+    } else if (velocity < -0.25 || dx < -threshold) {
       target = Math.max(0, activeIndex - 1)
     }
     goTo(target)

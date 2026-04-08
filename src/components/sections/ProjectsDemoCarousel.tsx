@@ -108,9 +108,17 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
   useEffect(() => {
     const track = trackRef.current
     if (!track) return
-    track.addEventListener('scroll', detectActive, { passive: true })
+    let timer: ReturnType<typeof setTimeout>
+    // Debounced scroll = fallback for Safari <17 which lacks scrollend
+    const onScroll = () => { clearTimeout(timer); timer = setTimeout(detectActive, 120) }
+    track.addEventListener('scrollend', detectActive, { passive: true })
+    track.addEventListener('scroll', onScroll, { passive: true })
     detectActive()
-    return () => track.removeEventListener('scroll', detectActive)
+    return () => {
+      clearTimeout(timer)
+      track.removeEventListener('scrollend', detectActive)
+      track.removeEventListener('scroll', onScroll)
+    }
   }, [detectActive])
 
   useEffect(() => { return () => cancelAnimationFrame(rafRef.current) }, [])
@@ -216,10 +224,10 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
     }
     const dx = dragStartX.current - e.clientX
     const velocity = dragVelocity.current
-    const threshold = CARD_WIDTH_PX * 0.28
+    const threshold = CARD_WIDTH_PX * 0.18
     let target = activeIndex
-    if (velocity > 0.4 || dx > threshold) target = Math.min(items.length - 1, activeIndex + 1)
-    else if (velocity < -0.4 || dx < -threshold) target = Math.max(0, activeIndex - 1)
+    if (velocity > 0.25 || dx > threshold) target = Math.min(items.length - 1, activeIndex + 1)
+    else if (velocity < -0.25 || dx < -threshold) target = Math.max(0, activeIndex - 1)
     goTo(target)
   }, [activeIndex, items.length, goTo])
 
@@ -319,7 +327,7 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
                     loop
                     muted
                     playsInline
-                    preload={index === 0 ? 'auto' : 'none'}
+                    preload={index === 0 ? 'auto' : index === 1 ? 'metadata' : 'none'}
                     className="w-full h-full object-cover"
                     src={item.src}
                   />
