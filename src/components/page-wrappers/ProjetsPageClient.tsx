@@ -80,9 +80,9 @@ function GalleryGrid({ lang }: { lang: 'en' | 'fr' }) {
 
   return (
     <div className="relative">
-      <div className="pointer-events-none absolute inset-y-0 left-0 w-24 z-10"
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-24 z-10 hidden sm:block"
         style={{ background: 'linear-gradient(to right, #FDFDFC 20%, transparent)', opacity: canScrollLeft ? 1 : 0, transition: 'opacity 200ms ease' }} />
-      <div className="pointer-events-none absolute inset-y-0 right-0 w-32 z-10"
+      <div className="pointer-events-none absolute inset-y-0 right-0 w-32 z-10 hidden sm:block"
         style={{ background: 'linear-gradient(to left, #FDFDFC 20%, transparent)', opacity: canScrollRight ? 1 : 0, transition: 'opacity 200ms ease' }} />
 
       <div
@@ -221,6 +221,7 @@ function CarouselSection({ title, projects, lang, animationDelay = 0 }: Carousel
   // ── Drag / swipe ──────────────────────────────────────────────────────────
   const onPointerDown = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
     if (e.button !== 0) return
+    if (e.pointerType === 'touch') return // native scroll handles touch — no conflict
     const track = trackRef.current
     if (!track) return
     dragging.current = true
@@ -361,7 +362,7 @@ function CarouselSection({ title, projects, lang, animationDelay = 0 }: Carousel
                 }}
                 onMouseEnter={() => setHoveredId(project.id)}
               >
-                <Link href={projectHref(project, lang)} className="block active:scale-[0.98] transition-transform duration-150" draggable={false}>
+                <Link href={projectHref(project, lang)} className="block" draggable={false}>
                   {/* Cover */}
                   <div
                     className="relative w-full rounded-2xl overflow-hidden mb-4"
@@ -470,9 +471,9 @@ function CarouselSection({ title, projects, lang, animationDelay = 0 }: Carousel
           })}
         </div>
 
-        {/* Left fade — 60ms delay prevents flicker on micro-scroll */}
+        {/* Left fade — desktop only */}
         <div
-          className="pointer-events-none absolute inset-y-0 left-0 w-16"
+          className="pointer-events-none absolute inset-y-0 left-0 w-16 hidden sm:block"
           style={{
             background: 'linear-gradient(to left, transparent, rgba(253,253,252,0.7) 60%, #FDFDFC 100%)',
             opacity: canScrollLeft ? 1 : 0,
@@ -481,9 +482,9 @@ function CarouselSection({ title, projects, lang, animationDelay = 0 }: Carousel
           }}
         />
 
-        {/* Right fade */}
+        {/* Right fade — desktop only */}
         <div
-          className="pointer-events-none absolute inset-y-0 right-0 w-16"
+          className="pointer-events-none absolute inset-y-0 right-0 w-16 hidden sm:block"
           style={{
             background: 'linear-gradient(to right, transparent, rgba(253,253,252,0.7) 60%, #FDFDFC 100%)',
             opacity: canScrollRight ? 1 : 0,

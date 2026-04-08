@@ -171,6 +171,7 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
   // ── Drag / swipe ───────────────────────────────────────────────────────────
   const onPointerDown = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
     if (e.button !== 0) return
+    if (e.pointerType === 'touch') return // native scroll handles touch — no conflict
     const track = trackRef.current
     if (!track) return
     dragging.current = true
@@ -398,9 +399,9 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
           })}
         </div>
 
-        {/* Left fade */}
+        {/* Left fade — desktop only: on mobile the card fills the viewport, gradients cut into content */}
         <div
-          className="pointer-events-none absolute inset-y-0 left-0 w-14"
+          className="pointer-events-none absolute inset-y-0 left-0 w-14 hidden sm:block"
           style={{
             background: 'linear-gradient(to left, transparent 0%, rgba(253,253,252,0.6) 50%, #FDFDFC 100%)',
             opacity: canScrollLeft ? 1 : 0,
@@ -409,9 +410,9 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
           }}
         />
 
-        {/* Right fade */}
+        {/* Right fade — desktop only */}
         <div
-          className="pointer-events-none absolute inset-y-0 right-0 w-14"
+          className="pointer-events-none absolute inset-y-0 right-0 w-14 hidden sm:block"
           style={{
             background: 'linear-gradient(to right, transparent 0%, rgba(253,253,252,0.6) 50%, #FDFDFC 100%)',
             opacity: canScrollRight ? 1 : 0,
