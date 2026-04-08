@@ -225,9 +225,11 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
     const dx = dragStartX.current - e.clientX
     const velocity = dragVelocity.current
     const threshold = CARD_WIDTH_PX * 0.18
+    // Mouse/trackpad generates higher accidental velocity — use stricter threshold
+    const velThreshold = e.pointerType === 'mouse' ? 0.3 : 0.25
     let target = activeIndex
-    if (velocity > 0.25 || dx > threshold) target = Math.min(items.length - 1, activeIndex + 1)
-    else if (velocity < -0.25 || dx < -threshold) target = Math.max(0, activeIndex - 1)
+    if (velocity > velThreshold || dx > threshold) target = Math.min(items.length - 1, activeIndex + 1)
+    else if (velocity < -velThreshold || dx < -threshold) target = Math.max(0, activeIndex - 1)
     goTo(target)
   }, [activeIndex, items.length, goTo])
 
@@ -303,8 +305,6 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
                   width: 'min(692px, calc(100vw - 48px))',
                   scrollSnapAlign: 'start',
                   cursor: 'pointer',
-                  opacity: isActive ? 1 : 0.5,
-                  transition: 'opacity 300ms ease',
                 }}
                 onClick={() => {
                   if (index !== activeIndex) goTo(index)

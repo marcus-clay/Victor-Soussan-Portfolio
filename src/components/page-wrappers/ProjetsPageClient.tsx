@@ -156,6 +156,10 @@ function GalleryGrid({ lang }: { lang: 'en' | 'fr' }) {
           gap: '10px',
           overflowX: 'auto',
           scrollbarWidth: 'none',
+          // Snap aligns to column boundaries: items in the same column share the same
+          // offsetLeft so CSS deduplicates snap points — effectively one snap per column
+          scrollSnapType: 'x mandatory',
+          scrollPaddingLeft: CONTENT_LEFT,
           paddingLeft: CONTENT_LEFT,
           paddingRight: '48px',
           paddingTop: '12px',
@@ -174,6 +178,8 @@ function GalleryGrid({ lang }: { lang: 'en' | 'fr' }) {
             key={i}
             href={`/${lang}/visual-archive#gallery-${item.projectId}`}
             className="block rounded-lg overflow-hidden bg-[#F0F0EF] cursor-pointer"
+            draggable={false}
+            style={{ scrollSnapAlign: 'start' }}
           >
             <img
               src={item.src}
@@ -349,10 +355,11 @@ function CarouselSection({ title, projects, lang, animationDelay = 0 }: Carousel
     const dx = dragStartX.current - e.clientX
     const velocity = dragVelocity.current
     const threshold = CARD_WIDTH_PX * 0.18
+    const velThreshold = e.pointerType === 'mouse' ? 0.3 : 0.25
     let target = activeIndex
-    if (velocity > 0.25 || dx > threshold) {
+    if (velocity > velThreshold || dx > threshold) {
       target = Math.min(projects.length - 1, activeIndex + 1)
-    } else if (velocity < -0.25 || dx < -threshold) {
+    } else if (velocity < -velThreshold || dx < -threshold) {
       target = Math.max(0, activeIndex - 1)
     }
     goTo(target)
