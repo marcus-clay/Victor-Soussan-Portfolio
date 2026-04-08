@@ -86,13 +86,14 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
   const dragLastX = useRef(0)
   const dragLastTime = useRef(0)
   const dragVelocity = useRef(0)
+  const trackPl = useRef(24) // cached paddingLeft, updated on resize
 
   // ── State sync ─────────────────────────────────────────────────────────────
   const detectActive = useCallback(() => {
     if (dragging.current || animating.current) return
     const track = trackRef.current
     if (!track) return
-    const pl = parseFloat(getComputedStyle(track).paddingLeft)
+    const pl = trackPl.current
     const cards = track.querySelectorAll<HTMLElement>('[data-card]')
     let closest = 0
     let minDist = Infinity
@@ -105,21 +106,61 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
     setCanScrollRight(track.scrollLeft < track.scrollWidth - track.clientWidth - 8)
   }, [])
 
+  // Direct DOM opacity update — bypasses React for per-frame smoothness
+  const updateOpacities = useCallback((scrollLeft: number) => {
+    const track = trackRef.current
+    if (!track) return
+    const pl = trackPl.current
+    const cards = track.querySelectorAll<HTMLElement>('[data-card]')
+    cards.forEach((card) => {
+      const dist = Math.abs(card.offsetLeft - pl - scrollLeft)
+      const normalized = Math.min(dist / CARD_WIDTH_PX, 1)
+      card.style.opacity = String(1 - 0.28 * normalized)
+    })
+  }, [])
+
+  useEffect(() => {
+    const track = trackRef.current
+    if (!track) return
+    // Cache paddingLeft so we don't call getComputedStyle on every scroll frame
+    const updatePl = () => { trackPl.current = parseFloat(getComputedStyle(track).paddingLeft) }
+    updatePl()
+    window.addEventListener('resize', updatePl)
+    return () => window.removeEventListener('resize', updatePl)
+  }, [])
+
   useEffect(() => {
     const track = trackRef.current
     if (!track) return
     let timer: ReturnType<typeof setTimeout>
-    // Debounced scroll = fallback for Safari <17 which lacks scrollend
-    const onScroll = () => { clearTimeout(timer); timer = setTimeout(detectActive, 60) }
+    const onScroll = () => {
+      // Live opacity tracking on every scroll frame
+      updateOpacities(track.scrollLeft)
+      // Eager activeIndex: fire before scrollend when card is nearly centred
+      if (!dragging.current && !animating.current) {
+        const pl = trackPl.current
+        const cards = track.querySelectorAll<HTMLElement>('[data-card]')
+        let closest = 0, minDist = Infinity
+        cards.forEach((card, i) => {
+          const dist = Math.abs(card.offsetLeft - pl - track.scrollLeft)
+          if (dist < minDist) { minDist = dist; closest = i }
+        })
+        if (minDist < 20) setActiveIndex(closest)
+      }
+      // Debounced full sync = fallback for Safari <17 which lacks scrollend
+      clearTimeout(timer)
+      timer = setTimeout(detectActive, 60)
+    }
     track.addEventListener('scrollend', detectActive, { passive: true })
     track.addEventListener('scroll', onScroll, { passive: true })
     detectActive()
+    updateOpacities(track.scrollLeft)
     return () => {
       clearTimeout(timer)
       track.removeEventListener('scrollend', detectActive)
       track.removeEventListener('scroll', onScroll)
     }
-  }, [detectActive])
+  }, [detectActive, updateOpacities])
 
   useEffect(() => { return () => cancelAnimationFrame(rafRef.current) }, [])
 
@@ -153,7 +194,9 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
     const t0 = performance.now()
     function frame(now: number) {
       const t = Math.min((now - t0) / SCROLL_DURATION, 1)
-      el.scrollLeft = start + diff * easeOutStrong(t)
+      const newScrollLeft = start + diff * easeOutStrong(t)
+      el.scrollLeft = newScrollLeft
+      updateOpacities(newScrollLeft)
       if (t < 1) {
         rafRef.current = requestAnimationFrame(frame)
       } else {
@@ -163,7 +206,7 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
       }
     }
     rafRef.current = requestAnimationFrame(frame)
-  }, [detectActive])
+  }, [detectActive, updateOpacities])
 
   const goTo = useCallback((index: number) => {
     const track = trackRef.current
@@ -204,13 +247,15 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
       hasMoved.current = true
     }
     track.style.scrollSnapType = 'none'
-    track.scrollLeft = dragStartScrollLeft.current - dx
+    const newScrollLeft = dragStartScrollLeft.current - dx
+    track.scrollLeft = newScrollLeft
+    updateOpacities(newScrollLeft)
     const now = performance.now()
     const dt = now - dragLastTime.current
     if (dt > 0) dragVelocity.current = (dragLastX.current - e.clientX) / dt
     dragLastX.current = e.clientX
     dragLastTime.current = now
-  }, [])
+  }, [updateOpacities])
 
   const onPointerUp = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
     if (!dragging.current) return
@@ -305,9 +350,6 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
                   width: 'min(692px, calc(100vw - 48px))',
                   scrollSnapAlign: 'start',
                   cursor: 'pointer',
-                  // Dimming adjacent cards only — no transition delay on active reveal
-                  opacity: isActive ? 1 : Math.abs(index - activeIndex) === 1 ? 0.72 : 1,
-                  transition: 'opacity 80ms ease',
                 }}
                 onClick={() => {
                   if (index !== activeIndex) goTo(index)
@@ -373,12 +415,12 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
                     {item.title}
                   </p>
 
-                  {/* Summary — instant reveal, no transition delay */}
+                  {/* Summary — always visible, color dims when inactive */}
                   <p
                     className="text-sm leading-relaxed line-clamp-2 mb-3"
                     style={{
-                      color: '#6B7280',
-                      opacity: isActive ? 1 : 0,
+                      color: isActive ? '#6B7280' : '#9CA3AF',
+                      transition: 'color 80ms ease',
                     }}
                   >
                     {item.summary}

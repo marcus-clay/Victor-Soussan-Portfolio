@@ -35,7 +35,7 @@ const SUMMARY_TOC: Record<string, TOCSections> = {
     { id: 'context', label_en: 'Context', label_fr: 'Contexte' },
     { id: 'role', label_en: 'Role', label_fr: 'Rôle' },
     { id: 'scope', label_en: 'Scope', label_fr: 'Périmètre' },
-    { id: 'highlights', label_en: 'Highlights', label_fr: 'Points clés' },
+    { id: 'highlights', label_en: 'Interactions', label_fr: 'Interactions' },
     { id: 'user-testing', label_en: 'User testing', label_fr: 'Tests utilisateurs' },
     { id: 'outcome', label_en: 'Outcome', label_fr: 'Résultats' },
   ],
@@ -68,6 +68,7 @@ const SUMMARY_TOC: Record<string, TOCSections> = {
     { id: 'hero', label_en: 'Top', label_fr: 'Haut' },
     { id: 'initiatives', label_en: 'Overview', label_fr: 'Aperçu' },
     { id: 'role', label_en: 'Role', label_fr: 'Rôle' },
+    { id: 'scope', label_en: 'Scope', label_fr: 'Périmètre' },
     { id: 'outcome', label_en: 'Outcome', label_fr: 'Résultats' },
   ],
   pagesjaunes: [

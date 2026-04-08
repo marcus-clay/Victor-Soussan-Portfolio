@@ -76,8 +76,6 @@ function GalleryGrid({ lang }: { lang: 'en' | 'fr' }) {
   const dragLastTime = useRef(0)
   const dragVelocity = useRef(0)
 
-  useEffect(() => { return () => {} }, []) // no cleanup needed — scrollBy is native
-
   const syncBounds = useCallback(() => {
     const el = gridRef.current
     if (!el) return
