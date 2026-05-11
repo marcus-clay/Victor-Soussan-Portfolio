@@ -1970,7 +1970,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
             </div>
             <div className="flex-1 relative">
               <iframe
-                src="https://golden-parfait-cc3d92.netlify.app/"
+                src="https://endearing-taffy-c86c69.netlify.app/"
                 className="absolute inset-0 w-full h-full border-0"
                 title="VAE Collective Prototype"
                 allow="fullscreen"

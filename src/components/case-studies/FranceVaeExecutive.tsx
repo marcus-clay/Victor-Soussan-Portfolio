@@ -96,6 +96,7 @@ const TRANSLATIONS = {
     cta: {
       viewFull: 'View full case study',
       contact: 'Get in touch',
+      prototypeButton: 'Open prototype',
     },
   },
   fr: {
@@ -171,9 +172,12 @@ const TRANSLATIONS = {
     cta: {
       viewFull: 'Voir le case study complet',
       contact: 'Me contacter',
+      prototypeButton: 'Ouvrir le prototype',
     },
   },
 };
+
+const VAE_COLLECTIVE_PROTOTYPE_URL = 'https://endearing-taffy-c86c69.netlify.app/';
 
 // Hardware-accelerated fade-in (transform string, not Framer Motion shorthand y which runs on main thread)
 const FadeIn: React.FC<{
@@ -381,6 +385,22 @@ const FranceVaeExecutive: React.FC<FranceVaeExecutiveProps> = ({
                   onImageClick={onImageClick}
                 />
               </div>
+
+              {area.title.startsWith('MVP VAE Collective') && (
+                <div className="max-w-[740px] mx-auto px-6 mt-6">
+                  <FadeIn delay={0.04}>
+                    <a
+                      href={VAE_COLLECTIVE_PROTOTYPE_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors duration-150"
+                    >
+                      {t.cta.prototypeButton}
+                      <ArrowRight size={14} />
+                    </a>
+                  </FadeIn>
+                </div>
+              )}
             </div>
           ))}
         </div>
