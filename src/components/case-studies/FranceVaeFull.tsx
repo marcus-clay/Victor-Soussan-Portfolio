@@ -16,14 +16,13 @@ import React, { useRef, useState } from 'react';
 import ExpandableSection from './ExpandableSection';
 import CaseStudyTestimonialBlock from './CaseStudyTestimonialBlock';
 import VideoPlayer from '@/components/VideoPlayer';
-import { motion, useInView, AnimatePresence } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import {
   Stack as Layers,
   ArrowRight,
   Briefcase,
   Calendar,
   Buildings as Building2,
-  X,
   Play,
   ArrowSquareOut as ExternalLink,
   Users,
@@ -1223,9 +1222,6 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
   const t = TRANSLATIONS[lang];
   const isDark = false;
 
-  // State for modals
-  const [prototypeModalOpen, setPrototypeModalOpen] = useState(false);
-  const [reportModalOpen, setReportModalOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-[#FDFDFC]">
@@ -1417,13 +1413,15 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
               </div>
               <BulletSection title={t.initiative1.deliverables.title} items={t.initiative1.deliverables.items} isDark={isDark} />
               <div className="mt-6">
-                <button
-                  onClick={() => setPrototypeModalOpen(true)}
-                  className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors duration-150"
+                <a
+                  href="https://endearing-taffy-c86c69.netlify.app/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#2D5CF3] text-white text-sm font-medium shadow-sm hover:bg-[#2450d9] hover:shadow-md transition-[background-color,box-shadow] duration-150"
                 >
                   {t.initiative1.prototypeButton}
-                  <ArrowRight size={14} />
-                </button>
+                  <ArrowRight size={14} weight="bold" />
+                </a>
               </div>
             </FadeInSection>
 
@@ -1603,13 +1601,15 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
                 </div>
               </ExpandableSection>
               <div className="mt-6">
-                <button
-                  onClick={() => setReportModalOpen(true)}
-                  className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors duration-150"
+                <a
+                  href="https://tests-utilisateur-tableau-de-bord-c.vercel.app"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#2D5CF3] text-white text-sm font-medium shadow-sm hover:bg-[#2450d9] hover:shadow-md transition-[background-color,box-shadow] duration-150"
                 >
                   {t.initiative3.reportButton}
-                  <ExternalLink size={14} />
-                </button>
+                  <ExternalLink size={14} weight="bold" />
+                </a>
               </div>
             </FadeInSection>
 
@@ -1944,76 +1944,6 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
 
         </div>
       </div>
-
-      {/* PROTOTYPE MODAL */}
-      <AnimatePresence>
-        {prototypeModalOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] bg-black/90 flex flex-col"
-          >
-            <div className="flex items-center justify-between px-4 py-3 bg-black/50 backdrop-blur-sm border-b border-white/10">
-              <div className="flex items-center gap-3">
-                <img loading="lazy" src="/images/francevae/logo fvae.webp" alt="France VAE" className="h-6 w-auto" />
-                <span className="text-white/70 text-sm font-medium">
-                  {lang === 'fr' ? 'Prototype VAE Collective' : 'VAE Collective Prototype'}
-                </span>
-              </div>
-              <button
-                onClick={() => setPrototypeModalOpen(false)}
-                className="relative p-3 rounded-full flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-colors before:absolute before:inset-[-12px] before:content-['']"
-              >
-                <X size={24} />
-              </button>
-            </div>
-            <div className="flex-1 relative">
-              <iframe
-                src="https://endearing-taffy-c86c69.netlify.app/"
-                className="absolute inset-0 w-full h-full border-0"
-                title="VAE Collective Prototype"
-                allow="fullscreen"
-              />
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* REPORT MODAL */}
-      <AnimatePresence>
-        {reportModalOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] bg-black/90 flex flex-col"
-          >
-            <div className="flex items-center justify-between px-4 py-3 bg-black/50 backdrop-blur-sm border-b border-white/10">
-              <div className="flex items-center gap-3">
-                <img loading="lazy" src="/images/francevae/logo fvae.webp" alt="France VAE" className="h-6 w-auto" />
-                <span className="text-white/70 text-sm font-medium">
-                  {lang === 'fr' ? 'Rapport de test - Tableau de bord candidat' : 'Test Report - Candidate Dashboard'}
-                </span>
-              </div>
-              <button
-                onClick={() => setReportModalOpen(false)}
-                className="relative p-3 rounded-full flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-colors before:absolute before:inset-[-12px] before:content-['']"
-              >
-                <X size={24} />
-              </button>
-            </div>
-            <div className="flex-1 relative">
-              <iframe
-                src="https://tests-utilisateur-tableau-de-bord-c.vercel.app"
-                className="absolute inset-0 w-full h-full border-0"
-                title="UXR Test Report"
-                allow="fullscreen"
-              />
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
     </div>
   );

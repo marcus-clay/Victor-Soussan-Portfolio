@@ -7,7 +7,7 @@
 
 import React, { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { ArrowRight } from '@phosphor-icons/react';
+import { ArrowRight, ArrowSquareOut as ExternalLink } from '@phosphor-icons/react';
 import CaseStudyViewPills from '../CaseStudyViewPills';
 import CaseStudyTestimonialBlock from './CaseStudyTestimonialBlock';
 import { getTestimonials } from '@/data/testimonialsData';
@@ -97,6 +97,7 @@ const TRANSLATIONS = {
       viewFull: 'View full case study',
       contact: 'Get in touch',
       prototypeButton: 'Open prototype',
+      reportButton: 'View full report',
     },
   },
   fr: {
@@ -173,11 +174,13 @@ const TRANSLATIONS = {
       viewFull: 'Voir le case study complet',
       contact: 'Me contacter',
       prototypeButton: 'Ouvrir le prototype',
+      reportButton: 'Voir le rapport complet',
     },
   },
 };
 
 const VAE_COLLECTIVE_PROTOTYPE_URL = 'https://endearing-taffy-c86c69.netlify.app/';
+const UXR_REPORT_URL = 'https://tests-utilisateur-tableau-de-bord-c.vercel.app';
 
 // Hardware-accelerated fade-in (transform string, not Framer Motion shorthand y which runs on main thread)
 const FadeIn: React.FC<{
@@ -393,10 +396,26 @@ const FranceVaeExecutive: React.FC<FranceVaeExecutiveProps> = ({
                       href={VAE_COLLECTIVE_PROTOTYPE_URL}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors duration-150"
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#2D5CF3] text-white text-sm font-medium shadow-sm hover:bg-[#2450d9] hover:shadow-md transition-[background-color,box-shadow] duration-150"
                     >
                       {t.cta.prototypeButton}
-                      <ArrowRight size={14} />
+                      <ArrowRight size={14} weight="bold" />
+                    </a>
+                  </FadeIn>
+                </div>
+              )}
+
+              {area.image.includes('UXR - interface tableau de bord candidat') && (
+                <div className="max-w-[740px] mx-auto px-6 mt-6">
+                  <FadeIn delay={0.04}>
+                    <a
+                      href={UXR_REPORT_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#2D5CF3] text-white text-sm font-medium shadow-sm hover:bg-[#2450d9] hover:shadow-md transition-[background-color,box-shadow] duration-150"
+                    >
+                      {t.cta.reportButton}
+                      <ExternalLink size={14} weight="bold" />
                     </a>
                   </FadeIn>
                 </div>
