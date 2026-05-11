@@ -47,7 +47,7 @@ const TRANSLATIONS = {
         {
           title: 'SQOOL Partage',
           description: 'One-gesture file sharing. Drag and drop to share files with a class, like AirDrop for classrooms.',
-          image: '/images/sqool/hero_ecosystem_sqool.webp',
+          image: '/images/sqool/systeme de marque/visuels_systeme_de_marque_04_2x.webp',
         },
         {
           title: 'SQOOL MDM',
@@ -201,7 +201,7 @@ const TRANSLATIONS = {
         {
           title: 'SQOOL Partage',
           description: 'Partage de fichiers en un geste. Glisser-d\u00e9poser pour partager avec une classe, comme AirDrop pour les salles de classe.',
-          image: '/images/sqool/hero_ecosystem_sqool.webp',
+          image: '/images/sqool/systeme de marque/visuels_systeme_de_marque_04_2x.webp',
         },
         {
           title: 'SQOOL MDM',

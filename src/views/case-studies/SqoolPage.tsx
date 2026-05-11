@@ -42,7 +42,6 @@ const allImagesData: MediaItem[] = [
   { src: '/images/sqool/hi sqool/004 003-hp-scroll-2x.webp', captionKey: 'hisqool', type: 'image' },
   { src: '/videos/connect/connect-dashboard-prototype-compressed.mp4', captionKey: 'connect', type: 'video' },
   { src: '/videos/connect/Video-demo-bulle-interactions-compressed.mp4', captionKey: 'bulle', type: 'video' },
-  { src: '/images/sqool/sqool_brand.webp', captionKey: 'brand', type: 'image' },
   { src: '/images/sqool/thumbnail_suite_sqool_blue.webp', captionKey: 'suiteSqool', type: 'image' },
   // Brand System Visuals
   { src: '/images/sqool/systeme de marque/visuels_systeme_de_marque_01_2x.webp', captionKey: 'brandVisual01', type: 'image' },
@@ -60,13 +59,13 @@ const allImagesData: MediaItem[] = [
   { src: '/images/sqool/systeme de marque/visuels_systeme_de_marque_13_2x.webp', captionKey: 'brandVisual13', type: 'image' },
   { src: '/images/sqool/systeme de marque/visuels_systeme_de_marque_14_2x.webp', captionKey: 'brandVisual14', type: 'image' },
   { src: '/images/sqool/systeme de marque/visuel_systeme_de_marque_15.webp', captionKey: 'brandVisual15', type: 'image' },
-  { src: '/images/sqool/sqool_design_system.webp', captionKey: 'designSystem', type: 'image' },
-  { src: '/images/sqool/sqool_classe.webp', captionKey: 'classe', type: 'image' },
-  { src: '/images/sqool/sqool_partage.webp', captionKey: 'partage', type: 'image' },
-  { src: '/images/sqool/sqool_applications.webp', captionKey: 'applications', type: 'image' },
-  { src: '/images/sqool/sqool_mdm.webp', captionKey: 'mdm', type: 'image' },
-  { src: '/images/sqool/sqool_protect.webp', captionKey: 'protect', type: 'image' },
-  { src: '/images/sqool/sqool_extend.webp', captionKey: 'extend', type: 'image' },
+  { src: '/images/sqool/hi sqool/hisqoolcomponents2x.webp', captionKey: 'designSystem', type: 'image' },
+  { src: '/images/sqool/sqool classe/Visuel - Comm - Pilotage - accueil - Focus Classe temporaire@2x.webp', captionKey: 'classe', type: 'image' },
+  { src: '/images/sqool/systeme de marque/visuels_systeme_de_marque_04_2x.webp', captionKey: 'partage', type: 'image' },
+  { src: '/images/sqool/systeme de marque/visuels_systeme_de_marque_09_2x.webp', captionKey: 'applications', type: 'image' },
+  { src: '/images/sqool/systeme de marque/visuels_systeme_de_marque_05_2x.webp', captionKey: 'mdm', type: 'image' },
+  { src: '/images/sqool/systeme de marque/visuels_systeme_de_marque_08_2x.webp', captionKey: 'protect', type: 'image' },
+  { src: '/images/sqool/systeme de marque/visuels_systeme_de_marque_07_2x.webp', captionKey: 'extend', type: 'image' },
 ];
 
 interface GalleryCardProps {
@@ -691,7 +690,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
 
               <div className="max-w-[960px] mx-auto px-6">
                 <MediaFigure
-                  src="/images/sqool/sqool_design_system.webp"
+                  src="/images/sqool/hi sqool/hisqoolcomponents2x.webp"
                   alt={t.captions.designSystem}
                   caption={t.captions.designSystem}
                   captionDesc={t.captions.designSystemDesc}
@@ -727,7 +726,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
               </div>
               <div className="max-w-[960px] mx-auto px-6 mb-10">
                 <MediaFigure
-                  src="/images/sqool/sqool_classe.webp"
+                  src="/images/sqool/sqool classe/Visuel - Comm - Pilotage - accueil - Focus Classe temporaire@2x.webp"
                   alt={t.captions.classe}
                   caption={t.captions.classe}
                 />
@@ -748,7 +747,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
               </div>
               <div className="max-w-[960px] mx-auto px-6 mb-10">
                 <MediaFigure
-                  src="/images/sqool/sqool_partage.webp"
+                  src="/images/sqool/systeme de marque/visuels_systeme_de_marque_04_2x.webp"
                   alt={t.captions.partage}
                   caption={t.captions.partage}
                 />
