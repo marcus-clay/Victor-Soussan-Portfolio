@@ -12,6 +12,7 @@
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
     "@phosphor-icons/react": "^2.1.10",
+    "@vercel/analytics": "^2.0.1",
     "framer-motion": "^12.23.24",
     "jspdf": "^3.0.4",
     "next": "^16.1.7",
