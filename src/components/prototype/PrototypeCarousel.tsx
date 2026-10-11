@@ -2,6 +2,7 @@ import React, { useRef, useState, useCallback, useEffect } from 'react';
 import { CaretLeft as ChevronLeft, CaretRight as ChevronRight, Play, Pause, ArrowCounterClockwise as RotateCcw, ArrowsOut as Expand } from '@phosphor-icons/react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PrototypeItem, getIframeSrc, CATEGORY_COLORS } from '../../data/sqoolPrototypesData';
+import { useScrollLock } from '../../hooks/useScrollLock';
 
 interface PrototypeCarouselProps {
   prototypes: PrototypeItem[];
@@ -276,12 +277,9 @@ const FullscreenPlayer: React.FC<{
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
     document.addEventListener('keydown', handleKey);
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.removeEventListener('keydown', handleKey);
-      document.body.style.overflow = '';
-    };
+    return () => document.removeEventListener('keydown', handleKey);
   }, [onClose]);
+  useScrollLock(true);
 
   const handlePlay = useCallback(() => {
     iframeRef.current?.contentWindow?.postMessage('play', '*');

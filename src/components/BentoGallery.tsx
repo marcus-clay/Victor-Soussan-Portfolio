@@ -4,6 +4,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence, PanInfo, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import { X, CaretLeft as ChevronLeft, CaretRight as ChevronRight, Play } from '@phosphor-icons/react';
+import { useScrollLock } from '../hooks/useScrollLock';
 
 // Apple-style spring transition
 const springTransition = {
@@ -257,17 +258,8 @@ export const BentoGallery: React.FC<BentoGalleryProps> = ({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, lightboxOpen, onClose]);
 
-  // Prevent body scroll when open
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [isOpen]);
+  // Prevent page scroll while open
+  useScrollLock(isOpen);
 
   // Handle drag end for swipe navigation
   const handleDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {

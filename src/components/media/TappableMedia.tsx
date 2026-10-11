@@ -1,6 +1,7 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { motion, AnimatePresence, useAnimation, PanInfo } from 'framer-motion';
 import { X } from '@phosphor-icons/react';
+import { useScrollLock } from '@/hooks/useScrollLock';
 
 interface TappableMediaProps {
   children: React.ReactNode;
@@ -46,20 +47,16 @@ const TappableMedia = ({
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Lock body scroll when lightbox is open
+  // Lock page scroll while the lightbox is open
+  useScrollLock(isOpen);
+
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
       // Hide hint after 2 seconds
       const timer = setTimeout(() => setShowHint(false), 2000);
       return () => clearTimeout(timer);
-    } else {
-      document.body.style.overflow = '';
-      setShowHint(true);
     }
-    return () => {
-      document.body.style.overflow = '';
-    };
+    setShowHint(true);
   }, [isOpen]);
 
   // Handle keyboard events

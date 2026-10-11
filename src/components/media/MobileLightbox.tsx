@@ -1,6 +1,7 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { motion, AnimatePresence, useAnimation, PanInfo } from 'framer-motion';
 import { X } from '@phosphor-icons/react';
+import { useScrollLock } from '@/hooks/useScrollLock';
 
 interface MobileLightboxProps {
   src: string;
@@ -42,17 +43,8 @@ const MobileLightbox = ({
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Lock body scroll when lightbox is open
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [isOpen]);
+  // Lock page scroll while the lightbox is open
+  useScrollLock(isOpen);
 
   // Handle keyboard events
   useEffect(() => {
