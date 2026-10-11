@@ -439,7 +439,7 @@ function CAbout({ go }: { go: (p: PageId) => void }) {
             {modules.map((m, i) => (
               <Fade key={m.id} delay={i * 0.04} className={`col-span-12 ${m.span}`}>
                 {m.isPhoto ? (
-                  <div className="rounded-2xl overflow-hidden h-full min-h-[200px]"><img src="/images/photos victor/image_victor_home.png" alt="Victor Soussan" className="w-full h-full object-cover object-top" /></div>
+                  <div className="rounded-2xl overflow-hidden h-full min-h-[200px]"><img src="/images/photos victor/image_victor_home.webp" alt="Victor Soussan" className="w-full h-full object-cover object-top" /></div>
                 ) : (
                   <motion.div whileHover={{ y: -1 }} transition={springB}
                     className="p-6 rounded-2xl bg-white border border-gray-100 hover:border-gray-200 transition-all cursor-pointer h-full"
@@ -482,7 +482,7 @@ function CBlog({ go }: { go: (p: PageId) => void }) {
             <motion.div whileHover={{ y: -2 }} transition={springB} onClick={() => go('article')}
               className="group cursor-pointer rounded-2xl overflow-hidden bg-white border border-gray-100 hover:border-gray-200 hover:shadow-xl transition-all mb-8">
               <div className="flex flex-col md:flex-row">
-                <div className="w-full md:w-64 shrink-0 overflow-hidden"><img src="/images/guide-claude-code/hero-cover.png" alt="" className="w-full h-full object-cover min-h-[160px]" /></div>
+                <div className="w-full md:w-64 shrink-0 overflow-hidden"><img src="/images/guide-claude-code/hero-cover.webp" alt="" className="w-full h-full object-cover min-h-[160px]" /></div>
                 <div className="p-6 flex flex-col justify-center">
                   <div className="flex items-center gap-2 mb-2"><BookOpen size={14} className="text-blue-500" /><span className="text-[12px] text-blue-500 font-bold uppercase tracking-wider">Guide · 9 chapters</span></div>
                   <h2 className="text-[20px] font-bold group-hover:text-blue-600 transition-colors mb-2">Getting started with Claude Code</h2>

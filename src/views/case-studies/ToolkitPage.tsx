@@ -2,6 +2,7 @@
 // Displays the Toolkit project case study
 
 import React, { useState, useEffect, useRef } from 'react';
+import { useStableComponent } from '../../hooks/useStableComponent';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import { ArrowRight } from '@phosphor-icons/react';
@@ -9,7 +10,6 @@ import VideoPlayer from '@/components/VideoPlayer';
 import { GalleryItem, getToolkitGalleryItems } from '../../components/BentoGallery';
 import ToolkitExecutive from '../../components/case-studies/ToolkitExecutive';
 import EnhancedLightbox from '../../components/media/EnhancedLightbox';
-import { PROJECT_SEO, DEFAULT_SEO, updateMetaTags, injectJsonLd } from '../../utils/seo';
 import { TOOLKIT_TRANSLATIONS } from '../../data/caseStudyTranslations/toolkitTranslations';
 
 interface ToolkitPageProps {
@@ -335,16 +335,6 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
   lang = 'en',
   onContact,
 }) => {
-  useEffect(() => {
-    const seo = PROJECT_SEO['toolkit'];
-    if (seo) {
-      updateMetaTags(seo);
-      const removeJsonLd = injectJsonLd('toolkit', seo);
-      return () => { updateMetaTags(DEFAULT_SEO); removeJsonLd(); };
-    }
-    return () => updateMetaTags(DEFAULT_SEO);
-  }, []);
-
   const t = TOOLKIT_TRANSLATIONS[lang];
   const galleryItems = getToolkitGalleryItems(lang);
 
@@ -390,7 +380,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
   };
 
   // Reusable media figure component
-  const MediaFigure = ({ src, alt, caption, captionDesc, description, type = 'image', className = '' }: {
+  const MediaFigure = useStableComponent(({ src, alt, caption, captionDesc, description, type = 'image', className = '' }: {
     src: string; alt: string; caption: string; captionDesc?: string; description?: string; type?: 'image' | 'video'; className?: string;
   }) => (
     <motion.figure
@@ -421,10 +411,10 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
         {description && <p className="text-base text-gray-500 leading-relaxed mt-2">{description}</p>}
       </div>
     </motion.figure>
-  );
+  ));
 
   // Reusable video figure with ref tracking
-  const VideoFigure = ({ src, refKey, caption, captionDesc, description, className = '' }: {
+  const VideoFigure = useStableComponent(({ src, refKey, caption, captionDesc, description, className = '' }: {
     src: string; refKey: string; caption: string; captionDesc?: string; description?: string; className?: string;
   }) => (
     <motion.figure
@@ -452,7 +442,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
         {description && <p className="text-base text-gray-500 leading-relaxed mt-2">{description}</p>}
       </div>
     </motion.figure>
-  );
+  ));
 
   return (
     <div

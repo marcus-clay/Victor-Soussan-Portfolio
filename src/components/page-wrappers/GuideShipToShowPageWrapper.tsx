@@ -1,16 +1,8 @@
 'use client'
 
-import dynamic from 'next/dynamic'
 import { useRouter } from 'next/navigation'
+import GuideShipToShowPage from '@/views/GuideShipToShowPage'
 
-const GuideShipToShowPage = dynamic(() => import('@/views/GuideShipToShowPage'), {
-  ssr: false,
-  loading: () => (
-    <div className="min-h-screen bg-[#FDFDFC] flex items-center justify-center">
-      <div className="w-8 h-8 border-2 border-gray-200 border-t-gray-900 rounded-full animate-spin" />
-    </div>
-  ),
-})
 
 export default function GuideShipToShowPageWrapper({
   lang,

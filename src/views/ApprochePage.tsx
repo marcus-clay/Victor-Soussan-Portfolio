@@ -746,7 +746,7 @@ export default function ApprochePage({
             <RevealSection delay={0.08} className="mt-8">
               <div className="rounded-xl overflow-hidden border border-gray-100">
                 <img
-                  src="/images/approche/design-teardown.png"
+                  src="/images/approche/design-teardown.webp"
                   alt={lang === 'fr' ? 'Atelier Design Teardown — exemple réel' : 'Design Teardown workshop — real example'}
                   loading="lazy"
                   className="w-full h-auto"

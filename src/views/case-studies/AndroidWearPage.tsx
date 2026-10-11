@@ -12,7 +12,6 @@ import VideoPlayer from '@/components/VideoPlayer';
 import { GalleryItem } from '../../components/BentoGallery';
 import EnhancedLightbox from '../../components/media/EnhancedLightbox';
 
-import { PROJECT_SEO, DEFAULT_SEO, updateMetaTags, injectJsonLd } from '../../utils/seo';
 import { ANDROID_WEAR_TRANSLATIONS } from '../../data/caseStudyTranslations/androidWearTranslations';
 
 interface AndroidWearPageProps {
@@ -205,16 +204,6 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
   lang = 'en',
   onContact,
 }) => {
-  useEffect(() => {
-    const seo = PROJECT_SEO['androidwear'];
-    if (seo) {
-      updateMetaTags(seo);
-      const removeJsonLd = injectJsonLd('androidwear', seo);
-      return () => { updateMetaTags(DEFAULT_SEO); removeJsonLd(); };
-    }
-    return () => updateMetaTags(DEFAULT_SEO);
-  }, []);
-
   const t = TRANSLATIONS[lang];
   const galleryItems = getGalleryItems(lang);
   const containerRef = useRef<HTMLDivElement>(null);

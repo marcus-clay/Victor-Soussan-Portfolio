@@ -111,7 +111,7 @@ export function FloatingGuideCTA({ onClick }: { onClick?: () => void }) {
         <motion.button initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }} transition={springBounce}
           onClick={onClick}
           className="fixed right-6 top-24 z-[80] bg-white border border-gray-200 rounded-2xl p-3 shadow-lg shadow-gray-900/[0.06] hover:shadow-xl hover:border-gray-300 transition-all flex items-center gap-3 max-w-[220px]">
-          <img src="/images/guide-claude-code/hero-cover.png" alt="" className="w-10 h-10 rounded-lg object-cover flex-shrink-0" />
+          <img src="/images/guide-claude-code/hero-cover.webp" alt="" className="w-10 h-10 rounded-lg object-cover flex-shrink-0" />
           <div className="text-left">
             <p className="text-xs font-semibold text-gray-900 leading-tight" style={{ fontFamily }}>Claude Code Guide</p>
             <p className="text-micro text-gray-500" style={{ fontFamily }}>9 chapters</p>

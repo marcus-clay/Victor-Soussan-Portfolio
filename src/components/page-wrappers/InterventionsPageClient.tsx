@@ -128,7 +128,7 @@ export default function InterventionsPageClient({ lang }: { lang: 'en' | 'fr' })
           <div className="flex flex-col sm:flex-row gap-6 items-start">
             <div className="w-20 h-20 rounded-2xl bg-gray-100 overflow-hidden flex-shrink-0">
               <img
-                src="/images/photos victor/image-victor-linkedin.png"
+                src="/images/photos victor/image-victor-linkedin.webp"
                 alt="Victor Soussan"
                 className="w-full h-full object-cover"
                 loading="lazy"

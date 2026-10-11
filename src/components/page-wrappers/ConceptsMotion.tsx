@@ -102,7 +102,7 @@ const PILLARS = [
 ];
 
 const RESOURCES = [
-  { id: 'guide-claude-code', type: 'guide' as const, title: 'Getting started with Claude Code', desc: 'Complete guide for designers: installation to deployment.', chapters: 9, cover: '/images/guide-claude-code/hero-cover.png' },
+  { id: 'guide-claude-code', type: 'guide' as const, title: 'Getting started with Claude Code', desc: 'Complete guide for designers: installation to deployment.', chapters: 9, cover: '/images/guide-claude-code/hero-cover.webp' },
   { id: 'ai-design-workflows', type: 'article' as const, title: 'AI-assisted design workflows', desc: 'How AI changes the way designers prototype and ship.' },
   { id: 'design-system-figma', type: 'article' as const, title: 'Design System with Claude Code', desc: 'Figma to code with zero drift.' },
 ];
@@ -718,7 +718,7 @@ function About({ go }: { go: (p: PageId) => void }) {
             <FadeUp delay={0.15}>
               <div className="md:sticky md:top-20 space-y-6">
                 <div className="rounded-2xl overflow-hidden bg-gray-50">
-                  <img src="/images/photos victor/image_victor_home.png" alt="Victor Soussan" className="w-full aspect-[3/4] object-cover object-top" />
+                  <img src="/images/photos victor/image_victor_home.webp" alt="Victor Soussan" className="w-full aspect-[3/4] object-cover object-top" />
                 </div>
                 <div className="p-6 rounded-2xl bg-gray-50 border border-gray-100">
                   <h3 className="text-[14px] font-semibold mb-4">Tools</h3>

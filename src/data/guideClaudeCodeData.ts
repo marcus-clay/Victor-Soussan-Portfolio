@@ -39,7 +39,7 @@ export const GUIDE_META = {
     linkedin: 'https://linkedin.com/in/victor-soussan-product-design/',
     website: 'https://www.victorsoussan.fr/',
   },
-  heroImage: '/images/guide-claude-code/hero-cover.png',
+  heroImage: '/images/guide-claude-code/hero-cover.webp',
   heroAlt_en: 'Claude Code gives designers the ability to design, produce, and deploy real deliverables.',
   heroAlt_fr: 'Claude Code ouvre aux designers la possibilité de concevoir, produire et déployer des livrables réels.',
 };
@@ -216,7 +216,7 @@ export const GUIDE_CHAPTERS: GuideChapter[] = [
     ├── prototype-dashboard/
     ├── landing-client-x/
     └── design-system-doc/</code></pre>
-<img src="/images/guide-claude-code/ch3-dev-projects-folder.png" alt="Organisation des dossiers dev_projects dans le Finder" />
+<img src="/images/guide-claude-code/ch3-dev-projects-folder.webp" alt="Organisation des dossiers dev_projects dans le Finder" />
 <p><strong>Pour le créer :</strong></p>
 <ol>
 <li>Ouvre le Finder.</li>
@@ -234,7 +234,7 @@ export const GUIDE_CHAPTERS: GuideChapter[] = [
     ├── prototype-dashboard/
     ├── landing-client-x/
     └── design-system-doc/</code></pre>
-<img src="/images/guide-claude-code/ch3-dev-projects-folder.png" alt="dev_projects folder organization in the Finder" />
+<img src="/images/guide-claude-code/ch3-dev-projects-folder.webp" alt="dev_projects folder organization in the Finder" />
 <p><strong>To create it:</strong></p>
 <ol>
 <li>Open the Finder.</li>
@@ -331,9 +331,9 @@ export const GUIDE_CHAPTERS: GuideChapter[] = [
       {
         heading_fr: 'Vue d\'ensemble',
         heading_en: 'Overview',
-        content_fr: `<img src="/images/guide-claude-code/ch3-three-approaches.png" alt="Les trois approches pour démarrer un projet avec Claude Code" />
+        content_fr: `<img src="/images/guide-claude-code/ch3-three-approaches.webp" alt="Les trois approches pour démarrer un projet avec Claude Code" />
 <p>Il n'y a pas une seule façon de commencer un projet avec Claude Code. Selon l'état d'avancement de ton idée, les outils que tu maîtrises, et le temps disponible pour la configuration, trois chemins s'offrent à toi.</p>`,
-        content_en: `<img src="/images/guide-claude-code/ch3-three-approaches.png" alt="The three approaches to starting a project with Claude Code" />
+        content_en: `<img src="/images/guide-claude-code/ch3-three-approaches.webp" alt="The three approaches to starting a project with Claude Code" />
 <p>There's no single way to start a project with Claude Code. Depending on how developed your idea is, the tools you're comfortable with, and the time available for setup, you have three paths to choose from.</p>`,
       },
       {
@@ -638,7 +638,7 @@ Use Tailwind CSS via CDN. Mobile-first responsive.</code></pre>
 <li>Cherche <strong>Claude Code</strong></li>
 <li>Sélectionne l'extension publiée par <strong>Anthropic</strong> et clique sur Installer</li>
 </ol>
-<img src="/images/guide-claude-code/ch5-vscode-extension.png" alt="Extension Claude Code dans le marketplace VSCode" />
+<img src="/images/guide-claude-code/ch5-vscode-extension.webp" alt="Extension Claude Code dans le marketplace VSCode" />
 <h3>Mise en place</h3>
 <ol>
 <li><strong>Ouvrir le projet dans VSCode</strong> : File > Open Folder</li>
@@ -646,7 +646,7 @@ Use Tailwind CSS via CDN. Mobile-first responsive.</code></pre>
 <li><strong>Mettre les deux fenêtres côte à côte</strong> : 60 % VSCode / 40 % compagnon sur un écran large</li>
 <li><strong>Vérifier que Claude voit les fichiers</strong> : « Lis la structure du projet et résume ce qu'il contient. »</li>
 </ol>
-<img src="/images/guide-claude-code/ch5-vscode-companion.png" alt="VSCode + Compagnon Claude Code" />
+<img src="/images/guide-claude-code/ch5-vscode-companion.webp" alt="VSCode + Compagnon Claude Code" />
 <h3>Travailler dans cette configuration</h3>
 <p><strong>Donner des instructions précises :</strong></p>
 <pre><code class="language-plain">Modifie le composant HeroSection.jsx :
@@ -665,7 +665,7 @@ Use Tailwind CSS via CDN. Mobile-first responsive.</code></pre>
 <li>Search for <strong>Claude Code</strong></li>
 <li>Select the extension published by <strong>Anthropic</strong> and click Install</li>
 </ol>
-<img src="/images/guide-claude-code/ch5-vscode-extension.png" alt="Claude Code extension in the VSCode marketplace" />
+<img src="/images/guide-claude-code/ch5-vscode-extension.webp" alt="Claude Code extension in the VSCode marketplace" />
 <h3>Setup</h3>
 <ol>
 <li><strong>Open the project in VSCode</strong>: File > Open Folder</li>
@@ -673,7 +673,7 @@ Use Tailwind CSS via CDN. Mobile-first responsive.</code></pre>
 <li><strong>Place the two windows side by side</strong>: 60% VSCode / 40% companion on a wide screen</li>
 <li><strong>Verify Claude can see the files</strong>: "Read the project structure and summarize what it contains."</li>
 </ol>
-<img src="/images/guide-claude-code/ch5-vscode-companion.png" alt="VSCode + Claude Code companion window" />
+<img src="/images/guide-claude-code/ch5-vscode-companion.webp" alt="VSCode + Claude Code companion window" />
 <h3>Working in this setup</h3>
 <p><strong>Give precise instructions:</strong></p>
 <pre><code class="language-plain">Update the HeroSection.jsx component:
@@ -688,7 +688,7 @@ Use Tailwind CSS via CDN. Mobile-first responsive.</code></pre>
       {
         heading_fr: 'VSCode + Terminal intégré',
         heading_en: 'VSCode + integrated terminal',
-        content_fr: `<img src="/images/guide-claude-code/ch5-vscode-terminal.png" alt="VSCode avec Claude Code dans le terminal intégré" />
+        content_fr: `<img src="/images/guide-claude-code/ch5-vscode-terminal.webp" alt="VSCode avec Claude Code dans le terminal intégré" />
 <p><strong>Ouvrir le terminal intégré :</strong> <code>Cmd+\`</code> (backtick)</p>
 <p><strong>Lancer Claude Code :</strong> <code>claude</code></p>
 <p><strong>Prévisualiser le résultat :</strong></p>
@@ -696,7 +696,7 @@ Use Tailwind CSS via CDN. Mobile-first responsive.</code></pre>
 <li>HTML statique : clic droit sur <code>index.html</code> > Open with Live Server</li>
 <li>Projet Next.js : <code>npm run dev</code> dans un second terminal, puis ouvre <code>localhost:3000</code></li>
 </ul>`,
-        content_en: `<img src="/images/guide-claude-code/ch5-vscode-terminal.png" alt="VSCode with Claude Code in the integrated terminal" />
+        content_en: `<img src="/images/guide-claude-code/ch5-vscode-terminal.webp" alt="VSCode with Claude Code in the integrated terminal" />
 <p><strong>Open the integrated terminal:</strong> <code>Cmd+\`</code> (backtick)</p>
 <p><strong>Launch Claude Code:</strong> <code>claude</code></p>
 <p><strong>Preview the result:</strong></p>

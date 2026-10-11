@@ -1,21 +1,21 @@
 import type { Metadata } from 'next'
 import QuotePageWrapper from '@/components/page-wrappers/QuotePageWrapper'
+import { buildMetadata, toLang } from '@/lib/seo'
 
 type Props = { params: Promise<{ lang: string }> }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { lang } = await params
-  return {
-    robots: { index: false, follow: false },
+  const lang = toLang((await params).lang)
+  return buildMetadata({
+    lang,
+    path: 'quote',
     title: lang === 'fr' ? 'Devis' : 'Quote',
-    alternates: {
-      canonical: `https://www.victorsoussan.fr/${lang}/quote`,
-      languages: { fr: 'https://www.victorsoussan.fr/fr/quote', en: 'https://www.victorsoussan.fr/en/quote' },
-    },
-  }
+    description: lang === 'fr' ? 'G\u00e9n\u00e9rateur de devis pour une mission de product design.' : 'Quote generator for a product design engagement.',
+    noindex: true,
+  })
 }
 
 export default async function QuotePage({ params }: Props) {
-  const { lang } = await params
-  return <QuotePageWrapper lang={lang as 'en' | 'fr'} />
+  const lang = toLang((await params).lang)
+  return <QuotePageWrapper lang={lang} />
 }

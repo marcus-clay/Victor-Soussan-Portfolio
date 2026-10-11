@@ -601,7 +601,7 @@ function About({ go }: { go: (p: PageId) => void }) {
           </div>
           <div className="md:col-span-5">
             <F delay={0.2}><div className="md:sticky md:top-20 space-y-5">
-              <div className="rounded-2xl overflow-hidden bg-gray-50"><img src="/images/photos victor/image_victor_home.png" alt="" className="w-full aspect-[3/4] object-cover object-top" /></div>
+              <div className="rounded-2xl overflow-hidden bg-gray-50"><img src="/images/photos victor/image_victor_home.webp" alt="" className="w-full aspect-[3/4] object-cover object-top" /></div>
               <div className="p-5 rounded-2xl bg-white border border-gray-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.6),0_2px_8px_rgba(0,0,0,0.02)]">
                 <h3 className="text-[19px] font-semibold mb-3">Tools</h3>
                 <div className="flex flex-wrap gap-2">{['Figma', 'Claude Code', 'VS Code', 'Next.js', 'Tailwind', 'Vercel', 'Linear', 'Notion'].map(t => <span key={t} className="text-[20px] px-3 py-1.5 rounded-xl bg-gray-50 text-gray-600 border border-gray-100">{t}</span>)}</div>
@@ -677,7 +677,7 @@ function ArticlePage({ go }: { go: (p: PageId) => void }) {
         ))}
       </div></article>
       <section className="py-12 px-6 border-t border-gray-100"><div className="max-w-[680px] mx-auto flex items-center gap-4">
-        <img src="/images/photos victor/image_victor_home.png" alt="" className="w-14 h-14 rounded-full object-cover" />
+        <img src="/images/photos victor/image_victor_home.webp" alt="" className="w-14 h-14 rounded-full object-cover" />
         <div><p className="text-[20px] font-semibold">Victor Soussan</p><p className="text-[19px] text-gray-400">Lead Product Designer · Paris</p></div>
       </div></section>
       <section className="py-16 px-6 bg-gray-50/50"><div className="max-w-[800px] mx-auto">

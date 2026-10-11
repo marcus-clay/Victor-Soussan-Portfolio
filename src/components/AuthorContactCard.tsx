@@ -25,7 +25,7 @@ export default function AuthorContactCard({ lang, isDark = false, message }: Aut
     }`}>
       <div className="flex items-start gap-4">
         <img
-          src="/images/photos victor/image_victor_home.png"
+          src="/images/photos victor/image_victor_home.webp"
           alt="Victor Soussan"
           className="w-14 h-14 rounded-full object-cover flex-shrink-0"
         />

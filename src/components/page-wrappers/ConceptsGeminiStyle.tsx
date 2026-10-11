@@ -639,7 +639,7 @@ function About({ go }: { go: (p: PageId) => void }) {
           </div>
           <div className="md:col-span-5">
             <F delay={0.2}><div className="md:sticky md:top-24 space-y-5">
-              <div className="rounded-2xl overflow-hidden" style={{ boxShadow: '0 16px 48px rgba(45,92,243,0.08)', border: '1.5px solid rgba(45,92,243,0.08)' }}><img src="/images/photos victor/image_victor_home.png" alt="" className="w-full aspect-[3/4] object-cover object-top" /></div>
+              <div className="rounded-2xl overflow-hidden" style={{ boxShadow: '0 16px 48px rgba(45,92,243,0.08)', border: '1.5px solid rgba(45,92,243,0.08)' }}><img src="/images/photos victor/image_victor_home.webp" alt="" className="w-full aspect-[3/4] object-cover object-top" /></div>
               <div className="p-5 rounded-2xl bg-white shadow-sm" style={{ border: '1.5px solid rgba(0,0,0,0.04)' }}>
                 <h3 className="text-[14px] font-bold text-gray-900 mb-3">Tools</h3>
                 <div className="flex flex-wrap gap-2">{['Figma', 'Claude Code', 'VS Code', 'Next.js', 'Tailwind', 'Vercel', 'Linear'].map(t => <span key={t} className="text-[13px] px-3 py-1.5 rounded-full bg-blue-50 font-semibold" style={{ color: blue }}>{t}</span>)}</div>
@@ -761,7 +761,7 @@ function ArticlePage({ go }: { go: (p: PageId) => void }) {
             <span className="px-3 py-1 rounded-full text-[12px] font-bold" style={{ background: '#EBF0FE', color: blue }}>{a.category}</span>
             <h1 className="text-[clamp(2rem,5vw,2.8rem)] font-bold text-gray-900 mt-4 mb-4">{a.title_en}</h1>
             <div className="flex items-center gap-3 mb-8">
-              <img src="/images/photos victor/image_victor_home.png" alt="" className="w-8 h-8 rounded-full object-cover" />
+              <img src="/images/photos victor/image_victor_home.webp" alt="" className="w-8 h-8 rounded-full object-cover" />
               <span className="text-[14px] text-gray-500">Victor Soussan · {a.date}</span>
             </div>
           </F>
@@ -801,7 +801,7 @@ function ArticlePage({ go }: { go: (p: PageId) => void }) {
           <div className="pt-8 border-t border-gray-100">
             <F>
               <div className="flex items-center gap-4 mb-8">
-                <img src="/images/photos victor/image_victor_home.png" alt="" className="w-14 h-14 rounded-full object-cover shadow-sm" style={{ border: '2px solid white' }} />
+                <img src="/images/photos victor/image_victor_home.webp" alt="" className="w-14 h-14 rounded-full object-cover shadow-sm" style={{ border: '2px solid white' }} />
                 <div><p className="text-[15px] font-bold text-gray-900">Victor Soussan</p><p className="text-[14px] text-gray-400">Lead Product Designer · Paris</p></div>
               </div>
             </F>

@@ -1,28 +1,40 @@
 import type { Metadata } from 'next'
 import TestimonialsPageClient from './TestimonialsPageClient'
+import JsonLd from '@/components/JsonLd'
+import { buildMetadata, pageLd, toLang } from '@/lib/seo'
 
 type Props = { params: Promise<{ lang: string }> }
 
+const COPY = {
+  fr: { title: 'Témoignages', description: 'Ce que disent les collaborateurs, clients et partenaires de Victor Soussan.' },
+  en: { title: 'Testimonials', description: 'What collaborators, clients and partners say about working with Victor Soussan.' },
+} as const
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { lang: langParam } = await params
-  const lang = langParam === 'fr' ? 'fr' : 'en'
-  return {
-    title: lang === 'fr' ? 'Témoignages' : 'Testimonials',
-    description: lang === 'fr'
-      ? 'Ce que disent les collaborateurs, clients et partenaires de Victor Soussan.'
-      : 'What collaborators, clients and partners say about Victor Soussan.',
-    alternates: {
-      canonical: `https://www.victorsoussan.fr/${lang}/testimonials`,
-      languages: {
-        fr: 'https://www.victorsoussan.fr/fr/testimonials',
-        en: 'https://www.victorsoussan.fr/en/testimonials',
-      },
-    },
-  }
+  const lang = toLang((await params).lang)
+  return buildMetadata({
+    lang,
+    path: 'testimonials',
+    title: COPY[lang].title,
+    description: COPY[lang].description,
+  })
 }
 
-export default async function TestimonialsPage({ params }: Props) {
-  const { lang: langParam } = await params
-  const lang = (langParam === 'fr' ? 'fr' : 'en') as 'en' | 'fr'
-  return <TestimonialsPageClient lang={lang} />
+export default async function Page({ params }: Props) {
+  const lang = toLang((await params).lang)
+  return (
+    <>
+      <JsonLd
+        data={pageLd({
+          lang,
+          path: 'testimonials',
+          type: 'WebPage',
+          name: COPY[lang].title,
+          description: COPY[lang].description,
+          crumbs: [{ name: COPY[lang].title, path: 'testimonials' }],
+        })}
+      />
+      <TestimonialsPageClient lang={lang} />
+    </>
+  )
 }

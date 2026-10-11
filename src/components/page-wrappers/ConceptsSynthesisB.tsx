@@ -456,7 +456,7 @@ function BAbout({ go }: { go: (p: PageId) => void }) {
           <div className="md:col-span-4">
             <Fade delay={0.2}>
               <div className="md:sticky md:top-24 space-y-6">
-                <div className="rounded-2xl overflow-hidden"><img src="/images/photos victor/image_victor_home.png" alt="Victor Soussan" className="w-full aspect-[3/4] object-cover object-top" /></div>
+                <div className="rounded-2xl overflow-hidden"><img src="/images/photos victor/image_victor_home.webp" alt="Victor Soussan" className="w-full aspect-[3/4] object-cover object-top" /></div>
                 <div className="p-5 rounded-xl bg-gray-50 border border-gray-100">
                   <h3 className="text-[14px] font-semibold mb-3">Tools</h3>
                   <div className="flex flex-wrap gap-2">
@@ -519,7 +519,7 @@ function BArticle({ go }: { go: (p: PageId) => void }) {
         ))}
       </div></article>
       <section className="py-12 px-8 border-t border-gray-100"><div className="max-w-[680px] mx-auto flex items-center gap-4">
-        <img src="/images/photos victor/image_victor_home.png" alt="" className="w-14 h-14 rounded-full object-cover" />
+        <img src="/images/photos victor/image_victor_home.webp" alt="" className="w-14 h-14 rounded-full object-cover" />
         <div><p className="text-[15px] font-semibold">Victor Soussan</p><p className="text-[14px] text-gray-400">Lead Product Designer · Paris</p></div>
       </div></section>
     </div>

@@ -1,28 +1,47 @@
 import type { Metadata } from 'next'
 import { SHIP_TO_SHOW_META } from '@/data/guideShipToShowData'
 import GuideShipToShowPageWrapper from '@/components/page-wrappers/GuideShipToShowPageWrapper'
+import JsonLd from '@/components/JsonLd'
+import { articleLd, breadcrumbLd, buildMetadata, toLang } from '@/lib/seo'
 
 type Props = { params: Promise<{ lang: string }> }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { lang } = await params
-  const l = (lang === 'fr' ? 'fr' : 'en') as 'en' | 'fr'
-  return {
-    title: `${SHIP_TO_SHOW_META.title_fr} - ${l === 'fr' ? SHIP_TO_SHOW_META.subtitle_fr : SHIP_TO_SHOW_META.subtitle_en}`,
-    description: l === 'fr' ? SHIP_TO_SHOW_META.subtitle_fr : SHIP_TO_SHOW_META.subtitle_en,
-    alternates: {
-      canonical: `https://www.victorsoussan.fr/${lang}/guide/ship-to-show`,
-      languages: {
-        fr: `https://www.victorsoussan.fr/fr/guide/ship-to-show`,
-        en: `https://www.victorsoussan.fr/en/guide/ship-to-show`,
-      },
-    },
-  }
+  const lang = toLang((await params).lang)
+  const subtitle = lang === 'fr' ? SHIP_TO_SHOW_META.subtitle_fr : SHIP_TO_SHOW_META.subtitle_en
+  return buildMetadata({
+    lang,
+    path: 'guide/ship-to-show',
+    title: `${SHIP_TO_SHOW_META.title_en}: ${lang === 'fr' ? 'du prototype au case study' : 'from prototype to case study'}`,
+    description: subtitle,
+    type: 'article',
+    publishedTime: SHIP_TO_SHOW_META.date,
+  })
 }
 
 export default async function ShipToShowGuidePage({ params }: Props) {
-  const { lang: langParam } = await params
-  const lang = (langParam === 'fr' ? 'fr' : 'en') as 'en' | 'fr'
+  const lang = toLang((await params).lang)
+  const subtitle = lang === 'fr' ? SHIP_TO_SHOW_META.subtitle_fr : SHIP_TO_SHOW_META.subtitle_en
 
-  return <GuideShipToShowPageWrapper lang={lang} />
+  return (
+    <>
+      <JsonLd
+        data={[
+          articleLd({
+            lang,
+            path: 'guide/ship-to-show',
+            headline: `${SHIP_TO_SHOW_META.title_en}: ${subtitle}`,
+            description: subtitle,
+            datePublished: SHIP_TO_SHOW_META.date,
+            keywords: ['Claude Code', 'Portfolio', 'Case study', 'Product design'],
+          }),
+          breadcrumbLd(lang, [
+            { name: lang === 'fr' ? 'Ressources' : 'Resources', path: 'ressources' },
+            { name: SHIP_TO_SHOW_META.title_en, path: 'guide/ship-to-show' },
+          ]),
+        ]}
+      />
+      <GuideShipToShowPageWrapper lang={lang} />
+    </>
+  )
 }

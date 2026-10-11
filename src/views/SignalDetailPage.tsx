@@ -174,7 +174,7 @@ const SignalDetailPage: React.FC<Props> = ({ signalId, systemTheme, lang, onBack
             {/* Meta row with author */}
             <div className={`flex items-center gap-3 pb-6 mb-6 border-b ${isDark ? 'border-white/10' : 'border-gray-100'}`}>
               <img
-                src="/images/photos victor/image_victor_home.png"
+                src="/images/photos victor/image_victor_home.webp"
                 alt="Victor Soussan"
                 className="w-9 h-9 rounded-full object-cover flex-shrink-0"
               />

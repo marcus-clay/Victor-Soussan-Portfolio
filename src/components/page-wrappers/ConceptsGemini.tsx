@@ -48,7 +48,7 @@ const TESTIMONIALS = [
 ];
 
 const RESOURCES = [
-  { id: 'guide-claude-code', type: 'guide' as const, title: 'Getting started with Claude Code', desc: 'Complete guide for designers: from installation to deployment.', chapters: 9, cover: '/images/guide-claude-code/hero-cover.png' },
+  { id: 'guide-claude-code', type: 'guide' as const, title: 'Getting started with Claude Code', desc: 'Complete guide for designers: from installation to deployment.', chapters: 9, cover: '/images/guide-claude-code/hero-cover.webp' },
   { id: 'ai-design-workflows', type: 'article' as const, title: 'AI-assisted design workflows', desc: 'How AI changes the way designers prototype, test, and ship.' },
 ];
 
@@ -362,7 +362,7 @@ export function V29() {
               {page === 'home' && (
                 <div className="space-y-8">
                   <div className="bg-[#F2F2F7] border border-[#D1D1D6] rounded-[24px] p-10 shadow-[inset_0_2px_3px_rgba(255,255,255,1),0_5px_15px_rgba(0,0,0,0.05)] text-center relative overflow-hidden">
-                    <div className="absolute top-0 right-0 w-64 h-64 bg-[url('/images/guide-claude-code/hero-cover.png')] opacity-10 blur-xl pointer-events-none" />
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-[url('/images/guide-claude-code/hero-cover.webp')] opacity-10 blur-xl pointer-events-none" />
                     <h1 className="text-4xl font-extrabold text-[#1C1C1E] mb-4">Gemini MacPaw App UI</h1>
                     <p className="text-[17px] font-semibold text-[#86868B] mb-8">{HERO.desc}</p>
                     <button onClick={() => go('work')} className="px-6 py-2.5 rounded-full bg-gradient-to-b from-white to-[#F0F0F0] border border-[#C6C6C8] text-[#1C1C1E] font-extrabold shadow-[0_2px_5px_rgba(0,0,0,0.05),inset_0_2px_0_rgba(255,255,255,1)] active:scale-95 transition-transform flex items-center justify-center gap-2 mx-auto">

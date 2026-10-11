@@ -1,29 +1,40 @@
 import type { Metadata } from 'next'
 import ContactPageClient from '@/components/page-wrappers/ContactPageClient'
+import JsonLd from '@/components/JsonLd'
+import { buildMetadata, pageLd, toLang } from '@/lib/seo'
 
 type Props = { params: Promise<{ lang: string }> }
 
+const COPY = {
+  fr: { title: 'Contact', description: 'Contactez Victor Soussan, Lead Product Designer basé à Paris. Missions de product design, audits de design system, ateliers.' },
+  en: { title: 'Contact', description: 'Get in touch with Victor Soussan, Lead Product Designer based in Paris. Product design missions, design system audits, workshops.' },
+} as const
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { lang: langParam } = await params
-  const lang = langParam === 'fr' ? 'fr' : 'en'
-  return {
-    title: 'Contact',
-    description: lang === 'fr'
-      ? 'Contactez Victor Soussan, Lead Product Designer basé à Paris.'
-      : 'Get in touch with Victor Soussan, Lead Product Designer based in Paris.',
-    alternates: {
-      canonical: `https://www.victorsoussan.fr/${lang}/contact`,
-      languages: {
-        fr: 'https://www.victorsoussan.fr/fr/contact',
-        en: 'https://www.victorsoussan.fr/en/contact',
-      },
-    },
-  }
+  const lang = toLang((await params).lang)
+  return buildMetadata({
+    lang,
+    path: 'contact',
+    title: COPY[lang].title,
+    description: COPY[lang].description,
+  })
 }
 
-export default async function ContactPage({ params }: Props) {
-  const { lang: langParam } = await params
-  const lang = (langParam === 'fr' ? 'fr' : 'en') as 'en' | 'fr'
-
-  return <ContactPageClient lang={lang} />
+export default async function Page({ params }: Props) {
+  const lang = toLang((await params).lang)
+  return (
+    <>
+      <JsonLd
+        data={pageLd({
+          lang,
+          path: 'contact',
+          type: 'ContactPage',
+          name: COPY[lang].title,
+          description: COPY[lang].description,
+          crumbs: [{ name: COPY[lang].title, path: 'contact' }],
+        })}
+      />
+      <ContactPageClient lang={lang} />
+    </>
+  )
 }

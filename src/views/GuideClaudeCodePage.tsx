@@ -157,6 +157,10 @@ const GuideChapter: React.FC<{
     return () => container.removeEventListener('click', handleClick);
   }, []);
 
+  // The lightbox portal needs document.body, which does not exist during server rendering.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
   // Track active section for left TOC
   useEffect(() => {
     if (!chapter) return;
@@ -206,7 +210,7 @@ const GuideChapter: React.FC<{
   return (
     <>
       {/* Lightbox — portaled to body to escape z-index stacking context */}
-      {createPortal(
+      {mounted && createPortal(
         <AnimatePresence>
           {lightboxSrc && (
             <motion.div

@@ -8,7 +8,6 @@ import EnhancedLightbox from '../../components/media/EnhancedLightbox';
 import PagesJaunesExecutive from '../../components/case-studies/PagesJaunesExecutive';
 import PagesJaunesFull from '../../components/case-studies/PagesJaunesFull';
 
-import { PROJECT_SEO, DEFAULT_SEO, updateMetaTags, injectJsonLd } from '../../utils/seo';
 
 import { PAGESJAUNES_CAPTIONS } from '../../data/caseStudyTranslations/pagesJaunesTranslations';
 
@@ -317,16 +316,6 @@ export const PagesJaunesPage: React.FC<PagesJaunesPageProps> = ({
   onContact,
   onNavigateToProject,
 }) => {
-  useEffect(() => {
-    const seo = PROJECT_SEO['pagesjaunes'];
-    if (seo) {
-      updateMetaTags(seo);
-      const removeJsonLd = injectJsonLd('pagesjaunes', seo);
-      return () => { updateMetaTags(DEFAULT_SEO); removeJsonLd(); };
-    }
-    return () => updateMetaTags(DEFAULT_SEO);
-  }, []);
-
   const galleryItems = getPagesJaunesGalleryItems(lang);
   const allImages = getAllImages(lang);
 

@@ -7,6 +7,7 @@ import {
   Globe,
 } from '@phosphor-icons/react'
 import { TRANSLATIONS } from '@/data/translations'
+import { openConsentSettings } from '@/lib/analytics'
 
 type Lang = 'en' | 'fr'
 
@@ -110,6 +111,13 @@ export default function Footer({ lang }: { lang: Lang }) {
             &copy; {new Date().getFullYear()} Victor Soussan. {lang === 'en' ? 'All rights reserved.' : 'Tous droits r\u00e9serv\u00e9s.'}
           </p>
           <div className="flex items-center gap-6">
+            <button
+              type="button"
+              onClick={openConsentSettings}
+              className="text-sm text-gray-600 hover:text-gray-900 transition-colors cursor-pointer"
+            >
+              {lang === 'en' ? 'Cookie settings' : 'G\u00e9rer les cookies'}
+            </button>
             <Link
               href={`/${otherLang}`}
               hrefLang={otherLang}

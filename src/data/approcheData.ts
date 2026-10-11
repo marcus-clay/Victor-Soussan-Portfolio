@@ -278,7 +278,7 @@ export const DELIVERABLES: Deliverable[] = [
     activity: { en: 'Framing workshop', fr: 'Atelier de cadrage' },
     output: { en: 'Structured problem, hypotheses, success criteria', fr: 'Probl\u00e8me structur\u00e9, hypoth\u00e8ses, crit\u00e8res de succ\u00e8s' },
     format: { en: 'FigJam board, Notion/Confluence doc, restitution deck', fr: 'Board FigJam, doc Notion/Confluence, deck de restitution' },
-    image: '/images/approche/double-diamond.png',
+    image: '/images/approche/double-diamond.webp',
   },
   {
     activity: { en: 'Exploration', fr: 'Exploration' },
@@ -289,13 +289,13 @@ export const DELIVERABLES: Deliverable[] = [
     activity: { en: 'Design', fr: 'Conception' },
     output: { en: 'Complete flows, states, edge cases', fr: 'Parcours complets, \u00e9tats, cas limites' },
     format: { en: 'Interactive Figma or HTML prototype', fr: 'Prototype interactif Figma ou HTML' },
-    image: '/images/approche/design-teardown.png',
+    image: '/images/approche/design-teardown.webp',
   },
   {
     activity: { en: 'Validation', fr: 'Validation' },
     output: { en: 'Documented field insights, recommendations', fr: 'Insights terrain document\u00e9s, recommandations' },
     format: { en: 'Test report (Notion), annotated videos', fr: 'Rapport de test (Notion), vid\u00e9os annot\u00e9es' },
-    image: '/images/approche/persona-journey.png',
+    image: '/images/approche/persona-journey.webp',
   },
   {
     activity: { en: 'Handoff', fr: 'Handoff' },
@@ -335,7 +335,7 @@ export const RELATED_ARTICLE_IDS = ['binome-pm-designer', 'scoping-is-the-work']
 // ---------------------------------------------------------------------------
 
 export const SECTION_IMAGES = {
-  process: '/images/approche/double-diamond.png',
-  lessons: '/images/approche/persona-journey.png',
-  collaboration: '/images/approche/design-teardown.png',
+  process: '/images/approche/double-diamond.webp',
+  lessons: '/images/approche/persona-journey.webp',
+  collaboration: '/images/approche/design-teardown.webp',
 }

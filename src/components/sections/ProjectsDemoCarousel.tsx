@@ -297,7 +297,7 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
                     loop
                     muted
                     playsInline
-                    preload={index === 0 ? 'auto' : index === 1 ? 'metadata' : 'none'}
+                    preload={index <= 1 ? 'metadata' : 'none'}
                     className="w-full h-full object-cover"
                     src={item.src}
                   />

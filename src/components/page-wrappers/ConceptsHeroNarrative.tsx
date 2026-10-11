@@ -11,7 +11,7 @@ const font = "'Public Sans', system-ui, sans-serif";
 
 /* ═══ PHOTOS ═══ */
 const PHOTOS = {
-  hero: '/images/photos victor/image_victor_home.png',
+  hero: '/images/photos victor/image_victor_home.webp',
   atelier: '/images/photos victor/photo atelier aap.webp',
   atelier2: '/images/photos victor/photo atelier aap 02.webp',
   demo: '/images/photos victor/photo victor demo.webp',
@@ -63,7 +63,7 @@ const PILLARS = [
 ];
 
 const RESOURCES = [
-  { id: 'guide-claude-code', type: 'guide' as const, title: 'Getting started with Claude Code', desc: 'Complete guide for designers: installation to deployment.', chapters: 9, cover: '/images/guide-claude-code/hero-cover.png' },
+  { id: 'guide-claude-code', type: 'guide' as const, title: 'Getting started with Claude Code', desc: 'Complete guide for designers: installation to deployment.', chapters: 9, cover: '/images/guide-claude-code/hero-cover.webp' },
 ];
 
 type PageId = 'home' | 'work' | 'case' | 'about' | 'blog' | 'article' | 'gallery';

@@ -642,7 +642,7 @@ function About({ go }: { go: (p: PageId) => void }) {
           <div className="md:col-span-5">
             <F delay={0.2}><div className="md:sticky md:top-20 space-y-5">
               <div className="rounded-2xl overflow-hidden p-1.5 bg-white/40 border border-white/60" style={{ boxShadow: `inset 0 1px 0 rgba(255,255,255,0.5), 0 12px 40px rgba(0,0,0,0.05)` }}>
-                <div className="rounded-[calc(1rem-6px)] overflow-hidden"><img src="/images/photos victor/image_victor_home.png" alt="" className="w-full aspect-[3/4] object-cover object-top" /></div>
+                <div className="rounded-[calc(1rem-6px)] overflow-hidden"><img src="/images/photos victor/image_victor_home.webp" alt="" className="w-full aspect-[3/4] object-cover object-top" /></div>
               </div>
               <Glass className="p-5">
                 <h3 className="text-[14px] font-semibold mb-3">Tools</h3>
@@ -717,7 +717,7 @@ function Article({ go }: { go: (p: PageId) => void }) {
         ))}
       </div></article>
       <section className="py-12 px-6 border-t border-gray-100/50"><div className="max-w-[680px] mx-auto flex items-center gap-4">
-        <div className="w-14 h-14 rounded-full overflow-hidden p-0.5 bg-white/40 border border-white/60"><img src="/images/photos victor/image_victor_home.png" alt="" className="w-full h-full rounded-full object-cover" /></div>
+        <div className="w-14 h-14 rounded-full overflow-hidden p-0.5 bg-white/40 border border-white/60"><img src="/images/photos victor/image_victor_home.webp" alt="" className="w-full h-full rounded-full object-cover" /></div>
         <div><p className="text-[15px] font-semibold">Victor Soussan</p><p className="text-[14px] text-gray-400">Lead Product Designer · Paris</p></div>
       </div></section>
       <section className="py-16 px-6" style={{ background: blueSoft }}><div className="max-w-[800px] mx-auto">

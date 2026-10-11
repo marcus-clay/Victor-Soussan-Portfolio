@@ -35,6 +35,10 @@ const CaseStudyTOCBar: React.FC<CaseStudyTOCBarProps> = ({
   const barRef = useRef<HTMLDivElement>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
   const [dropdownTop, setDropdownTop] = useState(0)
+  // The dropdown is portaled to document.body, which only exists on the client. Rendering it on the
+  // first client pass would not match the server HTML and React would drop the server-rendered page.
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
 
   const currentIndex = sections.findIndex(s => s.id === activeSection)
   const currentLabel = sections.find(s => s.id === activeSection)?.label || sections[0]?.label || ''
@@ -118,7 +122,7 @@ const CaseStudyTOCBar: React.FC<CaseStudyTOCBarProps> = ({
   }
 
   // Portal dropdown — solid bg, no glass
-  const dropdown = typeof document !== 'undefined' && createPortal(
+  const dropdown = mounted && createPortal(
     <div
       ref={dropdownRef}
       id={DROPDOWN_ID}

@@ -353,7 +353,7 @@ const OtherPagesContent = ({ page, go, inverse = false }: { page: PageId, go: (p
         <div className={`rounded-2xl overflow-hidden ${cardBg} border mb-8 cursor-pointer group`}>
           <div className="flex flex-col md:flex-row gap-6 p-6 md:p-8">
             <div className="w-full md:w-48 rounded-xl overflow-hidden bg-gray-50 shrink-0">
-              <img src="/images/guide-claude-code/hero-cover.png" alt="" className="w-full aspect-[16/10] object-cover" />
+              <img src="/images/guide-claude-code/hero-cover.webp" alt="" className="w-full aspect-[16/10] object-cover" />
             </div>
             <div>
               <span className="text-[12px] text-blue-500 font-bold uppercase tracking-wider">Guide · 9 chapters</span>

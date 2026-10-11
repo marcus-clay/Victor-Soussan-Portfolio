@@ -2,6 +2,7 @@
 // Displays the SQOOL Connect project case study
 
 import React, { useState, useEffect, useRef } from 'react';
+import { useStableComponent } from '../../hooks/useStableComponent';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import { ArrowRight } from '@phosphor-icons/react';
@@ -10,7 +11,6 @@ import { GalleryItem, getConnectGalleryItems } from '../../components/BentoGalle
 import ConnectExecutive from '../../components/case-studies/ConnectExecutive';
 import EnhancedLightbox from '../../components/media/EnhancedLightbox';
 
-import { PROJECT_SEO, DEFAULT_SEO, updateMetaTags, injectJsonLd } from '../../utils/seo';
 import { CONNECT_TRANSLATIONS } from '../../data/caseStudyTranslations/connectTranslations';
 
 interface ConnectPageProps {
@@ -87,16 +87,6 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
   lang = 'en',
   onContact,
 }) => {
-  useEffect(() => {
-    const seo = PROJECT_SEO['connect'];
-    if (seo) {
-      updateMetaTags(seo);
-      const removeJsonLd = injectJsonLd('connect', seo);
-      return () => { updateMetaTags(DEFAULT_SEO); removeJsonLd(); };
-    }
-    return () => updateMetaTags(DEFAULT_SEO);
-  }, []);
-
   const t = CONNECT_TRANSLATIONS[lang];
   const galleryItems = getConnectGalleryItems(lang);
 
@@ -141,7 +131,7 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
   };
 
   // Reusable media figure component
-  const MediaFigure = ({ src, alt, caption, captionDesc, type = 'image', className = '' }: {
+  const MediaFigure = useStableComponent(({ src, alt, caption, captionDesc, type = 'image', className = '' }: {
     src: string; alt: string; caption: string; captionDesc?: string; type?: 'image' | 'video'; className?: string;
   }) => (
     <figure className={className}>
@@ -164,7 +154,7 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
         {caption}{captionDesc && ` · ${captionDesc}`}
       </figcaption>
     </figure>
-  );
+  ));
 
   return (
     <div

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { EMAILJS_CONFIG } from '../config/emailConfig';
+import { track } from '../lib/analytics';
 import {
   CaretRight as ChevronRight,
   CheckCircle as CheckCircle2,
@@ -1398,6 +1399,7 @@ export default function QuoteGeneratorModal({
                         );
 
                         // Success
+                        track('generate_lead', { form: 'quote' });
                         setQuoteSuccess(true);
                         localStorage.removeItem('quoteDraft');
 

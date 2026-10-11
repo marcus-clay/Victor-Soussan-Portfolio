@@ -73,7 +73,7 @@ const TESTIMONIALS = [
 ];
 
 const RESOURCES = [
-  { id: 'guide-claude-code', type: 'guide' as const, title: 'Getting started with Claude Code', desc: 'Complete guide for designers: from installation to deployment.', chapters: 9, cover: '/images/guide-claude-code/hero-cover.png' },
+  { id: 'guide-claude-code', type: 'guide' as const, title: 'Getting started with Claude Code', desc: 'Complete guide for designers: from installation to deployment.', chapters: 9, cover: '/images/guide-claude-code/hero-cover.webp' },
   { id: 'ai-design-workflows', type: 'article' as const, title: 'AI-assisted design workflows', desc: 'How AI changes the way designers prototype, test, and ship.', date: '2025-02' },
   { id: 'design-scoping', type: 'template' as const, title: 'Template: Design Scoping', desc: 'The document I fill before opening Figma to align everyone on the Why.', date: '2024-01' },
   { id: 'design-system-figma', type: 'article' as const, title: 'Design System with Claude Code', desc: 'Designing in Figma, implementing with AI. Zero drift between design and code.', date: '2025-03' },
@@ -1135,7 +1135,7 @@ function V6() {
         <div className="md:col-span-5">
           <FadeIn>
             <div className="rounded-3xl overflow-hidden bg-gray-100 aspect-[3/4]">
-              <img src="/images/photos victor/image_victor_home.png" alt="Victor Soussan" className="w-full h-full object-cover object-top" />
+              <img src="/images/photos victor/image_victor_home.webp" alt="Victor Soussan" className="w-full h-full object-cover object-top" />
             </div>
           </FadeIn>
         </div>
@@ -1181,7 +1181,7 @@ function V6() {
         <div className="group cursor-pointer rounded-3xl overflow-hidden bg-[#F5F5F7] hover:shadow-xl hover:shadow-gray-900/[0.03] transition-all duration-700 mb-8">
           <div className="flex flex-col md:flex-row">
             <div className="md:w-2/5 aspect-[16/10] md:aspect-auto overflow-hidden">
-              <img src="/images/guide-claude-code/hero-cover.png" alt="Guide" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
+              <img src="/images/guide-claude-code/hero-cover.webp" alt="Guide" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
             </div>
             <div className="p-8 md:p-10 flex-1 flex flex-col justify-center">
               <div className="flex items-center gap-2 mb-3">
@@ -1263,7 +1263,7 @@ function V7() {
             className="fixed right-6 bottom-40 z-[90] w-80 rounded-2xl bg-white border border-gray-200 shadow-2xl shadow-gray-900/10 overflow-hidden"
           >
             <div className="aspect-[16/9] bg-gray-100 overflow-hidden">
-              <img src="/images/guide-claude-code/hero-cover.png" alt="Guide" className="w-full h-full object-cover" />
+              <img src="/images/guide-claude-code/hero-cover.webp" alt="Guide" className="w-full h-full object-cover" />
             </div>
             <div className="p-5">
               <h3 className="text-base font-bold tracking-[-0.01em] mb-1">Getting started with Claude Code</h3>
@@ -1380,7 +1380,7 @@ function V7() {
               <motion.div key="about" initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }} className="overflow-hidden">
                 <div className="pt-8 flex flex-col md:flex-row gap-6 items-start">
                   <div className="w-24 h-24 rounded-2xl overflow-hidden bg-gray-100 shrink-0">
-                    <img src="/images/photos victor/image_victor_home.png" alt="Victor" className="w-full h-full object-cover object-top" />
+                    <img src="/images/photos victor/image_victor_home.webp" alt="Victor" className="w-full h-full object-cover object-top" />
                   </div>
                   <div>
                     <p className="text-base text-gray-500 leading-relaxed max-w-lg mb-4">15 years in tech, from visual design to product leadership. I work on complex B2B and B2G interfaces: SaaS platforms, EdTech, public services. Based in Paris, fluent in French and English.</p>
@@ -1404,7 +1404,7 @@ function V7() {
             <div className="group cursor-pointer rounded-3xl overflow-hidden bg-white hover:shadow-2xl hover:shadow-gray-900/[0.05] transition-all duration-700">
               <div className="grid grid-cols-1 md:grid-cols-2">
                 <div className="aspect-[4/3] md:aspect-auto overflow-hidden">
-                  <img src="/images/guide-claude-code/hero-cover.png" alt="Guide Claude Code" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
+                  <img src="/images/guide-claude-code/hero-cover.webp" alt="Guide Claude Code" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
                 </div>
                 <div className="p-8 md:p-12 flex flex-col justify-center">
                   <div className="flex items-center gap-2 mb-4">
@@ -1534,7 +1534,7 @@ function V8() {
               <FadeIn delay={0.2}>
                 <div className="p-2 rounded-3xl bg-white/40 border border-white/60" style={{ boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.6), 0 12px 40px rgba(120,80,40,0.08)' }}>
                   <div className="rounded-[calc(1.5rem-8px)] overflow-hidden">
-                    <img src="/images/photos victor/image_victor_home.png" alt="Victor Soussan" className="w-full aspect-[3/4] object-cover object-top" />
+                    <img src="/images/photos victor/image_victor_home.webp" alt="Victor Soussan" className="w-full aspect-[3/4] object-cover object-top" />
                   </div>
                 </div>
               </FadeIn>
@@ -1742,7 +1742,7 @@ function V9() {
               <div className="grid grid-cols-1 md:grid-cols-2 relative z-10">
                 <div className="p-2">
                   <div className="rounded-[calc(1.5rem-8px)] overflow-hidden aspect-[4/3]">
-                    <img src="/images/guide-claude-code/hero-cover.png" alt="Guide Claude Code" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
+                    <img src="/images/guide-claude-code/hero-cover.webp" alt="Guide Claude Code" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
                   </div>
                 </div>
                 <div className="p-8 md:p-12 flex flex-col justify-center">
@@ -1951,7 +1951,7 @@ function V10() {
         <div className="md:col-span-5">
           <FadeIn>
             <div className="rounded-2xl overflow-hidden bg-[#F5F5F7] aspect-[3/4]">
-              <img src="/images/photos victor/image_victor_home.png" alt="Victor Soussan" className="w-full h-full object-cover object-top" />
+              <img src="/images/photos victor/image_victor_home.webp" alt="Victor Soussan" className="w-full h-full object-cover object-top" />
             </div>
           </FadeIn>
         </div>
@@ -2168,7 +2168,7 @@ function V16() {
           <FadeIn delay={0.05}>
             <div onClick={() => go('blog')} className="group cursor-pointer rounded-2xl overflow-hidden bg-white border border-gray-200/60 hover:border-gray-300 hover:shadow-xl hover:shadow-gray-900/[0.04] transition-all duration-600 mb-6" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
               <div className="flex flex-col md:flex-row">
-                <div className="md:w-2/5 aspect-[16/10] md:aspect-auto overflow-hidden"><img src="/images/guide-claude-code/hero-cover.png" alt="Guide" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.02]" /></div>
+                <div className="md:w-2/5 aspect-[16/10] md:aspect-auto overflow-hidden"><img src="/images/guide-claude-code/hero-cover.webp" alt="Guide" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.02]" /></div>
                 <div className="p-7 md:p-10 flex-1 flex flex-col justify-center">
                   <span className="text-[12px] font-semibold text-gray-400 uppercase tracking-[0.08em] mb-3">Guide · 9 chapters</span>
                   <h3 className="text-[22px] font-bold tracking-[-0.02em] mb-3 group-hover:text-gray-600 transition-colors">{RESOURCES[0].title}</h3>
@@ -2324,7 +2324,7 @@ function V16() {
           <div className="md:col-span-4">
             <FadeIn>
               <div className="rounded-2xl overflow-hidden border border-gray-200/60 aspect-[3/4] sticky top-24" style={{ boxShadow: '0 4px 16px rgba(0,0,0,0.04)' }}>
-                <img src="/images/photos victor/image_victor_home.png" alt="Victor Soussan" className="w-full h-full object-cover object-top" />
+                <img src="/images/photos victor/image_victor_home.webp" alt="Victor Soussan" className="w-full h-full object-cover object-top" />
               </div>
             </FadeIn>
           </div>
@@ -2407,7 +2407,7 @@ function V16() {
         <FadeIn delay={0.05}>
           <div className="group cursor-pointer rounded-2xl overflow-hidden bg-white border border-gray-200/60 hover:shadow-xl hover:shadow-gray-900/[0.04] transition-all duration-600 mb-8" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
             <div className="flex flex-col md:flex-row">
-              <div className="md:w-2/5 aspect-[16/10] md:aspect-auto overflow-hidden"><img src="/images/guide-claude-code/hero-cover.png" alt="" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.02]" /></div>
+              <div className="md:w-2/5 aspect-[16/10] md:aspect-auto overflow-hidden"><img src="/images/guide-claude-code/hero-cover.webp" alt="" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.02]" /></div>
               <div className="p-7 md:p-10 flex-1">
                 <span className="text-[12px] font-semibold text-gray-400 uppercase tracking-[0.08em]">Guide · 9 chapters</span>
                 <h2 className="text-[22px] font-bold tracking-[-0.02em] mt-2 mb-3 group-hover:text-gray-600 transition-colors">{RESOURCES[0].title}</h2>
@@ -2564,7 +2564,7 @@ function V17() {
           <FadeIn delay={0.05}>
             <div onClick={() => go('blog')} className="group cursor-pointer rounded-2xl overflow-hidden mb-6 transition-all duration-600" style={{ background: 'rgba(255,255,255,0.6)', border: '1px solid rgba(0,0,0,0.06)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.8), 0 1px 3px rgba(0,0,0,0.04)' }}>
               <div className="flex flex-col md:flex-row">
-                <div className="md:w-2/5 overflow-hidden p-2"><div className="rounded-xl overflow-hidden"><img src="/images/guide-claude-code/hero-cover.png" alt="" className="w-full aspect-[16/10] md:aspect-auto md:h-full object-cover transition-transform duration-700 group-hover:scale-[1.02]" /></div></div>
+                <div className="md:w-2/5 overflow-hidden p-2"><div className="rounded-xl overflow-hidden"><img src="/images/guide-claude-code/hero-cover.webp" alt="" className="w-full aspect-[16/10] md:aspect-auto md:h-full object-cover transition-transform duration-700 group-hover:scale-[1.02]" /></div></div>
                 <div className="p-7 md:p-10 flex-1 flex flex-col justify-center">
                   <span className="text-[12px] font-semibold text-gray-400 uppercase tracking-[0.08em] mb-3">Featured guide · 9 chapters</span>
                   <h3 className="text-[22px] font-bold tracking-[-0.02em] mb-3 group-hover:text-gray-600 transition-colors">{RESOURCES[0].title}</h3>
@@ -2664,7 +2664,7 @@ function V17() {
     <div className="pt-24 pb-20" style={{ background: '#F6F4F0' }}>
       <div className="max-w-[1060px] mx-auto px-6 md:px-10">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-16">
-          <div className="md:col-span-4"><FadeIn><div className="rounded-2xl overflow-hidden aspect-[3/4] sticky top-24" style={{ border: '1px solid rgba(0,0,0,0.06)', boxShadow: '0 4px 16px rgba(0,0,0,0.04)' }}><img src="/images/photos victor/image_victor_home.png" alt="Victor" className="w-full h-full object-cover object-top" /></div></FadeIn></div>
+          <div className="md:col-span-4"><FadeIn><div className="rounded-2xl overflow-hidden aspect-[3/4] sticky top-24" style={{ border: '1px solid rgba(0,0,0,0.06)', boxShadow: '0 4px 16px rgba(0,0,0,0.04)' }}><img src="/images/photos victor/image_victor_home.webp" alt="Victor" className="w-full h-full object-cover object-top" /></div></FadeIn></div>
           <div className="md:col-span-8">
             <FadeIn><h1 className="text-[clamp(2.5rem,5vw,4rem)] font-bold tracking-[-0.04em] leading-[0.92] text-gray-900 mb-8">About</h1></FadeIn>
             <FadeIn delay={0.05}>
@@ -2704,7 +2704,7 @@ function V17() {
         <FadeIn delay={0.05}>
           <div className="group cursor-pointer rounded-2xl overflow-hidden mb-6 transition-all duration-600" style={{ background: 'rgba(255,255,255,0.6)', border: '1px solid rgba(0,0,0,0.06)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.8), 0 1px 3px rgba(0,0,0,0.04)' }}>
             <div className="flex flex-col md:flex-row">
-              <div className="md:w-2/5 p-2"><div className="rounded-xl overflow-hidden"><img src="/images/guide-claude-code/hero-cover.png" alt="" className="w-full aspect-[16/10] md:aspect-auto md:h-full object-cover transition-transform duration-700 group-hover:scale-[1.02]" /></div></div>
+              <div className="md:w-2/5 p-2"><div className="rounded-xl overflow-hidden"><img src="/images/guide-claude-code/hero-cover.webp" alt="" className="w-full aspect-[16/10] md:aspect-auto md:h-full object-cover transition-transform duration-700 group-hover:scale-[1.02]" /></div></div>
               <div className="p-7 md:p-10 flex-1">
                 <span className="text-[12px] font-semibold text-gray-400 uppercase tracking-[0.08em]">Guide · 9 chapters</span>
                 <h2 className="text-[22px] font-bold tracking-[-0.02em] mt-2 mb-3 group-hover:text-gray-600 transition-colors">{RESOURCES[0].title}</h2>
@@ -2752,7 +2752,7 @@ function V18() {
     <motion.div className="fixed right-6 bottom-24 z-[90]" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 1.5, ...spring }}>
       <div onClick={() => go('blog')} className="group cursor-pointer flex items-center gap-3 px-5 py-3 bg-white rounded-2xl border border-gray-200 hover:border-gray-300 hover:shadow-xl hover:shadow-gray-900/[0.06] transition-all duration-300">
         <div className="w-10 h-10 rounded-xl overflow-hidden bg-gray-100 shrink-0">
-          <img src="/images/guide-claude-code/hero-cover.png" alt="" className="w-full h-full object-cover" />
+          <img src="/images/guide-claude-code/hero-cover.webp" alt="" className="w-full h-full object-cover" />
         </div>
         <div>
           <p className="text-[13px] font-semibold text-gray-900">Guide Claude Code</p>
@@ -2863,7 +2863,7 @@ function V18() {
           <FadeIn delay={0.04}>
             <div onClick={() => go('blog')} className="group cursor-pointer rounded-2xl overflow-hidden bg-white border border-gray-200/60 hover:shadow-xl hover:shadow-gray-900/[0.04] transition-all duration-300 mb-6">
               <div className="flex flex-col md:flex-row">
-                <div className="md:w-2/5 aspect-[16/10] md:aspect-auto overflow-hidden"><img src="/images/guide-claude-code/hero-cover.png" alt="" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]" /></div>
+                <div className="md:w-2/5 aspect-[16/10] md:aspect-auto overflow-hidden"><img src="/images/guide-claude-code/hero-cover.webp" alt="" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]" /></div>
                 <div className="p-8 md:p-10 flex-1 flex flex-col justify-center">
                   <span className="text-[13px] font-semibold text-gray-400 uppercase tracking-[0.08em] mb-3">Guide · 9 chapters</span>
                   <h3 className="text-[24px] font-bold tracking-[-0.02em] mb-3 group-hover:text-gray-600 transition-colors">{RESOURCES[0].title}</h3>
@@ -3027,7 +3027,7 @@ function V18() {
     <div className="pt-24 pb-20 bg-white">
       <div className="max-w-[1140px] mx-auto px-6 md:px-10">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-16">
-          <div className="md:col-span-4"><FadeIn><div className="rounded-2xl overflow-hidden border border-gray-200/60 aspect-[3/4] sticky top-24"><img src="/images/photos victor/image_victor_home.png" alt="Victor" className="w-full h-full object-cover object-top" /></div></FadeIn></div>
+          <div className="md:col-span-4"><FadeIn><div className="rounded-2xl overflow-hidden border border-gray-200/60 aspect-[3/4] sticky top-24"><img src="/images/photos victor/image_victor_home.webp" alt="Victor" className="w-full h-full object-cover object-top" /></div></FadeIn></div>
           <div className="md:col-span-8">
             <FadeIn><h1 className="text-[clamp(2.8rem,5.5vw,4.5rem)] font-bold tracking-[-0.04em] leading-[0.9] text-gray-900 mb-10">About</h1></FadeIn>
             <FadeIn delay={0.03}>
@@ -3088,7 +3088,7 @@ function V18() {
         <FadeIn delay={0.04}>
           <div onClick={() => {}} className="group cursor-pointer rounded-2xl overflow-hidden bg-white border border-gray-200/60 hover:shadow-xl hover:shadow-gray-900/[0.04] transition-all duration-300 mb-8">
             <div className="flex flex-col md:flex-row">
-              <div className="md:w-2/5 aspect-[16/10] md:aspect-auto overflow-hidden"><img src="/images/guide-claude-code/hero-cover.png" alt="" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]" /></div>
+              <div className="md:w-2/5 aspect-[16/10] md:aspect-auto overflow-hidden"><img src="/images/guide-claude-code/hero-cover.webp" alt="" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]" /></div>
               <div className="p-8 md:p-10 flex-1">
                 <span className="text-[13px] font-semibold text-gray-400 uppercase tracking-[0.08em]">Featured guide · 9 chapters</span>
                 <h2 className="text-[24px] font-bold tracking-[-0.02em] mt-3 mb-4 group-hover:text-gray-600 transition-colors">{RESOURCES[0].title}</h2>
