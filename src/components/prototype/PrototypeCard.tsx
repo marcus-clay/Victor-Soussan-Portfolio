@@ -46,7 +46,7 @@ const PrototypeCard: React.FC<PrototypeCardProps> = ({
       />
 
       {/* Badge */}
-      <div className={`absolute top-2.5 left-2.5 z-10 flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[10px] font-bold tracking-wide backdrop-blur-sm ${
+      <div className={`absolute top-2.5 left-2.5 z-10 flex items-center gap-1.5 px-2 py-0.5 rounded-md text-micro font-bold tracking-wide backdrop-blur-sm ${
         isDark ? `${colors.bg} ${colors.text}` : `${colors.bgLight} ${colors.textLight}`
       }`}>
         {prototypeId}
@@ -79,7 +79,7 @@ const PrototypeCard: React.FC<PrototypeCardProps> = ({
           {title}
         </p>
         {!compact && (
-          <p className={`text-[10px] leading-tight mt-0.5 line-clamp-2 ${
+          <p className={`text-micro leading-tight mt-0.5 line-clamp-2 ${
             isDark ? 'text-gray-300' : 'text-gray-500'
           }`}>
             {description}

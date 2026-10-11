@@ -79,7 +79,7 @@ export const getProjects = (lang: Language): Project[] => {
       icon: <ShieldCheck size={24} />,
       color: "blue",
       coverImage: "/images/riskos/02-case-detail.png",
-      externalLink: "https://riskos-gulcbxw52-hugos-projects-0ac0cf31.vercel.app",
+      externalLink: "https://riskos.vercel.app",
       status: "experiment",
       cardBg: "#111113"
     },
@@ -443,7 +443,7 @@ export const getProjects = (lang: Language): Project[] => {
       icon: <Layers size={24} />,
       color: "blue",
       coverImage: "/articles/Experimentation Claude Code - design system, ui, figma, claude/thumnbnail claude code - figma mcp.png",
-      videoUrl: "/articles/Experimentation Claude Code - design system, ui, figma, claude/Claude Code + Figma MCP Console Demo.mp4",
+      // videoUrl: the demo file was never committed. Add it under public/articles/... and restore this line.
       status: "shipped"
     }
   ];

@@ -254,13 +254,13 @@ const getAllImages = (lang: 'en' | 'fr') => {
     { src: '/images/thumbnail_pagesjaunes_sp_tablette.webp', type: 'image', caption: 'PagesJaunes Mobile Apps' },
     { src: '/images/thumbnail-pagesjaunes-multidevices.webp', type: 'image', caption: 'PagesJaunes Multi-devices' },
     // Itinerary images with special characters - need both encoded and regular versions
-    { src: '/images/pagesjaunes/pj_ipad_itinéraire_piéton.webp', type: 'image', caption: lang === 'fr' ? 'Itinéraire piéton iPad' : 'iPad Pedestrian Route' },
-    { src: '/images/pagesjaunes/pj_ipad_itinéraire_transports.webp', type: 'image', caption: lang === 'fr' ? 'Itinéraire transports iPad' : 'iPad Transit Route' },
-    { src: '/images/pagesjaunes/pj_ipad_itinéraire_voiture.webp', type: 'image', caption: lang === 'fr' ? 'Itinéraire voiture iPad' : 'iPad Driving Route' },
-    { src: '/images/pagesjaunes/pj_iphone_itinéraire_piéton.webp', type: 'image', caption: lang === 'fr' ? 'Itinéraire piéton iPhone' : 'iPhone Pedestrian Route' },
-    { src: '/images/pagesjaunes/pj_iphone_itinéraire_transports.webp', type: 'image', caption: lang === 'fr' ? 'Itinéraire transports iPhone' : 'iPhone Transit Route' },
-    { src: '/images/pagesjaunes/pj_iphone_itinéraire_voiture.webp', type: 'image', caption: lang === 'fr' ? 'Itinéraire voiture iPhone' : 'iPhone Driving Route' },
-    { src: '/images/pagesjaunes/pj_iphone_itinéraire_piéton_ficheroute.webp', type: 'image', caption: lang === 'fr' ? 'Fiche route piéton iPhone' : 'iPhone Pedestrian Route Sheet' },
+    { src: '/images/pagesjaunes/pj_ipad_itineraire_pieton.webp', type: 'image', caption: lang === 'fr' ? 'Itinéraire piéton iPad' : 'iPad Pedestrian Route' },
+    { src: '/images/pagesjaunes/pj_ipad_itineraire_transports.webp', type: 'image', caption: lang === 'fr' ? 'Itinéraire transports iPad' : 'iPad Transit Route' },
+    { src: '/images/pagesjaunes/pj_ipad_itineraire_voiture.webp', type: 'image', caption: lang === 'fr' ? 'Itinéraire voiture iPad' : 'iPad Driving Route' },
+    { src: '/images/pagesjaunes/pj_iphone_itineraire_pieton.webp', type: 'image', caption: lang === 'fr' ? 'Itinéraire piéton iPhone' : 'iPhone Pedestrian Route' },
+    { src: '/images/pagesjaunes/pj_iphone_itineraire_transports.webp', type: 'image', caption: lang === 'fr' ? 'Itinéraire transports iPhone' : 'iPhone Transit Route' },
+    { src: '/images/pagesjaunes/pj_iphone_itineraire_voiture.webp', type: 'image', caption: lang === 'fr' ? 'Itinéraire voiture iPhone' : 'iPhone Driving Route' },
+    { src: '/images/pagesjaunes/pj_iphone_itineraire_pieton_ficheroute.webp', type: 'image', caption: lang === 'fr' ? 'Fiche route piéton iPhone' : 'iPhone Pedestrian Route Sheet' },
     { src: '/images/pagesjaunes/Android wear/screens/cover_yellow strap apps.webp', type: 'image', caption: lang === 'fr' ? 'Stratégie Design System Yellowstrap' : 'Yellowstrap Design System Strategy' },
   ];
 
@@ -299,7 +299,7 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick }) => {
           <img loading="lazy" src={item.src} alt={item.caption} className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" />
         )}
       </div>
-      <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
+      <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
         {item.caption}
         {item.captionDesc && <span className="hidden sm:inline"> · {item.captionDesc}</span>}
       </figcaption>
@@ -386,7 +386,7 @@ export const PagesJaunesPage: React.FC<PagesJaunesPageProps> = ({
               className="min-h-full bg-[#FDFDFC]"
             >
               <div className="max-w-[960px] mx-auto px-6 py-16 md:py-24">
-                <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-10">
+                <h2 className="text-title-2 text-gray-900 mb-10">
                   {lang === 'fr' ? 'Galerie du projet' : 'Project Gallery'}
                 </h2>
                 <div className="columns-1 md:columns-2 lg:columns-3 gap-4">

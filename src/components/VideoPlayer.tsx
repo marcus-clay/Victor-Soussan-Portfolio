@@ -2,7 +2,7 @@
 
 /**
  * VideoPlayer — autoplay loop video with a persistent play/pause toggle.
- * - Plays automatically (muted, loop)
+ * - Plays automatically (muted, loop), except under prefers-reduced-motion
  * - Play/Pause button always visible at bottom-right (dim at rest, bright on hover / when paused)
  * - Click anywhere on video also toggles playback
  */
@@ -29,8 +29,23 @@ export default function VideoPlayer({
   aspectClassName,
 }: VideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null)
-  const [isPlaying, setIsPlaying] = useState(true)
+  const [isPlaying, setIsPlaying] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
+
+  // Autoplay unless the visitor asked the system for reduced motion.
+  // The `autoPlay` attribute is left off on purpose: it would start playback
+  // before this check can run. A click on play still works either way.
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reduce) {
+      video.pause()
+      setIsPlaying(false)
+    } else {
+      video.play().catch(() => {})
+    }
+  }, [])
 
   // Sync state if browser pauses externally (tab visibility, etc.)
   useEffect(() => {
@@ -67,7 +82,6 @@ export default function VideoPlayer({
       <video
         ref={videoRef}
         src={src}
-        autoPlay
         loop
         muted
         playsInline
@@ -81,6 +95,7 @@ export default function VideoPlayer({
         onClick={toggle}
         aria-label={isPlaying ? 'Pause video' : 'Play video'}
         className="absolute bottom-3 right-3 z-10 flex items-center justify-center w-7 h-7 rounded-full
+          before:absolute before:-inset-2 before:content-['']
           bg-black/50 text-white
           transition-opacity duration-200 ease-out"
         style={{
@@ -103,7 +118,7 @@ export default function VideoPlayer({
         <div className={aspectClassName}>{inner}</div>
       ) : inner}
       {caption && (
-        <p className="mt-3 text-sm text-gray-400 leading-relaxed">{caption}</p>
+        <p className="mt-3 text-sm text-gray-500 leading-relaxed">{caption}</p>
       )}
     </div>
   )

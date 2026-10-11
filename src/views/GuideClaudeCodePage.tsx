@@ -37,12 +37,12 @@ const GuideIndex: React.FC<{ isDark: boolean; lang: string; onNavigate: (t: stri
     <div className="mb-6">
       <div className="flex flex-wrap gap-2 mb-4">
         {(lang === 'fr' ? GUIDE_META.categories_fr : GUIDE_META.categories_en).map((cat) => (
-          <span key={cat} className={`px-2.5 py-1 rounded-full text-[11px] font-semibold ${TAG_STYLES[cat as string]}`}>
+          <span key={cat} className={`px-2.5 py-1 rounded-full text-micro font-semibold ${TAG_STYLES[cat as string]}`}>
             {cat}
           </span>
         ))}
       </div>
-      <h1 className={`text-base font-semibold tracking-[-0.01em] mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+      <h1 className={`text-title-1 mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
         {lang === 'fr' ? GUIDE_META.title_fr : GUIDE_META.title_en}
       </h1>
       <p className={`text-base leading-relaxed mb-6 max-w-[55ch] ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
@@ -62,7 +62,7 @@ const GuideIndex: React.FC<{ isDark: boolean; lang: string; onNavigate: (t: stri
 
     <figure className="mb-10">
       <img src={GUIDE_META.heroImage} alt={lang === 'fr' ? GUIDE_META.heroAlt_fr : GUIDE_META.heroAlt_en} className="w-full rounded-xl" />
-      <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
+      <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
         {lang === 'en'
           ? 'Claude Code gives designers the ability to design, produce, and deploy real, usable deliverables. A link to share with your team, to present to stakeholders, to put in front of users to define scope and refine a solution. With a bit of method and strong design opinions, the cycle between a design decision and something testable shrinks to the essentials.'
           : 'Claude Code ouvre aux designers la possibilité de concevoir, produire et déployer des livrables réels, directement utilisables. Un lien à partager à son équipe, à présenter à ses décideurs, à faire tester à ses usagers pour délimiter un scope et raffiner une solution. Avec un peu de méthode et des partis pris affirmés, le cycle entre une décision de design et quelque chose de testable se réduit à l\'essentiel.'}
@@ -72,7 +72,7 @@ const GuideIndex: React.FC<{ isDark: boolean; lang: string; onNavigate: (t: stri
     <div>
         {/* Intro callout */}
         <div className={`p-6 rounded-xl border-l-4 border-amber-400 mb-14 ${isDark ? 'bg-amber-900/10' : 'bg-amber-50'}`}>
-          <p className={`text-[15px] leading-[1.8] ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+          <p className={`text-sm leading-[1.8] ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
             {lang === 'en'
               ? <>Most Claude Code guides are written for developers. This one starts from a different place: you're a designer, you work in Figma, you think in interfaces, flows, and components. <strong>You don't necessarily want to learn to code for real. And you don't have to.</strong></>
               : <>Beaucoup de guides sur Claude Code s'adressent à des développeurs. Celui-ci part d'un point de vue différent : tu es designer, tu travailles dans Figma, tu penses en interfaces, en flux, en composants. <strong>Tu n'as pas forcément envie d'apprendre à coder pour de bon. Et tu n'en as pas besoin.</strong></>}
@@ -80,7 +80,7 @@ const GuideIndex: React.FC<{ isDark: boolean; lang: string; onNavigate: (t: stri
         </div>
 
         {/* Chapter cards */}
-        <h2 className={`text-base font-semibold tracking-[-0.01em] mb-8 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+        <h2 className={`text-title-2 mb-8 ${isDark ? 'text-white' : 'text-gray-900'}`}>
           {lang === 'en' ? 'Table of contents' : 'Ce que couvre ce guide'}
         </h2>
         <div className="flex flex-col gap-4 mb-14">
@@ -110,7 +110,7 @@ const GuideIndex: React.FC<{ isDark: boolean; lang: string; onNavigate: (t: stri
                   {ch.number}
                 </span>
                 <div className="flex-1 min-w-0">
-                  <h3 className={`text-base font-semibold mb-1 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                  <h3 className={`text-title-3 mb-1 ${isDark ? 'text-white' : 'text-gray-900'}`}>
                     {chTitle}
                   </h3>
                   <p className={`text-sm leading-relaxed line-clamp-2 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
@@ -250,10 +250,10 @@ const GuideChapter: React.FC<{
           <article ref={articleRef} className="flex-1 min-w-0 pt-8 md:pt-10">
             {/* Chapter header */}
             <div className="mb-12">
-              <span className={`text-[11px] font-semibold uppercase tracking-widest ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
+              <span className={`text-micro font-semibold uppercase tracking-widest ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
                 {lang === 'en' ? 'Chapter' : 'Chapitre'} {chapter.number} / {GUIDE_CHAPTERS.length}
               </span>
-              <h1 className={`text-base font-semibold tracking-[-0.01em] mt-3 mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <h1 className={`text-title-1 mt-3 mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
                 {lang === 'fr' ? chapter.title_fr : chapter.title_en}
               </h1>
               <p className={`text-base leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
@@ -268,7 +268,7 @@ const GuideChapter: React.FC<{
                 id={`section-${slug}-${sIdx}`}
                 className={`mb-14 scroll-mt-28 ${sIdx > 0 ? `pt-10 border-t ${isDark ? 'border-white/5' : 'border-gray-100'}` : ''}`}
               >
-                <h2 className={`text-base font-semibold tracking-[-0.01em] mb-5 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                <h2 className={`text-title-2 mb-5 ${isDark ? 'text-white' : 'text-gray-900'}`}>
                   {lang === 'fr' ? section.heading_fr : section.heading_en}
                 </h2>
                 <div className={`article-body ${isDark ? 'article-body-dark' : ''}`} dangerouslySetInnerHTML={{ __html: lang === 'fr' ? section.content_fr : section.content_en }} />
@@ -285,7 +285,7 @@ const GuideChapter: React.FC<{
                   }`}
                   style={{ transition: 'transform 160ms cubic-bezier(0.23, 1, 0.32, 1), border-color 200ms ease, box-shadow 200ms ease' }}
                 >
-                  <span className={`text-[11px] font-medium uppercase tracking-wider ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
+                  <span className={`text-micro font-medium uppercase tracking-wider ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
                     <ArrowLeft size={10} className="inline mr-1" />
                     {lang === 'en' ? 'Previous' : 'Précédent'}
                   </span>
@@ -300,7 +300,7 @@ const GuideChapter: React.FC<{
                   }`}
                   style={{ transition: 'transform 160ms cubic-bezier(0.23, 1, 0.32, 1), border-color 200ms ease, box-shadow 200ms ease' }}
                 >
-                  <span className={`text-[11px] font-medium uppercase tracking-wider ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
+                  <span className={`text-micro font-medium uppercase tracking-wider ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
                     {lang === 'en' ? 'Next' : 'Suivant'}
                     <ArrowRight size={10} className="inline ml-1" />
                   </span>
@@ -337,7 +337,7 @@ const GuideChapter: React.FC<{
 
       {/* ─── Right sidebar: Chapter navigation (outside 1200px container) ─── */}
       <aside className="hidden 2xl:block fixed right-6 top-28 w-48 z-10">
-        <p className={`text-[11px] font-semibold uppercase tracking-widest mb-4 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
+        <p className={`text-micro font-semibold uppercase tracking-widest mb-4 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
           {lang === 'en' ? 'Chapters' : 'Chapitres'}
         </p>
         <ul className="space-y-0.5">
@@ -347,13 +347,13 @@ const GuideChapter: React.FC<{
             <li key={chSlug}>
               <button
                 onClick={() => onNavigate(chSlug)}
-                className={`text-left text-[12px] leading-snug py-1.5 px-2.5 rounded-lg w-full transition-colors cursor-pointer ${
+                className={`text-left text-xs leading-snug py-1.5 px-2.5 rounded-lg w-full transition-colors cursor-pointer ${
                   chSlug === slug
                     ? isDark ? 'text-white bg-white/5 font-medium' : 'text-gray-900 bg-gray-100 font-medium'
                     : isDark ? 'text-gray-500 hover:text-gray-300 hover:bg-white/5' : 'text-gray-400 hover:text-gray-700 hover:bg-gray-50'
                 }`}
               >
-                <span className="inline-block w-4 text-[10px] opacity-50">{ch.number}.</span>
+                <span className="inline-block w-4 text-micro opacity-50">{ch.number}.</span>
                 {lang === 'fr' ? ch.title_fr : ch.title_en}
               </button>
             </li>
@@ -380,7 +380,7 @@ const GuideClaudeCodePage: React.FC<Props> = ({ systemTheme, lang, view, onNavig
       {/* Breadcrumb bar - sticky below Nav */}
       <div className={`sticky z-10 backdrop-blur-xl ${isDark ? 'bg-[#0a0a0a]/80 border-white/5' : 'bg-[#FCFCFD]/80 border-gray-200'}`} style={{ top: 'var(--nav-height, 72px)', transition: 'top 250ms cubic-bezier(0.23, 1, 0.32, 1)' }}>
         <div className="max-w-[740px] mx-auto px-4 md:px-6 h-10 flex items-center justify-between">
-          <nav className="flex items-center gap-1.5 text-[13px] min-w-0 overflow-hidden">
+          <nav className="flex items-center gap-1.5 text-xs min-w-0 overflow-hidden">
             <button onClick={() => onNavigate('blog')} className={`transition-colors cursor-pointer hover:underline flex-shrink-0 ${isDark ? 'text-gray-500 hover:text-white' : 'text-gray-400 hover:text-gray-900'}`}>
               {lang === 'fr' ? 'Ressources' : 'Resources'}
             </button>

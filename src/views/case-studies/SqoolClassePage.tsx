@@ -173,14 +173,14 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
 
                     {/* Meta */}
                     <div className="flex flex-wrap gap-x-3 gap-y-1 mb-6">
-                      <span className="text-xs text-gray-400">{t.hero.role}</span>
+                      <span className="text-xs text-gray-500">{t.hero.role}</span>
                       <span className="text-xs text-gray-300">/</span>
-                      <span className="text-xs text-gray-400">{t.hero.scope}</span>
+                      <span className="text-xs text-gray-500">{t.hero.scope}</span>
                       <span className="text-xs text-gray-300">/</span>
-                      <span className="text-xs text-gray-400">{t.hero.period}</span>
+                      <span className="text-xs text-gray-500">{t.hero.period}</span>
                     </div>
 
-                    <h1 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+                    <h1 className="text-title-1 text-gray-900 mb-4">
                       {t.hero.title}
                     </h1>
 
@@ -197,7 +197,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                         { label: t.metaLabels.company, value: t.meta.company },
                       ].map((item, i) => (
                         <div key={i} className="flex items-center justify-between py-3">
-                          <span className="text-xs text-gray-400">{item.label}</span>
+                          <span className="text-xs text-gray-500">{item.label}</span>
                           <span className="text-sm font-medium text-gray-900">{item.value}</span>
                         </div>
                       ))}
@@ -225,7 +225,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                 {/* ==================== CONTEXT ==================== */}
                 <section id="context" className="mb-24 md:mb-32">
                   <div className="max-w-[740px] mx-auto px-6">
-                    <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+                    <h2 className="text-title-2 text-gray-900 mb-4">
                       {t.context.title}
                     </h2>
                     <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">
@@ -235,7 +235,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
 
                   {/* Field observation photos */}
                   <div className="max-w-[960px] mx-auto px-6 mt-16">
-                    <p className="text-xs text-gray-400 mb-2 uppercase tracking-wider">
+                    <p className="text-xs text-gray-500 mb-2 uppercase tracking-wider">
                       {t.context.fieldObsTitle}
                     </p>
                     <p className="text-base text-gray-500 leading-relaxed mb-8 max-w-[65ch]">
@@ -265,7 +265,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                 {/* ==================== APPROACH ==================== */}
                 <section id="approach" className="mb-24 md:mb-32">
                   <div className="max-w-[740px] mx-auto px-6">
-                    <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-8">
+                    <h2 className="text-title-2 text-gray-900 mb-8">
                       {t.approach.title}
                     </h2>
                     <div className="divide-y divide-gray-100">
@@ -290,11 +290,11 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                 {/* ==================== TEACHER EXPERIENCE ==================== */}
                 <section id="teacher" className="mb-24 md:mb-32 pt-12">
                   <div className="max-w-[740px] mx-auto px-6">
-                    <p className="text-xs text-gray-400 mb-4">
+                    <p className="text-xs text-gray-500 mb-4">
                       {lang === 'fr' ? 'Côté enseignant' : 'Teacher side'}
                     </p>
 
-                    <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+                    <h2 className="text-title-2 text-gray-900 mb-4">
                       {t.teacher.title}
                     </h2>
                     <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">
@@ -310,7 +310,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                     >
                       <img src={caseImages[6].src} alt={caseImages[6].caption} loading="lazy" className="w-full transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" />
                     </button>
-                    <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed max-w-[65ch]">
+                    <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed max-w-[65ch]">
                       {t.teacher.gridCaption}
                     </figcaption>
                   </figure>
@@ -336,7 +336,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                         >
                           <img src={caseImages[8].src} alt="" loading="lazy" className="w-full transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" />
                         </button>
-                        <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
+                        <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
                           {t.teacher.screenShareCaption}
                         </figcaption>
                       </figure>
@@ -347,7 +347,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                         >
                           <img src={caseImages[10].src} alt="" loading="lazy" className="w-full transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" />
                         </button>
-                        <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
+                        <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
                           {t.teacher.docSendCaption}
                         </figcaption>
                       </figure>
@@ -361,7 +361,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                       >
                         <img src={caseImages[9].src} alt="" loading="lazy" className="w-full transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" />
                       </button>
-                      <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed max-w-[65ch]">
+                      <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed max-w-[65ch]">
                         {t.teacher.actionsCaption}
                       </figcaption>
                     </figure>
@@ -375,11 +375,11 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                 {/* ==================== STUDENT EXPERIENCE ==================== */}
                 <section id="students" className="mb-24 md:mb-32 pt-12">
                   <div className="max-w-[740px] mx-auto px-6">
-                    <p className="text-xs text-gray-400 mb-4">
+                    <p className="text-xs text-gray-500 mb-4">
                       {lang === 'fr' ? 'Côté élève' : 'Student side'}
                     </p>
 
-                    <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+                    <h2 className="text-title-2 text-gray-900 mb-4">
                       {t.students.title}
                     </h2>
                     <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">
@@ -395,7 +395,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                     >
                       <img src={caseImages[7].src} alt="" loading="lazy" className="w-full transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" />
                     </button>
-                    <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed text-center max-w-[65ch] mx-auto">
+                    <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed text-center max-w-[65ch] mx-auto">
                       {t.students.compositionCaption}
                     </figcaption>
                   </figure>
@@ -410,7 +410,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                         >
                           <img src={caseImages[11].src} alt="" loading="lazy" className="w-full transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" />
                         </button>
-                        <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
+                        <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
                           {t.students.classroomsCaption}
                         </figcaption>
                       </figure>
@@ -421,7 +421,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                         >
                           <img src={caseImages[14].src} alt="" loading="lazy" className="w-full transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" />
                         </button>
-                        <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
+                        <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
                           {t.students.interactionsCaption}
                         </figcaption>
                       </figure>
@@ -454,7 +454,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                 {/* ==================== IMPACT ==================== */}
                 <section id="impact" className="mb-24 md:mb-32 pt-12">
                   <div className="max-w-[740px] mx-auto px-6">
-                    <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+                    <h2 className="text-title-2 text-gray-900 mb-4">
                       {t.impact.title}
                     </h2>
                     <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-12">
@@ -476,7 +476,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                           >
                             <img src={item.img.src} alt={item.img.caption} loading="lazy" className="w-full transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" />
                           </button>
-                          <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
+                          <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
                             {item.caption}
                           </figcaption>
                         </figure>
@@ -507,7 +507,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                       <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-3">
                         &laquo;{t.testimonial.quote}&raquo;
                       </p>
-                      <footer className="text-xs text-gray-400">
+                      <footer className="text-xs text-gray-500">
                         {t.testimonial.author}, {t.testimonial.role}
                       </footer>
                     </blockquote>
@@ -521,7 +521,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                       </p>
                       <footer>
                         <p className="text-sm font-medium text-gray-900">{t.heroTestimonial.author}</p>
-                        <p className="text-xs text-gray-400">{t.heroTestimonial.role}</p>
+                        <p className="text-xs text-gray-500">{t.heroTestimonial.role}</p>
                       </footer>
                     </blockquote>
                   </div>
@@ -530,7 +530,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                 {/* ==================== CTA ==================== */}
                 <section className="mb-24 md:mb-32">
                   <div className="max-w-[740px] mx-auto px-6 text-center">
-                    <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-6">
+                    <h2 className="text-title-2 text-gray-900 mb-6">
                       {t.cta.title}
                     </h2>
                     <button

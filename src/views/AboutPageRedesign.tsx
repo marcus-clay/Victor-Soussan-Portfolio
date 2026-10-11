@@ -271,7 +271,7 @@ export default function AboutPageRedesign({
             <motion.h1
               variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
               transition={{ duration: 0.5, ease: EASE_OUT }}
-              className="text-base font-semibold tracking-[-0.01em] text-gray-900"
+              className="text-title-1 text-gray-900"
             >
               {t.page_title}
             </motion.h1>
@@ -330,7 +330,7 @@ export default function AboutPageRedesign({
             className="mt-8 flex items-center gap-2"
           >
             <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
-            <span className="text-xs text-gray-400">{t.availability}</span>
+            <span className="text-xs text-gray-500">{t.availability}</span>
           </motion.div>
         </div>
       </section>
@@ -356,7 +356,7 @@ export default function AboutPageRedesign({
                 <span className="block text-2xl font-semibold text-gray-900 tracking-[-0.01em]">
                   <CountUp value={m.value} delay={idx * 100} />
                 </span>
-                <span className="text-xs text-gray-400 mt-1 block">{m.label}</span>
+                <span className="text-xs text-gray-500 mt-1 block">{m.label}</span>
               </motion.div>
             ))}
           </motion.div>
@@ -385,14 +385,14 @@ export default function AboutPageRedesign({
                 <p className="text-lg italic text-gray-500 leading-relaxed">
                   &ldquo;{currentQuote.text}&rdquo;
                 </p>
-                <p className="mt-4 text-xs text-gray-400">
+                <p className="mt-4 text-xs text-gray-500">
                   {currentQuote.author}
                 </p>
               </motion.div>
             </AnimatePresence>
             <button
               onClick={() => setQuoteIndex((quoteIndex + 1) % quotes.length)}
-              className="mt-5 flex items-center gap-1.5 text-xs text-gray-400 hover:text-gray-700 transition-colors duration-150 group"
+              className="mt-5 flex items-center gap-1.5 text-xs text-gray-500 hover:text-gray-700 transition-colors duration-150 group"
               aria-label="Next testimonial"
             >
               <span>{lang === 'fr' ? 'Voir un autre' : 'Next'}</span>
@@ -428,7 +428,7 @@ export default function AboutPageRedesign({
             viewport={{ once: true, margin: '-80px' }}
             transition={{ duration: 0.5, ease: EASE_OUT }}
           >
-            <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-8">
+            <h2 className="text-title-2 text-gray-900 mb-8">
               {t.career_title}
             </h2>
 
@@ -438,7 +438,7 @@ export default function AboutPageRedesign({
                   key={idx}
                   className="group py-6 first:pt-0 last:pb-0 -mx-3 px-3 rounded-lg hover:bg-black/[.02] transition-colors duration-200 cursor-default"
                 >
-                  <span className="text-xs text-gray-400 block mb-1 group-hover:text-gray-500 transition-colors duration-200">
+                  <span className="text-xs text-gray-500 block mb-1 group-hover:text-gray-500 transition-colors duration-200">
                     {era.period}
                   </span>
                   <span className="text-base font-medium text-gray-900 block mb-2">
@@ -470,7 +470,7 @@ export default function AboutPageRedesign({
                 <span className="text-sm font-medium text-gray-900 block">LinkedIn</span>
                 <span className="text-sm text-gray-500">{t.linkedin_label}</span>
               </div>
-              <ArrowUpRight size={14} className="text-gray-400 group-hover:text-gray-700 transition-colors duration-200 flex-shrink-0" />
+              <ArrowUpRight size={14} className="text-gray-500 group-hover:text-gray-700 transition-colors duration-200 flex-shrink-0" />
             </a>
             <button
               onClick={() => setCvModalOpen(true)}
@@ -482,7 +482,7 @@ export default function AboutPageRedesign({
                 </span>
                 <span className="text-sm text-gray-500">{t.cv_label}</span>
               </div>
-              <ArrowRight size={14} className="text-gray-400 group-hover:text-gray-700 transition-colors duration-200 flex-shrink-0" />
+              <ArrowRight size={14} className="text-gray-500 group-hover:text-gray-700 transition-colors duration-200 flex-shrink-0" />
             </button>
           </motion.div>
         </div>
@@ -509,14 +509,14 @@ export default function AboutPageRedesign({
             >
               {/* Modal header */}
               <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-                <h3 className="text-base font-semibold text-gray-900">
+                <h3 className="text-title-3 text-gray-900">
                   {lang === 'fr' ? 'Curriculum vitae' : 'Resume'}
                 </h3>
                 <div className="flex items-center gap-2">
                   <a
                     href="/cv/CV-Victor-Soussan-2026-FR.pdf"
                     download
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[13px] font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 active:scale-[0.97]"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 active:scale-[0.97]"
                     style={{ transition: 'background-color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
                   >
                     <DownloadSimple size={14} />
@@ -524,7 +524,7 @@ export default function AboutPageRedesign({
                   </a>
                   <button
                     onClick={() => setCvModalOpen(false)}
-                    className="p-2 rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-900 active:scale-[0.95]"
+                    className="p-2 rounded-full hover:bg-gray-100 text-gray-500 hover:text-gray-900 active:scale-[0.95]"
                     style={{ transition: 'background-color 150ms ease, color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
                   >
                     <X size={20} />
@@ -555,7 +555,7 @@ export default function AboutPageRedesign({
             viewport={{ once: true, margin: '-80px' }}
             transition={{ duration: 0.5, ease: EASE_OUT }}
           >
-            <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-6">
+            <h2 className="text-title-2 text-gray-900 mb-6">
               {t.practice_title}
             </h2>
             <p className="text-sm leading-relaxed text-gray-500 mb-10">
@@ -564,7 +564,7 @@ export default function AboutPageRedesign({
 
             {/* Toolkit as animated pills */}
             <div className="mb-10">
-              <h3 className="text-xs font-medium uppercase tracking-wider text-gray-400 mb-2">
+              <h3 className="text-xs font-medium uppercase tracking-wider text-gray-500 mb-2">
                 {t.toolkit_title}
               </h3>
               <motion.div
@@ -589,7 +589,7 @@ export default function AboutPageRedesign({
 
             {/* Education */}
             <div className="pt-6 border-t border-gray-100">
-              <h3 className="text-xs font-medium uppercase tracking-wider text-gray-400 mb-2">
+              <h3 className="text-xs font-medium uppercase tracking-wider text-gray-500 mb-2">
                 {t.education_title}
               </h3>
               <p className="text-sm text-gray-500">{t.education_line1}</p>
@@ -611,7 +611,7 @@ export default function AboutPageRedesign({
               viewport={{ once: true, margin: '-60px' }}
               transition={{ duration: 0.5, ease: EASE_OUT }}
             >
-              <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-2">
+              <h2 className="text-title-2 text-gray-900 mb-2">
                 {t.resources_section_title}
               </h2>
               <p className="text-sm text-gray-500 mb-8">
@@ -632,7 +632,7 @@ export default function AboutPageRedesign({
                     </span>
                     <ArrowUpRight
                       size={14}
-                      className="text-gray-400 group-hover:text-gray-600 transition-colors duration-200 flex-shrink-0 ml-4"
+                      className="text-gray-500 group-hover:text-gray-600 transition-colors duration-200 flex-shrink-0 ml-4"
                     />
                   </a>
                 ))}

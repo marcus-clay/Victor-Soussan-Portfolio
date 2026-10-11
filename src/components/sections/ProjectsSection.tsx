@@ -80,7 +80,7 @@ export default function ProjectsSection({
       <div className="max-w-[692px] mx-auto">
 
         <div className="mb-12 md:mb-14">
-          <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900">
+          <h2 className="text-title-2 text-gray-900">
             {lang === 'en' ? 'Projects' : 'Projets'}
           </h2>
         </div>
@@ -132,7 +132,7 @@ export default function ProjectsSection({
                         <div className="flex items-baseline gap-2.5 mb-2">
                           {/* Index — always w-5, only color-transitions, zero shift */}
                           <span
-                            className="text-[11px] tabular-nums leading-none flex-shrink-0 w-5"
+                            className="text-micro tabular-nums leading-none flex-shrink-0 w-5"
                             style={{
                               color: isActive ? '#9CA3AF' : '#E5E7EB',
                               transition: 'color 200ms ease',
@@ -143,7 +143,7 @@ export default function ProjectsSection({
                           </span>
 
                           <h3
-                            className="text-[15px] leading-snug tracking-[-0.01em]"
+                            className="text-sm leading-snug tracking-[-0.01em]"
                             style={{
                               fontWeight: isActive ? 500 : 400,
                               color: '#111827',
@@ -172,7 +172,7 @@ export default function ProjectsSection({
                       <div className="hidden sm:flex flex-col items-end gap-2.5">
 
                         <div className="flex items-center gap-2 h-5">
-                          <span className="text-[11px] tabular-nums text-gray-400 leading-none">
+                          <span className="text-micro tabular-nums text-gray-500 leading-none">
                             {year}
                           </span>
                           <ArrowDiag

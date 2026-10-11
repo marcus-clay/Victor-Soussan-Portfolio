@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
+import { useSnapScroller } from '@/hooks/useSnapScroller'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import Link from 'next/link'
 import { ArrowRight, ArrowLeft, CaretDown } from '@phosphor-icons/react'
@@ -129,7 +130,7 @@ function AccordionItem({
         <motion.span
           animate={{ rotate: isOpen ? 180 : 0 }}
           transition={{ duration: prefersReduced ? 0 : 0.2, ease: EASE_OUT }}
-          className="shrink-0 text-gray-400"
+          className="shrink-0 text-gray-500"
         >
           <CaretDown size={14} weight="bold" />
         </motion.span>
@@ -286,17 +287,16 @@ const DeliverableCarousel = React.forwardRef<
   const scrollRef = React.useRef<HTMLDivElement>(null)
   const [activeIndex, setActiveIndex] = useState(0)
 
+  const travelling = React.useRef(false)
+  const { bind, scrollToIndex } = useSnapScroller(scrollRef, {
+    pageLimit: 2,
+    onSettle: () => { travelling.current = false },
+  })
+
   const scrollTo = (index: number) => {
-    const container = scrollRef.current
-    if (!container) return
-    const card = container.children[index] as HTMLElement
-    if (!card) return
-    // Offset relative to container, not document — reliable across layouts
-    container.scrollTo({
-      left: card.offsetLeft - container.offsetLeft,
-      behavior: 'smooth',
-    })
+    travelling.current = true
     setActiveIndex(index)
+    scrollToIndex(index)
   }
 
   const prev = () => scrollTo(Math.max(0, activeIndex - 1))
@@ -311,7 +311,7 @@ const DeliverableCarousel = React.forwardRef<
     if (rafRef.current) cancelAnimationFrame(rafRef.current)
     rafRef.current = requestAnimationFrame(() => {
       const container = scrollRef.current
-      if (!container) return
+      if (!container || travelling.current) return
       const cards = Array.from(container.children) as HTMLElement[]
       const mid = container.scrollLeft + container.clientWidth / 2
       let closest = 0
@@ -330,7 +330,13 @@ const DeliverableCarousel = React.forwardRef<
       <div
         ref={scrollRef}
         onScroll={onScroll}
-        className="flex gap-3 overflow-x-auto snap-x snap-mandatory pb-3 -mx-6 px-6
+        {...bind}
+        onPointerCancel={bind.onPointerUp}
+        tabIndex={0}
+        role="group"
+        aria-roledescription="carousel"
+        aria-label={lang === 'fr' ? 'Livrables' : 'Deliverables'}
+        className="snap-scroller snap-rubber flex gap-3 overflow-x-auto snap-x snap-mandatory scroll-pl-6 pb-3 -mx-6 px-6 cursor-grab
           [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
       >
         {items.map((item, i) => {
@@ -353,7 +359,7 @@ const DeliverableCarousel = React.forwardRef<
                   <Illustration />
                 </div>
                 {/* Number */}
-                <span className="text-[11px] tabular-nums text-gray-300 font-medium mb-1">
+                <span className="text-micro tabular-nums text-gray-300 font-medium mb-1">
                   {String(i + 1).padStart(2, '0')}
                 </span>
                 {/* Title */}
@@ -365,7 +371,7 @@ const DeliverableCarousel = React.forwardRef<
                   {item.output[lang]}
                 </p>
                 {/* Format */}
-                <p className="text-[11px] text-gray-400 leading-relaxed mt-3 pt-3 border-t border-gray-50">
+                <p className="text-micro text-gray-500 leading-relaxed mt-3 pt-3 border-t border-gray-50">
                   {item.format[lang]}
                 </p>
               </div>
@@ -444,7 +450,7 @@ function WeeklyRhythmGrid({ lang }: { lang: Language }) {
     <div className="mt-10 rounded-xl border border-gray-100 overflow-hidden">
       {/* Label */}
       <div className="px-4 py-2.5 border-b border-gray-100 bg-[#FAFAFA]">
-        <span className="text-[11px] text-gray-400 uppercase tracking-wide font-medium">{r.label}</span>
+        <span className="text-micro text-gray-500 uppercase tracking-wide font-medium">{r.label}</span>
       </div>
 
       {/* ── Mobile: 3-column simplified ─────────────────────────────── */}
@@ -453,18 +459,18 @@ function WeeklyRhythmGrid({ lang }: { lang: Language }) {
           <div className="px-2 py-2" />
           {r.days3.map((day) => (
             <div key={day} className="px-2 py-2 border-l border-gray-100">
-              <span className="text-[10px] text-gray-400 font-medium">{day}</span>
+              <span className="text-micro text-gray-500 font-medium">{day}</span>
             </div>
           ))}
         </div>
         {r.modes.map((mode, modeIdx) => (
           <div key={mode} className={`grid grid-cols-[60px_repeat(3,1fr)] ${modeIdx === 0 ? 'border-b border-gray-100' : ''}`}>
             <div className="px-2 py-3 flex items-start">
-              <span className="text-[10px] font-medium text-gray-500">{mode}</span>
+              <span className="text-micro font-medium text-gray-500">{mode}</span>
             </div>
             {r.cells3[modeIdx].map((cell, dayIdx) => (
               <div key={dayIdx} className="px-2 py-3 border-l border-gray-100">
-                <p className="text-[10px] text-gray-400 leading-relaxed">{cell}</p>
+                <p className="text-micro text-gray-500 leading-relaxed">{cell}</p>
               </div>
             ))}
           </div>
@@ -477,18 +483,18 @@ function WeeklyRhythmGrid({ lang }: { lang: Language }) {
           <div className="px-3 py-2" />
           {r.days4.map((day) => (
             <div key={day} className="px-3 py-2 border-l border-gray-100">
-              <span className="text-[11px] text-gray-400 font-medium">{day}</span>
+              <span className="text-micro text-gray-500 font-medium">{day}</span>
             </div>
           ))}
         </div>
         {r.modes.map((mode, modeIdx) => (
           <div key={mode} className={`grid grid-cols-[80px_repeat(4,1fr)] ${modeIdx === 0 ? 'border-b border-gray-100' : ''}`}>
             <div className="px-3 py-3 flex items-start">
-              <span className="text-[11px] font-medium text-gray-500">{mode}</span>
+              <span className="text-micro font-medium text-gray-500">{mode}</span>
             </div>
             {r.cells4[modeIdx].map((cell, dayIdx) => (
               <div key={dayIdx} className="px-3 py-3 border-l border-gray-100">
-                <p className="text-[11px] text-gray-400 leading-relaxed">{cell}</p>
+                <p className="text-micro text-gray-500 leading-relaxed">{cell}</p>
               </div>
             ))}
           </div>
@@ -497,7 +503,7 @@ function WeeklyRhythmGrid({ lang }: { lang: Language }) {
 
       {/* Footer note */}
       <div className="px-4 py-2.5 border-t border-gray-100 bg-[#FAFAFA]">
-        <p className="text-[11px] text-gray-400 leading-relaxed">{r.footer}</p>
+        <p className="text-micro text-gray-500 leading-relaxed">{r.footer}</p>
       </div>
     </div>
   )
@@ -557,7 +563,7 @@ export default function ApprochePage({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, ease: EASE_OUT }}
           >
-            <h1 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-3">
+            <h1 className="text-title-1 text-gray-900 mb-3">
               {hero.title}
             </h1>
             <div className="space-y-4 max-w-[65ch]">
@@ -574,7 +580,7 @@ export default function ApprochePage({
           {/* ============================================================= */}
           <section className="py-16 md:py-24 border-t border-gray-100" id="process">
             <RevealSection className="mb-8">
-              <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-2">
+              <h2 className="text-title-2 text-gray-900 mb-2">
                 {processT.title}
               </h2>
               <p className="text-sm text-gray-500 max-w-[55ch]">
@@ -592,7 +598,7 @@ export default function ApprochePage({
                     onToggle={() => setOpenPhase(openPhase === i ? null : i)}
                     trigger={
                       <div className="flex items-baseline gap-2.5">
-                        <span className="text-xs tabular-nums text-gray-400 flex-shrink-0">
+                        <span className="text-xs tabular-nums text-gray-500 flex-shrink-0">
                           {String(i + 1).padStart(2, '0')}
                         </span>
                         <span className="text-sm font-medium text-gray-900 leading-snug">
@@ -607,11 +613,11 @@ export default function ApprochePage({
                       </p>
                       <div className="flex flex-col sm:flex-row sm:items-start gap-4 pt-3 border-t border-gray-100">
                         <div className="flex-1">
-                          <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">Output</p>
+                          <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">Output</p>
                           <p className="text-sm text-gray-500 leading-relaxed">{phase.output[lang]}</p>
                         </div>
                         <div className="flex-1">
-                          <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">
+                          <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">
                             {lang === 'fr' ? 'Exemple' : 'Example'}
                           </p>
                           <p className="text-sm text-gray-500 leading-relaxed">{phase.example[lang]}</p>
@@ -630,7 +636,7 @@ export default function ApprochePage({
           {/* ============================================================= */}
           <section className="py-16 md:py-24 border-t border-gray-100" id="lessons">
             <RevealSection>
-              <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-2">
+              <h2 className="text-title-2 text-gray-900 mb-2">
                 {lessons.title}
               </h2>
               <p className="text-sm text-gray-500 mb-6 max-w-[55ch]">
@@ -677,7 +683,7 @@ export default function ApprochePage({
                         </div>
                         {/* Text */}
                         <div className="min-w-0 flex-1">
-                          <p className="text-[11px] text-gray-400 mb-0.5 uppercase tracking-wide font-medium">
+                          <p className="text-micro text-gray-500 mb-0.5 uppercase tracking-wide font-medium">
                             {lang === 'en' ? 'Case study' : 'Étude de cas'}
                           </p>
                           <p className="text-sm font-medium text-gray-900 leading-snug mb-0.5 group-hover:text-black transition-colors duration-150">
@@ -690,7 +696,7 @@ export default function ApprochePage({
                         <ArrowRight
                           size={12}
                           weight="bold"
-                          className="shrink-0 text-gray-400 transition-transform duration-200 ease-out group-hover:translate-x-0.5"
+                          className="shrink-0 text-gray-500 transition-transform duration-200 ease-out group-hover:translate-x-0.5"
                         />
                       </Link>
                     )}
@@ -706,7 +712,7 @@ export default function ApprochePage({
           {/* ============================================================= */}
           <section className="py-16 md:py-24 border-t border-gray-100" id="collaboration">
             <RevealSection>
-              <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-6">
+              <h2 className="text-title-2 text-gray-900 mb-6">
                 {collab.title}
               </h2>
             </RevealSection>
@@ -746,7 +752,7 @@ export default function ApprochePage({
                   className="w-full h-auto"
                 />
               </div>
-              <p className="mt-2 text-[11px] text-gray-400">
+              <p className="mt-2 text-micro text-gray-500">
                 {lang === 'fr'
                   ? 'Design Teardown\u00a0: en 3h, générer et valider des solutions concrètes sur une feature identifiée.'
                   : 'Design Teardown: in 3h, generate and validate concrete solutions on a specific feature.'}
@@ -762,7 +768,7 @@ export default function ApprochePage({
               {/* Header row: title/subtitle left, arrows right */}
               <div className="flex items-end justify-between gap-4">
                 <div>
-                  <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-2">
+                  <h2 className="text-title-2 text-gray-900 mb-2">
                     {deliverablesT.title}
                   </h2>
                   <p className="text-sm text-gray-500 max-w-[50ch]">
@@ -803,7 +809,7 @@ export default function ApprochePage({
           {/* ============================================================= */}
           <section className="py-16 md:py-24 border-t border-gray-100" id="contact">
             <RevealSection>
-              <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-8">
+              <h2 className="text-title-2 text-gray-900 mb-8">
                 {ctaT.title}
               </h2>
 
@@ -828,7 +834,7 @@ export default function ApprochePage({
                         <ArrowRight
                           size={14}
                           weight="bold"
-                          className="shrink-0 text-gray-400 transition-transform duration-200 ease-out group-hover:translate-x-0.5"
+                          className="shrink-0 text-gray-500 transition-transform duration-200 ease-out group-hover:translate-x-0.5"
                         />
                       </Link>
                     ))}
@@ -860,7 +866,7 @@ export default function ApprochePage({
                         <ArrowRight
                           size={14}
                           weight="bold"
-                          className="shrink-0 text-gray-400 transition-transform duration-200 ease-out group-hover:translate-x-0.5"
+                          className="shrink-0 text-gray-500 transition-transform duration-200 ease-out group-hover:translate-x-0.5"
                         />
                       </Link>
                     ))}

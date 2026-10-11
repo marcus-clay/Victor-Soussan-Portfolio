@@ -132,7 +132,7 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang, isDark, onIm
                       }}
                     >
                       {/* Year Label */}
-                      <span className="text-xs text-gray-400 mb-3">
+                      <span className="text-xs text-gray-500 mb-3">
                         {phase.period}
                       </span>
 
@@ -185,7 +185,7 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang, isDark, onIm
                                 </span>
                               ))}
                               {phase.items.length > 3 && (
-                                <span className="text-xs px-2 py-1 text-gray-400">
+                                <span className="text-xs px-2 py-1 text-gray-500">
                                   +{phase.items.length - 3}
                                 </span>
                               )}
@@ -203,7 +203,7 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang, isDark, onIm
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 1.5 }}
-                className="text-center mt-12 text-sm text-gray-400"
+                className="text-center mt-12 text-sm text-gray-500"
               >
                 {lang === 'fr' ? 'Cliquez sur une phase pour voir les détails' : 'Click on a phase to see details'}
               </motion.p>
@@ -268,7 +268,7 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang, isDark, onIm
                             <span className="text-2xl font-semibold tracking-[-0.01em] text-gray-900">
                               {String(activePhase + 1).padStart(2, '0')}
                             </span>
-                            <span className="text-sm text-gray-400">
+                            <span className="text-sm text-gray-500">
                               / {String(phases.length).padStart(2, '0')}
                             </span>
                           </motion.div>
@@ -278,7 +278,7 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang, isDark, onIm
                             initial={{ y: 8, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ delay: 0.15 }}
-                            className="text-xs text-gray-400 mb-3"
+                            className="text-xs text-gray-500 mb-3"
                           >
                             {phases[activePhase].period}
                           </motion.p>
@@ -288,7 +288,7 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang, isDark, onIm
                             initial={{ y: 8, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ delay: 0.2 }}
-                            className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-1"
+                            className="text-title-2 text-gray-900 mb-1"
                           >
                             {phases[activePhase].title}
                           </motion.h2>
@@ -375,7 +375,7 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang, isDark, onIm
                     className={`text-xs font-medium transition-colors duration-150 ${
                       activePhase === index
                         ? 'text-gray-900'
-                        : 'text-gray-400 hover:text-gray-600'
+                        : 'text-gray-500 hover:text-gray-600'
                     }`}
                   >
                     {phase.period}

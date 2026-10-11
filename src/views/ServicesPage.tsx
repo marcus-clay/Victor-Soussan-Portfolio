@@ -281,7 +281,7 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ lang, onContact }) => {
           <motion.h1
             variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
             transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
-            className="text-base font-semibold tracking-[-0.01em] text-gray-900 leading-[1.08]"
+            className="text-title-1 text-gray-900"
           >
             {t.page_title}
           </motion.h1>
@@ -315,11 +315,11 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ lang, onContact }) => {
               }}
             >
               <div className="flex items-baseline gap-3 mb-3">
-                <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900">
+                <h2 className="text-title-2 text-gray-900">
                   {pillar.title}
                 </h2>
                 <span
-                  className="text-xs text-gray-400"
+                  className="text-xs text-gray-500"
                   style={{
                     opacity: hoveredPillar === i ? 1 : 0,
                     transform: hoveredPillar === i ? 'translateX(0)' : 'translateX(-6px)',
@@ -363,7 +363,7 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ lang, onContact }) => {
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
         >
-          <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+          <h2 className="text-title-2 text-gray-900 mb-4">
             {t.approach_title}
           </h2>
 
@@ -395,7 +395,7 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ lang, onContact }) => {
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
         >
-          <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-10">
+          <h2 className="text-title-2 text-gray-900 mb-10">
             {t.trusted_by}
           </h2>
 

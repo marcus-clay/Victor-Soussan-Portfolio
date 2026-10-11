@@ -87,7 +87,7 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick }) => {
           <img loading="lazy" src={item.src} alt={item.caption} className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" />
         )}
       </div>
-      <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
+      <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
         {item.caption}
         {item.captionDesc && <span className="hidden sm:inline"> · {item.captionDesc}</span>}
       </figcaption>
@@ -244,7 +244,7 @@ const ProductEvolutionDiagram: React.FC<{
             className={`px-3 py-1.5 rounded-full text-xs transition-colors duration-200 ${
               idx === activePhase
                 ? 'bg-gray-900 text-white'
-                : 'text-gray-400 hover:text-gray-600'
+                : 'text-gray-500 hover:text-gray-600'
             }`}
           >
             {texts.phase} {phase.id}
@@ -273,14 +273,14 @@ const ProductEvolutionDiagram: React.FC<{
                 <div className="space-y-8">
                   {/* Identity */}
                   <div>
-                    <p className="text-xs text-gray-400 mb-1">{texts.phase} {phase.id} · {phase.duration}</p>
+                    <p className="text-xs text-gray-500 mb-1">{texts.phase} {phase.id} · {phase.duration}</p>
                     <p className="text-sm font-medium text-gray-900 mb-2">{phase.title}</p>
                     <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">{phase.description}</p>
                   </div>
 
                   {/* Features */}
                   <div>
-                    <p className="text-xs text-gray-400 mb-4">{texts.keyDeliverables}</p>
+                    <p className="text-xs text-gray-500 mb-4">{texts.keyDeliverables}</p>
                     <div className="divide-y divide-gray-100">
                       {phase.features.map((feature, fIdx) => (
                         <motion.div
@@ -307,7 +307,7 @@ const ProductEvolutionDiagram: React.FC<{
           <button
             onClick={handlePrev}
             disabled={activePhase === 0}
-            className="text-sm text-gray-400 hover:text-gray-900 transition-colors disabled:opacity-0 disabled:pointer-events-none flex items-center gap-1"
+            className="text-sm text-gray-500 hover:text-gray-900 transition-colors disabled:opacity-0 disabled:pointer-events-none flex items-center gap-1"
           >
             <ArrowRight size={14} className="rotate-180" />
             <span>{lang === 'fr' ? 'Precedent' : 'Previous'}</span>
@@ -315,7 +315,7 @@ const ProductEvolutionDiagram: React.FC<{
           <button
             onClick={handleNext}
             disabled={activePhase === phases.length - 1}
-            className="text-sm text-gray-400 hover:text-gray-900 transition-colors disabled:opacity-0 disabled:pointer-events-none flex items-center gap-1"
+            className="text-sm text-gray-500 hover:text-gray-900 transition-colors disabled:opacity-0 disabled:pointer-events-none flex items-center gap-1"
           >
             <span>{lang === 'fr' ? 'Suivant' : 'Next'}</span>
             <ArrowRight size={14} />
@@ -416,7 +416,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
         )}
       </div>
       <div className="mt-4 max-w-[740px] mx-auto">
-        <p className="text-xs font-medium text-gray-400 mb-1">{caption}</p>
+        <p className="text-xs font-medium text-gray-500 mb-1">{caption}</p>
         {captionDesc && <p className="text-base text-gray-500 leading-relaxed">{captionDesc}</p>}
         {description && <p className="text-base text-gray-500 leading-relaxed mt-2">{description}</p>}
       </div>
@@ -447,7 +447,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
         />
       </div>
       <div className="mt-4 max-w-[740px] mx-auto">
-        <p className="text-xs font-medium text-gray-400 mb-1">{caption}</p>
+        <p className="text-xs font-medium text-gray-500 mb-1">{caption}</p>
         {captionDesc && <p className="text-base text-gray-500 leading-relaxed">{captionDesc}</p>}
         {description && <p className="text-base text-gray-500 leading-relaxed mt-2">{description}</p>}
       </div>
@@ -530,12 +530,12 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
             <section id="hero" className="mb-24 md:mb-32">
               <div className="max-w-[740px] mx-auto px-6 pt-16 md:pt-24">
                 {/* Meta */}
-                <p className="text-xs text-gray-400 mb-4">
+                <p className="text-xs text-gray-500 mb-4">
                   {t.hero.tags} · {t.hero.zeroToOne} · {t.meta.period}
                 </p>
 
                 {/* Title */}
-                <h1 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-3">
+                <h1 className="text-title-1 text-gray-900 mb-3">
                   {t.hero.title}
                 </h1>
 
@@ -577,7 +577,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                       <p className="text-sm font-medium text-gray-900">
                         {t.testimonial.author}
                       </p>
-                      <p className="text-xs text-gray-400">
+                      <p className="text-xs text-gray-500">
                         {t.testimonial.role}
                       </p>
                     </div>
@@ -600,7 +600,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
             {/* Overview Section */}
             <section id="overview" className="mb-24 md:mb-32">
               <div className="max-w-[740px] mx-auto px-6">
-                <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+                <h2 className="text-title-2 text-gray-900 mb-4">
                   {t.overview.title}
                 </h2>
 
@@ -647,7 +647,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
             {/* Context and Approach Section */}
             <section id="context" className="mb-24 md:mb-32">
               <div className="max-w-[740px] mx-auto px-6">
-                <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+                <h2 className="text-title-2 text-gray-900 mb-4">
                   {t.context.title}
                 </h2>
                 <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-12">
@@ -727,7 +727,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
             {/* Phase 1 - Foundation */}
             <section id="phase1" className="mb-24 md:mb-32">
               <div className="max-w-[740px] mx-auto px-6">
-                <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+                <h2 className="text-title-2 text-gray-900 mb-4">
                   {t.phase1.title}
                 </h2>
 
@@ -982,7 +982,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
             {/* Phase 2 - Feature expansion */}
             <section id="phase2" className="mb-24 md:mb-32">
               <div className="max-w-[740px] mx-auto px-6">
-                <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+                <h2 className="text-title-2 text-gray-900 mb-4">
                   {t.phase2.title}
                 </h2>
                 <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-12">
@@ -1078,7 +1078,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
             {/* Phase 3 - Platform maturity */}
             <section id="phase3" className="mb-24 md:mb-32">
               <div className="max-w-[740px] mx-auto px-6">
-                <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+                <h2 className="text-title-2 text-gray-900 mb-4">
                   {t.phase3.title}
                 </h2>
                 <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-12">
@@ -1127,7 +1127,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
             {/* Design System Foundation */}
             <section id="design-system" className="mb-24 md:mb-32">
               <div className="max-w-[740px] mx-auto px-6">
-                <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+                <h2 className="text-title-2 text-gray-900 mb-4">
                   {t.designSystem.title}
                 </h2>
                 <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-12">
@@ -1161,7 +1161,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
             {/* Impact */}
             <section id="impact" className="mb-24 md:mb-32">
               <div className="max-w-[740px] mx-auto px-6">
-                <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+                <h2 className="text-title-2 text-gray-900 mb-4">
                   {t.impact.title}
                 </h2>
                 <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-12">
@@ -1184,15 +1184,15 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                 <div className="divide-y divide-gray-100">
                   <div className="py-4 -mx-3 px-3 rounded-lg transition-colors duration-150 hover:bg-gray-100">
                     <p className="text-2xl font-semibold text-gray-900">{t.impact.customers}</p>
-                    <p className="text-xs text-gray-400 mt-1">{t.impact.customersDesc}</p>
+                    <p className="text-xs text-gray-500 mt-1">{t.impact.customersDesc}</p>
                   </div>
                   <div className="py-4 -mx-3 px-3 rounded-lg transition-colors duration-150 hover:bg-gray-100">
                     <p className="text-2xl font-semibold text-gray-900">{t.impact.seriesA}</p>
-                    <p className="text-xs text-gray-400 mt-1">{t.impact.seriesADesc}</p>
+                    <p className="text-xs text-gray-500 mt-1">{t.impact.seriesADesc}</p>
                   </div>
                   <div className="py-4 -mx-3 px-3 rounded-lg transition-colors duration-150 hover:bg-gray-100">
                     <p className="text-2xl font-semibold text-gray-900">{t.impact.enterprise}</p>
-                    <p className="text-xs text-gray-400 mt-1">{t.impact.enterpriseDesc}</p>
+                    <p className="text-xs text-gray-500 mt-1">{t.impact.enterpriseDesc}</p>
                   </div>
                 </div>
               </div>

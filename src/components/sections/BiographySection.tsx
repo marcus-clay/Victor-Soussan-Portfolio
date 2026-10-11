@@ -109,7 +109,7 @@ const BiographySection: React.FC<BiographySectionProps> = ({
                     </div>
                   </div>
 
-                  <div className={`space-y-5 leading-relaxed text-[15px] ${
+                  <div className={`space-y-5 leading-relaxed text-sm ${
                     systemTheme === 'dark' ? 'text-gray-300' : 'text-gray-600'
                   }`}>
                     {/* Intro paragraphs first */}
@@ -221,7 +221,7 @@ const BiographySection: React.FC<BiographySectionProps> = ({
                            <div className={`text-xs ${
                              systemTheme === 'dark'
                                ? 'text-gray-500 group-hover:text-blue-400'
-                               : 'text-gray-400 group-hover:text-blue-400'
+                               : 'text-gray-500 group-hover:text-blue-400'
                            }`}>{res.desc}</div>
                         </div>
                         <ArrowUpRight size={16} className="opacity-0 group-hover:opacity-100 transition-opacity text-blue-600"/>

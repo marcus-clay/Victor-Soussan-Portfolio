@@ -400,8 +400,8 @@ function CarouselSection({ title, projects, lang, animationDelay = 0 }: Carousel
         transition={{ duration: 0.4, delay: animationDelay, ease: EASE }}
       >
         <div className="flex items-baseline gap-2.5">
-          <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900">{title}</h2>
-          <span className="text-[11px] tabular-nums text-gray-400">{projects.length}</span>
+          <h2 className="text-title-2 text-gray-900">{title}</h2>
+          <span className="text-micro tabular-nums text-gray-500">{projects.length}</span>
         </div>
       </motion.div>
 
@@ -512,14 +512,14 @@ function CarouselSection({ title, projects, lang, animationDelay = 0 }: Carousel
                   {/* Meta row */}
                   <div className="flex items-center justify-between gap-2 mb-1.5">
                     <span
-                      className="text-[11px] truncate max-w-[65%]"
-                      style={{ color: isHovered ? '#6B7280' : '#9CA3AF', transition: 'color 160ms ease' }}
+                      className="text-micro truncate max-w-[65%]"
+                      style={{ color: isHovered ? '#6B7280' : '#6B7280', transition: 'color 160ms ease' }}
                     >
                       {project.role}
                     </span>
                     <span
-                      className="text-[11px] tabular-nums flex-shrink-0"
-                      style={{ color: isHovered ? '#6B7280' : '#9CA3AF', transition: 'color 160ms ease' }}
+                      className="text-micro tabular-nums flex-shrink-0"
+                      style={{ color: isHovered ? '#6B7280' : '#6B7280', transition: 'color 160ms ease' }}
                     >
                       {year}
                     </span>
@@ -527,9 +527,8 @@ function CarouselSection({ title, projects, lang, animationDelay = 0 }: Carousel
 
                   {/* Title */}
                   <h2
-                    className="text-[15px] leading-snug tracking-[-0.01em] mb-1.5"
+                    className="text-title-3 mb-1.5"
                     style={{
-                      fontWeight: isHovered ? 500 : 400,
                       color: isHovered ? '#000' : '#111827',
                       transition: 'color 160ms ease',
                     }}
@@ -549,13 +548,13 @@ function CarouselSection({ title, projects, lang, animationDelay = 0 }: Carousel
                   <div className="flex items-center gap-1">
                     <span
                       className="text-xs"
-                      style={{ color: isHovered ? '#374151' : '#9CA3AF', transition: 'color 160ms ease' }}
+                      style={{ color: isHovered ? '#374151' : '#6B7280', transition: 'color 160ms ease' }}
                     >
                       {isEn ? 'View project' : 'Voir le projet'}
                     </span>
                     <ArrowDiag
                       style={{
-                        color: isHovered ? '#374151' : '#9CA3AF',
+                        color: isHovered ? '#374151' : '#6B7280',
                         transform: isHovered ? 'translate(1px,-1px)' : 'translate(0,0)',
                         transition: 'color 160ms ease, transform 200ms cubic-bezier(0.23,1,0.32,1)',
                       }}
@@ -637,7 +636,7 @@ export default function ProjetsPageClient({ lang }: { lang: 'en' | 'fr' }) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, ease: EASE }}
       >
-        <h1 className="text-base font-semibold tracking-[-0.01em] text-gray-900">
+        <h1 className="text-title-1 text-gray-900">
           {isEn ? 'Work' : 'Projets'}
         </h1>
         <p className="mt-1 text-base text-gray-500 leading-relaxed max-w-[52ch]">
@@ -675,7 +674,7 @@ export default function ProjetsPageClient({ lang }: { lang: 'en' | 'fr' }) {
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.4, ease: EASE }}
         >
-          <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-1.5">
+          <h2 className="text-title-2 text-gray-900 mb-1.5">
             {isEn ? 'Interface gallery' : 'Galerie d\u2019interfaces'}
           </h2>
           <p className="text-sm text-gray-500 max-w-[50ch] leading-relaxed mb-4">

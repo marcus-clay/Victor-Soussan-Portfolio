@@ -77,8 +77,33 @@ For interactive rows in lists, menus, accordions, and divide-y blocks:
 - No colored accent borders on cards or containers (colored border-l, border-t, border-left). Use uniform `border-gray-100` on all sides.
 - No colored accent bars inside cards (e.g. colored div as visual separator). Keep cards clean.
 
-## Typography
-- Headings: font-bold, tracking-[-0.02em] or tracking-[-0.03em]
-- Body: text-sm to text-base, leading-relaxed
-- Dark mode text: text-white (headings), text-gray-400 (body)
-- Light mode text: text-gray-900 (headings), text-gray-600 (body)
+## Typography (type scale)
+Sizes are Tailwind tokens defined in `tailwind.config.js`. Each size carries its own tracking and leading (tighter as it grows), so do not add `tracking-*` or `leading-*` on headings unless there is a reason. Never use `text-[Npx]`: pick the closest token.
+
+| Role | Class | Size | Weight | Use |
+|---|---|---|---|---|
+| Page title | `text-title-1` | 24 to 28px (fluid) | 600 | the page `h1`, including the homepage name |
+| Section | `text-title-2` | 20px | 600 | `h2` |
+| Sub-section, card title | `text-title-3` | 17px | 600 | `h3`, project and article card titles |
+| Lead | `text-lg` | 18px | 400 | subtitle under a page title, role line |
+| Body | `text-base` | 16px | 400 | running text |
+| UI, summaries | `text-sm` | 15px | 400 / 500 | buttons, card summaries, navigation |
+| Caption | `text-xs` | 13px | 400 / 500 | metadata, breadcrumbs, footers |
+| Micro | `text-micro` | 11px | 500 | labels, years, counters (use `uppercase tracking-[0.08em]` for overlines) |
+
+- Hierarchy comes from size first, then weight, then color: `gray-900` for titles, `gray-600` for body, `gray-500` minimum for metadata.
+- Large display sizes (`text-4xl` and up) are reserved for the `/presentation`, `/quote` and resume surfaces.
+- Dark mode text: `text-white` (headings), `text-gray-400` (body).
+- The header repeats the page identity once the first `h1` (the whole hero on the homepage) leaves the viewport.
+
+## Carousels (horizontal scrollers)
+Every swipeable carousel uses `useSnapScroller` (`src/hooks/useSnapScroller.ts`) on top of CSS scroll-snap:
+- Touch and trackpad scrolling stay native (`scroll-snap-type` + `snap-scroller` for `overscroll-behavior-x: contain`).
+- Mouse drag is 1:1, then lands on the snap point the gesture was heading to (momentum projection, rate 0.998), through a critically damped spring that inherits the release velocity.
+- Rubber banding at both ends via `.snap-rubber` (individual `translate` on direct children, never `transform`).
+- Arrows, dots and ArrowLeft/ArrowRight go through the same spring. A press or a wheel stops the motion where it is.
+- Never use `scroll-behavior: smooth` or `scrollTo({ behavior: 'smooth' })` on a carousel: it fights the spring.
+- Track needs `tabIndex={0}`, `role="group"`, `aria-roledescription="carousel"` and an `aria-label`; items get `scroll-snap-align`, and the container `scroll-padding-left` equal to its left padding.
+
+## Overlays and scroll lock
+Lightboxes and galleries lock the page with `useScrollLock(isOpen)` (`src/hooks/useScrollLock.ts`), never with `body.style.overflow`, `position: fixed` or a `scrollTo`. The page must stay exactly where it was. Do not change the pathname from an overlay (the router scrolls to top on pathname change); use the URL hash.

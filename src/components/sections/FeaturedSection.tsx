@@ -44,12 +44,12 @@ const FeaturedSection: React.FC<FeaturedSectionProps> = ({
 
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
-          <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900">
+          <h2 className="text-title-2 text-gray-900">
             {isEn ? 'Resources' : 'Ressources'}
           </h2>
           <Link
             href={`/${lang}/ressources`}
-            className="group text-sm text-gray-400 hover:text-gray-900 transition-colors duration-150 flex items-center gap-1"
+            className="group text-sm text-gray-500 hover:text-gray-900 transition-colors duration-150 flex items-center gap-1"
           >
             {isEn ? 'All articles' : 'Tous les articles'}
             <ArrowDiag
@@ -72,9 +72,9 @@ const FeaturedSection: React.FC<FeaturedSectionProps> = ({
             className="group -mx-3 px-3 py-5 rounded-xl text-left w-full block hover:bg-gray-100 transition-colors duration-150"
           >
             <div className="flex items-center gap-2 mb-2">
-              <span className="text-[11px] font-medium text-gray-400 uppercase tracking-wide">Guide</span>
+              <span className="text-micro font-medium text-gray-500 uppercase tracking-wide">Guide</span>
               <span className="w-1 h-1 rounded-full bg-gray-300 flex-shrink-0" />
-              <span className="text-[11px] font-medium text-gray-400 uppercase tracking-wide">
+              <span className="text-micro font-medium text-gray-500 uppercase tracking-wide">
                 {guideChapters.length} {isEn ? 'chapters' : 'chapitres'}
               </span>
             </div>
@@ -107,7 +107,7 @@ const FeaturedSection: React.FC<FeaturedSectionProps> = ({
                 style={{
                   flexShrink: 0,
                   marginTop: 2,
-                  color: '#9CA3AF',
+                  color: '#6B7280',
                   opacity: hoveredGuide ? 1 : 0,
                   transform: hoveredGuide ? 'translate(0,0)' : 'translate(-4px,4px)',
                   transition: 'opacity 180ms ease, transform 240ms cubic-bezier(0.23, 1, 0.32, 1)',
@@ -125,18 +125,17 @@ const FeaturedSection: React.FC<FeaturedSectionProps> = ({
               className="group -mx-3 px-3 py-5 rounded-xl text-left w-full block hover:bg-gray-100 transition-colors duration-150"
             >
               <div className="flex items-center gap-2 mb-2">
-                <span className="text-[11px] font-medium text-gray-400 uppercase tracking-wide">
+                <span className="text-micro font-medium text-gray-500 uppercase tracking-wide">
                   {isEn ? 'AI' : 'IA'}
                 </span>
               </div>
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
                   <h3
-                    className="text-sm leading-snug mb-1.5"
+                    className="text-title-3 mb-1.5"
                     style={{
-                      fontWeight: hoveredSignal ? 500 : 400,
                       color: hoveredSignal ? '#000000' : '#111827',
-                      transition: 'color 180ms ease, font-weight 0ms',
+                      transition: 'color 180ms ease',
                     }}
                   >
                     {isEn ? guideSignal.title_en : guideSignal.title_fr}
@@ -156,7 +155,7 @@ const FeaturedSection: React.FC<FeaturedSectionProps> = ({
                   style={{
                     flexShrink: 0,
                     marginTop: 2,
-                    color: '#9CA3AF',
+                    color: '#6B7280',
                     opacity: hoveredSignal ? 1 : 0,
                     transform: hoveredSignal ? 'translate(0,0)' : 'translate(-4px,4px)',
                     transition: 'opacity 180ms ease, transform 240ms cubic-bezier(0.23, 1, 0.32, 1)',

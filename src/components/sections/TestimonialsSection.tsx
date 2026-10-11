@@ -50,7 +50,7 @@ const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
   return (
     <section id="testimonials" className="py-24 md:py-40 px-6">
       <div className="max-w-[692px] mx-auto">
-        <h2 className="text-base font-semibold tracking-[-0.01em] mb-10 md:mb-14 text-gray-900">
+        <h2 className="text-title-2 mb-10 md:mb-14 text-gray-900">
           {content.testimonials.title}
         </h2>
 
@@ -112,7 +112,7 @@ const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
 
                   {/* Caret indicator — always visible on mobile, hover-only on desktop */}
                   {isLong && (
-                    <div className="mt-3 flex items-center gap-1 text-sm text-gray-400 opacity-100 md:opacity-0 md:group-hover/card:opacity-100 transition-opacity duration-150">
+                    <div className="mt-3 flex items-center gap-1 text-sm text-gray-500 opacity-100 md:opacity-0 md:group-hover/card:opacity-100 transition-opacity duration-150">
                       <span>
                         {isExpanded
                           ? (lang === 'fr' ? 'Réduire' : 'Read less')

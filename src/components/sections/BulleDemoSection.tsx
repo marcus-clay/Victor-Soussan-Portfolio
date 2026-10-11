@@ -25,7 +25,7 @@ export default function BulleDemoSection({ lang, onNavigate }: BulleDemoSectionP
       <div className="max-w-[692px] mx-auto">
 
         {/* Category label */}
-        <p className="text-[11px] font-medium text-gray-400 uppercase tracking-[0.08em] mb-5">
+        <p className="text-micro font-medium text-gray-500 uppercase tracking-[0.08em] mb-5">
           {isEn ? 'Interaction design' : 'Design d\u2019interaction'}
         </p>
 
@@ -63,7 +63,7 @@ export default function BulleDemoSection({ lang, onNavigate }: BulleDemoSectionP
           </p>
           <button
             onClick={() => onNavigate('/project/connect/summary')}
-            className="flex items-center gap-1.5 text-sm text-gray-400 hover:text-gray-900 transition-colors duration-150"
+            className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors duration-150"
           >
             {isEn ? 'View case study' : 'Voir l\u2019étude de cas'}
             <ArrowDiag />

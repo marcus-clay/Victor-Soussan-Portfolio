@@ -4,6 +4,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence, PanInfo, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import { X, CaretLeft as ChevronLeft, CaretRight as ChevronRight, Play } from '@phosphor-icons/react';
+import { useScrollLock } from '../hooks/useScrollLock';
 
 // Apple-style spring transition
 const springTransition = {
@@ -257,17 +258,8 @@ export const BentoGallery: React.FC<BentoGalleryProps> = ({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, lightboxOpen, onClose]);
 
-  // Prevent body scroll when open
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [isOpen]);
+  // Prevent page scroll while open
+  useScrollLock(isOpen);
 
   // Handle drag end for swipe navigation
   const handleDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
@@ -924,7 +916,7 @@ export const CONNECT_GALLERY_ITEMS: GalleryItem[] = [
     type: 'video',
   },
   {
-    src: '/videos/connect/connect-dashboard-prototype_complet_4k.mp4',
+    src: '/videos/connect/connect-dashboard-prototype_complet_4k-compressed.mp4',
     caption: 'Dashboard Prototype',
     captionDesc: 'Full interaction walkthrough demonstrating modular capabilities',
     type: 'video',
@@ -984,13 +976,13 @@ export const CONNECT_GALLERY_ITEMS: GalleryItem[] = [
     type: 'image',
   },
   {
-    src: '/videos/connect/interaction-bulle-connect.mp4',
+    src: '/videos/connect/interaction-bulle-connect-compressed.mp4',
     caption: 'La Bulle - Interaction Demo',
     captionDesc: 'Motion prototype of bubble opening animation',
     type: 'video',
   },
   {
-    src: '/videos/connect/Video-demo-bulle-interactions-02.mp4',
+    src: '/videos/connect/Video-demo-bulle-interactions-02-compressed.mp4',
     caption: 'La Bulle - Full Demo',
     captionDesc: 'Complete demonstration of bubble capabilities',
     type: 'video',
@@ -1214,26 +1206,26 @@ export const SQOOL_GALLERY_ITEMS: GalleryItem[] = [
   },
   // Connect Vision Prototype (videos)
   {
-    src: '/videos/connect/connect-dashboard-prototype_complet_4k.mp4',
+    src: '/videos/connect/connect-dashboard-prototype_complet_4k-compressed.mp4',
     caption: 'Connect Dashboard Prototype',
     captionDesc: 'Full walkthrough of the web-based dashboard demonstrator',
     type: 'video',
     span: 'wide',
   },
   {
-    src: '/videos/connect/Video-demo-bulle-interactions-02.mp4',
+    src: '/videos/connect/Video-demo-bulle-interactions-02-compressed.mp4',
     caption: 'La Bulle Interactions',
     captionDesc: 'Persistent floating UI for quick contextual actions',
     type: 'video',
   },
   {
-    src: '/videos/connect/interaction-bulle-connect.mp4',
+    src: '/videos/connect/interaction-bulle-connect-compressed.mp4',
     caption: 'Bubble Animation',
     captionDesc: 'Opening animation and menu transitions',
     type: 'video',
   },
   {
-    src: '/videos/connect/connect design sprint.mp4',
+    src: '/videos/connect/connect-design-sprint-compressed.mp4',
     caption: 'Design Sprint',
     captionDesc: 'User journey walkthrough from onboarding to classroom control',
     type: 'video',

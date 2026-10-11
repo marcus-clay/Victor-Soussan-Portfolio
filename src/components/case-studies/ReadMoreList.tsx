@@ -78,7 +78,7 @@ const ReadMoreList: React.FC<ReadMoreListProps> = ({
           type="button"
           onClick={() => setIsExpanded(v => !v)}
           aria-expanded={isExpanded}
-          className="inline-flex items-center gap-1.5 text-sm font-medium text-gray-400 hover:text-gray-700 transition-colors duration-150 active:scale-[0.97]"
+          className="inline-flex items-center gap-1.5 text-sm font-medium text-gray-500 hover:text-gray-700 transition-colors duration-150 active:scale-[0.97]"
         >
           {isExpanded
             ? <Minus size={12} weight="bold" />

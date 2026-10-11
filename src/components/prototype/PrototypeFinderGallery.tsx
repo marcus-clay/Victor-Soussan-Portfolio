@@ -191,12 +191,12 @@ const PrototypeList: React.FC<PrototypeListProps> = ({
                     : 'text-gray-700 hover:bg-gray-100'
               }`}
             >
-              <span className={`text-[10px] font-mono font-bold flex-shrink-0 w-7 ${
+              <span className={`text-micro font-mono font-bold flex-shrink-0 w-7 ${
                 isSelected ? 'text-white/70' : (isDark ? 'text-gray-500' : 'text-gray-400')
               }`}>
                 {proto.id}
               </span>
-              <span className={`text-[13px] ${isSelected ? 'font-medium' : ''}`}>
+              <span className={`text-xs ${isSelected ? 'font-medium' : ''}`}>
                 {proto.title[lang]}
               </span>
             </motion.button>
@@ -254,7 +254,7 @@ const PreviewPane: React.FC<{
           className="flex-1 min-w-0 text-left group cursor-pointer"
         >
           <div className="flex items-center gap-2.5 mb-1">
-            <span className={`text-[11px] font-bold px-2 py-0.5 rounded flex-shrink-0 ${
+            <span className={`text-micro font-bold px-2 py-0.5 rounded flex-shrink-0 ${
               isDark
                 ? `${CATEGORY_COLORS[prototype.category].bg} ${CATEGORY_COLORS[prototype.category].text}`
                 : `${CATEGORY_COLORS[prototype.category].bgLight} ${CATEGORY_COLORS[prototype.category].textLight}`
@@ -539,7 +539,7 @@ const PrototypeFinderGallery: React.FC<PrototypeFinderGalleryProps> = ({
 
   // Category pills — tablet/mobile (no layoutId to avoid cross-instance conflicts)
   const categoryPills = (
-    <div className="flex gap-1.5 overflow-x-auto py-1" style={{ scrollbarWidth: 'none' }}>
+    <div className="flex gap-1.5 overflow-x-auto overscroll-x-contain py-1 [&::-webkit-scrollbar]:hidden" style={{ scrollbarWidth: 'none' }}>
       {GALLERY_CATEGORIES.map(cat => {
         const Icon = CATEGORY_ICONS[cat.id];
         const isActive = activeCategory === cat.id;
@@ -559,10 +559,10 @@ const PrototypeFinderGallery: React.FC<PrototypeFinderGalleryProps> = ({
             }`}
           >
             <Icon size={14} className={isActive ? 'text-white/80' : (isDark ? colors.text : colors.textLight)} />
-            <span className={`text-[13px] font-medium ${isActive ? 'text-white' : ''}`}>
+            <span className={`text-xs font-medium ${isActive ? 'text-white' : ''}`}>
               {CATEGORY_LABELS[cat.id][lang]}
             </span>
-            <span className={`text-[11px] tabular-nums ${isActive ? 'text-white/60' : (isDark ? 'text-gray-500' : 'text-gray-400')}`}>
+            <span className={`text-micro tabular-nums ${isActive ? 'text-white/60' : (isDark ? 'text-gray-500' : 'text-gray-400')}`}>
               {cat.prototypeIds.length}
             </span>
           </motion.button>
@@ -593,7 +593,7 @@ const PrototypeFinderGallery: React.FC<PrototypeFinderGalleryProps> = ({
         {/* Col 1: Categories — sliding selection indicator via layoutId */}
         <div className={`w-[200px] flex-shrink-0 border-r ${borderColor} ${bgCol} flex flex-col`}>
           <div className={`px-4 py-3 border-b ${borderColor}`}>
-            <h3 className={`text-[11px] font-semibold uppercase tracking-wider ${isDark ? 'text-white/40' : 'text-gray-400'}`}>
+            <h3 className={`text-micro font-semibold uppercase tracking-wider ${isDark ? 'text-white/40' : 'text-gray-400'}`}>
               {lang === 'fr' ? 'Catégories' : 'Categories'}
             </h3>
           </div>
@@ -613,10 +613,10 @@ const PrototypeFinderGallery: React.FC<PrototypeFinderGalleryProps> = ({
                   }`}
                 >
                   <Icon size={15} className={isActive ? 'text-white/80' : (isDark ? colors.text : colors.textLight)} />
-                  <span className={`text-[13px] font-medium flex-1 ${isActive ? 'text-white' : ''}`}>
+                  <span className={`text-xs font-medium flex-1 ${isActive ? 'text-white' : ''}`}>
                     {CATEGORY_LABELS[cat.id][lang]}
                   </span>
-                  <span className={`text-[11px] tabular-nums flex-shrink-0 ${isActive ? 'text-white/60' : (isDark ? 'text-gray-500' : 'text-gray-400')}`}>
+                  <span className={`text-micro tabular-nums flex-shrink-0 ${isActive ? 'text-white/60' : (isDark ? 'text-gray-500' : 'text-gray-400')}`}>
                     {cat.prototypeIds.length}
                   </span>
                 </motion.button>
@@ -628,7 +628,7 @@ const PrototypeFinderGallery: React.FC<PrototypeFinderGalleryProps> = ({
         {/* Col 2: Prototype list */}
         <div className={`w-[300px] flex-shrink-0 border-r ${borderColor} ${bgCol} flex flex-col`}>
           <div className={`px-4 py-3 border-b ${borderColor}`}>
-            <h3 className={`text-[11px] font-semibold uppercase tracking-wider ${isDark ? 'text-white/40' : 'text-gray-400'}`}>
+            <h3 className={`text-micro font-semibold uppercase tracking-wider ${isDark ? 'text-white/40' : 'text-gray-400'}`}>
               <AnimatePresence mode="wait">
                 <motion.span
                   key={activeCategory}
@@ -708,7 +708,7 @@ const PrototypeFinderGallery: React.FC<PrototypeFinderGalleryProps> = ({
           }`}
         >
           <div className="flex items-center gap-2">
-            <span className={`text-[10px] font-mono font-bold ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
+            <span className={`text-micro font-mono font-bold ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
               {selectedProtoId}
             </span>
             <span className={`text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>

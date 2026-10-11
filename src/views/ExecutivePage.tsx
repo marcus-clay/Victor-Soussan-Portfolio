@@ -1,3 +1,4 @@
+import { useScrollLock } from '@/hooks/useScrollLock';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform, PanInfo } from 'framer-motion';
 import jsPDF from 'jspdf';
@@ -1127,6 +1128,8 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
     }
   };
 
+  useScrollLock(lightboxOpen || videoLightboxOpen);
+
   // Open lightbox with specific image
   const openLightbox = (imageSrc: string) => {
     const index = allImages.findIndex(img => img === imageSrc);
@@ -1135,14 +1138,12 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
       setPage([index, 0]);
       setLightboxZoomed(false);
       setLightboxOpen(true);
-      document.body.style.overflow = 'hidden';
     }
   };
 
   // Close lightbox
   const closeLightbox = () => {
     setLightboxOpen(false);
-    document.body.style.overflow = '';
   };
 
   // Open video lightbox with optional start time
@@ -1150,14 +1151,12 @@ export default function ExecutivePage({ language = 'fr', onClose, onBookCall, on
     setVideoLightboxSrc(videoSrc);
     setVideoStartTime(startTime);
     setVideoLightboxOpen(true);
-    document.body.style.overflow = 'hidden';
   };
 
   // Close video lightbox
   const closeVideoLightbox = () => {
     setVideoLightboxOpen(false);
     setVideoLightboxSrc(null);
-    document.body.style.overflow = '';
   };
 
   // Navigate to next/previous image in lightbox

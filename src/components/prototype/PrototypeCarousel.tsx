@@ -1,7 +1,9 @@
 import React, { useRef, useState, useCallback, useEffect } from 'react';
+import { useSnapScroller } from '../../hooks/useSnapScroller';
 import { CaretLeft as ChevronLeft, CaretRight as ChevronRight, Play, Pause, ArrowCounterClockwise as RotateCcw, ArrowsOut as Expand } from '@phosphor-icons/react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PrototypeItem, getIframeSrc, CATEGORY_COLORS } from '../../data/sqoolPrototypesData';
+import { useScrollLock } from '../../hooks/useScrollLock';
 
 interface PrototypeCarouselProps {
   prototypes: PrototypeItem[];
@@ -193,7 +195,7 @@ const PrototypePlayer: React.FC<PrototypePlayerProps> = ({
         </div>
 
         {/* Badge */}
-        <div className={`absolute top-2.5 left-2.5 z-20 flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[10px] font-bold tracking-wide backdrop-blur-sm ${
+        <div className={`absolute top-2.5 left-2.5 z-20 flex items-center gap-1.5 px-2 py-0.5 rounded-md text-micro font-bold tracking-wide backdrop-blur-sm ${
           isDark ? `${colors.bg} ${colors.text}` : `${colors.bgLight} ${colors.textLight}`
         }`}>
           {prototype.id}
@@ -254,7 +256,7 @@ const PrototypePlayer: React.FC<PrototypePlayerProps> = ({
         <p className={`text-xs font-medium ${isDark ? 'text-white/70' : 'text-gray-700'}`}>
           {prototype.title[lang]}
         </p>
-        <p className={`text-[11px] leading-relaxed mt-0.5 ${isDark ? 'text-white/40' : 'text-gray-500'}`}>
+        <p className={`text-micro leading-relaxed mt-0.5 ${isDark ? 'text-white/40' : 'text-gray-500'}`}>
           {caption}
         </p>
       </div>
@@ -276,12 +278,9 @@ const FullscreenPlayer: React.FC<{
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
     document.addEventListener('keydown', handleKey);
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.removeEventListener('keydown', handleKey);
-      document.body.style.overflow = '';
-    };
+    return () => document.removeEventListener('keydown', handleKey);
   }, [onClose]);
+  useScrollLock(true);
 
   const handlePlay = useCallback(() => {
     iframeRef.current?.contentWindow?.postMessage('play', '*');
@@ -416,11 +415,18 @@ const PrototypeCarousel: React.FC<PrototypeCarouselProps> = ({
     };
   }, [updateScrollState, carouselProtos.length]);
 
+  const { bind, scrollToIndex, currentIndex } = useSnapScroller(scrollRef, {
+    onProgress: updateScrollState,
+    onSettle: updateScrollState,
+  });
+
+  // One arrow press moves by the number of thumbnails that fit in view
   const scrollBy = useCallback((dir: number) => {
     const el = scrollRef.current;
     if (!el) return;
-    el.scrollBy({ left: dir * SCROLL_AMOUNT, behavior: 'smooth' });
-  }, []);
+    const perView = Math.max(1, Math.floor((el.clientWidth + 16) / SCROLL_AMOUNT));
+    scrollToIndex(currentIndex() + dir * perView);
+  }, [scrollToIndex, currentIndex]);
 
   if (prototypes.length === 0) return null;
 
@@ -464,11 +470,17 @@ const PrototypeCarousel: React.FC<PrototypeCarouselProps> = ({
           {/* Scrollable track */}
           <div
             ref={scrollRef}
-            className="proto-strip flex gap-4 overflow-x-auto scroll-smooth pb-3"
+            {...bind}
+            onPointerCancel={bind.onPointerUp}
+            tabIndex={0}
+            role="group"
+            aria-roledescription="carousel"
+            className="proto-strip snap-scroller snap-rubber flex gap-4 overflow-x-auto pb-3 cursor-grab"
             style={{
               scrollbarWidth: 'none',
               msOverflowStyle: 'none',
               WebkitOverflowScrolling: 'touch',
+              scrollSnapType: 'x proximity',
             }}
           >
             <style>{`.proto-strip::-webkit-scrollbar { display: none; }`}</style>
@@ -476,7 +488,7 @@ const PrototypeCarousel: React.FC<PrototypeCarouselProps> = ({
               <div
                 key={proto.id}
                 className="flex-shrink-0"
-                style={{ width: `${THUMB_WIDTH}px` }}
+                style={{ width: `${THUMB_WIDTH}px`, scrollSnapAlign: 'start' }}
               >
                 <PrototypePlayer
                   prototype={proto}

@@ -34,14 +34,67 @@
   --nav-height: 72px;
 }
 
-/* Reduced motion: keep opacity, remove movement */
+/* Reduced motion: keep opacity and color changes (short cross-fade), remove movement.
+   Framer Motion is handled separately by <MotionConfig reducedMotion="user"> in LayoutShell. */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+    transition-property: opacity, color, background-color, border-color, text-decoration-color !important;
+    transition-duration: 150ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* ── Appearance ────────────────────────────────────────────────────────────
+   Entrances are CSS animations, not JS-driven: they start on first paint, so
+   server-rendered content is never held back waiting for hydration.
+   Only opacity and transform move. `backwards` fill = no residual style after the
+   animation, so hover and state styles keep working. */
+@keyframes rise-in {
+  from { opacity: 0; transform: translate3d(0, var(--rise, 12px), 0); }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+}
+
+/* Staggered entrance: style={{ '--i': 0 }} on each element, 70ms apart */
+.rise-in {
+  animation: rise-in 500ms var(--ease-out-expo) backwards;
+  animation-delay: calc(var(--i, 0) * 70ms);
+}
+
+/* Every page after a client-side navigation */
+.page-in {
+  animation: rise-in 380ms var(--ease-out-expo) backwards;
+  --rise: 8px;
+}
+
+/* Lazy images fade in once decoded instead of popping in. The hiding rule only
+   applies after JavaScript has marked the document (.img-fade), so server HTML
+   and no-JS visitors always see images. Images already loaded at hydration are
+   marked data-loaded="instant" and do not animate. */
+.img-fade img[loading="lazy"]:not([data-loaded]) {
+  opacity: 0;
+}
+.img-fade img[loading="lazy"][data-loaded=""] {
+  animation: fade-in 450ms var(--ease-out-expo) backwards;
+}
+
+/* Keyboard focus: one consistent, visible ring in the brand blue.
+   :where() keeps specificity at zero, so component-level focus styles still win. */
+:where(a, button, [role="button"], input, textarea, select, summary, [tabindex]):focus-visible {
+  outline: 2px solid #2D5CF3;
+  outline-offset: 2px;
+}
+
+/* Typography: balanced headings, no orphans in running text */
+h1, h2, h3, h4 { text-wrap: balance; }
+p, li, blockquote { text-wrap: pretty; }
+
+/* Translucent chrome falls back to a solid surface when the user asks for it */
+@media (prefers-reduced-transparency: reduce) {
+  #site-nav { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; background: #FDFDFC !important; }
 }
 
 html {
@@ -236,6 +289,22 @@ body {
 
 .logo-carousel-track:hover {
   animation-play-state: paused;
+}
+
+/* Horizontal carousels (see src/hooks/useSnapScroller.ts) */
+.snap-scroller {
+  overscroll-behavior-x: contain; /* no browser back-swipe when a carousel hits its end */
+  scroll-snap-stop: normal;
+}
+.snap-scroller:focus-visible {
+  outline: 2px solid #2D5CF3;
+  outline-offset: 4px;
+  border-radius: 8px;
+}
+/* Rubber banding moves the direct children with the individual `translate` property,
+   so it never conflicts with their own transforms (hover scale, motion). */
+.snap-rubber > * {
+  translate: var(--rb, 0px) 0;
 }
 
 /* Gallery carousel — continuous auto-scroll, pauses on hover */

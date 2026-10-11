@@ -209,7 +209,7 @@ export function V28() {
             
             {page === 'home' && (
               <div className="space-y-10">
-                <div className={`${v28Card} p-12 text-center flex flex-col items-center bg-[url('/images/ui-noise.png')] bg-repeat bg-opacity-10`}>
+                <div className={`${v28Card} p-12 text-center flex flex-col items-center`}>
                   <div className={v28Inner} />
                   <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-[#FF3B30] to-[#FF9500] mb-6 shadow-[0_10px_20px_rgba(255,59,48,0.3),inset_0_2px_4px_rgba(255,255,255,0.6),inset_0_-4px_4px_rgba(0,0,0,0.1)] flex items-center justify-center border border-[#FF3B30]">
                     <Sparkle weight="fill" size={40} className="text-white drop-shadow-md" />
@@ -521,7 +521,7 @@ export function V32() {
            <motion.div key={page} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
              {page === 'home' && (
                <div className="space-y-10">
-                 <div className={`${v32Paper} p-12 text-center rounded-sm bg-[url('/images/ui-noise.png')] bg-repeat bg-opacity-5`}>
+                 <div className={`${v32Paper} p-12 text-center rounded-sm`}>
                    <h2 className="text-6xl font-black text-[#1C1C1E] leading-tight mb-6">Designing Digital<br/>Physicality.</h2>
                    <p className="font-sans text-lg font-bold text-[#8E8E93] max-w-lg mx-auto">{HERO.desc}</p>
                  </div>

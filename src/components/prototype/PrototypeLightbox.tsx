@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, CaretLeft as ChevronLeft, CaretRight as ChevronRight, Play, Pause, ArrowCounterClockwise as RotateCcw } from '@phosphor-icons/react';
+import { useScrollLock } from '../../hooks/useScrollLock';
 import { getIframeSrc } from '../../data/sqoolPrototypesData';
 
 interface PrototypeLightboxItem {
@@ -65,13 +66,7 @@ const PrototypeLightbox: React.FC<PrototypeLightboxProps> = ({
     return () => document.removeEventListener('keydown', handleKey, { capture: true });
   }, [isOpen, onClose, hasPrev, hasNext, goPrev, goNext]);
 
-  // Body scroll lock
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-      return () => { document.body.style.overflow = ''; };
-    }
-  }, [isOpen]);
+  useScrollLock(isOpen);
 
   // Touch swipe
   const [touchStart, setTouchStart] = useState<number | null>(null);

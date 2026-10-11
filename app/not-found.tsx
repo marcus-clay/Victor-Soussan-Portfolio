@@ -17,7 +17,7 @@ export default function NotFound() {
             Back to portfolio
           </Link>
           <Link
-            href="/en/work"
+            href="/en/projets"
             className="inline-flex items-center gap-2 bg-white text-gray-700 px-6 py-3 rounded-full font-medium border border-gray-200 hover:bg-gray-50 transition-colors"
           >
             View projects

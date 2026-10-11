@@ -60,7 +60,7 @@ const SHOWCASE_CONTENT = {
         quote: 'Victor transformed complex business requirements into perfectly adapted user flows. His foundational systems saved us considerable development time.',
         author: 'Pierre-Marie Nigay',
         role: 'Founder @ Toolkit',
-        avatar: '/images/testimonials/pierre-marie-nigay.webp',
+        avatar: '/images/people/pierre-marie-nigay.webp',
         size: 'medium' as const,
       },
       {
@@ -159,7 +159,7 @@ const SHOWCASE_CONTENT = {
         quote: 'Victor a transformé des exigences métier complexes en parcours utilisateur parfaitement adaptés. Ses systèmes fondamentaux nous ont fait gagner un temps de développement considérable.',
         author: 'Pierre-Marie Nigay',
         role: 'Fondateur @ Toolkit',
-        avatar: '/images/testimonials/pierre-marie-nigay.webp',
+        avatar: '/images/people/pierre-marie-nigay.webp',
         size: 'medium' as const,
       },
       {
@@ -418,7 +418,7 @@ const ShowcaseCard: React.FC<{
         <h3 className={`text-lg font-semibold tracking-tight mb-1.5 ${isDark ? 'text-white' : 'text-gray-900'}`}>
           {section.title}
         </h3>
-        <p className={`text-[13px] leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+        <p className={`text-xs leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
           {section.description}
         </p>
       </div>

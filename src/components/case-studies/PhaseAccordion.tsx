@@ -56,7 +56,7 @@ const PhaseAccordion: React.FC<PhaseAccordionProps> = ({ phases }) => {
                   {phase.title}
                 </span>
                 {phase.period && (
-                  <span className="text-xs text-gray-400 shrink-0">{phase.period}</span>
+                  <span className="text-xs text-gray-500 shrink-0">{phase.period}</span>
                 )}
                 {/* Count badge — visible only when collapsed */}
                 <AnimatePresence initial={false}>
@@ -67,7 +67,7 @@ const PhaseAccordion: React.FC<PhaseAccordionProps> = ({ phases }) => {
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
                       transition={prefersReduced ? { duration: 0 } : { duration: 0.12 }}
-                      className="text-xs text-gray-400 shrink-0 tabular-nums"
+                      className="text-xs text-gray-500 shrink-0 tabular-nums"
                     >
                       {count} {count === 1 ? 'item' : 'items'}
                     </motion.span>
@@ -76,7 +76,7 @@ const PhaseAccordion: React.FC<PhaseAccordionProps> = ({ phases }) => {
               </div>
 
               {/* +/− icon */}
-              <span className="shrink-0 text-gray-400 w-4 h-4 flex items-center justify-center">
+              <span className="shrink-0 text-gray-500 w-4 h-4 flex items-center justify-center">
                 {isOpen
                   ? <Minus size={13} weight="bold" />
                   : <Plus size={13} weight="bold" />

@@ -38,7 +38,7 @@ export default function CaseStudyViewPills({
       {showFull && (
         <Link
           href={`/${lang}/project/${projectId}/full`}
-          className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-[13px] font-medium active:scale-[0.95] select-none ${pillCls}`}
+          className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium active:scale-[0.95] select-none ${pillCls}`}
           style={pillStyle}
         >
           <BookOpen size={14} weight="regular" />
@@ -48,7 +48,7 @@ export default function CaseStudyViewPills({
       {showGallery && (
         <Link
           href={`/${lang}/project/${projectId}/gallery`}
-          className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-[13px] font-medium active:scale-[0.95] select-none ${pillCls}`}
+          className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium active:scale-[0.95] select-none ${pillCls}`}
           style={pillStyle}
         >
           <Images size={14} weight="regular" />

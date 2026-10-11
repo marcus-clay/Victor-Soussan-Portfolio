@@ -54,19 +54,19 @@ const GALLERY_IMAGES = {
   maps: {
     system: '/images/pagesjaunes/pj 07@2x.webp',
     multidevice: '/images/pagesjaunes/pj 08@2x.webp',
-    ipadPedestrian: '/images/pagesjaunes/pj_ipad_itinéraire_piéton.webp',
-    ipadTransit: '/images/pagesjaunes/pj_ipad_itinéraire_transports.webp',
-    ipadDriving: '/images/pagesjaunes/pj_ipad_itinéraire_voiture.webp',
-    iphonePedestrian: '/images/pagesjaunes/pj_iphone_itinéraire_piéton.webp',
-    iphoneTransit: '/images/pagesjaunes/pj_iphone_itinéraire_transports.webp',
-    iphoneDriving: '/images/pagesjaunes/pj_iphone_itinéraire_voiture.webp',
+    ipadPedestrian: '/images/pagesjaunes/pj_ipad_itineraire_pieton.webp',
+    ipadTransit: '/images/pagesjaunes/pj_ipad_itineraire_transports.webp',
+    ipadDriving: '/images/pagesjaunes/pj_ipad_itineraire_voiture.webp',
+    iphonePedestrian: '/images/pagesjaunes/pj_iphone_itineraire_pieton.webp',
+    iphoneTransit: '/images/pagesjaunes/pj_iphone_itineraire_transports.webp',
+    iphoneDriving: '/images/pagesjaunes/pj_iphone_itineraire_voiture.webp',
     iphoneFlows: '/images/pagesjaunes/pagejaunes itineraire iphone.webp',
     ipadItinerary: '/images/pagesjaunes/pagejaunes itineraire ipad.webp',
   },
   wear: {
-    flows: '/images/pagesjaunes/pj android wear flows.webp',
-    uiModes: '/images/pagesjaunes/pj android wear ui modes.webp',
-    ui: '/images/pagesjaunes/pj android wear ui.webp',
+    flows: '/images/pagesjaunes/Android wear/pj android wear flows.webp',
+    uiModes: '/images/pagesjaunes/Android wear/pj android wear ui modes.webp',
+    ui: '/images/pagesjaunes/Android wear/pj android wear ui.webp',
     flowsDetailed: '/images/pagesjaunes/Android wear/Android Wear UI and Interactions.webp',
     components: '/images/pagesjaunes/Android wear/android_wear_design_02.webp',
     ambient: '/images/pagesjaunes/Android wear/Android Wear - ambient mode sketches.webp',
@@ -670,12 +670,12 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
       <section className="mb-16 md:mb-24">
         <div className="max-w-[740px] mx-auto px-6 pt-16 md:pt-24">
           {/* Meta */}
-          <p className="text-xs text-gray-400 mb-4">
+          <p className="text-xs text-gray-500 mb-4">
             {t.hero.role} · {t.hero.scope} · {t.hero.period}
           </p>
 
           {/* Main Title */}
-          <h1 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-3">
+          <h1 className="text-title-1 text-gray-900 mb-3">
             {t.hero.title}
           </h1>
 
@@ -718,7 +718,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
               className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
             />
           </div>
-          <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
+          <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
             {lang === 'en' ? 'PagesJaunes redesigned apps across iOS, Android and tablet' : 'Applications PagesJaunes redessinées sur iOS, Android et tablette'}
           </figcaption>
         </figure>
@@ -730,7 +730,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
       <FadeInSection>
         <section id="overview" className="mb-24 md:mb-32">
           <div className="max-w-[740px] mx-auto px-6">
-            <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+            <h2 className="text-title-2 text-gray-900 mb-4">
               {t.overview.title}
             </h2>
 
@@ -770,19 +770,19 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
             {/* Meta */}
             <div className="mt-12 divide-y divide-gray-100">
               <div className="flex justify-between py-3">
-                <span className="text-xs text-gray-400">{t.meta.typeLabel}</span>
+                <span className="text-xs text-gray-500">{t.meta.typeLabel}</span>
                 <span className="text-sm text-gray-900">{t.meta.type}</span>
               </div>
               <div className="flex justify-between py-3">
-                <span className="text-xs text-gray-400">{t.meta.scopeLabel}</span>
+                <span className="text-xs text-gray-500">{t.meta.scopeLabel}</span>
                 <span className="text-sm text-gray-900">{t.meta.scope}</span>
               </div>
               <div className="flex justify-between py-3">
-                <span className="text-xs text-gray-400">{t.meta.periodLabel}</span>
+                <span className="text-xs text-gray-500">{t.meta.periodLabel}</span>
                 <span className="text-sm text-gray-900">{t.meta.period}</span>
               </div>
               <div className="flex justify-between py-3">
-                <span className="text-xs text-gray-400">{t.meta.companyLabel}</span>
+                <span className="text-xs text-gray-500">{t.meta.companyLabel}</span>
                 <span className="text-sm text-gray-900">{t.meta.company}</span>
               </div>
             </div>
@@ -796,7 +796,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
       <FadeInSection>
         <section id="homepage" className="mb-24 md:mb-32">
           <div className="max-w-[740px] mx-auto px-6">
-            <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-3">
+            <h2 className="text-title-2 text-gray-900 mb-3">
               {t.homepage.sectionTitle}
             </h2>
 
@@ -841,7 +841,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
                 className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
               />
             </div>
-            <p className="mt-3 text-xs font-medium text-gray-400">
+            <p className="mt-3 text-xs font-medium text-gray-500">
               {lang === 'en' ? 'PagesJaunes — iOS & Android homepage' : 'PagesJaunes — Page d\'accueil iOS & Android'}
             </p>
           </div>
@@ -862,7 +862,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
                 className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
               />
             </div>
-            <p className="mt-3 text-xs font-medium text-gray-400">
+            <p className="mt-3 text-xs font-medium text-gray-500">
               {lang === 'en' ? 'PagesJaunes — Hero image variations' : 'PagesJaunes — Variations image hero'}
             </p>
           </div>
@@ -883,7 +883,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
                 className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
               />
             </div>
-            <p className="mt-3 text-xs font-medium text-gray-400">
+            <p className="mt-3 text-xs font-medium text-gray-500">
               {lang === 'en' ? 'PagesJaunes — iPad homepage' : 'PagesJaunes — Page d\'accueil iPad'}
             </p>
           </div>
@@ -904,7 +904,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
                 className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
               />
             </div>
-            <p className="mt-3 text-xs font-medium text-gray-400">
+            <p className="mt-3 text-xs font-medium text-gray-500">
               {lang === 'en' ? 'PagesJaunes — Multi-device responsive' : 'PagesJaunes — Responsive multi-device'}
             </p>
           </div>
@@ -917,7 +917,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
       <FadeInSection>
         <section id="search" className="mb-24 md:mb-32">
           <div className="max-w-[740px] mx-auto px-6">
-            <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-3">
+            <h2 className="text-title-2 text-gray-900 mb-3">
               {t.searchEngine.sectionTitle}
             </h2>
 
@@ -960,7 +960,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
                   className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
                 />
               </div>
-              <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
+              <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
                 {CAPTIONS[lang].search.flow}
               </figcaption>
             </figure>
@@ -1005,7 +1005,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
                   </div>
                 </div>
               </div>
-              <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
+              <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
                 {CAPTIONS[lang].search.prototype}
               </figcaption>
             </figure>
@@ -1019,7 +1019,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
       <FadeInSection>
         <section id="onboarding" className="mb-24 md:mb-32">
           <div className="max-w-[740px] mx-auto px-6">
-            <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-3">
+            <h2 className="text-title-2 text-gray-900 mb-3">
               {t.onboarding.sectionTitle}
             </h2>
 
@@ -1072,7 +1072,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
                 className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
               />
             </div>
-            <p className="mt-3 text-xs font-medium text-gray-400">{t.onboarding.ios}</p>
+            <p className="mt-3 text-xs font-medium text-gray-500">{t.onboarding.ios}</p>
           </div>
 
           {/* Android Onboarding Video */}
@@ -1090,7 +1090,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
                 className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
               />
             </div>
-            <p className="mt-3 text-xs font-medium text-gray-400">{t.onboarding.android}</p>
+            <p className="mt-3 text-xs font-medium text-gray-500">{t.onboarding.android}</p>
           </div>
         </section>
       </FadeInSection>
@@ -1101,7 +1101,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
       <FadeInSection>
         <section id="navigation" className="mb-24 md:mb-32">
           <div className="max-w-[740px] mx-auto px-6">
-            <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-3">
+            <h2 className="text-title-2 text-gray-900 mb-3">
               {t.navigation.sectionTitle}
             </h2>
 
@@ -1149,7 +1149,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
                   className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
                 />
               </div>
-              <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
+              <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
                 {CAPTIONS[lang].maps.system}
               </figcaption>
             </figure>
@@ -1167,7 +1167,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
                   className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
                 />
               </div>
-              <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
+              <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
                 {CAPTIONS[lang].maps.multidevice}
               </figcaption>
             </figure>
@@ -1185,7 +1185,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
                   className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
                 />
               </div>
-              <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
+              <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
                 {CAPTIONS[lang].maps.iphoneFlows}
               </figcaption>
             </figure>
@@ -1203,7 +1203,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
                   className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
                 />
               </div>
-              <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
+              <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
                 {CAPTIONS[lang].maps.ipadPedestrian}
               </figcaption>
             </figure>
@@ -1217,7 +1217,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
       <FadeInSection>
         <section id="account" className="mb-24 md:mb-32">
           <div className="max-w-[740px] mx-auto px-6">
-            <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-3">
+            <h2 className="text-title-2 text-gray-900 mb-3">
               {t.account.sectionTitle}
             </h2>
 
@@ -1240,7 +1240,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
                   className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
                 />
               </div>
-              <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
+              <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
                 {CAPTIONS[lang].account.flow}
               </figcaption>
             </figure>
@@ -1258,7 +1258,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
                   className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
                 />
               </div>
-              <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
+              <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
                 {CAPTIONS[lang].account.engagement}
               </figcaption>
             </figure>
@@ -1276,7 +1276,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
                   className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
                 />
               </div>
-              <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
+              <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
                 {CAPTIONS[lang].contributions.desktopReview}
               </figcaption>
             </figure>
@@ -1290,7 +1290,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
       <FadeInSection>
         <section id="micro-interactions" className="mb-24 md:mb-32">
           <div className="max-w-[740px] mx-auto px-6">
-            <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-3">
+            <h2 className="text-title-2 text-gray-900 mb-3">
               {CAPTIONS[lang].microInteractions.sectionTitle}
             </h2>
 
@@ -1320,7 +1320,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
                   />
                 </div>
               </div>
-              <p className="mt-3 text-xs font-medium text-gray-400">
+              <p className="mt-3 text-xs font-medium text-gray-500">
                 {lang === 'en' ? 'Navigation Drawer' : 'Navigation Drawer'}
               </p>
             </div>
@@ -1342,7 +1342,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
                   />
                 </div>
               </div>
-              <p className="mt-3 text-xs font-medium text-gray-400">
+              <p className="mt-3 text-xs font-medium text-gray-500">
                 {lang === 'en' ? 'Favorites animation' : 'Animation Favoris'}
               </p>
             </div>
@@ -1364,7 +1364,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
                   />
                 </div>
               </div>
-              <p className="mt-3 text-xs font-medium text-gray-400">
+              <p className="mt-3 text-xs font-medium text-gray-500">
                 {lang === 'en' ? 'History & remarketing' : 'Historique & remarketing'}
               </p>
             </div>
@@ -1378,7 +1378,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
       <FadeInSection>
         <section id="wear" className="mb-24 md:mb-32">
           <div className="max-w-[740px] mx-auto px-6">
-            <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-3">
+            <h2 className="text-title-2 text-gray-900 mb-3">
               {t.wear.sectionTitle}
             </h2>
 
@@ -1403,7 +1403,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
                   className="w-full h-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.02]"
                 />
               </div>
-              <p className="mt-3 text-xs font-medium text-gray-400">
+              <p className="mt-3 text-xs font-medium text-gray-500">
                 {lang === 'en' ? 'PagesJaunes Android Wear' : 'PagesJaunes Android Wear'}
               </p>
             </div>
@@ -1422,7 +1422,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
                   className="w-full h-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.02]"
                 />
               </div>
-              <p className="mt-3 text-xs font-medium text-gray-400">
+              <p className="mt-3 text-xs font-medium text-gray-500">
                 {lang === 'en' ? '"Y Aller" — navigation action' : '"Y Aller" — action de navigation'}
               </p>
             </div>
@@ -1446,7 +1446,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
                       />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-xs font-medium uppercase tracking-wide mb-1 text-gray-400">
+                      <p className="text-xs font-medium uppercase tracking-wide mb-1 text-gray-500">
                         {lang === 'en' ? 'Case Study' : 'Case Study'}
                       </p>
                       <h3 className="text-sm font-semibold mb-1 text-gray-900">
@@ -1479,7 +1479,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
       <FadeInSection>
         <section id="design-system" className="mb-24 md:mb-32">
           <div className="max-w-[740px] mx-auto px-6">
-            <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-3">
+            <h2 className="text-title-2 text-gray-900 mb-3">
               {t.system.sectionTitle}
             </h2>
 
@@ -1507,7 +1507,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
               </div>
             </div>
 
-            <p className="text-sm italic text-gray-400">
+            <p className="text-sm italic text-gray-500">
               {t.system.note}
             </p>
           </div>
@@ -1520,7 +1520,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
       <FadeInSection>
         <section id="team" className="mb-24 md:mb-32">
           <div className="max-w-[740px] mx-auto px-6">
-            <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-3">
+            <h2 className="text-title-2 text-gray-900 mb-3">
               {t.team.sectionTitle}
             </h2>
 
@@ -1531,11 +1531,11 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
             {/* Phase 1: 2014-2015 - UX Core Team */}
             <div className="pt-6 pb-8 border-t border-gray-100 mb-2">
               <div className="flex flex-wrap items-baseline gap-3 mb-4">
-                <span className="text-xs tabular-nums text-gray-400">2014–2015</span>
+                <span className="text-xs tabular-nums text-gray-500">2014–2015</span>
                 <h3 className="text-sm font-medium text-gray-900">
                   {lang === 'en' ? 'UX Core Team' : 'Équipe UX centrale'}
                 </h3>
-                <span className="ml-auto text-xs text-gray-400">
+                <span className="ml-auto text-xs text-gray-500">
                   {lang === 'en' ? 'Product Designer' : 'Product Designer'}
                 </span>
               </div>
@@ -1566,12 +1566,12 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
                       className="text-sm text-gray-700 hover:text-gray-900 hover:underline transition-colors duration-150"
                     >
                       {person.name}
-                      <span className="text-xs text-gray-400 ml-1">{person.role}</span>
+                      <span className="text-xs text-gray-500 ml-1">{person.role}</span>
                     </a>
                   ) : (
                     <span key={idx} className="text-sm text-gray-500">
                       {person.name}
-                      <span className="text-xs text-gray-400 ml-1">{person.role}</span>
+                      <span className="text-xs text-gray-500 ml-1">{person.role}</span>
                     </span>
                   )
                 ))}
@@ -1581,11 +1581,11 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
             {/* Phase 2: 2015-2016 - Feature Team */}
             <div className="pt-6 pb-8 border-t border-gray-100 mb-2">
               <div className="flex flex-wrap items-baseline gap-3 mb-4">
-                <span className="text-xs tabular-nums text-gray-400">2015–2016</span>
+                <span className="text-xs tabular-nums text-gray-500">2015–2016</span>
                 <h3 className="text-sm font-medium text-gray-900">
                   {lang === 'en' ? 'Feature Team' : 'Feature Team'}
                 </h3>
-                <span className="ml-auto text-xs text-gray-400">
+                <span className="ml-auto text-xs text-gray-500">
                   {lang === 'en' ? 'Product Designer → UI Team Lead' : 'Product Designer → UI Team Lead'}
                 </span>
               </div>
@@ -1614,19 +1614,19 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
                       className="text-sm text-gray-700 hover:text-gray-900 hover:underline transition-colors duration-150"
                     >
                       {person.name}
-                      <span className="text-xs text-gray-400 ml-1">{person.role}</span>
+                      <span className="text-xs text-gray-500 ml-1">{person.role}</span>
                     </a>
                   ) : (
                     <span key={idx} className="text-sm text-gray-500">
                       {person.name}
-                      <span className="text-xs text-gray-400 ml-1">{person.role}</span>
+                      <span className="text-xs text-gray-500 ml-1">{person.role}</span>
                     </span>
                   )
                 ))}
               </div>
             </div>
 
-            <p className="text-sm italic text-gray-400">
+            <p className="text-sm italic text-gray-500">
               {t.team.rituals}
             </p>
           </div>
@@ -1639,7 +1639,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
       <FadeInSection>
         <section id="impact" className="mb-24 md:mb-32">
           <div className="max-w-[740px] mx-auto px-6">
-            <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-8">
+            <h2 className="text-title-2 text-gray-900 mb-8">
               {t.impact.sectionTitle}
             </h2>
 
@@ -1648,7 +1648,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
                 <div key={idx} className="flex items-baseline justify-between py-4">
                   <span className="text-sm text-gray-500">
                     {metric.label}
-                    {metric.sublabel && <span className="ml-1 text-gray-400"> · {metric.sublabel}</span>}
+                    {metric.sublabel && <span className="ml-1 text-gray-500"> · {metric.sublabel}</span>}
                   </span>
                   <span className="text-sm text-gray-500 tabular-nums">
                     {metric.value}
@@ -1666,7 +1666,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
       <FadeInSection>
         <section id="learnings" className="mb-24 md:mb-32">
           <div className="max-w-[740px] mx-auto px-6">
-            <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-8">
+            <h2 className="text-title-2 text-gray-900 mb-8">
               {t.learnings.sectionTitle}
             </h2>
 

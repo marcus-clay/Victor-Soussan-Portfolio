@@ -255,7 +255,7 @@ export const TRANSLATIONS = {
       linkedin: "linkedin.com/in/victorsoussan",
       portfolio: "https://victorsoussan-portfolio-2026.vercel.app",
       summary_title: "Professional Summary",
-      summary: "Product Design Lead with 15 years of tech experience and 10 years of design leadership for enterprise software, education, media, and public services. Expert in 0-to-1 product design, design systems, team building, and AI-assisted prototyping. Track record: products serving 500K+ users and teams of 5+ designers.",
+      summary: "Lead Product Designer with 15 years of tech experience and 10 years of design leadership for enterprise software, education, media, and public services. Expert in 0-to-1 product design, design systems, team building, and AI-assisted prototyping. Track record: products serving 500K+ users and teams of 5+ designers.",
       experience_title: "Professional Experience",
       experience: [
         {

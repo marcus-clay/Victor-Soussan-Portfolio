@@ -29,14 +29,14 @@ export default function ShortProjectView({
             <span className="text-xs font-medium px-3 py-1 rounded-full bg-gray-100 text-gray-600">
               {categoryLabel}
             </span>
-            <span className="text-xs text-gray-400">{project.period}</span>
+            <span className="text-xs text-gray-500">{project.period}</span>
             {project.status === 'shipped' && (
-              <span className="text-xs font-medium px-3 py-1 rounded-full bg-emerald-50 text-emerald-600">
+              <span className="text-xs font-medium px-3 py-1 rounded-full bg-emerald-50 text-emerald-700">
                 Shipped
               </span>
             )}
           </div>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-[-0.03em] text-gray-900 leading-[1.08] mb-4">
+          <h1 className="text-title-1 text-gray-900 mb-4">
             {project.title}
           </h1>
           <p className="text-lg md:text-xl text-gray-500 max-w-[55ch]">
@@ -122,7 +122,7 @@ export default function ShortProjectView({
         {/* Deliverables if present */}
         {project.deliverables && project.deliverables.length > 0 && (
           <div className="mb-12">
-            <h2 className="text-lg font-bold text-gray-900 mb-4">
+            <h2 className="text-title-2 text-gray-900 mb-4">
               {lang === 'fr' ? 'Livrables' : 'Deliverables'}
             </h2>
             <div className="flex flex-wrap gap-2">

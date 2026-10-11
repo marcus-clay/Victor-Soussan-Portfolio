@@ -95,6 +95,9 @@ export default function Nav({ lang }: { lang: Lang }) {
       if (!h1) return
 
       const isHomepage = pathname === `/${lang}` || pathname === `/${lang}/`
+      // On the homepage the identity (name + role) lives in the hero, so the header
+      // takes over only once the whole hero has left the viewport, not just the h1.
+      const target: Element = isHomepage ? (h1.closest('header') ?? h1) : h1
       if (isHomepage) {
         setPageTitle('Lead Product Designer')
       } else {
@@ -118,7 +121,7 @@ export default function Nav({ lang }: { lang: Lang }) {
         },
         { threshold: 0, rootMargin: '-72px 0px 0px 0px' }
       )
-      observer.observe(h1)
+      observer.observe(target)
 
       return () => {
         observer.disconnect()
@@ -151,17 +154,18 @@ export default function Nav({ lang }: { lang: Lang }) {
       >
         <div className="max-w-[740px] mx-auto px-6 h-full flex items-center justify-between">
           {/* Logo + contextual page title */}
-          <div className="flex items-baseline gap-0 min-w-0 overflow-hidden">
+          <div className="flex items-baseline gap-0 min-w-0 flex-1 overflow-hidden">
             {(() => {
               const isHomepage = pathname === `/${lang}` || pathname === `/${lang}/` || pathname === `/${lang}/v2` || pathname === `/${lang}/v2/`
               return (
                 <>
                   <Link
                     href={`/${lang}`}
-                    className="relative z-10 font-semibold text-base tracking-[-0.01em] text-gray-900 whitespace-nowrap hover:opacity-70 flex-shrink-0 py-2 -my-2 pr-1"
+                    className="relative z-10 font-semibold text-base tracking-[-0.01em] text-gray-900 whitespace-nowrap hover:opacity-70 flex-shrink-0 py-2 -my-2 pr-0 sm:pr-1"
                     style={{
                       opacity: (isHomepage && !showPageTitle && !isMobileMenuOpen) ? 0 : 1,
-                      transition: 'opacity 250ms ease',
+                      transform: (isHomepage && !showPageTitle && !isMobileMenuOpen) ? 'translateY(4px)' : 'translateY(0)',
+                      transition: 'opacity 250ms ease, transform 350ms cubic-bezier(0.23, 1, 0.32, 1)',
                       pointerEvents: (isHomepage && !showPageTitle && !isMobileMenuOpen) ? 'none' : 'auto',
                     }}
                   >
@@ -173,15 +177,17 @@ export default function Nav({ lang }: { lang: Lang }) {
                     className="flex items-baseline gap-0 min-w-0 overflow-hidden"
                     style={{
                       opacity: (showPageTitle || isMobileMenuOpen) ? 1 : 0,
-                      transition: 'opacity 250ms ease',
-                      maxWidth: (showPageTitle || isMobileMenuOpen) ? 'min(300px, calc(100vw - 220px))' : 0,
+                      transform: (showPageTitle || isMobileMenuOpen) ? 'translateY(0)' : 'translateY(4px)',
+                      // The role follows the name by a beat, so the two read as one arrival
+                      transition: `opacity 250ms ease ${(showPageTitle || isMobileMenuOpen) ? '70ms' : '0ms'}, transform 350ms cubic-bezier(0.23, 1, 0.32, 1) ${(showPageTitle || isMobileMenuOpen) ? '70ms' : '0ms'}`,
+                      maxWidth: (showPageTitle || isMobileMenuOpen) ? '100%' : 0,
                       pointerEvents: (showPageTitle || isMobileMenuOpen) ? 'auto' : 'none',
                     }}
                   >
-                    <span className="text-gray-300 mx-2 text-[13px] flex-shrink-0">
+                    <span className="text-gray-300 mx-1.5 sm:mx-2 text-xs max-[400px]:text-micro flex-shrink-0">
                       {(isHomepage || isMobileMenuOpen) ? '\u00b7' : '/'}
                     </span>
-                    <span className="text-[13px] font-medium text-gray-500 truncate">
+                    <span className="text-xs max-[400px]:text-micro font-medium text-gray-500 truncate">
                       {isMobileMenuOpen && !showPageTitle ? 'Lead Product Designer' : pageTitle}
                     </span>
                   </div>
@@ -191,11 +197,11 @@ export default function Nav({ lang }: { lang: Lang }) {
           </div>
 
           {/* Right side */}
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-0.5 sm:gap-1.5 flex-shrink-0">
             {/* Lang switcher — always visible, gets pushed left when Contact appears */}
             <Link
               href={`/${otherLang}${pathname.replace(`/${lang}`, '')}`}
-              className="px-2.5 py-1.5 text-sm font-medium rounded-full text-gray-400 hover:text-gray-900 hover:bg-black/[0.04]"
+              className="px-2 sm:px-2.5 py-1.5 text-sm font-medium rounded-full text-gray-500 hover:text-gray-900 hover:bg-black/[0.04]"
               style={{ transition: 'background-color 150ms ease, color 150ms ease' }}
             >
               {lang === 'en' ? 'FR' : 'EN'}

@@ -4,6 +4,7 @@ import React, { useState, useRef, useCallback, useEffect } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { Play, Pause } from '@phosphor-icons/react'
 import { getProjects } from '@/data/projectsData'
+import { useSnapScroller } from '@/hooks/useSnapScroller'
 
 const EASE: [number, number, number, number] = [0.23, 1, 0.32, 1]
 
@@ -11,12 +12,6 @@ const EASE: [number, number, number, number] = [0.23, 1, 0.32, 1]
 const CONTENT_LEFT = 'max(24px, calc(50vw - 346px))'
 // Must equal CONTENT_LEFT: cards are 692px wide, so clientWidth − cardWidth − CONTENT_LEFT = CONTENT_LEFT.
 const CONTENT_RIGHT = CONTENT_LEFT
-const SCROLL_DURATION = 460
-
-function easeOutStrong(t: number): number {
-  return 1 - Math.pow(1 - t, 3)
-}
-
 function ArrowDiag({ style }: { style?: React.CSSProperties }) {
   return (
     <svg width={12} height={12} viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -73,24 +68,19 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
   const [canScrollRight, setCanScrollRight] = useState(true)
   const [isPaused, setIsPaused] = useState(false)
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
+  const [inView, setInView] = useState(true)
+  const [reduceMotion, setReduceMotion] = useState(false)
 
   const trackRef = useRef<HTMLDivElement>(null)
-  const rafRef = useRef<number>(0)
+  const userStartedRef = useRef(false)
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([])
 
-  const dragging = useRef(false)
   const animating = useRef(false)
-  const hasMoved = useRef(false)
-  const dragStartX = useRef(0)
-  const dragStartScrollLeft = useRef(0)
-  const dragLastX = useRef(0)
-  const dragLastTime = useRef(0)
-  const dragVelocity = useRef(0)
   const trackPl = useRef(24) // cached paddingLeft, updated on resize
 
   // ── State sync ─────────────────────────────────────────────────────────────
   const detectActive = useCallback(() => {
-    if (dragging.current || animating.current) return
+    if (animating.current) return
     const track = trackRef.current
     if (!track) return
     const pl = trackPl.current
@@ -106,7 +96,9 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
     setCanScrollRight(track.scrollLeft < track.scrollWidth - track.clientWidth - 8)
   }, [])
 
-  // Direct DOM opacity update — bypasses React for per-frame smoothness
+  // Direct DOM opacity update — bypasses React for per-frame smoothness.
+  // Only the media dims with distance: the text keeps full opacity so inactive
+  // slides stay readable (WCAG AA) while the depth effect is preserved.
   const updateOpacities = useCallback((scrollLeft: number) => {
     const track = trackRef.current
     if (!track) return
@@ -115,7 +107,8 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
     cards.forEach((card) => {
       const dist = Math.abs(card.offsetLeft - pl - scrollLeft)
       const normalized = Math.min(dist / CARD_WIDTH_PX, 1)
-      card.style.opacity = String(1 - 0.28 * normalized)
+      const media = card.querySelector<HTMLElement>('[data-card-media]')
+      if (media) media.style.opacity = String(1 - 0.28 * normalized)
     })
   }, [])
 
@@ -137,7 +130,7 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
       // Live opacity tracking on every scroll frame
       updateOpacities(track.scrollLeft)
       // Eager activeIndex: fire before scrollend when card is nearly centred
-      if (!dragging.current && !animating.current) {
+      if (!animating.current) {
         const pl = trackPl.current
         const cards = track.querySelectorAll<HTMLElement>('[data-card]')
         let closest = 0, minDist = Infinity
@@ -162,129 +155,59 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
     }
   }, [detectActive, updateOpacities])
 
-  useEffect(() => { return () => cancelAnimationFrame(rafRef.current) }, [])
-
-  // Play active video, pause others
+  // Respect reduced motion: videos start paused and the visitor can press play
   useEffect(() => {
-    setIsPaused(false)
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const apply = () => setReduceMotion(mq.matches)
+    apply()
+    mq.addEventListener('change', apply)
+    return () => mq.removeEventListener('change', apply)
+  }, [])
+
+  // Stop decoding video while the carousel is off screen
+  useEffect(() => {
+    const track = trackRef.current
+    if (!track) return
+    const io = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), { threshold: 0.2 })
+    io.observe(track)
+    return () => io.disconnect()
+  }, [])
+
+  // A new card or a change of motion preference resets the manual pause state
+  useEffect(() => {
+    setIsPaused(reduceMotion)
+  }, [activeIndex, reduceMotion])
+
+  // Play the active video only when visible and not paused; pause the others
+  useEffect(() => {
     videoRefs.current.forEach((video, i) => {
       if (!video) return
-      if (i === activeIndex) video.play().catch(() => {})
+      const blockedByMotionPref = window.matchMedia('(prefers-reduced-motion: reduce)').matches && !userStartedRef.current
+      if (i === activeIndex && inView && !isPaused && !blockedByMotionPref) video.play().catch(() => {})
       else video.pause()
     })
-  }, [activeIndex])
+  }, [activeIndex, inView, isPaused])
 
   const togglePause = useCallback((e: React.MouseEvent) => {
     e.stopPropagation()
     const video = videoRefs.current[activeIndex]
     if (!video) return
-    if (isPaused) { video.play().catch(() => {}); setIsPaused(false) }
+    if (isPaused) { userStartedRef.current = true; video.play().catch(() => {}); setIsPaused(false) }
     else { video.pause(); setIsPaused(true) }
   }, [activeIndex, isPaused])
 
-  // ── Programmatic scroll ────────────────────────────────────────────────────
-  const smoothScrollTo = useCallback((el: HTMLElement, target: number) => {
-    cancelAnimationFrame(rafRef.current)
-    const start = el.scrollLeft
-    const diff = target - start
-    if (Math.abs(diff) < 1) return
-    animating.current = true
-    const prevSnap = el.style.scrollSnapType
-    el.style.scrollSnapType = 'none'
-    const t0 = performance.now()
-    function frame(now: number) {
-      const t = Math.min((now - t0) / SCROLL_DURATION, 1)
-      const newScrollLeft = start + diff * easeOutStrong(t)
-      el.scrollLeft = newScrollLeft
-      updateOpacities(newScrollLeft)
-      if (t < 1) {
-        rafRef.current = requestAnimationFrame(frame)
-      } else {
-        animating.current = false
-        el.style.scrollSnapType = prevSnap || ''
-        detectActive()
-      }
-    }
-    rafRef.current = requestAnimationFrame(frame)
-  }, [detectActive, updateOpacities])
+  // ── Scrolling: snap, momentum, spring, rubber band (shared hook) ───────────
+  const { bind, scrollToIndex } = useSnapScroller(trackRef, {
+    pageLimit: 1,
+    onProgress: updateOpacities,
+    onSettle: () => { animating.current = false; detectActive() },
+  })
 
   const goTo = useCallback((index: number) => {
-    const track = trackRef.current
-    if (!track) return
-    const pl = parseFloat(getComputedStyle(track).paddingLeft)
-    const cards = track.querySelectorAll<HTMLElement>('[data-card]')
-    const card = cards[index]
-    if (!card) return
-    smoothScrollTo(track, card.offsetLeft - pl)
+    animating.current = true
     setActiveIndex(index)
-  }, [smoothScrollTo])
-
-  // ── Drag / swipe ───────────────────────────────────────────────────────────
-  const onPointerDown = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
-    if (e.button !== 0) return
-    if (e.pointerType === 'touch') return // native scroll handles touch — no conflict
-    const track = trackRef.current
-    if (!track) return
-    dragging.current = true
-    hasMoved.current = false
-    dragStartX.current = e.clientX
-    dragStartScrollLeft.current = track.scrollLeft
-    dragLastX.current = e.clientX
-    dragLastTime.current = performance.now()
-    dragVelocity.current = 0
-    cancelAnimationFrame(rafRef.current)
-    animating.current = false
-    track.style.cursor = 'grabbing'
-  }, [])
-
-  const onPointerMove = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
-    if (!dragging.current) return
-    const track = trackRef.current
-    if (!track) return
-    const dx = e.clientX - dragStartX.current
-    if (Math.abs(dx) > 4) {
-      if (!hasMoved.current) track.setPointerCapture(e.pointerId)
-      hasMoved.current = true
-    }
-    track.style.scrollSnapType = 'none'
-    const newScrollLeft = dragStartScrollLeft.current - dx
-    track.scrollLeft = newScrollLeft
-    updateOpacities(newScrollLeft)
-    const now = performance.now()
-    const dt = now - dragLastTime.current
-    if (dt > 0) dragVelocity.current = (dragLastX.current - e.clientX) / dt
-    dragLastX.current = e.clientX
-    dragLastTime.current = now
-  }, [updateOpacities])
-
-  const onPointerUp = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
-    if (!dragging.current) return
-    dragging.current = false
-    const track = trackRef.current
-    if (!track) return
-    track.style.cursor = 'grab'
-    if (!hasMoved.current) {
-      track.style.scrollSnapType = 'x mandatory'
-      return
-    }
-    const dx = dragStartX.current - e.clientX
-    const velocity = dragVelocity.current
-    const threshold = CARD_WIDTH_PX * 0.18
-    // Mouse/trackpad generates higher accidental velocity — use stricter threshold
-    const velThreshold = e.pointerType === 'mouse' ? 0.3 : 0.25
-    let target = activeIndex
-    if (velocity > velThreshold || dx > threshold) target = Math.min(items.length - 1, activeIndex + 1)
-    else if (velocity < -velThreshold || dx < -threshold) target = Math.max(0, activeIndex - 1)
-    goTo(target)
-  }, [activeIndex, items.length, goTo])
-
-  const onClickCapture = useCallback((e: React.MouseEvent) => {
-    if (hasMoved.current) {
-      e.preventDefault()
-      e.stopPropagation()
-      hasMoved.current = false
-    }
-  }, [])
+    scrollToIndex(index)
+  }, [scrollToIndex])
 
   const sectionRef = useRef<HTMLElement>(null)
   const isInView = useInView(sectionRef, { once: true, margin: '-80px 0px 0px 0px' })
@@ -301,12 +224,12 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
 
       {/* Header row */}
       <div className="max-w-[740px] mx-auto px-6 flex items-center justify-between mb-8">
-        <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900">
+        <h2 className="text-title-2 text-gray-900">
           {isEn ? 'Work' : 'Projets'}
         </h2>
         <a
           href={`/${lang}/projets`}
-          className="group text-sm text-gray-400 hover:text-gray-900 inline-flex items-center gap-1"
+          className="group text-sm text-gray-500 hover:text-gray-900 inline-flex items-center gap-1 py-2.5 -my-2.5"
           style={{ transition: 'color 150ms ease' }}
         >
           {isEn ? 'All projects' : 'Tous les projets'}
@@ -318,7 +241,11 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
       <div className="relative">
         <div
           ref={trackRef}
-          className="flex gap-7 [&::-webkit-scrollbar]:hidden"
+          className="snap-scroller snap-rubber flex gap-7 [&::-webkit-scrollbar]:hidden"
+          tabIndex={0}
+          role="group"
+          aria-roledescription="carousel"
+          aria-label={isEn ? 'Selected projects' : 'Projets sélectionnés'}
           style={{
             overflowX: 'auto',
             scrollSnapType: 'x mandatory',
@@ -331,11 +258,8 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
             cursor: 'grab',
             userSelect: 'none',
           } as React.CSSProperties}
-          onPointerDown={onPointerDown}
-          onPointerMove={onPointerMove}
-          onPointerUp={onPointerUp}
-          onPointerCancel={onPointerUp}
-          onClickCapture={onClickCapture}
+          {...bind}
+          onPointerCancel={bind.onPointerUp}
         >
           {items.map((item, index) => {
             const isActive = index === activeIndex
@@ -360,6 +284,7 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
               >
                 {/* Video */}
                 <div
+                  data-card-media=""
                   className="relative rounded-2xl overflow-hidden bg-[#111113]"
                   style={{
                     aspectRatio: '16 / 10',
@@ -381,7 +306,7 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
                   <button
                     onClick={togglePause}
                     aria-label={isPaused ? (lang === 'fr' ? 'Lire' : 'Play') : (lang === 'fr' ? 'Pause' : 'Pause')}
-                    className="absolute bottom-3 right-3 w-8 h-8 flex items-center justify-center rounded-full bg-black/30 backdrop-blur-sm text-white/70 hover:bg-black/50 hover:text-white active:scale-95 transition-[background-color,color,transform,opacity] duration-150"
+                    className="absolute bottom-3 right-3 w-8 h-8 flex items-center justify-center rounded-full bg-black/30 backdrop-blur-sm text-white/70 hover:bg-black/50 hover:text-white active:scale-95 transition-[background-color,color,transform,opacity] duration-150 before:absolute before:-inset-1.5 before:content-['']"
                     style={{
                       opacity: isActive ? 1 : 0,
                       pointerEvents: isActive ? 'auto' : 'none',
@@ -395,31 +320,37 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
                 <div className="mt-4">
                   {/* Meta row */}
                   <div className="flex items-center justify-between gap-2 mb-1.5">
-                    <span className="text-[11px] font-medium uppercase tracking-[0.08em]" style={{ color: '#9CA3AF' }}>
+                    <span className="text-micro font-medium uppercase tracking-[0.08em]" style={{ color: '#6B7280' }}>
                       {item.role}
                     </span>
-                    <span className="text-[11px] tabular-nums" style={{ color: '#9CA3AF' }}>
+                    <span className="text-micro tabular-nums" style={{ color: '#6B7280' }}>
                       {item.year}
                     </span>
                   </div>
 
-                  {/* Title */}
-                  <p
-                    className="text-sm leading-snug tracking-[-0.01em] mb-1"
-                    style={{
-                      fontWeight: 500,
-                      color: isActive ? '#111827' : '#6B7280',
-                      transition: 'color 80ms ease',
-                    }}
-                  >
-                    {item.title}
+                  {/* Title: a real link, so the project is reachable by keyboard, screen reader and crawler.
+                      The card's onClick still performs the client-side navigation. */}
+                  <p className="text-title-3 mb-1">
+                    <a
+                      href={`/${lang}${item.path}`}
+                      className="relative"
+                      tabIndex={isActive ? 0 : -1}
+                      onClick={(e) => { if (!e.metaKey && !e.ctrlKey && !e.shiftKey) e.preventDefault() }}
+                      style={{
+                        color: isActive ? '#111827' : '#6B7280',
+                        transition: 'color 80ms ease',
+                      }}
+                    >
+                      {item.title}
+                      <span className="sr-only">{isEn ? ', view case study' : ', voir l\u2019\u00e9tude de cas'}</span>
+                    </a>
                   </p>
 
-                  {/* Summary — always visible, color dims when inactive */}
+                  {/* Summary — always visible, one step lighter when inactive (both pass AA) */}
                   <p
                     className="text-sm leading-relaxed line-clamp-2 mb-3"
                     style={{
-                      color: isActive ? '#6B7280' : '#9CA3AF',
+                      color: isActive ? '#4B5563' : '#6B7280',
                       transition: 'color 80ms ease',
                     }}
                   >
@@ -474,24 +405,28 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
       </div>
 
       {/* Navigation dots */}
-      <div className="flex items-center justify-center gap-1.5 mt-5">
-        {items.map((_, i) => (
+      <div className="flex items-center justify-center mt-3">
+        {items.map((item, i) => (
           <button
             key={i}
             onClick={() => goTo(i)}
-            aria-label={`Go to project ${i + 1}`}
-            style={{
-              width: i === activeIndex ? 16 : 5,
-              height: 5,
-              borderRadius: 3,
-              background: i === activeIndex ? '#111827' : '#D1D5DB',
-              border: 'none',
-              padding: 0,
-              cursor: 'pointer',
-              transition: 'width 240ms cubic-bezier(0.23,1,0.32,1), background-color 180ms ease',
-              flexShrink: 0,
-            }}
-          />
+            aria-label={isEn ? `Go to project ${i + 1}: ${item.title}` : `Aller au projet ${i + 1} : ${item.title}`}
+            aria-current={i === activeIndex ? 'true' : undefined}
+            className="flex items-center justify-center h-6 px-[9.5px]"
+            style={{ border: 'none', background: 'transparent', cursor: 'pointer', flexShrink: 0 }}
+          >
+            <span
+              aria-hidden="true"
+              style={{
+                display: 'block',
+                width: i === activeIndex ? 16 : 5,
+                height: 5,
+                borderRadius: 3,
+                background: i === activeIndex ? '#111827' : '#D1D5DB',
+                transition: 'width 240ms cubic-bezier(0.23,1,0.32,1), background-color 180ms ease',
+              }}
+            />
+          </button>
         ))}
       </div>
 

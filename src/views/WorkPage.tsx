@@ -341,7 +341,7 @@ const WorkPage: React.FC<WorkPageProps> = ({
       <main className="max-w-[1200px] mx-auto px-6 py-12 md:py-20">
         {/* Page title */}
         <div className="mb-10 md:mb-14">
-          <h1 className={`text-3xl sm:text-4xl md:text-5xl font-bold tracking-[-0.03em] mb-4 ${
+          <h1 className={`text-title-1 mb-4 ${
             isDark ? 'text-white' : 'text-gray-900'
           }`}>
             {t.title}

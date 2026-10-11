@@ -73,7 +73,7 @@ export default function InterventionsPageClient({ lang }: { lang: 'en' | 'fr' })
       <div className="max-w-[1200px] mx-auto px-6 pt-20 pb-28">
 
         {/* Header */}
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-[-0.03em] text-gray-900 leading-[1.08] mb-5">
+        <h1 className="text-title-1 text-gray-900 mb-5">
           {isEn ? 'Speaking & Workshops' : 'Interventions'}
         </h1>
         <p className="text-lg text-gray-500 leading-relaxed max-w-[60ch] mb-16">
@@ -93,7 +93,7 @@ export default function InterventionsPageClient({ lang }: { lang: 'en' | 'fr' })
                 key={topic.title}
                 className="rounded-2xl border border-gray-200 bg-white p-6"
               >
-                <h3 className="text-base font-semibold text-gray-900 mb-2">{topic.title}</h3>
+                <h3 className="text-title-3 text-gray-900 mb-2">{topic.title}</h3>
                 <p className="text-base text-gray-500 leading-relaxed">{topic.desc}</p>
               </div>
             ))}
@@ -114,8 +114,8 @@ export default function InterventionsPageClient({ lang }: { lang: 'en' | 'fr' })
                 }`}
               >
                 <div className="flex items-baseline gap-3 sm:w-[200px] flex-shrink-0">
-                  <span className="text-[15px] font-medium text-gray-900">{format.name}</span>
-                  <span className="text-xs text-gray-400">{format.duration}</span>
+                  <span className="text-sm font-medium text-gray-900">{format.name}</span>
+                  <span className="text-xs text-gray-500">{format.duration}</span>
                 </div>
                 <p className="text-sm text-gray-500">{format.context}</p>
               </div>
@@ -135,7 +135,7 @@ export default function InterventionsPageClient({ lang }: { lang: 'en' | 'fr' })
               />
             </div>
             <div>
-              <p className="text-[15px] text-gray-600 leading-relaxed mb-3">
+              <p className="text-sm text-gray-600 leading-relaxed mb-3">
                 {isEn
                   ? 'Victor Soussan, Lead Product Designer. 15 years of experience with Airbus, Orange, beta.gouv, Dailymotion, Unowhy. I use Claude Code and Figma MCP daily to design, prototype and ship.'
                   : 'Victor Soussan, Lead Product Designer. 15 ans d\u2019exp\u00e9rience avec Airbus, Orange, beta.gouv, Dailymotion, Unowhy. J\u2019utilise Claude Code et Figma MCP au quotidien pour concevoir, prototyper et livrer.'}
@@ -174,7 +174,7 @@ export default function InterventionsPageClient({ lang }: { lang: 'en' | 'fr' })
             <div className="flex flex-col sm:flex-row gap-3">
               <a
                 href={`mailto:${EMAIL}?subject=${encodeURIComponent(isEn ? 'Speaking engagement inquiry' : 'Demande d\u2019intervention')}`}
-                className="group inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gray-900 text-white font-medium text-[15px] hover:bg-gray-800 ring-1 ring-black shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] active:scale-[0.97] transition-[background-color,transform] duration-200 ease-out"
+                className="group inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gray-900 text-white font-medium text-sm hover:bg-gray-800 ring-1 ring-black shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] active:scale-[0.97] transition-[background-color,transform] duration-200 ease-out"
               >
                 {isEn ? 'Send an email' : 'Envoyer un email'}
                 <ArrowUpRight size={15} weight="bold" className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200 ease-out" />
@@ -183,7 +183,7 @@ export default function InterventionsPageClient({ lang }: { lang: 'en' | 'fr' })
                 href={CALENDAR_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center gap-2 px-6 py-3 rounded-full border border-gray-200 text-gray-700 font-medium text-[15px] hover:bg-gray-50 hover:border-gray-300 active:scale-[0.97] transition-[background-color,border-color,transform] duration-200 ease-out"
+                className="group inline-flex items-center gap-2 px-6 py-3 rounded-full border border-gray-200 text-gray-700 font-medium text-sm hover:bg-gray-50 hover:border-gray-300 active:scale-[0.97] transition-[background-color,border-color,transform] duration-200 ease-out"
               >
                 {isEn ? 'Book a call' : 'R\u00e9server un appel'}
                 <ArrowUpRight size={15} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200 ease-out" />

@@ -246,7 +246,7 @@ const ImageCard: React.FC<{
         />
       </div>
       <div className="mt-3 max-w-[740px] mx-auto px-6">
-        <p className="text-xs font-medium text-gray-400 mb-1">{caption}</p>
+        <p className="text-xs font-medium text-gray-500 mb-1">{caption}</p>
         {description && (
           <p className="text-sm text-gray-500 leading-relaxed">{description}</p>
         )}
@@ -281,11 +281,11 @@ const FranceVaeExecutive: React.FC<FranceVaeExecutiveProps> = ({
           </FadeIn>
 
           <FadeIn delay={0.03}>
-            <p className="text-xs text-gray-400 mb-4">{t.hero.eyebrow}</p>
+            <p className="text-xs text-gray-500 mb-4">{t.hero.eyebrow}</p>
           </FadeIn>
 
           <FadeIn delay={0.06}>
-            <h1 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-3">
+            <h1 className="text-title-1 text-gray-900 mb-3">
               {t.hero.title}
             </h1>
           </FadeIn>
@@ -331,7 +331,7 @@ const FranceVaeExecutive: React.FC<FranceVaeExecutiveProps> = ({
       <section id="role" className="mb-24 md:mb-32">
         <div className="max-w-[740px] mx-auto px-6">
           <FadeIn>
-            <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+            <h2 className="text-title-2 text-gray-900 mb-4">
               {t.role.title}
             </h2>
           </FadeIn>
@@ -341,7 +341,7 @@ const FranceVaeExecutive: React.FC<FranceVaeExecutiveProps> = ({
               {t.role.items.map((item, idx) => (
                 <div key={idx} className="flex items-baseline justify-between py-3">
                   <span className="text-sm text-gray-500">{item.label}</span>
-                  <span className="text-xs text-gray-400">{item.detail}</span>
+                  <span className="text-xs text-gray-500">{item.detail}</span>
                 </div>
               ))}
             </div>
@@ -359,7 +359,7 @@ const FranceVaeExecutive: React.FC<FranceVaeExecutiveProps> = ({
       <section id="scope" className="mb-24 md:mb-32">
         <div className="max-w-[740px] mx-auto px-6 mb-10">
           <FadeIn>
-            <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900">
+            <h2 className="text-title-2 text-gray-900">
               {t.scope.title}
             </h2>
           </FadeIn>
@@ -435,7 +435,7 @@ const FranceVaeExecutive: React.FC<FranceVaeExecutiveProps> = ({
                   <span className="text-2xl font-semibold text-gray-900">
                     {metric.value}
                   </span>
-                  <p className="text-xs text-gray-400 mt-1">{metric.label}</p>
+                  <p className="text-xs text-gray-500 mt-1">{metric.label}</p>
                 </div>
               ))}
             </div>

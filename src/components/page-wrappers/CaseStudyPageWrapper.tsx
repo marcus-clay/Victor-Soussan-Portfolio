@@ -329,10 +329,10 @@ export default function CaseStudyPageWrapper({
             }}
           >
             <div className="max-w-[740px] mx-auto px-6 w-full h-10 flex items-center">
-              <nav className="flex items-center gap-1.5 text-[13px] min-w-0 overflow-hidden">
+              <nav className="flex items-center gap-1.5 text-xs min-w-0 overflow-hidden">
                 <Link
                   href={`/${lang}/projets`}
-                  className="text-gray-400 hover:text-gray-900 transition-colors hover:underline flex-shrink-0"
+                  className="text-gray-500 hover:text-gray-900 transition-colors hover:underline flex-shrink-0"
                 >
                   {lang === 'fr' ? 'Projets' : 'Projects'}
                 </Link>
@@ -341,7 +341,7 @@ export default function CaseStudyPageWrapper({
                   <>
                     <Link
                       href={`/${lang}/project/${projectId}/summary`}
-                      className="text-gray-400 hover:text-gray-900 transition-colors hover:underline flex-shrink-0"
+                      className="text-gray-500 hover:text-gray-900 transition-colors hover:underline flex-shrink-0"
                     >
                       {projectName}
                     </Link>
@@ -473,7 +473,7 @@ function CaseStudyFooter({
                       {proj.role}
                     </p>
                   </div>
-                  <span className="text-xs text-gray-400 flex-shrink-0">
+                  <span className="text-xs text-gray-500 flex-shrink-0">
                     {proj.period}
                   </span>
                 </Link>

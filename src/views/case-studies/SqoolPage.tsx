@@ -2,6 +2,7 @@
 // A trunk case study that synthesizes the SQOOL journey (2018-2024)
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useSnapScroller } from '@/hooks/useSnapScroller';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   CaretRight as ChevronRight,
@@ -91,7 +92,7 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick }) => {
           <img loading="lazy" src={item.src} alt={item.caption} className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" />
         )}
       </div>
-      <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
+      <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
         {item.caption}
         {item.captionDesc && <span className="hidden sm:inline"> · {item.captionDesc}</span>}
       </figcaption>
@@ -181,15 +182,14 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
     }
   }, []);
 
+  const { bind: brandBind, scrollToIndex: brandScrollToIndex, currentIndex: brandIndex } = useSnapScroller(brandCarouselRef, {
+    onProgress: checkBrandScroll,
+    onSettle: checkBrandScroll,
+  });
+
   const scrollBrandCarousel = useCallback((direction: 'left' | 'right') => {
-    if (brandCarouselRef.current) {
-      const scrollAmount = 400;
-      brandCarouselRef.current.scrollBy({
-        left: direction === 'left' ? -scrollAmount : scrollAmount,
-        behavior: 'smooth'
-      });
-    }
-  }, []);
+    brandScrollToIndex(brandIndex() + (direction === 'left' ? -1 : 1));
+  }, [brandScrollToIndex, brandIndex]);
 
   const brandVisuals = [
     { src: '/images/sqool/systeme de marque/visuels_systeme_de_marque_01_2x.webp', key: 'brandVisual01', wide: true },
@@ -229,7 +229,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
           />
         )}
       </div>
-      <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
+      <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
         {caption}{captionDesc && ` · ${captionDesc}`}
       </figcaption>
     </figure>
@@ -317,12 +317,12 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
                 </div>
 
                 {/* Meta */}
-                <p className="text-xs text-gray-400 mb-4">
+                <p className="text-xs text-gray-500 mb-4">
                   {t.hero.role} · {t.hero.scope} · {t.hero.period}
                 </p>
 
                 {/* Title */}
-                <h1 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-3">
+                <h1 className="text-title-1 text-gray-900 mb-3">
                   {t.hero.title}
                 </h1>
 
@@ -349,7 +349,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
                     />
                     <div>
                       <p className="text-sm font-medium text-gray-900">{t.testimonial.author}</p>
-                      <p className="text-xs text-gray-400">{t.testimonial.role}</p>
+                      <p className="text-xs text-gray-500">{t.testimonial.role}</p>
                     </div>
                   </div>
                 </div>
@@ -361,19 +361,19 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
               <div className="max-w-[740px] mx-auto px-6">
                 <div className="divide-y divide-gray-100">
                   <div className="flex justify-between py-3">
-                    <span className="text-xs text-gray-400">Type</span>
+                    <span className="text-xs text-gray-500">Type</span>
                     <span className="text-sm text-gray-900">{t.meta.type}</span>
                   </div>
                   <div className="flex justify-between py-3">
-                    <span className="text-xs text-gray-400">Scope</span>
+                    <span className="text-xs text-gray-500">Scope</span>
                     <span className="text-sm text-gray-900">{t.meta.scope}</span>
                   </div>
                   <div className="flex justify-between py-3">
-                    <span className="text-xs text-gray-400">Period</span>
+                    <span className="text-xs text-gray-500">Period</span>
                     <span className="text-sm text-gray-900">{t.meta.period}</span>
                   </div>
                   <div className="flex justify-between py-3">
-                    <span className="text-xs text-gray-400">Company</span>
+                    <span className="text-xs text-gray-500">Company</span>
                     <span className="text-sm text-gray-900">{t.meta.company}</span>
                   </div>
                 </div>
@@ -392,7 +392,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
             {/* Context Section */}
             <section id="context" className="mb-24 md:mb-32">
               <div className="max-w-[740px] mx-auto px-6">
-                <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+                <h2 className="text-title-2 text-gray-900 mb-4">
                   {t.context.title}
                 </h2>
                 <p className="text-sm font-medium text-gray-900 mb-4">
@@ -479,7 +479,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
             {/* Timeline Section */}
             <section className="mb-24 md:mb-32">
               <div className="max-w-[740px] mx-auto px-6 mb-8">
-                <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+                <h2 className="text-title-2 text-gray-900 mb-4">
                   {lang === 'fr' ? 'Parcours de transformation' : 'Transformation Journey'}
                 </h2>
                 <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">
@@ -498,10 +498,10 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
             {/* Phase 1 */}
             <section id="phase1" className="mb-24 md:mb-32">
               <div className="max-w-[740px] mx-auto px-6">
-                <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-1">
+                <h2 className="text-title-2 text-gray-900 mb-1">
                   {t.phase1.title}
                 </h2>
-                <p className="text-xs text-gray-400 mb-6">{t.phase1.period}</p>
+                <p className="text-xs text-gray-500 mb-6">{t.phase1.period}</p>
 
                 <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-10">
                   {t.phase1.intro}
@@ -577,10 +577,10 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
             {/* Phase 2 */}
             <section id="phase2" className="mb-24 md:mb-32">
               <div className="max-w-[740px] mx-auto px-6">
-                <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-1">
+                <h2 className="text-title-2 text-gray-900 mb-1">
                   {t.phase2.title}
                 </h2>
-                <p className="text-xs text-gray-400 mb-6">{t.phase2.period}</p>
+                <p className="text-xs text-gray-500 mb-6">{t.phase2.period}</p>
 
                 <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-10">
                   {t.phase2.intro}
@@ -651,13 +651,18 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
                   <div
                     ref={brandCarouselRef}
                     onScroll={checkBrandScroll}
-                    className="flex gap-3 overflow-x-auto scrollbar-hide px-4 py-1"
-                    style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                    {...brandBind}
+                    onPointerCancel={brandBind.onPointerUp}
+                    tabIndex={0}
+                    role="group"
+                    aria-roledescription="carousel"
+                    className="snap-scroller snap-rubber flex gap-3 overflow-x-auto scrollbar-hide px-4 py-1 scroll-pl-4 cursor-grab"
+                    style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', scrollSnapType: 'x proximity' }}
                   >
                     {brandVisuals.map((item, idx) => (
                       <div
                         key={idx}
-                        className="group rounded-xl overflow-hidden cursor-zoom-in flex-shrink-0 ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
+                        className="group snap-start rounded-xl overflow-hidden cursor-zoom-in flex-shrink-0 ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
                         style={{
                           width: item.wide ? '400px' : '280px',
                           height: '220px'
@@ -701,10 +706,10 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
             {/* Phase 3 - Apps */}
             <section id="phase3" className="mb-24 md:mb-32">
               <div className="max-w-[740px] mx-auto px-6">
-                <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-1">
+                <h2 className="text-title-2 text-gray-900 mb-1">
                   {t.phase3.title}
                 </h2>
-                <p className="text-xs text-gray-400 mb-6">{t.phase3.period}</p>
+                <p className="text-xs text-gray-500 mb-6">{t.phase3.period}</p>
 
                 <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-10">
                   {t.phase3.intro}
@@ -716,7 +721,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
                 <p className="text-sm font-medium text-gray-900 mb-1">
                   {t.apps.classe.title}
                 </p>
-                <p className="text-xs text-gray-400 mb-3">{t.apps.classe.subtitle}</p>
+                <p className="text-xs text-gray-500 mb-3">{t.apps.classe.subtitle}</p>
                 <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-3">
                   {t.apps.classe.desc}
                 </p>
@@ -737,7 +742,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
                 <p className="text-sm font-medium text-gray-900 mb-1">
                   {t.apps.partage.title}
                 </p>
-                <p className="text-xs text-gray-400 mb-3">{t.apps.partage.subtitle}</p>
+                <p className="text-xs text-gray-500 mb-3">{t.apps.partage.subtitle}</p>
                 <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-3">
                   {t.apps.partage.desc}
                 </p>
@@ -761,7 +766,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
                     <p className="text-sm font-medium text-gray-900 mb-1">
                       {t.apps.applications.title}
                     </p>
-                    <p className="text-xs text-gray-400 mb-2">{t.apps.applications.subtitle}</p>
+                    <p className="text-xs text-gray-500 mb-2">{t.apps.applications.subtitle}</p>
                     <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">
                       {t.apps.applications.desc}
                     </p>
@@ -772,7 +777,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
                     <p className="text-sm font-medium text-gray-900 mb-1">
                       {t.apps.mdm.title}
                     </p>
-                    <p className="text-xs text-gray-400 mb-2">{t.apps.mdm.subtitle}</p>
+                    <p className="text-xs text-gray-500 mb-2">{t.apps.mdm.subtitle}</p>
                     <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">
                       {t.apps.mdm.desc}
                     </p>
@@ -783,7 +788,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
                     <p className="text-sm font-medium text-gray-900 mb-1">
                       {t.apps.protect.title}
                     </p>
-                    <p className="text-xs text-gray-400 mb-2">{t.apps.protect.subtitle}</p>
+                    <p className="text-xs text-gray-500 mb-2">{t.apps.protect.subtitle}</p>
                     <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">
                       {t.apps.protect.desc}
                     </p>
@@ -794,7 +799,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
                     <p className="text-sm font-medium text-gray-900 mb-1">
                       {t.apps.extend.title}
                     </p>
-                    <p className="text-xs text-gray-400 mb-2">{t.apps.extend.subtitle}</p>
+                    <p className="text-xs text-gray-500 mb-2">{t.apps.extend.subtitle}</p>
                     <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">
                       {t.apps.extend.desc}
                     </p>
@@ -806,7 +811,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
             {/* User Research Insights */}
             <section className="mb-24 md:mb-32">
               <div className="max-w-[740px] mx-auto px-6">
-                <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+                <h2 className="text-title-2 text-gray-900 mb-4">
                   {t.research.title}
                 </h2>
                 <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-8">
@@ -831,7 +836,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
             {/* Impact */}
             <section id="impact" className="mb-24 md:mb-32">
               <div className="max-w-[740px] mx-auto px-6">
-                <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+                <h2 className="text-title-2 text-gray-900 mb-4">
                   {t.impact.title}
                 </h2>
                 <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-10">
@@ -863,7 +868,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
             {/* Key Learnings */}
             <section className="mb-24 md:mb-32">
               <div className="max-w-[740px] mx-auto px-6">
-                <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-8">
+                <h2 className="text-title-2 text-gray-900 mb-8">
                   {t.learnings.title}
                 </h2>
 

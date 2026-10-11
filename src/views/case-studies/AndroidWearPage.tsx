@@ -189,7 +189,7 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick }) => {
           <img loading="lazy" src={item.src} alt={item.caption} className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" />
         )}
       </div>
-      <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
+      <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
         {item.caption}
       </figcaption>
     </motion.figure>
@@ -253,12 +253,12 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
           <section id="overview" className="mb-24 md:mb-32">
             <div className="max-w-[740px] mx-auto px-6 pt-16 md:pt-24">
               <div className="flex flex-wrap items-center gap-3 mb-6">
-                <span className="text-xs text-gray-400">{t.hero.role}</span>
-                <span className="text-xs text-gray-400">{t.hero.scope}</span>
-                <span className="text-xs text-gray-400">{t.hero.period}</span>
+                <span className="text-xs text-gray-500">{t.hero.role}</span>
+                <span className="text-xs text-gray-500">{t.hero.scope}</span>
+                <span className="text-xs text-gray-500">{t.hero.period}</span>
               </div>
 
-              <h1 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+              <h1 className="text-title-1 text-gray-900 mb-4">
                 {t.hero.title}
               </h1>
 
@@ -299,19 +299,19 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
             <div className="max-w-[740px] mx-auto px-6">
               <div className="divide-y divide-gray-100">
                 <div className="flex justify-between py-3">
-                  <span className="text-xs text-gray-400">{t.meta.typeLabel}</span>
+                  <span className="text-xs text-gray-500">{t.meta.typeLabel}</span>
                   <span className="text-sm text-gray-900">{t.meta.type}</span>
                 </div>
                 <div className="flex justify-between py-3">
-                  <span className="text-xs text-gray-400">{t.meta.scopeLabel}</span>
+                  <span className="text-xs text-gray-500">{t.meta.scopeLabel}</span>
                   <span className="text-sm text-gray-900">{t.meta.scope}</span>
                 </div>
                 <div className="flex justify-between py-3">
-                  <span className="text-xs text-gray-400">{t.meta.periodLabel}</span>
+                  <span className="text-xs text-gray-500">{t.meta.periodLabel}</span>
                   <span className="text-sm text-gray-900">{t.meta.period}</span>
                 </div>
                 <div className="flex justify-between py-3">
-                  <span className="text-xs text-gray-400">{t.meta.companyLabel}</span>
+                  <span className="text-xs text-gray-500">{t.meta.companyLabel}</span>
                   <span className="text-sm text-gray-900">{t.meta.company}</span>
                 </div>
               </div>
@@ -325,7 +325,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
                 "{t.testimonial.quote}"
               </p>
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-xs font-medium text-gray-400">
+                <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-xs font-medium text-gray-500">
                   TF
                 </div>
                 <div>
@@ -337,7 +337,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
                   >
                     {t.testimonial.author}
                   </a>
-                  <p className="text-xs text-gray-400">{t.testimonial.role}</p>
+                  <p className="text-xs text-gray-500">{t.testimonial.role}</p>
                 </div>
               </div>
             </div>
@@ -346,7 +346,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
           {/* Overview Section */}
           <section className="mb-24 md:mb-32">
             <div className="max-w-[740px] mx-auto px-6">
-              <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+              <h2 className="text-title-2 text-gray-900 mb-4">
                 {t.overview.title}
               </h2>
 
@@ -382,7 +382,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
           {/* User Scenario Section */}
           <section className="mb-24 md:mb-32">
             <div className="max-w-[740px] mx-auto px-6">
-              <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+              <h2 className="text-title-2 text-gray-900 mb-4">
                 {t.persona.title}
               </h2>
 
@@ -394,7 +394,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
                 <p className="text-sm font-medium text-gray-900 mb-1">
                   {t.persona.name}
                 </p>
-                <p className="text-xs text-gray-400 mb-4">
+                <p className="text-xs text-gray-500 mb-4">
                   {t.persona.context}
                 </p>
                 <ul className="text-sm text-gray-500 space-y-2">
@@ -412,7 +412,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
           {/* Approach Section */}
           <section className="mb-24 md:mb-32">
             <div className="max-w-[740px] mx-auto px-6">
-              <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+              <h2 className="text-title-2 text-gray-900 mb-4">
                 {t.approach.title}
               </h2>
 
@@ -436,7 +436,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
             <div className="max-w-[740px] mx-auto px-6">
               <div className="space-y-8">
                 <div>
-                  <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+                  <h2 className="text-title-2 text-gray-900 mb-4">
                     {t.features.title}
                   </h2>
                   <ul className="text-sm text-gray-500 space-y-2">
@@ -449,7 +449,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
                   </ul>
                 </div>
                 <div>
-                  <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+                  <h2 className="text-title-2 text-gray-900 mb-4">
                     {t.deliverables.title}
                   </h2>
                   <div className="divide-y divide-gray-100">
@@ -469,10 +469,10 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
           {/* ================================================================== */}
           <section id="research" className="mb-24 md:mb-32">
             <div className="max-w-[740px] mx-auto px-6 mb-8">
-              <span className="text-xs text-gray-400 mb-3 block">
+              <span className="text-xs text-gray-500 mb-3 block">
                 {lang === 'fr' ? 'Phase 1' : 'Phase 1'}
               </span>
-              <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+              <h2 className="text-title-2 text-gray-900 mb-4">
                 {lang === 'fr' ? 'Recherche & Exploration' : 'Research & Discovery'}
               </h2>
               <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">
@@ -496,7 +496,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
                     className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
                   />
                 </div>
-                <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
+                <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
                   {t.process.sketches}. {t.process.sketchesDesc}
                 </figcaption>
               </figure>
@@ -517,7 +517,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
                       className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
                     />
                   </div>
-                  <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
+                  <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
                     {t.process.flows}. {t.process.flowsDesc}
                   </figcaption>
                 </figure>
@@ -533,7 +533,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
                       className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
                     />
                   </div>
-                  <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
+                  <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
                     {t.process.ambient}. {t.process.ambientDesc}
                   </figcaption>
                 </figure>
@@ -546,10 +546,10 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
           {/* ================================================================== */}
           <section id="design" className="mb-24 md:mb-32">
             <div className="max-w-[740px] mx-auto px-6 mb-8">
-              <span className="text-xs text-gray-400 mb-3 block">
+              <span className="text-xs text-gray-500 mb-3 block">
                 {lang === 'fr' ? 'Phase 2' : 'Phase 2'}
               </span>
-              <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+              <h2 className="text-title-2 text-gray-900 mb-4">
                 {lang === 'fr' ? 'Design d\'Interface' : 'Screen Design'}
               </h2>
               <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">
@@ -573,7 +573,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
                     className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
                   />
                 </div>
-                <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
+                <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
                   {lang === 'fr' ? 'UI et Interactions' : 'UI and Interactions'}. {lang === 'fr' ? 'Le mod\u00e8le d\'interaction complet montrant comment les actions montre se transmettent au t\u00e9l\u00e9phone pour les appels et la navigation.' : 'The complete interaction model showing how watch actions hand off to phone for calls and navigation.'}
                 </figcaption>
               </figure>
@@ -644,13 +644,13 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
                           className="w-full h-auto block"
                         />
                       </div>
-                      <p className="text-[11px] text-gray-500 text-center leading-relaxed">
+                      <p className="text-micro text-gray-400 text-center leading-relaxed">
                         {lang === 'fr' ? screen.captionFr : screen.captionEn}
                       </p>
                     </div>
                   ))}
                 </div>
-                <p className="mt-6 text-[11px] text-gray-600 text-center">
+                <p className="mt-6 text-micro text-gray-400 text-center">
                   {lang === 'fr' ? 'Inventaire des \u00e9crans. 8 \u00e9tats, du chargement \u00e0 la fiche d\u00e9tail.' : 'Screen inventory. 8 states, from loading to detail card.'}
                 </p>
               </div>
@@ -680,7 +680,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
                     />
                   </div>
                 </div>
-                <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
+                <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
                   {lang === 'fr' ? 'App en situation.' : 'App in context.'} {lang === 'fr' ? 'La fiche d\u00e9tail sur un vrai poignet. Le design circulaire tire parti du cadre de la montre.' : 'The detail card on an actual wrist. The circular design works with the watch frame, not against it.'}
                 </figcaption>
               </figure>
@@ -701,7 +701,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
                       className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
                     />
                   </div>
-                  <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
+                  <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
                     {t.process.uiModes}. {t.process.uiModesDesc}
                   </figcaption>
                 </figure>
@@ -717,7 +717,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
                       className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
                     />
                   </div>
-                  <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
+                  <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
                     {lang === 'fr' ? 'Vue d\'ensemble UI' : 'UI Overview'}. {lang === 'fr' ? 'Catalogue des \u00e9tats d\'\u00e9cran assurant la coh\u00e9rence \u00e0 travers l\'exp\u00e9rience montre connect\u00e9e.' : 'Systematic catalog of screen states ensuring design consistency across the wearable experience.'}
                   </figcaption>
                 </figure>
@@ -730,10 +730,10 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
           {/* ================================================================== */}
           <section id="specs" className="mb-24 md:mb-32">
             <div className="max-w-[740px] mx-auto px-6 mb-8">
-              <span className="text-xs text-gray-400 mb-3 block">
+              <span className="text-xs text-gray-500 mb-3 block">
                 {lang === 'fr' ? 'Phase 3' : 'Phase 3'}
               </span>
-              <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+              <h2 className="text-title-2 text-gray-900 mb-4">
                 {lang === 'fr' ? 'Sp\u00e9cifications & Guidelines' : 'Specifications & Guidelines'}
               </h2>
               <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">
@@ -757,7 +757,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
                     className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
                   />
                 </div>
-                <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
+                <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
                   {t.process.components}. {t.process.componentsDesc}
                 </figcaption>
               </figure>
@@ -777,7 +777,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
                     className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
                   />
                 </div>
-                <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
+                <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
                   {lang === 'fr' ? 'Sp\u00e9cifications Mode Ambiant' : 'Ambient Mode Specifications'}. {lang === 'fr' ? 'Contours blancs sur fond noir pour \u00e9conomiser la batterie. Chaque \u00e9cran actif a son \u00e9quivalent basse consommation, gardant les utilisateurs orient\u00e9s.' : 'White outlines on black background to preserve battery. Each active screen has its low-power equivalent, keeping users oriented.'}
                 </figcaption>
               </figure>
@@ -789,10 +789,10 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
           {/* ================================================================== */}
           <section id="implementation" className="mb-24 md:mb-32">
             <div className="max-w-[740px] mx-auto px-6 mb-8">
-              <span className="text-xs text-gray-400 mb-3 block">
+              <span className="text-xs text-gray-500 mb-3 block">
                 {lang === 'fr' ? 'Phase 4' : 'Phase 4'}
               </span>
-              <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+              <h2 className="text-title-2 text-gray-900 mb-4">
                 {lang === 'fr' ? 'Impl\u00e9mentation & Lancement' : 'Implementation & Launch'}
               </h2>
               <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">
@@ -816,7 +816,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
                     className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
                   />
                 </div>
-                <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
+                <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
                   {t.implementation.devSession}. {t.implementation.devSessionDesc}
                 </figcaption>
               </figure>
@@ -837,7 +837,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
                       className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
                     />
                   </div>
-                  <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
+                  <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
                     {lang === 'fr' ? 'Prototypage Keynote' : 'Keynote Prototyping'}. {lang === 'fr' ? 'Keynote servait d\'outil de prototypage rapide. Rapide \u00e0 it\u00e9rer, facile \u00e0 partager, assez pr\u00e9cis pour la transmission au d\u00e9veloppeur.' : 'Keynote served as my rapid prototyping tool. Quick to iterate, easy to share, precise enough for handoff.'}
                   </figcaption>
                 </figure>
@@ -853,7 +853,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
                       className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
                     />
                   </div>
-                  <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
+                  <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
                     {lang === 'fr' ? 'V\u00e9rification sur Appareil' : 'On-Device Verification'}. {lang === 'fr' ? 'Rien ne remplace le test sur le vrai mat\u00e9riel. Reflets, angles de vue et zones tactiles ne se r\u00e9v\u00e8lent qu\'en contexte.' : 'Nothing replaces testing on real hardware. Reflections, viewing angles and touch targets only reveal themselves in context.'}
                   </figcaption>
                 </figure>
@@ -873,7 +873,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
                       className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
                     />
                   </div>
-                  <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
+                  <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
                     {t.implementation.prototype}. {t.implementation.prototypeDesc}
                   </figcaption>
                 </figure>
@@ -887,7 +887,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
                       className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
                     />
                   </div>
-                  <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
+                  <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
                     {lang === 'fr' ? 'D\u00e9mo Navigation' : 'Navigation Demo'}. {lang === 'fr' ? 'Transition fluide de la montre au t\u00e9l\u00e9phone quand l\'utilisateur demande un itin\u00e9raire.' : 'Seamless transition from watch to phone when the user requests directions.'}
                   </figcaption>
                 </figure>
@@ -908,7 +908,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
                     className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
                   />
                 </div>
-                <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
+                <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
                   {lang === 'fr' ? 'Communication Lancement' : 'Launch Communication'}. {lang === 'fr' ? 'Communication interne pour le lancement. Visuels marketing pr\u00eats pour publication.' : 'Internal communication for app launch. Marketing assets and store listing materials ready for publication.'}
                 </figcaption>
               </figure>
@@ -928,7 +928,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
                     className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
                   />
                 </div>
-                <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
+                <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
                   {lang === 'fr' ? 'Visuel Play Store' : 'Play Store Visual'}. {lang === 'fr' ? 'Le visuel promotionnel pour le listing Google Play. Les premi\u00e8res impressions comptent.' : 'The promotional visual for Google Play listing. First impressions matter.'}
                 </figcaption>
               </figure>
@@ -938,7 +938,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
           {/* Results Section */}
           <section id="results" className="mb-24 md:mb-32">
             <div className="max-w-[740px] mx-auto px-6">
-              <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-8">
+              <h2 className="text-title-2 text-gray-900 mb-8">
                 {t.result.title}
               </h2>
 
@@ -956,7 +956,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
           {/* Learnings Section */}
           <section className="mb-24 md:mb-32">
             <div className="max-w-[740px] mx-auto px-6">
-              <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+              <h2 className="text-title-2 text-gray-900 mb-4">
                 {t.learnings.title}
               </h2>
 
@@ -978,7 +978,7 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
           {/* CTA Section */}
           <section className="mb-24 md:mb-32">
             <div className="max-w-[740px] mx-auto px-6">
-              <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+              <h2 className="text-title-2 text-gray-900 mb-4">
                 {t.cta.title}
               </h2>
               <button

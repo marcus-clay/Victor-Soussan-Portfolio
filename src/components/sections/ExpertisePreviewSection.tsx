@@ -40,7 +40,7 @@ const ExpertisePreviewSection: React.FC<ExpertisePreviewSectionProps> = ({
       <div className="max-w-[692px] mx-auto">
         {/* Section heading */}
         <div className="mb-10 md:mb-14">
-          <h2 className="text-base font-semibold tracking-[-0.01em] mb-4 text-gray-900">
+          <h2 className="text-title-2 mb-4 text-gray-900">
             {content.services.title}
           </h2>
           <p className="text-sm sm:text-base text-gray-500 leading-relaxed">
@@ -88,7 +88,7 @@ const ExpertisePreviewSection: React.FC<ExpertisePreviewSectionProps> = ({
                 {/* Arrow — appears on hover to signal navigation */}
                 <ArrowRight
                   size={13}
-                  className="flex-shrink-0 mt-1.5 text-gray-400"
+                  className="flex-shrink-0 mt-1.5 text-gray-500"
                   style={{
                     opacity: hoveredIndex === index ? 1 : 0,
                     transform: hoveredIndex === index ? 'translateX(0)' : 'translateX(-4px)',

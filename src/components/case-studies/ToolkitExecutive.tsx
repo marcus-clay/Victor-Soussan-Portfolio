@@ -373,15 +373,15 @@ const ToolkitExecutive: React.FC<ToolkitExecutiveProps> = ({
         <div className="max-w-[740px] mx-auto px-6">
           {/* Meta row */}
           <motion.div {...fadeIn()} className="flex flex-wrap items-center gap-x-4 gap-y-1 mb-6">
-            <span className="text-xs text-gray-400">{t.hero.role}</span>
+            <span className="text-xs text-gray-500">{t.hero.role}</span>
             <span className="text-xs text-gray-300">|</span>
-            <span className="text-xs text-gray-400">{t.hero.client}</span>
+            <span className="text-xs text-gray-500">{t.hero.client}</span>
             <span className="text-xs text-gray-300">|</span>
-            <span className="text-xs text-gray-400">{t.hero.period}</span>
+            <span className="text-xs text-gray-500">{t.hero.period}</span>
           </motion.div>
 
           {/* Title */}
-          <motion.h1 {...fadeIn(0.05)} className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-3">
+          <motion.h1 {...fadeIn(0.05)} className="text-title-1 text-gray-900 mb-3">
             {t.hero.title}
           </motion.h1>
 
@@ -422,7 +422,7 @@ const ToolkitExecutive: React.FC<ToolkitExecutiveProps> = ({
             />
           </div>
           <div className="mt-4 max-w-[740px] mx-auto">
-            <p className="text-xs font-medium text-gray-400 mb-1">{t.hero.imageCaption}</p>
+            <p className="text-xs font-medium text-gray-500 mb-1">{t.hero.imageCaption}</p>
             <p className="text-base text-gray-500 leading-relaxed">{t.hero.imageDesc}</p>
           </div>
         </motion.div>
@@ -433,7 +433,7 @@ const ToolkitExecutive: React.FC<ToolkitExecutiveProps> = ({
       {/* ================================================================ */}
       <section id="role" className="mb-24 md:mb-32">
         <div className="max-w-[740px] mx-auto px-6">
-          <motion.h2 {...fadeIn()} className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+          <motion.h2 {...fadeIn()} className="text-title-2 text-gray-900 mb-4">
             {t.role.title}
           </motion.h2>
 
@@ -446,7 +446,7 @@ const ToolkitExecutive: React.FC<ToolkitExecutiveProps> = ({
             {t.role.items.map((item, idx) => (
               <div key={idx} className="py-3 flex items-baseline justify-between gap-4">
                 <span className="text-sm text-gray-500">{item.label}</span>
-                <span className="text-xs text-gray-400 text-right shrink-0">{item.detail}</span>
+                <span className="text-xs text-gray-500 text-right shrink-0">{item.detail}</span>
               </div>
             ))}
           </motion.div>
@@ -462,7 +462,7 @@ const ToolkitExecutive: React.FC<ToolkitExecutiveProps> = ({
       {/* ================================================================ */}
       <section id="scope" className="mb-24 md:mb-32">
         <div className="max-w-[740px] mx-auto px-6">
-          <motion.h2 {...fadeIn()} className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+          <motion.h2 {...fadeIn()} className="text-title-2 text-gray-900 mb-4">
             {t.scope.title}
           </motion.h2>
 
@@ -490,7 +490,7 @@ const ToolkitExecutive: React.FC<ToolkitExecutiveProps> = ({
                   className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
                 />
               </div>
-              <p className="mt-3 text-xs font-medium text-gray-400">{area.title}</p>
+              <p className="mt-3 text-xs font-medium text-gray-500">{area.title}</p>
             </motion.div>
           </React.Fragment>
         ))}
@@ -501,7 +501,7 @@ const ToolkitExecutive: React.FC<ToolkitExecutiveProps> = ({
       {/* ================================================================ */}
       <section id="journey" className="mb-24 md:mb-32">
         <div className="max-w-[740px] mx-auto px-6">
-          <motion.h2 {...fadeIn()} className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-10">
+          <motion.h2 {...fadeIn()} className="text-title-2 text-gray-900 mb-10">
             {t.journey.title}
           </motion.h2>
 
@@ -523,7 +523,7 @@ const ToolkitExecutive: React.FC<ToolkitExecutiveProps> = ({
               className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
             />
           </div>
-          <p className="mt-3 text-xs font-medium text-gray-400">{t.journey.diagramCaption}</p>
+          <p className="mt-3 text-xs font-medium text-gray-500">{t.journey.diagramCaption}</p>
         </motion.div>
       </section>
 
@@ -532,7 +532,7 @@ const ToolkitExecutive: React.FC<ToolkitExecutiveProps> = ({
       {/* ================================================================ */}
       <section id="highlights" className="mb-24 md:mb-32">
         <div className="max-w-[740px] mx-auto px-6">
-          <motion.h2 {...fadeIn()} className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-12">
+          <motion.h2 {...fadeIn()} className="text-title-2 text-gray-900 mb-12">
             {t.highlights.title}
           </motion.h2>
         </div>
@@ -541,7 +541,7 @@ const ToolkitExecutive: React.FC<ToolkitExecutiveProps> = ({
           <React.Fragment key={item.id}>
             {/* Text first */}
             <motion.div {...fadeIn()} className="max-w-[740px] mx-auto px-6 mb-6">
-              <p className="text-xs text-gray-400 mb-1">{item.subtitle}</p>
+              <p className="text-xs text-gray-500 mb-1">{item.subtitle}</p>
               <h3 className="text-sm font-medium text-gray-900 mb-2">{item.title}</h3>
               <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">{item.description}</p>
             </motion.div>
@@ -562,7 +562,7 @@ const ToolkitExecutive: React.FC<ToolkitExecutiveProps> = ({
                   />
                 )}
               </div>
-              <p className="mt-3 text-xs font-medium text-gray-400">{item.title}</p>
+              <p className="mt-3 text-xs font-medium text-gray-500">{item.title}</p>
             </motion.div>
           </React.Fragment>
         ))}
@@ -573,7 +573,7 @@ const ToolkitExecutive: React.FC<ToolkitExecutiveProps> = ({
       {/* ================================================================ */}
       <section id="outcome" className="mb-24 md:mb-32">
         <div className="max-w-[740px] mx-auto px-6">
-          <motion.h2 {...fadeIn()} className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-8">
+          <motion.h2 {...fadeIn()} className="text-title-2 text-gray-900 mb-8">
             {t.outcome.title}
           </motion.h2>
 
@@ -581,8 +581,8 @@ const ToolkitExecutive: React.FC<ToolkitExecutiveProps> = ({
             {t.outcome.metrics.map((metric, idx) => (
               <div key={idx}>
                 <span className="text-base font-semibold text-gray-900">{metric.value}</span>
-                <p className="text-xs text-gray-400 mt-1">{metric.label}</p>
-                <p className="text-xs text-gray-400">{metric.sublabel}</p>
+                <p className="text-xs text-gray-500 mt-1">{metric.label}</p>
+                <p className="text-xs text-gray-500">{metric.sublabel}</p>
               </div>
             ))}
           </motion.div>

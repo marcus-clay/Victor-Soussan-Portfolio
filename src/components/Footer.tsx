@@ -31,14 +31,14 @@ export default function Footer({ lang }: { lang: Lang }) {
                 href="https://linkedin.com/in/victorsoussan"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-gray-900 transition-colors duration-150"
+                className="text-gray-500 hover:text-gray-900 transition-colors duration-150"
                 aria-label="LinkedIn"
               >
                 <LinkedinLogo size={18} />
               </a>
               <a
                 href="mailto:victorsoussan@gmail.com"
-                className="text-gray-400 hover:text-gray-900 transition-colors duration-150"
+                className="text-gray-500 hover:text-gray-900 transition-colors duration-150"
                 aria-label="Email"
               >
                 <Mail size={18} />
@@ -48,7 +48,7 @@ export default function Footer({ lang }: { lang: Lang }) {
 
           {/* Navigation Column */}
           <div>
-            <h4 className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-4">Navigation</h4>
+            <h4 className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-4">Navigation</h4>
             <ul className="space-y-2.5">
               <li>
                 <Link href={`/${lang}/projets`} className="text-sm text-gray-500 hover:text-gray-900 transition-colors duration-150">
@@ -75,7 +75,7 @@ export default function Footer({ lang }: { lang: Lang }) {
 
           {/* Contact Column */}
           <div>
-            <h4 className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-4">Contact</h4>
+            <h4 className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-4">Contact</h4>
             <ul className="space-y-2.5">
               <li>
                 <a href="mailto:victorsoussan@gmail.com" className="text-sm text-gray-500 hover:text-gray-900 transition-colors duration-150">
@@ -107,15 +107,17 @@ export default function Footer({ lang }: { lang: Lang }) {
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-gray-100 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-sm text-gray-500">
-            &copy; {new Date().getFullYear()} Victor Soussan. {lang === 'en' ? 'All rights reserved.' : 'Tous droits reserves.'}
+            &copy; {new Date().getFullYear()} Victor Soussan. {lang === 'en' ? 'All rights reserved.' : 'Tous droits r\u00e9serv\u00e9s.'}
           </p>
           <div className="flex items-center gap-6">
             <Link
               href={`/${otherLang}`}
+              hrefLang={otherLang}
+              lang={otherLang}
               className="text-sm text-gray-600 hover:text-gray-900 transition-colors flex items-center gap-2"
             >
               <Globe size={16} />
-              {lang === 'en' ? 'Francais' : 'English'}
+              {lang === 'en' ? 'Fran\u00e7ais' : 'English'}
             </Link>
           </div>
         </div>

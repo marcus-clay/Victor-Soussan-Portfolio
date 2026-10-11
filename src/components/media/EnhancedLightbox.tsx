@@ -18,6 +18,7 @@
 
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { motion, AnimatePresence, useAnimation, PanInfo, useMotionValue, LayoutGroup } from 'framer-motion';
+import { useScrollLock } from '@/hooks/useScrollLock';
 import { X, CaretLeft as ChevronLeft, CaretRight as ChevronRight, MagnifyingGlassPlus as ZoomIn, MagnifyingGlassMinus as ZoomOut } from '@phosphor-icons/react';
 
 export interface LightboxImage {
@@ -75,7 +76,6 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
   const lastTap = useRef<number>(0);
   const doubleTapTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const savedScrollY = useRef(0);
   const savedUrl = useRef('');
 
   // Set video start time when lightbox opens with a video
@@ -106,31 +106,20 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Lock body scroll when open — preserves scroll position on close
+  // Lock page scroll while open. The page itself never moves, so closing the
+  // lightbox leaves it exactly where the tapped image was.
+  useScrollLock(isOpen);
+
   useEffect(() => {
     if (isOpen) {
-      savedScrollY.current = window.scrollY;
-      savedUrl.current = window.location.href;
-      document.body.style.overflow = 'hidden';
-      document.body.style.position = 'fixed';
-      document.body.style.top = `-${savedScrollY.current}px`;
-      document.body.style.width = '100%';
+      savedUrl.current = window.location.pathname + window.location.search;
       // Default to zoomed on desktop
       setIsZoomed(!isMobile);
       const timer = setTimeout(() => setShowHint(false), 2500);
       return () => clearTimeout(timer);
-    } else {
-      const scrollY = savedScrollY.current;
-      document.body.style.overflow = '';
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.width = '';
-      requestAnimationFrame(() => {
-        window.scrollTo(0, scrollY);
-      });
-      setShowHint(true);
-      resetState();
     }
+    setShowHint(true);
+    resetState();
   }, [isOpen, isMobile]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // On image change: reset position always; on desktop preserve zoom state
@@ -148,26 +137,22 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
     }
   }, [currentIndex]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Update URL when image changes (for SEO and shareability)
+  // Reflect the current media in the URL hash (shareable, and it leaves the route
+  // untouched: a pathname change would make the router scroll the page to the top).
   useEffect(() => {
     if (!isOpen || !updateUrl || !projectId) return;
-
-    const currentImg = images[currentIndex];
-    const mediaType = currentImg?.type === 'video' ? 'video' : 'image';
-    const mediaUrl = `/project/${projectId}/media/${mediaType}/${currentIndex + 1}`;
-
-    // Update URL without triggering navigation
+    const mediaType = images[currentIndex]?.type === 'video' ? 'video' : 'image';
     window.history.replaceState(
-      { project: projectId, mediaIndex: currentIndex, mediaType },
+      window.history.state,
       '',
-      mediaUrl
+      `${window.location.pathname}${window.location.search}#${mediaType}-${currentIndex + 1}`
     );
   }, [isOpen, currentIndex, projectId, updateUrl, images]);
 
-  // Restore URL when lightbox closes
+  // Drop the hash when the lightbox closes
   const handleClose = useCallback(() => {
     if (updateUrl && savedUrl.current) {
-      window.history.replaceState({}, '', savedUrl.current);
+      window.history.replaceState(window.history.state, '', savedUrl.current);
     }
     onClose();
   }, [onClose, updateUrl]);

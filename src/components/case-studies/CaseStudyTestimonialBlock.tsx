@@ -86,7 +86,7 @@ export default function CaseStudyTestimonialBlock({
 
           {/* Caret indicator — always visible on mobile, hover-only on desktop */}
           {isLong && (
-            <div className="mt-2.5 flex items-center gap-1 text-sm text-gray-400 opacity-100 md:opacity-0 md:group-hover/card:opacity-100 transition-opacity duration-150">
+            <div className="mt-2.5 flex items-center gap-1 text-sm text-gray-500 opacity-100 md:opacity-0 md:group-hover/card:opacity-100 transition-opacity duration-150">
               <span>
                 {expanded
                   ? (lang === 'fr' ? 'Réduire' : 'Read less')
