@@ -69,10 +69,8 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
   const [isPaused, setIsPaused] = useState(false)
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
   const [inView, setInView] = useState(true)
-  const [reduceMotion, setReduceMotion] = useState(false)
 
   const trackRef = useRef<HTMLDivElement>(null)
-  const userStartedRef = useRef(false)
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([])
 
   const animating = useRef(false)
@@ -155,15 +153,6 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
     }
   }, [detectActive, updateOpacities])
 
-  // Respect reduced motion: videos start paused and the visitor can press play
-  useEffect(() => {
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
-    const apply = () => setReduceMotion(mq.matches)
-    apply()
-    mq.addEventListener('change', apply)
-    return () => mq.removeEventListener('change', apply)
-  }, [])
-
   // Stop decoding video while the carousel is off screen
   useEffect(() => {
     const track = trackRef.current
@@ -173,17 +162,16 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
     return () => io.disconnect()
   }, [])
 
-  // A new card or a change of motion preference resets the manual pause state
+  // A new card resets the manual pause state
   useEffect(() => {
-    setIsPaused(reduceMotion)
-  }, [activeIndex, reduceMotion])
+    setIsPaused(false)
+  }, [activeIndex])
 
   // Play the active video only when visible and not paused; pause the others
   useEffect(() => {
     videoRefs.current.forEach((video, i) => {
       if (!video) return
-      const blockedByMotionPref = window.matchMedia('(prefers-reduced-motion: reduce)').matches && !userStartedRef.current
-      if (i === activeIndex && inView && !isPaused && !blockedByMotionPref) video.play().catch(() => {})
+      if (i === activeIndex && inView && !isPaused) video.play().catch(() => {})
       else video.pause()
     })
   }, [activeIndex, inView, isPaused])
@@ -192,7 +180,7 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
     e.stopPropagation()
     const video = videoRefs.current[activeIndex]
     if (!video) return
-    if (isPaused) { userStartedRef.current = true; video.play().catch(() => {}); setIsPaused(false) }
+    if (isPaused) { video.play().catch(() => {}); setIsPaused(false) }
     else { video.pause(); setIsPaused(true) }
   }, [activeIndex, isPaused])
 
@@ -285,8 +273,9 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
                 {/* Video */}
                 <div
                   data-card-media=""
-                  className="relative rounded-2xl overflow-hidden bg-[#111113]"
+                  className="relative rounded-2xl overflow-hidden bg-gray-100"
                   style={{
+                    isolation: 'isolate',
                     aspectRatio: '16 / 10',
                     transform: isActive && isHovered ? 'scale(1.005)' : 'scale(1)',
                     transition: 'transform 300ms cubic-bezier(0.23,1,0.32,1)',
@@ -297,9 +286,9 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
                     loop
                     muted
                     playsInline
-                    preload={index === 0 ? 'auto' : index === 1 ? 'metadata' : 'none'}
+                    preload={index <= 1 ? 'auto' : 'metadata'}
                     className="w-full h-full object-cover"
-                    src={item.src}
+                    src={`${item.src}#t=0.1`}
                   />
 
                   {/* Play / pause — only visible on active card */}

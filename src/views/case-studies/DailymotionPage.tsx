@@ -2,6 +2,7 @@
 // Displays the Dailymotion project case study
 
 import React, { useState, useEffect, useRef } from 'react';
+import { useStableComponent } from '../../hooks/useStableComponent';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import { ArrowRight } from '@phosphor-icons/react';
@@ -10,7 +11,6 @@ import { GalleryItem, getDailymotionGalleryItems } from '../../components/BentoG
 import EnhancedLightbox from '../../components/media/EnhancedLightbox';
 import DailymotionExecutive from '../../components/case-studies/DailymotionExecutive';
 
-import { PROJECT_SEO, DEFAULT_SEO, updateMetaTags, injectJsonLd } from '../../utils/seo';
 import { DAILYMOTION_TRANSLATIONS } from '../../data/caseStudyTranslations/dailymotionTranslations';
 
 interface DailymotionPageProps {
@@ -90,16 +90,6 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
   lang = 'en',
   onContact,
 }) => {
-  useEffect(() => {
-    const seo = PROJECT_SEO['dailymotion'];
-    if (seo) {
-      updateMetaTags(seo);
-      const removeJsonLd = injectJsonLd('dailymotion', seo);
-      return () => { updateMetaTags(DEFAULT_SEO); removeJsonLd(); };
-    }
-    return () => updateMetaTags(DEFAULT_SEO);
-  }, []);
-
   const t = DAILYMOTION_TRANSLATIONS[lang];
   const galleryItems = getDailymotionGalleryItems(lang);
 
@@ -146,7 +136,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
   };
 
   // Reusable media figure component
-  const MediaFigure = ({ src, alt, caption, captionDesc, type = 'image', className = '', videoRefKey }: {
+  const MediaFigure = useStableComponent(({ src, alt, caption, captionDesc, type = 'image', className = '', videoRefKey }: {
     src: string; alt: string; caption: string; captionDesc?: string; type?: 'image' | 'video'; className?: string; videoRefKey?: string;
   }) => (
     <figure className={className}>
@@ -172,7 +162,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
         {caption}{captionDesc && ` · ${captionDesc}`}
       </figcaption>
     </figure>
-  );
+  ));
 
   return (
     <div

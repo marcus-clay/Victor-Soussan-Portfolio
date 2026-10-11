@@ -2,7 +2,8 @@
 
 import React, { useEffect, useState } from 'react'
 import { useSnapScroller } from '@/hooks/useSnapScroller'
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
+import { useReducedMotion } from '@/hooks/useReducedMotion'
 import Link from 'next/link'
 import { ArrowRight, ArrowLeft, CaretDown } from '@phosphor-icons/react'
 import AuthorContactCard from '@/components/AuthorContactCard'
@@ -746,7 +747,7 @@ export default function ApprochePage({
             <RevealSection delay={0.08} className="mt-8">
               <div className="rounded-xl overflow-hidden border border-gray-100">
                 <img
-                  src="/images/approche/design-teardown.png"
+                  src="/images/approche/design-teardown.webp"
                   alt={lang === 'fr' ? 'Atelier Design Teardown — exemple réel' : 'Design Teardown workshop — real example'}
                   loading="lazy"
                   className="w-full h-auto"

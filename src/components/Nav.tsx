@@ -61,16 +61,34 @@ export default function Nav({ lang }: { lang: Lang }) {
   const closeMenu = () => { setIsMobileMenuOpen(false) }
   const toggleMenu = () => { isMobileMenuOpen ? closeMenu() : openMenu() }
 
-  // Track scroll for header height transition + update CSS variable
+  // Track scroll for header height transition + update CSS variable.
+  // Two thresholds (hysteresis) and one update per frame: the header never flips back and
+  // forth when the scroll position sits right on the limit.
   useEffect(() => {
-    const handleScroll = () => {
-      const scrolled = window.scrollY > 10
-      setIsScrolled(scrolled)
-      document.documentElement.style.setProperty('--nav-height', scrolled ? '56px' : '64px')
+    let scrolled = window.scrollY > 24
+    let frame = 0
+    const apply = (value: boolean) => {
+      setIsScrolled(value)
+      document.documentElement.style.setProperty('--nav-height', value ? '56px' : '64px')
     }
+    const handleScroll = () => {
+      if (frame) return
+      frame = requestAnimationFrame(() => {
+        frame = 0
+        const y = window.scrollY
+        const next = scrolled ? y > 6 : y > 24
+        if (next !== scrolled) {
+          scrolled = next
+          apply(next)
+        }
+      })
+    }
+    apply(scrolled)
     window.addEventListener('scroll', handleScroll, { passive: true })
-    handleScroll()
-    return () => window.removeEventListener('scroll', handleScroll)
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      if (frame) cancelAnimationFrame(frame)
+    }
   }, [])
 
   // Detect dark nav mode (set by CaseStudyPageWrapper via DOM class)
@@ -142,13 +160,13 @@ export default function Nav({ lang }: { lang: Lang }) {
       {/* Top bar — content-width, always burger */}
       <nav
         id="site-nav"
-        className={`fixed top-0 w-full z-50 backdrop-blur-xl ${
+        className={`fixed top-0 w-full z-50 backdrop-blur-xl [transform:translateZ(0)] ${
           isMenuMounted
             ? 'bg-[#FDFDFC]'
             : isScrolled ? 'bg-[#FDFDFC]/80' : 'bg-transparent'
         }`}
         style={{
-          height: isScrolled ? 56 : 64,
+          height: 'var(--nav-height)',
           transition: 'height 250ms cubic-bezier(0.23, 1, 0.32, 1), background-color 200ms ease',
         }}
       >
@@ -307,7 +325,7 @@ export default function Nav({ lang }: { lang: Lang }) {
                   ? 'bg-[#1D1D1F]'
                   : 'bg-[#FDFDFC] border-b border-gray-100'
               }`}
-              style={{ top: isScrolled ? 56 : 64 }}
+              style={{ top: 'var(--nav-height)', transition: 'top 250ms cubic-bezier(0.23, 1, 0.32, 1)' }}
             >
               <div className="max-w-[740px] mx-auto px-6 py-4">
                 <div className="flex flex-col">

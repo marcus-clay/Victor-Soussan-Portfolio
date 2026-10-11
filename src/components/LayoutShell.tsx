@@ -24,11 +24,11 @@ export default function LayoutShell({
   const isBare = BARE_ROUTES.some((route) => pathname.includes(route))
 
   if (isBare) {
-    return <MotionConfig reducedMotion="user">{children}</MotionConfig>
+    return <MotionConfig reducedMotion="never">{children}</MotionConfig>
   }
 
   return (
-    <MotionConfig reducedMotion="user">
+    <MotionConfig reducedMotion="never">
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:top-4 focus:left-4 focus:bg-white focus:text-black focus:px-4 focus:py-2 focus:rounded"
@@ -37,7 +37,7 @@ export default function LayoutShell({
       </a>
       <ImageFadeIn />
       {nav}
-      <main id="main-content" style={{ paddingTop: 'var(--nav-height, 72px)', transition: 'padding-top 250ms cubic-bezier(0.23, 1, 0.32, 1)' }}>
+      <main id="main-content" style={{ paddingTop: 64 }}>
         {children}
       </main>
       {footer}

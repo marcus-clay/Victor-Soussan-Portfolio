@@ -6,7 +6,6 @@ import { motion } from 'framer-motion';
 import FranceVaeExecutive from '../../components/case-studies/FranceVaeExecutive';
 import FranceVaeFull from '../../components/case-studies/FranceVaeFull';
 import EnhancedLightbox from '../../components/media/EnhancedLightbox';
-import { PROJECT_SEO, DEFAULT_SEO, updateMetaTags, injectJsonLd } from '../../utils/seo';
 
 import { FRANCEVAE_TRANSLATIONS } from '../../data/caseStudyTranslations/franceVaeTranslations';
 
@@ -101,16 +100,6 @@ const FranceVaePage: React.FC<FranceVaePageProps> = ({
   onViewModeChange,
   onContact,
 }) => {
-  useEffect(() => {
-    const seo = PROJECT_SEO['france-vae'];
-    if (seo) {
-      updateMetaTags(seo);
-      const removeJsonLd = injectJsonLd('france-vae', seo);
-      return () => { updateMetaTags(DEFAULT_SEO); removeJsonLd(); };
-    }
-    return () => updateMetaTags(DEFAULT_SEO);
-  }, []);
-
   const [lang, setLang] = useState<'en' | 'fr'>(propLang || 'fr');
   const initialViewMode = propViewMode === 'gallery' ? 'gallery' : 'caseStudy';
   const [viewMode, setViewModeInternal] = useState<'caseStudy' | 'gallery'>(initialViewMode);

@@ -7,7 +7,7 @@ import {
   Briefcase,
   DeviceMobile as Smartphone,
   ShieldCheck,
-} from '@phosphor-icons/react';
+} from '@phosphor-icons/react/ssr';
 import type { Language } from './translations';
 
 export type ProjectFormat = 'case-study' | 'short'
@@ -78,7 +78,7 @@ export const getProjects = (lang: Language): Project[] => {
         : ["Prototype fonctionnel", "6 flux d'interaction", "Comparatif avant/après", "Schéma de flux de données", "Métriques de session"],
       icon: <ShieldCheck size={24} />,
       color: "blue",
-      coverImage: "/images/riskos/02-case-detail.png",
+      coverImage: "/images/riskos/02-case-detail.webp",
       externalLink: "https://riskos.vercel.app",
       status: "experiment",
       cardBg: "#111113"
@@ -415,7 +415,7 @@ export const getProjects = (lang: Language): Project[] => {
         : ["50+ Apps Web", "React/Next.js", "Tailwind CSS", "Déploiements Vercel", "Workflows Claude Code"],
       icon: <Cpu size={24} />,
       color: "indigo",
-      coverImage: "/images/thumbnail_condamine_apps.png",
+      coverImage: "/images/thumbnail_condamine_apps.webp",
       externalLink: "https://www.condamine.studio/apps",
       status: "shipped"
     },
@@ -442,7 +442,7 @@ export const getProjects = (lang: Language): Project[] => {
         : ["Design System (Tokens + Variables)", "Figma MCP Console", "App Médicale 10 Écrans", "Workflow Claude Code", "Prototypes Interactifs"],
       icon: <Layers size={24} />,
       color: "blue",
-      coverImage: "/articles/Experimentation Claude Code - design system, ui, figma, claude/thumnbnail claude code - figma mcp.png",
+      coverImage: "/articles/Experimentation Claude Code - design system, ui, figma, claude/thumnbnail claude code - figma mcp.webp",
       // videoUrl: the demo file was never committed. Add it under public/articles/... and restore this line.
       status: "shipped"
     }

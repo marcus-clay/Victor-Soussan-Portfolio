@@ -157,6 +157,10 @@ const GuideChapter: React.FC<{
     return () => container.removeEventListener('click', handleClick);
   }, []);
 
+  // The lightbox portal needs document.body, which does not exist during server rendering.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
   // Track active section for left TOC
   useEffect(() => {
     if (!chapter) return;
@@ -206,7 +210,7 @@ const GuideChapter: React.FC<{
   return (
     <>
       {/* Lightbox — portaled to body to escape z-index stacking context */}
-      {createPortal(
+      {mounted && createPortal(
         <AnimatePresence>
           {lightboxSrc && (
             <motion.div
@@ -230,7 +234,7 @@ const GuideChapter: React.FC<{
       {showTOC && (
         <div
           className={`sticky z-10 backdrop-blur-xl ${isDark ? 'bg-[#0a0a0a]/80' : 'bg-[#FCFCFD]/80'}`}
-          style={{ top: 'var(--nav-height, 72px)', transition: 'top 250ms cubic-bezier(0.23, 1, 0.32, 1)' }}
+          style={{ top: 'var(--nav-height, 64px)', transition: 'top 250ms cubic-bezier(0.23, 1, 0.32, 1)' }}
         >
           <CaseStudyTOCBar
             sections={chapter.sections.map((sec, i) => ({
@@ -378,7 +382,7 @@ const GuideClaudeCodePage: React.FC<Props> = ({ systemTheme, lang, view, onNavig
       className={`min-h-screen ${isDark ? 'bg-[#0a0a0a]' : 'bg-[#FCFCFD]'}`}
     >
       {/* Breadcrumb bar - sticky below Nav */}
-      <div className={`sticky z-10 backdrop-blur-xl ${isDark ? 'bg-[#0a0a0a]/80 border-white/5' : 'bg-[#FCFCFD]/80 border-gray-200'}`} style={{ top: 'var(--nav-height, 72px)', transition: 'top 250ms cubic-bezier(0.23, 1, 0.32, 1)' }}>
+      <div className={`sticky z-10 backdrop-blur-xl ${isDark ? 'bg-[#0a0a0a]/80 border-white/5' : 'bg-[#FCFCFD]/80 border-gray-200'}`} style={{ top: 'var(--nav-height, 64px)', transition: 'top 250ms cubic-bezier(0.23, 1, 0.32, 1)' }}>
         <div className="max-w-[740px] mx-auto px-4 md:px-6 h-10 flex items-center justify-between">
           <nav className="flex items-center gap-1.5 text-xs min-w-0 overflow-hidden">
             <button onClick={() => onNavigate('blog')} className={`transition-colors cursor-pointer hover:underline flex-shrink-0 ${isDark ? 'text-gray-500 hover:text-white' : 'text-gray-400 hover:text-gray-900'}`}>

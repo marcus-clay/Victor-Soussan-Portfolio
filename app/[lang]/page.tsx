@@ -1,54 +1,50 @@
 import type { Metadata } from 'next'
 import HomepageClient from '@/components/page-wrappers/HomepageClient'
+import JsonLd from '@/components/JsonLd'
+import { PERSON_ID, buildMetadata, pageLd, toLang } from '@/lib/seo'
 
 type Props = {
   params: Promise<{ lang: string }>
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { lang: langParam } = await params
-  const lang = langParam === 'fr' ? 'fr' : 'en'
-  const description = lang === 'fr'
-    ? 'Lead Product Designer avec plus de 15 ans d\u2019exp\u00e9rience. Sp\u00e9cialis\u00e9 en Design Systems, UX Research et transformation digitale.'
-    : 'Lead Product Designer with 15+ years of experience. Specialized in Design Systems, UX Research, and digital transformation.'
-  const shareDescription = lang === 'fr'
-    ? 'Lead Product Designer, 15 ans de conception produit. Design systems, interfaces complexes, prototypage assist\u00e9 par IA.'
-    : 'Lead Product Designer, 15+ years of product design. Design systems, complex interfaces, AI-assisted prototyping.'
-  const title = 'Victor Soussan | Lead Product Designer'
-  const image = '/images/og_victor_soussan.jpg'
+const COPY = {
+  fr: {
+    title: 'Victor Soussan | Lead Product Designer B2B et B2G, France',
+    description: 'Lead Product Designer avec 15 ans d\u2019exp\u00e9rience, sp\u00e9cialiste du product design B2B et B2G en France. Design systems, interfaces m\u00e9tier, prototypage IA.',
+  },
+  en: {
+    title: 'Victor Soussan | Lead Product Designer, B2B and B2G, France',
+    description: 'Lead Product Designer with 15 years of experience, specialist in B2B and B2G product design in France. Design systems, business interfaces, AI prototyping.',
+  },
+} as const
 
-  return {
-    title: { absolute: title },
-    description,
-    openGraph: {
-      type: 'website',
-      locale: lang === 'fr' ? 'fr_FR' : 'en_US',
-      alternateLocale: lang === 'fr' ? 'en_US' : 'fr_FR',
-      siteName: 'Victor Soussan Portfolio',
-      url: `https://www.victorsoussan.fr/${lang}`,
-      title,
-      description: shareDescription,
-      images: [{ url: image, width: 1200, height: 630, alt: 'Victor Soussan, Lead Product Designer' }],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title,
-      description: shareDescription,
-      images: [image],
-    },
-    alternates: {
-      canonical: `https://www.victorsoussan.fr/${lang}`,
-      languages: {
-        'fr': 'https://www.victorsoussan.fr/fr',
-        'en': 'https://www.victorsoussan.fr/en',
-      },
-    },
-  }
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const lang = toLang((await params).lang)
+  return buildMetadata({
+    lang,
+    path: '',
+    title: COPY[lang].title,
+    absoluteTitle: true,
+    description: COPY[lang].description,
+  })
 }
 
 export default async function HomePage({ params }: Props) {
-  const { lang: langParam } = await params
-  const lang = (langParam === 'fr' ? 'fr' : 'en') as 'en' | 'fr'
+  const lang = toLang((await params).lang)
 
-  return <HomepageClient lang={lang} />
+  return (
+    <>
+      <JsonLd
+        data={pageLd({
+          lang,
+          path: '',
+          type: 'ProfilePage',
+          name: COPY[lang].title,
+          description: COPY[lang].description,
+          mainEntity: { '@id': PERSON_ID },
+        })}
+      />
+      <HomepageClient lang={lang} />
+    </>
+  )
 }

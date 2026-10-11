@@ -4,6 +4,15 @@ const nextConfig: NextConfig = {
   // Vercel handles SSG natively, no need for static export
   // Middleware + headers + redirects require server mode
 
+  poweredByHeader: false,
+
+  experimental: {
+    // The root <html> lives in app/[lang]/layout.tsx so lang matches the page language;
+    // unmatched URLs are rendered by app/global-not-found.tsx.
+    globalNotFound: true,
+    optimizePackageImports: ['@phosphor-icons/react', 'framer-motion'],
+  },
+
   images: {
     remotePatterns: [
       {
@@ -16,8 +25,17 @@ const nextConfig: NextConfig = {
     unoptimized: true,
   },
 
-  // Security headers (migrated from vercel.json)
+  // Security headers (migrated from vercel.json) + long cache for public media
   headers: async () => [
+    {
+      // Vercel serves files from /public with max-age=0 by default, which forces a revalidation
+      // round trip for every image and video on every visit. One week + stale-while-revalidate keeps
+      // repeat visits instant while a replaced file still shows up within days.
+      source: '/:path(images|videos|logos|sounds|articles|cv|prototypes)/:rest*',
+      headers: [
+        { key: 'Cache-Control', value: 'public, max-age=604800, stale-while-revalidate=2592000' },
+      ],
+    },
     {
       source: '/(.*)',
       headers: [
@@ -31,13 +49,21 @@ const nextConfig: NextConfig = {
           key: 'Content-Security-Policy',
           value: [
             "default-src 'self'",
-            "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.clarity.ms",
+            "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.clarity.ms https://scripts.clarity.ms",
             "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
             "font-src 'self' https://fonts.gstatic.com",
             "img-src 'self' data: https: blob:",
             "media-src 'self' https:",
             "frame-src 'self' https://www.youtube.com https://player.vimeo.com",
-            "connect-src 'self' https://api.emailjs.com https://res.cloudinary.com",
+            [
+              "connect-src 'self' https://api.emailjs.com https://res.cloudinary.com",
+              // Google Analytics 4 (collect endpoints, regional endpoints, Google Signals)
+              'https://www.google-analytics.com https://*.google-analytics.com https://analytics.google.com https://*.analytics.google.com https://stats.g.doubleclick.net https://www.googletagmanager.com',
+              // Microsoft Clarity
+              'https://*.clarity.ms https://c.bing.com',
+              // Vercel Web Analytics and Speed Insights
+              'https://vitals.vercel-insights.com',
+            ].join(' '),
             "object-src 'none'",
           ].join('; '),
         },
@@ -47,18 +73,30 @@ const nextConfig: NextConfig = {
 
   // Redirects from old SPA routes to new i18n routes
   redirects: async () => [
+    // One canonical host: apex -> www (Search Console reports the apex as duplicate content)
+    {
+      source: '/:path*',
+      has: [{ type: 'host', value: 'victorsoussan.fr' }],
+      destination: 'https://www.victorsoussan.fr/:path*',
+      permanent: true,
+    },
     // Old query param routes -> path prefix
     { source: '/', has: [{ type: 'query', key: 'lang', value: 'fr' }], destination: '/fr', permanent: true },
     { source: '/', has: [{ type: 'query', key: 'lang', value: 'en' }], destination: '/en', permanent: true },
     // Old SPA routes without lang prefix -> default /en
     ...[
-      'about', 'work', 'services', 'signals', 'visual-archive',
+      'about', 'services', 'visual-archive',
       'consulting', 'presentation', 'contact', 'quote', 'resume', 'testimonials',
     ].map((route) => ({
       source: `/${route}`,
       destination: `/en/${route}`,
       permanent: true,
     })),
+    // Renamed routes go straight to their final URL (one hop instead of two)
+    { source: '/work', destination: '/en/projets', permanent: true },
+    { source: '/signals', destination: '/en/ressources', permanent: true },
+    // /interventions was a client-side redirect page; a real 308 is cleaner for crawlers
+    { source: '/:lang(en|fr)/interventions', destination: '/:lang/contact#interventions', permanent: true },
     // Old signal routes
     { source: '/signal/:id', destination: '/en/signal/:id', permanent: true },
     // Old project routes
@@ -114,6 +152,11 @@ const nextConfig: NextConfig = {
     { source: '/projects/:path*', destination: '/fr/projets', permanent: true },
     { source: '/project_category/:path*', destination: '/fr/projets', permanent: true },
     { source: '/blog', destination: '/fr/ressources', permanent: true },
+    { source: '/blog/:path*', destination: '/fr/ressources', permanent: true },
+    { source: '/a-propos-design-philosophy-claude', destination: '/fr/about', permanent: true },
+    { source: '/feed', destination: '/fr/ressources', permanent: true },
+    { source: '/feed/:path*', destination: '/fr/ressources', permanent: true },
+    { source: '/comments/feed', destination: '/fr/ressources', permanent: true },
     { source: '/journal', destination: '/fr/ressources', permanent: true },
     { source: '/reviews', destination: '/fr/testimonials', permanent: true },
     { source: '/a-propos', destination: '/fr/about', permanent: true },

@@ -37,7 +37,7 @@ const PILLARS = [
 ];
 
 const RESOURCES = [
-  { id: 'guide-claude-code', type: 'guide' as const, title: 'Getting started with Claude Code', desc: 'Complete guide for designers: from installation to deployment.', chapters: 9, cover: '/images/guide-claude-code/hero-cover.png' },
+  { id: 'guide-claude-code', type: 'guide' as const, title: 'Getting started with Claude Code', desc: 'Complete guide for designers: from installation to deployment.', chapters: 9, cover: '/images/guide-claude-code/hero-cover.webp' },
   { id: 'ai-design-workflows', type: 'article' as const, title: 'AI-assisted design workflows', desc: 'How AI changes the way designers prototype, test, and ship.' },
   { id: 'design-system-figma', type: 'article' as const, title: 'Design System with Claude Code', desc: 'Figma to code with zero drift.' },
 ];

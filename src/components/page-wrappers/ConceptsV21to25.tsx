@@ -34,8 +34,8 @@ const PROJECTS = [
   { id: 'dailymotion', title: 'Dailymotion Partner', role: 'Senior Product Designer', period: '2017-2018', summary: 'Redesigning the professional video management suite for tier-1 media partners.', cover: '/images/thumbnail-dailymotion-web-platform.webp', category: 'Product Design', format: 'case-study' as const },
   { id: 'sqool', title: 'SQOOL Suite', role: 'Product Design Manager', period: '2018-2024', summary: 'EdTech ecosystem for 500K+ students. Hardware to SaaS transformation.', cover: '/images/thumbnail-sqool-suite.webp', category: 'Product Design', format: 'case-study' as const },
   { id: 'pagesjaunes', title: 'PagesJaunes', role: 'Mobile UI Lead', period: '2014-2017', summary: 'Mobile-first modernization for 22M+ users across iOS, Android, and Web.', cover: '/images/thumbnail-pagesjaunes-multidevices.webp', category: 'Product Design', format: 'case-study' as const },
-  { id: 'condamine-apps', title: 'Condamine Apps', role: 'Solo Designer & Builder', period: '2025', summary: '50+ web apps prototyped with Claude Code and AI workflows.', cover: '/images/guide-claude-code/hero-cover.png', category: 'AI Experiment', format: 'short' as const },
-  { id: 'design-system-figma', title: 'Design System with Claude Code', role: 'Designer & Implementer', period: '2025', summary: 'Figma to code with zero drift. AI-driven implementation.', cover: '/images/guide-claude-code/hero-cover.png', category: 'AI Experiment', format: 'short' as const },
+  { id: 'condamine-apps', title: 'Condamine Apps', role: 'Solo Designer & Builder', period: '2025', summary: '50+ web apps prototyped with Claude Code and AI workflows.', cover: '/images/guide-claude-code/hero-cover.webp', category: 'AI Experiment', format: 'short' as const },
+  { id: 'design-system-figma', title: 'Design System with Claude Code', role: 'Designer & Implementer', period: '2025', summary: 'Figma to code with zero drift. AI-driven implementation.', cover: '/images/guide-claude-code/hero-cover.webp', category: 'AI Experiment', format: 'short' as const },
 ];
 
 const PILLARS = [
@@ -50,7 +50,7 @@ const TESTIMONIALS = [
 ];
 
 const RESOURCES = [
-  { id: 'guide-claude-code', type: 'guide' as const, title: 'Getting started with Claude Code', desc: 'Complete guide for designers: from installation to deployment.', chapters: 9, cover: '/images/guide-claude-code/hero-cover.png' },
+  { id: 'guide-claude-code', type: 'guide' as const, title: 'Getting started with Claude Code', desc: 'Complete guide for designers: from installation to deployment.', chapters: 9, cover: '/images/guide-claude-code/hero-cover.webp' },
   { id: 'ai-design-workflows', type: 'article' as const, title: 'AI-assisted design workflows', desc: 'How AI changes the way designers prototype, test, and ship.' },
   { id: 'design-scoping', type: 'template' as const, title: 'Template: Design Scoping', desc: 'The document I fill before opening Figma.' },
   { id: 'design-system-figma', type: 'article' as const, title: 'Design System with Claude Code', desc: 'Designing in Figma, implementing with AI. Zero drift.' },
@@ -330,7 +330,7 @@ function FloatingGuide({ go }: { go: (p: PageId) => void }) {
           onClick={() => go('blog')}
           className="fixed right-6 top-24 z-[80] bg-white border border-gray-200 rounded-2xl p-3 shadow-lg shadow-gray-900/[0.06] hover:shadow-xl hover:border-gray-300 transition-all flex items-center gap-3 max-w-[220px]"
         >
-          <img src="/images/guide-claude-code/hero-cover.png" alt="" className="w-10 h-10 rounded-lg object-cover flex-shrink-0" />
+          <img src="/images/guide-claude-code/hero-cover.webp" alt="" className="w-10 h-10 rounded-lg object-cover flex-shrink-0" />
           <div className="text-left">
             <p className="text-[12px] font-semibold text-gray-900 leading-tight" style={{ fontFamily }}>Claude Code Guide</p>
             <p className="text-[11px] text-gray-400" style={{ fontFamily }}>9 chapters · Featured</p>

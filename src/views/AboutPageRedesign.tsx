@@ -296,7 +296,7 @@ export default function AboutPageRedesign({
               style={{ cursor: 'zoom-in' }}
             >
               <img
-                src="/images/photos victor/image-victor-linkedin.png"
+                src="/images/photos victor/image-victor-linkedin.webp"
                 alt="Victor Soussan"
                 className="w-full h-full object-cover object-top group-hover:scale-[1.02] transition-transform duration-300 ease-out"
                 loading="eager"

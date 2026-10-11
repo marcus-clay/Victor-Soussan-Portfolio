@@ -31,19 +31,16 @@
   --ease-out-expo: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in-out-strong: cubic-bezier(0.77, 0, 0.175, 1);
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-  --nav-height: 72px;
+  --nav-height: 64px;
 }
 
-/* Reduced motion: keep opacity and color changes (short cross-fade), remove movement.
-   Framer Motion is handled separately by <MotionConfig reducedMotion="user"> in LayoutShell. */
+/* Reduced motion, gentle version: nothing is switched off. Hover, lightbox, menu and
+   accordion transitions keep running. Only the large travel of page entrances is traded
+   for a plain fade, and smooth scrolling is turned off. Videos keep playing (muted, with
+   a visible pause control). */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-property: opacity, color, background-color, border-color, text-decoration-color !important;
-    transition-duration: 150ms !important;
-    scroll-behavior: auto !important;
-  }
+  :root { --rise-scale: 0; }
+  html { scroll-behavior: auto; }
 }
 
 /* ── Appearance ────────────────────────────────────────────────────────────
@@ -52,7 +49,7 @@
    Only opacity and transform move. `backwards` fill = no residual style after the
    animation, so hover and state styles keep working. */
 @keyframes rise-in {
-  from { opacity: 0; transform: translate3d(0, var(--rise, 12px), 0); }
+  from { opacity: 0; transform: translate3d(0, calc(var(--rise, 12px) * var(--rise-scale, 1)), 0); }
 }
 @keyframes fade-in {
   from { opacity: 0; }
@@ -66,8 +63,7 @@
 
 /* Every page after a client-side navigation */
 .page-in {
-  animation: rise-in 380ms var(--ease-out-expo) backwards;
-  --rise: 8px;
+  animation: fade-in 320ms var(--ease-out-expo) backwards;
 }
 
 /* Lazy images fade in once decoded instead of popping in. The hiding rule only
@@ -79,6 +75,13 @@
 }
 .img-fade img[loading="lazy"][data-loaded=""] {
   animation: fade-in 450ms var(--ease-out-expo) backwards;
+}
+
+/* Rounded media frames: a scaled or composited child (video, zoomed image) inside an
+   overflow-hidden rounded box can escape the rounded clip in Safari and Chrome while it
+   animates, which shows up as flickering corners. A stacking context per frame fixes it. */
+.overflow-hidden[class*="rounded"] {
+  isolation: isolate;
 }
 
 /* Keyboard focus: one consistent, visible ring in the brand blue.

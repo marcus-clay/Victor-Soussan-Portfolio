@@ -66,7 +66,7 @@ const GUIDE_ITEM: ContentItem = {
   date: GUIDE_META.date,
   category: 'ai',
   chapterCount: 9,
-  heroImage: '/images/guide-claude-code/hero-cover.png',
+  heroImage: '/images/guide-claude-code/hero-cover.webp',
 }
 
 // Guide Ship to Show as a single content item

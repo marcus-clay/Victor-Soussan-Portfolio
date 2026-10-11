@@ -9,7 +9,6 @@ import EnhancedLightbox from '../../components/media/EnhancedLightbox';
 
 import PrototypeFinderGallery from '../../components/prototype/PrototypeFinderGallery';
 import SqoolClasseExecutive from '../../components/case-studies/SqoolClasseExecutive';
-import { PROJECT_SEO, DEFAULT_SEO, updateMetaTags, injectJsonLd } from '../../utils/seo';
 import { SQOOL_CLASSE_TRANSLATIONS } from '../../data/caseStudyTranslations/sqoolClasseTranslations';
 
 interface SqoolClassePageProps {
@@ -34,16 +33,6 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
   lang = 'fr',
   onContact,
 }) => {
-  useEffect(() => {
-    const seo = PROJECT_SEO['sqool-classe'];
-    if (seo) {
-      updateMetaTags(seo);
-      const removeJsonLd = injectJsonLd('sqool-classe', seo);
-      return () => { updateMetaTags(DEFAULT_SEO); removeJsonLd(); };
-    }
-    return () => updateMetaTags(DEFAULT_SEO);
-  }, []);
-
   const containerRef = useRef<HTMLDivElement>(null);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);

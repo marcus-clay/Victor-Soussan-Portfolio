@@ -2,6 +2,7 @@
 // A trunk case study that synthesizes the SQOOL journey (2018-2024)
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useStableComponent } from '../../hooks/useStableComponent';
 import { useSnapScroller } from '@/hooks/useSnapScroller';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -16,7 +17,6 @@ import { SqoolTimeline } from './SqoolTimeline';
 import SqoolExecutive from '../../components/case-studies/SqoolExecutive';
 import EnhancedLightbox from '../../components/media/EnhancedLightbox';
 
-import { PROJECT_SEO, DEFAULT_SEO, updateMetaTags, injectJsonLd } from '../../utils/seo';
 import { SQOOL_TRANSLATIONS } from '../../data/caseStudyTranslations/sqoolTranslations';
 
 
@@ -108,16 +108,6 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
   lang = 'en',
   onContact,
 }) => {
-  useEffect(() => {
-    const seo = PROJECT_SEO['sqool'];
-    if (seo) {
-      updateMetaTags(seo);
-      const removeJsonLd = injectJsonLd('sqool', seo);
-      return () => { updateMetaTags(DEFAULT_SEO); removeJsonLd(); };
-    }
-    return () => updateMetaTags(DEFAULT_SEO);
-  }, []);
-
   const t = SQOOL_TRANSLATIONS[lang];
   const galleryItems = getSqoolGalleryItems(lang);
 
@@ -210,7 +200,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
   ];
 
   // Reusable media figure
-  const MediaFigure = ({ src, alt, caption, captionDesc, type = 'image', className = '' }: {
+  const MediaFigure = useStableComponent(({ src, alt, caption, captionDesc, type = 'image', className = '' }: {
     src: string; alt: string; caption: string; captionDesc?: string; type?: 'image' | 'video'; className?: string;
   }) => (
     <figure className={className}>
@@ -233,7 +223,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
         {caption}{captionDesc && ` · ${captionDesc}`}
       </figcaption>
     </figure>
-  );
+  ));
 
   return (
     <div ref={containerRef} className="min-h-screen bg-[#FDFDFC]">

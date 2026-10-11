@@ -1,7 +1,8 @@
 import React, { useRef, useState, useCallback, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { Monitor, Users, Play, Pause, ArrowCounterClockwise as RotateCcw, CaretDown } from '@phosphor-icons/react';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useReducedMotion } from '@/hooks/useReducedMotion'
 import {
   GALLERY_CATEGORIES,
   PROTOTYPE_MAP,
@@ -588,7 +589,7 @@ const PrototypeFinderGallery: React.FC<PrototypeFinderGalleryProps> = ({
         className={`hidden lg:flex rounded-2xl border overflow-hidden ${borderColor} ${
           isDark ? 'bg-[#161618]' : 'bg-white'
         }`}
-        style={{ height: 'calc(100vh - var(--nav-height, 72px) - 56px)', minHeight: '560px' }}
+        style={{ height: 'calc(100vh - var(--nav-height, 64px) - 56px)', minHeight: '560px' }}
       >
         {/* Col 1: Categories — sliding selection indicator via layoutId */}
         <div className={`w-[200px] flex-shrink-0 border-r ${borderColor} ${bgCol} flex flex-col`}>
@@ -666,7 +667,7 @@ const PrototypeFinderGallery: React.FC<PrototypeFinderGalleryProps> = ({
         className={`hidden md:flex lg:hidden flex-col rounded-2xl border overflow-hidden ${borderColor} ${
           isDark ? 'bg-[#161618]' : 'bg-white'
         }`}
-        style={{ height: 'calc(100vh - var(--nav-height, 72px) - 56px)', minHeight: '500px' }}
+        style={{ height: 'calc(100vh - var(--nav-height, 64px) - 56px)', minHeight: '500px' }}
       >
         <div className={`px-4 py-3 border-b ${borderColor} ${bgCol}`}>
           {categoryPills}

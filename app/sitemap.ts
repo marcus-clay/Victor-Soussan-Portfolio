@@ -1,163 +1,73 @@
 import type { MetadataRoute } from 'next'
-import { GUIDE_CHAPTERS } from '@/data/guideClaudeCodeData'
+import { GUIDE_CHAPTERS, GUIDE_META } from '@/data/guideClaudeCodeData'
+import { SHIP_TO_SHOW_META } from '@/data/guideShipToShowData'
+import { SIGNALS } from '@/data/signalsData'
+import { getProjects } from '@/data/projectsData'
+import { LANGS, isoDate, pageUrl } from '@/lib/seo'
 
-const BASE_URL = 'https://www.victorsoussan.fr'
+/**
+ * Only indexable, canonical, 200 URLs belong here. Pages marked noindex (consulting, visual-archive,
+ * resume, quote, presentation, project galleries) and redirects are deliberately left out: listing them
+ * is what makes Search Console report "Excluded by noindex" and "Page with redirect".
+ *
+ * lastModified comes from real content dates, never from the build time: a lastmod that changes on
+ * every deploy teaches Google to ignore the field.
+ */
 
-const STATIC_ROUTES = [
-  '', 'about', 'approche', 'projets', 'services', 'consulting', 'ressources',
-  'visual-archive', 'testimonials', 'contact', 'interventions', 'resume', 'quote', 'presentation',
-]
+const INDEXABLE_STATIC = ['', 'about', 'approche', 'projets', 'services', 'ressources', 'testimonials', 'contact']
 
-const PROJECT_IDS = [
-  'toolkit', 'dailymotion', 'connect', 'sqool', 'sqool-classe',
-  'france-vae', 'pagesjaunes', 'androidwear', 'riskos',
-]
+// Update when the copy of the main pages changes in a meaningful way.
+const SITE_CONTENT_UPDATED = '2026-10-12'
 
-const SHORT_PROJECT_IDS = [
-  'condamine-apps', 'design-system-figma-claude',
-]
+type Entry = { path: Record<(typeof LANGS)[number], string>; lastModified: string }
 
-const VIEW_MODES = ['summary', 'full']
+function toEntries(items: Entry[]): MetadataRoute.Sitemap {
+  return items.flatMap((item) =>
+    LANGS.map((lang) => ({
+      url: pageUrl(lang, item.path[lang]),
+      lastModified: item.lastModified,
+      alternates: {
+        languages: {
+          en: pageUrl('en', item.path.en),
+          fr: pageUrl('fr', item.path.fr),
+          'x-default': pageUrl('en', item.path.en),
+        },
+      },
+    }))
+  )
+}
 
-const SIGNAL_IDS = [
-  'hiring-solo-designer', 'design-thinking-public-service', 'roadmap-zero-to-one',
-  'design-system-five-brands', 'ai-prototyping-50-apps', 'scoping-is-the-work',
-  'designer-to-lead', 'designing-for-unwilling-users', 'storybook-negotiation',
-  'ai-training-non-designers', 'delivery-cycles', 'structurer-le-flou',
-  'culture-design-organisation', 'binome-pm-designer', 'claude-code-figma-mcp',
-  'design-system-figma-claude-code', 'claude-code-full-project',
-]
-
-const LANGS = ['en', 'fr'] as const
+const same = (p: string) => ({ en: p, fr: p })
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const entries: MetadataRoute.Sitemap = []
+  const items: Entry[] = []
 
-  // Static routes
-  for (const lang of LANGS) {
-    for (const route of STATIC_ROUTES) {
-      const path = route ? `/${lang}/${route}` : `/${lang}`
-      entries.push({
-        url: `${BASE_URL}${path}`,
-        lastModified: new Date(),
-        changeFrequency: route === '' ? 'weekly' : 'monthly',
-        priority: route === '' ? 1.0 : 0.8,
-        alternates: {
-          languages: {
-            fr: `${BASE_URL}/fr/${route}`,
-            en: `${BASE_URL}/en/${route}`,
-          },
-        },
-      })
-    }
+  for (const route of INDEXABLE_STATIC) {
+    items.push({ path: same(route), lastModified: SITE_CONTENT_UPDATED })
   }
 
-  // Signal routes
-  for (const lang of LANGS) {
-    for (const id of SIGNAL_IDS) {
-      entries.push({
-        url: `${BASE_URL}/${lang}/signal/${id}`,
-        lastModified: new Date(),
-        changeFrequency: 'monthly',
-        priority: 0.7,
-        alternates: {
-          languages: {
-            fr: `${BASE_URL}/fr/signal/${id}`,
-            en: `${BASE_URL}/en/signal/${id}`,
-          },
-        },
-      })
-    }
+  // Projects: case studies get summary + full, short projects summary only. Galleries are noindex.
+  for (const p of getProjects('en')) {
+    const year = p.period.match(/\d{4}/g)?.pop()
+    const lastModified = isoDate(year ? `${year}` : undefined) ?? SITE_CONTENT_UPDATED
+    items.push({ path: same(`project/${p.id}/summary`), lastModified })
+    if (p.format === 'case-study') items.push({ path: same(`project/${p.id}/full`), lastModified })
   }
 
-  // Project routes
-  for (const lang of LANGS) {
-    for (const id of PROJECT_IDS) {
-      for (const view of VIEW_MODES) {
-        entries.push({
-          url: `${BASE_URL}/${lang}/project/${id}/${view}`,
-          lastModified: new Date(),
-          changeFrequency: 'monthly',
-          priority: 0.7,
-          alternates: {
-            languages: {
-              fr: `${BASE_URL}/fr/project/${id}/${view}`,
-              en: `${BASE_URL}/en/project/${id}/${view}`,
-            },
-          },
-        })
-      }
-    }
+  // Articles
+  for (const s of SIGNALS) {
+    items.push({ path: same(`signal/${s.id}`), lastModified: isoDate(s.date) ?? SITE_CONTENT_UPDATED })
   }
 
-  // Short project routes (summary only)
-  for (const lang of LANGS) {
-    for (const id of SHORT_PROJECT_IDS) {
-      entries.push({
-        url: `${BASE_URL}/${lang}/project/${id}/summary`,
-        lastModified: new Date(),
-        changeFrequency: 'monthly',
-        priority: 0.6,
-        alternates: {
-          languages: {
-            fr: `${BASE_URL}/fr/project/${id}/summary`,
-            en: `${BASE_URL}/en/project/${id}/summary`,
-          },
-        },
-      })
-    }
-  }
-
-  // Guide Ship to Show
-  for (const lang of LANGS) {
-    entries.push({
-      url: `${BASE_URL}/${lang}/guide/ship-to-show`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.6,
-      alternates: {
-        languages: {
-          fr: `${BASE_URL}/fr/guide/ship-to-show`,
-          en: `${BASE_URL}/en/guide/ship-to-show`,
-        },
-      },
-    })
-  }
-
-  // Guide Claude Code index
-  for (const lang of LANGS) {
-    entries.push({
-      url: `${BASE_URL}/${lang}/guide/claude-code`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.6,
-      alternates: {
-        languages: {
-          fr: `${BASE_URL}/fr/guide/claude-code`,
-          en: `${BASE_URL}/en/guide/claude-code`,
-        },
-      },
-    })
-  }
-
-  // Guide chapters (bilingual slugs with proper hreflang)
+  // Guides
+  items.push({ path: same('guide/ship-to-show'), lastModified: isoDate(SHIP_TO_SHOW_META.date) ?? SITE_CONTENT_UPDATED })
+  items.push({ path: same('guide/claude-code'), lastModified: isoDate(GUIDE_META.date) ?? SITE_CONTENT_UPDATED })
   for (const ch of GUIDE_CHAPTERS) {
-    for (const lang of LANGS) {
-      const slug = lang === 'en' ? ch.slug_en : ch.slug_fr
-      entries.push({
-        url: `${BASE_URL}/${lang}/guide/claude-code/${slug}`,
-        lastModified: new Date(),
-        changeFrequency: 'monthly',
-        priority: 0.6,
-        alternates: {
-          languages: {
-            fr: `${BASE_URL}/fr/guide/claude-code/${ch.slug_fr}`,
-            en: `${BASE_URL}/en/guide/claude-code/${ch.slug_en}`,
-          },
-        },
-      })
-    }
+    items.push({
+      path: { en: `guide/claude-code/${ch.slug_en}`, fr: `guide/claude-code/${ch.slug_fr}` },
+      lastModified: isoDate(GUIDE_META.date) ?? SITE_CONTENT_UPDATED,
+    })
   }
 
-  return entries
+  return toEntries(items)
 }

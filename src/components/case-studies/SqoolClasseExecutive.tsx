@@ -121,7 +121,7 @@ const TRANSLATIONS = {
         {
           title: 'Link sharing to the whole class',
           description: 'The teacher types a URL, every student browser opens the same page at the same time.',
-          media: '/images/sqool/sqool classe/Visuel - Comm - En Classe - Partager un lien - Toute la classe V0@2x.png',
+          media: '/images/sqool/sqool classe/Visuel - Comm - En Classe - Partager un lien - Toute la classe V0@2x.webp',
         },
         {
           title: 'Screen sharing in progress',
@@ -131,7 +131,7 @@ const TRANSLATIONS = {
         {
           title: 'Classroom observation, Jean Vilar middle school',
           description: 'Before drawing anything, we sit in the classroom.',
-          media: '/images/sqool/sqool classe/prototypes - observation - user testing - classe PXL_20231010_084158712.jpg',
+          media: '/images/sqool/sqool classe/prototypes - observation - user testing - classe PXL_20231010_084158712.webp',
         },
       ],
     },
@@ -253,7 +253,7 @@ const TRANSLATIONS = {
         {
           title: 'Partage de lien vers toute la classe',
           description: 'L\u2019enseignant tape une URL, chaque navigateur \u00e9l\u00e8ve ouvre la m\u00eame page au m\u00eame moment.',
-          media: '/images/sqool/sqool classe/Visuel - Comm - En Classe - Partager un lien - Toute la classe V0@2x.png',
+          media: '/images/sqool/sqool classe/Visuel - Comm - En Classe - Partager un lien - Toute la classe V0@2x.webp',
         },
         {
           title: '\u00c9cran de partage en cours',
@@ -263,7 +263,7 @@ const TRANSLATIONS = {
         {
           title: 'Observation en classe, Coll\u00e8ge Jean Vilar',
           description: 'Avant de dessiner quoi que ce soit, on s\u2019installe dans la salle de classe.',
-          media: '/images/sqool/sqool classe/prototypes - observation - user testing - classe PXL_20231010_084158712.jpg',
+          media: '/images/sqool/sqool classe/prototypes - observation - user testing - classe PXL_20231010_084158712.webp',
         },
       ],
     },
