@@ -916,7 +916,7 @@ export const CONNECT_GALLERY_ITEMS: GalleryItem[] = [
     type: 'video',
   },
   {
-    src: '/videos/connect/connect-dashboard-prototype_complet_4k.mp4',
+    src: '/videos/connect/connect-dashboard-prototype_complet_4k-compressed.mp4',
     caption: 'Dashboard Prototype',
     captionDesc: 'Full interaction walkthrough demonstrating modular capabilities',
     type: 'video',
@@ -976,13 +976,13 @@ export const CONNECT_GALLERY_ITEMS: GalleryItem[] = [
     type: 'image',
   },
   {
-    src: '/videos/connect/interaction-bulle-connect.mp4',
+    src: '/videos/connect/interaction-bulle-connect-compressed.mp4',
     caption: 'La Bulle - Interaction Demo',
     captionDesc: 'Motion prototype of bubble opening animation',
     type: 'video',
   },
   {
-    src: '/videos/connect/Video-demo-bulle-interactions-02.mp4',
+    src: '/videos/connect/Video-demo-bulle-interactions-02-compressed.mp4',
     caption: 'La Bulle - Full Demo',
     captionDesc: 'Complete demonstration of bubble capabilities',
     type: 'video',
@@ -1206,26 +1206,26 @@ export const SQOOL_GALLERY_ITEMS: GalleryItem[] = [
   },
   // Connect Vision Prototype (videos)
   {
-    src: '/videos/connect/connect-dashboard-prototype_complet_4k.mp4',
+    src: '/videos/connect/connect-dashboard-prototype_complet_4k-compressed.mp4',
     caption: 'Connect Dashboard Prototype',
     captionDesc: 'Full walkthrough of the web-based dashboard demonstrator',
     type: 'video',
     span: 'wide',
   },
   {
-    src: '/videos/connect/Video-demo-bulle-interactions-02.mp4',
+    src: '/videos/connect/Video-demo-bulle-interactions-02-compressed.mp4',
     caption: 'La Bulle Interactions',
     captionDesc: 'Persistent floating UI for quick contextual actions',
     type: 'video',
   },
   {
-    src: '/videos/connect/interaction-bulle-connect.mp4',
+    src: '/videos/connect/interaction-bulle-connect-compressed.mp4',
     caption: 'Bubble Animation',
     captionDesc: 'Opening animation and menu transitions',
     type: 'video',
   },
   {
-    src: '/videos/connect/connect design sprint.mp4',
+    src: '/videos/connect/connect-design-sprint-compressed.mp4',
     caption: 'Design Sprint',
     captionDesc: 'User journey walkthrough from onboarding to classroom control',
     type: 'video',

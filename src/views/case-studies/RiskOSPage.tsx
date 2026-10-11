@@ -246,7 +246,7 @@ const RiskOSPage: React.FC<RiskOSPageProps> = ({ lang: propLang }) => {
 
           <div className="mt-5">
             <a
-              href="https://riskos-gulcbxw52-hugos-projects-0ac0cf31.vercel.app"
+              href="https://riskos.vercel.app"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium rounded-full bg-gray-900 text-white hover:bg-gray-700 active:scale-[0.97] transition-[background-color,transform] duration-150"
@@ -384,7 +384,7 @@ const RiskOSPage: React.FC<RiskOSPageProps> = ({ lang: propLang }) => {
 
             <div className="flex items-center gap-4 mt-6">
               <a
-                href="https://riskos-gulcbxw52-hugos-projects-0ac0cf31.vercel.app"
+                href="https://riskos.vercel.app"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-sm font-medium text-gray-900 hover:text-gray-600 transition-colors duration-150 underline underline-offset-4 decoration-gray-300 hover:decoration-gray-500 inline-flex items-center gap-1"

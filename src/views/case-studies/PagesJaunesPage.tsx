@@ -254,13 +254,13 @@ const getAllImages = (lang: 'en' | 'fr') => {
     { src: '/images/thumbnail_pagesjaunes_sp_tablette.webp', type: 'image', caption: 'PagesJaunes Mobile Apps' },
     { src: '/images/thumbnail-pagesjaunes-multidevices.webp', type: 'image', caption: 'PagesJaunes Multi-devices' },
     // Itinerary images with special characters - need both encoded and regular versions
-    { src: '/images/pagesjaunes/pj_ipad_itinéraire_piéton.webp', type: 'image', caption: lang === 'fr' ? 'Itinéraire piéton iPad' : 'iPad Pedestrian Route' },
-    { src: '/images/pagesjaunes/pj_ipad_itinéraire_transports.webp', type: 'image', caption: lang === 'fr' ? 'Itinéraire transports iPad' : 'iPad Transit Route' },
-    { src: '/images/pagesjaunes/pj_ipad_itinéraire_voiture.webp', type: 'image', caption: lang === 'fr' ? 'Itinéraire voiture iPad' : 'iPad Driving Route' },
-    { src: '/images/pagesjaunes/pj_iphone_itinéraire_piéton.webp', type: 'image', caption: lang === 'fr' ? 'Itinéraire piéton iPhone' : 'iPhone Pedestrian Route' },
-    { src: '/images/pagesjaunes/pj_iphone_itinéraire_transports.webp', type: 'image', caption: lang === 'fr' ? 'Itinéraire transports iPhone' : 'iPhone Transit Route' },
-    { src: '/images/pagesjaunes/pj_iphone_itinéraire_voiture.webp', type: 'image', caption: lang === 'fr' ? 'Itinéraire voiture iPhone' : 'iPhone Driving Route' },
-    { src: '/images/pagesjaunes/pj_iphone_itinéraire_piéton_ficheroute.webp', type: 'image', caption: lang === 'fr' ? 'Fiche route piéton iPhone' : 'iPhone Pedestrian Route Sheet' },
+    { src: '/images/pagesjaunes/pj_ipad_itineraire_pieton.webp', type: 'image', caption: lang === 'fr' ? 'Itinéraire piéton iPad' : 'iPad Pedestrian Route' },
+    { src: '/images/pagesjaunes/pj_ipad_itineraire_transports.webp', type: 'image', caption: lang === 'fr' ? 'Itinéraire transports iPad' : 'iPad Transit Route' },
+    { src: '/images/pagesjaunes/pj_ipad_itineraire_voiture.webp', type: 'image', caption: lang === 'fr' ? 'Itinéraire voiture iPad' : 'iPad Driving Route' },
+    { src: '/images/pagesjaunes/pj_iphone_itineraire_pieton.webp', type: 'image', caption: lang === 'fr' ? 'Itinéraire piéton iPhone' : 'iPhone Pedestrian Route' },
+    { src: '/images/pagesjaunes/pj_iphone_itineraire_transports.webp', type: 'image', caption: lang === 'fr' ? 'Itinéraire transports iPhone' : 'iPhone Transit Route' },
+    { src: '/images/pagesjaunes/pj_iphone_itineraire_voiture.webp', type: 'image', caption: lang === 'fr' ? 'Itinéraire voiture iPhone' : 'iPhone Driving Route' },
+    { src: '/images/pagesjaunes/pj_iphone_itineraire_pieton_ficheroute.webp', type: 'image', caption: lang === 'fr' ? 'Fiche route piéton iPhone' : 'iPhone Pedestrian Route Sheet' },
     { src: '/images/pagesjaunes/Android wear/screens/cover_yellow strap apps.webp', type: 'image', caption: lang === 'fr' ? 'Stratégie Design System Yellowstrap' : 'Yellowstrap Design System Strategy' },
   ];
 
