@@ -539,7 +539,7 @@ const PrototypeFinderGallery: React.FC<PrototypeFinderGalleryProps> = ({
 
   // Category pills — tablet/mobile (no layoutId to avoid cross-instance conflicts)
   const categoryPills = (
-    <div className="flex gap-1.5 overflow-x-auto py-1" style={{ scrollbarWidth: 'none' }}>
+    <div className="flex gap-1.5 overflow-x-auto overscroll-x-contain py-1 [&::-webkit-scrollbar]:hidden" style={{ scrollbarWidth: 'none' }}>
       {GALLERY_CATEGORIES.map(cat => {
         const Icon = CATEGORY_ICONS[cat.id];
         const isActive = activeCategory === cat.id;

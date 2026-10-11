@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useSnapScroller } from '@/hooks/useSnapScroller';
 import { CaretRight as ChevronRight, CaretLeft as ChevronLeft, Briefcase } from '@phosphor-icons/react';
 import { careerData, CareerItem } from '../data/careerData';
 
@@ -18,16 +19,13 @@ export default function CareerCarousel({ lang, headline }: CareerCarouselProps) 
   const activeIndex = careerData.findIndex(d => d.id === activeId);
 
   // Sync scroll of the thumbnail timeline with active ID (desktop only)
+  const { bind: stripBind, scrollToIndex: stripScrollToIndex } = useSnapScroller(scrollContainerRef, {
+    align: 'center',
+  });
+
   useEffect(() => {
-    if (scrollContainerRef.current) {
-      const activeElement = scrollContainerRef.current.children[activeIndex] as HTMLElement;
-      if (activeElement) {
-        const container = scrollContainerRef.current;
-        const scrollLeft = activeElement.offsetLeft - container.offsetWidth / 2 + activeElement.offsetWidth / 2;
-        container.scrollTo({ left: scrollLeft, behavior: 'smooth' });
-      }
-    }
-  }, [activeId, activeIndex]);
+    stripScrollToIndex(activeIndex);
+  }, [activeId, activeIndex, stripScrollToIndex]);
 
   // Scroll to active item on mobile
   useEffect(() => {
@@ -287,8 +285,9 @@ export default function CareerCarousel({ lang, headline }: CareerCarouselProps) 
 
           <div
             ref={scrollContainerRef}
-            className="flex items-center space-x-4 overflow-x-auto px-[50vw] hide-scrollbar h-full py-4 snap-x"
-            style={{ scrollBehavior: 'smooth' }}
+            {...stripBind}
+            onPointerCancel={stripBind.onPointerUp}
+            className="snap-scroller snap-rubber flex items-center space-x-4 overflow-x-auto px-[50vw] hide-scrollbar h-full py-4 snap-x snap-proximity cursor-grab"
           >
             {careerData.map((item) => {
               const isActive = activeId === item.id;

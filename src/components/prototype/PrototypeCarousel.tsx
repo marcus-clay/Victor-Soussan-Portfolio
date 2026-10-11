@@ -1,4 +1,5 @@
 import React, { useRef, useState, useCallback, useEffect } from 'react';
+import { useSnapScroller } from '../../hooks/useSnapScroller';
 import { CaretLeft as ChevronLeft, CaretRight as ChevronRight, Play, Pause, ArrowCounterClockwise as RotateCcw, ArrowsOut as Expand } from '@phosphor-icons/react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PrototypeItem, getIframeSrc, CATEGORY_COLORS } from '../../data/sqoolPrototypesData';
@@ -414,11 +415,18 @@ const PrototypeCarousel: React.FC<PrototypeCarouselProps> = ({
     };
   }, [updateScrollState, carouselProtos.length]);
 
+  const { bind, scrollToIndex, currentIndex } = useSnapScroller(scrollRef, {
+    onProgress: updateScrollState,
+    onSettle: updateScrollState,
+  });
+
+  // One arrow press moves by the number of thumbnails that fit in view
   const scrollBy = useCallback((dir: number) => {
     const el = scrollRef.current;
     if (!el) return;
-    el.scrollBy({ left: dir * SCROLL_AMOUNT, behavior: 'smooth' });
-  }, []);
+    const perView = Math.max(1, Math.floor((el.clientWidth + 16) / SCROLL_AMOUNT));
+    scrollToIndex(currentIndex() + dir * perView);
+  }, [scrollToIndex, currentIndex]);
 
   if (prototypes.length === 0) return null;
 
@@ -462,11 +470,17 @@ const PrototypeCarousel: React.FC<PrototypeCarouselProps> = ({
           {/* Scrollable track */}
           <div
             ref={scrollRef}
-            className="proto-strip flex gap-4 overflow-x-auto scroll-smooth pb-3"
+            {...bind}
+            onPointerCancel={bind.onPointerUp}
+            tabIndex={0}
+            role="group"
+            aria-roledescription="carousel"
+            className="proto-strip snap-scroller snap-rubber flex gap-4 overflow-x-auto pb-3 cursor-grab"
             style={{
               scrollbarWidth: 'none',
               msOverflowStyle: 'none',
               WebkitOverflowScrolling: 'touch',
+              scrollSnapType: 'x proximity',
             }}
           >
             <style>{`.proto-strip::-webkit-scrollbar { display: none; }`}</style>
@@ -474,7 +488,7 @@ const PrototypeCarousel: React.FC<PrototypeCarouselProps> = ({
               <div
                 key={proto.id}
                 className="flex-shrink-0"
-                style={{ width: `${THUMB_WIDTH}px` }}
+                style={{ width: `${THUMB_WIDTH}px`, scrollSnapAlign: 'start' }}
               >
                 <PrototypePlayer
                   prototype={proto}

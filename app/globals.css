@@ -256,6 +256,22 @@ body {
   animation-play-state: paused;
 }
 
+/* Horizontal carousels (see src/hooks/useSnapScroller.ts) */
+.snap-scroller {
+  overscroll-behavior-x: contain; /* no browser back-swipe when a carousel hits its end */
+  scroll-snap-stop: normal;
+}
+.snap-scroller:focus-visible {
+  outline: 2px solid #2D5CF3;
+  outline-offset: 4px;
+  border-radius: 8px;
+}
+/* Rubber banding moves the direct children with the individual `translate` property,
+   so it never conflicts with their own transforms (hover scale, motion). */
+.snap-rubber > * {
+  translate: var(--rb, 0px) 0;
+}
+
 /* Gallery carousel — continuous auto-scroll, pauses on hover */
 @keyframes gallery-scroll {
   0% { transform: translateX(0); }

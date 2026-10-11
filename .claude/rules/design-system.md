@@ -95,3 +95,15 @@ Sizes are Tailwind tokens defined in `tailwind.config.js`. Each size carries its
 - Large display sizes (`text-4xl` and up) are reserved for the `/presentation`, `/quote` and resume surfaces.
 - Dark mode text: `text-white` (headings), `text-gray-400` (body).
 - The header repeats the page identity once the first `h1` (the whole hero on the homepage) leaves the viewport.
+
+## Carousels (horizontal scrollers)
+Every swipeable carousel uses `useSnapScroller` (`src/hooks/useSnapScroller.ts`) on top of CSS scroll-snap:
+- Touch and trackpad scrolling stay native (`scroll-snap-type` + `snap-scroller` for `overscroll-behavior-x: contain`).
+- Mouse drag is 1:1, then lands on the snap point the gesture was heading to (momentum projection, rate 0.998), through a critically damped spring that inherits the release velocity.
+- Rubber banding at both ends via `.snap-rubber` (individual `translate` on direct children, never `transform`).
+- Arrows, dots and ArrowLeft/ArrowRight go through the same spring. A press or a wheel stops the motion where it is.
+- Never use `scroll-behavior: smooth` or `scrollTo({ behavior: 'smooth' })` on a carousel: it fights the spring.
+- Track needs `tabIndex={0}`, `role="group"`, `aria-roledescription="carousel"` and an `aria-label`; items get `scroll-snap-align`, and the container `scroll-padding-left` equal to its left padding.
+
+## Overlays and scroll lock
+Lightboxes and galleries lock the page with `useScrollLock(isOpen)` (`src/hooks/useScrollLock.ts`), never with `body.style.overflow`, `position: fixed` or a `scrollTo`. The page must stay exactly where it was. Do not change the pathname from an overlay (the router scrolls to top on pathname change); use the URL hash.

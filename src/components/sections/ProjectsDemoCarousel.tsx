@@ -4,6 +4,7 @@ import React, { useState, useRef, useCallback, useEffect } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { Play, Pause } from '@phosphor-icons/react'
 import { getProjects } from '@/data/projectsData'
+import { useSnapScroller } from '@/hooks/useSnapScroller'
 
 const EASE: [number, number, number, number] = [0.23, 1, 0.32, 1]
 
@@ -11,12 +12,6 @@ const EASE: [number, number, number, number] = [0.23, 1, 0.32, 1]
 const CONTENT_LEFT = 'max(24px, calc(50vw - 346px))'
 // Must equal CONTENT_LEFT: cards are 692px wide, so clientWidth − cardWidth − CONTENT_LEFT = CONTENT_LEFT.
 const CONTENT_RIGHT = CONTENT_LEFT
-const SCROLL_DURATION = 460
-
-function easeOutStrong(t: number): number {
-  return 1 - Math.pow(1 - t, 3)
-}
-
 function ArrowDiag({ style }: { style?: React.CSSProperties }) {
   return (
     <svg width={12} height={12} viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -78,22 +73,14 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
 
   const trackRef = useRef<HTMLDivElement>(null)
   const userStartedRef = useRef(false)
-  const rafRef = useRef<number>(0)
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([])
 
-  const dragging = useRef(false)
   const animating = useRef(false)
-  const hasMoved = useRef(false)
-  const dragStartX = useRef(0)
-  const dragStartScrollLeft = useRef(0)
-  const dragLastX = useRef(0)
-  const dragLastTime = useRef(0)
-  const dragVelocity = useRef(0)
   const trackPl = useRef(24) // cached paddingLeft, updated on resize
 
   // ── State sync ─────────────────────────────────────────────────────────────
   const detectActive = useCallback(() => {
-    if (dragging.current || animating.current) return
+    if (animating.current) return
     const track = trackRef.current
     if (!track) return
     const pl = trackPl.current
@@ -143,7 +130,7 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
       // Live opacity tracking on every scroll frame
       updateOpacities(track.scrollLeft)
       // Eager activeIndex: fire before scrollend when card is nearly centred
-      if (!dragging.current && !animating.current) {
+      if (!animating.current) {
         const pl = trackPl.current
         const cards = track.querySelectorAll<HTMLElement>('[data-card]')
         let closest = 0, minDist = Infinity
@@ -167,8 +154,6 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
       track.removeEventListener('scroll', onScroll)
     }
   }, [detectActive, updateOpacities])
-
-  useEffect(() => { return () => cancelAnimationFrame(rafRef.current) }, [])
 
   // Respect reduced motion: videos start paused and the visitor can press play
   useEffect(() => {
@@ -211,109 +196,18 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
     else { video.pause(); setIsPaused(true) }
   }, [activeIndex, isPaused])
 
-  // ── Programmatic scroll ────────────────────────────────────────────────────
-  const smoothScrollTo = useCallback((el: HTMLElement, target: number) => {
-    cancelAnimationFrame(rafRef.current)
-    const start = el.scrollLeft
-    const diff = target - start
-    if (Math.abs(diff) < 1) return
-    animating.current = true
-    const prevSnap = el.style.scrollSnapType
-    el.style.scrollSnapType = 'none'
-    const t0 = performance.now()
-    function frame(now: number) {
-      const t = Math.min((now - t0) / SCROLL_DURATION, 1)
-      const newScrollLeft = start + diff * easeOutStrong(t)
-      el.scrollLeft = newScrollLeft
-      updateOpacities(newScrollLeft)
-      if (t < 1) {
-        rafRef.current = requestAnimationFrame(frame)
-      } else {
-        animating.current = false
-        el.style.scrollSnapType = prevSnap || ''
-        detectActive()
-      }
-    }
-    rafRef.current = requestAnimationFrame(frame)
-  }, [detectActive, updateOpacities])
+  // ── Scrolling: snap, momentum, spring, rubber band (shared hook) ───────────
+  const { bind, scrollToIndex } = useSnapScroller(trackRef, {
+    pageLimit: 1,
+    onProgress: updateOpacities,
+    onSettle: () => { animating.current = false; detectActive() },
+  })
 
   const goTo = useCallback((index: number) => {
-    const track = trackRef.current
-    if (!track) return
-    const pl = parseFloat(getComputedStyle(track).paddingLeft)
-    const cards = track.querySelectorAll<HTMLElement>('[data-card]')
-    const card = cards[index]
-    if (!card) return
-    smoothScrollTo(track, card.offsetLeft - pl)
+    animating.current = true
     setActiveIndex(index)
-  }, [smoothScrollTo])
-
-  // ── Drag / swipe ───────────────────────────────────────────────────────────
-  const onPointerDown = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
-    if (e.button !== 0) return
-    if (e.pointerType === 'touch') return // native scroll handles touch — no conflict
-    const track = trackRef.current
-    if (!track) return
-    dragging.current = true
-    hasMoved.current = false
-    dragStartX.current = e.clientX
-    dragStartScrollLeft.current = track.scrollLeft
-    dragLastX.current = e.clientX
-    dragLastTime.current = performance.now()
-    dragVelocity.current = 0
-    cancelAnimationFrame(rafRef.current)
-    animating.current = false
-    track.style.cursor = 'grabbing'
-  }, [])
-
-  const onPointerMove = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
-    if (!dragging.current) return
-    const track = trackRef.current
-    if (!track) return
-    const dx = e.clientX - dragStartX.current
-    if (Math.abs(dx) > 4) {
-      if (!hasMoved.current) track.setPointerCapture(e.pointerId)
-      hasMoved.current = true
-    }
-    track.style.scrollSnapType = 'none'
-    const newScrollLeft = dragStartScrollLeft.current - dx
-    track.scrollLeft = newScrollLeft
-    updateOpacities(newScrollLeft)
-    const now = performance.now()
-    const dt = now - dragLastTime.current
-    if (dt > 0) dragVelocity.current = (dragLastX.current - e.clientX) / dt
-    dragLastX.current = e.clientX
-    dragLastTime.current = now
-  }, [updateOpacities])
-
-  const onPointerUp = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
-    if (!dragging.current) return
-    dragging.current = false
-    const track = trackRef.current
-    if (!track) return
-    track.style.cursor = 'grab'
-    if (!hasMoved.current) {
-      track.style.scrollSnapType = 'x mandatory'
-      return
-    }
-    const dx = dragStartX.current - e.clientX
-    const velocity = dragVelocity.current
-    const threshold = CARD_WIDTH_PX * 0.18
-    // Mouse/trackpad generates higher accidental velocity — use stricter threshold
-    const velThreshold = e.pointerType === 'mouse' ? 0.3 : 0.25
-    let target = activeIndex
-    if (velocity > velThreshold || dx > threshold) target = Math.min(items.length - 1, activeIndex + 1)
-    else if (velocity < -velThreshold || dx < -threshold) target = Math.max(0, activeIndex - 1)
-    goTo(target)
-  }, [activeIndex, items.length, goTo])
-
-  const onClickCapture = useCallback((e: React.MouseEvent) => {
-    if (hasMoved.current) {
-      e.preventDefault()
-      e.stopPropagation()
-      hasMoved.current = false
-    }
-  }, [])
+    scrollToIndex(index)
+  }, [scrollToIndex])
 
   const sectionRef = useRef<HTMLElement>(null)
   const isInView = useInView(sectionRef, { once: true, margin: '-80px 0px 0px 0px' })
@@ -347,7 +241,11 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
       <div className="relative">
         <div
           ref={trackRef}
-          className="flex gap-7 [&::-webkit-scrollbar]:hidden"
+          className="snap-scroller snap-rubber flex gap-7 [&::-webkit-scrollbar]:hidden"
+          tabIndex={0}
+          role="group"
+          aria-roledescription="carousel"
+          aria-label={isEn ? 'Selected projects' : 'Projets sélectionnés'}
           style={{
             overflowX: 'auto',
             scrollSnapType: 'x mandatory',
@@ -360,11 +258,8 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
             cursor: 'grab',
             userSelect: 'none',
           } as React.CSSProperties}
-          onPointerDown={onPointerDown}
-          onPointerMove={onPointerMove}
-          onPointerUp={onPointerUp}
-          onPointerCancel={onPointerUp}
-          onClickCapture={onClickCapture}
+          {...bind}
+          onPointerCancel={bind.onPointerUp}
         >
           {items.map((item, index) => {
             const isActive = index === activeIndex

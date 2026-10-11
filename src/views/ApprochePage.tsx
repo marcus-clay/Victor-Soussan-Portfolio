@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
+import { useSnapScroller } from '@/hooks/useSnapScroller'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import Link from 'next/link'
 import { ArrowRight, ArrowLeft, CaretDown } from '@phosphor-icons/react'
@@ -286,17 +287,16 @@ const DeliverableCarousel = React.forwardRef<
   const scrollRef = React.useRef<HTMLDivElement>(null)
   const [activeIndex, setActiveIndex] = useState(0)
 
+  const travelling = React.useRef(false)
+  const { bind, scrollToIndex } = useSnapScroller(scrollRef, {
+    pageLimit: 2,
+    onSettle: () => { travelling.current = false },
+  })
+
   const scrollTo = (index: number) => {
-    const container = scrollRef.current
-    if (!container) return
-    const card = container.children[index] as HTMLElement
-    if (!card) return
-    // Offset relative to container, not document — reliable across layouts
-    container.scrollTo({
-      left: card.offsetLeft - container.offsetLeft,
-      behavior: 'smooth',
-    })
+    travelling.current = true
     setActiveIndex(index)
+    scrollToIndex(index)
   }
 
   const prev = () => scrollTo(Math.max(0, activeIndex - 1))
@@ -311,7 +311,7 @@ const DeliverableCarousel = React.forwardRef<
     if (rafRef.current) cancelAnimationFrame(rafRef.current)
     rafRef.current = requestAnimationFrame(() => {
       const container = scrollRef.current
-      if (!container) return
+      if (!container || travelling.current) return
       const cards = Array.from(container.children) as HTMLElement[]
       const mid = container.scrollLeft + container.clientWidth / 2
       let closest = 0
@@ -330,7 +330,13 @@ const DeliverableCarousel = React.forwardRef<
       <div
         ref={scrollRef}
         onScroll={onScroll}
-        className="flex gap-3 overflow-x-auto snap-x snap-mandatory pb-3 -mx-6 px-6
+        {...bind}
+        onPointerCancel={bind.onPointerUp}
+        tabIndex={0}
+        role="group"
+        aria-roledescription="carousel"
+        aria-label={lang === 'fr' ? 'Livrables' : 'Deliverables'}
+        className="snap-scroller snap-rubber flex gap-3 overflow-x-auto snap-x snap-mandatory scroll-pl-6 pb-3 -mx-6 px-6 cursor-grab
           [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
       >
         {items.map((item, i) => {

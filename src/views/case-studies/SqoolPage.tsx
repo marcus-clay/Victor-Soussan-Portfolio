@@ -2,6 +2,7 @@
 // A trunk case study that synthesizes the SQOOL journey (2018-2024)
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useSnapScroller } from '@/hooks/useSnapScroller';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   CaretRight as ChevronRight,
@@ -181,15 +182,14 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
     }
   }, []);
 
+  const { bind: brandBind, scrollToIndex: brandScrollToIndex, currentIndex: brandIndex } = useSnapScroller(brandCarouselRef, {
+    onProgress: checkBrandScroll,
+    onSettle: checkBrandScroll,
+  });
+
   const scrollBrandCarousel = useCallback((direction: 'left' | 'right') => {
-    if (brandCarouselRef.current) {
-      const scrollAmount = 400;
-      brandCarouselRef.current.scrollBy({
-        left: direction === 'left' ? -scrollAmount : scrollAmount,
-        behavior: 'smooth'
-      });
-    }
-  }, []);
+    brandScrollToIndex(brandIndex() + (direction === 'left' ? -1 : 1));
+  }, [brandScrollToIndex, brandIndex]);
 
   const brandVisuals = [
     { src: '/images/sqool/systeme de marque/visuels_systeme_de_marque_01_2x.webp', key: 'brandVisual01', wide: true },
@@ -651,13 +651,18 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
                   <div
                     ref={brandCarouselRef}
                     onScroll={checkBrandScroll}
-                    className="flex gap-3 overflow-x-auto scrollbar-hide px-4 py-1"
-                    style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                    {...brandBind}
+                    onPointerCancel={brandBind.onPointerUp}
+                    tabIndex={0}
+                    role="group"
+                    aria-roledescription="carousel"
+                    className="snap-scroller snap-rubber flex gap-3 overflow-x-auto scrollbar-hide px-4 py-1 scroll-pl-4 cursor-grab"
+                    style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', scrollSnapType: 'x proximity' }}
                   >
                     {brandVisuals.map((item, idx) => (
                       <div
                         key={idx}
-                        className="group rounded-xl overflow-hidden cursor-zoom-in flex-shrink-0 ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
+                        className="group snap-start rounded-xl overflow-hidden cursor-zoom-in flex-shrink-0 ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
                         style={{
                           width: item.wide ? '400px' : '280px',
                           height: '220px'

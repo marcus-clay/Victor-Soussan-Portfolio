@@ -43,7 +43,7 @@ const GallerySidebar: React.FC<GallerySidebarProps> = ({
   if (isMobile) {
     // Mobile: horizontal pill bar
     return (
-      <div className={`sticky top-16 z-30 px-4 py-2 flex gap-2 overflow-x-auto ${
+      <div className={`sticky top-16 z-30 px-4 py-2 flex gap-2 overflow-x-auto overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${
         isDark ? 'bg-[#0a0a0a]/90 backdrop-blur-md' : 'bg-white/90 backdrop-blur-md'
       }`}>
         {GALLERY_CATEGORIES.map(cat => {
