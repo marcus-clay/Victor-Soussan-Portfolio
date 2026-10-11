@@ -46,6 +46,41 @@
   }
 }
 
+/* ── Appearance ────────────────────────────────────────────────────────────
+   Entrances are CSS animations, not JS-driven: they start on first paint, so
+   server-rendered content is never held back waiting for hydration.
+   Only opacity and transform move. `backwards` fill = no residual style after the
+   animation, so hover and state styles keep working. */
+@keyframes rise-in {
+  from { opacity: 0; transform: translate3d(0, var(--rise, 12px), 0); }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+}
+
+/* Staggered entrance: style={{ '--i': 0 }} on each element, 70ms apart */
+.rise-in {
+  animation: rise-in 500ms var(--ease-out-expo) backwards;
+  animation-delay: calc(var(--i, 0) * 70ms);
+}
+
+/* Every page after a client-side navigation */
+.page-in {
+  animation: rise-in 380ms var(--ease-out-expo) backwards;
+  --rise: 8px;
+}
+
+/* Lazy images fade in once decoded instead of popping in. The hiding rule only
+   applies after JavaScript has marked the document (.img-fade), so server HTML
+   and no-JS visitors always see images. Images already loaded at hydration are
+   marked data-loaded="instant" and do not animate. */
+.img-fade img[loading="lazy"]:not([data-loaded]) {
+  opacity: 0;
+}
+.img-fade img[loading="lazy"][data-loaded=""] {
+  animation: fade-in 450ms var(--ease-out-expo) backwards;
+}
+
 /* Keyboard focus: one consistent, visible ring in the brand blue.
    :where() keeps specificity at zero, so component-level focus styles still win. */
 :where(a, button, [role="button"], input, textarea, select, summary, [tabindex]):focus-visible {

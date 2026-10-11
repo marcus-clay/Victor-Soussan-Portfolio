@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation'
 import type { ReactNode } from 'react'
 import { MotionConfig } from 'framer-motion'
 import SkillsPromoBanner from './SkillsPromoBanner'
+import ImageFadeIn from './ImageFadeIn'
 
 // Routes that use their own full-screen layout (no Nav/Footer)
 const BARE_ROUTES = ['/presentation', '/quote']
@@ -34,6 +35,7 @@ export default function LayoutShell({
       >
         Skip to content
       </a>
+      <ImageFadeIn />
       {nav}
       <main id="main-content" style={{ paddingTop: 'var(--nav-height, 72px)', transition: 'padding-top 250ms cubic-bezier(0.23, 1, 0.32, 1)' }}>
         {children}
