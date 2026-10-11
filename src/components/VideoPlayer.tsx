@@ -2,7 +2,7 @@
 
 /**
  * VideoPlayer — autoplay loop video with a persistent play/pause toggle.
- * - Plays automatically (muted, loop), except under prefers-reduced-motion
+ * - Plays automatically (muted, loop); the pause button is always one click away
  * - Play/Pause button always visible at bottom-right (dim at rest, bright on hover / when paused)
  * - Click anywhere on video also toggles playback
  */
@@ -32,19 +32,10 @@ export default function VideoPlayer({
   const [isPlaying, setIsPlaying] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
 
-  // Autoplay unless the visitor asked the system for reduced motion.
-  // The `autoPlay` attribute is left off on purpose: it would start playback
-  // before this check can run. A click on play still works either way.
+  // Start playback once mounted. Muted + playsInline lets browsers allow it; if one
+  // refuses, the play button stays available.
   useEffect(() => {
-    const video = videoRef.current
-    if (!video) return
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (reduce) {
-      video.pause()
-      setIsPlaying(false)
-    } else {
-      video.play().catch(() => {})
-    }
+    videoRef.current?.play().catch(() => {})
   }, [])
 
   // Sync state if browser pauses externally (tab visibility, etc.)
@@ -82,6 +73,7 @@ export default function VideoPlayer({
       <video
         ref={videoRef}
         src={src}
+        autoPlay
         loop
         muted
         playsInline

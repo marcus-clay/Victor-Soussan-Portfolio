@@ -1,6 +1,7 @@
 'use client'
 
-import { motion, useReducedMotion } from 'framer-motion'
+import { motion } from 'framer-motion'
+import { useReducedMotion } from '@/hooks/useReducedMotion'
 import { ArrowUpRight, LinkedinLogoIcon } from '@phosphor-icons/react'
 import { getTestimonials } from '@/data/testimonialsData'
 import { TRANSLATIONS } from '@/data/translations'

@@ -7,8 +7,8 @@ import { buildMetadata, itemListLd, pageLd, pageUrl, toLang } from '@/lib/seo'
 type Props = { params: Promise<{ lang: string }> }
 
 const COPY = {
-  fr: { title: 'Ressources', description: 'Articles, guides, templates et retours d’expérience sur le product design et l’IA.' },
-  en: { title: 'Resources', description: 'Articles, guides, templates, and insights on product design and AI.' },
+  fr: { title: 'Ressources product design et IA', description: 'Articles, guides et templates sur le product design B2B et B2G, les design systems et le prototypage assisté par IA, par Victor Soussan, Lead Product Designer.' },
+  en: { title: 'Product design and AI resources', description: 'Articles, guides and templates on B2B and B2G product design, design systems and AI-assisted prototyping, by Victor Soussan, Lead Product Designer.' },
 } as const
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

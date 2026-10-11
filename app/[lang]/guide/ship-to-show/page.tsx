@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     lang,
     path: 'guide/ship-to-show',
     title: `${SHIP_TO_SHOW_META.title_en}: ${lang === 'fr' ? 'du prototype au case study' : 'from prototype to case study'}`,
-    description: subtitle,
+    description: `${subtitle}. ${lang === 'fr' ? 'Méthode pas à pas par Victor Soussan, Lead Product Designer : vidéos animées, récit bilingue et pack d’intégration.' : 'Step-by-step method by Victor Soussan, Lead Product Designer: animated videos, bilingual narrative and integration pack.'}`,
     type: 'article',
     publishedTime: SHIP_TO_SHOW_META.date,
   })

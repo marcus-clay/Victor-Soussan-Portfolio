@@ -124,7 +124,7 @@ const VisualArchivePage: React.FC<VisualArchivePageProps> = ({ lang }) => {
       {/* Sticky sub-bar: swaps between breadcrumb and TOC */}
       <div
         className="sticky z-10 backdrop-blur-xl bg-[#FDFDFC]/80"
-        style={{ top: 'var(--nav-height, 72px)', transition: 'top 250ms cubic-bezier(0.23, 1, 0.32, 1)' }}
+        style={{ top: 'var(--nav-height, 64px)', transition: 'top 250ms cubic-bezier(0.23, 1, 0.32, 1)' }}
       >
         <div className="relative h-10 overflow-hidden">
           {/* Breadcrumb layer */}
@@ -302,7 +302,7 @@ const ProjectSection: React.FC<{
   return (
     <section
       id={`gallery-${project.id}`}
-      style={{ scrollMarginTop: 'calc(var(--nav-height, 72px) + 40px + 32px)' }}
+      style={{ scrollMarginTop: 'calc(var(--nav-height, 64px) + 40px + 32px)' }}
     >
       {/* Project header — aligned with the 740px text column */}
       {/* clamp(0px, (100vw - 740px) / 2, 110px) matches the centering offset between the

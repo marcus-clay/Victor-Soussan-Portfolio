@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { motion, useReducedMotion } from 'framer-motion'
+import { motion } from 'framer-motion'
+import { useReducedMotion } from '@/hooks/useReducedMotion'
 import { LinkedinLogo, CaretDown } from '@phosphor-icons/react'
 import Avatar from '@/components/Avatar'
 

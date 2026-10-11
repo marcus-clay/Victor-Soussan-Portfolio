@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       en: `guide/claude-code/${chapter.slug_en}`,
     },
     title: `${chapterTitle} | ${guideTitle}`,
-    description: lang === 'fr' ? chapter.intro_fr : chapter.intro_en,
+    description: `${lang === 'fr' ? chapter.intro_fr : chapter.intro_en} ${lang === 'fr' ? 'Guide Claude Code pour product designers, par Victor Soussan.' : 'Claude Code guide for product designers, by Victor Soussan.'}`,
     type: 'article',
     publishedTime: GUIDE_META.date,
     section: guideTitle,

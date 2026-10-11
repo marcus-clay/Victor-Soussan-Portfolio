@@ -10,7 +10,7 @@
  */
 function getStickyOffset(): number {
   const navHeight = parseInt(
-    getComputedStyle(document.documentElement).getPropertyValue('--nav-height') || '72',
+    getComputedStyle(document.documentElement).getPropertyValue('--nav-height') || '64',
     10
   )
   // 40px for breadcrumb/TOC bar + 24px breathing room

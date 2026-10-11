@@ -142,7 +142,7 @@ export function useSnapScroller(
     const max = el.scrollWidth - el.clientWidth;
     const to = clamp(target, 0, max);
 
-    if (prefersReducedMotion() || (Math.abs(to - from) < 0.5 && rb.current === 0)) {
+    if ((Math.abs(to - from) < 0.5 && rb.current === 0)) {
       el.scrollLeft = to;
       setRb(0);
       releaseSnapType();

@@ -2,7 +2,8 @@
 
 import React, { useEffect, useState } from 'react'
 import { useSnapScroller } from '@/hooks/useSnapScroller'
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
+import { useReducedMotion } from '@/hooks/useReducedMotion'
 import Link from 'next/link'
 import { ArrowRight, ArrowLeft, CaretDown } from '@phosphor-icons/react'
 import AuthorContactCard from '@/components/AuthorContactCard'

@@ -314,7 +314,7 @@ export default function CaseStudyPageWrapper({
       {/* Sticky sub-bar: swaps between breadcrumb and TOC */}
       <div
         className="sticky z-10 backdrop-blur-xl bg-[#FDFDFC]/80"
-        style={{ top: 'var(--nav-height, 72px)', transition: 'top 250ms cubic-bezier(0.23, 1, 0.32, 1)' }}
+        style={{ top: 'var(--nav-height, 64px)', transition: 'top 250ms cubic-bezier(0.23, 1, 0.32, 1)' }}
       >
         {/* Breadcrumb (clipped container for swap animation) */}
         <div className="relative h-10 overflow-hidden">
