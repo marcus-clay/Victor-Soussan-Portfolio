@@ -34,7 +34,7 @@ export default function TestimonialsPageClient({ lang }: { lang: 'en' | 'fr' }) 
           <motion.h1
             variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
             transition={{ duration: 0.5, ease: easeOut }}
-            className="text-base font-semibold tracking-[-0.01em] text-gray-900"
+            className="text-title-1 text-gray-900"
           >
             {t.title}
           </motion.h1>
@@ -152,7 +152,7 @@ export default function TestimonialsPageClient({ lang }: { lang: 'en' | 'fr' }) 
 
         {/* Cross-links */}
         <div className="mt-20">
-          <h2 className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-4">
+          <h2 className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-4">
             {t.crosslink_title}
           </h2>
           <div className="divide-y divide-gray-100">
@@ -175,7 +175,7 @@ export default function TestimonialsPageClient({ lang }: { lang: 'en' | 'fr' }) 
                   </span>
                   <ArrowUpRight
                     size={14}
-                    className="text-gray-400 group-hover:text-gray-600 transition-colors duration-150 flex-shrink-0"
+                    className="text-gray-500 group-hover:text-gray-600 transition-colors duration-150 flex-shrink-0"
                   />
                 </Link>
               </motion.div>

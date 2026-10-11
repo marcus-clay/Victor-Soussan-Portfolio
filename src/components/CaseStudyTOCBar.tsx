@@ -242,7 +242,7 @@ const CaseStudyTOCBar: React.FC<CaseStudyTOCBarProps> = ({
                 {currentLabel}
               </span>
               {/* Fraction counter */}
-              <span className="text-xs tabular-nums flex-shrink-0 text-gray-400">
+              <span className="text-xs tabular-nums flex-shrink-0 text-gray-500">
                 · {currentIndex + 1}/{sections.length}
               </span>
             </div>
@@ -254,7 +254,7 @@ const CaseStudyTOCBar: React.FC<CaseStudyTOCBarProps> = ({
                 transition: 'transform 200ms cubic-bezier(0.23, 1, 0.32, 1)',
               }}
             >
-              <CaretDown size={14} weight="bold" className="text-gray-400" />
+              <CaretDown size={14} weight="bold" className="text-gray-500" />
             </div>
           </button>
         </div>

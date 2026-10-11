@@ -649,7 +649,7 @@ const ClickableImage: React.FC<{
         />
       </div>
       {caption && (
-        <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed max-w-[740px] mx-auto">
+        <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed max-w-[740px] mx-auto">
           {caption}
         </figcaption>
       )}
@@ -1086,12 +1086,12 @@ const InitiativesDiagram: React.FC<{
                         }`}>
                           <InitiativeIcon size={26} strokeWidth={2} />
                         </div>
-                        <div className={`text-xs uppercase font-medium tracking-wider text-gray-400 mb-2 ${
-                          'text-gray-400'
+                        <div className={`text-xs uppercase font-medium tracking-wider text-gray-500 mb-2 ${
+                          'text-gray-500'
                         }`}>
                           {texts.initiative} {initiative.id}
                         </div>
-                        <h3 className="text-base font-semibold tracking-[-0.01em] leading-tight mb-2 text-gray-900">
+                        <h3 className="text-title-3 leading-tight mb-2 text-gray-900">
                           {initiative.title}
                         </h3>
                         <div className={`inline-block px-3 py-1 rounded-md text-xs font-semibold ${
@@ -1110,7 +1110,7 @@ const InitiativesDiagram: React.FC<{
                     {/* Right: Features */}
                     <div className="md:w-2/3 p-8 md:p-10 overflow-y-auto">
                       <h4 className={`text-xs font-semibold uppercase tracking-wider mb-6 ${
-                        'text-gray-400'
+                        'text-gray-500'
                       }`}>
                         {texts.keyDeliverables}
                       </h4>
@@ -1182,8 +1182,8 @@ const InitiativesDiagram: React.FC<{
                     <InitiativeIcon size={20} strokeWidth={2} />
                   </div>
                   <div>
-                    <div className={`text-xs uppercase font-medium tracking-wider text-gray-400 ${
-                      'text-gray-400'
+                    <div className={`text-xs uppercase font-medium tracking-wider text-gray-500 ${
+                      'text-gray-500'
                     }`}>
                       {texts.initiative} {initiative.id}
                     </div>
@@ -1238,15 +1238,15 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
 
           {/* Meta */}
           <div className="flex flex-wrap gap-x-3 gap-y-1 mb-4">
-            <span className="text-xs text-gray-400">{t.meta.role}</span>
+            <span className="text-xs text-gray-500">{t.meta.role}</span>
             <span className="text-xs text-gray-300">·</span>
-            <span className="text-xs text-gray-400">{t.meta.scope}</span>
+            <span className="text-xs text-gray-500">{t.meta.scope}</span>
             <span className="text-xs text-gray-300">·</span>
-            <span className="text-xs text-gray-400">{t.meta.period}</span>
+            <span className="text-xs text-gray-500">{t.meta.period}</span>
           </div>
 
           {/* Title */}
-          <h1 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-3">
+          <h1 className="text-title-1 text-gray-900 mb-3">
             {t.hero.title}
           </h1>
 
@@ -1274,19 +1274,19 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
           <div className="divide-y divide-gray-100">
             <div className="flex items-baseline justify-between py-3">
               <span className="text-sm text-gray-500">Type</span>
-              <span className="text-xs text-gray-400 tabular-nums">Product Design</span>
+              <span className="text-xs text-gray-500 tabular-nums">Product Design</span>
             </div>
             <div className="flex items-baseline justify-between py-3">
               <span className="text-sm text-gray-500">Scope</span>
-              <span className="text-xs text-gray-400 tabular-nums">{t.meta.scope}</span>
+              <span className="text-xs text-gray-500 tabular-nums">{t.meta.scope}</span>
             </div>
             <div className="flex items-baseline justify-between py-3">
               <span className="text-sm text-gray-500">Period</span>
-              <span className="text-xs text-gray-400 tabular-nums">{t.meta.period}</span>
+              <span className="text-xs text-gray-500 tabular-nums">{t.meta.period}</span>
             </div>
             <div className="flex items-baseline justify-between py-3">
               <span className="text-sm text-gray-500">Company</span>
-              <span className="text-xs text-gray-400 tabular-nums">{t.meta.company}</span>
+              <span className="text-xs text-gray-500 tabular-nums">{t.meta.company}</span>
             </div>
           </div>
         </div>
@@ -1312,12 +1312,12 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
       <section className="px-6 py-16">
         <div className="max-w-[740px] mx-auto">
           <FadeInSection>
-            <span className="text-xs text-gray-400 uppercase tracking-wide">
+            <span className="text-xs text-gray-500 uppercase tracking-wide">
               {t.initiatives.eyebrow}
             </span>
           </FadeInSection>
           <FadeInSection delay={0.1}>
-            <h2 className="mt-3 mb-8 text-base font-semibold tracking-[-0.01em] text-gray-900">
+            <h2 className="mt-3 mb-8 text-title-2 text-gray-900">
               {t.initiatives.title}
             </h2>
           </FadeInSection>
@@ -1334,7 +1334,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
           {/* CONTEXT */}
           <section id="context" className="mb-24 md:mb-32">
             <FadeInSection>
-              <h2 className={`text-base font-semibold tracking-[-0.01em] mb-4 tracking-tight text-gray-900`}>
+              <h2 className={`text-title-2 mb-4 tracking-tight text-gray-900`}>
                 {t.context.title}
               </h2>
               <hr className={`mb-10 border-gray-200`} />
@@ -1348,7 +1348,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
 
             <div className="space-y-8">
               <FadeInSection delay={0.2}>
-                <h3 className={`text-base font-semibold mb-4 tracking-tight text-gray-900`}>
+                <h3 className={`text-title-3 mb-4 tracking-tight text-gray-900`}>
                   {t.context.challenge}
                 </h3>
                 <p className={`text-base md:text-sm text-gray-500 leading-relaxed max-w-[65ch] text-gray-500`}>
@@ -1356,7 +1356,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
                 </p>
               </FadeInSection>
               <FadeInSection delay={0.3}>
-                <h3 className={`text-base font-semibold mb-4 tracking-tight text-gray-900`}>
+                <h3 className={`text-title-3 mb-4 tracking-tight text-gray-900`}>
                   {t.context.myScope}
                 </h3>
                 <p className={`text-base md:text-sm text-gray-500 leading-relaxed max-w-[65ch] text-gray-500`}>
@@ -1372,7 +1372,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
               <span className={`text-sm font-medium tracking-wide text-gray-500`}>
                 {t.initiative1.eyebrow}
               </span>
-              <h2 className={`text-base font-semibold tracking-[-0.01em] mt-3 mb-2 tracking-tight text-gray-900`}>
+              <h2 className={`text-title-2 mt-3 mb-2 tracking-tight text-gray-900`}>
                 {t.initiative1.title}
               </h2>
               <p className={`text-sm text-gray-500 mb-4`}>
@@ -1383,7 +1383,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
 
             {/* Problem */}
             <FadeInSection delay={0.1}>
-              <h3 className="text-base font-semibold mb-4 tracking-tight text-gray-900">
+              <h3 className="text-title-3 mb-4 tracking-tight text-gray-900">
                 {t.initiative1.problem}
               </h3>
               <p className="text-sm text-gray-500 leading-relaxed mb-8 max-w-[65ch]">
@@ -1404,7 +1404,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
 
             {/* What I did */}
             <FadeInSection delay={0.2}>
-              <h3 className="text-base font-semibold mb-8 tracking-tight text-gray-900">
+              <h3 className="text-title-3 mb-8 tracking-tight text-gray-900">
                 {t.initiative1.whatIDid}
               </h3>
               <div className="space-y-8 mb-10">
@@ -1457,10 +1457,10 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
           {/* INITIATIVE 2: PRODUCT OPS */}
           <section id="initiative-2" className="mb-24 md:mb-32">
             <FadeInSection>
-              <span className="text-xs font-medium text-gray-400 uppercase tracking-wide">
+              <span className="text-xs font-medium text-gray-500 uppercase tracking-wide">
                 {t.initiative2.eyebrow}
               </span>
-              <h2 className={`text-base font-semibold tracking-[-0.01em] mt-3 mb-2 tracking-tight text-gray-900`}>
+              <h2 className={`text-title-2 mt-3 mb-2 tracking-tight text-gray-900`}>
                 {t.initiative2.title}
               </h2>
               <hr className={`mb-10 border-gray-200`} />
@@ -1468,7 +1468,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
 
             {/* Problem */}
             <FadeInSection delay={0.1}>
-              <h3 className="text-base font-semibold mb-4 tracking-tight text-gray-900">
+              <h3 className="text-title-3 mb-4 tracking-tight text-gray-900">
                 {t.initiative2.problem}
               </h3>
               <p className="text-sm text-gray-500 leading-relaxed mb-8 max-w-[65ch]">
@@ -1489,7 +1489,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
 
             {/* What I did */}
             <FadeInSection delay={0.2}>
-              <h3 className="text-base font-semibold mb-8 tracking-tight text-gray-900">
+              <h3 className="text-title-3 mb-8 tracking-tight text-gray-900">
                 {t.initiative2.whatIDid}
               </h3>
               <ExpandableSection
@@ -1551,10 +1551,10 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
           {/* INITIATIVE 3: USER RESEARCH */}
           <section id="initiative-3" className="mb-24 md:mb-32">
             <FadeInSection>
-              <span className="text-xs font-medium text-gray-400 uppercase tracking-wide">
+              <span className="text-xs font-medium text-gray-500 uppercase tracking-wide">
                 {t.initiative3.eyebrow}
               </span>
-              <h2 className={`text-base font-semibold tracking-[-0.01em] mt-3 mb-2 tracking-tight text-gray-900`}>
+              <h2 className={`text-title-2 mt-3 mb-2 tracking-tight text-gray-900`}>
                 {t.initiative3.title}
               </h2>
               <p className={`text-sm text-gray-500 mb-4`}>
@@ -1565,7 +1565,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
 
             {/* Problem */}
             <FadeInSection delay={0.1}>
-              <h3 className="text-base font-semibold mb-4 tracking-tight text-gray-900">
+              <h3 className="text-title-3 mb-4 tracking-tight text-gray-900">
                 {t.initiative3.problem}
               </h3>
               <p className="text-sm text-gray-500 leading-relaxed mb-8 max-w-[65ch]">
@@ -1586,7 +1586,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
 
             {/* What I did */}
             <FadeInSection delay={0.2}>
-              <h3 className="text-base font-semibold mb-8 tracking-tight text-gray-900">
+              <h3 className="text-title-3 mb-8 tracking-tight text-gray-900">
                 {t.initiative3.whatIDid}
               </h3>
               <ExpandableSection
@@ -1645,10 +1645,10 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
           {/* INITIATIVE 4: WORKSHOPS */}
           <section id="initiative-4" className="mb-24 md:mb-32">
             <FadeInSection>
-              <span className="text-xs font-medium text-gray-400 uppercase tracking-wide">
+              <span className="text-xs font-medium text-gray-500 uppercase tracking-wide">
                 {t.initiative4.eyebrow}
               </span>
-              <h2 className={`text-base font-semibold tracking-[-0.01em] mt-3 mb-2 tracking-tight text-gray-900`}>
+              <h2 className={`text-title-2 mt-3 mb-2 tracking-tight text-gray-900`}>
                 {t.initiative4.title}
               </h2>
               <p className={`text-sm text-gray-500 mb-4`}>
@@ -1659,7 +1659,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
 
             {/* Problem */}
             <FadeInSection delay={0.1}>
-              <h3 className="text-base font-semibold mb-4 tracking-tight text-gray-900">
+              <h3 className="text-title-3 mb-4 tracking-tight text-gray-900">
                 {t.initiative4.problem}
               </h3>
               <p className="text-sm text-gray-500 leading-relaxed mb-8 max-w-[65ch]">
@@ -1680,7 +1680,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
 
             {/* What I did */}
             <FadeInSection delay={0.2}>
-              <h3 className="text-base font-semibold mb-8 tracking-tight text-gray-900">
+              <h3 className="text-title-3 mb-8 tracking-tight text-gray-900">
                 {t.initiative4.whatIDid}
               </h3>
               <div className="space-y-8 mb-10">
@@ -1725,7 +1725,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
               <span className={`text-sm font-medium tracking-wide text-gray-500`}>
                 {t.initiative5.eyebrow}
               </span>
-              <h2 className={`text-base font-semibold tracking-[-0.01em] mt-3 mb-2 tracking-tight text-gray-900`}>
+              <h2 className={`text-title-2 mt-3 mb-2 tracking-tight text-gray-900`}>
                 {t.initiative5.title}
               </h2>
               <p className={`text-sm text-gray-500 mb-4`}>
@@ -1765,7 +1765,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
 
             {/* What I did */}
             <FadeInSection delay={0.2}>
-              <h3 className="text-base font-semibold mb-8 tracking-tight text-gray-900">
+              <h3 className="text-title-3 mb-8 tracking-tight text-gray-900">
                 {t.initiative5.whatIDid}
               </h3>
               <ExpandableSection
@@ -1812,10 +1812,10 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
           {/* UI & DELIVERY */}
           <section id="ui-delivery" className="mb-24 md:mb-32">
             <FadeInSection>
-              <span className="text-xs font-medium text-gray-400 uppercase tracking-wide">
+              <span className="text-xs font-medium text-gray-500 uppercase tracking-wide">
                 {t.uiDelivery.eyebrow}
               </span>
-              <h2 className={`text-base font-semibold tracking-[-0.01em] mt-3 mb-2 tracking-tight text-gray-900`}>
+              <h2 className={`text-title-2 mt-3 mb-2 tracking-tight text-gray-900`}>
                 {t.uiDelivery.title}
               </h2>
               <p className={`text-sm text-gray-500 mb-4`}>
@@ -1826,7 +1826,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
 
             {/* Homepage Before/After */}
             <FadeInSection delay={0.1} className="mb-16">
-              <h3 className={`text-base font-semibold mb-4 tracking-tight text-gray-900`}>
+              <h3 className={`text-title-3 mb-4 tracking-tight text-gray-900`}>
                 {t.uiDelivery.homepageTitle}
               </h3>
               <p className={`text-base md:text-sm text-gray-500 leading-relaxed mb-8 max-w-[65ch] text-gray-500`}>
@@ -1859,7 +1859,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
 
             {/* Video Section */}
             <FadeInSection delay={0.2}>
-              <h3 className={`text-base font-semibold mb-4 tracking-tight text-gray-900`}>
+              <h3 className={`text-title-3 mb-4 tracking-tight text-gray-900`}>
                 {t.uiDelivery.videoTitle}
               </h3>
               <p className={`text-base md:text-sm text-gray-500 leading-relaxed mb-8 max-w-[65ch] text-gray-500`}>
@@ -1887,7 +1887,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
           {/* TESTIMONIAL */}
           <section className="mb-24 md:mb-32">
             <FadeInSection>
-              <span className="text-xs font-medium text-gray-400 uppercase tracking-wide">
+              <span className="text-xs font-medium text-gray-500 uppercase tracking-wide">
                 {t.testimonial.eyebrow}
               </span>
             </FadeInSection>
@@ -1903,10 +1903,10 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
           {/* LEARNINGS */}
           <section id="learnings" className="mb-24 md:mb-32">
             <FadeInSection>
-              <span className="text-xs font-medium text-gray-400 uppercase tracking-wide">
+              <span className="text-xs font-medium text-gray-500 uppercase tracking-wide">
                 {t.learnings.eyebrow}
               </span>
-              <h2 className={`text-base font-semibold tracking-[-0.01em] mt-3 mb-4 tracking-tight text-gray-900`}>
+              <h2 className={`text-title-2 mt-3 mb-4 tracking-tight text-gray-900`}>
                 {t.learnings.title}
               </h2>
               <hr className={`mb-10 border-gray-200`} />

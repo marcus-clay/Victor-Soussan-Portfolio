@@ -120,7 +120,7 @@ const SignalDetailPage: React.FC<Props> = ({ signalId, systemTheme, lang, onBack
       {/* Breadcrumb - sticky below Nav */}
       <div className={`sticky z-10 backdrop-blur-xl ${isDark ? 'bg-[#0a0a0a]/80 border-white/5' : 'bg-[#FCFCFD]/80 border-gray-200'}`} style={{ top: 'var(--nav-height, 72px)', transition: 'top 250ms cubic-bezier(0.23, 1, 0.32, 1)' }}>
         <div className="max-w-[740px] mx-auto px-4 md:px-6 h-10 flex items-center">
-          <nav className="flex items-center gap-1.5 text-[13px] min-w-0 overflow-hidden">
+          <nav className="flex items-center gap-1.5 text-xs min-w-0 overflow-hidden">
             <button
               onClick={onBack}
               className={`transition-colors cursor-pointer hover:underline flex-shrink-0 ${isDark ? 'text-gray-500 hover:text-white' : 'text-gray-400 hover:text-gray-900'}`}
@@ -158,14 +158,14 @@ const SignalDetailPage: React.FC<Props> = ({ signalId, systemTheme, lang, onBack
           {/* Hero: content-first (matches guide layout) */}
           <div className="mb-10">
             {/* Category tag */}
-            <span className={`inline-block px-3 py-1 rounded-full text-[11px] font-semibold mb-4 ${
+            <span className={`inline-block px-3 py-1 rounded-full text-micro font-semibold mb-4 ${
               isDark ? catColors.bgDark : catColors.bg
             } ${catColors.text}`}>
               {CATEGORY_LABELS[signal.category][lang]}
             </span>
 
             {/* Title */}
-            <h1 className={`text-base font-semibold tracking-[-0.01em] mb-4 ${
+            <h1 className={`text-title-1 mb-4 ${
               isDark ? 'text-white' : 'text-gray-900'
             }`}>
               {title}
@@ -224,7 +224,7 @@ const SignalDetailPage: React.FC<Props> = ({ signalId, systemTheme, lang, onBack
           {/* Related articles (inline, below author) */}
           {relatedSignals.length > 0 && (
             <div className="mt-14">
-              <p className={`text-[11px] font-semibold uppercase tracking-widest mb-5 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
+              <p className={`text-micro font-semibold uppercase tracking-widest mb-5 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
                 {lang === 'en' ? 'More articles' : 'Autres articles'}
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
@@ -245,7 +245,7 @@ const SignalDetailPage: React.FC<Props> = ({ signalId, systemTheme, lang, onBack
                       }`}
                       style={{ transition: 'transform 160ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 200ms cubic-bezier(0.23, 1, 0.32, 1), ring-color 200ms ease' }}
                     >
-                      <span className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-semibold mb-2 ${
+                      <span className={`inline-block px-2 py-0.5 rounded-full text-micro font-semibold mb-2 ${
                         isDark ? rsColors.bgDark : rsColors.bg
                       } ${rsColors.text}`}>
                         {CATEGORY_LABELS[rs.category][lang]}

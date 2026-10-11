@@ -418,7 +418,7 @@ const ShowcaseCard: React.FC<{
         <h3 className={`text-lg font-semibold tracking-tight mb-1.5 ${isDark ? 'text-white' : 'text-gray-900'}`}>
           {section.title}
         </h3>
-        <p className={`text-[13px] leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+        <p className={`text-xs leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
           {section.description}
         </p>
       </div>

@@ -115,7 +115,7 @@ export default function CareerCarousel({ lang, headline }: CareerCarouselProps) 
         <header className="px-4 sm:px-8 pt-4 sm:pt-6 pb-2 flex justify-between items-center z-30 shrink-0">
           <div>
             <h1 className="text-lg sm:text-xl font-semibold tracking-tight text-zinc-900">{headline}</h1>
-            <p className="text-zinc-400 text-[10px] uppercase tracking-widest font-medium">
+            <p className="text-zinc-400 text-micro uppercase tracking-widest font-medium">
               {lang === 'fr' ? 'Evolution & Expertise' : 'Evolution & Expertise'}
             </p>
           </div>
@@ -157,7 +157,7 @@ export default function CareerCarousel({ lang, headline }: CareerCarouselProps) 
                     <span className="text-xs font-mono font-semibold text-zinc-500">{yearLabel}</span>
                   </div>
                   {isActive && (
-                    <span className="text-[10px] font-medium text-zinc-400 uppercase tracking-wider">
+                    <span className="text-micro font-medium text-zinc-400 uppercase tracking-wider">
                       {lang === 'fr' ? 'Actuel' : 'Current'}
                     </span>
                   )}
@@ -307,12 +307,12 @@ export default function CareerCarousel({ lang, headline }: CareerCarouselProps) 
                 >
                   <div className={`w-full h-1.5 rounded-full ${item.color} mb-2 opacity-80`}></div>
                   <div className="flex-1">
-                    <p className={`text-[9px] font-bold leading-tight line-clamp-2 ${isActive ? 'text-zinc-800' : 'text-zinc-400'}`}>
+                    <p className={`text-micro font-bold leading-tight line-clamp-2 ${isActive ? 'text-zinc-800' : 'text-zinc-400'}`}>
                       {getRole(item)}
                     </p>
                   </div>
                   <div className="mt-2 pt-2 border-t border-zinc-100 flex justify-between items-end">
-                    <span className={`text-[10px] font-mono font-medium ${isActive ? 'text-zinc-900' : 'text-zinc-300'}`}>
+                    <span className={`text-micro font-mono font-medium ${isActive ? 'text-zinc-900' : 'text-zinc-300'}`}>
                       {yearLabel}
                     </span>
                     {isActive && <div className={`w-1.5 h-1.5 rounded-full ${item.color}`}></div>}
@@ -323,7 +323,7 @@ export default function CareerCarousel({ lang, headline }: CareerCarouselProps) 
           </div>
 
           <div className="absolute bottom-1 left-0 right-0 text-center pointer-events-none">
-            <p className="text-[9px] text-zinc-300 uppercase tracking-widest">Timeline</p>
+            <p className="text-micro text-zinc-300 uppercase tracking-widest">Timeline</p>
           </div>
         </div>
 

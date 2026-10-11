@@ -56,7 +56,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           <motion.h1
             variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
             transition={{ duration: 0.5, ease: EASE_OUT }}
-            className="text-base font-semibold tracking-[-0.01em] text-gray-900"
+            className="text-title-1 text-gray-900"
           >
             {content.hero.tagline}
           </motion.h1>
@@ -65,7 +65,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           <motion.p
             variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0 } }}
             transition={{ duration: 0.4, ease: EASE_OUT }}
-            className="text-base text-gray-500 mb-16 sm:mb-20 md:mb-28"
+            className="mt-1 text-lg text-gray-500 mb-16 sm:mb-20 md:mb-28"
           >
             Lead Product Designer
           </motion.p>

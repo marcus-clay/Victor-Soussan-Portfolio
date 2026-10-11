@@ -278,13 +278,13 @@ const ConsultingPage: React.FC<ConsultingPageProps> = ({ lang, onContact, onProj
 
         {/* ========== HERO ========== */}
         <div className="pb-24 md:pb-40">
-          <p className="text-xs text-gray-400 uppercase tracking-wider mb-6">
+          <p className="text-xs text-gray-500 uppercase tracking-wider mb-6">
             {t.availability}
           </p>
 
           <h1
             id="consulting-page-title"
-            className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4"
+            className="text-title-1 text-gray-900 mb-4"
           >
             {t.page_subtitle}
           </h1>
@@ -304,7 +304,7 @@ const ConsultingPage: React.FC<ConsultingPageProps> = ({ lang, onContact, onProj
 
         {/* ========== SITUATIONS ========== */}
         <section id="situations" className="py-24 md:py-40 border-t border-gray-100">
-          <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-2">
+          <h2 className="text-title-2 text-gray-900 mb-2">
             {t.situations_title}
           </h2>
           <p className="text-base text-gray-500 leading-relaxed mb-10">
@@ -313,10 +313,10 @@ const ConsultingPage: React.FC<ConsultingPageProps> = ({ lang, onContact, onProj
 
           {/* Table header */}
           <div className="hidden md:grid grid-cols-4 gap-4 pb-3 mb-0">
-            <div className="text-xs text-gray-400 uppercase tracking-wider" />
-            <div className="text-xs text-gray-400 uppercase tracking-wider">{t.col_symptom}</div>
-            <div className="text-xs text-gray-400 uppercase tracking-wider">{t.col_cause}</div>
-            <div className="text-xs text-gray-400 uppercase tracking-wider">{t.col_cost}</div>
+            <div className="text-xs text-gray-500 uppercase tracking-wider" />
+            <div className="text-xs text-gray-500 uppercase tracking-wider">{t.col_symptom}</div>
+            <div className="text-xs text-gray-500 uppercase tracking-wider">{t.col_cause}</div>
+            <div className="text-xs text-gray-500 uppercase tracking-wider">{t.col_cost}</div>
           </div>
 
           {/* Table rows */}
@@ -328,15 +328,15 @@ const ConsultingPage: React.FC<ConsultingPageProps> = ({ lang, onContact, onProj
                 </div>
                 {/* Mobile labels */}
                 <div className="mb-3 md:mb-0">
-                  <span className="text-xs text-gray-400 uppercase tracking-wider md:hidden block mb-1">{t.col_symptom}</span>
+                  <span className="text-xs text-gray-500 uppercase tracking-wider md:hidden block mb-1">{t.col_symptom}</span>
                   <p className="text-base text-gray-500 leading-relaxed">{l(phase, 'symptom')}</p>
                 </div>
                 <div className="mb-3 md:mb-0">
-                  <span className="text-xs text-gray-400 uppercase tracking-wider md:hidden block mb-1">{t.col_cause}</span>
+                  <span className="text-xs text-gray-500 uppercase tracking-wider md:hidden block mb-1">{t.col_cause}</span>
                   <p className="text-base text-gray-500 leading-relaxed">{l(phase, 'cause')}</p>
                 </div>
                 <div>
-                  <span className="text-xs text-gray-400 uppercase tracking-wider md:hidden block mb-1">{t.col_cost}</span>
+                  <span className="text-xs text-gray-500 uppercase tracking-wider md:hidden block mb-1">{t.col_cost}</span>
                   <p className="text-base text-gray-500 leading-relaxed">{l(phase, 'cost')}</p>
                 </div>
               </div>
@@ -350,7 +350,7 @@ const ConsultingPage: React.FC<ConsultingPageProps> = ({ lang, onContact, onProj
 
         {/* ========== METHODOLOGY ========== */}
         <section id="methodology" className="py-24 md:py-40 border-t border-gray-100">
-          <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-2">
+          <h2 className="text-title-2 text-gray-900 mb-2">
             {t.methodology_title}
           </h2>
           <p className="text-base text-gray-500 leading-relaxed mb-10">
@@ -361,14 +361,14 @@ const ConsultingPage: React.FC<ConsultingPageProps> = ({ lang, onContact, onProj
             {t.method_phases.map((phase) => (
               <div key={phase.num} className="py-5">
                 <div className="flex items-baseline gap-4 mb-2">
-                  <span className="text-xs text-gray-400">{phase.num}</span>
+                  <span className="text-xs text-gray-500">{phase.num}</span>
                   <h3 className="text-base font-medium text-gray-900">{phase.title}</h3>
-                  <span className="text-xs text-gray-400 ml-auto">{phase.duration}</span>
+                  <span className="text-xs text-gray-500 ml-auto">{phase.duration}</span>
                 </div>
                 <p className="text-base text-gray-500 leading-relaxed mb-3 pl-8">
                   {phase.desc}
                 </p>
-                <p className="text-sm text-gray-400 leading-relaxed pl-8">
+                <p className="text-sm text-gray-500 leading-relaxed pl-8">
                   {phase.deliverable}
                 </p>
               </div>
@@ -378,7 +378,7 @@ const ConsultingPage: React.FC<ConsultingPageProps> = ({ lang, onContact, onProj
 
         {/* ========== OFFERINGS ========== */}
         <section id="offerings" className="py-24 md:py-40 border-t border-gray-100">
-          <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-2">
+          <h2 className="text-title-2 text-gray-900 mb-2">
             {t.offerings_title}
           </h2>
           <p className="text-base text-gray-500 leading-relaxed mb-10">
@@ -392,7 +392,7 @@ const ConsultingPage: React.FC<ConsultingPageProps> = ({ lang, onContact, onProj
                   <h3 className="text-base font-medium text-gray-900">
                     {l(offering, 'title')}
                   </h3>
-                  <span className="text-xs text-gray-400">
+                  <span className="text-xs text-gray-500">
                     {l(offering, 'duration')}
                   </span>
                 </div>
@@ -400,7 +400,7 @@ const ConsultingPage: React.FC<ConsultingPageProps> = ({ lang, onContact, onProj
                   {l(offering, 'desc')}
                 </p>
                 <div>
-                  <span className="text-xs text-gray-400 uppercase tracking-wider block mb-2">
+                  <span className="text-xs text-gray-500 uppercase tracking-wider block mb-2">
                     {t.deliverables_label}
                   </span>
                   <ul className="space-y-1">
@@ -417,13 +417,13 @@ const ConsultingPage: React.FC<ConsultingPageProps> = ({ lang, onContact, onProj
 
           <div className="mt-8 pt-5 border-t border-gray-100">
             <p className="text-sm text-gray-500">{t.tjm_note}</p>
-            <p className="text-sm text-gray-400 mt-1">{t.offerings_note}</p>
+            <p className="text-sm text-gray-500 mt-1">{t.offerings_note}</p>
           </div>
         </section>
 
         {/* ========== SCENARIOS ========== */}
         <section id="scenarios" className="py-24 md:py-40 border-t border-gray-100">
-          <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-2">
+          <h2 className="text-title-2 text-gray-900 mb-2">
             {t.scenarios_title}
           </h2>
           <p className="text-base text-gray-500 leading-relaxed mb-10">
@@ -437,14 +437,14 @@ const ConsultingPage: React.FC<ConsultingPageProps> = ({ lang, onContact, onProj
                   <h3 className="text-base font-medium text-gray-900">
                     {l(scenario, 'title')}
                   </h3>
-                  <span className="text-xs text-gray-400 flex-shrink-0 ml-4">
+                  <span className="text-xs text-gray-500 flex-shrink-0 ml-4">
                     {l(scenario, 'duration')}
                   </span>
                 </div>
 
                 {/* Context */}
                 <div className="mb-4">
-                  <span className="text-xs text-gray-400 uppercase tracking-wider block mb-1">
+                  <span className="text-xs text-gray-500 uppercase tracking-wider block mb-1">
                     {t.scenario_context}
                   </span>
                   <p className="text-base text-gray-500 leading-relaxed">
@@ -454,13 +454,13 @@ const ConsultingPage: React.FC<ConsultingPageProps> = ({ lang, onContact, onProj
 
                 {/* Timeline */}
                 <div className="mb-4">
-                  <span className="text-xs text-gray-400 uppercase tracking-wider block mb-2">
+                  <span className="text-xs text-gray-500 uppercase tracking-wider block mb-2">
                     {t.scenario_timeline}
                   </span>
                   <div className="space-y-2">
                     {scenario.steps.map((step, i) => (
                       <div key={i} className="flex gap-3">
-                        <span className="text-xs text-gray-400 w-24 flex-shrink-0 pt-0.5">
+                        <span className="text-xs text-gray-500 w-24 flex-shrink-0 pt-0.5">
                           {l(step, 'label')}
                         </span>
                         <p className="text-base text-gray-500 leading-relaxed">
@@ -473,7 +473,7 @@ const ConsultingPage: React.FC<ConsultingPageProps> = ({ lang, onContact, onProj
 
                 {/* Outcome */}
                 <div className="mb-4">
-                  <span className="text-xs text-gray-400 uppercase tracking-wider block mb-1">
+                  <span className="text-xs text-gray-500 uppercase tracking-wider block mb-1">
                     {t.scenario_outcome}
                   </span>
                   <p className="text-base text-gray-500 leading-relaxed">
@@ -483,7 +483,7 @@ const ConsultingPage: React.FC<ConsultingPageProps> = ({ lang, onContact, onProj
 
                 {/* Offerings involved */}
                 <div>
-                  <span className="text-xs text-gray-400 uppercase tracking-wider block mb-1">
+                  <span className="text-xs text-gray-500 uppercase tracking-wider block mb-1">
                     {t.scenario_offerings}
                   </span>
                   <div className="flex flex-wrap gap-x-3 gap-y-1">
@@ -515,7 +515,7 @@ const ConsultingPage: React.FC<ConsultingPageProps> = ({ lang, onContact, onProj
 
         {/* ========== REFERENCES ========== */}
         <section id="references" className="py-24 md:py-40 border-t border-gray-100">
-          <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-2">
+          <h2 className="text-title-2 text-gray-900 mb-2">
             {t.references_title}
           </h2>
           <p className="text-base text-gray-500 leading-relaxed mb-10">
@@ -527,9 +527,9 @@ const ConsultingPage: React.FC<ConsultingPageProps> = ({ lang, onContact, onProj
               <div key={ref.id} className="py-5">
                 <div className="flex items-baseline justify-between mb-1">
                   <h3 className="text-sm font-medium text-gray-900">{ref.client}</h3>
-                  <span className="text-xs text-gray-400">{l(ref, 'duration')}</span>
+                  <span className="text-xs text-gray-500">{l(ref, 'duration')}</span>
                 </div>
-                <p className="text-xs text-gray-400 mb-2">{l(ref, 'sector')}</p>
+                <p className="text-xs text-gray-500 mb-2">{l(ref, 'sector')}</p>
                 <p className="text-base text-gray-500 leading-relaxed mb-1">{l(ref, 'scope')}</p>
                 <p className="text-base text-gray-500 leading-relaxed">{l(ref, 'outcome')}</p>
                 {ref.caseStudyId && onProjectClick && (
@@ -548,7 +548,7 @@ const ConsultingPage: React.FC<ConsultingPageProps> = ({ lang, onContact, onProj
 
         {/* ========== DELIVERY MODES ========== */}
         <section id="delivery" className="py-24 md:py-40 border-t border-gray-100">
-          <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-2">
+          <h2 className="text-title-2 text-gray-900 mb-2">
             {t.delivery_title}
           </h2>
           <p className="text-base text-gray-500 leading-relaxed mb-10">
@@ -562,7 +562,7 @@ const ConsultingPage: React.FC<ConsultingPageProps> = ({ lang, onContact, onProj
                   <h3 className="text-base font-medium text-gray-900">
                     {l(mode, 'title')}
                   </h3>
-                  <span className="text-xs text-gray-400">
+                  <span className="text-xs text-gray-500">
                     {l(mode, 'duration')}
                   </span>
                 </div>
@@ -570,7 +570,7 @@ const ConsultingPage: React.FC<ConsultingPageProps> = ({ lang, onContact, onProj
                   {l(mode, 'desc')}
                 </p>
                 <div>
-                  <span className="text-xs text-gray-400 uppercase tracking-wider block mb-2">
+                  <span className="text-xs text-gray-500 uppercase tracking-wider block mb-2">
                     {t.best_for}
                   </span>
                   <ul className="space-y-1">
@@ -588,7 +588,7 @@ const ConsultingPage: React.FC<ConsultingPageProps> = ({ lang, onContact, onProj
 
         {/* ========== CTA ========== */}
         <section id="cta" className="py-24 md:py-40 border-t border-gray-100">
-          <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-2">
+          <h2 className="text-title-2 text-gray-900 mb-2">
             {t.cta_title}
           </h2>
 
@@ -605,7 +605,7 @@ const ConsultingPage: React.FC<ConsultingPageProps> = ({ lang, onContact, onProj
             <ArrowRight size={14} />
           </button>
 
-          <p className="text-sm text-gray-400">
+          <p className="text-sm text-gray-500">
             {t.cta_email}:{' '}
             <a
               href="mailto:victorsoussan@gmail.com"

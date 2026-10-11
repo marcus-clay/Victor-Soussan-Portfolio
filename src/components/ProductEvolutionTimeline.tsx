@@ -288,7 +288,7 @@ const ProductEvolutionTimeline: React.FC<ProductEvolutionTimelineProps> = ({
                           }`}>
                             <PhaseIcon size={24} strokeWidth={2} />
                           </div>
-                          <div className={`uppercase tracking-widest text-[10px] font-bold mb-2 ${
+                          <div className={`uppercase tracking-widest text-micro font-bold mb-2 ${
                             isDark ? 'text-gray-500' : 'text-[#86868B]'
                           }`}>
                             Phase {phase.id}
@@ -330,7 +330,7 @@ const ProductEvolutionTimeline: React.FC<ProductEvolutionTimelineProps> = ({
                               <div className={`mt-0.5 transition-all duration-700 ${isActive ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
                                 <CheckCircle2 size={18} className="text-blue-500" strokeWidth={2.5} />
                               </div>
-                              <span className={`text-sm md:text-[17px] font-medium leading-relaxed transition-all duration-700 ${
+                              <span className={`text-sm md:text-lg font-medium leading-relaxed transition-all duration-700 ${
                                 isActive ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4'
                               } ${isDark ? 'text-gray-200' : 'text-[#1D1D1F]'}`}>
                                 {feature}
@@ -397,7 +397,7 @@ const ProductEvolutionTimeline: React.FC<ProductEvolutionTimelineProps> = ({
                         <PhaseIcon size={20} strokeWidth={2} />
                       </div>
                       <div>
-                        <div className={`text-[10px] uppercase font-bold tracking-wider ${
+                        <div className={`text-micro uppercase font-bold tracking-wider ${
                           isDark ? 'text-gray-500' : 'text-[#86868B]'
                         }`}>
                           Phase {phase.id}

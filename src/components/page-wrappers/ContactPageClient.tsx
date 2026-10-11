@@ -70,7 +70,7 @@ export default function ContactPageClient({ lang }: { lang: 'en' | 'fr' }) {
         {/* ============================================ */}
 
         <section className="pb-24 md:pb-40">
-          <h1 className="text-base font-semibold tracking-[-0.01em] text-gray-900 leading-tight mb-4">
+          <h1 className="text-title-1 text-gray-900 leading-tight mb-4">
             {isEn ? "Let's talk" : 'Discutons'}
           </h1>
 
@@ -86,7 +86,7 @@ export default function ContactPageClient({ lang }: { lang: 'en' | 'fr' }) {
               href={CALENDAR_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full bg-gray-900 text-white font-medium text-[15px] hover:bg-gray-800 active:scale-[0.97] ring-1 ring-black shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition-[background-color,transform] duration-200 ease-out"
+              className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full bg-gray-900 text-white font-medium text-sm hover:bg-gray-800 active:scale-[0.97] ring-1 ring-black shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition-[background-color,transform] duration-200 ease-out"
             >
               {isEn ? 'Book a call' : 'R\u00e9server un appel'}
             </a>
@@ -94,7 +94,7 @@ export default function ContactPageClient({ lang }: { lang: 'en' | 'fr' }) {
 
           {/* Email + copy */}
           <div className="mb-8">
-            <p className="text-sm text-gray-400 mb-1.5">
+            <p className="text-sm text-gray-500 mb-1.5">
               {isEn ? 'Prefer async?' : 'Plut\u00f4t par \u00e9crit\u00a0?'}
             </p>
             <div className="flex items-center gap-3">
@@ -107,7 +107,7 @@ export default function ContactPageClient({ lang }: { lang: 'en' | 'fr' }) {
                 title={isEn ? 'Copy email' : 'Copier l\'email'}
               >
                 <span className={`inline-flex transition-opacity duration-200 ${copied ? 'opacity-0' : 'opacity-100'}`}>
-                  <Copy size={16} className="text-gray-400" />
+                  <Copy size={16} className="text-gray-500" />
                 </span>
                 <span className={`absolute inset-0 flex items-center justify-center transition-opacity duration-200 ${copied ? 'opacity-100' : 'opacity-0'}`}>
                   <Check size={16} weight="bold" className="text-gray-900" />
@@ -118,13 +118,13 @@ export default function ContactPageClient({ lang }: { lang: 'en' | 'fr' }) {
 
           {/* Connect */}
           <div className="flex flex-wrap items-center gap-5">
-            <a href="https://linkedin.com/in/victorsoussan" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-sm text-gray-400 hover:text-gray-900 transition-colors duration-200">
+            <a href="https://linkedin.com/in/victorsoussan" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors duration-200">
               <LinkedinLogo size={18} /> LinkedIn
             </a>
-            <a href="https://www.condamine.studio/apps" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-sm text-gray-400 hover:text-gray-900 transition-colors duration-200">
+            <a href="https://www.condamine.studio/apps" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors duration-200">
               <ArrowUpRight size={14} /> Condamine Apps
             </a>
-            <a href="tel:+33615989400" className="text-sm text-gray-400 hover:text-gray-900 transition-colors duration-200">
+            <a href="tel:+33615989400" className="text-sm text-gray-500 hover:text-gray-900 transition-colors duration-200">
               +33 6 15 98 94 00
             </a>
           </div>
@@ -135,24 +135,24 @@ export default function ContactPageClient({ lang }: { lang: 'en' | 'fr' }) {
         {/* ============================================ */}
 
         <section className="py-24 md:py-40 border-t border-gray-100">
-          <h2 className="text-lg font-semibold tracking-[-0.04em] text-gray-900 mb-6">
+          <h2 className="text-title-2 text-gray-900 mb-6">
             {isEn ? 'What I can help with' : 'Ce que je peux apporter'}
           </h2>
           <div className="divide-y divide-gray-100">
             <div className="py-4 first:pt-0">
-              <p className="text-[15px] text-gray-900 font-medium mb-1">{isEn ? 'Product Design' : 'Design Produit'}</p>
+              <p className="text-sm text-gray-900 font-medium mb-1">{isEn ? 'Product Design' : 'Design Produit'}</p>
               <p className="text-base text-gray-500 leading-relaxed">
                 {isEn ? 'UX/UI, design systems, prototyping, from framing to dev handoff' : 'UX/UI, design systems, prototypage, du cadrage au handoff dev'}
               </p>
             </div>
             <div className="py-4">
-              <p className="text-[15px] text-gray-900 font-medium mb-1">{isEn ? 'Team Leadership' : 'Leadership'}</p>
+              <p className="text-sm text-gray-900 font-medium mb-1">{isEn ? 'Team Leadership' : 'Leadership'}</p>
               <p className="text-base text-gray-500 leading-relaxed">
                 {isEn ? 'Hiring, mentoring, design ops, delivery cadence' : 'Recrutement, mentoring, design ops, cadence de livraison'}
               </p>
             </div>
             <div className="py-4 last:pb-0">
-              <p className="text-[15px] text-gray-900 font-medium mb-1">{isEn ? 'AI Prototyping' : 'Prototypage IA'}</p>
+              <p className="text-sm text-gray-900 font-medium mb-1">{isEn ? 'AI Prototyping' : 'Prototypage IA'}</p>
               <p className="text-base text-gray-500 leading-relaxed">
                 {isEn ? 'Claude Code, Figma MCP, concept to deployed prototype in hours' : 'Claude Code, Figma MCP, du concept au prototype d\u00e9ploy\u00e9 en quelques heures'}
               </p>
@@ -165,7 +165,7 @@ export default function ContactPageClient({ lang }: { lang: 'en' | 'fr' }) {
         {/* ============================================ */}
 
         <section id="interventions" className="py-24 md:py-40 border-t border-gray-100 scroll-mt-24">
-          <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-3">
+          <h2 className="text-title-2 text-gray-900 mb-3">
             {isEn ? 'Speaking & Workshops' : 'Interventions'}
           </h2>
           <p className="text-base text-gray-500 leading-relaxed mb-12">
@@ -176,13 +176,13 @@ export default function ContactPageClient({ lang }: { lang: 'en' | 'fr' }) {
 
           {/* Topics */}
           <div className="mb-14">
-            <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-5">
+            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-5">
               {isEn ? 'Topics' : 'Sujets'}
             </h3>
             <div className="divide-y divide-gray-100">
               {topics.map((topic) => (
                 <div key={topic.title} className="py-5 first:pt-0 last:pb-0">
-                  <h4 className="text-[15px] font-medium text-gray-900 mb-1.5">{topic.title}</h4>
+                  <h4 className="text-sm font-medium text-gray-900 mb-1.5">{topic.title}</h4>
                   <p className="text-base text-gray-500 leading-relaxed">{topic.desc}</p>
                 </div>
               ))}
@@ -191,7 +191,7 @@ export default function ContactPageClient({ lang }: { lang: 'en' | 'fr' }) {
 
           {/* Formats */}
           <div className="mb-14">
-            <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-5">
+            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-5">
               {isEn ? 'Formats' : 'Formats'}
             </h3>
             <div className="divide-y divide-gray-100">
@@ -201,8 +201,8 @@ export default function ContactPageClient({ lang }: { lang: 'en' | 'fr' }) {
                   className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-6 py-4 first:pt-0 last:pb-0"
                 >
                   <div className="flex items-baseline gap-3 sm:w-[200px] flex-shrink-0">
-                    <span className="text-[15px] font-medium text-gray-900">{format.name}</span>
-                    <span className="text-xs text-gray-400">{format.duration}</span>
+                    <span className="text-sm font-medium text-gray-900">{format.name}</span>
+                    <span className="text-xs text-gray-500">{format.duration}</span>
                   </div>
                   <p className="text-sm text-gray-500">{format.context}</p>
                 </div>
@@ -212,7 +212,7 @@ export default function ContactPageClient({ lang }: { lang: 'en' | 'fr' }) {
 
           {/* Intervention CTA */}
           <div>
-            <p className="text-[15px] text-gray-500 mb-5 max-w-[50ch]">
+            <p className="text-sm text-gray-500 mb-5 max-w-[50ch]">
               {isEn
                 ? 'Tell me about the format, topic, and context. I\u2019ll get back to you within 48h.'
                 : 'Dites-moi quel format vous int\u00e9resse, le sujet, et le contexte. R\u00e9ponse sous 48h.'}
@@ -220,7 +220,7 @@ export default function ContactPageClient({ lang }: { lang: 'en' | 'fr' }) {
             <div className="flex flex-col sm:flex-row gap-4 items-start">
               <a
                 href={`mailto:${EMAIL}?subject=${encodeURIComponent(isEn ? 'Speaking engagement inquiry' : 'Demande d\u2019intervention')}`}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gray-900 text-white font-medium text-[15px] hover:bg-gray-800 active:scale-[0.97] ring-1 ring-black shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition-[background-color,transform] duration-200 ease-out"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gray-900 text-white font-medium text-sm hover:bg-gray-800 active:scale-[0.97] ring-1 ring-black shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition-[background-color,transform] duration-200 ease-out"
               >
                 {isEn ? 'Send an email' : 'Envoyer un email'}
                 <ArrowUpRight size={15} weight="bold" />
@@ -245,10 +245,10 @@ export default function ContactPageClient({ lang }: { lang: 'en' | 'fr' }) {
           {/* Featured projects */}
           <div className="mb-14">
             <div className="flex items-baseline justify-between mb-5">
-              <h2 className="text-lg font-semibold tracking-[-0.04em] text-gray-900">
+              <h2 className="text-title-2 text-gray-900">
                 {isEn ? 'Recent work' : 'Projets r\u00e9cents'}
               </h2>
-              <Link href={`/${lang}/projets`} className="text-sm text-gray-400 hover:text-gray-900 transition-colors duration-200 flex items-center gap-1">
+              <Link href={`/${lang}/projets`} className="text-sm text-gray-500 hover:text-gray-900 transition-colors duration-200 flex items-center gap-1">
                 {isEn ? 'All projects' : 'Tous les projets'} <ArrowRight size={14} />
               </Link>
             </div>
@@ -260,10 +260,10 @@ export default function ContactPageClient({ lang }: { lang: 'en' | 'fr' }) {
                   className="group flex items-baseline justify-between py-3.5 first:pt-0 last:pb-0 transition-colors duration-200"
                 >
                   <div className="flex items-baseline gap-3">
-                    <span className="text-[15px] font-medium text-gray-900 group-hover:text-gray-600 transition-colors duration-200">{project.title}</span>
-                    <span className="text-xs text-gray-400">{project.role}</span>
+                    <span className="text-sm font-medium text-gray-900 group-hover:text-gray-600 transition-colors duration-200">{project.title}</span>
+                    <span className="text-xs text-gray-500">{project.role}</span>
                   </div>
-                  <span className="text-xs text-gray-400">{project.period}</span>
+                  <span className="text-xs text-gray-500">{project.period}</span>
                 </Link>
               ))}
             </div>
@@ -273,10 +273,10 @@ export default function ContactPageClient({ lang }: { lang: 'en' | 'fr' }) {
           {articles.length > 0 && (
             <div>
               <div className="flex items-baseline justify-between mb-5">
-                <h2 className="text-lg font-semibold tracking-[-0.04em] text-gray-900">
+                <h2 className="text-title-2 text-gray-900">
                   {isEn ? 'Recent writing' : '\u00c0 lire'}
                 </h2>
-                <Link href={`/${lang}/ressources`} className="text-sm text-gray-400 hover:text-gray-900 transition-colors duration-200 flex items-center gap-1">
+                <Link href={`/${lang}/ressources`} className="text-sm text-gray-500 hover:text-gray-900 transition-colors duration-200 flex items-center gap-1">
                   {isEn ? 'All articles' : 'Toutes les ressources'} <ArrowRight size={14} />
                 </Link>
               </div>
@@ -287,10 +287,10 @@ export default function ContactPageClient({ lang }: { lang: 'en' | 'fr' }) {
                     href={`/${lang}/signal/${article.id}`}
                     className="group block py-3.5 first:pt-0 last:pb-0 transition-colors duration-200"
                   >
-                    <p className="text-[15px] font-medium text-gray-900 group-hover:text-gray-600 transition-colors duration-200 mb-0.5">
+                    <p className="text-sm font-medium text-gray-900 group-hover:text-gray-600 transition-colors duration-200 mb-0.5">
                       {isEn ? article.title_en : article.title_fr}
                     </p>
-                    <p className="text-sm text-gray-400 line-clamp-1">
+                    <p className="text-sm text-gray-500 line-clamp-1">
                       {isEn ? article.excerpt_en : article.excerpt_fr}
                     </p>
                   </Link>

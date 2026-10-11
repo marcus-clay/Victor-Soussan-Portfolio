@@ -193,7 +193,7 @@ const PrototypePlayer: React.FC<PrototypePlayerProps> = ({
         </div>
 
         {/* Badge */}
-        <div className={`absolute top-2.5 left-2.5 z-20 flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[10px] font-bold tracking-wide backdrop-blur-sm ${
+        <div className={`absolute top-2.5 left-2.5 z-20 flex items-center gap-1.5 px-2 py-0.5 rounded-md text-micro font-bold tracking-wide backdrop-blur-sm ${
           isDark ? `${colors.bg} ${colors.text}` : `${colors.bgLight} ${colors.textLight}`
         }`}>
           {prototype.id}
@@ -254,7 +254,7 @@ const PrototypePlayer: React.FC<PrototypePlayerProps> = ({
         <p className={`text-xs font-medium ${isDark ? 'text-white/70' : 'text-gray-700'}`}>
           {prototype.title[lang]}
         </p>
-        <p className={`text-[11px] leading-relaxed mt-0.5 ${isDark ? 'text-white/40' : 'text-gray-500'}`}>
+        <p className={`text-micro leading-relaxed mt-0.5 ${isDark ? 'text-white/40' : 'text-gray-500'}`}>
           {caption}
         </p>
       </div>

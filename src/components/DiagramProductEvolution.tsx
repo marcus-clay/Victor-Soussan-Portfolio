@@ -200,7 +200,7 @@ function FocusView({ activePhase, setActivePhase, handleNext, handlePrev }: any)
                     <div className="inline-flex items-center justify-center w-14 h-14 bg-[#1D1D1F] text-white rounded-2xl shadow-lg mb-8">
                       <phase.icon size={26} strokeWidth={2} />
                     </div>
-                    <div className="uppercase tracking-widest text-[10px] font-bold text-[#86868B] mb-2">
+                    <div className="uppercase tracking-widest text-micro font-bold text-[#86868B] mb-2">
                       Phase {phase.id}
                     </div>
                     <h2 className="text-3xl font-bold text-[#1D1D1F] leading-tight mb-2">
@@ -233,7 +233,7 @@ function FocusView({ activePhase, setActivePhase, handleNext, handlePrev }: any)
                            {/* Accent Color Change: #007AFF -> #4D4BE7 */}
                            <CheckCircle2 size={20} className="text-[#4D4BE7]" strokeWidth={2.5} />
                         </div>
-                        <span className={`text-[17px] font-medium text-[#1D1D1F] leading-relaxed transition-all duration-700 ${isActive ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4'}`}>
+                        <span className={`text-lg font-medium text-[#1D1D1F] leading-relaxed transition-all duration-700 ${isActive ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4'}`}>
                           {feature}
                         </span>
                       </li>
@@ -283,7 +283,7 @@ function OverviewView() {
                     <phase.icon size={22} strokeWidth={2} />
                  </div>
                  <div>
-                    <div className="text-[10px] uppercase font-bold text-[#86868B] tracking-wider">Phase {phase.id}</div>
+                    <div className="text-micro uppercase font-bold text-[#86868B] tracking-wider">Phase {phase.id}</div>
                     <div className="text-xs font-semibold text-[#1D1D1F]">{phase.duration}</div>
                  </div>
               </div>

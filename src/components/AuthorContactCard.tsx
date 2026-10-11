@@ -36,7 +36,7 @@ export default function AuthorContactCard({ lang, isDark = false, message }: Aut
           <p className={`text-sm mb-3 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
             Lead Product Designer
           </p>
-          <p className={`text-sm leading-relaxed mb-4 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
+          <p className={`text-sm leading-relaxed mb-4 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
             {message || defaultMessage}
           </p>
           <div className="flex flex-wrap gap-3">

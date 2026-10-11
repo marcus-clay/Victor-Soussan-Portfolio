@@ -55,7 +55,7 @@ export default function RessourcesPageClient({ lang }: { lang: 'en' | 'fr' }) {
       >
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0 flex-1">
-            <span className="text-xs text-gray-400">{typeLabel}</span>
+            <span className="text-xs text-gray-500">{typeLabel}</span>
             <h3 className="text-base font-medium text-gray-900 mb-1 line-clamp-2">
               {title}
             </h3>
@@ -105,7 +105,7 @@ export default function RessourcesPageClient({ lang }: { lang: 'en' | 'fr' }) {
           <motion.h1
             variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
             transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
-            className="text-base font-semibold tracking-[-0.01em] text-gray-900"
+            className="text-title-1 text-gray-900"
           >
             {isEn ? 'Resources' : 'Ressources'}
           </motion.h1>
@@ -166,7 +166,7 @@ export default function RessourcesPageClient({ lang }: { lang: 'en' | 'fr' }) {
           >
             <div className="flex items-start justify-between gap-4">
               <div className="min-w-0 flex-1">
-                <span className="text-xs text-gray-400">Condamine Studio</span>
+                <span className="text-xs text-gray-500">Condamine Studio</span>
                 <h3 className="text-base font-medium text-gray-900 mb-1">
                   {isEn ? 'AI Agents & Prompts' : 'Agents IA et prompts'}
                 </h3>

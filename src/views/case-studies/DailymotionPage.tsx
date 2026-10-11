@@ -73,7 +73,7 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick }) => {
           <img loading="lazy" src={item.src} alt={item.caption} className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" />
         )}
       </div>
-      <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
+      <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
         {item.caption}
         {item.captionDesc && <span className="hidden sm:inline"> · {item.captionDesc}</span>}
       </figcaption>
@@ -168,7 +168,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
           />
         )}
       </div>
-      <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
+      <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
         {caption}{captionDesc && ` · ${captionDesc}`}
       </figcaption>
     </figure>
@@ -250,12 +250,12 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
             <section id="hero" className="mb-24 md:mb-32">
               <div className="max-w-[740px] mx-auto px-6 pt-16 md:pt-24">
                 {/* Meta */}
-                <p className="text-xs text-gray-400 mb-4">
+                <p className="text-xs text-gray-500 mb-4">
                   {t.hero.role} · {t.hero.scope} · {t.hero.period}
                 </p>
 
                 {/* Title */}
-                <h1 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-3">
+                <h1 className="text-title-1 text-gray-900 mb-3">
                   {t.hero.title}
                 </h1>
 
@@ -296,7 +296,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
             {/* Overview Section */}
             <section id="overview" className="mb-24 md:mb-32">
               <div className="max-w-[740px] mx-auto px-6">
-                <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+                <h2 className="text-title-2 text-gray-900 mb-4">
                   {t.overview.title}
                 </h2>
 
@@ -339,19 +339,19 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                 {/* Project meta */}
                 <div className="mt-12 divide-y divide-gray-100">
                   <div className="flex justify-between py-3">
-                    <span className="text-xs text-gray-400">Type</span>
+                    <span className="text-xs text-gray-500">Type</span>
                     <span className="text-sm text-gray-900">{t.meta.type}</span>
                   </div>
                   <div className="flex justify-between py-3">
-                    <span className="text-xs text-gray-400">Scope</span>
+                    <span className="text-xs text-gray-500">Scope</span>
                     <span className="text-sm text-gray-900">{t.meta.scope}</span>
                   </div>
                   <div className="flex justify-between py-3">
-                    <span className="text-xs text-gray-400">Period</span>
+                    <span className="text-xs text-gray-500">Period</span>
                     <span className="text-sm text-gray-900">{t.meta.period}</span>
                   </div>
                   <div className="flex justify-between py-3">
-                    <span className="text-xs text-gray-400">Company</span>
+                    <span className="text-xs text-gray-500">Company</span>
                     <span className="text-sm text-gray-900">{t.meta.company}</span>
                   </div>
                 </div>
@@ -361,7 +361,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
             {/* Key Product Modules Section */}
             <section id="modules" className="mb-24 md:mb-32">
               <div className="max-w-[740px] mx-auto px-6">
-                <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+                <h2 className="text-title-2 text-gray-900 mb-4">
                   {t.modules.deliveredTitle}
                 </h2>
               </div>
@@ -398,7 +398,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
             {/* Video Upload and Management Workflows Section */}
             <section id="upload" className="mb-24 md:mb-32">
               <div className="max-w-[740px] mx-auto px-6">
-                <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+                <h2 className="text-title-2 text-gray-900 mb-4">
                   {t.upload.sectionTitle}
                 </h2>
 
@@ -545,7 +545,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
             {/* Live Management Console Section */}
             <section id="live" className="mb-24 md:mb-32">
               <div className="max-w-[740px] mx-auto px-6">
-                <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+                <h2 className="text-title-2 text-gray-900 mb-4">
                   {t.live.sectionTitle}
                 </h2>
 
@@ -581,7 +581,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
             {/* Player Manager Section */}
             <section id="player" className="mb-24 md:mb-32">
               <div className="max-w-[740px] mx-auto px-6">
-                <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+                <h2 className="text-title-2 text-gray-900 mb-4">
                   {t.player.title}
                 </h2>
 
@@ -607,7 +607,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
             {/* Design System Section */}
             <section id="design-system" className="mb-24 md:mb-32">
               <div className="max-w-[740px] mx-auto px-6">
-                <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+                <h2 className="text-title-2 text-gray-900 mb-4">
                   {t.designSystem.sectionTitle}
                 </h2>
 
@@ -637,7 +637,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
             {/* Impact Section */}
             <section id="impact" className="mb-24 md:mb-32">
               <div className="max-w-[740px] mx-auto px-6">
-                <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+                <h2 className="text-title-2 text-gray-900 mb-4">
                   {t.impact.title}
                 </h2>
                 <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-12">

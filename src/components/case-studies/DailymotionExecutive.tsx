@@ -307,10 +307,10 @@ const DailymotionExecutive: React.FC<DailymotionExecutiveProps> = ({
       {/* HERO */}
       <section id="hero" className="pt-16 md:pt-24 mb-24 md:mb-32">
         <div className="max-w-[740px] mx-auto px-6">
-          <motion.p {...fadeIn()} className="text-xs text-gray-400 mb-4">
+          <motion.p {...fadeIn()} className="text-xs text-gray-500 mb-4">
             {t.hero.eyebrow}
           </motion.p>
-          <motion.h1 {...fadeIn(0.05)} className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+          <motion.h1 {...fadeIn(0.05)} className="text-title-1 text-gray-900 mb-4">
             {t.hero.title}
           </motion.h1>
           <motion.p {...fadeIn(0.1)} className="text-base text-gray-500 leading-relaxed max-w-[65ch]">
@@ -340,14 +340,14 @@ const DailymotionExecutive: React.FC<DailymotionExecutiveProps> = ({
       {/* ROLE */}
       <section id="role" className="mb-24 md:mb-32">
         <div className="max-w-[740px] mx-auto px-6">
-          <motion.h2 {...fadeIn()} className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+          <motion.h2 {...fadeIn()} className="text-title-2 text-gray-900 mb-4">
             {t.role.title}
           </motion.h2>
           <motion.ul {...fadeIn(0.05)} className="divide-y divide-gray-100">
             {t.role.items.map((item, idx) => (
               <li key={idx} className="py-3 flex items-baseline justify-between">
                 <span className="text-sm text-gray-500">{item.label}</span>
-                <span className="text-xs text-gray-400">{item.detail}</span>
+                <span className="text-xs text-gray-500">{item.detail}</span>
               </li>
             ))}
           </motion.ul>
@@ -360,7 +360,7 @@ const DailymotionExecutive: React.FC<DailymotionExecutiveProps> = ({
       {/* MODULES */}
       <section id="journey" className="mb-24 md:mb-32">
         <div className="max-w-[740px] mx-auto px-6">
-          <motion.h2 {...fadeIn()} className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-8">
+          <motion.h2 {...fadeIn()} className="text-title-2 text-gray-900 mb-8">
             {t.modules.title}
           </motion.h2>
           <div className="space-y-10">
@@ -368,7 +368,7 @@ const DailymotionExecutive: React.FC<DailymotionExecutiveProps> = ({
               <motion.div key={idx} {...fadeIn()}>
                 <div className="flex items-baseline gap-3 mb-3">
                   <span className="text-sm font-medium text-gray-900">{phase.title}</span>
-                  <span className="text-xs text-gray-400">{phase.period}</span>
+                  <span className="text-xs text-gray-500">{phase.period}</span>
                 </div>
                 <ul className="divide-y divide-gray-100">
                   {phase.deliverables.map((d, i) => (
@@ -384,7 +384,7 @@ const DailymotionExecutive: React.FC<DailymotionExecutiveProps> = ({
       {/* SCOPE */}
       <section id="scope" className="mb-24 md:mb-32">
         <div className="max-w-[740px] mx-auto px-6">
-          <motion.h2 {...fadeIn()} className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+          <motion.h2 {...fadeIn()} className="text-title-2 text-gray-900 mb-4">
             {t.scope.title}
           </motion.h2>
           <motion.p {...fadeIn(0.05)} className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-4">
@@ -410,7 +410,7 @@ const DailymotionExecutive: React.FC<DailymotionExecutiveProps> = ({
                   className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
                 />
               </div>
-              <p className="mt-3 text-xs font-medium text-gray-400">{area.title}</p>
+              <p className="mt-3 text-xs font-medium text-gray-500">{area.title}</p>
             </motion.div>
           </React.Fragment>
         ))}
@@ -419,7 +419,7 @@ const DailymotionExecutive: React.FC<DailymotionExecutiveProps> = ({
       {/* KEY INTERACTIONS */}
       <section id="highlights" className="mb-24 md:mb-32">
         <div className="max-w-[740px] mx-auto px-6">
-          <motion.h2 {...fadeIn()} className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+          <motion.h2 {...fadeIn()} className="text-title-2 text-gray-900 mb-4">
             {t.highlights.title}
           </motion.h2>
         </div>
@@ -445,7 +445,7 @@ const DailymotionExecutive: React.FC<DailymotionExecutiveProps> = ({
                   />
                 )}
               </div>
-              <p className="mt-3 text-xs font-medium text-gray-400">{item.title}</p>
+              <p className="mt-3 text-xs font-medium text-gray-500">{item.title}</p>
             </motion.div>
           </React.Fragment>
         ))}
@@ -454,14 +454,14 @@ const DailymotionExecutive: React.FC<DailymotionExecutiveProps> = ({
       {/* IMPACT */}
       <section id="outcome" className="mb-24 md:mb-32">
         <div className="max-w-[740px] mx-auto px-6">
-          <motion.h2 {...fadeIn()} className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-8">
+          <motion.h2 {...fadeIn()} className="text-title-2 text-gray-900 mb-8">
             {t.outcome.title}
           </motion.h2>
           <motion.div {...fadeIn(0.05)} className="flex flex-wrap gap-x-16 gap-y-8">
             {t.outcome.metrics.map((metric, idx) => (
               <div key={idx}>
                 <span className="text-base font-semibold text-gray-900">{metric.value}</span>
-                <p className="text-xs text-gray-400 mt-1">{metric.label}</p>
+                <p className="text-xs text-gray-500 mt-1">{metric.label}</p>
               </div>
             ))}
           </motion.div>

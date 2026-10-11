@@ -75,10 +75,10 @@ export default function SkillsPromoBanner({ lang }: { lang: string }) {
           <div className="w-8 h-8 rounded-full bg-gradient-to-br from-violet-500 to-blue-500 flex items-center justify-center flex-shrink-0">
             <Lightning size={14} weight="fill" className="text-white" />
           </div>
-          <span className="text-[13px] font-semibold text-gray-900 whitespace-nowrap">
+          <span className="text-xs font-semibold text-gray-900 whitespace-nowrap">
             {isEn ? 'Claude Code skills' : 'Skills Claude Code'}
           </span>
-          <ArrowRight size={12} className="text-gray-400 flex-shrink-0" />
+          <ArrowRight size={12} className="text-gray-500 flex-shrink-0" />
         </Link>
 
         <button

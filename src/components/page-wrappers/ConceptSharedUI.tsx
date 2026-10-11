@@ -44,7 +44,7 @@ export function SectionProgress({ sections, className = '' }: { sections: string
       <div className="max-w-[1200px] mx-auto px-6 flex items-center gap-4 overflow-x-auto scrollbar-hide">
         {sections.map((s, i) => (
           <button key={i} onClick={() => scrollToElement(`cs-section-${i}`)}
-            className={`text-[12px] font-semibold whitespace-nowrap transition-colors ${i === activeIdx ? 'text-gray-900' : 'text-gray-300 hover:text-gray-500'}`} style={{ fontFamily }}>
+            className={`text-xs font-semibold whitespace-nowrap transition-colors ${i === activeIdx ? 'text-gray-900' : 'text-gray-300 hover:text-gray-500'}`} style={{ fontFamily }}>
             {s}
           </button>
         ))}
@@ -70,8 +70,8 @@ export function StickyCTABar({ label = 'Book a call' }: { label?: string }) {
       {show && (
         <motion.div initial={{ y: 80, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 80, opacity: 0 }} transition={springBounce}
           className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[80] flex items-center gap-3 px-5 py-3 bg-white/90 backdrop-blur-xl rounded-full border border-gray-200 shadow-xl shadow-gray-900/10">
-          <span className="text-[13px] text-gray-500 font-medium hidden sm:block" style={{ fontFamily }}>Available for new projects</span>
-          <button className="px-4 py-2 bg-gray-900 text-white rounded-full text-[13px] font-semibold hover:bg-gray-800 transition-colors" style={{ fontFamily }}>{label}</button>
+          <span className="text-xs text-gray-500 font-medium hidden sm:block" style={{ fontFamily }}>Available for new projects</span>
+          <button className="px-4 py-2 bg-gray-900 text-white rounded-full text-xs font-semibold hover:bg-gray-800 transition-colors" style={{ fontFamily }}>{label}</button>
         </motion.div>
       )}
     </AnimatePresence>
@@ -113,8 +113,8 @@ export function FloatingGuideCTA({ onClick }: { onClick?: () => void }) {
           className="fixed right-6 top-24 z-[80] bg-white border border-gray-200 rounded-2xl p-3 shadow-lg shadow-gray-900/[0.06] hover:shadow-xl hover:border-gray-300 transition-all flex items-center gap-3 max-w-[220px]">
           <img src="/images/guide-claude-code/hero-cover.png" alt="" className="w-10 h-10 rounded-lg object-cover flex-shrink-0" />
           <div className="text-left">
-            <p className="text-[12px] font-semibold text-gray-900 leading-tight" style={{ fontFamily }}>Claude Code Guide</p>
-            <p className="text-[11px] text-gray-400" style={{ fontFamily }}>9 chapters</p>
+            <p className="text-xs font-semibold text-gray-900 leading-tight" style={{ fontFamily }}>Claude Code Guide</p>
+            <p className="text-micro text-gray-500" style={{ fontFamily }}>9 chapters</p>
           </div>
         </motion.button>
       )}
@@ -134,9 +134,9 @@ export function TestimonialScroller({ testimonials }: { testimonials: { author: 
           <motion.div key={i} initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1, ...spring }}
             className="min-w-[320px] max-w-[400px] p-6 rounded-2xl bg-white border border-gray-100 snap-start shrink-0">
             <Quotes size={16} weight="fill" className="text-gray-200 mb-3" />
-            <blockquote className="text-[15px] text-gray-600 leading-relaxed mb-4" style={{ fontFamily }}>{t.content}</blockquote>
-            <p className="text-[13px]" style={{ fontFamily }}>
-              <span className="font-semibold text-gray-900">{t.author}</span> <span className="text-gray-400">· {t.role}</span>
+            <blockquote className="text-sm text-gray-600 leading-relaxed mb-4" style={{ fontFamily }}>{t.content}</blockquote>
+            <p className="text-xs" style={{ fontFamily }}>
+              <span className="font-semibold text-gray-900">{t.author}</span> <span className="text-gray-500">· {t.role}</span>
             </p>
           </motion.div>
         ))}
@@ -152,14 +152,14 @@ export function ContinueReading({ items, onNavigate }: { items: { label: string;
   return (
     <section className="py-16 px-6 border-t border-gray-100 bg-gray-50/30">
       <div className="max-w-[1200px] mx-auto">
-        <p className="text-[12px] font-bold text-gray-400 uppercase tracking-[0.12em] mb-6" style={{ fontFamily }}>Continue exploring</p>
+        <p className="text-xs font-bold text-gray-500 uppercase tracking-[0.12em] mb-6" style={{ fontFamily }}>Continue exploring</p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {items.map((item, i) => (
             <motion.button key={i} onClick={item.onClick} whileHover={{ y: -3 }} whileTap={{ scale: 0.98 }} transition={springBounce}
               className="text-left p-5 rounded-2xl bg-white border border-gray-100 hover:border-gray-200 hover:shadow-lg hover:shadow-gray-900/[0.03] transition-shadow group">
               {item.image && <img src={item.image} alt="" className="w-full aspect-[16/9] rounded-lg object-cover mb-3 group-hover:scale-[1.02] transition-transform" />}
-              <p className="text-[15px] font-semibold text-gray-900 group-hover:text-blue-600 transition-colors" style={{ fontFamily }}>{item.label}</p>
-              <p className="text-[13px] text-gray-400 mt-1" style={{ fontFamily }}>{item.desc}</p>
+              <p className="text-sm font-semibold text-gray-900 group-hover:text-blue-600 transition-colors" style={{ fontFamily }}>{item.label}</p>
+              <p className="text-xs text-gray-500 mt-1" style={{ fontFamily }}>{item.desc}</p>
               <ArrowRight size={14} className="text-gray-300 mt-3 group-hover:text-blue-500 group-hover:translate-x-1 transition-all" />
             </motion.button>
           ))}
@@ -184,8 +184,8 @@ export function ProjectNavigator({ projects, currentIdx = 0, onSelect }: { proje
             <ArrowRight size={14} className="text-gray-300 rotate-180 shrink-0" />
             <div className="w-14 h-10 rounded-lg overflow-hidden bg-gray-50 shrink-0"><img src={prev.cover} alt="" className="w-full h-full object-cover" /></div>
             <div className="min-w-0">
-              <p className="text-[11px] text-gray-400 font-medium" style={{ fontFamily }}>Previous</p>
-              <p className="text-[14px] font-semibold text-gray-900 truncate group-hover:text-blue-600 transition-colors" style={{ fontFamily }}>{prev.title}</p>
+              <p className="text-micro text-gray-500 font-medium" style={{ fontFamily }}>Previous</p>
+              <p className="text-sm font-semibold text-gray-900 truncate group-hover:text-blue-600 transition-colors" style={{ fontFamily }}>{prev.title}</p>
             </div>
           </motion.button>
         )}
@@ -195,8 +195,8 @@ export function ProjectNavigator({ projects, currentIdx = 0, onSelect }: { proje
             <ArrowRight size={14} className="text-gray-300 shrink-0" />
             <div className="w-14 h-10 rounded-lg overflow-hidden bg-gray-50 shrink-0"><img src={next.cover} alt="" className="w-full h-full object-cover" /></div>
             <div className="min-w-0">
-              <p className="text-[11px] text-gray-400 font-medium" style={{ fontFamily }}>Next</p>
-              <p className="text-[14px] font-semibold text-gray-900 truncate group-hover:text-blue-600 transition-colors" style={{ fontFamily }}>{next.title}</p>
+              <p className="text-micro text-gray-500 font-medium" style={{ fontFamily }}>Next</p>
+              <p className="text-sm font-semibold text-gray-900 truncate group-hover:text-blue-600 transition-colors" style={{ fontFamily }}>{next.title}</p>
             </div>
           </motion.button>
         )}
@@ -242,13 +242,13 @@ export function SitemapToggle({ onNavigate }: { onNavigate?: (page: string) => v
                   <motion.div key={page.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: pi * 0.06, ...spring }}>
                     <button onClick={() => { onNavigate?.(page.id); setOpen(false); }}
                       className="text-left w-full group">
-                      <h3 className="text-[16px] font-semibold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors flex items-center gap-2" style={{ fontFamily }}>
+                      <h3 className="text-base font-semibold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors flex items-center gap-2" style={{ fontFamily }}>
                         {page.label} <ArrowUpRight size={12} className="text-gray-300 group-hover:text-blue-500 transition-colors" />
                       </h3>
                       <div className="space-y-1.5 pl-3 border-l-2 border-gray-100">
                         {page.children.map((child, ci) => (
                           <motion.p key={ci} initial={{ opacity: 0, x: -5 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: pi * 0.06 + ci * 0.03, ...spring }}
-                            className="text-[13px] text-gray-400" style={{ fontFamily }}>
+                            className="text-xs text-gray-500" style={{ fontFamily }}>
                             {child}
                           </motion.p>
                         ))}
@@ -280,9 +280,9 @@ export function ScrollRevealCallout({ message, triggerAt = 2000, onAction, actio
         <motion.div initial={{ opacity: 0, x: -20, scale: 0.95 }} animate={{ opacity: 1, x: 0, scale: 1 }} exit={{ opacity: 0, x: -20, scale: 0.95 }} transition={springBounce}
           className="fixed left-6 top-1/2 -translate-y-1/2 z-[75] max-w-[260px] p-4 bg-white rounded-2xl border border-gray-200 shadow-xl shadow-gray-900/10">
           <button onClick={() => setDismissed(true)} className="absolute top-2 right-2 p-1 text-gray-300 hover:text-gray-500"><X size={14} /></button>
-          <p className="text-[14px] text-gray-700 font-medium leading-snug pr-4" style={{ fontFamily }}>{message}</p>
+          <p className="text-sm text-gray-700 font-medium leading-snug pr-4" style={{ fontFamily }}>{message}</p>
           {onAction && (
-            <button onClick={onAction} className="mt-3 text-[13px] font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-1 transition-colors" style={{ fontFamily }}>
+            <button onClick={onAction} className="mt-3 text-xs font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-1 transition-colors" style={{ fontFamily }}>
               {actionLabel} <ArrowRight size={12} />
             </button>
           )}
@@ -310,10 +310,10 @@ export function HoverRevealProjectCard({ title, role, period, cover, summary, de
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }}
               className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent flex items-end p-5">
               <div>
-                <p className="text-white text-[14px] font-medium mb-2" style={{ fontFamily }}>View project</p>
+                <p className="text-white text-sm font-medium mb-2" style={{ fontFamily }}>View project</p>
                 {deliverables.length > 0 && (
                   <div className="flex flex-wrap gap-1.5">
-                    {deliverables.slice(0, 3).map(d => <span key={d} className="text-[10px] px-2 py-0.5 rounded-full bg-white/20 text-white/90 backdrop-blur-sm">{d}</span>)}
+                    {deliverables.slice(0, 3).map(d => <span key={d} className="text-micro px-2 py-0.5 rounded-full bg-white/20 text-white/90 backdrop-blur-sm">{d}</span>)}
                   </div>
                 )}
               </div>
@@ -323,10 +323,10 @@ export function HoverRevealProjectCard({ title, role, period, cover, summary, de
       </div>
       <div className="p-5">
         <div className="flex items-baseline justify-between">
-          <h3 className="text-[16px] font-semibold tracking-[-0.01em] group-hover:text-blue-600 transition-colors" style={{ fontFamily }}>{title}</h3>
-          <span className="text-[11px] text-gray-300 font-mono tabular-nums">{period}</span>
+          <h3 className="text-base font-semibold tracking-[-0.01em] group-hover:text-blue-600 transition-colors" style={{ fontFamily }}>{title}</h3>
+          <span className="text-micro text-gray-300 font-mono tabular-nums">{period}</span>
         </div>
-        <p className="text-[14px] text-gray-400 mt-1" style={{ fontFamily }}>{role}</p>
+        <p className="text-sm text-gray-500 mt-1" style={{ fontFamily }}>{role}</p>
       </div>
     </motion.div>
   );
@@ -342,13 +342,13 @@ export function ExpandCollapse({ preview, full }: { preview: string; full: strin
       <AnimatePresence mode="wait" initial={false}>
         {expanded ? (
           <motion.div key="full" initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} transition={spring}>
-            <p className="text-[17px] leading-relaxed text-gray-600" style={{ whiteSpace: 'pre-line', fontFamily }}>{full}</p>
+            <p className="text-lg leading-relaxed text-gray-600" style={{ whiteSpace: 'pre-line', fontFamily }}>{full}</p>
           </motion.div>
         ) : (
-          <motion.p key="preview" className="text-[17px] leading-relaxed text-gray-600 line-clamp-3" style={{ fontFamily }}>{preview}</motion.p>
+          <motion.p key="preview" className="text-lg leading-relaxed text-gray-600 line-clamp-3" style={{ fontFamily }}>{preview}</motion.p>
         )}
       </AnimatePresence>
-      <button onClick={() => setExpanded(!expanded)} className="mt-2 text-[14px] font-medium text-blue-600 hover:text-blue-700 transition-colors flex items-center gap-1" style={{ fontFamily }}>
+      <button onClick={() => setExpanded(!expanded)} className="mt-2 text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors flex items-center gap-1" style={{ fontFamily }}>
         {expanded ? 'Show less' : 'Read more'}
         <motion.span animate={{ rotate: expanded ? 90 : 0 }} transition={spring}><CaretRight size={12} /></motion.span>
       </button>
@@ -362,7 +362,7 @@ export function ExpandCollapse({ preview, full }: { preview: string; full: strin
 export function StickyLabel({ children }: { children: React.ReactNode }) {
   return (
     <div className="sticky top-14 z-30 py-2.5 bg-white/90 backdrop-blur-md border-b border-gray-100 mb-6 -mx-6 px-6">
-      <p className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.12em]" style={{ fontFamily }}>{children}</p>
+      <p className="text-micro font-bold text-gray-500 uppercase tracking-[0.12em]" style={{ fontFamily }}>{children}</p>
     </div>
   );
 }

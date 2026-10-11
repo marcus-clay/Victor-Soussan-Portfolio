@@ -330,7 +330,7 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
 
       {/* Header row */}
       <div className="max-w-[740px] mx-auto px-6 flex items-center justify-between mb-8">
-        <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900">
+        <h2 className="text-title-2 text-gray-900">
           {isEn ? 'Work' : 'Projets'}
         </h2>
         <a
@@ -425,24 +425,23 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
                 <div className="mt-4">
                   {/* Meta row */}
                   <div className="flex items-center justify-between gap-2 mb-1.5">
-                    <span className="text-[11px] font-medium uppercase tracking-[0.08em]" style={{ color: '#6B7280' }}>
+                    <span className="text-micro font-medium uppercase tracking-[0.08em]" style={{ color: '#6B7280' }}>
                       {item.role}
                     </span>
-                    <span className="text-[11px] tabular-nums" style={{ color: '#6B7280' }}>
+                    <span className="text-micro tabular-nums" style={{ color: '#6B7280' }}>
                       {item.year}
                     </span>
                   </div>
 
                   {/* Title: a real link, so the project is reachable by keyboard, screen reader and crawler.
                       The card's onClick still performs the client-side navigation. */}
-                  <p className="text-sm leading-snug tracking-[-0.01em] mb-1">
+                  <p className="text-title-3 mb-1">
                     <a
                       href={`/${lang}${item.path}`}
                       className="relative"
                       tabIndex={isActive ? 0 : -1}
                       onClick={(e) => { if (!e.metaKey && !e.ctrlKey && !e.shiftKey) e.preventDefault() }}
                       style={{
-                        fontWeight: 500,
                         color: isActive ? '#111827' : '#6B7280',
                         transition: 'color 80ms ease',
                       }}

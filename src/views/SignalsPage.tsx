@@ -109,7 +109,7 @@ const SignalsPage: React.FC<SignalsPageProps> = ({ systemTheme, lang, onBack, on
 
         {/* Header */}
         <div className="mb-10 md:mb-14">
-          <h1 className={`text-3xl sm:text-4xl md:text-5xl font-bold tracking-[-0.03em] mb-4 ${
+          <h1 className={`text-title-1 mb-4 ${
             isDark ? 'text-white' : 'text-gray-900'
           }`}>{t.page_title}</h1>
           <p className={`text-base md:text-lg max-w-2xl ${
@@ -152,9 +152,9 @@ const SignalsPage: React.FC<SignalsPageProps> = ({ systemTheme, lang, onBack, on
             <div className="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <div className="flex-1">
                 <div className="flex flex-wrap gap-2 mb-3">
-                  <span className="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-[#7B61FF]/10 text-[#7B61FF]">Guide</span>
-                  <span className="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-[#2D5CF3]/10 text-[#2D5CF3]">Claude Code</span>
-                  <span className="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-emerald-500/10 text-emerald-600">Ressources</span>
+                  <span className="px-2.5 py-1 rounded-full text-micro font-semibold bg-[#7B61FF]/10 text-[#7B61FF]">Guide</span>
+                  <span className="px-2.5 py-1 rounded-full text-micro font-semibold bg-[#2D5CF3]/10 text-[#2D5CF3]">Claude Code</span>
+                  <span className="px-2.5 py-1 rounded-full text-micro font-semibold bg-emerald-500/10 text-emerald-600">Ressources</span>
                 </div>
                 <h3 className={`text-lg md:text-xl font-bold tracking-[-0.02em] mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
                   {lang === 'en' ? 'Getting Started with Claude Code' : 'Bien d\u00e9marrer avec Claude Code'}
@@ -196,7 +196,7 @@ const SignalsPage: React.FC<SignalsPageProps> = ({ systemTheme, lang, onBack, on
                 >
                   <div className="p-5 md:p-6 flex flex-col min-w-0">
                     <div className="flex items-start justify-between gap-2 mb-3">
-                      <span className={`inline-block px-2.5 py-0.5 rounded-full text-[11px] font-semibold ${
+                      <span className={`inline-block px-2.5 py-0.5 rounded-full text-micro font-semibold ${
                         isDark ? colors.bgDark : colors.bg
                       } ${colors.text}`}>
                         {CATEGORY_LABELS[signal.category][lang]}
@@ -239,7 +239,7 @@ const SignalsPage: React.FC<SignalsPageProps> = ({ systemTheme, lang, onBack, on
                           isDark ? 'text-blue-400' : 'text-[#2D5CF3]'
                         }`} />
                       </div>
-                      <time className={`text-[11px] ${isDark ? 'text-gray-600' : 'text-gray-400'}`}>
+                      <time className={`text-micro ${isDark ? 'text-gray-600' : 'text-gray-400'}`}>
                         {new Date(signal.date + '-01').toLocaleDateString(lang === 'fr' ? 'fr-FR' : 'en-US', {
                           month: 'short',
                           year: 'numeric',

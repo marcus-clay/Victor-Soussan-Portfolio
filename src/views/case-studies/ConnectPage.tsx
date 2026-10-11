@@ -70,7 +70,7 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick }) => {
           <img loading="lazy" src={item.src} alt={item.caption} className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" />
         )}
       </div>
-      <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
+      <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
         {item.caption}
         {item.captionDesc && <span className="hidden sm:inline"> · {item.captionDesc}</span>}
       </figcaption>
@@ -160,7 +160,7 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
           />
         )}
       </div>
-      <figcaption className="mt-3 text-xs text-gray-400 leading-relaxed">
+      <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
         {caption}{captionDesc && ` · ${captionDesc}`}
       </figcaption>
     </figure>
@@ -242,12 +242,12 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
             <section id="hero" className="mb-24 md:mb-32">
               <div className="max-w-[740px] mx-auto px-6 pt-16 md:pt-24">
                 {/* Meta */}
-                <p className="text-xs text-gray-400 mb-4">
+                <p className="text-xs text-gray-500 mb-4">
                   {t.hero.role} · {t.hero.scope} · {t.hero.period}
                 </p>
 
                 {/* Title */}
-                <h1 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-3">
+                <h1 className="text-title-1 text-gray-900 mb-3">
                   {t.hero.title}
                 </h1>
 
@@ -277,7 +277,7 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
             {/* Overview Section */}
             <section id="overview" className="mb-24 md:mb-32">
               <div className="max-w-[740px] mx-auto px-6">
-                <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+                <h2 className="text-title-2 text-gray-900 mb-4">
                   {t.overview.title}
                 </h2>
 
@@ -322,7 +322,7 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
             {/* Dashboard Section */}
             <section id="dashboard" className="mb-24 md:mb-32">
               <div className="max-w-[740px] mx-auto px-6">
-                <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+                <h2 className="text-title-2 text-gray-900 mb-4">
                   {t.dashboard.title}
                 </h2>
                 <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-12">
@@ -416,7 +416,7 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
             {/* La Bulle Section */}
             <section id="bulle" className="mb-24 md:mb-32">
               <div className="max-w-[740px] mx-auto px-6">
-                <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+                <h2 className="text-title-2 text-gray-900 mb-4">
                   {t.bulle.title}
                 </h2>
                 <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-12">
@@ -482,7 +482,7 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
                   Pas de lightbox, pas de hover-zoom — c'est une démonstration, pas un artefact de galerie. */}
               <div className="mt-4 bg-[#111113] py-16 md:py-20">
                 <div className="max-w-[840px] mx-auto px-6">
-                  <p className="text-[11px] font-medium text-white/35 uppercase tracking-[0.08em] mb-8">
+                  <p className="text-micro font-medium text-white/60 uppercase tracking-[0.08em] mb-8">
                     Prototype d'interaction
                   </p>
                   <div className="rounded-2xl overflow-hidden">
@@ -497,7 +497,7 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
                     />
                   </div>
                   {t.bulle.bulleDemoDesc && (
-                    <p className="mt-5 text-[12px] text-white/35 leading-relaxed max-w-[60ch]">
+                    <p className="mt-5 text-xs text-white/60 leading-relaxed max-w-[60ch]">
                       {t.bulle.bulleDemoDesc}
                     </p>
                   )}

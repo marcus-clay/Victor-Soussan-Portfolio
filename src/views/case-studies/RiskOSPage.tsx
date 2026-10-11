@@ -155,7 +155,7 @@ function VideoCard({
           <VideoPlayer src={src} className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" />
       </motion.figure>
       <div className="mt-4 max-w-[740px] mx-auto">
-        <p className="text-xs font-medium text-gray-400 mb-1">{caption}</p>
+        <p className="text-xs font-medium text-gray-500 mb-1">{caption}</p>
         {description && <p className="text-base text-gray-500 leading-relaxed mb-2">{description}</p>}
         {frustration && (
           <p className="text-xs text-gray-500 leading-relaxed">
@@ -175,7 +175,7 @@ function VideoCard({
 }
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
-  return <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">{children}</h2>;
+  return <h2 className="text-title-2 text-gray-900 mb-4">{children}</h2>;
 }
 
 function Paragraph({ children }: { children: React.ReactNode }) {
@@ -232,17 +232,17 @@ const RiskOSPage: React.FC<RiskOSPageProps> = ({ lang: propLang }) => {
           transition={{ duration: 0.5, ease: EASE_OUT }}
         >
           <div className="flex items-center gap-2 mb-4">
-            <span className="text-xs text-gray-400">{t.category}</span>
+            <span className="text-xs text-gray-500">{t.category}</span>
             <span className="w-1 h-1 rounded-full bg-gray-300" />
-            <span className="text-xs text-gray-400">2026</span>
+            <span className="text-xs text-gray-500">2026</span>
           </div>
-          <h1 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-1">
+          <h1 className="text-title-1 text-gray-900 mb-1">
             RiskOS
           </h1>
           <p className="text-base text-gray-500 max-w-[55ch] mb-2">
             {t.subtitle}
           </p>
-          <p className="text-xs text-gray-400">{t.author}</p>
+          <p className="text-xs text-gray-500">{t.author}</p>
 
           <div className="mt-5">
             <a

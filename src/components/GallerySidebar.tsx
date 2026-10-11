@@ -62,7 +62,7 @@ const GallerySidebar: React.FC<GallerySidebarProps> = ({
             >
               <Icon size={12} />
               {CATEGORY_LABELS[cat.id][lang]}
-              <span className={`text-[10px] ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
+              <span className={`text-micro ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
                 {cat.prototypeIds.length}
               </span>
             </button>
@@ -97,7 +97,7 @@ const GallerySidebar: React.FC<GallerySidebarProps> = ({
               <span className={`text-xs font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
                 {CATEGORY_LABELS[cat.id][lang]}
               </span>
-              <span className={`text-[10px] ml-auto ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
+              <span className={`text-micro ml-auto ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
                 {cat.prototypeIds.length}
               </span>
             </button>
@@ -111,13 +111,13 @@ const GallerySidebar: React.FC<GallerySidebarProps> = ({
                   <button
                     key={pid}
                     onClick={() => onPrototypeClick(pid)}
-                    className={`flex items-center gap-2 w-full text-left px-2 py-1 rounded-md text-[11px] transition-colors ${
+                    className={`flex items-center gap-2 w-full text-left px-2 py-1 rounded-md text-micro transition-colors ${
                       isActive
                         ? (isDark ? 'bg-blue-600/20 text-blue-400' : 'bg-blue-50 text-[#2D5CF3]')
                         : (isDark ? 'text-gray-400 hover:text-gray-200 hover:bg-white/5' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50')
                     }`}
                   >
-                    <span className={`font-mono text-[10px] flex-shrink-0 w-6 ${
+                    <span className={`font-mono text-micro flex-shrink-0 w-6 ${
                       isActive ? '' : (isDark ? 'text-gray-500' : 'text-gray-400')
                     }`}>
                       {pid}

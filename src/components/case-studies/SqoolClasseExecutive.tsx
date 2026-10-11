@@ -308,13 +308,13 @@ const SqoolClasseExecutive: React.FC<SqoolClasseExecutiveProps> = ({
       {/* HERO */}
       <section id="hero" className="pt-16 md:pt-24 mb-24 md:mb-32">
         <div className="max-w-[740px] mx-auto px-6">
-          <motion.p {...fadeIn} className="text-xs text-gray-400 mb-4">
+          <motion.p {...fadeIn} className="text-xs text-gray-500 mb-4">
             {t.hero.eyebrow}
           </motion.p>
           <motion.h1
             {...fadeIn}
             transition={{ duration: 0.4, delay: 0.05, ease: [0.23, 1, 0.32, 1] }}
-            className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4"
+            className="text-title-1 text-gray-900 mb-4"
           >
             {t.hero.title}
           </motion.h1>
@@ -364,7 +364,7 @@ const SqoolClasseExecutive: React.FC<SqoolClasseExecutiveProps> = ({
       {/* ROLE */}
       <section id="role" className="mb-24 md:mb-32">
         <div className="max-w-[740px] mx-auto px-6">
-          <motion.h2 {...fadeIn} className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+          <motion.h2 {...fadeIn} className="text-title-2 text-gray-900 mb-4">
             {t.role.title}
           </motion.h2>
           <motion.div
@@ -375,7 +375,7 @@ const SqoolClasseExecutive: React.FC<SqoolClasseExecutiveProps> = ({
             {t.role.items.map((item, idx) => (
               <div key={idx} className="flex items-baseline justify-between py-3">
                 <span className="text-sm text-gray-500">{item.label}</span>
-                <span className="text-xs text-gray-400">{item.detail}</span>
+                <span className="text-xs text-gray-500">{item.detail}</span>
               </div>
             ))}
           </motion.div>
@@ -392,7 +392,7 @@ const SqoolClasseExecutive: React.FC<SqoolClasseExecutiveProps> = ({
       {/* PRODUCT MODULES */}
       <section id="modules" className="mb-24 md:mb-32">
         <div className="max-w-[740px] mx-auto px-6">
-          <motion.h2 {...fadeIn} className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-8">
+          <motion.h2 {...fadeIn} className="text-title-2 text-gray-900 mb-8">
             {t.modules.title}
           </motion.h2>
           <div className="space-y-10">
@@ -404,7 +404,7 @@ const SqoolClasseExecutive: React.FC<SqoolClasseExecutiveProps> = ({
               >
                 <div className="flex items-baseline gap-3 mb-3">
                   <span className="text-sm font-medium text-gray-900">{phase.title}</span>
-                  <span className="text-xs text-gray-400">{phase.period}</span>
+                  <span className="text-xs text-gray-500">{phase.period}</span>
                 </div>
                 <ul className="divide-y divide-gray-100">
                   {phase.deliverables.map((d, i) => (
@@ -420,7 +420,7 @@ const SqoolClasseExecutive: React.FC<SqoolClasseExecutiveProps> = ({
       {/* SCOPE */}
       <section id="scope" className="mb-24 md:mb-32">
         <div className="max-w-[740px] mx-auto px-6">
-          <motion.h2 {...fadeIn} className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+          <motion.h2 {...fadeIn} className="text-title-2 text-gray-900 mb-4">
             {t.scope.title}
           </motion.h2>
           <motion.p
@@ -450,7 +450,7 @@ const SqoolClasseExecutive: React.FC<SqoolClasseExecutiveProps> = ({
                   className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
                 />
               </div>
-              <p className="mt-3 text-xs font-medium text-gray-400">{area.title}</p>
+              <p className="mt-3 text-xs font-medium text-gray-500">{area.title}</p>
             </motion.div>
           </React.Fragment>
         ))}
@@ -460,10 +460,10 @@ const SqoolClasseExecutive: React.FC<SqoolClasseExecutiveProps> = ({
       <section id="highlights" className="mb-24 md:mb-32">
         <div className="max-w-[740px] mx-auto px-6">
           <motion.div {...fadeIn}>
-            <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-1">
+            <h2 className="text-title-2 text-gray-900 mb-1">
               {t.highlights.title}
             </h2>
-            <p className="text-xs text-gray-400 mb-4">{t.highlights.subtitle}</p>
+            <p className="text-xs text-gray-500 mb-4">{t.highlights.subtitle}</p>
           </motion.div>
         </div>
         {t.highlights.items.map((item, idx) => (
@@ -484,7 +484,7 @@ const SqoolClasseExecutive: React.FC<SqoolClasseExecutiveProps> = ({
                   className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
                 />
               </div>
-              <p className="mt-3 text-xs font-medium text-gray-400">{item.title}</p>
+              <p className="mt-3 text-xs font-medium text-gray-500">{item.title}</p>
             </motion.div>
           </React.Fragment>
         ))}
@@ -493,7 +493,7 @@ const SqoolClasseExecutive: React.FC<SqoolClasseExecutiveProps> = ({
       {/* IMPACT */}
       <section id="outcome" className="mb-24 md:mb-32">
         <div className="max-w-[740px] mx-auto px-6">
-          <motion.h2 {...fadeIn} className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-8">
+          <motion.h2 {...fadeIn} className="text-title-2 text-gray-900 mb-8">
             {t.outcome.title}
           </motion.h2>
           <motion.div
@@ -504,7 +504,7 @@ const SqoolClasseExecutive: React.FC<SqoolClasseExecutiveProps> = ({
             {t.outcome.metrics.map((metric, idx) => (
               <div key={idx}>
                 <span className="text-base font-semibold text-gray-900">{metric.value}</span>
-                <p className="text-xs text-gray-400 mt-1">{metric.label}</p>
+                <p className="text-xs text-gray-500 mt-1">{metric.label}</p>
               </div>
             ))}
           </motion.div>

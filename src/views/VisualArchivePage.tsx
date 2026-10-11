@@ -143,10 +143,10 @@ const VisualArchivePage: React.FC<VisualArchivePageProps> = ({ lang }) => {
                 }}
               >
                 <div className="max-w-[740px] mx-auto px-6 w-full h-10 flex items-center">
-                  <nav className="flex items-center gap-1.5 text-[13px] min-w-0 overflow-hidden">
+                  <nav className="flex items-center gap-1.5 text-xs min-w-0 overflow-hidden">
                     <Link
                       href={`/${lang}/projets`}
-                      className="transition-colors hover:underline flex-shrink-0 text-gray-400 hover:text-gray-900"
+                      className="transition-colors hover:underline flex-shrink-0 text-gray-500 hover:text-gray-900"
                     >
                       {lang === 'fr' ? 'Projets' : 'Projects'}
                     </Link>
@@ -189,7 +189,7 @@ const VisualArchivePage: React.FC<VisualArchivePageProps> = ({ lang }) => {
         <div className="max-w-[740px] mx-auto px-6">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16 md:mb-20">
             <div>
-              <h1 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-3">
+              <h1 className="text-title-1 text-gray-900 mb-3">
                 {t.title}
               </h1>
               <p className="text-base text-gray-500 max-w-md">
@@ -311,7 +311,7 @@ const ProjectSection: React.FC<{
         className="max-w-[740px] mb-6"
         style={{ marginLeft: 'clamp(0px, calc((100vw - 740px) / 2), 110px)' }}
       >
-        <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-1">
+        <h2 className="text-title-2 text-gray-900 mb-1">
           {project.name}
         </h2>
         <p className="text-sm text-gray-500">
@@ -358,7 +358,7 @@ const ProjectSection: React.FC<{
 
           <button
             onClick={onToggleExpand}
-            className="mt-4 flex items-center gap-2 text-sm font-medium text-gray-400 hover:text-gray-900 cursor-pointer active:scale-[0.97]"
+            className="mt-4 flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-gray-900 cursor-pointer active:scale-[0.97]"
             style={{
               marginLeft: 'clamp(0px, calc((100vw - 740px) / 2), 110px)',
               transition: 'color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)',

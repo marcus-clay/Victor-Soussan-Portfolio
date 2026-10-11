@@ -48,7 +48,7 @@ const ContactCTASection: React.FC<ContactCTASectionProps> = ({
   return (
     <section className="py-24 md:py-40 px-6">
       <div className="max-w-[692px] mx-auto">
-        <h2 className="text-base font-semibold tracking-[-0.01em] text-gray-900 mb-4">
+        <h2 className="text-title-2 text-gray-900 mb-4">
           {content.contact.title}
         </h2>
         <p className="text-sm md:text-base text-gray-500 leading-relaxed mb-8">
