@@ -109,7 +109,9 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
     setCanScrollRight(track.scrollLeft < track.scrollWidth - track.clientWidth - 8)
   }, [])
 
-  // Direct DOM opacity update — bypasses React for per-frame smoothness
+  // Direct DOM opacity update — bypasses React for per-frame smoothness.
+  // Only the media dims with distance: the text keeps full opacity so inactive
+  // slides stay readable (WCAG AA) while the depth effect is preserved.
   const updateOpacities = useCallback((scrollLeft: number) => {
     const track = trackRef.current
     if (!track) return
@@ -118,7 +120,8 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
     cards.forEach((card) => {
       const dist = Math.abs(card.offsetLeft - pl - scrollLeft)
       const normalized = Math.min(dist / CARD_WIDTH_PX, 1)
-      card.style.opacity = String(1 - 0.28 * normalized)
+      const media = card.querySelector<HTMLElement>('[data-card-media]')
+      if (media) media.style.opacity = String(1 - 0.28 * normalized)
     })
   }, [])
 
@@ -386,6 +389,7 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
               >
                 {/* Video */}
                 <div
+                  data-card-media=""
                   className="relative rounded-2xl overflow-hidden bg-[#111113]"
                   style={{
                     aspectRatio: '16 / 10',
@@ -448,11 +452,11 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
                     </a>
                   </p>
 
-                  {/* Summary — always visible, color dims when inactive */}
+                  {/* Summary — always visible, one step lighter when inactive (both pass AA) */}
                   <p
                     className="text-sm leading-relaxed line-clamp-2 mb-3"
                     style={{
-                      color: isActive ? '#6B7280' : '#9CA3AF',
+                      color: isActive ? '#4B5563' : '#6B7280',
                       transition: 'color 80ms ease',
                     }}
                   >
