@@ -73,8 +73,11 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
   const [canScrollRight, setCanScrollRight] = useState(true)
   const [isPaused, setIsPaused] = useState(false)
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
+  const [inView, setInView] = useState(true)
+  const [reduceMotion, setReduceMotion] = useState(false)
 
   const trackRef = useRef<HTMLDivElement>(null)
+  const userStartedRef = useRef(false)
   const rafRef = useRef<number>(0)
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([])
 
@@ -164,21 +167,44 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
 
   useEffect(() => { return () => cancelAnimationFrame(rafRef.current) }, [])
 
-  // Play active video, pause others
+  // Respect reduced motion: videos start paused and the visitor can press play
   useEffect(() => {
-    setIsPaused(false)
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const apply = () => setReduceMotion(mq.matches)
+    apply()
+    mq.addEventListener('change', apply)
+    return () => mq.removeEventListener('change', apply)
+  }, [])
+
+  // Stop decoding video while the carousel is off screen
+  useEffect(() => {
+    const track = trackRef.current
+    if (!track) return
+    const io = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), { threshold: 0.2 })
+    io.observe(track)
+    return () => io.disconnect()
+  }, [])
+
+  // A new card or a change of motion preference resets the manual pause state
+  useEffect(() => {
+    setIsPaused(reduceMotion)
+  }, [activeIndex, reduceMotion])
+
+  // Play the active video only when visible and not paused; pause the others
+  useEffect(() => {
     videoRefs.current.forEach((video, i) => {
       if (!video) return
-      if (i === activeIndex) video.play().catch(() => {})
+      const blockedByMotionPref = window.matchMedia('(prefers-reduced-motion: reduce)').matches && !userStartedRef.current
+      if (i === activeIndex && inView && !isPaused && !blockedByMotionPref) video.play().catch(() => {})
       else video.pause()
     })
-  }, [activeIndex])
+  }, [activeIndex, inView, isPaused])
 
   const togglePause = useCallback((e: React.MouseEvent) => {
     e.stopPropagation()
     const video = videoRefs.current[activeIndex]
     if (!video) return
-    if (isPaused) { video.play().catch(() => {}); setIsPaused(false) }
+    if (isPaused) { userStartedRef.current = true; video.play().catch(() => {}); setIsPaused(false) }
     else { video.pause(); setIsPaused(true) }
   }, [activeIndex, isPaused])
 
@@ -306,7 +332,7 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
         </h2>
         <a
           href={`/${lang}/projets`}
-          className="group text-sm text-gray-400 hover:text-gray-900 inline-flex items-center gap-1"
+          className="group text-sm text-gray-500 hover:text-gray-900 inline-flex items-center gap-1 py-2.5 -my-2.5"
           style={{ transition: 'color 150ms ease' }}
         >
           {isEn ? 'All projects' : 'Tous les projets'}
@@ -381,7 +407,7 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
                   <button
                     onClick={togglePause}
                     aria-label={isPaused ? (lang === 'fr' ? 'Lire' : 'Play') : (lang === 'fr' ? 'Pause' : 'Pause')}
-                    className="absolute bottom-3 right-3 w-8 h-8 flex items-center justify-center rounded-full bg-black/30 backdrop-blur-sm text-white/70 hover:bg-black/50 hover:text-white active:scale-95 transition-[background-color,color,transform,opacity] duration-150"
+                    className="absolute bottom-3 right-3 w-8 h-8 flex items-center justify-center rounded-full bg-black/30 backdrop-blur-sm text-white/70 hover:bg-black/50 hover:text-white active:scale-95 transition-[background-color,color,transform,opacity] duration-150 before:absolute before:-inset-1.5 before:content-['']"
                     style={{
                       opacity: isActive ? 1 : 0,
                       pointerEvents: isActive ? 'auto' : 'none',
@@ -395,24 +421,31 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
                 <div className="mt-4">
                   {/* Meta row */}
                   <div className="flex items-center justify-between gap-2 mb-1.5">
-                    <span className="text-[11px] font-medium uppercase tracking-[0.08em]" style={{ color: '#9CA3AF' }}>
+                    <span className="text-[11px] font-medium uppercase tracking-[0.08em]" style={{ color: '#6B7280' }}>
                       {item.role}
                     </span>
-                    <span className="text-[11px] tabular-nums" style={{ color: '#9CA3AF' }}>
+                    <span className="text-[11px] tabular-nums" style={{ color: '#6B7280' }}>
                       {item.year}
                     </span>
                   </div>
 
-                  {/* Title */}
-                  <p
-                    className="text-sm leading-snug tracking-[-0.01em] mb-1"
-                    style={{
-                      fontWeight: 500,
-                      color: isActive ? '#111827' : '#6B7280',
-                      transition: 'color 80ms ease',
-                    }}
-                  >
-                    {item.title}
+                  {/* Title: a real link, so the project is reachable by keyboard, screen reader and crawler.
+                      The card's onClick still performs the client-side navigation. */}
+                  <p className="text-sm leading-snug tracking-[-0.01em] mb-1">
+                    <a
+                      href={`/${lang}${item.path}`}
+                      className="relative"
+                      tabIndex={isActive ? 0 : -1}
+                      onClick={(e) => { if (!e.metaKey && !e.ctrlKey && !e.shiftKey) e.preventDefault() }}
+                      style={{
+                        fontWeight: 500,
+                        color: isActive ? '#111827' : '#6B7280',
+                        transition: 'color 80ms ease',
+                      }}
+                    >
+                      {item.title}
+                      <span className="sr-only">{isEn ? ', view case study' : ', voir l\u2019\u00e9tude de cas'}</span>
+                    </a>
                   </p>
 
                   {/* Summary — always visible, color dims when inactive */}
@@ -474,24 +507,28 @@ export default function ProjectsDemoCarousel({ lang, onNavigate }: ProjectsDemoC
       </div>
 
       {/* Navigation dots */}
-      <div className="flex items-center justify-center gap-1.5 mt-5">
-        {items.map((_, i) => (
+      <div className="flex items-center justify-center mt-3">
+        {items.map((item, i) => (
           <button
             key={i}
             onClick={() => goTo(i)}
-            aria-label={`Go to project ${i + 1}`}
-            style={{
-              width: i === activeIndex ? 16 : 5,
-              height: 5,
-              borderRadius: 3,
-              background: i === activeIndex ? '#111827' : '#D1D5DB',
-              border: 'none',
-              padding: 0,
-              cursor: 'pointer',
-              transition: 'width 240ms cubic-bezier(0.23,1,0.32,1), background-color 180ms ease',
-              flexShrink: 0,
-            }}
-          />
+            aria-label={isEn ? `Go to project ${i + 1}: ${item.title}` : `Aller au projet ${i + 1} : ${item.title}`}
+            aria-current={i === activeIndex ? 'true' : undefined}
+            className="flex items-center justify-center h-6 px-[9.5px]"
+            style={{ border: 'none', background: 'transparent', cursor: 'pointer', flexShrink: 0 }}
+          >
+            <span
+              aria-hidden="true"
+              style={{
+                display: 'block',
+                width: i === activeIndex ? 16 : 5,
+                height: 5,
+                borderRadius: 3,
+                background: i === activeIndex ? '#111827' : '#D1D5DB',
+                transition: 'width 240ms cubic-bezier(0.23,1,0.32,1), background-color 180ms ease',
+              }}
+            />
+          </button>
         ))}
       </div>
 

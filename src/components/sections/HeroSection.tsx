@@ -96,7 +96,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             {/* Approach */}
             <button
               onClick={() => openModalWithUrl('/approche')}
-              className="text-sm text-gray-500 hover:text-gray-900 active:opacity-60 transition-[color,opacity] duration-150 inline-flex items-center gap-1.5 cursor-pointer"
+              className="text-sm text-gray-500 hover:text-gray-900 active:opacity-60 transition-[color,opacity] duration-150 inline-flex items-center gap-1.5 cursor-pointer py-2.5 -my-2.5"
             >
               {isEn ? 'My approach' : 'Mon approche'}
               <ArrowDiag />
@@ -108,7 +108,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             {/* Contact */}
             <button
               onClick={() => openModalWithUrl('/contact')}
-              className="text-sm font-medium text-gray-900 hover:text-gray-500 active:opacity-60 transition-[color,opacity] duration-150 inline-flex items-center gap-1.5 cursor-pointer"
+              className="text-sm font-medium text-gray-900 hover:text-gray-500 active:opacity-60 transition-[color,opacity] duration-150 inline-flex items-center gap-1.5 cursor-pointer py-2.5 -my-2.5"
             >
               {isEn ? "Let's talk" : 'Parlons-en'}
               <ArrowDiag />

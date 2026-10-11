@@ -2,6 +2,7 @@
 
 import { usePathname } from 'next/navigation'
 import type { ReactNode } from 'react'
+import { MotionConfig } from 'framer-motion'
 import SkillsPromoBanner from './SkillsPromoBanner'
 
 // Routes that use their own full-screen layout (no Nav/Footer)
@@ -22,11 +23,11 @@ export default function LayoutShell({
   const isBare = BARE_ROUTES.some((route) => pathname.includes(route))
 
   if (isBare) {
-    return <>{children}</>
+    return <MotionConfig reducedMotion="user">{children}</MotionConfig>
   }
 
   return (
-    <>
+    <MotionConfig reducedMotion="user">
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:top-4 focus:left-4 focus:bg-white focus:text-black focus:px-4 focus:py-2 focus:rounded"
@@ -39,6 +40,6 @@ export default function LayoutShell({
       </main>
       {footer}
       <SkillsPromoBanner lang={lang} />
-    </>
+    </MotionConfig>
   )
 }

@@ -170,7 +170,7 @@ export default function Nav({ lang }: { lang: Lang }) {
 
                   {/* Subtitle — visible on scroll OR when menu is open */}
                   <div
-                    className="flex items-baseline gap-0 min-w-0 overflow-hidden"
+                    className={`flex items-baseline gap-0 min-w-0 overflow-hidden ${isHomepage ? 'max-[439px]:hidden' : ''}`}
                     style={{
                       opacity: (showPageTitle || isMobileMenuOpen) ? 1 : 0,
                       transition: 'opacity 250ms ease',
@@ -195,7 +195,7 @@ export default function Nav({ lang }: { lang: Lang }) {
             {/* Lang switcher — always visible, gets pushed left when Contact appears */}
             <Link
               href={`/${otherLang}${pathname.replace(`/${lang}`, '')}`}
-              className="px-2.5 py-1.5 text-sm font-medium rounded-full text-gray-400 hover:text-gray-900 hover:bg-black/[0.04]"
+              className="px-2.5 py-1.5 text-sm font-medium rounded-full text-gray-500 hover:text-gray-900 hover:bg-black/[0.04]"
               style={{ transition: 'background-color 150ms ease, color 150ms ease' }}
             >
               {lang === 'en' ? 'FR' : 'EN'}

@@ -49,7 +49,7 @@ const FeaturedSection: React.FC<FeaturedSectionProps> = ({
           </h2>
           <Link
             href={`/${lang}/ressources`}
-            className="group text-sm text-gray-400 hover:text-gray-900 transition-colors duration-150 flex items-center gap-1"
+            className="group text-sm text-gray-500 hover:text-gray-900 transition-colors duration-150 flex items-center gap-1"
           >
             {isEn ? 'All articles' : 'Tous les articles'}
             <ArrowDiag
@@ -72,9 +72,9 @@ const FeaturedSection: React.FC<FeaturedSectionProps> = ({
             className="group -mx-3 px-3 py-5 rounded-xl text-left w-full block hover:bg-gray-100 transition-colors duration-150"
           >
             <div className="flex items-center gap-2 mb-2">
-              <span className="text-[11px] font-medium text-gray-400 uppercase tracking-wide">Guide</span>
+              <span className="text-[11px] font-medium text-gray-500 uppercase tracking-wide">Guide</span>
               <span className="w-1 h-1 rounded-full bg-gray-300 flex-shrink-0" />
-              <span className="text-[11px] font-medium text-gray-400 uppercase tracking-wide">
+              <span className="text-[11px] font-medium text-gray-500 uppercase tracking-wide">
                 {guideChapters.length} {isEn ? 'chapters' : 'chapitres'}
               </span>
             </div>
@@ -125,7 +125,7 @@ const FeaturedSection: React.FC<FeaturedSectionProps> = ({
               className="group -mx-3 px-3 py-5 rounded-xl text-left w-full block hover:bg-gray-100 transition-colors duration-150"
             >
               <div className="flex items-center gap-2 mb-2">
-                <span className="text-[11px] font-medium text-gray-400 uppercase tracking-wide">
+                <span className="text-[11px] font-medium text-gray-500 uppercase tracking-wide">
                   {isEn ? 'AI' : 'IA'}
                 </span>
               </div>

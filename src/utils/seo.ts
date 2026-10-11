@@ -50,7 +50,7 @@ export const PROJECT_SEO: Record<string, SeoMeta> = {
 export const DEFAULT_SEO: SeoMeta = {
   title: 'Victor Soussan | Product Design Lead - UX/UI Portfolio',
   description: 'Senior Product Design Lead avec 15+ ans d\u2019exp\u00e9rience. Sp\u00e9cialis\u00e9 en Design System, UX Research, et transformation digitale.',
-  image: '/images/og_victor_soussan.webp'
+  image: '/images/og_victor_soussan.jpg'
 };
 
 export const injectJsonLd = (projectId: string, seo: SeoMeta): (() => void) => {

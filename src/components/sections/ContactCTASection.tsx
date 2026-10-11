@@ -65,7 +65,7 @@ const ContactCTASection: React.FC<ContactCTASectionProps> = ({
 
           <button
             onClick={handleCopy}
-            className="text-sm text-gray-400 hover:text-gray-900 transition-colors duration-150 cursor-pointer"
+            className="text-sm text-gray-500 hover:text-gray-900 transition-colors duration-150 cursor-pointer"
           >
             <span className={`inline-flex items-center gap-1.5 transition-[filter,opacity] duration-100 ease-out ${transitioning ? 'blur-[2px] opacity-70' : ''}`}>
               {copied ? (

@@ -70,7 +70,7 @@ export default function ResumePageWrapper({ lang }: { lang: 'en' | 'fr' }) {
               <h2 className="text-2xl font-semibold text-gray-900 tracking-[-0.02em]">
                 {resumeLang === 'fr' ? 'CV' : 'Resume'}
               </h2>
-              <p className="text-sm text-gray-500 mt-0.5">Product Design Lead</p>
+              <p className="text-sm text-gray-500 mt-0.5">Lead Product Designer</p>
             </div>
             <button
               onClick={() => router.back()}

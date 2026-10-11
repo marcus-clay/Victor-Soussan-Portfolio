@@ -34,14 +34,32 @@
   --nav-height: 72px;
 }
 
-/* Reduced motion: keep opacity, remove movement */
+/* Reduced motion: keep opacity and color changes (short cross-fade), remove movement.
+   Framer Motion is handled separately by <MotionConfig reducedMotion="user"> in LayoutShell. */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+    transition-property: opacity, color, background-color, border-color, text-decoration-color !important;
+    transition-duration: 150ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* Keyboard focus: one consistent, visible ring in the brand blue.
+   :where() keeps specificity at zero, so component-level focus styles still win. */
+:where(a, button, [role="button"], input, textarea, select, summary, [tabindex]):focus-visible {
+  outline: 2px solid #2D5CF3;
+  outline-offset: 2px;
+}
+
+/* Typography: balanced headings, no orphans in running text */
+h1, h2, h3, h4 { text-wrap: balance; }
+p, li, blockquote { text-wrap: pretty; }
+
+/* Translucent chrome falls back to a solid surface when the user asks for it */
+@media (prefers-reduced-transparency: reduce) {
+  #site-nav { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; background: #FDFDFC !important; }
 }
 
 html {

@@ -11,7 +11,7 @@ const publicSans = Public_Sans({
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.victorsoussan.fr'),
   title: {
-    default: 'Victor Soussan | Product Design Lead',
+    default: 'Victor Soussan | Lead Product Designer',
     template: '%s | Victor Soussan',
   },
   description:
@@ -28,12 +28,12 @@ export const metadata: Metadata = {
     locale: 'fr_FR',
     alternateLocale: 'en_US',
     siteName: 'Victor Soussan Portfolio',
-    title: 'Victor Soussan | Product Design Lead',
+    title: 'Victor Soussan | Lead Product Designer',
     description:
       'Lead Product Designer, 15 ans de conception produit. Design systems, interfaces complexes, prototypage assist\u00e9 par IA.',
     images: [
       {
-        url: '/images/og_victor_soussan.webp',
+        url: '/images/og_victor_soussan.jpg',
         width: 1200,
         height: 630,
       },
@@ -41,10 +41,10 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Victor Soussan | Product Design Lead',
+    title: 'Victor Soussan | Lead Product Designer',
     description:
       'Lead Product Designer, 15 ans de conception produit. Design systems, interfaces complexes, prototypage assist\u00e9 par IA.',
-    images: ['/images/og_victor_soussan.webp'],
+    images: ['/images/og_victor_soussan.jpg'],
   },
   icons: {
     icon: [
@@ -76,8 +76,8 @@ export default function RootLayout({
               '@type': 'Person',
               '@id': 'https://www.victorsoussan.fr/#person',
               name: 'Victor Soussan',
-              jobTitle: 'Product Design Lead',
-              description: 'Product Design Lead with 15+ years in tech. Expert in design systems, UX research, and digital transformation.',
+              jobTitle: 'Lead Product Designer',
+              description: 'Lead Product Designer with 15+ years in tech. Expert in design systems, UX research, and digital transformation.',
               url: 'https://www.victorsoussan.fr',
               image: 'https://www.victorsoussan.fr/images/victor-soussan.webp',
               sameAs: [
