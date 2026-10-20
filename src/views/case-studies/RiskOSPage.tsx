@@ -4,6 +4,8 @@ import { ArrowUpRight } from '@phosphor-icons/react';
 
 import EnhancedLightbox, { type LightboxImage } from '../../components/media/EnhancedLightbox';
 import VideoPlayer from '@/components/VideoPlayer';
+import CaseStudyGlance from '@/components/case-studies/CaseStudyGlance';
+import { getProjects } from '@/data/projectsData';
 
 const EASE_OUT: [number, number, number, number] = [0.23, 1, 0.32, 1];
 
@@ -198,6 +200,7 @@ function buildLightboxItems(lang: 'en' | 'fr'): LightboxImage[] {
 
 const RiskOSPage: React.FC<RiskOSPageProps> = ({ lang: propLang }) => {
   const lang = propLang || 'fr';
+  const project = getProjects(lang).find((p) => p.id === 'riskos');
   const t = CONTENT[lang];
   const containerRef = useRef<HTMLDivElement>(null);
   const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -249,13 +252,16 @@ const RiskOSPage: React.FC<RiskOSPageProps> = ({ lang: propLang }) => {
               href="https://riskos.vercel.app"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium rounded-full bg-gray-900 text-white hover:bg-gray-700 active:scale-[0.97] transition-[background-color,transform] duration-150"
+              className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium rounded-full bg-[#2D5CF3] text-white shadow-sm hover:bg-[#2450d9] hover:shadow-md active:scale-[0.97] transition-[background-color,box-shadow,transform] duration-150"
             >
               {t.viewPrototype} <ArrowUpRight size={14} />
             </a>
           </div>
         </motion.div>
       </div>
+
+      {/* Layer 1: summary built from the project data */}
+      {project && <CaseStudyGlance project={project} lang={lang} />}
 
       {/* Content */}
       <div className="max-w-[960px] mx-auto px-6 pb-24 md:pb-40">
