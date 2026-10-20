@@ -50,7 +50,7 @@ function coverSrc(project: Project): string {
 }
 
 function projectHref(project: Project, lang: string): string {
-  return `/${lang}/project/${project.id}/summary`
+  return `/${lang}/project/${project.id}`
 }
 
 const THUMB_W = 132

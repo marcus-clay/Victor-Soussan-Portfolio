@@ -235,7 +235,7 @@ const GuideShipToShowPage: React.FC<Props> = ({ lang, onNavigate }) => {
                   : 'The framework was designed and tested on RiskOS, an AI-augmented fraud detection prototype. The complete case study was produced in a single 2h30 session, from raw prototype to published page.'}
               </p>
               <a
-                href={`/${lang}/project/${meta.exampleProject.slug}/summary`}
+                href={`/${lang}/project/${meta.exampleProject.slug}`}
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium bg-gray-900 text-white hover:bg-gray-800 active:scale-[0.97] ring-1 ring-black shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]"
                 style={{ transition: 'background-color 200ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
               >

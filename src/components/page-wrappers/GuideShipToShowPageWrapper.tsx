@@ -20,7 +20,7 @@ export default function GuideShipToShowPageWrapper({
           router.push(`/${lang}/ressources`)
         } else if (target.startsWith('project-')) {
           const slug = target.replace('project-', '')
-          router.push(`/${lang}/project/${slug}/summary`)
+          router.push(`/${lang}/project/${slug}`)
         } else {
           router.push(`/${lang}/${target}`)
         }
