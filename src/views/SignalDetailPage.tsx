@@ -210,6 +210,19 @@ const SignalDetailPage: React.FC<Props> = ({ signalId, systemTheme, lang, onBack
             </motion.figure>
           )}
 
+          {/* Answer first: the author's own summary opens every long article */}
+          {bodyLong && (
+            <section
+              aria-label={lang === 'en' ? 'In short' : 'En bref'}
+              className={`mb-10 rounded-2xl border p-6 ${isDark ? 'border-white/10 bg-white/[0.04]' : 'border-gray-100 bg-white'}`}
+            >
+              <p className={`text-micro font-semibold uppercase tracking-widest mb-3 ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>
+                {lang === 'en' ? 'In short' : 'En bref'}
+              </p>
+              <p className={`text-base leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{bodyShort}</p>
+            </section>
+          )}
+
           {/* Article body */}
           <div
             className={`article-body ${isDark ? 'article-body-dark' : ''}`}
