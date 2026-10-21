@@ -31,7 +31,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       fr: `guide/claude-code/${chapter.slug_fr}`,
       en: `guide/claude-code/${chapter.slug_en}`,
     },
-    title: `${chapterTitle} | ${guideTitle}`,
+    // Short suffix keeps the chapter title whole inside the SEO budget; skipped when the chapter already names Claude Code.
+    title: chapterTitle.includes('Claude Code') ? chapterTitle : `${chapterTitle} | Claude Code`,
     description: `${lang === 'fr' ? chapter.intro_fr : chapter.intro_en} ${lang === 'fr' ? 'Guide Claude Code pour product designers, par Victor Soussan.' : 'Claude Code guide for product designers, by Victor Soussan.'}`,
     type: 'article',
     publishedTime: GUIDE_META.date,
