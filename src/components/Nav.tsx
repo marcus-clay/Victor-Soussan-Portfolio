@@ -183,11 +183,12 @@ export default function Nav({ lang }: { lang: Lang }) {
                 <>
                   <Link
                     href={`/${lang}`}
-                    className="relative z-10 font-semibold text-base tracking-[-0.01em] text-gray-900 whitespace-nowrap hover:opacity-70 flex-shrink-0 py-2 -my-2 pr-0 sm:pr-1"
+                    className="relative z-10 font-semibold text-base tracking-[-0.01em] text-gray-900 hover:text-gray-600 whitespace-nowrap flex-shrink-0 py-2 -my-2 pr-0 sm:pr-1"
                     style={{
                       opacity: (isHomepage && !showPageTitle && !isMobileMenuOpen) ? 0 : 1,
                       transform: (isHomepage && !showPageTitle && !isMobileMenuOpen) ? 'translateY(4px)' : 'translateY(0)',
-                      transition: 'opacity 250ms ease, transform 350ms cubic-bezier(0.23, 1, 0.32, 1)',
+                      // Colour is listed here because the inline transition replaces any class-level one
+                      transition: 'opacity 250ms ease, transform 350ms cubic-bezier(0.23, 1, 0.32, 1), color 150ms ease',
                       pointerEvents: (isHomepage && !showPageTitle && !isMobileMenuOpen) ? 'none' : 'auto',
                     }}
                   >
@@ -244,8 +245,8 @@ export default function Nav({ lang }: { lang: Lang }) {
             {/* Lang switcher */}
             <Link
               href={`/${otherLang}${pathname.replace(`/${lang}`, '')}`}
-              className="px-2 sm:px-2.5 py-1.5 text-sm font-medium rounded-full text-gray-500 hover:text-gray-900 hover:bg-black/[0.04]"
-              style={{ transition: 'background-color 150ms ease, color 150ms ease' }}
+              className="px-2 sm:px-2.5 py-1.5 text-sm font-medium rounded-full text-gray-500 hover:text-gray-900 hover:bg-black/[0.04] active:scale-[0.96]"
+              style={{ transition: 'background-color 150ms ease, color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
             >
               {lang === 'en' ? 'FR' : 'EN'}
             </Link>

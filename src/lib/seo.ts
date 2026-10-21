@@ -44,7 +44,7 @@ export function clip(text: string | undefined, max = 158): string {
   // Prefer ending on a full sentence: a description cut mid-sentence reads as broken in the results.
   const window = clean.slice(0, max + 1)
   let end = -1
-  for (let i = window.length - 1; i >= 80; i--) {
+  for (let i = Math.min(window.length - 1, max - 1); i >= 80; i--) {
     if ('.!?'.includes(window[i]) && (i === window.length - 1 || window[i + 1] === ' ')) {
       end = i
       break
@@ -77,6 +77,25 @@ export interface MetaOptions {
   section?: string
 }
 
+const DESC_MIN = 120
+const DESC_MAX = 158
+const AUDIENCE: Record<Lang, { full: string; short: string }> = {
+  fr: { full: ' Par Victor Soussan, Lead Product Designer B2B et B2G.', short: ' Lead Product Designer B2B et B2G.' },
+  en: { full: ' By Victor Soussan, Lead Product Designer, B2B and B2G.', short: ' Lead Product Designer, B2B and B2G.' },
+}
+
+/**
+ * Descriptions under 120 characters read as thin in the results. Complete them with who writes
+ * the page (the name is skipped when the text already signs it), only when the result still fits.
+ */
+function withAudience(description: string, lang: Lang): string {
+  if (!description || description.length >= DESC_MIN) return description
+  const base = /[.!?\u2026]$/.test(description) ? description : `${description}.`
+  const tails = /Victor Soussan/.test(description) ? [AUDIENCE[lang].short] : [AUDIENCE[lang].full, AUDIENCE[lang].short]
+  const fit = tails.find((tail) => (base + tail).length <= DESC_MAX)
+  return fit ? base + fit : description
+}
+
 export function buildMetadata(o: MetaOptions): Metadata {
   const { lang } = o
   const other: Lang = lang === 'fr' ? 'en' : 'fr'
@@ -94,7 +113,7 @@ export function buildMetadata(o: MetaOptions): Metadata {
   const title = useAbsolute ? { absolute: o.title.length > 70 ? clip(o.title, 70) : o.title } : o.title
   const fullTitle = useAbsolute ? (typeof title === 'string' ? title : title.absolute) : withSuffix
 
-  const description = clip(o.description, 158)
+  const description = withAudience(clip(o.description, 158), lang)
   const image = o.image ?? DEFAULT_OG_IMAGE
 
   return {

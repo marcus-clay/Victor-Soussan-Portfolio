@@ -210,7 +210,7 @@ export default function ResumePageWrapper({ lang }: { lang: 'en' | 'fr' }) {
 
                   <button
                     onClick={() =>
-                      copyWithFeedback('https://victorsoussan.com', setCopiedPortfolio)
+                      copyWithFeedback('https://www.victorsoussan.fr', setCopiedPortfolio)
                     }
                     className="px-3 py-1.5 glass-effect text-gray-700 rounded-full text-xs font-medium btn-pill flex items-center gap-2 hover:text-blue-600"
                   >

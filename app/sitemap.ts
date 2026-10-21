@@ -14,7 +14,7 @@ import { LANGS, isoDate, pageUrl } from '@/lib/seo'
  * every deploy teaches Google to ignore the field.
  */
 
-const INDEXABLE_STATIC = ['', 'about', 'approche', 'projets', 'services', 'ressources', 'testimonials', 'contact']
+const INDEXABLE_STATIC = ['', 'about', 'approche', 'projets', 'services', 'ressources', 'testimonials', 'resume', 'contact']
 
 // Update when the copy of the main pages changes in a meaningful way.
 const SITE_CONTENT_UPDATED = '2026-10-12'

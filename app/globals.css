@@ -219,15 +219,48 @@ body {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.btn-pill:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+@media (hover: hover) and (pointer: fine) {
+  .btn-pill:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  }
 }
 
 .btn-pill:active {
   transform: scale(0.98) translateY(0);
   transition: all 0.1s ease;
 }
+
+/* ── Press feedback ────────────────────────────────────────────────────────
+   The interface answers on pointer-down, not on release. Two layers:
+
+   1. Anything button-like sinks 3% while pressed. It uses the individual `scale`
+      property, which composes with the `transform` Tailwind utilities (centering,
+      rotation) instead of replacing it. The zero-specificity :where() base lets any
+      component-level `transition-*` class or inline style take over; those keep their
+      own release timing. Wide rows and overlays are left alone (3% of 700px is not a
+      press, it is a jump), and so is anything that already declares `active:scale`.
+   2. Plain text links and list rows take their hover colour on press, so touch screens
+      (where hover no longer applies) still acknowledge the tap. */
+:where(button, [role="button"], summary, a.rounded-full) {
+  transition: scale 160ms var(--ease-out-expo);
+}
+:where(button, [role="button"], summary):not(
+    :disabled,
+    [aria-disabled="true"],
+    [class*="active:scale"],
+    [class*="w-full"],
+    [class*="inset-0"]
+  ):active,
+a.rounded-full:not([class*="active:scale"], [class*="w-full"]):active {
+  scale: 0.97;
+}
+
+a[class*="hover:text-gray-900"]:active { color: #111827; }
+[class*="hover:bg-gray-100"]:active { background-color: #E5E7EB; }
+[class*="hover:bg-black/[0.04]"]:active,
+[class*="hover:bg-black/[.04]"]:active { background-color: rgba(0, 0, 0, 0.08); }
+[class*="hover:bg-white/[0.08]"]:active { background-color: rgba(255, 255, 255, 0.13); }
 
 /* Liquid glass effect */
 .glass-effect {

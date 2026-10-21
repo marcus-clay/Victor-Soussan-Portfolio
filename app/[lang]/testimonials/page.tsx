@@ -6,8 +6,8 @@ import { buildMetadata, pageLd, toLang } from '@/lib/seo'
 type Props = { params: Promise<{ lang: string }> }
 
 const COPY = {
-  fr: { title: 'Témoignages', description: 'Ce que disent les collaborateurs, clients et partenaires de Victor Soussan.' },
-  en: { title: 'Testimonials', description: 'What collaborators, clients and partners say about working with Victor Soussan.' },
+  fr: { title: 'Témoignages', description: 'Ce que disent les collaborateurs, clients et partenaires de Victor Soussan : approche, collaboration et résultats.' },
+  en: { title: 'Testimonials', description: 'What collaborators, clients and partners say about working with Victor Soussan: approach, collaboration and results.' },
 } as const
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

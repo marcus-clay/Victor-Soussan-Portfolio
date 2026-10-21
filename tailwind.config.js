@@ -1,6 +1,9 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./app/**/*.{js,ts,jsx,tsx}', './src/**/*.{js,ts,jsx,tsx}'],
+  // hover: utilities only apply on devices that can really hover (mouse, trackpad), so a tap
+  // on a phone never leaves a card zoomed or a pill filled. Touch gets the :active states.
+  future: { hoverOnlyWhenSupported: true },
   theme: {
     extend: {
       fontFamily: {

@@ -16,22 +16,14 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
 
       - name: Install dependencies
-        run: rm -rf node_modules package-lock.json && npm install
+        run: npm ci
 
       - name: TypeScript typecheck
         run: npx tsc --noEmit
 
       - name: Build
         run: npm run build
-
-      - name: Check bundle size
-        run: |
-          echo "## Build output" >> $GITHUB_STEP_SUMMARY
-          du -sh dist/ >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### Chunks" >> $GITHUB_STEP_SUMMARY
-          ls -lhS dist/assets/*.js | head -20 >> $GITHUB_STEP_SUMMARY

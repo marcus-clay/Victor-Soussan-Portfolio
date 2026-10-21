@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "check:assets": "node scripts/check-assets.mjs"
+    "check:assets": "node scripts/check-assets.mjs",
+    "audit:sitemap": "node scripts/audit/crawl-sitemap.mjs"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",

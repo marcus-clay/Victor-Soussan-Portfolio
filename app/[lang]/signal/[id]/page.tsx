@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return buildMetadata({
     lang,
     path: `signal/${id}`,
-    title: lang === 'fr' ? signal.title_fr : signal.title_en,
+    title: (lang === 'fr' ? signal.seoTitle_fr : signal.seoTitle_en) ?? (lang === 'fr' ? signal.title_fr : signal.title_en),
     description: lang === 'fr' ? signal.body_fr : signal.body_en,
     type: 'article',
     publishedTime: isoDate(signal.date),
