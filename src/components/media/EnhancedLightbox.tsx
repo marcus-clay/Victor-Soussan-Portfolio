@@ -11,13 +11,18 @@
  *   velocity (Apple, "Designing Fluid Interfaces"): interruptible at any instant, rubber
  *   banding at both ends, a flick lands on the page its momentum projects to.
  * - Dragging down (fitted view) dismisses, the backdrop fading with the drag.
+ * - Opens from the picture that was clicked and closes back onto it (shared-element transition,
+ *   see `lightboxOrigin`): the media travels on the zoom/pan springs, the backdrop and controls
+ *   fade around it. The source stays hidden while the viewer is open so the picture exists once.
+ *   Without a known source (deep link, keyboard from a text button) the viewer fades and settles.
  * - Reduced motion: no travel, the page changes with a short fade.
  */
 
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { motion, AnimatePresence, animate, useMotionValue, useTransform } from 'framer-motion'
 import { useScrollLock } from '@/hooks/useScrollLock'
 import { imgDims } from '@/utils/imageDimensions'
+import { installLightboxOrigin, takeLightboxOrigin } from '@/utils/lightboxOrigin'
 import {
   X,
   CaretLeft as ChevronLeft,
@@ -49,6 +54,14 @@ interface EnhancedLightboxProps {
 // Critically damped (damping ratio 1): no overshoot, settles in about 0.4s
 const SLIDE_SPRING = { type: 'spring' as const, stiffness: 260, damping: 32, mass: 1 }
 const ZOOM_SPRING = { type: 'spring' as const, stiffness: 300, damping: 34, mass: 1 }
+// The media's trip between its place in the page and the viewer: critically damped, so it lands
+// without overshoot. Opening takes about 0.4s, returning is quicker (the visitor is done).
+const FLIGHT_OPEN = { type: 'spring' as const, stiffness: 300, damping: 34, mass: 1 }
+const FLIGHT_CLOSE = { type: 'spring' as const, stiffness: 420, damping: 42, mass: 1 }
+const EASE_OUT = [0.23, 1, 0.32, 1] as const
+
+// One listener for the whole site: remembers the media inside whatever was clicked
+if (typeof window !== 'undefined') installLightboxOrigin()
 
 const FIT = 0.9 // fitted media fills 90% of the screen
 const ZOOM_WIDTH = 0.95 // zoomed media is 95% of the screen width, as before
@@ -117,9 +130,18 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
   const zoom = useMotionValue(1)
   const panX = useMotionValue(0)
   const panY = useMotionValue(0)
-  const backdrop = useTransform(dragY, [-260, 0, 260], [0.35, 1, 0.35])
+  // Opening and closing envelopes, separate from the drag so both can act on the backdrop
+  const backdropIn = useMotionValue(0)
+  const chrome = useMotionValue(0)
+  const stage = useMotionValue(1)
+  const stageScale = useMotionValue(1)
+  const backdrop = useTransform([dragY, backdropIn], ([y, b]: number[]) => b * (1 - 0.65 * Math.min(1, Math.abs(y) / 260)))
 
   const dialogRef = useRef<HTMLDivElement>(null)
+  const originEl = useRef<HTMLElement | null>(null)
+  const originIndex = useRef(0)
+  const flying = useRef(false)
+  const closing = useRef(false)
   const videoRef = useRef<HTMLVideoElement>(null)
   const gesture = useRef<Gesture | null>(null)
   const lastTap = useRef(0)
@@ -246,6 +268,62 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
     [current, zoomed, resetZoom, zoomTarget, panBounds, viewport, zoom, panX, panY, prefersReduced]
   )
 
+  // Where a media sits, as the zoom/pan values that put the fitted media exactly over it
+  const frameOf = useCallback(
+    (el: HTMLElement, img: LightboxImage) => {
+      const r = el.getBoundingClientRect()
+      const fit = fitSize(img)
+      return {
+        scale: r.width / fit.w,
+        x: r.left + r.width / 2 - viewport.w / 2,
+        y: r.top + r.height / 2 - viewport.h / 2,
+      }
+    },
+    [fitSize, viewport]
+  )
+
+  const showSource = useCallback((visible: boolean) => {
+    if (originEl.current) originEl.current.style.visibility = visible ? '' : 'hidden'
+  }, [])
+
+  // Open. Runs before paint, so the first frame already has the media over its source.
+  useLayoutEffect(() => {
+    if (!isOpen) return
+    closing.current = false
+    const el = takeLightboxOrigin()
+    if (el && current && !prefersReduced) {
+      const f = frameOf(el, current)
+      originEl.current = el
+      originIndex.current = index
+      flying.current = true
+      showSource(false)
+      stage.set(1)
+      stageScale.set(1)
+      zoom.set(f.scale)
+      panX.set(f.x)
+      panY.set(f.y)
+      backdropIn.set(0)
+      chrome.set(0)
+      animate(zoom, 1, FLIGHT_OPEN)
+      animate(panX, 0, FLIGHT_OPEN)
+      animate(panY, 0, FLIGHT_OPEN)
+      animate(backdropIn, 1, { duration: 0.3, ease: EASE_OUT })
+      animate(chrome, 1, { duration: 0.22, delay: 0.14, ease: EASE_OUT })
+    } else {
+      originEl.current = null
+      stage.set(0)
+      stageScale.set(prefersReduced ? 1 : 0.96)
+      backdropIn.set(0)
+      chrome.set(0)
+      animate(stage, 1, { duration: 0.22, ease: EASE_OUT })
+      animate(stageScale, 1, { duration: 0.28, ease: EASE_OUT })
+      animate(backdropIn, 1, { duration: 0.22, ease: EASE_OUT })
+      animate(chrome, 1, { duration: 0.2, delay: 0.08, ease: EASE_OUT })
+    }
+    // The source comes back whatever closes the viewer (route change included)
+    return () => showSource(true)
+  }, [isOpen]) // eslint-disable-line react-hooks/exhaustive-deps
+
   // Move the track to the current page. Starts from the live value, so an interrupted
   // slide continues instead of jumping.
   useEffect(() => {
@@ -261,7 +339,9 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
     } else if (!dragging) {
       animate(trackX, target, SLIDE_SPRING)
     }
-    resetZoom(true)
+    // The opening flight owns zoom and pan until it lands
+    if (flying.current) flying.current = false
+    else resetZoom(true)
     dragY.set(0)
   }, [isOpen, index, viewport.w]) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -294,12 +374,45 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
     )
   }, [isOpen, index, projectId, updateUrl, current])
 
+  // Close. The media flies back onto the picture it came from when that picture is still on
+  // screen and the visitor has not moved to another slide; otherwise the viewer fades and settles.
   const handleClose = useCallback(() => {
+    if (closing.current) return
+    closing.current = true
     if (updateUrl && savedUrl.current) {
       window.history.replaceState(window.history.state, '', savedUrl.current)
     }
-    onClose()
-  }, [onClose, updateUrl])
+    gesture.current = null
+    trackX.stop()
+    setZoomed(false)
+
+    const el = originEl.current
+    const canReturn = !!el && !!current && el.isConnected && !prefersReduced && index === originIndex.current
+    if (canReturn && el && current) {
+      const f = frameOf(el, current)
+      Promise.all([
+        animate(zoom, f.scale, FLIGHT_CLOSE),
+        animate(panX, f.x, FLIGHT_CLOSE),
+        animate(panY, f.y, FLIGHT_CLOSE),
+        animate(dragY, 0, FLIGHT_CLOSE),
+        animate(backdropIn, 0, { duration: 0.26, ease: EASE_OUT }),
+        animate(chrome, 0, { duration: 0.1, ease: EASE_OUT }),
+      ]).then(() => {
+        showSource(true)
+        onClose()
+      })
+    } else {
+      Promise.all([
+        animate(stage, 0, { duration: 0.18, ease: EASE_OUT }),
+        animate(stageScale, prefersReduced ? 1 : 0.97, { duration: 0.18, ease: EASE_OUT }),
+        animate(backdropIn, 0, { duration: 0.18, ease: EASE_OUT }),
+        animate(chrome, 0, { duration: 0.1, ease: EASE_OUT }),
+      ]).then(() => {
+        showSource(true)
+        onClose()
+      })
+    }
+  }, [onClose, updateUrl, current, index, prefersReduced, frameOf, showSource, zoom, panX, panY, dragY, trackX, backdropIn, chrome, stage, stageScale])
 
   const goTo = useCallback(
     (next: number) => {
@@ -358,7 +471,7 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
   // ── Gestures: one pointer model for mouse, pen and touch ────────────────────
   const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     const target = e.target as HTMLElement
-    if (target.closest('button') || target.closest('video')) return
+    if (closing.current || target.closest('button') || target.closest('video')) return
     isTouchDevice.current = e.pointerType === 'touch'
     e.currentTarget.setPointerCapture(e.pointerId)
     // A press stops the track where it is (interruptibility)
@@ -508,10 +621,13 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
           aria-modal="true"
           aria-label={t.dialog}
           tabIndex={-1}
-          initial={{ opacity: 0 }}
+          // No fade of the whole dialog: opening and closing are driven by the backdrop, stage and
+          // controls values, so the media in flight is never dimmed. This exit only covers a close
+          // that did not come through handleClose (the page unmounting the viewer).
+          initial={false}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.2, ease: [0.23, 1, 0.32, 1] }}
+          transition={{ duration: 0.12, ease: EASE_OUT }}
           className="fixed inset-0 z-[200] outline-none"
         >
           <motion.div className="absolute inset-0 bg-black" style={{ opacity: backdrop }} aria-hidden="true" />
@@ -519,10 +635,7 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
           {/* Viewer: the track of slides and all gestures */}
           <motion.div
             className="absolute inset-0 overflow-hidden select-none"
-            style={{ y: dragY, touchAction: 'none', cursor: zoomed ? 'zoom-out' : 'default' }}
-            initial={{ scale: 0.98 }}
-            animate={{ scale: 1, transition: { duration: 0.2, ease: [0.23, 1, 0.32, 1] } }}
-            exit={{ scale: 0.92, transition: { duration: 0.24, ease: [0.23, 1, 0.32, 1] } }}
+            style={{ y: dragY, opacity: stage, scale: stageScale, touchAction: 'none', cursor: zoomed ? 'zoom-out' : 'default' }}
             onPointerDown={onPointerDown}
             onPointerMove={onPointerMove}
             onPointerUp={onPointerUp}
@@ -586,12 +699,14 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
             </motion.div>
           </motion.div>
 
-          {/* Controls sit above the viewer, outside its gesture area */}
+          {/* Controls sit above the viewer, outside its gesture area. They fade in a beat after the
+              media starts moving and out first when it leaves. */}
+          <motion.div className="absolute inset-0 z-20 pointer-events-none" style={{ opacity: chrome }}>
           <button
             type="button"
             onClick={handleClose}
             aria-label={t.close}
-            className="absolute top-4 right-4 z-20 flex items-center justify-center w-11 h-11 rounded-full bg-black/45 backdrop-blur-xl text-white hover:bg-black/60 active:scale-[0.97] transition-[background-color,transform] duration-150"
+            className="absolute top-4 right-4 pointer-events-auto z-20 flex items-center justify-center w-11 h-11 rounded-full bg-black/45 backdrop-blur-xl text-white hover:bg-black/60 active:scale-[0.97] transition-[background-color,transform] duration-150"
           >
             <X size={22} />
           </button>
@@ -602,7 +717,7 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
               onClick={() => toggleZoom()}
               aria-label={zoomed ? t.zoomOut : t.zoomIn}
               aria-pressed={zoomed}
-              className="absolute top-4 left-4 z-20 flex items-center justify-center w-11 h-11 rounded-full bg-black/45 backdrop-blur-xl text-white hover:bg-black/60 active:scale-[0.97] transition-[background-color,transform] duration-150"
+              className="absolute top-4 left-4 pointer-events-auto z-20 flex items-center justify-center w-11 h-11 rounded-full bg-black/45 backdrop-blur-xl text-white hover:bg-black/60 active:scale-[0.97] transition-[background-color,transform] duration-150"
             >
               {zoomed ? <ZoomOut size={22} /> : <ZoomIn size={22} />}
             </button>
@@ -615,7 +730,7 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
                 onClick={() => goTo(index - 1)}
                 disabled={index === 0}
                 aria-label={t.previous}
-                className="hidden md:flex absolute left-6 top-1/2 -translate-y-1/2 z-20 items-center justify-center w-12 h-12 rounded-full bg-black/45 backdrop-blur-xl text-white hover:bg-black/60 active:scale-[0.97] disabled:opacity-0 disabled:pointer-events-none transition-[background-color,transform,opacity] duration-150"
+                className="hidden md:flex absolute left-6 top-1/2 -translate-y-1/2 pointer-events-auto z-20 items-center justify-center w-12 h-12 rounded-full bg-black/45 backdrop-blur-xl text-white hover:bg-black/60 active:scale-[0.97] disabled:opacity-0 disabled:pointer-events-none transition-[background-color,transform,opacity] duration-150"
               >
                 <ChevronLeft size={26} />
               </button>
@@ -624,7 +739,7 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
                 onClick={() => goTo(index + 1)}
                 disabled={index === count - 1}
                 aria-label={t.next}
-                className="hidden md:flex absolute right-6 top-1/2 -translate-y-1/2 z-20 items-center justify-center w-12 h-12 rounded-full bg-black/45 backdrop-blur-xl text-white hover:bg-black/60 active:scale-[0.97] disabled:opacity-0 disabled:pointer-events-none transition-[background-color,transform,opacity] duration-150"
+                className="hidden md:flex absolute right-6 top-1/2 -translate-y-1/2 pointer-events-auto z-20 items-center justify-center w-12 h-12 rounded-full bg-black/45 backdrop-blur-xl text-white hover:bg-black/60 active:scale-[0.97] disabled:opacity-0 disabled:pointer-events-none transition-[background-color,transform,opacity] duration-150"
               >
                 <ChevronRight size={26} />
               </button>
@@ -663,6 +778,7 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
               )}
             </div>
           </div>
+          </motion.div>
         </motion.div>
       )}
     </AnimatePresence>

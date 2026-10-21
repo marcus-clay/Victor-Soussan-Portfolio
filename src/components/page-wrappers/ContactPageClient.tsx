@@ -65,6 +65,10 @@ const HELP = {
 const TEXT_LINK =
   'inline-flex min-h-11 items-center text-sm font-medium text-gray-900 underline decoration-gray-300 underline-offset-4 [@media(hover:hover)]:hover:text-gray-500 active:scale-[0.97] transition-[color,transform] duration-150 ease-out'
 
+/** Same link, quieter: grey at rest, ink on hover (the muted state is a class, not !important, so hover can win) */
+const TEXT_LINK_MUTED =
+  'inline-flex min-h-11 items-center text-sm font-medium text-gray-500 underline decoration-gray-300 underline-offset-4 [@media(hover:hover)]:hover:text-gray-900 active:scale-[0.97] transition-[color,transform] duration-150 ease-out'
+
 /** Black pill, the only primary action of the page (twice: calendar, then speaking enquiries) */
 const PILL =
   'inline-flex items-center gap-2 min-h-11 px-5 rounded-full bg-gray-900 [@media(hover:hover)]:hover:bg-black text-white text-sm font-medium active:scale-[0.97] transition-[background-color,transform] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)]'
@@ -144,13 +148,13 @@ export default function ContactPageClient({ lang }: { lang: 'en' | 'fr' }) {
           </div>
         </div>
         <div className="mt-1 flex flex-wrap items-center gap-x-6">
-          <a href="https://linkedin.com/in/victorsoussan" target="_blank" rel="noopener noreferrer" className={`${TEXT_LINK} gap-1.5 !text-gray-500`}>
+          <a href="https://linkedin.com/in/victorsoussan" target="_blank" rel="noopener noreferrer" className={`${TEXT_LINK_MUTED} gap-1.5`}>
             LinkedIn <ArrowUpRight size={12} weight="bold" aria-hidden="true" />
           </a>
-          <a href="https://www.condamine.studio/apps" target="_blank" rel="noopener noreferrer" className={`${TEXT_LINK} gap-1.5 !text-gray-500`}>
+          <a href="https://www.condamine.studio/apps" target="_blank" rel="noopener noreferrer" className={`${TEXT_LINK_MUTED} gap-1.5`}>
             Condamine Apps <ArrowUpRight size={12} weight="bold" aria-hidden="true" />
           </a>
-          <a href="tel:+33615989400" className={`${TEXT_LINK} !text-gray-500`}>
+          <a href="tel:+33615989400" className={TEXT_LINK_MUTED}>
             +33 6 15 98 94 00
           </a>
         </div>

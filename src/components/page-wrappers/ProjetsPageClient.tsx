@@ -169,7 +169,7 @@ function GalleryGrid({ lang }: { lang: 'en' | 'fr' }) {
           <Link
             key={i}
             href={`/${lang}/visual-archive#gallery-${item.projectId}`}
-            className="block rounded-lg overflow-hidden bg-[#F0F0EF] cursor-pointer"
+            className="group block rounded-lg overflow-hidden bg-[#F0F0EF] cursor-pointer ring-1 ring-inset ring-black/[0.04] hover:ring-black/[0.1] hover:shadow-md active:scale-[0.98] transition-[box-shadow,transform] duration-200 ease-[cubic-bezier(0.23,1,0.32,1)]"
             draggable={false}
             style={{ scrollSnapAlign: 'start' }}
           >
@@ -178,7 +178,7 @@ function GalleryGrid({ lang }: { lang: 'en' | 'fr' }) {
               alt={`${item.name} (UI)`}
               loading="lazy"
               draggable={false}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.04]"
             />
           </Link>
         ))}

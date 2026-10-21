@@ -70,15 +70,15 @@ export default function SkillsPromoBanner({ lang }: { lang: string }) {
       >
         <Link
           href={`/${lang}/guide/claude-code/skills`}
-          className="flex items-center gap-2.5 cursor-pointer min-w-0"
+          className="group flex items-center gap-2.5 cursor-pointer min-w-0 active:opacity-70 transition-opacity duration-150"
         >
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-violet-500 to-blue-500 flex items-center justify-center flex-shrink-0">
+          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-violet-500 to-blue-500 flex items-center justify-center flex-shrink-0 transition-transform duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-110">
             <Lightning size={14} weight="fill" className="text-white" />
           </div>
-          <span className="text-xs font-semibold text-gray-900 whitespace-nowrap">
+          <span className="text-xs font-semibold text-gray-900 whitespace-nowrap transition-colors duration-150 group-hover:text-gray-600">
             {isEn ? 'Claude Code skills' : 'Skills Claude Code'}
           </span>
-          <ArrowRight size={12} className="text-gray-500 flex-shrink-0" />
+          <ArrowRight size={12} className="text-gray-500 flex-shrink-0 transition-[transform,color] duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:translate-x-0.5 group-hover:text-gray-900" />
         </Link>
 
         <button

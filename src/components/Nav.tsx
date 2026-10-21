@@ -183,7 +183,7 @@ export default function Nav({ lang }: { lang: Lang }) {
                 <>
                   <Link
                     href={`/${lang}`}
-                    className="relative z-10 font-semibold text-base tracking-[-0.01em] text-gray-900 hover:text-gray-600 whitespace-nowrap flex-shrink-0 py-2 -my-2 pr-0 sm:pr-1"
+                    className="relative z-10 font-semibold text-base tracking-[-0.01em] text-gray-900 hover:text-gray-600 active:text-gray-500 whitespace-nowrap flex-shrink-0 py-2 -my-2 pr-0 sm:pr-1"
                     style={{
                       opacity: (isHomepage && !showPageTitle && !isMobileMenuOpen) ? 0 : 1,
                       transform: (isHomepage && !showPageTitle && !isMobileMenuOpen) ? 'translateY(4px)' : 'translateY(0)',

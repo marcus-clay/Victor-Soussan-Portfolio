@@ -256,6 +256,16 @@ a.rounded-full:not([class*="active:scale"], [class*="w-full"]):active {
   scale: 0.97;
 }
 
+/* Text links and text buttons (a hover:text-* colour and no fill of their own) dim while
+   pressed: the colour change on hover is not enough on touch, and some links already sit on
+   their hover colour. Filled and scaling controls have their own press. */
+:is(a, button)[class*="hover:text-"]:not([class*="bg-"], [class*="active:opacity"], [class*="active:scale"]):active {
+  opacity: 0.6;
+}
+/* ...and the colour transitions carry opacity too, so the link eases back on release */
+.transition-colors {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity;
+}
 a[class*="hover:text-gray-900"]:active { color: #111827; }
 [class*="hover:bg-gray-100"]:active { background-color: #E5E7EB; }
 [class*="hover:bg-black/[0.04]"]:active,
