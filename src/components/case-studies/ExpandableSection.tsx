@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useId, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useReducedMotion } from '@/hooks/useReducedMotion'
 import { Plus, Minus } from '@phosphor-icons/react';
@@ -11,12 +11,14 @@ interface ExpandableSectionProps {
   previewRem?: number;
   expandLabel?: string;
   collapseLabel?: string;
+  /** Language of the default labels. */
+  lang?: 'en' | 'fr';
 }
 
 const EASE_OUT: [number, number, number, number] = [0.23, 1, 0.32, 1];
 
 /**
- * ExpandableSection — progressive disclosure for long prose/list content.
+ * ExpandableSection: progressive disclosure for long prose/list content.
  *
  * Uses Framer Motion height animation (not max-height) to avoid layout/paint jank.
  * Gradient fade masks truncated content. +/− toggle instead of rotating chevron.
@@ -25,15 +27,19 @@ const ExpandableSection: React.FC<ExpandableSectionProps> = ({
   children,
   gradientFrom = '#FDFDFC',
   previewRem = 8,
-  expandLabel = 'Read more',
-  collapseLabel = 'Show less',
+  expandLabel,
+  collapseLabel,
+  lang = 'en',
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const contentId = useId();
+  const expandText = expandLabel ?? (lang === 'fr' ? 'Lire la suite' : 'Read more');
+  const collapseText = collapseLabel ?? (lang === 'fr' ? 'Réduire' : 'Show less');
   const prefersReduced = useReducedMotion();
 
   return (
     <div>
-      <div className="relative">
+      <div className="relative" id={contentId}>
         {/* Collapsed: fixed height container; Expanded: full height via AnimatePresence */}
         <AnimatePresence initial={false}>
           {isExpanded ? (
@@ -65,7 +71,7 @@ const ExpandableSection: React.FC<ExpandableSectionProps> = ({
           )}
         </AnimatePresence>
 
-        {/* Gradient fade — only visible when collapsed */}
+        {/* Gradient fade: only visible when collapsed */}
         <AnimatePresence initial={false}>
           {!isExpanded && (
             <motion.div
@@ -75,6 +81,7 @@ const ExpandableSection: React.FC<ExpandableSectionProps> = ({
               exit={{ opacity: 0 }}
               transition={prefersReduced ? { duration: 0 } : { duration: 0.2 }}
               className="absolute bottom-0 left-0 right-0 h-10 pointer-events-none"
+              aria-hidden="true"
               style={{
                 background: `linear-gradient(to top, ${gradientFrom}, transparent)`,
               }}
@@ -86,9 +93,11 @@ const ExpandableSection: React.FC<ExpandableSectionProps> = ({
       <button
         type="button"
         onClick={() => setIsExpanded(v => !v)}
-        className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors duration-150 active:scale-[0.97]"
+        aria-expanded={isExpanded}
+        aria-controls={contentId}
+        className="mt-1 inline-flex items-center gap-1.5 min-h-11 text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors duration-150 active:scale-[0.97]"
       >
-        {isExpanded ? collapseLabel : expandLabel}
+        {isExpanded ? collapseText : expandText}
         <span className="flex items-center justify-center">
           {isExpanded
             ? <Minus size={13} weight="bold" />
