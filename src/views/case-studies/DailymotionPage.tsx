@@ -32,6 +32,7 @@ interface DailymotionPageProps {
 // All media (images + videos) for lightbox navigation
 type MediaItem = { src: string; captionKey: string; type: 'image' | 'video' };
 const allImagesData: MediaItem[] = [
+  { src: '/images/thumbnail-dailymotion-web-platform.webp', captionKey: 'hero', type: 'image' },
   { src: '/images/dailymotion/thumbnail_dailymotion_-_web_platform2x.webp', captionKey: 'hero', type: 'image' },
   { src: '/images/dailymotion/dailymotion_focus_upload_2x.webp', captionKey: 'videoManagement', type: 'image' },
   { src: '/images/dailymotion/dailymotion_focus_livestream_2x.webp', captionKey: 'liveDashboard', type: 'image' },
@@ -226,6 +227,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                 { label: t.metaLabels.role, value: t.hero.role },
                 { label: t.metaLabels.scope, value: t.hero.scope },
               ]}
+              onZoom={() => openLightbox('/images/thumbnail-dailymotion-web-platform.webp')}
               visualAlt={t.captions.hero}
               externalHref="https://www.dailymotion.com/partner"
               externalLabel={t.visitDailymotion}

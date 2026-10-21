@@ -445,6 +445,9 @@ a[class*="hover:text-gray-900"]:active { color: #111827; }
   border-radius: 1.25rem;
   isolation: isolate;
 }
+/* Case study hero: a plain ground (white, or black for RiskOS), 3:2, no dot grid, a hairline ring */
+.hero-panel-flat::before { display: none; }
+.hero-panel-flat { box-shadow: inset 0 0 0 1px rgba(17, 24, 39, 0.05); }
 .hero-panel::before {
   content: '';
   position: absolute;

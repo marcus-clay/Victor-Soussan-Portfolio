@@ -147,6 +147,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                 { label: t.metaLabels.scope, value: t.hero.scope },
                 { label: t.metaLabels.company, value: t.meta.company },
               ]}
+              onZoom={() => openImageLightbox('/images/thumbnail_sqool_classe.webp')}
               visualAlt={c.thumb}
               hideGallery
             />

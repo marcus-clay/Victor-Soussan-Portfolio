@@ -1367,6 +1367,7 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
           { label: t.meta.labels.scope, value: t.meta.scope },
           { label: t.meta.labels.company, value: t.meta.company },
         ]}
+        onZoom={() => onImageClick('/images/francevae/thumbnail_france_vae.webp')}
         visualAlt={t.hero.heroCaption}
         externalHref="https://vae.gouv.fr"
         externalLabel={t.hero.visitSite}

@@ -295,6 +295,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
                 { label: t.metaLabels.scope, value: t.hero.scope },
                 { label: t.metaLabels.company, value: t.meta.company },
               ]}
+              onZoom={() => openLightbox('/images/thumbnail-sqool-suite.webp')}
               visualAlt={t.captions.hero}
             />
 

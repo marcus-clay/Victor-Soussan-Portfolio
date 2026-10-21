@@ -32,6 +32,7 @@ interface ToolkitPageProps {
 // All media (images + videos) for lightbox navigation
 type MediaItem = { src: string; captionKey: string; type: 'image' | 'video' };
 const allImagesData: MediaItem[] = [
+  { src: '/images/thumbnail-toolkit.webp', captionKey: 'hero', type: 'image' },
   { src: '/images/toolkit/hero.webp', captionKey: 'hero', type: 'image' },
   { src: '/images/toolkit/toolkit_app_v3.webp', captionKey: 'overview', type: 'image' },
   { src: '/images/toolkit/Diagram_00_-_Product_Evolution___12_months.svg', captionKey: 'productEvolution', type: 'image' },
@@ -471,6 +472,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                 { label: lang === 'fr' ? 'Périmètre' : 'Scope', value: t.meta.scope },
                 { label: lang === 'fr' ? 'Phase' : 'Phase', value: t.meta.phase },
               ]}
+              onZoom={() => openLightbox('/images/thumbnail-toolkit.webp')}
               visualAlt={t.captions.hero as string}
               externalHref="https://toolkit-app.com"
               externalLabel={t.visitToolkit}

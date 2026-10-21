@@ -83,7 +83,7 @@ export default function CaseStudyHero({
 
         {/* Hero visual: same panel for every project */}
         <figure
-          className={`hero-panel order-3 col-span-12 md:order-none md:row-start-3 aspect-[4/3] md:aspect-[21/9] ${onZoom ? 'cursor-zoom-in' : ''}`}
+          className={`hero-panel hero-panel-flat order-3 col-span-12 md:order-none md:row-start-3 aspect-[3/2] ${onZoom ? 'cursor-zoom-in' : ''}`}
           style={{ backgroundColor: shell.tone }}
           {...(onZoom ? zoomable(() => onZoom()) : {})}
           aria-label={onZoom ? visualAlt : undefined}

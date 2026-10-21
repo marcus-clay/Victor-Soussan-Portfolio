@@ -32,6 +32,7 @@ interface ConnectPageProps {
 // All images for lightbox navigation with caption keys
 type MediaItem = { src: string; captionKey: string; type: 'image' | 'video' };
 const allImagesData: MediaItem[] = [
+  { src: '/images/thumbnail-connect.webp', captionKey: 'thumbnail', type: 'image' },
   { src: '/images/connect/connect_overview.webp', captionKey: 'thumbnail', type: 'image' },
   { src: '/images/connect/connect_dashboard_home_dark_full_smartphone-scaled.webp', captionKey: 'homeDark', type: 'image' },
   { src: '/images/connect/connect_dashboard_home_light_full-scaled.webp', captionKey: 'homeLight', type: 'image' },
@@ -223,6 +224,7 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
                 { label: t.metaLabels.scope, value: t.hero.scope },
                 { label: t.metaLabels.company, value: t.meta.company },
               ]}
+              onZoom={() => openLightbox('/images/thumbnail-connect.webp')}
               visualAlt={t.captions.thumbnail}
             />
 
