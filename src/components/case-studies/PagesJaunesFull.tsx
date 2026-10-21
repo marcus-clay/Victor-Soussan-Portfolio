@@ -2,24 +2,20 @@
  * PagesJaunesFull - Full narrative case study version
  *
  * Complete deep-dive into the 2-year design work at PagesJaunes (2014-2016)
- * Following the pattern of SqoolPage, DailymotionPage, ToolkitPage
  */
 
 import React, { useRef } from 'react';
+import { imgDims } from '@/utils/imageDimensions'
+import Link from 'next/link';
 import VideoPlayer from '@/components/VideoPlayer';
 import { motion, useInView } from 'framer-motion';
+import { zoomable } from '@/utils/zoomable'
 import ReadMoreList from './ReadMoreList';
 import CaseStudyTestimonialBlock from './CaseStudyTestimonialBlock';
-import {
-  ArrowRight,
-} from '@phosphor-icons/react';
 
 interface PagesJaunesFullProps {
-  systemTheme: 'light' | 'dark';
   lang: 'en' | 'fr';
   onImageClick: (src: string) => void;
-  onContact?: () => void;
-  onNavigateToProject?: (projectId: string) => void;
 }
 
 // ============================================================================
@@ -149,7 +145,7 @@ const CAPTIONS = {
       redesign: 'Contextual tooltips guide feature discovery. Clear visual hierarchy, animated entrance, minimal disruption to the user flow.',
     },
     microInteractions: {
-      sectionTitle: 'Micro-Interactions',
+      sectionTitle: 'Micro-interactions',
       intro: 'Motion specs I delivered to dev teams. These animations shipped in production across iOS and Android.',
       navDrawer: 'Material Design Navigation Drawer. Familiar Android pattern, PagesJaunes colors. Users already know how this works.',
       favorites: 'Heart animation on "Add to Favorites". The bounce gives instant feedback that the action worked.',
@@ -158,64 +154,64 @@ const CAPTIONS = {
   },
   fr: {
     homepage: {
-      main: 'Une accroche conversationnelle ("De quoi avez-vous besoin ?") transforme la recherche d\'annuaire en résolution de problème. Les utilisateurs agissent plus vite quand l\'interface est personnelle.',
-      variations: 'Huit visuels contextuels de pros locaux : boulanger, garagiste, fleuriste. Chacun crée la confiance en montrant l\'humain derrière le service.',
+      main: 'Une accroche conversationnelle («\u202fDe quoi avez-vous besoin\u00a0?\u202f») transforme la recherche d\'annuaire en résolution de problème. Les utilisateurs agissent plus vite quand l\'interface est personnelle.',
+      variations: 'Huit visuels contextuels de professionnels locaux\u00a0: boulanger, garagiste, fleuriste. Chacun crée la confiance en montrant l\'humain derrière le service.',
     },
     homepageIpad: {
-      main: 'Deux variantes de homepage sur iPad avec photographies de professionnels en fond. Chaque visuel met en avant un pro local, créant chaleur et confiance dès le premier regard.',
-      variations: 'Visuels héros responsive sur iPhone 4, Retina, iPad, Android phone/tablet. Détection auto du point focal avec recadrage adapté au viewport. Co-développé avec Alexandre Badie, lead dev Android.',
+      main: 'Deux variantes de la page d\'accueil sur iPad, avec des photographies de professionnels en arrière-plan. Chaque visuel met en avant un professionnel local, ce qui crée chaleur et confiance dès le premier regard.',
+      variations: 'Visuels héros adaptatifs sur iPhone 4, Retina, iPad, téléphone et tablette Android. Détection automatique du point focal avec recadrage adapté à l\'écran. Co-développé avec Alexandre Badie, développeur Android principal.',
     },
     artDirection: {
-      before: 'Avant : Photo brute. Le sujet entre en concurrence avec les éléments de fond distrayants.',
-      after: 'Après : Cadrage stratégique et étalonnage couleur. Le focus se déplace vers l\'expertise de l\'artisan.',
+      before: 'Avant\u00a0: photo brute. Le sujet entre en concurrence avec les éléments de fond.',
+      after: 'Après\u00a0: cadrage stratégique et étalonnage couleur. L\'attention se déplace vers l\'expertise de l\'artisan.',
     },
     search: {
-      flow: 'De la requête à la fiche en trois taps. L\'autocomplétion réduit la charge cognitive, le contexte de localisation élimine les saisies redondantes.',
-      prototype: 'Prototype évolution moteur de recherche. Transitions Activity Material Design avec animations d\'éléments partagés. La barre de recherche se transforme en résultats plein écran.',
+      flow: 'De la requête à la fiche en trois appuis. L\'autocomplétion réduit la charge cognitive, le contexte de localisation évite les saisies redondantes.',
+      prototype: 'Prototype de l\'évolution du moteur de recherche. Transitions d\'activité Material Design avec animations d\'éléments partagés. La barre de recherche se transforme en résultats plein écran.',
     },
     account: {
-      flow: 'La connexion sociale réduit la friction de 60%. Le fallback email/mot de passe est conservé pour ceux qui préfèrent l\'auth traditionnelle.',
-      engagement: 'Historique et Favoris transforment les recherches ponctuelles en valeur conservée. Chaque établissement sauvegardé est une raison de revenir.',
+      flow: 'La connexion sociale réduit la friction de 60\u00a0%. La connexion par e-mail et mot de passe reste disponible pour ceux qui la préfèrent.',
+      engagement: 'Historique et favoris transforment les recherches ponctuelles en valeur conservée. Chaque établissement enregistré est une raison de revenir.',
     },
     maps: {
-      system: 'Les icônes de transport portent des données : couleurs des lignes de métro, noms de stations, segments piétons. Tout parsé depuis l\'API Mappy, stylé pour la lecture rapide.',
-      multidevice: 'Un trajet, trois modes : marche, voiture, transports. L\'interface s\'adapte au choix de l\'utilisateur, la destination reste constante.',
-      ipadPedestrian: 'Navigation split-view iPad : contexte carte à gauche, guidage pas-à-pas à droite. Tout visible, pas besoin de changer d\'onglet.',
-      ipadTransit: 'Transports en commun sur tablette : les lignes de métro comme repères visuels. Les utilisateurs tracent leur trajet sans tout lire.',
-      ipadDriving: 'Mode voiture avec handoff : "Guidez-moi avec..." affiche Waze, Google Maps, Plans. On facilite la navigation via l\'app préférée de l\'utilisateur.',
-      iphonePedestrian: 'Vue piéton mobile avec calories et temps estimé. Des directions qui font aussi ressortir un bénéfice santé.',
-      iphoneTransit: 'Détail transports : marche 3 min, Ligne 1 pendant 20 min, Ligne 11 pendant 7 min. Des trajets complexes rendus scannables.',
-      iphoneDriving: 'Itinéraire voiture avec handoff app. Le CTA jaune respecte les conventions de plateforme tout en maintenant la présence de marque.',
-      iphoneFlows: 'Trois flows iPhone : feuille de route, aperçu carte, détail transports. Chaque écran répond à une question utilisateur différente.',
+      system: 'Les icônes de transport portent des données\u00a0: couleurs des lignes de métro, noms de stations, segments à pied. Tout est extrait de l\'API Mappy et mis en forme pour une lecture rapide.',
+      multidevice: 'Un trajet, trois modes\u00a0: marche, voiture, transports. L\'interface s\'adapte au choix de l\'utilisateur, la destination reste la même.',
+      ipadPedestrian: 'Navigation iPad en vue scindée\u00a0: la carte à gauche, le guidage pas à pas à droite. Tout est visible, sans changer d\'onglet.',
+      ipadTransit: 'Transports en commun sur tablette\u00a0: les lignes de métro servent de repères visuels. Les utilisateurs suivent leur trajet sans tout lire.',
+      ipadDriving: 'Mode voiture avec relais vers une autre app\u00a0: «\u202fGuidez-moi avec...\u202f» propose Waze, Google Maps, Plans. La navigation passe par l\'app préférée de l\'utilisateur.',
+      iphonePedestrian: 'Vue piéton sur mobile avec calories et durée estimée. Un itinéraire qui met aussi en avant un bénéfice pour la santé.',
+      iphoneTransit: 'Détail des transports\u00a0: marche 3 min, ligne 1 pendant 20 min, ligne 11 pendant 7 min. Des trajets complexes lisibles d\'un coup d\'œil.',
+      iphoneDriving: 'Itinéraire en voiture avec relais vers une autre app. Le bouton jaune respecte les conventions de la plateforme tout en gardant la marque présente.',
+      iphoneFlows: 'Trois parcours sur iPhone\u00a0: feuille de route, aperçu de la carte, détail des transports. Chaque écran répond à une question différente de l\'utilisateur.',
     },
     wear: {
-      flows: 'Flows wearable : recherche puis appel, ou recherche puis navigation. Deux jobs, deux chemins, minimum de taps.',
+      flows: 'Parcours sur montre\u00a0: recherche puis appel, ou recherche puis navigation. Deux usages, deux chemins, un minimum d\'appuis.',
       uiModes: 'Le mode normal utilise un jaune à fort contraste pour l\'interaction active. Le mode ambiant passe en monochrome pour économiser la batterie.',
-      ui: 'Système de composants Android Wear complet : états de chargement, position launcher, home, résultats, fiches détail, boutons d\'action.',
-      flowsDetailed: 'Flux utilisateur avec handoff téléphone. Deux scénarios : "Trouver un resto et appeler" (lance le téléphone) ou "Trouver et y aller" (ouvre Google Maps).',
-      components: 'Inventaire complet des écrans : Chargement, Launcher, Home, Liste résultats, Fiche détail, Actions. Guidelines pour écrans carrés et ronds.',
-      ambient: 'Sketches mode ambiant. Mapping de chaque état d\'écran vers affichage basse conso. Contours blancs sur noir pour économie batterie OLED.',
-      insituStore: 'Visuel promo Google Play Store. Mockup montre sur fond jaune PagesJaunes montrant l\'écran d\'accueil avec raccourcis catégories.',
-      insituDetail: 'Fiche pro en contexte. Hiérarchie d\'info clé : nom, catégorie, statut, note, tel, adresse. Scannable en moins de 2 secondes.',
-      sketches: 'Wireframes précoces du flow rappel. L\'utilisateur peut programmer un rappel après avoir appelé un commerce pour récupérer une commande.',
-      devSession: 'Test sur device réel avec Thibault. Deux montres connectées, smartphone sync, itérations sur le build en temps réel.',
-      thumbnail: 'App PagesJaunes Android Wear sur cadran de montre. Infos locales lisibles d\'un coup d\'œil.',
-      yAllerBtn: 'Écran d\'action navigation. Bouton "Y Aller" en un tap déclenche le handoff vers Google Maps.',
-      designWork: 'Session design Keynote. Construction du flow complet fiche détail : infos commerce, aperçu carte, horaires, budget, boutons d\'action.',
-      prototypeVideo: 'Prototype fonctionnel sur hardware réel. Flow complet du lancement app à la fiche détail jusqu\'au handoff appel téléphone.',
+      ui: 'Système de composants Android Wear\u00a0: états de chargement, position du lanceur, accueil, résultats, fiches détail, boutons d\'action.',
+      flowsDetailed: 'Parcours utilisateur avec relais vers le téléphone. Deux scénarios\u00a0: «\u202fTrouver un resto et appeler\u202f» (lance le composeur) ou «\u202fTrouver et y aller\u202f» (ouvre Google Maps).',
+      components: 'Inventaire des écrans\u00a0: chargement, lanceur, accueil, liste de résultats, fiche détail, actions. Recommandations pour les écrans carrés et ronds.',
+      ambient: 'Croquis du mode ambiant. Chaque état d\'écran est associé à un affichage basse consommation. Contours blancs sur fond noir pour économiser la batterie sur écran OLED.',
+      insituStore: 'Visuel promotionnel pour Google Play Store. Maquette de montre sur fond jaune PagesJaunes, avec l\'écran d\'accueil et ses raccourcis de catégories.',
+      insituDetail: 'Fiche du professionnel en contexte. Hiérarchie de l\'information\u00a0: nom, catégorie, statut, note, téléphone, adresse. Lisible en moins de 2 secondes.',
+      sketches: 'Premiers croquis du parcours de rappel. L\'utilisateur peut programmer un rappel après avoir appelé un commerce, pour récupérer une commande plus tard.',
+      devSession: 'Test sur appareil réel avec Thibault. Deux montres connectées, smartphone synchronisé, itérations sur la version en temps réel.',
+      thumbnail: 'App PagesJaunes Android Wear sur un cadran de montre. Recherche locale lisible d\'un coup d\'œil.',
+      yAllerBtn: 'Écran d\'action de navigation. Le bouton « Y aller » ouvre Google Maps en un appui.',
+      designWork: 'Session de design dans Keynote. Construction du parcours complet de la fiche détail\u00a0: infos du commerce, aperçu de la carte, horaires, budget, boutons d\'action.',
+      prototypeVideo: 'Prototype fonctionnel sur matériel réel. Parcours complet du lancement de l\'app à la fiche détail, jusqu\'à la transmission de l\'appel au téléphone.',
     },
     contributions: {
-      desktopReview: 'Interface web desktop pour l\'édition d\'avis. Notes multi-critères par étoiles, champs pour/contre, limites de caractères, formatage enrichi. Responsive du desktop à la tablette.',
+      desktopReview: 'Interface web sur ordinateur pour l\'édition d\'avis. Notes multicritères par étoiles, champs pour et contre, limites de caractères, mise en forme enrichie. Adaptée de l\'ordinateur à la tablette.',
     },
     tooltips: {
-      redesign: 'Tooltips contextuels pour guider la découverte des features. Hiérarchie visuelle claire, animation d\'entrée, perturbation minimale du flow utilisateur.',
+      redesign: 'Des info-bulles contextuelles guident la découverte des fonctionnalités. Hiérarchie visuelle claire, animation d\'entrée, perturbation minimale du parcours.',
     },
     microInteractions: {
-      sectionTitle: 'Micro-Interactions',
-      intro: 'Specs motion livrées aux équipes dev. Ces animations sont passées en production sur iOS et Android.',
-      navDrawer: 'Navigation Drawer Material Design. Pattern Android familier, couleurs PagesJaunes. Les utilisateurs savent déjà comment ça marche.',
-      favorites: 'Animation cœur sur "Ajouter aux Favoris". Le rebond donne un feedback immédiat que l\'action a fonctionné.',
-      historyRemarketing: 'Écran Historique avec incitation à uploader une photo. Encourager les utilisateurs à partager leur expérience après une visite.',
+      sectionTitle: 'Micro-interactions',
+      intro: 'Spécifications de mouvement livrées aux équipes de développement. Ces animations sont passées en production sur iOS et Android.',
+      navDrawer: 'Tiroir de navigation Material Design. Motif Android familier, aux couleurs de PagesJaunes. Les utilisateurs savent déjà comment il fonctionne.',
+      favorites: 'Animation en forme de cœur sur « Ajouter aux favoris ». Le rebond confirme immédiatement que l\'action a fonctionné.',
+      historyRemarketing: 'Écran Historique avec invitation à ajouter une photo. Encourager les utilisateurs à partager leur expérience après une visite.',
     },
   },
 };
@@ -233,7 +229,7 @@ const TRANSLATIONS = {
     testimonial: {
       quote: 'Victor is passionate about UX and keeps himself up to date with latest trends and methods. He is a very capable designer who can do the legwork but also take a step back and advise on more strategic aspects of an interface design or the project as a whole. Highly recommended as part of a UX or product team.',
       author: 'Simon White',
-      role: 'Director of UX @ PagesJaunes'
+      role: 'Director of UX at PagesJaunes'
     },
     meta: {
       type: 'Mobile & Web',
@@ -279,7 +275,7 @@ const TRANSLATIONS = {
       model: 'The "What + Where" Model',
       modelDesc: 'Search structured around two core questions: What professional or company are you looking for? Where do you need them? This geolocation-centric approach helped users find nearby professionals, view their details, call them, or navigate there.',
       materialDesign: 'Material Design Transitions',
-      materialDesignDesc: 'We implemented Google\'s Material Design patterns with Activity transitions and shared element animations. The search bar elegantly transforms into full-screen results, maintaining context while expanding functionality.',
+      materialDesignDesc: 'We implemented Google\'s Material Design patterns with Activity transitions and shared element animations. The search bar expands into full-screen results, keeping context while adding functionality.',
       shipped: 'Shipped to Production',
       shippedDesc: 'This prototype became the production implementation deployed on Google Play Store. Smooth transitions reduced perceived latency while the familiar search model preserved user habits built over years.'
     },
@@ -366,7 +362,7 @@ const TRANSLATIONS = {
       auditDesc: 'Reviewed all app screens across iOS, Android, and web. Interviewed designers and developers across squads to understand pain points.',
       roadmap: 'Yellowstrap Roadmap',
       roadmapDesc: 'Delivered the component system roadmap and guidelines. Defined naming conventions, color usage, CTA styles, status indicators. Pre-Figma era tools: Zeplin, PDF kits, Sketch.',
-      note: 'Note: My role focused on strategic definition and requirements, not hands-on library building.'
+      note: 'Note: my role covered strategic definition and requirements. I did not build the library hands-on.'
     },
     team: {
       sectionTitle: 'Team & Collaboration',
@@ -415,30 +411,25 @@ const TRANSLATIONS = {
         }
       ]
     },
-    cta: {
-      title: 'Got a legacy product to modernize?',
-      button: 'Get in touch'
-    },
-    scrollHint: 'Scroll to explore'
   },
   fr: {
     hero: {
       role: 'Product Designer → UI Team Lead',
-      scope: 'Apps Mobiles, Web, Design System',
+      scope: 'Apps mobiles, web, design system',
       period: '2014-2016',
-      title: 'Refonte de PagesJaunes pour 22M d\'utilisateurs',
-      subtitle: 'D\'un annuaire legacy vers une expérience mobile-first',
-      description: 'Deux ans à moderniser l\'app utilitaire la plus téléchargée de France. J\'ai rejoint comme Product Designer, suis devenu UI Team Lead avec 4 designers, et livré des mises à jour majeures sur iOS, Android, web et Android Wear.'
+      title: 'Refonte de PagesJaunes pour 22 millions d\'utilisateurs',
+      subtitle: 'D\'un annuaire hérité à une expérience pensée d\'abord pour le mobile',
+      description: 'Deux ans à moderniser l\'app utilitaire la plus téléchargée de France. J\'ai rejoint l\'équipe comme Product Designer, puis je suis devenu responsable de l\'équipe UI avec 4 designers, et j\'ai livré des mises à jour majeures sur iOS, Android, le web et Android Wear.'
     },
     testimonial: {
-      quote: 'Victor est passionné par l\'UX et se tient constamment à jour des dernières tendances et méthodes. C\'est un designer très compétent qui peut faire le travail de terrain mais aussi prendre du recul pour conseiller sur les aspects plus stratégiques d\'une interface ou du projet dans son ensemble. Hautement recommandé dans une équipe UX ou produit.',
+      quote: 'Victor est passionné par l\'UX et se tient constamment à jour des dernières tendances et méthodes. C\'est un designer très compétent, capable de faire le travail de terrain mais aussi de prendre du recul pour conseiller sur les aspects plus stratégiques d\'une interface ou du projet dans son ensemble. Hautement recommandé dans une équipe UX ou produit.',
       author: 'Simon White',
-      role: 'Director of UX @ PagesJaunes'
+      role: 'Directeur UX chez PagesJaunes'
     },
     meta: {
-      type: 'Mobile & Web',
+      type: 'Mobile et web',
       typeLabel: 'Type',
-      scope: 'Refonte Apps',
+      scope: 'Refonte des apps',
       scopeLabel: 'Périmètre',
       period: '2014-2016',
       periodLabel: 'Période',
@@ -447,151 +438,151 @@ const TRANSLATIONS = {
     },
     overview: {
       title: 'Vue d\'ensemble',
-      introTitle: 'Le Contexte',
-      introDesc: 'En 2014, PagesJaunes servait 15M+ de visiteurs mensuels mais restait ancré dans une logique d\'annuaire web. Les apps mobiles avaient des millions de téléchargements, mais l\'expérience était lourde. Le produit devait évoluer de fiches statiques vers une expérience fluide, personnelle et mobile-first, sans casser ce qui marchait.',
-      roleTitle: 'Mon Rôle',
-      roleDesc: 'J\'ai rejoint comme Product Designer sur le web, les partenariats (TheFork, Renault R-Link), et les flows de login. En 2015, je suis devenu UI Team Lead : coordination de 4 designers, ownership de la refonte mobile, et syncs hebdo avec les devs iOS/Android.',
-      goalsTitle: 'Objectifs Clés',
+      introTitle: 'Le contexte',
+      introDesc: 'En 2014, PagesJaunes comptait plus de 15 millions de visiteurs mensuels mais restait ancré dans une logique d\'annuaire web. Les apps mobiles avaient des millions de téléchargements, mais l\'expérience était lourde. Le produit devait passer de fiches statiques à une expérience fluide, personnelle et pensée d\'abord pour le mobile, sans casser ce qui fonctionnait pour les utilisateurs existants.',
+      roleTitle: 'Mon rôle',
+      roleDesc: 'J\'ai rejoint l\'équipe comme Product Designer sur le web, les partenariats (TheFork, Renault R-Link) et les parcours de connexion. En 2015, je suis devenu responsable de l\'équipe UI\u00a0: coordination de 4 designers, pilotage de la refonte mobile et points hebdomadaires avec les développeurs iOS et Android.',
+      goalsTitle: 'Objectifs clés',
       goals: [
-        'Refonte de la homepage avec recherche par intention',
-        'Livrer l\'onboarding natif pour iOS & Android',
+        'Refonte de la page d\'accueil avec une recherche guidée par l\'intention',
+        'Livrer l\'onboarding natif pour iOS et Android',
         'Construire la navigation piétonne (API Mappy)',
         'Auditer et planifier le design system (Yellowstrap)'
       ]
     },
     homepage: {
-      sectionTitle: 'Refonte Homepage',
-      question: 'Comment rendre une recherche utilitaire personnelle et accueillante ?',
-      intro: 'L\'ancienne homepage montrait deux champs : "Qui" et "Où". Ça marchait, mais c\'était froid et daté. On est passé à un design plus conversationnel.',
-      greeting: 'Bonjour, de quoi avez-vous besoin ?',
+      sectionTitle: 'Refonte de la page d\'accueil',
+      question: 'Comment rendre une recherche utilitaire personnelle et accueillante\u00a0?',
+      intro: 'L\'ancienne page d\'accueil montrait deux champs\u00a0: «\u202fQui\u202f» et «\u202fOù\u202f». Elle fonctionnait, mais paraissait froide et datée. Nous sommes passés à un design plus conversationnel.',
+      greeting: 'Bonjour, de quoi avez-vous besoin\u00a0?',
       greetingDesc: 'Cette phrase amicale donnait le ton. Elle apportait de la chaleur à un outil utilitaire.',
-      imagery: 'Imagerie Contextuelle',
-      imageryDesc: 'On a conçu des règles de direction artistique pour des images de fond tournantes montrant des pros locaux : le boulanger, le garagiste, le fleuriste. Contextualisées selon la catégorie de recherche.',
-      simplification: 'Simplification Recherche',
-      simplificationDesc: 'Remplacement des deux champs par une barre de recherche unique. Réduction du bruit visuel. Unification du langage des onglets sur iOS et Android.'
+      imagery: 'Imagerie contextuelle',
+      imageryDesc: 'Nous avons défini des règles de direction artistique pour des images de fond tournantes montrant des professionnels locaux\u00a0: le boulanger, le garagiste, le fleuriste. Elles varient selon la catégorie de recherche.',
+      simplification: 'Simplification de la recherche',
+      simplificationDesc: 'Remplacement des deux champs par une barre de recherche unique. Moins de bruit visuel. Langage des onglets unifié sur iOS et Android.'
     },
     searchEngine: {
-      sectionTitle: 'Évolution Moteur de Recherche',
-      question: 'Comment refondre le moteur de revenus sans perdre les utilisateurs ?',
-      intro: 'Le moteur de recherche est le cœur de PagesJaunes. Avec près de 500M€ de revenus annuels liés au ranking et à la visibilité, chaque changement était à haut risque. Les utilisateurs devaient trouver les professionnels rapidement. Le business devait préserver le modèle de ranking qui monétisait chaque requête.',
-      stakes: 'Enjeux Élevés',
-      stakesDesc: 'Le moteur de recherche alimentait tout le modèle économique. La position dans les suggestions et résultats impactait directement les revenus publicitaires. Toute erreur de redesign pouvait coûter des millions.',
-      model: 'Le Modèle "Quoi + Où"',
-      modelDesc: 'Recherche structurée autour de deux questions : Quel professionnel ou entreprise cherchez-vous ? Où en avez-vous besoin ? Cette approche géolocalisée aide les utilisateurs à trouver des pros à proximité, consulter leurs infos, les appeler ou s\'y rendre.',
+      sectionTitle: 'Évolution du moteur de recherche',
+      question: 'Comment refondre le moteur de revenus sans perdre les utilisateurs\u00a0?',
+      intro: 'Le moteur de recherche est le cœur de PagesJaunes. Avec près de 500 M€ de revenus annuels liés au classement et à la visibilité, chaque changement comportait un risque élevé. Les utilisateurs devaient trouver rapidement les professionnels. L\'entreprise devait préserver le modèle de classement qui monétisait chaque requête.',
+      stakes: 'Enjeux élevés',
+      stakesDesc: 'Le moteur de recherche portait tout le modèle économique. La position dans les suggestions et les résultats influait directement sur les revenus publicitaires. Une erreur de refonte pouvait coûter des millions.',
+      model: 'Le modèle «\u202fQuoi + Où\u202f»',
+      modelDesc: 'La recherche s\'organise autour de deux questions\u00a0: quel professionnel ou quelle entreprise cherchez-vous\u00a0? Où en avez-vous besoin\u00a0? Cette approche géolocalisée aide les utilisateurs à trouver des professionnels à proximité, à consulter leurs informations, à les appeler ou à s\'y rendre.',
       materialDesign: 'Transitions Material Design',
-      materialDesignDesc: 'On a implémenté les patterns Material Design de Google avec transitions Activity et animations d\'éléments partagés. La barre de recherche se transforme élégamment en résultats plein écran, maintenant le contexte tout en étendant les fonctionnalités.',
-      shipped: 'Livré en Production',
-      shippedDesc: 'Ce prototype est devenu l\'implémentation production déployée sur le Google Play Store. Les transitions fluides réduisent la latence perçue tout en préservant les habitudes utilisateur construites au fil des années.'
+      materialDesignDesc: 'Nous avons mis en œuvre les motifs Material Design de Google avec des transitions d\'activité et des animations d\'éléments partagés. La barre de recherche se transforme en résultats plein écran, en conservant le contexte tout en étendant les fonctionnalités.',
+      shipped: 'Livré en production',
+      shippedDesc: 'Ce prototype est devenu l\'implémentation de production déployée sur le Google Play Store. Les transitions fluides réduisent la latence perçue, tandis que le modèle de recherche familier préserve les habitudes construites au fil des années.'
     },
     onboarding: {
-      sectionTitle: 'Onboarding Natif',
-      question: 'Comment guider 22M d\'utilisateurs à travers une mise à jour majeure ?',
-      intro: 'On lançait une version majeure. Les utilisateurs devaient découvrir les nouvelles features sans être bloqués. On a conçu des animations courtes et non-bloquantes au premier lancement.',
+      sectionTitle: 'Onboarding natif',
+      question: 'Comment guider 22 millions d\'utilisateurs à travers une mise à jour majeure\u00a0?',
+      intro: 'Nous lancions une version majeure. Les utilisateurs devaient découvrir les nouveautés sans être bloqués. Nous avons conçu des animations courtes et non bloquantes au premier lancement.',
       ios: 'Implémentation iOS',
-      iosDesc: 'Utilisation de CAAnimation pour des séquences de walkthrough fluides. Itérations testées dans notre labo UX à Paris.',
+      iosDesc: 'Utilisation de CAAnimation pour des séquences de présentation fluides. Itérations testées dans notre laboratoire UX à Paris.',
       android: 'Implémentation Android',
-      androidDesc: 'Utilisation des transitions Activity avec les codes Material Design. Coordination avec les devs sur les specs motion.',
-      goals: 'Objectifs Onboarding',
+      androidDesc: 'Utilisation des transitions d\'activité avec les codes Material Design. Coordination avec l\'équipe de développement sur les spécifications de mouvement.',
+      goals: 'Objectifs de l\'onboarding',
       goalsList: [
-        'Réduire les tickets support sur la navigation',
-        'Booster la découverte des features (Favoris, Cartes)',
-        'Augmenter la rétention première semaine'
+        'Réduire les demandes au support sur la navigation',
+        'Favoriser la découverte des fonctionnalités (favoris, cartes)',
+        'Augmenter la rétention de la première semaine'
       ]
     },
     navigation: {
-      sectionTitle: 'Cartes & Itinéraire Piéton',
-      question: 'Comment amener les utilisateurs de la recherche à la destination plus vite ?',
-      intro: 'Trouver un pro, c\'est la moitié du travail. Les utilisateurs doivent s\'y rendre. On a construit une expérience de navigation piétonne complète sur l\'API Mappy.',
-      features: 'Features Clés',
+      sectionTitle: 'Cartes et itinéraire piéton',
+      question: 'Comment amener les utilisateurs de la recherche à la destination plus vite\u00a0?',
+      intro: 'Trouver un professionnel, c\'est la moitié du travail. Les utilisateurs doivent s\'y rendre. Nous avons construit une expérience de navigation piétonne complète sur l\'API Mappy.',
+      features: 'Fonctionnalités clés',
       featuresList: [
-        'Aperçu itinéraires piétons turn-by-turn',
-        'Handoff multi-apps : Waze, Google Maps, Apple Maps',
-        'Optimisation réseau pour connexions 3G',
-        'Split-view iPad avec clarté d\'itinéraire'
+        'Aperçu des itinéraires piétons avec guidage pas à pas',
+        'Relais vers d\'autres apps\u00a0: Waze, Google Maps, Plans',
+        'Optimisation réseau pour les connexions 3G',
+        'Vue scindée sur iPad avec itinéraire lisible'
       ],
-      tablet: 'Expérience Tablette',
-      tabletDesc: 'Sur iPad, on a complètement repensé l\'expérience carte avec les split views natifs. Liste des directions d\'un côté, carte interactive de l\'autre. Support accessibilité complet avec Dynamic Type et VoiceOver.'
+      tablet: 'Expérience sur tablette',
+      tabletDesc: 'Sur iPad, nous avons entièrement repensé l\'expérience de la carte avec des vues scindées natives. La liste des indications d\'un côté, la carte interactive de l\'autre. Prise en charge complète de l\'accessibilité avec Dynamic Type et VoiceOver.'
     },
     account: {
       sectionTitle: 'Mon PagesJaunes',
-      question: 'Comment transformer des chercheurs passifs en utilisateurs engagés ?',
-      intro: 'L\'espace fidélité et compte était fragmenté et sous-utilisé. On l\'a repensé pour soutenir la stratégie de rétention.',
-      areas: 'Zones Clés',
+      question: 'Comment transformer des chercheurs passifs en utilisateurs engagés\u00a0?',
+      intro: 'L\'espace fidélité et compte était fragmenté et sous-utilisé. Nous l\'avons repensé pour soutenir la stratégie de rétention.',
+      areas: 'Zones clés',
       areasList: [
-        'Favoris : sauvegarder et organiser les pros préférés',
-        'Historique : accès rapide aux recherches récentes',
-        'Contributions : soumission de photos et avis',
-        'Compte : login et inscription simplifiés'
+        'Favoris\u00a0: enregistrer et organiser ses professionnels préférés',
+        'Historique\u00a0: accès rapide aux recherches récentes',
+        'Contributions\u00a0: ajout de photos et d\'avis',
+        'Compte\u00a0: connexion et inscription simplifiées'
       ],
-      contribution: 'Contributions Utilisateurs',
-      contributionDesc: 'Conception de l\'expérience complète pour ajouter photos et avis depuis les fiches pro. Transformer les utilisateurs passifs en contributeurs actifs.'
+      contribution: 'Contributions des utilisateurs',
+      contributionDesc: 'Conception de l\'expérience complète d\'ajout de photos et d\'avis depuis les fiches des professionnels. Faire des utilisateurs passifs des contributeurs actifs.'
     },
     wear: {
       sectionTitle: 'Android Wear',
-      intro: 'Un projet expérimental, tourné vers l\'avenir. PagesJaunes voulait être présent sur les wearables. J\'ai conçu et développé cette app en duo avec Thibault Fighiera, dev Android. Deux mois du concept à la sortie Google Play.',
-      scenario: '"Il est midi, Julien a faim. Il veut trouver rapidement un resto près du bureau et s\'y faire guider."',
-      context: 'Contexte Projet',
+      intro: 'Un projet expérimental, tourné vers l\'avenir. PagesJaunes voulait être présent sur les appareils portables. J\'ai conçu et développé cette app en duo avec Thibault Fighiera, développeur Android. Deux mois entre le concept et la sortie sur Google Play.',
+      scenario: '«\u202fIl est midi, Julien a faim. Il veut trouver rapidement un restaurant près du bureau et s\'y faire guider.\u202f»',
+      context: 'Contexte du projet',
       contextItems: [
-        'Équipe agile de 3 : Designer (moi) + PO + Dev',
-        'Oct-Déc 2015 : conception et développement en 2 mois',
-        'Première étape du branding PagesJaunes vers Material Design',
-        'Livré sur Google Play, décembre 2015'
+        'Équipe agile de 3 personnes\u00a0: designer (moi), product owner et développeur',
+        'Octobre à décembre 2015\u00a0: conception et développement en 2 mois',
+        'Première étape de l\'adaptation de la marque PagesJaunes à Material Design',
+        'Livré sur Google Play en décembre 2015'
       ],
-      approach: 'Approche Design',
-      approachDesc: 'Apprentissage des guidelines OS, évaluation des contraintes Android Wear, adaptation de la marque PagesJaunes. Design pour montre avec contexte en tête : usage low-effort, info scannable, actions rapides.',
-      features: 'Ce qu\'on a construit',
+      approach: 'Approche de conception',
+      approachDesc: 'Apprentissage des recommandations du système, évaluation des contraintes d\'Android Wear, adaptation de la marque PagesJaunes. Conception pour la montre en gardant le contexte en tête\u00a0: usage à faible effort, informations lisibles d\'un coup d\'œil, actions rapides.',
+      features: 'Ce que nous avons construit',
       featuresList: [
-        'UI en cartes avec notes, statut et CTA contact',
-        'Deux flows utilisateur : recherche→appel et recherche→navigation',
-        'Mode normal (jaune haut contraste) et mode ambiant (monochrome)',
-        'Intégration recherche vocale "Ok Google"',
-        'Handoff vers téléphone pour appels et navigation Google Maps'
+        'Interface en cartes avec notes, statut et bouton de contact',
+        'Deux parcours\u00a0: recherche→appel et recherche→navigation',
+        'Mode normal (jaune à fort contraste) et mode ambiant (monochrome)',
+        'Recherche vocale avec «\u202fOk Google\u202f»',
+        'Transmission au téléphone pour les appels et la navigation Google Maps'
       ],
-      deliverables: 'Mes Livrables',
+      deliverables: 'Mes livrables',
       deliverablesList: [
-        'Documentation persona et user story',
-        'Sketching et wireframing',
-        'UI design et specs d\'interaction',
-        'Prototypage et vidéos de démo',
-        'Présentation aux stakeholders'
+        'Documentation du persona et des user stories',
+        'Croquis et wireframes',
+        'Design d\'interface et spécifications d\'interaction',
+        'Prototypage et vidéos de démonstration',
+        'Présentation aux parties prenantes'
       ],
       collaborator: 'Thibault Fighiera',
       collaboratorRole: 'Développeur Android',
-      collaboratorDesc: 'Collaboration back-to-back sur design et développement. Cycles d\'itération rapides avec tests sur device réel.'
+      collaboratorDesc: 'Collaboration en binôme sur le design et le développement. Cycles d\'itération rapides avec tests sur appareil réel.'
     },
     system: {
-      sectionTitle: 'Stratégie Design System',
-      intro: 'Avec plusieurs plateformes et une divergence croissante des features, on avait besoin de fondations partagées. J\'ai mené le premier audit complet.',
-      audit: 'L\'Audit',
-      auditDesc: 'Revue de tous les écrans app sur iOS, Android et web. Interviews des designers et devs à travers les squads pour comprendre les points de friction.',
-      roadmap: 'Roadmap Yellowstrap',
-      roadmapDesc: 'Livraison de la roadmap système de composants et des guidelines. Définition des conventions de nommage, usage couleurs, styles CTA, indicateurs de statut. Outils pré-Figma : Zeplin, kits PDF, Sketch.',
-      note: 'Note : Mon rôle était focalisé sur la définition stratégique et les besoins, pas sur la construction hands-on de la bibliothèque.'
+      sectionTitle: 'Stratégie du design system',
+      intro: 'Avec plusieurs plateformes et des fonctionnalités qui divergeaient de plus en plus, nous avions besoin de fondations partagées. J\'ai mené le premier audit complet.',
+      audit: 'L\'audit',
+      auditDesc: 'Revue de tous les écrans des apps iOS, Android et web. Entretiens avec les designers et les développeurs de plusieurs équipes pour comprendre les points de friction.',
+      roadmap: 'Feuille de route Yellowstrap',
+      roadmapDesc: 'Livraison de la feuille de route du système de composants et des recommandations. Définition des conventions de nommage, de l\'usage des couleurs, des styles de boutons d\'appel à l\'action et des indicateurs de statut. Outils d\'avant Figma\u00a0: Zeplin, kits PDF, Sketch.',
+      note: 'Note\u00a0: mon rôle couvrait la définition stratégique et les besoins. Je n\'ai pas construit la bibliothèque moi-même.'
     },
     team: {
-      sectionTitle: 'Équipe & Collaboration',
-      intro: 'Ce projet était impossible à réaliser seul. J\'ai travaillé avec les devs iOS/Android, le backend, le marketing et les PO.',
+      sectionTitle: 'Équipe et collaboration',
+      intro: 'Ce projet n\'aurait pas été possible seul. J\'ai travaillé avec les développeurs iOS et Android, le backend, le marketing et le product owner.',
       led: 'J\'ai piloté',
       ledList: [
-        'Direction UI et specs composants',
-        'Rituels d\'équipe design et mentoring (4 designers)',
-        'Présentations executive (User Club Day, revues roadmap)'
+        'Direction UI et spécifications des composants',
+        'Rituels de l\'équipe design et mentorat (4 designers)',
+        'Présentations à la direction (User Club Day, revues de feuille de route)'
       ],
       collaborated: 'J\'ai collaboré avec',
       collaboratedList: [
-        'Backend pour le shaping des payloads API',
-        'Équipes mobiles pour les specs animation et scroll',
-        'Marketing pour les guidelines imagerie homepage'
+        'Le backend pour la structure des réponses d\'API',
+        'Les équipes mobiles pour les spécifications d\'animation et de défilement',
+        'Le marketing pour les règles d\'imagerie de la page d\'accueil'
       ],
-      rituals: 'Crits et retros hebdo. Boucles de feedback rapides, alignement serré.'
+      rituals: 'Revues de design et rétrospectives chaque semaine. Retours rapides, alignement serré.'
     },
     impact: {
       sectionTitle: 'Résultats',
       metrics: [
         { value: '22M+', label: 'Téléchargements', sublabel: 'installations cumulées' },
-        { value: '300K', label: 'Utilisateurs/jour', sublabel: 'au pic d\'usage' },
-        { value: '4', label: 'Designers', sublabel: 'managés comme lead' },
-        { value: '4.5★', label: 'App Store', sublabel: 'vs 4.2 avant' }
+        { value: '300K', label: 'Utilisateurs par jour', sublabel: 'au pic d\'usage' },
+        { value: '4', label: 'Designers', sublabel: 'encadrés comme responsable d\'équipe' },
+        { value: '4,5★', label: 'App Store', sublabel: 'contre 4,2 auparavant' }
       ]
     },
     learnings: {
@@ -599,27 +590,22 @@ const TRANSLATIONS = {
       items: [
         {
           title: 'Ne pas casser les habitudes',
-          description: '22M d\'utilisateurs ont une mémoire musculaire. Les changements radicaux les perdent. Des améliorations petites et claires marchent mieux.'
+          description: '22 millions d\'utilisateurs ont des automatismes. Les changements radicaux les désorientent. Des améliorations petites et claires fonctionnent mieux.'
         },
         {
-          title: 'L\'utilitaire exige la vitesse',
-          description: 'Les gens cherchent un plombier quand ils ont une fuite. Chaque milliseconde compte. Surtout en 3G.'
+          title: 'Un outil utilitaire exige de la vitesse',
+          description: 'Les gens cherchent un plombier quand ils ont une fuite. Chaque milliseconde compte, surtout en 3G.'
         },
         {
-          title: 'La cohérence, c\'est dur',
-          description: 'iOS, Android, web, Wear : chaque plateforme a ses contraintes. Les patterns partagés demandent une négociation constante.'
+          title: 'La cohérence est difficile',
+          description: 'iOS, Android, web, Wear\u00a0: chaque plateforme a ses contraintes. Les motifs partagés demandent une négociation constante.'
         },
         {
-          title: 'La stratégie crée du levier',
-          description: 'À cette échelle, définir la structure et les règles (audit design system) crée plus d\'impact que des écrans individuels.'
+          title: 'La stratégie crée un effet de levier',
+          description: 'À cette échelle, définir la structure et les règles (audit du design system) a plus d\'impact que des écrans pris un à un.'
         }
       ]
-    },
-    cta: {
-      title: 'Un produit legacy à moderniser ?',
-      button: 'Me contacter'
-    },
-    scrollHint: 'Défiler pour explorer'
+    }
   }
 };
 
@@ -653,13 +639,12 @@ const FadeInSection: React.FC<{
 // ============================================================================
 
 const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
-  systemTheme,
   lang,
   onImageClick,
-  onContact,
-  onNavigateToProject
 }) => {
   const t = TRANSLATIONS[lang];
+  // ReadMoreList labels: French when the page is French, component defaults otherwise
+  const readMoreLabels = lang === 'fr' ? { expandLabel: 'Voir la suite', collapseLabel: 'Voir moins' } : {};
 
   return (
     <div className="bg-[#FDFDFC]">
@@ -669,23 +654,21 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
       {/* ================================================================ */}
       <section className="mb-16 md:mb-24">
         <div className="max-w-[740px] mx-auto px-6 pt-16 md:pt-24">
-          {/* Meta */}
-          <p className="text-xs text-gray-500 mb-4">
-            {t.hero.role} · {t.hero.scope} · {t.hero.period}
-          </p>
-
           {/* Main Title */}
           <h1 className="text-title-1 text-gray-900 mb-3">
             {t.hero.title}
           </h1>
 
-          {/* Subtitle */}
-          <p className="text-base text-gray-500 leading-relaxed mb-3">
+          {/* Subtitle, then role, scope and period as one quiet line */}
+          <p className="text-lg text-gray-600 mb-1">
             {t.hero.subtitle}
+          </p>
+          <p className="text-xs text-gray-500 mb-6">
+            {[t.hero.role, t.hero.scope, t.hero.period].join(' · ')}
           </p>
 
           {/* Description */}
-          <p className="text-base text-gray-500 leading-relaxed mb-8">
+          <p className="text-base text-gray-600 leading-relaxed mb-8">
             {t.hero.description}
           </p>
 
@@ -708,12 +691,13 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
       <div className="max-w-[960px] mx-auto px-6">
         <figure className="mb-24 md:mb-32">
           <div
-            onClick={() => onImageClick('/images/thumbnail_pagesjaunes_sp_tablette.webp')}
+            {...zoomable(() => onImageClick('/images/thumbnail_pagesjaunes_sp_tablette.webp'))}
             className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
           >
             <img
-              loading="lazy"
-              src="/images/thumbnail_pagesjaunes_sp_tablette.webp"
+              loading="eager"
+              fetchPriority="high"
+              src="/images/thumbnail_pagesjaunes_sp_tablette.webp" {...imgDims("/images/thumbnail_pagesjaunes_sp_tablette.webp")}
               alt="PagesJaunes Mobile Apps"
               className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
             />
@@ -736,30 +720,30 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
 
             <div className="space-y-8">
               <div>
-                <p className="text-sm font-medium text-gray-900 mb-2">
+                <h3 className="text-title-3 text-gray-900 mb-2">
                   {t.overview.introTitle}
-                </p>
-                <p className="text-base text-gray-500 leading-relaxed">
+                </h3>
+                <p className="text-base text-gray-600 leading-relaxed">
                   {t.overview.introDesc}
                 </p>
               </div>
 
               <div>
-                <p className="text-sm font-medium text-gray-900 mb-2">
+                <h3 className="text-title-3 text-gray-900 mb-2">
                   {t.overview.roleTitle}
-                </p>
-                <p className="text-base text-gray-500 leading-relaxed">
+                </h3>
+                <p className="text-base text-gray-600 leading-relaxed">
                   {t.overview.roleDesc}
                 </p>
               </div>
 
               <div>
-                <p className="text-sm font-medium text-gray-900 mb-2">
+                <h3 className="text-title-3 text-gray-900 mb-2">
                   {t.overview.goalsTitle}
-                </p>
+                </h3>
                 <ul className="space-y-1.5">
                   {t.overview.goals.map((goal, idx) => (
-                    <li key={idx} className="text-base text-gray-500 leading-relaxed">
+                    <li key={idx} className="text-base text-gray-600 leading-relaxed">
                       <span className="text-gray-300 mr-2">&#8226;</span>{goal}
                     </li>
                   ))}
@@ -796,29 +780,33 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
       <FadeInSection>
         <section id="homepage" className="mb-24 md:mb-32">
           <div className="max-w-[740px] mx-auto px-6">
-            <h2 className="text-title-2 text-gray-900 mb-3">
+            <h2 className="text-title-2 text-gray-900 mb-2">
               {t.homepage.sectionTitle}
             </h2>
 
-            <p className="text-base text-gray-500 leading-relaxed mb-8">
+            <p className="text-base text-gray-600 leading-relaxed mb-3">
+              {t.homepage.question}
+            </p>
+
+            <p className="text-base text-gray-600 leading-relaxed mb-8">
               {t.homepage.intro}
             </p>
 
             <div className="divide-y divide-gray-100 mb-12">
               <div className="py-4">
-                <p className="text-sm font-medium text-gray-900 mb-2">
+                <h3 className="text-title-3 text-gray-900 mb-2">
                   {t.homepage.imagery}
-                </p>
-                <p className="text-base text-gray-500 leading-relaxed">
+                </h3>
+                <p className="text-base text-gray-600 leading-relaxed">
                   {t.homepage.imageryDesc}
                 </p>
               </div>
 
               <div className="py-4">
-                <p className="text-sm font-medium text-gray-900 mb-2">
+                <h3 className="text-title-3 text-gray-900 mb-2">
                   {t.homepage.simplification}
-                </p>
-                <p className="text-base text-gray-500 leading-relaxed">
+                </h3>
+                <p className="text-base text-gray-600 leading-relaxed">
                   {t.homepage.simplificationDesc}
                 </p>
               </div>
@@ -827,85 +815,85 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
 
           {/* Homepage iOS & Android */}
           <div className="max-w-[740px] mx-auto px-6 mb-4">
-            <p className="text-base text-gray-500 leading-relaxed">{CAPTIONS[lang].homepage.main}</p>
+            <p className="text-base text-gray-600 leading-relaxed">{CAPTIONS[lang].homepage.main}</p>
           </div>
           <div className="max-w-[960px] mx-auto px-6 mb-16">
             <div
-              onClick={() => onImageClick(GALLERY_IMAGES.homepage.main)}
+              {...zoomable(() => onImageClick(GALLERY_IMAGES.homepage.main))}
               className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
             >
               <img
                 loading="lazy"
-                src={GALLERY_IMAGES.homepage.main}
+                src={GALLERY_IMAGES.homepage.main} {...imgDims(GALLERY_IMAGES.homepage.main)}
                 alt="PagesJaunes Homepage iOS & Android"
                 className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
               />
             </div>
             <p className="mt-3 text-xs font-medium text-gray-500">
-              {lang === 'en' ? 'PagesJaunes — iOS & Android homepage' : 'PagesJaunes — Page d\'accueil iOS & Android'}
+              {lang === 'en' ? 'iOS and Android homepage' : 'Page d\u2019accueil iOS et Android'}
             </p>
           </div>
 
           {/* Homepage Variations */}
           <div className="max-w-[740px] mx-auto px-6 mb-4">
-            <p className="text-base text-gray-500 leading-relaxed">{CAPTIONS[lang].homepage.variations}</p>
+            <p className="text-base text-gray-600 leading-relaxed">{CAPTIONS[lang].homepage.variations}</p>
           </div>
           <div className="max-w-[960px] mx-auto px-6 mb-16">
             <div
-              onClick={() => onImageClick(GALLERY_IMAGES.homepage.variations)}
+              {...zoomable(() => onImageClick(GALLERY_IMAGES.homepage.variations))}
               className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
             >
               <img
                 loading="lazy"
-                src={GALLERY_IMAGES.homepage.variations}
+                src={GALLERY_IMAGES.homepage.variations} {...imgDims(GALLERY_IMAGES.homepage.variations)}
                 alt="PagesJaunes Homepage Variations"
                 className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
               />
             </div>
             <p className="mt-3 text-xs font-medium text-gray-500">
-              {lang === 'en' ? 'PagesJaunes — Hero image variations' : 'PagesJaunes — Variations image hero'}
+              {lang === 'en' ? 'Hero image variations' : 'Variations des visuels héros'}
             </p>
           </div>
 
           {/* iPad Homepage */}
           <div className="max-w-[740px] mx-auto px-6 mb-4">
-            <p className="text-base text-gray-500 leading-relaxed">{CAPTIONS[lang].homepageIpad.main}</p>
+            <p className="text-base text-gray-600 leading-relaxed">{CAPTIONS[lang].homepageIpad.main}</p>
           </div>
           <div className="max-w-[960px] mx-auto px-6 mb-16">
             <div
-              onClick={() => onImageClick(GALLERY_IMAGES.homepageIpad.main)}
+              {...zoomable(() => onImageClick(GALLERY_IMAGES.homepageIpad.main))}
               className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
             >
               <img
                 loading="lazy"
-                src={GALLERY_IMAGES.homepageIpad.main}
+                src={GALLERY_IMAGES.homepageIpad.main} {...imgDims(GALLERY_IMAGES.homepageIpad.main)}
                 alt="PagesJaunes iPad Homepage"
                 className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
               />
             </div>
             <p className="mt-3 text-xs font-medium text-gray-500">
-              {lang === 'en' ? 'PagesJaunes — iPad homepage' : 'PagesJaunes — Page d\'accueil iPad'}
+              {lang === 'en' ? 'iPad homepage' : 'Page d\u2019accueil iPad'}
             </p>
           </div>
 
           {/* iPad Homepage Variations */}
           <div className="max-w-[740px] mx-auto px-6 mb-4">
-            <p className="text-base text-gray-500 leading-relaxed">{CAPTIONS[lang].homepageIpad.variations}</p>
+            <p className="text-base text-gray-600 leading-relaxed">{CAPTIONS[lang].homepageIpad.variations}</p>
           </div>
           <div className="max-w-[960px] mx-auto px-6">
             <div
-              onClick={() => onImageClick(GALLERY_IMAGES.homepageIpad.variations)}
+              {...zoomable(() => onImageClick(GALLERY_IMAGES.homepageIpad.variations))}
               className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
             >
               <img
                 loading="lazy"
-                src={GALLERY_IMAGES.homepageIpad.variations}
+                src={GALLERY_IMAGES.homepageIpad.variations} {...imgDims(GALLERY_IMAGES.homepageIpad.variations)}
                 alt="PagesJaunes iPad Homepage Variations"
                 className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
               />
             </div>
             <p className="mt-3 text-xs font-medium text-gray-500">
-              {lang === 'en' ? 'PagesJaunes — Multi-device responsive' : 'PagesJaunes — Responsive multi-device'}
+              {lang === 'en' ? 'Responsive hero images across devices' : 'Visuels héros adaptés à chaque appareil'}
             </p>
           </div>
         </section>
@@ -917,29 +905,33 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
       <FadeInSection>
         <section id="search" className="mb-24 md:mb-32">
           <div className="max-w-[740px] mx-auto px-6">
-            <h2 className="text-title-2 text-gray-900 mb-3">
+            <h2 className="text-title-2 text-gray-900 mb-2">
               {t.searchEngine.sectionTitle}
             </h2>
 
-            <p className="text-base text-gray-500 leading-relaxed mb-8">
+            <p className="text-base text-gray-600 leading-relaxed mb-3">
+              {t.searchEngine.question}
+            </p>
+
+            <p className="text-base text-gray-600 leading-relaxed mb-8">
               {t.searchEngine.intro}
             </p>
 
             <div className="divide-y divide-gray-100 mb-12">
               <div className="py-4">
-                <p className="text-sm font-medium text-gray-900 mb-2">
+                <h3 className="text-title-3 text-gray-900 mb-2">
                   {t.searchEngine.stakes}
-                </p>
-                <p className="text-base text-gray-500 leading-relaxed">
+                </h3>
+                <p className="text-base text-gray-600 leading-relaxed">
                   {t.searchEngine.stakesDesc}
                 </p>
               </div>
 
               <div className="py-4">
-                <p className="text-sm font-medium text-gray-900 mb-2">
+                <h3 className="text-title-3 text-gray-900 mb-2">
                   {t.searchEngine.model}
-                </p>
-                <p className="text-base text-gray-500 leading-relaxed">
+                </h3>
+                <p className="text-base text-gray-600 leading-relaxed">
                   {t.searchEngine.modelDesc}
                 </p>
               </div>
@@ -950,12 +942,12 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
           <div className="max-w-[960px] mx-auto px-6">
             <figure className="mb-8">
               <div
-                onClick={() => onImageClick(GALLERY_IMAGES.search.flow)}
+                {...zoomable(() => onImageClick(GALLERY_IMAGES.search.flow))}
                 className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
               >
                 <img
                   loading="lazy"
-                  src={GALLERY_IMAGES.search.flow}
+                  src={GALLERY_IMAGES.search.flow} {...imgDims(GALLERY_IMAGES.search.flow)}
                   alt="PagesJaunes Search Flow"
                   className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
                 />
@@ -969,41 +961,36 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
           <div className="max-w-[740px] mx-auto px-6">
             <div className="divide-y divide-gray-100 mb-12">
               <div className="py-4">
-                <p className="text-sm font-medium text-gray-900 mb-2">
+                <h3 className="text-title-3 text-gray-900 mb-2">
                   {t.searchEngine.materialDesign}
-                </p>
-                <p className="text-base text-gray-500 leading-relaxed">
+                </h3>
+                <p className="text-base text-gray-600 leading-relaxed">
                   {t.searchEngine.materialDesignDesc}
                 </p>
               </div>
 
               <div className="py-4">
-                <p className="text-sm font-medium text-gray-900 mb-2">
+                <h3 className="text-title-3 text-gray-900 mb-2">
                   {t.searchEngine.shipped}
-                </p>
-                <p className="text-base text-gray-500 leading-relaxed">
+                </h3>
+                <p className="text-base text-gray-600 leading-relaxed">
                   {t.searchEngine.shippedDesc}
                 </p>
               </div>
             </div>
           </div>
 
-          {/* Search Engine Prototype Video */}
+          {/* Search Engine Prototype Video: portrait, shown at its natural aspect in a phone-width column */}
           <div className="max-w-[960px] mx-auto px-6">
             <figure className="mb-8">
               <div
-                onClick={() => onImageClick(GALLERY_IMAGES.search.prototype)}
-                className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01] relative"
-                style={{ backgroundColor: '#C8C8C8', width: '100%', height: 0, paddingTop: '66.67%', position: 'relative' }}
+                {...zoomable(() => onImageClick(GALLERY_IMAGES.search.prototype))}
+                className="group max-w-[360px] mx-auto rounded-2xl overflow-hidden bg-gray-100 border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
               >
-                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <div className="relative rounded-lg overflow-hidden" style={{ maxWidth: '384px', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.35)' }}>
-                    <VideoPlayer
-                      src={GALLERY_IMAGES.search.prototype}
-                      className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
-                    />
-                  </div>
-                </div>
+                <VideoPlayer
+                  src={GALLERY_IMAGES.search.prototype}
+                  className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
+                />
               </div>
               <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
                 {CAPTIONS[lang].search.prototype}
@@ -1019,40 +1006,44 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
       <FadeInSection>
         <section id="onboarding" className="mb-24 md:mb-32">
           <div className="max-w-[740px] mx-auto px-6">
-            <h2 className="text-title-2 text-gray-900 mb-3">
+            <h2 className="text-title-2 text-gray-900 mb-2">
               {t.onboarding.sectionTitle}
             </h2>
 
-            <p className="text-base text-gray-500 leading-relaxed mb-8">
+            <p className="text-base text-gray-600 leading-relaxed mb-3">
+              {t.onboarding.question}
+            </p>
+
+            <p className="text-base text-gray-600 leading-relaxed mb-8">
               {t.onboarding.intro}
             </p>
 
-            <ReadMoreList className="divide-y divide-gray-100 mb-12" initialCount={2}>
+            <ReadMoreList className="divide-y divide-gray-100 mb-12" initialCount={2} {...readMoreLabels}>
               <div className="py-4">
-                <p className="text-sm font-medium text-gray-900 mb-2">
+                <h3 className="text-title-3 text-gray-900 mb-2">
                   {t.onboarding.ios}
-                </p>
-                <p className="text-base text-gray-500 leading-relaxed">
+                </h3>
+                <p className="text-base text-gray-600 leading-relaxed">
                   {t.onboarding.iosDesc}
                 </p>
               </div>
 
               <div className="py-4">
-                <p className="text-sm font-medium text-gray-900 mb-2">
+                <h3 className="text-title-3 text-gray-900 mb-2">
                   {t.onboarding.android}
-                </p>
-                <p className="text-base text-gray-500 leading-relaxed">
+                </h3>
+                <p className="text-base text-gray-600 leading-relaxed">
                   {t.onboarding.androidDesc}
                 </p>
               </div>
 
               <div className="py-4">
-                <p className="text-sm font-medium text-gray-900 mb-2">
+                <h3 className="text-title-3 text-gray-900 mb-2">
                   {t.onboarding.goals}
-                </p>
+                </h3>
                 <ul className="space-y-1">
                   {t.onboarding.goalsList.map((goal, idx) => (
-                    <li key={idx} className="text-base text-gray-500 leading-relaxed">
+                    <li key={idx} className="text-base text-gray-600 leading-relaxed">
                       <span className="text-gray-300 mr-2">&#8226;</span>{goal}
                     </li>
                   ))}
@@ -1064,7 +1055,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
           {/* iOS Onboarding Video */}
           <div className="max-w-[960px] mx-auto px-6 mb-16">
             <div
-              onClick={() => onImageClick('/images/pj-ios-app-onboarding-animation.mp4')}
+              {...zoomable(() => onImageClick('/images/pj-ios-app-onboarding-animation.mp4'))}
               className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
             >
               <VideoPlayer
@@ -1077,12 +1068,12 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
 
           {/* Android Onboarding Video */}
           <div className="max-w-[740px] mx-auto px-6 mb-4">
-            <p className="text-sm font-medium text-gray-900 mb-1">{t.onboarding.android}</p>
-            <p className="text-base text-gray-500 leading-relaxed">{t.onboarding.androidDesc}</p>
+            <h3 className="text-title-3 text-gray-900 mb-1">{t.onboarding.android}</h3>
+            <p className="text-base text-gray-600 leading-relaxed">{t.onboarding.androidDesc}</p>
           </div>
           <div className="max-w-[960px] mx-auto px-6">
             <div
-              onClick={() => onImageClick('/images/pj-and-app-onboarding-animation.mp4')}
+              {...zoomable(() => onImageClick('/images/pj-and-app-onboarding-animation.mp4'))}
               className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
             >
               <VideoPlayer
@@ -1101,22 +1092,26 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
       <FadeInSection>
         <section id="navigation" className="mb-24 md:mb-32">
           <div className="max-w-[740px] mx-auto px-6">
-            <h2 className="text-title-2 text-gray-900 mb-3">
+            <h2 className="text-title-2 text-gray-900 mb-2">
               {t.navigation.sectionTitle}
             </h2>
 
-            <p className="text-base text-gray-500 leading-relaxed mb-8">
+            <p className="text-base text-gray-600 leading-relaxed mb-3">
+              {t.navigation.question}
+            </p>
+
+            <p className="text-base text-gray-600 leading-relaxed mb-8">
               {t.navigation.intro}
             </p>
 
             <div className="divide-y divide-gray-100 mb-12">
               <div className="py-4">
-                <p className="text-sm font-medium text-gray-900 mb-2">
+                <h3 className="text-title-3 text-gray-900 mb-2">
                   {t.navigation.features}
-                </p>
+                </h3>
                 <ul className="space-y-1.5">
                   {t.navigation.featuresList.map((feature, idx) => (
-                    <li key={idx} className="text-base text-gray-500 leading-relaxed">
+                    <li key={idx} className="text-base text-gray-600 leading-relaxed">
                       <span className="text-gray-300 mr-2">&#8226;</span>{feature}
                     </li>
                   ))}
@@ -1124,10 +1119,10 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
               </div>
 
               <div className="py-4">
-                <p className="text-sm font-medium text-gray-900 mb-2">
+                <h3 className="text-title-3 text-gray-900 mb-2">
                   {t.navigation.tablet}
-                </p>
-                <p className="text-base text-gray-500 leading-relaxed">
+                </h3>
+                <p className="text-base text-gray-600 leading-relaxed">
                   {t.navigation.tabletDesc}
                 </p>
               </div>
@@ -1139,12 +1134,12 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
             {/* Transit System Components */}
             <figure className="mb-8">
               <div
-                onClick={() => onImageClick(GALLERY_IMAGES.maps.system)}
+                {...zoomable(() => onImageClick(GALLERY_IMAGES.maps.system))}
                 className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
               >
                 <img
                   loading="lazy"
-                  src={GALLERY_IMAGES.maps.system}
+                  src={GALLERY_IMAGES.maps.system} {...imgDims(GALLERY_IMAGES.maps.system)}
                   alt="PagesJaunes Transit System Components"
                   className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
                 />
@@ -1157,12 +1152,12 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
             {/* Multi-device Navigation */}
             <figure className="mb-8">
               <div
-                onClick={() => onImageClick(GALLERY_IMAGES.maps.multidevice)}
+                {...zoomable(() => onImageClick(GALLERY_IMAGES.maps.multidevice))}
                 className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
               >
                 <img
                   loading="lazy"
-                  src={GALLERY_IMAGES.maps.multidevice}
+                  src={GALLERY_IMAGES.maps.multidevice} {...imgDims(GALLERY_IMAGES.maps.multidevice)}
                   alt="PagesJaunes Multi-device Navigation"
                   className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
                 />
@@ -1175,12 +1170,12 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
             {/* iPhone Navigation Flows */}
             <figure className="mb-8">
               <div
-                onClick={() => onImageClick(GALLERY_IMAGES.maps.iphoneFlows)}
+                {...zoomable(() => onImageClick(GALLERY_IMAGES.maps.iphoneFlows))}
                 className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
               >
                 <img
                   loading="lazy"
-                  src={GALLERY_IMAGES.maps.iphoneFlows}
+                  src={GALLERY_IMAGES.maps.iphoneFlows} {...imgDims(GALLERY_IMAGES.maps.iphoneFlows)}
                   alt="PagesJaunes iPhone Navigation Flows"
                   className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
                 />
@@ -1193,12 +1188,12 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
             {/* iPad Itinerary */}
             <figure className="mb-8">
               <div
-                onClick={() => onImageClick(GALLERY_IMAGES.maps.ipadItinerary)}
+                {...zoomable(() => onImageClick(GALLERY_IMAGES.maps.ipadItinerary))}
                 className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
               >
                 <img
                   loading="lazy"
-                  src={GALLERY_IMAGES.maps.ipadItinerary}
+                  src={GALLERY_IMAGES.maps.ipadItinerary} {...imgDims(GALLERY_IMAGES.maps.ipadItinerary)}
                   alt="PagesJaunes iPad Itinerary"
                   className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
                 />
@@ -1217,11 +1212,15 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
       <FadeInSection>
         <section id="account" className="mb-24 md:mb-32">
           <div className="max-w-[740px] mx-auto px-6">
-            <h2 className="text-title-2 text-gray-900 mb-3">
+            <h2 className="text-title-2 text-gray-900 mb-2">
               {t.account.sectionTitle}
             </h2>
 
-            <p className="text-base text-gray-500 leading-relaxed mb-12">
+            <p className="text-base text-gray-600 leading-relaxed mb-3">
+              {t.account.question}
+            </p>
+
+            <p className="text-base text-gray-600 leading-relaxed mb-12">
               {t.account.intro}
             </p>
           </div>
@@ -1230,12 +1229,12 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
             {/* Account Flow */}
             <figure className="mb-8">
               <div
-                onClick={() => onImageClick(GALLERY_IMAGES.account.flow)}
+                {...zoomable(() => onImageClick(GALLERY_IMAGES.account.flow))}
                 className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
               >
                 <img
                   loading="lazy"
-                  src={GALLERY_IMAGES.account.flow}
+                  src={GALLERY_IMAGES.account.flow} {...imgDims(GALLERY_IMAGES.account.flow)}
                   alt="PagesJaunes Account Flow"
                   className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
                 />
@@ -1248,12 +1247,12 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
             {/* Engagement Features */}
             <figure className="mb-8">
               <div
-                onClick={() => onImageClick(GALLERY_IMAGES.account.engagement)}
+                {...zoomable(() => onImageClick(GALLERY_IMAGES.account.engagement))}
                 className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
               >
                 <img
                   loading="lazy"
-                  src={GALLERY_IMAGES.account.engagement}
+                  src={GALLERY_IMAGES.account.engagement} {...imgDims(GALLERY_IMAGES.account.engagement)}
                   alt="PagesJaunes Engagement Features"
                   className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
                 />
@@ -1266,12 +1265,12 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
             {/* Desktop Review Editing */}
             <figure className="mb-8">
               <div
-                onClick={() => onImageClick(GALLERY_IMAGES.contributions.desktopReview)}
+                {...zoomable(() => onImageClick(GALLERY_IMAGES.contributions.desktopReview))}
                 className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
               >
                 <img
                   loading="lazy"
-                  src={GALLERY_IMAGES.contributions.desktopReview}
+                  src={GALLERY_IMAGES.contributions.desktopReview} {...imgDims(GALLERY_IMAGES.contributions.desktopReview)}
                   alt="PagesJaunes Desktop Review Editing"
                   className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
                 />
@@ -1294,79 +1293,62 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
               {CAPTIONS[lang].microInteractions.sectionTitle}
             </h2>
 
-            <p className="text-base text-gray-500 leading-relaxed mb-12">
+            <p className="text-base text-gray-600 leading-relaxed mb-12">
               {CAPTIONS[lang].microInteractions.intro}
             </p>
           </div>
 
-          {/* Micro-interactions */}
+          {/* Micro-interactions: three phone-width columns side by side on md+, stacked on mobile */}
           <div className="max-w-[960px] mx-auto px-6">
-            {/* Navigation Drawer */}
-            <p className="text-base text-gray-500 leading-relaxed mb-4">{CAPTIONS[lang].microInteractions.navDrawer}</p>
-            <div className="mb-16">
-              <div
-                onClick={() => onImageClick(GALLERY_IMAGES.microInteractions.navDrawer)}
-                className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
-              >
-                <div
-                  className="aspect-[2/3] flex items-center justify-center"
-                  style={{ backgroundColor: '#C8C8C8' }}
-                >
-                  <img
-                    loading="lazy"
-                    src={GALLERY_IMAGES.microInteractions.navDrawer}
-                    alt="Material Design Navigation Drawer"
-                    className="w-full h-full object-contain"
-                  />
-                </div>
-              </div>
-              <p className="mt-3 text-xs font-medium text-gray-500">
-                {lang === 'en' ? 'Navigation Drawer' : 'Navigation Drawer'}
-              </p>
-            </div>
-
-            {/* Favorites Animation */}
-            <p className="text-base text-gray-500 leading-relaxed mb-4">{CAPTIONS[lang].microInteractions.favorites}</p>
-            <div className="mb-16">
-              <div
-                onClick={() => onImageClick(GALLERY_IMAGES.microInteractions.favorites)}
-                className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
-              >
-                <div
-                  className="aspect-[2/3] flex items-center justify-center"
-                  style={{ backgroundColor: '#C8C8C8' }}
-                >
-                  <VideoPlayer
-                    src={GALLERY_IMAGES.microInteractions.favorites}
-                    className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
-                  />
-                </div>
-              </div>
-              <p className="mt-3 text-xs font-medium text-gray-500">
-                {lang === 'en' ? 'Favorites animation' : 'Animation Favoris'}
-              </p>
-            </div>
-
-            {/* History Remarketing Animation */}
-            <p className="text-base text-gray-500 leading-relaxed mb-4">{CAPTIONS[lang].microInteractions.historyRemarketing}</p>
-            <div>
-              <div
-                onClick={() => onImageClick(GALLERY_IMAGES.microInteractions.historyRemarketing)}
-                className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
-              >
-                <div
-                  className="aspect-[2/3] flex items-center justify-center"
-                  style={{ backgroundColor: '#C8C8C8' }}
-                >
-                  <VideoPlayer
-                    src={GALLERY_IMAGES.microInteractions.historyRemarketing}
-                    className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
-                  />
-                </div>
-              </div>
-              <p className="mt-3 text-xs font-medium text-gray-500">
-                {lang === 'en' ? 'History & remarketing' : 'Historique & remarketing'}
-              </p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-6">
+              {[
+                {
+                  src: GALLERY_IMAGES.microInteractions.navDrawer,
+                  isVideo: false,
+                  alt: lang === 'en' ? 'Material Design navigation drawer' : 'Tiroir de navigation Material Design',
+                  label: lang === 'en' ? 'Navigation drawer' : 'Tiroir de navigation',
+                  desc: CAPTIONS[lang].microInteractions.navDrawer,
+                },
+                {
+                  src: GALLERY_IMAGES.microInteractions.favorites,
+                  isVideo: true,
+                  alt: '',
+                  label: lang === 'en' ? 'Favorites animation' : 'Animation des favoris',
+                  desc: CAPTIONS[lang].microInteractions.favorites,
+                },
+                {
+                  src: GALLERY_IMAGES.microInteractions.historyRemarketing,
+                  isVideo: true,
+                  alt: '',
+                  label: lang === 'en' ? 'History and remarketing' : 'Historique et remarketing',
+                  desc: CAPTIONS[lang].microInteractions.historyRemarketing,
+                },
+              ].map((item) => (
+                <figure key={item.src} className="flex flex-col">
+                  <div
+                    {...zoomable(() => onImageClick(item.src))}
+                    className="group w-full max-w-[320px] mx-auto rounded-2xl overflow-hidden bg-gray-100 border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
+                  >
+                    {item.isVideo ? (
+                      <VideoPlayer
+                        src={item.src}
+                        className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
+                      />
+                    ) : (
+                      <img
+                        loading="lazy"
+                        src={item.src} {...imgDims(item.src)}
+                        alt={item.alt}
+                        className="w-full h-auto block transition-transform duration-300 ease-out group-hover:scale-[1.02]"
+                      />
+                    )}
+                  </div>
+                  <figcaption className="mt-3 max-w-[320px] w-full mx-auto">
+                    <span className="block text-xs font-medium text-gray-500 mb-1">{item.label}</span>
+                    <span className="block text-sm text-gray-600 leading-relaxed">{item.desc}</span>
+                  </figcaption>
+                </figure>
+              ))}
             </div>
           </div>
         </section>
@@ -1382,7 +1364,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
               {t.wear.sectionTitle}
             </h2>
 
-            <p className="text-base text-gray-500 leading-relaxed mb-12">
+            <p className="text-base text-gray-600 leading-relaxed mb-12">
               {t.wear.intro}
             </p>
           </div>
@@ -1390,49 +1372,49 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
           {/* Key visuals */}
           <div className="max-w-[960px] mx-auto px-6">
             {/* Watch face thumbnail */}
-            <p className="text-base text-gray-500 leading-relaxed mb-4">{CAPTIONS[lang].wear.thumbnail}</p>
+            <p className="text-base text-gray-600 leading-relaxed mb-4">{CAPTIONS[lang].wear.thumbnail}</p>
             <div className="mb-16">
               <div
-                onClick={() => onImageClick(GALLERY_IMAGES.wear.thumbnail)}
+                {...zoomable(() => onImageClick(GALLERY_IMAGES.wear.thumbnail))}
                 className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01] aspect-square"
               >
                 <img
                   loading="lazy"
-                  src={GALLERY_IMAGES.wear.thumbnail}
+                  src={GALLERY_IMAGES.wear.thumbnail} {...imgDims(GALLERY_IMAGES.wear.thumbnail)}
                   alt="PagesJaunes Android Wear"
                   className="w-full h-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.02]"
                 />
               </div>
               <p className="mt-3 text-xs font-medium text-gray-500">
-                {lang === 'en' ? 'PagesJaunes Android Wear' : 'PagesJaunes Android Wear'}
+                PagesJaunes Android Wear
               </p>
             </div>
 
             {/* Y Aller navigation button */}
-            <p className="text-base text-gray-500 leading-relaxed mb-4">{CAPTIONS[lang].wear.yAllerBtn}</p>
+            <p className="text-base text-gray-600 leading-relaxed mb-4">{CAPTIONS[lang].wear.yAllerBtn}</p>
             <div className="mb-8">
               <div
-                onClick={() => onImageClick(GALLERY_IMAGES.wear.yAllerBtn)}
+                {...zoomable(() => onImageClick(GALLERY_IMAGES.wear.yAllerBtn))}
                 className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01] aspect-square"
               >
                 <img
                   loading="lazy"
-                  src={GALLERY_IMAGES.wear.yAllerBtn}
+                  src={GALLERY_IMAGES.wear.yAllerBtn} {...imgDims(GALLERY_IMAGES.wear.yAllerBtn)}
                   alt="Y Aller navigation button"
                   className="w-full h-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.02]"
                 />
               </div>
               <p className="mt-3 text-xs font-medium text-gray-500">
-                {lang === 'en' ? '"Y Aller" — navigation action' : '"Y Aller" — action de navigation'}
+                {lang === 'en' ? 'The "Y Aller" navigation action' : 'L\u2019action de navigation «\u202fY aller\u202f»'}
               </p>
             </div>
           </div>
 
-          {/* CTA to dedicated Android Wear case study */}
+          {/* Link to the dedicated Android Wear case study */}
           <div className="max-w-[740px] mx-auto px-6">
-            <div
-              onClick={() => onNavigateToProject?.('androidwear')}
-              className="group rounded-xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-pointer transition-[border-color,transform] duration-200 ease-out hover:scale-[1.005]"
+            <Link
+              href={`/${lang}/project/androidwear`}
+              className="group block rounded-xl overflow-hidden border border-gray-100 hover:border-gray-200 transition-[border-color,transform] duration-200 ease-out hover:scale-[1.005]"
             >
               <div className="p-5">
                 <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
@@ -1440,35 +1422,32 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
                     <div className="w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0 rounded-xl overflow-hidden">
                       <img
                         loading="lazy"
-                        src={GALLERY_IMAGES.wear.insituStore}
-                        alt="PagesJaunes Android Wear"
+                        src={GALLERY_IMAGES.wear.insituStore} {...imgDims(GALLERY_IMAGES.wear.insituStore)}
+                        alt=""
                         className="w-full h-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.02]"
                       />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-xs font-medium uppercase tracking-wide mb-1 text-gray-500">
-                        {lang === 'en' ? 'Case Study' : 'Case Study'}
-                      </p>
-                      <h3 className="text-sm font-semibold mb-1 text-gray-900">
+                      <h3 className="text-title-3 text-gray-900 mb-1">
                         {lang === 'en'
                           ? 'PagesJaunes on your wrist'
-                          : 'PagesJaunes au poignet'}
+                          : 'PagesJaunes à votre poignet'}
                       </h3>
                       <p className="text-sm line-clamp-2 sm:line-clamp-none text-gray-600">
                         {lang === 'en'
                           ? 'When users need a plumber now, can a watch be faster than pulling out a phone?'
-                          : 'Quand l\'utilisateur a besoin d\'un plombier maintenant, une montre peut-elle être plus rapide qu\'un téléphone ?'}
+                          : 'Quand l\u2019utilisateur a besoin d\u2019un plombier maintenant, une montre peut-elle être plus rapide qu\u2019un téléphone\u00a0?'}
                       </p>
                     </div>
                   </div>
                   <div className="flex-shrink-0 sm:self-center">
                     <span className="text-sm text-gray-500 group-hover:text-gray-900 transition-colors duration-150 whitespace-nowrap">
-                      {lang === 'en' ? 'Read more' : 'Lire la suite'}
+                      {lang === 'en' ? 'Read the case study' : 'Lire l\u2019étude de cas'}
                     </span>
                   </div>
                 </div>
               </div>
-            </div>
+            </Link>
           </div>
         </section>
       </FadeInSection>
@@ -1483,31 +1462,31 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
               {t.system.sectionTitle}
             </h2>
 
-            <p className="text-base text-gray-500 leading-relaxed mb-8">
+            <p className="text-base text-gray-600 leading-relaxed mb-8">
               {t.system.intro}
             </p>
 
             <div className="divide-y divide-gray-100 mb-6">
               <div className="py-4">
-                <p className="text-sm font-medium text-gray-900 mb-2">
+                <h3 className="text-title-3 text-gray-900 mb-2">
                   {t.system.audit}
-                </p>
-                <p className="text-base text-gray-500 leading-relaxed">
+                </h3>
+                <p className="text-base text-gray-600 leading-relaxed">
                   {t.system.auditDesc}
                 </p>
               </div>
 
               <div className="py-4">
-                <p className="text-sm font-medium text-gray-900 mb-2">
+                <h3 className="text-title-3 text-gray-900 mb-2">
                   {t.system.roadmap}
-                </p>
-                <p className="text-base text-gray-500 leading-relaxed">
+                </h3>
+                <p className="text-base text-gray-600 leading-relaxed">
                   {t.system.roadmapDesc}
                 </p>
               </div>
             </div>
 
-            <p className="text-sm italic text-gray-500">
+            <p className="text-sm italic text-gray-600">
               {t.system.note}
             </p>
           </div>
@@ -1524,19 +1503,19 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
               {t.team.sectionTitle}
             </h2>
 
-            <p className="text-base text-gray-500 leading-relaxed mb-8">
+            <p className="text-base text-gray-600 leading-relaxed mb-8">
               {t.team.intro}
             </p>
 
             {/* Phase 1: 2014-2015 - UX Core Team */}
             <div className="pt-6 pb-8 border-t border-gray-100 mb-2">
               <div className="flex flex-wrap items-baseline gap-3 mb-4">
-                <span className="text-xs tabular-nums text-gray-500">2014–2015</span>
+                <span className="text-xs tabular-nums text-gray-500">2014-2015</span>
                 <h3 className="text-sm font-medium text-gray-900">
                   {lang === 'en' ? 'UX Core Team' : 'Équipe UX centrale'}
                 </h3>
                 <span className="ml-auto text-xs text-gray-500">
-                  {lang === 'en' ? 'Product Designer' : 'Product Designer'}
+                  Product Designer
                 </span>
               </div>
               <p className={`text-sm mb-4 text-gray-600`}>
@@ -1581,12 +1560,12 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
             {/* Phase 2: 2015-2016 - Feature Team */}
             <div className="pt-6 pb-8 border-t border-gray-100 mb-2">
               <div className="flex flex-wrap items-baseline gap-3 mb-4">
-                <span className="text-xs tabular-nums text-gray-500">2015–2016</span>
+                <span className="text-xs tabular-nums text-gray-500">2015-2016</span>
                 <h3 className="text-sm font-medium text-gray-900">
-                  {lang === 'en' ? 'Feature Team' : 'Feature Team'}
+                  {lang === 'en' ? 'Feature team' : 'Équipe dédiée'}
                 </h3>
                 <span className="ml-auto text-xs text-gray-500">
-                  {lang === 'en' ? 'Product Designer → UI Team Lead' : 'Product Designer → UI Team Lead'}
+                  Product Designer → UI Team Lead
                 </span>
               </div>
               <p className={`text-sm mb-4 text-gray-600`}>
@@ -1626,7 +1605,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
               </div>
             </div>
 
-            <p className="text-sm italic text-gray-500">
+            <p className="text-sm italic text-gray-600">
               {t.team.rituals}
             </p>
           </div>
@@ -1670,13 +1649,13 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
               {t.learnings.sectionTitle}
             </h2>
 
-            <ReadMoreList className="divide-y divide-gray-100" initialCount={2}>
+            <ReadMoreList className="divide-y divide-gray-100" initialCount={2} {...readMoreLabels}>
               {t.learnings.items.map((item, idx) => (
                 <div key={idx} className="py-4">
-                  <p className="text-sm font-medium text-gray-900 mb-2">
+                  <h3 className="text-title-3 text-gray-900 mb-2">
                     {item.title}
-                  </p>
-                  <p className="text-base text-gray-500 leading-relaxed">
+                  </h3>
+                  <p className="text-base text-gray-600 leading-relaxed">
                     {item.description}
                   </p>
                 </div>
@@ -1686,21 +1665,6 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
         </section>
       </FadeInSection>
 
-      {/* ================================================================ */}
-      {/* CTA SECTION */}
-      {/* ================================================================ */}
-      <FadeInSection>
-        <div className="max-w-[740px] mx-auto px-6 py-16">
-          <p className="text-sm text-gray-500 mb-4">{t.cta.title}</p>
-          <button
-            onClick={onContact}
-            className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors duration-150"
-          >
-            {t.cta.button}
-            <ArrowRight size={14} />
-          </button>
-        </div>
-      </FadeInSection>
 
     </div>
   );

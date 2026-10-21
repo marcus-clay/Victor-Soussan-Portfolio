@@ -2,6 +2,7 @@
 // A trunk case study that synthesizes the SQOOL journey (2018-2024)
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { imgDims } from '@/utils/imageDimensions'
 import { useStableComponent } from '../../hooks/useStableComponent';
 import { useSnapScroller } from '@/hooks/useSnapScroller';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -14,10 +15,10 @@ import VideoPlayer from '@/components/VideoPlayer';
 
 import { GalleryItem, getSqoolGalleryItems } from '../../components/BentoGallery';
 import { SqoolTimeline } from './SqoolTimeline';
-import SqoolExecutive from '../../components/case-studies/SqoolExecutive';
 import EnhancedLightbox from '../../components/media/EnhancedLightbox';
 
 import { SQOOL_TRANSLATIONS } from '../../data/caseStudyTranslations/sqoolTranslations';
+import { zoomable } from '@/utils/zoomable'
 
 
 interface SqoolPageProps {
@@ -32,6 +33,7 @@ interface SqoolPageProps {
 
 // Media items for lightbox
 type MediaItem = { src: string; captionKey: string; type: 'image' | 'video' };
+type LightboxItem = { src: string; caption: string; type: 'image' | 'video' };
 const allImagesData: MediaItem[] = [
   { src: '/images/sqool/hero_ecosystem_sqool.webp', captionKey: 'hero', type: 'image' },
   { src: '/images/sqool/image-unowhy-region-iledefrance-distribution-rentree.webp', captionKey: 'distribution', type: 'image' },
@@ -89,7 +91,7 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick }) => {
         {isVideo ? (
           <VideoPlayer src={item.src} className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" />
         ) : (
-          <img loading="lazy" src={item.src} alt={item.caption} className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" />
+          <img loading="lazy" src={item.src} {...imgDims(item.src)} alt={item.caption} className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" />
         )}
       </div>
       <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
@@ -111,42 +113,61 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
   const t = SQOOL_TRANSLATIONS[lang];
   const galleryItems = getSqoolGalleryItems(lang);
 
-  const allImages = allImagesData.map(item => ({
+  const captionWithDesc = (caption: string, desc?: string) => (desc ? `${caption} · ${desc}` : caption);
+
+  // Story view: every media of the case study, deduplicated by src (several slides reuse the brand visuals)
+  const storyImages: LightboxItem[] = [];
+  allImagesData.forEach(item => {
+    if (storyImages.some(img => img.src === item.src)) return;
+    storyImages.push({
+      src: item.src,
+      type: item.type,
+      caption: captionWithDesc(
+        t.captions[item.captionKey as keyof typeof t.captions] || '',
+        t.captions[`${item.captionKey}Desc` as keyof typeof t.captions]
+      ),
+    });
+  });
+
+  // Gallery view: the lightbox follows the gallery cards
+  const galleryLightboxImages: LightboxItem[] = galleryItems.map(item => ({
     src: item.src,
     type: item.type,
-    caption: `${t.captions[item.captionKey as keyof typeof t.captions]} - ${t.captions[`${item.captionKey}Desc` as keyof typeof t.captions] || ''}`
+    caption: captionWithDesc(item.caption, item.captionDesc),
   }));
 
-  const initialCaseStudyMode = viewMode === 'executive' ? 'executive' : (viewMode === 'caseStudy' ? 'full' : 'executive');
-  const [caseStudyMode, setCaseStudyMode] = useState<'executive' | 'full'>(initialCaseStudyMode);
+  const allImages = viewMode === 'gallery' ? galleryLightboxImages : storyImages;
+
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [videoStartTime, setVideoStartTime] = useState(0);
+  // Single-item list used when a clicked media is not part of the current list
+  const [fallbackItem, setFallbackItem] = useState<LightboxItem | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const brandCarouselRef = useRef<HTMLDivElement>(null);
-  void useRef<{ [key: string]: HTMLVideoElement | null }>({});
   const [canScrollBrandLeft, setCanScrollBrandLeft] = useState(false);
   const [canScrollBrandRight, setCanScrollBrandRight] = useState(true);
 
   useEffect(() => {
-    if (viewMode === 'executive') {
-      setCaseStudyMode('executive');
-    } else if (viewMode === 'caseStudy') {
-      setCaseStudyMode('full');
-    }
-  }, [viewMode]);
-
-  useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
-  }, [caseStudyMode, viewMode]);
+  }, [viewMode]);
 
   const openLightbox = (imageSrc: string, startTime: number = 0) => {
     const index = allImages.findIndex(img => img.src === imageSrc);
     if (index !== -1) {
+      setFallbackItem(null);
       setLightboxIndex(index);
-      setVideoStartTime(startTime);
-      setLightboxOpen(true);
+    } else {
+      // Never a silent no-op: open the clicked media on its own
+      setFallbackItem({
+        src: imageSrc,
+        type: /\.(mp4|webm|mov)$/i.test(imageSrc) ? 'video' : 'image',
+        caption: '',
+      });
+      setLightboxIndex(0);
     }
+    setVideoStartTime(startTime);
+    setLightboxOpen(true);
   };
 
   const closeLightbox = () => {
@@ -200,12 +221,12 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
   ];
 
   // Reusable media figure
-  const MediaFigure = useStableComponent(({ src, alt, caption, captionDesc, type = 'image', className = '' }: {
-    src: string; alt: string; caption: string; captionDesc?: string; type?: 'image' | 'video'; className?: string;
+  const MediaFigure = useStableComponent(({ src, alt, caption, captionDesc, type = 'image', className = '', priority = false }: {
+    src: string; alt: string; caption: string; captionDesc?: string; type?: 'image' | 'video'; className?: string; priority?: boolean;
   }) => (
     <figure className={className}>
       <div
-        onClick={() => openLightbox(src)}
+        {...zoomable(() => openLightbox(src))}
         className="group rounded-xl overflow-hidden cursor-zoom-in ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
       >
         {type === 'video' ? (
@@ -214,7 +235,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
             className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
           />
         ) : (
-          <img loading="lazy" src={src} alt={alt}
+          <img loading={priority ? 'eager' : 'lazy'} fetchPriority={priority ? 'high' : undefined} src={src} {...imgDims(src)} alt={alt}
             className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
           />
         )}
@@ -232,11 +253,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
       <EnhancedLightbox
         isOpen={lightboxOpen}
         onClose={closeLightbox}
-        images={allImages.map(img => ({
-          src: img.src,
-          caption: img.caption,
-          type: img.type
-        }))}
+        images={fallbackItem ? [fallbackItem] : allImages}
         currentIndex={lightboxIndex}
         onIndexChange={setLightboxIndex}
         lang={lang}
@@ -268,72 +285,47 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
               ))}
             </div>
           </motion.div>
-        ) : caseStudyMode === 'executive' ? (
-          /* Executive View */
-          <motion.div
-            key="executive"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.15 }}
-          >
-            <SqoolExecutive
-              systemTheme={systemTheme}
-              lang={lang}
-              onImageClick={openLightbox}
-              onViewFull={() => setCaseStudyMode('full')}
-              onContact={onContact}
-            />
-          </motion.div>
         ) : (
           /* Full Case Study View */
-          <motion.div
-            key="caseStudy"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.15 }}
-          >
+          <div key="caseStudy">
             {/* Hero Section */}
             <section id="hero" className="mb-24 md:mb-32">
               <div className="max-w-[740px] mx-auto px-6 pt-16 md:pt-24">
                 {/* Logo */}
                 <div className="mb-8">
-                  <img loading="lazy"
-                    src="/images/sqool/logo-sqool.svg"
+                  <img
+                    src="/images/sqool/logo-sqool.svg" {...imgDims("/images/sqool/logo-sqool.svg")}
                     alt="SQOOL"
                     className="h-5 w-auto"
                   />
                 </div>
-
-                {/* Meta */}
-                <p className="text-xs text-gray-500 mb-4">
-                  {t.hero.role} · {t.hero.scope} · {t.hero.period}
-                </p>
 
                 {/* Title */}
                 <h1 className="text-title-1 text-gray-900 mb-3">
                   {t.hero.title}
                 </h1>
 
-                {/* Subtitle */}
-                <p className="text-sm font-medium text-gray-900 mb-4">
+                {/* Subtitle and role line */}
+                <p className="text-lg text-gray-600 mb-2">
                   {t.hero.subtitle}
+                </p>
+                <p className="text-sm text-gray-500 mb-6">
+                  {t.hero.role} · {t.hero.scope} · {t.hero.period}
                 </p>
 
                 {/* Description */}
-                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-8">
+                <p className="text-base text-gray-600 leading-relaxed max-w-[65ch] mb-8">
                   {t.hero.description}
                 </p>
 
                 {/* Testimonial */}
                 <div className="py-6 border-t border-gray-100">
-                  <p className="text-base text-gray-500 leading-relaxed italic max-w-[65ch] mb-3">
+                  <p className="text-base text-gray-600 leading-relaxed italic max-w-[65ch] mb-3">
                     {t.testimonial.quote}
                   </p>
                   <div className="flex items-center gap-3">
                     <img loading="lazy"
-                      src="/images/people/charlotte-rifflet.webp"
+                      src="/images/people/charlotte-rifflet.webp" {...imgDims("/images/people/charlotte-rifflet.webp")}
                       alt={t.testimonial.author}
                       className="w-8 h-8 rounded-full object-cover"
                     />
@@ -351,19 +343,19 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
               <div className="max-w-[740px] mx-auto px-6">
                 <div className="divide-y divide-gray-100">
                   <div className="flex justify-between py-3">
-                    <span className="text-xs text-gray-500">Type</span>
+                    <span className="text-xs text-gray-500">{t.metaLabels.type}</span>
                     <span className="text-sm text-gray-900">{t.meta.type}</span>
                   </div>
                   <div className="flex justify-between py-3">
-                    <span className="text-xs text-gray-500">Scope</span>
+                    <span className="text-xs text-gray-500">{t.metaLabels.scope}</span>
                     <span className="text-sm text-gray-900">{t.meta.scope}</span>
                   </div>
                   <div className="flex justify-between py-3">
-                    <span className="text-xs text-gray-500">Period</span>
+                    <span className="text-xs text-gray-500">{t.metaLabels.period}</span>
                     <span className="text-sm text-gray-900">{t.meta.period}</span>
                   </div>
                   <div className="flex justify-between py-3">
-                    <span className="text-xs text-gray-500">Company</span>
+                    <span className="text-xs text-gray-500">{t.metaLabels.company}</span>
                     <span className="text-sm text-gray-900">{t.meta.company}</span>
                   </div>
                 </div>
@@ -376,6 +368,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
                 src="/images/sqool/hero_ecosystem_sqool.webp"
                 alt={t.captions.hero}
                 caption={t.captions.hero}
+                priority
               />
             </div>
 
@@ -385,10 +378,10 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
                 <h2 className="text-title-2 text-gray-900 mb-4">
                   {t.context.title}
                 </h2>
-                <p className="text-sm font-medium text-gray-900 mb-4">
+                <h3 className="text-title-3 text-gray-900 mb-4">
                   {t.context.subtitle}
-                </p>
-                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-8">
+                </h3>
+                <p className="text-base text-gray-600 leading-relaxed max-w-[65ch] mb-8">
                   {t.context.p1}
                 </p>
               </div>
@@ -415,7 +408,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
               </div>
 
               <div className="max-w-[740px] mx-auto px-6">
-                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-8">
+                <p className="text-base text-gray-600 leading-relaxed max-w-[65ch] mb-8">
                   {t.context.p2}
                 </p>
               </div>
@@ -447,19 +440,19 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
               {/* Challenge */}
               <div className="max-w-[740px] mx-auto px-6">
                 <div className="py-6 border-t border-gray-100">
-                  <p className="text-sm font-medium text-gray-900 mb-2">
+                  <h3 className="text-title-3 text-gray-900 mb-2">
                     {t.context.challenge}
-                  </p>
-                  <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">
+                  </h3>
+                  <p className="text-base text-gray-600 leading-relaxed max-w-[65ch]">
                     {t.context.challengeDesc}
                   </p>
                 </div>
 
                 <div className="mt-6">
-                  <p className="text-sm font-medium text-gray-900 mb-2">
+                  <h3 className="text-title-3 text-gray-900 mb-2">
                     {t.context.myRole}
-                  </p>
-                  <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">
+                  </h3>
+                  <p className="text-base text-gray-600 leading-relaxed max-w-[65ch]">
                     {t.context.roleDesc}
                   </p>
                 </div>
@@ -470,18 +463,14 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
             <section className="mb-24 md:mb-32">
               <div className="max-w-[740px] mx-auto px-6 mb-8">
                 <h2 className="text-title-2 text-gray-900 mb-4">
-                  {lang === 'fr' ? 'Parcours de transformation' : 'Transformation Journey'}
+                  {t.timelineSection.title}
                 </h2>
-                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">
-                  {lang === 'fr' ? '6 ans d\'evolution produit et design' : '6 years of product and design evolution'}
+                <p className="text-base text-gray-600 leading-relaxed max-w-[65ch]">
+                  {t.timelineSection.subtitle}
                 </p>
               </div>
               <div className="max-w-[960px] mx-auto px-6">
-                <SqoolTimeline
-                  lang={lang}
-                  isDark={false}
-                  onImageClick={openLightbox}
-                />
+                <SqoolTimeline lang={lang} />
               </div>
             </section>
 
@@ -493,18 +482,18 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
                 </h2>
                 <p className="text-xs text-gray-500 mb-6">{t.phase1.period}</p>
 
-                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-10">
+                <p className="text-base text-gray-600 leading-relaxed max-w-[65ch] mb-10">
                   {t.phase1.intro}
                 </p>
 
                 {/* Hi-SQOOL */}
-                <p className="text-sm font-medium text-gray-900 mb-2">
+                <h3 className="text-title-3 text-gray-900 mb-2">
                   {t.phase1.hisqool.title}
-                </p>
-                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-2">
+                </h3>
+                <p className="text-base text-gray-600 leading-relaxed max-w-[65ch] mb-2">
                   {t.phase1.hisqool.p1}
                 </p>
-                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-6">
+                <p className="text-base text-gray-600 leading-relaxed max-w-[65ch] mb-6">
                   {t.phase1.hisqool.p2}
                 </p>
               </div>
@@ -519,21 +508,21 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
               </div>
 
               <div className="max-w-[740px] mx-auto px-6">
-                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-10">
+                <p className="text-base text-gray-600 leading-relaxed max-w-[65ch] mb-10">
                   {t.phase1.hisqool.outcome}
                 </p>
 
                 {/* Connect */}
-                <p className="text-sm font-medium text-gray-900 mb-2">
+                <h3 className="text-title-3 text-gray-900 mb-2">
                   {t.phase1.connect.title}
-                </p>
-                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-2">
+                </h3>
+                <p className="text-base text-gray-600 leading-relaxed max-w-[65ch] mb-2">
                   {t.phase1.connect.p1}
                 </p>
-                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-2">
+                <p className="text-base text-gray-600 leading-relaxed max-w-[65ch] mb-2">
                   {t.phase1.connect.p2}
                 </p>
-                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-6">
+                <p className="text-base text-gray-600 leading-relaxed max-w-[65ch] mb-6">
                   {t.phase1.connect.p3}
                 </p>
               </div>
@@ -558,7 +547,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
               </div>
 
               <div className="max-w-[740px] mx-auto px-6">
-                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">
+                <p className="text-base text-gray-600 leading-relaxed max-w-[65ch]">
                   {t.phase1.connect.outcome}
                 </p>
               </div>
@@ -572,29 +561,29 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
                 </h2>
                 <p className="text-xs text-gray-500 mb-6">{t.phase2.period}</p>
 
-                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-10">
+                <p className="text-base text-gray-600 leading-relaxed max-w-[65ch] mb-10">
                   {t.phase2.intro}
                 </p>
 
                 {/* Manifesto */}
-                <p className="text-sm font-medium text-gray-900 mb-2">
+                <h3 className="text-title-3 text-gray-900 mb-2">
                   {t.phase2.manifesto.title}
-                </p>
-                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-2">
+                </h3>
+                <p className="text-base text-gray-600 leading-relaxed max-w-[65ch] mb-2">
                   {t.phase2.manifesto.p1}
                 </p>
-                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-10">
+                <p className="text-base text-gray-600 leading-relaxed max-w-[65ch] mb-10">
                   {t.phase2.manifesto.p2}
                 </p>
 
                 {/* Brand */}
-                <p className="text-sm font-medium text-gray-900 mb-2">
+                <h3 className="text-title-3 text-gray-900 mb-2">
                   {t.phase2.brand.title}
-                </p>
-                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-2">
+                </h3>
+                <p className="text-base text-gray-600 leading-relaxed max-w-[65ch] mb-2">
                   {t.phase2.brand.p1}
                 </p>
-                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-6">
+                <p className="text-base text-gray-600 leading-relaxed max-w-[65ch] mb-6">
                   {t.phase2.brand.p2}
                 </p>
               </div>
@@ -603,8 +592,8 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
               <div className="max-w-[960px] mx-auto px-6 mb-6">
                 <MediaFigure
                   src="/images/sqool/thumbnail_suite_sqool_blue.webp"
-                  alt="Suite SQOOL"
-                  caption="Suite SQOOL"
+                  alt={t.captions.suiteSqool}
+                  caption={t.captions.suiteSqool}
                 />
               </div>
 
@@ -618,6 +607,8 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
                   {/* Navigation arrows */}
                   <button
                     onClick={() => scrollBrandCarousel('left')}
+                    aria-label={lang === 'fr' ? 'Visuels précédents' : 'Previous visuals'}
+                    disabled={!canScrollBrandLeft}
                     className={`absolute left-2 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full flex items-center justify-center transition-opacity duration-200 ${
                       canScrollBrandLeft
                         ? 'bg-gray-900/80 text-white cursor-pointer opacity-100'
@@ -628,6 +619,8 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
                   </button>
                   <button
                     onClick={() => scrollBrandCarousel('right')}
+                    aria-label={lang === 'fr' ? 'Visuels suivants' : 'Next visuals'}
+                    disabled={!canScrollBrandRight}
                     className={`absolute right-2 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full flex items-center justify-center transition-opacity duration-200 ${
                       canScrollBrandRight
                         ? 'bg-gray-900/80 text-white cursor-pointer opacity-100'
@@ -646,6 +639,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
                     tabIndex={0}
                     role="group"
                     aria-roledescription="carousel"
+                    aria-label={lang === 'fr' ? 'Système de marque SQOOL' : 'SQOOL brand system'}
                     className="snap-scroller snap-rubber flex gap-3 overflow-x-auto scrollbar-hide px-4 py-1 scroll-pl-4 cursor-grab"
                     style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', scrollSnapType: 'x proximity' }}
                   >
@@ -657,10 +651,10 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
                           width: item.wide ? '400px' : '280px',
                           height: '220px'
                         }}
-                        onClick={() => openLightbox(item.src)}
+                        {...zoomable(() => openLightbox(item.src))}
                       >
                         <img loading="lazy"
-                          src={item.src}
+                          src={item.src} {...imgDims(item.src)}
                           alt={t.captions[item.key as keyof typeof t.captions]}
                           className="w-full h-full object-cover transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
                         />
@@ -672,13 +666,13 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
 
               {/* Design System */}
               <div className="max-w-[740px] mx-auto px-6">
-                <p className="text-sm font-medium text-gray-900 mb-2">
+                <h3 className="text-title-3 text-gray-900 mb-2">
                   {t.phase2.ds.title}
-                </p>
-                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-2">
+                </h3>
+                <p className="text-base text-gray-600 leading-relaxed max-w-[65ch] mb-2">
                   {t.phase2.ds.p1}
                 </p>
-                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-6">
+                <p className="text-base text-gray-600 leading-relaxed max-w-[65ch] mb-6">
                   {t.phase2.ds.p2}
                 </p>
               </div>
@@ -701,21 +695,21 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
                 </h2>
                 <p className="text-xs text-gray-500 mb-6">{t.phase3.period}</p>
 
-                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-10">
+                <p className="text-base text-gray-600 leading-relaxed max-w-[65ch] mb-10">
                   {t.phase3.intro}
                 </p>
               </div>
 
               {/* SQOOL Classe */}
               <div className="max-w-[740px] mx-auto px-6 mb-10">
-                <p className="text-sm font-medium text-gray-900 mb-1">
+                <h3 className="text-title-3 text-gray-900 mb-1">
                   {t.apps.classe.title}
-                </p>
+                </h3>
                 <p className="text-xs text-gray-500 mb-3">{t.apps.classe.subtitle}</p>
-                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-3">
+                <p className="text-base text-gray-600 leading-relaxed max-w-[65ch] mb-3">
                   {t.apps.classe.desc}
                 </p>
-                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-4">
+                <p className="text-base text-gray-600 leading-relaxed max-w-[65ch] mb-4">
                   {t.apps.classe.research}
                 </p>
               </div>
@@ -729,14 +723,14 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
 
               {/* SQOOL Partage */}
               <div className="max-w-[740px] mx-auto px-6 mb-10">
-                <p className="text-sm font-medium text-gray-900 mb-1">
+                <h3 className="text-title-3 text-gray-900 mb-1">
                   {t.apps.partage.title}
-                </p>
+                </h3>
                 <p className="text-xs text-gray-500 mb-3">{t.apps.partage.subtitle}</p>
-                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-3">
+                <p className="text-base text-gray-600 leading-relaxed max-w-[65ch] mb-3">
                   {t.apps.partage.desc}
                 </p>
-                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-4">
+                <p className="text-base text-gray-600 leading-relaxed max-w-[65ch] mb-4">
                   {t.apps.partage.research}
                 </p>
               </div>
@@ -753,44 +747,44 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
                 <div className="divide-y divide-gray-100">
                   {/* Applications */}
                   <div className="py-6">
-                    <p className="text-sm font-medium text-gray-900 mb-1">
+                    <h3 className="text-title-3 text-gray-900 mb-1">
                       {t.apps.applications.title}
-                    </p>
+                    </h3>
                     <p className="text-xs text-gray-500 mb-2">{t.apps.applications.subtitle}</p>
-                    <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">
+                    <p className="text-base text-gray-600 leading-relaxed max-w-[65ch]">
                       {t.apps.applications.desc}
                     </p>
                   </div>
 
                   {/* MDM */}
                   <div className="py-6">
-                    <p className="text-sm font-medium text-gray-900 mb-1">
+                    <h3 className="text-title-3 text-gray-900 mb-1">
                       {t.apps.mdm.title}
-                    </p>
+                    </h3>
                     <p className="text-xs text-gray-500 mb-2">{t.apps.mdm.subtitle}</p>
-                    <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">
+                    <p className="text-base text-gray-600 leading-relaxed max-w-[65ch]">
                       {t.apps.mdm.desc}
                     </p>
                   </div>
 
                   {/* Protect */}
                   <div className="py-6">
-                    <p className="text-sm font-medium text-gray-900 mb-1">
+                    <h3 className="text-title-3 text-gray-900 mb-1">
                       {t.apps.protect.title}
-                    </p>
+                    </h3>
                     <p className="text-xs text-gray-500 mb-2">{t.apps.protect.subtitle}</p>
-                    <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">
+                    <p className="text-base text-gray-600 leading-relaxed max-w-[65ch]">
                       {t.apps.protect.desc}
                     </p>
                   </div>
 
                   {/* Extend */}
                   <div className="py-6">
-                    <p className="text-sm font-medium text-gray-900 mb-1">
+                    <h3 className="text-title-3 text-gray-900 mb-1">
                       {t.apps.extend.title}
-                    </p>
+                    </h3>
                     <p className="text-xs text-gray-500 mb-2">{t.apps.extend.subtitle}</p>
-                    <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">
+                    <p className="text-base text-gray-600 leading-relaxed max-w-[65ch]">
                       {t.apps.extend.desc}
                     </p>
                   </div>
@@ -804,17 +798,17 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
                 <h2 className="text-title-2 text-gray-900 mb-4">
                   {t.research.title}
                 </h2>
-                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-8">
+                <p className="text-base text-gray-600 leading-relaxed max-w-[65ch] mb-8">
                   {t.research.subtitle}
                 </p>
 
                 <div className="divide-y divide-gray-100">
                   {t.research.insights.map((insight, index) => (
                     <div key={index} className="py-5">
-                      <p className="text-sm font-medium text-gray-900 mb-2">
+                      <h3 className="text-title-3 text-gray-900 mb-2">
                         {insight.title}
-                      </p>
-                      <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">
+                      </h3>
+                      <p className="text-base text-gray-600 leading-relaxed max-w-[65ch]">
                         {insight.desc}
                       </p>
                     </div>
@@ -829,7 +823,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
                 <h2 className="text-title-2 text-gray-900 mb-4">
                   {t.impact.title}
                 </h2>
-                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-10">
+                <p className="text-base text-gray-600 leading-relaxed max-w-[65ch] mb-10">
                   {t.impact.intro}
                 </p>
 
@@ -864,11 +858,11 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
 
                 <div className="divide-y divide-gray-100">
                   {t.learnings.items.map((learning, index) => (
-                    <div key={index} className="py-5 -mx-3 px-3 rounded-lg transition-colors duration-150 hover:bg-gray-50">
-                      <p className="text-sm font-medium text-gray-900 mb-2">
+                    <div key={index} className="py-5">
+                      <h3 className="text-title-3 text-gray-900 mb-2">
                         {index + 1}. {learning.title}
-                      </p>
-                      <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">
+                      </h3>
+                      <p className="text-base text-gray-600 leading-relaxed max-w-[65ch]">
                         {learning.desc}
                       </p>
                     </div>
@@ -889,7 +883,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
                 </button>
               </div>
             </section>
-          </motion.div>
+          </div>
         )}
       </AnimatePresence>
     </div>

@@ -1,14 +1,14 @@
 // SQOOL Classe Case Study Page - Real-Time Classroom Supervision
 // Minimalist rewrite: bg-[#FDFDFC], no dark mode, no cards, no shadows, no blue CTA
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import { imgDims } from '@/utils/imageDimensions'
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight } from '@phosphor-icons/react';
 
 import EnhancedLightbox from '../../components/media/EnhancedLightbox';
 
 import PrototypeFinderGallery from '../../components/prototype/PrototypeFinderGallery';
-import SqoolClasseExecutive from '../../components/case-studies/SqoolClasseExecutive';
 import { SQOOL_CLASSE_TRANSLATIONS } from '../../data/caseStudyTranslations/sqoolClasseTranslations';
 
 interface SqoolClassePageProps {
@@ -23,73 +23,89 @@ interface SqoolClassePageProps {
 
 const TRANSLATIONS = SQOOL_CLASSE_TRANSLATIONS;
 
+const IMG_BASE = '/images/sqool/sqool classe';
+
+type LightboxItem = { src: string; caption: string; type: 'image' | 'video' };
+
+// Frame shared by every zoomable image of the page
+const MEDIA_BUTTON =
+  'group relative w-full rounded-xl overflow-hidden cursor-zoom-in ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]';
+const MEDIA_IMAGE =
+  'w-full transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]';
 
 const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
-  onClose,
-  systemTheme,
+  onClose: _onClose,
+  systemTheme: _systemTheme,
   onToggleTheme: _onToggleTheme,
   viewMode,
-  onViewModeChange,
+  onViewModeChange: _onViewModeChange,
   lang = 'fr',
   onContact,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
+  // Single-item list used when a clicked image is not part of the main list
+  const [fallbackItem, setFallbackItem] = useState<LightboxItem | null>(null);
 
-  const [galleryInitialCategory, setGalleryInitialCategory] = useState<'teacher' | 'student' | 'scenario' | undefined>(undefined);
+  const t = TRANSLATIONS[lang] || TRANSLATIONS.fr;
+  const c = t.imageCaptions;
 
-  // All images for lightbox navigation
-  const IMG_BASE = '/images/sqool/sqool classe';
-  const caseImages = [
-    { src: '/images/thumbnail_sqool_classe.webp', caption: 'SQOOL Classe' },
-    { src: `${IMG_BASE}/Visuel - Comm - Pilotage - accueil - Focus Classe temporaire@2x.webp`, caption: lang === 'fr' ? 'Tableau de bord enseignant' : 'Teacher dashboard' },
-    // Field observation photos
-    { src: `${IMG_BASE}/prototypes - observation - user testing - classe PXL_20231010_084158712.jpg`, caption: lang === 'fr' ? 'Observation terrain : suivi des écrans élèves en temps réel, Collège Jean Vilar' : 'Field observation: live student screen monitoring, Collège Jean Vilar' },
-    { src: `${IMG_BASE}/prototypes - observation - user testing - classe PXL_20231010_085423494.jpg`, caption: lang === 'fr' ? 'Test en conditions réelles : gestion des connexions et déconnexions' : 'Real-world testing: handling connection states' },
-    { src: `${IMG_BASE}/prototypes - observation - user testing - classe PXL_20231010_085429484.jpg`, caption: lang === 'fr' ? 'L\'enseignant navigue dans la vue élèves pendant le cours' : 'Teacher navigating student view during class' },
-    { src: `${IMG_BASE}/prototypes - observation - user testing - classe PXL_20231010_122812837.jpg`, caption: lang === 'fr' ? 'Côté élève : la notification de supervision, transparente et non intrusive' : 'Student side: transparent, non-intrusive supervision notification' },
-    // Teacher UI
-    { src: `${IMG_BASE}/UI - enseignant_vue_en_classe_grille_1_5x.webp`, caption: lang === 'fr' ? 'Vue grille enseignant : chaque élève visible, chaque action accessible' : 'Teacher grid view: every student visible, every action accessible' },
-    { src: `${IMG_BASE}/UI - enseignant_vue_groupe_classe_vue_groupe_individuel_1_5x.webp`, caption: lang === 'fr' ? 'Vue classe et vue groupe sur tablette élève' : 'Class view and group view on student tablet' },
-    { src: `${IMG_BASE}/UI - enseignant_partager_son_cran_aux_l_ves_1_5x.webp`, caption: lang === 'fr' ? 'Choisir quoi partager : un écran complet ou une fenêtre spécifique' : 'Choose what to share: full screen or a specific window' },
-    { src: `${IMG_BASE}/UI - enseignant_partage_d_cran_en_cours_1_5x.webp`, caption: lang === 'fr' ? 'Partage en cours : l\'enseignant voit son écran et ses élèves simultanément' : 'Screen sharing in progress: teacher sees their screen and students simultaneously' },
-    { src: `${IMG_BASE}/UI - enseignant_envoyer_un_document_depuis_drive_1_5x.webp`, caption: lang === 'fr' ? 'Envoyer un document directement depuis Google Drive, en un geste' : 'Send a document directly from Google Drive, in one gesture' },
-    // Student UI
-    { src: `${IMG_BASE}/UI - eleve_vue_mes_salles_de_classe_1_5x.webp`, caption: lang === 'fr' ? 'L\'accueil élève : toutes les salles de classe, avec l\'essentiel visible d\'un coup d\'oeil' : 'Student home: all classrooms with key info at a glance' },
-    { src: `${IMG_BASE}/UI - eleve_vue_groupe_classe_1_5x.webp`, caption: lang === 'fr' ? 'Vue classe : les camarades, les ressources du cours, les messages du professeur' : 'Class view: classmates, course resources, teacher messages' },
-    { src: `${IMG_BASE}/UI - eleve_vue_groupe_individuel_1_5x.webp`, caption: lang === 'fr' ? 'Vue groupe : un espace dédié avec ses propres ressources et consignes' : 'Group view: a dedicated space with its own resources and instructions' },
-    { src: `${IMG_BASE}/UI - eleve_interactions_vers_le_prof_1_5x.webp`, caption: lang === 'fr' ? 'Six façons de communiquer avec l\'enseignant, sans déranger la classe' : 'Six ways to communicate with the teacher, without disrupting the class' },
-    // Marketing visuals
-    { src: `${IMG_BASE}/Visuel - Comm - En Classe - Partager un lien - Toute la classe V0@2x.png`, caption: lang === 'fr' ? 'Partage de lien vers toute la classe : chaque navigateur ouvre la même page' : 'Link sharing to the whole class: every browser opens the same page' },
-    { src: `${IMG_BASE}/Visuel - Comm - Pilotage - En Classe - code big@2x.png`, caption: lang === 'fr' ? 'Code d\'invitation : les élèves rejoignent la classe en quelques secondes' : 'Invitation code: students join the class in seconds' },
-    { src: `${IMG_BASE}/Visuel - Comm - Pilotage - avis@2x.png`, caption: lang === 'fr' ? 'Recueil de feedback intégré pour améliorer le produit en continu' : 'Built-in feedback collection for continuous product improvement' },
-  ];
+  // All images for lightbox navigation (the .webp twins when they exist)
+  const caseImages = useMemo<LightboxItem[]>(
+    () => [
+      { src: '/images/thumbnail_sqool_classe.webp', caption: c.thumb },
+      { src: `${IMG_BASE}/Visuel - Comm - Pilotage - accueil - Focus Classe temporaire@2x.webp`, caption: c.dashboard },
+      // Field observation photos
+      { src: `${IMG_BASE}/prototypes - observation - user testing - classe PXL_20231010_084158712.webp`, caption: c.obs1 },
+      { src: `${IMG_BASE}/prototypes - observation - user testing - classe PXL_20231010_085423494.jpg`, caption: c.obs2 },
+      { src: `${IMG_BASE}/prototypes - observation - user testing - classe PXL_20231010_085429484.jpg`, caption: c.obs3 },
+      { src: `${IMG_BASE}/prototypes - observation - user testing - classe PXL_20231010_122812837.jpg`, caption: c.obs4 },
+      // Teacher UI
+      { src: `${IMG_BASE}/UI - enseignant_vue_en_classe_grille_1_5x.webp`, caption: c.grid },
+      { src: `${IMG_BASE}/UI - enseignant_vue_groupe_classe_vue_groupe_individuel_1_5x.webp`, caption: c.groupView },
+      { src: `${IMG_BASE}/UI - enseignant_partager_son_cran_aux_l_ves_1_5x.webp`, caption: c.shareChoose },
+      { src: `${IMG_BASE}/UI - enseignant_partage_d_cran_en_cours_1_5x.webp`, caption: c.shareActive },
+      { src: `${IMG_BASE}/UI - enseignant_envoyer_un_document_depuis_drive_1_5x.webp`, caption: c.sendDoc },
+      // Student UI
+      { src: `${IMG_BASE}/UI - eleve_vue_mes_salles_de_classe_1_5x.webp`, caption: c.studentHome },
+      { src: `${IMG_BASE}/UI - eleve_vue_groupe_classe_1_5x.webp`, caption: c.studentClass },
+      { src: `${IMG_BASE}/UI - eleve_vue_groupe_individuel_1_5x.webp`, caption: c.studentGroup },
+      { src: `${IMG_BASE}/UI - eleve_interactions_vers_le_prof_1_5x.webp`, caption: c.studentInteractions },
+      // Marketing visuals
+      { src: `${IMG_BASE}/Visuel - Comm - En Classe - Partager un lien - Toute la classe V0@2x.webp`, caption: c.linkShare },
+      { src: `${IMG_BASE}/Visuel - Comm - Pilotage - En Classe - code big@2x.png`, caption: c.inviteCode },
+      { src: `${IMG_BASE}/Visuel - Comm - Pilotage - avis@2x.png`, caption: c.feedback },
+    ].map(img => ({ ...img, type: 'image' as const })),
+    [c]
+  );
 
+  // Never a silent no-op: an unknown src opens as a single-item lightbox
   const openImageLightbox = useCallback((imageSrc: string) => {
     const index = caseImages.findIndex(img => img.src === imageSrc);
     if (index >= 0) {
+      setFallbackItem(null);
       setLightboxIndex(index);
-      setLightboxOpen(true);
+    } else {
+      setFallbackItem({ src: imageSrc, caption: '', type: 'image' });
+      setLightboxIndex(0);
     }
+    setLightboxOpen(true);
   }, [caseImages]);
-  const [caseStudyMode, setCaseStudyMode] = useState<'executive' | 'full'>(
-    viewMode === 'executive' ? 'executive' : 'full'
-  );
 
-  const t = TRANSLATIONS[lang] || TRANSLATIONS.fr;
-
-
-  // Sync caseStudyMode with viewMode prop and scroll to top on view switch
+  // Scroll to top on view switch
   useEffect(() => {
-    if (viewMode === 'executive') setCaseStudyMode('executive');
-    else if (viewMode === 'caseStudy') setCaseStudyMode('full');
-    // Single scroll reset when switching views — no delayed repeats
+    // Single scroll reset when switching views, no delayed repeats
     // (delayed repeats interfere with gallery interactions that happen soon after navigation)
     if (viewMode !== 'gallery') {
       window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
     }
   }, [viewMode]);
+
+  // French guillemets with narrow no-break spaces, curly quotes in English
+  const quote = (text: string) => (lang === 'fr' ? `«\u202f${text}\u202f»` : `“${text}”`);
+
+  const heroMeta = [t.hero.role, t.hero.scope, t.hero.period].join(' · ');
 
   return (
     <div ref={containerRef} className="min-h-screen bg-[#FDFDFC]">
@@ -97,7 +113,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
       <EnhancedLightbox
         isOpen={lightboxOpen}
         onClose={() => setLightboxOpen(false)}
-        images={caseImages.map(img => ({ src: img.src, caption: img.caption, type: 'image' as const }))}
+        images={fallbackItem ? [fallbackItem] : caseImages}
         currentIndex={lightboxIndex}
         onIndexChange={setLightboxIndex}
         lang={lang}
@@ -108,7 +124,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
       {/* Content */}
       <AnimatePresence mode="wait">
         {viewMode === 'gallery' ? (
-          /* Prototype Finder Gallery */
+          /* Prototype Finder Gallery (disabled on purpose, see projectsData) */
           <motion.div
             key="gallery"
             initial={{ opacity: 0 }}
@@ -117,63 +133,34 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
             transition={{ duration: 0.15 }}
           >
             <div className="w-full px-8 pt-4 md:pt-6 pb-8">
-              <PrototypeFinderGallery isDark={false} lang={lang} initialCategory={galleryInitialCategory} />
+              <PrototypeFinderGallery isDark={false} lang={lang} />
             </div>
-          </motion.div>
-        ) : caseStudyMode === 'executive' ? (
-          /* Executive Summary - dedicated component */
-          <motion.div
-            key="executive"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.15 }}
-          >
-            <SqoolClasseExecutive
-              systemTheme={systemTheme}
-              lang={lang}
-              onImageClick={(src) => openImageLightbox(src)}
-              onViewFull={() => { onViewModeChange('caseStudy'); setCaseStudyMode('full'); }}
-              onContact={() => onContact?.()}
-            />
           </motion.div>
         ) : (
           /* Full Case Study */
-          <motion.div
-            key="caseStudy"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.15 }}
-          >
+          <div key="caseStudy">
             <div className="pt-16 md:pt-24 pb-12 md:pb-16">
-              <main className="w-full">
+              {/* The layout already provides the page's <main> */}
+              <div className="w-full">
 
                 {/* ==================== HERO ==================== */}
                 <section id="hero" className="mb-24 md:mb-32">
                   <div className="max-w-[740px] mx-auto px-6">
                     {/* Logo */}
                     <img
-                      loading="lazy"
-                      src="/images/sqool/logo-sqool.svg"
+                      src="/images/sqool/logo-sqool.svg" {...imgDims("/images/sqool/logo-sqool.svg")}
                       alt="SQOOL"
                       className="h-6 w-auto mb-8 opacity-60"
                     />
 
-                    {/* Meta */}
-                    <div className="flex flex-wrap gap-x-3 gap-y-1 mb-6">
-                      <span className="text-xs text-gray-500">{t.hero.role}</span>
-                      <span className="text-xs text-gray-300">/</span>
-                      <span className="text-xs text-gray-500">{t.hero.scope}</span>
-                      <span className="text-xs text-gray-300">/</span>
-                      <span className="text-xs text-gray-500">{t.hero.period}</span>
-                    </div>
-
-                    <h1 className="text-title-1 text-gray-900 mb-4">
+                    <h1 className="text-title-1 text-gray-900 mb-2">
                       {t.hero.title}
                     </h1>
 
-                    <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-10">
+                    {/* Role line */}
+                    <p className="text-sm text-gray-500 mb-6">{heroMeta}</p>
+
+                    <p className="text-base text-gray-600 leading-relaxed max-w-[65ch] mb-10">
                       {t.hero.description}
                     </p>
 
@@ -198,14 +185,16 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                 <figure className="mb-24 md:mb-32">
                   <div className="max-w-[960px] mx-auto px-6">
                     <button
-                      onClick={() => openImageLightbox('/images/thumbnail_sqool_classe.webp')}
-                      className="group relative w-full rounded-xl overflow-hidden cursor-zoom-in ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
+                      onClick={() => openImageLightbox(caseImages[0].src)}
+                      aria-label={caseImages[0].caption}
+                      className={MEDIA_BUTTON}
                     >
                       <img
-                        loading="lazy"
-                        src="/images/thumbnail_sqool_classe.webp"
-                        alt="SQOOL Classe"
-                        className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
+                        loading="eager"
+                        fetchPriority="high"
+                        src={caseImages[0].src} {...imgDims(caseImages[0].src)}
+                        alt={caseImages[0].caption}
+                        className={`${MEDIA_IMAGE} h-auto`}
                       />
                     </button>
                   </div>
@@ -217,17 +206,17 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                     <h2 className="text-title-2 text-gray-900 mb-4">
                       {t.context.title}
                     </h2>
-                    <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">
+                    <p className="text-base text-gray-600 leading-relaxed max-w-[65ch]">
                       {t.context.description}
                     </p>
                   </div>
 
                   {/* Field observation photos */}
                   <div className="max-w-[960px] mx-auto px-6 mt-16">
-                    <p className="text-xs text-gray-500 mb-2 uppercase tracking-wider">
+                    <h3 className="text-title-3 text-gray-900 mb-2">
                       {t.context.fieldObsTitle}
-                    </p>
-                    <p className="text-base text-gray-500 leading-relaxed mb-8 max-w-[65ch]">
+                    </h3>
+                    <p className="text-base text-gray-600 leading-relaxed mb-8 max-w-[65ch]">
                       {t.context.fieldObsDesc}
                     </p>
                     <div className="space-y-4">
@@ -235,9 +224,10 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                         <button
                           key={i}
                           onClick={() => openImageLightbox(img.src)}
-                          className="group relative aspect-[3/2] rounded-xl overflow-hidden cursor-zoom-in ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99] w-full block"
+                          aria-label={img.caption}
+                          className={`${MEDIA_BUTTON} aspect-[3/2] block`}
                         >
-                          <img src={img.src} alt={img.caption} loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" />
+                          <img src={img.src} {...imgDims(img.src)} alt={img.caption} loading="lazy" className={`absolute inset-0 h-full object-cover ${MEDIA_IMAGE}`} />
                         </button>
                       ))}
                     </div>
@@ -245,9 +235,39 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
 
                   {/* Problem question */}
                   <div className="max-w-[740px] mx-auto px-6 mt-16">
-                    <p className="text-sm font-medium text-gray-900 leading-relaxed max-w-[65ch]">
+                    <h3 className="text-title-3 text-gray-900 max-w-[65ch]">
                       {t.context.problemQuestion}
+                    </h3>
+                  </div>
+                </section>
+
+                {/* ==================== ROLE ==================== */}
+                <section id="role" className="mb-24 md:mb-32">
+                  <div className="max-w-[740px] mx-auto px-6">
+                    <h2 className="text-title-2 text-gray-900 mb-4">
+                      {t.myRole.title}
+                    </h2>
+                    <p className="text-base text-gray-600 leading-relaxed max-w-[65ch] mb-10">
+                      {t.myRole.roleDesc}
                     </p>
+
+                    {[
+                      { title: t.myRole.scopeTitle, items: t.myRole.scopeItems },
+                      { title: t.myRole.modulesTitle, items: t.myRole.modules },
+                      { title: t.myRole.challengesTitle, items: t.myRole.challenges },
+                    ].map((group, g) => (
+                      <div key={g} className="mb-10 last:mb-0">
+                        <h3 className="text-title-3 text-gray-900 mb-3">{group.title}</h3>
+                        <ul className="space-y-2">
+                          {group.items.map((item, i) => (
+                            <li key={i} className="flex items-start gap-3">
+                              <span aria-hidden="true" className="w-1 h-1 rounded-full mt-2.5 flex-shrink-0 bg-gray-300" />
+                              <span className="text-base text-gray-600 leading-relaxed max-w-[65ch]">{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
                   </div>
                 </section>
 
@@ -264,8 +284,8 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                         { title: t.approach.pillar3Title, desc: t.approach.pillar3Desc },
                       ].map((p, i) => (
                         <div key={i} className="py-6 first:pt-0 last:pb-0">
-                          <p className="text-sm font-medium text-gray-900 mb-1">{p.title}</p>
-                          <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">{p.desc}</p>
+                          <h3 className="text-title-3 text-gray-900 mb-2">{p.title}</h3>
+                          <p className="text-base text-gray-600 leading-relaxed max-w-[65ch]">{p.desc}</p>
                         </div>
                       ))}
                     </div>
@@ -279,14 +299,10 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                 {/* ==================== TEACHER EXPERIENCE ==================== */}
                 <section id="teacher" className="mb-24 md:mb-32 pt-12">
                   <div className="max-w-[740px] mx-auto px-6">
-                    <p className="text-xs text-gray-500 mb-4">
-                      {lang === 'fr' ? 'Côté enseignant' : 'Teacher side'}
-                    </p>
-
                     <h2 className="text-title-2 text-gray-900 mb-4">
                       {t.teacher.title}
                     </h2>
-                    <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">
+                    <p className="text-base text-gray-600 leading-relaxed max-w-[65ch]">
                       {t.teacher.description}
                     </p>
                   </div>
@@ -295,25 +311,15 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                   <figure className="max-w-[960px] mx-auto px-6 mt-12 mb-12">
                     <button
                       onClick={() => openImageLightbox(caseImages[6].src)}
-                      className="group relative w-full rounded-xl overflow-hidden cursor-zoom-in ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
+                      aria-label={caseImages[6].caption}
+                      className={MEDIA_BUTTON}
                     >
-                      <img src={caseImages[6].src} alt={caseImages[6].caption} loading="lazy" className="w-full transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" />
+                      <img src={caseImages[6].src} {...imgDims(caseImages[6].src)} alt={caseImages[6].caption} loading="lazy" className={MEDIA_IMAGE} />
                     </button>
                     <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed max-w-[65ch]">
                       {t.teacher.gridCaption}
                     </figcaption>
                   </figure>
-
-                  {/* CTA: explore teacher prototypes */}
-                  <div className="max-w-[740px] mx-auto px-6 mb-12">
-                    <button
-                      onClick={() => { setGalleryInitialCategory('teacher'); onViewModeChange('gallery'); }}
-                      className="group inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-900 transition-colors duration-200"
-                    >
-                      {lang === 'fr' ? '25 prototypes enseignant a explorer' : '25 teacher prototypes to explore'}
-                      <ArrowRight size={14} className="transition-transform duration-200 group-hover:translate-x-0.5" />
-                    </button>
-                  </div>
 
                   {/* Screen sharing + Document sending */}
                   <div className="max-w-[960px] mx-auto px-6">
@@ -321,9 +327,10 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                       <figure>
                         <button
                           onClick={() => openImageLightbox(caseImages[8].src)}
-                          className="group relative w-full rounded-xl overflow-hidden cursor-zoom-in ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
+                          aria-label={caseImages[8].caption}
+                          className={MEDIA_BUTTON}
                         >
-                          <img src={caseImages[8].src} alt="" loading="lazy" className="w-full transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" />
+                          <img src={caseImages[8].src} {...imgDims(caseImages[8].src)} alt="" loading="lazy" className={MEDIA_IMAGE} />
                         </button>
                         <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
                           {t.teacher.screenShareCaption}
@@ -332,9 +339,10 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                       <figure>
                         <button
                           onClick={() => openImageLightbox(caseImages[10].src)}
-                          className="group relative w-full rounded-xl overflow-hidden cursor-zoom-in ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
+                          aria-label={caseImages[10].caption}
+                          className={MEDIA_BUTTON}
                         >
-                          <img src={caseImages[10].src} alt="" loading="lazy" className="w-full transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" />
+                          <img src={caseImages[10].src} {...imgDims(caseImages[10].src)} alt="" loading="lazy" className={MEDIA_IMAGE} />
                         </button>
                         <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
                           {t.teacher.docSendCaption}
@@ -346,9 +354,10 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                     <figure>
                       <button
                         onClick={() => openImageLightbox(caseImages[9].src)}
-                        className="group relative w-full rounded-xl overflow-hidden cursor-zoom-in ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
+                        aria-label={caseImages[9].caption}
+                        className={MEDIA_BUTTON}
                       >
-                        <img src={caseImages[9].src} alt="" loading="lazy" className="w-full transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" />
+                        <img src={caseImages[9].src} {...imgDims(caseImages[9].src)} alt="" loading="lazy" className={MEDIA_IMAGE} />
                       </button>
                       <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed max-w-[65ch]">
                         {t.teacher.actionsCaption}
@@ -364,14 +373,10 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                 {/* ==================== STUDENT EXPERIENCE ==================== */}
                 <section id="students" className="mb-24 md:mb-32 pt-12">
                   <div className="max-w-[740px] mx-auto px-6">
-                    <p className="text-xs text-gray-500 mb-4">
-                      {lang === 'fr' ? 'Côté élève' : 'Student side'}
-                    </p>
-
                     <h2 className="text-title-2 text-gray-900 mb-4">
                       {t.students.title}
                     </h2>
-                    <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">
+                    <p className="text-base text-gray-600 leading-relaxed max-w-[65ch]">
                       {t.students.description}
                     </p>
                   </div>
@@ -380,9 +385,10 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                   <figure className="max-w-[960px] mx-auto px-6 mt-12 mb-12">
                     <button
                       onClick={() => openImageLightbox(caseImages[7].src)}
-                      className="group relative w-full md:w-3/4 mx-auto block rounded-xl overflow-hidden cursor-zoom-in ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
+                      aria-label={caseImages[7].caption}
+                      className={`${MEDIA_BUTTON} md:w-3/4 mx-auto block`}
                     >
-                      <img src={caseImages[7].src} alt="" loading="lazy" className="w-full transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" />
+                      <img src={caseImages[7].src} {...imgDims(caseImages[7].src)} alt="" loading="lazy" className={MEDIA_IMAGE} />
                     </button>
                     <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed text-center max-w-[65ch] mx-auto">
                       {t.students.compositionCaption}
@@ -390,14 +396,15 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                   </figure>
 
                   {/* Student screens: classrooms + interactions */}
-                  <div className="max-w-[960px] mx-auto px-6 mb-12">
+                  <div className="max-w-[960px] mx-auto px-6">
                     <div className="space-y-4">
                       <figure>
                         <button
                           onClick={() => openImageLightbox(caseImages[11].src)}
-                          className="group relative w-full rounded-xl overflow-hidden cursor-zoom-in ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
+                          aria-label={caseImages[11].caption}
+                          className={MEDIA_BUTTON}
                         >
-                          <img src={caseImages[11].src} alt="" loading="lazy" className="w-full transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" />
+                          <img src={caseImages[11].src} {...imgDims(caseImages[11].src)} alt="" loading="lazy" className={MEDIA_IMAGE} />
                         </button>
                         <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
                           {t.students.classroomsCaption}
@@ -406,33 +413,16 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                       <figure>
                         <button
                           onClick={() => openImageLightbox(caseImages[14].src)}
-                          className="group relative w-full rounded-xl overflow-hidden cursor-zoom-in ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
+                          aria-label={caseImages[14].caption}
+                          className={MEDIA_BUTTON}
                         >
-                          <img src={caseImages[14].src} alt="" loading="lazy" className="w-full transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" />
+                          <img src={caseImages[14].src} {...imgDims(caseImages[14].src)} alt="" loading="lazy" className={MEDIA_IMAGE} />
                         </button>
                         <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
                           {t.students.interactionsCaption}
                         </figcaption>
                       </figure>
                     </div>
-                  </div>
-
-                  {/* CTA: explore student + scenario prototypes */}
-                  <div className="max-w-[740px] mx-auto px-6 flex flex-col sm:flex-row gap-4">
-                    <button
-                      onClick={() => { setGalleryInitialCategory('student'); onViewModeChange('gallery'); }}
-                      className="group inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-900 transition-colors duration-200"
-                    >
-                      {lang === 'fr' ? '7 prototypes élève' : '7 student prototypes'}
-                      <ArrowRight size={14} className="transition-transform duration-200 group-hover:translate-x-0.5" />
-                    </button>
-                    <button
-                      onClick={() => { setGalleryInitialCategory('scenario'); onViewModeChange('gallery'); }}
-                      className="group inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-900 transition-colors duration-200"
-                    >
-                      {lang === 'fr' ? '10 scénarios complets' : '10 complete scenarios'}
-                      <ArrowRight size={14} className="transition-transform duration-200 group-hover:translate-x-0.5" />
-                    </button>
                   </div>
                 </section>
 
@@ -446,7 +436,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                     <h2 className="text-title-2 text-gray-900 mb-4">
                       {t.impact.title}
                     </h2>
-                    <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-12">
+                    <p className="text-base text-gray-600 leading-relaxed max-w-[65ch] mb-12">
                       {t.impact.intro}
                     </p>
                   </div>
@@ -461,9 +451,10 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                         <figure key={i}>
                           <button
                             onClick={() => openImageLightbox(item.img.src)}
-                            className="group relative w-full rounded-xl overflow-hidden cursor-zoom-in ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
+                            aria-label={item.img.caption}
+                            className={MEDIA_BUTTON}
                           >
-                            <img src={item.img.src} alt={item.img.caption} loading="lazy" className="w-full transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" />
+                            <img src={item.img.src} {...imgDims(item.img.src)} alt={item.img.caption} loading="lazy" className={MEDIA_IMAGE} />
                           </button>
                           <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
                             {item.caption}
@@ -482,7 +473,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                         { value: t.impact.stat3, label: t.impact.stat3Desc },
                         { value: t.impact.stat4, label: t.impact.stat4Desc },
                       ].map((stat, i) => (
-                        <div key={i} className="flex items-baseline justify-between py-4">
+                        <div key={i} className="flex items-baseline justify-between gap-6 py-4">
                           <span className="text-sm text-gray-500">{stat.label}</span>
                           <span className="text-base font-semibold text-gray-900 tabular-nums">{stat.value}</span>
                         </div>
@@ -493,8 +484,8 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                   {/* Testimonial */}
                   <div className="max-w-[740px] mx-auto px-6">
                     <blockquote>
-                      <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-3">
-                        &laquo;{t.testimonial.quote}&raquo;
+                      <p className="text-base text-gray-600 leading-relaxed max-w-[65ch] mb-3">
+                        {quote(t.testimonial.quote)}
                       </p>
                       <footer className="text-xs text-gray-500">
                         {t.testimonial.author}, {t.testimonial.role}
@@ -505,8 +496,8 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                   {/* Hero testimonial (Charlotte Rifflet) */}
                   <div className="max-w-[740px] mx-auto px-6 mt-12">
                     <blockquote>
-                      <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-3">
-                        &laquo;{t.heroTestimonial.quote}&raquo;
+                      <p className="text-base text-gray-600 leading-relaxed max-w-[65ch] mb-3">
+                        {quote(t.heroTestimonial.quote)}
                       </p>
                       <footer>
                         <p className="text-sm font-medium text-gray-900">{t.heroTestimonial.author}</p>
@@ -532,9 +523,9 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                   </div>
                 </section>
 
-              </main>
+              </div>
             </div>
-          </motion.div>
+          </div>
         )}
       </AnimatePresence>
     </div>

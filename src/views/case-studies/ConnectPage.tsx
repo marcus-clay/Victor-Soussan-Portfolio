@@ -1,17 +1,18 @@
 // Connect Case Study Page - Minimalist aesthetic
 // Displays the SQOOL Connect project case study
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
+import { imgDims } from '@/utils/imageDimensions'
 import { useStableComponent } from '../../hooks/useStableComponent';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import { ArrowRight } from '@phosphor-icons/react';
 import VideoPlayer from '@/components/VideoPlayer';
 import { GalleryItem, getConnectGalleryItems } from '../../components/BentoGallery';
-import ConnectExecutive from '../../components/case-studies/ConnectExecutive';
 import EnhancedLightbox from '../../components/media/EnhancedLightbox';
 
 import { CONNECT_TRANSLATIONS } from '../../data/caseStudyTranslations/connectTranslations';
+import { zoomable } from '@/utils/zoomable'
 
 interface ConnectPageProps {
   onClose: () => void;
@@ -67,7 +68,7 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick }) => {
         {isVideo ? (
           <VideoPlayer src={item.src} className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" />
         ) : (
-          <img loading="lazy" src={item.src} alt={item.caption} className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" />
+          <img loading="lazy" src={item.src} {...imgDims(item.src)} alt={item.caption} className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" />
         )}
       </div>
       <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
@@ -79,11 +80,7 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick }) => {
 };
 
 export const ConnectPage: React.FC<ConnectPageProps> = ({
-  onClose,
-  systemTheme,
-  onToggleTheme: _onToggleTheme,
   viewMode,
-  onViewModeChange,
   lang = 'en',
   onContact,
 }) => {
@@ -91,31 +88,25 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
   const galleryItems = getConnectGalleryItems(lang);
 
   // Build allImages with translated captions
-  const allImages = allImagesData.map(item => ({
-    src: item.src,
-    type: item.type,
-    caption: `${t.captions[item.captionKey as keyof typeof t.captions]} - ${t.captions[`${item.captionKey}Desc` as keyof typeof t.captions] || ''}`
-  }));
+  // French needs a no-break space before the colon.
+  const captionSeparator = lang === 'fr' ? '\u00a0: ' : ': ';
+  const allImages = allImagesData.map(item => {
+    const title = t.captions[item.captionKey as keyof typeof t.captions];
+    const desc = t.captions[`${item.captionKey}Desc` as keyof typeof t.captions];
+    return {
+      src: item.src,
+      type: item.type,
+      caption: desc ? `${title}${captionSeparator}${desc}` : title,
+    };
+  });
 
   const [lightboxOpen, setLightboxOpen] = useState(false);
-  const initialCaseStudyMode = viewMode === 'executive' ? 'executive' : (viewMode === 'caseStudy' ? 'full' : 'executive');
-  const [caseStudyMode, setCaseStudyMode] = useState<'executive' | 'full'>(initialCaseStudyMode);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [videoStartTime, setVideoStartTime] = useState(0);
-  const containerRef = useRef<HTMLDivElement>(null);
-  void useRef<{ [key: string]: HTMLVideoElement | null }>({});
-
-  useEffect(() => {
-    if (viewMode === 'executive') {
-      setCaseStudyMode('executive');
-    } else if (viewMode === 'caseStudy') {
-      setCaseStudyMode('full');
-    }
-  }, [viewMode]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
-  }, [caseStudyMode, viewMode]);
+  }, [viewMode]);
 
   const openLightbox = (imageSrc: string, startTime: number = 0) => {
     const index = allImages.findIndex(img => img.src === imageSrc);
@@ -131,12 +122,15 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
   };
 
   // Reusable media figure component
-  const MediaFigure = useStableComponent(({ src, alt, caption, captionDesc, type = 'image', className = '' }: {
-    src: string; alt: string; caption: string; captionDesc?: string; type?: 'image' | 'video'; className?: string;
+  // The figcaption describes the media, so the image alt stays empty and the
+  // zoom button takes its accessible name from the caption.
+  const MediaFigure = useStableComponent(({ src, caption, captionDesc, type = 'image', className = '', priority = false }: {
+    src: string; caption: string; captionDesc?: string; type?: 'image' | 'video'; className?: string; priority?: boolean;
   }) => (
     <figure className={className}>
       <div
-        onClick={() => openLightbox(src)}
+        {...zoomable(() => openLightbox(src))}
+        aria-label={caption}
         className="group rounded-xl overflow-hidden cursor-zoom-in ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
       >
         {type === 'video' ? (
@@ -145,22 +139,19 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
             className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
           />
         ) : (
-          <img loading="lazy" src={src} alt={alt}
+          <img loading={priority ? 'eager' : 'lazy'} fetchPriority={priority ? 'high' : undefined} src={src} {...imgDims(src)} alt=""
             className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
           />
         )}
       </div>
-      <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
+      <figcaption className="mt-3 text-left text-xs text-gray-500 leading-relaxed">
         {caption}{captionDesc && ` · ${captionDesc}`}
       </figcaption>
     </figure>
   ));
 
   return (
-    <div
-      ref={containerRef}
-      className="min-h-screen bg-[#FDFDFC]"
-    >
+    <div className="min-h-screen bg-[#FDFDFC]">
 
       {/* Lightbox */}
       <EnhancedLightbox
@@ -202,67 +193,43 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
               ))}
             </div>
           </motion.div>
-        ) : caseStudyMode === 'executive' ? (
-          /* Executive Summary View */
-          <motion.div
-            key="executive"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.15 }}
-          >
-            <ConnectExecutive
-              systemTheme={systemTheme}
-              lang={lang}
-              onImageClick={openLightbox}
-              onViewFull={() => setCaseStudyMode('full')}
-              onContact={onContact}
-            />
-          </motion.div>
         ) : (
           /* Full Case Study View */
-          <motion.div
-            key="caseStudy"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.15 }}
-          >
+          <div key="caseStudy">
             {/* Hero Section */}
             <section id="hero" className="mb-24 md:mb-32">
-              <div className="max-w-[740px] mx-auto px-6 pt-16 md:pt-24">
-                {/* Meta */}
-                <p className="text-xs text-gray-500 mb-4">
-                  {t.hero.role} · {t.hero.scope} · {t.hero.period}
-                </p>
-
+              <div className="max-w-[740px] mx-auto px-6 pt-16 md:pt-24 mb-12 md:mb-16">
                 {/* Title */}
                 <h1 className="text-title-1 text-gray-900 mb-3">
                   {t.hero.title}
                 </h1>
 
                 {/* Subtitle */}
-                <p className="text-sm font-medium text-gray-900 mb-4">
+                <p className="text-lg text-gray-600 mb-2">
                   {t.hero.subtitle}
                 </p>
 
+                {/* Role, scope, period */}
+                <p className="text-xs text-gray-500 mb-6">
+                  {t.hero.role}<span aria-hidden="true"> · </span>{t.hero.scope}<span aria-hidden="true"> · </span>{t.hero.period}
+                </p>
+
                 {/* Description */}
-                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">
+                <p className="text-base text-gray-600 leading-relaxed max-w-[65ch]">
                   {t.hero.description}
                 </p>
               </div>
-            </section>
 
-            {/* Hero Image */}
-            <div className="max-w-[960px] mx-auto px-6">
-              <MediaFigure
-                src="/images/connect/connect_overview.webp"
-                alt="SQOOL Connect Overview"
-                caption={t.captions.thumbnail}
-                captionDesc={t.captions.thumbnailDesc}
-                className="mb-24 md:mb-32"
-              />
-            </div>
+              {/* Hero Image (LCP: loaded eagerly) */}
+              <div className="max-w-[960px] mx-auto px-6">
+                <MediaFigure
+                  src="/images/connect/connect_overview.webp"
+                  caption={t.captions.thumbnail}
+                  captionDesc={t.captions.thumbnailDesc}
+                  priority
+                />
+              </div>
+            </section>
 
             {/* Overview Section */}
             <section id="overview" className="mb-24 md:mb-32">
@@ -274,22 +241,22 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
                 <div className="space-y-8">
                   {/* Introduction */}
                   <div>
-                    <p className="text-sm font-medium text-gray-900 mb-2">
+                    <h3 className="text-title-3 text-gray-900 mb-2">
                       {t.overview.introTitle}
-                    </p>
-                    <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">
+                    </h3>
+                    <p className="text-base text-gray-600 leading-relaxed max-w-[65ch]">
                       {t.overview.introDesc}
                     </p>
                   </div>
 
                   {/* Goals */}
                   <div>
-                    <p className="text-sm font-medium text-gray-900 mb-2">
+                    <h3 className="text-title-3 text-gray-900 mb-2">
                       {t.overview.goalsTitle}
-                    </p>
+                    </h3>
                     <ul className="space-y-1.5">
                       {t.overview.goals.map((goal, idx) => (
-                        <li key={idx} className="text-base text-gray-500 leading-relaxed">
+                        <li key={idx} className="text-base text-gray-600 leading-relaxed">
                           <span className="text-gray-300 mr-2">&#8226;</span>{goal}
                         </li>
                       ))}
@@ -299,10 +266,10 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
 
                 {/* Role */}
                 <div className="mt-8">
-                  <p className="text-sm font-medium text-gray-900 mb-2">
+                  <h3 className="text-title-3 text-gray-900 mb-2">
                     {t.overview.roleTitle}
-                  </p>
-                  <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">
+                  </h3>
+                  <p className="text-base text-gray-600 leading-relaxed max-w-[65ch]">
                     {t.overview.roleDesc}
                   </p>
                 </div>
@@ -315,7 +282,7 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
                 <h2 className="text-title-2 text-gray-900 mb-4">
                   {t.dashboard.title}
                 </h2>
-                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-12">
+                <p className="text-base text-gray-600 leading-relaxed max-w-[65ch] mb-12">
                   {t.dashboard.intro}
                 </p>
               </div>
@@ -324,7 +291,6 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
                 {/* Dashboard Home Dark */}
                 <MediaFigure
                   src="/images/connect/connect_dashboard_home_dark_full_smartphone-scaled.webp"
-                  alt={t.dashboard.homeDark}
                   caption={t.dashboard.homeDark}
                   captionDesc={t.dashboard.homeDarkDesc}
                   className="mb-12"
@@ -334,13 +300,11 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
                 <div className="space-y-8 mb-12">
                   <MediaFigure
                     src="/images/connect/connect_dashboard_home_light_full-scaled.webp"
-                    alt={t.dashboard.homeLight}
                     caption={t.dashboard.homeLight}
                     captionDesc={t.dashboard.homeLightDesc}
                   />
                   <MediaFigure
                     src="/images/connect/connect_dashboard_applications_full-scaled.webp"
-                    alt={t.dashboard.applications}
                     caption={t.dashboard.applications}
                     captionDesc={t.dashboard.applicationsDesc}
                   />
@@ -349,7 +313,6 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
                 {/* Loading & Auth Video */}
                 <MediaFigure
                   src="/videos/connect/connect-loading-user-authent-app-launch-study.mp4"
-                  alt={t.dashboard.loadingAuth}
                   caption={t.dashboard.loadingAuth}
                   captionDesc={t.dashboard.loadingAuthDesc}
                   type="video"
@@ -359,17 +322,25 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
                 {/* Complete Dashboard Prototype Video */}
                 <MediaFigure
                   src="/videos/connect/connect-dashboard-prototype_complet_4k-compressed.mp4"
-                  alt={t.dashboard.prototype}
                   caption={t.dashboard.prototype}
                   captionDesc={t.dashboard.prototypeDesc}
                   type="video"
-                  className="mb-12"
                 />
+              </div>
+            </section>
 
+            {/* Architecture and specs Section */}
+            <section id="architecture" className="mb-24 md:mb-32">
+              <div className="max-w-[740px] mx-auto px-6">
+                <h2 className="text-title-2 text-gray-900 mb-8">
+                  {t.architecture.title}
+                </h2>
+              </div>
+
+              <div className="max-w-[960px] mx-auto px-6">
                 {/* Tech Architecture */}
                 <MediaFigure
                   src="/images/connect/connect_tech_architecture-1-scaled.webp"
-                  alt={t.dashboard.techArch}
                   caption={t.dashboard.techArch}
                   captionDesc={t.dashboard.techArchDesc}
                   className="mb-12"
@@ -379,13 +350,11 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
                 <div className="space-y-8 mb-12">
                   <MediaFigure
                     src="/images/connect/connect_specifications_implem_01-scaled.webp"
-                    alt={t.dashboard.specsImplem}
                     caption={t.dashboard.specsImplem}
                     captionDesc={t.dashboard.specsImplDesc}
                   />
                   <MediaFigure
                     src="/images/connect/connect_specifications_content_02-scaled.webp"
-                    alt={t.dashboard.specsContent}
                     caption={t.dashboard.specsContent}
                     captionDesc={t.dashboard.specsContentDesc}
                   />
@@ -394,11 +363,9 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
                 {/* App Loading Choreography */}
                 <MediaFigure
                   src="/videos/connect/connect-specs-app-loading-choregraphy.mp4"
-                  alt={t.dashboard.appLoading}
                   caption={t.dashboard.appLoading}
                   captionDesc={t.dashboard.appLoadingDesc}
                   type="video"
-                  className="mb-12"
                 />
               </div>
             </section>
@@ -409,7 +376,7 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
                 <h2 className="text-title-2 text-gray-900 mb-4">
                   {t.bulle.title}
                 </h2>
-                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-12">
+                <p className="text-base text-gray-600 leading-relaxed max-w-[65ch] mb-12">
                   {t.bulle.intro}
                 </p>
               </div>
@@ -418,7 +385,6 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
                 {/* Bulle Wireframes */}
                 <MediaFigure
                   src="/images/connect/connect_bulle_ui_wireframes_concept-scaled.webp"
-                  alt={t.bulle.wireframes}
                   caption={t.bulle.wireframes}
                   captionDesc={t.bulle.wireframesDesc}
                   className="mb-12"
@@ -428,13 +394,11 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
                 <div className="space-y-8 mb-12">
                   <MediaFigure
                     src="/images/connect/connect_bulle_ui_focus-scaled.webp"
-                    alt={t.bulle.uiFocus}
                     caption={t.bulle.uiFocus}
                     captionDesc={t.bulle.uiFocusDesc}
                   />
                   <MediaFigure
                     src="/images/connect/connect_bulle_icons-1-scaled.webp"
-                    alt={t.bulle.icons}
                     caption={t.bulle.icons}
                     captionDesc={t.bulle.iconsDesc}
                   />
@@ -444,13 +408,11 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
                 <div className="space-y-8 mb-12">
                   <MediaFigure
                     src="/images/connect/connect_bulle_behaviour_square_01-scaled.webp"
-                    alt={t.bulle.behaviour1}
                     caption={t.bulle.behaviour1}
                     captionDesc={t.bulle.behaviour1Desc}
                   />
                   <MediaFigure
                     src="/images/connect/connect_bulle_behaviour_square_02-scaled.webp"
-                    alt={t.bulle.behaviour2}
                     caption={t.bulle.behaviour2}
                     captionDesc={t.bulle.behaviour2Desc}
                   />
@@ -459,39 +421,29 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
                 {/* Interaction Demo Video */}
                 <MediaFigure
                   src="/videos/connect/interaction-bulle-connect-compressed.mp4"
-                  alt={t.bulle.interactionDemo}
                   caption={t.bulle.interactionDemo}
                   captionDesc={t.bulle.interactionDemoDesc}
                   type="video"
-                  className="mb-16"
                 />
               </div>
 
-              {/* Bulle Demo — dark stage, rupture éditoriale.
-                  Autoplay silencieux : le mouvement est le contenu.
-                  Pas de lightbox, pas de hover-zoom — c'est une démonstration, pas un artefact de galerie. */}
-              <div className="mt-4 bg-[#111113] py-16 md:py-20">
-                <div className="max-w-[840px] mx-auto px-6">
-                  <p className="text-micro font-medium text-white/60 uppercase tracking-[0.08em] mb-8">
-                    Prototype d'interaction
-                  </p>
+              {/* Bulle demo: dark stage, editorial break.
+                  Silent autoplay (the movement is the content) with the shared pause control.
+                  No lightbox and no hover zoom: it is a demonstration, not a gallery artifact. */}
+              <div className="mt-16 md:mt-20 bg-[#111113] py-16 md:py-20">
+                <figure className="max-w-[840px] mx-auto px-6">
                   <div className="rounded-2xl overflow-hidden">
-                    <video
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                      preload="auto"
-                      className="w-full h-auto block"
+                    <VideoPlayer
                       src="/videos/connect/Video-demo-bulle-interactions-02-compressed.mp4"
+                      className="w-full h-auto block"
                     />
                   </div>
                   {t.bulle.bulleDemoDesc && (
-                    <p className="mt-5 text-xs text-white/60 leading-relaxed max-w-[60ch]">
+                    <figcaption className="mt-5 text-left text-xs text-white/60 leading-relaxed max-w-[60ch]">
                       {t.bulle.bulleDemoDesc}
-                    </p>
+                    </figcaption>
                   )}
-                </div>
+                </figure>
               </div>
             </section>
 
@@ -507,7 +459,7 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
                 </button>
               </div>
             </div>
-          </motion.div>
+          </div>
         )}
       </AnimatePresence>
     </div>
