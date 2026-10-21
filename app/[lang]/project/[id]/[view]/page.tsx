@@ -6,7 +6,7 @@ import { getProjects } from '@/data/projectsData'
 import { breadcrumbLd, buildMetadata, creativeWorkLd, toLang, type Lang } from '@/lib/seo'
 
 const CASE_STUDY_IDS = ['toolkit', 'dailymotion', 'connect', 'sqool', 'sqool-classe', 'france-vae', 'pagesjaunes', 'androidwear', 'riskos'] as const
-const SHORT_PROJECT_IDS = ['condamine-apps', 'design-system-figma-claude'] as const
+const SHORT_PROJECT_IDS = ['condamine-apps', 'design-system-figma-claude', 'telemedicine-patient-app'] as const
 const VIEW_MODES = ['summary', 'full', 'gallery'] as const
 
 type Props = { params: Promise<{ lang: string; id: string; view: string }> }
