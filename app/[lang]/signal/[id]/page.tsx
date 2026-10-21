@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import { CATEGORY_LABELS, SIGNALS } from '@/data/signalsData'
 import SignalDetailPageWrapper from '@/components/page-wrappers/SignalDetailPageWrapper'
 import JsonLd from '@/components/JsonLd'
+import { relatedContent } from '@/lib/related'
 import { articleLd, breadcrumbLd, buildMetadata, clip, isoDate, toLang } from '@/lib/seo'
 
 type Props = { params: Promise<{ lang: string; id: string }> }
@@ -62,7 +63,7 @@ export default async function SignalPage({ params }: Props) {
           ]),
         ]}
       />
-      <SignalDetailPageWrapper lang={lang} signalId={id} />
+      <SignalDetailPageWrapper lang={lang} signalId={id} related={relatedContent(lang, id)} />
     </>
   )
 }

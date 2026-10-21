@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     lang,
     path: `project/${id}/gallery`,
     title: PROJECT_TITLE[lang].gallery(project.title),
-    description: PROJECT_DESC[lang].gallery(project.title, project.period, project.shortDescription || project.summary),
+    description: PROJECT_DESC[lang].gallery(project.title, project.shortDescription || project.summary),
     noindex: true,
     image: ogImageFor(id, project.coverImage),
   })

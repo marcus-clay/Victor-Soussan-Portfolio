@@ -15,8 +15,6 @@ export const SQOOL_TIMELINE_TRANSLATIONS = {
     phases: [
       {
         id: 'legacy',
-        period: '2015-2018',
-        year: '2015',
         title: 'Legacy Foundation',
         subtitle: 'The monolithic era',
         description: 'SQOOL Suite was a native Android launcher designed for shared tablets on classroom carts. Teachers used heavy C++ desktop apps while students were locked into a custom environment.',
@@ -29,8 +27,6 @@ export const SQOOL_TIMELINE_TRANSLATIONS = {
       },
       {
         id: 'research',
-        period: '2019-2020',
-        year: '2019',
         title: 'Finding Our Path',
         subtitle: 'Web-first exploration',
         description: 'With 500,000 personal devices deploying, we needed a new approach. Hi-SQOOL tested student engagement while Connect prototype validated web technology, and revealed why dashboards wouldn\'t work.',
@@ -43,8 +39,6 @@ export const SQOOL_TIMELINE_TRANSLATIONS = {
       },
       {
         id: 'pivot',
-        period: '2021',
-        year: '2021',
         title: 'Strategic Pivot',
         subtitle: 'Simple, Fluid, Magical',
         description: 'Instead of one big platform, we chose focused apps that do one thing well. A new manifesto guided product direction while the brand system and design system enabled scale.',
@@ -57,8 +51,6 @@ export const SQOOL_TIMELINE_TRANSLATIONS = {
       },
       {
         id: 'delivery',
-        period: '2022-2024',
-        year: '2022',
         title: 'Suite Delivery',
         subtitle: 'Specialized applications',
         description: 'With strategy defined and design system ready, we shipped the specialized apps: Classe for supervision, Partage for file sharing, Applications for discovery, MDM for IT, Protect for parents, Extend for virtual desktops.',
@@ -88,8 +80,6 @@ export const SQOOL_TIMELINE_TRANSLATIONS = {
     phases: [
       {
         id: 'legacy',
-        period: '2015-2018',
-        year: '2015',
         title: 'Fondation historique',
         subtitle: 'L’ère monolithique',
         description: 'La suite SQOOL était un launcher Android natif conçu pour des tablettes partagées sur chariots. Les enseignants utilisaient des apps C++ lourdes tandis que les élèves étaient enfermés dans un environnement personnalisé.',
@@ -102,8 +92,6 @@ export const SQOOL_TIMELINE_TRANSLATIONS = {
       },
       {
         id: 'research',
-        period: '2019-2020',
-        year: '2019',
         title: 'Trouver notre voie',
         subtitle: 'Exploration centrée sur le web',
         description: 'Avec 500 000 appareils personnels à déployer, nous avions besoin d’une nouvelle approche. Hi-SQOOL a testé l’engagement des élèves tandis que le prototype Connect a validé la technologie web, et révélé pourquoi les tableaux de bord ne marcheraient pas.',
@@ -116,8 +104,6 @@ export const SQOOL_TIMELINE_TRANSLATIONS = {
       },
       {
         id: 'pivot',
-        period: '2021',
-        year: '2021',
         title: 'Pivot stratégique',
         subtitle: 'Simple, fluide, magique',
         description: 'Au lieu d’une grande plateforme, nous avons choisi des apps ciblées qui font une seule chose bien. Un nouveau manifeste a guidé la direction produit tandis que le système de marque et le design system ont permis de passer à l’échelle.',
@@ -130,8 +116,6 @@ export const SQOOL_TIMELINE_TRANSLATIONS = {
       },
       {
         id: 'delivery',
-        period: '2022-2024',
-        year: '2022',
         title: 'Livraison de la suite',
         subtitle: 'Applications spécialisées',
         description: 'Avec la stratégie définie et le design system prêt, nous avons livré les apps spécialisées\u00a0: Classe pour la supervision, Partage pour les fichiers, Applications pour la découverte, MDM pour l’IT, Protect pour les parents, Extend pour les bureaux virtuels.',

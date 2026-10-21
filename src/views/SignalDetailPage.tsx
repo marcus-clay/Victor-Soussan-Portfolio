@@ -1,14 +1,22 @@
 /**
  * SignalDetailPage - Blog article view for a single signal
- * Layout unified with GuideClaudeCodePage: CaseStudyTOCBar, breadcrumb, article-body styles
+ * Same grammar as the case-study body: a full-width header, then ONE content column (.act-wide).
+ * Each h2 opens a numbered section (hairline, number in the gutter, title and text); text caps its
+ * own measure in `ch`. The header is a title and one quiet line of metadata: the long excerpt
+ * (370 to 980 characters, a summary of the opening paragraph) is not repeated as a standfirst, the
+ * opening paragraph itself leads the text.
  */
 
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Clock, Calendar, ArrowRight } from '@phosphor-icons/react';
-import { SIGNALS, CATEGORY_COLORS, CATEGORY_LABELS } from '../data/signalsData';
+import { ArrowRight } from '@phosphor-icons/react';
+import { SIGNALS, CATEGORY_LABELS } from '../data/signalsData';
 import CaseStudyTOCBar from '../components/CaseStudyTOCBar';
 import AuthorContactCard from '../components/AuthorContactCard';
+import RelatedContent, { type RelatedItem } from '../components/RelatedContent';
+import { ActRule } from '../components/case-study/ActSection';
+import { ArticleBody, ArticleBodyStyles } from '../components/article/ArticleBody';
+import { TRANSLATIONS } from '../data/translations';
 import { scrollToElement } from '../utils/smoothScroll';
 
 interface Props {
@@ -16,7 +24,8 @@ interface Props {
   systemTheme: 'light' | 'dark';
   lang: 'en' | 'fr';
   onBack: () => void;
-  onOpenSignal?: (signalId: string) => void;
+  /** Follow-up cards (computed on the server): next article first, then related content */
+  related: RelatedItem[];
 }
 
 interface TOCItem {
@@ -37,7 +46,19 @@ function parseAndInjectTOC(html: string): { tocItems: TOCItem[]; processedHtml: 
   return { tocItems, processedHtml };
 }
 
-const SignalDetailPage: React.FC<Props> = ({ signalId, systemTheme, lang, onBack, onOpenSignal }) => {
+/**
+ * Cuts the article HTML at every h2: the text before the first h2 is the introduction, then one
+ * chunk per section (the h2 is the first element of its chunk). Words and order are untouched.
+ */
+function splitAtH2(html: string): { intro: string; sections: string[] } {
+  const parts = html.split(/(?=<h2 id=")/);
+  if (parts.length > 0 && !parts[0].startsWith('<h2')) {
+    return { intro: parts[0], sections: parts.slice(1) };
+  }
+  return { intro: '', sections: parts };
+}
+
+const SignalDetailPage: React.FC<Props> = ({ signalId, systemTheme, lang, onBack, related }) => {
   const signal = SIGNALS.find(s => s.id === signalId);
   const isDark = systemTheme === 'dark';
   const articleRef = useRef<HTMLDivElement>(null);
@@ -62,13 +83,6 @@ const SignalDetailPage: React.FC<Props> = ({ signalId, systemTheme, lang, onBack
     return () => window.removeEventListener('scroll', handleScroll);
   }, [signal]);
 
-  const relatedSignals = useMemo(() => {
-    if (!signal) return [];
-    const sameCat = SIGNALS.filter(s => s.category === signal.category && s.id !== signal.id);
-    const others = SIGNALS.filter(s => s.category !== signal.category && s.id !== signal.id);
-    return [...sameCat, ...others].slice(0, 3);
-  }, [signal]);
-
   if (!signal) {
     return (
       <motion.div
@@ -79,8 +93,8 @@ const SignalDetailPage: React.FC<Props> = ({ signalId, systemTheme, lang, onBack
       >
         <div className="flex items-center justify-center h-full">
           <div className="text-center">
-            <p className="text-lg mb-4">{lang === 'en' ? 'Signal not found' : 'Signal introuvable'}</p>
-            <button onClick={onBack} className="text-gray-500 hover:text-gray-900 font-medium">
+            <p className="text-base mb-4">{lang === 'en' ? 'Signal not found' : 'Signal introuvable'}</p>
+            <button onClick={onBack} className="text-gray-500 [@media(hover:hover)]:hover:text-gray-900 font-medium">
               {lang === 'en' ? 'Go back' : 'Retour'}
             </button>
           </div>
@@ -95,35 +109,27 @@ const SignalDetailPage: React.FC<Props> = ({ signalId, systemTheme, lang, onBack
   const rawContent = bodyLong || `<p>${bodyShort}</p>`;
   const { tocItems, processedHtml } = parseAndInjectTOC(rawContent);
   const hasTOC = tocItems.length >= 2;
+  const { intro, sections } = splitAtH2(processedHtml);
 
   const formattedDate = new Date(signal.date + '-01').toLocaleDateString(
     lang === 'fr' ? 'fr-FR' : 'en-US',
     { month: 'long', year: 'numeric' }
   );
 
-  const textContent = rawContent.replace(/<[^>]*>/g, '');
-  const wordCount = textContent.split(/\s+/).length;
-  const readingTime = Math.max(1, Math.ceil(wordCount / 230));
-  const catColors = CATEGORY_COLORS[signal.category];
+  // Reading time: 220 words per minute, words counted on the text only (tags become spaces)
+  const wordCount = rawContent.replace(/<[^>]*>/g, ' ').split(/\s+/).filter(Boolean).length;
+  const readingTime = Math.max(1, Math.round(wordCount / 220));
+  const readingLabel = lang === 'fr' ? `${readingTime}\u00A0min de lecture` : `${readingTime} min read`;
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.2 }}
-      role="dialog"
-      aria-modal="true"
-      aria-label="Signal detail"
-      className={`min-h-screen ${isDark ? 'bg-[#0a0a0a]' : 'bg-[#FCFCFD]'}`}
-    >
+    <div className={`min-h-screen ${isDark ? 'bg-[#0a0a0a]' : 'bg-[#FCFCFD]'}`}>
       {/* Breadcrumb - sticky below Nav */}
       <div className={`sticky z-10 backdrop-blur-xl ${isDark ? 'bg-[#0a0a0a]/80 border-white/5' : 'bg-[#FCFCFD]/80 border-gray-200'}`} style={{ top: 'var(--nav-height, 64px)', transition: 'top 250ms cubic-bezier(0.23, 1, 0.32, 1)' }}>
-        <div className="max-w-[740px] mx-auto px-4 md:px-6 h-10 flex items-center">
+        <div className="wrap h-10 flex items-center">
           <nav className="flex items-center gap-1.5 text-xs min-w-0 overflow-hidden">
             <button
               onClick={onBack}
-              className={`transition-colors cursor-pointer hover:underline flex-shrink-0 ${isDark ? 'text-gray-500 hover:text-white' : 'text-gray-400 hover:text-gray-900'}`}
+              className={`transition-colors cursor-pointer flex-shrink-0 [@media(hover:hover)]:hover:underline ${isDark ? 'text-gray-500 [@media(hover:hover)]:hover:text-white' : 'text-gray-500 [@media(hover:hover)]:hover:text-gray-900'}`}
             >
               {lang === 'fr' ? 'Ressources' : 'Resources'}
             </button>
@@ -151,194 +157,66 @@ const SignalDetailPage: React.FC<Props> = ({ signalId, systemTheme, lang, onBack
         </div>
       )}
 
-      {/* Main content */}
-      <div className="max-w-[740px] mx-auto px-6 pb-20">
-        <article ref={articleRef} className="flex-1 min-w-0 pt-8 md:pt-10">
+      {/* Header full width (same as Approche), then everything lives in the one content column */}
+      <article ref={articleRef}>
+        <header className="wrap pt-10 md:pt-16 pb-12 md:pb-16">
+          <h1 className={`text-headline text-balance max-w-[26ch] ${isDark ? 'text-white' : 'text-gray-900'}`}>
+            {title}
+          </h1>
 
-          {/* Hero: content-first (matches guide layout) */}
-          <div className="mb-10">
-            {/* Category tag */}
-            <span className={`inline-block px-3 py-1 rounded-full text-micro font-semibold mb-4 ${
-              isDark ? catColors.bgDark : catColors.bg
-            } ${catColors.text}`}>
-              {CATEGORY_LABELS[signal.category][lang]}
-            </span>
+          {/* One quiet line: category, date, reading time */}
+          <p className="mt-6 md:mt-8 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-gray-500">
+            <span>{CATEGORY_LABELS[signal.category][lang]}</span>
+            <span className="text-gray-300" aria-hidden="true">·</span>
+            <time dateTime={signal.date}>{formattedDate}</time>
+            <span className="text-gray-300" aria-hidden="true">·</span>
+            <span>{readingLabel}</span>
+          </p>
+        </header>
 
-            {/* Title */}
-            <h1 className={`text-title-1 mb-4 ${
-              isDark ? 'text-white' : 'text-gray-900'
-            }`}>
-              {title}
-            </h1>
+        {/* Hero image (if signal has one): the full column */}
+        {signal.heroImage && (
+          <figure className="act-wide m-0 pb-12 md:pb-16">
+            <img
+              src={signal.heroImage}
+              alt={title}
+              className="w-full max-h-[70vh] object-cover rounded-xl ring-1 ring-inset ring-black/[0.05]"
+            />
+          </figure>
+        )}
 
-            {/* Meta row with author */}
-            <div className={`flex items-center gap-3 pb-6 mb-6 border-b ${isDark ? 'border-white/10' : 'border-gray-100'}`}>
-              <img
-                src="/images/photos victor/image_victor_home.webp"
-                alt="Victor Soussan"
-                className="w-9 h-9 rounded-full object-cover flex-shrink-0"
-              />
-              <div className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-400'}`}>
-                <span className={`font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>Victor Soussan</span>
-                <span className="mx-2 text-gray-300">·</span>
-                <span className="inline-flex items-center gap-1">
-                  <Calendar size={12} />
-                  {formattedDate}
-                </span>
-                <span className="mx-2 text-gray-300">·</span>
-                <span className="inline-flex items-center gap-1">
-                  <Clock size={12} />
-                  {readingTime} min {lang === 'en' ? 'read' : 'de lecture'}
-                </span>
-              </div>
+        {/* Introduction: the text before the first h2 */}
+        {intro && (
+          <div className={`act-wide ${sections.length > 0 ? 'pb-12 md:pb-16' : 'pb-16 md:pb-24'}`}>
+            <ArticleBody html={intro} isDark={isDark} lead />
+          </div>
+        )}
+
+        {/* One section per h2: hairline across the container, number in the gutter (above the title
+            on phones), then title and text on the column. The hairline above the related block
+            closes the article. */}
+        {sections.map((html, i) => (
+          <section key={i}>
+            <ActRule />
+            <div className={`act-wide pt-12 md:pt-16 ${i === sections.length - 1 ? 'pb-16 md:pb-24' : 'pb-12 md:pb-16'}`}>
+              <span
+                className="block md:absolute md:left-[var(--pad)] md:top-[4.45rem] mb-3 md:mb-0 text-xs font-medium text-gray-500 tabular-nums"
+                aria-hidden="true"
+              >
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <ArticleBody html={html} isDark={isDark} />
             </div>
-          </div>
+          </section>
+        ))}
+      </article>
 
-          {/* Hero image (if signal has one) */}
-          {signal.heroImage && (
-            <motion.figure
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1], delay: 0.1 }}
-              className="mb-10"
-            >
-              <img
-                src={signal.heroImage}
-                alt={title}
-                className="w-full rounded-xl"
-              />
-            </motion.figure>
-          )}
+      {/* Follow-up: next article first, then related content, then the author block */}
+      <RelatedContent heading={TRANSLATIONS[lang].related.keep_reading} items={related} id="related" />
+      <AuthorContactCard lang={lang} />
 
-          {/* Article body */}
-          <div
-            className={`article-body ${isDark ? 'article-body-dark' : ''}`}
-            dangerouslySetInnerHTML={{ __html: processedHtml }}
-          />
-
-          {/* Author + Contact */}
-          <div className="mt-14">
-            <AuthorContactCard lang={lang} isDark={isDark} />
-          </div>
-
-          {/* Related articles (inline, below author) */}
-          {relatedSignals.length > 0 && (
-            <div className="mt-14">
-              <p className={`text-micro font-semibold uppercase tracking-widest mb-5 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
-                {lang === 'en' ? 'More articles' : 'Autres articles'}
-              </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                {relatedSignals.map((rs, idx) => {
-                  const rsColors = CATEGORY_COLORS[rs.category];
-                  return (
-                    <motion.button
-                      key={rs.id}
-                      initial={{ opacity: 0, y: 12 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, margin: '-40px' }}
-                      transition={{ duration: 0.35, ease: [0.23, 1, 0.32, 1], delay: idx * 0.06 }}
-                      onClick={() => onOpenSignal ? onOpenSignal(rs.id) : null}
-                      className={`group text-left rounded-xl cursor-pointer p-4 active:scale-[0.97] ${
-                        isDark
-                          ? 'bg-[#1D1D1F] ring-1 ring-white/5 hover:ring-white/15 hover:shadow-lg'
-                          : 'bg-white ring-1 ring-gray-200/60 hover:ring-gray-300/80 shadow-sm hover:shadow-md'
-                      }`}
-                      style={{ transition: 'transform 160ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 200ms cubic-bezier(0.23, 1, 0.32, 1), ring-color 200ms ease' }}
-                    >
-                      <span className={`inline-block px-2 py-0.5 rounded-full text-micro font-semibold mb-2 ${
-                        isDark ? rsColors.bgDark : rsColors.bg
-                      } ${rsColors.text}`}>
-                        {CATEGORY_LABELS[rs.category][lang]}
-                      </span>
-                      <p className={`text-sm font-bold leading-snug line-clamp-2 mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                        {lang === 'en' ? rs.title_en : rs.title_fr}
-                      </p>
-                      <span className={`flex items-center gap-1 text-xs font-medium ${isDark ? 'text-blue-400' : 'text-gray-500 hover:text-gray-900'}`}>
-                        {lang === 'en' ? 'Read' : 'Lire'}
-                        <ArrowRight size={10} className="transition-transform duration-200 group-hover:translate-x-0.5" />
-                      </span>
-                    </motion.button>
-                  );
-                })}
-              </div>
-            </div>
-          )}
-
-          {/* Back to resources */}
-          <div className="mt-14 flex justify-center">
-            <button
-              onClick={onBack}
-              className="group inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-medium cursor-pointer bg-gray-900 text-white hover:bg-gray-800 active:scale-[0.97] ring-1 ring-black shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]"
-              style={{ transition: 'background-color 200ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
-            >
-              <ArrowLeft size={16} className="transition-transform duration-200 group-hover:-translate-x-1" />
-              {lang === 'en' ? 'All articles' : 'Tous les articles'}
-            </button>
-          </div>
-        </article>
-      </div>
-
-      {/* Article typography (shared with GuideClaudeCodePage) */}
-      <style>{`
-        .article-body p {
-          margin-bottom: 1.75rem;
-          line-height: 1.85;
-          font-size: 1rem;
-          color: #4b5563;
-        }
-        .article-body strong { font-weight: 600; color: #1f2937; }
-        .article-body h2, .article-body h3 {
-          font-size: 1rem;
-          font-weight: 600;
-          letter-spacing: -0.01em;
-          line-height: 1.4;
-          color: #111827;
-        }
-        .article-body h2 {
-          margin-top: 3rem;
-          margin-bottom: 1rem;
-          padding-top: 1.5rem;
-          border-top: 1px solid #f3f4f6;
-          scroll-margin-top: 7rem;
-        }
-        .article-body h2:first-child { margin-top: 0; padding-top: 0; border-top: none; }
-        .article-body h3 {
-          margin-top: 2rem;
-          margin-bottom: 0.75rem;
-        }
-        .article-body ul, .article-body ol { margin-top: 0.75rem; margin-bottom: 1.75rem; padding-left: 1.5rem; }
-        .article-body ul { list-style-type: disc; }
-        .article-body ol { list-style-type: decimal; }
-        .article-body li { margin-bottom: 0.75rem; line-height: 1.75; font-size: 1rem; color: #4b5563; }
-        .article-body a { color: #111827; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: #d1d5db; transition: text-decoration-color 0.15s; }
-        .article-body a:hover { text-decoration-color: #6b7280; }
-        .article-body img { border-radius: 12px; max-width: 100%; margin: 2.5rem 0; cursor: zoom-in; transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.3s cubic-bezier(0.23, 1, 0.32, 1); }
-        @media (hover: hover) and (pointer: fine) {
-          .article-body img:hover { transform: scale(1.01); box-shadow: 0 12px 40px rgba(0,0,0,0.1); }
-        }
-        .article-body pre { background: #18181b; color: #e4e4e7; padding: 20px 24px; border-radius: 12px; overflow-x: auto; margin: 2rem 0; font-size: 13px; line-height: 1.7; border: 1px solid rgba(255,255,255,0.06); }
-        .article-body pre code { background: none; padding: 0; font-size: inherit; color: inherit; }
-        .article-body code { background: #f4f4f5; padding: 3px 7px; border-radius: 5px; font-family: ui-monospace, SFMono-Regular, monospace; font-size: 0.8125rem; color: #18181b; }
-        .article-body blockquote { border-left: 2px solid #d1d5db; padding: 1rem 1.25rem; margin: 2rem 0; font-style: italic; color: #6b7280; border-radius: 0; line-height: 1.7; }
-        .article-body table { width: 100%; border-collapse: collapse; margin: 2rem 0; font-size: 0.875rem; }
-        .article-body th { font-weight: 600; padding: 12px 16px; text-align: left; background: #f4f4f5; color: #111827; font-size: 0.8125rem; text-transform: uppercase; letter-spacing: 0.04em; }
-        .article-body td { padding: 12px 16px; border-bottom: 1px solid #f4f4f5; color: #4b5563; }
-        .article-body tr:nth-child(even) td { background: #fafafa; }
-        @media (min-width: 768px) {
-          .article-body p, .article-body li { font-size: 1.0625rem; }
-        }
-        .article-body-dark p, .article-body-dark li { color: #a1a1aa; }
-        .article-body-dark strong { color: #e4e4e7; }
-        .article-body-dark h2, .article-body-dark h3 { color: #ffffff; }
-        .article-body-dark h2 { border-top-color: rgba(255,255,255,0.05); }
-        .article-body-dark blockquote { color: #71717a; background: rgba(255,255,255,0.03); }
-        .article-body-dark code { background: rgba(255,255,255,0.08); color: #e2e8f0; }
-        .article-body-dark th { background: rgba(255,255,255,0.05); color: #fff; }
-        .article-body-dark td { border-bottom-color: rgba(255,255,255,0.05); color: #a1a1aa; }
-        .article-body-dark tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
-        .article-body-dark img:hover { box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
-      `}</style>
-    </motion.div>
+      <ArticleBodyStyles />
+    </div>
   );
 };
 

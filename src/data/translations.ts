@@ -431,6 +431,19 @@ export const TRANSLATIONS = {
       modal_title: "All Testimonials",
       modal_sub: "verified reviews (LinkedIn / PDF)",
       empty: "No testimonials found in this category.",
+      filters_label: "Filter by category",
+      filter_all: "All",
+      filter_clients: "Clients",
+      filter_management: "Management",
+      filter_design: "Design",
+      filter_product: "Product and tech",
+      count_one: "{n} testimonial",
+      count_other: "{n} testimonials",
+      read_full: "Read the full testimonial",
+      read_more: "Read more",
+      read_less: "Show less",
+      case_study_link: "Read the {name} case study",
+      linkedin_profile: "{name} on LinkedIn",
       close: "Close",
       linkedin_cta_title: "More recommendations on LinkedIn",
       linkedin_cta_desc: "These testimonials are all published on LinkedIn. You'll find the full list there, along with articles on product design, Claude Code, and AI-driven workflows.",
@@ -549,6 +562,10 @@ export const TRANSLATIONS = {
       quote_validation_email: "Please enter a valid email",
       quote_validation_file_size: "File size must be under 3MB",
       quote_validation_file_type: "Only PDF and DOCX files are allowed"
+    },
+    related: {
+      keep_reading: "Keep reading",
+      next_project: "Next project"
     },
     settings: {
       title: "Settings",
@@ -895,6 +912,19 @@ export const TRANSLATIONS = {
       modal_title: "Tous les T\u00e9moignages",
       modal_sub: "avis v\u00e9rifi\u00e9s (LinkedIn / PDF)",
       empty: "Aucun témoignage trouvé dans cette catégorie.",
+      filters_label: "Filtrer par catégorie",
+      filter_all: "Tous",
+      filter_clients: "Clients",
+      filter_management: "Management",
+      filter_design: "Design",
+      filter_product: "Produit et tech",
+      count_one: "{n}\u00a0témoignage",
+      count_other: "{n}\u00a0témoignages",
+      read_full: "Lire le témoignage complet",
+      read_more: "Lire la suite",
+      read_less: "Réduire",
+      case_study_link: "Lire l’étude de cas {name}",
+      linkedin_profile: "{name} sur LinkedIn",
       close: "Fermer",
       linkedin_cta_title: "D'autres recommandations sur LinkedIn",
       linkedin_cta_desc: "Ces témoignages sont tous publiés sur LinkedIn. Vous y trouverez la liste complète, ainsi que des articles sur le product design, Claude Code et les workflows augmentés par l'IA.",
@@ -1013,6 +1043,10 @@ export const TRANSLATIONS = {
       quote_validation_email: "Veuillez entrer un email valide",
       quote_validation_file_size: "La taille du fichier doit \u00eatre inf\u00e9rieure \u00e0 3Mo",
       quote_validation_file_type: "Seuls les fichiers PDF et DOCX sont autoris\u00e9s"
+    },
+    related: {
+      keep_reading: "Pour continuer",
+      next_project: "Projet suivant"
     },
     settings: {
       title: "Param\u00e8tres",

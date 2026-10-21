@@ -1,68 +1,58 @@
-'use client'
-
-import { LinkedinLogo, Envelope } from '@phosphor-icons/react'
+import Link from 'next/link'
+import { TRANSLATIONS } from '@/data/translations'
 
 interface AuthorContactCardProps {
   lang: 'en' | 'fr'
-  isDark?: boolean
   /** Contextual message. Falls back to a generic collaboration prompt. */
   message?: string
 }
 
 /**
- * AuthorContactCard — Design system component.
- * Reusable author card with contact CTAs (LinkedIn + Email).
- * Used at the bottom of case studies, guides, and articles.
+ * Author block that closes case studies, articles and guides, after the related content.
+ * Same rhythm as RelatedContent (hairline, then pt-12 md:pt-16 and pb-16 md:pb-24), no card
+ * around it, one primary action in a black button; LinkedIn stays a quiet text link.
  */
-export default function AuthorContactCard({ lang, isDark = false, message }: AuthorContactCardProps) {
+export default function AuthorContactCard({ lang, message }: AuthorContactCardProps) {
   const defaultMessage = lang === 'fr'
     ? 'Envie de collaborer sur un projet similaire ? Discutons.'
     : 'Interested in working on a similar project? Let\'s talk.'
 
   return (
-    <div className={`p-6 md:p-8 rounded-2xl border ${
-      isDark ? 'bg-[#1D1D1F] border-white/5' : 'bg-white border-gray-100'
-    }`}>
-      <div className="flex items-start gap-4">
-        <img
-          src="/images/photos victor/image_victor_home.webp"
-          alt="Victor Soussan"
-          className="w-14 h-14 rounded-full object-cover flex-shrink-0"
-        />
-        <div>
-          <p className={`font-bold mb-0.5 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-            Victor Soussan
-          </p>
-          <p className={`text-sm mb-3 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-            Lead Product Designer
-          </p>
-          <p className={`text-sm leading-relaxed mb-4 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-            {message || defaultMessage}
-          </p>
-          <div className="flex flex-wrap gap-3">
-            <a
-              href="https://www.linkedin.com/in/victorsoussan/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium bg-gray-900 text-white hover:bg-gray-800 active:scale-[0.97] ring-1 ring-black shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]"
-              style={{ transition: 'background-color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
-            >
-              <LinkedinLogo size={16} weight="bold" /> LinkedIn
-            </a>
-            <a
-              href="mailto:victor@victorsoussan.fr"
-              className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium active:scale-[0.97] ${
-                isDark
-                  ? 'bg-white/5 text-white hover:bg-white/10 ring-1 ring-white/10'
-                  : 'bg-gray-100 text-gray-900 hover:bg-gray-200 ring-1 ring-black/[0.06]'
-              }`}
-              style={{ transition: 'background-color 200ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
-            >
-              <Envelope size={16} /> Email
-            </a>
+    <section aria-label="Victor Soussan" className="border-t border-gray-100">
+      <div className="wrap pt-12 md:pt-16 pb-16 md:pb-24">
+        <div className="flex max-w-[680px] items-start gap-4">
+          <img
+            src="/images/photos victor/image_victor_home.webp"
+            alt=""
+            width={56}
+            height={56}
+            loading="lazy"
+            className="h-14 w-14 flex-shrink-0 rounded-full object-cover"
+          />
+          <div>
+            <p className="text-base font-medium text-gray-900">Victor Soussan</p>
+            <p className="text-sm text-gray-500">Lead Product Designer</p>
+            <p className="mt-4 max-w-[56ch] text-sm text-gray-600">{message || defaultMessage}</p>
+            <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2">
+              <Link
+                href={`/${lang}/contact`}
+                className="inline-flex min-h-11 items-center rounded-full bg-gray-900 px-5 text-sm font-medium text-white hover:bg-black active:scale-[0.97]"
+                style={{ transition: 'background-color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
+              >
+                {TRANSLATIONS[lang].nav.contact}
+              </Link>
+              <a
+                href="https://www.linkedin.com/in/victorsoussan/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-11 items-center text-sm text-gray-600 transition-colors duration-150 hover:text-gray-500"
+              >
+                LinkedIn
+              </a>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   )
 }

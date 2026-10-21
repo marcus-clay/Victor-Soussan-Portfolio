@@ -2,6 +2,8 @@
  * GuideClaudeCodePage - Guide with index page + individual chapter sub-pages
  * view='index' → landing page with chapter cards
  * view={slug}  → single chapter article with breadcrumb
+ * Same grammar as the case-study body: a full-width header, then ONE content column (.act-wide).
+ * Every chapter section is a hairline, its title and its text; text caps its own measure in `ch`.
  */
 
 import React, { useState, useEffect, useRef } from 'react';
@@ -9,81 +11,89 @@ import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { scrollToElement } from '../utils/smoothScroll';
 import {
-  ArrowLeft, ArrowRight, Clock, Calendar, List,
-  LinkedinLogo, Envelope, CaretRight, X,
+  ArrowRight, Clock, Calendar, List,
+  CaretRight, X,
 } from '@phosphor-icons/react';
 import { GUIDE_META, GUIDE_CHAPTERS } from '../data/guideClaudeCodeData';
 import CaseStudyTOCBar from '../components/CaseStudyTOCBar';
 import AuthorContactCard from '../components/AuthorContactCard';
+import RelatedContent, { type RelatedItem } from '../components/RelatedContent';
+import { ActRule } from '../components/case-study/ActSection';
+import { ArticleBody, ArticleBodyStyles } from '../components/article/ArticleBody';
+import { TRANSLATIONS } from '../data/translations';
+import { useReveal } from '../lib/motion';
 
 interface Props {
   systemTheme: 'light' | 'dark';
   lang: 'en' | 'fr';
   view: string; // 'index' or chapter slug
   onNavigate: (target: string) => void; // 'blog', 'index', or chapter slug
+  /** Follow-up cards (computed on the server): next and previous chapter, then other resources */
+  related: RelatedItem[];
 }
 
-const TAG_STYLES: Record<string, string> = {
-  'Claude Code': 'bg-gray-100 text-gray-500',
-  'Guide': 'bg-gray-100 text-gray-500',
-  'Ressources': 'bg-gray-100 text-gray-500',
-};
+const TAG_STYLE = 'bg-gray-100 text-gray-600';
 
 // ─── Index Page ───────────────────────────────────────────────────────────────
 
-const GuideIndex: React.FC<{ isDark: boolean; lang: string; onNavigate: (t: string) => void }> = ({ isDark, lang, onNavigate }) => (
-  <div className="max-w-[740px] mx-auto px-6 pb-20 pt-8 md:pt-10">
-    {/* Title + meta : full width, left-aligned */}
-    <div className="mb-6">
-      <div className="flex flex-wrap gap-2 mb-4">
+const GuideIndex: React.FC<{ isDark: boolean; lang: string; onNavigate: (t: string) => void }> = ({ isDark, lang, onNavigate }) => {
+  const reveal = useReveal();
+  return (
+  <>
+    {/* Header: full width, like Approche */}
+    <header className="wrap pt-10 md:pt-16 pb-12 md:pb-16">
+      <div className="flex flex-wrap gap-2 mb-6">
         {(lang === 'fr' ? GUIDE_META.categories_fr : GUIDE_META.categories_en).map((cat) => (
-          <span key={cat} className={`px-2.5 py-1 rounded-full text-micro font-semibold ${TAG_STYLES[cat as string]}`}>
+          <span key={cat} className={`px-2.5 py-1 rounded-full text-micro font-semibold ${TAG_STYLE}`}>
             {cat}
           </span>
         ))}
       </div>
-      <h1 className={`text-title-1 mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+      <h1 className={`text-headline text-balance max-w-[26ch] ${isDark ? 'text-white' : 'text-gray-900'}`}>
         {lang === 'fr' ? GUIDE_META.title_fr : GUIDE_META.title_en}
       </h1>
-      <p className={`text-base leading-relaxed mb-6 max-w-[55ch] ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+      <p className={`mt-6 md:mt-8 text-lead-lg max-w-[54ch] ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
         {lang === 'fr' ? GUIDE_META.subtitle_fr : GUIDE_META.subtitle_en}
       </p>
-      <div className={`flex items-center gap-3 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
+      <div className="mt-6 md:mt-8 flex items-center gap-3 text-gray-500">
         <img src={GUIDE_META.author.image} alt={GUIDE_META.author.name} className="w-9 h-9 rounded-full object-cover" />
-        <div className="text-sm">
+        <div className="text-xs">
           <span className={`font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>{GUIDE_META.author.name}</span>
-          <span className="mx-2">·</span>
-          <span className="inline-flex items-center gap-1"><Calendar size={12} />{new Date(GUIDE_META.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
-          <span className="mx-2">·</span>
-          <span className="inline-flex items-center gap-1"><Clock size={12} />{GUIDE_META.readTime}</span>
+          <span className="mx-2" aria-hidden="true">·</span>
+          <span className="inline-flex items-center gap-1"><Calendar size={12} aria-hidden="true" />{new Date(GUIDE_META.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+          <span className="mx-2" aria-hidden="true">·</span>
+          <span className="inline-flex items-center gap-1"><Clock size={12} aria-hidden="true" />{GUIDE_META.readTime}</span>
         </div>
       </div>
-    </div>
+    </header>
 
-    <figure className="mb-10">
-      <img src={GUIDE_META.heroImage} alt={lang === 'fr' ? GUIDE_META.heroAlt_fr : GUIDE_META.heroAlt_en} className="w-full rounded-xl" />
-      <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
+    {/* Hero figure: the full column */}
+    <figure className="act-wide m-0 pb-12 md:pb-16">
+      <img src={GUIDE_META.heroImage} alt={lang === 'fr' ? GUIDE_META.heroAlt_fr : GUIDE_META.heroAlt_en} className="w-full max-h-[70vh] object-cover rounded-2xl ring-1 ring-inset ring-black/[0.05]" />
+      <figcaption className="mt-3 text-sm text-gray-500 max-w-[62ch]">
         {lang === 'en'
           ? 'Claude Code gives designers the ability to design, produce, and deploy real, usable deliverables. A link to share with your team, to present to stakeholders, to put in front of users to define scope and refine a solution. With a bit of method and strong design opinions, the cycle between a design decision and something testable shrinks to the essentials.'
           : 'Claude Code ouvre aux designers la possibilité de concevoir, produire et déployer des livrables réels, directement utilisables. Un lien à partager à son équipe, à présenter à ses décideurs, à faire tester à ses usagers pour délimiter un scope et raffiner une solution. Avec un peu de méthode et des partis pris affirmés, le cycle entre une décision de design et quelque chose de testable se réduit à l\'essentiel.'}
       </figcaption>
     </figure>
 
-    <div>
-        {/* Intro callout */}
-        <div className={`p-6 rounded-xl border-l-4 border-amber-400 mb-14 ${isDark ? 'bg-amber-900/10' : 'bg-amber-50'}`}>
-          <p className={`text-sm leading-[1.8] ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-            {lang === 'en'
-              ? <>Most Claude Code guides are written for developers. This one starts from a different place: you're a designer, you work in Figma, you think in interfaces, flows, and components. <strong>You don't necessarily want to learn to code for real. And you don't have to.</strong></>
-              : <>Beaucoup de guides sur Claude Code s'adressent à des développeurs. Celui-ci part d'un point de vue différent : tu es designer, tu travailles dans Figma, tu penses en interfaces, en flux, en composants. <strong>Tu n'as pas forcément envie d'apprendre à coder pour de bon. Et tu n'en as pas besoin.</strong></>}
-          </p>
-        </div>
+    {/* Intro: plain text on the column, no tinted panel */}
+    <div className="act-wide pb-12 md:pb-16">
+      <p className={`text-base max-w-[62ch] ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+        {lang === 'en'
+          ? <>Most Claude Code guides are written for developers. This one starts from a different place: you're a designer, you work in Figma, you think in interfaces, flows, and components. <strong>You don't necessarily want to learn to code for real. And you don't have to.</strong></>
+          : <>Beaucoup de guides sur Claude Code s'adressent à des développeurs. Celui-ci part d'un point de vue différent : tu es designer, tu travailles dans Figma, tu penses en interfaces, en flux, en composants. <strong>Tu n'as pas forcément envie d'apprendre à coder pour de bon. Et tu n'en as pas besoin.</strong></>}
+      </p>
+    </div>
 
-        {/* Chapter cards */}
-        <h2 className={`text-title-2 mb-8 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+    {/* Chapter cards */}
+    <section>
+      <ActRule />
+      <div className="act-wide pt-12 md:pt-16 pb-16 md:pb-24">
+        <h2 className={`text-subhead max-w-[26ch] mb-8 md:mb-10 ${isDark ? 'text-white' : 'text-gray-900'}`}>
           {lang === 'en' ? 'Table of contents' : 'Ce que couvre ce guide'}
         </h2>
-        <div className="flex flex-col gap-4 mb-14">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
           {GUIDE_CHAPTERS.map((ch, idx) => {
             const chSlug = lang === 'fr' ? ch.slug_fr : ch.slug_en;
             const chTitle = lang === 'fr' ? ch.title_fr : ch.title_en;
@@ -91,44 +101,36 @@ const GuideIndex: React.FC<{ isDark: boolean; lang: string; onNavigate: (t: stri
             return (
             <motion.button
               key={chSlug}
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-30px' }}
-              transition={{ duration: 0.35, ease: [0.23, 1, 0.32, 1], delay: idx * 0.05 }}
+              {...reveal(idx)}
               onClick={() => onNavigate(chSlug)}
-              className={`group text-left p-4 md:p-5 rounded-xl border cursor-pointer active:scale-[0.98] ${
+              className={`group text-left h-full p-5 md:p-6 rounded-2xl border cursor-pointer active:scale-[0.98] ${
                 isDark
-                  ? 'bg-[#1D1D1F] border-white/5 hover:border-white/15 hover:shadow-lg'
-                  : 'bg-white border-gray-200 hover:border-gray-300 hover:shadow-md'
+                  ? 'bg-[#1D1D1F] border-white/5 [@media(hover:hover)]:hover:border-white/15'
+                  : 'bg-white border-gray-100 [@media(hover:hover)]:hover:border-gray-200'
               }`}
-              style={{ transition: 'transform 160ms cubic-bezier(0.23, 1, 0.32, 1), border-color 200ms ease, box-shadow 200ms ease' }}
+              style={{ transition: 'transform 160ms cubic-bezier(0.23, 1, 0.32, 1), border-color 150ms ease' }}
             >
               <div className="flex items-start gap-4">
-                <span className={`flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold ${
-                  isDark ? 'bg-white/5 text-gray-400' : 'bg-gray-100 text-gray-500'
-                }`}>
-                  {ch.number}
-                </span>
                 <div className="flex-1 min-w-0">
-                  <h3 className={`text-title-3 mb-1 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                  <p className="mb-1.5 text-xs tabular-nums text-gray-500">{ch.number}</p>
+                  <h3 className={`text-title-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>
                     {chTitle}
                   </h3>
-                  <p className={`text-sm leading-relaxed line-clamp-2 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                  <p className={`mt-2 text-sm line-clamp-2 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
                     {chIntro}
                   </p>
                 </div>
-                <ArrowRight size={16} className={`flex-shrink-0 mt-1.5 transition-transform duration-200 group-hover:translate-x-1 ${isDark ? 'text-gray-600' : 'text-gray-300'}`} />
+                <ArrowRight size={16} aria-hidden="true" className={`flex-shrink-0 mt-1 transition-transform duration-200 [@media(hover:hover)]:group-hover:translate-x-1 ${isDark ? 'text-gray-600' : 'text-gray-400'}`} />
               </div>
             </motion.button>
             );
           })}
         </div>
-
-        {/* Author + Contact */}
-        <AuthorContactCard lang={lang as 'en' | 'fr'} isDark={isDark} />
-    </div>
-  </div>
-);
+      </div>
+    </section>
+  </>
+  );
+};
 
 // ─── Chapter Page ─────────────────────────────────────────────────────────────
 
@@ -187,29 +189,26 @@ const GuideChapter: React.FC<{
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Scroll to top on chapter change
+  // New chapter: reset the active section. The router already puts a new page at the top,
+  // and nothing scrolls on mount.
   useEffect(() => {
-    window.scrollTo({ top: 0 });
     setActiveSection('');
   }, [slug]);
 
   if (!chapter) {
     return (
-      <div className="max-w-[900px] mx-auto px-6 py-20 text-center">
-        <p className={`text-lg mb-4 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{lang === 'en' ? 'Chapter not found' : 'Chapitre introuvable'}</p>
-        <button onClick={() => onNavigate('index')} className="text-gray-500 hover:text-gray-900 font-medium hover:underline">
+      <div className="wrap py-16 md:py-24">
+        <p className={`text-base mb-4 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{lang === 'en' ? 'Chapter not found' : 'Chapitre introuvable'}</p>
+        <button onClick={() => onNavigate('index')} className="text-gray-500 font-medium [@media(hover:hover)]:hover:text-gray-900 [@media(hover:hover)]:hover:underline">
           {lang === 'en' ? 'Back to guide' : 'Retour au guide'}
         </button>
       </div>
     );
   }
 
-  const prev = chapterIdx > 0 ? GUIDE_CHAPTERS[chapterIdx - 1] : null;
-  const next = chapterIdx < GUIDE_CHAPTERS.length - 1 ? GUIDE_CHAPTERS[chapterIdx + 1] : null;
-
   return (
     <>
-      {/* Lightbox — portaled to body to escape z-index stacking context */}
+      {/* Lightbox: portaled to body to escape z-index stacking context */}
       {mounted && createPortal(
         <AnimatePresence>
           {lightboxSrc && (
@@ -220,7 +219,7 @@ const GuideChapter: React.FC<{
               className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/85 backdrop-blur-sm cursor-zoom-out p-4 md:p-10"
               onClick={() => setLightboxSrc(null)}
             >
-              <button className="absolute top-4 right-4 p-2 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors z-10" onClick={() => setLightboxSrc(null)}>
+              <button className="absolute top-4 right-4 p-2 rounded-full bg-white/10 text-white [@media(hover:hover)]:hover:bg-white/20 transition-colors z-10" onClick={() => setLightboxSrc(null)}>
                 <X size={24} />
               </button>
               <motion.img initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }} transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }} src={lightboxSrc} alt="" className="max-w-full max-h-full rounded-xl object-contain" onClick={(e) => e.stopPropagation()} />
@@ -249,99 +248,37 @@ const GuideChapter: React.FC<{
         </div>
       )}
 
-      <div className="max-w-[740px] mx-auto px-6 pb-20">
-          {/* ─── Article content ─── */}
-          <article ref={articleRef} className="flex-1 min-w-0 pt-8 md:pt-10">
-            {/* Chapter header */}
-            <div className="mb-12">
-              <span className={`text-micro font-semibold uppercase tracking-widest ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
-                {lang === 'en' ? 'Chapter' : 'Chapitre'} {chapter.number} / {GUIDE_CHAPTERS.length}
-              </span>
-              <h1 className={`text-title-1 mt-3 mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                {lang === 'fr' ? chapter.title_fr : chapter.title_en}
-              </h1>
-              <p className={`text-base leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                {lang === 'fr' ? chapter.intro_fr : chapter.intro_en}
-              </p>
+      <article ref={articleRef}>
+        {/* Chapter header: full width, like Approche */}
+        <header className="wrap pt-10 md:pt-16 pb-12 md:pb-16">
+          <span className="text-micro font-semibold uppercase tracking-[0.08em] text-gray-500">
+            {lang === 'en' ? 'Chapter' : 'Chapitre'} {chapter.number} / {GUIDE_CHAPTERS.length}
+          </span>
+          <h1 className={`mt-6 text-headline text-balance max-w-[26ch] ${isDark ? 'text-white' : 'text-gray-900'}`}>
+            {lang === 'fr' ? chapter.title_fr : chapter.title_en}
+          </h1>
+          <p className={`mt-6 md:mt-8 text-lead-lg max-w-[54ch] ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+            {lang === 'fr' ? chapter.intro_fr : chapter.intro_en}
+          </p>
+        </header>
+
+        {/* Sections: hairline across the container, title and text on the one content column */}
+        {chapter.sections.map((section, sIdx) => (
+          <section key={sIdx} id={`section-${slug}-${sIdx}`} className="scroll-mt-28">
+            <ActRule />
+            <div className={`act-wide pt-12 md:pt-16 ${sIdx === chapter.sections.length - 1 ? 'pb-16 md:pb-24' : 'pb-12 md:pb-16'}`}>
+              <h2 className={`text-subhead max-w-[26ch] mb-5 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                {lang === 'fr' ? section.heading_fr : section.heading_en}
+              </h2>
+              <ArticleBody html={lang === 'fr' ? section.content_fr : section.content_en} isDark={isDark} />
             </div>
+          </section>
+        ))}
+      </article>
 
-            {/* Sections */}
-            {chapter.sections.map((section, sIdx) => (
-              <div
-                key={sIdx}
-                id={`section-${slug}-${sIdx}`}
-                className={`mb-14 scroll-mt-28 ${sIdx > 0 ? `pt-10 border-t ${isDark ? 'border-white/5' : 'border-gray-100'}` : ''}`}
-              >
-                <h2 className={`text-title-2 mb-5 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                  {lang === 'fr' ? section.heading_fr : section.heading_en}
-                </h2>
-                <div className={`article-body ${isDark ? 'article-body-dark' : ''}`} dangerouslySetInnerHTML={{ __html: lang === 'fr' ? section.content_fr : section.content_en }} />
-              </div>
-            ))}
-
-            {/* Prev / Next navigation */}
-            <div className={`grid grid-cols-1 sm:grid-cols-2 gap-3 mt-12 pt-8 border-t ${isDark ? 'border-white/5' : 'border-gray-100'}`}>
-              {prev ? (
-                <button
-                  onClick={() => onNavigate(lang === 'fr' ? prev.slug_fr : prev.slug_en)}
-                  className={`group text-left p-4 rounded-xl border cursor-pointer active:scale-[0.97] ${
-                    isDark ? 'bg-[#1D1D1F] border-white/5 hover:border-white/15' : 'bg-white border-gray-200 hover:border-gray-300 hover:shadow-md'
-                  }`}
-                  style={{ transition: 'transform 160ms cubic-bezier(0.23, 1, 0.32, 1), border-color 200ms ease, box-shadow 200ms ease' }}
-                >
-                  <span className={`text-micro font-medium uppercase tracking-wider ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
-                    <ArrowLeft size={10} className="inline mr-1" />
-                    {lang === 'en' ? 'Previous' : 'Précédent'}
-                  </span>
-                  <p className={`text-sm font-semibold mt-1 ${isDark ? 'text-white' : 'text-gray-900'}`}>{lang === 'fr' ? prev.title_fr : prev.title_en}</p>
-                </button>
-              ) : <div />}
-              {next ? (
-                <button
-                  onClick={() => onNavigate(lang === 'fr' ? next.slug_fr : next.slug_en)}
-                  className={`group text-left p-4 rounded-xl border cursor-pointer active:scale-[0.97] ${
-                    isDark ? 'bg-[#1D1D1F] border-white/5 hover:border-white/15' : 'bg-white border-gray-200 hover:border-gray-300 hover:shadow-md'
-                  }`}
-                  style={{ transition: 'transform 160ms cubic-bezier(0.23, 1, 0.32, 1), border-color 200ms ease, box-shadow 200ms ease' }}
-                >
-                  <span className={`text-micro font-medium uppercase tracking-wider ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
-                    {lang === 'en' ? 'Next' : 'Suivant'}
-                    <ArrowRight size={10} className="inline ml-1" />
-                  </span>
-                  <p className={`text-sm font-semibold mt-1 ${isDark ? 'text-white' : 'text-gray-900'}`}>{lang === 'fr' ? next.title_fr : next.title_en}</p>
-                </button>
-              ) : <div />}
-            </div>
-
-            {/* Contact CTA (only on last chapter) */}
-            {!next && (
-              <div className="mt-10">
-                <AuthorContactCard
-                  lang={lang as 'en' | 'fr'}
-                  isDark={isDark}
-                  message={lang === 'en'
-                    ? 'I help design teams integrate Claude Code into their workflows: workshops, pair sessions, project setup.'
-                    : 'J\'accompagne les équipes design dans l\'intégration de Claude Code : ateliers, sessions en binôme, mise en place de projets.'}
-                />
-              </div>
-            )}
-
-            {/* Back to guide index */}
-            <div className="mt-10 flex justify-center">
-              <button
-                onClick={() => onNavigate('index')}
-                className={`group inline-flex items-center gap-2 text-sm font-medium transition-colors cursor-pointer ${isDark ? 'text-gray-400 hover:text-white' : 'text-gray-500 hover:text-gray-900'}`}
-              >
-                <ArrowLeft size={14} className="transition-transform group-hover:-translate-x-1" />
-                {lang === 'en' ? 'Back to guide' : 'Retour au guide'}
-              </button>
-            </div>
-          </article>
-      </div>
-
-      {/* ─── Right sidebar: Chapter navigation (outside 1200px container) ─── */}
-      <aside className="hidden 2xl:block fixed right-6 top-28 w-48 z-10">
-        <p className={`text-micro font-semibold uppercase tracking-widest mb-4 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
+      {/* ─── Right sidebar: chapter navigation. Shown from 1700px, where it no longer overlaps the 1120px content column ─── */}
+      <aside className="hidden min-[1700px]:block fixed right-14 top-28 w-48 z-10">
+        <p className="text-micro font-semibold uppercase tracking-[0.08em] mb-4 text-gray-500">
           {lang === 'en' ? 'Chapters' : 'Chapitres'}
         </p>
         <ul className="space-y-0.5">
@@ -354,7 +291,7 @@ const GuideChapter: React.FC<{
                 className={`text-left text-xs leading-snug py-1.5 px-2.5 rounded-lg w-full transition-colors cursor-pointer ${
                   chSlug === slug
                     ? isDark ? 'text-white bg-white/5 font-medium' : 'text-gray-900 bg-gray-100 font-medium'
-                    : isDark ? 'text-gray-500 hover:text-gray-300 hover:bg-white/5' : 'text-gray-400 hover:text-gray-700 hover:bg-gray-50'
+                    : isDark ? 'text-gray-500 [@media(hover:hover)]:hover:text-gray-300 [@media(hover:hover)]:hover:bg-white/[0.08]' : 'text-gray-500 [@media(hover:hover)]:hover:text-gray-900 [@media(hover:hover)]:hover:bg-gray-100'
                 }`}
               >
                 <span className="inline-block w-4 text-micro opacity-50">{ch.number}.</span>
@@ -371,7 +308,7 @@ const GuideChapter: React.FC<{
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 
-const GuideClaudeCodePage: React.FC<Props> = ({ systemTheme, lang, view, onNavigate }) => {
+const GuideClaudeCodePage: React.FC<Props> = ({ systemTheme, lang, view, onNavigate, related }) => {
   const isDark = systemTheme === 'dark';
   const isIndex = view === 'index';
   const chapter = !isIndex ? GUIDE_CHAPTERS.find(c => c.slug_en === view || c.slug_fr === view) : null;
@@ -383,9 +320,9 @@ const GuideClaudeCodePage: React.FC<Props> = ({ systemTheme, lang, view, onNavig
     >
       {/* Breadcrumb bar - sticky below Nav */}
       <div className={`sticky z-10 backdrop-blur-xl ${isDark ? 'bg-[#0a0a0a]/80 border-white/5' : 'bg-[#FCFCFD]/80 border-gray-200'}`} style={{ top: 'var(--nav-height, 64px)', transition: 'top 250ms cubic-bezier(0.23, 1, 0.32, 1)' }}>
-        <div className="max-w-[740px] mx-auto px-4 md:px-6 h-10 flex items-center justify-between">
+        <div className="wrap h-10 flex items-center justify-between">
           <nav className="flex items-center gap-1.5 text-xs min-w-0 overflow-hidden">
-            <button onClick={() => onNavigate('blog')} className={`transition-colors cursor-pointer hover:underline flex-shrink-0 ${isDark ? 'text-gray-500 hover:text-white' : 'text-gray-400 hover:text-gray-900'}`}>
+            <button onClick={() => onNavigate('blog')} className={`transition-colors cursor-pointer flex-shrink-0 [@media(hover:hover)]:hover:underline ${isDark ? 'text-gray-500 [@media(hover:hover)]:hover:text-white' : 'text-gray-500 [@media(hover:hover)]:hover:text-gray-900'}`}>
               {lang === 'fr' ? 'Ressources' : 'Resources'}
             </button>
             <CaretRight size={10} className={`flex-shrink-0 ${isDark ? 'text-gray-600' : 'text-gray-300'}`} />
@@ -393,7 +330,7 @@ const GuideClaudeCodePage: React.FC<Props> = ({ systemTheme, lang, view, onNavig
               <span className={`truncate font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>{lang === 'fr' ? GUIDE_META.title_fr : GUIDE_META.title_en}</span>
             ) : (
               <>
-                <button onClick={() => onNavigate('index')} className={`transition-colors cursor-pointer hover:underline flex-shrink-0 ${isDark ? 'text-gray-500 hover:text-white' : 'text-gray-400 hover:text-gray-900'}`}>
+                <button onClick={() => onNavigate('index')} className={`transition-colors cursor-pointer flex-shrink-0 [@media(hover:hover)]:hover:underline ${isDark ? 'text-gray-500 [@media(hover:hover)]:hover:text-white' : 'text-gray-500 [@media(hover:hover)]:hover:text-gray-900'}`}>
                   Guide
                 </button>
                 <CaretRight size={10} className={`flex-shrink-0 ${isDark ? 'text-gray-600' : 'text-gray-300'}`} />
@@ -406,7 +343,7 @@ const GuideClaudeCodePage: React.FC<Props> = ({ systemTheme, lang, view, onNavig
           {!isIndex && (
             <button
               onClick={() => onNavigate('index')}
-              className={`p-1.5 rounded-lg transition-colors cursor-pointer flex-shrink-0 lg:hidden ${isDark ? 'hover:bg-white/10' : 'hover:bg-gray-100'}`}
+              className={`p-1.5 rounded-lg transition-colors cursor-pointer flex-shrink-0 lg:hidden ${isDark ? '[@media(hover:hover)]:hover:bg-white/10' : '[@media(hover:hover)]:hover:bg-gray-100'}`}
             >
               <List size={16} />
             </button>
@@ -421,128 +358,16 @@ const GuideClaudeCodePage: React.FC<Props> = ({ systemTheme, lang, view, onNavig
         <GuideChapter isDark={isDark} lang={lang} slug={view} onNavigate={onNavigate} />
       )}
 
-      {/* Article typography — generous spacing, strong hierarchy */}
-      <style>{`
-        /* ── Base text ── */
-        .article-body p {
-          margin-bottom: 1.75rem;
-          line-height: 1.85;
-          font-size: 1rem;
-          color: #4b5563;
-        }
-        .article-body strong { font-weight: 600; color: #1f2937; }
+      {/* Follow-up: same block as every content page, then the author block */}
+      <RelatedContent heading={TRANSLATIONS[lang].related.keep_reading} items={related} id="related" />
+      <AuthorContactCard
+        lang={lang}
+        message={lang === 'en'
+          ? 'I help design teams integrate Claude Code into their workflows: workshops, pair sessions, project setup.'
+          : 'J\'accompagne les équipes design dans l\'intégration de Claude Code : ateliers, sessions en binôme, mise en place de projets.'}
+      />
 
-        /* ── Headings: consistent with design system ── */
-        .article-body h3 {
-          font-size: 1rem;
-          font-weight: 600;
-          letter-spacing: -0.01em;
-          margin-top: 3rem;
-          margin-bottom: 1rem;
-          padding-top: 1.5rem;
-          border-top: 1px solid #f3f4f6;
-          color: #111827;
-          line-height: 1.4;
-        }
-        .article-body h3:first-child { margin-top: 0; padding-top: 0; border-top: none; }
-
-        /* ── Lists ── */
-        .article-body ul, .article-body ol { margin-top: 0.75rem; margin-bottom: 1.75rem; padding-left: 1.5rem; }
-        .article-body ul { list-style-type: disc; }
-        .article-body ol { list-style-type: decimal; }
-        .article-body li { margin-bottom: 0.75rem; line-height: 1.75; font-size: 1rem; color: #4b5563; }
-
-        /* ── Links ── */
-        .article-body a { color: #111827; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: #d1d5db; transition: text-decoration-color 0.15s; }
-        .article-body a:hover { text-decoration-color: #6b7280; }
-
-        /* ── Images: generous vertical breathing room ── */
-        .article-body img {
-          border-radius: 12px;
-          max-width: 100%;
-          margin: 2.5rem 0;
-          cursor: zoom-in;
-          transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-        @media (hover: hover) and (pointer: fine) {
-          .article-body img:hover {
-            transform: scale(1.01);
-            box-shadow: 0 12px 40px rgba(0,0,0,0.1);
-          }
-        }
-
-        /* ── Code blocks ── */
-        .article-body pre {
-          background: #18181b;
-          color: #e4e4e7;
-          padding: 20px 24px;
-          border-radius: 12px;
-          overflow-x: auto;
-          margin: 2rem 0;
-          font-size: 13px;
-          line-height: 1.7;
-          border: 1px solid rgba(255,255,255,0.06);
-        }
-        .article-body pre code { background: none; padding: 0; font-size: inherit; color: inherit; }
-        .article-body code {
-          background: #f4f4f5;
-          padding: 3px 7px;
-          border-radius: 5px;
-          font-family: ui-monospace, SFMono-Regular, 'SF Mono', monospace;
-          font-size: 0.8125rem;
-          color: #18181b;
-        }
-
-        /* ── Blockquotes ── */
-        .article-body blockquote {
-          border-left: 2px solid #d1d5db;
-          padding: 1rem 1.25rem;
-          margin: 2rem 0;
-          font-style: italic;
-          color: #6b7280;
-          background: #f9fafb;
-          border-radius: 0 8px 8px 0;
-          line-height: 1.7;
-        }
-
-        /* ── Tables ── */
-        .article-body table { width: 100%; border-collapse: collapse; margin: 2rem 0; font-size: 0.875rem; border-radius: 8px; overflow: hidden; }
-        .article-body th { font-weight: 600; padding: 12px 16px; text-align: left; background: #f4f4f5; color: #111827; font-size: 0.8125rem; text-transform: uppercase; letter-spacing: 0.04em; }
-        .article-body td { padding: 12px 16px; border-bottom: 1px solid #f4f4f5; color: #4b5563; }
-        .article-body tr:nth-child(even) td { background: #fafafa; }
-
-        /* ── Callouts ── */
-        .article-body .callout {
-          border-left: 4px solid #f59e0b;
-          padding: 1.25rem 1.5rem;
-          border-radius: 0 12px 12px 0;
-          margin: 2rem 0;
-          background: #fffbeb;
-          font-size: 0.9375rem;
-          line-height: 1.7;
-        }
-
-        /* ── Horizontal rules ── */
-        .article-body hr { border: none; border-top: 1px solid #e5e7eb; margin: 2.5rem 0; }
-
-        /* ── Desktop refinements ── */
-        @media (min-width: 768px) {
-          .article-body p, .article-body li { font-size: 1.0625rem; }
-        }
-
-        /* ── Dark mode ── */
-        .article-body-dark p, .article-body-dark li { color: #a1a1aa; }
-        .article-body-dark strong { color: #e4e4e7; }
-        .article-body-dark h3 { color: #f4f4f5; border-top-color: rgba(255,255,255,0.05); }
-        .article-body-dark blockquote { color: #71717a; background: rgba(255,255,255,0.03); }
-        .article-body-dark code { background: rgba(255,255,255,0.08); color: #e2e8f0; }
-        .article-body-dark th { background: rgba(255,255,255,0.05); color: #fff; }
-        .article-body-dark td { border-bottom-color: rgba(255,255,255,0.05); color: #a1a1aa; }
-        .article-body-dark tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
-        .article-body-dark .callout { background: rgba(245,158,11,0.06); color: #d4d4d8; }
-        .article-body-dark img:hover { box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
-        .article-body-dark hr { border-top-color: rgba(255,255,255,0.05); }
-      `}</style>
+      <ArticleBodyStyles />
     </div>
   );
 };

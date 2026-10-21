@@ -142,7 +142,7 @@ function CHome({ go }: { go: (p: PageId) => void }) {
                 <div className="overflow-hidden"><img src={PROJECTS[0].coverImage} alt={PROJECTS[0].title} className="w-full aspect-[21/9] object-cover group-hover:scale-[1.02] transition-transform duration-700" /></div>
                 <div className="p-6">
                   <h3 className="text-[18px] font-bold group-hover:text-blue-600 transition-colors">{PROJECTS[0].title}</h3>
-                  <p className="text-[14px] text-gray-400 mt-1">{PROJECTS[0].role} · {PROJECTS[0].period}</p>
+                  <p className="text-[14px] text-gray-400 mt-1">{PROJECTS[0].role}</p>
                 </div>
               </motion.div>
             </Fade>
@@ -155,7 +155,6 @@ function CHome({ go }: { go: (p: PageId) => void }) {
                   <div className="overflow-hidden"><img src={p.coverImage} alt={p.title} className="w-full aspect-[4/3] object-cover group-hover:scale-[1.03] transition-transform duration-500" /></div>
                   <div className="p-4">
                     <h3 className="text-[14px] font-semibold group-hover:text-blue-600 transition-colors">{p.title}</h3>
-                    <p className="text-[12px] text-gray-400 mt-0.5">{p.period}</p>
                   </div>
                 </motion.div>
               </Fade>
@@ -240,7 +239,7 @@ function CCase({ go }: { go: (p: PageId) => void }) {
           <Fade><button onClick={() => go('work')} className="flex items-center gap-2 text-[14px] text-gray-400 hover:text-gray-900 mb-8"><ArrowLeft size={14} /> All projects</button></Fade>
           <Fade delay={0.03}>
             <div className="flex items-center gap-4 text-[14px] text-gray-400 mb-4">
-              <span className="font-semibold text-gray-900">Toolkit</span><span>·</span><span>{TK.meta.type}</span><span>·</span><span>{TK.meta.period}</span>
+              <span className="font-semibold text-gray-900">Toolkit</span><span>·</span><span>{TK.meta.type}</span>
             </div>
             <h1 className="text-[clamp(2rem,4vw,3rem)] font-bold tracking-[-0.04em] leading-[1.05] mb-4 max-w-[700px]">{TK.hero.title}</h1>
             <p className="text-[18px] text-gray-500 leading-[1.7] max-w-[600px]">{TK.hero.subtitle}</p>
@@ -387,7 +386,7 @@ function CWork({ go }: { go: (p: PageId) => void }) {
                     <div className="overflow-hidden"><img src={p.coverImage} alt={p.title} className="w-full aspect-[16/10] object-cover group-hover:scale-[1.03] transition-transform duration-500" /></div>
                     <div className="p-5">
                       <h3 className="text-[16px] font-semibold group-hover:text-blue-600 transition-colors">{p.title}</h3>
-                      <p className="text-[14px] text-gray-400 mt-1">{p.role} · {p.period}</p>
+                      <p className="text-[14px] text-gray-400 mt-1">{p.role}</p>
                       <p className="text-[14px] text-gray-500 mt-2 line-clamp-2">{p.summary}</p>
                     </div>
                   </motion.div>
@@ -404,7 +403,7 @@ function CWork({ go }: { go: (p: PageId) => void }) {
                     <div className="w-16 h-12 rounded-lg overflow-hidden bg-gray-50 shrink-0"><img src={p.coverImage} alt="" className="w-full h-full object-cover" /></div>
                     <div className="flex-1 min-w-0">
                       <h3 className="text-[16px] font-semibold group-hover:text-blue-600 transition-colors">{p.title}</h3>
-                      <p className="text-[13px] text-gray-400">{p.role} · {p.period}</p>
+                      <p className="text-[13px] text-gray-400">{p.role}</p>
                     </div>
                     <ArrowRight size={14} className="text-gray-200 group-hover:text-gray-400 group-hover:translate-x-1 transition-all shrink-0" />
                   </motion.div>

@@ -2,6 +2,7 @@
 
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/navigation'
+import type { RelatedItem } from '@/components/RelatedContent'
 
 const SignalDetailPage = dynamic(() => import('@/views/SignalDetailPage'), {
   loading: () => (
@@ -14,9 +15,11 @@ const SignalDetailPage = dynamic(() => import('@/views/SignalDetailPage'), {
 export default function SignalDetailPageWrapper({
   lang,
   signalId,
+  related,
 }: {
   lang: 'en' | 'fr'
   signalId: string
+  related: RelatedItem[]
 }) {
   const router = useRouter()
 
@@ -26,8 +29,8 @@ export default function SignalDetailPageWrapper({
         signalId={signalId}
         systemTheme="light"
         lang={lang}
+        related={related}
         onBack={() => router.push(`/${lang}/ressources`)}
-        onOpenSignal={(id) => router.push(`/${lang}/signal/${id}`)}
       />
     </div>
   )

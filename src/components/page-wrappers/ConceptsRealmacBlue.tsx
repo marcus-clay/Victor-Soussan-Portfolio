@@ -319,7 +319,6 @@ function Home({ go }: { go: (p: PageId) => void }) {
                     <div className="px-5 pb-5 pt-2">
                       <div className="flex items-baseline justify-between">
                         <h3 className="text-[17px] font-semibold tracking-[-0.01em] group-hover:text-blue-600 transition-colors">{p.title}</h3>
-                        <span className="text-[11px] text-gray-400 font-mono tabular-nums">{p.period}</span>
                       </div>
                       <p className="text-[14px] text-gray-400 mt-1">{p.role}</p>
                     </div>
@@ -467,7 +466,6 @@ function Work({ go }: { go: (p: PageId) => void }) {
                   <div className="px-6 pb-6 pt-3">
                     <div className="flex items-baseline gap-4 mb-1">
                       <h2 className="text-[20px] font-bold tracking-[-0.02em] group-hover:text-blue-600 transition-colors">{p.title}</h2>
-                      <span className="text-[13px] text-gray-400 font-mono tabular-nums">{p.period}</span>
                     </div>
                     <p className="text-[14px] text-gray-400 mb-2">{p.role}</p>
                     <p className="text-[16px] text-gray-500 leading-relaxed max-w-lg">{p.summary}</p>
@@ -515,7 +513,7 @@ function Case({ go }: { go: (p: PageId) => void }) {
         <div className="max-w-[800px] mx-auto">
           <F><motion.button whileHover={{ x: -3 }} transition={spB} onClick={() => go('work')} className="flex items-center gap-2 text-[14px] text-gray-400 hover:text-gray-900 mb-10"><ArrowLeft size={14} /> All projects</motion.button></F>
           <F delay={0.03}>
-            <div className="flex items-center gap-6 text-[14px] text-gray-400 mb-4"><span className="font-semibold text-gray-900">Toolkit</span><span>·</span><span>{TK.meta.type}</span><span>·</span><span>{TK.meta.period}</span></div>
+            <div className="flex items-center gap-6 text-[14px] text-gray-400 mb-4"><span className="font-semibold text-gray-900">Toolkit</span><span>·</span><span>{TK.meta.type}</span></div>
             <h1 className="text-[clamp(2rem,5vw,3.2rem)] font-bold tracking-[-0.04em] leading-[1.05] mb-6">{TK.hero.title}</h1>
             <p className="text-[18px] text-gray-500 leading-[1.75]">{TK.hero.description}</p>
           </F>

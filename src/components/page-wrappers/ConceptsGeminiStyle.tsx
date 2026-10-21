@@ -307,7 +307,7 @@ function Home({ go, variant }: { go: (p: PageId) => void; variant: 'A' | 'B' | '
                 <img src={PROJECTS[0].coverImage} alt="" className="w-full transition-transform duration-[2000ms] group-hover:scale-[1.03]" />
               </MacFrame>
               <div className="text-center mt-8">
-                <span className="text-[13px] font-bold uppercase tracking-[0.1em]" style={{ color: blue }}>{PROJECTS[0].role} · {PROJECTS[0].period}</span>
+                <span className="text-[13px] font-bold uppercase tracking-[0.1em]" style={{ color: blue }}>{PROJECTS[0].role}</span>
                 <h3 className="text-[28px] font-bold text-gray-900 mt-2 mb-2 group-hover:text-blue-600 transition-colors">{PROJECTS[0].title}</h3>
                 <p className="text-[16px] text-gray-500 max-w-md mx-auto">{PROJECTS[0].summary.slice(0, 100)}.</p>
               </div>
@@ -334,7 +334,7 @@ function Home({ go, variant }: { go: (p: PageId) => void; variant: 'A' | 'B' | '
                       <h3 className="text-[16px] font-bold text-gray-900 group-hover:text-blue-600 transition-colors">{p.title}</h3>
                       {p.format === 'short' && <span className="text-[10px] px-2 py-0.5 rounded-full bg-violet-50 text-violet-600 font-semibold">Concept</span>}
                     </div>
-                    <p className="text-[13px] text-gray-400">{p.role} · {p.period}</p>
+                    <p className="text-[13px] text-gray-400">{p.role}</p>
                   </div>
                 </motion.div>
               </F>
@@ -477,7 +477,7 @@ function Work({ go }: { go: (p: PageId) => void }) {
         <F><p className="text-[13px] font-bold text-gray-400 uppercase tracking-[0.12em] mb-6">Case Studies</p></F>
         {CASES.map((p, i) => (
           <F key={p.id} delay={i * 0.04}>
-            <ExpandItem title={p.title} sub={`${p.role} · ${p.period}`}>
+            <ExpandItem title={p.title} sub={`${p.role}`}>
               <div className="flex flex-col md:flex-row gap-6">
                 <motion.div whileHover={{ rotate: -1 }} transition={{ duration: 0.4, ease }} className="w-full md:w-72 shrink-0 cursor-pointer" onClick={() => go('case')}>
                   <ImgCard src={p.coverImage} shadow="blue" />
@@ -494,7 +494,7 @@ function Work({ go }: { go: (p: PageId) => void }) {
           <F><p className="text-[13px] font-bold text-gray-400 uppercase tracking-[0.12em] mt-12 mb-6">Concepts & Experiments</p></F>
           {SHORTS.map((p, i) => (
             <F key={p.id} delay={i * 0.04}>
-              <ExpandItem title={p.title} sub={`${p.role} · ${p.period}`} badge="Concept">
+              <ExpandItem title={p.title} sub={`${p.role}`} badge="Concept">
                 <p className="text-[16px] text-gray-500 leading-[1.7]">{p.summary}</p>
               </ExpandItem>
             </F>

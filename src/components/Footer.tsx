@@ -17,7 +17,7 @@ export default function Footer({ lang }: { lang: Lang }) {
 
   return (
     <footer id="site-footer" className="py-16 border-t bg-[#FDFDFC] border-gray-100 transition-colors duration-200">
-      <div className="max-w-[740px] mx-auto px-6">
+      <div className="wrap">
         <div className="flex flex-col md:flex-row gap-12 md:gap-16 mb-12">
           {/* Brand Column */}
           <div className="flex-1">

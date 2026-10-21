@@ -19,13 +19,13 @@ const INDEXABLE_STATIC = ['', 'about', 'approche', 'projets', 'services', 'resso
 // Update when the copy of the main pages changes in a meaningful way.
 const SITE_CONTENT_UPDATED = '2026-10-12'
 
-type Entry = { path: Record<(typeof LANGS)[number], string>; lastModified: string }
+type Entry = { path: Record<(typeof LANGS)[number], string>; lastModified?: string }
 
 function toEntries(items: Entry[]): MetadataRoute.Sitemap {
   return items.flatMap((item) =>
     LANGS.map((lang) => ({
       url: pageUrl(lang, item.path[lang]),
-      lastModified: item.lastModified,
+      ...(item.lastModified ? { lastModified: item.lastModified } : {}),
       alternates: {
         languages: {
           en: pageUrl('en', item.path.en),
@@ -48,9 +48,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // Projects: one canonical URL each. /summary and /full redirect to it, galleries are noindex.
   for (const p of getProjects('en')) {
-    const year = p.period.match(/\d{4}/g)?.pop()
-    const lastModified = isoDate(year ? `${year}` : undefined) ?? SITE_CONTENT_UPDATED
-    items.push({ path: same(`project/${p.id}`), lastModified })
+    items.push({ path: same(`project/${p.id}`) })
   }
 
   // Articles

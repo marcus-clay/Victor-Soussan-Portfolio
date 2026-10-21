@@ -17,7 +17,6 @@ export interface Project {
   id: string;
   title: string;
   role: string;
-  period: string;
   summary: string;
   format: ProjectFormat;
   category: ProjectCategory;
@@ -52,7 +51,6 @@ export const getProjects = (lang: Language): Project[] => {
       category: 'ai-experiment',
       title: "RiskOS",
       role: "Product Design",
-      period: "2026",
       summary: isEn
         ? "AI-augmented fraud detection. A functional prototype exploring human/AI collaboration under time pressure."
         : "Détection de fraude augmentée par IA agentique. Un prototype fonctionnel explorant la collaboration humain/IA sous pression temporelle.",
@@ -89,7 +87,6 @@ export const getProjects = (lang: Language): Project[] => {
       category: 'product-design',
       title: "Toolkit",
       role: isEn ? "Founding Designer" : "Premier Designer",
-      period: "2023 – 2024",
       summary: isEn
         ? "0-to-1 Product Design for a Construction Tech SaaS. From pitch deck to MVP."
         : "Création d'un SaaS B2B pour le BTP, de zéro (0 to 1). J'ai traduit la vision des fondateurs en un produit commercialisable.",
@@ -131,7 +128,6 @@ export const getProjects = (lang: Language): Project[] => {
       category: 'product-design',
       title: "Dailymotion Partner",
       role: isEn ? "Senior Product Designer" : "Senior Product Designer",
-      period: "2017 – 2018",
       summary: isEn ? "Redesigning the professional video management suite for tier-1 media partners (CBS, Bein Sports)." : "Refonte du back-office vidéo utilisé par les grands médias (CBS, Bein Sports). Un outil métier complexe à fort volume de données.",
       missions: isEn ? [
         "Led UX for high-volume upload & livestreaming dashboards",
@@ -171,7 +167,6 @@ export const getProjects = (lang: Language): Project[] => {
       category: 'product-design',
       title: "France VAE",
       role: isEn ? "Lead Product Designer" : "Lead Product Designer",
-      period: isEn ? "Dec 2024 – Jul 2025" : "Déc 2024 – Juil 2025",
       summary: isEn
         ? "6-month mission structuring product ops for a national public service scaling to 100K+ candidates."
         : "Mission de 6 mois pour structurer les ops produit d'un service public national servant 100K+ candidats.",
@@ -203,7 +198,8 @@ export const getProjects = (lang: Language): Project[] => {
       ],
       icon: <FileText size={24} />,
       color: "blue",
-      coverImage: "/images/francevae/thumbnail_france_vae.webp"
+      coverImage: "/images/francevae/thumbnail_france_vae.webp",
+      testimonialId: "boris-aime"
     },
     {
       id: "connect",
@@ -211,7 +207,6 @@ export const getProjects = (lang: Language): Project[] => {
       category: 'product-design',
       title: "SQOOL Connect",
       role: isEn ? "Product Design Lead" : "Product Design Lead",
-      period: "2020 – 2021",
       summary: isEn ? "Designing a web-based dashboard concept and persistent interaction prototype for classroom orchestration." : "Conception d'un dashboard web et d'un prototype d'interaction persistante pour l'orchestration de classe.",
       missions: isEn ? [
         "Led the design of a proof-of-concept dashboard platform",
@@ -242,6 +237,7 @@ export const getProjects = (lang: Language): Project[] => {
       icon: <Layers size={24} />,
       color: "purple",
       coverImage: "/images/thumbnail-connect.webp",
+      testimonialId: "achref-akkari",
       status: "concept"
     },
     {
@@ -250,17 +246,16 @@ export const getProjects = (lang: Language): Project[] => {
       category: 'product-design',
       title: "SQOOL Suite (UNOWHY)",
       role: isEn ? "Product Lead UI & Manager" : "Product Design Manager",
-      period: "2018 – 2024",
       summary: isEn ? "Leading the design transformation of a hardware company into a comprehensive EdTech SaaS ecosystem." : "Passage d'une boite Hardware à un écosystème SaaS EdTech complet. J'ai structuré le pôle design et piloté la refonte logicielle.",
       missions: isEn ? [
         "Managed a team of 4 designers: hiring, annual reviews, career coaching",
-        "Led design strategy workshops for 'Road to 2025' vision",
+        "Led design strategy workshops to define the product vision",
         "Structured Design Ops: Figma organization, templates, and rituals",
         "Bridged Product & Tech: Designed decks for C-Level & All-Hands demos"
       ] : [
         "Recrutement et management d'une équipe de 4 Product Designers",
         "Mise en place des Design Ops (Process, Figma, QA Design)",
-        "Pilotage de la stratégie UX pour la suite logicielle (Roadmap 2025)",
+        "Pilotage de la stratégie UX pour la suite logicielle et sa feuille de route",
         "Collaboration étroite avec 30+ développeurs et PMs"
       ],
       system: {
@@ -285,7 +280,6 @@ export const getProjects = (lang: Language): Project[] => {
       category: 'product-design',
       title: "SQOOL Classe",
       role: isEn ? "Lead Interaction Designer" : "Lead Interaction Designer",
-      period: "2022",
       summary: isEn
         ? "Designing a real-time classroom supervision tool for 500,000 tablets deployed across 465 high schools in Ile-de-France."
         : "Conception d'un outil de supervision de classe en temps réel pour 500 000 tablettes déployées dans 465 lycées d'Île-de-France.",
@@ -318,6 +312,7 @@ export const getProjects = (lang: Language): Project[] => {
       icon: <Smartphone size={24} />,
       color: "purple",
       coverImage: "/images/thumbnail_sqool_classe.webp",
+      testimonialId: "charlotte-rifflet",
       status: "shipped"
     },
     {
@@ -326,7 +321,6 @@ export const getProjects = (lang: Language): Project[] => {
       category: 'product-design',
       title: "PagesJaunes",
       role: isEn ? "Mobile UI Lead" : "Lead UI Mobile",
-      period: "2014 – 2017",
       summary: isEn ? "Modernizing a legacy giant. Bringing mobile-first thinking to 22M+ users." : "Modernisation de l'application grand public (22 millions de téléchargements). Le défi : faire simple pour une audience très large.",
       missions: isEn ? [
         "Led UI for iOS & Android apps (22M downloads)",
@@ -365,7 +359,6 @@ export const getProjects = (lang: Language): Project[] => {
       category: 'product-design',
       title: "Android Wear",
       role: isEn ? "Mobile UI Lead" : "Lead UI Mobile",
-      period: "2015",
       summary: isEn
         ? "Designing PagesJaunes for wrist: local search on Android Wear, shipped on Google Play."
         : "PagesJaunes sur montre connectée : recherche locale sur Android Wear, disponible sur Google Play.",
@@ -392,6 +385,7 @@ export const getProjects = (lang: Language): Project[] => {
       icon: <Smartphone size={24} />,
       color: "purple",
       coverImage: "/images/pagesjaunes/Android%20wear/pj%20android%20wear%20ui%20modes.webp",
+      testimonialId: "frederic-rodriguez",
       status: "shipped"
     },
     // --- Short format projects ---
@@ -401,7 +395,6 @@ export const getProjects = (lang: Language): Project[] => {
       category: 'ai-experiment',
       title: "Condamine Apps",
       role: isEn ? "Solo Designer & Builder" : "Designer & Builder",
-      period: "2025",
       summary: isEn
         ? "50+ functional web applications prototyped and deployed with Claude Code and AI-assisted workflows."
         : "50+ applications web fonctionnelles prototypées et déployées avec Claude Code et des workflows assistés par IA.",
@@ -425,7 +418,6 @@ export const getProjects = (lang: Language): Project[] => {
       category: 'ai-experiment',
       title: isEn ? "Design System with Claude Code" : "Design System avec Claude Code",
       role: isEn ? "Designer & Implementer" : "Designer & Implémenteur",
-      period: "2025",
       summary: isEn
         ? "Using Claude Code and Figma MCP to design, implement, and maintain a design system where tokens, variables, and components stay synchronized between Figma and code."
         : "Utiliser Claude Code et Figma MCP pour concevoir, implémenter et maintenir un design system où tokens, variables et composants restent synchronisés entre Figma et le code.",

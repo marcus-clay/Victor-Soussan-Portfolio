@@ -1,34 +1,32 @@
 /**
- * FranceVaeFull - Complete case study with narrative structure
+ * FranceVaeFull - Complete case study: summary first, then narration
  *
- * Structure based on france_vae_casestudy_v2.md:
- * - Context (before the overview diagram)
- * - Initiative 1: MVP VAE Collective
- * - Initiative 2: Product Operations
- * - Initiative 3: User Research
- * - Initiative 4: Design Thinking Workshops
- * - Initiative 5: AI Experimentation
- * - Learnings
- * - Testimonial
+ * - Hero (the intro is the executive summary), client testimonial, summary
+ * - 01 Approach: overview of the five initiatives, then one h3 block each
+ *   (problem, what I did, impact); sub-anchors initiative-1 to initiative-5
+ * - 02 Product: homepage before and after, search engine, ministry video
+ * - 03 Learnings
  */
 
 import React, { useRef, useState } from 'react';
+import Link from 'next/link';
 import { imgDims } from '@/utils/imageDimensions'
 import ExpandableSection from './ExpandableSection';
 import CaseStudyTestimonialBlock from './CaseStudyTestimonialBlock';
-import { motion, useInView } from 'framer-motion';
+import CaseStudyHero from '@/components/case-study/CaseStudyHero'
+import CaseStudySummary from '@/components/case-study/CaseStudySummary'
+import { ActRule, ActTitle } from '@/components/case-study/ActSection'
+import { motion } from 'framer-motion';
+import { useReveal } from '@/lib/motion'
 import { zoomable } from '@/utils/zoomable'
+import VideoPlayer from '@/components/VideoPlayer'
 import {
-  Stack as Layers,
   ArrowRight,
   Play,
   ArrowSquareOut as ExternalLink,
-  Users,
-  Lightbulb,
-  Robot as Bot,
   CheckCircle as CheckCircle2,
-  Target,
   CaretDown as ChevronDown,
+  ArrowsOut,
 } from '@phosphor-icons/react';
 
 interface FranceVaeFullProps {
@@ -47,13 +45,14 @@ const TRANSLATIONS = {
     meta: {
       role: 'Lead Product Designer',
       scope: 'Product Strategy, Design, Research',
-      period: 'Dec 2024 to Jul 2025',
       company: 'beta.gouv.fr',
       type: 'Product Design',
-      labels: { type: 'Type', scope: 'Scope', period: 'Period', company: 'Company' }
+      labels: { role: 'Role', type: 'Type', scope: 'Scope', company: 'Company' }
     },
     ui: {
       focus: 'Focus',
+      impact: 'Impact',
+      viewAllVisuals: 'View all visuals',
       overview: 'Overview',
       keyDeliverables: 'Key deliverables',
       initiative: 'Initiative',
@@ -64,10 +63,12 @@ const TRANSLATIONS = {
       beforeAlt: 'France VAE homepage before the redesign',
       afterAlt: 'France VAE homepage after the redesign',
       sliderLabel: 'Compare the homepage before and after the redesign',
+      zoomLabel: 'View the homepage before and after in full size',
       videoFallback: 'Your browser does not support the video tag.'
     },
     hero: {
       title: 'Shipping fast in a complex environment',
+      intro: 'As Lead Product Designer at France VAE, the national public service for VAE, I structured design and discovery so the team could ship faster on politically driven requests. Five initiatives, from an employer MVP to AI prototypes.',
       subtitle: 'How I led the design team process and co-drove the roadmap to help a government startup ship faster, especially on politically-driven initiatives lacking clear specs.',
       visitSite: 'Visit France VAE',
       heroCaption: 'France VAE Homepage: national public service for VAE'
@@ -79,6 +80,36 @@ const TRANSLATIONS = {
       challengeText: 'Structure discovery and roadmap planning to accelerate decision-making, while delivering critical features for a service serving 100K+ candidates, often from politically-driven requests lacking mature specs.',
       myScope: 'My scope',
       myScopeText: 'Leading design team process, co-driving the roadmap with the Lead PM, structuring discovery to help the delivery team ship faster. A transversal role covering the entire product cycle.'
+    },
+    acts: {
+      approach: 'Five initiatives to ship faster',
+      product: 'Shipping features',
+      learnings: 'What I learned',
+      processTitle: 'Structuring how the team works',
+      deliveryTitle: 'What shipped and what was tested',
+    },
+    summary: {
+      context: 'France VAE is the national public service for Validation of Acquired Experience (VAE): it lets citizens without diplomas have their professional experience officially recognized. The service reaches 100K+ candidates, and critical features often came from politically driven requests with immature specs.',
+      role: 'Lead Product Designer on a mission at beta.gouv.fr. I led the design team process, co-drove the roadmap with the Lead PM and structured discovery so the delivery team could ship faster. A transversal role across the whole product cycle.',
+      roleItems: [
+        { title: 'Monthly seasons', detail: 'One-month cycles' },
+        { title: 'Prioritization matrix', detail: 'Co-designed with the Lead PM' },
+        { title: 'User research', detail: '10 interviews and workshops' },
+        { title: 'Design ops', detail: 'Figma and delivery' },
+      ],
+      deliverables: [
+        { title: 'MVP VAE Collective', detail: 'Employer journey prototype for collective VAE, sales deck and promotional video.' },
+        { title: 'Product operations', detail: 'One-month seasons, a three-tier strategic framework and a cross-team prioritization matrix.' },
+        { title: 'User research', detail: 'Knowledge base, 10 moderated interviews in 2 waves and 2 synthesis reports.' },
+        { title: 'Design thinking workshops', detail: 'A 2-day workshop with accompaniment providers, plus internal workshops.' },
+        { title: 'AI experimentation', detail: 'Two functional prototypes in 1 week: a positioning chatbot and a skills radar.' },
+        { title: 'UI deliveries', detail: 'Homepage redesign, certification search engine and a presentation video for the Minister of Labor\'s cabinet.' },
+      ],
+      metrics: [
+        { value: '100K+', label: 'Candidates served by the platform' },
+        { value: '10', label: 'Moderated interviews, in 2 waves' },
+        { value: '1 week', label: 'To deliver two functional AI prototypes' },
+      ],
     },
     initiative1: {
       title: 'MVP VAE Collective',
@@ -111,6 +142,7 @@ const TRANSLATIONS = {
         ]
       },
       impact: 'Structured B2B offer ready for deployment. The sales team has a clear journey and tools to approach companies.',
+      brief: 'Companies running a collective VAE had no dedicated tool: HR teams coordinated cohorts of 10 to 90 candidates by email and spreadsheet. After two weeks of discovery, I designed the employer journey prototype, a B2B pitch deck and a promotional video. Result: a structured B2B offer ready to deploy.',
       prototypeButton: 'Open prototype',
       prototypeCaption: 'VAE Collective employer dashboard: cohort management interface',
       bentoImages: {
@@ -156,6 +188,7 @@ const TRANSLATIONS = {
         ]
       },
       impact: 'Faster decisions, stronger alignment. Teams have a clear framework to arbitrate between initiatives.',
+      brief: 'Priorities changed often and teams worked in silos. With the Lead PM, I introduced one-month seasons (25% preparation, 50% execution, 25% retrospective), a three-tier framework (objectives, initiatives, features) and a cross-team prioritization matrix. Decisions got faster and teams now share a framework to arbitrate.',
       imageCaption: 'Discovery process and monthly seasons framework presented to teams',
       bentoImages: {
         large: { src: '/images/francevae/presentation process_discovery @2x.webp', caption: 'The seasons framework gave teams a shared rhythm: preparation, execution, retrospective' },
@@ -193,6 +226,8 @@ const TRANSLATIONS = {
         ]
       },
       impact: 'Operational user knowledge base. Product decisions now rely on structured qualitative data.',
+      brief: 'Product decisions were made without consolidated user data. I set up a centralized knowledge base and ran 10 moderated remote interviews in two waves on the new candidate dashboard, then presented two synthesis reports in plenary. Product decisions now rely on structured qualitative data.',
+      reportCaption: 'Synthesis report of the dashboard test campaign',
       reportButton: 'View full report',
       imageCaption: 'Candidate dashboard interface tested with users',
       bentoImages: {
@@ -233,6 +268,7 @@ const TRANSLATIONS = {
         ]
       },
       impact: 'Co-creation of grounded solutions. Accompaniment providers became active design partners.',
+      brief: 'The product team had no direct contact with accompaniment providers, key actors of the VAE journey. I built and facilitated a two-day design thinking workshop with them, from problem framing to solution sketches. They became active design partners.',
       imageCaption: 'Design thinking workshop with AAP accompaniment structures',
       bentoImages: {
         large: { src: '/images/francevae/photo atelier aap.webp', caption: 'Accompaniment providers became active design partners, bridging the gap between product team and field reality' },
@@ -268,6 +304,9 @@ const TRANSLATIONS = {
         ]
       },
       impact: 'Initiative deprioritized but functional prototypes delivered in 1 week. Demonstrated ability to rapidly explore innovative paths without blocking other work.',
+      brief: '55% of candidates don\'t know if VAE suits them. I explored 10+ concepts, then built two functional prototypes in one week: a positioning chatbot and a skills radar. The initiative was deprioritized, but the prototypes informed product decisions.',
+      chatbotDemo: 'Try the chatbot demo',
+      radarDemo: 'Try the skills radar demo',
       tryDemo: 'Try the demo',
       chatbotCaption: 'AI chatbot prototype: VAE positioning assessment',
       radarCaption: 'Skills radar prototype: career orientation tool'
@@ -303,6 +342,7 @@ const TRANSLATIONS = {
       subtitle: 'Beyond process and research, concrete deliverables shipped to production.',
       homepageTitle: 'Homepage redesign',
       homepageDescription: 'Complete redesign of the France VAE homepage to improve clarity, accessibility and conversion. The new design emphasizes the value proposition and simplifies the entry points for different user profiles.',
+      brief: 'The homepage was redesigned to clarify the value proposition and simplify the entry points for each user profile. I also reworked the certification search engine across the 16,000+ certifications, and produced a presentation video of the candidate journey for the Minister of Labor\'s cabinet.',
       homepageBefore: 'Before',
       homepageAfter: 'After',
       homepageCaption: 'France VAE Homepage: before and after redesign',
@@ -317,7 +357,7 @@ const TRANSLATIONS = {
       button: 'Get in touch'
     },
     initiatives: {
-      title: 'Five high-impact initiatives'
+      title: 'Five initiatives to ship faster'
     },
     progressive: {
       readMore: 'Read more',
@@ -328,13 +368,14 @@ const TRANSLATIONS = {
     meta: {
       role: 'Lead Product Designer',
       scope: 'Stratégie produit, conception, recherche',
-      period: 'déc. 2024 à juil. 2025',
       company: 'beta.gouv.fr',
       type: 'Design produit',
-      labels: { type: 'Type', scope: 'Périmètre', period: 'Période', company: 'Entreprise' }
+      labels: { role: 'Rôle', type: 'Type', scope: 'Périmètre', company: 'Entreprise' }
     },
     ui: {
       focus: 'Focus',
+      impact: 'Impact',
+      viewAllVisuals: 'Voir tous les visuels',
       overview: 'Vue d’ensemble',
       keyDeliverables: 'Livrables clés',
       initiative: 'Initiative',
@@ -345,10 +386,12 @@ const TRANSLATIONS = {
       beforeAlt: 'Page d’accueil France VAE avant la refonte',
       afterAlt: 'Page d’accueil France VAE après la refonte',
       sliderLabel: 'Comparer la page d’accueil avant et après la refonte',
+      zoomLabel: 'Voir la page d’accueil avant et après en grand',
       videoFallback: 'Votre navigateur ne prend pas en charge la lecture vidéo.'
     },
     hero: {
       title: 'Livrer vite dans un environnement complexe',
+      intro: 'Lead Product Designer chez France VAE, j’ai structuré la conception et la découverte pour que l’équipe livre plus vite malgré des commandes politiques peu spécifiées. Cinq initiatives, d’un MVP employeur à des prototypes IA.',
       subtitle: 'Comment j’ai encadré le processus design et co-piloté la feuille de route pour aider une startup d’État à livrer plus vite, notamment sur des commandes politiques sans spécifications claires.',
       visitSite: 'Visiter France VAE',
       heroCaption: 'Page d’accueil France VAE\u00a0: service public national pour la VAE'
@@ -357,9 +400,39 @@ const TRANSLATIONS = {
       title: 'Contexte',
       intro: 'France VAE est le service public national de la Validation des Acquis de l’Expérience. La plateforme permet aux citoyens sans diplôme de faire reconnaître leur expérience professionnelle pour obtenir des certifications officielles.',
       challenge: 'L’enjeu',
-      challengeText: 'Structurer la découverte et la planification de la feuille de route pour accélérer la prise de décision, tout en livrant des fonctionnalités critiques pour un service au service de 100\u00a0000+ candidats, souvent issues de commandes politiques floues dont les spécifications n’étaient pas abouties.',
+      challengeText: 'Structurer la découverte et la planification de la feuille de route pour accélérer la prise de décision, tout en livrant des fonctionnalités critiques pour un service destiné à 100\u00a0000+ candidats, souvent issues de commandes politiques floues dont les spécifications n’étaient pas abouties.',
       myScope: 'Mon périmètre',
       myScopeText: 'Encadrer le processus de l’équipe design, co-piloter la feuille de route avec la Lead PM, structurer la découverte pour permettre à l’équipe de réalisation de livrer plus vite. Un rôle transverse couvrant l’ensemble du cycle produit.'
+    },
+    acts: {
+      approach: 'Cinq initiatives pour livrer plus vite',
+      product: 'Fonctionnalités livrées',
+      learnings: 'Ce que j’ai appris',
+      processTitle: 'Structurer le travail de l’équipe',
+      deliveryTitle: 'Ce qui a été livré et testé',
+    },
+    summary: {
+      context: 'France VAE est le service public national de la Validation des Acquis de l’Expérience (VAE)\u00a0: il permet aux citoyens sans diplôme de faire reconnaître officiellement leur expérience professionnelle. Le service touche plus de 100\u00a0000 candidats, et des fonctionnalités critiques naissaient souvent de commandes politiques aux spécifications peu abouties.',
+      role: 'Lead Product Designer en mission chez beta.gouv.fr. J’ai encadré le processus de l’équipe design, co-piloté la feuille de route avec la Lead PM et structuré la découverte pour que l’équipe de réalisation livre plus vite. Un rôle transverse sur tout le cycle produit.',
+      roleItems: [
+        { title: 'Saisons mensuelles', detail: 'Cycles d’un mois' },
+        { title: 'Matrice de priorisation', detail: 'Co-conçue avec la Lead PM' },
+        { title: 'Recherche utilisateur', detail: '10 entretiens et ateliers' },
+        { title: 'Design ops', detail: 'Figma et livraison' },
+      ],
+      deliverables: [
+        { title: 'MVP VAE Collective', detail: 'Prototype du parcours employeur pour la VAE collective, présentation commerciale et vidéo promotionnelle.' },
+        { title: 'Opérations produit', detail: 'Saisons d’un mois, cadre stratégique à trois niveaux et matrice de priorisation inter-équipes.' },
+        { title: 'Recherche utilisateur', detail: 'Base de connaissances, 10 entretiens modérés en 2 vagues et 2 rapports de synthèse.' },
+        { title: 'Ateliers design thinking', detail: 'Un atelier de 2 jours avec des accompagnateurs, plus des ateliers internes.' },
+        { title: 'Expérimentation IA', detail: 'Deux prototypes fonctionnels en 1 semaine\u00a0: un chatbot de positionnement et un radar de compétences.' },
+        { title: 'Livraisons UI', detail: 'Refonte de la page d’accueil, moteur de recherche de certifications et vidéo de présentation pour le cabinet de la Ministre du Travail.' },
+      ],
+      metrics: [
+        { value: '100\u00a0000+', label: 'Candidats servis par la plateforme' },
+        { value: '10', label: 'Entretiens modérés, en 2 vagues' },
+        { value: '1 semaine', label: 'Pour livrer deux prototypes IA fonctionnels' },
+      ],
     },
     initiative1: {
       title: 'MVP VAE Collective',
@@ -392,6 +465,7 @@ const TRANSLATIONS = {
         ]
       },
       impact: 'Offre B2B structurée et prête au déploiement. L’équipe commerciale dispose d’un parcours clair et d’outils pour adresser les entreprises.',
+      brief: 'Les entreprises qui lancent une VAE collective n’avaient aucun outil dédié\u00a0: les RH coordonnaient des cohortes de 10 à 90 candidats par e-mail et tableur. Après deux semaines de découverte, j’ai conçu le prototype du parcours employeur, une présentation B2B et une vidéo promotionnelle. Résultat\u00a0: une offre B2B structurée, prête au déploiement.',
       prototypeButton: 'Ouvrir le prototype',
       prototypeCaption: 'Tableau de bord employeur VAE Collective\u00a0: interface de gestion des cohortes',
       bentoImages: {
@@ -437,6 +511,7 @@ const TRANSLATIONS = {
         ]
       },
       impact: 'Décisions plus rapides, alignement renforcé. Les équipes disposent d’un cadre clair pour arbitrer entre les initiatives.',
+      brief: 'Les priorités changeaient souvent et les équipes travaillaient en silos. Avec la Lead PM, j’ai introduit des saisons d’un mois (25\u00a0% préparation, 50\u00a0% exécution, 25\u00a0% rétrospective), un cadre à trois niveaux (objectifs, initiatives, fonctionnalités) et une matrice de priorisation inter-équipes. Les décisions sont plus rapides et les équipes partagent un cadre pour arbitrer.',
       imageCaption: 'Cadre de découverte et saisons mensuelles présentés aux équipes',
       bentoImages: {
         large: { src: '/images/francevae/presentation process_discovery @2x.webp', caption: 'Le cadre des saisons donne aux équipes un rythme partagé\u00a0: préparation, exécution, rétrospective' },
@@ -474,6 +549,8 @@ const TRANSLATIONS = {
         ]
       },
       impact: 'Base de connaissance utilisateur opérationnelle. Les décisions produit s’appuient désormais sur des données qualitatives structurées.',
+      brief: 'Les décisions produit se prenaient sans données utilisateurs consolidées. J’ai mis en place une base de connaissances centralisée et mené 10 entretiens modérés à distance, en deux vagues, sur le nouveau tableau de bord candidat, puis présenté deux rapports de synthèse en plénière. Les décisions produit s’appuient désormais sur des données qualitatives structurées.',
+      reportCaption: 'Rapport de synthèse de la campagne de test du tableau de bord',
       reportButton: 'Voir le rapport complet',
       imageCaption: 'Interface tableau de bord candidat testée avec les utilisateurs',
       bentoImages: {
@@ -514,6 +591,7 @@ const TRANSLATIONS = {
         ]
       },
       impact: 'Co-création de solutions ancrées dans le réel. Les accompagnateurs sont devenus des partenaires actifs de la conception.',
+      brief: 'L’équipe produit n’avait pas de contact direct avec les accompagnateurs, acteurs clés du parcours VAE. J’ai préparé et animé avec eux un atelier design thinking de deux jours, du cadrage du problème aux croquis de solutions. Ils sont devenus des partenaires actifs de la conception.',
       imageCaption: 'Atelier design thinking avec les structures d’accompagnement AAP',
       bentoImages: {
         large: { src: '/images/francevae/photo atelier aap.webp', caption: 'Les accompagnateurs deviennent partenaires actifs de la conception, comblant le fossé entre équipe produit et réalité terrain' },
@@ -549,6 +627,9 @@ const TRANSLATIONS = {
         ]
       },
       impact: 'Initiative non priorisée, mais prototypes fonctionnels livrés en 1 semaine. Démonstration de la capacité à explorer rapidement des pistes innovantes sans bloquer les autres chantiers.',
+      brief: '55\u00a0% des candidats ne savent pas si la VAE leur convient. J’ai exploré plus de 10 concepts, puis construit deux prototypes fonctionnels en une semaine\u00a0: un chatbot de positionnement et un radar de compétences. L’initiative n’a pas été priorisée, mais les prototypes ont informé les décisions produit.',
+      chatbotDemo: 'Essayer la démo du chatbot',
+      radarDemo: 'Essayer la démo du radar de compétences',
       tryDemo: 'Essayer la démo',
       chatbotCaption: 'Prototype de chatbot IA\u00a0: évaluation du positionnement VAE',
       radarCaption: 'Prototype de radar de compétences\u00a0: outil d’orientation professionnelle'
@@ -584,6 +665,7 @@ const TRANSLATIONS = {
       subtitle: 'Au-delà du processus et de la recherche, des livrables concrets mis en production.',
       homepageTitle: 'Refonte de la page d’accueil',
       homepageDescription: 'Refonte complète de la page d’accueil France VAE pour améliorer la clarté, l’accessibilité et la conversion. Le nouveau design met en valeur la proposition de valeur et simplifie les points d’entrée pour les différents profils utilisateurs.',
+      brief: 'La page d’accueil a été refondue pour clarifier la proposition de valeur et simplifier les points d’entrée de chaque profil. J’ai aussi retravaillé le moteur de recherche parmi les 16\u00a0000+ certifications, et réalisé une vidéo de présentation du parcours candidat pour le cabinet de la Ministre du Travail.',
       homepageBefore: 'Avant',
       homepageAfter: 'Après',
       homepageCaption: 'Page d’accueil France VAE\u00a0: avant et après la refonte',
@@ -598,7 +680,7 @@ const TRANSLATIONS = {
       button: 'Me contacter'
     },
     initiatives: {
-      title: 'Cinq initiatives à fort impact'
+      title: 'Cinq initiatives pour livrer plus vite'
     },
     progressive: {
       readMore: 'Lire la suite',
@@ -611,71 +693,79 @@ const TRANSLATIONS = {
 // HELPER COMPONENTS
 // ============================================================================
 
-const FadeInSection: React.FC<{
-  children: React.ReactNode;
-  delay?: number;
-  className?: string;
-}> = ({ children, delay = 0, className = '' }) => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-50px' });
-
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 12 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
-      transition={{ duration: 0.28, delay: delay * 0.5, ease: [0.23, 1, 0.32, 1] }}
-      className={className}
-    >
-      {children}
-    </motion.div>
-  );
-};
-
-// Clickable image with hover effect
+// Clickable image with hover effect; fades in once as it enters the viewport
 const ClickableImage: React.FC<{
   src: string;
   alt: string;
   caption?: string;
   onClick: (src: string) => void;
   className?: string;
-  aspectRatio?: string;
   priority?: boolean;
-}> = ({ src, alt, caption, onClick, className = '', aspectRatio, priority = false }) => {
+}> = ({ src, alt, caption, onClick, className = '', priority = false }) => {
+  const reveal = useReveal();
   return (
-    <figure className={className}>
+    <motion.figure className={className} {...reveal(0, priority)}>
       <div
         {...zoomable(() => onClick(src))}
         aria-label={alt}
-        className={`cursor-zoom-in group rounded-2xl overflow-hidden ring-1 ring-black/[0.06] hover:ring-black/[0.10] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99] ${aspectRatio || ''}`}
+        className="cursor-zoom-in group rounded-2xl overflow-hidden ring-1 ring-black/[0.06] [@media(hover:hover)]:hover:ring-black/[0.10] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)]:hover:scale-[1.01] active:scale-[0.99]"
       >
         <img
           loading={priority ? 'eager' : 'lazy'}
           fetchPriority={priority ? 'high' : undefined}
           src={src} {...imgDims(src)}
-          alt={alt}
-          className={`w-full transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02] ${aspectRatio ? 'h-full object-cover object-top' : 'h-auto'}`}
+          alt=""
+          className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)]:group-hover:scale-[1.02]"
         />
       </div>
       {caption && (
-        <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed max-w-[740px] mx-auto">
+        <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
           {caption}
         </figcaption>
       )}
-    </figure>
+    </motion.figure>
   );
 };
 
-// Section with bullet list
+// Interaction or demo video: autoplay muted loop (VideoPlayer), same frame and lightbox wiring as ClickableImage
+const VideoFigure: React.FC<{
+  src: string;
+  caption?: string;
+  label: string;
+  onClick: (src: string) => void;
+}> = ({ src, caption, label, onClick }) => {
+  const reveal = useReveal();
+  return (
+    <motion.figure {...reveal(0, false)}>
+      <div
+        {...zoomable(() => onClick(src))}
+        aria-label={label}
+        className="cursor-zoom-in group rounded-2xl overflow-hidden ring-1 ring-black/[0.06] [@media(hover:hover)]:hover:ring-black/[0.10] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)]:hover:scale-[1.01] active:scale-[0.99]"
+      >
+        <VideoPlayer
+          src={src}
+          className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)]:group-hover:scale-[1.02]"
+        />
+      </div>
+      {caption && (
+        <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
+          {caption}
+        </figcaption>
+      )}
+    </motion.figure>
+  );
+};
+
+// Sub-section with bullet list (h5 inside an h4 label)
 const BulletSection: React.FC<{
   title: string;
   items: string[];
 }> = ({ title, items }) => {
   return (
     <div className="mb-8">
-      <h4 className="text-sm font-medium mb-3 text-gray-900">
+      <h5 className="text-sm font-medium mb-3 text-gray-900">
         {title}
-      </h4>
+      </h5>
       <ul className="space-y-2">
         {items.map((item, idx) => (
           <li key={idx} className="flex items-start gap-3">
@@ -690,20 +780,9 @@ const BulletSection: React.FC<{
   );
 };
 
-// Impact block
-const ImpactBlock: React.FC<{ text: string }> = ({ text }) => {
-  return (
-    <p className="text-base text-gray-600 leading-relaxed max-w-[65ch]">{text}</p>
-  );
-};
-
-// Section title: h2, optional subtitle, rule
-const SectionHeading: React.FC<{ title: string; subtitle?: string }> = ({ title, subtitle }) => (
-  <FadeInSection>
-    <h2 className="text-title-2 mb-2 text-gray-900">{title}</h2>
-    {subtitle && <p className="text-base text-gray-600 mb-4">{subtitle}</p>}
-    <hr className="mb-10 border-gray-200" />
-  </FadeInSection>
+// Label above a paragraph of a decision block (problem, what I did, impact)
+const BlockLabel: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <h4 className="text-title-3 text-gray-900 mb-2">{children}</h4>
 );
 
 // ============================================================================
@@ -718,7 +797,11 @@ const BeforeAfterSlider: React.FC<{
   beforeAlt: string;
   afterAlt: string;
   sliderLabel: string;
-}> = ({ beforeSrc, afterSrc, beforeLabel, afterLabel, beforeAlt, afterAlt, sliderLabel }) => {
+  /** Accessible name of the full size button */
+  zoomLabel: string;
+  /** Opens the shared lightbox on the given image */
+  onZoom: (src: string) => void;
+}> = ({ beforeSrc, afterSrc, beforeLabel, afterLabel, beforeAlt, afterAlt, sliderLabel, zoomLabel, onZoom }) => {
   const [sliderPosition, setSliderPosition] = useState(50);
   const [isDragging, setIsDragging] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -816,7 +899,7 @@ const BeforeAfterSlider: React.FC<{
         <div className="absolute inset-0 bg-white shadow-[0_0_10px_rgba(0,0,0,0.3)]" />
 
         {/* Handle circle */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-xl group-focus-visible:ring-2 group-focus-visible:ring-[#2D5CF3]">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-xl group-focus-visible:ring-2 group-focus-visible:ring-gray-900">
           <div className="flex items-center gap-0.5">
             <ChevronDown size={16} className="text-gray-700 rotate-90" />
             <ChevronDown size={16} className="text-gray-700 -rotate-90" />
@@ -831,6 +914,18 @@ const BeforeAfterSlider: React.FC<{
       <div className="absolute top-4 right-4 px-3 py-1.5 rounded-full text-xs font-semibold z-10 bg-white/90 text-gray-900 shadow-md pointer-events-none">
         {afterLabel}
       </div>
+
+      {/* Full size: a separate control, because a press anywhere on the frame moves the slider.
+          It stops the pointer events so the frame never starts a drag or captures the click. */}
+      <button
+        type="button"
+        aria-label={zoomLabel}
+        onPointerDown={(e) => e.stopPropagation()}
+        onClick={() => onZoom(afterSrc)}
+        className="absolute bottom-4 right-4 z-30 flex items-center justify-center w-9 h-9 rounded-full bg-white/90 text-gray-900 shadow-md cursor-zoom-in active:scale-[0.95] transition-transform duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] before:absolute before:-inset-1 before:content-['']"
+      >
+        <ArrowsOut size={16} aria-hidden="true" />
+      </button>
     </div>
   );
 };
@@ -845,7 +940,6 @@ const INITIATIVES_DATA = {
       id: 1,
       title: "VAE Collective MVP",
       duration: "5 weeks",
-      icon: Target,
       description: "End-to-end employer journey for collective certification programs.",
       features: [
         "Discovery with HR managers and training centers",
@@ -859,7 +953,6 @@ const INITIATIVES_DATA = {
       id: 2,
       title: "Product Operations",
       duration: "5 weeks",
-      icon: Layers,
       description: "Restructuring team workflows for faster delivery.",
       features: [
         "Diagnosis of siloed team operations",
@@ -873,7 +966,6 @@ const INITIATIVES_DATA = {
       id: 3,
       title: "User Research",
       duration: "4 weeks",
-      icon: Users,
       description: "Building a knowledge base from candidate interviews.",
       features: [
         "Centralized user knowledge base",
@@ -887,7 +979,6 @@ const INITIATIVES_DATA = {
       id: 4,
       title: "Design Thinking Workshops",
       duration: "3 weeks",
-      icon: Lightbulb,
       description: "Co-creation with field practitioners.",
       features: [
         "2-day workshop with accompaniment structures",
@@ -901,7 +992,6 @@ const INITIATIVES_DATA = {
       id: 5,
       title: "AI Experimentation",
       duration: "2 weeks",
-      icon: Bot,
       description: "Rapid prototyping of AI-powered orientation tools.",
       features: [
         "User archetype identification",
@@ -917,7 +1007,6 @@ const INITIATIVES_DATA = {
       id: 1,
       title: "MVP VAE Collective",
       duration: "5 semaines",
-      icon: Target,
       description: "Parcours employeur complet pour programmes de certification collective.",
       features: [
         "Découverte avec les RH et les centres de formation",
@@ -931,7 +1020,6 @@ const INITIATIVES_DATA = {
       id: 2,
       title: "Opérations produit",
       duration: "5 semaines",
-      icon: Layers,
       description: "Restructuration des modes de travail pour livrer plus vite.",
       features: [
         "Diagnostic des équipes cloisonnées",
@@ -945,7 +1033,6 @@ const INITIATIVES_DATA = {
       id: 3,
       title: "Recherche utilisateur",
       duration: "4 semaines",
-      icon: Users,
       description: "Construction d’une base de connaissances candidat.",
       features: [
         "Base de connaissances utilisateur",
@@ -959,7 +1046,6 @@ const INITIATIVES_DATA = {
       id: 4,
       title: "Ateliers de design thinking",
       duration: "3 semaines",
-      icon: Lightbulb,
       description: "Co-création avec les acteurs terrain.",
       features: [
         "Atelier de 2 jours avec les structures AAP",
@@ -973,7 +1059,6 @@ const INITIATIVES_DATA = {
       id: 5,
       title: "Expérimentation IA",
       duration: "2 semaines",
-      icon: Bot,
       description: "Prototypage rapide d’outils d’orientation IA.",
       features: [
         "Identification des archétypes utilisateurs",
@@ -1035,9 +1120,9 @@ const InitiativesDiagram: React.FC<{
   };
 
   return (
-    <div className="mt-8">
+    <div>
       {/* View Toggle */}
-      <div className="flex justify-center mb-8">
+      <div className="flex justify-start mb-8">
         <div className="inline-flex rounded-full p-1 bg-gray-100">
           <button
             onClick={() => setViewMode('focus')}
@@ -1077,7 +1162,7 @@ const InitiativesDiagram: React.FC<{
           onKeyDown={onKeyDown}
         >
           {/* Controls: previous, progress dots, next (44px hit areas) */}
-          <div className="flex items-center justify-center gap-1 mb-8">
+          <div className="flex items-center justify-start gap-1 mb-8 -ml-2">
             <button
               onClick={handlePrev}
               disabled={activeInitiative === 0}
@@ -1118,7 +1203,6 @@ const InitiativesDiagram: React.FC<{
             {initiatives.map((initiative, idx) => {
               const isActive = idx === activeInitiative;
               const isPrev = idx < activeInitiative;
-              const InitiativeIcon = initiative.icon;
 
               return (
                 <div
@@ -1134,12 +1218,9 @@ const InitiativesDiagram: React.FC<{
                     {/* Left: Identity */}
                     <div className="md:w-1/3 p-8 md:p-10 flex flex-col justify-between bg-gray-50 border-b md:border-b-0 md:border-r border-gray-100">
                       <div>
-                        <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl mb-6 bg-gray-100 text-gray-600">
-                          <InitiativeIcon size={26} />
-                        </div>
-                        <h3 className="text-title-3 mb-2 text-gray-900">
+                        <p className="text-title-3 mb-2 text-gray-900">
                           {initiative.title}
-                        </h3>
+                        </p>
                         <div className="inline-block px-3 py-1 rounded-md text-xs font-semibold bg-gray-100 text-gray-600">
                           {ui.initiative} {initiative.id} · {initiative.duration}
                         </div>
@@ -1151,9 +1232,9 @@ const InitiativesDiagram: React.FC<{
 
                     {/* Right: Features */}
                     <div className="md:w-2/3 p-8 md:p-10">
-                      <h4 className="text-sm font-medium mb-6 text-gray-900">
+                      <p className="text-sm font-medium mb-6 text-gray-900">
                         {ui.keyDeliverables}
-                      </h4>
+                      </p>
                       <ul className="space-y-4">
                         {initiative.features.map((feature, fIdx) => (
                           <motion.li
@@ -1181,7 +1262,6 @@ const InitiativesDiagram: React.FC<{
         /* Overview View - Stacked list of all initiatives */
         <div className="space-y-4">
           {initiatives.map((initiative) => {
-            const InitiativeIcon = initiative.icon;
             return (
               <div
                 key={initiative.id}
@@ -1191,18 +1271,13 @@ const InitiativesDiagram: React.FC<{
                 })}
                 className="group rounded-xl p-5 transition-[background-color,transform] duration-200 ease-out hover:-translate-y-0.5 cursor-pointer border border-gray-100 hover:border-gray-200"
               >
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="p-3 rounded-xl bg-gray-100 text-gray-500">
-                    <InitiativeIcon size={20} />
-                  </div>
-                  <div className="text-xs font-medium text-gray-500">
-                    {ui.initiative} {initiative.id} · {initiative.duration}
-                  </div>
-                </div>
+                <p className="text-xs font-medium text-gray-500 mb-2">
+                  {ui.initiative} {initiative.id} · {initiative.duration}
+                </p>
 
-                <h3 className="text-title-3 mb-2 text-gray-900">
+                <p className="text-title-3 mb-2 text-gray-900">
                   {initiative.title}
-                </h3>
+                </p>
 
                 <p className="text-base leading-relaxed text-gray-600">
                   {initiative.description}
@@ -1220,523 +1295,179 @@ const InitiativesDiagram: React.FC<{
 // MAIN COMPONENT
 // ============================================================================
 
+// Two key visuals side by side, same frame (similarity)
+const Pair: React.FC<{
+  a: { src: string; caption: string };
+  b: { src: string; caption: string };
+  onClick: (src: string) => void;
+}> = ({ a, b, onClick }) => (
+  <div className="mb-10 grid gap-x-6 gap-y-8 md:grid-cols-2">
+    <ClickableImage src={a.src} alt={a.caption} caption={a.caption} onClick={onClick} />
+    <ClickableImage src={b.src} alt={b.caption} caption={b.caption} onClick={onClick} />
+  </div>
+);
+
+const MINISTER_VIDEO_SRC = "/images/francevae/20250701 - Video ministre - revision 3'30.mp4";
+const VAE_COLLECTIVE_PROTOTYPE_URL = 'https://endearing-taffy-c86c69.netlify.app/';
+const UXR_REPORT_URL = 'https://tests-utilisateur-tableau-de-bord-c.vercel.app';
+const AI_CHATBOT_DEMO_URL = 'https://joyful-unicorn-489a7b.netlify.app';
+const AI_RADAR_DEMO_URL = 'https://flourishing-cascaron-0d6509.netlify.app';
+
+// Quiet text link used for demos and reports: 44px target, press feedback
+const quietLinkClass =
+  'inline-flex items-center gap-1.5 min-h-11 text-sm font-medium text-gray-900 [@media(hover:hover)]:hover:text-gray-500 active:scale-[0.97] transition-[color,transform] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)]';
+
+// One initiative: an h3, one short paragraph, one visual, optional quiet links.
+const InitiativeBlock: React.FC<{
+  id: string;
+  title: string;
+  text: string;
+  src: string;
+  caption: string;
+  onImageClick: (src: string) => void;
+  links?: { href: string; label: string; external: boolean; play?: boolean }[];
+}> = ({ id, title, text, src, caption, onImageClick, links }) => (
+  <div id={id} className="mb-14 md:mb-16 last:mb-0 scroll-mt-24">
+    <h3 className="text-title-3 text-gray-900 mb-3 max-w-[56ch]">{title}</h3>
+    <p className="text-base text-gray-600 max-w-[62ch]">{text}</p>
+    {links && links.length > 0 && (
+      <div className="mt-2 flex flex-wrap gap-x-6">
+        {links.map(link => (
+          <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer" className={quietLinkClass}>
+            {link.play && <Play size={14} aria-hidden="true" />}
+            {link.label}
+            {!link.play && (link.external ? <ExternalLink size={14} aria-hidden="true" /> : <ArrowRight size={14} aria-hidden="true" />)}
+          </a>
+        ))}
+      </div>
+    )}
+    <div className="mt-6 md:mt-8">
+      <ClickableImage src={src} alt={caption} caption={caption} onClick={onImageClick} />
+    </div>
+  </div>
+);
+
 const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
   lang,
   onImageClick,
-  onContact
 }) => {
   const t = TRANSLATIONS[lang];
 
   return (
     <div className="min-h-screen bg-[#FDFDFC]">
 
-      {/* HERO */}
-      <section className="px-6 pt-8 pb-10">
-        <div className="max-w-[740px] mx-auto">
-          {/* Logo */}
-          <img
-            src="/images/francevae/logo fvae.webp" {...imgDims("/images/francevae/logo fvae.webp")}
-            alt="France VAE"
-            className="h-8 w-auto mb-8"
+      {/* Hero: same structure for every case study. The intro is the executive summary. */}
+      <CaseStudyHero
+        lang={lang}
+        projectId="france-vae"
+        title={t.hero.title}
+        intro={t.hero.intro}
+        meta={[
+          { label: t.meta.labels.role, value: t.meta.role },
+          { label: t.meta.labels.scope, value: t.meta.scope },
+          { label: t.meta.labels.company, value: t.meta.company },
+        ]}
+        visualAlt={t.hero.heroCaption}
+        externalHref="https://vae.gouv.fr"
+        externalLabel={t.hero.visitSite}
+      />
+
+      {/* Client testimonial, right under the hero, in the act column */}
+      <div className="act-wide pb-12 md:pb-16">
+        <div className="max-w-[62ch]">
+          <CaseStudyTestimonialBlock
+            quote={t.testimonial.quote}
+            author={t.testimonial.author}
+            role={t.testimonial.role}
+            image="boris-aime-bauderlique.webp"
+            lang={lang}
           />
-
-          {/* Title */}
-          <h1 className="text-title-1 text-gray-900 mb-2">
-            {t.hero.title}
-          </h1>
-
-          {/* Role line */}
-          <p className="text-sm text-gray-500 mb-6">
-            {t.meta.role} · {t.meta.scope} · {t.meta.period}
-          </p>
-
-          {/* Subtitle */}
-          <p className="text-base text-gray-600 leading-relaxed max-w-[65ch] mb-6">
-            {t.hero.subtitle}
-          </p>
-
-          {/* Visit link */}
-          <a
-            href="https://vae.gouv.fr"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors duration-150"
-          >
-            <ExternalLink size={14} />
-            {t.hero.visitSite}
-          </a>
         </div>
-      </section>
+      </div>
 
-      {/* Meta */}
-      <section className="px-6 pb-10">
-        <div className="max-w-[740px] mx-auto">
-          <div className="divide-y divide-gray-100">
-            {[
-              { label: t.meta.labels.type, value: t.meta.type },
-              { label: t.meta.labels.scope, value: t.meta.scope },
-              { label: t.meta.labels.period, value: t.meta.period },
-              { label: t.meta.labels.company, value: t.meta.company },
-            ].map((item, i) => (
-              <div key={i} className="flex items-baseline justify-between gap-6 py-3">
-                <span className="text-xs text-gray-500">{item.label}</span>
-                <span className="text-sm font-medium text-gray-900 text-right">{item.value}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Summary: context, role, deliverables and sourced numbers */}
+      <CaseStudySummary
+        lang={lang}
+        context={t.summary.context}
+        role={t.summary.role}
+        roleItems={t.summary.roleItems}
+        deliverables={t.summary.deliverables}
+        metrics={t.summary.metrics}
+      />
 
-      {/* Hero Image */}
-      <section className="px-6 pb-10">
-        <div className="max-w-[960px] mx-auto">
-          <FadeInSection>
-            <ClickableImage
-              src="/images/francevae/france_vae_home.webp"
-              alt="France VAE Homepage"
-              caption={t.hero.heroCaption}
-              onClick={onImageClick}
-              aspectRatio="aspect-[3/2]"
-              priority
+      {/* 01 Approach: the three initiatives that changed how the team works */}
+      <section id="approach">
+        <ActRule />
+        <div className="act-wide pt-10 md:pt-14 pb-12 md:pb-16">
+          <ActTitle index="01" title={t.acts.processTitle} />
+
+          <div className="mt-4 md:mt-6">
+            <InitiativeBlock
+              id="initiative-2"
+              title={t.initiative2.title}
+              text={t.initiative2.brief}
+              src={t.initiative2.bentoImages.large.src}
+              caption={t.initiative2.imageCaption}
+              onImageClick={onImageClick}
             />
-          </FadeInSection>
-        </div>
-      </section>
 
-      {/* CONTEXT (before the overview diagram, which relies on it) */}
-      <section id="context" className="px-6 pt-16 md:pt-24">
-        <div className="max-w-[740px] mx-auto">
-          <SectionHeading title={t.context.title} />
+            <InitiativeBlock
+              id="initiative-3"
+              title={t.initiative3.title}
+              text={t.initiative3.brief}
+              src="/images/francevae/UXR - interface tableau de bord candidat.webp"
+              caption={t.initiative3.imageCaption}
+              onImageClick={onImageClick}
+              links={[{ href: UXR_REPORT_URL, label: t.initiative3.reportButton, external: true }]}
+            />
 
-          <FadeInSection delay={0.1}>
-            <p className="text-base text-gray-600 leading-relaxed mb-12 max-w-[65ch]">
-              {t.context.intro}
-            </p>
-          </FadeInSection>
-
-          <div className="space-y-8">
-            <FadeInSection delay={0.2}>
-              <h3 className="text-title-3 mb-4 text-gray-900">
-                {t.context.challenge}
-              </h3>
-              <p className="text-base text-gray-600 leading-relaxed max-w-[65ch]">
-                {t.context.challengeText}
-              </p>
-            </FadeInSection>
-            <FadeInSection delay={0.3}>
-              <h3 className="text-title-3 mb-4 text-gray-900">
-                {t.context.myScope}
-              </h3>
-              <p className="text-base text-gray-600 leading-relaxed max-w-[65ch]">
-                {t.context.myScopeText}
-              </p>
-            </FadeInSection>
+            <InitiativeBlock
+              id="initiative-4"
+              title={t.initiative4.title}
+              text={t.initiative4.brief}
+              src={t.initiative4.bentoImages.large.src}
+              caption={t.initiative4.imageCaption}
+              onImageClick={onImageClick}
+            />
           </div>
         </div>
       </section>
 
-      {/* INTERACTIVE INITIATIVES DIAGRAM */}
-      <section className="px-6 py-16">
-        <div className="max-w-[740px] mx-auto">
-          <FadeInSection>
-            <h2 className="mb-8 text-title-2 text-gray-900">
-              {t.initiatives.title}
-            </h2>
-          </FadeInSection>
-          <FadeInSection delay={0.2}>
-            <InitiativesDiagram lang={lang} />
-          </FadeInSection>
-        </div>
-      </section>
+      {/* 02 Product: the employer MVP, the AI prototypes, the homepage */}
+      <section id="product">
+        <ActRule />
+        <div className="act-wide pt-10 md:pt-14 pb-12 md:pb-16">
+          <ActTitle index="02" title={t.acts.deliveryTitle} />
 
-      {/* MAIN CONTENT */}
-      <div className="px-6 pb-16 md:pb-24">
-        <div className="max-w-[740px] mx-auto">
+          <div id="ui-delivery" className="mt-4 md:mt-6">
+            <InitiativeBlock
+              id="initiative-1"
+              title={t.initiative1.title}
+              text={t.initiative1.brief}
+              src={t.initiative1.bentoImages.large.src}
+              caption={t.initiative1.prototypeCaption}
+              onImageClick={onImageClick}
+              links={[{ href: VAE_COLLECTIVE_PROTOTYPE_URL, label: t.initiative1.prototypeButton, external: false }]}
+            />
 
-          {/* INITIATIVE 1: VAE COLLECTIVE */}
-          <section id="initiative-1" className="mb-24 md:mb-32">
-            <SectionHeading title={t.initiative1.title} subtitle={t.initiative1.subtitle} />
+            <InitiativeBlock
+              id="initiative-5"
+              title={t.initiative5.title}
+              text={t.initiative5.brief}
+              src="/images/francevae/proto IA - orientation professionnelle assistee par IA.webp"
+              caption={t.initiative5.radarCaption}
+              onImageClick={onImageClick}
+              links={[
+                { href: AI_CHATBOT_DEMO_URL, label: t.initiative5.chatbotDemo, external: false, play: true },
+                { href: AI_RADAR_DEMO_URL, label: t.initiative5.radarDemo, external: false, play: true },
+              ]}
+            />
 
-            {/* Problem */}
-            <FadeInSection delay={0.1}>
-              <h3 className="text-title-3 mb-4 text-gray-900">
-                {t.initiative1.problem}
-              </h3>
-              <p className="text-base text-gray-600 leading-relaxed mb-8 max-w-[65ch]">
-                {t.initiative1.problemText}
-              </p>
-            </FadeInSection>
-
-            {/* Key visual: employer dashboard prototype */}
-            <FadeInSection delay={0.15} className="mb-12">
-              <ClickableImage
-                src={t.initiative1.bentoImages.large.src}
-                alt={t.initiative1.bentoImages.large.caption}
-                caption={t.initiative1.bentoImages.large.caption}
-                onClick={onImageClick}
-              />
-            </FadeInSection>
-
-            {/* What I did */}
-            <FadeInSection delay={0.2}>
-              <h3 className="text-title-3 mb-8 text-gray-900">
-                {t.initiative1.whatIDid}
-              </h3>
-              <div className="space-y-8 mb-10">
-                <BulletSection title={t.initiative1.discovery.title} items={t.initiative1.discovery.items} />
-                <BulletSection title={t.initiative1.design.title} items={t.initiative1.design.items} />
-              </div>
-              <BulletSection title={t.initiative1.deliverables.title} items={t.initiative1.deliverables.items} />
-              <div className="mt-6">
-                <a
-                  href="https://endearing-taffy-c86c69.netlify.app/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#2D5CF3] text-white text-sm font-medium shadow-sm hover:bg-[#2450d9] hover:shadow-md transition-[background-color,box-shadow] duration-150"
-                >
-                  {t.initiative1.prototypeButton}
-                  <ArrowRight size={14} weight="bold" />
-                </a>
-              </div>
-            </FadeInSection>
-
-            {/* Presentation slides */}
-            <FadeInSection delay={0.3} className="mt-10">
-              <ClickableImage
-                src={t.initiative1.bentoImages.small1.src}
-                alt={t.initiative1.bentoImages.small1.caption}
-                caption={t.initiative1.bentoImages.small1.caption}
-                onClick={onImageClick}
-              />
-            </FadeInSection>
-
-            <FadeInSection className="mt-10">
-              <ClickableImage
-                src={t.initiative1.bentoImages.small2.src}
-                alt={t.initiative1.bentoImages.small2.caption}
-                caption={t.initiative1.bentoImages.small2.caption}
-                onClick={onImageClick}
-              />
-            </FadeInSection>
-
-            {/* Impact */}
-            <FadeInSection delay={0.4} className="mt-10">
-              <ImpactBlock text={t.initiative1.impact} />
-            </FadeInSection>
-          </section>
-
-          {/* INITIATIVE 2: PRODUCT OPS */}
-          <section id="initiative-2" className="mb-24 md:mb-32">
-            <SectionHeading title={t.initiative2.title} />
-
-            {/* Problem */}
-            <FadeInSection delay={0.1}>
-              <h3 className="text-title-3 mb-4 text-gray-900">
-                {t.initiative2.problem}
-              </h3>
-              <p className="text-base text-gray-600 leading-relaxed mb-8 max-w-[65ch]">
-                {t.initiative2.problemText}
-              </p>
-            </FadeInSection>
-
-            {/* Key visual: seasons framework */}
-            <FadeInSection delay={0.15} className="mb-12">
-              <ClickableImage
-                src={t.initiative2.bentoImages.large.src}
-                alt={t.initiative2.bentoImages.large.caption}
-                caption={t.initiative2.bentoImages.large.caption}
-                onClick={onImageClick}
-              />
-            </FadeInSection>
-
-            {/* What I did */}
-            <FadeInSection delay={0.2}>
-              <h3 className="text-title-3 mb-8 text-gray-900">
-                {t.initiative2.whatIDid}
-              </h3>
-              <ExpandableSection
-                lang={lang}
-                previewRem={14}
-                expandLabel={t.progressive.readMore}
-                collapseLabel={t.progressive.showLess}
-              >
-                <div className="space-y-8 mb-10">
-                  <BulletSection title={t.initiative2.diagnostic.title} items={t.initiative2.diagnostic.items} />
-                  <BulletSection title={t.initiative2.coDesign.title} items={t.initiative2.coDesign.items} />
-                  <BulletSection title={t.initiative2.matrix.title} items={t.initiative2.matrix.items} />
-                  <BulletSection title={t.initiative2.deployment.title} items={t.initiative2.deployment.items} />
-                </div>
-              </ExpandableSection>
-            </FadeInSection>
-
-            {/* Team org: before/after */}
-            <FadeInSection delay={0.3} className="mt-10">
-              <ClickableImage
-                src={t.initiative2.bentoImages.small1.src}
-                alt={t.initiative2.bentoImages.small1.caption}
-                caption={t.initiative2.bentoImages.small1.caption}
-                onClick={onImageClick}
-              />
-            </FadeInSection>
-
-            <FadeInSection className="mt-10">
-              <ClickableImage
-                src={t.initiative2.bentoImages.small2.src}
-                alt={t.initiative2.bentoImages.small2.caption}
-                caption={t.initiative2.bentoImages.small2.caption}
-                onClick={onImageClick}
-              />
-            </FadeInSection>
-
-            {/* Initiative lifecycle */}
-            {t.initiative2.bentoImages.large2 && (
-              <FadeInSection delay={0.35} className="mt-10">
-                <ClickableImage
-                  src={t.initiative2.bentoImages.large2.src}
-                  alt={t.initiative2.bentoImages.large2.caption}
-                  caption={t.initiative2.bentoImages.large2.caption}
-                  onClick={onImageClick}
-                />
-              </FadeInSection>
-            )}
-
-            {/* Impact */}
-            <FadeInSection delay={0.4} className="mt-10">
-              <ImpactBlock text={t.initiative2.impact} />
-            </FadeInSection>
-          </section>
-
-          {/* INITIATIVE 3: USER RESEARCH */}
-          <section id="initiative-3" className="mb-24 md:mb-32">
-            <SectionHeading title={t.initiative3.title} subtitle={t.initiative3.subtitle} />
-
-            {/* Problem */}
-            <FadeInSection delay={0.1}>
-              <h3 className="text-title-3 mb-4 text-gray-900">
-                {t.initiative3.problem}
-              </h3>
-              <p className="text-base text-gray-600 leading-relaxed mb-8 max-w-[65ch]">
-                {t.initiative3.problemText}
-              </p>
-            </FadeInSection>
-
-            {/* Key visual: synthesis report */}
-            <FadeInSection delay={0.15} className="mb-12">
-              <ClickableImage
-                src={t.initiative3.bentoImages.large.src}
-                alt={t.initiative3.bentoImages.large.caption}
-                caption={t.initiative3.bentoImages.large.caption}
-                onClick={onImageClick}
-              />
-            </FadeInSection>
-
-            {/* What I did */}
-            <FadeInSection delay={0.2}>
-              <h3 className="text-title-3 mb-8 text-gray-900">
-                {t.initiative3.whatIDid}
-              </h3>
-              <ExpandableSection
-                lang={lang}
-                previewRem={10.5}
-                expandLabel={t.progressive.readMore}
-                collapseLabel={t.progressive.showLess}
-              >
-                <div className="space-y-8 mb-10">
-                  <BulletSection title={t.initiative3.structuring.title} items={t.initiative3.structuring.items} />
-                  <BulletSection title={t.initiative3.campaigns.title} items={t.initiative3.campaigns.items} />
-                  <BulletSection title={t.initiative3.presentation.title} items={t.initiative3.presentation.items} />
-                </div>
-              </ExpandableSection>
-              <div className="mt-6">
-                <a
-                  href="https://tests-utilisateur-tableau-de-bord-c.vercel.app"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#2D5CF3] text-white text-sm font-medium shadow-sm hover:bg-[#2450d9] hover:shadow-md transition-[background-color,box-shadow] duration-150"
-                >
-                  {t.initiative3.reportButton}
-                  <ExternalLink size={14} weight="bold" />
-                </a>
-              </div>
-            </FadeInSection>
-
-            {/* Research artifacts */}
-            <FadeInSection delay={0.3} className="mt-10">
-              <ClickableImage
-                src={t.initiative3.bentoImages.small1.src}
-                alt={t.initiative3.bentoImages.small1.caption}
-                caption={t.initiative3.bentoImages.small1.caption}
-                onClick={onImageClick}
-              />
-            </FadeInSection>
-
-            <FadeInSection className="mt-10">
-              <ClickableImage
-                src={t.initiative3.bentoImages.small2.src}
-                alt={t.initiative3.bentoImages.small2.caption}
-                caption={t.initiative3.bentoImages.small2.caption}
-                onClick={onImageClick}
-              />
-            </FadeInSection>
-
-            {/* Impact */}
-            <FadeInSection delay={0.4} className="mt-10">
-              <ImpactBlock text={t.initiative3.impact} />
-            </FadeInSection>
-          </section>
-
-          {/* INITIATIVE 4: WORKSHOPS */}
-          <section id="initiative-4" className="mb-24 md:mb-32">
-            <SectionHeading title={t.initiative4.title} subtitle={t.initiative4.subtitle} />
-
-            {/* Problem */}
-            <FadeInSection delay={0.1}>
-              <h3 className="text-title-3 mb-4 text-gray-900">
-                {t.initiative4.problem}
-              </h3>
-              <p className="text-base text-gray-600 leading-relaxed mb-8 max-w-[65ch]">
-                {t.initiative4.problemText}
-              </p>
-            </FadeInSection>
-
-            {/* Key visual: workshop in session */}
-            <FadeInSection delay={0.15} className="mb-12">
-              <ClickableImage
-                src={t.initiative4.bentoImages.large.src}
-                alt={t.initiative4.bentoImages.large.caption}
-                caption={t.initiative4.bentoImages.large.caption}
-                onClick={onImageClick}
-              />
-            </FadeInSection>
-
-            {/* What I did */}
-            <FadeInSection delay={0.2}>
-              <h3 className="text-title-3 mb-8 text-gray-900">
-                {t.initiative4.whatIDid}
-              </h3>
-              <div className="space-y-8 mb-10">
-                <BulletSection title={t.initiative4.preparation.title} items={t.initiative4.preparation.items} />
-                <BulletSection title={t.initiative4.facilitation.title} items={t.initiative4.facilitation.items} />
-              </div>
-              <BulletSection title={t.initiative4.internal.title} items={t.initiative4.internal.items} />
-            </FadeInSection>
-
-            {/* Workshop slides */}
-            <FadeInSection delay={0.3} className="mt-10">
-              <ClickableImage
-                src={t.initiative4.bentoImages.small1.src}
-                alt={t.initiative4.bentoImages.small1.caption}
-                caption={t.initiative4.bentoImages.small1.caption}
-                onClick={onImageClick}
-              />
-            </FadeInSection>
-
-            <FadeInSection className="mt-10">
-              <ClickableImage
-                src={t.initiative4.bentoImages.small2.src}
-                alt={t.initiative4.bentoImages.small2.caption}
-                caption={t.initiative4.bentoImages.small2.caption}
-                onClick={onImageClick}
-              />
-            </FadeInSection>
-
-            {/* Impact */}
-            <FadeInSection delay={0.4} className="mt-10">
-              <ImpactBlock text={t.initiative4.impact} />
-            </FadeInSection>
-          </section>
-
-          {/* INITIATIVE 5: AI */}
-          <section id="initiative-5" className="mb-24 md:mb-32">
-            <SectionHeading title={t.initiative5.title} subtitle={t.initiative5.subtitle} />
-
-            {/* Context */}
-            <FadeInSection delay={0.1}>
-              <p className="text-base text-gray-600 leading-relaxed mb-8 max-w-[65ch]">
-                {t.initiative5.context}
-              </p>
-            </FadeInSection>
-
-            {/* Key visual: chatbot prototype */}
-            <FadeInSection delay={0.15} className="mb-4">
-              <ClickableImage
-                src="/images/francevae/proto IA - chatbot de positionnement.webp"
-                alt="AI Chatbot Prototype"
-                caption={t.initiative5.chatbotCaption}
-                onClick={onImageClick}
-              />
-            </FadeInSection>
-            <FadeInSection delay={0.17} className="mb-12">
-              <a
-                href="https://joyful-unicorn-489a7b.netlify.app"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors duration-150"
-              >
-                <Play size={14} />
-                {t.initiative5.tryDemo}
-              </a>
-            </FadeInSection>
-
-            {/* What I did */}
-            <FadeInSection delay={0.2}>
-              <h3 className="text-title-3 mb-8 text-gray-900">
-                {t.initiative5.whatIDid}
-              </h3>
-              <ExpandableSection
-                lang={lang}
-                previewRem={10.5}
-                expandLabel={t.progressive.readMore}
-                collapseLabel={t.progressive.showLess}
-              >
-                <div className="space-y-8 mb-10">
-                  <BulletSection title={t.initiative5.study.title} items={t.initiative5.study.items} />
-                  <BulletSection title={t.initiative5.ideation.title} items={t.initiative5.ideation.items} />
-                  <BulletSection title={t.initiative5.prototyping.title} items={t.initiative5.prototyping.items} />
-                </div>
-              </ExpandableSection>
-            </FadeInSection>
-
-            {/* Second prototype: skills radar */}
-            <FadeInSection delay={0.3} className="mt-10 mb-4">
-              <ClickableImage
-                src="/images/francevae/proto IA - orientation professionnelle assistee par IA.webp"
-                alt="AI Skills Radar Prototype"
-                caption={t.initiative5.radarCaption}
-                onClick={onImageClick}
-              />
-            </FadeInSection>
-            <FadeInSection delay={0.32} className="mb-0">
-              <a
-                href="https://flourishing-cascaron-0d6509.netlify.app"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors duration-150"
-              >
-                <Play size={14} />
-                {t.initiative5.tryDemo}
-              </a>
-            </FadeInSection>
-
-            {/* Impact */}
-            <FadeInSection delay={0.4} className="mt-10">
-              <ImpactBlock text={t.initiative5.impact} />
-            </FadeInSection>
-          </section>
-
-          {/* UI & DELIVERY */}
-          <section id="ui-delivery" className="mb-24 md:mb-32">
-            <SectionHeading title={t.uiDelivery.title} subtitle={t.uiDelivery.subtitle} />
-
-            {/* Homepage Before/After */}
-            <FadeInSection delay={0.1} className="mb-16">
-              <h3 className="text-title-3 mb-4 text-gray-900">
-                {t.uiDelivery.homepageTitle}
-              </h3>
-              <p className="text-base text-gray-600 leading-relaxed mb-8 max-w-[65ch]">
-                {t.uiDelivery.homepageDescription}
-              </p>
-              <figure>
+            {/* Homepage before and after: the slider is the visual of this block */}
+            <div>
+              <h3 className="text-title-3 text-gray-900 mb-3 max-w-[56ch]">{t.uiDelivery.homepageTitle}</h3>
+              <p className="text-base text-gray-600 max-w-[62ch]">{t.uiDelivery.brief}</p>
+              <figure className="mt-6 md:mt-8">
                 <BeforeAfterSlider
                   beforeSrc="/images/francevae/france_vae_home_before_2x.webp"
                   afterSrc="/images/francevae/france_vae_home_after_2x.webp"
@@ -1745,97 +1476,51 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
                   beforeAlt={t.ui.beforeAlt}
                   afterAlt={t.ui.afterAlt}
                   sliderLabel={t.ui.sliderLabel}
+                  zoomLabel={t.ui.zoomLabel}
+                  onZoom={onImageClick}
                 />
                 <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
                   {t.uiDelivery.homepageCaption}
                 </figcaption>
               </figure>
-            </FadeInSection>
 
-            {/* Search Engine - Text description */}
-            <FadeInSection delay={0.15} className="mb-16">
-              <h3 className="text-title-3 mb-4 text-gray-900">
-                {t.uiDelivery.searchEngineTitle}
-              </h3>
-              <p className="text-base text-gray-600 leading-relaxed max-w-[65ch]">
-                {t.uiDelivery.searchEngineDescription}
-              </p>
-            </FadeInSection>
-
-            {/* Video Section */}
-            <FadeInSection delay={0.2}>
-              <h3 className="text-title-3 mb-4 text-gray-900">
-                {t.uiDelivery.videoTitle}
-              </h3>
-              <p className="text-base text-gray-600 leading-relaxed mb-8 max-w-[65ch]">
-                {t.uiDelivery.videoSubtitle}
-              </p>
-              <figure>
-                <div className="rounded-2xl overflow-hidden border border-gray-200">
-                  <video
-                    controls
-                    playsInline
-                    preload="metadata"
-                    className="w-full h-auto"
-                  >
-                    <source src="/images/francevae/20250701 - Video ministre - revision 3'30.mp4" type="video/mp4" />
-                    {t.ui.videoFallback}
-                  </video>
-                </div>
-                <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
-                  {t.uiDelivery.videoCaption}
-                </figcaption>
-              </figure>
-            </FadeInSection>
-          </section>
-
-          {/* TESTIMONIAL */}
-          <section className="mb-24 md:mb-32">
-            <CaseStudyTestimonialBlock
-              quote={t.testimonial.quote}
-              author={t.testimonial.author}
-              role={t.testimonial.role}
-              image="boris-aime-bauderlique.webp"
-              lang={lang}
-            />
-          </section>
-
-          {/* LEARNINGS */}
-          <section id="learnings" className="mb-24 md:mb-32">
-            <SectionHeading title={t.learnings.title} />
-
-            <div className="divide-y divide-gray-100">
-              {t.learnings.items.map((item, idx) => (
-                <FadeInSection key={idx} delay={0.1 + idx * 0.05}>
-                  <div className="py-6">
-                    <h3 className="text-title-3 mb-2 text-gray-900">
-                      {item.title}
-                    </h3>
-                    <p className="text-base leading-relaxed max-w-[65ch] text-gray-600">
-                      {item.text}
-                    </p>
-                  </div>
-                </FadeInSection>
-              ))}
+              {/* Presentation video for the Minister's cabinet: the last visual of the page */}
+              <div className="mt-10 md:mt-12">
+                <VideoFigure
+                  src={MINISTER_VIDEO_SRC}
+                  caption={t.uiDelivery.videoCaption}
+                  label={t.uiDelivery.videoTitle}
+                  onClick={onImageClick}
+                />
+              </div>
             </div>
-          </section>
 
-          {/* CTA */}
-          <section className="pb-16 md:pb-24">
-            <FadeInSection>
-              <p className="text-sm text-gray-500 mb-4">{t.cta.title}</p>
-              <button
-                onClick={onContact}
-                className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors duration-150"
-              >
-                {t.cta.button}
-                <ArrowRight size={14} />
-              </button>
-            </FadeInSection>
-          </section>
-
+            {/* Gallery access */}
+            <div className="mt-10">
+              <Link href={`/${lang}/project/france-vae/gallery`} className={quietLinkClass}>
+                {t.ui.viewAllVisuals}
+                <ArrowRight size={14} aria-hidden="true" />
+              </Link>
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
+
+      {/* 03 Learnings: three of the four, the fourth stays in the translations */}
+      <section id="learnings">
+        <ActRule />
+        <div className="act-wide pt-10 md:pt-14 pb-12 md:pb-16">
+          <ActTitle index="03" title={t.acts.learnings} />
+          <div className="divide-y divide-gray-100 border-t border-gray-100">
+            {t.learnings.items.slice(1).map((item, idx) => (
+              <div key={idx} className="py-6">
+                <h3 className="text-title-3 mb-2 text-gray-900 max-w-[56ch]">{item.title}</h3>
+                <p className="text-base text-gray-600 max-w-[62ch]">{item.text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
     </div>
   );

@@ -54,7 +54,7 @@ const BlogPreviewSection: React.FC<BlogPreviewSectionProps> = ({
                 </span>
 
                 {/* Title */}
-                <h3 className="text-lg md:text-xl font-bold tracking-[-0.02em] text-gray-900 mb-3 group-hover:text-[#2D5CF3] transition-colors">
+                <h3 className="text-lg md:text-xl font-bold tracking-[-0.02em] text-gray-900 mb-3 group-hover:text-gray-500 transition-colors">
                   {title}
                 </h3>
 
@@ -64,7 +64,7 @@ const BlogPreviewSection: React.FC<BlogPreviewSectionProps> = ({
                 </p>
 
                 {/* Read more */}
-                <span className="inline-flex items-center gap-1.5 text-sm font-medium text-[#2D5CF3]">
+                <span className="inline-flex items-center gap-1.5 text-sm font-medium text-gray-900">
                   {lang === 'fr' ? 'Lire la suite' : 'Read more'}
                   <ArrowRight size={14} weight="bold" />
                 </span>
@@ -77,7 +77,7 @@ const BlogPreviewSection: React.FC<BlogPreviewSectionProps> = ({
         <div className="text-center">
           <Link
             href={`/${lang}/ressources`}
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-medium bg-[#2D5CF3] text-white hover:bg-[#2450d9] shadow-sm hover:shadow-md transition-all"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-medium bg-gray-900 text-white hover:bg-black shadow-sm hover:shadow-md transition-all"
           >
             {content.signals.cta}
             <ArrowRight size={18} weight="bold" />

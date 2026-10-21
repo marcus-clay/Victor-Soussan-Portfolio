@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import ServicesPageWrapper from '@/components/page-wrappers/ServicesPageWrapper'
+import ServicesPage from '@/views/ServicesPage'
 import JsonLd from '@/components/JsonLd'
 import { buildMetadata, pageLd, toLang } from '@/lib/seo'
 
@@ -34,7 +34,7 @@ export default async function Page({ params }: Props) {
           crumbs: [{ name: COPY[lang].title, path: 'services' }],
         })}
       />
-      <ServicesPageWrapper lang={lang} />
+      <ServicesPage lang={lang} />
     </>
   )
 }

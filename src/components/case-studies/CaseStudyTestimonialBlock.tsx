@@ -57,7 +57,7 @@ export default function CaseStudyTestimonialBlock({
     : `${author}, ${role} (LinkedIn profile)`
 
   return (
-    <div className="mt-10 rise-in">
+    <div className="mt-10">
       <div className="relative">
         <motion.div
           id={contentId}
@@ -123,8 +123,8 @@ export default function CaseStudyTestimonialBlock({
               <span className="text-sm text-gray-500 sm:truncate">{role}</span>
             </span>
             <span className="flex items-center gap-1 flex-shrink-0 pl-2" aria-hidden="true">
-              <LinkedinLogo size={14} weight="fill" className="text-[#0A66C2] flex-shrink-0" />
-              <span className="hidden sm:inline text-sm font-medium text-[#0A66C2] whitespace-nowrap">
+              <LinkedinLogo size={14} weight="fill" className="text-gray-900 flex-shrink-0" />
+              <span className="hidden sm:inline text-sm font-medium text-gray-900 whitespace-nowrap">
                 {lang === 'fr' ? 'Voir le profil' : 'View profile'}
               </span>
             </span>

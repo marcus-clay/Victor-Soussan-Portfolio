@@ -257,7 +257,7 @@ function Home({ go }: { go: (p: PageId) => void }) {
           className="group cursor-pointer rounded-xl overflow-hidden bg-white border border-gray-200/60 hover:border-gray-300 hover:shadow-lg hover:shadow-gray-900/[0.04] transition-all">
           <div className="overflow-hidden"><img src={PROJECTS[0].coverImage} alt={PROJECTS[0].title} className="w-full aspect-[21/9] object-cover transition-transform duration-[2000ms] group-hover:scale-[1.06]" /></div>
           <div className="p-8">
-            <span className="text-[12px] font-bold text-gray-400 uppercase tracking-wider">{PROJECTS[0].role} · {PROJECTS[0].period}</span>
+            <span className="text-[12px] font-bold text-gray-400 uppercase tracking-wider">{PROJECTS[0].role}</span>
             <h3 className="text-[22px] font-bold mt-2 mb-2 group-hover:text-blue-600 transition-colors">{PROJECTS[0].title}</h3>
             <Expand summary={PROJECTS[0].summary.slice(0, 100) + '.'}>
               <p className="text-[16px] text-gray-500 leading-relaxed">{PROJECTS[0].summary}</p>
@@ -282,7 +282,7 @@ function Home({ go }: { go: (p: PageId) => void }) {
                   <div className="overflow-hidden"><img src={p.coverImage} alt={p.title} className="w-full aspect-[16/10] object-cover transition-transform duration-[2000ms] group-hover:scale-[1.06]" /></div>
                   <div className="p-5">
                     <h3 className="text-[17px] font-semibold group-hover:text-blue-600 transition-colors">{p.title}</h3>
-                    <p className="text-[14px] text-gray-500 mt-1">{p.role} · {p.period}</p>
+                    <p className="text-[14px] text-gray-500 mt-1">{p.role}</p>
                   </div>
                 </motion.div>
               </F>
@@ -404,7 +404,7 @@ function Work({ go }: { go: (p: PageId) => void }) {
       <div className="max-w-[1200px] mx-auto px-6 pb-16">
         {PROJECTS.map((p, i) => (
           <F key={p.id} delay={i * 0.03}>
-            <ExpandItem title={p.title} subtitle={`${p.role} · ${p.period}`} badge={p.format === 'case-study' ? 'Case Study' : 'Short'}>
+            <ExpandItem title={p.title} subtitle={`${p.role}`} badge={p.format === 'case-study' ? 'Case Study' : 'Short'}>
               <div className="flex flex-col md:flex-row gap-6">
                 <div className="w-full md:w-64 rounded-xl overflow-hidden bg-gray-50 shrink-0 cursor-pointer" onClick={() => go('case')}>
                   <img src={p.coverImage} alt={p.title} className="w-full aspect-[16/10] object-cover hover:scale-[1.03] transition-transform duration-[2000ms]" />
@@ -456,7 +456,7 @@ function Case({ go }: { go: (p: PageId) => void }) {
         <div className="max-w-[800px] mx-auto">
           <F><motion.button whileHover={{ x: -3 }} transition={spB} onClick={() => go('work')} className="flex items-center gap-2 text-[14px] text-gray-400 hover:text-gray-900 mb-10"><ArrowLeft size={14} /> All projects</motion.button></F>
           <F delay={0.03}>
-            <div className="flex items-center gap-6 text-[14px] text-gray-500 mb-4"><span className="font-semibold text-gray-900">Toolkit</span><span>·</span><span>{TK.meta.type}</span><span>·</span><span>{TK.meta.period}</span></div>
+            <div className="flex items-center gap-6 text-[14px] text-gray-500 mb-4"><span className="font-semibold text-gray-900">Toolkit</span><span>·</span><span>{TK.meta.type}</span></div>
             <h1 className="text-[clamp(2rem,5vw,3.2rem)] font-bold tracking-[-0.04em] leading-[1.05] mb-6">{TK.hero.title}</h1>
             <Expand summary={TK.hero.description.slice(0, 160) + '.'}>
               <p className="text-[16px] text-gray-500 leading-relaxed">{TK.hero.description}</p>

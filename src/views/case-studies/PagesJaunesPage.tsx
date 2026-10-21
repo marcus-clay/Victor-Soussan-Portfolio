@@ -1,6 +1,6 @@
 // PagesJaunes Case Study Page - wrapper around PagesJaunesFull (case study) and the media gallery
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { imgDims } from '@/utils/imageDimensions'
 import { motion, AnimatePresence } from 'framer-motion';
 import { GalleryItem } from '../../components/BentoGallery';
@@ -10,6 +10,7 @@ import VideoPlayer from '@/components/VideoPlayer';
 import { zoomable } from '@/utils/zoomable';
 
 import { PAGESJAUNES_CAPTIONS } from '../../data/caseStudyTranslations/pagesJaunesTranslations';
+import { useScrollTopOnChange } from '@/hooks/useScrollTopOnChange';
 
 interface PagesJaunesPageProps {
   onClose: () => void;
@@ -26,6 +27,7 @@ const getPagesJaunesGalleryItems = (lang: 'en' | 'fr'): GalleryItem[] => {
   const captions = PAGESJAUNES_CAPTIONS;
 
   const t = captions[lang];
+  const fr = lang === 'fr';
 
   return [
     // Homepage
@@ -234,6 +236,37 @@ const getPagesJaunesGalleryItems = (lang: 'en' | 'fr'): GalleryItem[] => {
       type: 'video',
       caption: t.androidOnboarding,
       captionDesc: t.androidOnboardingDesc
+    },
+    // Micro-interactions and Android Wear visuals, shown in the gallery only (the case study keeps one visual per decision)
+    {
+      src: '/images/pagesjaunes/micro-interactions/NES_Anim_Nav_Drawer.gif',
+      type: 'image',
+      caption: fr ? 'Tiroir de navigation Material Design' : 'Material Design navigation drawer',
+      captionDesc: fr ? 'Motif Android familier, aux couleurs de PagesJaunes.' : 'Familiar Android pattern in PagesJaunes colors.'
+    },
+    {
+      src: '/images/pagesjaunes/micro-interactions/anim_favoris.mp4',
+      type: 'video',
+      caption: fr ? 'Animation des favoris' : 'Favorites animation',
+      captionDesc: fr ? 'Le rebond du cœur confirme immédiatement l’action.' : 'The heart bounce confirms the action at once.'
+    },
+    {
+      src: '/images/pagesjaunes/micro-interactions/Anim_remarketing_historique.mp4',
+      type: 'video',
+      caption: fr ? 'Historique et invitation à ajouter une photo' : 'History and photo upload prompt',
+      captionDesc: fr ? 'Inviter l’utilisateur à partager son expérience après une visite.' : 'Inviting users to share their experience after a visit.'
+    },
+    {
+      src: '/images/pagesjaunes/Android wear/android_wear_thumbnail.webp',
+      type: 'image',
+      caption: fr ? 'PagesJaunes Android Wear' : 'PagesJaunes Android Wear',
+      captionDesc: fr ? 'Recherche locale lisible d’un coup d’œil sur un cadran de montre.' : 'Glanceable local search on a watch face.'
+    },
+    {
+      src: '/images/pagesjaunes/Android wear/screens/09 Y Aller BTN.webp',
+      type: 'image',
+      caption: fr ? 'L’action de navigation « Y aller »' : 'The "Y Aller" navigation action',
+      captionDesc: fr ? 'Un appui ouvre Google Maps.' : 'One tap opens Google Maps.'
     }
   ];
 };
@@ -289,20 +322,20 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick }) => {
   const isVideo = item.type === 'video' || item.src.match(/\.(mp4|webm|mov)$/i);
   return (
     <motion.figure
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.28, delay: index * 0.03, ease: [0.23, 1, 0.32, 1] }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.32, ease: [0.23, 1, 0.32, 1] }}
       className="group cursor-zoom-in break-inside-avoid mb-6"
       {...zoomable(onClick)}
     >
-      <div className="rounded-xl overflow-hidden ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]">
+      <div className="rounded-xl overflow-hidden ring-1 ring-black/[0.04] [@media(hover:hover)]:hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)]:hover:scale-[1.01] active:scale-[0.99]">
         {isVideo ? (
           <VideoPlayer
             src={item.src}
-            className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
+            className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)]:group-hover:scale-[1.02]"
           />
         ) : (
-          <img loading="lazy" src={item.src} {...imgDims(item.src)} alt={item.caption} className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" />
+          <img loading="lazy" src={item.src} {...imgDims(item.src)} alt={item.caption} className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)]:group-hover:scale-[1.02]" />
         )}
       </div>
       <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
@@ -327,9 +360,7 @@ export const PagesJaunesPage: React.FC<PagesJaunesPageProps> = ({
   const [singleImage, setSingleImage] = useState<LightboxImage | null>(null);
 
   // Scroll to top when mode changes
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
-  }, [viewMode]);
+  useScrollTopOnChange(viewMode);
 
   // Open lightbox with specific image
   const openLightbox = (imageSrc: string, startTime: number = 0) => {
@@ -364,14 +395,14 @@ export const PagesJaunesPage: React.FC<PagesJaunesPageProps> = ({
               transition={{ duration: 0.3 }}
               className="min-h-full bg-[#FDFDFC]"
             >
-              <div className="max-w-[960px] mx-auto px-6 py-16 md:py-24">
+              <div className="act-wide py-8 md:py-12">
                 <h1 className="sr-only">
                   {lang === 'fr' ? 'PagesJaunes : galerie du projet' : 'PagesJaunes: project gallery'}
                 </h1>
                 <h2 className="text-title-2 text-gray-900 mb-10">
                   {lang === 'fr' ? 'Galerie du projet' : 'Project gallery'}
                 </h2>
-                <div className="columns-1 md:columns-2 lg:columns-3 gap-4">
+                <div className="columns-1 sm:columns-2 lg:columns-3 gap-4">
                   {galleryItems.map((item, idx) => (
                     <GalleryCard
                       key={item.src}

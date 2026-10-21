@@ -35,6 +35,16 @@ export default {
         'title-1': ['clamp(1.5rem, 1.35rem + 0.6vw, 1.75rem)', { lineHeight: '1.18', letterSpacing: '-0.025em', fontWeight: '600' }],
         'title-2': ['1.25rem', { lineHeight: '1.3', letterSpacing: '-0.02em', fontWeight: '600' }],
         'title-3': ['1.0625rem', { lineHeight: '1.4', letterSpacing: '-0.012em', fontWeight: '600' }],
+        // Immersive roles (homepage, case studies, approach, testimonials). Fluid, and tighter
+        // as they grow. Tracking never goes below -0.04em.
+        //   display   homepage statement      44 to 128px
+        //   headline  case study title         36 to 80px
+        //   subhead   act title, big quote     22 to 38px
+        //   lead-lg   intro paragraph          18 to 24px
+        display: ['clamp(2.75rem, 1.6rem + 5vw, 8rem)', { lineHeight: '0.98', letterSpacing: '-0.04em', fontWeight: '600' }],
+        headline: ['clamp(2.25rem, 1.5rem + 2.8vw, 5rem)', { lineHeight: '1.02', letterSpacing: '-0.035em', fontWeight: '600' }],
+        subhead: ['clamp(1.375rem, 1.1rem + 1vw, 2.375rem)', { lineHeight: '1.15', letterSpacing: '-0.025em', fontWeight: '600' }],
+        'lead-lg': ['clamp(1.125rem, 1rem + 0.5vw, 1.5rem)', { lineHeight: '1.5', letterSpacing: '-0.01em' }],
       },
       colors: {
         // Secondary text. Tailwind's #6B7280 lands at 4.4:1 on the #F9F9F9 and gray-100

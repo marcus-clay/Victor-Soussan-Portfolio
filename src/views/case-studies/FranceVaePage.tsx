@@ -1,11 +1,13 @@
 // France VAE Case Study Page
 
 import React, { useState, useEffect, useRef } from 'react';
+import { zoomable } from '@/utils/zoomable'
 import { imgDims } from '@/utils/imageDimensions'
 import { motion } from 'framer-motion';
 
 import FranceVaeFull from '../../components/case-studies/FranceVaeFull';
 import EnhancedLightbox from '../../components/media/EnhancedLightbox';
+import { useScrollTopOnChange } from '@/hooks/useScrollTopOnChange';
 
 interface GalleryCardProps {
   item: { src: string; caption: string; captionFr: string };
@@ -19,17 +21,17 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick, lang })
   const caption = lang === 'fr' ? item.captionFr : item.caption;
   return (
     <motion.figure
-      initial={{ opacity: 0, transform: 'translateY(12px)' }}
-      animate={{ opacity: 1, transform: 'translateY(0px)' }}
-      transition={{ duration: 0.3, delay: index * 0.03, ease: [0.23, 1, 0.32, 1] }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.32, ease: [0.23, 1, 0.32, 1] }}
       className="group cursor-zoom-in break-inside-avoid mb-6"
-      onClick={onClick}
+      {...zoomable(onClick)}
     >
-      <div className="rounded-xl overflow-hidden ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]">
+      <div className="rounded-xl overflow-hidden ring-1 ring-black/[0.04] [@media(hover:hover)]:hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)]:hover:scale-[1.01] active:scale-[0.99]">
         {isVideo ? (
-          <video src={item.src} className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" muted playsInline autoPlay loop preload="metadata" />
+          <video src={item.src} className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)]:group-hover:scale-[1.02]" muted playsInline autoPlay loop preload="metadata" />
         ) : (
-          <img loading="lazy" src={item.src} {...imgDims(item.src)} alt={caption} className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" />
+          <img loading="lazy" src={item.src} {...imgDims(item.src)} alt={caption} className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)]:group-hover:scale-[1.02]" />
         )}
       </div>
       <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
@@ -89,6 +91,11 @@ const ALL_MEDIA = [
   { src: '/images/francevae/workspace UX 05 - uxr.webp', caption: 'User Research Hub', captionFr: 'Pôle de recherche utilisateur' },
   { src: '/images/francevae/workspace UX 06 - uxr - etudes.webp', caption: 'Research Studies', captionFr: 'Études de recherche' },
   { src: '/images/francevae/workspace UX 07 - uxr - annuaire.webp', caption: 'UXR Participant Directory', captionFr: 'Annuaire des participants de recherche' },
+  // Homepage before and after: the two sides of the comparison slider of the case study
+  { src: '/images/francevae/france_vae_home_before_2x.webp', caption: 'France VAE homepage before the redesign', captionFr: 'Page d’accueil France VAE avant la refonte' },
+  { src: '/images/francevae/france_vae_home_after_2x.webp', caption: 'France VAE homepage after the redesign', captionFr: 'Page d’accueil France VAE après la refonte' },
+  // Shown in the case study only as a sentence: kept reachable here
+  { src: '/images/francevae/20250701 - Video ministre - revision 3\'30.mp4', caption: 'Presentation video for the Minister of Labor\'s cabinet', captionFr: 'Vidéo de présentation pour le cabinet de la Ministre du Travail' },
 ];
 
 const FranceVaePage: React.FC<FranceVaePageProps> = ({
@@ -125,9 +132,7 @@ const FranceVaePage: React.FC<FranceVaePageProps> = ({
     }
   }, [propViewMode]);
 
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
-  }, [viewMode]);
+  useScrollTopOnChange(viewMode);
 
   const openLightbox = (imageSrc: string) => {
     const index = ALL_MEDIA.findIndex(m => m.src === imageSrc);
@@ -160,7 +165,7 @@ const FranceVaePage: React.FC<FranceVaePageProps> = ({
         </div>
       ) : (
         <div>
-          <div className="max-w-[960px] mx-auto px-6 py-16 md:py-24">
+          <div className="wrap py-16 md:py-24">
             <div className="columns-1 sm:columns-2 lg:columns-3 gap-4">
               {ALL_MEDIA.map((item, index) => (
                 <GalleryCard
@@ -181,6 +186,7 @@ const FranceVaePage: React.FC<FranceVaePageProps> = ({
         onClose={closeLightbox}
         images={fallbackItem ? [fallbackItem] : ALL_MEDIA.map(item => ({
           src: item.src,
+          type: (/\.(mp4|webm|mov)$/i.test(item.src) ? 'video' : 'image') as 'video' | 'image',
           caption: lang === 'fr' ? item.captionFr : item.caption
         }))}
         currentIndex={lightboxIndex}

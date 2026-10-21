@@ -1,51 +1,100 @@
+'use client'
+
 /**
- * EnhancedLightbox - Desktop & Mobile optimized lightbox
+ * EnhancedLightbox: one viewer for desktop and touch.
  *
- * Desktop:
- * - Cursor with magnifying glass icon
- * - Single click to zoom to full width (scrollable height)
- * - Click again to dezoom (smooth transition)
- * - Keyboard navigation (arrows, escape)
- *
- * Mobile:
- * - Tap opens image with caption
- * - Double-tap to zoom at tap location
- * - Pan gesture when zoomed
- * - Double-tap to dezoom
- * - Swipe down to close
- * - Swipe left/right to navigate
+ * - Opens with the media fitted to 90% of the screen (width and height).
+ * - Click zooms in on the clicked point, click again returns to the fitted view. On touch the
+ *   same toggle is a double tap. Zoomed, the media pans: drag with inertia, wheel, trackpad.
+ * - Images sit on one horizontal track. Arrows, keys, dots and swipes move the track with a
+ *   critically damped spring that starts from where the track is and inherits the finger's
+ *   velocity (Apple, "Designing Fluid Interfaces"): interruptible at any instant, rubber
+ *   banding at both ends, a flick lands on the page its momentum projects to.
+ * - Dragging down (fitted view) dismisses, the backdrop fading with the drag.
+ * - Reduced motion: no travel, the page changes with a short fade.
  */
 
-import React, { useState, useRef, useCallback, useEffect } from 'react';
-import { motion, AnimatePresence, useAnimation, PanInfo, useMotionValue, LayoutGroup } from 'framer-motion';
-import { useScrollLock } from '@/hooks/useScrollLock';
-import { X, CaretLeft as ChevronLeft, CaretRight as ChevronRight, MagnifyingGlassPlus as ZoomIn, MagnifyingGlassMinus as ZoomOut } from '@phosphor-icons/react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { motion, AnimatePresence, animate, useMotionValue, useTransform } from 'framer-motion'
+import { useScrollLock } from '@/hooks/useScrollLock'
+import { imgDims } from '@/utils/imageDimensions'
+import {
+  X,
+  CaretLeft as ChevronLeft,
+  CaretRight as ChevronRight,
+  MagnifyingGlassPlus as ZoomIn,
+  MagnifyingGlassMinus as ZoomOut,
+} from '@phosphor-icons/react'
 
 export interface LightboxImage {
-  src: string;
-  caption?: string;
-  type?: 'image' | 'video';
+  src: string
+  caption?: string
+  type?: 'image' | 'video'
 }
 
 interface EnhancedLightboxProps {
-  isOpen: boolean;
-  onClose: () => void;
-  images: LightboxImage[];
-  currentIndex: number;
-  onIndexChange: (index: number) => void;
-  lang?: 'en' | 'fr';
-  videoStartTime?: number;
+  isOpen: boolean
+  onClose: () => void
+  images: LightboxImage[]
+  currentIndex: number
+  onIndexChange: (index: number) => void
+  lang?: 'en' | 'fr'
+  videoStartTime?: number
   /** Project ID for URL generation (e.g., 'toolkit', 'dailymotion') */
-  projectId?: string;
+  projectId?: string
   /** Whether to update browser URL when navigating images */
-  updateUrl?: boolean;
+  updateUrl?: boolean
 }
 
-const springTransition = {
-  type: 'spring' as const,
-  stiffness: 400,
-  damping: 35
-};
+// Critically damped (damping ratio 1): no overshoot, settles in about 0.4s
+const SLIDE_SPRING = { type: 'spring' as const, stiffness: 260, damping: 32, mass: 1 }
+const ZOOM_SPRING = { type: 'spring' as const, stiffness: 300, damping: 34, mass: 1 }
+
+const FIT = 0.9 // fitted media fills 90% of the screen
+const ZOOM_WIDTH = 0.95 // zoomed media is 95% of the screen width, as before
+const MIN_ZOOM = 1.6 // a click on an already wide image must still zoom visibly
+const TOUCH_ZOOM = 2.2
+const DRAG_THRESHOLD = 8
+
+/** Where a flick comes to rest (Apple's exponential deceleration, rate 0.998) */
+const project = (velocity: number, rate = 0.998) => ((velocity / 1000) * rate) / (1 - rate)
+
+/** Progressive resistance past an edge */
+const rubberband = (over: number, dimension: number, c = 0.55) =>
+  (over * dimension * c) / (dimension + c * Math.abs(over))
+
+const clamp = (v: number, min: number, max: number) => Math.min(max, Math.max(min, v))
+
+interface Gesture {
+  id: number
+  startX: number
+  startY: number
+  mode: 'idle' | 'pan' | 'swipe' | 'dismiss'
+  onMedia: boolean
+  touch: boolean
+  samples: { t: number; x: number; y: number }[]
+  startPanX: number
+  startPanY: number
+  startTrack: number
+  startIndex: number
+}
+
+/**
+ * The viewer moves media across the whole screen, which is the large travel the site's own
+ * motion policy leaves out, so it reads the system preference directly: visitors who ask for
+ * reduced motion get a fade between images and no rubber banding.
+ */
+function usePrefersReducedMotion() {
+  const [reduced, setReduced] = useState(false)
+  useEffect(() => {
+    const query = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const update = () => setReduced(query.matches)
+    update()
+    query.addEventListener('change', update)
+    return () => query.removeEventListener('change', update)
+  }, [])
+  return reduced
+}
 
 const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
   isOpen,
@@ -56,668 +105,568 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
   lang = 'fr',
   videoStartTime = 0,
   projectId,
-  updateUrl = false
+  updateUrl = false,
 }) => {
-  // State
-  const [isZoomed, setIsZoomed] = useState(false);
-  const [scale, setScale] = useState(1);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [dragY, setDragY] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
-  const [showHint, setShowHint] = useState(true);
+  const prefersReduced = usePrefersReducedMotion()
+  const [viewport, setViewport] = useState({ w: 1280, h: 800 })
+  const [zoomed, setZoomed] = useState(false)
+  const [natural, setNatural] = useState<Record<string, [number, number]>>({})
 
-  // Animation controls
-  const controls = useAnimation();
-  const dragX = useMotionValue(0);
+  const trackX = useMotionValue(0)
+  const dragY = useMotionValue(0)
+  const zoom = useMotionValue(1)
+  const panX = useMotionValue(0)
+  const panY = useMotionValue(0)
+  const backdrop = useTransform(dragY, [-260, 0, 260], [0.35, 1, 0.35])
 
-  // Refs
-  const containerRef = useRef<HTMLDivElement>(null);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const lastTap = useRef<number>(0);
-  const doubleTapTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const savedUrl = useRef('');
+  const dialogRef = useRef<HTMLDivElement>(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const gesture = useRef<Gesture | null>(null)
+  const lastTap = useRef(0)
+  const openedFrom = useRef<HTMLElement | null>(null)
+  const savedUrl = useRef('')
+  const settledOnce = useRef(false)
 
-  // Set video start time when lightbox opens with a video
-  useEffect(() => {
-    const currentImg = images[currentIndex];
-    if (isOpen && currentImg?.type === 'video' && videoRef.current && videoStartTime > 0) {
-      videoRef.current.currentTime = videoStartTime;
-    }
-  }, [isOpen, currentIndex, videoStartTime, images]);
+  const count = images.length
+  const index = clamp(currentIndex, 0, Math.max(0, count - 1))
+  const current = images[index]
 
-  // Translations
   const t = {
     close: lang === 'fr' ? 'Fermer' : 'Close',
-    swipeHint: lang === 'fr' ? 'Glisser pour fermer' : 'Swipe to close',
-    tapToZoom: lang === 'fr' ? 'Double-tap pour zoomer' : 'Double-tap to zoom',
-    clickToZoom: lang === 'fr' ? 'Cliquez pour agrandir' : 'Click to enlarge',
-    clickToShrink: lang === 'fr' ? 'Cliquez pour réduire' : 'Click to shrink',
-    counter: (idx: number, total: number) => `${idx + 1} / ${total}`
-  };
+    zoomIn: lang === 'fr' ? 'Agrandir' : 'Zoom in',
+    zoomOut: lang === 'fr' ? 'Réduire' : 'Zoom out',
+    previous: lang === 'fr' ? 'Image précédente' : 'Previous image',
+    next: lang === 'fr' ? 'Image suivante' : 'Next image',
+    dialog: lang === 'fr' ? 'Visionneuse d’images' : 'Image viewer',
+    hintClick: lang === 'fr' ? 'Cliquez pour agrandir' : 'Click to zoom',
+    hintTap: lang === 'fr' ? 'Double-tap pour agrandir' : 'Double-tap to zoom',
+    hintBack: lang === 'fr' ? 'Cliquez pour revenir' : 'Click to return',
+    goTo: (n: number) => (lang === 'fr' ? `Aller à l’image ${n}` : `Go to image ${n}`),
+  }
 
-  // Detect mobile viewport
+  // Lock page scroll while open: the page stays exactly where the tapped media was
+  useScrollLock(isOpen)
+
+  // Viewport size
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768 || 'ontouchstart' in window);
-    };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+    const measure = () => setViewport({ w: window.innerWidth, h: window.innerHeight })
+    measure()
+    window.addEventListener('resize', measure)
+    return () => window.removeEventListener('resize', measure)
+  }, [])
 
-  // Lock page scroll while open. The page itself never moves, so closing the
-  // lightbox leaves it exactly where the tapped image was.
-  useScrollLock(isOpen);
+  // Geometry of the fitted media, from its known aspect ratio
+  const aspectOf = useCallback(
+    (img: LightboxImage) => {
+      const known = imgDims(img.src)
+      const dims = known.width && known.height ? ([known.width, known.height] as [number, number]) : natural[img.src]
+      if (dims) return dims[0] / dims[1]
+      return img.type === 'video' ? 16 / 9 : 4 / 3
+    },
+    [natural]
+  )
 
-  useEffect(() => {
-    if (isOpen) {
-      savedUrl.current = window.location.pathname + window.location.search;
-      // Default to zoomed on desktop
-      setIsZoomed(!isMobile);
-      const timer = setTimeout(() => setShowHint(false), 2500);
-      return () => clearTimeout(timer);
-    }
-    setShowHint(true);
-    resetState();
-  }, [isOpen, isMobile]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  // On image change: reset position always; on desktop preserve zoom state
-  useEffect(() => {
-    if (isMobile) {
-      resetState();
-    } else {
-      setScale(1);
-      setPosition({ x: 0, y: 0 });
-      setDragY(0);
-      controls.start({ scale: 1, x: 0, y: 0 });
-      if (scrollContainerRef.current) {
-        scrollContainerRef.current.scrollTop = 0;
+  const fitSize = useCallback(
+    (img: LightboxImage) => {
+      const ar = aspectOf(img)
+      let w = viewport.w * FIT
+      let h = w / ar
+      if (h > viewport.h * FIT) {
+        h = viewport.h * FIT
+        w = h * ar
       }
-    }
-  }, [currentIndex]); // eslint-disable-line react-hooks/exhaustive-deps
+      return { w, h }
+    },
+    [aspectOf, viewport]
+  )
 
-  // Reflect the current media in the URL hash (shareable, and it leaves the route
-  // untouched: a pathname change would make the router scroll the page to the top).
+  const isTouchDevice = useRef(false)
+  const zoomTarget = useCallback(
+    (img: LightboxImage) => {
+      const fit = fitSize(img)
+      if (isTouchDevice.current) return TOUCH_ZOOM
+      return Math.max(MIN_ZOOM, (viewport.w * ZOOM_WIDTH) / fit.w)
+    },
+    [fitSize, viewport.w]
+  )
+
+  const panBounds = useCallback(
+    (img: LightboxImage, scale: number) => {
+      const fit = fitSize(img)
+      return {
+        x: Math.max(0, (fit.w * scale - viewport.w) / 2 + (fit.w * scale > viewport.w ? 24 : 0)),
+        y: Math.max(0, (fit.h * scale - viewport.h) / 2 + (fit.h * scale > viewport.h ? 24 : 0)),
+      }
+    },
+    [fitSize, viewport]
+  )
+
+  // Return to the fitted view
+  const resetZoom = useCallback(
+    (instant = false) => {
+      setZoomed(false)
+      if (instant || prefersReduced) {
+        zoom.set(1)
+        panX.set(0)
+        panY.set(0)
+        return
+      }
+      animate(zoom, 1, ZOOM_SPRING)
+      animate(panX, 0, ZOOM_SPRING)
+      animate(panY, 0, ZOOM_SPRING)
+    },
+    [zoom, panX, panY, prefersReduced]
+  )
+
+  const toggleZoom = useCallback(
+    (point?: { x: number; y: number }) => {
+      if (!current || current.type === 'video') return
+      if (zoomed) {
+        resetZoom()
+        return
+      }
+      const s = zoomTarget(current)
+      const bounds = panBounds(current, s)
+      // The clicked point stays under the cursor: pan = -(point - center) * (scale - 1)
+      const px = point ? point.x - viewport.w / 2 : 0
+      const py = point ? point.y - viewport.h / 2 : 0
+      const tx = clamp(-px * (s - 1), -bounds.x, bounds.x)
+      const ty = clamp(-py * (s - 1), -bounds.y, bounds.y)
+      setZoomed(true)
+      if (prefersReduced) {
+        zoom.set(s)
+        panX.set(tx)
+        panY.set(ty)
+      } else {
+        animate(zoom, s, ZOOM_SPRING)
+        animate(panX, tx, ZOOM_SPRING)
+        animate(panY, ty, ZOOM_SPRING)
+      }
+    },
+    [current, zoomed, resetZoom, zoomTarget, panBounds, viewport, zoom, panX, panY, prefersReduced]
+  )
+
+  // Move the track to the current page. Starts from the live value, so an interrupted
+  // slide continues instead of jumping.
   useEffect(() => {
-    if (!isOpen || !updateUrl || !projectId) return;
-    const mediaType = images[currentIndex]?.type === 'video' ? 'video' : 'image';
+    if (!isOpen) {
+      settledOnce.current = false
+      return
+    }
+    const target = -index * viewport.w
+    const dragging = gesture.current?.mode === 'swipe'
+    if (!settledOnce.current || prefersReduced) {
+      trackX.set(target)
+      settledOnce.current = true
+    } else if (!dragging) {
+      animate(trackX, target, SLIDE_SPRING)
+    }
+    resetZoom(true)
+    dragY.set(0)
+  }, [isOpen, index, viewport.w]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Video start position
+  useEffect(() => {
+    if (isOpen && current?.type === 'video' && videoRef.current && videoStartTime > 0) {
+      videoRef.current.currentTime = videoStartTime
+    }
+  }, [isOpen, index, videoStartTime, current])
+
+  // Focus management: move focus into the dialog, give it back on close
+  useEffect(() => {
+    if (!isOpen) return
+    openedFrom.current = document.activeElement as HTMLElement | null
+    savedUrl.current = window.location.pathname + window.location.search
+    dialogRef.current?.focus({ preventScroll: true })
+    return () => {
+      openedFrom.current?.focus?.({ preventScroll: true })
+    }
+  }, [isOpen])
+
+  // Reflect the current media in the URL hash (shareable, leaves the route untouched)
+  useEffect(() => {
+    if (!isOpen || !updateUrl || !projectId) return
+    const mediaType = current?.type === 'video' ? 'video' : 'image'
     window.history.replaceState(
       window.history.state,
       '',
-      `${window.location.pathname}${window.location.search}#${mediaType}-${currentIndex + 1}`
-    );
-  }, [isOpen, currentIndex, projectId, updateUrl, images]);
+      `${window.location.pathname}${window.location.search}#${mediaType}-${index + 1}`
+    )
+  }, [isOpen, index, projectId, updateUrl, current])
 
-  // Drop the hash when the lightbox closes
   const handleClose = useCallback(() => {
     if (updateUrl && savedUrl.current) {
-      window.history.replaceState(window.history.state, '', savedUrl.current);
+      window.history.replaceState(window.history.state, '', savedUrl.current)
     }
-    onClose();
-  }, [onClose, updateUrl]);
+    onClose()
+  }, [onClose, updateUrl])
 
-  // Keyboard navigation - capture phase prevents App.tsx global Escape from closing parent modal
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (!isOpen) return;
-      if (e.key === 'Escape') {
-        e.stopImmediatePropagation();
-        handleClose();
-        return;
-      }
-      if (e.key === 'ArrowRight' && currentIndex < images.length - 1 && (!isZoomed || !isMobile)) {
-        onIndexChange(currentIndex + 1);
-      }
-      if (e.key === 'ArrowLeft' && currentIndex > 0 && (!isZoomed || !isMobile)) {
-        onIndexChange(currentIndex - 1);
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown, true);
-    return () => window.removeEventListener('keydown', handleKeyDown, true);
-  }, [isOpen, currentIndex, images.length, handleClose, onIndexChange, isZoomed]);
-
-  // Reset all state — desktop defaults to zoomed, mobile defaults to unzoomed
-  const resetState = useCallback(() => {
-    setIsZoomed(!isMobile);
-    setScale(1);
-    setPosition({ x: 0, y: 0 });
-    setDragY(0);
-    controls.start({ scale: 1, x: 0, y: 0 });
-    // Reset scroll position
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollTop = 0;
-    }
-  }, [controls, isMobile]);
-
-  // Desktop: Single click to toggle zoom
-  const handleDesktopClick = useCallback((e: React.MouseEvent) => {
-    if (isMobile) return;
-    e.stopPropagation();
-
-    if (isZoomed) {
-      // Dezoom with smooth animation
-      setIsZoomed(false);
-      // Scroll to top when dezooming
-      if (scrollContainerRef.current) {
-        scrollContainerRef.current.scrollTo({ top: 0, behavior: 'smooth' });
-      }
-    } else {
-      // Zoom in
-      setIsZoomed(true);
-    }
-  }, [isMobile, isZoomed]);
-
-  // Mobile: Handle double-tap zoom
-  const handleMobileDoubleTap = useCallback((e: React.TouchEvent) => {
-    if (!isMobile) return;
-    e.stopPropagation();
-
-    const now = Date.now();
-    const DOUBLE_TAP_DELAY = 300;
-
-    if (doubleTapTimeout.current) {
-      clearTimeout(doubleTapTimeout.current);
-      doubleTapTimeout.current = null;
-    }
-
-    if (now - lastTap.current < DOUBLE_TAP_DELAY) {
-      // Double tap detected
-      lastTap.current = 0;
-
-      if (isZoomed) {
-        // Zoom out
-        setScale(1);
-        setPosition({ x: 0, y: 0 });
-        setIsZoomed(false);
-        controls.start({ scale: 1, x: 0, y: 0 });
-      } else {
-        // Zoom in to tap location
-        const rect = containerRef.current?.getBoundingClientRect();
-        if (!rect || !e.changedTouches[0]) return;
-
-        const clientX = e.changedTouches[0].clientX;
-        const clientY = e.changedTouches[0].clientY;
-
-        const x = clientX - rect.left - rect.width / 2;
-        const y = clientY - rect.top - rect.height / 2;
-
-        const newScale = 2.0;
-        const newX = -x * (newScale - 1);
-        const newY = -y * (newScale - 1);
-
-        setScale(newScale);
-        setPosition({ x: newX, y: newY });
-        setIsZoomed(true);
-        controls.start({ scale: newScale, x: newX, y: newY });
-      }
-    } else {
-      lastTap.current = now;
-      doubleTapTimeout.current = setTimeout(() => {
-        doubleTapTimeout.current = null;
-      }, DOUBLE_TAP_DELAY);
-    }
-  }, [isMobile, isZoomed, controls]);
-
-  // Handle vertical drag for swipe-to-close (mobile only)
-  const handleDragY = useCallback((_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    if (isZoomed || !isMobile) return;
-    setDragY(info.offset.y);
-  }, [isZoomed, isMobile]);
-
-  // Combined drag end handler for mobile - determines intent from gesture direction
-  const handleCombinedDragEnd = useCallback((_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    if (isZoomed) return;
-
-    const absX = Math.abs(info.offset.x);
-    const absY = Math.abs(info.offset.y);
-
-    if (absX > absY) {
-      // Horizontal swipe → navigate between images
-      const threshold = 50;
-      if (info.offset.x < -threshold || info.velocity.x < -500) {
-        if (currentIndex < images.length - 1) {
-          onIndexChange(currentIndex + 1);
-        }
-      } else if (info.offset.x > threshold || info.velocity.x > 500) {
-        if (currentIndex > 0) {
-          onIndexChange(currentIndex - 1);
-        }
-      }
-    } else {
-      // Vertical swipe → close lightbox
-      const threshold = 100;
-      if ((info.offset.y > threshold || info.velocity.y > 500) && isMobile) {
-        setDragY(0);
-        handleClose();
-      } else if (isMobile) {
-        setDragY(0);
-        controls.start({ y: 0 });
-      }
-    }
-    dragX.set(0);
-  }, [isZoomed, currentIndex, images.length, onIndexChange, isMobile, handleClose, controls, dragX]);
-
-
-  // Handle pan when zoomed (mobile)
-  const handlePanWhenZoomed = useCallback((_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    if (!isZoomed || !isMobile) return;
-    setPosition(prev => ({
-      x: prev.x + info.delta.x,
-      y: prev.y + info.delta.y
-    }));
-  }, [isZoomed, isMobile]);
-
-  // Calculate background opacity based on drag
-  const backgroundOpacity = isMobile ? Math.max(0.3, 1 - Math.abs(dragY) / 250) : 1;
-
-  // Navigate functions
-  const goNext = useCallback(() => {
-    if (currentIndex < images.length - 1) {
-      onIndexChange(currentIndex + 1);
-    }
-  }, [currentIndex, images.length, onIndexChange]);
-
-  const goPrev = useCallback(() => {
-    if (currentIndex > 0) {
-      onIndexChange(currentIndex - 1);
-    }
-  }, [currentIndex, onIndexChange]);
-
-  // Centered scale animation — fast sync enter, fast ease-out exit
-  const slideVariants = {
-    enter: () => ({
-      opacity: 0,
-      scale: 0.98
-    }),
-    center: {
-      opacity: 1,
-      scale: 1
+  const goTo = useCallback(
+    (next: number) => {
+      const target = clamp(next, 0, count - 1)
+      if (target !== index) onIndexChange(target)
     },
-    exit: () => ({
-      opacity: 0,
-      scale: 0.97,
-      transition: { duration: 0.18, ease: [0.23, 1, 0.32, 1] as [number, number, number, number] }
-    })
-  };
+    [count, index, onIndexChange]
+  )
 
-  const slideTransition = {
-    duration: 0.2,
-    ease: [0.23, 1, 0.32, 1] as [number, number, number, number]
-  };
+  // Keyboard: arrows move the track, Escape closes, Tab stays inside the dialog
+  useEffect(() => {
+    if (!isOpen) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.stopImmediatePropagation()
+        handleClose()
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault()
+        goTo(index + 1)
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault()
+        goTo(index - 1)
+      } else if (e.key === 'Tab' && dialogRef.current) {
+        const focusables = dialogRef.current.querySelectorAll<HTMLElement>('button:not([disabled]), video[controls]')
+        if (focusables.length === 0) return
+        const first = focusables[0]
+        const last = focusables[focusables.length - 1]
+        if (e.shiftKey && (document.activeElement === first || document.activeElement === dialogRef.current)) {
+          e.preventDefault()
+          last.focus()
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault()
+          first.focus()
+        }
+      }
+    }
+    window.addEventListener('keydown', onKey, true)
+    return () => window.removeEventListener('keydown', onKey, true)
+  }, [isOpen, index, goTo, handleClose])
 
-  const currentImage = images[currentIndex];
-  if (!currentImage) return null;
+  // Wheel and trackpad pan the zoomed media (non-passive: the page must not scroll)
+  useEffect(() => {
+    const node = dialogRef.current
+    if (!isOpen || !node) return
+    const onWheel = (e: WheelEvent) => {
+      e.preventDefault()
+      if (!zoomed || !current) return
+      const bounds = panBounds(current, zoom.get())
+      panX.set(clamp(panX.get() - e.deltaX, -bounds.x, bounds.x))
+      panY.set(clamp(panY.get() - e.deltaY, -bounds.y, bounds.y))
+    }
+    node.addEventListener('wheel', onWheel, { passive: false })
+    return () => node.removeEventListener('wheel', onWheel)
+  }, [isOpen, zoomed, current, panBounds, zoom, panX, panY])
+
+  // ── Gestures: one pointer model for mouse, pen and touch ────────────────────
+  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLElement
+    if (target.closest('button') || target.closest('video')) return
+    isTouchDevice.current = e.pointerType === 'touch'
+    e.currentTarget.setPointerCapture(e.pointerId)
+    // A press stops the track where it is (interruptibility)
+    trackX.stop()
+    gesture.current = {
+      id: e.pointerId,
+      startX: e.clientX,
+      startY: e.clientY,
+      mode: 'idle',
+      onMedia: !!target.closest('[data-media]'),
+      touch: e.pointerType === 'touch',
+      samples: [{ t: performance.now(), x: e.clientX, y: e.clientY }],
+      startPanX: panX.get(),
+      startPanY: panY.get(),
+      startTrack: trackX.get(),
+      startIndex: index,
+    }
+  }
+
+  const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    const g = gesture.current
+    if (!g || g.id !== e.pointerId || !current) return
+    const dx = e.clientX - g.startX
+    const dy = e.clientY - g.startY
+    g.samples.push({ t: performance.now(), x: e.clientX, y: e.clientY })
+    if (g.samples.length > 6) g.samples.shift()
+
+    if (g.mode === 'idle' && Math.max(Math.abs(dx), Math.abs(dy)) > DRAG_THRESHOLD) {
+      g.mode = zoomed ? 'pan' : Math.abs(dx) > Math.abs(dy) ? 'swipe' : 'dismiss'
+    }
+
+    if (g.mode === 'pan') {
+      const b = panBounds(current, zoom.get())
+      const soft = (v: number, limit: number, dim: number) =>
+        Math.abs(v) <= limit ? v : Math.sign(v) * (limit + (prefersReduced ? 0 : rubberband(Math.abs(v) - limit, dim)))
+      panX.set(soft(g.startPanX + dx, b.x, viewport.w))
+      panY.set(soft(g.startPanY + dy, b.y, viewport.h))
+    } else if (g.mode === 'swipe') {
+      let next = g.startTrack + dx
+      const min = -(count - 1) * viewport.w
+      if (next > 0) next = prefersReduced ? 0 : rubberband(next, viewport.w)
+      else if (next < min) next = prefersReduced ? min : min - rubberband(min - next, viewport.w)
+      trackX.set(next)
+    } else if (g.mode === 'dismiss') {
+      dragY.set(dy)
+    }
+  }
+
+  const velocityOf = (g: Gesture) => {
+    const first = g.samples[0]
+    const last = g.samples[g.samples.length - 1]
+    const dt = (last.t - first.t) / 1000
+    if (dt <= 0) return { x: 0, y: 0 }
+    return { x: (last.x - first.x) / dt, y: (last.y - first.y) / dt }
+  }
+
+  const onPointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
+    const g = gesture.current
+    if (!g || g.id !== e.pointerId) return
+    gesture.current = null
+    const v = velocityOf(g)
+
+    if (g.mode === 'idle') {
+      // A press without travel: a click
+      if (g.onMedia) {
+        if (g.touch) {
+          const now = Date.now()
+          if (now - lastTap.current < 300) {
+            lastTap.current = 0
+            toggleZoom({ x: e.clientX, y: e.clientY })
+          } else {
+            lastTap.current = now
+          }
+        } else {
+          toggleZoom({ x: e.clientX, y: e.clientY })
+        }
+      } else if (!zoomed) {
+        handleClose()
+      }
+      return
+    }
+
+    if (g.mode === 'pan' && current) {
+      const b = panBounds(current, zoom.get())
+      animate(panX, panX.get(), {
+        type: 'inertia',
+        velocity: v.x,
+        min: -b.x,
+        max: b.x,
+        bounceStiffness: 260,
+        bounceDamping: 30,
+        timeConstant: 325,
+      })
+      animate(panY, panY.get(), {
+        type: 'inertia',
+        velocity: v.y,
+        min: -b.y,
+        max: b.y,
+        bounceStiffness: 260,
+        bounceDamping: 30,
+        timeConstant: 325,
+      })
+    } else if (g.mode === 'swipe') {
+      // Land on the page the gesture is heading to, one page at most
+      const projected = trackX.get() + project(v.x)
+      const wanted = Math.round(-projected / viewport.w)
+      const target = clamp(wanted, g.startIndex - 1, g.startIndex + 1)
+      const final = clamp(target, 0, count - 1)
+      if (final !== g.startIndex) onIndexChange(final)
+      if (prefersReduced) trackX.set(-final * viewport.w)
+      else animate(trackX, -final * viewport.w, { ...SLIDE_SPRING, velocity: v.x })
+    } else if (g.mode === 'dismiss') {
+      if (dragY.get() > 110 || v.y > 600) {
+        handleClose()
+      } else {
+        animate(dragY, 0, SLIDE_SPRING)
+      }
+    }
+  }
+
+  const onPointerCancel = (e: React.PointerEvent<HTMLDivElement>) => {
+    const g = gesture.current
+    if (!g || g.id !== e.pointerId) return
+    gesture.current = null
+    animate(trackX, -index * viewport.w, SLIDE_SPRING)
+    animate(dragY, 0, SLIDE_SPRING)
+  }
+
+  // Slides worth rendering: the current one and its neighbours
+  const visible = useMemo(() => {
+    const set = new Set<number>()
+    for (let i = index - 1; i <= index + 1; i++) if (i >= 0 && i < count) set.add(i)
+    return [...set]
+  }, [index, count])
+
+  const hint = zoomed ? t.hintBack : isTouchDevice.current ? t.hintTap : t.hintClick
+  const canZoom = current?.type !== 'video'
+
+  if (!current) return null
 
   return (
     <AnimatePresence>
       {isOpen && (
         <motion.div
+          ref={dialogRef}
+          role="dialog"
+          aria-modal="true"
+          aria-label={t.dialog}
+          tabIndex={-1}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2, ease: [0.23, 1, 0.32, 1] }}
-          className="fixed inset-0 z-[200]"
+          className="fixed inset-0 z-[200] outline-none"
         >
-          {/* Background - fades fast so content scale-down reads against the page */}
-          <motion.div
-            className="absolute inset-0 bg-black"
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.12, ease: [0.23, 1, 0.32, 1] }}
-            style={{ opacity: backgroundOpacity }}
-            onClick={!isZoomed ? handleClose : undefined}
-          />
+          <motion.div className="absolute inset-0 bg-black" style={{ opacity: backdrop }} aria-hidden="true" />
 
-          {/* Content wrapper - fast sync open, ease-out close */}
+          {/* Viewer: the track of slides and all gestures */}
           <motion.div
-            initial={{ scale: 0.98, opacity: 0 }}
-            animate={{
-              scale: 1,
-              opacity: 1,
-              transition: { duration: 0.2, ease: [0.23, 1, 0.32, 1] }
-            }}
-            exit={{
-              scale: 0.88,
-              opacity: 0,
-              transition: { duration: 0.28, ease: [0.23, 1, 0.32, 1] }
-            }}
-            className="absolute inset-0 flex items-center justify-center"
-            style={{ touchAction: 'none' }}
+            className="absolute inset-0 overflow-hidden select-none"
+            style={{ y: dragY, touchAction: 'none', cursor: zoomed ? 'zoom-out' : 'default' }}
+            initial={{ scale: 0.98 }}
+            animate={{ scale: 1, transition: { duration: 0.2, ease: [0.23, 1, 0.32, 1] } }}
+            exit={{ scale: 0.92, transition: { duration: 0.24, ease: [0.23, 1, 0.32, 1] } }}
+            onPointerDown={onPointerDown}
+            onPointerMove={onPointerMove}
+            onPointerUp={onPointerUp}
+            onPointerCancel={onPointerCancel}
           >
+            <motion.div className="absolute inset-0" style={{ x: trackX }}>
+              {visible.map((i) => {
+                const img = images[i]
+                const isCurrent = i === index
+                const fit = fitSize(img)
+                return (
+                  <div
+                    key={`${img.src}-${i}-${prefersReduced && isCurrent ? 'current' : 'idle'}`}
+                    className={`absolute top-0 h-full flex items-center justify-center ${prefersReduced && isCurrent ? 'page-in' : ''}`}
+                    style={{ left: i * viewport.w, width: viewport.w }}
+                    aria-hidden={!isCurrent}
+                  >
+                    <motion.div
+                      data-media
+                      className="relative"
+                      style={{
+                        width: fit.w,
+                        height: fit.h,
+                        ...(isCurrent ? { scale: zoom, x: panX, y: panY } : {}),
+                        cursor: img.type === 'video' ? 'default' : zoomed && isCurrent ? 'zoom-out' : 'zoom-in',
+                      }}
+                    >
+                      {img.type === 'video' ? (
+                        isCurrent ? (
+                          <video
+                            ref={videoRef}
+                            src={img.src}
+                            className="w-full h-full object-contain rounded-2xl shadow-2xl"
+                            controls
+                            playsInline
+                            autoPlay
+                            onLoadedMetadata={(e) => {
+                              const { videoWidth, videoHeight } = e.currentTarget
+                              setNatural((n) => ({ ...n, [img.src]: [videoWidth, videoHeight] }))
+                            }}
+                          />
+                        ) : (
+                          <div className="w-full h-full rounded-2xl bg-white/5" />
+                        )
+                      ) : (
+                        <img
+                          src={img.src}
+                          alt={isCurrent ? img.caption || '' : ''}
+                          className="w-full h-full object-contain rounded-2xl shadow-2xl select-none"
+                          draggable={false}
+                          onLoad={(e) => {
+                            const { naturalWidth, naturalHeight } = e.currentTarget
+                            setNatural((n) => ({ ...n, [img.src]: [naturalWidth, naturalHeight] }))
+                          }}
+                        />
+                      )}
+                    </motion.div>
+                  </div>
+                )
+              })}
+            </motion.div>
+          </motion.div>
 
-          {/* Close button */}
-          <motion.button
-            initial={{ opacity: 0, y: -20 }}
-            animate={{
-              opacity: isZoomed && isMobile ? 0 : 1,
-              y: 0,
-              pointerEvents: isZoomed && isMobile ? 'none' : 'auto'
-            }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.2 }}
+          {/* Controls sit above the viewer, outside its gesture area */}
+          <button
+            type="button"
             onClick={handleClose}
-            className="absolute top-4 right-4 z-20 p-3 rounded-full bg-white/10 backdrop-blur-sm text-white transition-colors hover:bg-white/20 before:absolute before:inset-[-12px] before:content-['']"
             aria-label={t.close}
+            className="absolute top-4 right-4 z-20 flex items-center justify-center w-11 h-11 rounded-full bg-black/45 backdrop-blur-xl text-white hover:bg-black/60 active:scale-[0.97] transition-[background-color,transform] duration-150"
           >
-            <X size={24} />
-          </motion.button>
+            <X size={22} />
+          </button>
 
-          {/* Desktop: Zoom/Unzoom button */}
-          {!isMobile && (
-            <motion.button
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={(e) => { e.stopPropagation(); handleDesktopClick(e); }}
-              className="absolute top-4 left-4 z-20 p-3 rounded-full bg-white/10 backdrop-blur-sm text-white transition-colors hover:bg-white/20"
-              aria-label={isZoomed ? t.clickToShrink : t.clickToZoom}
+          {canZoom && (
+            <button
+              type="button"
+              onClick={() => toggleZoom()}
+              aria-label={zoomed ? t.zoomOut : t.zoomIn}
+              aria-pressed={zoomed}
+              className="absolute top-4 left-4 z-20 flex items-center justify-center w-11 h-11 rounded-full bg-black/45 backdrop-blur-xl text-white hover:bg-black/60 active:scale-[0.97] transition-[background-color,transform] duration-150"
             >
-              {isZoomed ? <ZoomOut size={24} /> : <ZoomIn size={24} />}
-            </motion.button>
+              {zoomed ? <ZoomOut size={22} /> : <ZoomIn size={22} />}
+            </button>
           )}
 
-          {/* Navigation arrows - hidden on mobile only */}
-          {!isMobile && (
+          {count > 1 && (
             <>
-              {currentIndex > 0 && (
-                <motion.button
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  transition={springTransition}
-                  onClick={(e) => { e.stopPropagation(); goPrev(); }}
-                  className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
-                >
-                  <ChevronLeft size={28} />
-                </motion.button>
-              )}
-
-              {currentIndex < images.length - 1 && (
-                <motion.button
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 20 }}
-                  transition={springTransition}
-                  onClick={(e) => { e.stopPropagation(); goNext(); }}
-                  className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
-                >
-                  <ChevronRight size={28} />
-                </motion.button>
-              )}
+              <button
+                type="button"
+                onClick={() => goTo(index - 1)}
+                disabled={index === 0}
+                aria-label={t.previous}
+                className="hidden md:flex absolute left-6 top-1/2 -translate-y-1/2 z-20 items-center justify-center w-12 h-12 rounded-full bg-black/45 backdrop-blur-xl text-white hover:bg-black/60 active:scale-[0.97] disabled:opacity-0 disabled:pointer-events-none transition-[background-color,transform,opacity] duration-150"
+              >
+                <ChevronLeft size={26} />
+              </button>
+              <button
+                type="button"
+                onClick={() => goTo(index + 1)}
+                disabled={index === count - 1}
+                aria-label={t.next}
+                className="hidden md:flex absolute right-6 top-1/2 -translate-y-1/2 z-20 items-center justify-center w-12 h-12 rounded-full bg-black/45 backdrop-blur-xl text-white hover:bg-black/60 active:scale-[0.97] disabled:opacity-0 disabled:pointer-events-none transition-[background-color,transform,opacity] duration-150"
+              >
+                <ChevronRight size={26} />
+              </button>
             </>
           )}
 
-          {/* Main content container */}
-          <LayoutGroup>
-          {isMobile ? (
-            // Mobile: Gesture-based container
-            <motion.div
-              ref={containerRef}
-              className="relative w-full h-full flex items-center justify-center overflow-hidden"
-              drag={!isZoomed}
-              dragDirectionLock
-              dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-              dragElastic={0.5}
-              onDrag={handleDragY}
-              onDragEnd={handleCombinedDragEnd}
-              animate={controls}
-              style={{ y: isZoomed ? 0 : dragY }}
-            >
-              <AnimatePresence mode="popLayout" custom={null}>
-                <motion.div
-                  key={currentIndex}
-                  custom={null}
-                  variants={slideVariants}
-                  initial="enter"
-                  animate="center"
-                  exit="exit"
-                  transition={slideTransition}
-                  className="flex flex-col items-center max-w-[95vw] px-4"
-                >
-                  <motion.div
-                    animate={{
-                      scale: isZoomed ? scale : 1,
-                      x: isZoomed ? position.x : 0,
-                      y: isZoomed ? position.y : 0
-                    }}
-                    transition={springTransition}
-                    onTouchEnd={handleMobileDoubleTap}
-                    onPan={isZoomed ? handlePanWhenZoomed : undefined}
-                    className="relative"
-                    style={{ touchAction: 'none' }}
-                  >
-                    {currentImage.type === 'video' ? (
-                      <video
-                        ref={videoRef}
-                        src={currentImage.src}
-                        className="max-w-full max-h-[60vh] object-contain rounded-3xl shadow-2xl"
-                        controls
-                        playsInline
-                        autoPlay
-                        onClick={(e) => {
-                          const vid = e.currentTarget;
-                          const wasPlaying = !vid.paused;
-                          setTimeout(() => {
-                            if (wasPlaying && vid.paused) vid.play();
-                          }, 0);
-                        }}
-                      />
-                    ) : (
-                      <img loading="lazy"
-                        src={currentImage.src}
-                        alt={currentImage.caption || ''}
-                        className="max-w-full max-h-[60vh] object-contain rounded-3xl shadow-2xl select-none"
-                        draggable={false}
-                      />
-                    )}
-                  </motion.div>
-
-                  {/* Caption below media - mobile */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{
-                      opacity: isZoomed ? 0 : 1,
-                      y: isZoomed ? 10 : 0
-                    }}
-                    transition={{ duration: 0.2, delay: 0.15 }}
-                    className="mt-5 text-center max-w-full px-2"
-                  >
-                    {currentImage.caption && (
-                      <p className="text-white/90 text-sm font-medium leading-relaxed mb-2">
-                        {currentImage.caption}
-                      </p>
-                    )}
-                    <p className="text-white/40 text-xs tracking-wide">
-                      {t.counter(currentIndex, images.length)}
-                      {!isZoomed && (
-                        <span className="ml-2">
-                          • {t.tapToZoom}
-                        </span>
-                      )}
-                    </p>
-                  </motion.div>
-                </motion.div>
-              </AnimatePresence>
-            </motion.div>
-          ) : (
-            // Desktop: Scrollable container when zoomed
-            <div
-              ref={scrollContainerRef}
-              className={`relative w-full h-full flex ${
-                isZoomed
-                  ? 'overflow-y-auto overflow-x-hidden items-start justify-center py-8'
-                  : 'overflow-hidden items-center justify-center'
-              }`}
-              onClick={(e) => {
-                // Only close if clicking background, not image
-                if (e.target === e.currentTarget && !isZoomed) {
-                  handleClose();
-                }
-              }}
-            >
-              <AnimatePresence mode="popLayout" custom={null}>
-                <motion.div
-                  key={currentIndex}
-                  custom={null}
-                  variants={slideVariants}
-                  initial="enter"
-                  animate="center"
-                  exit="exit"
-                  transition={slideTransition}
-                  className={`flex flex-col items-center ${isZoomed ? 'w-full max-w-[95vw]' : 'max-w-[85vw]'}`}
-                >
-                  {/* Media container with shared element transition */}
-                  <motion.div
-                    layoutId={`lightbox-media-${currentIndex}`}
-                    onClick={handleDesktopClick}
-                    className="relative"
-                    style={{
-                      cursor: isZoomed ? 'zoom-out' : 'zoom-in'
-                    }}
-                    transition={{
-                      layout: {
-                        type: 'spring',
-                        stiffness: 300,
-                        damping: 30
-                      }
-                    }}
-                  >
-                    {currentImage.type === 'video' ? (
-                      <video
-                        ref={videoRef}
-                        src={currentImage.src}
-                        className={`${isZoomed ? 'w-full h-auto max-w-[95vw]' : 'max-w-[85vw] max-h-[65vh] object-contain'} rounded-3xl shadow-2xl`}
-                        controls
-                        playsInline
-                        autoPlay
-                        onClick={(e) => {
-                          // Prevent native click from pausing during zoom toggle
-                          // Resume playback immediately if the click was for zooming
-                          const vid = e.currentTarget;
-                          const wasPlaying = !vid.paused;
-                          setTimeout(() => {
-                            if (wasPlaying && vid.paused) {
-                              vid.play();
-                            }
-                          }, 0);
-                        }}
-                      />
-                    ) : (
-                      <motion.img
-                        layoutId={`lightbox-img-${currentIndex}`}
-                        src={currentImage.src}
-                        alt={currentImage.caption || ''}
-                        className={`${isZoomed ? 'w-full h-auto max-w-[95vw]' : 'max-w-[85vw] max-h-[65vh] object-contain'} rounded-3xl shadow-2xl select-none`}
-                        draggable={false}
-                        transition={{
-                          layout: {
-                            type: 'spring',
-                            stiffness: 300,
-                            damping: 30
-                          }
-                        }}
-                      />
-                    )}
-                  </motion.div>
-
-                  {/* Caption handled by the persistent desktop bottom bar */}
-                </motion.div>
-              </AnimatePresence>
-            </div>
-          )}
-          </LayoutGroup>
-
-          {/* Desktop: persistent bottom bar with gradient backdrop */}
-          {!isMobile && (
-            <div className="absolute bottom-0 left-0 right-0 z-20 pointer-events-none">
-              <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/20 to-transparent" />
-              <div className="relative flex flex-col items-center gap-3 px-8 pb-6 pt-10">
-                {/* Dots navigation */}
-                {images.length > 1 && images.length <= 20 && (
-                  <div className="flex items-center gap-2 pointer-events-auto">
-                    {images.map((_, idx) => (
-                      <button
-                        key={idx}
-                        onClick={(e) => { e.stopPropagation(); onIndexChange(idx); }}
-                        className={`rounded-full transition-all duration-200 ${
-                          idx === currentIndex
-                            ? 'bg-white w-6 h-2'
-                            : 'bg-white/30 hover:bg-white/50 w-2 h-2'
+          {/* Caption plate: a translucent material over the media's lower edge */}
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 w-[min(92vw,640px)] pointer-events-none">
+            <div className="mx-auto w-fit max-w-full rounded-2xl bg-black/50 backdrop-blur-xl px-4 py-2.5 text-center">
+              {current.caption && (
+                <p className="text-white text-sm font-medium leading-snug line-clamp-2">{current.caption}</p>
+              )}
+              <p className="text-white/60 text-xs tabular-nums mt-0.5">
+                {index + 1} / {count}
+                {canZoom && <span className="ml-2">{`· ${hint}`}</span>}
+              </p>
+              {count > 1 && count <= 20 && (
+                <div className="mt-2 flex items-center justify-center gap-1 pointer-events-auto">
+                  {images.map((_, i) => (
+                    <button
+                      key={i}
+                      type="button"
+                      onClick={() => goTo(i)}
+                      aria-label={t.goTo(i + 1)}
+                      aria-current={i === index}
+                      className="relative flex items-center justify-center w-5 h-5"
+                    >
+                      <span
+                        className={`block h-1.5 rounded-full transition-[width,background-color] duration-200 ${
+                          i === index ? 'w-4 bg-white' : 'w-1.5 bg-white/35'
                         }`}
                       />
-                    ))}
-                  </div>
-                )}
-                {/* Caption + counter + hint */}
-                <div className="text-center max-w-2xl">
-                  {currentImage.caption && (
-                    <p className="text-white/90 text-sm md:text-base font-medium leading-relaxed mb-1">
-                      {currentImage.caption}
-                    </p>
-                  )}
-                  <p className="text-white/45 text-xs tracking-wide">
-                    {t.counter(currentIndex, images.length)}
-                    <span className="ml-2">
-                      {isZoomed ? `• ${t.clickToShrink}` : `• ${t.clickToZoom}`}
-                    </span>
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Navigation indicator - dots for small sets on mobile only */}
-          {isMobile && images.length > 1 && !isZoomed && (
-            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10">
-              {images.length <= 20 ? (
-                <div className="flex items-center gap-2">
-                  {images.map((_, idx) => (
-                    <button
-                      key={idx}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        resetState();
-                        onIndexChange(idx);
-                      }}
-                      className={`rounded-full transition-all duration-200 ${
-                        idx === currentIndex
-                          ? 'bg-white w-6 h-2'
-                          : 'bg-white/30 hover:bg-white/50 w-2 h-2'
-                      }`}
-                    />
+                    </button>
                   ))}
-                </div>
-              ) : (
-                <div className="px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-sm text-white/70 text-xs font-medium tracking-wide">
-                  {currentIndex + 1} / {images.length}
                 </div>
               )}
             </div>
-          )}
-
-          {/* Mobile swipe hint */}
-          <AnimatePresence>
-            {isMobile && showHint && !isZoomed && (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 0.6, y: 0 }}
-                exit={{ opacity: 0 }}
-                transition={{ delay: 0.5 }}
-                className="absolute bottom-28 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 pointer-events-none z-10"
-              >
-                <motion.div
-                  animate={{ y: [0, 8, 0] }}
-                  transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
-                  className="w-8 h-1 rounded-full bg-white/40"
-                />
-              </motion.div>
-            )}
-          </AnimatePresence>
-          </motion.div>{/* end content wrapper */}
+          </div>
         </motion.div>
       )}
     </AnimatePresence>
-  );
-};
+  )
+}
 
-export default EnhancedLightbox;
+export default EnhancedLightbox

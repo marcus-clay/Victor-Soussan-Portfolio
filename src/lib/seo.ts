@@ -152,7 +152,7 @@ export function personLd(lang: Lang) {
         ? 'Lead Product Designer avec 15 ans d\u2019exp\u00e9rience, sp\u00e9cialiste du product design B2B et B2G en France. Design systems, interfaces m\u00e9tier complexes, prototypage assist\u00e9 par IA.'
         : 'Lead Product Designer with 15 years of experience, specialist in B2B and B2G product design in France. Design systems, complex business interfaces, AI-assisted prototyping.',
     url: SITE_URL,
-    image: `${SITE_URL}/images/victor-soussan.webp`,
+    image: `${SITE_URL}/images/image-victor-soussan-2027.jpg`,
     address: { '@type': 'PostalAddress', addressLocality: 'Paris', addressCountry: 'FR' },
     sameAs: [LINKEDIN_URL, 'https://github.com/marcus-clay', 'https://www.condamine.studio'],
     knowsAbout: [

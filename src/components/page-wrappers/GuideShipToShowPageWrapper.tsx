@@ -2,12 +2,15 @@
 
 import { useRouter } from 'next/navigation'
 import GuideShipToShowPage from '@/views/GuideShipToShowPage'
+import type { RelatedItem } from '@/components/RelatedContent'
 
 
 export default function GuideShipToShowPageWrapper({
   lang,
+  related,
 }: {
   lang: 'en' | 'fr'
+  related: RelatedItem[]
 }) {
   const router = useRouter()
 
@@ -15,6 +18,7 @@ export default function GuideShipToShowPageWrapper({
     <GuideShipToShowPage
       systemTheme="light"
       lang={lang}
+      related={related}
       onNavigate={(target) => {
         if (target === 'ressources') {
           router.push(`/${lang}/ressources`)

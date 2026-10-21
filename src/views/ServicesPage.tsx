@@ -1,67 +1,55 @@
 /**
- * ServicesPage - Expertise page with pillars, approach, and client logos
- * Minimalist Emil Kowalski aesthetic
+ * ServicesPage - Expertise page. Same grammar as the Approach page: a display statement,
+ * then four chapters (hairline, number in the gutter, title, one lead sentence) that each
+ * hold ONE row of three cards: what you get (the deliverables) and two case studies that
+ * show the pillar at work. Then a pointer to the Approach page, client logos and contact.
  */
 
-import React, { useState, useEffect } from 'react';
-import { scrollToElement } from '../utils/smoothScroll';
-import { motion } from 'framer-motion';
-import { ArrowRight } from '@phosphor-icons/react';
-import Link from 'next/link';
-import CaseStudyTOCBar from '../components/CaseStudyTOCBar';
+import Link from 'next/link'
+import { ArrowRight, ArrowUpRight } from '@phosphor-icons/react/dist/ssr'
+import { ActRule, ActTitle } from '@/components/case-study/ActSection'
+import CardGrid from '@/components/ui/CardGrid'
+import ContentCard from '@/components/ui/ContentCard'
+import { getProjects, type Project } from '@/data/projectsData'
+import { CASE_STUDY_SHELL } from '@/data/caseStudyShell'
+import { imgDims } from '@/utils/imageDimensions'
 
-type Language = 'en' | 'fr';
+type Language = 'en' | 'fr'
 
 interface Pillar {
-  title: string;
-  desc: string;
-  deliverables: string[];
-}
-
-interface ApproachStep {
-  title: string;
-  desc: string;
-  deliverable?: string;
+  title: string
+  desc: string
+  deliverables: string[]
 }
 
 interface ServicesPageProps {
-  systemTheme: 'light' | 'dark';
-  lang: Language;
-  onBack: () => void;
-  onContact: () => void;
+  lang: Language
 }
 
-const PILLAR_IDS = ['design-prototyping', 'product-strategy', 'design-ops', 'leadership'];
+const PILLAR_IDS = ['design-prototyping', 'product-strategy', 'design-ops', 'leadership']
 
-const TOC_SECTIONS = {
-  en: [
-    { id: 'top', label: 'Top' },
-    { id: 'design-prototyping', label: 'Design & Prototyping' },
-    { id: 'product-strategy', label: 'Product Strategy' },
-    { id: 'design-ops', label: 'Design Ops' },
-    { id: 'leadership', label: 'Leadership' },
-    { id: 'approach', label: 'How I work' },
-    { id: 'clients', label: 'Clients' },
-  ],
-  fr: [
-    { id: 'top', label: 'Début' },
-    { id: 'design-prototyping', label: 'Design & Prototypage' },
-    { id: 'product-strategy', label: 'Stratégie Produit' },
-    { id: 'design-ops', label: 'Design Ops' },
-    { id: 'leadership', label: 'Leadership' },
-    { id: 'approach', label: 'Méthode' },
-    { id: 'clients', label: 'Clients' },
-  ]
-};
+/** Two case studies per pillar, in the order they are shown. */
+const PILLAR_PROJECTS: string[][] = [
+  ['toolkit', 'riskos'],
+  ['france-vae', 'connect'],
+  ['pagesjaunes', 'dailymotion'],
+  ['sqool', 'sqool-classe'],
+]
+
+/** Deliverables shown at first; the rest wait behind a "Show all" disclosure (Miller, Hick). */
+const VISIBLE_DELIVERABLES = 4
 
 const TRANSLATIONS = {
   en: {
     page_title: "Expertise",
-    page_intro: "I work with product teams, startups, and public services to reduce risk through design. Whether you need an end-to-end designer, a strategic partner, or someone to structure your design practice — here is what I bring.",
+    page_statement: "I work with product teams, startups, and public services to reduce risk through design.",
+    page_lead: "Whether you need an end-to-end designer, a strategic partner, or someone to structure your design practice, here is what I bring.",
+    deliverables_label: "What you get",
+    show_all: (n: number) => `Show all ${n}`,
     pillars: [
       {
         title: "Design & Prototyping",
-        desc: "I design interfaces from first wireframe to production-ready screens, then prototype at high fidelity so decisions get made on real artifacts instead of assumptions. When the timeline is tight, I build functional MVPs directly — auth, database, GenAI integration, shipped to Vercel. At Toolkit.ac, this approach took a product from first concepts to 2,000 paying users.",
+        desc: "I design interfaces from first wireframe to production-ready screens, then prototype at high fidelity so decisions get made on real artifacts instead of assumptions. When the timeline is tight, I build functional MVPs directly: auth, database, GenAI integration, shipped to Vercel. At Toolkit.ac, this approach took a product from first concepts to 2,000 paying users.",
         deliverables: [
           "UX framing, UI design, micro-interactions, and motion",
           "High-fidelity prototyping to validate ideas and align stakeholders before engineering commits",
@@ -84,7 +72,7 @@ const TRANSLATIONS = {
       },
       {
         title: "Design Ops",
-        desc: "A design system is only valuable when the whole team uses it without friction. At UNOWHY, I built a unified system across five product brands that cut design production time by 60% and made developer handoff predictable. The work was not just components — it was structure, shared language, and the rituals that keep it alive.",
+        desc: "A design system is only valuable when the whole team uses it without friction. At UNOWHY, I built a unified system across five product brands that cut design production time by 60% and made developer handoff predictable. The work was not just components: it was structure, shared language, and the rituals that keep it alive.",
         deliverables: [
           "Design systems built across multiple brands and product surfaces",
           "Reusable component libraries with Figma tokens and documentation",
@@ -95,7 +83,7 @@ const TRANSLATIONS = {
       },
       {
         title: "Leadership & Organisation",
-        desc: "I have built design teams from the ground up. At UNOWHY, I hired, managed, and mentored five designers over six years — annual reviews, mid-year check-ins, design challenges, and a culture built around critique and shared learning. At PagesJaunes, I introduced the weekly design review that became the team's core ritual.",
+        desc: "I have built design teams from the ground up. At UNOWHY, I hired, managed, and mentored five designers over six years: annual reviews, mid-year check-ins, design challenges, and a culture built around critique and shared learning. At PagesJaunes, I introduced the weekly design review that became the team's core ritual.",
         deliverables: [
           "Team building: hiring, onboarding, and structured performance reviews",
           "Career development and mentoring for junior and mid-level designers",
@@ -106,17 +94,17 @@ const TRANSLATIONS = {
       }
     ] as Pillar[],
     approach_title: "How I work",
-    approach_steps: [
-      { title: "Frame", desc: "We define the problem, the hypotheses, and the success criteria. Before the first screen.", deliverable: "A shared scoping document with a clear perimeter and identified risks." },
-      { title: "Build", desc: "Short cycles. One week, one testable prototype. A concrete artifact to put in front of a decision-maker or a user.", deliverable: "A prototype ready to confront with a stakeholder or a user, built to collect feedback." },
-      { title: "Decide", desc: "We test. We observe. We adjust. Insights feed the backlog directly.", deliverable: "Documented decisions and a backlog informed by facts." }
-    ] as ApproachStep[],
+    approach_text: "Frame the problem, build in short cycles, decide from evidence. The full process is documented on the Approach page.",
+    approach_cta: "See my approach",
     trusted_by: "Trusted by leading companies",
     cta_text: "Let's talk about your project",
   },
   fr: {
     page_title: "Expertises",
-    page_intro: "J'accompagne les équipes produit, les startups et les services publics pour réduire le risque par le design. Que vous cherchiez un designer end-to-end, un partenaire stratégique ou quelqu'un pour structurer votre pratique design, voici ce que j'apporte.",
+    page_statement: "J'accompagne les équipes produit, les startups et les services publics pour réduire le risque par le design.",
+    page_lead: "Que vous cherchiez un designer end-to-end, un partenaire stratégique ou quelqu'un pour structurer votre pratique design, voici ce que j'apporte.",
+    deliverables_label: "Ce que vous obtenez",
+    show_all: (n: number) => `Voir les ${n}`,
     pillars: [
       {
         title: "Design & Prototypage",
@@ -165,15 +153,12 @@ const TRANSLATIONS = {
       }
     ] as Pillar[],
     approach_title: "Comment je travaille",
-    approach_steps: [
-      { title: "Cadrer", desc: "On pose le problème, les hypothèses, les critères de succès. Avant le premier écran.", deliverable: "Un document de cadrage partagé avec périmètre clair et risques identifiés." },
-      { title: "Matérialiser", desc: "Cycles courts. Une semaine, un prototype testable. Un artefact concret à mettre devant un décideur ou un usager.", deliverable: "Un prototype à confronter à un stakeholder ou un utilisateur, prêt à recueillir du feedback." },
-      { title: "Arbitrer", desc: "On teste. On observe. On ajuste. Les insights nourrissent le backlog directement.", deliverable: "Des décisions documentées et un backlog informé par des faits." }
-    ] as ApproachStep[],
+    approach_text: "Cadrer le problème, construire en cycles courts, décider par les faits. Le processus complet est documenté sur la page Approche.",
+    approach_cta: "Voir mon approche",
     trusted_by: "Ils me font confiance",
     cta_text: "Parlons de votre projet",
   }
-};
+}
 
 const LOGOS = [
   { src: '/logos/LOGO UNOWHY.svg', alt: 'Unowhy' },
@@ -192,218 +177,242 @@ const LOGOS = [
   { src: '/logos/LOGO OPERA COMIQUE.svg', alt: 'Opéra Comique' },
   { src: '/logos/LOGO VERLINDE.svg', alt: 'Verlinde' },
   { src: '/logos/LOGO UPTRADE.svg', alt: 'Uptrade' },
-];
+]
 
-const SECTION_IDS = ['design-prototyping', 'product-strategy', 'design-ops', 'leadership', 'approach', 'clients'];
+// Thumbnails that ship with 400w / 800w / 1200w variants next to the 1920w original.
+const RESPONSIVE_THUMBS = new Set([
+  '/images/thumbnail-toolkit.webp',
+  '/images/thumbnail-dailymotion-web-platform.webp',
+  '/images/thumbnail-connect.webp',
+  '/images/thumbnail-sqool-suite.webp',
+  '/images/thumbnail-pagesjaunes-multidevices.webp',
+])
 
-const ulVariants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.04 } },
-};
+function srcSetFor(src: string): string | undefined {
+  if (!RESPONSIVE_THUMBS.has(src)) return undefined
+  const base = src.replace(/\.webp$/, '')
+  return `${base}-400w.webp 400w, ${base}-800w.webp 800w, ${base}-1200w.webp 1200w, ${src} 1920w`
+}
 
-const liVariants = {
-  hidden: { opacity: 0, x: -6 },
-  visible: { opacity: 1, x: 0 },
-};
+const CARD_PRESS =
+  'transition-[border-color,transform] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)]:hover:border-gray-200 active:scale-[0.985]'
 
-const ServicesPage: React.FC<ServicesPageProps> = ({ lang, onContact }) => {
-  const t = TRANSLATIONS[lang];
-  const [activeSection, setActiveSection] = useState('top');
-  const [showTOC, setShowTOC] = useState(false);
-  const [hoveredPillar, setHoveredPillar] = useState<number | null>(null);
-  const sections = TOC_SECTIONS[lang];
+/**
+ * A pillar description opens with its claim and goes on with the proof. The first sentence is
+ * the lead; the others follow in body size. Only the layout changes: words and order are kept.
+ */
+function splitLead(text: string): { claim: string; proof: string } {
+  const at = text.search(/(?<=[.!?]) (?=[A-ZÀ-ÖØ-Þ])/)
+  if (at === -1) return { claim: text, proof: '' }
+  return { claim: text.slice(0, at), proof: text.slice(at + 1) }
+}
 
-  // Scroll to anchor on initial load — Next.js App Router doesn't handle
-  // cross-page hash navigation natively; we do it after the first paint.
-  // 'instant' matches native browser anchor behavior (no scroll animation).
-  useEffect(() => {
-    const hash = window.location.hash
-    if (!hash) return
-    const id = hash.slice(1)
-    const timer = setTimeout(() => {
-      const el = document.getElementById(id)
-      if (el) el.scrollIntoView({ behavior: 'instant' })
-    }, 150)
-    return () => clearTimeout(timer)
-  }, [])
+// ---------------------------------------------------------------------------
+// Card 1: what you get
+// ---------------------------------------------------------------------------
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setShowTOC(window.scrollY > 300);
+function DeliverablesCard({
+  label,
+  items,
+  showAll,
+}: {
+  label: string
+  items: string[]
+  showAll: string
+}) {
+  // Collapse only when at least two entries would be hidden: a disclosure for one line is noise
+  const visible = items.length - VISIBLE_DELIVERABLES >= 2 ? VISIBLE_DELIVERABLES : items.length
+  const shown = items.slice(0, visible)
+  const rest = items.slice(visible)
 
-      for (let i = SECTION_IDS.length - 1; i >= 0; i--) {
-        const el = document.getElementById(SECTION_IDS[i]);
-        if (el) {
-          const rect = el.getBoundingClientRect();
-          if (rect.top <= 200) {
-            setActiveSection(SECTION_IDS[i]);
-            return;
-          }
-        }
-      }
-      setActiveSection('top');
-    };
+  return (
+    <ContentCard label={label}>
+      <ul role="list" className="mt-2 divide-y divide-gray-100">
+        {shown.map((item) => (
+          <li key={item} className="py-3 text-sm text-gray-900 first:pt-1">
+            {item}
+          </li>
+        ))}
+      </ul>
+      {rest.length > 0 && (
+        <details className="group">
+          <summary className="mt-3 inline-flex min-h-11 cursor-pointer list-none items-center rounded-full border border-gray-200 px-5 text-sm font-medium text-gray-900 transition-[color,border-color,transform] duration-150 ease-out active:scale-[0.97] group-open:hidden [@media(hover:hover)]:hover:border-gray-300 [@media(hover:hover)]:hover:text-gray-500 [&::-webkit-details-marker]:hidden">
+            {showAll}
+          </summary>
+          <ul role="list" className="divide-y divide-gray-100 border-t border-gray-100">
+            {rest.map((item) => (
+              <li key={item} className="py-3 text-sm text-gray-900">
+                {item}
+              </li>
+            ))}
+          </ul>
+        </details>
+      )}
+    </ContentCard>
+  )
+}
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+// ---------------------------------------------------------------------------
+// Cards 2 and 3: seen in practice, one case study each
+// ---------------------------------------------------------------------------
 
-  const scrollToSection = scrollToElement;
+function CaseCard({ project, lang }: { project: Project; lang: Language }) {
+  const shell = CASE_STUDY_SHELL[project.id]
+  const srcSet = srcSetFor(shell.visual)
+  const cover = shell.fit === 'cover'
+
+  return (
+    <Link
+      href={`/${lang}/project/${project.id}`}
+      className={`group block min-w-0 flex-1 rounded-2xl border border-gray-100 bg-white p-5 md:p-6 text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gray-900 ${CARD_PRESS}`}
+    >
+      <div
+        className="aspect-[3/2] overflow-hidden rounded-2xl ring-1 ring-inset ring-black/[0.05]"
+        style={{ backgroundColor: shell.tone }}
+      >
+        <img
+          src={shell.visual}
+          srcSet={srcSet}
+          sizes={srcSet ? '(min-width: 1024px) 340px, (min-width: 768px) 60vw, 90vw' : undefined}
+          {...imgDims(shell.visual)}
+          alt=""
+          loading="lazy"
+          decoding="async"
+          className={`h-full w-full ${cover ? 'object-cover' : 'object-contain p-[5%]'}`}
+          style={cover && shell.position ? { objectPosition: shell.position } : undefined}
+        />
+      </div>
+
+      <p className="mt-4 mb-1.5 text-xs text-gray-500">{project.role}</p>
+      <div className="flex items-start justify-between gap-3">
+        <h3 className="text-title-3 text-gray-900 transition-colors duration-150 [@media(hover:hover)]:group-hover:text-gray-500">
+          {project.title}
+        </h3>
+        <ArrowUpRight
+          size={16}
+          aria-hidden="true"
+          className="mt-1 shrink-0 text-gray-900 transition-transform duration-200 ease-out [@media(hover:hover)]:group-hover:-translate-y-0.5 [@media(hover:hover)]:group-hover:translate-x-0.5"
+        />
+      </div>
+      <p className="mt-2 line-clamp-2 text-sm text-gray-600">{project.summary}</p>
+    </Link>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// One pillar: hairline, number in the gutter, title, lead, then one row of three cards
+// ---------------------------------------------------------------------------
+
+function PillarChapter({
+  id,
+  index,
+  pillar,
+  projects,
+  lang,
+}: {
+  id: string
+  index: number
+  pillar: Pillar
+  projects: Project[]
+  lang: Language
+}) {
+  const t = TRANSLATIONS[lang]
+  const { claim, proof } = splitLead(pillar.desc)
+
+  return (
+    <section id={id} aria-label={pillar.title} className="scroll-mt-20">
+      <ActRule />
+      <div className="act-wide pt-10 md:pt-14 pb-12 md:pb-20">
+        <div className="md:max-w-[66.666%]">
+          <ActTitle index={String(index + 1).padStart(2, '0')} title={pillar.title} />
+          <p className="text-lead-lg text-gray-900 max-w-[40ch]">{claim}</p>
+          {proof && <p className="mt-4 text-base text-gray-600 max-w-[62ch]">{proof}</p>}
+        </div>
+
+        <CardGrid cols={3} label={pillar.title} className="mt-8 md:mt-10">
+          <DeliverablesCard
+            label={t.deliverables_label}
+            items={pillar.deliverables}
+            showAll={t.show_all(pillar.deliverables.length)}
+          />
+          {projects.map((project) => (
+            <CaseCard key={project.id} project={project} lang={lang} />
+          ))}
+        </CardGrid>
+      </div>
+    </section>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Page
+// ---------------------------------------------------------------------------
+
+export default function ServicesPage({ lang }: ServicesPageProps) {
+  const t = TRANSLATIONS[lang]
+  const all = getProjects(lang)
+  const byId = (id: string) => all.find((p) => p.id === id && CASE_STUDY_SHELL[p.id])
 
   return (
     <div className="min-h-screen bg-[#FDFDFC]">
-      {/* Sticky TOC bar */}
-      {showTOC && (
+      {/* Nav reads this before falling back to the long statement in the h1 */}
+      <span data-nav-title className="sr-only">{t.page_title}</span>
+
+      {/* The claim */}
+      <header className="wrap pt-10 md:pt-16 pb-12 md:pb-16">
+        <h1 className="text-display text-gray-900 text-balance">{t.page_statement}</h1>
+        <p className="mt-6 md:mt-8 text-lead-lg text-gray-600 max-w-[54ch]">{t.page_lead}</p>
+      </header>
+
+      {/* Four pillars, linked by one vertical line in the gutter, behind the hairlines */}
+      <div className="relative mx-auto w-full max-w-[var(--wrap-max)]">
         <div
-          className="sticky z-10 backdrop-blur-xl bg-[#FDFDFC]/80"
-          style={{ top: 'var(--nav-height, 64px)', transition: 'top 250ms cubic-bezier(0.23, 1, 0.32, 1)' }}
-        >
-          <CaseStudyTOCBar
-            sections={sections}
-            activeSection={activeSection}
-            onSectionClick={scrollToSection}
-            isDark={false}
+          aria-hidden="true"
+          className="pointer-events-none absolute bottom-0 top-[4.5rem] left-[calc(var(--pad)+2rem)] hidden border-l border-gray-100 md:block"
+        />
+        {t.pillars.map((pillar, i) => (
+          <PillarChapter
+            key={PILLAR_IDS[i]}
+            id={PILLAR_IDS[i]}
+            index={i}
+            pillar={pillar}
+            projects={PILLAR_PROJECTS[i].map(byId).filter((p): p is Project => Boolean(p))}
             lang={lang}
           />
-        </div>
-      )}
+        ))}
+      </div>
 
-      {/* Content */}
-      <div className="max-w-[740px] mx-auto px-6 pt-32 sm:pt-40 md:pt-48 pb-24 md:pb-40">
-
-        {/* Header */}
-        <motion.div
-          className="mb-16"
-          initial="hidden"
-          animate="visible"
-          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08 } } }}
-        >
-          <motion.h1
-            variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
-            transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
-            className="text-title-1 text-gray-900"
-          >
-            {t.page_title}
-          </motion.h1>
-          <motion.p
-            variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0 } }}
-            transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
-            className="mt-4 text-base text-gray-500 leading-relaxed"
-          >
-            {t.page_intro}
-          </motion.p>
-        </motion.div>
-
-        {/* Service Pillars as divide-y list */}
-        <div
-          className="divide-y divide-gray-100 mb-24"
-          onMouseLeave={() => setHoveredPillar(null)}
-        >
-          {t.pillars.map((pillar, i) => (
-            <motion.div
-              key={i}
-              id={PILLAR_IDS[i]}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-60px' }}
-              transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
-              className="scroll-mt-28 py-10 first:pt-0 -mx-3 px-3 rounded-lg"
-              onMouseEnter={() => setHoveredPillar(i)}
-              style={{
-                opacity: hoveredPillar === null ? 1 : hoveredPillar === i ? 1 : 0.4,
-                transition: 'opacity 200ms ease',
-              }}
-            >
-              <div className="flex items-baseline gap-3 mb-3">
-                <h2 className="text-title-2 text-gray-900">
-                  {pillar.title}
-                </h2>
-                <span
-                  className="text-xs text-gray-500"
-                  style={{
-                    opacity: hoveredPillar === i ? 1 : 0,
-                    transform: hoveredPillar === i ? 'translateX(0)' : 'translateX(-6px)',
-                    transition: 'opacity 200ms cubic-bezier(0.23, 1, 0.32, 1), transform 200ms cubic-bezier(0.23, 1, 0.32, 1)',
-                  }}
-                >
-                  {`→ ${pillar.deliverables.length} deliverables`}
-                </span>
-              </div>
-              <p className="text-base text-gray-500 leading-relaxed mb-5">
-                {pillar.desc}
-              </p>
-              <motion.ul
-                className="space-y-2"
-                variants={ulVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: '-40px' }}
-              >
-                {pillar.deliverables.map((item, j) => (
-                  <motion.li
-                    key={j}
-                    className="text-base text-gray-500 leading-relaxed pl-4 relative before:content-[''] before:absolute before:left-0 before:top-[9px] before:w-1 before:h-1 before:rounded-full before:bg-gray-300"
-                    variants={liVariants}
-                    transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
-                  >
-                    {item}
-                  </motion.li>
-                ))}
-              </motion.ul>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Approach Section — CTA to Approach page */}
-        <motion.div
-          id="approach"
-          className="scroll-mt-28 py-24 md:py-40"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
-        >
-          <h2 className="text-title-2 text-gray-900 mb-4">
-            {t.approach_title}
-          </h2>
-
-          <p className="text-base text-gray-500 leading-relaxed mb-8 max-w-[50ch]">
-            {lang === 'en'
-              ? 'Frame the problem, build in short cycles, decide from evidence. The full process is documented on the Approach page.'
-              : 'Cadrer le problème, construire en cycles courts, décider par les faits. Le processus complet est documenté sur la page Approche.'}
-          </p>
-
+      {/* How I work: pointer to the Approach page */}
+      <section id="approach" aria-label={t.approach_title} className="scroll-mt-20">
+        <ActRule />
+        <div className="act-wide pt-10 md:pt-14 pb-12 md:pb-16">
+          <h2 className="text-title-2 text-gray-900">{t.approach_title}</h2>
+          <p className="mt-3 text-base text-gray-600 max-w-[62ch]">{t.approach_text}</p>
           <Link
             href={`/${lang}/approche`}
-            className="group inline-flex items-center gap-2 px-6 py-3 rounded-full border border-gray-200 text-sm font-medium text-gray-700 hover:border-gray-900 hover:text-gray-900 active:scale-[0.97]"
-            style={{ transition: 'border-color 200ms ease, color 200ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
+            className="group mt-6 inline-flex min-h-11 items-center gap-2 rounded-full bg-gray-900 px-5 text-sm font-medium text-white shadow-sm [@media(hover:hover)]:hover:bg-black [@media(hover:hover)]:hover:shadow-md active:scale-[0.97] transition-[background-color,box-shadow,transform] duration-150 ease-out"
           >
-            {lang === 'en' ? 'See my approach' : 'Voir mon approche'}
+            {t.approach_cta}
             <ArrowRight
               size={14}
-              className="transition-transform duration-200 ease-out group-hover:translate-x-0.5"
+              aria-hidden="true"
+              className="transition-transform duration-200 ease-out [@media(hover:hover)]:group-hover:translate-x-0.5"
             />
           </Link>
-        </motion.div>
+        </div>
+      </section>
 
-        {/* Trusted By */}
-        <motion.div
-          id="clients"
-          className="scroll-mt-28 py-24 md:py-40"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
-        >
-          <h2 className="text-title-2 text-gray-900 mb-10">
-            {t.trusted_by}
-          </h2>
+      {/* Trusted by */}
+      <section id="clients" aria-label={t.trusted_by} className="scroll-mt-20">
+        <ActRule />
+        <div className="act-wide pt-10 md:pt-14 pb-12 md:pb-16">
+          <h2 className="text-title-2 text-gray-900 mb-8 md:mb-10">{t.trusted_by}</h2>
 
           <div className="relative overflow-hidden">
             <div className="absolute left-0 top-0 bottom-0 w-16 z-20 pointer-events-none bg-gradient-to-r from-[#FDFDFC] to-transparent" />
             <div className="absolute right-0 top-0 bottom-0 w-16 z-20 pointer-events-none bg-gradient-to-l from-[#FDFDFC] to-transparent" />
 
-            <div className="logo-carousel-track flex hover:[animation-play-state:paused]">
+            <div className="logo-carousel-track flex [@media(hover:hover)]:hover:[animation-play-state:paused]">
               {[...Array(2)].map((_, setIndex) => (
                 <div key={setIndex} className="flex shrink-0">
                   {LOGOS.map((logo, index) => (
@@ -416,7 +425,7 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ lang, onContact }) => {
                         alt={logo.alt}
                         width="80"
                         height="80"
-                        className="h-[50px] sm:h-[60px] md:h-[70px] w-auto grayscale opacity-50 hover:grayscale-0 hover:opacity-75"
+                        className="h-[50px] sm:h-[60px] md:h-[70px] w-auto grayscale opacity-50 [@media(hover:hover)]:hover:grayscale-0 [@media(hover:hover)]:hover:opacity-75"
                         style={{ transition: 'filter 250ms ease, opacity 250ms ease' }}
                       />
                     </div>
@@ -425,26 +434,27 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ lang, onContact }) => {
               ))}
             </div>
           </div>
-        </motion.div>
+        </div>
+      </section>
 
-        {/* CTA as text link */}
-        <div className="pb-16">
-          <button
-            onClick={onContact}
-            className="group inline-flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-gray-900 cursor-pointer active:scale-[0.97]"
-            style={{ transition: 'color 200ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
+      {/* Contact */}
+      <section aria-label="Contact">
+        <ActRule />
+        <div className="act-wide pt-10 md:pt-12 pb-14 md:pb-16">
+          <Link
+            href={`/${lang}/contact`}
+            className="group inline-flex min-h-11 items-center gap-2 rounded-full bg-gray-900 px-5 text-sm font-medium text-white shadow-sm [@media(hover:hover)]:hover:bg-black [@media(hover:hover)]:hover:shadow-md active:scale-[0.97] transition-[background-color,box-shadow,transform] duration-150 ease-out"
           >
             {t.cta_text}
             <ArrowRight
               size={14}
               weight="bold"
-              className="transition-transform duration-200 ease-out group-hover:translate-x-1"
+              aria-hidden="true"
+              className="transition-transform duration-200 ease-out [@media(hover:hover)]:group-hover:translate-x-1"
             />
-          </button>
+          </Link>
         </div>
-      </div>
+      </section>
     </div>
-  );
-};
-
-export default ServicesPage;
+  )
+}

@@ -100,7 +100,7 @@ export default async function LangLayout({
   const lang = toLang((await params).lang)
 
   return (
-    <html lang={HTML_LANG[lang]} className={publicSans.variable}>
+    <html lang={HTML_LANG[lang]} className={publicSans.variable} data-scroll-behavior="smooth">
       <body className="font-sans antialiased">
         <JsonLd data={[personLd(lang), websiteLd()]} />
         <LanguageProvider lang={lang}>

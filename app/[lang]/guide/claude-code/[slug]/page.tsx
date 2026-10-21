@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import { GUIDE_CHAPTERS, GUIDE_META } from '@/data/guideClaudeCodeData'
 import GuideClaudeCodePageWrapper from '@/components/page-wrappers/GuideClaudeCodePageWrapper'
 import JsonLd from '@/components/JsonLd'
+import { guideChapterLead, relatedContent } from '@/lib/related'
 import { articleLd, breadcrumbLd, buildMetadata, clip, toLang } from '@/lib/seo'
 
 type Props = { params: Promise<{ lang: string; slug: string }> }
@@ -76,7 +77,11 @@ export default async function GuideChapterPage({ params }: Props) {
           ]),
         ]}
       />
-      <GuideClaudeCodePageWrapper lang={lang} view={slug} />
+      <GuideClaudeCodePageWrapper
+        lang={lang}
+        view={slug}
+        related={relatedContent(lang, 'guide-claude-code', guideChapterLead(lang, GUIDE_CHAPTERS.indexOf(chapter)))}
+      />
     </>
   )
 }

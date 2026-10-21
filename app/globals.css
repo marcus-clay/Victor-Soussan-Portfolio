@@ -2,6 +2,28 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Page container: fluid side margins (20px, 40px from md, 56px from 1536px), growing up to
+   1920px. Reading text sits in a narrower column inside it (max-w-[680px]); visuals use the
+   full width. The variables are shared by .wrap and the .act-* classes below. */
+:root {
+  --wrap-max: 1920px;
+  --pad: 20px;
+}
+@media (min-width: 768px) {
+  :root { --pad: 40px; }
+}
+@media (min-width: 1536px) {
+  :root { --pad: 56px; }
+}
+@layer components {
+  .wrap {
+    margin-inline: auto;
+    width: 100%;
+    max-width: var(--wrap-max);
+    padding-inline: var(--pad);
+  }
+}
+
 /* Custom scrollbar for webkit */
 ::-webkit-scrollbar {
   width: 8px;
@@ -30,40 +52,38 @@
 :root {
   --ease-out-expo: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in-out-strong: cubic-bezier(0.77, 0, 0.175, 1);
-  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   --nav-height: 64px;
 }
 
 /* Reduced motion, gentle version: nothing is switched off. Hover, lightbox, menu and
-   accordion transitions keep running. Only the large travel of page entrances is traded
-   for a plain fade, and smooth scrolling is turned off. Videos keep playing (muted, with
-   a visible pause control). */
+   accordion transitions keep running. Page loads are already a plain fade for everyone,
+   so only the small 8px travel of scroll reveals is dropped (see src/lib/motion.ts) and
+   smooth scrolling is turned off. Videos keep playing (muted, with a visible pause
+   control). */
 @media (prefers-reduced-motion: reduce) {
-  :root { --rise-scale: 0; }
   html { scroll-behavior: auto; }
 }
 
 /* ── Appearance ────────────────────────────────────────────────────────────
-   Entrances are CSS animations, not JS-driven: they start on first paint, so
-   server-rendered content is never held back waiting for hydration.
-   Only opacity and transform move. `backwards` fill = no residual style after the
-   animation, so hover and state styles keep working. */
-@keyframes rise-in {
-  from { opacity: 0; transform: translate3d(0, calc(var(--rise, 12px) * var(--rise-scale, 1)), 0); }
-}
+   One page-load transition for every route: the content fades in (opacity only, no
+   vertical travel, 320ms, ease-out-expo). Entrances are CSS animations, not JS-driven:
+   they start on first paint, so server-rendered content is never held back waiting for
+   hydration. `backwards` fill = no residual style after the animation, so hover and
+   state styles keep working. */
 @keyframes fade-in {
   from { opacity: 0; }
 }
 
-/* Staggered entrance: style={{ '--i': 0 }} on each element, 70ms apart */
-.rise-in {
-  animation: rise-in 500ms var(--ease-out-expo) backwards;
-  animation-delay: calc(var(--i, 0) * 70ms);
-}
-
-/* Every page after a client-side navigation */
+/* Every route (app/[lang]/template.tsx), home included */
 .page-in {
   animation: fade-in 320ms var(--ease-out-expo) backwards;
+}
+
+/* Staggered fade for lists and hero blocks: style={{ '--i': 0 }} on each element, 70ms
+   apart. Same duration and easing as .page-in, opacity only. */
+.rise-in {
+  animation: fade-in 320ms var(--ease-out-expo) backwards;
+  animation-delay: calc(var(--i, 0) * 70ms);
 }
 
 /* Lazy images fade in once decoded instead of popping in. The hiding rule only
@@ -87,7 +107,7 @@
 /* Keyboard focus: one consistent, visible ring in the brand blue.
    :where() keeps specificity at zero, so component-level focus styles still win. */
 :where(a, button, [role="button"], input, textarea, select, summary, [tabindex]):focus-visible {
-  outline: 2px solid #2D5CF3;
+  outline: 2px solid #111827;
   outline-offset: 2px;
 }
 
@@ -126,6 +146,15 @@ body {
 }
 #site-nav.nav-dark a.font-semibold {
   color: #ffffff;
+}
+/* Contact stays the one filled button: inverted on the dark nav */
+#site-nav.nav-dark a.nav-cta {
+  background: #ffffff;
+  color: #111827;
+}
+#site-nav.nav-dark a.nav-cta:hover {
+  background: #e5e7eb;
+  color: #111827;
 }
 /* Dark main background to prevent white bleed under Nav blur */
 #main-content.main-dark {
@@ -300,7 +329,7 @@ body {
   scroll-snap-stop: normal;
 }
 .snap-scroller:focus-visible {
-  outline: 2px solid #2D5CF3;
+  outline: 2px solid #111827;
   outline-offset: 4px;
   border-radius: 8px;
 }
@@ -368,5 +397,72 @@ body {
   body {
     font-size: 11pt;
     line-height: 1.4;
+  }
+}
+
+
+/* ── Case study hero visual ────────────────────────────────────────────────
+   One panel, one size, for every project: 4:3 on phones, 21:9 from md. The screen is shown
+   whole (object-fit: contain) on a ground tinted per project, with a dot grid at 4% and
+   crop marks in the corners. As it enters, the image settles from 94% to 100% (transform
+   only, scroll-linked, skipped for reduced motion). */
+.hero-panel {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.25rem;
+  isolation: isolate;
+}
+.hero-panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: radial-gradient(rgba(17, 24, 39, 0.06) 1px, transparent 1px);
+  background-size: 20px 20px;
+  pointer-events: none;
+}
+@keyframes hero-settle {
+  from { transform: scale(0.94); }
+  to { transform: scale(1); }
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-panel-img {
+      animation: hero-settle linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 40%;
+    }
+  }
+}
+
+
+/* ── Case study acts: ONE content column ─────────────────────────────────────
+   Below md everything is a single column with the page margins. From md, a left gutter of
+   two of twelve columns is kept free for the act number, and every block of every section
+   (title, lead, prose, cards, figures, testimonial, summary) starts at the same left edge and
+   runs to the same right edge, the same one the Approche page uses.
+   .act-wide   the content column, 1120px; text elements inside cap their own measure in `ch`
+   .act-text and .act-bleed are kept as aliases of it so nothing runs on a second width.
+   Past 1120px the free space stays on the right, so the left edge never moves. */
+:root {
+  /* offset of the text edge from the container's padding box */
+  --act-gutter: calc((min(100vw, var(--wrap-max)) - 2 * var(--pad) - 264px) / 6 + 48px);
+  --act-media-w: 1120px;
+}
+.act-text,
+.act-wide,
+.act-bleed {
+  position: relative;
+  width: 100%;
+  max-width: var(--wrap-max);
+  margin-inline: auto;
+  padding-inline: var(--pad);
+}
+@media (min-width: 768px) {
+  .act-text,
+  .act-wide,
+  .act-bleed {
+    padding-left: calc(var(--pad) + var(--act-gutter));
+    padding-right: calc(var(--pad) + max(0px, min(100vw, var(--wrap-max)) - 2 * var(--pad) - var(--act-gutter) - var(--act-media-w)));
   }
 }

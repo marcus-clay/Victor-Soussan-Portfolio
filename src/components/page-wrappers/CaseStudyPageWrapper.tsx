@@ -9,6 +9,9 @@ import { getProjects, type Project } from '@/data/projectsData'
 import ShortProjectView from '@/components/ShortProjectView'
 import AuthorContactCard from '@/components/AuthorContactCard'
 import CaseStudyTOCBar from '@/components/CaseStudyTOCBar'
+import RelatedContent from '@/components/RelatedContent'
+import { relatedProjects } from '@/lib/relatedProjects'
+import { TRANSLATIONS } from '@/data/translations'
 import { useScrollDirection } from '@/hooks/useScrollDirection'
 import { scrollToElement } from '@/utils/smoothScroll'
 
@@ -23,97 +26,69 @@ type TOCSections = { id: string; label_en: string; label_fr: string }[]
 // Case study TOC (the canonical page is always the full view)
 const FULL_TOC: Record<string, TOCSections> = {
   toolkit: [
-    { id: 'top', label_en: 'Intro', label_fr: 'Intro' },
-    { id: 'overview', label_en: 'Overview', label_fr: 'Vue d\'ensemble' },
-    { id: 'context', label_en: 'Context', label_fr: 'Contexte' },
-    { id: 'phase1', label_en: 'Phase 1', label_fr: 'Phase 1' },
-    { id: 'phase2', label_en: 'Phase 2', label_fr: 'Phase 2' },
-    { id: 'phase3', label_en: 'Phase 3', label_fr: 'Phase 3' },
-    { id: 'design-system', label_en: 'Design System', label_fr: 'Design System' },
-    { id: 'impact', label_en: 'Impact', label_fr: 'Impact' },
+    { id: 'top', label_en: "Intro", label_fr: "Intro" },
+    { id: 'summary', label_en: "Summary", label_fr: "Synthèse" },
+    { id: 'context', label_en: "Context and approach", label_fr: "Contexte et approche" },
+    { id: 'phases', label_en: "Three phases", label_fr: "Trois phases" },
+    { id: 'design-system', label_en: "Design system", label_fr: "Design system" },
+    { id: 'impact', label_en: "Impact", label_fr: "Impact" },
   ],
   connect: [
-    { id: 'top', label_en: 'Intro', label_fr: 'Intro' },
-    { id: 'overview', label_en: 'Overview', label_fr: 'Aperçu' },
-    { id: 'dashboard', label_en: 'Dashboard', label_fr: 'Tableau de bord' },
-    { id: 'architecture', label_en: 'Architecture and specs', label_fr: 'Architecture et spécifications' },
-    { id: 'bulle', label_en: 'La Bulle', label_fr: 'La Bulle' },
+    { id: 'top', label_en: "Intro", label_fr: "Intro" },
+    { id: 'summary', label_en: "Summary", label_fr: "Synthèse" },
+    { id: 'dashboard', label_en: "The dashboard", label_fr: "Le tableau de bord" },
+    { id: 'bulle', label_en: "La Bulle", label_fr: "La Bulle" },
   ],
   dailymotion: [
-    { id: 'top', label_en: 'Intro', label_fr: 'Intro' },
-    { id: 'overview', label_en: 'Overview', label_fr: 'Vue d\'ensemble' },
-    { id: 'modules', label_en: 'Key Modules', label_fr: 'Modules clés' },
-    { id: 'upload', label_en: 'Upload and management', label_fr: 'Téléversement et gestion' },
-    { id: 'live', label_en: 'Live console', label_fr: 'Console live' },
-    { id: 'player', label_en: 'Player Manager', label_fr: 'Gestionnaire de player' },
-    { id: 'design-system', label_en: 'Design System', label_fr: 'Design System' },
-    { id: 'impact', label_en: 'Impact', label_fr: 'Impact' },
+    { id: 'top', label_en: "Intro", label_fr: "Intro" },
+    { id: 'summary', label_en: "Summary", label_fr: "Synthèse" },
+    { id: 'approach', label_en: "Three workflows", label_fr: "Trois flux" },
+    { id: 'design-system', label_en: "Design system", label_fr: "Design system" },
+    { id: 'results', label_en: "Results", label_fr: "Résultats" },
   ],
   sqool: [
-    { id: 'top', label_en: 'Intro', label_fr: 'Intro' },
-    { id: 'context', label_en: 'Context', label_fr: 'Contexte' },
-    { id: 'phase1', label_en: '2019-2020', label_fr: '2019-2020' },
-    { id: 'phase2', label_en: '2021', label_fr: '2021' },
-    { id: 'phase3', label_en: '2022-2024', label_fr: '2022-2024' },
-    { id: 'impact', label_en: 'Impact', label_fr: 'Impact' },
+    { id: 'top', label_en: "Intro", label_fr: "Intro" },
+    { id: 'summary', label_en: "Summary", label_fr: "Synthèse" },
+    { id: 'approach', label_en: "Approach", label_fr: "Démarche" },
+    { id: 'product', label_en: "Product", label_fr: "Produit" },
+    { id: 'learnings', label_en: "Learnings", label_fr: "Enseignements" },
   ],
   'sqool-classe': [
-    { id: 'top', label_en: 'Intro', label_fr: 'Intro' },
-    { id: 'context', label_en: 'Context', label_fr: 'Contexte' },
-    { id: 'role', label_en: 'My role', label_fr: 'Mon rôle' },
-    { id: 'approach', label_en: 'Approach', label_fr: 'Approche' },
-    { id: 'teacher', label_en: 'Teacher', label_fr: 'Enseignant' },
-    { id: 'students', label_en: 'Students', label_fr: 'Élèves' },
-    { id: 'impact', label_en: 'Impact', label_fr: 'Impact' },
+    { id: 'top', label_en: "Intro", label_fr: "Intro" },
+    { id: 'summary', label_en: "Summary", label_fr: "Synthèse" },
+    { id: 'approach', label_en: "Approach", label_fr: "Démarche" },
+    { id: 'product', label_en: "Product", label_fr: "Produit" },
+    { id: 'results', label_en: "Results", label_fr: "Résultats" },
   ],
   'france-vae': [
-    { id: 'top', label_en: 'Intro', label_fr: 'Intro' },
-    { id: 'context', label_en: 'Context', label_fr: 'Contexte' },
-    { id: 'initiative-1', label_en: 'VAE Collective', label_fr: 'VAE Collective' },
-    { id: 'initiative-2', label_en: 'Product Ops', label_fr: 'Product Ops' },
-    { id: 'initiative-3', label_en: 'Research', label_fr: 'Recherche' },
-    { id: 'initiative-4', label_en: 'Workshops', label_fr: 'Ateliers' },
-    { id: 'initiative-5', label_en: 'AI', label_fr: 'IA' },
-    { id: 'ui-delivery', label_en: 'UI & Delivery', label_fr: 'UI & Livraison' },
-    { id: 'learnings', label_en: 'Learnings', label_fr: 'Apprentissages' },
+    { id: 'top', label_en: "Intro", label_fr: "Intro" },
+    { id: 'summary', label_en: "Summary", label_fr: "Synthèse" },
+    { id: 'approach', label_en: "Approach", label_fr: "Démarche" },
+    { id: 'product', label_en: "Product", label_fr: "Produit" },
+    { id: 'learnings', label_en: "Learnings", label_fr: "Enseignements" },
   ],
   pagesjaunes: [
-    { id: 'top', label_en: 'Intro', label_fr: 'Intro' },
-    { id: 'overview', label_en: 'Overview', label_fr: 'Aperçu' },
-    { id: 'homepage', label_en: 'Homepage', label_fr: 'Homepage' },
-    { id: 'search', label_en: 'Search Engine', label_fr: 'Moteur' },
-    { id: 'onboarding', label_en: 'Onboarding', label_fr: 'Onboarding' },
-    { id: 'navigation', label_en: 'Navigation', label_fr: 'Navigation' },
-    { id: 'account', label_en: 'Account', label_fr: 'Compte' },
-    { id: 'micro-interactions', label_en: 'Motion', label_fr: 'Motion' },
-    { id: 'wear', label_en: 'Android Wear', label_fr: 'Android Wear' },
-    { id: 'design-system', label_en: 'Design System', label_fr: 'Design System' },
-    { id: 'team', label_en: 'Team', label_fr: 'Équipe' },
-    { id: 'impact', label_en: 'Impact', label_fr: 'Impact' },
-    { id: 'learnings', label_en: 'Learnings', label_fr: 'Apprentissages' },
+    { id: 'top', label_en: "Intro", label_fr: "Intro" },
+    { id: 'summary', label_en: "Summary", label_fr: "Synthèse" },
+    { id: 'approach', label_en: "Approach", label_fr: "Approche" },
+    { id: 'product', label_en: "Product", label_fr: "Produit" },
+    { id: 'results', label_en: "Results and learnings", label_fr: "Résultats et apprentissages" },
   ],
   androidwear: [
-    { id: 'top', label_en: 'Intro', label_fr: 'Intro' },
-    { id: 'overview', label_en: 'Overview', label_fr: 'Vue d\'ensemble' },
-    { id: 'approach', label_en: 'Approach', label_fr: 'Approche' },
-    { id: 'research', label_en: 'Exploration', label_fr: 'Exploration' },
-    { id: 'design', label_en: 'Screen design', label_fr: 'Design des écrans' },
-    { id: 'specs', label_en: 'Specifications', label_fr: 'Spécifications' },
-    { id: 'implementation', label_en: 'Implementation', label_fr: 'Implémentation' },
-    { id: 'results', label_en: 'Results', label_fr: 'Résultats' },
-    { id: 'learnings', label_en: 'Learnings', label_fr: 'Enseignements' },
+    { id: 'top', label_en: "Intro", label_fr: "Intro" },
+    { id: 'summary', label_en: "Summary", label_fr: "Synthèse" },
+    { id: 'context', label_en: "Context", label_fr: "Contexte" },
+    { id: 'approach', label_en: "Approach", label_fr: "Approche" },
+    { id: 'product', label_en: "Product", label_fr: "Produit" },
+    { id: 'results', label_en: "Results and learnings", label_fr: "Résultats et apprentissages" },
   ],
   riskos: [
-    { id: 'top', label_en: 'Intro', label_fr: 'Intro' },
-    { id: 'why', label_en: 'Context', label_fr: 'Contexte' },
-    { id: 'insight', label_en: 'Observation', label_fr: 'Observation' },
-    { id: 'design-question', label_en: 'Approach', label_fr: 'Approche' },
-    { id: 'triage', label_en: 'Triage', label_fr: 'Triage' },
-    { id: 'ai-analysis', label_en: 'AI analysis', label_fr: 'Analyse IA' },
-    { id: 'decision', label_en: 'Decision', label_fr: 'Décision' },
-    { id: 'false-positive', label_en: 'False alarms', label_fr: 'Fausses alertes' },
-    { id: 'queue', label_en: 'Queue', label_fr: 'File d\'attente' },
-    { id: 'learnings', label_en: 'Observations', label_fr: 'Observations' },
+    { id: 'top', label_en: "Intro", label_fr: "Intro" },
+    { id: 'summary', label_en: "Summary", label_fr: "Synthèse" },
+    { id: 'context', label_en: "Context", label_fr: "Contexte" },
+    { id: 'approach', label_en: "Approach", label_fr: "Approche" },
+    { id: 'product', label_en: "Product", label_fr: "Produit" },
+    { id: 'learnings', label_en: "Observations", label_fr: "Observations" },
   ],
 }
 
@@ -245,7 +220,7 @@ export default function CaseStudyPageWrapper({
                 : 'transform 280ms cubic-bezier(0.23, 1, 0.32, 1), opacity 200ms ease 80ms',
             }}
           >
-            <div className="max-w-[740px] mx-auto px-6 w-full h-10 flex items-center">
+            <div className="wrap h-10 flex items-center">
               <nav aria-label={lang === 'fr' ? 'Fil d\'Ariane' : 'Breadcrumb'} className="flex items-center gap-1.5 text-xs min-w-0 overflow-hidden h-10">
                 <Link
                   href={`/${lang}/projets`}
@@ -318,31 +293,13 @@ export default function CaseStudyPageWrapper({
         />
       ) : null}
 
-      {/* Bottom: related projects + Contact CTA */}
+      {/* Bottom: related projects, then contact */}
       <CaseStudyFooter lang={lang} projectId={projectId} allProjects={allProjects} />
     </>
   )
 }
 
-// Smart related projects: same category first, then different
-
-function getRelatedProjects(current: Project, allProjects: Project[]): Project[] {
-  const others = allProjects.filter((p) => p.id !== current.id && p.format === 'case-study')
-  // Same category first
-  const sameCategory = others.filter((p) => p.category === current.category)
-  const diffCategory = others.filter((p) => p.category !== current.category)
-  // Score by shared deliverable keywords as tiebreaker
-  const scored = [...sameCategory, ...diffCategory].map((p) => {
-    const shared = p.deliverables.filter((d) =>
-      current.deliverables.some((cd) => cd.toLowerCase().includes(d.toLowerCase().split(' ')[0]))
-    ).length
-    return { project: p, score: (p.category === current.category ? 10 : 0) + shared }
-  })
-  scored.sort((a, b) => b.score - a.score)
-  return scored.slice(0, 2).map((s) => s.project)
-}
-
-// Footer: related projects + contact CTA
+// Footer: related projects (the next one first), then the contact block
 
 function CaseStudyFooter({
   lang,
@@ -353,61 +310,16 @@ function CaseStudyFooter({
   projectId: string
   allProjects: Project[]
 }) {
-  const currentProject = allProjects.find((p) => p.id === projectId)
-  const suggestions = useMemo(() => {
-    if (!currentProject) return []
-    return getRelatedProjects(currentProject, allProjects)
-  }, [currentProject, allProjects])
+  const t = TRANSLATIONS[lang].related
+  const items = useMemo(
+    () => relatedProjects(lang, allProjects, projectId, t.next_project),
+    [lang, allProjects, projectId, t.next_project],
+  )
 
   return (
-    <div className="bg-[#F5F5F7]">
-      <div className="max-w-[740px] mx-auto px-6 pt-12 pb-16 md:pt-16 md:pb-24">
-        {/* Related projects */}
-        {suggestions.length > 0 && (
-          <div>
-            <p className="text-sm font-semibold tracking-[-0.01em] text-gray-500 mb-4">
-              {lang === 'fr' ? 'Projets similaires' : 'Related projects'}
-            </p>
-            <div className="divide-y divide-gray-200">
-              {suggestions.map((proj) => (
-                <Link
-                  key={proj.id}
-                  href={`/${lang}/project/${proj.id}`}
-                  className="py-4 -mx-3 px-3 rounded-xl hover:bg-black/[.04] active:scale-[0.99] transition-[background-color,transform] duration-150 cursor-pointer flex items-center gap-4"
-                >
-                  <div className="w-16 h-11 rounded-lg overflow-hidden flex-shrink-0 bg-gray-200">
-                    <img
-                      src={proj.coverImage}
-                      alt={proj.title}
-                      width={64}
-                      height={44}
-                      loading="lazy"
-                      decoding="async"
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-sm font-medium text-gray-900 leading-tight">
-                      {proj.title}
-                    </p>
-                    <p className="text-xs text-gray-500 mt-0.5">
-                      {proj.role}
-                    </p>
-                  </div>
-                  <span className="text-xs text-gray-500 flex-shrink-0">
-                    {proj.period}
-                  </span>
-                </Link>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Contact CTA */}
-        <div className="mt-8">
-          <AuthorContactCard lang={lang} />
-        </div>
-      </div>
-    </div>
+    <>
+      <RelatedContent heading={t.keep_reading} items={items} id="related" />
+      <AuthorContactCard lang={lang} />
+    </>
   )
 }

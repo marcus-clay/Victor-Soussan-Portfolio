@@ -22,10 +22,9 @@ export function proxy(request: NextRequest) {
     return NextResponse.next()
   }
 
-  // Detect preferred language from Accept-Language header
-  const acceptLang = request.headers.get('accept-language') || ''
-  const prefersFrench = acceptLang.toLowerCase().startsWith('fr')
-  const lang = prefersFrench ? 'fr' : DEFAULT_LANG
+  // English is the default language for everyone. French is reached through /fr or the
+  // language switch, never guessed from the browser.
+  const lang = DEFAULT_LANG
 
   // Redirect to lang-prefixed path
   const url = request.nextUrl.clone()

@@ -22,16 +22,16 @@ export const PROJECT_TITLE: Record<Lang, Record<'caseStudy' | 'short' | 'gallery
   },
 }
 
-export const PROJECT_DESC: Record<Lang, Record<'caseStudy' | 'short' | 'gallery', (name: string, period: string, summary: string) => string>> = {
+export const PROJECT_DESC: Record<Lang, Record<'caseStudy' | 'short' | 'gallery', (name: string, summary: string) => string>> = {
   en: {
-    caseStudy: (n, p, s) => `Full case study of ${n} (${p}). ${s}`,
-    short: (n, p, s) => `${s} ${n}, ${p}, by Victor Soussan.`,
-    gallery: (n, p, s) => `Screens and visuals from ${n} (${p}). ${s}`,
+    caseStudy: (n, s) => `Full case study of ${n}. ${s}`,
+    short: (n, s) => `${s} ${n}, by Victor Soussan.`,
+    gallery: (n, s) => `Screens and visuals from ${n}. ${s}`,
   },
   fr: {
-    caseStudy: (n, p, s) => `Étude de cas complète de ${n} (${p}). ${s}`,
-    short: (n, p, s) => `${s} ${n}, ${p}, par Victor Soussan.`,
-    gallery: (n, p, s) => `Écrans et visuels de ${n} (${p}). ${s}`,
+    caseStudy: (n, s) => `Étude de cas complète de ${n}. ${s}`,
+    short: (n, s) => `${s} ${n}, par Victor Soussan.`,
+    gallery: (n, s) => `Écrans et visuels de ${n}. ${s}`,
   },
 }
 

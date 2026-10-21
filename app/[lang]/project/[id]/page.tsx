@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     lang,
     path: `project/${id}`,
     title: PROJECT_TITLE[lang][kind](project.title),
-    description: PROJECT_DESC[lang][kind](project.title, project.period, project.shortDescription || project.summary),
+    description: PROJECT_DESC[lang][kind](project.title, project.shortDescription || project.summary),
     image: ogImageFor(id, project.coverImage),
   })
 }
@@ -35,7 +35,6 @@ export default async function ProjectPage({ params }: Props) {
   if (!project) notFound()
 
   const kind = project.format === 'case-study' ? 'caseStudy' : 'short'
-  const year = project.period.match(/\d{4}/)?.[0]
 
   return (
     <>
@@ -47,7 +46,6 @@ export default async function ProjectPage({ params }: Props) {
             name: PROJECT_TITLE[lang][kind](project.title),
             description: project.shortDescription || project.summary,
             image: ogImageFor(id, project.coverImage)?.url ?? project.coverImage,
-            datePublished: year ? `${year}-01-01` : undefined,
             genre: 'Product design',
           }),
           breadcrumbLd(lang, [

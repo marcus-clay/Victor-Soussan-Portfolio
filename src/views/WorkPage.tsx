@@ -272,7 +272,7 @@ const ProjectCard: React.FC<{
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.8 }}
               transition={{ duration: 0.15 }}
-              className="absolute bottom-5 right-5 w-10 h-10 rounded-full flex items-center justify-center bg-[#2D5CF3] text-white"
+              className="absolute bottom-5 right-5 w-10 h-10 rounded-full flex items-center justify-center bg-gray-900 text-white"
             >
               <ArrowRight size={18} />
             </motion.div>

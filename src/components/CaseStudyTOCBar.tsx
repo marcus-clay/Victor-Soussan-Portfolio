@@ -142,7 +142,7 @@ const CaseStudyTOCBar: React.FC<CaseStudyTOCBarProps> = ({
         visibility: isExpanded ? 'visible' : 'hidden',
       }}
     >
-      <div className="max-w-[740px] mx-auto px-6">
+      <div className="wrap">
         <div className="py-2 border-t border-gray-100">
           {/* Section list with vertical progress line */}
           <div className="relative">
@@ -226,7 +226,7 @@ const CaseStudyTOCBar: React.FC<CaseStudyTOCBarProps> = ({
   return (
     <>
       <div ref={barRef} className="relative h-10">
-        <div className="max-w-[740px] mx-auto px-6 h-full">
+        <div className="wrap h-full">
           <button
             onClick={handleToggle}
             aria-expanded={isExpanded}

@@ -2,6 +2,7 @@
 
 import React, { useState, useCallback, useRef } from 'react';
 import { Copy, Check } from '@phosphor-icons/react';
+import HomeBlock from './HomeBlock';
 
 interface ContactCTASectionProps {
   lang: 'en' | 'fr';
@@ -18,10 +19,10 @@ interface ContactCTASectionProps {
 
 const EMAIL = 'victorsoussan@gmail.com';
 
-const ContactCTASection: React.FC<ContactCTASectionProps> = ({
-  lang,
-  content,
-}) => {
+/** French typography: a no-break space before : ; ? ! */
+const frTypo = (s: string) => s.replace(/ ([:;?!])/g, ' $1');
+
+const ContactCTASection: React.FC<ContactCTASectionProps> = ({ lang, content }) => {
   const [copied, setCopied] = useState(false);
   const [transitioning, setTransitioning] = useState(false);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -45,45 +46,43 @@ const ContactCTASection: React.FC<ContactCTASectionProps> = ({
     });
   }, []);
 
+  const typo = (s: string) => (lang === 'fr' ? frTypo(s) : s);
+
   return (
-    <section className="py-24 md:py-40 px-6">
-      <div className="max-w-[692px] mx-auto">
-        <h2 className="text-title-2 text-gray-900 mb-4">
-          {content.contact.title}
-        </h2>
-        <p className="text-sm md:text-base text-gray-500 leading-relaxed mb-8">
-          {content.contact.subtitle}
-        </p>
+    <HomeBlock id="contact" title={typo(content.contact.title)}>
+      <p className="text-lead-lg text-gray-600 max-w-[54ch]">{typo(content.contact.subtitle)}</p>
 
-        <div className="flex items-center gap-6">
-          <a
-            href={`mailto:${EMAIL}`}
-            className="text-sm font-medium text-gray-900 hover:text-gray-600 transition-colors duration-150 underline underline-offset-4 decoration-gray-300 hover:decoration-gray-500"
-          >
-            {content.contact.email}
-          </a>
+      <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+        <a
+          href={`mailto:${EMAIL}`}
+          className="inline-flex min-h-11 items-center rounded-full bg-gray-900 px-6 text-sm font-medium text-white shadow-sm transition-[background-color,box-shadow,transform] duration-150 hover:bg-black hover:shadow-md active:scale-[0.97] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900"
+        >
+          {content.contact.email}
+        </a>
 
-          <button
-            onClick={handleCopy}
-            className="text-sm text-gray-500 hover:text-gray-900 transition-colors duration-150 cursor-pointer"
+        <button
+          type="button"
+          onClick={handleCopy}
+          className="inline-flex min-h-11 items-center text-sm text-gray-500 hover:text-gray-900 transition-colors duration-150 cursor-pointer"
+        >
+          <span
+            className={`inline-flex items-center gap-1.5 transition-[filter,opacity] duration-100 ease-out ${transitioning ? 'blur-[2px] opacity-70' : ''}`}
           >
-            <span className={`inline-flex items-center gap-1.5 transition-[filter,opacity] duration-100 ease-out ${transitioning ? 'blur-[2px] opacity-70' : ''}`}>
-              {copied ? (
-                <>
-                  <Check size={14} className="text-gray-900" />
-                  {content.contact.email_copied}
-                </>
-              ) : (
-                <>
-                  <Copy size={14} />
-                  {content.contact.copy_email}
-                </>
-              )}
-            </span>
-          </button>
-        </div>
+            {copied ? (
+              <>
+                <Check size={14} className="text-gray-900" />
+                {content.contact.email_copied}
+              </>
+            ) : (
+              <>
+                <Copy size={14} />
+                {content.contact.copy_email}
+              </>
+            )}
+          </span>
+        </button>
       </div>
-    </section>
+    </HomeBlock>
   );
 };
 

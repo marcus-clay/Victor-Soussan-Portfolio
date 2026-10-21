@@ -1,35 +1,22 @@
 // Translations extracted from PagesJaunesPage.tsx
 
+// Acts in DOM order (the page builds its own sub-bar from the wrapper's list)
 export const TOC_SECTIONS = {
   en: [
-    { id: 'top', label: 'Top' },
-    { id: 'overview', label: 'Overview' },
-    { id: 'homepage', label: 'Homepage' },
-    { id: 'search', label: 'Search Engine' },
-    { id: 'onboarding', label: 'Onboarding' },
-    { id: 'navigation', label: 'Navigation' },
-    { id: 'account', label: 'Account' },
-    { id: 'micro-interactions', label: 'Motion' },
-    { id: 'wear', label: 'Android Wear' },
-    { id: 'design-system', label: 'Design System' },
-    { id: 'team', label: 'Team' },
-    { id: 'impact', label: 'Impact' },
-    { id: 'learnings', label: 'Learnings' }
+    { id: 'summary', label: 'Summary' },
+    { id: 'approach', label: 'Approach' },
+    { id: 'product', label: 'Product' },
+    { id: 'results', label: 'Results' },
+    { id: 'learnings', label: 'Learnings' },
+    { id: 'team', label: 'Team' }
   ],
   fr: [
-    { id: 'top', label: 'Haut' },
-    { id: 'overview', label: 'Aperçu' },
-    { id: 'homepage', label: 'Homepage' },
-    { id: 'search', label: 'Moteur' },
-    { id: 'onboarding', label: 'Onboarding' },
-    { id: 'navigation', label: 'Navigation' },
-    { id: 'account', label: 'Compte' },
-    { id: 'micro-interactions', label: 'Motion' },
-    { id: 'wear', label: 'Android Wear' },
-    { id: 'design-system', label: 'Design System' },
-    { id: 'team', label: 'Équipe' },
-    { id: 'impact', label: 'Impact' },
-    { id: 'learnings', label: 'Apprentissages' }
+    { id: 'summary', label: 'Synthèse' },
+    { id: 'approach', label: 'Approche' },
+    { id: 'product', label: 'Produit' },
+    { id: 'results', label: 'Résultats' },
+    { id: 'learnings', label: 'Apprentissages' },
+    { id: 'team', label: 'Équipe' }
   ]
 };
 

@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import { imgDims } from '@/utils/imageDimensions'
 import { motion } from 'framer-motion';
+import { useReveal } from '@/lib/motion'
 import { ArrowUpRight } from '@phosphor-icons/react';
+import CaseStudyHero from '@/components/case-study/CaseStudyHero';
+import CaseStudySummary from '@/components/case-study/CaseStudySummary';
+import { ActRule, ActTitle } from '@/components/case-study/ActSection';
 
 import EnhancedLightbox, { type LightboxImage } from '../../components/media/EnhancedLightbox';
 import VideoPlayer from '@/components/VideoPlayer';
@@ -25,9 +28,22 @@ const CONTENT = {
     category: 'Agentic UX experimentation',
     author: 'Victor Soussan · Product Design',
     whyTitle: 'Context',
-    whyP1: 'Agentic interfaces raise a question I find genuinely interesting from a product design perspective: when an AI is part of a decision process, how do you keep the person making the call actively engaged? If the AI does too much, the human disengages. If it does too little to explain itself, trust erodes.',
-    whyP2: 'Fraud detection in European banking was a natural context to explore this. Analysts work under time pressure, 80% of their alerts turn out to be false alarms, and the final decision is always theirs.',
-    whyP3: 'RiskOS is the prototype I built to test ideas around that balance.',
+    heroIntro: 'RiskOS is a working prototype that tests whether an AI can prepare fraud alerts while the analyst keeps the decision. The AI writes its reasoning in full, and every action leaves a visible trace.',
+    heroRole: 'Product design',
+    heroFormat: 'Working prototype',
+    summaryContext: 'Agentic interfaces raise a question I find genuinely interesting from a product design perspective: when an AI is part of a decision process, how do you keep the person making the call actively engaged? Fraud detection in European banking was a natural context to explore this. Analysts work under time pressure, 80% of their alerts turn out to be false alarms, and the final decision is always theirs.',
+    summaryRole: 'I designed and built RiskOS, a working prototype that tests whether the AI can handle the preparation work while the analyst keeps full ownership of the decision. Stack: React 18, Vite and Tailwind CSS, deployed on Vercel.',
+    summaryDeliverables: [
+      { title: 'Triage view', detail: 'Five cases sorted by risk level, with priority filters and a live counter.' },
+      { title: 'Streaming AI analysis', detail: 'The AI writes its reasoning word by word, with highlighted details, sources and a confidence score.' },
+      { title: 'Decision flow', detail: 'Block the card, escalate or monitor, with the Slack message and the customer SMS made visible.' },
+      { title: 'False-alarm resolution', detail: 'A medium-risk alert reviewed by the AI and confirmed with one click.' },
+      { title: 'Queue processing', detail: 'Five cases resolved in sequence, with a session recap.' },
+    ],
+    actContext: 'Keeping the analyst engaged when an AI helps decide',
+    actApproach: 'Keeping the analyst in charge: three principles, three decisions',
+    actProduct: 'The prototype in use: from one false alarm to a full queue',
+    whyP1: 'If the AI does too much, the human disengages. If it does too little to explain itself, trust erodes.',
     insightTitle: 'Initial observation',
     insightP1: 'A fraud analyst at a European neobank handles 80 to 150 alerts per shift. Most are harmless. Every minute spent on a false alarm is a minute not available for a real case.',
     insightP2: 'In many teams, the daily tool is still a spreadsheet and a set of fixed rules. No surrounding context, no sorting by relevance, no memory of previous cases.',
@@ -82,9 +98,22 @@ const CONTENT = {
     category: 'Expérimentation UX agentique',
     author: 'Victor Soussan · Product Design',
     whyTitle: 'Contexte',
-    whyP1: 'Les interfaces agentiques posent une question intéressante du point de vue du product design\u00a0: quand une IA participe à un processus de décision, comment maintenir la personne qui décide dans une posture active\u00a0? Si l\'IA fait trop, l\'humain se désengage. Si elle manque de transparence, la confiance s\'effrite.',
-    whyP2: 'La détection de fraude dans le secteur bancaire européen offrait un contexte naturel pour explorer cette question. Les analystes travaillent sous contrainte de temps, 80\u00a0% de leurs alertes se révèlent être de fausses alarmes, et la décision finale leur revient toujours.',
-    whyP3: 'RiskOS est le prototype que j\'ai construit pour tester des idées autour de cet équilibre.',
+    heroIntro: 'RiskOS est un prototype fonctionnel qui teste si une IA peut préparer les alertes de fraude pendant que l\'analyste garde la décision. L\'IA écrit son raisonnement en toutes lettres et chaque action laisse une trace visible.',
+    heroRole: 'Product design',
+    heroFormat: 'Prototype fonctionnel',
+    summaryContext: 'Les interfaces agentiques posent une question intéressante du point de vue du product design : quand une IA participe à un processus de décision, comment maintenir la personne qui décide dans une posture active ? La détection de fraude dans le secteur bancaire européen offrait un contexte naturel pour explorer cette question. Les analystes travaillent sous contrainte de temps, 80 % de leurs alertes se révèlent être de fausses alarmes, et la décision finale leur revient toujours.',
+    summaryRole: 'J\'ai conçu et construit RiskOS, un prototype fonctionnel qui teste si l\'IA peut prendre en charge la préparation tout en laissant à l\'analyste la pleine maîtrise de la décision. Périmètre technique : React 18, Vite et Tailwind CSS, déployé sur Vercel.',
+    summaryDeliverables: [
+      { title: 'Vue de triage', detail: 'Cinq cas classés par niveau de risque, avec filtres de priorité et compteur en direct.' },
+      { title: 'Analyse IA en direct', detail: 'L\'IA écrit son raisonnement mot par mot, avec détails mis en évidence, sources et score de confiance.' },
+      { title: 'Parcours de décision', detail: 'Bloquer la carte, transmettre ou surveiller, avec le message Slack et le SMS au client rendus visibles.' },
+      { title: 'Résolution d\'une fausse alerte', detail: 'Une alerte de risque moyen passée en revue par l\'IA et confirmée d\'un clic.' },
+      { title: 'Traitement d\'une file', detail: 'Cinq cas résolus en séquence, avec un bilan de session.' },
+    ],
+    actContext: 'Garder l\'analyste engagé quand une IA participe à la décision',
+    actApproach: 'Laisser la main à l\'analyste : trois principes, trois décisions',
+    actProduct: 'Le prototype en usage : d\'une fausse alerte à une file complète',
+    whyP1: 'Si l\'IA fait trop, l\'humain se désengage. Si elle manque de transparence, la confiance s\'effrite.',
     insightTitle: 'Observation initiale',
     insightP1: 'Un analyste fraude dans une néobanque européenne traite 80 à 150 alertes par vacation. La plupart sont sans suite. Chaque minute passée sur une fausse alarme est une minute indisponible pour un cas réel.',
     insightP2: 'Dans beaucoup d\'équipes, l\'outil du quotidien reste un tableur et un jeu de règles fixes. Pas de contexte, pas de tri par pertinence, pas de mémoire des cas précédents.',
@@ -137,78 +166,89 @@ const CONTENT = {
 };
 
 const VIDEO_BASE = '/videos/riskos';
+const EASE = 'ease-[cubic-bezier(0.23,1,0.32,1)]';
 
-function VideoCard({
-  src, caption, description, frustration, benefit, lang, index, onClick,
-}: {
-  src: string; caption: string; description?: string; frustration?: string; benefit?: string;
-  lang: 'en' | 'fr'; index: number; onClick: (currentTime: number) => void;
-}) {
+// Clips kept out of the narration (their copy stays in CONTENT): 07-data-flow, a process diagram.
+// The narration shows the six clips of the prototype in use (dark UI with colour accents).
+const HERO_IMAGE = '/images/riskos/02-case-detail.webp';
+const CLIP_BEFORE_AFTER = `${VIDEO_BASE}/06-before-after.mp4`;
+const CLIP_TRIAGE = `${VIDEO_BASE}/01-hero-triage.mp4`;
+const CLIP_FALSE_POSITIVE = `${VIDEO_BASE}/05-false-positive.mp4`;
+const CLIP_AI = `${VIDEO_BASE}/02-ai-insight.mp4`;
+const CLIP_DECISION = `${VIDEO_BASE}/03-decision-ellipses.mp4`;
+const CLIP_QUEUE = `${VIDEO_BASE}/04-queue-cleared.mp4`;
+
+interface VideoFigureProps {
+  src: string;
+  /** Accessible name of the zoomable frame, also the one-line caption */
+  name: string;
+  onZoom: () => void;
+}
+
+function VideoFigure({ src, name, onZoom }: VideoFigureProps) {
+  const reveal = useReveal();
   return (
-    <motion.figure
-      initial={{ opacity: 0, transform: 'translateY(12px)' }}
-      whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
-      viewport={{ once: true, margin: '-60px' }}
-      transition={{ duration: 0.35, delay: index * 0.04, ease: EASE_OUT }}
-      className="mb-24 md:mb-32"
-    >
-      <div
-        {...zoomable(() => onClick(0))}
-        className="group cursor-zoom-in ring-1 ring-black/[0.04] hover:ring-black/[0.08] rounded-xl overflow-hidden transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
-      >
-        <VideoPlayer src={src} className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" />
-      </div>
-      <figcaption className="mt-4 max-w-[740px] mx-auto">
-        <span className="block text-xs font-medium text-gray-500 mb-1">{caption}</span>
-        {description && <span className="block text-base text-gray-600 leading-relaxed mb-2">{description}</span>}
-        {frustration && (
-          <span className="block text-sm text-gray-600 leading-relaxed">
-            <span className="font-medium text-gray-900">{lang === 'fr' ? 'Frustration\u00a0: ' : 'Frustration: '}</span>
-            {frustration}
-          </span>
-        )}
-        {benefit && (
-          <span className="block text-sm text-gray-600 leading-relaxed mt-1">
-            <span className="font-medium text-gray-900">{lang === 'fr' ? 'Bénéfice\u00a0: ' : 'Benefit: '}</span>
-            {benefit}
-          </span>
-        )}
-      </figcaption>
+    <motion.figure {...reveal()}>
+        <div
+          {...zoomable(onZoom)}
+          aria-label={name}
+          className={`group rounded-2xl overflow-hidden border border-gray-100 [@media(hover:hover)]:hover:border-gray-200 cursor-zoom-in shadow-sm [@media(hover:hover)]:hover:shadow-lg [@media(hover:hover)]:hover:scale-[1.01] active:scale-[0.99] transition-[border-color,box-shadow,transform] duration-300 ${EASE}`}
+        >
+          <VideoPlayer src={src} className={`w-full h-auto block transition-transform duration-300 ${EASE} [@media(hover:hover)]:group-hover:scale-[1.02]`} />
+        </div>
+        <figcaption className="mt-3 text-xs text-gray-500">{name}</figcaption>
     </motion.figure>
   );
 }
 
-function SectionTitle({ children }: { children: React.ReactNode }) {
-  return <h2 className="text-title-2 text-gray-900 mb-4">{children}</h2>;
+/** One block: an h3, one short paragraph in the reading column, then at most one visual */
+function Block({ id, title, text, children }: { id?: string; title: string; text: string; children?: React.ReactNode }) {
+  return (
+    <div id={id} className="scroll-mt-28 mb-12 md:mb-16 last:mb-0">
+      <h3 className="text-title-3 text-gray-900 mb-3 max-w-[56ch]">{title}</h3>
+      <p className="max-w-[62ch] text-base text-gray-600">{text}</p>
+      {children && <div className="mt-8">{children}</div>}
+    </div>
+  );
 }
 
-function Paragraph({ children }: { children: React.ReactNode }) {
-  return <p className="text-base text-gray-600 leading-relaxed mb-3 max-w-[65ch]">{children}</p>;
+/** Act opening: hairline, number, title and an optional lead of 55 words at most */
+function ActOpen({ index, title, lead, leadId }: { index: string; title: string; lead?: string; leadId?: string }) {
+  return (
+    <div className={lead ? 'mb-10 md:mb-14' : 'mb-5 md:mb-9'}>
+      <ActTitle index={index} title={title} />
+      {lead && (
+        <p id={leadId} className="max-w-[62ch] text-base text-gray-600 scroll-mt-28">{lead}</p>
+      )}
+    </div>
+  );
 }
 
 function buildLightboxItems(lang: 'en' | 'fr'): LightboxImage[] {
   const t = CONTENT[lang];
   return [
-    { src: '/images/riskos/thubmnail_riskos_dark.webp', caption: 'RiskOS', type: 'image' },
-    { src: `${VIDEO_BASE}/06-before-after.mp4`, caption: t.beforeAfterCaption, type: 'video' },
-    { src: `${VIDEO_BASE}/07-data-flow.mp4`, caption: t.dataFlowCaption, type: 'video' },
-    { src: `${VIDEO_BASE}/01-hero-triage.mp4`, caption: t.triageCaption, type: 'video' },
-    { src: `${VIDEO_BASE}/02-ai-insight.mp4`, caption: t.aiCaption, type: 'video' },
-    { src: `${VIDEO_BASE}/03-decision-ellipses.mp4`, caption: t.decisionCaption, type: 'video' },
-    { src: `${VIDEO_BASE}/05-false-positive.mp4`, caption: t.falsePositiveCaption, type: 'video' },
-    { src: `${VIDEO_BASE}/04-queue-cleared.mp4`, caption: t.queueCaption, type: 'video' },
+    { src: HERO_IMAGE, caption: 'RiskOS', type: 'image' },
+    { src: CLIP_BEFORE_AFTER, caption: t.beforeAfterCaption, type: 'video' },
+    { src: CLIP_TRIAGE, caption: t.triageCaption, type: 'video' },
+    { src: CLIP_AI, caption: t.aiCaption, type: 'video' },
+    { src: CLIP_DECISION, caption: t.decisionCaption, type: 'video' },
+    { src: CLIP_FALSE_POSITIVE, caption: t.falsePositiveCaption, type: 'video' },
+    { src: CLIP_QUEUE, caption: t.queueCaption, type: 'video' },
   ];
 }
 
 const RiskOSPage: React.FC<RiskOSPageProps> = ({ lang: propLang }) => {
   const lang = propLang ?? 'en';
+  const fr = lang === 'fr';
   const t = CONTENT[lang];
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [videoTime, setVideoTime] = useState(0);
   const lightboxItems = buildLightboxItems(lang);
 
-  const openLightbox = (index: number, currentTime = 0) => {
+  const openLightbox = (src: string, currentTime = 0) => {
+    const index = lightboxItems.findIndex((item) => item.src === src);
+    if (index === -1) return;
     setVideoTime(currentTime);
     setLightboxIndex(index);
     setLightboxOpen(true);
@@ -227,169 +267,111 @@ const RiskOSPage: React.FC<RiskOSPageProps> = ({ lang: propLang }) => {
         videoStartTime={videoTime}
       />
 
-      {/* Hero */}
-      <div className="max-w-[740px] mx-auto px-6 pt-16 md:pt-24 pb-16">
-        <div className="rise-in">
-          <h1 className="text-title-1 text-gray-900 mb-1">
-            RiskOS
-          </h1>
-          <p className="text-lg text-gray-600 max-w-[55ch] mb-1">
-            {t.subtitle}
-          </p>
-          <p className="text-xs text-gray-500">{[t.author, t.category, '2026'].join(' · ')}</p>
+      {/* Hero: the intro is the executive summary. The prototype is external, and there is no gallery view. */}
+      <CaseStudyHero
+        lang={lang}
+        projectId="riskos"
+        title={t.subtitle}
+        intro={t.heroIntro}
+        meta={[
+          { label: fr ? 'Rôle' : 'Role', value: t.heroRole },
+          { label: fr ? 'Périmètre' : 'Scope', value: t.category },
+          { label: 'Format', value: t.heroFormat },
+        ]}
+        visualAlt={t.subtitle}
+        externalHref="https://riskos.vercel.app"
+        externalLabel={t.viewPrototype}
+        hideGallery
+        onZoom={() => openLightbox(HERO_IMAGE)}
+      />
 
-          <div className="mt-5">
+      {/* Summary: context, role and deliverables. No measured outcome exists, so no number strip. */}
+      <CaseStudySummary
+        lang={lang}
+        context={t.summaryContext}
+        role={t.summaryRole}
+        deliverables={t.summaryDeliverables}
+      />
+
+      {/* ================================================================ */}
+      {/* 01 CONTEXT: why engagement is the design problem */}
+      {/* ================================================================ */}
+      <section id="context">
+        <ActRule />
+        <div className="act-wide pt-10 md:pt-14 pb-12 md:pb-16">
+          <ActOpen index="01" title={t.actContext} lead={t.whyP1} leadId="why" />
+
+          <Block id="insight" title={t.insightTitle} text={t.insightP1}>
+            <VideoFigure src={CLIP_BEFORE_AFTER} name={t.beforeAfterCaption} onZoom={() => openLightbox(CLIP_BEFORE_AFTER)} />
+          </Block>
+        </div>
+      </section>
+
+      {/* ================================================================ */}
+      {/* 02 APPROACH: three principles, three decisions */}
+      {/* ================================================================ */}
+      <section id="approach">
+        <ActRule />
+        <div className="act-wide pt-10 md:pt-14 pb-12 md:pb-16">
+          <ActOpen index="02" title={t.actApproach} lead={t.designQuestionP1} leadId="design-question" />
+
+          <Block id="triage" title={t.triageTitle} text={t.triageText}>
+            <VideoFigure src={CLIP_TRIAGE} name={t.triageCaption} onZoom={() => openLightbox(CLIP_TRIAGE)} />
+          </Block>
+
+          <Block id="ai-analysis" title={t.aiTitle} text={t.aiP1}>
+            <VideoFigure src={CLIP_AI} name={t.aiCaption} onZoom={() => openLightbox(CLIP_AI)} />
+          </Block>
+
+          <Block id="decision" title={t.decisionTitle} text={t.decisionP1}>
+            <VideoFigure src={CLIP_DECISION} name={t.decisionCaption} onZoom={() => openLightbox(CLIP_DECISION)} />
+          </Block>
+        </div>
+      </section>
+
+      {/* ================================================================ */}
+      {/* 03 PRODUCT: the prototype in use */}
+      {/* ================================================================ */}
+      <section id="product">
+        <ActRule />
+        <div className="act-wide pt-10 md:pt-14 pb-12 md:pb-16">
+          <ActOpen index="03" title={t.actProduct} />
+
+          <Block id="false-positive" title={t.falsePositiveTitle} text={t.falsePositiveText}>
+            <VideoFigure src={CLIP_FALSE_POSITIVE} name={t.falsePositiveCaption} onZoom={() => openLightbox(CLIP_FALSE_POSITIVE)} />
+          </Block>
+
+          <Block id="queue" title={t.queueTitle} text={t.queueText}>
+            <VideoFigure src={CLIP_QUEUE} name={t.queueCaption} onZoom={() => openLightbox(CLIP_QUEUE)} />
+          </Block>
+
+          {/* The prototype itself is in the hero; the source is here */}
+          <div className="mt-12">
             <a
-              href="https://riskos.vercel.app"
+              href="https://github.com/marcus-clay/riskos-fraud-detection"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 min-h-11 px-5 text-sm font-medium rounded-full bg-[#2D5CF3] hover:bg-[#2450d9] text-white shadow-sm hover:shadow-md active:scale-[0.97] transition-[background-color,box-shadow,transform] duration-150"
+              className={`inline-flex items-center gap-1 min-h-11 text-sm font-medium text-gray-900 [@media(hover:hover)]:hover:text-gray-500 active:scale-[0.97] transition-[color,transform] duration-150 ${EASE}`}
             >
-              {t.viewPrototype} <ArrowUpRight size={14} />
+              {t.viewGitHub}
+              <ArrowUpRight size={14} aria-hidden="true" />
             </a>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Content */}
-      <div className="max-w-[960px] mx-auto px-6 pb-24 md:pb-40">
+      {/* ================================================================ */}
+      {/* 04 LEARNINGS */}
+      {/* ================================================================ */}
+      <section id="learnings">
+        <ActRule />
+        <div className="act-wide pt-10 md:pt-14 pb-12 md:pb-16">
+          <ActOpen index="04" title={t.learningsTitle} />
 
-        {/* Hero image */}
-        <figure className="mb-24 md:mb-32">
-          <div
-            className="rounded-xl overflow-hidden cursor-zoom-in group ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
-            {...zoomable(() => openLightbox(0))}
-          >
-            <img
-              loading="eager"
-              fetchPriority="high"
-              src="/images/riskos/thubmnail_riskos_dark.webp" {...imgDims("/images/riskos/thubmnail_riskos_dark.webp")}
-              alt="RiskOS"
-              className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
-            />
-          </div>
-        </figure>
-
-        {/* Text sections use narrower container */}
-        <div className="max-w-[740px] mx-auto">
-
-          <section id="why" className="mb-24 md:mb-32 scroll-mt-28">
-            <SectionTitle>{t.whyTitle}</SectionTitle>
-            <Paragraph>{t.whyP1}</Paragraph>
-            <Paragraph>{t.whyP2}</Paragraph>
-            <Paragraph>{t.whyP3}</Paragraph>
-          </section>
-
-          <section id="insight" className="mb-24 md:mb-32 scroll-mt-28">
-            <SectionTitle>{t.insightTitle}</SectionTitle>
-            <Paragraph>{t.insightP1}</Paragraph>
-            <Paragraph>{t.insightP2}</Paragraph>
-          </section>
+          <Block title={t.learning1Title} text={t.learning1Text} />
+          <Block title={t.learning2Title} text={t.learning2Text} />
         </div>
-
-        {/* Video: Before/After (full width) */}
-        <VideoCard src={`${VIDEO_BASE}/06-before-after.mp4`} caption={t.beforeAfterCaption} description={t.beforeAfterText} lang={lang} index={1} onClick={(time) => openLightbox(1, time)} />
-
-        <div className="max-w-[740px] mx-auto">
-          <section id="design-question" className="mb-24 md:mb-32 scroll-mt-28">
-            <SectionTitle>{t.designQuestionTitle}</SectionTitle>
-            <Paragraph>{t.designQuestionP1}</Paragraph>
-            <Paragraph>{t.designQuestionP2}</Paragraph>
-            <ul className="space-y-2 max-w-[65ch] mb-4">
-              {t.designPrinciples.map((p, i) => (
-                <li key={i} className="flex gap-2 text-base text-gray-600 leading-relaxed">
-                  <span className="text-gray-300 mt-1 shrink-0">&#8226;</span>
-                  {p}
-                </li>
-              ))}
-            </ul>
-          </section>
-        </div>
-
-        <VideoCard src={`${VIDEO_BASE}/07-data-flow.mp4`} caption={t.dataFlowCaption} description={t.dataFlowText} lang={lang} index={2} onClick={(time) => openLightbox(2, time)} />
-
-        <div className="max-w-[740px] mx-auto">
-          <section id="triage" className="mb-6 scroll-mt-28">
-            <SectionTitle>{t.triageTitle}</SectionTitle>
-            <Paragraph>{t.triageText}</Paragraph>
-          </section>
-        </div>
-        <VideoCard src={`${VIDEO_BASE}/01-hero-triage.mp4`} caption={t.triageCaption} frustration={t.triageFrustration} benefit={t.triageBenefit} lang={lang} index={3} onClick={(time) => openLightbox(3, time)} />
-
-        <div className="max-w-[740px] mx-auto">
-          <section id="ai-analysis" className="mb-6 scroll-mt-28">
-            <SectionTitle>{t.aiTitle}</SectionTitle>
-            <Paragraph>{t.aiP1}</Paragraph>
-            <Paragraph>{t.aiP2}</Paragraph>
-          </section>
-        </div>
-        <VideoCard src={`${VIDEO_BASE}/02-ai-insight.mp4`} caption={t.aiCaption} frustration={t.aiFrustration} benefit={t.aiBenefit} lang={lang} index={4} onClick={(time) => openLightbox(4, time)} />
-
-        <div className="max-w-[740px] mx-auto">
-          <section id="decision" className="mb-6 scroll-mt-28">
-            <SectionTitle>{t.decisionTitle}</SectionTitle>
-            <Paragraph>{t.decisionP1}</Paragraph>
-          </section>
-        </div>
-        <VideoCard src={`${VIDEO_BASE}/03-decision-ellipses.mp4`} caption={t.decisionCaption} frustration={t.decisionFrustration} benefit={t.decisionBenefit} lang={lang} index={5} onClick={(time) => openLightbox(5, time)} />
-
-        <div className="max-w-[740px] mx-auto">
-          <section id="false-positive" className="mb-6 scroll-mt-28">
-            <SectionTitle>{t.falsePositiveTitle}</SectionTitle>
-            <Paragraph>{t.falsePositiveText}</Paragraph>
-          </section>
-        </div>
-        <VideoCard src={`${VIDEO_BASE}/05-false-positive.mp4`} caption={t.falsePositiveCaption} lang={lang} index={6} onClick={(time) => openLightbox(6, time)} />
-
-        <div className="max-w-[740px] mx-auto">
-          <section id="queue" className="mb-6 scroll-mt-28">
-            <SectionTitle>{t.queueTitle}</SectionTitle>
-            <Paragraph>{t.queueText}</Paragraph>
-          </section>
-        </div>
-        <VideoCard src={`${VIDEO_BASE}/04-queue-cleared.mp4`} caption={t.queueCaption} lang={lang} index={7} onClick={(time) => openLightbox(7, time)} />
-
-        {/* Learnings */}
-        <div className="max-w-[740px] mx-auto">
-          <section id="learnings" className="mb-24 md:mb-32 scroll-mt-28">
-            <SectionTitle>{t.learningsTitle}</SectionTitle>
-            <Paragraph>{t.learningsIntro}</Paragraph>
-
-            <div className="divide-y divide-gray-100 mt-6 max-w-[65ch]">
-              {[
-                { title: t.learning1Title, text: t.learning1Text },
-                { title: t.learning2Title, text: t.learning2Text },
-              ].map((learning, i) => (
-                <div key={i} className="py-5">
-                  <h3 className="text-title-3 text-gray-900 mb-1.5">{learning.title}</h3>
-                  <p className="text-base text-gray-600 leading-relaxed">{learning.text}</p>
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-6">
-              <Paragraph>{t.learningsOutro}</Paragraph>
-            </div>
-          </section>
-
-          {/* Tech + links */}
-          <section className="mb-16">
-            <SectionTitle>{t.techTitle}</SectionTitle>
-            <Paragraph>{t.techText}</Paragraph>
-
-            <div className="flex items-center gap-4 mt-6">
-              <a
-                href="https://github.com/marcus-clay/riskos-fraud-detection"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm text-gray-500 hover:text-gray-900 transition-colors duration-150 inline-flex items-center gap-1"
-              >
-                {t.viewGitHub} <ArrowUpRight size={14} />
-              </a>
-            </div>
-          </section>
-        </div>
-      </div>
+      </section>
     </div>
   );
 };

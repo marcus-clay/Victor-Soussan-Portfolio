@@ -249,7 +249,7 @@ const OtherPagesContent = ({ page, go, inverse = false }: { page: PageId, go: (p
           <div className={`rounded-3xl overflow-hidden ${cardBg} border cursor-pointer group`} onClick={() => go('case')}>
             <div className="overflow-hidden"><img src={PROJECTS[0].coverImage} className="w-full aspect-[21/9] object-cover group-hover:scale-[1.02] transition-transform duration-700" alt="" /></div>
             <div className="p-8">
-              <span className="text-[12px] font-bold text-gray-400 uppercase tracking-wider">{PROJECTS[0].role} · {PROJECTS[0].period}</span>
+              <span className="text-[12px] font-bold text-gray-400 uppercase tracking-wider">{PROJECTS[0].role}</span>
               <h3 className={`text-2xl font-semibold mt-2 mb-2 group-hover:text-blue-600 transition-colors ${th}`}>{PROJECTS[0].title}</h3>
               <p className={`text-base leading-relaxed max-w-lg ${tc}`}>{PROJECTS[0].summary}</p>
             </div>
@@ -266,7 +266,7 @@ const OtherPagesContent = ({ page, go, inverse = false }: { page: PageId, go: (p
                 <div className="overflow-hidden"><img src={p.coverImage} className="w-full aspect-[16/10] object-cover group-hover:scale-[1.03] transition-transform duration-500" alt="" /></div>
                 <div className="p-5">
                   <h3 className={`text-lg font-semibold group-hover:text-blue-600 transition-colors ${th}`}>{p.title}</h3>
-                  <p className={`text-[14px] mt-1 ${tc}`}>{p.role} · {p.period}</p>
+                  <p className={`text-[14px] mt-1 ${tc}`}>{p.role}</p>
                 </div>
               </div>
             </Reveal>
@@ -316,7 +316,6 @@ const OtherPagesContent = ({ page, go, inverse = false }: { page: PageId, go: (p
                 <div className="p-6 md:p-8">
                   <div className="flex items-baseline gap-4 mb-2">
                     <h2 className={`text-xl font-semibold group-hover:text-blue-600 transition-colors ${th}`}>{p.title}</h2>
-                    <span className="text-[13px] text-gray-300 font-mono">{p.period}</span>
                   </div>
                   <p className={`text-[14px] mb-2 ${tc}`}>{p.role}</p>
                   <p className={`text-base leading-relaxed max-w-lg ${tc}`}>{p.summary}</p>

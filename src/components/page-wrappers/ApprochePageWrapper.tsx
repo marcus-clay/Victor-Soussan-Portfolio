@@ -1,42 +1,20 @@
-'use client'
-
-import { useRouter } from 'next/navigation'
 import ApprochePage from '@/views/ApprochePage'
-import { getProjects } from '@/data/projectsData'
-import { SIGNALS } from '@/data/signalsData'
-import { RELATED_PROJECT_IDS, RELATED_ARTICLE_IDS } from '@/data/approcheData'
+import { ALL_CONTENT, TYPE_LABELS } from '@/data/contentData'
+import { RELATED_ARTICLE_IDS } from '@/data/approcheData'
+import type { RelatedItem } from '@/components/RelatedContent'
 
+// Server component: only the card fields of the related articles reach the page, not their bodies.
 export default function ApprochePageWrapper({ lang }: { lang: 'en' | 'fr' }) {
-  const router = useRouter()
-  const allProjects = getProjects(lang)
-  const allSignals = SIGNALS
-
-  const relatedProjects = RELATED_PROJECT_IDS
-    .map((id) => allProjects.find((p) => p.id === id))
-    .filter(Boolean)
-    .map((p) => ({
-      id: p!.id,
-      title: p!.title,
-      summary: p!.summary,
-      cover: p!.coverImage,
+  const related: RelatedItem[] = RELATED_ARTICLE_IDS
+    .map((id) => ALL_CONTENT.find((item) => item.id === id))
+    .filter((item): item is NonNullable<typeof item> => Boolean(item))
+    .map((item) => ({
+      href: `/${lang}/signal/${item.id}`,
+      title: lang === 'fr' ? item.title_fr : item.title_en,
+      label: TYPE_LABELS[item.type][lang],
+      description: lang === 'fr' ? item.excerpt_fr : item.excerpt_en,
+      cover: item.heroImage ? { src: item.heroImage } : undefined,
     }))
 
-  const relatedArticles = RELATED_ARTICLE_IDS
-    .map((id) => allSignals.find((s) => s.id === id))
-    .filter(Boolean)
-    .map((s) => ({
-      id: s!.id,
-      title: lang === 'fr' ? s!.title_fr : s!.title_en,
-      summary: lang === 'fr' ? s!.body_fr.slice(0, 140) + '...' : s!.body_en.slice(0, 140) + '...',
-    }))
-
-  return (
-    <ApprochePage
-      lang={lang}
-      onBack={() => router.back()}
-      onContact={() => router.push(`/${lang}/contact`)}
-      relatedProjects={relatedProjects}
-      relatedArticles={relatedArticles}
-    />
-  )
+  return <ApprochePage lang={lang} related={related} />
 }

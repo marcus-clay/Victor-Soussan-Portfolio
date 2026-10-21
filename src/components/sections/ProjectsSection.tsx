@@ -4,8 +4,7 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import type { Project } from '@/data/projectsData'
-
-const EASE: [number, number, number, number] = [0.23, 1, 0.32, 1]
+import { useReveal } from '@/lib/motion'
 
 function ArrowDiag({ style }: { style?: React.CSSProperties }) {
   return (
@@ -55,6 +54,7 @@ export default function ProjectsSection({
   openModalWithUrl,
   setIframeModalUrl,
 }: ProjectsSectionProps) {
+  const reveal = useReveal()
   const listed = projects.slice(0, 3)
   const [activeId, setActiveId] = useState<string>(listed[0]?.id ?? '')
 
@@ -89,15 +89,11 @@ export default function ProjectsSection({
           {listed.map((project, index) => {
             const isActive = activeId === project.id
             const src = coverSrc(project)
-            const year = project.period.split(' – ')[0]
 
             return (
               <motion.div
                 key={project.id}
-                initial={{ opacity: 0, y: 8 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-60px' }}
-                transition={{ duration: 0.3, delay: index * 0.06, ease: EASE }}
+                {...reveal(index)}
                 className="border-t border-gray-100 last:border-b"
               >
                 <button
@@ -168,13 +164,10 @@ export default function ProjectsSection({
                         </p>
                       </div>
 
-                      {/* Right: year + arrow + thumbnail (desktop only) */}
+                      {/* Right: arrow + thumbnail (desktop only) */}
                       <div className="hidden sm:flex flex-col items-end gap-2.5">
 
                         <div className="flex items-center gap-2 h-5">
-                          <span className="text-micro tabular-nums text-gray-500 leading-none">
-                            {year}
-                          </span>
                           <ArrowDiag
                             style={{
                               color: '#9CA3AF',

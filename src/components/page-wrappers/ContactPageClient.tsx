@@ -5,16 +5,18 @@ import Link from 'next/link'
 import {
   Copy,
   Check,
-  LinkedinLogo,
   ArrowUpRight,
   ArrowRight,
 } from '@phosphor-icons/react'
 import { getProjects } from '@/data/projectsData'
 import { getArticles } from '@/data/contentData'
+import HomeBlock from '@/components/sections/HomeBlock'
+import TopicsCarousel from '@/components/contact/TopicsCarousel'
+import { RelatedCard, type RelatedItem } from '@/components/RelatedContent'
 
 const EMAIL = 'victorsoussan@gmail.com'
 const CALENDAR_URL = 'https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ1FzJJuVF3V2pu95ctzbbztxczeq8yQf0ZxbTL_JBrFsuu4iWORqpflL14N8NHM-sR5v1Az4Tew'
-const FEATURED_PROJECT_IDS = ['riskos', 'toolkit', 'francevae']
+const FEATURED_PROJECT_IDS = ['riskos', 'toolkit', 'france-vae']
 
 const TOPICS = {
   en: [
@@ -46,13 +48,51 @@ const FORMATS = {
   ],
 }
 
+const HELP = {
+  en: [
+    { title: 'Product Design', desc: 'UX/UI, design systems, prototyping, from framing to dev handoff' },
+    { title: 'Team Leadership', desc: 'Hiring, mentoring, design ops, delivery cadence' },
+    { title: 'AI Prototyping', desc: 'Claude Code, Figma MCP, concept to deployed prototype in hours' },
+  ],
+  fr: [
+    { title: 'Design Produit', desc: 'UX/UI, design systems, prototypage, du cadrage au handoff dev' },
+    { title: 'Leadership', desc: 'Recrutement, mentoring, design ops, cadence de livraison' },
+    { title: 'Prototypage IA', desc: 'Claude Code, Figma MCP, du concept au prototype déployé en quelques heures' },
+  ],
+}
+
+/** Text link: ink with a quiet underline, grey on hover, 44px tall hit area, presses on tap */
+const TEXT_LINK =
+  'inline-flex min-h-11 items-center text-sm font-medium text-gray-900 underline decoration-gray-300 underline-offset-4 [@media(hover:hover)]:hover:text-gray-500 active:scale-[0.97] transition-[color,transform] duration-150 ease-out'
+
+/** Black pill, the only primary action of the page (twice: calendar, then speaking enquiries) */
+const PILL =
+  'inline-flex items-center gap-2 min-h-11 px-5 rounded-full bg-gray-900 [@media(hover:hover)]:hover:bg-black text-white text-sm font-medium active:scale-[0.97] transition-[background-color,transform] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)]'
+
+const ROW_LINK =
+  'group -mx-3 px-3 py-5 md:py-6 rounded-lg flex items-start justify-between gap-6 transition-colors duration-150 [@media(hover:hover)]:hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900'
+
+const coverSrc = (cover: string) => (cover.startsWith('/') ? cover : `/images/${cover}`)
+
 export default function ContactPageClient({ lang }: { lang: 'en' | 'fr' }) {
   const [copied, setCopied] = useState(false)
   const isEn = lang === 'en'
-  const projects = getProjects(lang).filter(p => FEATURED_PROJECT_IDS.includes(p.id))
-  const articles = getArticles().slice(0, 3)
   const topics = TOPICS[lang]
   const formats = FORMATS[lang]
+  const help = HELP[lang]
+
+  const projectItems: RelatedItem[] = getProjects(lang)
+    .filter((p) => FEATURED_PROJECT_IDS.includes(p.id))
+    .map((p) => ({
+      href: `/${lang}/project/${p.id}`,
+      title: p.title,
+      label: p.role,
+      description: p.summary,
+      cover: { src: coverSrc(p.coverImage) },
+    }))
+
+  const articles = getArticles().slice(0, 3)
+  const subject = (s: string) => `mailto:${EMAIL}?subject=${encodeURIComponent(s)}`
 
   const handleCopy = useCallback(() => {
     navigator.clipboard.writeText(EMAIL).then(() => {
@@ -63,244 +103,177 @@ export default function ContactPageClient({ lang }: { lang: 'en' | 'fr' }) {
 
   return (
     <div className="min-h-screen bg-[#FDFDFC]">
-      <div className="max-w-[740px] mx-auto px-6 pt-32 sm:pt-40 md:pt-48 pb-24 md:pb-40">
 
-        {/* ============================================ */}
-        {/* SECTION 1: Contact                          */}
-        {/* ============================================ */}
+      {/* Opening, same grammar as the homepage: display title, one paragraph, the actions */}
+      <header className="wrap pt-10 md:pt-16 pb-14 md:pb-20">
+        <h1 className="text-display text-gray-900">
+          {isEn ? "Let's talk" : 'Discutons'}
+        </h1>
+        <p className="mt-8 md:mt-10 max-w-[56ch] text-lead-lg text-gray-600">
+          {isEn
+            ? 'Open to product design missions, team leadership roles, and interesting problems where design makes a measurable difference.'
+            : 'Ouvert aux missions de design produit, aux rôles de leadership, et aux problèmes intéressants où le design fait une différence mesurable.'}
+        </p>
 
-        <section className="pb-24 md:pb-40">
-          <h1 className="text-title-1 text-gray-900 leading-tight mb-4">
-            {isEn ? "Let's talk" : 'Discutons'}
-          </h1>
-
-          <p className="text-base text-gray-500 leading-relaxed mb-10">
-            {isEn
-              ? 'Open to product design missions, team leadership roles, and interesting problems where design makes a measurable difference.'
-              : 'Ouvert aux missions de design produit, aux r\u00f4les de leadership, et aux probl\u00e8mes int\u00e9ressants o\u00f9 le design fait une diff\u00e9rence mesurable.'}
-          </p>
-
-          {/* Primary CTA */}
-          <div className="mb-8">
+        <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+          <a href={CALENDAR_URL} target="_blank" rel="noopener noreferrer" className={PILL}>
+            {isEn ? 'Book a call' : 'Réserver un appel'}
+            <ArrowUpRight size={14} weight="bold" aria-hidden="true" />
+          </a>
+          <div className="flex items-center gap-1">
             <a
-              href={CALENDAR_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full bg-gray-900 text-white font-medium text-sm hover:bg-gray-800 active:scale-[0.97] ring-1 ring-black shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition-[background-color,transform] duration-200 ease-out"
+              href={`mailto:${EMAIL}`}
+              className="min-w-0 break-words text-sm font-medium text-gray-900 [@media(hover:hover)]:hover:text-gray-500 transition-colors duration-150 ease-out"
             >
-              {isEn ? 'Book a call' : 'R\u00e9server un appel'}
+              {EMAIL}
             </a>
+            <button
+              type="button"
+              onClick={handleCopy}
+              className="relative inline-flex shrink-0 items-center justify-center min-h-11 min-w-11 rounded-md [@media(hover:hover)]:hover:bg-gray-100 active:scale-[0.95] transition-[background-color,transform] duration-150 ease-out cursor-pointer"
+              title={isEn ? 'Copy email' : 'Copier l’email'}
+              aria-label={isEn ? 'Copy email' : 'Copier l’email'}
+            >
+              <span className={`inline-flex transition-opacity duration-200 ${copied ? 'opacity-0' : 'opacity-100'}`}>
+                <Copy size={16} className="text-gray-500" />
+              </span>
+              <span className={`absolute inset-0 flex items-center justify-center transition-opacity duration-200 ${copied ? 'opacity-100' : 'opacity-0'}`}>
+                <Check size={16} weight="bold" className="text-gray-900" />
+              </span>
+            </button>
           </div>
+        </div>
+        <div className="mt-1 flex flex-wrap items-center gap-x-6">
+          <a href="https://linkedin.com/in/victorsoussan" target="_blank" rel="noopener noreferrer" className={`${TEXT_LINK} gap-1.5 !text-gray-500`}>
+            LinkedIn <ArrowUpRight size={12} weight="bold" aria-hidden="true" />
+          </a>
+          <a href="https://www.condamine.studio/apps" target="_blank" rel="noopener noreferrer" className={`${TEXT_LINK} gap-1.5 !text-gray-500`}>
+            Condamine Apps <ArrowUpRight size={12} weight="bold" aria-hidden="true" />
+          </a>
+          <a href="tel:+33615989400" className={`${TEXT_LINK} !text-gray-500`}>
+            +33 6 15 98 94 00
+          </a>
+        </div>
+      </header>
 
-          {/* Email + copy */}
-          <div className="mb-8">
-            <p className="text-sm text-gray-500 mb-1.5">
-              {isEn ? 'Prefer async?' : 'Plut\u00f4t par \u00e9crit\u00a0?'}
-            </p>
-            <div className="flex items-center gap-3">
-              <a href={`mailto:${EMAIL}`} className="text-base font-medium text-gray-900 hover:text-gray-600 transition-colors duration-200">
-                {EMAIL}
-              </a>
-              <button
-                onClick={handleCopy}
-                className="relative p-1.5 rounded-md hover:bg-gray-100 active:scale-[0.95] transition-[background-color,transform] duration-150 ease-out cursor-pointer"
-                title={isEn ? 'Copy email' : 'Copier l\'email'}
-              >
-                <span className={`inline-flex transition-opacity duration-200 ${copied ? 'opacity-0' : 'opacity-100'}`}>
-                  <Copy size={16} className="text-gray-500" />
-                </span>
-                <span className={`absolute inset-0 flex items-center justify-center transition-opacity duration-200 ${copied ? 'opacity-100' : 'opacity-0'}`}>
-                  <Check size={16} weight="bold" className="text-gray-900" />
-                </span>
-              </button>
+      {/* What I can help with: title left, three rows right */}
+      <HomeBlock id="help" title={isEn ? 'What I can help with' : 'Ce que je peux apporter'}>
+        <dl className="divide-y divide-gray-100 border-b border-gray-100">
+          {help.map((item) => (
+            <div key={item.title} className="grid gap-x-6 gap-y-2 py-6 md:grid-cols-[minmax(0,15rem)_1fr] md:py-8">
+              <dt className="text-subhead text-gray-900">{item.title}</dt>
+              <dd className="max-w-[48ch] text-base text-gray-600 md:pt-1.5">{item.desc}</dd>
             </div>
-          </div>
+          ))}
+        </dl>
+      </HomeBlock>
 
-          {/* Connect */}
-          <div className="flex flex-wrap items-center gap-5">
-            <a href="https://linkedin.com/in/victorsoussan" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors duration-200">
-              <LinkedinLogo size={18} /> LinkedIn
-            </a>
-            <a href="https://www.condamine.studio/apps" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors duration-200">
-              <ArrowUpRight size={14} /> Condamine Apps
-            </a>
-            <a href="tel:+33615989400" className="text-sm text-gray-500 hover:text-gray-900 transition-colors duration-200">
-              +33 6 15 98 94 00
-            </a>
-          </div>
-        </section>
-
-        {/* ============================================ */}
-        {/* What I can help with                        */}
-        {/* ============================================ */}
-
-        <section className="py-24 md:py-40 border-t border-gray-100">
-          <h2 className="text-title-2 text-gray-900 mb-6">
-            {isEn ? 'What I can help with' : 'Ce que je peux apporter'}
-          </h2>
-          <div className="divide-y divide-gray-100">
-            <div className="py-4 first:pt-0">
-              <p className="text-sm text-gray-900 font-medium mb-1">{isEn ? 'Product Design' : 'Design Produit'}</p>
-              <p className="text-base text-gray-500 leading-relaxed">
-                {isEn ? 'UX/UI, design systems, prototyping, from framing to dev handoff' : 'UX/UI, design systems, prototypage, du cadrage au handoff dev'}
-              </p>
-            </div>
-            <div className="py-4">
-              <p className="text-sm text-gray-900 font-medium mb-1">{isEn ? 'Team Leadership' : 'Leadership'}</p>
-              <p className="text-base text-gray-500 leading-relaxed">
-                {isEn ? 'Hiring, mentoring, design ops, delivery cadence' : 'Recrutement, mentoring, design ops, cadence de livraison'}
-              </p>
-            </div>
-            <div className="py-4 last:pb-0">
-              <p className="text-sm text-gray-900 font-medium mb-1">{isEn ? 'AI Prototyping' : 'Prototypage IA'}</p>
-              <p className="text-base text-gray-500 leading-relaxed">
-                {isEn ? 'Claude Code, Figma MCP, concept to deployed prototype in hours' : 'Claude Code, Figma MCP, du concept au prototype d\u00e9ploy\u00e9 en quelques heures'}
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* ============================================ */}
-        {/* SECTION 2: Interventions                    */}
-        {/* ============================================ */}
-
-        <section id="interventions" className="py-24 md:py-40 border-t border-gray-100 scroll-mt-24">
-          <h2 className="text-title-2 text-gray-900 mb-3">
-            {isEn ? 'Speaking & Workshops' : 'Interventions'}
-          </h2>
-          <p className="text-base text-gray-500 leading-relaxed mb-12">
-            {isEn
-              ? 'Conferences, workshops and training. Product design, design systems, AI tools.'
-              : 'Conf\u00e9rences, workshops et formations. Conception produit, design systems, outils IA.'}
-          </p>
-
-          {/* Topics */}
-          <div className="mb-14">
-            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-5">
-              {isEn ? 'Topics' : 'Sujets'}
-            </h3>
-            <div className="divide-y divide-gray-100">
-              {topics.map((topic) => (
-                <div key={topic.title} className="py-5 first:pt-0 last:pb-0">
-                  <h4 className="text-sm font-medium text-gray-900 mb-1.5">{topic.title}</h4>
-                  <p className="text-base text-gray-500 leading-relaxed">{topic.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Formats */}
-          <div className="mb-14">
-            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-5">
-              {isEn ? 'Formats' : 'Formats'}
-            </h3>
-            <div className="divide-y divide-gray-100">
-              {formats.map((format) => (
-                <div
-                  key={format.name}
-                  className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-6 py-4 first:pt-0 last:pb-0"
-                >
-                  <div className="flex items-baseline gap-3 sm:w-[200px] flex-shrink-0">
-                    <span className="text-sm font-medium text-gray-900">{format.name}</span>
-                    <span className="text-xs text-gray-500">{format.duration}</span>
-                  </div>
-                  <p className="text-sm text-gray-500">{format.context}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Intervention CTA */}
-          <div>
-            <p className="text-sm text-gray-500 mb-5 max-w-[50ch]">
-              {isEn
-                ? 'Tell me about the format, topic, and context. I\u2019ll get back to you within 48h.'
-                : 'Dites-moi quel format vous int\u00e9resse, le sujet, et le contexte. R\u00e9ponse sous 48h.'}
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 items-start">
-              <a
-                href={`mailto:${EMAIL}?subject=${encodeURIComponent(isEn ? 'Speaking engagement inquiry' : 'Demande d\u2019intervention')}`}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gray-900 text-white font-medium text-sm hover:bg-gray-800 active:scale-[0.97] ring-1 ring-black shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition-[background-color,transform] duration-200 ease-out"
-              >
-                {isEn ? 'Send an email' : 'Envoyer un email'}
-                <ArrowUpRight size={15} weight="bold" />
-              </a>
-              <a
-                href={CALENDAR_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm text-gray-500 hover:text-gray-900 underline underline-offset-4 decoration-gray-300 transition-colors duration-200 py-3"
-              >
-                {isEn ? 'Or book a call' : 'Ou r\u00e9server un appel'}
-              </a>
-            </div>
-          </div>
-        </section>
-
-        {/* ============================================ */}
-        {/* SECTION 3: Discovery                        */}
-        {/* ============================================ */}
-
-        <section className="py-24 md:py-40 border-t border-gray-100">
-          {/* Featured projects */}
-          <div className="mb-14">
-            <div className="flex items-baseline justify-between mb-5">
-              <h2 className="text-title-2 text-gray-900">
-                {isEn ? 'Recent work' : 'Projets r\u00e9cents'}
+      {/* Speaking: the topics as a strip of dark cards, the high-contrast object of the page */}
+      <section id="interventions" aria-labelledby="interventions-title" className="scroll-mt-24 pb-16 md:pb-28">
+        <div className="wrap">
+          <div className="grid grid-cols-12 gap-x-6 gap-y-6 border-t border-gray-200 pt-6 md:pt-8">
+            <div className="col-span-12 md:col-span-3">
+              <h2 id="interventions-title" className="text-title-2 text-gray-900">
+                {isEn ? 'Speaking & Workshops' : 'Interventions'}
               </h2>
-              <Link href={`/${lang}/projets`} className="text-sm text-gray-500 hover:text-gray-900 transition-colors duration-200 flex items-center gap-1">
-                {isEn ? 'All projects' : 'Tous les projets'} <ArrowRight size={14} />
-              </Link>
             </div>
-            <div className="divide-y divide-gray-100">
-              {projects.map((project) => (
-                <Link
-                  key={project.id}
-                  href={`/${lang}/project/${project.id}`}
-                  className="group flex items-baseline justify-between py-3.5 first:pt-0 last:pb-0 transition-colors duration-200"
-                >
-                  <div className="flex items-baseline gap-3">
-                    <span className="text-sm font-medium text-gray-900 group-hover:text-gray-600 transition-colors duration-200">{project.title}</span>
-                    <span className="text-xs text-gray-500">{project.role}</span>
-                  </div>
-                  <span className="text-xs text-gray-500">{project.period}</span>
-                </Link>
-              ))}
-            </div>
+            <p className="col-span-12 md:col-span-9 max-w-[48ch] text-lead-lg text-gray-600">
+              {isEn
+                ? 'Conferences, workshops and training. Product design, design systems, AI tools.'
+                : 'Conférences, workshops et formations. Conception produit, design systems, outils IA.'}
+            </p>
           </div>
+        </div>
+        <div className="mt-8 md:mt-10">
+          <TopicsCarousel
+            topics={topics.map((topic) => ({
+              ...topic,
+              href: subject(isEn ? `Speaking: ${topic.title}` : `Intervention : ${topic.title}`),
+            }))}
+            cardLabel={isEn ? 'Ask about this topic' : 'Parler de ce sujet'}
+            labels={{
+              track: isEn ? 'Talk topics' : 'Sujets d’intervention',
+              prev: isEn ? 'Previous topic' : 'Sujet précédent',
+              next: isEn ? 'Next topic' : 'Sujet suivant',
+            }}
+          />
+        </div>
+      </section>
 
-          {/* Featured articles */}
-          {articles.length > 0 && (
-            <div>
-              <div className="flex items-baseline justify-between mb-5">
-                <h2 className="text-title-2 text-gray-900">
-                  {isEn ? 'Recent writing' : '\u00c0 lire'}
-                </h2>
-                <Link href={`/${lang}/ressources`} className="text-sm text-gray-500 hover:text-gray-900 transition-colors duration-200 flex items-center gap-1">
-                  {isEn ? 'All articles' : 'Toutes les ressources'} <ArrowRight size={14} />
-                </Link>
-              </div>
-              <div className="divide-y divide-gray-100">
-                {articles.map((article) => (
-                  <Link
-                    key={article.id}
-                    href={`/${lang}/signal/${article.id}`}
-                    className="group block py-3.5 first:pt-0 last:pb-0 transition-colors duration-200"
-                  >
-                    <p className="text-sm font-medium text-gray-900 group-hover:text-gray-600 transition-colors duration-200 mb-0.5">
-                      {isEn ? article.title_en : article.title_fr}
-                    </p>
-                    <p className="text-sm text-gray-500 line-clamp-1">
-                      {isEn ? article.excerpt_en : article.excerpt_fr}
-                    </p>
-                  </Link>
-                ))}
-              </div>
+      {/* Formats: rows as in the method block, then how to ask */}
+      <HomeBlock id="formats" title="Formats">
+        <dl className="divide-y divide-gray-100 border-b border-gray-100">
+          {formats.map((format) => (
+            <div key={format.name} className="grid gap-x-6 gap-y-1 py-5 md:grid-cols-[minmax(0,15rem)_9rem_1fr] md:py-6">
+              <dt className="text-title-3 text-gray-900">{format.name}</dt>
+              <dd className="text-sm text-gray-500 md:pt-0.5">{format.duration}</dd>
+              <dd className="max-w-[48ch] text-sm text-gray-600 md:pt-0.5">{format.context}</dd>
             </div>
-          )}
-        </section>
+          ))}
+        </dl>
+        <p className="mt-8 max-w-[56ch] text-base text-gray-900">
+          {isEn
+            ? 'Tell me about the format, topic, and context. I’ll get back to you within 48h.'
+            : 'Dites-moi quel format vous intéresse, le sujet, et le contexte. Réponse sous 48h.'}
+        </p>
+        <div className="mt-4 flex flex-col gap-x-6 gap-y-2 sm:flex-row sm:items-center">
+          <a href={subject(isEn ? 'Speaking engagement inquiry' : 'Demande d’intervention')} className={PILL}>
+            {isEn ? 'Send an email' : 'Envoyer un email'}
+            <ArrowUpRight size={14} weight="bold" aria-hidden="true" />
+          </a>
+          <a href={CALENDAR_URL} target="_blank" rel="noopener noreferrer" className={TEXT_LINK}>
+            {isEn ? 'Or book a call' : 'Ou réserver un appel'}
+          </a>
+        </div>
+      </HomeBlock>
 
-      </div>
+      {/* Recent work: the picture cards of the site */}
+      <HomeBlock id="work" title={isEn ? 'Recent work' : 'Projets récents'}>
+        <ul role="list" className="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-6">
+          {projectItems.map((item) => (
+            <li key={item.href} className="min-w-0">
+              <RelatedCard item={item} />
+            </li>
+          ))}
+        </ul>
+        <Link
+          href={`/${lang}/projets`}
+          className="group mt-6 inline-flex min-h-11 items-center gap-2 text-sm font-medium text-gray-900 hover:text-gray-500 transition-colors duration-150"
+        >
+          {isEn ? 'All projects' : 'Tous les projets'}
+          <ArrowRight size={16} aria-hidden="true" className="transition-transform duration-300 ease-out group-hover:translate-x-1" />
+        </Link>
+      </HomeBlock>
+
+      {/* Recent writing: the resources rows of the homepage */}
+      <HomeBlock id="writing" title={isEn ? 'Recent writing' : 'À lire'}>
+        <ul role="list" className="divide-y divide-gray-100 border-b border-gray-100">
+          {articles.map((article) => (
+            <li key={article.id}>
+              <Link href={`/${lang}/signal/${article.id}`} className={ROW_LINK}>
+                <div className="min-w-0">
+                  <h3 className="text-title-3 text-gray-900">{isEn ? article.title_en : article.title_fr}</h3>
+                  <p className="mt-1.5 max-w-[60ch] text-sm text-gray-600 line-clamp-2">
+                    {isEn ? article.excerpt_en : article.excerpt_fr}
+                  </p>
+                </div>
+                <ArrowRight
+                  size={16}
+                  aria-hidden="true"
+                  className="mt-1 shrink-0 text-gray-500 transition-transform duration-300 ease-out group-hover:translate-x-1 group-hover:text-gray-900"
+                />
+              </Link>
+            </li>
+          ))}
+        </ul>
+        <Link
+          href={`/${lang}/ressources`}
+          className="group mt-6 inline-flex min-h-11 items-center gap-2 text-sm font-medium text-gray-900 hover:text-gray-500 transition-colors duration-150"
+        >
+          {isEn ? 'All articles' : 'Toutes les ressources'}
+          <ArrowRight size={16} aria-hidden="true" className="transition-transform duration-300 ease-out group-hover:translate-x-1" />
+        </Link>
+      </HomeBlock>
     </div>
   )
 }

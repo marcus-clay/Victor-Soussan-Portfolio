@@ -1,7 +1,11 @@
-// Connect Case Study Page - Minimalist aesthetic
-// Displays the SQOOL Connect project case study
+// Connect Case Study Page
+// Order: hero, summary, then the narration as numbered acts (approach, product)
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import Link from 'next/link';
+import { ActRule, ActTitle } from '@/components/case-study/ActSection'
+import CaseStudySummary from '@/components/case-study/CaseStudySummary'
+import CaseStudyHero from '@/components/case-study/CaseStudyHero'
 import { imgDims } from '@/utils/imageDimensions'
 import { useStableComponent } from '../../hooks/useStableComponent';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -13,6 +17,7 @@ import EnhancedLightbox from '../../components/media/EnhancedLightbox';
 
 import { CONNECT_TRANSLATIONS } from '../../data/caseStudyTranslations/connectTranslations';
 import { zoomable } from '@/utils/zoomable'
+import { useScrollTopOnChange } from '@/hooks/useScrollTopOnChange';
 
 interface ConnectPageProps {
   onClose: () => void;
@@ -58,17 +63,17 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick }) => {
   const isVideo = item.type === 'video' || item.src.match(/\.(mp4|webm|mov)$/i);
   return (
     <motion.figure
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.28, delay: index * 0.03, ease: [0.23, 1, 0.32, 1] }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.32, ease: [0.23, 1, 0.32, 1] }}
       className="group cursor-zoom-in break-inside-avoid mb-4"
-      onClick={onClick}
+      {...zoomable(onClick)}
     >
-      <div className="rounded-xl overflow-hidden ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]">
+      <div className="rounded-xl overflow-hidden ring-1 ring-black/[0.04] [@media(hover:hover)]:hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)]:hover:scale-[1.01] active:scale-[0.99]">
         {isVideo ? (
-          <VideoPlayer src={item.src} className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" />
+          <VideoPlayer src={item.src} className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)]:group-hover:scale-[1.02]" />
         ) : (
-          <img loading="lazy" src={item.src} {...imgDims(item.src)} alt={item.caption} className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" />
+          <img loading="lazy" src={item.src} {...imgDims(item.src)} alt={item.caption} className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)]:group-hover:scale-[1.02]" />
         )}
       </div>
       <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
@@ -79,17 +84,30 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick }) => {
   );
 };
 
+// One idea: h3 and one short paragraph (each caps its own measure), one visual below, all in the act column
+const Block: React.FC<{ id?: string; title: string; text: string; children: React.ReactNode }> = ({ id, title, text, children }) => (
+  <div id={id} className="mb-12 md:mb-14 last:mb-0 scroll-mt-24">
+    <h3 className="text-title-3 text-gray-900 mb-2 max-w-[56ch]">{title}</h3>
+    <p className="max-w-[62ch] text-base text-gray-600">{text}</p>
+    <div className="mt-6 md:mt-8">{children}</div>
+  </div>
+);
+
+// Several visuals of one idea, stacked in the act column
+const Visuals: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <div className="space-y-6 md:space-y-8">{children}</div>
+);
+
 export const ConnectPage: React.FC<ConnectPageProps> = ({
   viewMode,
   lang = 'en',
-  onContact,
 }) => {
   const t = CONNECT_TRANSLATIONS[lang];
   const galleryItems = getConnectGalleryItems(lang);
 
   // Build allImages with translated captions
   // French needs a no-break space before the colon.
-  const captionSeparator = lang === 'fr' ? '\u00a0: ' : ': ';
+  const captionSeparator = lang === 'fr' ? ' : ' : ': ';
   const allImages = allImagesData.map(item => {
     const title = t.captions[item.captionKey as keyof typeof t.captions];
     const desc = t.captions[`${item.captionKey}Desc` as keyof typeof t.captions];
@@ -104,9 +122,7 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [videoStartTime, setVideoStartTime] = useState(0);
 
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
-  }, [viewMode]);
+  useScrollTopOnChange(viewMode);
 
   const openLightbox = (imageSrc: string, startTime: number = 0) => {
     const index = allImages.findIndex(img => img.src === imageSrc);
@@ -124,23 +140,23 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
   // Reusable media figure component
   // The figcaption describes the media, so the image alt stays empty and the
   // zoom button takes its accessible name from the caption.
-  const MediaFigure = useStableComponent(({ src, caption, captionDesc, type = 'image', className = '', priority = false }: {
-    src: string; caption: string; captionDesc?: string; type?: 'image' | 'video'; className?: string; priority?: boolean;
+  const MediaFigure = useStableComponent(({ src, caption, captionDesc, type = 'image', className = '' }: {
+    src: string; caption: string; captionDesc?: string; type?: 'image' | 'video'; className?: string;
   }) => (
     <figure className={className}>
       <div
         {...zoomable(() => openLightbox(src))}
         aria-label={caption}
-        className="group rounded-xl overflow-hidden cursor-zoom-in ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
+        className="group rounded-xl overflow-hidden cursor-zoom-in ring-1 ring-black/[0.04] [@media(hover:hover)]:hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)]:hover:scale-[1.01] active:scale-[0.99]"
       >
         {type === 'video' ? (
           <VideoPlayer
             src={src}
-            className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
+            className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)]:group-hover:scale-[1.02]"
           />
         ) : (
-          <img loading={priority ? 'eager' : 'lazy'} fetchPriority={priority ? 'high' : undefined} src={src} {...imgDims(src)} alt=""
-            className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
+          <img loading="lazy" src={src} {...imgDims(src)} alt=""
+            className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)]:group-hover:scale-[1.02]"
           />
         )}
       </div>
@@ -180,7 +196,7 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
-            className="max-w-[960px] mx-auto px-6 py-8 md:py-12"
+            className="act-wide py-8 md:py-12"
           >
             <div className="columns-1 sm:columns-2 lg:columns-3 gap-4">
               {galleryItems.map((item, index) => (
@@ -196,269 +212,104 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
         ) : (
           /* Full Case Study View */
           <div key="caseStudy">
-            {/* Hero Section */}
-            <section id="hero" className="mb-24 md:mb-32">
-              <div className="max-w-[740px] mx-auto px-6 pt-16 md:pt-24 mb-12 md:mb-16">
-                {/* Title */}
-                <h1 className="text-title-1 text-gray-900 mb-3">
-                  {t.hero.title}
-                </h1>
+            {/* Hero: same structure for every case study. Its intro is the executive summary. */}
+            <CaseStudyHero
+              lang={lang}
+              projectId="connect"
+              title={t.hero.title}
+              intro={t.hero.intro}
+              meta={[
+                { label: t.metaLabels.role, value: t.hero.role },
+                { label: t.metaLabels.scope, value: t.hero.scope },
+                { label: t.metaLabels.company, value: t.meta.company },
+              ]}
+              visualAlt={t.captions.thumbnail}
+            />
 
-                {/* Subtitle */}
-                <p className="text-lg text-gray-600 mb-2">
-                  {t.hero.subtitle}
-                </p>
+            {/* Summary: context, role, deliverables. No client testimonial on this page, and no sourced result numbers (the outcome is qualitative). */}
+            <CaseStudySummary
+              lang={lang}
+              context={t.summary.context}
+              role={t.summary.role}
+              roleItems={t.summary.roleItems}
+              deliverables={t.summary.deliverables}
+            />
 
-                {/* Role, scope, period */}
-                <p className="text-xs text-gray-500 mb-6">
-                  {t.hero.role}<span aria-hidden="true"> · </span>{t.hero.scope}<span aria-hidden="true"> · </span>{t.hero.period}
-                </p>
+            {/* 01 Dashboard: the main decision, then how it fits the existing Android stack */}
+            <section id="dashboard">
+              <ActRule />
+              <div className="act-wide pt-10 md:pt-14 pb-12 md:pb-16">
+                <ActTitle index="01" title={t.dashboard.title} />
 
-                {/* Description */}
-                <p className="text-base text-gray-600 leading-relaxed max-w-[65ch]">
-                  {t.hero.description}
-                </p>
-              </div>
+                <div className="mt-3 md:mt-5">
+                  <Block id="product-dashboard" title={t.brief.dashboardBlock} text={t.brief.dashboard}>
+                    <Visuals>
+                      <MediaFigure
+                        src="/images/connect/connect_dashboard_home_dark_full_smartphone-scaled.webp"
+                        caption={t.captions.homeDark}
+                      />
+                      <MediaFigure
+                        src="/videos/connect/connect-dashboard-prototype_complet_4k-compressed.mp4"
+                        type="video"
+                        caption={t.captions.prototype}
+                      />
+                    </Visuals>
+                  </Block>
 
-              {/* Hero Image (LCP: loaded eagerly) */}
-              <div className="max-w-[960px] mx-auto px-6">
-                <MediaFigure
-                  src="/images/connect/connect_overview.webp"
-                  caption={t.captions.thumbnail}
-                  captionDesc={t.captions.thumbnailDesc}
-                  priority
-                />
-              </div>
-            </section>
-
-            {/* Overview Section */}
-            <section id="overview" className="mb-24 md:mb-32">
-              <div className="max-w-[740px] mx-auto px-6">
-                <h2 className="text-title-2 text-gray-900 mb-4">
-                  {t.overview.title}
-                </h2>
-
-                <div className="space-y-8">
-                  {/* Introduction */}
-                  <div>
-                    <h3 className="text-title-3 text-gray-900 mb-2">
-                      {t.overview.introTitle}
-                    </h3>
-                    <p className="text-base text-gray-600 leading-relaxed max-w-[65ch]">
-                      {t.overview.introDesc}
-                    </p>
-                  </div>
-
-                  {/* Goals */}
-                  <div>
-                    <h3 className="text-title-3 text-gray-900 mb-2">
-                      {t.overview.goalsTitle}
-                    </h3>
-                    <ul className="space-y-1.5">
-                      {t.overview.goals.map((goal, idx) => (
-                        <li key={idx} className="text-base text-gray-600 leading-relaxed">
-                          <span className="text-gray-300 mr-2">&#8226;</span>{goal}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-
-                {/* Role */}
-                <div className="mt-8">
-                  <h3 className="text-title-3 text-gray-900 mb-2">
-                    {t.overview.roleTitle}
-                  </h3>
-                  <p className="text-base text-gray-600 leading-relaxed max-w-[65ch]">
-                    {t.overview.roleDesc}
-                  </p>
+                  <Block id="architecture" title={t.architecture.title} text={t.brief.architecture}>
+                    <Visuals>
+                      <MediaFigure
+                        src="/images/connect/connect_tech_architecture-1-scaled.webp"
+                        caption={t.captions.techArch}
+                      />
+                      <MediaFigure
+                        src="/images/connect/connect_specifications_implem_01-scaled.webp"
+                        caption={t.captions.specsImplem}
+                      />
+                    </Visuals>
+                  </Block>
                 </div>
               </div>
             </section>
 
-            {/* Dashboard Section */}
-            <section id="dashboard" className="mb-24 md:mb-32">
-              <div className="max-w-[740px] mx-auto px-6">
-                <h2 className="text-title-2 text-gray-900 mb-4">
-                  {t.dashboard.title}
-                </h2>
-                <p className="text-base text-gray-600 leading-relaxed max-w-[65ch] mb-12">
-                  {t.dashboard.intro}
-                </p>
-              </div>
+            {/* 02 La Bulle: one demonstration */}
+            <section id="bulle">
+              <ActRule />
+              <div className="act-wide pt-10 md:pt-14 pb-12 md:pb-16">
+                <ActTitle index="02" title={t.bulle.title} />
+                <p className="max-w-[62ch] text-base text-gray-600">{t.brief.bulleLead}</p>
 
-              <div className="max-w-[960px] mx-auto px-6">
-                {/* Dashboard Home Dark */}
-                <MediaFigure
-                  src="/images/connect/connect_dashboard_home_dark_full_smartphone-scaled.webp"
-                  caption={t.dashboard.homeDark}
-                  captionDesc={t.dashboard.homeDarkDesc}
-                  className="mb-12"
-                />
-
-                {/* Dashboard Home Light & Applications */}
-                <div className="space-y-8 mb-12">
-                  <MediaFigure
-                    src="/images/connect/connect_dashboard_home_light_full-scaled.webp"
-                    caption={t.dashboard.homeLight}
-                    captionDesc={t.dashboard.homeLightDesc}
-                  />
-                  <MediaFigure
-                    src="/images/connect/connect_dashboard_applications_full-scaled.webp"
-                    caption={t.dashboard.applications}
-                    captionDesc={t.dashboard.applicationsDesc}
-                  />
-                </div>
-
-                {/* Loading & Auth Video */}
-                <MediaFigure
-                  src="/videos/connect/connect-loading-user-authent-app-launch-study.mp4"
-                  caption={t.dashboard.loadingAuth}
-                  captionDesc={t.dashboard.loadingAuthDesc}
-                  type="video"
-                  className="mb-12"
-                />
-
-                {/* Complete Dashboard Prototype Video */}
-                <MediaFigure
-                  src="/videos/connect/connect-dashboard-prototype_complet_4k-compressed.mp4"
-                  caption={t.dashboard.prototype}
-                  captionDesc={t.dashboard.prototypeDesc}
-                  type="video"
-                />
-              </div>
-            </section>
-
-            {/* Architecture and specs Section */}
-            <section id="architecture" className="mb-24 md:mb-32">
-              <div className="max-w-[740px] mx-auto px-6">
-                <h2 className="text-title-2 text-gray-900 mb-8">
-                  {t.architecture.title}
-                </h2>
-              </div>
-
-              <div className="max-w-[960px] mx-auto px-6">
-                {/* Tech Architecture */}
-                <MediaFigure
-                  src="/images/connect/connect_tech_architecture-1-scaled.webp"
-                  caption={t.dashboard.techArch}
-                  captionDesc={t.dashboard.techArchDesc}
-                  className="mb-12"
-                />
-
-                {/* Specifications */}
-                <div className="space-y-8 mb-12">
-                  <MediaFigure
-                    src="/images/connect/connect_specifications_implem_01-scaled.webp"
-                    caption={t.dashboard.specsImplem}
-                    captionDesc={t.dashboard.specsImplDesc}
-                  />
-                  <MediaFigure
-                    src="/images/connect/connect_specifications_content_02-scaled.webp"
-                    caption={t.dashboard.specsContent}
-                    captionDesc={t.dashboard.specsContentDesc}
-                  />
-                </div>
-
-                {/* App Loading Choreography */}
-                <MediaFigure
-                  src="/videos/connect/connect-specs-app-loading-choregraphy.mp4"
-                  caption={t.dashboard.appLoading}
-                  captionDesc={t.dashboard.appLoadingDesc}
-                  type="video"
-                />
-              </div>
-            </section>
-
-            {/* La Bulle Section */}
-            <section id="bulle" className="mb-24 md:mb-32">
-              <div className="max-w-[740px] mx-auto px-6">
-                <h2 className="text-title-2 text-gray-900 mb-4">
-                  {t.bulle.title}
-                </h2>
-                <p className="text-base text-gray-600 leading-relaxed max-w-[65ch] mb-12">
-                  {t.bulle.intro}
-                </p>
-              </div>
-
-              <div className="max-w-[960px] mx-auto px-6">
-                {/* Bulle Wireframes */}
-                <MediaFigure
-                  src="/images/connect/connect_bulle_ui_wireframes_concept-scaled.webp"
-                  caption={t.bulle.wireframes}
-                  captionDesc={t.bulle.wireframesDesc}
-                  className="mb-12"
-                />
-
-                {/* UI Focus & Icons */}
-                <div className="space-y-8 mb-12">
-                  <MediaFigure
-                    src="/images/connect/connect_bulle_ui_focus-scaled.webp"
-                    caption={t.bulle.uiFocus}
-                    captionDesc={t.bulle.uiFocusDesc}
-                  />
-                  <MediaFigure
-                    src="/images/connect/connect_bulle_icons-1-scaled.webp"
-                    caption={t.bulle.icons}
-                    captionDesc={t.bulle.iconsDesc}
-                  />
-                </div>
-
-                {/* Behaviour documentation */}
-                <div className="space-y-8 mb-12">
-                  <MediaFigure
-                    src="/images/connect/connect_bulle_behaviour_square_01-scaled.webp"
-                    caption={t.bulle.behaviour1}
-                    captionDesc={t.bulle.behaviour1Desc}
-                  />
-                  <MediaFigure
-                    src="/images/connect/connect_bulle_behaviour_square_02-scaled.webp"
-                    caption={t.bulle.behaviour2}
-                    captionDesc={t.bulle.behaviour2Desc}
-                  />
-                </div>
-
-                {/* Interaction Demo Video */}
-                <MediaFigure
-                  src="/videos/connect/interaction-bulle-connect-compressed.mp4"
-                  caption={t.bulle.interactionDemo}
-                  captionDesc={t.bulle.interactionDemoDesc}
-                  type="video"
-                />
-              </div>
-
-              {/* Bulle demo: dark stage, editorial break.
-                  Silent autoplay (the movement is the content) with the shared pause control.
-                  No lightbox and no hover zoom: it is a demonstration, not a gallery artifact. */}
-              <div className="mt-16 md:mt-20 bg-[#111113] py-16 md:py-20">
-                <figure className="max-w-[840px] mx-auto px-6">
-                  <div className="rounded-2xl overflow-hidden">
+                {/* Bulle demo: dark stage inside the column (never full bleed).
+                    Silent autoplay (the movement is the content) with the shared pause control.
+                    Opens the shared lightbox like every other visual of the page. */}
+                <figure className="mt-8 md:mt-10 rounded-2xl bg-[#111113] p-4 md:p-8">
+                  <div
+                    {...zoomable(() => openLightbox('/videos/connect/Video-demo-bulle-interactions-02-compressed.mp4'))}
+                    aria-label={t.captions.bulleDemo}
+                    className="group rounded-xl overflow-hidden cursor-zoom-in transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)]:hover:scale-[1.01] active:scale-[0.99]"
+                  >
                     <VideoPlayer
                       src="/videos/connect/Video-demo-bulle-interactions-02-compressed.mp4"
-                      className="w-full h-auto block"
+                      className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)]:[@media(hover:hover)]:group-hover:scale-[1.02]"
                     />
                   </div>
-                  {t.bulle.bulleDemoDesc && (
-                    <figcaption className="mt-5 text-left text-xs text-white/60 leading-relaxed max-w-[60ch]">
-                      {t.bulle.bulleDemoDesc}
-                    </figcaption>
-                  )}
+                  <figcaption className="mt-4 text-left text-xs text-white/60 leading-relaxed">
+                    {t.captions.bulleDemo}
+                  </figcaption>
                 </figure>
+
+                {/* Quiet way to the full gallery */}
+                <div className="mt-10 md:mt-12">
+                  <Link
+                    href={`/${lang}/project/connect/gallery`}
+                    className="inline-flex items-center gap-1.5 min-h-11 text-sm font-medium text-gray-900 [@media(hover:hover)]:hover:text-gray-500 active:scale-[0.97] transition-[color,transform] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)]"
+                  >
+                    {t.acts.viewAll}
+                    <ArrowRight size={14} aria-hidden="true" />
+                  </Link>
+                </div>
               </div>
             </section>
-
-            {/* Footer CTA */}
-            <div className="max-w-[740px] mx-auto px-6 pb-16">
-              <div className="pt-8 border-t border-gray-100">
-                <button
-                  onClick={onContact}
-                  className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors duration-200"
-                >
-                  {t.contactVictor}
-                  <ArrowRight size={14} />
-                </button>
-              </div>
-            </div>
           </div>
         )}
       </AnimatePresence>

@@ -8,30 +8,54 @@ export const SQOOL_TRANSLATIONS = {
     contactVictor: 'Contact Victor for a similar project',
     clickToZoom: 'Click to zoom',
     clickToExitZoom: 'Click to exit zoom',
-    metaLabels: { type: 'Type', scope: 'Scope', period: 'Period', company: 'Company' },
+    metaLabels: { role: 'Role', type: 'Type', scope: 'Scope', company: 'Company' },
+    viewAllVisuals: 'View all visuals',
+    acts: {
+      context: 'A massive deployment, a new challenge',
+      approach: 'From one platform to focused apps',
+      product: 'Shipping the suite',
+      results: 'Impact',
+      learnings: 'Key learnings',
+    },
+    summary: {
+      context: 'The Île-de-France region equipped 465 high schools with 500,000 personal tablets and PCs. The SQOOL suite, built for shared tablets on carts, no longer fit, so it had to be rebuilt for personal devices used at school and at home.',
+      role: 'I joined UNOWHY as Senior UX/UI Designer, became Design Lead and later Product Lead. I recruited and managed a team of 5 designers, co-led product strategy with the CPO and built the design system for the whole suite.',
+      roleItems: [
+        { title: 'Brand identity', detail: 'Full visual system' },
+        { title: 'Design system', detail: 'ZeroHeight and Figma' },
+        { title: 'Product strategy', detail: 'Co-led with the CPO' },
+      ],
+      deliverables: [
+        { title: 'SQOOL Classe', detail: 'Real-time classroom supervision: teachers see every student screen, lock devices and push content.' },
+        { title: 'SQOOL Partage', detail: 'File sharing in one gesture, as simple as AirDrop for a class.' },
+        { title: 'SQOOL MDM', detail: 'Device fleet management for IT admins: security policies, app deployments, remote troubleshooting.' },
+        { title: 'SQOOL Protect', detail: 'Parental controls with QR code pairing, shipped in 3 months.' },
+        { title: 'SQOOL Extend', detail: 'Virtual Windows desktops with professional tools on light devices.' },
+        { title: 'Brand and design system', detail: 'Visual system for 7+ apps, Figma libraries and ZeroHeight documentation.' },
+      ],
+    },
     timelineSection: { title: 'Transformation journey', subtitle: '6 years of product and design evolution' },
     viewDetailedCaseStudy: 'View detailed case study',
     meta: {
       type: 'Product Design, Design System',
       scope: 'EdTech Ecosystem',
-      period: '2018-2024',
       company: 'UNOWHY / SQOOL',
     },
     nav: {
       intro: 'Intro',
       context: 'Context',
-      phase1: '2019-2020',
-      phase2: '2021',
-      phase3: '2022-2024',
+      phase1: 'Phase 1',
+      phase2: 'Phase 2',
+      phase3: 'Phase 3',
       apps: 'Apps',
       impact: 'Impact',
     },
     hero: {
       role: 'Product Lead and Design Manager',
       scope: 'EdTech Ecosystem and Design System',
-      period: '2018-2024',
       title: 'Building an EdTech Ecosystem for 500,000 Students',
       subtitle: 'How we transformed a hardware company into a modern software platform',
+      intro: 'Over six years at UNOWHY, I led the design of a suite of 7+ web applications that replaced a legacy Android launcher. It serves 500,000+ students and teachers in 465 schools across Île-de-France.',
       description: 'Over six years at UNOWHY, I led the design transformation from a legacy Android launcher to a suite of 7+ web applications serving high school students and teachers across 465 schools in Île-de-France. This is the story of strategic pivots, user-centered design, and building a design system that scales.',
     },
     testimonial: {
@@ -42,16 +66,15 @@ export const SQOOL_TRANSLATIONS = {
     context: {
       title: 'The Context',
       subtitle: 'A massive deployment, a new challenge',
-      p1: 'In early 2019, the Île-de-France region partnered with UNOWHY for the “Lycée Numérique” program. The goal: equip every student and teacher in 465 high schools with a personal device, which meant 500,000 tablets and PCs deployed at the start of the 2019 school year.',
-      p2: 'The existing SQOOL suite (2015-2018) was built for a different world: shared tablets on carts, teachers using heavy C++ desktop apps, and students locked into a custom Android launcher. None of this would work for personal devices used at school and at home.',
+      p1: 'The Île-de-France region partnered with UNOWHY for the “Lycée Numérique” program. The goal: equip every student and teacher in 465 high schools with a personal device, which meant 500,000 tablets and PCs deployed at the start of the school year.',
+      p2: 'The existing SQOOL suite was built for a different world: shared tablets on carts, teachers using heavy C++ desktop apps, and students locked into a custom Android launcher. None of this would work for personal devices used at school and at home.',
       challenge: 'The Challenge',
       challengeDesc: 'Design a new software ecosystem that works on standard Android and Windows devices, accessible from any browser, while competing with government-mandated platforms (ENT) that schools were already using.',
       myRole: 'My Role',
-      roleDesc: 'I joined as Senior UX/UI Designer in 2018, grew into Design Lead in 2020, then Product Lead in 2023. I recruited and managed a team of 5 designers, co-led product strategy with the CPO, and built the design system that unified the entire suite.',
+      roleDesc: 'I joined as Senior UX/UI Designer, grew into Design Lead, then Product Lead. I recruited and managed a team of 5 designers, co-led product strategy with the CPO, and built the design system that unified the entire suite.',
     },
     phase1: {
       title: 'Phase 1: Finding Our Place',
-      period: '2019-2020',
       intro: 'We needed to prove that web-based tools could work for education. Two projects shaped our direction:',
       hisqool: {
         title: 'Hi-SQOOL: A New Identity for Students',
@@ -61,7 +84,7 @@ export const SQOOL_TRANSLATIONS = {
       },
       connect: {
         title: 'Connect: The Dashboard That Taught Us to Pivot',
-        p1: 'In 2020, as COVID hit, we realized our apps weren\'t sticky. Without a native launcher, users had no reason to think of SQOOL. We designed Connect, a vision prototype for a unified dashboard that would be the entry point for everything.',
+        p1: 'As COVID hit, we realized our apps weren\'t sticky. Without a native launcher, users had no reason to think of SQOOL. We designed Connect, a vision prototype for a unified dashboard that would be the entry point for everything.',
         p2: 'We built a working React prototype with an innovative concept called “La Bulle”, a persistent floating menu for quick actions. The prototype proved the technology worked.',
         p3: 'But it also revealed a fatal flaw: a dense dashboard would directly compete with ENTs. We were building something schools already had.',
         outcome: 'Outcome: The non-shipped prototype was our most valuable deliverable. It gave us evidence to stop and change direction.',
@@ -69,7 +92,6 @@ export const SQOOL_TRANSLATIONS = {
     },
     phase2: {
       title: 'Phase 2: The Strategic Pivot',
-      period: '2021',
       intro: 'Instead of one big platform, we decided to build focused apps that do one thing well.',
       manifesto: {
         title: 'A New Vision: Simple, Fluid, Magical',
@@ -89,7 +111,6 @@ export const SQOOL_TRANSLATIONS = {
     },
     phase3: {
       title: 'Phase 3: Shipping the Suite',
-      period: '2022-2024',
       intro: 'With our strategy defined and design system in place, we built and launched the specialized apps:',
     },
     apps: {
@@ -180,6 +201,34 @@ export const SQOOL_TRANSLATIONS = {
         },
       ],
     },
+    // Curated narration (editorial pass): one short block per decision. The longer texts above stay in the file.
+    curated: {
+      lead: 'The challenge: a new ecosystem that runs on standard Android and Windows devices, from any browser, while competing with the government ENT platforms schools already used.',
+      hisqool: {
+        title: 'Hi-SQOOL: a platform for students',
+        text: 'High schoolers wanted something different from the institutional tools they were required to use. In a six-week sprint we designed a new identity and a web app for chat, documents and schedules. It validated web-first and produced the authentication and cloud storage later apps reused.',
+      },
+      connect: {
+        title: 'Connect: the prototype that was never shipped',
+        text: 'Our apps were not sticky without a native launcher, so we prototyped a unified dashboard with a floating menu, “La Bulle”. The React prototype worked, and it showed that a dense dashboard would compete directly with the ENT. We changed direction.',
+      },
+      pivot: {
+        title: 'The pivot: focused apps instead of one platform',
+        text: 'With product leadership I wrote a manifesto for the company: apps should be simple to understand, fluid to use and magical where it matters. Each app would solve one clear problem: files with Partage, supervision with Classe. This ended the attempt to be everything at once.',
+      },
+      system: {
+        title: 'A shared brand and design system',
+        text: 'A suite of apps needs one identity. I designed the visual system, with one color per app inside one family, refined with the agency Fllow for 7+ apps. I structured the Figma libraries and the ZeroHeight documentation, with weekly design syncs and QA reviews.',
+      },
+      classe: {
+        title: 'SQOOL Classe: classroom supervision',
+        text: 'Teachers feared losing control once students had devices. A grid of every student screen with color-coded status gave them confidence, and they can lock devices and push content without leaving their desk.',
+      },
+      partage: {
+        title: 'SQOOL Partage: file sharing',
+        text: 'The biggest daily friction was getting a PDF to 27 students. Partage turns it into one gesture: drag and drop to the class, with no USB keys and no email attachments.',
+      },
+    },
     relatedCases: {
       title: 'Detailed Case Studies',
       items: [
@@ -207,7 +256,7 @@ export const SQOOL_TRANSLATIONS = {
       legacyMdm: 'Legacy MDM',
       legacyMdmDesc: 'On-premise device management system',
       context: 'Lycée numérique',
-      contextDesc: '500,000 devices deployed in 2019',
+      contextDesc: '500,000 devices deployed',
       hisqool: 'Hi-SQOOL',
       hisqoolDesc: 'Student platform and new brand identity',
       connect: 'Connect',
@@ -277,29 +326,53 @@ export const SQOOL_TRANSLATIONS = {
     clickToZoom: 'Cliquer pour agrandir',
     clickToExitZoom: 'Cliquer pour fermer',
     viewDetailedCaseStudy: 'Voir l’étude de cas détaillée',
-    metaLabels: { type: 'Type', scope: 'Périmètre', period: 'Période', company: 'Entreprise' },
+    metaLabels: { role: 'Rôle', type: 'Type', scope: 'Périmètre', company: 'Entreprise' },
+    viewAllVisuals: 'Voir tous les visuels',
+    acts: {
+      context: 'Un déploiement massif, un nouveau défi',
+      approach: 'D’une plateforme unique à des apps ciblées',
+      product: 'Livrer la suite',
+      results: 'Impact',
+      learnings: 'Apprentissages clés',
+    },
+    summary: {
+      context: 'La Région Île-de-France équipe 465 lycées de 500\u00a0000 tablettes et PC personnels. La suite SQOOL, conçue pour des tablettes partagées sur chariots, ne convient plus\u00a0: il faut la reconstruire pour des appareils personnels utilisés en classe et à la maison.',
+      role: 'J’ai rejoint UNOWHY comme Senior UX/UI Designer, puis je suis devenu Design Lead et enfin Product Lead. J’ai recruté et encadré une équipe de 5 designers, co-piloté la stratégie produit avec la CPO et construit le design system de toute la suite.',
+      roleItems: [
+        { title: 'Identité de marque', detail: 'Système visuel complet' },
+        { title: 'Design system', detail: 'ZeroHeight et Figma' },
+        { title: 'Stratégie produit', detail: 'Co-pilotée avec la CPO' },
+      ],
+      deliverables: [
+        { title: 'SQOOL Classe', detail: 'Supervision de classe en temps réel\u00a0: l’enseignant voit chaque écran, verrouille les appareils et pousse du contenu.' },
+        { title: 'SQOOL Partage', detail: 'Partage de fichiers en un geste, aussi simple qu’AirDrop pour une classe.' },
+        { title: 'SQOOL MDM', detail: 'Gestion de flotte d’appareils pour les administrateurs IT\u00a0: politiques de sécurité, déploiements, dépannage à distance.' },
+        { title: 'SQOOL Protect', detail: 'Contrôle parental avec appairage par QR code, livré en 3 mois.' },
+        { title: 'SQOOL Extend', detail: 'Bureaux Windows virtuels avec des outils professionnels sur des appareils légers.' },
+        { title: 'Marque et design system', detail: 'Système visuel pour 7+ apps, bibliothèques Figma et documentation ZeroHeight.' },
+      ],
+    },
     timelineSection: { title: 'Parcours de transformation', subtitle: '6 ans d’évolution produit et design' },
     meta: {
       type: 'Design produit, design system',
       scope: 'Écosystème EdTech',
-      period: '2018-2024',
       company: 'UNOWHY / SQOOL',
     },
     nav: {
       intro: 'Intro',
       context: 'Contexte',
-      phase1: '2019-2020',
-      phase2: '2021',
-      phase3: '2022-2024',
+      phase1: 'Phase 1',
+      phase2: 'Phase 2',
+      phase3: 'Phase 3',
       apps: 'Apps',
       impact: 'Impact',
     },
     hero: {
       role: 'Product Lead et Design Manager',
       scope: 'Écosystème EdTech et design system',
-      period: '2018-2024',
-      title: 'Construire un écosystème EdTech pour 500 000 élèves',
+      title: 'Construire un écosystème EdTech pour 500 000 élèves',
       subtitle: 'Comment nous avons transformé un fabricant de matériel en plateforme logicielle moderne',
+      intro: 'Pendant six ans chez UNOWHY, j’ai dirigé le design d’une suite de 7+ applications web qui a remplacé un launcher Android historique. Elle sert 500\u00a0000+ élèves et enseignants dans 465 lycées d’Île-de-France.',
       description: 'Pendant six ans chez UNOWHY, j’ai dirigé la transformation design d’un launcher Android vers une suite de 7+ applications web utilisées par les lycéens et enseignants de 465 établissements en Île-de-France. C’est l’histoire de pivots stratégiques, de design centré utilisateur, et de la construction d’un design system qui passe à l’échelle.',
     },
     testimonial: {
@@ -310,16 +383,15 @@ export const SQOOL_TRANSLATIONS = {
     context: {
       title: 'Le contexte',
       subtitle: 'Un déploiement massif, un nouveau défi',
-      p1: 'Début 2019, la Région Île-de-France s’associe à UNOWHY pour le programme « Lycée numérique ». L’objectif\u00a0: équiper chaque élève et enseignant des 465 lycées d’un appareil personnel, soit 500 000 tablettes et PC déployés à la rentrée 2019.',
-      p2: 'La suite SQOOL existante (2015-2018) était conçue pour un autre monde\u00a0: tablettes partagées sur chariots, enseignants utilisant des apps lourdes en C++, élèves enfermés dans un launcher Android personnalisé. Rien de tout ça ne fonctionnerait pour des appareils personnels utilisés en classe et à la maison.',
+      p1: 'La Région Île-de-France s’associe à UNOWHY pour le programme «\u202fLycée numérique\u202f». L’objectif\u00a0: équiper chaque élève et enseignant des 465 lycées d’un appareil personnel, soit 500\u00a0000 tablettes et PC déployés à la rentrée.',
+      p2: 'La suite SQOOL existante était conçue pour un autre monde\u00a0: tablettes partagées sur chariots, enseignants utilisant des apps lourdes en C++, élèves enfermés dans un launcher Android personnalisé. Rien de tout ça ne fonctionnerait pour des appareils personnels utilisés en classe et à la maison.',
       challenge: 'Le défi',
       challengeDesc: 'Concevoir un nouvel écosystème logiciel qui fonctionne sur Android et Windows standard, accessible depuis n’importe quel navigateur, tout en concurrençant les plateformes gouvernementales (ENT) déjà utilisées par les établissements.',
       myRole: 'Mon rôle',
-      roleDesc: 'J’ai rejoint UNOWHY comme Senior UX/UI Designer en 2018, suis devenu Design Lead en 2020, puis Product Lead en 2023. J’ai recruté et encadré une équipe de 5 designers, co-piloté la stratégie produit avec le CPO, et construit le design system qui unifie toute la suite.',
+      roleDesc: 'J’ai rejoint UNOWHY comme Senior UX/UI Designer, suis devenu Design Lead, puis Product Lead. J’ai recruté et encadré une équipe de 5 designers, co-piloté la stratégie produit avec le CPO, et construit le design system qui unifie toute la suite.',
     },
     phase1: {
       title: 'Phase 1\u00a0: trouver notre place',
-      period: '2019-2020',
       intro: 'Nous devions prouver que des outils web pouvaient fonctionner pour l’éducation. Deux projets ont orienté notre direction\u00a0:',
       hisqool: {
         title: 'Hi-SQOOL\u00a0: une nouvelle identité pour les élèves',
@@ -329,15 +401,14 @@ export const SQOOL_TRANSLATIONS = {
       },
       connect: {
         title: 'Connect\u00a0: le tableau de bord qui nous a appris à pivoter',
-        p1: 'En 2020, avec la Covid-19, nous avons réalisé que nos apps ne retenaient pas les utilisateurs. Sans launcher natif, les gens n’avaient aucune raison de penser à SQOOL. Nous avons conçu Connect, un prototype de vision pour un tableau de bord unifié qui serait le point d’entrée de tout.',
-        p2: 'Nous avons construit un prototype React fonctionnel avec un concept innovant appelé « La Bulle », un menu flottant persistant pour les actions rapides. Le prototype a prouvé que la technologie fonctionnait.',
+        p1: 'Avec la Covid-19, nous avons réalisé que nos apps ne retenaient pas les utilisateurs. Sans launcher natif, les gens n’avaient aucune raison de penser à SQOOL. Nous avons conçu Connect, un prototype de vision pour un tableau de bord unifié qui serait le point d’entrée de tout.',
+        p2: 'Nous avons construit un prototype React fonctionnel avec un concept innovant appelé « La Bulle », un menu flottant persistant pour les actions rapides. Le prototype a prouvé que la technologie fonctionnait.',
         p3: 'Mais il a aussi révélé un défaut fatal\u00a0: un tableau de bord dense serait en concurrence directe avec les ENT. Nous construisions quelque chose que les établissements avaient déjà.',
         outcome: 'Résultat\u00a0: le prototype non livré a été notre livrable le plus précieux. Il nous a donné les preuves pour nous arrêter et changer de direction.',
       },
     },
     phase2: {
       title: 'Phase 2\u00a0: le pivot stratégique',
-      period: '2021',
       intro: 'Au lieu d’une grande plateforme, nous avons décidé de construire des apps ciblées qui font une seule chose bien.',
       manifesto: {
         title: 'Une nouvelle vision\u00a0: simple, fluide, magique',
@@ -357,7 +428,6 @@ export const SQOOL_TRANSLATIONS = {
     },
     phase3: {
       title: 'Phase 3\u00a0: livrer la suite',
-      period: '2022-2024',
       intro: 'Avec notre stratégie définie et le design system en place, nous avons construit et lancé les apps spécialisées\u00a0:',
     },
     apps: {
@@ -382,7 +452,7 @@ export const SQOOL_TRANSLATIONS = {
       mdm: {
         title: 'SQOOL MDM',
         subtitle: 'Gestion d’appareils',
-        desc: 'Les administrateurs IT gèrent 500 000 appareils\u00a0: politiques de sécurité, déploiements d’apps, dépannage à distance. Nous avons séparé cette complexité des outils pour enseignants.',
+        desc: 'Les administrateurs IT gèrent 500 000 appareils\u00a0: politiques de sécurité, déploiements d’apps, dépannage à distance. Nous avons séparé cette complexité des outils pour enseignants.',
       },
       protect: {
         title: 'SQOOL Protect',
@@ -422,7 +492,7 @@ export const SQOOL_TRANSLATIONS = {
     impact: {
       title: 'Impact',
       intro: 'En six ans, nous avons transformé un fabricant de matériel en plateforme SaaS moderne. L’approche design a permis de passer à l’échelle sur plusieurs produits tout en maintenant la cohérence.',
-      users: '500 000+',
+      users: '500 000+',
       usersDesc: 'Élèves et enseignants servis quotidiennement',
       schools: '465',
       schoolsDesc: 'Lycées équipés en Île-de-France',
@@ -447,6 +517,34 @@ export const SQOOL_TRANSLATIONS = {
           desc: 'Amener 30+ développeurs répartis sur 5 équipes à utiliser la bibliothèque de façon cohérente demande bien plus de travail que de construire la bibliothèque de boutons.',
         },
       ],
+    },
+    // Narration resserrée (passe éditoriale) : un bloc court par décision. Les textes longs ci-dessus restent dans le fichier.
+    curated: {
+      lead: 'Le défi\u00a0: concevoir un écosystème qui fonctionne sur des appareils Android et Windows standard, depuis n’importe quel navigateur, face aux plateformes ENT que les établissements utilisaient déjà.',
+      hisqool: {
+        title: 'Hi-SQOOL\u00a0: une plateforme pour les élèves',
+        text: 'Les lycéens voulaient autre chose que les outils institutionnels qu’on leur imposait. En six semaines de sprint, nous avons conçu une identité et une application web (chat, documents, emplois du temps). Elle a validé l’approche web et fourni l’authentification et le stockage cloud des apps suivantes.',
+      },
+      connect: {
+        title: 'Connect\u00a0: le prototype jamais livré',
+        text: 'Sans launcher natif, nos apps ne retenaient pas les utilisateurs. Nous avons prototypé un tableau de bord unifié avec un menu flottant, «\u202fLa Bulle\u202f». Le prototype React fonctionnait, et il a montré qu’un tableau de bord dense concurrencerait directement les ENT. Nous avons changé de direction.',
+      },
+      pivot: {
+        title: 'Le pivot\u00a0: des apps ciblées plutôt qu’une plateforme',
+        text: 'Avec la direction produit, j’ai écrit un manifeste pour l’entreprise\u00a0: des apps simples à comprendre, fluides à utiliser, magiques dans les moments qui comptent. Chaque app résoudrait un seul problème\u00a0: les fichiers avec Partage, la supervision avec Classe. Fini l’ambition d’être tout à la fois.',
+      },
+      system: {
+        title: 'Une marque et un design system partagés',
+        text: 'Une suite d’apps a besoin d’une seule identité. J’ai conçu le système visuel, une couleur par app au sein d’une même famille, affiné avec l’agence Fllow pour 7+ apps. J’ai structuré les bibliothèques Figma et la documentation ZeroHeight, avec des points design hebdomadaires et des revues qualité.',
+      },
+      classe: {
+        title: 'SQOOL Classe\u00a0: supervision de classe',
+        text: 'Les enseignants craignaient de perdre le contrôle une fois les élèves équipés. Une grille de tous les écrans, avec des statuts colorés, leur a donné confiance\u00a0: ils verrouillent les appareils et poussent du contenu sans quitter leur bureau.',
+      },
+      partage: {
+        title: 'SQOOL Partage\u00a0: partage de fichiers',
+        text: 'La plus grande friction du quotidien était d’envoyer un PDF à 27 élèves. Partage en fait un seul geste\u00a0: glisser-déposer vers la classe, sans clé USB ni pièce jointe.',
+      },
     },
     relatedCases: {
       title: 'Études de cas détaillées',
@@ -475,7 +573,7 @@ export const SQOOL_TRANSLATIONS = {
       legacyMdm: 'MDM historique',
       legacyMdmDesc: 'Système de gestion d’appareils hébergé sur site',
       context: 'Lycée numérique',
-      contextDesc: '500 000 appareils déployés en 2019',
+      contextDesc: '500\u00a0000 appareils déployés',
       hisqool: 'Hi-SQOOL',
       hisqoolDesc: 'Plateforme élève et nouvelle identité',
       connect: 'Connect',

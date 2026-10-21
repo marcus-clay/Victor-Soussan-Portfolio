@@ -317,7 +317,7 @@ function SynAHome({ go }: { go: (p: PageId) => void }) {
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="text-[17px] font-semibold tracking-[-0.01em] group-hover:text-blue-600 transition-colors">{p.title}</h3>
-                  <p className="text-[14px] text-gray-400 mt-0.5">{p.role} · {p.period}</p>
+                  <p className="text-[14px] text-gray-400 mt-0.5">{p.role}</p>
                 </div>
                 <ArrowRight size={14} className="text-gray-200 group-hover:text-gray-400 group-hover:translate-x-1 transition-all shrink-0" />
               </motion.div>
@@ -437,7 +437,6 @@ function SynAWork({ go }: { go: (p: PageId) => void }) {
             <div className="max-w-[800px] mx-auto mb-4">
               <div className="flex items-baseline gap-4 mb-2">
                 <h2 className="text-[20px] font-bold tracking-[-0.02em]">{p.title}</h2>
-                <span className="text-[13px] text-gray-300 font-mono">{p.period}</span>
               </div>
               <p className="text-[14px] text-gray-400 mb-1">{p.role}</p>
               <p className="text-[16px] text-gray-500 leading-relaxed">{p.summary}</p>
@@ -485,7 +484,7 @@ function SynACase({ go }: { go: (p: PageId) => void }) {
           </FadeUp>
           <FadeUp delay={0.03}>
             <div className="flex items-center gap-6 text-[14px] text-gray-400 mb-6">
-              <span className="font-semibold text-gray-900">Toolkit</span><span>·</span><span>{TK.meta.type}</span><span>·</span><span>{TK.meta.period}</span>
+              <span className="font-semibold text-gray-900">Toolkit</span><span>·</span><span>{TK.meta.type}</span>
             </div>
           </FadeUp>
           <FadeUp delay={0.06}>

@@ -62,15 +62,15 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang }) => {
   return (
     <div className="w-full text-gray-900">
       {/* View Toggle */}
-      <div className="flex justify-center mb-8">
+      <div className="flex justify-start mb-8">
         <div className="inline-flex p-1 rounded-full bg-gray-100">
           <button
             onClick={() => changeView('timeline')}
             aria-pressed={viewMode === 'timeline'}
-            className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-[background-color,color,transform] duration-200 ease-out ${
+            className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium active:scale-[0.97] transition-[background-color,color,transform] duration-200 ease-out ${
               viewMode === 'timeline'
                 ? 'bg-white text-gray-900 shadow-sm'
-                : 'text-gray-500 hover:text-gray-900'
+                : 'text-gray-500 [@media(hover:hover)]:hover:text-gray-900'
             }`}
           >
             <Clock size={16} />
@@ -79,10 +79,10 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang }) => {
           <button
             onClick={() => changeView('carousel')}
             aria-pressed={viewMode === 'carousel'}
-            className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-[background-color,color,transform] duration-200 ease-out ${
+            className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium active:scale-[0.97] transition-[background-color,color,transform] duration-200 ease-out ${
               viewMode === 'carousel'
                 ? 'bg-white text-gray-900 shadow-sm'
-                : 'text-gray-500 hover:text-gray-900'
+                : 'text-gray-500 [@media(hover:hover)]:hover:text-gray-900'
             }`}
           >
             <Layers size={16} />
@@ -95,15 +95,15 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang }) => {
         {viewMode === 'timeline' ? (
           <motion.div
             key="timeline"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
             {/* Timeline View */}
             <div className="relative">
               {/* Phase nodes: the connecting line lives in each node's dot row, so it always meets the dots */}
-              <div className="flex px-4 md:px-8">
+              <div className="flex">
                 {phases.map((phase, index) => {
                   const isPreviewed = previewPhase === index;
                   return (
@@ -113,9 +113,9 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang }) => {
                       aria-expanded={isPreviewed}
                       className="group flex flex-col items-center cursor-pointer min-w-0 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-900/20"
                       style={{ width: `${100 / phases.length}%` }}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.2 + index * 0.15 }}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.32, delay: 0.2 + index * 0.07 }}
                       onPointerDown={(e) => { pointerType.current = e.pointerType; }}
                       onKeyDown={() => { pointerType.current = 'keyboard'; }}
                       onPointerEnter={(e) => { if (e.pointerType === 'mouse') setHoveredPhase(index); }}
@@ -131,9 +131,9 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang }) => {
                         }
                       }}
                     >
-                      {/* Year Label */}
-                      <span className="text-xs text-gray-500 mb-3">
-                        {phase.period}
+                      {/* Phase number: the order matters, the years do not */}
+                      <span className="text-xs tabular-nums text-gray-500 mb-3">
+                        {String(index + 1).padStart(2, '0')}
                       </span>
 
                       {/* Dot row with the line segments */}
@@ -145,8 +145,8 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang }) => {
                           <span aria-hidden="true" className="absolute left-1/2 right-0 top-1/2 h-[2px] -translate-y-1/2 bg-gray-200" />
                         )}
                         <span
-                          className={`relative z-10 w-4 h-4 rounded-full bg-white border-[2px] transition-[border-color,transform] duration-150 group-hover:scale-110 ${
-                            isPreviewed ? 'border-gray-600' : 'border-gray-300 group-hover:border-gray-600'
+                          className={`relative z-10 w-4 h-4 rounded-full bg-white border-[2px] transition-[border-color,transform] duration-150 [@media(hover:hover)]:group-hover:scale-110 ${
+                            isPreviewed ? 'border-gray-600' : 'border-gray-300 [@media(hover:hover)]:group-hover:border-gray-600'
                           }`}
                         />
                       </span>
@@ -166,7 +166,7 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang }) => {
               </div>
 
               {/* Preview card (single, below the nodes, so it never overflows on narrow screens) */}
-              <div className="mt-10 min-h-[9.5rem] flex flex-col items-center justify-start" aria-live="polite">
+              <div className="mt-10 min-h-[9.5rem] flex flex-col items-stretch justify-start" aria-live="polite">
                 <AnimatePresence mode="wait">
                   {preview ? (
                     <motion.div
@@ -175,9 +175,9 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang }) => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 8 }}
                       transition={{ duration: 0.2, ease: [0.23, 1, 0.32, 1] }}
-                      className="w-full max-w-[480px] p-4 rounded-xl border border-gray-200 bg-white"
+                      className="w-full p-5 md:p-6 rounded-2xl border border-gray-100 bg-white"
                     >
-                      <p className="text-base text-gray-600 mb-3">
+                      <p className="text-base text-gray-600 mb-4 max-w-[62ch]">
                         {preview.description}
                       </p>
                       <div className="flex flex-wrap items-center gap-2">
@@ -198,7 +198,7 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang }) => {
                       <button
                         type="button"
                         onClick={() => openPhase(previewPhase as number)}
-                        className="mt-3 inline-flex items-center gap-1.5 min-h-11 text-sm text-gray-500 hover:text-gray-900 transition-colors duration-150"
+                        className="mt-3 inline-flex items-center gap-1.5 min-h-11 text-sm text-gray-500 [@media(hover:hover)]:hover:text-gray-900 active:scale-[0.97] transition-[color,transform] duration-150"
                       >
                         {t.openPhase}
                         <ChevronRight size={14} />
@@ -211,7 +211,7 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang }) => {
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
                       transition={{ duration: 0.15 }}
-                      className="text-center text-sm text-gray-500"
+                      className="text-sm text-gray-500"
                     >
                       {t.hint}
                     </motion.p>
@@ -223,9 +223,9 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang }) => {
         ) : (
           <motion.div
             key="carousel"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
             {/* Carousel View */}
@@ -237,34 +237,8 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang }) => {
               tabIndex={0}
               onKeyDown={handleCarouselKeyDown}
             >
-              {/* Navigation Arrows */}
-              <button
-                onClick={prevPhase}
-                disabled={activePhase === 0}
-                aria-label={t.previous}
-                className={`absolute left-0 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full transition-[background-color,color,transform] duration-200 ease-out ${
-                  activePhase === 0
-                    ? 'opacity-30 cursor-not-allowed'
-                    : 'opacity-100 hover:scale-105'
-                } bg-gray-100 hover:bg-gray-200`}
-              >
-                <ChevronLeft size={24} />
-              </button>
-              <button
-                onClick={nextPhase}
-                disabled={activePhase === phases.length - 1}
-                aria-label={t.next}
-                className={`absolute right-0 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full transition-[background-color,color,transform] duration-200 ease-out ${
-                  activePhase === phases.length - 1
-                    ? 'opacity-30 cursor-not-allowed'
-                    : 'opacity-100 hover:scale-105'
-                } bg-gray-100 hover:bg-gray-200`}
-              >
-                <ChevronRight size={24} />
-              </button>
-
               {/* Carousel Content */}
-              <div className="overflow-hidden px-12 md:px-16" aria-live="polite">
+              <div className="overflow-hidden" aria-live="polite">
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={activePhase}
@@ -285,7 +259,7 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang }) => {
                             transition={{ delay: 0.1 }}
                             className="flex items-baseline gap-2 mb-4"
                           >
-                            <span className="text-title-1 text-gray-900">
+                            <span className="text-title-2 text-gray-900">
                               {String(activePhase + 1).padStart(2, '0')}
                             </span>
                             <span className="text-sm text-gray-500">
@@ -293,25 +267,25 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang }) => {
                             </span>
                           </motion.div>
 
-                          {/* Period */}
+                          {/* Phase number */}
                           <motion.p
                             initial={{ y: 8, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ delay: 0.15 }}
                             className="text-xs text-gray-500 mb-3"
                           >
-                            {phases[activePhase].period}
+                            {String(activePhase + 1).padStart(2, '0')}
                           </motion.p>
 
                           {/* Title */}
-                          <motion.h3
+                          <motion.h4
                             initial={{ y: 8, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ delay: 0.2 }}
-                            className="text-title-2 text-gray-900 mb-1"
+                            className="text-title-3 text-gray-900 mb-1"
                           >
                             {phases[activePhase].title}
-                          </motion.h3>
+                          </motion.h4>
 
                           {/* Subtitle */}
                           <motion.p
@@ -330,7 +304,7 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang }) => {
                         initial={{ y: 8, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ delay: 0.3 }}
-                        className="text-base text-gray-600 leading-relaxed mb-8 max-w-[65ch]"
+                        className="text-base text-gray-600 mb-8 max-w-[62ch]"
                       >
                         {phases[activePhase].description}
                       </motion.p>
@@ -350,11 +324,11 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang }) => {
                             transition={{ delay: 0.4 + index * 0.05 }}
                             className="py-3 border-b border-gray-100 last:border-0"
                           >
-                            <h4 className="text-sm font-medium text-gray-900 mb-0.5">
+                            <h5 className="text-sm font-medium text-gray-900 mb-0.5">
                               {item.title}
-                            </h4>
+                            </h5>
                             {item.description && (
-                              <p className="text-sm text-gray-600 leading-relaxed">
+                              <p className="text-sm text-gray-600 max-w-[62ch]">
                                 {item.description}
                               </p>
                             )}
@@ -366,25 +340,54 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang }) => {
                 </AnimatePresence>
               </div>
 
-              {/* Dots Navigation (44px hit area, small visual dot) */}
-              <div className="flex justify-center mt-6">
-                {phases.map((phase, index) => (
-                  <button
-                    key={index}
-                    onClick={() => goToPhase(index)}
-                    aria-label={`${phase.period} : ${phase.title}`}
-                    aria-current={activePhase === index ? 'true' : undefined}
-                    className="group flex items-center justify-center min-h-11 min-w-11"
-                  >
-                    <span
-                      className={`block h-2 rounded-full transition-[width,background-color,transform] duration-200 ease-out ${
-                        activePhase === index
-                          ? 'w-8 bg-gray-900'
-                          : 'w-2 bg-black/15 group-hover:scale-125'
-                      }`}
-                    />
-                  </button>
-                ))}
+              {/* Controls: previous, dots, next, in one row under the card */}
+              <div className="mt-4 flex items-center justify-between">
+                <button
+                  onClick={prevPhase}
+                  disabled={activePhase === 0}
+                  aria-label={t.previous}
+                  className={`p-3 rounded-full bg-gray-100 transition-[background-color,color,transform] duration-200 ease-out ${
+                    activePhase === 0
+                      ? 'opacity-30 cursor-not-allowed'
+                      : '[@media(hover:hover)]:hover:bg-gray-200 active:scale-[0.97]'
+                  }`}
+                >
+                  <ChevronLeft size={24} />
+                </button>
+
+                {/* Dots Navigation (44px hit area, small visual dot) */}
+                <div className="flex justify-center">
+                  {phases.map((phase, index) => (
+                    <button
+                      key={index}
+                      onClick={() => goToPhase(index)}
+                      aria-label={`${index + 1}. ${phase.title}`}
+                      aria-current={activePhase === index ? 'true' : undefined}
+                      className="group flex items-center justify-center min-h-11 min-w-11"
+                    >
+                      <span
+                        className={`block h-2 rounded-full transition-[width,background-color,transform] duration-200 ease-out ${
+                          activePhase === index
+                            ? 'w-8 bg-gray-900'
+                            : 'w-2 bg-black/15 [@media(hover:hover)]:group-hover:scale-125'
+                        }`}
+                      />
+                    </button>
+                  ))}
+                </div>
+
+                <button
+                  onClick={nextPhase}
+                  disabled={activePhase === phases.length - 1}
+                  aria-label={t.next}
+                  className={`p-3 rounded-full bg-gray-100 transition-[background-color,color,transform] duration-200 ease-out ${
+                    activePhase === phases.length - 1
+                      ? 'opacity-30 cursor-not-allowed'
+                      : '[@media(hover:hover)]:hover:bg-gray-200 active:scale-[0.97]'
+                  }`}
+                >
+                  <ChevronRight size={24} />
+                </button>
               </div>
 
               {/* Phase Labels Below Dots */}
@@ -393,13 +396,13 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang }) => {
                   <button
                     key={index}
                     onClick={() => goToPhase(index)}
-                    className={`min-h-11 px-2 text-xs font-medium transition-colors duration-150 ${
+                    className={`min-h-11 px-2 text-xs font-medium active:scale-[0.97] transition-[color,transform] duration-150 ${
                       activePhase === index
                         ? 'text-gray-900'
-                        : 'text-gray-500 hover:text-gray-600'
+                        : 'text-gray-500 [@media(hover:hover)]:hover:text-gray-600'
                     }`}
                   >
-                    {phase.period}
+                    {String(index + 1).padStart(2, '0')}
                   </button>
                 ))}
               </div>

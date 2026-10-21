@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { GUIDE_CHAPTERS, GUIDE_META } from '@/data/guideClaudeCodeData'
 import GuideClaudeCodePageWrapper from '@/components/page-wrappers/GuideClaudeCodePageWrapper'
 import JsonLd from '@/components/JsonLd'
+import { relatedContent } from '@/lib/related'
 import { breadcrumbLd, buildMetadata, itemListLd, pageUrl, toLang, webPageLd } from '@/lib/seo'
 
 type Props = { params: Promise<{ lang: string }> }
@@ -44,7 +45,7 @@ export default async function GuideIndexPage({ params }: Props) {
           ),
         ]}
       />
-      <GuideClaudeCodePageWrapper lang={lang} view="index" />
+      <GuideClaudeCodePageWrapper lang={lang} view="index" related={relatedContent(lang, 'guide-claude-code')} />
     </>
   )
 }

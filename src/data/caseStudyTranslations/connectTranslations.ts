@@ -10,7 +10,6 @@ export const CONNECT_TRANSLATIONS = {
     meta: {
       type: 'Product Design',
       scope: 'Dashboard, Android UI',
-      period: '2020-2021',
       company: 'UNOWHY',
     },
     nav: {
@@ -24,15 +23,15 @@ export const CONNECT_TRANSLATIONS = {
     hero: {
       role: 'Product Design Lead',
       scope: 'UX Strategy, UI Design, Prototyping',
-      period: '2020-2021',
       title: 'A web-based dashboard concept and persistent interaction prototype for classroom orchestration',
       subtitle: 'Replacing a legacy Android launcher with modern, modular interfaces',
-      description: 'By 2020, UNOWHY\'s Android launcher was increasingly difficult to maintain and evolve. The launcher acted as the main interface for students to access content, but it had become outdated and unsustainable on new Android systems. We envisioned Connect as a modern, web-based dashboard to replace the launcher for teachers and students, offering modular access to apps, session tools, and notifications. In parallel, we conceptualized "The Bubble", a persistent contextual UI prototype that would float above Android UI, offering quick and smart interactions.',
+      intro: 'I led the design of Connect, a web dashboard concept to replace UNOWHY\'s obsolete Android launcher, and of La Bulle, a persistent interface prototype. The functional demo convinced executives of the strategic direction.',
+      description: 'UNOWHY\'s Android launcher was increasingly difficult to maintain and evolve. The launcher acted as the main interface for students to access content, but it had become outdated and unsustainable on new Android systems. We envisioned Connect as a modern, web-based dashboard to replace the launcher for teachers and students, offering modular access to apps, session tools, and notifications. In parallel, we conceptualized "The Bubble", a persistent contextual UI prototype that would float above Android UI, offering quick and smart interactions.',
     },
     overview: {
       title: 'Overview',
       introTitle: 'Introduction',
-      introDesc: 'Between 2020 and 2021, the French EdTech company UNOWHY faced a turning point. Its long-standing Android-based launcher had reached technical and conceptual obsolescence. Originally built for primary and middle schools, the launcher offered limited flexibility and a user experience that no longer reflected modern pedagogical practices, especially for high schools entering France\'s ambitious Plan Lycée Numérique. At that critical juncture, I led the design of a proof-of-concept platform we called Connect: an integrated web-based dashboard interface that brought together classroom control, onboarding, app access, and persistent UI experimentation. As a proof of concept, its goal was to crystallize a vision for the future of educational interfaces at UNOWHY and provide a tangible experimentation platform.',
+      introDesc: 'The French EdTech company UNOWHY faced a turning point. Its long-standing Android-based launcher had reached technical and conceptual obsolescence. Originally built for primary and middle schools, the launcher offered limited flexibility and a user experience that no longer reflected modern pedagogical practices, especially for high schools entering France\'s ambitious Plan Lycée Numérique. At that critical juncture, I led the design of a proof-of-concept platform we called Connect: an integrated web-based dashboard interface that brought together classroom control, onboarding, app access, and persistent UI experimentation. As a proof of concept, its goal was to crystallize a vision for the future of educational interfaces at UNOWHY and provide a tangible experimentation platform.',
       roleTitle: 'Role and scope',
       roleDesc: 'Product Design Lead (UX strategy, UI design, prototyping, interaction design). Initiator and co-author of the project vision and interaction model. Designer and presenter of motion prototypes, interaction flows and specs. Contributor to the PRD and onboarding flows. Designed all core UI systems: app grid, quick actions, notifications, modals. Collaborated daily with our React developer to shape the prototype dashboard.',
       goalsTitle: 'Goals',
@@ -98,10 +97,40 @@ export const CONNECT_TRANSLATIONS = {
       bulleDemo: 'Bubble interactions',
       bulleDemoDesc: 'Full demonstration of the bubble\'s capabilities including shortcuts, search, and sharing features.',
     },
+    acts: {
+      approach: 'Designing a dashboard and an experimental overlay',
+      product: 'The dashboard, its specifications and La Bulle',
+      viewAll: 'View all visuals',
+    },
+    summary: {
+      context: 'UNOWHY\'s Android launcher was technically obsolete and visually outdated, and the acceleration of digital usage during COVID-19 made the need more critical. It no longer matched modern teaching practices, especially for high schools entering France\'s Plan Lycée Numérique. Connect was the proof of concept for a web-based dashboard to centralize classroom control, app access and notifications for 500,000+ students across France.',
+      role: 'As Product Design Lead, I initiated the Connect vision with the Head of Product, co-authored the PRD and designed all the interfaces. I worked daily with a React developer to build a functional prototype that convinced C-level executives of the strategic direction.',
+      roleItems: [
+        { title: 'Product Design Lead', detail: 'UX strategy and UI design' },
+        { title: 'Vision initiator', detail: 'Co-author of the PRD' },
+        { title: 'Prototype design', detail: 'Functional React demo' },
+        { title: 'System design', detail: 'UI kit foundations' },
+        { title: 'Cross-team', detail: 'Dev and C-level alignment' },
+      ],
+      deliverables: [
+        { title: 'Teacher dashboard', detail: 'Modular web dashboard with quick actions, app catalog and notifications, in light and dark themes.' },
+        { title: 'App catalog', detail: 'Searchable, filtered access to educational apps, with MDM policy integration.' },
+        { title: 'La Bulle', detail: 'Persistent floating interface for quick contextual actions, inspired by gaming overlays.' },
+        { title: 'Technical architecture', detail: 'How the web dashboard integrates with the existing Android infrastructure.' },
+        { title: 'Specifications', detail: 'Implementation and content specs, plus the app loading choreography.' },
+        { title: 'Design system', detail: 'Component library and visual language foundation for the Connect ecosystem.' },
+      ],
+    },
+    brief: {
+      dashboardBlock: 'Quick actions, class status and apps in one view',
+      dashboard: 'Inspired by desktop operating systems, the dashboard puts quick actions (lock screens, share files, open apps remotely), class status (connectivity, device health, participation), a personalized app catalog and notifications on one screen, in light and dark themes.',
+      architecture: 'The web dashboard had to coexist with the existing Android infrastructure. The diagram documents how the two integrate. The implementation and content specifications, with the app loading choreography, were written for the React developer I worked with daily.',
+      bulleLead: 'La Bulle is a floating, persistent module inspired by gaming overlays and stylus menus. On student tablets, a motion-rich bubble opens a radial or vertical menu and a context-aware assistant offering shortcuts, search, capture and sharing.',
+    },
     metaLabels: {
+      role: 'Role',
       type: 'Type',
       scope: 'Scope',
-      period: 'Period',
       company: 'Company',
     },
     captions: {
@@ -155,7 +184,6 @@ export const CONNECT_TRANSLATIONS = {
     meta: {
       type: 'Design produit',
       scope: 'Tableau de bord, UI Android',
-      period: '2020-2021',
       company: 'UNOWHY',
     },
     nav: {
@@ -169,15 +197,15 @@ export const CONNECT_TRANSLATIONS = {
     hero: {
       role: 'Product Design Lead',
       scope: 'Stratégie UX, design UI, prototypage',
-      period: '2020-2021',
       title: 'Un concept de tableau de bord web et un prototype d’interaction persistante pour l’orchestration de la classe',
       subtitle: 'Remplacer un lanceur Android obsolète par des interfaces modernes et modulaires',
-      description: 'En 2020, le lanceur Android d’UNOWHY devenait de plus en plus difficile à maintenir et à faire évoluer. Il servait d’interface principale aux élèves pour accéder aux contenus, mais il était devenu obsolète et impossible à maintenir sur les nouvelles versions d’Android. Nous avons imaginé Connect comme un tableau de bord web moderne destiné à remplacer le lanceur pour les enseignants et les élèves, avec un accès modulaire aux applications, aux outils de session et aux notifications. En parallèle, nous avons conçu «\u202fLa Bulle\u202f», un prototype d’interface contextuelle persistante qui flotterait au-dessus de l’interface Android et proposerait des interactions rapides et intelligentes.',
+      intro: 'J’ai dirigé la conception de Connect, un concept de tableau de bord web pour remplacer le lanceur Android obsolète d’UNOWHY, et de La Bulle, un prototype d’interface persistante. La démo fonctionnelle a convaincu les dirigeants de la direction stratégique.',
+      description: 'Le lanceur Android d’UNOWHY devenait de plus en plus difficile à maintenir et à faire évoluer. Il servait d’interface principale aux élèves pour accéder aux contenus, mais il était devenu obsolète et impossible à maintenir sur les nouvelles versions d’Android. Nous avons imaginé Connect comme un tableau de bord web moderne destiné à remplacer le lanceur pour les enseignants et les élèves, avec un accès modulaire aux applications, aux outils de session et aux notifications. En parallèle, nous avons conçu «\u202fLa Bulle\u202f», un prototype d’interface contextuelle persistante qui flotterait au-dessus de l’interface Android et proposerait des interactions rapides et intelligentes.',
     },
     overview: {
       title: 'Vue d’ensemble',
       introTitle: 'Introduction',
-      introDesc: 'Entre 2020 et 2021, l’entreprise française d’EdTech UNOWHY faisait face à un tournant. Son lanceur Android, en place de longue date, avait atteint l’obsolescence technique et conceptuelle. Conçu à l’origine pour les écoles primaires et les collèges, il offrait une flexibilité limitée et une expérience qui ne reflétait plus les pratiques pédagogiques actuelles, notamment pour les lycées entrant dans l’ambitieux Plan Lycée Numérique. À ce moment charnière, j’ai dirigé la conception d’une plateforme de preuve de concept que nous avons appelée Connect\u00a0: une interface de tableau de bord web intégrée, réunissant le contrôle de la classe, la prise en main, l’accès aux applications et l’expérimentation d’une interface persistante. Cette preuve de concept avait pour objectif de cristalliser une vision de l’avenir des interfaces éducatives chez UNOWHY et de fournir une plateforme d’expérimentation tangible.',
+      introDesc: 'L’entreprise française d’EdTech UNOWHY faisait face à un tournant. Son lanceur Android, en place de longue date, avait atteint l’obsolescence technique et conceptuelle. Conçu à l’origine pour les écoles primaires et les collèges, il offrait une flexibilité limitée et une expérience qui ne reflétait plus les pratiques pédagogiques actuelles, notamment pour les lycées entrant dans l’ambitieux Plan Lycée Numérique. À ce moment charnière, j’ai dirigé la conception d’une plateforme de preuve de concept que nous avons appelée Connect\u00a0: une interface de tableau de bord web intégrée, réunissant le contrôle de la classe, la prise en main, l’accès aux applications et l’expérimentation d’une interface persistante. Cette preuve de concept avait pour objectif de cristalliser une vision de l’avenir des interfaces éducatives chez UNOWHY et de fournir une plateforme d’expérimentation tangible.',
       roleTitle: 'Rôle et périmètre',
       roleDesc: 'Product Design Lead (stratégie UX, design UI, prototypage, design d’interaction). Initiateur et co-auteur de la vision du projet et du modèle d’interaction. Concepteur et présentateur des prototypes animés, des parcours d’interaction et des spécifications. Contributeur au PRD et aux parcours de prise en main. Conception de tous les systèmes d’interface principaux\u00a0: grille d’applications, actions rapides, notifications, fenêtres modales. Collaboration quotidienne avec notre développeur React pour façonner le prototype de tableau de bord.',
       goalsTitle: 'Objectifs',
@@ -243,10 +271,40 @@ export const CONNECT_TRANSLATIONS = {
       bulleDemo: 'Interactions de la bulle',
       bulleDemoDesc: 'Démonstration complète des capacités de la bulle, avec raccourcis, recherche et partage.',
     },
+    acts: {
+      approach: 'Concevoir un tableau de bord et une surcouche expérimentale',
+      product: 'Le tableau de bord, ses spécifications et La Bulle',
+      viewAll: 'Voir tous les visuels',
+    },
+    summary: {
+      context: 'Le lanceur Android d’UNOWHY était obsolète sur le plan technique comme sur le plan visuel, et l’accélération des usages numériques liée à la COVID-19 rendait le besoin plus critique. Il ne reflétait plus les pratiques pédagogiques actuelles, notamment pour les lycées entrant dans le Plan Lycée Numérique. Connect était la preuve de concept d’un tableau de bord web centralisant le contrôle de la classe, l’accès aux applications et les notifications pour plus de 500\u202f000 élèves en France.',
+      role: 'En tant que Product Design Lead, j’ai initié la vision de Connect avec le Head of Product, co-rédigé le PRD et conçu toutes les interfaces. J’ai travaillé au quotidien avec un développeur React pour construire un prototype fonctionnel qui a convaincu les dirigeants de la direction stratégique.',
+      roleItems: [
+        { title: 'Product Design Lead', detail: 'Stratégie UX et design UI' },
+        { title: 'Initiateur de la vision', detail: 'Co-auteur du PRD' },
+        { title: 'Design du prototype', detail: 'Démo React fonctionnelle' },
+        { title: 'Design du système', detail: 'Fondations de l’UI kit' },
+        { title: 'Transversal', detail: 'Alignement développeurs et direction' },
+      ],
+      deliverables: [
+        { title: 'Tableau de bord enseignant', detail: 'Tableau de bord web modulaire avec actions rapides, catalogue d’applications et notifications, en thèmes clair et sombre.' },
+        { title: 'Catalogue d’applications', detail: 'Accès recherchable et filtré aux applications éducatives, avec intégration des politiques MDM.' },
+        { title: 'La Bulle', detail: 'Interface flottante persistante pour des actions contextuelles rapides, inspirée des surcouches de jeu vidéo.' },
+        { title: 'Architecture technique', detail: 'Intégration du tableau de bord web à l’infrastructure Android existante.' },
+        { title: 'Spécifications', detail: 'Spécifications d’implémentation et de contenu, et chorégraphie de chargement des applications.' },
+        { title: 'Design system', detail: 'Bibliothèque de composants et fondation du langage visuel de l’écosystème Connect.' },
+      ],
+    },
+    brief: {
+      dashboardBlock: 'Actions rapides, état de la classe et applications en une vue',
+      dashboard: 'Inspiré des systèmes d’exploitation de bureau, le tableau de bord réunit sur un seul écran les actions rapides (verrouiller les écrans, partager des fichiers, ouvrir des applications à distance), l’état de la classe (connectivité, santé des appareils, participation), un catalogue d’applications personnalisé et les notifications, en thème clair et sombre.',
+      architecture: 'Le tableau de bord web devait cohabiter avec l’infrastructure Android existante. Le schéma documente leur intégration. Les spécifications d’implémentation et de contenu, avec la chorégraphie de chargement des applications, ont été rédigées pour le développeur React avec qui je travaillais au quotidien.',
+      bulleLead: 'La Bulle est un module flottant et persistant, inspiré des surcouches de jeux et des menus de stylet. Sur les tablettes des élèves, une bulle riche en mouvement ouvre un menu radial ou vertical et un assistant contextuel qui propose raccourcis, recherche, capture et partage.',
+    },
     metaLabels: {
+      role: 'Rôle',
       type: 'Type',
       scope: 'Périmètre',
-      period: 'Période',
       company: 'Entreprise',
     },
     captions: {

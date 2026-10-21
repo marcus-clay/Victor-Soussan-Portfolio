@@ -173,7 +173,7 @@ export default function QuoteGeneratorModal({
                 {/* Small Avatar */}
                 <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-blue-600/20 shadow-lg">
                   <img loading="lazy"
-                    src={systemTheme === 'dark' ? '/images/victor_soussan_dark.webp' : '/images/victor-soussan.webp'}
+                    src={systemTheme === 'dark' ? '/images/victor_soussan_dark.webp' : '/images/image-victor-soussan-2027.jpg'}
                     alt="Victor Soussan"
                     className="w-full h-full object-cover"
                   />
@@ -213,7 +213,7 @@ export default function QuoteGeneratorModal({
               {[1, 2, 3, 4, 5, 6, 7, 8].map((step) => (
                 <div key={step} className="flex items-center flex-1">
                   <div className={`w-full h-1.5 rounded-full transition-all duration-300 ${
-                    step <= quoteStep ? 'bg-[#2D5CF3]' : systemTheme === 'dark' ? 'bg-white/20' : 'bg-gray-200'
+                    step <= quoteStep ? 'bg-gray-900' : systemTheme === 'dark' ? 'bg-white/20' : 'bg-gray-200'
                   }`} />
                   {step < 8 && <div className="w-2" />}
                 </div>
@@ -260,7 +260,7 @@ export default function QuoteGeneratorModal({
                   <div className="relative">
                     <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-blue-600/20 shadow-2xl shadow-blue-600/10 mx-auto">
                       <img loading="lazy"
-                        src={systemTheme === 'dark' ? '/images/victor_soussan_dark.webp' : '/images/victor-soussan.webp'}
+                        src={systemTheme === 'dark' ? '/images/victor_soussan_dark.webp' : '/images/image-victor-soussan-2027.jpg'}
                         alt="Victor Soussan"
                         className="w-full h-full object-cover"
                       />
@@ -365,7 +365,7 @@ export default function QuoteGeneratorModal({
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => setQuoteStep(1)}
-                  className="inline-flex items-center px-12 py-5 bg-[#2D5CF3] hover:bg-[#2450d9] text-white rounded-full font-semibold text-xl shadow-lg shadow-[#2D5CF3]/30 hover:shadow-xl hover:shadow-[#2D5CF3]/50 transition-all duration-200"
+                  className="inline-flex items-center px-12 py-5 bg-gray-900 hover:bg-black text-white rounded-full font-semibold text-xl shadow-lg shadow-[#2D5CF3]/30 hover:shadow-xl hover:shadow-[#2D5CF3]/50 transition-all duration-200"
                 >
                   {lang === 'en' ? 'Start Now' : 'Démarrer'}
                   <ArrowRight className="ml-2" size={24} />
@@ -650,7 +650,7 @@ export default function QuoteGeneratorModal({
                         <motion.span
                           whileHover={{ scale: 1.02 }}
                           whileTap={{ scale: 0.98 }}
-                          className="px-5 py-2.5 bg-white border-2 border-[#2D5CF3] text-[#2D5CF3] rounded-full font-medium text-sm hover:bg-[#2D5CF3]/5 transition-all cursor-pointer inline-block btn-pill"
+                          className="px-5 py-2.5 bg-white border-2 border-gray-900 text-gray-900 rounded-full font-medium text-sm hover:bg-gray-900/5 transition-all cursor-pointer inline-block btn-pill"
                         >
                           {lang === 'en' ? 'Browse Files' : 'Parcourir les fichiers'}
                         </motion.span>
@@ -1351,7 +1351,7 @@ export default function QuoteGeneratorModal({
                     }}
                     whileHover={{ scale: 1.02, y: -2 }}
                     whileTap={{ scale: 0.98 }}
-                    className="flex items-center justify-center space-x-2 px-5 py-2.5 border-2 border-[#2D5CF3] text-[#2D5CF3] rounded-full font-medium text-sm hover:bg-[#2D5CF3]/5 transition-all duration-200 btn-pill"
+                    className="flex items-center justify-center space-x-2 px-5 py-2.5 border-2 border-gray-900 text-gray-900 rounded-full font-medium text-sm hover:bg-gray-900/5 transition-all duration-200 btn-pill"
                   >
                     <Download size={16} />
                     <span>{content.contact.quote_step_7_download}</span>
@@ -1491,7 +1491,7 @@ export default function QuoteGeneratorModal({
                   onClick={() => setQuoteStep(4)}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="px-6 py-3 text-gray-600 hover:text-[#2D5CF3] font-semibold transition-colors"
+                  className="px-6 py-3 text-gray-600 hover:text-gray-500 font-semibold transition-colors"
                   style={{ pointerEvents: 'auto', position: 'relative', zIndex: 20 }}
                 >
                   {content.contact.quote_skip}
@@ -1539,7 +1539,7 @@ export default function QuoteGeneratorModal({
                   }}
                   whileHover={{ scale: 1.02, y: -2 }}
                   whileTap={{ scale: 0.98 }}
-                  className="flex items-center space-x-2 px-8 py-3.5 bg-[#2D5CF3] hover:bg-[#2450d9] text-white rounded-full font-semibold shadow-lg shadow-[#2D5CF3]/25 hover:shadow-xl hover:shadow-[#2D5CF3]/40 transition-all duration-200"
+                  className="flex items-center space-x-2 px-8 py-3.5 bg-gray-900 hover:bg-black text-white rounded-full font-semibold shadow-lg shadow-[#2D5CF3]/25 hover:shadow-xl hover:shadow-[#2D5CF3]/40 transition-all duration-200"
                   style={{ pointerEvents: 'auto', position: 'relative', zIndex: 20 }}
                 >
                   <span>{content.contact.quote_next}</span>

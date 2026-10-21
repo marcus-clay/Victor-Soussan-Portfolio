@@ -2,14 +2,17 @@
 
 import { useRouter } from 'next/navigation'
 import GuideClaudeCodePage from '@/views/GuideClaudeCodePage'
+import type { RelatedItem } from '@/components/RelatedContent'
 
 
 export default function GuideClaudeCodePageWrapper({
   lang,
   view,
+  related,
 }: {
   lang: 'en' | 'fr'
   view: string
+  related: RelatedItem[]
 }) {
   const router = useRouter()
 
@@ -18,6 +21,7 @@ export default function GuideClaudeCodePageWrapper({
       systemTheme="light"
       lang={lang}
       view={view}
+      related={related}
       onNavigate={(target) => {
         if (target === 'blog') {
           router.push(`/${lang}/ressources`)

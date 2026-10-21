@@ -90,7 +90,7 @@ const BiographySection: React.FC<BiographySectionProps> = ({
                 <div>
                   <div className="flex flex-col md:flex-row items-center md:items-start space-y-4 md:space-y-0 md:space-x-8 mb-6 md:mb-8">
                     <Avatar
-                      filename="victor-soussan.webp"
+                      filename="image-victor-soussan-2027.jpg"
                       alt="Victor Soussan"
                       className="w-28 h-28 md:w-40 md:h-40 rounded-2xl md:rounded-[2rem] shadow-lg border border-white/20"
                       isDark={systemTheme === 'dark'}
@@ -142,7 +142,7 @@ const BiographySection: React.FC<BiographySectionProps> = ({
                 }`}>
                    <button
                      onClick={() => openModalWithUrl('/about')}
-                     className="group px-8 py-3 rounded-full font-medium transition-colors inline-flex items-center shadow-sm hover:shadow-md bg-[#2D5CF3] text-white hover:bg-[#2450d9]"
+                     className="group px-8 py-3 rounded-full font-medium transition-colors inline-flex items-center shadow-sm hover:shadow-md bg-gray-900 text-white hover:bg-black"
                    >
                      {content.bio.view_full_bio} <ArrowUpRight size={18} className="ml-2 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                    </button>
