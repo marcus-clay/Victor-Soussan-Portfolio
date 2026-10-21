@@ -26,10 +26,7 @@ export default function ResumePageWrapper({ lang }: { lang: 'en' | 'fr' }) {
   const resumeContent = TRANSLATIONS[resumeLang].resume
 
   const handleDownloadResume = useCallback(() => {
-    const url = resumeLang === 'fr'
-      ? 'https://docs.google.com/document/d/1DvCVcLllc-f7vD2sGni5sONVdyDY8hIG/edit?usp=sharing&ouid=102321755574001298179&rtpof=true&sd=true'
-      : 'https://docs.google.com/document/d/1EOTBgcnhxcbxk6dYIt1ZAMrd9WqCceUY/edit?usp=sharing&ouid=102321755574001298179&rtpof=true&sd=true'
-    window.open(url, '_blank')
+    window.open(`/cv/CV-Victor-Soussan-2026-${resumeLang.toUpperCase()}.pdf`, '_blank')
   }, [resumeLang])
 
   const copyWithFeedback = useCallback(
@@ -193,7 +190,7 @@ export default function ResumePageWrapper({ lang }: { lang: 'en' | 'fr' }) {
 
                   <button
                     onClick={() =>
-                      copyWithFeedback('https://linkedin.com/in/victorsoussan', setCopiedLinkedin)
+                      copyWithFeedback('https://linkedin.com/in/victorsoussan-product-design', setCopiedLinkedin)
                     }
                     className="px-3 py-1.5 glass-effect text-gray-700 rounded-full text-xs font-medium btn-pill flex items-center gap-2 hover:text-blue-600"
                   >

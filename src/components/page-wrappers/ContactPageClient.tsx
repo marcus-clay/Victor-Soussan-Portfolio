@@ -118,7 +118,7 @@ export default function ContactPageClient({ lang }: { lang: 'en' | 'fr' }) {
 
           {/* Connect */}
           <div className="flex flex-wrap items-center gap-5">
-            <a href="https://linkedin.com/in/victorsoussan" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors duration-200">
+            <a href="https://linkedin.com/in/victorsoussan-product-design" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors duration-200">
               <LinkedinLogo size={18} /> LinkedIn
             </a>
             <a href="https://www.condamine.studio/apps" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors duration-200">

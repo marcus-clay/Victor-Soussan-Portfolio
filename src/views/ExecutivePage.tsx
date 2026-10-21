@@ -676,7 +676,7 @@ const SLIDES = {
       type: 'contact',
       headline: 'Let\'s talk',
       email: 'victorsoussan@gmail.com',
-      linkedin: 'linkedin.com/in/victorsoussan',
+      linkedin: 'linkedin.com/in/victorsoussan-product-design',
       phone: '+33 6 15 98 94 00',
     },
     // 15. Farewell (shown after modal closes)
@@ -932,7 +932,7 @@ const SLIDES = {
       type: 'contact',
       headline: 'Parlons-en',
       email: 'victorsoussan@gmail.com',
-      linkedin: 'linkedin.com/in/victorsoussan',
+      linkedin: 'linkedin.com/in/victorsoussan-product-design',
       phone: '+33 6 15 98 94 00',
     },
     // 15. Farewell (shown after modal closes)

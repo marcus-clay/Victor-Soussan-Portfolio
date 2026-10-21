@@ -136,7 +136,7 @@ export function buildMetadata(o: MetaOptions): Metadata {
 export const PERSON_ID = `${SITE_URL}/#person`
 export const WEBSITE_ID = `${SITE_URL}/#website`
 
-export const LINKEDIN_URL = 'https://www.linkedin.com/in/victorsoussan'
+export const LINKEDIN_URL = 'https://www.linkedin.com/in/victorsoussan-product-design'
 
 export function personLd(lang: Lang) {
   return {

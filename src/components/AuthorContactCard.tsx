@@ -41,7 +41,7 @@ export default function AuthorContactCard({ lang, isDark = false, message }: Aut
           </p>
           <div className="flex flex-wrap gap-3">
             <a
-              href="https://www.linkedin.com/in/victorsoussan/"
+              href="https://www.linkedin.com/in/victorsoussan-product-design/"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium bg-gray-900 text-white hover:bg-gray-800 active:scale-[0.97] ring-1 ring-black shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]"

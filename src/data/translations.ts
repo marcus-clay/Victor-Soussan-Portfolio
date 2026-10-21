@@ -251,12 +251,12 @@ export const TRANSLATIONS = {
       }
     },
     resume: {
-      title: "Victor Soussan \u2013 Lead Product Designer",
+      title: "Victor Soussan, Lead Product Designer",
       contact: "victorsoussan@gmail.com \u2022 +33 6 15 98 94 00 \u2022 Paris, France",
-      linkedin: "linkedin.com/in/victorsoussan",
+      linkedin: "linkedin.com/in/victorsoussan-product-design",
       portfolio: "https://victorsoussan-portfolio-2026.vercel.app",
       summary_title: "Professional Summary",
-      summary: "Lead Product Designer with 15 years of tech experience and 10 years of design leadership for enterprise software, education, media, and public services. Expert in 0-to-1 product design, design systems, team building, and AI-assisted prototyping. Track record: products serving 500K+ users and teams of 5+ designers.",
+      summary: "Lead Product Designer, 15 years of experience in B2B and B2G SaaS and complex business interfaces. Framing with a PM, delivery with a developer, or directly with Claude Code and Figma MCP. SQOOL suite: 7 applications, 500,000 students, team of 5 designers. Dailymotion publisher tools: 8,000+ users. France VAE for beta.gouv. PagesJaunes mobile apps: 22 million downloads. Available for freelance engagements and permanent roles (Head of Design, Design Lead).",
       experience_title: "Professional Experience",
       experience: resumeExperience('en'),
       skills_title: "Key Skills",
@@ -275,8 +275,8 @@ export const TRANSLATIONS = {
       tools: "Figma, FigJam, Adobe Suite, Sketch, Notion, Slack, Linear, ChatGPT, Claude, Midjourney, Bolt, Lovable, Storybook, HTML/CSS",
       education_title: "Education & Certifications",
       education: [
-        "Master in Communication & Multimedia \u2013 ISCOM Paris (2001-2005)",
-        "UX/UI Design & Prototyping \u2013 UXcel / Udemy (2021)"
+        "Master in Communication & Multimedia, ISCOM Paris (2001-2005)",
+        "UX/UI Design & Prototyping, UXcel / Udemy (2021)"
       ],
       languages_title: "Languages",
       languages: "French (native) \u2022 English (full professional) \u2022 Spanish (professional working)",
@@ -718,12 +718,12 @@ export const TRANSLATIONS = {
       }
     },
     resume: {
-      title: "Victor Soussan \u2013 Lead Product Designer",
+      title: "Victor Soussan, Lead Product Designer",
       contact: "victorsoussan@gmail.com \u2022 +33 6 15 98 94 00 \u2022 Paris, France",
-      linkedin: "linkedin.com/in/victorsoussan",
+      linkedin: "linkedin.com/in/victorsoussan-product-design",
       portfolio: "https://victorsoussan-portfolio-2026.vercel.app",
       summary_title: "R\u00e9sum\u00e9 Professionnel",
-      summary: "Lead Product Designer avec 15 ans d\u2019exp\u00e9rience tech et 10 ans de leadership design pour logiciels d\u2019entreprise, \u00e9ducation, m\u00e9dias et services publics. Expert en design produit 0-to-1, design systems, construction d\u2019\u00e9quipes et prototypage assist\u00e9 par IA. Bilan : produits \u00e0 500K+ utilisateurs et gestion d\u2019\u00e9quipes de 5+ designers.",
+      summary: "Lead Product Designer, 15 ans d’expérience en SaaS B2B, B2G et interfaces métier complexes. Cadrage avec un PM, livraison avec un développeur, ou directement avec Claude Code et Figma MCP. Suite SQOOL : 7 applications, 500 000 élèves, équipe de 5 designers. Outils publishers de Dailymotion : 8 000+ utilisateurs. France VAE pour beta.gouv. Applications mobiles PagesJaunes : 22 millions de téléchargements. Disponible en mission freelance et en CDI (Head of Design, Design Lead).",
       experience_title: "Exp\u00e9rience Professionnelle",
       experience: resumeExperience('fr'),
       skills_title: "Comp\u00e9tences Cl\u00e9s",
@@ -731,7 +731,7 @@ export const TRANSLATIONS = {
       tools_title: "Outils & Technologies",
       tools: "Figma, FigJam, Adobe Suite, Sketch, Notion, Slack, Linear, ChatGPT, Claude, Midjourney, Bolt, Lovable, Storybook, HTML/CSS",
       education_title: "Formation & Certifications",
-      education: ["Master Communication & Multim\u00e9dia \u2013 ISCOM Paris (2001-2005)", "UX/UI Design & Prototypage \u2013 UXcel / Udemy (2021)"],
+      education: ["Master Communication & Multim\u00e9dia, ISCOM Paris (2001-2005)", "UX/UI Design & Prototypage, UXcel / Udemy (2021)"],
       languages_title: "Langues",
       languages: "Fran\u00e7ais (natif) \u2022 Anglais (professionnel complet) \u2022 Espagnol (professionnel)",
       download_btn: "T\u00e9l\u00e9charger PDF",
