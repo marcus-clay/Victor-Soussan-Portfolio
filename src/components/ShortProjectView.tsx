@@ -1,14 +1,40 @@
 'use client'
 
-import React from 'react'
+import React, { useMemo, useState } from 'react'
 import { ArrowUpRight } from '@phosphor-icons/react'
 import type { Project } from '@/data/projectsData'
+import EnhancedLightbox from '@/components/media/EnhancedLightbox'
 
 const CATEGORY_LABELS: Record<string, { en: string; fr: string }> = {
   'product-design': { en: 'Product Design', fr: 'Design Produit' },
   'ai-experiment': { en: 'AI Experiment', fr: 'Expérimentation IA' },
   'prototype': { en: 'Prototype', fr: 'Prototype' },
   'concept': { en: 'Concept', fr: 'Concept' },
+}
+
+type BodyBlock =
+  | { kind: 'h2'; text: string }
+  | { kind: 'p'; text: string }
+  | { kind: 'figure'; src: string; caption: string; index: number }
+
+/** Paragraphs are separated by a blank line. `## ` opens a section, `![caption](src)` alone on its line is a figure. */
+function parseBody(body: string): { blocks: BodyBlock[]; figures: { src: string; caption: string }[] } {
+  const blocks: BodyBlock[] = []
+  const figures: { src: string; caption: string }[] = []
+  for (const raw of body.split('\n\n')) {
+    const text = raw.trim()
+    if (!text) continue
+    const figure = text.match(/^!\[(.*)\]\((.+)\)$/)
+    if (figure) {
+      blocks.push({ kind: 'figure', src: figure[2], caption: figure[1], index: figures.length })
+      figures.push({ src: figure[2], caption: figure[1] })
+    } else if (text.startsWith('## ')) {
+      blocks.push({ kind: 'h2', text: text.slice(3) })
+    } else {
+      blocks.push({ kind: 'p', text })
+    }
+  }
+  return { blocks, figures }
 }
 
 export default function ShortProjectView({
@@ -19,6 +45,9 @@ export default function ShortProjectView({
   lang: 'en' | 'fr'
 }) {
   const categoryLabel = CATEGORY_LABELS[project.category]?.[lang] || project.category
+  const { blocks, figures } = useMemo(() => parseBody(project.body ?? ''), [project.body])
+  const [lightboxOpen, setLightboxOpen] = useState(false)
+  const [lightboxIndex, setLightboxIndex] = useState(0)
 
   return (
     <div className="min-h-screen bg-[#FDFDFC]">
@@ -83,7 +112,7 @@ export default function ShortProjectView({
         )}
 
         {/* Cover image fallback if no media array */}
-        {(!project.media || project.media.length === 0) && project.coverImage && (
+        {(!project.media || project.media.length === 0) && project.coverImage && !project.heroInBody && (
           <div className="mb-12">
             <div className="rounded-2xl overflow-hidden bg-white border border-gray-100 aspect-[16/9]">
               <img
@@ -96,14 +125,59 @@ export default function ShortProjectView({
         )}
 
         {/* Body / extended description */}
-        {project.body && (
-          <div className="mb-12 max-w-[65ch]">
-            {project.body.split('\n\n').map((paragraph, idx) => (
-              <p key={idx} className="text-base leading-relaxed text-gray-600 mb-4 last:mb-0">
-                {paragraph}
-              </p>
-            ))}
+        {blocks.length > 0 && (
+          <div className="mb-12">
+            {blocks.map((block, idx) => {
+              if (block.kind === 'h2') {
+                return (
+                  <h2 key={idx} className="text-title-2 text-gray-900 mt-14 mb-4 max-w-[65ch] first:mt-0">
+                    {block.text}
+                  </h2>
+                )
+              }
+              if (block.kind === 'figure') {
+                return (
+                  <figure key={idx} className="my-10 first:mt-0">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setLightboxIndex(block.index)
+                        setLightboxOpen(true)
+                      }}
+                      aria-label={lang === 'fr' ? `Agrandir l’image : ${block.caption}` : `Enlarge image: ${block.caption}`}
+                      className="group block w-full overflow-hidden rounded-2xl bg-[#E8E8E8] ring-1 ring-black/[0.04] hover:ring-black/[0.08] cursor-zoom-in transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2D5CF3] focus-visible:ring-offset-2"
+                    >
+                      <img
+                        src={block.src}
+                        alt={block.caption}
+                        loading={idx === 0 ? 'eager' : 'lazy'}
+                        className="block w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
+                      />
+                    </button>
+                    <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed max-w-[65ch]">
+                      {block.caption}
+                    </figcaption>
+                  </figure>
+                )
+              }
+              return (
+                <p key={idx} className="text-base leading-relaxed text-gray-600 mb-4 max-w-[65ch]">
+                  {block.text}
+                </p>
+              )
+            })}
           </div>
+        )}
+
+        {figures.length > 0 && (
+          <EnhancedLightbox
+            isOpen={lightboxOpen}
+            onClose={() => setLightboxOpen(false)}
+            images={figures.map((f) => ({ src: f.src, caption: f.caption, type: 'image' as const }))}
+            currentIndex={lightboxIndex}
+            onIndexChange={setLightboxIndex}
+            lang={lang}
+          />
         )}
 
         {/* Video */}
