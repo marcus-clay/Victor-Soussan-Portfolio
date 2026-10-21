@@ -37,7 +37,7 @@ export default async function Page({ params }: Props) {
         itemListLd(
           getProjects(lang).map((pr) => ({
             name: pr.title,
-            url: pageUrl(lang, `project/${pr.id}/summary`),
+            url: pageUrl(lang, `project/${pr.id}`),
           }))
         )]}
       />

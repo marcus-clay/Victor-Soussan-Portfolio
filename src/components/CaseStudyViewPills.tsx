@@ -37,7 +37,7 @@ export default function CaseStudyViewPills({
     <div className="flex flex-wrap items-center gap-2 mt-5">
       {showFull && (
         <Link
-          href={`/${lang}/project/${projectId}/full`}
+          href={`/${lang}/project/${projectId}`}
           className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium active:scale-[0.95] select-none ${pillCls}`}
           style={pillStyle}
         >

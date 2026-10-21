@@ -46,12 +46,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     items.push({ path: same(route), lastModified: SITE_CONTENT_UPDATED })
   }
 
-  // Projects: case studies get summary + full, short projects summary only. Galleries are noindex.
+  // Projects: one canonical URL each. /summary and /full redirect to it, galleries are noindex.
   for (const p of getProjects('en')) {
     const year = p.period.match(/\d{4}/g)?.pop()
     const lastModified = isoDate(year ? `${year}` : undefined) ?? SITE_CONTENT_UPDATED
-    items.push({ path: same(`project/${p.id}/summary`), lastModified })
-    if (p.format === 'case-study') items.push({ path: same(`project/${p.id}/full`), lastModified })
+    items.push({ path: same(`project/${p.id}`), lastModified })
   }
 
   // Articles

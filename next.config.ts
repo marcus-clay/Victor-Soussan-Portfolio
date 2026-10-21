@@ -99,9 +99,12 @@ const nextConfig: NextConfig = {
     { source: '/:lang(en|fr)/interventions', destination: '/:lang/contact#interventions', permanent: true },
     // Old signal routes
     { source: '/signal/:id', destination: '/en/signal/:id', permanent: true },
+    // One canonical URL per project: /summary and /full (single 301 hop, with or without language prefix)
+    { source: '/:lang(en|fr)/project/:id/:view(summary|full)', destination: '/:lang/project/:id', permanent: true },
+    { source: '/project/:id/:view(summary|full)', destination: '/en/project/:id', permanent: true },
     // Old project routes
     { source: '/project/:id/:view', destination: '/en/project/:id/:view', permanent: true },
-    { source: '/project/:id', destination: '/en/project/:id/summary', permanent: true },
+    { source: '/project/:id', destination: '/en/project/:id', permanent: true },
     // Route renames: work -> projets, signals -> ressources
     { source: '/:lang/work', destination: '/:lang/projets', permanent: true },
     { source: '/:lang/signals', destination: '/:lang/ressources', permanent: true },
@@ -132,19 +135,19 @@ const nextConfig: NextConfig = {
     { source: '/:lang/guide/claude-code/ch8', destination: '/:lang/guide/claude-code/resultat-visuel', permanent: true },
     { source: '/:lang/guide/claude-code/ch9', destination: '/:lang/guide/claude-code/skills', permanent: true },
     // Legacy WordPress routes -> redirect to relevant current pages
-    { source: '/portfolio/toolkit/:path*', destination: '/fr/project/toolkit/summary', permanent: true },
-    { source: '/portfolio/sqool/:path*', destination: '/fr/project/sqool/summary', permanent: true },
-    { source: '/portfolio/sqool-classe-2022-2024', destination: '/fr/project/sqool-classe/summary', permanent: true },
-    // Gallery disabled (scroll bug with iframe loading) — redirect to summary until rework
-    { source: '/:lang/project/sqool-classe/gallery', destination: '/:lang/project/sqool-classe/summary', permanent: false },
-    { source: '/portfolio/sqool-software-ecosystem-evolution-2018-2024', destination: '/fr/project/sqool/summary', permanent: true },
-    { source: '/portfolio/sqool-extend-2024/:path*', destination: '/fr/project/sqool/summary', permanent: true },
-    { source: '/portfolio/pagesjaunes/:path*', destination: '/fr/project/pagesjaunes/summary', permanent: true },
-    { source: '/portfolio/pagesjaunes-2014-2016', destination: '/fr/project/pagesjaunes/summary', permanent: true },
-    { source: '/portfolio/connect/:path*', destination: '/fr/project/connect/summary', permanent: true },
-    { source: '/portfolio/connect-la-bulle-2020-2021', destination: '/fr/project/connect/summary', permanent: true },
-    { source: '/portfolio/france-vae/:path*', destination: '/fr/project/france-vae/summary', permanent: true },
-    { source: '/portfolio/toolkit-2023-2024', destination: '/fr/project/toolkit/summary', permanent: true },
+    { source: '/portfolio/toolkit/:path*', destination: '/fr/project/toolkit', permanent: true },
+    { source: '/portfolio/sqool/:path*', destination: '/fr/project/sqool', permanent: true },
+    { source: '/portfolio/sqool-classe-2022-2024', destination: '/fr/project/sqool-classe', permanent: true },
+    // Gallery disabled (scroll bug with iframe loading): redirect to the project page until rework
+    { source: '/:lang/project/sqool-classe/gallery', destination: '/:lang/project/sqool-classe', permanent: false },
+    { source: '/portfolio/sqool-software-ecosystem-evolution-2018-2024', destination: '/fr/project/sqool', permanent: true },
+    { source: '/portfolio/sqool-extend-2024/:path*', destination: '/fr/project/sqool', permanent: true },
+    { source: '/portfolio/pagesjaunes/:path*', destination: '/fr/project/pagesjaunes', permanent: true },
+    { source: '/portfolio/pagesjaunes-2014-2016', destination: '/fr/project/pagesjaunes', permanent: true },
+    { source: '/portfolio/connect/:path*', destination: '/fr/project/connect', permanent: true },
+    { source: '/portfolio/connect-la-bulle-2020-2021', destination: '/fr/project/connect', permanent: true },
+    { source: '/portfolio/france-vae/:path*', destination: '/fr/project/france-vae', permanent: true },
+    { source: '/portfolio/toolkit-2023-2024', destination: '/fr/project/toolkit', permanent: true },
     { source: '/portfolio/:path*', destination: '/fr/projets', permanent: true },
     { source: '/portfolio_category/:path*', destination: '/fr/projets', permanent: true },
     { source: '/portfolio_tag/:path*', destination: '/fr/projets', permanent: true },
@@ -176,7 +179,7 @@ const nextConfig: NextConfig = {
     // Old blog articles -> ressources
     { source: '/levolution-du-design-digital-25-ans-de-mutations', destination: '/fr/ressources', permanent: true },
     { source: '/lequilibre-perdu-quand-les-equipes-produit-etaient-vraiment-collaboratives', destination: '/fr/ressources', permanent: true },
-    { source: '/sqool-ecosystem-transformation-20251031', destination: '/fr/project/sqool/summary', permanent: true },
+    { source: '/sqool-ecosystem-transformation-20251031', destination: '/fr/project/sqool', permanent: true },
   ],
 }
 

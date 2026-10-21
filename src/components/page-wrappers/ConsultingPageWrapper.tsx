@@ -12,7 +12,7 @@ export default function ConsultingPageWrapper({ lang }: { lang: 'en' | 'fr' }) {
       lang={lang}
       onBack={() => router.back()}
       onContact={() => router.push(`/${lang}/contact`)}
-      onProjectClick={(id) => router.push(`/${lang}/project/${id}/summary`)}
+      onProjectClick={(id) => router.push(`/${lang}/project/${id}`)}
     />
   )
 }

@@ -221,7 +221,6 @@ const CASE_STUDY_COMPONENTS: Record<ProjectId, React.ComponentType<any>> = {
 }
 
 const VIEW_LABELS: Record<string, Record<string, string>> = {
-  full: { en: 'Full case study', fr: 'Case study complet' },
   gallery: { en: 'Gallery', fr: 'Galerie' },
 }
 
@@ -340,7 +339,7 @@ export default function CaseStudyPageWrapper({
                 {viewLabel ? (
                   <>
                     <Link
-                      href={`/${lang}/project/${projectId}/summary`}
+                      href={`/${lang}/project/${projectId}`}
                       className="text-gray-500 hover:text-gray-900 transition-colors hover:underline flex-shrink-0"
                     >
                       {projectName}
@@ -394,8 +393,8 @@ export default function CaseStudyPageWrapper({
           onClose={() => router.push(`/${lang}/projets`)}
           onToggleTheme={() => {}}
           onViewModeChange={(mode: string) => {
-            const urlView = mode === 'executive' ? 'summary' : mode === 'caseStudy' ? 'full' : 'gallery'
-            router.push(`/${lang}/project/${projectId}/${urlView}`)
+            // The canonical page is the case study itself; only the gallery has its own URL.
+            router.push(mode === 'gallery' ? `/${lang}/project/${projectId}/gallery` : `/${lang}/project/${projectId}`)
           }}
           onContact={() => router.push(`/${lang}/contact`)}
         />
@@ -455,7 +454,7 @@ function CaseStudyFooter({
               {suggestions.map((proj) => (
                 <Link
                   key={proj.id}
-                  href={`/${lang}/project/${proj.id}/summary`}
+                  href={`/${lang}/project/${proj.id}`}
                   className="py-4 -mx-3 px-3 rounded-xl hover:bg-black/[.04] active:scale-[0.99] transition-[background-color,transform] duration-150 cursor-pointer flex items-center gap-4"
                 >
                   <div className="w-16 h-11 rounded-lg overflow-hidden flex-shrink-0 bg-gray-200">

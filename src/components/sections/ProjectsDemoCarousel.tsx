@@ -32,11 +32,11 @@ const VIDEO_SRCS: Record<string, string> = {
 }
 
 const CASE_STUDY_PATHS: Record<string, string> = {
-  connect:     '/project/connect/summary',
-  riskos:      '/project/riskos/summary',
-  toolkit:     '/project/toolkit/summary',
-  dailymotion: '/project/dailymotion/summary',
-  pagesjaunes: '/project/pagesjaunes/summary',
+  connect:     '/project/connect',
+  riskos:      '/project/riskos',
+  toolkit:     '/project/toolkit',
+  dailymotion: '/project/dailymotion',
+  pagesjaunes: '/project/pagesjaunes',
 }
 
 interface ProjectsDemoCarouselProps {

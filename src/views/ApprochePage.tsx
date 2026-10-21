@@ -820,7 +820,7 @@ export default function ApprochePage({
                     {relatedProjects.map((project) => (
                       <Link
                         key={project.id}
-                        href={`/${lang}/project/${project.id}/summary`}
+                        href={`/${lang}/project/${project.id}`}
                         className="group flex items-center justify-between gap-4 py-4
                           transition-colors duration-150 ease-out hover:bg-black/[.04] active:bg-black/[.06] -mx-3 px-3 rounded-lg"
                       >
