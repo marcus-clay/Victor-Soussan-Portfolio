@@ -9,6 +9,8 @@ import { ArrowRight } from '@phosphor-icons/react';
 import VideoPlayer from '@/components/VideoPlayer';
 import { GalleryItem, getConnectGalleryItems } from '../../components/BentoGallery';
 import ConnectExecutive from '../../components/case-studies/ConnectExecutive';
+import CaseStudyHeroImage from '../../components/case-studies/CaseStudyHeroImage';
+import { heroSrc } from '../../data/caseStudyHeroImages';
 import EnhancedLightbox from '../../components/media/EnhancedLightbox';
 
 import { CONNECT_TRANSLATIONS } from '../../data/caseStudyTranslations/connectTranslations';
@@ -26,7 +28,7 @@ interface ConnectPageProps {
 // All images for lightbox navigation with caption keys
 type MediaItem = { src: string; captionKey: string; type: 'image' | 'video' };
 const allImagesData: MediaItem[] = [
-  { src: '/images/connect/connect_overview.webp', captionKey: 'thumbnail', type: 'image' },
+  { src: heroSrc('/images/connect/connect_overview.webp'), captionKey: 'thumbnail', type: 'image' },
   { src: '/images/connect/connect_dashboard_home_dark_full_smartphone-scaled.webp', captionKey: 'homeDark', type: 'image' },
   { src: '/images/connect/connect_dashboard_home_light_full-scaled.webp', captionKey: 'homeLight', type: 'image' },
   { src: '/images/connect/connect_dashboard_applications_full-scaled.webp', captionKey: 'applications', type: 'image' },
@@ -118,7 +120,8 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
   }, [caseStudyMode, viewMode]);
 
   const openLightbox = (imageSrc: string, startTime: number = 0) => {
-    const index = allImages.findIndex(img => img.src === imageSrc);
+    const target = heroSrc(imageSrc);
+    const index = allImages.findIndex(img => img.src === target);
     if (index !== -1) {
       setLightboxIndex(index);
       setVideoStartTime(startTime);
@@ -255,11 +258,12 @@ export const ConnectPage: React.FC<ConnectPageProps> = ({
 
             {/* Hero Image */}
             <div className="max-w-[960px] mx-auto px-6">
-              <MediaFigure
-                src="/images/connect/connect_overview.webp"
+              <CaseStudyHeroImage
+                src={heroSrc('/images/connect/connect_overview.webp')}
                 alt="SQOOL Connect Overview"
-                caption={t.captions.thumbnail}
-                captionDesc={t.captions.thumbnailDesc}
+                caption={`${t.captions.thumbnail}${t.captions.thumbnailDesc ? ` · ${t.captions.thumbnailDesc}` : ''}`}
+                onOpen={() => openLightbox('/images/connect/connect_overview.webp')}
+                lang={lang}
                 className="mb-24 md:mb-32"
               />
             </div>

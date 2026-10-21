@@ -11,6 +11,7 @@ import VideoPlayer from '@/components/VideoPlayer';
 
 import { GalleryItem } from '../../components/BentoGallery';
 import EnhancedLightbox from '../../components/media/EnhancedLightbox';
+import CaseStudyHeroImage from '../../components/case-studies/CaseStudyHeroImage';
 
 import { ANDROID_WEAR_TRANSLATIONS } from '../../data/caseStudyTranslations/androidWearTranslations';
 
@@ -30,6 +31,8 @@ const TRANSLATIONS = ANDROID_WEAR_TRANSLATIONS;
 const getGalleryItems = (lang: 'en' | 'fr'): GalleryItem[] => {
   const captions = {
     en: {
+      hero: 'PagesJaunes on Android Wear',
+      heroDesc: 'A glanceable local search experience designed for a 280dp watch screen.',
       sketches: 'Early Wireframes',
       sketchesDesc: 'Before opening Sketch, I explored dozens of layout options on paper. This rapid iteration revealed which information hierarchy worked best for a 280dp circular display.',
       ambient: 'Ambient Mode Mapping',
@@ -80,6 +83,8 @@ const getGalleryItems = (lang: 'en' | 'fr'): GalleryItem[] => {
       screenFDDesc: 'Complete business information at a glance.',
     },
     fr: {
+      hero: 'PagesJaunes sur Android Wear',
+      heroDesc: 'Une recherche locale lisible d’un coup d’œil, conçue pour un écran de montre de 280dp.',
       sketches: 'Wireframes Papier',
       sketchesDesc: 'Avant d\'ouvrir Sketch, j\'ai explor\u00e9 des dizaines d\'options de layout sur papier. Cette it\u00e9ration rapide a r\u00e9v\u00e9l\u00e9 quelle hi\u00e9rarchie d\'information fonctionnait sur un \u00e9cran circulaire de 280dp.',
       ambient: 'Mapping Mode Ambiant',
@@ -134,6 +139,7 @@ const getGalleryItems = (lang: 'en' | 'fr'): GalleryItem[] => {
   const t = captions[lang];
 
   return [
+    { src: '/images/pagesjaunes/Android%20wear/android_wear_thumbnail%2002.webp', type: 'image', caption: t.hero, captionDesc: t.heroDesc },
     { src: '/images/pagesjaunes/Android%20wear/early_wireframes.webp', type: 'image', caption: t.sketches, captionDesc: t.sketchesDesc },
     { src: '/images/pagesjaunes/Android%20wear/android_wear_ambient_sketches.webp', type: 'image', caption: t.ambient, captionDesc: t.ambientDesc },
     { src: '/images/pagesjaunes/Android%20wear/screens/android%20wear%20design%20ambient%20mode.webp', type: 'image', caption: t.ambientDesign, captionDesc: t.ambientDesignDesc },
@@ -264,22 +270,12 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
           {/* Hero Image */}
           <section className="mb-24 md:mb-32">
             <div className="max-w-[960px] mx-auto px-6">
-              <figure>
-                <div
-                  onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/android_wear_thumbnail%2002.webp')}
-                  className="rounded-xl overflow-hidden cursor-pointer group ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
-                  style={{ backgroundColor: '#E7E7E7' }}
-                >
-                  <div className="flex items-center justify-center" style={{ aspectRatio: '3/2' }}>
-                    <img
-                      loading="lazy"
-                      src="/images/pagesjaunes/Android%20wear/android_wear_thumbnail%2002.webp"
-                      alt="PagesJaunes Android Wear"
-                      className="h-full w-auto object-contain transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
-                    />
-                  </div>
-                </div>
-              </figure>
+              <CaseStudyHeroImage
+                src="/images/pagesjaunes/Android%20wear/android_wear_thumbnail%2002.webp"
+                alt="PagesJaunes Android Wear"
+                onOpen={() => handleImageClick('/images/pagesjaunes/Android%20wear/android_wear_thumbnail%2002.webp')}
+                lang={lang}
+              />
             </div>
           </section>
 

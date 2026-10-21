@@ -10,6 +10,8 @@ import VideoPlayer from '@/components/VideoPlayer';
 import { GalleryItem, getDailymotionGalleryItems } from '../../components/BentoGallery';
 import EnhancedLightbox from '../../components/media/EnhancedLightbox';
 import DailymotionExecutive from '../../components/case-studies/DailymotionExecutive';
+import CaseStudyHeroImage from '../../components/case-studies/CaseStudyHeroImage';
+import { heroSrc } from '../../data/caseStudyHeroImages';
 
 import { DAILYMOTION_TRANSLATIONS } from '../../data/caseStudyTranslations/dailymotionTranslations';
 
@@ -26,7 +28,7 @@ interface DailymotionPageProps {
 // All media (images + videos) for lightbox navigation
 type MediaItem = { src: string; captionKey: string; type: 'image' | 'video' };
 const allImagesData: MediaItem[] = [
-  { src: '/images/dailymotion/thumbnail_dailymotion_-_web_platform2x.webp', captionKey: 'hero', type: 'image' },
+  { src: heroSrc('/images/dailymotion/thumbnail_dailymotion_-_web_platform2x.webp'), captionKey: 'hero', type: 'image' },
   { src: '/images/dailymotion/dailymotion_focus_upload_2x.webp', captionKey: 'videoManagement', type: 'image' },
   { src: '/images/dailymotion/dailymotion_focus_livestream_2x.webp', captionKey: 'liveDashboard', type: 'image' },
   { src: '/images/dailymotion/dailymotion_focus_player_template_2x.webp', captionKey: 'playerManager', type: 'image' },
@@ -123,7 +125,8 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
   }, [caseStudyMode, viewMode]);
 
   const openLightbox = (imageSrc: string, startTime: number = 0) => {
-    const index = allImages.findIndex(img => img.src === imageSrc);
+    const target = heroSrc(imageSrc);
+    const index = allImages.findIndex(img => img.src === target);
     if (index !== -1) {
       setLightboxIndex(index);
       setVideoStartTime(startTime);
@@ -274,11 +277,12 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
 
             {/* Hero Image */}
             <div className="max-w-[960px] mx-auto px-6">
-              <MediaFigure
-                src="/images/dailymotion/thumbnail_dailymotion_-_web_platform2x.webp"
+              <CaseStudyHeroImage
+                src={heroSrc('/images/dailymotion/thumbnail_dailymotion_-_web_platform2x.webp')}
                 alt="Dailymotion Partner Platform Overview"
-                caption={t.captions.hero}
-                captionDesc={t.captions.heroDesc}
+                caption={`${t.captions.hero}${t.captions.heroDesc ? ` · ${t.captions.heroDesc}` : ''}`}
+                onOpen={() => openLightbox('/images/dailymotion/thumbnail_dailymotion_-_web_platform2x.webp')}
+                lang={lang}
                 className="mb-24 md:mb-32"
               />
             </div>

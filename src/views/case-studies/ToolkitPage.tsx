@@ -9,6 +9,8 @@ import { ArrowRight } from '@phosphor-icons/react';
 import VideoPlayer from '@/components/VideoPlayer';
 import { GalleryItem, getToolkitGalleryItems } from '../../components/BentoGallery';
 import ToolkitExecutive from '../../components/case-studies/ToolkitExecutive';
+import CaseStudyHeroImage from '../../components/case-studies/CaseStudyHeroImage';
+import { heroSrc } from '../../data/caseStudyHeroImages';
 import EnhancedLightbox from '../../components/media/EnhancedLightbox';
 import { TOOLKIT_TRANSLATIONS } from '../../data/caseStudyTranslations/toolkitTranslations';
 
@@ -25,7 +27,7 @@ interface ToolkitPageProps {
 // All media (images + videos) for lightbox navigation
 type MediaItem = { src: string; captionKey: string; type: 'image' | 'video' };
 const allImagesData: MediaItem[] = [
-  { src: '/images/toolkit/hero.webp', captionKey: 'hero', type: 'image' },
+  { src: heroSrc('/images/toolkit/hero.webp'), captionKey: 'hero', type: 'image' },
   { src: '/images/toolkit/toolkit_app_v3.webp', captionKey: 'overview', type: 'image' },
   { src: '/images/toolkit/Diagram_00_-_Product_Evolution___12_months.svg', captionKey: 'productEvolution', type: 'image' },
   { src: '/images/toolkit/Diagram_01_-_Problem.svg', captionKey: 'coreChallenge', type: 'image' },
@@ -367,7 +369,8 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
   }, [caseStudyMode, viewMode]);
 
   const openLightbox = (imageSrc: string, startTime: number = 0) => {
-    const index = allImages.findIndex(img => img.src === imageSrc);
+    const target = heroSrc(imageSrc);
+    const index = allImages.findIndex(img => img.src === target);
     if (index !== -1) {
       setLightboxIndex(index);
       setVideoStartTime(startTime);
@@ -578,11 +581,12 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
 
             {/* Hero Image */}
             <div className="max-w-[960px] mx-auto px-6">
-              <MediaFigure
-                src="/images/toolkit/hero.webp"
+              <CaseStudyHeroImage
+                src={heroSrc('/images/toolkit/hero.webp')}
                 alt="Toolkit App Overview"
-                caption={t.captions.hero as string}
-                captionDesc={t.captions.heroDesc as string}
+                caption={`${t.captions.hero as string}${t.captions.heroDesc ? ` · ${t.captions.heroDesc as string}` : ''}`}
+                onOpen={() => openLightbox('/images/toolkit/hero.webp')}
+                lang={lang}
                 className="mb-24 md:mb-32"
               />
             </div>

@@ -16,6 +16,8 @@ import React, { useRef, useState } from 'react';
 import ExpandableSection from './ExpandableSection';
 import CaseStudyTestimonialBlock from './CaseStudyTestimonialBlock';
 import VideoPlayer from '@/components/VideoPlayer';
+import CaseStudyHeroImage from './CaseStudyHeroImage';
+import { heroSrc } from '@/data/caseStudyHeroImages';
 import { motion, useInView } from 'framer-motion';
 import {
   Stack as Layers,
@@ -1296,13 +1298,13 @@ const FranceVaeFull: React.FC<FranceVaeFullProps> = ({
       <section className="px-6 pb-10">
         <div className="max-w-[960px] mx-auto">
           <FadeInSection>
-            <ClickableImage
-              src="/images/francevae/france_vae_home.webp"
+            <CaseStudyHeroImage
+              src={heroSrc('/images/francevae/france_vae_home.webp')}
               alt="France VAE Homepage"
               caption={t.hero.heroCaption}
-              isDark={isDark}
-              onClick={onImageClick}
-              aspectRatio="aspect-[3/2]"
+              onOpen={() => onImageClick('/images/francevae/france_vae_home.webp')}
+              lang={lang}
+              fit="top"
             />
           </FadeInSection>
         </div>

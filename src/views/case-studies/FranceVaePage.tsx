@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import FranceVaeExecutive from '../../components/case-studies/FranceVaeExecutive';
 import FranceVaeFull from '../../components/case-studies/FranceVaeFull';
 import EnhancedLightbox from '../../components/media/EnhancedLightbox';
+import { heroSrc } from '../../data/caseStudyHeroImages';
 
 import { FRANCEVAE_TRANSLATIONS } from '../../data/caseStudyTranslations/franceVaeTranslations';
 
@@ -53,7 +54,7 @@ interface FranceVaePageProps {
 
 // All media for lightbox
 const ALL_MEDIA = [
-  { src: '/images/francevae/france_vae_home.webp', caption: 'France VAE Homepage', captionFr: 'Page d\'accueil France VAE' },
+  { src: heroSrc('/images/francevae/france_vae_home.webp'), caption: 'France VAE Homepage', captionFr: 'Page d\'accueil France VAE' },
   { src: '/images/francevae/prototype vae collective .webp', caption: 'VAE Collective - Employer Dashboard Prototype', captionFr: 'VAE Collective - Prototype Dashboard Employeur' },
   { src: '/images/francevae/slide presentation process vae collective.webp', caption: 'VAE Collective - 4-Step Onboarding Process', captionFr: 'VAE Collective - Processus d\'onboarding en 4 étapes' },
   { src: '/images/francevae/slide presentation benefices vae collective.webp', caption: 'VAE Collective - ROI & Benefits for Enterprises', captionFr: 'VAE Collective - ROI et bénéfices entreprises' },
@@ -144,7 +145,8 @@ const FranceVaePage: React.FC<FranceVaePageProps> = ({
   }, [caseStudyMode, viewMode]);
 
   const openLightbox = (imageSrc: string) => {
-    const index = ALL_MEDIA.findIndex(m => m.src === imageSrc);
+    const target = heroSrc(imageSrc);
+    const index = ALL_MEDIA.findIndex(m => m.src === target);
     if (index !== -1) {
       setLightboxIndex(index);
       setLightboxOpen(true);

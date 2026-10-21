@@ -15,6 +15,8 @@ import VideoPlayer from '@/components/VideoPlayer';
 import { GalleryItem, getSqoolGalleryItems } from '../../components/BentoGallery';
 import { SqoolTimeline } from './SqoolTimeline';
 import SqoolExecutive from '../../components/case-studies/SqoolExecutive';
+import CaseStudyHeroImage from '../../components/case-studies/CaseStudyHeroImage';
+import { heroSrc } from '../../data/caseStudyHeroImages';
 import EnhancedLightbox from '../../components/media/EnhancedLightbox';
 
 import { SQOOL_TRANSLATIONS } from '../../data/caseStudyTranslations/sqoolTranslations';
@@ -33,7 +35,7 @@ interface SqoolPageProps {
 // Media items for lightbox
 type MediaItem = { src: string; captionKey: string; type: 'image' | 'video' };
 const allImagesData: MediaItem[] = [
-  { src: '/images/sqool/hero_ecosystem_sqool.webp', captionKey: 'hero', type: 'image' },
+  { src: heroSrc('/images/sqool/hero_ecosystem_sqool.webp'), captionKey: 'hero', type: 'image' },
   { src: '/images/sqool/image-unowhy-region-iledefrance-distribution-rentree.webp', captionKey: 'distribution', type: 'image' },
   { src: '/images/sqool/image-unowhy-shootingphoto-tablette.webp', captionKey: 'tablette', type: 'image' },
   { src: '/images/sqool/image-unowhy-marquage-fonctionnalites-appareils.webp', captionKey: 'marquage', type: 'image' },
@@ -141,7 +143,8 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
   }, [caseStudyMode, viewMode]);
 
   const openLightbox = (imageSrc: string, startTime: number = 0) => {
-    const index = allImages.findIndex(img => img.src === imageSrc);
+    const target = heroSrc(imageSrc);
+    const index = allImages.findIndex(img => img.src === target);
     if (index !== -1) {
       setLightboxIndex(index);
       setVideoStartTime(startTime);
@@ -372,10 +375,12 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
 
             {/* Hero Image */}
             <div className="max-w-[960px] mx-auto px-6 mb-24 md:mb-32">
-              <MediaFigure
-                src="/images/sqool/hero_ecosystem_sqool.webp"
+              <CaseStudyHeroImage
+                src={heroSrc('/images/sqool/hero_ecosystem_sqool.webp')}
                 alt={t.captions.hero}
                 caption={t.captions.hero}
+                onOpen={() => openLightbox('/images/sqool/hero_ecosystem_sqool.webp')}
+                lang={lang}
               />
             </div>
 

@@ -10,6 +10,7 @@ import VideoPlayer from '@/components/VideoPlayer';
 import { motion, useInView } from 'framer-motion';
 import ReadMoreList from './ReadMoreList';
 import CaseStudyTestimonialBlock from './CaseStudyTestimonialBlock';
+import CaseStudyHeroImage from './CaseStudyHeroImage';
 import {
   ArrowRight,
 } from '@phosphor-icons/react';
@@ -706,22 +707,14 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
       {/* HERO IMAGE */}
       {/* ================================================================ */}
       <div className="max-w-[960px] mx-auto px-6">
-        <figure className="mb-24 md:mb-32">
-          <div
-            onClick={() => onImageClick('/images/thumbnail_pagesjaunes_sp_tablette.webp')}
-            className="group rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 cursor-zoom-in transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-sm hover:shadow-lg hover:scale-[1.01]"
-          >
-            <img
-              loading="lazy"
-              src="/images/thumbnail_pagesjaunes_sp_tablette.webp"
-              alt="PagesJaunes Mobile Apps"
-              className="w-full h-auto transition-transform duration-300 ease-out group-hover:scale-[1.02]"
-            />
-          </div>
-          <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
-            {lang === 'en' ? 'PagesJaunes redesigned apps across iOS, Android and tablet' : 'Applications PagesJaunes redessinées sur iOS, Android et tablette'}
-          </figcaption>
-        </figure>
+        <CaseStudyHeroImage
+          src="/images/thumbnail_pagesjaunes_sp_tablette.webp"
+          alt="PagesJaunes Mobile Apps"
+          caption={lang === 'en' ? 'PagesJaunes redesigned apps across iOS, Android and tablet' : 'Applications PagesJaunes redessinées sur iOS, Android et tablette'}
+          onOpen={() => onImageClick('/images/thumbnail_pagesjaunes_sp_tablette.webp')}
+          lang={lang}
+          className="mb-24 md:mb-32"
+        />
       </div>
 
       {/* ================================================================ */}

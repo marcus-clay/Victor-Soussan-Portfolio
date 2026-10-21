@@ -9,6 +9,7 @@ import EnhancedLightbox from '../../components/media/EnhancedLightbox';
 
 import PrototypeFinderGallery from '../../components/prototype/PrototypeFinderGallery';
 import SqoolClasseExecutive from '../../components/case-studies/SqoolClasseExecutive';
+import CaseStudyHeroImage from '../../components/case-studies/CaseStudyHeroImage';
 import { SQOOL_CLASSE_TRANSLATIONS } from '../../data/caseStudyTranslations/sqoolClasseTranslations';
 
 interface SqoolClassePageProps {
@@ -195,21 +196,14 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                 </section>
 
                 {/* Hero Image */}
-                <figure className="mb-24 md:mb-32">
-                  <div className="max-w-[960px] mx-auto px-6">
-                    <button
-                      onClick={() => openImageLightbox('/images/thumbnail_sqool_classe.webp')}
-                      className="group relative w-full rounded-xl overflow-hidden cursor-zoom-in ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
-                    >
-                      <img
-                        loading="lazy"
-                        src="/images/thumbnail_sqool_classe.webp"
-                        alt="SQOOL Classe"
-                        className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
-                      />
-                    </button>
-                  </div>
-                </figure>
+                <div className="max-w-[960px] mx-auto px-6 mb-24 md:mb-32">
+                  <CaseStudyHeroImage
+                    src="/images/thumbnail_sqool_classe.webp"
+                    alt="SQOOL Classe"
+                    onOpen={() => openImageLightbox('/images/thumbnail_sqool_classe.webp')}
+                    lang={lang}
+                  />
+                </div>
 
                 {/* ==================== CONTEXT ==================== */}
                 <section id="context" className="mb-24 md:mb-32">

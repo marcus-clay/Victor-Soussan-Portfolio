@@ -679,7 +679,7 @@ export default function ApprochePage({
                             src={block.link.thumbnail}
                             alt={block.link.label}
                             loading="lazy"
-                            className="w-full h-full object-cover transition-transform duration-[300ms] cubic-bezier(0.23,1,0.32,1) group-hover:scale-[1.04]"
+                            className="w-full h-full object-cover transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.04]"
                           />
                         </div>
                         {/* Text */}

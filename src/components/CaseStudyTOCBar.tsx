@@ -179,7 +179,7 @@ const CaseStudyTOCBar: React.FC<CaseStudyTOCBarProps> = ({
                   tabIndex={isExpanded ? 0 : -1}
                   onClick={() => handleSectionClick(section.id)}
                   onKeyDown={(e) => handleItemKeyDown(e, index)}
-                  className={`w-full text-left py-2 pl-3 pr-3 rounded-lg flex items-center gap-3
+                  className={`w-full text-left py-2 pl-3 pr-3 rounded-lg flex items-center gap-3 active:[scale:0.98]
                     focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-900 focus-visible:ring-offset-1
                     ${isActive
                       ? 'text-gray-900'
@@ -192,22 +192,25 @@ const CaseStudyTOCBar: React.FC<CaseStudyTOCBarProps> = ({
                         : 'hover:bg-black/[0.04] hover:text-gray-900'
                     }`}
                   style={{
-                    transition: 'color 60ms ease, background-color 60ms ease, transform 80ms cubic-bezier(0.23, 1, 0.32, 1)',
-                    transform: isPressed ? 'scale(0.98)' : 'scale(1)',
+                    // The stagger belongs to opacity only: a delay on the whole list would also
+                    // hold back hover and press colours on the lower rows.
+                    transition: `color 60ms ease, background-color 60ms ease, scale 80ms cubic-bezier(0.23, 1, 0.32, 1), opacity 140ms ease ${isExpanded ? index * 20 : 0}ms`,
                     opacity: isExpanded ? 1 : 0,
-                    transitionDelay: isExpanded ? `${index * 20}ms` : '0ms',
                   }}
                 >
-                  {/* Dot on progress line */}
-                  <div
-                    className={`relative z-10 flex-shrink-0 rounded-full ring-2 ring-white/80 transition-all duration-200 ${
-                      isActive
-                        ? 'w-2 h-2 bg-gray-900'
-                        : isPast
-                          ? 'w-1.5 h-1.5 bg-gray-400'
-                          : 'w-1.5 h-1.5 bg-gray-200'
-                    }`}
-                  />
+                  {/* Dot on progress line: fixed 8px slot centred on the line, the dot scales
+                      inside it, so changing the active section never shifts the label */}
+                  <div className="relative z-10 flex-shrink-0 w-2 h-2">
+                    <div
+                      className={`absolute inset-0 rounded-full ring-2 ring-white/80 transition-[transform,background-color] duration-200 ease-out ${
+                        isActive
+                          ? 'scale-100 bg-gray-900'
+                          : isPast
+                            ? 'scale-75 bg-gray-400'
+                            : 'scale-75 bg-gray-200'
+                      }`}
+                    />
+                  </div>
                   <span className={`text-sm leading-snug ${isActive ? 'font-semibold' : 'font-medium'}`}>
                     {section.label}
                   </span>

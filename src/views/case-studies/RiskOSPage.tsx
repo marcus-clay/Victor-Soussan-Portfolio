@@ -5,6 +5,7 @@ import { ArrowUpRight } from '@phosphor-icons/react';
 import EnhancedLightbox, { type LightboxImage } from '../../components/media/EnhancedLightbox';
 import VideoPlayer from '@/components/VideoPlayer';
 import CaseStudyGlance from '@/components/case-studies/CaseStudyGlance';
+import CaseStudyHeroImage from '@/components/case-studies/CaseStudyHeroImage';
 import { getProjects } from '@/data/projectsData';
 
 const EASE_OUT: [number, number, number, number] = [0.23, 1, 0.32, 1];
@@ -267,19 +268,14 @@ const RiskOSPage: React.FC<RiskOSPageProps> = ({ lang: propLang }) => {
       <div className="max-w-[960px] mx-auto px-6 pb-24 md:pb-40">
 
         {/* Hero image */}
-        <figure className="mb-24 md:mb-32">
-          <div
-            className="rounded-xl overflow-hidden cursor-zoom-in group ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
-            onClick={() => openLightbox(0)}
-          >
-            <img
-              loading="lazy"
-              src="/images/riskos/thubmnail_riskos_dark.webp"
-              alt="RiskOS"
-              className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
-            />
-          </div>
-        </figure>
+        <CaseStudyHeroImage
+          src="/images/riskos/thubmnail_riskos_dark.webp"
+          alt="RiskOS"
+          onOpen={() => openLightbox(0)}
+          lang={lang}
+          tone="dark"
+          className="mb-24 md:mb-32"
+        />
 
         {/* Text sections use narrower container */}
         <div className="max-w-[740px] mx-auto">
