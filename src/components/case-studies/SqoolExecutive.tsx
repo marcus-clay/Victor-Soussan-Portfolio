@@ -22,7 +22,7 @@ const TRANSLATIONS = {
     hero: {
       eyebrow: 'Product Design Lead · 2018-2024',
       title: 'Building an EdTech ecosystem at scale',
-      subtitle: 'From hardware launcher to 7+ web apps serving 500K+ students. I joined UNOWHY as Senior UX/UI Designer in 2018, grew into Design Lead in 2020, then Product Lead in 2023.',
+      subtitle: 'From hardware launcher to 7 web apps serving 500K+ students. I joined UNOWHY as Senior UX/UI Designer in 2018, grew into Design Lead in 2020, then Product Lead in 2023.',
       image: '/images/sqool/hero_ecosystem_sqool.webp',
     },
     role: {
@@ -66,7 +66,7 @@ const TRANSLATIONS = {
         },
         {
           title: 'Design System',
-          description: 'Figma libraries, ZeroHeight documentation, tokens, and components scaling to 7+ apps.',
+          description: 'Figma libraries, ZeroHeight documentation, tokens, and components scaling to 7 apps.',
           image: '/images/sqool/hi sqool/hisqoolcomponents2x.webp',
         },
       ],
@@ -132,7 +132,7 @@ const TRANSLATIONS = {
         },
         {
           title: 'Component Library',
-          description: 'Reusable UI components ensuring consistency across 7+ applications and 120+ screens.',
+          description: 'Reusable UI components ensuring consistency across 7 applications and 120+ screens.',
           media: '/images/sqool/hi sqool/hisqooltokens2x3.webp',
         },
       ],
@@ -176,7 +176,7 @@ const TRANSLATIONS = {
     hero: {
       eyebrow: 'Product Design Lead · 2018-2024',
       title: 'Construire un \u00e9cosyst\u00e8me EdTech \u00e0 grande \u00e9chelle',
-      subtitle: 'Du launcher mat\u00e9riel \u00e0 7+ apps web pour 500K+ \u00e9l\u00e8ves. J\u2019ai rejoint UNOWHY comme Senior UX/UI Designer en 2018, suis devenu Design Lead en 2020, puis Product Lead en 2023.',
+      subtitle: 'Du launcher mat\u00e9riel \u00e0 7 apps web pour 500K+ \u00e9l\u00e8ves. J\u2019ai rejoint UNOWHY comme Senior UX/UI Designer en 2018, suis devenu Design Lead en 2020, puis Product Lead en 2023.',
       image: '/images/sqool/hero_ecosystem_sqool.webp',
     },
     role: {
@@ -220,7 +220,7 @@ const TRANSLATIONS = {
         },
         {
           title: 'Design System',
-          description: 'Biblioth\u00e8ques Figma, documentation ZeroHeight, tokens et composants scalant sur 7+ apps.',
+          description: 'Biblioth\u00e8ques Figma, documentation ZeroHeight, tokens et composants scalant sur 7 apps.',
           image: '/images/sqool/hi sqool/hisqoolcomponents2x.webp',
         },
       ],
@@ -286,7 +286,7 @@ const TRANSLATIONS = {
         },
         {
           title: 'Biblioth\u00e8que de composants',
-          description: 'Composants UI r\u00e9utilisables assurant la coh\u00e9rence sur 7+ applications et 120+ \u00e9crans.',
+          description: 'Composants UI r\u00e9utilisables assurant la coh\u00e9rence sur 7 applications et 120+ \u00e9crans.',
           media: '/images/sqool/hi sqool/hisqooltokens2x3.webp',
         },
       ],

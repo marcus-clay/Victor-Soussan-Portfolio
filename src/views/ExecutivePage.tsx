@@ -450,7 +450,7 @@ const SLIDES = {
       headline: '15 years',
       subline: 'In tech. 10 in product design. Specialized in rapid conceptualization and AI-assisted prototyping.',
       visual: '/images/sqool/hero_ecosystem_sqool.webp',
-      caption: 'SQOOL Suite: 6 modular apps designed from 0-to-1, design system, and team rituals (2019–2024)',
+      caption: 'SQOOL Suite: 7 modular apps designed from 0-to-1, design system, and team rituals (2019–2024)',
     },
     // 4. Scale
     {
@@ -527,7 +527,7 @@ const SLIDES = {
       type: 'bento',
       headline: 'Ship',
       items: [
-        '37+ apps designed and deployed with AI',
+        '50+ apps designed and deployed with AI',
         'From prototype to production in days',
       ],
       button: {
@@ -783,7 +783,7 @@ const SLIDES = {
       type: 'bento',
       headline: 'Livrer',
       items: [
-        '37+ apps conçues et déployées avec l\'IA',
+        '50+ apps conçues et déployées avec l\'IA',
         'Du prototype à la production en quelques jours',
       ],
       button: {

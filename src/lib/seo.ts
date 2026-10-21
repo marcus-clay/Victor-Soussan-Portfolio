@@ -165,7 +165,8 @@ export function personLd(lang: Lang) {
       occupationLocation: { '@type': 'Country', name: 'France' },
       skills: 'Product design, design systems, UX research, B2B and B2G interfaces, AI-assisted prototyping',
     },
-    knowsLanguage: ['fr', 'en'],
+    knowsLanguage: ['fr', 'en', 'es'],
+    alumniOf: { '@type': 'EducationalOrganization', name: 'ISCOM Paris' },
   }
 }
 

@@ -20,7 +20,7 @@ const TRANSLATIONS = {
     hero: {
       eyebrow: 'Senior Product Designer \u00b7 2017-2018',
       title: 'Video management for media partners',
-      subtitle: 'Empowering 30,000+ content partners to manage, publish and go live. Dailymotion was undergoing a major strategic pivot, shifting from general consumer content to repositioning itself as a premium platform for media partners.',
+      subtitle: 'Empowering 8,000+ users across 50 to 100 premium publishers to manage, publish and go live. Dailymotion was undergoing a major strategic pivot, shifting from general consumer content to repositioning itself as a premium platform for media partners.',
       image: '/images/dailymotion/thumbnail_dailymotion_-_web_platform2x.webp',
     },
     role: {
@@ -143,7 +143,7 @@ const TRANSLATIONS = {
     outcome: {
       title: 'Impact',
       metrics: [
-        { value: '30,000+', label: 'Content partners served worldwide' },
+        { value: '8,000+', label: 'Direct users across 50 to 100 premium publishers' },
         { value: '-50%', label: 'Preparation time for upload workflows' },
         { value: '120+', label: 'UI components in design system' },
       ],
@@ -153,7 +153,7 @@ const TRANSLATIONS = {
     hero: {
       eyebrow: 'Senior Product Designer \u00b7 2017-2018',
       title: 'Gestion vid\u00e9o pour partenaires m\u00e9dias',
-      subtitle: 'Outiller 30 000+ partenaires pour g\u00e9rer, publier et diffuser en live. Dailymotion \u00e9tait en plein pivot strat\u00e9gique majeur, passant du contenu grand public \u00e0 un repositionnement comme plateforme premium pour les partenaires m\u00e9dias.',
+      subtitle: 'Outiller 8 000+ utilisateurs de 50 \u00e0 100 publishers premium pour g\u00e9rer, publier et diffuser en live. Dailymotion \u00e9tait en plein pivot strat\u00e9gique majeur, passant du contenu grand public \u00e0 un repositionnement comme plateforme premium pour les partenaires m\u00e9dias.',
       image: '/images/dailymotion/thumbnail_dailymotion_-_web_platform2x.webp',
     },
     role: {
@@ -276,7 +276,7 @@ const TRANSLATIONS = {
     outcome: {
       title: 'Impact',
       metrics: [
-        { value: '30 000+', label: 'Partenaires contenu dans le monde' },
+        { value: '8 000+', label: 'Utilisateurs directs, 50 à 100 publishers premium' },
         { value: '-50%', label: 'Temps de pr\u00e9paration pour workflows upload' },
         { value: '120+', label: 'Composants UI dans le design system' },
       ],

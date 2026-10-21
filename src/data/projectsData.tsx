@@ -253,19 +253,19 @@ export const getProjects = (lang: Language): Project[] => {
       period: "2018 – 2024",
       summary: isEn ? "Leading the design transformation of a hardware company into a comprehensive EdTech SaaS ecosystem." : "Passage d'une boite Hardware à un écosystème SaaS EdTech complet. J'ai structuré le pôle design et piloté la refonte logicielle.",
       missions: isEn ? [
-        "Managed a team of 4 designers: hiring, annual reviews, career coaching",
+        "Managed a team of 5 designers: hiring, annual reviews, career coaching",
         "Led design strategy workshops for 'Road to 2025' vision",
         "Structured Design Ops: Figma organization, templates, and rituals",
         "Bridged Product & Tech: Designed decks for C-Level & All-Hands demos"
       ] : [
-        "Recrutement et management d'une équipe de 4 Product Designers",
+        "Recrutement et management d'une équipe de 5 designers",
         "Mise en place des Design Ops (Process, Figma, QA Design)",
         "Pilotage de la stratégie UX pour la suite logicielle (Roadmap 2025)",
         "Collaboration étroite avec 30+ développeurs et PMs"
       ],
       system: {
         title: isEn ? "Multi-Brand Design System" : "Design System Multi-Plateforme",
-        desc: isEn ? "Built a centralized Figma system supporting 8+ apps (Web/Android/PC). Created shared libraries for icons, gestures, and device frames to speed up hand-offs." : "Un système centralisé pour 8 applications (Web, Android, PC). J'ai standardisé les composants pour réduire la dette technique et accélérer les développements."
+        desc: isEn ? "Built a centralized Figma system supporting 7 apps (Web/Android/PC). Created shared libraries for icons, gestures, and device frames to speed up hand-offs." : "Un système centralisé pour 7 applications (Web, Android, PC). J'ai standardisé les composants pour réduire la dette technique et accélérer les développements."
       },
       deliverables: [
         "SQOOL Classe (Gestion de classe)",
