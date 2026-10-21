@@ -140,7 +140,7 @@ export default function TestimonialsPageClient({ lang }: { lang: 'en' | 'fr' }) 
         {/* LinkedIn CTA */}
         <div className="mt-12">
           <a
-            href="https://www.linkedin.com/in/victorsoussan/"
+            href="https://www.linkedin.com/in/victorsoussan-product-design/"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors duration-200

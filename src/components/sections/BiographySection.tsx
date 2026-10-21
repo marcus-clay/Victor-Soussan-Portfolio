@@ -149,7 +149,7 @@ const BiographySection: React.FC<BiographySectionProps> = ({
 
                    <div className="flex space-x-2">
                       <a
-                        href="https://linkedin.com/in/victorsoussan"
+                        href="https://linkedin.com/in/victorsoussan-product-design"
                         target="_blank"
                         rel="noreferrer"
                         className={`px-4 py-2.5 rounded-full text-sm font-medium btn-pill flex items-center ${

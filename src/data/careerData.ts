@@ -20,24 +20,23 @@ export const careerData: CareerItem[] = [
     id: 1,
     period: "2010-2014",
     role: {
-      en: "Art Director",
-      fr: "Directeur Artistique"
+      en: "Art Director / UX Designer",
+      fr: "Directeur Artistique / UX Designer"
     },
-    company: "Airbus",
+    company: "Louis 21",
     color: "bg-sky-500",
     details: {
       en: [
-        "Training simulators UI design",
-        "Cockpit interface concepts",
-        "Aviation safety displays"
+        "EADS internal social network for executives (10,000 users)",
+        "Android and iOS apps: Bouygues Immobilier, AFM Téléthon",
+        "Henner extranet for insurance brokers"
       ],
       fr: [
-        "UI simulateurs de formation",
-        "Concepts interfaces cockpit",
-        "Affichages sécurité aviation"
+        "Réseau social interne EADS pour cadres dirigeants (10 000 utilisateurs)",
+        "Apps Android et iOS : Bouygues Immobilier, AFM Téléthon",
+        "Extranet Henner pour courtiers en assurance"
       ]
-    },
-    logo: "/logos/LOGO AIRBUS.svg"
+    }
   },
   {
     id: 2,
@@ -120,12 +119,12 @@ export const careerData: CareerItem[] = [
     details: {
       en: [
         "Solutions design for 465 schools (Île-de-France)",
-        "Deployment on 300,000 devices",
+        "Deployment on 500,000 devices",
         "Digital educational ecosystems creation"
       ],
       fr: [
         "Conception de solutions pour 465 lycées (Île-de-France)",
-        "Déploiement sur 300 000 équipements",
+        "Déploiement sur 500 000 équipements",
         "Création d'écosystèmes éducatifs numériques"
       ]
     },
@@ -227,23 +226,23 @@ export const careerData: CareerItem[] = [
     id: 10,
     period: "2025",
     role: {
-      en: "Principal Designer & Entrepreneur",
-      fr: "Principal Designer & Entrepreneur"
+      en: "Lead Product Designer (Freelance)",
+      fr: "Lead Product Designer (Freelance)"
     },
     company: "Condamine Apps / beta.gouv.fr",
     color: "bg-indigo-500",
     details: {
       en: [
-        "Condamine Apps launch (37+ apps prototyped)",
+        "Condamine Apps launch (50+ apps prototyped)",
         "Joined beta.gouv.fr (Lead Product Designer France VAE)",
         "Freelance missions: Toolkit SaaS & Banque des Territoires (UX/Conversion)",
-        "Victor Soussan Design creation (Principal Designer)"
+        "Victor Soussan Design creation (Lead Product Designer)"
       ],
       fr: [
-        "Lancement de Condamine Apps (37+ apps prototypées)",
+        "Lancement de Condamine Apps (50+ apps prototypées)",
         "Rejoint beta.gouv.fr (Lead Product Designer France VAE)",
         "Missions Freelance : Toolkit SaaS & Banque des Territoires (UX/Conversion)",
-        "Création de Victor Soussan Design (Principal Designer)"
+        "Création de Victor Soussan Design (Lead Product Designer)"
       ]
     },
     logo: "/logos/LOGO BETAGOUV.svg"

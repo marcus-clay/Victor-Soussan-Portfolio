@@ -33,7 +33,7 @@ export const DAILYMOTION_TRANSLATIONS = {
       period: '2017-2018',
       title: 'Empowering Dailymotion\'s Video Partners to Manage, Publish and Go Live with Confidence',
       subtitle: 'Improved media management tools for video publishers',
-      description: 'Between 2017 and 2018, I was responsible for the UX and UI of Dailymotion\'s partner tool ecosystem. These web and mobile tools empowered over 30,000 content partners, including broadcasters and media publishers like France TV, CBS, and beIN Sports, to upload, edit, and livestream videos to their audiences.',
+      description: 'Between 2017 and 2018, I was responsible for the UX and UI of Dailymotion\'s partner tool ecosystem. These web and mobile tools empowered 8,000+ direct users across 50 to 100 premium publishers, including broadcasters and media publishers like France TV, CBS, and beIN Sports, to upload, edit, and livestream videos to their audiences.',
     },
     overview: {
       title: 'Overview',
@@ -112,8 +112,8 @@ export const DAILYMOTION_TRANSLATIONS = {
     impact: {
       title: 'Impact',
       intro: 'The design approach delivered measurable business results. By focusing on core workflows and progressive complexity, we created tools that media partners could adopt quickly.',
-      partners: '30,000+',
-      partnersDesc: 'Content partners served worldwide',
+      partners: '8,000+',
+      partnersDesc: 'Direct users across 50 to 100 premium publishers',
       videos: '10K+',
       videosDesc: 'Videos uploaded daily through the platform',
       reduction: '-50%',
@@ -207,7 +207,7 @@ export const DAILYMOTION_TRANSLATIONS = {
       period: '2017-2018',
       title: 'Permettre aux partenaires vid\u00e9o de Dailymotion de g\u00e9rer, publier et diffuser en live en toute confiance',
       subtitle: 'Outils de gestion m\u00e9dia am\u00e9lior\u00e9s pour les \u00e9diteurs vid\u00e9o',
-      description: 'Entre 2017 et 2018, j\'\u00e9tais responsable de l\'UX et UI de l\'\u00e9cosyst\u00e8me d\'outils partenaires de Dailymotion. Ces outils web et mobile ont permis \u00e0 plus de 30 000 partenaires de contenu, incluant des diffuseurs et \u00e9diteurs m\u00e9dias comme France TV, CBS et beIN Sports, d\'uploader, \u00e9diter et diffuser des vid\u00e9os en live \u00e0 leurs audiences.',
+      description: 'Entre 2017 et 2018, j\'\u00e9tais responsable de l\'UX et UI de l\'\u00e9cosyst\u00e8me d\'outils partenaires de Dailymotion. Ces outils web et mobile ont permis \u00e0 plus de 8 000 utilisateurs directs, r\u00e9partis sur 50 \u00e0 100 publishers premium, incluant des diffuseurs et \u00e9diteurs m\u00e9dias comme France TV, CBS et beIN Sports, d\'uploader, \u00e9diter et diffuser des vid\u00e9os en live \u00e0 leurs audiences.',
     },
     overview: {
       title: 'Vue d\'ensemble',
@@ -286,8 +286,8 @@ export const DAILYMOTION_TRANSLATIONS = {
     impact: {
       title: 'Impact',
       intro: 'L\'approche design a produit des r\u00e9sultats mesurables. En se concentrant sur les workflows essentiels et la complexit\u00e9 progressive, nous avons cr\u00e9\u00e9 des outils que les partenaires m\u00e9dias ont pu adopter rapidement.',
-      partners: '30 000+',
-      partnersDesc: 'Partenaires de contenu dans le monde',
+      partners: '8 000+',
+      partnersDesc: 'Utilisateurs directs, 50 à 100 publishers premium',
       videos: '10K+',
       videosDesc: 'Vid\u00e9os upload\u00e9es quotidiennement sur la plateforme',
       reduction: '-50%',

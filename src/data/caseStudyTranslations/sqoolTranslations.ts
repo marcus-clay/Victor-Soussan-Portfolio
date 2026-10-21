@@ -30,7 +30,7 @@ export const SQOOL_TRANSLATIONS = {
       period: '2018-2024',
       title: 'Building an EdTech Ecosystem for 500,000 Students',
       subtitle: 'How we transformed a hardware company into a modern software platform',
-      description: 'Over six years at UNOWHY, I led the design transformation from a legacy Android launcher to a suite of 7+ web applications serving high school students and teachers across 465 schools in Ile-de-France. This is the story of strategic pivots, user-centered design, and building a design system that scales.',
+      description: 'Over six years at UNOWHY, I led the design transformation from a legacy Android launcher to a suite of 7 web applications serving high school students and teachers across 465 schools in Ile-de-France. This is the story of strategic pivots, user-centered design, and building a design system that scales.',
     },
     testimonial: {
       quote: 'Victor played a key role in our design transformation. He built the team, established our design system, and brought the rigor we needed to scale from one product to an entire ecosystem. His ability to balance strategic vision with hands-on execution was essential to SQOOL\'s evolution.',
@@ -77,7 +77,7 @@ export const SQOOL_TRANSLATIONS = {
       brand: {
         title: 'Building the SQOOL Brand System',
         p1: 'A suite of apps needs a shared identity. I designed the new SQOOL visual system: logos for each app, a color palette that distinguished them while keeping them part of a family, and interaction patterns that would feel consistent everywhere.',
-        p2: 'We partnered with agency Fllow to refine the brand. The result was a system that could scale to 7+ apps while maintaining recognition.',
+        p2: 'We partnered with agency Fllow to refine the brand. The result was a system that could scale to 7 apps while maintaining recognition.',
       },
       ds: {
         title: 'Design System as Infrastructure',
@@ -295,7 +295,7 @@ export const SQOOL_TRANSLATIONS = {
       period: '2018-2024',
       title: 'Construire un écosystème EdTech pour 500 000 élèves',
       subtitle: 'Comment nous avons transformé un fabricant de matériel en plateforme logicielle moderne',
-      description: 'Pendant six ans chez UNOWHY, j\'ai dirigé la transformation design d\'un launcher Android vers une suite de 7+ applications web utilisées par les lycéens et enseignants de 465 établissements en Île-de-France. C\'est l\'histoire de pivots stratégiques, de design centré utilisateur, et de la construction d\'un design system qui passe à l\'échelle.',
+      description: 'Pendant six ans chez UNOWHY, j\'ai dirigé la transformation design d\'un launcher Android vers une suite de 7 applications web utilisées par les lycéens et enseignants de 465 établissements en Île-de-France. C\'est l\'histoire de pivots stratégiques, de design centré utilisateur, et de la construction d\'un design system qui passe à l\'échelle.',
     },
     testimonial: {
       quote: 'Victor a joué un rôle clé dans notre transformation design. Il a construit l\'équipe, établi notre design system, et apporté la rigueur nécessaire pour passer d\'un produit à un écosystème entier. Sa capacité à équilibrer vision stratégique et exécution concrète a été essentielle à l\'évolution de SQOOL.',
@@ -342,7 +342,7 @@ export const SQOOL_TRANSLATIONS = {
       brand: {
         title: 'Construire le système de marque SQOOL',
         p1: 'Une suite d\'apps a besoin d\'une identité partagée. J\'ai conçu le nouveau système visuel SQOOL : logos pour chaque app, une palette de couleurs qui les distingue tout en les gardant dans une même famille, et des patterns d\'interaction cohérents partout.',
-        p2: 'Nous avons travaillé avec l\'agence Fllow pour affiner la marque. Le résultat : un système qui peut passer à l\'échelle pour 7+ apps tout en maintenant la reconnaissance.',
+        p2: 'Nous avons travaillé avec l\'agence Fllow pour affiner la marque. Le résultat : un système qui peut passer à l\'échelle pour 7 apps tout en maintenant la reconnaissance.',
       },
       ds: {
         title: 'Le Design System comme infrastructure',
