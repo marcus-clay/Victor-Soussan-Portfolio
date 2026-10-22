@@ -70,7 +70,7 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
       {
         id: 'tunnel',
         title: 'Le tunnel de consultation',
-        text: 'Huit à treize écrans selon un routeur invisible, et 3 % de saisies de mutuelle réussies. La mutuelle sort du tunnel au profit d’une avance de frais, l’arrêt de travail devient une option du motif, et la salle d’attente montre une position plutôt qu’un minuteur qui mentirait. Des wireframes interactifs en noir et blanc, revus avec la direction produit, ont fixé l’ordre des écrans avant les maquettes.',
+        text: 'Huit à treize écrans selon un routeur invisible, et 3 % de saisies de mutuelle réussies. La mutuelle sort du tunnel au profit d’une avance de frais, l’arrêt de travail devient une option du motif, et la salle d’attente montre une position plutôt qu’un minuteur qui mentirait. Des wireframes interactifs en noir et blanc, revus avec la direction produit, ont fixé l’ordre des écrans avant les maquettes, puis un prototype de réservation a simulé la prise de créneau en pharmacie, de la carte des cabines à la confirmation.',
         figures: ['tunnelScreens', 'wireframes'],
       },
       {
@@ -107,7 +107,7 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
         id: 'vision',
         title: 'Tessan OS, sept prototypes en une semaine',
         text: 'En avril, un document de vision ne se discute pas en réunion, un téléphone qu’on fait défiler si. Chaque prototype porte une hypothèse : la confiance dans un interlocuteur permanent, un signal de santé lisible, la continuité entre la cabine et le mobile, la prévention par de petites missions. La revue du 24 avril les retient comme cap. Ensuite, tout ce qui ressemble à un avis médical est retiré : le score devient Score Bien-Être, WhatsApp est écarté, « Docteur » disparaît du nom.',
-        figures: ['osPrototypes', 'osPont', 'osCross'],
+        figures: ['osPrototypes', 'osPont', 'osVisio', 'osMedaillon', 'osCross'],
       },
       {
         id: 'hub',
@@ -125,7 +125,7 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
     captions: {
       appScreens: 'Les écrans de l’application patient',
       tunnelScreens: 'Le tunnel de consultation, de la carte vitale à la salle d’attente',
-      wireframes: 'Wireframes interactifs du tunnel',
+      wireframes: 'Prototypes interactifs : wireframes du tunnel et prototype de réservation en cabine',
       assistantScreen: 'L’Assistant Santé, avec son périmètre affiché',
       dsCatalogue: 'Le catalogue du kit de composants React',
       dsInteractions: 'Le kit en usage : une boîte de dialogue et une feuille',
@@ -135,6 +135,8 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
       pilotageAgent: 'Le pilotage produit lisible par un agent, et ses garde-fous',
       osPrototypes: 'Prototypes d’avril, avant le cadrage réglementaire',
       osPont: 'Le Pont (prototype d’avril) : en fin de consultation en cabine, le contexte passe au mobile',
+      osVisio: 'Première téléconsultation (prototype d’avril) : de la prise des constantes en cabine à l’appel vidéo',
+      osMedaillon: 'Tessan OS (prototype d’avril) : l’authentification par empreinte, avec le médaillon du patient',
       osCross: 'Tessan OS (prototype d’avril) : une couche commune au mobile, à la tablette et au bureau',
       hubScreens: 'Le Hub Santé : Ma Santé et le programme obésité',
     },
@@ -182,7 +184,7 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
       {
         id: 'tunnel',
         title: 'The consultation funnel',
-        text: 'Eight to thirteen screens depending on an invisible router, and 3% of health insurance entries completed. The insurance entry leaves the funnel for an advance payment, sick leave becomes an option of the reason for the visit, and the waiting room shows a position rather than a timer that would lie. Interactive black-and-white wireframes, reviewed with product leadership, fixed the order of the screens before the mockups.',
+        text: 'Eight to thirteen screens depending on an invisible router, and 3% of health insurance entries completed. The insurance entry leaves the funnel for an advance payment, sick leave becomes an option of the reason for the visit, and the waiting room shows a position rather than a timer that would lie. Interactive black-and-white wireframes, reviewed with product leadership, fixed the order of the screens before the mockups, then a booking prototype simulated slot booking in a pharmacy, from the booth map to the confirmation.',
         figures: ['tunnelScreens', 'wireframes'],
       },
       {
@@ -219,7 +221,7 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
         id: 'vision',
         title: 'Tessan OS, seven prototypes in a week',
         text: 'In April, a vision document cannot be discussed in a meeting, a phone you scroll can. Each prototype carries a hypothesis: trust in a permanent interlocutor, a readable health signal, continuity between booth and mobile, prevention through small missions. The April 24 review keeps them as a heading. After that, everything that reads like medical advice is removed: the score becomes the Wellbeing Score, WhatsApp is dropped, “Doctor” leaves the name.',
-        figures: ['osPrototypes', 'osPont', 'osCross'],
+        figures: ['osPrototypes', 'osPont', 'osVisio', 'osMedaillon', 'osCross'],
       },
       {
         id: 'hub',
@@ -237,7 +239,7 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
     captions: {
       appScreens: 'The patient app screens',
       tunnelScreens: 'The consultation funnel, from the health card to the waiting room',
-      wireframes: 'Interactive funnel wireframes',
+      wireframes: 'Interactive prototypes: funnel wireframes and booth booking prototype',
       assistantScreen: 'The Health Assistant, with its scope displayed',
       dsCatalogue: 'The React component kit catalog',
       dsInteractions: 'The kit in use: a dialog and a sheet',
@@ -247,6 +249,8 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
       pilotageAgent: 'Product management an agent can read, and its guardrails',
       osPrototypes: 'April prototypes, before the regulatory framing',
       osPont: 'The Bridge (April prototype): at the end of a booth consultation, the context moves to mobile',
+      osVisio: 'First teleconsultation (April prototype): from the vitals at the booth to the video call',
+      osMedaillon: 'Tessan OS (April prototype): fingerprint sign-in, with the patient badge',
       osCross: 'Tessan OS (April prototype): a layer shared across mobile, tablet and desktop',
       hubScreens: 'The Health Hub: My Health and the weight program',
     },

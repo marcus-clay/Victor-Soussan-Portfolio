@@ -137,6 +137,9 @@ const FIGURES: Record<string, FigureSource> = {
     screens: [
       proto('onboarding-wireframes-qualifier-avant-auth', { fr: 'Qualifier avant l’authentification', en: 'Qualify before signing in' }),
       proto('onboarding-wireframes-post-consultation', { fr: 'Après la consultation', en: 'After the consultation' }),
+      proto('patient-v4-reservation-cabine-sms-mail', { fr: 'Patient v4, réserver en cabine', en: 'Patient v4, booking at a booth' }),
+      proto('patient-v4-creneaux-creux-notification-acces', { fr: 'Patient v4, créneaux creux et accès', en: 'Patient v4, quiet slots and access' }),
+      proto('patient-v4-explorer-le-reseau-carte-reservation', { fr: 'Patient v4, explorer le réseau', en: 'Patient v4, exploring the network' }),
     ],
   },
   osPrototypes: {
@@ -148,6 +151,8 @@ const FIGURES: Record<string, FigureSource> = {
       proto('doctor-reserver-creneau', { fr: 'Docteur Tessan, réserver un créneau', en: 'Doctor Tessan, booking a slot' }),
       proto('score-bien-etre-interactions', { fr: 'Score Bien-Être, lire la tendance', en: 'Wellbeing Score, reading the trend' }),
       proto('prevention-maintenir-pour-valider', { fr: 'Prévention Active, maintenir pour valider', en: 'Active Prevention, hold to confirm' }),
+      proto('docteur-tessan-teleconsultation-appel', { fr: 'Docteur Tessan, lancer l’appel vidéo', en: 'Doctor Tessan, starting the video call' }),
+      proto('prevention-active-defis', { fr: 'Prévention Active, les défis', en: 'Active Prevention, the challenges' }),
       proto('whatsapp-chip-mission-du-jour', { fr: 'WhatsApp, la mission du jour', en: 'WhatsApp, the daily mission' }),
     ],
   },
@@ -156,6 +161,20 @@ const FIGURES: Record<string, FigureSource> = {
     kind: 'tablet',
     share: 0.86,
     screens: [proto('le-pont-cabine-vers-mobile', { fr: 'Le Pont', en: 'The Bridge' }, 2160 / 1500)],
+  },
+  osVisio: {
+    type: 'devices',
+    kind: 'browser',
+    url: 'tessan-os',
+    share: 0.86,
+    screens: [proto('premiere-teleconsultation-appel-video', { fr: 'Première téléconsultation', en: 'First teleconsultation' }, 2240 / 1400)],
+  },
+  osMedaillon: {
+    type: 'devices',
+    kind: 'browser',
+    url: 'tessan-os',
+    share: 0.86,
+    screens: [proto('tessan-os-medaillon-connexion', { fr: 'Connexion', en: 'Sign-in' }, 2160 / 1350)],
   },
   osCross: {
     type: 'devices',
