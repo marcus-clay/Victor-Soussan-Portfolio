@@ -89,7 +89,7 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
         id: 'design-system',
         title: 'Le design system',
         text: 'Un seul designer, Angular en production, React pour le neuf : le partage porte sur les tokens. Dans Figma, 11 rampes de couleur, 13 styles typographiques et près de 1 300 variantes de composants, nommés comme dans le kit React, son alter ego.',
-        figures: ['dsDemos', 'dsInteractions', 'dsDemosMobile', 'dsPalette'],
+        figures: ['dsVideos', 'dsVideosMobile', 'dsDemos', 'dsDemosMobile', 'dsPalette'],
       },
       {
         id: 'skills',
@@ -218,7 +218,7 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
         id: 'design-system',
         title: 'The design system',
         text: 'One designer, Angular in production, React for everything new: what is shared is the tokens. In Figma, 11 color ramps, 13 type styles and nearly 1,300 component variants, named as in the React kit, its alter ego.',
-        figures: ['dsDemos', 'dsInteractions', 'dsDemosMobile', 'dsPalette'],
+        figures: ['dsVideos', 'dsVideosMobile', 'dsDemos', 'dsDemosMobile', 'dsPalette'],
       },
       {
         id: 'skills',
