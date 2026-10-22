@@ -1,3 +1,4 @@
+import { getProjectTags } from '@/data/projectTags'
 import type { Project } from '@/data/projectsData'
 import type { RelatedItem } from '@/components/RelatedContent'
 
@@ -30,7 +31,7 @@ export function relatedProjects(
   return picks.map((project) => ({
     href: `/${lang}/project/${project.id}`,
     title: project.title,
-    label: project === next ? nextLabel : project.role,
+    label: project === next ? nextLabel : getProjectTags(project.id, lang).join(' · ') || project.role,
     description: project.summary,
     cover: { src: coverSrc(project) },
   }))
