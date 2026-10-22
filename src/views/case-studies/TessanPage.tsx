@@ -127,7 +127,9 @@ const FIGURES: Record<string, FigureSource> = {
     screens: [{ src: '/images/tessan/tessan-ds-catalogue.webp', width: 2000, height: 1475, aspect: 2000 / 1475, label: { fr: 'Catalogue', en: 'Catalog' } }],
   },
   dsPalette: { type: 'image', src: '/images/tessan/tessan-figma-palette.webp', width: 2000, height: 1806, maxWidth: 820 },
-  pmSchema: { type: 'image', src: '/images/tessan/tessan-systeme-gestion-produit.webp', width: 2200, height: 1120 },
+  skillsTree: { type: 'image', src: '/images/tessan/tessan-skills-arborescence.webp', width: 2160, height: 1563 },
+  auditComposants: { type: 'image', src: '/images/tessan/tessan-audit-composants.webp', width: 2160, height: 1134 },
+  pilotageAgent: { type: 'image', src: '/images/tessan/tessan-pilotage-agent.webp', width: 2160, height: 1236 },
   wireframes: {
     type: 'devices',
     kind: 'phone',
