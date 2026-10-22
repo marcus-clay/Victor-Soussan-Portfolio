@@ -24,7 +24,7 @@ export const CASE_STUDY_SHELL: Record<string, CaseStudyShell> = {
   tessan: {
     client: 'Tessan',
     logo: '/images/tessan/tessan-logo.svg',
-    visual: '/images/tessan/cover_tessan_front.webp',
+    visual: '/images/tessan/cover_tessan_hub.webp',
     tone: '#E8E8E8',
     fit: 'bleed',
   },

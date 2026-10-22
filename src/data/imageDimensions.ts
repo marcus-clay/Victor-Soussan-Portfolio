@@ -478,7 +478,7 @@ export const IMAGE_DIMENSIONS: Record<string, [number, number]> = {
   "/images/sqool/systeme de marque/visuels_systeme_de_marque_14_2x.webp": [2200, 1238],
   "/images/sqool/thumbnail_suite_sqool_blue.webp": [2200, 1467],
   "/images/tessan/cover_tessan_app.webp": [2000, 1333],
-  "/images/tessan/cover_tessan_front.webp": [2000, 1333],
+  "/images/tessan/cover_tessan_hub.webp": [2000, 1333],
   "/images/tessan/cover_tessan_os.webp": [2000, 1333],
   "/images/tessan/cover_tessan_systeme.webp": [2000, 1333],
   "/images/tessan/proto/docteur-tessan-teleconsultation-appel.webp": [780, 1688],
