@@ -2,6 +2,7 @@ import { useState, useRef, useCallback, useEffect } from 'react';
 import { motion, AnimatePresence, useAnimation, PanInfo } from 'framer-motion';
 import { X } from '@phosphor-icons/react';
 import { useScrollLock } from '@/hooks/useScrollLock';
+import ThumbVideo from './ThumbVideo';
 
 interface MobileLightboxProps {
   src: string;
@@ -201,7 +202,7 @@ const MobileLightbox = ({
       >
         {children || (
           type === 'video' ? (
-            <video src={src} poster={poster} className={className} playsInline muted />
+            <ThumbVideo src={src} poster={poster} className={className} />
           ) : (
             <img src={src} alt={alt} className={className} loading="lazy" />
           )
@@ -284,6 +285,8 @@ const MobileLightbox = ({
                     controls
                     playsInline
                     autoPlay
+                    loop
+                    muted
                   />
                 ) : (
                   <img loading="lazy"

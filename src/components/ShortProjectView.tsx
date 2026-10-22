@@ -4,6 +4,7 @@ import React, { useMemo, useState } from 'react'
 import { ArrowUpRight } from '@phosphor-icons/react'
 import type { Project } from '@/data/projectsData'
 import EnhancedLightbox from '@/components/media/EnhancedLightbox'
+import VideoPlayer from '@/components/VideoPlayer'
 
 const CATEGORY_LABELS: Record<string, { en: string; fr: string }> = {
   'product-design': { en: 'Product Design', fr: 'Design Produit' },
@@ -11,6 +12,8 @@ const CATEGORY_LABELS: Record<string, { en: string; fr: string }> = {
   'prototype': { en: 'Prototype', fr: 'Prototype' },
   'concept': { en: 'Concept', fr: 'Concept' },
 }
+
+const isVideoSrc = (src: string) => /\.(mp4|webm|mov)(\?|#|$)/i.test(src)
 
 type BodyBlock =
   | { kind: 'h2'; text: string }
@@ -98,12 +101,16 @@ export default function ShortProjectView({
                     'aspect-[4/3]'
                   }`}
                 >
-                  <img
-                    src={src}
-                    alt={`${project.title} - ${idx + 1}`}
-                    className="w-full h-full object-cover"
-                    loading={idx === 0 ? 'eager' : 'lazy'}
-                  />
+                  {isVideoSrc(src) ? (
+                    <VideoPlayer src={src} lang={lang} className="w-full h-full object-cover" containerClassName="w-full h-full" />
+                  ) : (
+                    <img
+                      src={src}
+                      alt={`${project.title} - ${idx + 1}`}
+                      className="w-full h-full object-cover"
+                      loading={idx === 0 ? 'eager' : 'lazy'}
+                    />
+                  )}
                 </div>
               ))}
             </div>
@@ -132,6 +139,18 @@ export default function ShortProjectView({
                   <h2 key={idx} className="text-title-2 text-gray-900 mt-14 mb-4 max-w-[680px] first:mt-0">
                     {block.text}
                   </h2>
+                )
+              }
+              if (block.kind === 'figure' && isVideoSrc(block.src)) {
+                return (
+                  <figure key={idx} className="my-10 first:mt-0">
+                    <div className="overflow-hidden rounded-2xl bg-[#E8E8E8] ring-1 ring-black/[0.04]">
+                      <VideoPlayer src={block.src} lang={lang} className="block w-full h-auto" />
+                    </div>
+                    <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed max-w-[680px]">
+                      {block.caption}
+                    </figcaption>
+                  </figure>
                 )
               }
               if (block.kind === 'figure') {
@@ -172,7 +191,7 @@ export default function ShortProjectView({
           <EnhancedLightbox
             isOpen={lightboxOpen}
             onClose={() => setLightboxOpen(false)}
-            images={figures.map((f) => ({ src: f.src, caption: f.caption, type: 'image' as const }))}
+            images={figures.map((f) => ({ src: f.src, caption: f.caption, type: isVideoSrc(f.src) ? ('video' as const) : ('image' as const) }))}
             currentIndex={lightboxIndex}
             onIndexChange={setLightboxIndex}
             lang={lang}
@@ -183,10 +202,11 @@ export default function ShortProjectView({
         {project.videoUrl && (
           <div className="border-t border-gray-100 pt-12 md:pt-16 pb-12 md:pb-16">
             <div className="aspect-video rounded-2xl overflow-hidden bg-gray-100">
-              <video
+              <VideoPlayer
                 src={project.videoUrl}
-                controls
+                lang={lang}
                 className="w-full h-full object-cover"
+                containerClassName="w-full h-full"
               />
             </div>
           </div>

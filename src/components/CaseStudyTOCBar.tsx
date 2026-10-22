@@ -6,7 +6,7 @@
  * Expanded: portal dropdown with vertical progress line and polished interactions.
  */
 
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useLayoutEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { CaretDown } from '@phosphor-icons/react'
 
@@ -41,9 +41,25 @@ const CaseStudyTOCBar: React.FC<CaseStudyTOCBarProps> = ({
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
 
+  // Sliding highlight behind the active row: it moves with the section as the reader scrolls
+  // (measured from the row, moved with transform only). The first measure sits in place; the
+  // slide is switched on afterwards, so opening the list never animates from nowhere.
+  const listRef = useRef<HTMLDivElement>(null)
+  const [highlight, setHighlight] = useState<{ y: number; h: number } | null>(null)
+  const [highlightReady, setHighlightReady] = useState(false)
+
   const currentIndex = sections.findIndex(s => s.id === activeSection)
   const currentLabel = sections.find(s => s.id === activeSection)?.label || sections[0]?.label || ''
   const progressRatio = sections.length <= 1 ? 0 : currentIndex / (sections.length - 1)
+
+  useLayoutEffect(() => {
+    if (!mounted) return
+    const row = listRef.current?.querySelectorAll<HTMLElement>('[data-toc-item]')[currentIndex]
+    if (!row) return
+    setHighlight({ y: row.offsetTop, h: row.offsetHeight })
+    const frame = requestAnimationFrame(() => setHighlightReady(true))
+    return () => cancelAnimationFrame(frame)
+  }, [mounted, currentIndex, sections, isExpanded])
 
   // Close on click outside
   useEffect(() => {
@@ -145,7 +161,19 @@ const CaseStudyTOCBar: React.FC<CaseStudyTOCBarProps> = ({
       <div className="wrap">
         <div className="py-2 border-t border-gray-100">
           {/* Section list with vertical progress line */}
-          <div className="relative">
+          <div className="relative" ref={listRef}>
+            {/* Active row highlight: slides between rows */}
+            {highlight && (
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute left-0 top-0 w-full rounded-lg bg-black/[0.04]"
+                style={{
+                  height: highlight.h,
+                  transform: `translateY(${highlight.y}px)`,
+                  transition: highlightReady ? 'transform 260ms cubic-bezier(0.23, 1, 0.32, 1)' : 'none',
+                }}
+              />
+            )}
             {/* Track line: full height background */}
             {sections.length > 1 && (
               <div
@@ -190,7 +218,7 @@ const CaseStudyTOCBar: React.FC<CaseStudyTOCBarProps> = ({
                     ${isPressed
                       ? 'bg-black/[0.06]'
                       : isActive
-                        ? 'bg-black/[0.04] hover:bg-black/[0.06]'
+                        ? 'hover:bg-black/[0.04]'
                         : 'hover:bg-black/[0.04] hover:text-gray-900'
                     }`}
                   style={{
@@ -246,7 +274,7 @@ const CaseStudyTOCBar: React.FC<CaseStudyTOCBarProps> = ({
               {/* Active section indicator dot */}
               <div className="w-2 h-2 rounded-full bg-gray-900 flex-shrink-0" />
               {/* Current label */}
-              <span className="text-sm font-medium text-gray-900 truncate">
+              <span key={currentLabel} className="toc-label-in text-sm font-medium text-gray-900 truncate">
                 {currentLabel}
               </span>
               {/* Fraction counter */}

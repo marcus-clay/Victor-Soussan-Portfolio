@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import Reveal from '@/components/ui/Reveal'
 
 interface ActHeaderProps {
   /** Act number ("01"): the order of a case study carries meaning, so it is shown */
@@ -17,15 +18,13 @@ interface ActHeaderProps {
 export function ActHeader({ index, title, lead }: ActHeaderProps) {
   return (
     <>
-      <div className="wrap" aria-hidden="true">
-        <div className="border-t border-gray-100" />
-      </div>
+      <ActRule />
       <div className="act-text pt-9 md:pt-14 pb-8 md:pb-12">
-        <span className="block md:absolute md:left-[var(--pad)] md:top-[3.95rem] mb-3 md:mb-0 text-xs font-medium text-gray-500 tabular-nums">
+        <Reveal as="span" className="block md:absolute md:left-[var(--pad)] md:top-[3.95rem] mb-3 md:mb-0 text-xs font-medium text-gray-500 tabular-nums">
           {index}
-        </span>
-        <h2 className="text-subhead text-gray-900 max-w-[26ch]">{title}</h2>
-        {lead && <p className="mt-5 text-lead-lg text-gray-900 max-w-[40ch]">{lead}</p>}
+        </Reveal>
+        <Reveal as="h2" className="text-subhead text-gray-900 max-w-[26ch]">{title}</Reveal>
+        {lead && <Reveal as="p" className="mt-5 text-lead-lg text-gray-900 max-w-[40ch]">{lead}</Reveal>}
       </div>
     </>
   )
@@ -35,7 +34,8 @@ export function ActHeader({ index, title, lead }: ActHeaderProps) {
 export function ActRule() {
   return (
     <div className="wrap" aria-hidden="true">
-      <div className="border-t border-gray-100" />
+      {/* The line draws itself from the left as the act comes into view */}
+      <Reveal kind="line" className="border-t border-gray-100" />
     </div>
   )
 }
@@ -47,10 +47,10 @@ export function ActRule() {
 export function ActTitle({ index, title }: { index: string; title: string }) {
   return (
     <>
-      <span className="block md:absolute md:left-[var(--pad)] md:top-[3.95rem] mb-3 md:mb-0 text-xs font-medium text-gray-500 tabular-nums">
+      <Reveal as="span" className="block md:absolute md:left-[var(--pad)] md:top-[3.95rem] mb-3 md:mb-0 text-xs font-medium text-gray-500 tabular-nums">
         {index}
-      </span>
-      <h2 className="text-subhead text-gray-900 max-w-[26ch] mb-5">{title}</h2>
+      </Reveal>
+      <Reveal as="h2" className="text-subhead text-gray-900 max-w-[26ch] mb-5">{title}</Reveal>
     </>
   )
 }
@@ -59,9 +59,9 @@ export function ActTitle({ index, title }: { index: string; title: string }) {
 export function Prose({ children, className = '' }: { children: ReactNode; className?: string }) {
   return (
     <div className="act-text">
-      <div className={`max-w-[62ch] text-base text-gray-600 [&>p+p]:mt-5 [&>h3]:mt-10 [&>h3]:mb-2 [&>h3:first-child]:mt-0 [&>h3]:text-title-3 [&>h3]:text-gray-900 ${className}`}>
+      <Reveal className={`max-w-[62ch] text-base text-gray-600 [&>p+p]:mt-5 [&>h3]:mt-10 [&>h3]:mb-2 [&>h3:first-child]:mt-0 [&>h3]:text-title-3 [&>h3]:text-gray-900 ${className}`}>
         {children}
-      </div>
+      </Reveal>
     </div>
   )
 }
@@ -69,14 +69,14 @@ export function Prose({ children, className = '' }: { children: ReactNode; class
 /** One design decision: the question as an h3, then the reasoning in the reading column. */
 export function DecisionBlock({ id, title, paragraphs }: { id: string; title: string; paragraphs: string[] }) {
   return (
-    <div id={id} className="act-text mb-12 md:mb-16 last:mb-0 scroll-mt-24">
+    <Reveal id={id} className="act-text mb-12 md:mb-16 last:mb-0 scroll-mt-24">
       <h3 className="text-title-3 text-gray-900 mb-3 max-w-[56ch]">{title}</h3>
       <div className="max-w-[62ch] text-base text-gray-600 [&>p+p]:mt-4">
         {paragraphs.map((text, i) => (
           <p key={i}>{text}</p>
         ))}
       </div>
-    </div>
+    </Reveal>
   )
 }
 
@@ -84,10 +84,10 @@ export function DecisionBlock({ id, title, paragraphs }: { id: string; title: st
 export function Scene({ id, title, lead, children }: { id?: string; title: string; lead?: string; children: ReactNode }) {
   return (
     <div id={id} className="mb-16 md:mb-24 last:mb-0 scroll-mt-24">
-      <div className="act-text mb-6 md:mb-8">
+      <Reveal className="act-text mb-6 md:mb-8">
         <h3 className="text-title-3 text-gray-900 mb-3">{title}</h3>
         {lead && <p className="max-w-[62ch] text-base text-gray-600">{lead}</p>}
-      </div>
+      </Reveal>
       {children}
     </div>
   )

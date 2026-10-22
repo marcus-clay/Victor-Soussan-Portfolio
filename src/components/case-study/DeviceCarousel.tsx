@@ -98,6 +98,8 @@ export default function DeviceCarousel({ kind, screens, ariaLabel, prevLabel, ne
               label={screen.label}
               aspect={screen.aspect}
               onZoom={() => onZoom(screen.video ?? screen.src)}
+              focused={i === index}
+              className={screen.video && i !== index ? 'opacity-60 transition-opacity duration-300 ease-out' : 'transition-opacity duration-300 ease-out'}
             />
             <figcaption className="mt-4 text-center text-xs text-gray-500">{screen.label}</figcaption>
           </figure>

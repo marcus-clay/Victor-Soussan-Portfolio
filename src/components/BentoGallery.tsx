@@ -3,8 +3,9 @@
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence, PanInfo, useMotionValue, useTransform, useSpring } from 'framer-motion';
-import { X, CaretLeft as ChevronLeft, CaretRight as ChevronRight, Play } from '@phosphor-icons/react';
+import { X, CaretLeft as ChevronLeft, CaretRight as ChevronRight } from '@phosphor-icons/react';
 import { useScrollLock } from '../hooks/useScrollLock';
+import ThumbVideo from './media/ThumbVideo';
 
 // Apple-style spring transition
 const springTransition = {
@@ -78,10 +79,11 @@ interface GalleryCardProps {
   item: GalleryItem;
   index: number;
   isVideo: (src: string) => boolean;
+  lang: 'en' | 'fr';
   onClick: () => void;
 }
 
-const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, isVideo, onClick }) => {
+const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, isVideo, lang, onClick }) => {
   const cardRef = useRef<HTMLDivElement>(null);
 
   // Motion values for 3D tilt effect
@@ -149,25 +151,10 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, isVideo, onClick
         />
 
         {item.type === 'video' || isVideo(item.src) ? (
-          <div className="relative">
-            <video
-              src={item.src}
-              className="w-full h-auto block"
-              muted
-              playsInline
-              preload="metadata"
-            />
-            {/* Play icon overlay */}
-            <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/30 transition-colors">
-              <div className="w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-md transition-transform duration-300 group-hover:scale-110 bg-white/20">
-                <Play
-                  size={28}
-                  className="text-white ml-1"
-                  fill="white"
-                />
-              </div>
-            </div>
-          </div>
+          <ThumbVideo
+            src={item.src}
+            className="w-full h-auto block"
+          />
         ) : (
           <img loading="lazy"
             src={item.src}
@@ -390,6 +377,7 @@ export const BentoGallery: React.FC<BentoGalleryProps> = ({
                     item={item}
                     index={index}
                     isVideo={isVideo}
+                    lang={lang}
                     onClick={() => openLightbox(index)}
                   />
                 ))}
@@ -576,9 +564,10 @@ export const BentoGallery: React.FC<BentoGalleryProps> = ({
                 {/* Image dots indicator */}
                 {!lightboxZoomed && (
                   <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center space-x-2">
-                    {items.map((_, idx) => (
+                    {items.map((dot, idx) => (
                       <button
                         key={idx}
+                        aria-label={`${idx + 1} / ${items.length}${dot.type === 'video' ? ` (${lang === 'fr' ? 'vidéo' : 'video'})` : ''}`}
                         onClick={(e) => {
                           e.stopPropagation();
                           const dir = idx > lightboxIndex ? 1 : -1;

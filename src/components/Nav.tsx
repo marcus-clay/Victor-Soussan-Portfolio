@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import {
   List as MenuIcon,
   X,
@@ -50,6 +50,9 @@ export default function Nav({ lang }: { lang: Lang }) {
   const [pageTitle, setPageTitle] = useState<string | null>(null)
   const [showPageTitle, setShowPageTitle] = useState(false)
   const pathname = usePathname()
+  // Real system preference (the site hook of the same name is a constant): the sliding
+  // indicator becomes a short fade-slide instead of a spring.
+  const reduceMotion = useReducedMotion()
   const content = TRANSLATIONS[lang].nav
   const otherLang = lang === 'en' ? 'fr' : 'en'
 
@@ -230,12 +233,22 @@ export default function Nav({ lang }: { lang: Lang }) {
                     <Link
                       href={`/${lang}/${item.route}`}
                       aria-current={active ? 'page' : undefined}
-                      className={`inline-flex min-h-10 items-center px-3.5 text-sm rounded-full hover:bg-black/[0.04] active:scale-[0.97] ${
+                      className={`relative inline-flex min-h-10 items-center px-3.5 text-sm rounded-full hover:bg-black/[0.04] active:scale-[0.97] ${
                         active ? 'font-semibold text-gray-900' : 'font-medium text-gray-600 hover:text-gray-900'
                       }`}
                       style={{ transition: 'background-color 150ms ease, color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
                     >
                       {item.labelKey ? content[item.labelKey] : ''}
+                      {/* One indicator shared by the entries: it slides from the page you leave to
+                          the page you open (spatial continuity), critically damped, no overshoot. */}
+                      {active && (
+                        <motion.span
+                          layoutId="nav-active-indicator"
+                          aria-hidden="true"
+                          className="pointer-events-none absolute inset-x-3.5 bottom-1.5 h-0.5 rounded-full bg-[#2D5CF3]"
+                          transition={reduceMotion ? { duration: 0.15, ease: EASE_OUT } : { type: 'spring', duration: 0.4, bounce: 0 }}
+                        />
+                      )}
                     </Link>
                   </li>
                 )

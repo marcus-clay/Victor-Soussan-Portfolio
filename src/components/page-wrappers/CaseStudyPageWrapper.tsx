@@ -10,6 +10,7 @@ import ShortProjectView from '@/components/ShortProjectView'
 import AuthorContactCard from '@/components/AuthorContactCard'
 import CaseStudyTOCBar from '@/components/CaseStudyTOCBar'
 import RelatedContent from '@/components/RelatedContent'
+import ReadingProgress from '@/components/ui/ReadingProgress'
 import { relatedProjects } from '@/lib/relatedProjects'
 import { TRANSLATIONS } from '@/data/translations'
 import { useScrollDirection } from '@/hooks/useScrollDirection'
@@ -132,7 +133,7 @@ const FULL_TOC: Record<string, TOCSections> = {
 
 
 const loadingSpinner = () => (
-  <div className="min-h-screen bg-white flex items-center justify-center">
+  <div className="loading-soft min-h-screen bg-white flex items-center justify-center">
     <div className="w-8 h-8 border-2 border-gray-200 border-t-gray-900 rounded-full animate-spin" />
   </div>
 )
@@ -247,6 +248,9 @@ export default function CaseStudyPageWrapper({
       {/* Nav title override: Nav.tsx reads [data-nav-title] before falling back to h1 */}
       <span data-nav-title className="sr-only">{project?.navTitle ?? projectName}</span>
 
+      {/* Reading progress: 2px line at the top of the window, scroll-driven (CSS only) */}
+      <ReadingProgress />
+
       {/* Sticky sub-bar: swaps between breadcrumb and TOC */}
       <div
         className="sticky z-10 backdrop-blur-xl bg-[#FDFDFC]/80"
@@ -268,7 +272,7 @@ export default function CaseStudyPageWrapper({
               <nav aria-label={lang === 'fr' ? 'Fil d\'Ariane' : 'Breadcrumb'} className="flex items-center gap-1.5 text-xs min-w-0 overflow-hidden h-10">
                 <Link
                   href={`/${lang}/projets`}
-                  className="text-gray-500 hover:text-gray-900 transition-colors hover:underline flex-shrink-0 inline-flex items-center h-10"
+                  className="link-draw [--link-draw-bottom:11px] text-gray-500 hover:text-gray-900 transition-colors flex-shrink-0 inline-flex items-center h-10"
                 >
                   {lang === 'fr' ? 'Projets' : 'Projects'}
                 </Link>
@@ -277,7 +281,7 @@ export default function CaseStudyPageWrapper({
                   <>
                     <Link
                       href={`/${lang}/project/${parent.id}`}
-                      className="text-gray-500 hover:text-gray-900 transition-colors hover:underline flex-shrink-0 inline-flex items-center h-10"
+                      className="link-draw [--link-draw-bottom:11px] text-gray-500 hover:text-gray-900 transition-colors flex-shrink-0 inline-flex items-center h-10"
                     >
                       {parent.title}
                     </Link>
@@ -288,7 +292,7 @@ export default function CaseStudyPageWrapper({
                   <>
                     <Link
                       href={`/${lang}/project/${projectId}`}
-                      className="text-gray-500 hover:text-gray-900 transition-colors hover:underline flex-shrink-0 inline-flex items-center h-10"
+                      className="link-draw [--link-draw-bottom:11px] text-gray-500 hover:text-gray-900 transition-colors flex-shrink-0 inline-flex items-center h-10"
                     >
                       {projectName}
                     </Link>

@@ -30,7 +30,7 @@ const CONTENT = {
     heroIntro: 'RiskOS is a working fraud-detection prototype. It tests whether an AI can prepare alerts while the analyst keeps the decision, with reasoning written out in full and a visible trace for every action.',
     heroRole: 'Product design',
     heroFormat: 'Working prototype',
-    summaryContext: 'When an AI takes part in a decision, how do you keep the person deciding actively engaged? I chose fraud detection in European banking to explore the question: analysts work under time pressure, 80% of their alerts turn out to be false alarms, and the final decision is always theirs.',
+    summaryContext: 'When an AI takes part in a decision, how do you keep the person deciding actively engaged? I chose fraud detection in European banking to explore the question: analysts work under time pressure, most of their alerts turn out to be false alarms, and the final decision is always theirs.',
     summaryRole: 'A personal exploration. I designed the interaction model and built the working prototype: React 18, Vite and Tailwind CSS, deployed on Vercel.',
     summaryDeliverables: [
       { title: 'Triage view', detail: 'Five cases sorted by risk level, with priority filters and a live counter.' },
@@ -44,29 +44,32 @@ const CONTENT = {
     actProduct: 'The prototype in use',
     actLearn: 'What the project shows',
     challengeTitle: 'The challenge',
-    challenge: 'If the AI does too much, the analyst disengages. If it does not explain itself, trust erodes. In many teams the daily tool is still a spreadsheet and fixed rules, with no context, no sorting by relevance and no memory of earlier cases. An analyst at a European neobank handles 80 to 150 alerts per shift, and every minute spent on a false alarm is a minute not available for a real case.',
-    beforeAfterCaption: 'Same data, two readings.',
+    challenge: 'If the AI does too much, the analyst disengages. If it does not explain itself, trust erodes. In many teams the daily tool is still a spreadsheet and fixed rules, with no context, no sorting by relevance and no memory of earlier cases. The prototype starts from a working hypothesis, not from client data: an analyst handles dozens of alerts per shift, and every minute spent on a false alarm is a minute not available for a real case.',
+    beforeAfterCaption: 'Compare a raw CSV in a terminal with the RiskOS case view',
     goalsTitle: 'The objectives',
     goals: [
       'The prototype tests whether the AI can handle the preparation work while the analyst keeps full ownership of the decision. Three principles guided the design. The AI sets up the context and the analyst decides. The reasoning is written out in full, so the analyst can read it. When the analyst acts, the effect is visible outside the tool as well.',
       'In the process, a suspicious transaction first meets the bank’s automated rules. If it is flagged, the alert enters a queue, the AI analyzes it, and the analyst reviews and decides.',
     ],
-    dataFlowCaption: 'Where RiskOS sits in the process.',
+    dataFlowCaption: 'Follow a transaction from the rule engine to the analyst’s decision',
     triageTitle: 'Triage under time pressure',
     triageText: 'The analyst opens a session and finds five cases sorted by risk level, with color-coded priorities, a filter and a live counter. Without sorting, the analyst scrolls the whole list to find the urgent cases. Here, sorting takes a few seconds.',
-    triageCaption: 'Triage view',
+    triageCaption: 'Open the highest-risk case from the sorted inbox',
+    filterCaption: 'Filter the inbox by risk level, then search for a case',
     aiTitle: 'Writing the AI reasoning in real time',
     aiText: 'The AI writes its analysis word by word. Relevant details are highlighted as they appear, the data sources light up progressively and a confidence score shows the level of certainty. The action buttons stay hidden until the analysis is complete, so the analyst reads the full reasoning before being able to decide.',
-    aiCaption: 'AI analysis, streaming',
+    aiCaption: 'Read the AI analysis as it is written, word by word',
+    contextCaption: 'Ask the AI for more context before choosing an action',
     decisionTitle: 'Making the effect of each action visible',
     decisionText: 'The analyst picks an action: block the card, pass the case to a senior or keep it under watch. A confirmation screen recaps what happened. Then two things appear that usually stay invisible: the Slack message to the fraud team and the SMS to the customer. Usually the analyst acts and never sees the result.',
-    decisionCaption: 'Confirmation and what happened next',
+    decisionCaption: 'Block a card and see the Slack message and the customer SMS',
     falsePositiveTitle: 'Resolving a false alarm in eight seconds',
     falsePositiveText: 'A medium-risk alert arrives: score 45, a 450 euro payment. The AI reviews the transaction history and finds nothing unusual. The analyst confirms with one click.',
-    falsePositiveCaption: 'False alarm, resolved',
+    falsePositiveCaption: 'Confirm a medium-risk alert as safe with one click',
     queueTitle: 'Processing a full queue',
     queueText: 'The analyst works through five cases in sequence. After each resolution, the next case loads automatically. At the end: five cases resolved, 92 seconds total.',
-    queueCaption: 'Case flow and session recap',
+    queueCaption: 'Finish the queue and read the session recap',
+    liveCaption: 'Open a case, block the card, then move on to the next one',
     learning1Title: 'Streaming the reasoning builds trust in a way scores cannot.',
     learning1Text: 'When the AI writes its analysis word by word, the analyst reads along and forms their own view at the same time. A confidence score after the fact just says “trust me” without showing the work.',
     learning2Title: 'Hiding the buttons until the analysis is done changes how people read.',
@@ -83,7 +86,7 @@ const CONTENT = {
     heroIntro: 'RiskOS est un prototype fonctionnel de détection de fraude. Il teste si une IA peut préparer les alertes pendant que l’analyste garde la décision, avec un raisonnement écrit en toutes lettres et une trace visible pour chaque action.',
     heroRole: 'Product design',
     heroFormat: 'Prototype fonctionnel',
-    summaryContext: 'Quand une IA participe à une décision, comment garder engagée la personne qui décide ? J’ai choisi la détection de fraude dans la banque européenne pour explorer cette question : les analystes travaillent sous contrainte de temps, 80 % de leurs alertes se révèlent être de fausses alarmes et la décision finale leur revient toujours.',
+    summaryContext: 'Quand une IA participe à une décision, comment garder engagée la personne qui décide ? J’ai choisi la détection de fraude dans la banque européenne pour explorer cette question : les analystes travaillent sous contrainte de temps, la majorité de leurs alertes se révèlent être de fausses alarmes et la décision finale leur revient toujours.',
     summaryRole: 'Une exploration personnelle. J’ai conçu le modèle d’interaction et construit le prototype fonctionnel : React 18, Vite et Tailwind CSS, déployé sur Vercel.',
     summaryDeliverables: [
       { title: 'Vue de triage', detail: 'Cinq cas classés par niveau de risque, avec filtres de priorité et compteur en direct.' },
@@ -97,29 +100,32 @@ const CONTENT = {
     actProduct: 'Le prototype en usage',
     actLearn: 'Ce que le projet enseigne',
     challengeTitle: 'L’enjeu',
-    challenge: 'Si l’IA en fait trop, l’analyste se désengage. Si elle n’explique pas son raisonnement, la confiance s’effrite. Dans beaucoup d’équipes, l’outil du quotidien reste un tableur et des règles fixes, sans contexte, sans tri par pertinence et sans mémoire des cas précédents. Un analyste fraude d’une néobanque européenne traite 80 à 150 alertes par vacation, et chaque minute passée sur une fausse alarme manque à un cas réel.',
-    beforeAfterCaption: 'Mêmes données, deux lectures.',
+    challenge: 'Si l’IA en fait trop, l’analyste se désengage. Si elle n’explique pas son raisonnement, la confiance s’effrite. Dans beaucoup d’équipes, l’outil du quotidien reste un tableur et des règles fixes, sans contexte, sans tri par pertinence et sans mémoire des cas précédents. Le prototype part d’une hypothèse de travail, sans donnée client : un analyste traite des dizaines d’alertes par vacation, et chaque minute passée sur une fausse alarme manque à un cas réel.',
+    beforeAfterCaption: 'Comparer un CSV brut dans un terminal avec la vue de cas RiskOS',
     goalsTitle: 'Les objectifs',
     goals: [
       'Le prototype teste si l’IA peut prendre en charge la préparation tout en laissant à l’analyste la pleine maîtrise de la décision. Trois principes ont guidé la conception. L’IA pose le contexte et l’analyste décide. Le raisonnement est écrit en toutes lettres, pour que l’analyste puisse le lire. Quand l’analyste agit, l’effet est visible aussi en dehors de l’outil.',
       'Dans le processus, une transaction suspecte passe d’abord par les règles automatiques de la banque. Si elle est signalée, l’alerte entre dans une file, l’IA l’analyse, puis l’analyste examine et tranche.',
     ],
-    dataFlowCaption: 'Où se place RiskOS dans le processus.',
+    dataFlowCaption: 'Suivre une transaction, du moteur de règles à la décision de l’analyste',
     triageTitle: 'Trier sous contrainte de temps',
     triageText: 'L’analyste ouvre sa session et trouve cinq cas classés par niveau de risque, avec des priorités colorées, un filtre et un compteur en direct. Sans tri, il parcourt toute la liste pour repérer les cas urgents. Ici, le tri prend quelques secondes.',
-    triageCaption: 'Vue de triage',
+    triageCaption: 'Ouvrir le cas le plus risqué depuis la liste triée',
+    filterCaption: 'Filtrer la liste par niveau de risque, puis chercher un cas',
     aiTitle: 'Écrire le raisonnement de l’IA en direct',
     aiText: 'L’IA rédige son analyse mot par mot. Les éléments pertinents sont mis en évidence au fur et à mesure, les sources de données s’allument progressivement et un score de confiance indique le niveau de certitude. Les boutons d’action restent masqués jusqu’à la fin de l’analyse, pour que l’analyste lise l’intégralité du raisonnement avant de pouvoir décider.',
-    aiCaption: 'Analyse IA, en direct',
+    aiCaption: 'Lire l’analyse de l’IA au fil de son écriture, mot par mot',
+    contextCaption: 'Demander plus de contexte à l’IA avant de choisir une action',
     decisionTitle: 'Rendre visible l’effet de chaque action',
     decisionText: 'L’analyste choisit une action : bloquer la carte, transmettre le cas à un senior ou le garder sous surveillance. Un écran de confirmation récapitule ce qui s’est passé. Puis apparaissent deux éléments qui restent habituellement invisibles : le message Slack à l’équipe fraude et le SMS au client. D’habitude, l’analyste agit sans jamais voir le résultat.',
-    decisionCaption: 'Confirmation et suite',
+    decisionCaption: 'Bloquer une carte et voir le message Slack et le SMS client',
     falsePositiveTitle: 'Résoudre une fausse alerte en huit secondes',
     falsePositiveText: 'Une alerte de risque moyen arrive : score de 45, paiement de 450 euros. L’IA passe l’historique des transactions en revue et ne trouve rien d’anormal. L’analyste confirme d’un clic.',
-    falsePositiveCaption: 'Fausse alerte, résolue',
+    falsePositiveCaption: 'Confirmer une alerte à risque moyen comme sûre en un clic',
     queueTitle: 'Traiter une file complète',
     queueText: 'L’analyste traite cinq cas en séquence. Après chaque résolution, le cas suivant se charge automatiquement. À la fin : cinq cas résolus, 92 secondes au total.',
-    queueCaption: 'Enchaînement des cas et bilan de session',
+    queueCaption: 'Terminer la file et lire le bilan de session',
+    liveCaption: 'Ouvrir un cas, bloquer la carte, puis passer au cas suivant',
     learning1Title: 'Écrire le raisonnement en direct construit la confiance, ce qu’un score ne fait pas.',
     learning1Text: 'Quand l’IA écrit son analyse mot par mot, l’analyste suit et se forge sa propre opinion en parallèle. Un score de confiance affiché après coup revient à dire « faites-moi confiance » sans montrer le travail.',
     learning2Title: 'Masquer les boutons tant que l’analyse est en cours change la lecture.',
@@ -145,6 +151,10 @@ const CLIP_FALSE_POSITIVE = `${VIDEO_BASE}/05-false-positive-fit.mp4`;
 const CLIP_AI = `${VIDEO_BASE}/02-ai-insight-fit.mp4`;
 const CLIP_DECISION = `${VIDEO_BASE}/03-decision-ellipses-fit.mp4`;
 const CLIP_QUEUE = `${VIDEO_BASE}/04-queue-cleared-fit.mp4`;
+// Recorded on the live prototype (riskos.vercel.app), fictional cases only
+const CLIP_LIVE = `${VIDEO_BASE}/00-live-prototype-fit.mp4`;
+const CLIP_FILTER = `${VIDEO_BASE}/08-inbox-filter.mp4`;
+const CLIP_CONTEXT = `${VIDEO_BASE}/09-ask-context.mp4`;
 
 interface VideoFigureProps {
   src: string;
@@ -169,6 +179,11 @@ function VideoFigure({ src, name, onZoom }: VideoFigureProps) {
   );
 }
 
+/** Several clips of one idea, stacked at the full width of the column */
+function Clips({ children }: { children: React.ReactNode }) {
+  return <div className="space-y-6 md:space-y-8">{children}</div>;
+}
+
 /** One block: an h3, one or two short paragraphs in the reading column, then at most one visual */
 function Block({ id, title, text, children }: { id?: string; title: string; text: string | string[]; children?: React.ReactNode }) {
   return (
@@ -191,10 +206,13 @@ function buildLightboxItems(lang: 'en' | 'fr'): LightboxImage[] {
     { src: CLIP_BEFORE_AFTER, caption: t.beforeAfterCaption, type: 'video' },
     { src: CLIP_DATA_FLOW, caption: t.dataFlowCaption, type: 'video' },
     { src: CLIP_TRIAGE, caption: t.triageCaption, type: 'video' },
+    { src: CLIP_FILTER, caption: t.filterCaption, type: 'video' },
     { src: CLIP_AI, caption: t.aiCaption, type: 'video' },
+    { src: CLIP_CONTEXT, caption: t.contextCaption, type: 'video' },
     { src: CLIP_DECISION, caption: t.decisionCaption, type: 'video' },
     { src: CLIP_FALSE_POSITIVE, caption: t.falsePositiveCaption, type: 'video' },
     { src: CLIP_QUEUE, caption: t.queueCaption, type: 'video' },
+    { src: CLIP_LIVE, caption: t.liveCaption, type: 'video' },
   ];
 }
 
@@ -277,11 +295,17 @@ const RiskOSPage: React.FC<RiskOSPageProps> = ({ lang: propLang }) => {
           <ActTitle index="02" title={t.actApproach} />
           <div className="mt-4 md:mt-6">
             <Block id="triage" title={t.triageTitle} text={t.triageText}>
-              <VideoFigure src={CLIP_TRIAGE} name={t.triageCaption} onZoom={() => openLightbox(CLIP_TRIAGE)} />
+              <Clips>
+                <VideoFigure src={CLIP_TRIAGE} name={t.triageCaption} onZoom={() => openLightbox(CLIP_TRIAGE)} />
+                <VideoFigure src={CLIP_FILTER} name={t.filterCaption} onZoom={() => openLightbox(CLIP_FILTER)} />
+              </Clips>
             </Block>
 
             <Block id="ai-analysis" title={t.aiTitle} text={t.aiText}>
-              <VideoFigure src={CLIP_AI} name={t.aiCaption} onZoom={() => openLightbox(CLIP_AI)} />
+              <Clips>
+                <VideoFigure src={CLIP_AI} name={t.aiCaption} onZoom={() => openLightbox(CLIP_AI)} />
+                <VideoFigure src={CLIP_CONTEXT} name={t.contextCaption} onZoom={() => openLightbox(CLIP_CONTEXT)} />
+              </Clips>
             </Block>
 
             <Block id="decision" title={t.decisionTitle} text={t.decisionText}>
@@ -296,7 +320,11 @@ const RiskOSPage: React.FC<RiskOSPageProps> = ({ lang: propLang }) => {
         <ActRule />
         <div className="act-wide pt-10 md:pt-14 pb-12 md:pb-16">
           <ActTitle index="03" title={t.actProduct} />
-          <div className="mt-4 md:mt-6">
+          {/* The whole prototype in one pass, before the two cases that are told separately */}
+          <div className="mt-4 md:mt-6 mb-14 md:mb-16">
+            <VideoFigure src={CLIP_LIVE} name={t.liveCaption} onZoom={() => openLightbox(CLIP_LIVE)} />
+          </div>
+          <div>
             <Block id="false-positive" title={t.falsePositiveTitle} text={t.falsePositiveText}>
               <VideoFigure src={CLIP_FALSE_POSITIVE} name={t.falsePositiveCaption} onZoom={() => openLightbox(CLIP_FALSE_POSITIVE)} />
             </Block>

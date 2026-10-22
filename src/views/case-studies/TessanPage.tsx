@@ -11,6 +11,7 @@ import CaseStudySummary from '@/components/case-study/CaseStudySummary'
 import CaseStudyHero from '@/components/case-study/CaseStudyHero'
 import DeviceCarousel from '@/components/case-study/DeviceCarousel'
 import DeviceMockup, { type DeviceKind, type DeviceScreen } from '@/components/case-study/DeviceMockup'
+import FlowPlayer from '@/components/case-study/FlowPlayer'
 import EnhancedLightbox, { type LightboxImage } from '@/components/media/EnhancedLightbox'
 import { zoomable } from '@/utils/zoomable'
 import { TESSAN_TRANSLATIONS } from '@/data/caseStudyTranslations/tessanTranslations'
@@ -78,7 +79,13 @@ interface ShowcaseFigure {
   items: ShowcaseItem[]
 }
 
-type FigureSource = ImageFigure | DeviceFigure | ShowcaseFigure
+/** Clips of one kind of screen, played one at a time on a single phone (a row of phones moving together reads as noise). */
+interface FlowFigure {
+  type: 'flows'
+  flows: { name: string; title: { fr: string; en: string }; line: { fr: string; en: string } }[]
+}
+
+type FigureSource = ImageFigure | DeviceFigure | ShowcaseFigure | FlowFigure
 
 const app = (name: string, label: { fr: string; en: string }): DeviceScreenSpec => ({
   src: `/images/tessan/tessan-app-${name}.webp`,
@@ -246,15 +253,13 @@ const FIGURES: Record<string, FigureSource> = {
     ],
   },
   wireframes: {
-    type: 'devices',
-    kind: 'phone',
-    carousel: true,
-    screens: [
-      proto('onboarding-wireframes-qualifier-avant-auth', { fr: 'Qualifier avant l’authentification', en: 'Qualify before signing in' }),
-      proto('onboarding-wireframes-post-consultation', { fr: 'Après la consultation', en: 'After the consultation' }),
-      proto('patient-v4-reservation-cabine-sms-mail', { fr: 'Patient v4, réserver en cabine', en: 'Patient v4, booking at a booth' }),
-      proto('patient-v4-creneaux-creux-notification-acces', { fr: 'Patient v4, créneaux creux et accès', en: 'Patient v4, quiet slots and access' }),
-      proto('patient-v4-explorer-le-reseau-carte-reservation', { fr: 'Patient v4, explorer le réseau', en: 'Patient v4, exploring the network' }),
+    type: 'flows',
+    flows: [
+      { name: 'onboarding-wireframes-qualifier-avant-auth', title: { fr: 'Qualifier avant l’authentification', en: 'Qualify before signing in' }, line: { fr: 'Pour qui, où, quel motif : le patient voit une cabine disponible avant de créer son espace personnel.', en: 'Who for, where, which reason: the patient sees an available booth before creating a personal account.' } },
+      { name: 'onboarding-wireframes-post-consultation', title: { fr: 'Après la consultation', en: 'After the consultation' }, line: { fr: 'Récapitulatif immédiat : compte-rendu envoyé, ordonnance disponible, puis suivi proposé en un tap.', en: 'Immediate recap: report sent, prescription available, then a follow-up slot offered in one tap.' } },
+      { name: 'patient-v4-reservation-cabine-sms-mail', title: { fr: 'Patient v4, réserver en cabine', en: 'Patient v4, booking at a booth' }, line: { fr: 'Choisir une pharmacie et un créneau, confirmer son adresse e-mail avec un code, puis recevoir la confirmation du passage.', en: 'Pick a pharmacy and a slot, confirm the e-mail address with a code, then get the booking confirmation.' } },
+      { name: 'patient-v4-creneaux-creux-notification-acces', title: { fr: 'Patient v4, créneaux calmes et accès', en: 'Patient v4, quiet slots and access' }, line: { fr: 'Une notification signale une cabine libre à proximité, l’activité habituelle du lieu aide à choisir, puis l’accès est confirmé.', en: 'A notification flags a free booth nearby, the usual activity of the place helps choose, then access is confirmed.' } },
+      { name: 'patient-v4-explorer-le-reseau-carte-reservation', title: { fr: 'Patient v4, explorer le réseau', en: 'Patient v4, exploring the network' }, line: { fr: 'Partir de la carte des cabines, ouvrir une pharmacie, choisir un créneau, puis confirmer avec le code reçu.', en: 'Start from the booth map, open a pharmacy, choose a slot, then confirm with the code received.' } },
     ],
   },
   osMedaillon: {
@@ -410,6 +415,26 @@ function FigureView({
   prototypeLabel: string
   onZoom: (key: string) => void
 }) {
+  if (figure.type === 'flows') {
+    return (
+      <figure>
+        <FlowPlayer
+          items={figure.flows.map((f) => ({
+            id: f.name,
+            title: f.title[lang],
+            line: f.line[lang],
+            poster: `/images/tessan/proto/${f.name}.webp`,
+            video: `/images/tessan/proto/${f.name}.mp4`,
+          }))}
+          ariaLabel={caption}
+          prevLabel={lang === 'fr' ? 'Parcours précédent' : 'Previous flow'}
+          nextLabel={lang === 'fr' ? 'Parcours suivant' : 'Next flow'}
+          aspect={780 / 1688}
+        />
+        <figcaption className="sr-only">{caption}</figcaption>
+      </figure>
+    )
+  }
   if (figure.type === 'showcase') {
     return <PrototypeShowcase figure={figure} lang={lang} testLabel={prototypeLabel} onZoom={onZoom} />
   }
@@ -490,6 +515,8 @@ export const TessanChapterPage: React.FC<TessanPageProps & { variant: TessanVari
         for (const item of figure.items) {
           items.push({ key: screenKey(item.screen), src: item.screen.video ?? item.screen.src, caption: `${item.n} ${item.name[lang]}`, type: item.screen.video ? 'video' : 'image' })
         }
+      } else if (figure.type === 'flows') {
+        continue
       } else if (figure.type === 'devices') {
         for (const screen of figure.screens) {
           items.push({ key: screenKey(screen), src: screen.video ?? screen.src, caption: `${t.captions[key] ?? ''}, ${screen.label[lang]}`, type: screen.video ? 'video' : 'image' })

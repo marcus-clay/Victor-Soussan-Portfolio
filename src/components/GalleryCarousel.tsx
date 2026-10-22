@@ -3,6 +3,7 @@
 import React, { useState, useCallback, useMemo } from 'react'
 import type { GalleryItem } from './BentoGallery'
 import EnhancedLightbox from './media/EnhancedLightbox'
+import ThumbVideo from './media/ThumbVideo'
 
 interface GalleryCarouselProps {
   items: GalleryItem[]
@@ -102,13 +103,8 @@ export default function GalleryCarousel({
               }}
             >
               {item.type === 'video' ? (
-                <video
+                <ThumbVideo
                   src={item.src}
-                  muted
-                  playsInline
-                  autoPlay
-                  loop
-                  preload="metadata"
                   className="w-full aspect-[16/10] object-cover transition-transform duration-300 ease-out group-hover:scale-[1.02]"
                 />
               ) : (

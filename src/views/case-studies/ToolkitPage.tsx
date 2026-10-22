@@ -316,8 +316,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                     <MediaFigure
                       src="/videos/toolkit/video_-_planning_-_zoom_dezoom.mp4"
                       type="video"
-                      caption={t.captions.expandLayout as string}
-                      captionDesc={t.captions.expandLayoutDesc as string}
+                      caption={t.captions.expandLayoutClip as string}
                     />
                   </Block>
                   <Block id="objectives" title={t.story.goalsTitle} text={t.story.goals} />
@@ -342,8 +341,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                     <MediaFigure
                       src="/videos/toolkit/video_-_navigation_-_show_hide-fit.mp4"
                       type="video"
-                      caption={t.captions.navShowHide as string}
-                      captionDesc={t.captions.navShowHideDesc as string}
+                      caption={t.captions.navShowHideClip as string}
                     />
                   </Visuals>
                 </Block>
@@ -358,8 +356,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                     <MediaFigure
                       src="/videos/toolkit/video_-_batch_edition.mp4"
                       type="video"
-                      caption={t.captions.batchEdition as string}
-                      captionDesc={t.captions.batchEditionDesc as string}
+                      caption={t.captions.batchEditionClip as string}
                     />
                   </Visuals>
                 </Block>
@@ -407,8 +404,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
                   <MediaFigure
                     src="/videos/toolkit/video_-_task_manipulation.mp4"
                     type="video"
-                    caption={t.captions.taskManipulation as string}
-                    captionDesc={t.captions.taskManipulationDesc as string}
+                    caption={t.captions.taskManipulationClip as string}
                   />
                 </div>
 

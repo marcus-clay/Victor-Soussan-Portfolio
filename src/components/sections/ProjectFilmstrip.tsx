@@ -9,6 +9,8 @@ import { getProjectTags } from '@/data/projectTags'
 import { CASE_STUDY_SHELL } from '@/data/caseStudyShell'
 import { imgDims } from '@/utils/imageDimensions'
 import { useSnapScroller } from '@/hooks/useSnapScroller'
+import { HERO_VIDEOS } from '@/data/heroVideos'
+import HeroLoop from '@/components/media/HeroLoop'
 
 /**
  * Four case studies, drawn at random on every page load, as one horizontal strip of large cards.
@@ -238,6 +240,15 @@ export default function ProjectFilmstrip({ lang }: ProjectFilmstripProps) {
           const photo = shell.fit === 'cover'
           // Light text on photographs (dark veil) and on dark grounds, dark text on light grounds
           const light = photo || isDarkGround(shell.tone)
+          const video = HERO_VIDEOS[project.id]
+          // The picture and the loop share one framing, so the video starts exactly where the picture was
+          const mediaClass = `w-full h-full transition-transform duration-300 [@media(hover:hover)]:group-hover:scale-[1.02] ${
+            shell.fit === 'cover' || shell.fit === 'bleed' ? 'object-cover' : 'object-contain p-[4%] pb-[12%] md:pb-[14%]'
+          }`
+          const mediaStyle: React.CSSProperties = {
+            transitionTimingFunction: easing,
+            ...(shell.position ? { objectPosition: shell.position } : {}),
+          }
 
           return (
             <Link
@@ -258,14 +269,14 @@ export default function ProjectFilmstrip({ lang }: ProjectFilmstripProps) {
                 draggable={false}
                 loading={i < 2 ? 'eager' : 'lazy'}
                 fetchPriority={i === 0 ? 'high' : undefined}
-                className={`absolute inset-0 z-[1] w-full h-full transition-transform duration-300 [@media(hover:hover)]:group-hover:scale-[1.02] ${
-                  shell.fit === 'cover' || shell.fit === 'bleed' ? 'object-cover' : 'object-contain p-[4%] pb-[12%] md:pb-[14%]'
-                }`}
-                style={{
-                  transitionTimingFunction: easing,
-                  ...(shell.position ? { objectPosition: shell.position } : {}),
-                }}
+                className={`absolute inset-0 z-[1] ${mediaClass}`}
+                style={mediaStyle}
               />
+
+              {/* Hero loop: the picture above is its poster and its fallback. The video is framed like the
+                  picture (same fit, same hover zoom), sits under the ground fade and the caption, plays while
+                  the pointer is on the card (centred card on touch), and has no control. */}
+              {video && <HeroLoop src={video.src} mediaClassName={mediaClass} mediaStyle={mediaStyle} />}
 
               {/* Ground fade: the image dissolves into its own tone where the text sits (or into a
                   dark veil for photographs), so the caption reads as part of the picture. */}

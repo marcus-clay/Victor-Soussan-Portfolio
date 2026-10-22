@@ -1,6 +1,9 @@
 import Link from 'next/link'
 import { ArrowRight, ArrowUpRight } from '@phosphor-icons/react/dist/ssr'
 import { imgDims } from '@/utils/imageDimensions'
+import { HERO_VIDEOS } from '@/data/heroVideos'
+import HeroLoop from '@/components/media/HeroLoop'
+import ArrowPill from '@/components/ui/ArrowPill'
 
 /**
  * Follow-up content at the bottom of a page (next project, related articles, next guide).
@@ -28,6 +31,8 @@ export interface RelatedItem {
     tone?: string
     fit?: 'cover' | 'contain'
     position?: string
+    /** Looping hero video; found from the href of a project card when left out (see `heroLoopFor`) */
+    video?: string
   }
   /** Opens in a new tab (templates hosted elsewhere) */
   external?: boolean
@@ -59,6 +64,16 @@ const CARD_CLASS =
   'group flex h-full flex-col overflow-hidden rounded-2xl border border-gray-100 bg-white outline-offset-4 ' +
   'transition-[transform,border-color] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] active:scale-[0.985] ' +
   '[@media(hover:hover)]:hover:border-gray-200'
+
+const PROJECT_HREF = /^\/(?:en|fr)\/project\/([^/?#]+)\/?$/
+
+/** The hero loop of the project a card points to, when its file exists in the registry */
+function heroLoopFor(item: RelatedItem): { src: string } | null {
+  const match = item.external ? null : PROJECT_HREF.exec(item.href)
+  if (!match) return null
+  const src = item.cover?.video ?? HERO_VIDEOS[match[1]]?.src
+  return src ? { src } : null
+}
 
 export default function RelatedContent({ heading, items, id, action, bordered = true, inColumn = false }: RelatedContentProps) {
   const shown = items.slice(0, MAX_ITEMS)
@@ -96,7 +111,7 @@ export default function RelatedContent({ heading, items, id, action, bordered = 
 export function RelatedCard({ item }: { item: RelatedItem }) {
   const body = (
     <>
-      {item.cover && <Cover cover={item.cover} />}
+      {item.cover && <Cover cover={item.cover} loop={heroLoopFor(item)} />}
       <div className={`flex flex-1 flex-col p-5 md:p-6 ${item.cover ? '' : 'min-h-[8.5rem]'}`}>
         {item.label && <p className="text-xs text-gray-500">{item.label}</p>}
         <div className={`${item.label ? 'mt-1' : ''} flex items-start justify-between gap-3`}>
@@ -127,7 +142,11 @@ export function RelatedCard({ item }: { item: RelatedItem }) {
   )
 }
 
-function Cover({ cover }: { cover: NonNullable<RelatedItem['cover']> }) {
+function Cover({ cover, loop }: { cover: NonNullable<RelatedItem['cover']>; loop: ReturnType<typeof heroLoopFor> }) {
+  const mediaClass = `h-full w-full transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-[1.03] ${
+    cover.fit === 'contain' ? 'object-contain p-[5%]' : 'object-cover'
+  }`
+  const mediaStyle = cover.position ? { objectPosition: cover.position } : undefined
   return (
     <div className="relative aspect-[3/2] shrink-0 overflow-hidden" style={{ backgroundColor: cover.tone ?? '#E8E8E8' }}>
       <img
@@ -137,11 +156,11 @@ function Cover({ cover }: { cover: NonNullable<RelatedItem['cover']> }) {
         loading="lazy"
         decoding="async"
         draggable={false}
-        className={`h-full w-full transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-[1.03] ${
-          cover.fit === 'contain' ? 'object-contain p-[5%]' : 'object-cover'
-        }`}
-        style={cover.position ? { objectPosition: cover.position } : undefined}
+        className={mediaClass}
+        style={mediaStyle}
       />
+      {loop && <HeroLoop src={loop.src} mediaClassName={mediaClass} mediaStyle={mediaStyle} />}
+      <ArrowPill size="sm" />
     </div>
   )
 }

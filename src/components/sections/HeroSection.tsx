@@ -37,18 +37,18 @@ export default function HeroSection({ lang }: HeroSectionProps) {
       <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-1">
         <Link
           href={`/${lang}/approche`}
-          className="inline-flex min-h-11 items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 active:opacity-60 transition-[color,opacity] duration-150"
+          className="group inline-flex min-h-11 items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 active:opacity-60 transition-[color,opacity] duration-150"
         >
           {isEn ? 'My approach' : 'Mon approche'}
-          <ArrowUpRight size={14} aria-hidden="true" />
+          <ArrowUpRight size={14} aria-hidden="true" className="transition-transform duration-200 ease-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
         </Link>
         <span className="text-gray-300 select-none" aria-hidden="true">·</span>
         <Link
           href={`/${lang}/contact`}
-          className="inline-flex min-h-11 items-center gap-1.5 text-sm font-medium text-gray-900 hover:text-gray-500 active:opacity-60 transition-[color,opacity] duration-150"
+          className="group inline-flex min-h-11 items-center gap-1.5 text-sm font-medium text-gray-900 hover:text-gray-500 active:opacity-60 transition-[color,opacity] duration-150"
         >
           {isEn ? "Let's talk" : 'Parlons-en'}
-          <ArrowUpRight size={14} aria-hidden="true" />
+          <ArrowUpRight size={14} aria-hidden="true" className="transition-transform duration-200 ease-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
         </Link>
       </div>
     </header>

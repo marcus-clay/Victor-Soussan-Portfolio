@@ -142,13 +142,22 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
 
   // A visual of the page: its short name under it, its source and its stage treatment here
   const cap = (key: string) => t.captions[key as keyof typeof t.captions] as string;
-  const visual = (src: string, key: string, extra: Partial<StageItem> = {}): StageItem => ({ src, caption: cap(key), ...extra });
+  // A video is named by what it shows, in a few words (the `Clip` caption); a picture by its title
+  const visual = (src: string, key: string, extra: Partial<StageItem> = {}): StageItem => ({
+    src,
+    caption: cap(extra.type === 'video' ? `${key}Clip` : key),
+    ...extra,
+  });
   const stripProps = { prevLabel: t.ui.previous, nextLabel: t.ui.next, onZoom: openLightbox };
 
   const uploadStrip: StageItem[] = [
     visual('/videos/dailymotion/video_-_cancel_upload.mp4', 'cancelUpload', { type: 'video', size: [1730, 1080] }),
     visual('/videos/dailymotion/video_2025-11-10_02.26.48.mp4', 'thumbnailUpdate', { type: 'video', size: [1080, 1080] }),
     visual('/videos/dailymotion/video_add_subtitle.mp4', 'addSubtitles', { type: 'video', size: [1080, 1080] }),
+  ];
+  const accessStrip: StageItem[] = [
+    visual('/videos/dailymotion/Geoblocking.mp4', 'geoblocking', { type: 'video', size: [2048, 2022], maxWidth: 780 }),
+    visual('/videos/dailymotion/dailymotion_video_manager_-_set_password.mp4', 'passwordProtection', { type: 'video', size: [2048, 1860], maxWidth: 780 }),
   ];
   const liveStrip: StageItem[] = [
     visual('/images/dailymotion/dailymotion_-_live_-_countdown2x.webp', 'preBroadcast', { onStage: true }),
@@ -159,6 +168,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
     visual('/videos/dailymotion/Dailymotion_-_video_manager_-_Embed_code_TOP_v6.mp4', 'embedCode', { type: 'video', size: [2048, 2004], maxWidth: 680 }),
   ];
   const specsStrip: StageItem[] = [
+    visual('/videos/dailymotion/switch_12-24.mp4', 'timePicker', { type: 'video', size: [420, 520], maxWidth: 420 }),
     visual('/images/dailymotion/dailymotion_-_share_expanded2x.webp', 'shareModal', { onStage: true }),
     visual('/images/dailymotion/Share_-_keyboard_input2x.webp', 'keyboardMapping'),
     visual('/images/dailymotion/dailymotion_-_add_to_playlist_-_spec2x.webp', 'addToPlaylist', { onStage: true }),
@@ -270,6 +280,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                   <Block id="upload" title={t.approach.upload.title} text={t.approach.upload.text}>
                     <StageFigure item={visual('/images/dailymotion/dailymotion_-_upload2x.webp', 'batchUpload', { onStage: true, maxWidth: 820 })} onZoom={openLightbox} />
                     <StageCarousel items={uploadStrip} ariaLabel={t.ui.carouselInteractions} {...stripProps} />
+                    <StageCarousel items={accessStrip} ariaLabel={t.ui.carouselAccess} {...stripProps} />
                   </Block>
 
                   <Block id="live" title={t.approach.live.title} text={t.approach.live.text}>
