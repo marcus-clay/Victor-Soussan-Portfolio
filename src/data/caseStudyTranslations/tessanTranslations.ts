@@ -65,7 +65,7 @@ export interface TessanTranslation {
 export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
   fr: {
     hero: {
-      title: 'Reconstruire l’application patient de Tessan en 30 jours',
+      title: 'Tessan : l’application, la vision et le système en trois mois',
       intro:
         'Trois mois chez Tessan, qui équipe des pharmacies de cabines de téléconsultation. Premier designer de l’entreprise, j’ai piloté avec un tech lead et deux développeurs la reconstruction de l’application patient, autour d’un design system, d’un assistant IA qui ne diagnostique pas et d’une vision produit, le Hub Santé.',
       role: 'Premier designer, lead design et product owner',
@@ -302,7 +302,7 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
   },
   en: {
     hero: {
-      title: 'Rebuilding Tessan’s patient app in 30 days',
+      title: 'Tessan: the app, the vision and the system in three months',
       intro:
         'Three months at Tessan, which equips pharmacies with telemedicine booths. As the company’s first designer, I led the rebuild of the patient app with a tech lead and two developers, around a design system, an AI assistant that does not diagnose and a product vision, the Health Hub.',
       role: 'First designer, design lead and product owner',
