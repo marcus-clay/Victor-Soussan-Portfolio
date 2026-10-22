@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import { GUIDE_CHAPTERS, GUIDE_META } from '@/data/guideClaudeCodeData'
 import GuideClaudeCodePageWrapper from '@/components/page-wrappers/GuideClaudeCodePageWrapper'
 import JsonLd from '@/components/JsonLd'
+import { guideChapterLead, relatedContent } from '@/lib/related'
 import { articleLd, breadcrumbLd, buildMetadata, clip, toLang } from '@/lib/seo'
 
 type Props = { params: Promise<{ lang: string; slug: string }> }
@@ -31,7 +32,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       fr: `guide/claude-code/${chapter.slug_fr}`,
       en: `guide/claude-code/${chapter.slug_en}`,
     },
-    title: `${chapterTitle} | ${guideTitle}`,
+    // Short suffix keeps the chapter title whole inside the SEO budget; skipped when the chapter already names Claude Code.
+    title: chapterTitle.includes('Claude Code') ? chapterTitle : `${chapterTitle} | Claude Code`,
     description: `${lang === 'fr' ? chapter.intro_fr : chapter.intro_en} ${lang === 'fr' ? 'Guide Claude Code pour product designers, par Victor Soussan.' : 'Claude Code guide for product designers, by Victor Soussan.'}`,
     type: 'article',
     publishedTime: GUIDE_META.date,
@@ -76,7 +78,11 @@ export default async function GuideChapterPage({ params }: Props) {
           ]),
         ]}
       />
-      <GuideClaudeCodePageWrapper lang={lang} view={slug} />
+      <GuideClaudeCodePageWrapper
+        lang={lang}
+        view={slug}
+        related={relatedContent(lang, 'guide-claude-code', guideChapterLead(lang, GUIDE_CHAPTERS.indexOf(chapter)))}
+      />
     </>
   )
 }

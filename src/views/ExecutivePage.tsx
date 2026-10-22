@@ -436,7 +436,7 @@ const SLIDES = {
       type: 'title',
       headline: 'Victor Soussan',
       subline: 'Senior Product Designer, Conceptualization & Rapid Prototyping',
-      visual: '/images/victor-soussan.webp',
+      visual: '/images/image-victor-soussan-2027.jpg',
     },
     // 2. Big statement - Frame. Design. Ship.
     {
@@ -683,7 +683,7 @@ const SLIDES = {
     {
       type: 'farewell',
       headline: 'See you soon',
-      visual: '/images/victor-soussan.webp',
+      visual: '/images/image-victor-soussan-2027.jpg',
     },
   ],
   fr: [
@@ -692,7 +692,7 @@ const SLIDES = {
       type: 'title',
       headline: 'Victor Soussan',
       subline: 'Senior Product Designer, Conceptualisation & Prototypage Rapide',
-      visual: '/images/victor-soussan.webp',
+      visual: '/images/image-victor-soussan-2027.jpg',
     },
     // 2. Big statement - Cadrer. Concevoir. Livrer.
     {
@@ -939,7 +939,7 @@ const SLIDES = {
     {
       type: 'farewell',
       headline: 'À bientôt',
-      visual: '/images/victor-soussan.webp',
+      visual: '/images/image-victor-soussan-2027.jpg',
     },
   ],
 };
@@ -956,7 +956,7 @@ interface ExecutivePageProps {
 
 // Helper to get portrait image based on theme
 const getPortraitImage = (isDark: boolean) => {
-  return isDark ? '/images/victor_soussan_dark.webp' : '/images/victor-soussan.webp';
+  return isDark ? '/images/victor_soussan_dark.webp' : '/images/image-victor-soussan-2027.jpg';
 };
 
 // Clickable image component with hover effect and iPadOS-style border

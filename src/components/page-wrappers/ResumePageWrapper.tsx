@@ -142,12 +142,12 @@ export default function ResumePageWrapper({ lang }: { lang: 'en' | 'fr' }) {
       {/* Resume Content */}
       <main className="max-w-5xl mx-auto bg-white border-x border-b border-gray-200/50">
         <div className="px-8 sm:px-12 py-10">
-          <AnimatePresence mode="wait">
+          <AnimatePresence mode="wait" initial={false}>
             <motion.div
               key={resumeLang}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
             >
               {/* Name & Title */}
@@ -207,7 +207,7 @@ export default function ResumePageWrapper({ lang }: { lang: 'en' | 'fr' }) {
 
                   <button
                     onClick={() =>
-                      copyWithFeedback('https://victorsoussan.com', setCopiedPortfolio)
+                      copyWithFeedback('https://www.victorsoussan.fr', setCopiedPortfolio)
                     }
                     className="px-3 py-1.5 glass-effect text-gray-700 rounded-full text-xs font-medium btn-pill flex items-center gap-2 hover:text-blue-600"
                   >

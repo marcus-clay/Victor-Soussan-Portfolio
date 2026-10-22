@@ -1,83 +1,39 @@
 'use client'
 
-import React, { useCallback } from 'react'
-import { useRouter } from 'next/navigation'
-import { scrollToElement } from '@/utils/smoothScroll'
+import React from 'react'
 import type { Language } from '@/data/translations'
 import { TRANSLATIONS } from '@/data/translations'
-import { getTestimonials } from '@/data/testimonialsData'
 import { SIGNALS, FEATURED_SIGNAL_IDS } from '@/data/signalsData'
 import { GUIDE_CHAPTERS } from '@/data/guideClaudeCodeData'
-import Avatar from '@/components/Avatar'
 import HeroSection from '@/components/sections/HeroSection'
+import ProjectFilmstrip from '@/components/sections/ProjectFilmstrip'
+import PositioningSection from '@/components/sections/PositioningSection'
+import MethodSection from '@/components/sections/MethodSection'
 import FeaturedSection from '@/components/sections/FeaturedSection'
-import ProjectsDemoCarousel from '@/components/sections/ProjectsDemoCarousel'
-import ExpertisePreviewSection from '@/components/sections/ExpertisePreviewSection'
-import TestimonialsSection from '@/components/sections/TestimonialsSection'
 import ContactCTASection from '@/components/sections/ContactCTASection'
 
 interface HomepageClientProps {
   lang: Language
 }
 
-
+/**
+ * Homepage: positioning sentence, then the nine case studies as a filmstrip, then the same
+ * wide grammar (page margins, hairline-separated blocks) for positioning, method, resources
+ * and contact.
+ */
 export default function HomepageClient({ lang }: HomepageClientProps) {
-  const router = useRouter()
-  // Cast needed: TRANSLATIONS uses `as const` (readonly), sections expect mutable arrays
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const content = JSON.parse(JSON.stringify(TRANSLATIONS[lang])) as any
-  const testimonials = getTestimonials(lang)
-  const featuredSignals = FEATURED_SIGNAL_IDS.map(id => SIGNALS.find(s => s.id === id)).filter(Boolean) as typeof SIGNALS
-
-  const navigate = useCallback((path: string) => {
-    router.push(`/${lang}${path}`)
-  }, [router, lang])
-
-  const scrollToSection = useCallback((id: string) => {
-    scrollToElement(id)
-  }, [])
+  const featuredSignals = FEATURED_SIGNAL_IDS.map((id) => SIGNALS.find((s) => s.id === id)).filter(
+    Boolean
+  ) as typeof SIGNALS
 
   return (
     <div className="min-h-screen bg-[#FDFDFC]">
-      <HeroSection
-        systemTheme="light"
-        lang={lang}
-        content={content}
-        scrollToSection={scrollToSection}
-        openModalWithUrl={navigate}
-      />
-
-      <ProjectsDemoCarousel
-        lang={lang}
-        onNavigate={navigate}
-      />
-
-      <ExpertisePreviewSection
-        lang={lang}
-        content={content}
-        onNavigate={navigate}
-      />
-
-      <TestimonialsSection
-        systemTheme="light"
-        lang={lang}
-        content={content}
-        testimonials={testimonials}
-        Avatar={Avatar}
-        openModalWithUrl={navigate}
-      />
-
-      <ContactCTASection
-        lang={lang}
-        content={content}
-      />
-
-      <FeaturedSection
-        lang={lang}
-        featuredSignals={featuredSignals}
-        guideChapters={GUIDE_CHAPTERS}
-        onNavigate={navigate}
-      />
+      <HeroSection lang={lang} />
+      <ProjectFilmstrip lang={lang} />
+      <PositioningSection lang={lang} />
+      <MethodSection lang={lang} />
+      <FeaturedSection lang={lang} featuredSignals={featuredSignals} guideChapters={GUIDE_CHAPTERS} />
+      <ContactCTASection lang={lang} content={TRANSLATIONS[lang]} />
     </div>
   )
 }

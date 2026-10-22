@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { SHIP_TO_SHOW_META } from '@/data/guideShipToShowData'
 import GuideShipToShowPageWrapper from '@/components/page-wrappers/GuideShipToShowPageWrapper'
 import JsonLd from '@/components/JsonLd'
+import { relatedContent } from '@/lib/related'
 import { articleLd, breadcrumbLd, buildMetadata, toLang } from '@/lib/seo'
 
 type Props = { params: Promise<{ lang: string }> }
@@ -41,7 +42,7 @@ export default async function ShipToShowGuidePage({ params }: Props) {
           ]),
         ]}
       />
-      <GuideShipToShowPageWrapper lang={lang} />
+      <GuideShipToShowPageWrapper lang={lang} related={relatedContent(lang, 'guide-ship-to-show')} />
     </>
   )
 }

@@ -3,8 +3,8 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-
-const EASE_OUT = [0.23, 1, 0.32, 1] as const
+import { EASE_OUT_EXPO as EASE_OUT, useReveal } from '@/lib/motion'
+import { ActRule } from '@/components/case-study/ActSection'
 import { ArrowUpRight, ArrowRight } from '@phosphor-icons/react'
 import {
   ALL_CONTENT,
@@ -14,9 +14,14 @@ import type { ContentItem, ContentType } from '@/data/contentData'
 
 type FilterType = 'all' | ContentType
 
+/** Rows shown before "Show all": one screen of choices at a time (Hick), the rest stays in the DOM. */
+const INITIAL_VISIBLE = 8
+
 export default function RessourcesPageClient({ lang }: { lang: 'en' | 'fr' }) {
   const [activeFilter, setActiveFilter] = useState<FilterType>('all')
+  const [showAll, setShowAll] = useState(false)
   const isEn = lang === 'en'
+  const reveal = useReveal()
 
   const filtered = activeFilter === 'all'
     ? ALL_CONTENT
@@ -51,15 +56,15 @@ export default function RessourcesPageClient({ lang }: { lang: 'en' | 'fr' }) {
         initial="rest"
         whileHover="hover"
         animate="rest"
-        className="py-5 -mx-3 px-3 rounded-lg hover:bg-gray-100/60 active:bg-gray-100 transition-colors duration-150 cursor-pointer"
+        className="py-5 -mx-3 px-3 rounded-lg [@media(hover:hover)]:hover:bg-gray-100 active:bg-gray-100 transition-colors duration-150 cursor-pointer"
       >
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0 flex-1">
             <span className="text-xs text-gray-500">{typeLabel}</span>
-            <h3 className="text-base font-medium text-gray-900 mb-1 line-clamp-2">
+            <h3 className="text-title-3 text-gray-900 mb-1 line-clamp-2">
               {title}
             </h3>
-            <p className="text-sm text-gray-500 line-clamp-1">
+            <p className="text-sm text-gray-600 line-clamp-1">
               {isEn ? item.excerpt_en : item.excerpt_fr}
             </p>
           </div>
@@ -94,96 +99,87 @@ export default function RessourcesPageClient({ lang }: { lang: 'en' | 'fr' }) {
 
   return (
     <div className="min-h-screen bg-[#FDFDFC]">
-      <div className="max-w-[740px] mx-auto px-6 pt-32 sm:pt-40 md:pt-48 pb-24 md:pb-40">
-        {/* Header */}
-        <motion.div
-          className="mb-12"
-          initial="hidden"
-          animate="visible"
-          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08 } } }}
-        >
-          <motion.h1
-            variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
-            transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
-            className="text-title-1 text-gray-900"
-          >
-            {isEn ? 'Resources' : 'Ressources'}
-          </motion.h1>
-          <motion.p
-            variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0 } }}
-            transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
-            className="mt-3 text-base text-gray-500 leading-relaxed max-w-[55ch]"
-          >
-            {isEn
-              ? 'Articles, guides, templates, and insights on product design and AI.'
-              : 'Articles, guides, templates et retours d\'experience sur le design produit et l\'IA.'}
-          </motion.p>
-        </motion.div>
+      {/* Header: page name and one line, full width, left aligned */}
+      <header className="wrap pt-10 md:pt-16 pb-12 md:pb-16">
+        <h1 className="text-headline text-gray-900">
+          {isEn ? 'Resources' : 'Ressources'}
+        </h1>
+        <p className="mt-4 text-lead-lg text-gray-600 max-w-[54ch]">
+          {isEn
+            ? 'Articles, guides, templates, and insights on product design and AI.'
+            : 'Articles, guides, templates et retours d\'expérience sur le design produit et l\'IA.'}
+        </p>
+      </header>
 
-        {/* Filters */}
-        <motion.div
-          className="flex flex-wrap gap-2 mb-10"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.2, ease: [0.23, 1, 0.32, 1] }}
-        >
+      {/* Filters and list: one group, same left edge as the header */}
+      <section className="wrap pb-16 md:pb-24" aria-label={isEn ? 'Resources' : 'Ressources'}>
+        <div className="flex flex-wrap gap-2 mb-8">
           {filters.map((f) => (
             <button
               key={f.key}
-              onClick={() => setActiveFilter(f.key)}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 ease-out cursor-pointer ${
+              onClick={() => { setActiveFilter(f.key); setShowAll(false) }}
+              className={`inline-flex items-center min-h-11 px-4 rounded-full text-sm font-medium transition-[background-color,color,transform] duration-200 ease-out active:scale-[0.97] cursor-pointer ${
                 activeFilter === f.key
-                  ? 'bg-gray-900 text-white'
-                  : 'text-gray-500 hover:text-gray-900'
+                  ? 'bg-gray-900 text-white [@media(hover:hover)]:hover:bg-black'
+                  : 'text-gray-600 [@media(hover:hover)]:hover:text-gray-500'
               }`}
             >
               {f.label}
-              <span className={`ml-1.5 ${activeFilter === f.key ? 'text-white/60' : 'text-gray-400'}`}>
+              <span className={`ml-1.5 ${activeFilter === f.key ? 'text-white/70' : 'text-gray-500'}`}>
                 {f.count}
               </span>
             </button>
           ))}
-        </motion.div>
-
-        {/* Content list */}
-        <div className="divide-y divide-gray-100">
-          {filtered.map((item) => renderRow(item))}
         </div>
 
-        {/* Agents & Prompts — minimal row */}
-        <motion.section
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
-          className="mt-16 pt-10 border-t border-gray-100"
-        >
-          <a
-            href="https://www.condamine.studio/agents-prompts"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group block -mx-3 px-3 py-5 rounded-lg hover:bg-gray-100/60 active:bg-gray-100 transition-colors duration-150 cursor-pointer"
-          >
-            <div className="flex items-start justify-between gap-4">
-              <div className="min-w-0 flex-1">
-                <span className="text-xs text-gray-500">Condamine Studio</span>
-                <h3 className="text-base font-medium text-gray-900 mb-1">
-                  {isEn ? 'AI Agents & Prompts' : 'Agents IA et prompts'}
-                </h3>
-                <p className="text-base text-gray-500 leading-relaxed max-w-[50ch]">
-                  {isEn
-                    ? '32 curated agents and prompt frameworks for design, development, marketing, and productivity.'
-                    : '32 agents et frameworks de prompts pour le design, le developpement, le marketing et la productivite.'}
-                </p>
-                <span className="inline-flex items-center gap-1.5 mt-3 text-sm text-gray-500 group-hover:text-gray-900 transition-colors duration-150">
-                  {isEn ? 'Explore the collection' : 'Explorer la collection'}
-                  <ArrowUpRight size={14} />
-                </span>
-              </div>
+        <div className="divide-y divide-gray-100">
+          {filtered.map((item, i) => (
+            <div key={item.id} className={!showAll && i >= INITIAL_VISIBLE ? 'hidden' : undefined}>
+              {renderRow(item)}
             </div>
-          </a>
-        </motion.section>
-      </div>
+          ))}
+        </div>
+
+        {!showAll && filtered.length > INITIAL_VISIBLE && (
+          <button
+            type="button"
+            onClick={() => setShowAll(true)}
+            className="mt-6 inline-flex min-h-11 cursor-pointer items-center rounded-full border border-gray-200 px-5 text-sm font-medium text-gray-900 transition-[color,border-color,transform] duration-150 ease-out [@media(hover:hover)]:hover:border-gray-300 [@media(hover:hover)]:hover:text-gray-500 active:scale-[0.97]"
+          >
+            {isEn
+              ? `Show all ${filtered.length}`
+              : `Voir les ${filtered.length}`}
+          </button>
+        )}
+      </section>
+
+      {/* Agents and prompts: one row, same grammar as the list above */}
+      <ActRule />
+      <motion.section
+        {...reveal()}
+        className="wrap pt-12 md:pt-16 pb-16 md:pb-24"
+      >
+        <a
+          href="https://www.condamine.studio/agents-prompts"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group block -mx-3 px-3 py-5 rounded-lg [@media(hover:hover)]:hover:bg-gray-100 active:bg-gray-100 transition-colors duration-150 cursor-pointer"
+        >
+          <span className="text-xs text-gray-500">Condamine Studio</span>
+          <h3 className="text-title-3 text-gray-900 mb-1">
+            {isEn ? 'AI Agents & Prompts' : 'Agents IA et prompts'}
+          </h3>
+          <p className="text-base text-gray-600 max-w-[62ch]">
+            {isEn
+              ? '32 curated agents and prompt frameworks for design, development, marketing, and productivity.'
+              : '32 agents et frameworks de prompts pour le design, le développement, le marketing et la productivité.'}
+          </p>
+          <span className="inline-flex items-center gap-1.5 mt-3 text-sm font-medium text-gray-900 transition-colors duration-150 [@media(hover:hover)]:group-hover:text-gray-500">
+            {isEn ? 'Explore the collection' : 'Explorer la collection'}
+            <ArrowUpRight size={14} aria-hidden="true" />
+          </span>
+        </a>
+      </motion.section>
     </div>
   )
 }

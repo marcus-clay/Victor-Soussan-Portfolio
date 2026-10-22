@@ -80,7 +80,7 @@ Light only. Dark override for specific projects (RiskOS).
 - Background: `bg-[#F9F9F9]` or `bg-white` or `bg-[#FCFCFD]`
 - Text: `text-gray-900` (headings), `text-gray-600` (body), `text-gray-500` min for readable metadata
 - Cards: `bg-white border border-gray-100 rounded-2xl`
-- Brand blue CTA: `bg-[#2D5CF3] hover:bg-[#2450d9]`
+- CTA: black, `bg-gray-900 hover:bg-black text-white` (no brand blue)
 - Max width: `max-w-[1200px]` (sections), `max-w-[720px]` (article body)
 - Related projects section: `bg-[#F5F5F7]` (light) / `bg-[#111113]` (dark)
 - Dark projects: `nav-dark`, `footer-dark`, `main-dark` CSS classes toggled via useEffect

@@ -1,11 +1,10 @@
 /**
  * ConsultingPage - Minimalist consulting page (Emil Kowalski aesthetic)
- * Narrow container, divide-y sections, no cards, no colors, no shadows.
+ * Page container (`wrap`), hairline-separated sections, no cards, no colors, no shadows.
  */
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { motion } from 'framer-motion';
-import { smoothScrollTo } from '../utils/smoothScroll';
+import React, { useState, useEffect, useCallback } from 'react';
+import { scrollToElement } from '../utils/smoothScroll';
 import {
   ArrowRight,
   Envelope as Mail,
@@ -193,7 +192,6 @@ const TRANSLATIONS = {
 
 const ConsultingPage: React.FC<ConsultingPageProps> = ({ lang, onContact, onProjectClick }) => {
   const t = TRANSLATIONS[lang];
-  const containerRef = useRef<HTMLDivElement>(null);
   const [activeSection, setActiveSection] = useState('top');
   const [showTOC, setShowTOC] = useState(false);
   const isEn = lang === 'en';
@@ -206,13 +204,10 @@ const ConsultingPage: React.FC<ConsultingPageProps> = ({ lang, onContact, onProj
     return (obj[key] as string) || '';
   }, [lang]);
 
-  // Scroll detection
+  // Scroll detection (window scroll, like every other page)
   useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
     const handleScroll = () => {
-      setShowTOC(container.scrollTop > 300);
+      setShowTOC(window.scrollY > 300);
       let current = 'top';
       for (let i = 0; i < SECTION_IDS.length; i++) {
         const el = document.getElementById(SECTION_IDS[i]);
@@ -226,37 +221,16 @@ const ConsultingPage: React.FC<ConsultingPageProps> = ({ lang, onContact, onProj
       setActiveSection(current);
     };
 
-    container.addEventListener('scroll', handleScroll, { passive: true });
-    return () => container.removeEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const scrollToSection = useCallback((sectionId: string) => {
-    if (!containerRef.current) return;
-    if (sectionId === 'top') {
-      smoothScrollTo(containerRef.current, 0);
-      return;
-    }
-    const el = document.getElementById(sectionId);
-    if (el && containerRef.current) {
-      const containerRect = containerRef.current.getBoundingClientRect();
-      const elRect = el.getBoundingClientRect();
-      const offset = containerRef.current.scrollTop + (elRect.top - containerRect.top) - 80;
-      smoothScrollTo(containerRef.current, offset);
-    }
+    scrollToElement(sectionId);
   }, []);
 
   return (
-    <motion.div
-      ref={containerRef}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.2 }}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="consulting-page-title"
-      className="fixed inset-0 md:top-16 z-[100] overflow-y-auto bg-[#FDFDFC]"
-    >
+    <div className="min-h-screen bg-[#FDFDFC]">
       {/* Sticky TOC bar */}
       {showTOC && (
         <div
@@ -274,28 +248,28 @@ const ConsultingPage: React.FC<ConsultingPageProps> = ({ lang, onContact, onProj
       )}
 
       {/* Content */}
-      <div className="max-w-[740px] mx-auto px-6 pt-32 md:pt-40">
+      <div>
 
         {/* ========== HERO ========== */}
-        <div className="pb-24 md:pb-40">
+        <div className="wrap pt-10 md:pt-16 pb-10 md:pb-14">
           <p className="text-xs text-gray-500 uppercase tracking-wider mb-6">
             {t.availability}
           </p>
 
           <h1
             id="consulting-page-title"
-            className="text-title-1 text-gray-900 mb-4"
+            className="text-headline text-gray-900 mb-4"
           >
             {t.page_subtitle}
           </h1>
 
-          <p className="text-base text-gray-500 leading-relaxed mb-8">
+          <p className="text-lead-lg text-gray-600 max-w-[56ch] mb-8">
             {t.page_intro}
           </p>
 
           <button
             onClick={onContact}
-            className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors"
+            className="inline-flex items-center gap-2 min-h-11 px-5 rounded-full bg-gray-900 hover:bg-black text-white text-sm font-medium active:scale-[0.97] transition-[background-color,transform] duration-200 ease-out"
           >
             {t.cta_primary}
             <ArrowRight size={14} />
@@ -303,11 +277,12 @@ const ConsultingPage: React.FC<ConsultingPageProps> = ({ lang, onContact, onProj
         </div>
 
         {/* ========== SITUATIONS ========== */}
-        <section id="situations" className="py-24 md:py-40 border-t border-gray-100">
+        <section id="situations" className="border-t border-gray-100">
+        <div className="wrap pt-12 md:pt-16 pb-16 md:pb-24">
           <h2 className="text-title-2 text-gray-900 mb-2">
             {t.situations_title}
           </h2>
-          <p className="text-base text-gray-500 leading-relaxed mb-10">
+          <p className="text-base text-gray-600 leading-relaxed max-w-[65ch] mb-10">
             {t.situations_intro}
           </p>
 
@@ -329,15 +304,15 @@ const ConsultingPage: React.FC<ConsultingPageProps> = ({ lang, onContact, onProj
                 {/* Mobile labels */}
                 <div className="mb-3 md:mb-0">
                   <span className="text-xs text-gray-500 uppercase tracking-wider md:hidden block mb-1">{t.col_symptom}</span>
-                  <p className="text-base text-gray-500 leading-relaxed">{l(phase, 'symptom')}</p>
+                  <p className="text-base text-gray-600 leading-relaxed">{l(phase, 'symptom')}</p>
                 </div>
                 <div className="mb-3 md:mb-0">
                   <span className="text-xs text-gray-500 uppercase tracking-wider md:hidden block mb-1">{t.col_cause}</span>
-                  <p className="text-base text-gray-500 leading-relaxed">{l(phase, 'cause')}</p>
+                  <p className="text-base text-gray-600 leading-relaxed">{l(phase, 'cause')}</p>
                 </div>
                 <div>
                   <span className="text-xs text-gray-500 uppercase tracking-wider md:hidden block mb-1">{t.col_cost}</span>
-                  <p className="text-base text-gray-500 leading-relaxed">{l(phase, 'cost')}</p>
+                  <p className="text-base text-gray-600 leading-relaxed">{l(phase, 'cost')}</p>
                 </div>
               </div>
             ))}
@@ -346,57 +321,64 @@ const ConsultingPage: React.FC<ConsultingPageProps> = ({ lang, onContact, onProj
           <p className="mt-8 text-sm text-gray-500">
             {t.situations_cta}
           </p>
+        </div>
         </section>
 
         {/* ========== METHODOLOGY ========== */}
-        <section id="methodology" className="py-24 md:py-40 border-t border-gray-100">
+        <section id="methodology" className="border-t border-gray-100">
+        <div className="wrap pt-12 md:pt-16 pb-16 md:pb-24">
           <h2 className="text-title-2 text-gray-900 mb-2">
             {t.methodology_title}
           </h2>
-          <p className="text-base text-gray-500 leading-relaxed mb-10">
+          <p className="text-base text-gray-600 leading-relaxed max-w-[65ch] mb-10">
             {t.methodology_intro}
           </p>
 
           <div className="divide-y divide-gray-100">
             {t.method_phases.map((phase) => (
-              <div key={phase.num} className="py-5">
-                <div className="flex items-baseline gap-4 mb-2">
+              <div key={phase.num} className="py-5 md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] md:gap-8">
+                <div className="flex items-baseline gap-4 mb-2 md:mb-0">
                   <span className="text-xs text-gray-500">{phase.num}</span>
                   <h3 className="text-base font-medium text-gray-900">{phase.title}</h3>
-                  <span className="text-xs text-gray-500 ml-auto">{phase.duration}</span>
+                  <span className="text-xs text-gray-500 ml-auto md:ml-4">{phase.duration}</span>
                 </div>
-                <p className="text-base text-gray-500 leading-relaxed mb-3 pl-8">
-                  {phase.desc}
-                </p>
-                <p className="text-sm text-gray-500 leading-relaxed pl-8">
-                  {phase.deliverable}
-                </p>
+                <div className="min-w-0 max-w-[65ch]">
+                  <p className="text-base text-gray-600 leading-relaxed mb-3">
+                    {phase.desc}
+                  </p>
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    {phase.deliverable}
+                  </p>
+                </div>
               </div>
             ))}
           </div>
+        </div>
         </section>
 
         {/* ========== OFFERINGS ========== */}
-        <section id="offerings" className="py-24 md:py-40 border-t border-gray-100">
+        <section id="offerings" className="border-t border-gray-100">
+        <div className="wrap pt-12 md:pt-16 pb-16 md:pb-24">
           <h2 className="text-title-2 text-gray-900 mb-2">
             {t.offerings_title}
           </h2>
-          <p className="text-base text-gray-500 leading-relaxed mb-10">
+          <p className="text-base text-gray-600 leading-relaxed max-w-[65ch] mb-10">
             {t.offerings_intro}
           </p>
 
           <div className="divide-y divide-gray-100">
             {OFFERINGS.map((offering) => (
-              <div key={offering.id} className="py-5">
-                <div className="flex items-baseline justify-between mb-2">
+              <div key={offering.id} className="py-5 md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] md:gap-8">
+                <div className="flex items-baseline justify-between md:block mb-2 md:mb-0">
                   <h3 className="text-base font-medium text-gray-900">
                     {l(offering, 'title')}
                   </h3>
-                  <span className="text-xs text-gray-500">
+                  <span className="text-xs text-gray-500 md:block md:mt-1">
                     {l(offering, 'duration')}
                   </span>
                 </div>
-                <p className="text-base text-gray-500 leading-relaxed mb-3">
+                <div className="min-w-0 max-w-[65ch]">
+                <p className="text-base text-gray-600 leading-relaxed mb-3">
                   {l(offering, 'desc')}
                 </p>
                 <div>
@@ -411,6 +393,7 @@ const ConsultingPage: React.FC<ConsultingPageProps> = ({ lang, onContact, onProj
                     ))}
                   </ul>
                 </div>
+                </div>
               </div>
             ))}
           </div>
@@ -419,35 +402,38 @@ const ConsultingPage: React.FC<ConsultingPageProps> = ({ lang, onContact, onProj
             <p className="text-sm text-gray-500">{t.tjm_note}</p>
             <p className="text-sm text-gray-500 mt-1">{t.offerings_note}</p>
           </div>
+        </div>
         </section>
 
         {/* ========== SCENARIOS ========== */}
-        <section id="scenarios" className="py-24 md:py-40 border-t border-gray-100">
+        <section id="scenarios" className="border-t border-gray-100">
+        <div className="wrap pt-12 md:pt-16 pb-16 md:pb-24">
           <h2 className="text-title-2 text-gray-900 mb-2">
             {t.scenarios_title}
           </h2>
-          <p className="text-base text-gray-500 leading-relaxed mb-10">
+          <p className="text-base text-gray-600 leading-relaxed max-w-[65ch] mb-10">
             {t.scenarios_intro}
           </p>
 
           <div className="divide-y divide-gray-100">
             {SCENARIOS.map((scenario) => (
-              <div key={scenario.id} className="py-6">
-                <div className="flex items-baseline justify-between mb-4">
+              <div key={scenario.id} className="py-6 md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] md:gap-8">
+                <div className="flex items-baseline justify-between md:block mb-4 md:mb-0">
                   <h3 className="text-base font-medium text-gray-900">
                     {l(scenario, 'title')}
                   </h3>
-                  <span className="text-xs text-gray-500 flex-shrink-0 ml-4">
+                  <span className="text-xs text-gray-500 flex-shrink-0 ml-4 md:ml-0 md:block md:mt-1">
                     {l(scenario, 'duration')}
                   </span>
                 </div>
+                <div className="min-w-0 max-w-[65ch]">
 
                 {/* Context */}
                 <div className="mb-4">
                   <span className="text-xs text-gray-500 uppercase tracking-wider block mb-1">
                     {t.scenario_context}
                   </span>
-                  <p className="text-base text-gray-500 leading-relaxed">
+                  <p className="text-base text-gray-600 leading-relaxed">
                     {l(scenario, 'context')}
                   </p>
                 </div>
@@ -463,7 +449,7 @@ const ConsultingPage: React.FC<ConsultingPageProps> = ({ lang, onContact, onProj
                         <span className="text-xs text-gray-500 w-24 flex-shrink-0 pt-0.5">
                           {l(step, 'label')}
                         </span>
-                        <p className="text-base text-gray-500 leading-relaxed">
+                        <p className="text-base text-gray-600 leading-relaxed">
                           {l(step, 'detail')}
                         </p>
                       </div>
@@ -476,7 +462,7 @@ const ConsultingPage: React.FC<ConsultingPageProps> = ({ lang, onContact, onProj
                   <span className="text-xs text-gray-500 uppercase tracking-wider block mb-1">
                     {t.scenario_outcome}
                   </span>
-                  <p className="text-base text-gray-500 leading-relaxed">
+                  <p className="text-base text-gray-600 leading-relaxed">
                     {l(scenario, 'outcome')}
                   </p>
                 </div>
@@ -498,6 +484,7 @@ const ConsultingPage: React.FC<ConsultingPageProps> = ({ lang, onContact, onProj
                     })}
                   </div>
                 </div>
+                </div>
               </div>
             ))}
           </div>
@@ -505,68 +492,77 @@ const ConsultingPage: React.FC<ConsultingPageProps> = ({ lang, onContact, onProj
           <div className="mt-8">
             <button
               onClick={onContact}
-              className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors"
+              className="inline-flex items-center gap-2 min-h-11 px-5 rounded-full bg-gray-900 hover:bg-black text-white text-sm font-medium active:scale-[0.97] transition-[background-color,transform] duration-200 ease-out"
             >
               {t.cta_primary}
               <ArrowRight size={14} />
             </button>
           </div>
+        </div>
         </section>
 
         {/* ========== REFERENCES ========== */}
-        <section id="references" className="py-24 md:py-40 border-t border-gray-100">
+        <section id="references" className="border-t border-gray-100">
+        <div className="wrap pt-12 md:pt-16 pb-16 md:pb-24">
           <h2 className="text-title-2 text-gray-900 mb-2">
             {t.references_title}
           </h2>
-          <p className="text-base text-gray-500 leading-relaxed mb-10">
+          <p className="text-base text-gray-600 leading-relaxed max-w-[65ch] mb-10">
             {t.references_intro}
           </p>
 
           <div className="divide-y divide-gray-100">
             {REFERENCES.map((ref) => (
-              <div key={ref.id} className="py-5">
-                <div className="flex items-baseline justify-between mb-1">
-                  <h3 className="text-sm font-medium text-gray-900">{ref.client}</h3>
-                  <span className="text-xs text-gray-500">{l(ref, 'duration')}</span>
+              <div key={ref.id} className="py-5 md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] md:gap-8">
+                <div className="mb-2 md:mb-0">
+                  <div className="flex items-baseline justify-between md:block mb-1">
+                    <h3 className="text-sm font-medium text-gray-900">{ref.client}</h3>
+                    <span className="text-xs text-gray-500">{l(ref, 'duration')}</span>
+                  </div>
+                  <p className="text-xs text-gray-500">{l(ref, 'sector')}</p>
                 </div>
-                <p className="text-xs text-gray-500 mb-2">{l(ref, 'sector')}</p>
-                <p className="text-base text-gray-500 leading-relaxed mb-1">{l(ref, 'scope')}</p>
-                <p className="text-base text-gray-500 leading-relaxed">{l(ref, 'outcome')}</p>
+                <div className="min-w-0 max-w-[65ch]">
+                <p className="text-base text-gray-600 leading-relaxed mb-1">{l(ref, 'scope')}</p>
+                <p className="text-base text-gray-600 leading-relaxed">{l(ref, 'outcome')}</p>
                 {ref.caseStudyId && onProjectClick && (
                   <button
                     onClick={() => onProjectClick(ref.caseStudyId!)}
-                    className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors mt-2"
+                    className="inline-flex items-center gap-1.5 min-h-11 text-sm text-gray-900 hover:text-gray-500 transition-colors mt-1"
                   >
                     {t.view_case_study}
                     <ArrowRight size={14} />
                   </button>
                 )}
+                </div>
               </div>
             ))}
           </div>
+        </div>
         </section>
 
         {/* ========== DELIVERY MODES ========== */}
-        <section id="delivery" className="py-24 md:py-40 border-t border-gray-100">
+        <section id="delivery" className="border-t border-gray-100">
+        <div className="wrap pt-12 md:pt-16 pb-16 md:pb-24">
           <h2 className="text-title-2 text-gray-900 mb-2">
             {t.delivery_title}
           </h2>
-          <p className="text-base text-gray-500 leading-relaxed mb-10">
+          <p className="text-base text-gray-600 leading-relaxed max-w-[65ch] mb-10">
             {t.delivery_intro}
           </p>
 
           <div className="divide-y divide-gray-100">
             {DELIVERY_MODES.map((mode) => (
-              <div key={mode.id} className="py-5">
-                <div className="flex items-baseline justify-between mb-2">
+              <div key={mode.id} className="py-5 md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] md:gap-8">
+                <div className="flex items-baseline justify-between md:block mb-2 md:mb-0">
                   <h3 className="text-base font-medium text-gray-900">
                     {l(mode, 'title')}
                   </h3>
-                  <span className="text-xs text-gray-500">
+                  <span className="text-xs text-gray-500 md:block md:mt-1">
                     {l(mode, 'duration')}
                   </span>
                 </div>
-                <p className="text-base text-gray-500 leading-relaxed mb-3">
+                <div className="min-w-0 max-w-[65ch]">
+                <p className="text-base text-gray-600 leading-relaxed mb-3">
                   {l(mode, 'desc')}
                 </p>
                 <div>
@@ -581,24 +577,27 @@ const ConsultingPage: React.FC<ConsultingPageProps> = ({ lang, onContact, onProj
                     ))}
                   </ul>
                 </div>
+                </div>
               </div>
             ))}
           </div>
+        </div>
         </section>
 
         {/* ========== CTA ========== */}
-        <section id="cta" className="py-24 md:py-40 border-t border-gray-100">
+        <section id="cta" className="border-t border-gray-100">
+        <div className="wrap pt-12 md:pt-16 pb-16 md:pb-24">
           <h2 className="text-title-2 text-gray-900 mb-2">
             {t.cta_title}
           </h2>
 
-          <p className="text-base text-gray-500 leading-relaxed mb-8">
+          <p className="text-base text-gray-600 leading-relaxed max-w-[65ch] mb-8">
             {t.cta_desc}
           </p>
 
           <button
             onClick={onContact}
-            className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors mb-4"
+            className="inline-flex items-center gap-2 min-h-11 px-5 rounded-full bg-gray-900 hover:bg-black text-white text-sm font-medium active:scale-[0.97] transition-[background-color,transform] duration-200 ease-out mb-4"
           >
             <Mail size={14} />
             {t.cta_button}
@@ -609,15 +608,16 @@ const ConsultingPage: React.FC<ConsultingPageProps> = ({ lang, onContact, onProj
             {t.cta_email}:{' '}
             <a
               href="mailto:victorsoussan@gmail.com"
-              className="text-gray-500 hover:text-gray-900 transition-colors"
+              className="text-gray-900 hover:text-gray-500 transition-colors underline underline-offset-4 decoration-gray-300"
             >
               victorsoussan@gmail.com
             </a>
           </p>
+        </div>
         </section>
 
       </div>
-    </motion.div>
+    </div>
   );
 };
 

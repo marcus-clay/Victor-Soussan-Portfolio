@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
+import { useReveal } from '@/lib/motion'
 import { LinkedinLogoIcon, CaretDownIcon } from '@phosphor-icons/react'
 
 interface Testimonial {
@@ -47,6 +48,7 @@ const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
   const top3 = testimonials.slice(0, 3)
   const [expandedId, setExpandedId] = useState<string | null>(null)
   const prefersReduced = useReducedMotion()
+  const reveal = useReveal()
 
   return (
     <section id="testimonials" className="py-24 md:py-40 px-6">
@@ -64,10 +66,7 @@ const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
             return (
               <motion.div
                 key={t.id}
-                initial={{ opacity: 0, y: 12 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-60px' }}
-                transition={{ duration: 0.35, delay: i * 0.06, ease: EASE_OUT }}
+                {...reveal(i)}
                 className="py-8 first:pt-0 group/card"
               >
                 {/* Quote area — full area is clickable when long */}
@@ -178,8 +177,8 @@ const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
                         transition={{ duration: prefersReduced ? 0 : 0.15, ease: EASE_OUT }}
                         className="flex items-center gap-1 flex-shrink-0 pl-2 [@media(hover:none)]:!opacity-100"
                       >
-                        <LinkedinLogoIcon size={14} weight="fill" className="text-[#0A66C2] flex-shrink-0" />
-                        <span className="text-sm font-medium text-[#0A66C2] whitespace-nowrap">
+                        <LinkedinLogoIcon size={14} weight="fill" className="text-gray-900 flex-shrink-0" />
+                        <span className="text-sm font-medium text-gray-900 whitespace-nowrap">
                           {lang === 'fr' ? 'Voir le profil' : 'View profile'}
                         </span>
                       </motion.div>

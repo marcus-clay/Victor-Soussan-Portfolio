@@ -1,17 +1,25 @@
-// Dailymotion Case Study Page - Minimalist aesthetic
-// Displays the Dailymotion project case study
+// Dailymotion Case Study Page
+// Order: hero, summary, then four acts: the challenge and its objectives, the design approach
+// (upload, live, player, specifications), the design system, the results. Each block is a short
+// title and paragraph followed by its visuals, shown large on the shared grey stage.
 
-import React, { useState, useEffect, useRef } from 'react';
-import { useStableComponent } from '../../hooks/useStableComponent';
+import React, { useMemo, useState } from 'react';
+import Link from 'next/link';
+import { ActRule, ActTitle } from '@/components/case-study/ActSection'
+import CaseStudySummary from '@/components/case-study/CaseStudySummary'
+import CaseStudyHero from '@/components/case-study/CaseStudyHero'
+import { StageCarousel, StageFigure, type StageItem } from '@/components/case-studies/CaseStudyMedia'
+import { imgDims } from '@/utils/imageDimensions'
 import { motion, AnimatePresence } from 'framer-motion';
 
 import { ArrowRight } from '@phosphor-icons/react';
 import VideoPlayer from '@/components/VideoPlayer';
 import { GalleryItem, getDailymotionGalleryItems } from '../../components/BentoGallery';
 import EnhancedLightbox from '../../components/media/EnhancedLightbox';
-import DailymotionExecutive from '../../components/case-studies/DailymotionExecutive';
 
 import { DAILYMOTION_TRANSLATIONS } from '../../data/caseStudyTranslations/dailymotionTranslations';
+import { zoomable } from '@/utils/zoomable'
+import { useScrollTopOnChange } from '@/hooks/useScrollTopOnChange';
 
 interface DailymotionPageProps {
   onClose: () => void;
@@ -26,6 +34,7 @@ interface DailymotionPageProps {
 // All media (images + videos) for lightbox navigation
 type MediaItem = { src: string; captionKey: string; type: 'image' | 'video' };
 const allImagesData: MediaItem[] = [
+  { src: '/images/thumbnail-dailymotion-web-platform.webp', captionKey: 'hero', type: 'image' },
   { src: '/images/dailymotion/thumbnail_dailymotion_-_web_platform2x.webp', captionKey: 'hero', type: 'image' },
   { src: '/images/dailymotion/dailymotion_focus_upload_2x.webp', captionKey: 'videoManagement', type: 'image' },
   { src: '/images/dailymotion/dailymotion_focus_livestream_2x.webp', captionKey: 'liveDashboard', type: 'image' },
@@ -50,6 +59,8 @@ const allImagesData: MediaItem[] = [
   { src: '/images/dailymotion/design_system_-_component_library2x.webp', captionKey: 'uiKitComponents', type: 'image' },
 ];
 
+const HERO_SRC = '/images/thumbnail-dailymotion-web-platform.webp';
+
 interface GalleryCardProps {
   item: GalleryItem;
   index: number;
@@ -60,17 +71,17 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick }) => {
   const isVideo = item.type === 'video' || item.src.match(/\.(mp4|webm|mov)$/i);
   return (
     <motion.figure
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.28, delay: index * 0.03, ease: [0.23, 1, 0.32, 1] }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.32, ease: [0.23, 1, 0.32, 1] }}
       className="group cursor-zoom-in break-inside-avoid mb-4"
-      onClick={onClick}
+      {...zoomable(onClick)}
     >
-      <div className="rounded-xl overflow-hidden ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]">
+      <div className="rounded-xl overflow-hidden ring-1 ring-black/[0.04] [@media(hover:hover)]:hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)]:hover:scale-[1.01] active:scale-[0.99]">
         {isVideo ? (
-          <VideoPlayer src={item.src} className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" />
+          <VideoPlayer src={item.src} className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)]:group-hover:scale-[1.02]" />
         ) : (
-          <img loading="lazy" src={item.src} alt={item.caption} className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" />
+          <img loading="lazy" src={item.src} {...imgDims(item.src)} alt={item.caption} className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)]:group-hover:scale-[1.02]" />
         )}
       </div>
       <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
@@ -81,52 +92,46 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick }) => {
   );
 };
 
+// One idea: an h3, one short paragraph (each caps its own measure), its visuals below, all in the act column
+const Block: React.FC<{ id?: string; title: string; text: string; children: React.ReactNode }> = ({ id, title, text, children }) => (
+  <div id={id} className="mb-14 md:mb-16 last:mb-0 scroll-mt-24">
+    <h3 className="text-title-3 text-gray-900 mb-2 max-w-[56ch]">{title}</h3>
+    <p className="max-w-[62ch] text-base text-gray-600">{text}</p>
+    <div className="mt-6 md:mt-8 space-y-6 md:space-y-8">{children}</div>
+  </div>
+);
+
 export const DailymotionPage: React.FC<DailymotionPageProps> = ({
-  onClose,
-  systemTheme,
-  onToggleTheme: _onToggleTheme,
   viewMode,
-  onViewModeChange,
   lang = 'en',
-  onContact,
 }) => {
   const t = DAILYMOTION_TRANSLATIONS[lang];
   const galleryItems = getDailymotionGalleryItems(lang);
 
-  // Build allImages with translated captions
-  const allImages = allImagesData.map(item => ({
-    src: item.src,
-    type: item.type,
-    caption: `${t.captions[item.captionKey as keyof typeof t.captions]} - ${t.captions[`${item.captionKey}Desc` as keyof typeof t.captions] || ''}`
-  }));
+  // French needs a no-break space before the colon.
+  const captionSeparator = lang === 'fr' ? ' : ' : ': ';
+  const allImages = useMemo(() => allImagesData.map(item => {
+    const title = t.captions[item.captionKey as keyof typeof t.captions];
+    const desc = t.captions[`${item.captionKey}Desc` as keyof typeof t.captions];
+    return {
+      src: item.src,
+      type: item.type,
+      caption: desc ? `${title}${captionSeparator}${desc}` : title,
+    };
+  }), [t, captionSeparator]);
 
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [videoStartTime, setVideoStartTime] = useState(0);
-  const initialCaseStudyMode = viewMode === 'executive' ? 'executive' : (viewMode === 'caseStudy' ? 'full' : 'executive');
-  const [caseStudyMode, setCaseStudyMode] = useState<'executive' | 'full'>(initialCaseStudyMode);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const videoRefs = useRef<{ [key: string]: HTMLVideoElement | null }>({});
 
-  // Sync caseStudyMode when viewMode changes from outside
-  useEffect(() => {
-    if (viewMode === 'executive') {
-      setCaseStudyMode('executive');
-    } else if (viewMode === 'caseStudy') {
-      setCaseStudyMode('full');
-    }
-  }, [viewMode]);
+  // Scroll to top when the view changes
+  useScrollTopOnChange(viewMode);
 
-  // Scroll to top when mode changes
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
-  }, [caseStudyMode, viewMode]);
-
-  const openLightbox = (imageSrc: string, startTime: number = 0) => {
+  const openLightbox = (imageSrc: string) => {
     const index = allImages.findIndex(img => img.src === imageSrc);
     if (index !== -1) {
       setLightboxIndex(index);
-      setVideoStartTime(startTime);
+      setVideoStartTime(0);
       setLightboxOpen(true);
     }
   };
@@ -135,40 +140,36 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
     setLightboxOpen(false);
   };
 
-  // Reusable media figure component
-  const MediaFigure = useStableComponent(({ src, alt, caption, captionDesc, type = 'image', className = '', videoRefKey }: {
-    src: string; alt: string; caption: string; captionDesc?: string; type?: 'image' | 'video'; className?: string; videoRefKey?: string;
-  }) => (
-    <figure className={className}>
-      <div
-        onClick={() => {
-          const startTime = videoRefKey ? (videoRefs.current[videoRefKey]?.currentTime || 0) : 0;
-          openLightbox(src, startTime);
-        }}
-        className="group rounded-xl overflow-hidden cursor-zoom-in ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
-      >
-        {type === 'video' ? (
-          <VideoPlayer
-            src={src}
-            className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
-          />
-        ) : (
-          <img loading="lazy" src={src} alt={alt}
-            className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
-          />
-        )}
-      </div>
-      <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
-        {caption}{captionDesc && ` · ${captionDesc}`}
-      </figcaption>
-    </figure>
-  ));
+  // A visual of the page: its short name under it, its source and its stage treatment here
+  const cap = (key: string) => t.captions[key as keyof typeof t.captions] as string;
+  const visual = (src: string, key: string, extra: Partial<StageItem> = {}): StageItem => ({ src, caption: cap(key), ...extra });
+  const stripProps = { prevLabel: t.ui.previous, nextLabel: t.ui.next, onZoom: openLightbox };
+
+  const uploadStrip: StageItem[] = [
+    visual('/videos/dailymotion/video_-_cancel_upload.mp4', 'cancelUpload', { type: 'video', size: [1730, 1080] }),
+    visual('/videos/dailymotion/video_2025-11-10_02.26.48.mp4', 'thumbnailUpdate', { type: 'video', size: [1080, 1080] }),
+    visual('/videos/dailymotion/video_add_subtitle.mp4', 'addSubtitles', { type: 'video', size: [1080, 1080] }),
+  ];
+  const liveStrip: StageItem[] = [
+    visual('/images/dailymotion/dailymotion_-_live_-_countdown2x.webp', 'preBroadcast', { onStage: true }),
+    visual('/images/dailymotion/dailymotion_-_livestream2x.webp', 'liveMonitor', { onStage: true }),
+  ];
+  const playerStrip: StageItem[] = [
+    visual('/images/dailymotion/dailymotion_-_create_player2x.webp', 'playerConfigurator', { onStage: true }),
+    visual('/videos/dailymotion/Dailymotion_-_video_manager_-_Embed_code_TOP_v6.mp4', 'embedCode', { type: 'video', size: [2048, 2004], maxWidth: 680 }),
+  ];
+  const specsStrip: StageItem[] = [
+    visual('/images/dailymotion/dailymotion_-_share_expanded2x.webp', 'shareModal', { onStage: true }),
+    visual('/images/dailymotion/Share_-_keyboard_input2x.webp', 'keyboardMapping'),
+    visual('/images/dailymotion/dailymotion_-_add_to_playlist_-_spec2x.webp', 'addToPlaylist', { onStage: true }),
+  ];
+  const designSystemStrip: StageItem[] = [
+    visual('/images/dailymotion/design_system_-_component_library2x.webp', 'uiKitComponents'),
+    visual('/images/dailymotion/design_system_-_Styles2x.webp', 'uiKitStyles'),
+  ];
 
   return (
-    <div
-      ref={containerRef}
-      className="min-h-screen bg-[#FDFDFC]"
-    >
+    <div className="min-h-screen bg-[#FDFDFC]">
 
       {/* Lightbox */}
       <EnhancedLightbox
@@ -197,7 +198,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
-            className="max-w-[960px] mx-auto px-6 py-8 md:py-12"
+            className="act-wide py-8 md:py-12"
           >
             <div className="columns-1 sm:columns-2 lg:columns-3 gap-4">
               {galleryItems.map((item, index) => (
@@ -210,465 +211,117 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
               ))}
             </div>
           </motion.div>
-        ) : caseStudyMode === 'executive' ? (
-          /* Executive Summary View */
-          <motion.div
-            key="executive"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.15 }}
-          >
-            <DailymotionExecutive
-              systemTheme={systemTheme}
-              lang={lang}
-              onImageClick={openLightbox}
-              onViewFull={() => setCaseStudyMode('full')}
-              onContact={onContact}
-            />
-          </motion.div>
         ) : (
           /* Full Case Study View */
-          <motion.div
-            key="caseStudy"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.15 }}
-          >
-            {/* Hero Section */}
-            <section id="hero" className="mb-24 md:mb-32">
-              <div className="max-w-[740px] mx-auto px-6 pt-16 md:pt-24">
-                {/* Meta */}
-                <p className="text-xs text-gray-500 mb-4">
-                  {t.hero.role} · {t.hero.scope} · {t.hero.period}
-                </p>
-
-                {/* Title */}
-                <h1 className="text-title-1 text-gray-900 mb-3">
-                  {t.hero.title}
-                </h1>
-
-                {/* Subtitle */}
-                <p className="text-sm font-medium text-gray-900 mb-4">
-                  {t.hero.subtitle}
-                </p>
-
-                {/* Description */}
-                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-6">
-                  {t.hero.description}
-                </p>
-
-                {/* Visit Website */}
-                <a
-                  href="https://www.dailymotion.com/partner"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors duration-200"
-                >
-                  {t.visitDailymotion}
-                  <ArrowRight size={14} />
-                </a>
-              </div>
-            </section>
-
-            {/* Hero Image */}
-            <div className="max-w-[960px] mx-auto px-6">
-              <MediaFigure
-                src="/images/dailymotion/thumbnail_dailymotion_-_web_platform2x.webp"
-                alt="Dailymotion Partner Platform Overview"
-                caption={t.captions.hero}
-                captionDesc={t.captions.heroDesc}
-                className="mb-24 md:mb-32"
+          <div key="caseStudy">
+            <div id="top">
+              {/* Hero: same structure for every case study. Its intro is the executive summary. */}
+              <CaseStudyHero
+                lang={lang}
+                projectId="dailymotion"
+                title={t.hero.title}
+                intro={t.hero.intro}
+                meta={[
+                  { label: t.metaLabels.role, value: t.hero.role },
+                  { label: t.metaLabels.period, value: t.hero.period },
+                  { label: t.metaLabels.team, value: t.hero.team },
+                  { label: t.metaLabels.scope, value: t.hero.scope },
+                ]}
+                onZoom={() => openLightbox(HERO_SRC)}
+                visualAlt={t.captions.hero}
+                externalHref="https://www.dailymotion.com/partner"
+                externalLabel={t.visitDailymotion}
               />
             </div>
 
-            {/* Overview Section */}
-            <section id="overview" className="mb-24 md:mb-32">
-              <div className="max-w-[740px] mx-auto px-6">
-                <h2 className="text-title-2 text-gray-900 mb-4">
-                  {t.overview.title}
-                </h2>
+            {/* Summary: context, role, deliverables and the sourced numbers. No client testimonial exists for this study. */}
+            <CaseStudySummary
+              lang={lang}
+              context={t.summary.context}
+              role={t.summary.role}
+              roleItems={t.summary.roleItems}
+              deliverables={t.summary.deliverables}
+              metrics={t.summary.metrics}
+            />
 
-                <div className="space-y-8">
-                  {/* Introduction */}
-                  <div>
-                    <p className="text-sm font-medium text-gray-900 mb-2">
-                      {t.overview.introTitle}
-                    </p>
-                    <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">
-                      {t.overview.introDesc}
-                    </p>
-                  </div>
+            {/* 01 Challenge and objectives: text only, the visuals start with the approach */}
+            <section id="challenge">
+              <ActRule />
+              <div className="act-wide pt-10 md:pt-14 pb-12 md:pb-16">
+                <ActTitle index="01" title={t.challenge.title} />
+                <p className="max-w-[62ch] text-base text-gray-600">{t.challenge.text}</p>
+                <h3 className="mt-8 text-title-3 text-gray-900">{t.challenge.objectivesTitle}</h3>
+                <ul className="mt-3 max-w-[62ch] list-disc pl-5 space-y-1.5 text-base text-gray-600 marker:text-gray-400">
+                  {t.challenge.objectives.map((objective) => (
+                    <li key={objective}>{objective}</li>
+                  ))}
+                </ul>
+              </div>
+            </section>
 
-                  {/* Role and scope */}
-                  <div>
-                    <p className="text-sm font-medium text-gray-900 mb-2">
-                      {t.overview.roleTitle}
-                    </p>
-                    <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">
-                      {t.overview.roleDesc}
-                    </p>
-                  </div>
+            {/* 02 Approach: three workflows, then the specifications that carried them to delivery */}
+            <section id="approach">
+              <ActRule />
+              <div className="act-wide pt-10 md:pt-14 pb-12 md:pb-16">
+                <ActTitle index="02" title={t.approach.title} />
+                <p className="max-w-[62ch] text-base text-gray-600">{t.approach.lead}</p>
 
-                  {/* Strategic goals */}
-                  <div>
-                    <p className="text-sm font-medium text-gray-900 mb-2">
-                      {t.overview.goalsTitle}
-                    </p>
-                    <ul className="space-y-1.5">
-                      {t.overview.goals.map((goal, idx) => (
-                        <li key={idx} className="text-base text-gray-500 leading-relaxed">
-                          <span className="text-gray-300 mr-2">&#8226;</span>{goal}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                <div className="mt-10 md:mt-12">
+                  <Block id="upload" title={t.approach.upload.title} text={t.approach.upload.text}>
+                    <StageFigure item={visual('/images/dailymotion/dailymotion_-_upload2x.webp', 'batchUpload', { onStage: true, maxWidth: 820 })} onZoom={openLightbox} />
+                    <StageCarousel items={uploadStrip} ariaLabel={t.ui.carouselInteractions} {...stripProps} />
+                  </Block>
+
+                  <Block id="live" title={t.approach.live.title} text={t.approach.live.text}>
+                    <StageCarousel items={liveStrip} ariaLabel={t.ui.carouselLive} {...stripProps} />
+                  </Block>
+
+                  <Block id="player" title={t.approach.player.title} text={t.approach.player.text}>
+                    <StageCarousel items={playerStrip} ariaLabel={t.ui.carouselPlayer} {...stripProps} />
+                  </Block>
+
+                  <Block id="specs" title={t.approach.specs.title} text={t.approach.specs.text}>
+                    <StageCarousel items={specsStrip} ariaLabel={t.ui.carouselSpecs} {...stripProps} />
+                  </Block>
                 </div>
 
-                {/* Project meta */}
-                <div className="mt-12 divide-y divide-gray-100">
-                  <div className="flex justify-between py-3">
-                    <span className="text-xs text-gray-500">Type</span>
-                    <span className="text-sm text-gray-900">{t.meta.type}</span>
-                  </div>
-                  <div className="flex justify-between py-3">
-                    <span className="text-xs text-gray-500">Scope</span>
-                    <span className="text-sm text-gray-900">{t.meta.scope}</span>
-                  </div>
-                  <div className="flex justify-between py-3">
-                    <span className="text-xs text-gray-500">Period</span>
-                    <span className="text-sm text-gray-900">{t.meta.period}</span>
-                  </div>
-                  <div className="flex justify-between py-3">
-                    <span className="text-xs text-gray-500">Company</span>
-                    <span className="text-sm text-gray-900">{t.meta.company}</span>
-                  </div>
+                {/* Quiet way to the full gallery */}
+                <div className="mt-10 md:mt-12">
+                  <Link
+                    href={`/${lang}/project/dailymotion/gallery`}
+                    className="inline-flex items-center gap-1.5 min-h-11 text-sm font-medium text-gray-900 [@media(hover:hover)]:hover:text-gray-500 active:scale-[0.97] transition-[color,transform] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)]"
+                  >
+                    {t.ui.viewAll}
+                    <ArrowRight size={14} aria-hidden="true" />
+                  </Link>
                 </div>
               </div>
             </section>
 
-            {/* Key Product Modules Section */}
-            <section id="modules" className="mb-24 md:mb-32">
-              <div className="max-w-[740px] mx-auto px-6">
-                <h2 className="text-title-2 text-gray-900 mb-4">
-                  {t.modules.deliveredTitle}
-                </h2>
-              </div>
-
-              <div className="max-w-[960px] mx-auto px-6">
-                <div className="space-y-8">
-                  {/* Video Management */}
-                  <MediaFigure
-                    src="/images/dailymotion/dailymotion_focus_upload_2x.webp"
-                    alt="Video Management Workflows"
-                    caption={t.captions.videoManagement}
-                    captionDesc={t.captions.videoManagementDesc}
-                  />
-
-                  {/* Live Dashboard */}
-                  <MediaFigure
-                    src="/images/dailymotion/dailymotion_focus_livestream_2x.webp"
-                    alt="Live Dashboard"
-                    caption={t.captions.liveDashboard}
-                    captionDesc={t.captions.liveDashboardDesc}
-                  />
-
-                  {/* Player Manager */}
-                  <MediaFigure
-                    src="/images/dailymotion/dailymotion_focus_player_template_2x.webp"
-                    alt="Player Manager"
-                    caption={t.captions.playerManager}
-                    captionDesc={t.captions.playerManagerDesc}
-                  />
+            {/* 03 Design system */}
+            <section id="design-system">
+              <ActRule />
+              <div className="act-wide pt-10 md:pt-14 pb-12 md:pb-16">
+                <ActTitle index="03" title={t.designSystem.title} />
+                <p className="max-w-[62ch] text-base text-gray-600">{t.designSystem.text}</p>
+                <div className="mt-8 md:mt-10">
+                  <StageCarousel items={designSystemStrip} ariaLabel={t.ui.carouselDesignSystem} {...stripProps} />
                 </div>
               </div>
             </section>
 
-            {/* Video Upload and Management Workflows Section */}
-            <section id="upload" className="mb-24 md:mb-32">
-              <div className="max-w-[740px] mx-auto px-6">
-                <h2 className="text-title-2 text-gray-900 mb-4">
-                  {t.upload.sectionTitle}
-                </h2>
-
-                <p className="text-sm font-medium text-gray-900 mb-2">
-                  {t.upload.question}
-                </p>
-
-                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-12">
-                  {t.upload.intro}
-                </p>
-
-                {/* Upload subtitle */}
-                <p className="text-sm font-medium text-gray-900 mb-4">
-                  {t.upload.uploadSubtitle}
-                </p>
-              </div>
-
-              <div className="max-w-[960px] mx-auto px-6">
-                {/* Upload images */}
-                <div className="space-y-8 mb-12">
-                  <MediaFigure
-                    src="/images/dailymotion/dailymotion_-_upload2x.webp"
-                    alt="Batch upload interface"
-                    caption={t.captions.batchUpload}
-                    captionDesc={t.captions.batchUploadDesc}
-                  />
-                  <MediaFigure
-                    src="/videos/dailymotion/video_-_cancel_upload.mp4"
-                    alt="Cancel upload interaction"
-                    caption={t.captions.cancelUpload}
-                    captionDesc={t.captions.cancelUploadDesc}
-                    type="video"
-                    videoRefKey="cancel-upload"
-                  />
-                </div>
-
-                <div className="space-y-8 mb-12">
-                  <MediaFigure
-                    src="/videos/dailymotion/video_2025-11-10_02.26.48.mp4"
-                    alt="Thumbnail update"
-                    caption={t.captions.thumbnailUpdate}
-                    captionDesc={t.captions.thumbnailUpdateDesc}
-                    type="video"
-                  />
-                  <MediaFigure
-                    src="/videos/dailymotion/video_add_subtitle.mp4"
-                    alt="Add subtitles"
-                    caption={t.captions.addSubtitles}
-                    captionDesc={t.captions.addSubtitlesDesc}
-                    type="video"
-                  />
-                </div>
-              </div>
-
-              {/* Video Library */}
-              <div className="max-w-[740px] mx-auto px-6">
-                <p className="text-sm font-medium text-gray-900 mb-2">
-                  {t.upload.videoLibraryTitle}
-                </p>
-                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-12">
-                  {t.upload.videoLibraryIntro}
-                </p>
-              </div>
-
-              <div className="max-w-[960px] mx-auto px-6">
-                <MediaFigure
-                  src="/images/dailymotion/dailymotion_-_video_manager.svg"
-                  alt="Video library"
-                  caption={t.captions.videoLibrary}
-                  captionDesc={t.captions.videoLibraryDesc}
-                  className="mb-12"
-                />
-
-                {/* Video interactions */}
-                <div className="space-y-8 mb-12">
-                  <MediaFigure
-                    src="/videos/dailymotion/Dailymotion_-_video_manager_-_Embed_code_TOP_v6.mp4"
-                    alt="Embed code"
-                    caption={t.captions.embedCode}
-                    captionDesc={t.captions.embedCodeDesc}
-                    type="video"
-                  />
-                  <MediaFigure
-                    src="/videos/dailymotion/switch_12-24.mp4"
-                    alt="Time picker"
-                    caption={t.captions.timePicker}
-                    captionDesc={t.captions.timePickerDesc}
-                    type="video"
-                  />
-                </div>
-
-                <div className="space-y-8 mb-12">
-                  <MediaFigure
-                    src="/videos/dailymotion/dailymotion_video_manager_-_set_password.mp4"
-                    alt="Password protection"
-                    caption={t.captions.passwordProtection}
-                    captionDesc={t.captions.passwordProtectionDesc}
-                    type="video"
-                  />
-                  <MediaFigure
-                    src="/videos/dailymotion/Geoblocking.mp4"
-                    alt="Geoblocking"
-                    caption={t.captions.geoblocking}
-                    captionDesc={t.captions.geoblockingDesc}
-                    type="video"
-                  />
-                </div>
-
-                {/* Share modal */}
-                <MediaFigure
-                  src="/images/dailymotion/dailymotion_-_share_expanded2x.webp"
-                  alt="Share modal"
-                  caption={t.captions.shareModal}
-                  captionDesc={t.captions.shareModalDesc}
-                  className="mb-12"
-                />
-
-                {/* Specifications */}
-                <div className="space-y-8 mb-12">
-                  <MediaFigure
-                    src="/images/dailymotion/Share_-_keyboard_input2x.webp"
-                    alt="Share modal keyboard mapping"
-                    caption={t.captions.keyboardMapping}
-                    captionDesc={t.captions.keyboardMappingDesc}
-                  />
-                  <MediaFigure
-                    src="/images/dailymotion/image.webp"
-                    alt="Start time keyboard input"
-                    caption={t.captions.startTimeInput}
-                    captionDesc={t.captions.startTimeInputDesc}
-                  />
-                </div>
-
-                {/* Playlist */}
-                <MediaFigure
-                  src="/images/dailymotion/dailymotion_-_add_to_playlist_-_spec2x.webp"
-                  alt="Add to playlist flow"
-                  caption={t.captions.addToPlaylist}
-                  captionDesc={t.captions.addToPlaylistDesc}
-                />
-              </div>
-            </section>
-
-            {/* Live Management Console Section */}
-            <section id="live" className="mb-24 md:mb-32">
-              <div className="max-w-[740px] mx-auto px-6">
-                <h2 className="text-title-2 text-gray-900 mb-4">
-                  {t.live.sectionTitle}
-                </h2>
-
-                <p className="text-sm font-medium text-gray-900 mb-2">
-                  {t.live.question}
-                </p>
-
-                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-12">
-                  {t.live.intro}
-                </p>
-              </div>
-
-              <div className="max-w-[960px] mx-auto px-6">
-                {/* Live countdown */}
-                <MediaFigure
-                  src="/images/dailymotion/dailymotion_-_live_-_countdown2x.webp"
-                  alt="Pre-broadcast countdown"
-                  caption={t.captions.preBroadcast}
-                  captionDesc={t.captions.preBroadcastDesc}
-                  className="mb-12"
-                />
-
-                {/* Live dashboard */}
-                <MediaFigure
-                  src="/images/dailymotion/dailymotion_-_livestream2x.webp"
-                  alt="Live dashboard"
-                  caption={t.captions.liveMonitor}
-                  captionDesc={t.captions.liveMonitorDesc}
-                />
-              </div>
-            </section>
-
-            {/* Player Manager Section */}
-            <section id="player" className="mb-24 md:mb-32">
-              <div className="max-w-[740px] mx-auto px-6">
-                <h2 className="text-title-2 text-gray-900 mb-4">
-                  {t.player.title}
-                </h2>
-
-                <p className="text-sm font-medium text-gray-900 mb-2">
-                  {t.player.question}
-                </p>
-
-                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-12">
-                  {t.player.intro}
-                </p>
-              </div>
-
-              <div className="max-w-[960px] mx-auto px-6">
-                <MediaFigure
-                  src="/images/dailymotion/dailymotion_-_create_player2x.webp"
-                  alt="Player template configurator"
-                  caption={t.captions.playerConfigurator}
-                  captionDesc={t.captions.playerConfiguratorDesc}
-                />
-              </div>
-            </section>
-
-            {/* Design System Section */}
-            <section id="design-system" className="mb-24 md:mb-32">
-              <div className="max-w-[740px] mx-auto px-6">
-                <h2 className="text-title-2 text-gray-900 mb-4">
-                  {t.designSystem.sectionTitle}
-                </h2>
-
-                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-12">
-                  {t.designSystem.intro}
-                </p>
-              </div>
-
-              <div className="max-w-[960px] mx-auto px-6">
-                <div className="space-y-8">
-                  <MediaFigure
-                    src="/images/dailymotion/design_system_-_Styles2x.webp"
-                    alt="UI Kit - Styles"
-                    caption={t.captions.uiKitStyles}
-                    captionDesc={t.captions.uiKitStylesDesc}
-                  />
-                  <MediaFigure
-                    src="/images/dailymotion/design_system_-_component_library2x.webp"
-                    alt="UI Kit - Components"
-                    caption={t.captions.uiKitComponents}
-                    captionDesc={t.captions.uiKitComponentsDesc}
-                  />
+            {/* 04 Results: the numbers are in the summary and are not repeated here */}
+            <section id="results">
+              <ActRule />
+              <div className="act-wide pt-10 md:pt-14 pb-12 md:pb-16">
+                <ActTitle index="04" title={t.results.title} />
+                <p className="max-w-[62ch] text-base text-gray-600">{t.results.text}</p>
+                <div className="mt-8 md:mt-10">
+                  <StageFigure item={visual('/images/dailymotion/dailymotion_-_video_manager.svg', 'videoLibrary', { onStage: true })} onZoom={openLightbox} />
                 </div>
               </div>
             </section>
-
-            {/* Impact Section */}
-            <section id="impact" className="mb-24 md:mb-32">
-              <div className="max-w-[740px] mx-auto px-6">
-                <h2 className="text-title-2 text-gray-900 mb-4">
-                  {t.impact.title}
-                </h2>
-                <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-12">
-                  {t.impact.intro}
-                </p>
-
-                {/* Key Results - inline metrics */}
-                <div className="divide-y divide-gray-100">
-                  <div className="flex items-baseline justify-between py-4">
-                    <span className="text-sm text-gray-500">{t.impact.partnersDesc}</span>
-                    <span className="text-base font-semibold text-gray-900 tabular-nums">{t.impact.partners}</span>
-                  </div>
-                  <div className="flex items-baseline justify-between py-4">
-                    <span className="text-sm text-gray-500">{t.impact.videosDesc}</span>
-                    <span className="text-base font-semibold text-gray-900 tabular-nums">{t.impact.videos}</span>
-                  </div>
-                  <div className="flex items-baseline justify-between py-4">
-                    <span className="text-sm text-gray-500">{t.impact.reductionDesc}</span>
-                    <span className="text-base font-semibold text-gray-900 tabular-nums">{t.impact.reduction}</span>
-                  </div>
-                  <div className="flex items-baseline justify-between py-4">
-                    <span className="text-sm text-gray-500">{t.impact.componentsDesc}</span>
-                    <span className="text-base font-semibold text-gray-900 tabular-nums">{t.impact.components}</span>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            {/* Footer CTA */}
-            <div className="max-w-[740px] mx-auto px-6 pb-16">
-              <div className="pt-8 border-t border-gray-100">
-                <button
-                  onClick={onContact}
-                  className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors duration-200"
-                >
-                  {t.cta.button}
-                  <ArrowRight size={14} />
-                </button>
-              </div>
-            </div>
-          </motion.div>
+          </div>
         )}
       </AnimatePresence>
     </div>

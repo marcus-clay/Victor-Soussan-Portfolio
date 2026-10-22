@@ -21,9 +21,19 @@ function getStickyOffset(): number {
 
 const easeOutQuint = (t: number): number => 1 - Math.pow(1 - t, 5)
 
+// The animation in flight. A press, a wheel, a touch or a key stops it where it is, so the
+// reader is never fighting the page for control of the scroll.
+let cancelActive: (() => void) | null = null
+
+function prefersReducedMotion(): boolean {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches
+}
+
 /**
  * Scroll window to targetTop with a controlled ease-out quint animation.
  * Duration scales with distance (min 400ms, max 700ms) for consistent feel.
+ * The animation yields to any user input, and jumps straight to the target when the
+ * reader asks for reduced motion.
  */
 export function smoothScrollTo(
   container: HTMLElement | Window,
@@ -38,8 +48,24 @@ export function smoothScrollTo(
   const distance = Math.abs(targetTop - currentTop)
   if (distance < 1) return
 
+  cancelActive?.()
+
+  if (isWindow && prefersReducedMotion()) {
+    window.scrollTo(0, targetTop)
+    return
+  }
+
   const duration = durationOverride ?? Math.min(700, Math.max(380, distance * 0.5))
   let startTime: number | null = null
+  let frame = 0
+
+  const stop = () => {
+    cancelAnimationFrame(frame)
+    INTERRUPTS.forEach((type) => window.removeEventListener(type, stop))
+    if (cancelActive === stop) cancelActive = null
+  }
+  cancelActive = stop
+  INTERRUPTS.forEach((type) => window.addEventListener(type, stop, { passive: true }))
 
   const animate = (time: number) => {
     if (startTime === null) startTime = time
@@ -54,12 +80,16 @@ export function smoothScrollTo(
     }
 
     if (elapsed < duration) {
-      requestAnimationFrame(animate)
+      frame = requestAnimationFrame(animate)
+    } else {
+      stop()
     }
   }
 
-  requestAnimationFrame(animate)
+  frame = requestAnimationFrame(animate)
 }
+
+const INTERRUPTS = ['wheel', 'touchstart', 'pointerdown', 'keydown'] as const
 
 /**
  * Scroll to a DOM element by ID with proper sticky offset.

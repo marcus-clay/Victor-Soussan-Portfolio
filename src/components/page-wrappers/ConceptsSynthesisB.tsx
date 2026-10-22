@@ -149,7 +149,7 @@ function BHome({ go }: { go: (p: PageId) => void }) {
               <img src={p.coverImage} alt={p.title} className="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-700" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-10 md:p-14">
-                <span className="text-[13px] font-semibold text-white/50 uppercase tracking-wider block mb-3">{p.role} · {p.period}</span>
+                <span className="text-[13px] font-semibold text-white/50 uppercase tracking-wider block mb-3">{p.role}</span>
                 <h2 className="text-[clamp(2rem,4vw,3.5rem)] font-bold tracking-[-0.03em] text-white mb-3">{p.title}</h2>
                 <p className="text-[17px] text-white/70 max-w-lg leading-relaxed">{p.summary}</p>
                 <div className="mt-4 flex items-center gap-2 text-[15px] font-semibold text-white/60 group-hover:text-white transition-colors">
@@ -272,7 +272,7 @@ function BWork({ go }: { go: (p: PageId) => void }) {
               <div className="p-8 flex items-start justify-between">
                 <div>
                   <h2 className="text-[22px] font-bold tracking-[-0.02em] group-hover:text-blue-600 transition-colors">{p.title}</h2>
-                  <p className="text-[15px] text-gray-400 mt-1">{p.role} · {p.period}</p>
+                  <p className="text-[15px] text-gray-400 mt-1">{p.role}</p>
                   <p className="text-[16px] text-gray-500 mt-3 max-w-lg leading-relaxed">{p.summary}</p>
                 </div>
                 <ArrowUpRight size={18} className="text-gray-300 group-hover:text-blue-500 transition-colors shrink-0 mt-1" />
@@ -309,7 +309,7 @@ function BCase({ go }: { go: (p: PageId) => void }) {
           </Fade>
           <Fade delay={0.05}>
             <div className="flex items-center gap-4 text-[14px] text-white/50 mb-4">
-              <span className="font-semibold text-white">{PROJECTS[0].title}</span><span>·</span><span>{TK.meta.type}</span><span>·</span><span>{TK.meta.period}</span>
+              <span className="font-semibold text-white">{PROJECTS[0].title}</span><span>·</span><span>{TK.meta.type}</span>
             </div>
             <h1 className="text-[clamp(2rem,5vw,3.5rem)] font-bold tracking-[-0.04em] leading-[1.05] text-white">{TK.hero.title}</h1>
           </Fade>

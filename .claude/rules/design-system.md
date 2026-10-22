@@ -1,5 +1,5 @@
 ## Colors
-- Brand blue (primary CTA): `#2D5CF3`, hover: `#2450d9`
+- No brand blue: the site is monochrome. Primary CTA is black (`bg-gray-900`, hover `bg-black`), decided by the owner on 2026-10-21
 - Dark background: `bg-[#0a0a0a]`
 - Light background: `bg-[#FCFCFD]`
 - Dark cards: `bg-[#1D1D1F]`
@@ -8,16 +8,16 @@
 - Light borders: `border-gray-100` to `border-gray-200`
 
 ## Buttons
-- Primary CTA: `bg-[#2D5CF3] text-white hover:bg-[#2450d9] shadow-sm hover:shadow-md`
-- Always blue, both light and dark mode
+- Primary CTA: `bg-gray-900 text-white hover:bg-black shadow-sm hover:shadow-md`
+- Always black, on light and dark grounds. Links hover to `hover:text-gray-500`
 - Rounded-full, font-medium, inline-flex with gap-2
-- Never use `bg-gray-900` for CTAs
+- Never introduce a colored button
 
 ## Site Header (Nav)
 - Default height: 64px, reduces to 56px on scroll (transition 250ms ease-out)
 - Logo: "Victor Soussan" at text-base (16px), font-semibold, tracking-[-0.02em]
 - Nav items: text-sm, rounded-full pills with hover bg-black/[0.04]
-- Active indicator: 2px blue underline inside pill
+- Active indicator: 2px dark underline inside pill
 - Contact button: bg-gray-900 text-white, rounded-full, same height as nav pills
 - Glass effect: bg-white/80 backdrop-blur-xl border-b border-gray-100/80
 - Scrollbar gutter: `scrollbar-gutter: stable` on html to prevent layout shift

@@ -18,7 +18,6 @@ export interface Project {
   id: string;
   title: string;
   role: string;
-  period: string;
   summary: string;
   format: ProjectFormat;
   category: ProjectCategory;
@@ -42,18 +41,50 @@ export interface Project {
   shortDescription?: string; // Executive description for short format
   videoUrl?: string;         // Embedded video URL
   body?: string;             // Extended description (rendered after media)
+  heroInBody?: boolean;      // The body opens on its own figure: the cover is not repeated above it
 }
 
 export const getProjects = (lang: Language): Project[] => {
   const isEn = lang === 'en';
   return [
     {
+      id: "tessan",
+      format: 'case-study',
+      category: 'product-design',
+      title: "Tessan",
+      navTitle: isEn ? "Tessan, patient app" : "Tessan, application patient",
+      role: isEn ? "First designer, design lead and product owner" : "Premier designer, lead design et product owner",
+      summary: isEn
+        ? "Patient app rebuilt in 30 days, an AI assistant under regulatory constraints, a design system and a product management system an AI can query, in three months."
+        : "Application patient reconstruite en 30 jours, assistant IA sous contrainte réglementaire, design system et gestion produit lisible par une IA, en trois mois.",
+      missions: isEn ? [
+        "Led design and product of the patient app, rebuilt in 30 days with a tech lead and two developers",
+        "Redesigned the consultation funnel from field research and an audit of 25 screens",
+        "Framed an AI assistant that is not allowed to diagnose, as interface rules",
+        "Overhauled the product management system so an AI can query it"
+      ] : [
+        "Pilotage design et produit de l'application patient, reconstruite en 30 jours avec un tech lead et deux développeurs",
+        "Refonte du tunnel de consultation à partir de la recherche terrain et d'un audit de 25 écrans",
+        "Cadrage d'un assistant IA qui n'a pas le droit de diagnostiquer, traduit en règles d'interface",
+        "Refonte du système de gestion produit pour qu'une IA puisse l'interroger"
+      ],
+      system: {
+        title: isEn ? "A design system for three stacks" : "Un design system pour trois stacks",
+        desc: isEn ? "Shared tokens between Angular, React and Figma, a component kit for everything new, and a skills pack that makes Claude Code produce aligned code." : "Des tokens partagés entre Angular, React et Figma, un kit de composants pour tout ce qui est neuf et un pack de skills qui fait produire à Claude Code du code aligné."
+      },
+      deliverables: isEn
+        ? ["Patient app (iOS, Android)", "Consultation funnel", "Health Assistant framework", "Design system and tokens", "Product management system", "Health Hub vision"]
+        : ["Application patient (iOS, Android)", "Tunnel de consultation", "Cadre de l'Assistant Santé", "Design system et tokens", "Système de gestion produit", "Vision Hub Santé"],
+      icon: <Stethoscope size={24} />,
+      color: "blue",
+      coverImage: "/images/tessan/cover_tessan_front.webp"
+    },
+    {
       id: "riskos",
       format: 'case-study',
       category: 'ai-experiment',
       title: "RiskOS",
       role: "Product Design",
-      period: "2026",
       summary: isEn
         ? "AI-augmented fraud detection. A functional prototype exploring human/AI collaboration under time pressure."
         : "Détection de fraude augmentée par IA agentique. Un prototype fonctionnel explorant la collaboration humain/IA sous pression temporelle.",
@@ -90,7 +121,6 @@ export const getProjects = (lang: Language): Project[] => {
       category: 'product-design',
       title: "Toolkit",
       role: isEn ? "Founding Designer" : "Premier Designer",
-      period: "2023 – 2024",
       summary: isEn
         ? "0-to-1 Product Design for a Construction Tech SaaS. From pitch deck to MVP."
         : "Création d'un SaaS B2B pour le BTP, de zéro (0 to 1). J'ai traduit la vision des fondateurs en un produit commercialisable.",
@@ -132,7 +162,6 @@ export const getProjects = (lang: Language): Project[] => {
       category: 'product-design',
       title: "Dailymotion Partner",
       role: isEn ? "Senior Product Designer" : "Senior Product Designer",
-      period: "2017 – 2018",
       summary: isEn ? "Redesigning the professional video management suite for tier-1 media partners (CBS, Bein Sports)." : "Refonte du back-office vidéo utilisé par les grands médias (CBS, Bein Sports). Un outil métier complexe à fort volume de données.",
       missions: isEn ? [
         "Led UX for high-volume upload & livestreaming dashboards",
@@ -172,7 +201,6 @@ export const getProjects = (lang: Language): Project[] => {
       category: 'product-design',
       title: "France VAE",
       role: isEn ? "Lead Product Designer" : "Lead Product Designer",
-      period: isEn ? "Dec 2024 – Jul 2025" : "Déc 2024 – Juil 2025",
       summary: isEn
         ? "6-month mission structuring product ops for a national public service scaling to 100K+ candidates."
         : "Mission de 6 mois pour structurer les ops produit d'un service public national servant 100K+ candidats.",
@@ -204,7 +232,8 @@ export const getProjects = (lang: Language): Project[] => {
       ],
       icon: <FileText size={24} />,
       color: "blue",
-      coverImage: "/images/francevae/thumbnail_france_vae.webp"
+      coverImage: "/images/francevae/thumbnail_france_vae.webp",
+      testimonialId: "boris-aime"
     },
     {
       id: "connect",
@@ -212,7 +241,6 @@ export const getProjects = (lang: Language): Project[] => {
       category: 'product-design',
       title: "SQOOL Connect",
       role: isEn ? "Product Design Lead" : "Product Design Lead",
-      period: "2020 – 2021",
       summary: isEn ? "Designing a web-based dashboard concept and persistent interaction prototype for classroom orchestration." : "Conception d'un dashboard web et d'un prototype d'interaction persistante pour l'orchestration de classe.",
       missions: isEn ? [
         "Led the design of a proof-of-concept dashboard platform",
@@ -243,6 +271,7 @@ export const getProjects = (lang: Language): Project[] => {
       icon: <Layers size={24} />,
       color: "purple",
       coverImage: "/images/thumbnail-connect.webp",
+      testimonialId: "achref-akkari",
       status: "concept"
     },
     {
@@ -251,17 +280,16 @@ export const getProjects = (lang: Language): Project[] => {
       category: 'product-design',
       title: "SQOOL Suite (UNOWHY)",
       role: isEn ? "Product Lead UI & Manager" : "Product Design Manager",
-      period: "2018 – 2024",
       summary: isEn ? "Leading the design transformation of a hardware company into a comprehensive EdTech SaaS ecosystem." : "Passage d'une boite Hardware à un écosystème SaaS EdTech complet. J'ai structuré le pôle design et piloté la refonte logicielle.",
       missions: isEn ? [
         "Managed a team of 5 designers: hiring, annual reviews, career coaching",
-        "Led design strategy workshops for 'Road to 2025' vision",
+        "Led design strategy workshops to define the product vision",
         "Structured Design Ops: Figma organization, templates, and rituals",
         "Bridged Product & Tech: Designed decks for C-Level & All-Hands demos"
       ] : [
         "Recrutement et management d'une équipe de 5 designers",
         "Mise en place des Design Ops (Process, Figma, QA Design)",
-        "Pilotage de la stratégie UX pour la suite logicielle (Roadmap 2025)",
+        "Pilotage de la stratégie UX pour la suite logicielle et sa feuille de route",
         "Collaboration étroite avec 30+ développeurs et PMs"
       ],
       system: {
@@ -286,7 +314,6 @@ export const getProjects = (lang: Language): Project[] => {
       category: 'product-design',
       title: "SQOOL Classe",
       role: isEn ? "Lead Interaction Designer" : "Lead Interaction Designer",
-      period: "2022",
       summary: isEn
         ? "Designing a real-time classroom supervision tool for 500,000 tablets deployed across 465 high schools in Ile-de-France."
         : "Conception d'un outil de supervision de classe en temps réel pour 500 000 tablettes déployées dans 465 lycées d'Île-de-France.",
@@ -319,6 +346,7 @@ export const getProjects = (lang: Language): Project[] => {
       icon: <Smartphone size={24} />,
       color: "purple",
       coverImage: "/images/thumbnail_sqool_classe.webp",
+      testimonialId: "charlotte-rifflet",
       status: "shipped"
     },
     {
@@ -327,7 +355,6 @@ export const getProjects = (lang: Language): Project[] => {
       category: 'product-design',
       title: "PagesJaunes",
       role: isEn ? "Mobile UI Lead" : "Lead UI Mobile",
-      period: "2014 – 2017",
       summary: isEn ? "Modernizing a legacy giant. Bringing mobile-first thinking to 22M+ users." : "Modernisation de l'application grand public (22 millions de téléchargements). Le défi : faire simple pour une audience très large.",
       missions: isEn ? [
         "Led UI for iOS & Android apps (22M downloads)",
@@ -366,7 +393,6 @@ export const getProjects = (lang: Language): Project[] => {
       category: 'product-design',
       title: "Android Wear",
       role: isEn ? "Mobile UI Lead" : "Lead UI Mobile",
-      period: "2015",
       summary: isEn
         ? "Designing PagesJaunes for wrist: local search on Android Wear, shipped on Google Play."
         : "PagesJaunes sur montre connectée : recherche locale sur Android Wear, disponible sur Google Play.",
@@ -374,12 +400,12 @@ export const getProjects = (lang: Language): Project[] => {
         "Designed the full interaction model for a 280dp circular display",
         "Defined active and ambient mode screens for battery efficiency",
         "Collaborated daily with developer Thibault Fighiera on device builds",
-        "Shipped on Google Play within 3 months"
+        "Shipped on Google Play within 2 months"
       ] : [
         "Conception du modèle d'interaction pour un écran circulaire de 280dp",
         "Définition des écrans actifs et mode ambiant pour l'autonomie batterie",
         "Collaboration quotidienne avec le développeur Thibault Fighiera",
-        "Mis en ligne sur Google Play en 3 mois"
+        "Mis en ligne sur Google Play en 2 mois"
       ],
       system: {
         title: isEn ? "Wearable Design System" : "Design System Wearables",
@@ -393,6 +419,7 @@ export const getProjects = (lang: Language): Project[] => {
       icon: <Smartphone size={24} />,
       color: "purple",
       coverImage: "/images/pagesjaunes/Android%20wear/pj%20android%20wear%20ui%20modes.webp",
+      testimonialId: "frederic-rodriguez",
       status: "shipped"
     },
     // --- Short format projects ---
@@ -402,7 +429,6 @@ export const getProjects = (lang: Language): Project[] => {
       category: 'ai-experiment',
       title: "Condamine Apps",
       role: isEn ? "Solo Designer & Builder" : "Designer & Builder",
-      period: "2025",
       summary: isEn
         ? "50+ functional web applications prototyped and deployed with Claude Code and AI-assisted workflows."
         : "50+ applications web fonctionnelles prototypées et déployées avec Claude Code et des workflows assistés par IA.",
@@ -426,7 +452,6 @@ export const getProjects = (lang: Language): Project[] => {
       category: 'ai-experiment',
       title: isEn ? "Design System with Claude Code" : "Design System avec Claude Code",
       role: isEn ? "Designer & Implementer" : "Designer & Implémenteur",
-      period: "2025",
       summary: isEn
         ? "Using Claude Code and Figma MCP to design, implement, and maintain a design system where tokens, variables, and components stay synchronized between Figma and code."
         : "Utiliser Claude Code et Figma MCP pour concevoir, implémenter et maintenir un design system où tokens, variables et composants restent synchronisés entre Figma et le code.",
@@ -446,32 +471,6 @@ export const getProjects = (lang: Language): Project[] => {
       coverImage: "/articles/Experimentation Claude Code - design system, ui, figma, claude/thumnbnail claude code - figma mcp.webp",
       // videoUrl: the demo file was never committed. Add it under public/articles/... and restore this line.
       status: "shipped"
-    },
-    {
-      id: "telemedicine-patient-app",
-      format: 'short',
-      category: 'product-design',
-      title: isEn ? "Rebuilding a telemedicine patient app in 30 days" : "Reconstruire l'application patient d'une société de téléconsultation en 30 jours",
-      navTitle: isEn ? "Telemedicine patient app" : "App patient téléconsultation",
-      role: isEn ? "First product designer, design lead and product owner" : "Premier product designer, lead design et product owner",
-      period: "2026",
-      summary: isEn
-        ? "Patient app rebuilt in 30 days, a design system of nearly 90 components, an AI assistant under regulatory constraints and a product management system, in three months."
-        : "Application patient reconstruite en 30 jours, design system de près de 90 composants, assistant IA sous contrainte réglementaire et système de gestion produit, en trois mois.",
-      shortDescription: isEn
-        ? "Three month engagement (April to July 2026) for a digital health company that equips pharmacies with telemedicine booths. As the company's first product designer, I rebuilt the patient app with a tech lead and two developers, while laying down a design system, a product management system and the design framework of an AI assistant that is not allowed to diagnose."
-        : "Mission de trois mois (avril à juillet 2026) pour une société de santé numérique qui équipe des pharmacies de cabines de téléconsultation. Premier product designer de l'entreprise, j'ai reconstruit l'application patient avec un tech lead et deux développeurs, tout en posant un design system, un système de gestion produit et le cadre de conception d'un assistant IA qui n'a pas le droit de diagnostiquer.",
-      body: isEn
-        ? "The business model depends on the number of consultations actually started. A patient who enters the funnel and drops out has already cost their acquisition. Over a year, 80% of patients consult only once: nothing in the journey gives a reason to come back once the prescription is delivered. The organization did not help: no design function, a component library frozen for more than a year, product management scattered across several tools, a shrinking product team and a very tight budget. On June 15, leadership set two priorities, consultation volume and the mobile app, with a store submission on July 15.\n\nA review of the existing app in early June found four problems that a patch could not fix: a fragmented session (signed in to the app, signed out of the consultation), a double navigation, a home screen that reorganized itself around the connected devices in use, and a funnel of 8 to 13 screens including a health insurance screen that only 3% of patients managed to complete. The architecture followed stacked features rather than the journey. Stripping the shell would have kept the embedded web view, and with it the double session: a rebuild was the only option.\n\nI removed what was most attractive. The first version refocuses the app on online consultation: connected devices, health metrics, AI analysis and the subscription are out of scope. Economic reason: the consultation is reimbursed and monetized by volume. Regulatory reason: these features exposed the product to a medical device requalification, with an 18 to 36 month certification against a 30 day deadline. I carried this removal to a leadership team that cared about these features.\n\nThe health insurance screen leaves the funnel in favor of an advance payment and a clear explanation of reimbursement. A screen with a failure rate close to 100% does not collect data, it manufactures drop-offs. My first hypothesis, delaying authentication until the waiting room, was abandoned and documented: checking entitlements with the national health insurance requires identification before the patient is connected.\n\nThe AI assistant is not allowed to diagnose. Instead of a clause in the terms of use, the limit is visible in the interface: a permanent scope banner, an imposed answer structure (information, context, action), escalation to a doctor triggered by the content of the conversation and never by a counter, and refusal designed as a journey with a real way out. Two home buttons (\"describe a symptom\", \"understand a prescription\") were removed: an affordance is a promise, and these announced a medical act. The non-medical framing was validated by the data protection officer, with data anonymized before it is sent to the model.\n\nOn the design system, a full migration of the existing Angular library was out of reach without a design team or a budget. I built a new system in parallel, with a shared token vocabulary, for everything new: two repositories, nearly 90 components, 12 color ramps, a 13 level type scale and layouts for three contexts (desktop, mobile, booth tablet). Accepted cost: two brand greens coexist for a while, with a written precedence rule. A Claude Code skill pack generates code aligned with the system: without a design team, governance goes through the tool rather than the document.\n\nThe patient app was rebuilt in React Native, reusing the native building blocks of the consultation. Mockups were presented to developers 48 hours after the decision, with one week sprints and a testable demo at the end of each, and three builds in two weeks. The specification has 7 epics, 24 user stories and eight screen sections with their four states (empty, loading, data, error). In the waiting room, no waiting time is ever displayed: the position changes continuously, and a frozen number would lie and ruin trust in the rest of the screen.\n\nOn product management, I audited six databases (three incompatible priority scales), moved tracking from Jira to Notion into four databases linked by a single chain, requalified 92 inherited requests and opened an intake form to the whole company. The model was tested on fifteen real situations before rollout: four pass, eleven get stuck, seven fixes. Documented handover to a junior product owner. A ten slide vision deck presented to the executive committee obtained two decisions: a single app with care and prevention sequenced, and a priority order between programs, pharmacy and connected devices.\n\nWhat is not measured: the app was not yet published when I left, the design system has no adoption measure, the product management system had been live for a week and the assistant was never opened to the public. The funnel redesign remains a reasoned hypothesis until step by step completion is tracked. Still open at handover: the exact regulatory qualification of the app, a session bug that signs the user out fifteen minutes after a consultation, and a passwordless authentication never tested in production.\n\nWhat I would do differently: set up measurement before the funnel redesign (completion by step, drop-off, assistance time in the pharmacy), get the technical confirmations the store listing depended on in the first week, instrument design system adoption from its first version, and write the product management governance before configuring the tool."
-        : "Le modèle économique dépend du nombre de consultations réellement lancées. Un patient qui entre dans le tunnel et n'en sort pas a déjà coûté son acquisition. Or, sur un an, 80 % des patients ne consultent qu'une fois : le parcours ne donne aucune raison de revenir une fois l'ordonnance remise. L'organisation n'aidait pas : aucune fonction design, une bibliothèque de composants gelée depuis plus d'un an, un pilotage produit éclaté entre plusieurs outils, une équipe produit en réduction et un budget très contraint. Le 15 juin, la direction fixe deux priorités, le volume de consultations et l'application mobile, avec une soumission aux stores le 15 juillet.\n\nUne revue de l'application existante, début juin, relève quatre problèmes qui ne se traitent pas par un correctif : une session fragmentée (connecté à l'application, déconnecté de la consultation), une double navigation, un accueil qui se réorganise selon les objets connectés actifs, et un tunnel de 8 à 13 écrans avec un écran de saisie de mutuelle que 3 % des patients réussissaient à remplir. L'architecture suivait les fonctionnalités empilées plutôt que le parcours. Déshabiller la coquille aurait conservé la vue web embarquée, donc la double session : la reconstruction s'est imposée.\n\nJ'ai retiré ce qui séduisait le plus. La première version recentre l'application sur la consultation en ligne : sortent du périmètre les objets connectés, les métriques de santé, l'analyse par IA et l'abonnement. Raison économique : la consultation est remboursée et monétisée au volume. Raison réglementaire : ces briques exposaient le produit à une requalification en dispositif médical, avec une certification de 18 à 36 mois face à une échéance de 30 jours. J'ai porté ce retrait devant une direction qui tenait à ces fonctions.\n\nLa mutuelle sort du tunnel au profit d'une avance de frais et d'une explication claire du remboursement. Un écran dont le taux d'échec approche 100 % ne collecte pas une donnée, il fabrique des abandons. Ma première hypothèse, repousser l'authentification jusqu'à la salle d'attente, a été abandonnée et documentée : l'appel aux droits de l'Assurance Maladie exige une identification avant la mise en relation.\n\nL'assistant IA n'a pas le droit de diagnostiquer. Plutôt qu'une clause dans les conditions d'utilisation, la limite est visible dans l'interface : bandeau de périmètre permanent, structure de réponse imposée (information, contexte, action), escalade vers un médecin déclenchée par le contenu de la conversation et jamais par un compteur, refus conçu comme un parcours avec une sortie réelle. Deux boutons d'accueil (« décrire un symptôme », « comprendre une ordonnance ») ont été retirés : une affordance est une promesse, et celle-ci annonçait un acte médical. Le cadrage non médical a été validé par la DPO, avec anonymisation des données avant envoi au modèle.\n\nSur le design system, la migration complète de la bibliothèque Angular existante était intenable sans équipe design ni budget. J'ai construit un système neuf en parallèle, avec un vocabulaire de tokens commun, pour tout ce qui est nouveau : deux dépôts, près de 90 composants, 12 rampes de couleur, une échelle typographique à 13 niveaux et des mises en page pour trois contextes (bureau, mobile, tablette de cabine). Coût assumé : deux verts de marque coexistent un temps, avec une règle de préséance écrite. Un pack de skills Claude Code génère du code aligné sur le système : sans équipe design, la gouvernance passe par l'outil plutôt que par le document.\n\nL'application patient a été reconstruite en React Native en réutilisant les briques natives de la consultation. Maquettes présentées aux développeurs 48 heures après l'arbitrage, sprints d'une semaine avec une démo testable à chaque fin, trois builds en deux semaines. La spécification compte 7 epics, 24 user stories et huit sections d'écrans avec leurs quatre états (vide, chargement, données, erreur). En salle d'attente, jamais de temps d'attente affiché : la position varie en continu, et un chiffre figé mentirait et ruinerait la confiance dans le reste de l'écran.\n\nCôté pilotage produit, j'ai audité six bases (trois échelles de priorité incompatibles), migré le suivi de Jira vers Notion en quatre bases reliées par une seule chaîne, requalifié 92 demandes héritées et ouvert un formulaire d'entrée à toute l'entreprise. Le modèle a été éprouvé sur quinze situations réelles avant déploiement : quatre passent, onze coincent, sept correctifs. Passation documentée à une PO junior. Un deck de vision de dix slides présenté au comité de direction a obtenu deux arbitrages : une seule application avec soin et prévention séquencés, et un ordre de priorité entre programmes, pharmacie et objets connectés.\n\nCe qui n'est pas mesuré : l'application n'était pas encore publiée à mon départ, le design system n'a pas de mesure d'adoption, le système de gestion produit n'avait vécu qu'une semaine et l'assistant n'a jamais été ouvert au public. La refonte du tunnel reste une hypothèse argumentée tant que la complétion par étape n'est pas suivie. Restaient ouverts à la passation : la qualification réglementaire exacte de l'application, un bug de session qui déconnecte l'utilisateur quinze minutes après une consultation, et une authentification sans mot de passe jamais testée en production.\n\nCe que je ferais autrement : poser la mesure avant la refonte du tunnel (complétion par étape, abandon, temps d'accompagnement en officine), obtenir dès la première semaine les confirmations techniques dont dépendait la fiche store, instrumenter l'adoption du design system dès sa première version, et écrire la gouvernance du système de gestion produit avant de configurer l'outil.",
-      missions: [],
-      system: { title: '', desc: '' },
-      deliverables: isEn
-        ? ["Patient app (iOS, Android)", "Design system, nearly 90 components", "AI assistant design framework", "Product management system (Jira to Notion)", "Product vision deck"]
-        : ["Application patient (iOS, Android)", "Design system, près de 90 composants", "Cadre de conception de l'assistant IA", "Système de gestion produit (Jira vers Notion)", "Deck de vision produit"],
-      icon: <Stethoscope size={24} />,
-      color: "blue",
-      coverImage: "/images/telemedicine/cover_patient_app.webp"
     }
   ];
 };

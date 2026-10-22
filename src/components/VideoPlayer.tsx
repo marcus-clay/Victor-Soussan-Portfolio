@@ -1,8 +1,11 @@
 'use client'
 
 /**
- * VideoPlayer — autoplay loop video with a persistent play/pause toggle.
- * - Plays automatically (muted, loop); the pause button is always one click away
+ * VideoPlayer: autoplay loop video with a persistent play/pause toggle.
+ * - Plays automatically (muted, loop) while on screen and pauses off screen, so videos below
+ *   the fold are not downloaded or decoded until the reader gets near them. Metadata is still
+ *   fetched up front: without it the video has no size and the page shifts when it starts.
+ * - A manual pause is respected: scrolling never restarts a video the reader stopped
  * - Play/Pause button always visible at bottom-right (dim at rest, bright on hover / when paused)
  * - Click anywhere on video also toggles playback
  */
@@ -32,10 +35,26 @@ export default function VideoPlayer({
   const [isPlaying, setIsPlaying] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
 
-  // Start playback once mounted. Muted + playsInline lets browsers allow it; if one
-  // refuses, the play button stays available.
+  const pausedByUser = useRef(false)
+
+  // Play while visible, pause when scrolled away. Muted + playsInline lets browsers allow
+  // autoplay; if one refuses, the play button stays available. The margin starts the
+  // download a little before the video enters the viewport.
   useEffect(() => {
-    videoRef.current?.play().catch(() => {})
+    const video = videoRef.current
+    if (!video) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          if (!pausedByUser.current) video.play().catch(() => {})
+        } else {
+          video.pause()
+        }
+      },
+      { rootMargin: '200px 0px', threshold: 0.01 }
+    )
+    observer.observe(video)
+    return () => observer.disconnect()
   }, [])
 
   // Sync state if browser pauses externally (tab visibility, etc.)
@@ -57,9 +76,11 @@ export default function VideoPlayer({
     const video = videoRef.current
     if (!video) return
     if (isPlaying) {
+      pausedByUser.current = true
       video.pause()
     } else {
-      video.play()
+      pausedByUser.current = false
+      video.play().catch(() => {})
     }
   }
 
@@ -73,7 +94,6 @@ export default function VideoPlayer({
       <video
         ref={videoRef}
         src={src}
-        autoPlay
         loop
         muted
         playsInline
@@ -82,7 +102,7 @@ export default function VideoPlayer({
         style={{ display: 'block' }}
       />
 
-      {/* Play / Pause button — bottom-right */}
+      {/* Play / Pause button: bottom-right */}
       <button
         onClick={toggle}
         aria-label={isPlaying ? 'Pause video' : 'Play video'}

@@ -153,7 +153,7 @@ const SignalsPage: React.FC<SignalsPageProps> = ({ systemTheme, lang, onBack, on
               <div className="flex-1">
                 <div className="flex flex-wrap gap-2 mb-3">
                   <span className="px-2.5 py-1 rounded-full text-micro font-semibold bg-[#7B61FF]/10 text-[#7B61FF]">Guide</span>
-                  <span className="px-2.5 py-1 rounded-full text-micro font-semibold bg-[#2D5CF3]/10 text-[#2D5CF3]">Claude Code</span>
+                  <span className="px-2.5 py-1 rounded-full text-micro font-semibold bg-gray-900/10 text-gray-900">Claude Code</span>
                   <span className="px-2.5 py-1 rounded-full text-micro font-semibold bg-emerald-500/10 text-emerald-600">Ressources</span>
                 </div>
                 <h3 className={`text-lg md:text-xl font-bold tracking-[-0.02em] mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
@@ -165,7 +165,7 @@ const SignalsPage: React.FC<SignalsPageProps> = ({ systemTheme, lang, onBack, on
                     : 'Guide complet pour les designers : 9 chapitres couvrant installation, workflows, d\u00e9ploiement, qualit\u00e9 visuelle et skills.'}
                 </p>
               </div>
-              <div className="flex items-center gap-2 text-[#2D5CF3] font-medium text-sm flex-shrink-0">
+              <div className="flex items-center gap-2 text-gray-900 font-medium text-sm flex-shrink-0">
                 <span>{lang === 'en' ? 'Read' : 'Lire'}</span>
                 <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
               </div>
@@ -217,7 +217,7 @@ const SignalsPage: React.FC<SignalsPageProps> = ({ systemTheme, lang, onBack, on
                     </div>
 
                     <h3 className={`text-lg md:text-xl font-bold mb-2 leading-snug tracking-[-0.02em] transition-colors line-clamp-3 ${
-                      isDark ? 'text-white group-hover:text-blue-400' : 'text-gray-900 group-hover:text-[#2D5CF3]'
+                      isDark ? 'text-white group-hover:text-blue-400' : 'text-gray-900 group-hover:text-gray-500'
                     }`}>
                       {getTitle(signal)}
                     </h3>
@@ -231,12 +231,12 @@ const SignalsPage: React.FC<SignalsPageProps> = ({ systemTheme, lang, onBack, on
                     <div className="mt-auto flex items-center justify-between">
                       <div className="flex items-center gap-1.5">
                         <span className={`text-sm font-medium transition-colors ${
-                          isDark ? 'text-blue-400' : 'text-[#2D5CF3]'
+                          isDark ? 'text-blue-400' : 'text-gray-900'
                         }`}>
                           {t.read_more}
                         </span>
                         <ArrowRight size={14} className={`transition-transform group-hover:translate-x-1 ${
-                          isDark ? 'text-blue-400' : 'text-[#2D5CF3]'
+                          isDark ? 'text-blue-400' : 'text-gray-900'
                         }`} />
                       </div>
                       <time className={`text-micro ${isDark ? 'text-gray-600' : 'text-gray-400'}`}>

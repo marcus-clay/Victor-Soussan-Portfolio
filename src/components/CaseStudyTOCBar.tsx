@@ -29,6 +29,7 @@ const CaseStudyTOCBar: React.FC<CaseStudyTOCBarProps> = ({
   sections,
   activeSection,
   onSectionClick,
+  lang,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false)
   const [pressedSection, setPressedSection] = useState<string | null>(null)
@@ -102,18 +103,18 @@ const CaseStudyTOCBar: React.FC<CaseStudyTOCBarProps> = ({
   const handleItemKeyDown = (e: React.KeyboardEvent, index: number) => {
     if (e.key === 'ArrowDown') {
       e.preventDefault()
-      const items = dropdownRef.current?.querySelectorAll<HTMLButtonElement>('[role="menuitem"]')
+      const items = dropdownRef.current?.querySelectorAll<HTMLButtonElement>('[data-toc-item]')
       items?.[Math.min(index + 1, sections.length - 1)]?.focus()
     } else if (e.key === 'ArrowUp') {
       e.preventDefault()
-      const items = dropdownRef.current?.querySelectorAll<HTMLButtonElement>('[role="menuitem"]')
+      const items = dropdownRef.current?.querySelectorAll<HTMLButtonElement>('[data-toc-item]')
       items?.[Math.max(index - 1, 0)]?.focus()
     } else if (e.key === 'Home') {
       e.preventDefault()
-      dropdownRef.current?.querySelector<HTMLButtonElement>('[role="menuitem"]')?.focus()
+      dropdownRef.current?.querySelector<HTMLButtonElement>('[data-toc-item]')?.focus()
     } else if (e.key === 'End') {
       e.preventDefault()
-      const items = dropdownRef.current?.querySelectorAll<HTMLButtonElement>('[role="menuitem"]')
+      const items = dropdownRef.current?.querySelectorAll<HTMLButtonElement>('[data-toc-item]')
       items?.[items.length - 1]?.focus()
     } else if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault()
@@ -121,13 +122,12 @@ const CaseStudyTOCBar: React.FC<CaseStudyTOCBarProps> = ({
     }
   }
 
-  // Portal dropdown — solid bg, no glass
+  // Portal dropdown: solid bg, no glass
   const dropdown = mounted && createPortal(
-    <div
+    <nav
       ref={dropdownRef}
       id={DROPDOWN_ID}
-      role="menu"
-      aria-label="Table of contents"
+      aria-label={lang === 'fr' ? 'Sommaire' : 'Table of contents'}
       className="fixed left-0 right-0 z-50 bg-white/90 backdrop-blur-xl"
       style={{
         top: dropdownTop,
@@ -136,15 +136,17 @@ const CaseStudyTOCBar: React.FC<CaseStudyTOCBarProps> = ({
         boxShadow: '0 8px 24px rgba(0, 0, 0, 0.06)',
         transition: isExpanded
           ? 'clip-path 220ms cubic-bezier(0.23, 1, 0.32, 1), opacity 160ms ease 20ms'
-          : 'clip-path 160ms cubic-bezier(0.23, 1, 0.32, 1), opacity 100ms ease',
+          : 'clip-path 160ms cubic-bezier(0.23, 1, 0.32, 1), opacity 100ms ease, visibility 0s linear 160ms',
         pointerEvents: isExpanded ? 'auto' : 'none',
+        // Out of the tab order and the accessibility tree once the close transition ends
+        visibility: isExpanded ? 'visible' : 'hidden',
       }}
     >
-      <div className="max-w-[740px] mx-auto px-6">
+      <div className="wrap">
         <div className="py-2 border-t border-gray-100">
           {/* Section list with vertical progress line */}
           <div className="relative">
-            {/* Track line — full height background */}
+            {/* Track line: full height background */}
             {sections.length > 1 && (
               <div
                 className="absolute w-px bg-gray-100"
@@ -152,7 +154,7 @@ const CaseStudyTOCBar: React.FC<CaseStudyTOCBarProps> = ({
                 aria-hidden="true"
               />
             )}
-            {/* Progress fill — scaleY from top */}
+            {/* Progress fill: scaleY from top */}
             {sections.length > 1 && (
               <div
                 className="absolute w-px bg-gray-300 origin-top"
@@ -175,11 +177,11 @@ const CaseStudyTOCBar: React.FC<CaseStudyTOCBarProps> = ({
               return (
                 <button
                   key={section.id}
-                  role="menuitem"
-                  tabIndex={isExpanded ? 0 : -1}
+                  data-toc-item
+                  aria-current={isActive ? 'location' : undefined}
                   onClick={() => handleSectionClick(section.id)}
                   onKeyDown={(e) => handleItemKeyDown(e, index)}
-                  className={`w-full text-left py-2 pl-3 pr-3 rounded-lg flex items-center gap-3
+                  className={`w-full text-left py-2 pl-3 pr-3 rounded-lg flex items-center gap-3 active:[scale:0.98]
                     focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-900 focus-visible:ring-offset-1
                     ${isActive
                       ? 'text-gray-900'
@@ -192,22 +194,25 @@ const CaseStudyTOCBar: React.FC<CaseStudyTOCBarProps> = ({
                         : 'hover:bg-black/[0.04] hover:text-gray-900'
                     }`}
                   style={{
-                    transition: 'color 60ms ease, background-color 60ms ease, transform 80ms cubic-bezier(0.23, 1, 0.32, 1)',
-                    transform: isPressed ? 'scale(0.98)' : 'scale(1)',
+                    // The stagger belongs to opacity only: a delay on the whole list would also
+                    // hold back hover and press colours on the lower rows.
+                    transition: `color 60ms ease, background-color 60ms ease, scale 80ms cubic-bezier(0.23, 1, 0.32, 1), opacity 140ms ease ${isExpanded ? index * 20 : 0}ms`,
                     opacity: isExpanded ? 1 : 0,
-                    transitionDelay: isExpanded ? `${index * 20}ms` : '0ms',
                   }}
                 >
-                  {/* Dot on progress line */}
-                  <div
-                    className={`relative z-10 flex-shrink-0 rounded-full ring-2 ring-white/80 transition-all duration-200 ${
-                      isActive
-                        ? 'w-2 h-2 bg-gray-900'
-                        : isPast
-                          ? 'w-1.5 h-1.5 bg-gray-400'
-                          : 'w-1.5 h-1.5 bg-gray-200'
-                    }`}
-                  />
+                  {/* Dot on progress line: fixed 8px slot centred on the line, the dot scales
+                      inside it, so changing the active section never shifts the label */}
+                  <div className="relative z-10 flex-shrink-0 w-2 h-2">
+                    <div
+                      className={`absolute inset-0 rounded-full ring-2 ring-white/80 transition-[transform,background-color] duration-200 ease-out ${
+                        isActive
+                          ? 'scale-100 bg-gray-900'
+                          : isPast
+                            ? 'scale-75 bg-gray-400'
+                            : 'scale-75 bg-gray-200'
+                      }`}
+                    />
+                  </div>
                   <span className={`text-sm leading-snug ${isActive ? 'font-semibold' : 'font-medium'}`}>
                     {section.label}
                   </span>
@@ -217,19 +222,18 @@ const CaseStudyTOCBar: React.FC<CaseStudyTOCBarProps> = ({
           </div>
         </div>
       </div>
-    </div>,
+    </nav>,
     document.body
   )
 
   return (
     <>
       <div ref={barRef} className="relative h-10">
-        <div className="max-w-[740px] mx-auto px-6 h-full">
+        <div className="wrap h-full">
           <button
             onClick={handleToggle}
             aria-expanded={isExpanded}
             aria-controls={DROPDOWN_ID}
-            aria-haspopup="menu"
             className={`w-full h-full flex items-center justify-between rounded-lg pl-1 pr-[10px]
               focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-900 focus-visible:ring-offset-1
               active:scale-[0.98]

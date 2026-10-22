@@ -1,18 +1,29 @@
-// Android Wear Case Study Page - Minimalist rewrite
-// PagesJaunes Android Wear wearable design project
+// Android Wear case study page.
+// Order: hero, testimonial, summary, then four numbered acts: challenge and goals, design
+// approach (four steps), deliverables (the app screen by screen) and result.
+// Watch screens come in groups of two or three on a flat grey plate (WatchScreenGroup), the
+// making-of photographs in a snap carousel (MediaCarousel); a click opens the lightbox, whose
+// list is the gallery view in the same order.
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
+import Link from 'next/link';
+import { ArrowRight } from '@phosphor-icons/react';
+import { imgDims } from '@/utils/imageDimensions'
 import { motion } from 'framer-motion';
-import {
-  Play,
-  ArrowRight,
-} from '@phosphor-icons/react';
+import { useReveal } from '@/lib/motion'
 import VideoPlayer from '@/components/VideoPlayer';
+import CaseStudyHero from '@/components/case-study/CaseStudyHero';
+import CaseStudySummary from '@/components/case-study/CaseStudySummary';
+import CaseStudyTestimonialBlock from '@/components/case-studies/CaseStudyTestimonialBlock';
+import WatchScreenGroup from '@/components/case-studies/WatchScreenGroup';
+import MediaCarousel from '@/components/case-studies/MediaCarousel';
+import { ActRule, ActTitle } from '@/components/case-study/ActSection';
 
 import { GalleryItem } from '../../components/BentoGallery';
-import EnhancedLightbox from '../../components/media/EnhancedLightbox';
+import EnhancedLightbox, { type LightboxImage } from '../../components/media/EnhancedLightbox';
 
 import { ANDROID_WEAR_TRANSLATIONS } from '../../data/caseStudyTranslations/androidWearTranslations';
+import { zoomable } from '@/utils/zoomable'
 
 interface AndroidWearPageProps {
   onClose: () => void;
@@ -21,143 +32,108 @@ interface AndroidWearPageProps {
   viewMode: 'caseStudy' | 'gallery' | 'executive';
   onViewModeChange: (mode: 'caseStudy' | 'gallery' | 'executive') => void;
   lang?: 'en' | 'fr';
-  onContact?: () => void;
 }
 
 const TRANSLATIONS = ANDROID_WEAR_TRANSLATIONS;
 
+const EASE = 'ease-[cubic-bezier(0.23,1,0.32,1)]';
+const VIDEO_RE = /\.(mp4|webm|mov)$/i;
+const WEAR = '/images/pagesjaunes/Android%20wear';
+const SCREENS = `${WEAR}/screens`;
+
+// Every file of the page, once, so the case study and the gallery cannot drift apart
+const FILES = {
+  hero: `${WEAR}/android_wear_thumbnail%2002.webp`,
+  julien: `${SCREENS}/persona_julien_scenario.webp`,
+  bernard: `${SCREENS}/persona_bernard_scenario.webp`,
+  bernardBoard: `${SCREENS}/AWEAR%20Scenario%2002.webp`,
+  sketches: `${WEAR}/early_wireframes.webp`,
+  ambientSketches: `${WEAR}/android_wear_ambient_sketches.webp`,
+  flows: `${WEAR}/pj%20android%20wear%20flows.webp`,
+  flowsDetailed: `${WEAR}/ui_interactions.webp`,
+  uiModes: `${WEAR}/pj%20android%20wear%20ui%20modes.webp`,
+  ambientDesign: `${SCREENS}/android%20wear%20design%20ambient%20mode.webp`,
+  ui: `${WEAR}/pj%20android%20wear%20ui.webp`,
+  components: `${WEAR}/component_library.webp`,
+  specs1: `${WEAR}/android_wear_design_optim_02.webp`,
+  specs2: `${WEAR}/android_wear_design_optim%2003.webp`,
+  specs3: `${WEAR}/android_wear_design.webp`,
+  time: `${SCREENS}/01%20Time.webp`,
+  voice: `${WEAR}/12%20reco%20voc.webp`,
+  voice2: `${WEAR}/12b%20reco%20voc.webp`,
+  loading: `${SCREENS}/00%20Loading.webp`,
+  appList: `${SCREENS}/02%20App%20list.webp`,
+  rubriques: `${SCREENS}/03%20Rubriques%20list.webp`,
+  fd: `${SCREENS}/07%20FD.webp`,
+  fdMap: `${WEAR}/07b%20FD%20Detail%20map.webp`,
+  lr1: `${SCREENS}/04%20LR%2001.webp`,
+  lr2: `${SCREENS}/05%20LR%2002.webp`,
+  lr3: `${SCREENS}/06%20LR%2003.webp`,
+  call: `${SCREENS}/08%20Appeler%20BTN.webp`,
+  callConfirm: `${WEAR}/11%20connex%20phone.webp`,
+  go: `${SCREENS}/09%20Y%20Aller%20BTN.webp`,
+  route: `${SCREENS}/10%20Route%20GMaps.webp`,
+  keynote: `${WEAR}/design_work_keynote.webp`,
+  diagram: `${WEAR}/design_work_keynote_2.webp`,
+  notes: `${WEAR}/design_work_detail.webp`,
+  devSession: `${WEAR}/dev_session_1.webp`,
+  devSession2: `${WEAR}/IMG_20151214_183800.webp`,
+  finalReview: `${WEAR}/final_review.webp`,
+  insituStore: `${WEAR}/android_wear_insitu_store_01.webp`,
+  insituDetail: `${WEAR}/maquette_insitu_FD_03%20(1).webp`,
+  mail: `${SCREENS}/android_wear_visuel_mail_comm.webp`,
+  videoSquare: `${WEAR}/VID_20151202_184124.mp4`,
+  videoRound: `${WEAR}/VID_20151218_100148.mp4`,
+};
+
 // Gallery items
 const getGalleryItems = (lang: 'en' | 'fr'): GalleryItem[] => {
-  const captions = {
-    en: {
-      sketches: 'Early Wireframes',
-      sketchesDesc: 'Before opening Sketch, I explored dozens of layout options on paper. This rapid iteration revealed which information hierarchy worked best for a 280dp circular display.',
-      ambient: 'Ambient Mode Mapping',
-      ambientDesc: 'Each active screen needed a low-power equivalent. White outlines on black preserved battery life while keeping users oriented when they glanced at their wrist.',
-      ambientDesign: 'Ambient Mode Design',
-      ambientDesignDesc: 'Final ambient mode specifications. Monochrome outlines preserve battery while maintaining brand recognition.',
-      flows: 'User Task Flows',
-      flowsDesc: 'Two optimized journeys: find-and-call for urgent needs, find-and-navigate for discovery. Every tap counted on a screen this constrained.',
-      flowsDetailed: 'UI and Interactions',
-      flowsDetailedDesc: 'The complete interaction model showing how watch actions hand off to phone for calls and navigation. Seamless transitions were critical for perceived speed.',
-      uiModes: 'Active vs Ambient States',
-      uiModesDesc: 'Brand yellow delivered instant recognition in active mode. The ambient state stripped to monochrome essentials, extending battery life by hours.',
-      ui: 'Screen Inventory',
-      uiDesc: 'A systematic catalog of every screen state, ensuring design consistency across the compact wearable experience.',
-      components: 'Component Library',
-      componentsDesc: 'Full documentation covering both round and square watch variants. This became the single source of truth for our two-person team.',
-      insituStore: 'Google Play Presence',
-      insituStoreDesc: 'The promotional asset for Play Store listing. First impressions matter when users are browsing new wearable experiences.',
-      insituDetail: 'Contextual Preview',
-      insituDetailDesc: 'Showing the business detail card on an actual wrist helps stakeholders understand the real-world reading conditions we designed for.',
-      storeSubmission: 'Play Store Submission',
-      storeSubmissionDesc: 'Internal communication for app launch. Marketing assets and store listing materials ready for publication.',
-      devSession: 'Pair Programming Sessions',
-      devSessionDesc: 'Daily working sessions with developer Thibault Fighiera. Two watches connected, iterating on actual builds instead of static mockups.',
-      designWork: 'Design in Progress',
-      designWorkDesc: 'Keynote served as my rapid prototyping tool. Quick to iterate, easy to share, and precise enough for production handoff.',
-      designDetail: 'On-Device Verification',
-      designDetailDesc: 'Nothing replaces checking designs on the actual hardware. Screen reflections, viewing angles, and touch targets only reveal themselves in context.',
-      prototypeVideo: 'Search Flow Demo',
-      prototypeVideoDesc: 'The complete search journey captured on real hardware. From voice input to business card display.',
-      navVideo: 'Navigation Handoff',
-      navVideoDesc: 'Demonstrating the seamless transition from watch to phone when the user requests directions.',
-      screenLoading: 'Loading State',
-      screenLoadingDesc: 'Minimalist loading indicator on brand yellow.',
-      screenTime: 'Watch Face',
-      screenTimeDesc: 'System time display before app launch.',
-      screenAppList: 'App Launcher',
-      screenAppListDesc: 'PagesJaunes icon in the Android Wear app list.',
-      screenRubriques: 'Category Selection',
-      screenRubriquesDesc: 'Browse by category for exploratory search.',
-      screenLR01: 'Search Results',
-      screenLR01Desc: 'First result in the local search list.',
-      screenLR02: 'Results Navigation',
-      screenLR02Desc: 'Scrolling through search results.',
-      screenLR03: 'Result Details Preview',
-      screenLR03Desc: 'Quick preview before full detail card.',
-      screenFD: 'Business Detail Card',
-      screenFDDesc: 'Complete business information at a glance.',
-    },
-    fr: {
-      sketches: 'Wireframes Papier',
-      sketchesDesc: 'Avant d\'ouvrir Sketch, j\'ai explor\u00e9 des dizaines d\'options de layout sur papier. Cette it\u00e9ration rapide a r\u00e9v\u00e9l\u00e9 quelle hi\u00e9rarchie d\'information fonctionnait sur un \u00e9cran circulaire de 280dp.',
-      ambient: 'Mapping Mode Ambiant',
-      ambientDesc: 'Chaque \u00e9cran actif n\u00e9cessitait un \u00e9quivalent basse consommation. Des contours blancs sur fond noir pr\u00e9servaient la batterie tout en gardant les utilisateurs orient\u00e9s.',
-      ambientDesign: 'Design Mode Ambiant',
-      ambientDesignDesc: 'Sp\u00e9cifications finales du mode ambiant. Contours monochromes pour pr\u00e9server la batterie tout en maintenant la reconnaissance de marque.',
-      flows: 'Parcours Utilisateur',
-      flowsDesc: 'Deux trajectoires optimis\u00e9es : trouver-et-appeler pour l\'urgence, trouver-et-naviguer pour la d\u00e9couverte. Chaque tap comptait sur un \u00e9cran aussi contraint.',
-      flowsDetailed: 'UI et Interactions',
-      flowsDetailedDesc: 'Le mod\u00e8le d\'interaction complet montrant comment les actions montre se transmettent au t\u00e9l\u00e9phone. Des transitions fluides \u00e9taient essentielles.',
-      uiModes: '\u00c9tats Actif vs Ambiant',
-      uiModesDesc: 'Le jaune PagesJaunes assurait une reconnaissance instantan\u00e9e en mode actif. L\'\u00e9tat ambiant se r\u00e9duisait \u00e0 l\'essentiel monochrome, prolongeant la batterie de plusieurs heures.',
-      ui: 'Inventaire \u00c9crans',
-      uiDesc: 'Un catalogue syst\u00e9matique de chaque \u00e9tat d\'\u00e9cran, assurant la coh\u00e9rence du design \u00e0 travers l\'exp\u00e9rience montre connect\u00e9e.',
-      components: 'Biblioth\u00e8que Composants',
-      componentsDesc: 'Documentation compl\u00e8te couvrant les variantes de montres rondes et carr\u00e9es. Cette biblioth\u00e8que est devenue la source de v\u00e9rit\u00e9 pour notre \u00e9quipe de deux.',
-      insituStore: 'Pr\u00e9sence Google Play',
-      insituStoreDesc: 'Le visuel promotionnel pour le Play Store. Les premi\u00e8res impressions comptent quand les utilisateurs d\u00e9couvrent de nouvelles apps pour montre connect\u00e9e.',
-      insituDetail: 'Pr\u00e9visualisation Contextuelle',
-      insituDetailDesc: 'Montrer la fiche d\u00e9tail sur un vrai poignet aide les d\u00e9cideurs \u00e0 comprendre les conditions de lecture r\u00e9elles pour lesquelles nous avons con\u00e7u.',
-      storeSubmission: 'Soumission Play Store',
-      storeSubmissionDesc: 'Communication interne pour le lancement. Visuels marketing et supports de pr\u00e9sentation pr\u00eats pour publication.',
-      devSession: 'Sessions en Bin\u00f4me',
-      devSessionDesc: 'Sessions de travail quotidiennes avec le d\u00e9veloppeur Thibault Fighiera. Deux montres connect\u00e9es, it\u00e9rant sur des versions r\u00e9elles plut\u00f4t que des maquettes statiques.',
-      designWork: 'Design en Cours',
-      designWorkDesc: 'Keynote servait d\'outil de prototypage rapide. Rapide \u00e0 it\u00e9rer, facile \u00e0 partager, et assez pr\u00e9cis pour la transmission au d\u00e9veloppeur.',
-      designDetail: 'V\u00e9rification sur Appareil',
-      designDetailDesc: 'Rien ne remplace la v\u00e9rification des designs sur le vrai mat\u00e9riel. Reflets d\'\u00e9cran, angles de vue et zones tactiles ne se r\u00e9v\u00e8lent qu\'en contexte.',
-      prototypeVideo: 'D\u00e9mo Parcours Recherche',
-      prototypeVideoDesc: 'Le parcours de recherche complet captur\u00e9 sur du vrai mat\u00e9riel. De la saisie vocale \u00e0 l\'affichage de la fiche commerce.',
-      navVideo: 'Relais Navigation',
-      navVideoDesc: 'D\u00e9monstration de la transition fluide de la montre au t\u00e9l\u00e9phone quand l\'utilisateur demande un itin\u00e9raire.',
-      screenLoading: '\u00c9tat de Chargement',
-      screenLoadingDesc: 'Indicateur de chargement minimaliste sur jaune marque.',
-      screenTime: 'Cadran Montre',
-      screenTimeDesc: 'Affichage de l\'heure syst\u00e8me avant lancement app.',
-      screenAppList: 'Lanceur d\'Apps',
-      screenAppListDesc: 'Ic\u00f4ne PagesJaunes dans la liste d\'apps Android Wear.',
-      screenRubriques: 'S\u00e9lection Cat\u00e9gorie',
-      screenRubriquesDesc: 'Navigation par cat\u00e9gorie pour recherche exploratoire.',
-      screenLR01: 'R\u00e9sultats Recherche',
-      screenLR01Desc: 'Premier r\u00e9sultat dans la liste de recherche locale.',
-      screenLR02: 'Navigation R\u00e9sultats',
-      screenLR02Desc: 'D\u00e9filement dans les r\u00e9sultats de recherche.',
-      screenLR03: 'Aper\u00e7u D\u00e9tail R\u00e9sultat',
-      screenLR03Desc: 'Aper\u00e7u rapide avant la fiche d\u00e9tail compl\u00e8te.',
-      screenFD: 'Fiche D\u00e9tail Pro',
-      screenFDDesc: 'Information commerce compl\u00e8te en un coup d\'\u0153il.',
-    },
-  };
-
-  const t = captions[lang];
+  const c = TRANSLATIONS[lang].captions;
+  const image = (src: string, caption: string, captionDesc?: string): GalleryItem => ({ src, type: 'image', caption, captionDesc });
+  const video = (src: string, caption: string): GalleryItem => ({ src, type: 'video', caption });
 
   return [
-    { src: '/images/pagesjaunes/Android%20wear/early_wireframes.webp', type: 'image', caption: t.sketches, captionDesc: t.sketchesDesc },
-    { src: '/images/pagesjaunes/Android%20wear/android_wear_ambient_sketches.webp', type: 'image', caption: t.ambient, captionDesc: t.ambientDesc },
-    { src: '/images/pagesjaunes/Android%20wear/screens/android%20wear%20design%20ambient%20mode.webp', type: 'image', caption: t.ambientDesign, captionDesc: t.ambientDesignDesc },
-    { src: '/images/pagesjaunes/Android%20wear/pj%20android%20wear%20flows.webp', type: 'image', caption: t.flows, captionDesc: t.flowsDesc },
-    { src: '/images/pagesjaunes/Android%20wear/ui_interactions.webp', type: 'image', caption: t.flowsDetailed, captionDesc: t.flowsDetailedDesc },
-    { src: '/images/pagesjaunes/Android%20wear/pj%20android%20wear%20ui%20modes.webp', type: 'image', caption: t.uiModes, captionDesc: t.uiModesDesc },
-    { src: '/images/pagesjaunes/Android%20wear/pj%20android%20wear%20ui.webp', type: 'image', caption: t.ui, captionDesc: t.uiDesc },
-    { src: '/images/pagesjaunes/Android%20wear/component_library.webp', type: 'image', caption: t.components, captionDesc: t.componentsDesc },
-    { src: '/images/pagesjaunes/Android%20wear/screens/00%20Loading.webp', type: 'image', caption: t.screenLoading, captionDesc: t.screenLoadingDesc },
-    { src: '/images/pagesjaunes/Android%20wear/screens/01%20Time.webp', type: 'image', caption: t.screenTime, captionDesc: t.screenTimeDesc },
-    { src: '/images/pagesjaunes/Android%20wear/screens/02%20App%20list.webp', type: 'image', caption: t.screenAppList, captionDesc: t.screenAppListDesc },
-    { src: '/images/pagesjaunes/Android%20wear/screens/03%20Rubriques%20list.webp', type: 'image', caption: t.screenRubriques, captionDesc: t.screenRubriquesDesc },
-    { src: '/images/pagesjaunes/Android%20wear/screens/04%20LR%2001.webp', type: 'image', caption: t.screenLR01, captionDesc: t.screenLR01Desc },
-    { src: '/images/pagesjaunes/Android%20wear/screens/05%20LR%2002.webp', type: 'image', caption: t.screenLR02, captionDesc: t.screenLR02Desc },
-    { src: '/images/pagesjaunes/Android%20wear/screens/06%20LR%2003.webp', type: 'image', caption: t.screenLR03, captionDesc: t.screenLR03Desc },
-    { src: '/images/pagesjaunes/Android%20wear/screens/07%20FD.webp', type: 'image', caption: t.screenFD, captionDesc: t.screenFDDesc },
-    { src: '/images/pagesjaunes/Android%20wear/android_wear_insitu_store_01.webp', type: 'image', caption: t.insituStore, captionDesc: t.insituStoreDesc },
-    { src: '/images/pagesjaunes/Android%20wear/maquette_insitu_FD_03%20(1).webp', type: 'image', caption: t.insituDetail, captionDesc: t.insituDetailDesc },
-    { src: '/images/pagesjaunes/Android%20wear/screens/android_wear_visuel_mail_comm.webp', type: 'image', caption: t.storeSubmission, captionDesc: t.storeSubmissionDesc },
-    { src: '/images/pagesjaunes/Android%20wear/dev_session_1.webp', type: 'image', caption: t.devSession, captionDesc: t.devSessionDesc },
-    { src: '/images/pagesjaunes/Android%20wear/design_work_keynote.webp', type: 'image', caption: t.designWork, captionDesc: t.designWorkDesc },
-    { src: '/images/pagesjaunes/Android%20wear/design_work_detail.webp', type: 'image', caption: t.designDetail, captionDesc: t.designDetailDesc },
-    { src: '/images/pagesjaunes/Android%20wear/VID_20151202_184124.mp4', type: 'video', caption: t.prototypeVideo, captionDesc: t.prototypeVideoDesc },
-    { src: '/images/pagesjaunes/Android%20wear/VID_20151218_100148.mp4', type: 'video', caption: t.navVideo, captionDesc: t.navVideoDesc },
+    image(FILES.hero, c.hero, c.heroDesc),
+    image(FILES.julien, c.julien, c.julienDesc),
+    image(FILES.bernard, c.bernard, c.bernardDesc),
+    image(FILES.bernardBoard, c.bernardBoard, c.bernardBoardDesc),
+    image(FILES.sketches, c.sketches, c.sketchesDesc),
+    image(FILES.ambientSketches, c.ambientSketches, c.ambientSketchesDesc),
+    image(FILES.flows, c.flows, c.flowsDesc),
+    image(FILES.flowsDetailed, c.flowsDetailed, c.flowsDetailedDesc),
+    image(FILES.uiModes, c.uiModes, c.uiModesDesc),
+    image(FILES.ambientDesign, c.ambientDesign, c.ambientDesignDesc),
+    image(FILES.ui, c.ui, c.uiDesc),
+    image(FILES.components, c.components, c.componentsDesc),
+    image(FILES.specs1, c.specs1, c.specs1Desc),
+    image(FILES.specs2, c.specs2, c.specs2Desc),
+    image(FILES.specs3, c.specs3, c.specs3Desc),
+    image(FILES.time, c.screenTime),
+    image(FILES.voice, c.screenVoice),
+    image(FILES.voice2, c.screenVoice2),
+    image(FILES.loading, c.screenLoading),
+    image(FILES.appList, c.screenAppList),
+    image(FILES.rubriques, c.screenRubriques),
+    image(FILES.fd, c.screenFD),
+    image(FILES.fdMap, c.screenFDMap),
+    image(FILES.lr1, c.screenLR01),
+    image(FILES.lr2, c.screenLR02),
+    image(FILES.lr3, c.screenLR03),
+    image(FILES.call, c.screenCall),
+    image(FILES.callConfirm, c.screenCallConfirm),
+    image(FILES.go, c.screenGo),
+    image(FILES.route, c.screenRoute),
+    image(FILES.keynote, c.keynote),
+    image(FILES.diagram, c.diagram),
+    image(FILES.notes, c.notes),
+    image(FILES.devSession, c.devSession),
+    image(FILES.devSession2, c.devSession2),
+    image(FILES.finalReview, c.finalReview),
+    image(FILES.insituStore, c.insituStore),
+    image(FILES.insituDetail, c.insituDetail),
+    image(FILES.mail, c.storeSubmission),
+    video(FILES.videoSquare, c.videoSquare),
+    video(FILES.videoRound, c.videoRound),
   ];
 };
 
@@ -172,20 +148,20 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick }) => {
   const isVideo = item.type === 'video' || item.src.match(/\.(mp4|webm|mov)$/i);
   return (
     <motion.figure
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.28, delay: index * 0.03, ease: [0.23, 1, 0.32, 1] }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.32, ease: [0.23, 1, 0.32, 1] }}
       className="group cursor-zoom-in break-inside-avoid mb-4"
-      onClick={onClick}
+      {...zoomable(onClick)}
     >
-      <div className="rounded-xl overflow-hidden ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]">
+      <div className="rounded-xl overflow-hidden ring-1 ring-black/[0.04] [@media(hover:hover)]:hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)]:hover:scale-[1.01] active:scale-[0.99]">
         {isVideo ? (
           <VideoPlayer
             src={item.src}
-            className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
+            className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)]:group-hover:scale-[1.02]"
           />
         ) : (
-          <img loading="lazy" src={item.src} alt={item.caption} className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]" />
+          <img loading="lazy" src={item.src} {...imgDims(item.src)} alt={item.caption} className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)]:group-hover:scale-[1.02]" />
         )}
       </div>
       <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
@@ -195,23 +171,83 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick }) => {
   );
 };
 
+// ============================================================================
+// LAYOUT BLOCKS (module level so they keep one identity across renders)
+// ============================================================================
 
-// Main Component
+interface MediaProps {
+  src: string;
+  /** Accessible name of the zoomable frame, also the one-line caption */
+  name: string;
+  onZoom: (src: string) => void;
+  /** Tailwind max-width class for near-square or portrait media, left-aligned on the media edge */
+  maxWidth?: string;
+  /** Flat grey ground for cut-outs on a transparent background */
+  plate?: boolean;
+}
+
+const Media: React.FC<MediaProps> = ({ src, name, onZoom, maxWidth = '', plate = false }) => {
+  const reveal = useReveal();
+  const video = VIDEO_RE.test(src);
+  return (
+    <motion.figure {...reveal()} className={maxWidth}>
+        <div
+          {...zoomable(() => onZoom(src))}
+          aria-label={name}
+          className={`group rounded-2xl overflow-hidden border border-gray-100 [@media(hover:hover)]:hover:border-gray-200 cursor-zoom-in shadow-sm [@media(hover:hover)]:hover:shadow-lg [@media(hover:hover)]:hover:scale-[1.01] active:scale-[0.99] transition-[border-color,box-shadow,transform] duration-300 ${EASE} ${plate ? 'bg-[#E8E8E8]' : ''}`}
+        >
+          {video ? (
+            <VideoPlayer
+              src={src}
+              className={`w-full h-auto block transition-transform duration-300 ${EASE} [@media(hover:hover)]:group-hover:scale-[1.02]`}
+            />
+          ) : (
+            <img
+              loading="lazy"
+              src={src}
+              {...imgDims(src)}
+              alt=""
+              className={`w-full h-auto block transition-transform duration-300 ${EASE} [@media(hover:hover)]:group-hover:scale-[1.02]`}
+            />
+          )}
+        </div>
+        <figcaption className="mt-3 text-xs text-gray-500">{name}</figcaption>
+    </motion.figure>
+  );
+};
+
+/** One block: an h3, one short paragraph in the reading column, then its visuals */
+const Block: React.FC<{ id?: string; title: string; text: string; children?: React.ReactNode }> = ({ id, title, text, children }) => (
+  <div id={id} className="scroll-mt-28 mb-14 md:mb-20 last:mb-0">
+    <h3 className="text-title-3 text-gray-900 mb-3 max-w-[56ch]">{title}</h3>
+    <p className="max-w-[62ch] text-base text-gray-600">{text}</p>
+    {children && <div className="mt-8 space-y-6 md:space-y-8">{children}</div>}
+  </div>
+);
+
+/** Act opening: hairline, number, title and an optional lead */
+const ActOpen: React.FC<{ index: string; title: string; lead?: string }> = ({ index, title, lead }) => (
+  <div className={lead ? 'mb-10 md:mb-14' : 'mb-5 md:mb-9'}>
+    <ActTitle index={index} title={title} />
+    {lead && <p className="max-w-[62ch] text-base text-gray-600">{lead}</p>}
+  </div>
+);
+
 const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
-  onClose,
   viewMode,
-  onViewModeChange,
   lang = 'en',
-  onContact,
 }) => {
   const t = TRANSLATIONS[lang];
+  const fr = lang === 'fr';
   const galleryItems = getGalleryItems(lang);
-  const containerRef = useRef<HTMLDivElement>(null);
 
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
+  // Media that is not in the lightbox list opens alone, never silently ignored
+  const [singleImage, setSingleImage] = useState<LightboxImage | null>(null);
 
   const openLightbox = (index: number) => {
+    setSingleImage(null);
     setLightboxIndex(index);
     setLightboxOpen(true);
   };
@@ -220,770 +256,275 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
     setLightboxOpen(false);
   };
 
-  const allImages = galleryItems.map(item => ({
+  // The gallery view indexes into these items, so they stay in the same order
+  const allImages: LightboxImage[] = galleryItems.map(item => ({
     src: item.src,
     type: (item.type || 'image') as 'image' | 'video',
-    caption: `${item.caption} - ${item.captionDesc || ''}`,
+    caption: item.captionDesc ? `${item.caption}. ${item.captionDesc}` : item.caption,
   }));
 
   const handleImageClick = (src: string) => {
     const index = allImages.findIndex(img => img.src === src);
     if (index !== -1) {
       openLightbox(index);
+      return;
     }
+    const isVideo = VIDEO_RE.test(src);
+    setSingleImage({ src, type: isVideo ? 'video' : 'image', caption: '' });
+    setLightboxIndex(0);
+    setLightboxOpen(true);
   };
 
+  const p = t.product;
+  const a = t.approach;
+
   return (
-    <div ref={containerRef} className="min-h-screen bg-[#FDFDFC]">
+    <div className="min-h-screen bg-[#FDFDFC]">
       {/* Content */}
       {viewMode !== 'gallery' ? (
         <div id="top">
-          {/* Hero Section */}
-          <section id="overview" className="mb-24 md:mb-32">
-            <div className="max-w-[740px] mx-auto px-6 pt-16 md:pt-24">
-              <div className="flex flex-wrap items-center gap-3 mb-6">
-                <span className="text-xs text-gray-500">{t.hero.role}</span>
-                <span className="text-xs text-gray-500">{t.hero.scope}</span>
-                <span className="text-xs text-gray-500">{t.hero.period}</span>
+          {/* Hero: the intro is the executive summary */}
+          <CaseStudyHero
+            lang={lang}
+            projectId="androidwear"
+            title={t.hero.title}
+            intro={t.hero.intro}
+            meta={[
+              { label: fr ? 'Rôle' : 'Role', value: t.hero.role },
+              { label: fr ? 'Périmètre' : 'Scope', value: t.hero.scope },
+              { label: fr ? 'Équipe' : 'Team', value: t.hero.team },
+            ]}
+            visualAlt={t.captions.hero}
+            onZoom={() => handleImageClick(FILES.hero)}
+          />
+
+          {/* Client testimonial, right under the hero */}
+          <div className="act-wide pb-12 md:pb-16">
+            <CaseStudyTestimonialBlock
+              quote={t.testimonial.quote}
+              author={t.testimonial.author}
+              role={t.testimonial.role}
+              image="thibault-fighiera.webp"
+              linkedin="https://www.linkedin.com/in/thibaultfighiera/"
+              lang={lang}
+            />
+          </div>
+
+          {/* Summary: context, role, deliverables and the three numbers of the project */}
+          <CaseStudySummary
+            lang={lang}
+            context={t.summary.context}
+            role={t.summary.role}
+            deliverables={t.summary.deliverables}
+            metrics={t.summary.metrics}
+          />
+
+          {/* ============================================================== */}
+          {/* 01 CHALLENGE AND GOALS, then the two personas that framed the journeys */}
+          {/* ============================================================== */}
+          <section id="context">
+            <ActRule />
+            <div className="act-wide pt-10 md:pt-14 pb-12 md:pb-16">
+              <ActOpen index="01" title={t.acts.context} />
+
+              <Block id="challenge" title={t.context.challengeTitle} text={t.context.challenge} />
+              <Block id="goals" title={t.context.goalsTitle} text={t.context.goals} />
+
+              <Block id="personas" title={t.context.personasTitle} text={t.context.personas}>
+                {/* Two A3 boards, one per persona: readable at this width, full size in the lightbox */}
+                <MediaCarousel
+                  label={t.context.personasCarousel}
+                  labels={{ prev: fr ? 'Planche précédente' : 'Previous board', next: fr ? 'Planche suivante' : 'Next board' }}
+                  onZoom={handleImageClick}
+                  items={[
+                    { src: FILES.julien, name: t.context.julien },
+                    { src: FILES.bernard, name: t.context.bernard },
+                  ]}
+                />
+              </Block>
+            </div>
+          </section>
+
+          {/* ============================================================== */}
+          {/* 02 DESIGN APPROACH: four steps of the project */}
+          {/* ============================================================== */}
+          <section id="approach">
+            <ActRule />
+            <div className="act-wide pt-10 md:pt-14 pb-12 md:pb-16">
+              <ActOpen index="02" title={t.acts.approach} />
+
+              <Block id="platform" title={a.platformTitle} text={a.platform}>
+                <Media src={FILES.flows} name={a.flowsName} onZoom={handleImageClick} />
+              </Block>
+
+              <Block id="paper" title={a.paperTitle} text={a.paper}>
+                <div className="grid gap-6 md:grid-cols-2 md:gap-8">
+                  <Media src={FILES.sketches} name={a.paperName1} onZoom={handleImageClick} />
+                  <Media src={FILES.ambientSketches} name={a.paperName2} onZoom={handleImageClick} />
+                </div>
+              </Block>
+
+              <Block id="modes" title={a.modesTitle} text={a.modes}>
+                <Media src={FILES.uiModes} name={a.modesName} onZoom={handleImageClick} />
+              </Block>
+
+              <Block id="hardware" title={a.hardwareTitle} text={a.hardware}>
+                <MediaCarousel
+                  label={a.photosLabel}
+                  labels={{ prev: a.prev, next: a.next }}
+                  onZoom={handleImageClick}
+                  items={[
+                    { src: FILES.keynote, name: a.photoKeynote },
+                    { src: FILES.diagram, name: a.photoDiagram },
+                    { src: FILES.notes, name: a.photoNotes },
+                    { src: FILES.devSession, name: a.photoPair },
+                    { src: FILES.devSession2, name: a.photoReview },
+                    { src: FILES.finalReview, name: a.photoFinal },
+                  ]}
+                />
+                {/* The two prototype clips, one per watch shape */}
+                <div className="grid gap-6 md:grid-cols-2 md:gap-8">
+                  <Media src={FILES.videoSquare} name={a.videoSquare} onZoom={handleImageClick} />
+                  <Media src={FILES.videoRound} name={a.videoRound} onZoom={handleImageClick} />
+                </div>
+              </Block>
+            </div>
+          </section>
+
+          {/* ============================================================== */}
+          {/* 03 DELIVERABLES: the app screen by screen, then specs and launch visuals */}
+          {/* ============================================================== */}
+          <section id="product">
+            <ActRule />
+            <div className="act-wide pt-10 md:pt-14 pb-12 md:pb-16">
+              <ActOpen index="03" title={t.acts.product} lead={p.lead} />
+
+              <div className="mb-14 md:mb-20">
+                <Media src={FILES.ui} name={p.overviewName} onZoom={handleImageClick} />
               </div>
 
-              <h1 className="text-title-1 text-gray-900 mb-4">
-                {t.hero.title}
-              </h1>
+              <Block id="launch" title={p.launchTitle} text={p.launch}>
+                <WatchScreenGroup
+                  groupLabel={p.launchGroup}
+                  onZoom={handleImageClick}
+                  screens={[
+                    { src: FILES.time, label: p.launchTime },
+                    { src: FILES.voice, label: p.launchVoice },
+                    { src: FILES.loading, label: p.launchLoading },
+                  ]}
+                />
+              </Block>
 
-              <p className="text-base text-gray-500 leading-relaxed max-w-[65ch] mb-8">
-                {t.hero.subtitle}
-              </p>
+              <Block id="lists" title={p.listsTitle} text={p.lists}>
+                <WatchScreenGroup
+                  groupLabel={p.listsGroup}
+                  onZoom={handleImageClick}
+                  screens={[
+                    { src: FILES.appList, label: p.listsLauncher },
+                    { src: FILES.rubriques, label: p.listsHome },
+                    { src: FILES.fd, label: p.listsDetail },
+                  ]}
+                />
+              </Block>
 
-              <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">
-                {t.hero.description}
-              </p>
-            </div>
-          </section>
+              <Block id="results-list" title={p.resultsTitle} text={p.results}>
+                <WatchScreenGroup
+                  groupLabel={p.resultsGroup}
+                  onZoom={handleImageClick}
+                  screens={[
+                    { src: FILES.lr1, label: p.result1 },
+                    { src: FILES.lr2, label: p.result2 },
+                    { src: FILES.lr3, label: p.result3 },
+                  ]}
+                />
+              </Block>
 
-          {/* Hero Image */}
-          <section className="mb-24 md:mb-32">
-            <div className="max-w-[960px] mx-auto px-6">
-              <figure>
-                <div
-                  onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/android_wear_thumbnail%2002.webp')}
-                  className="rounded-xl overflow-hidden cursor-pointer group ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
-                  style={{ backgroundColor: '#E7E7E7' }}
-                >
-                  <div className="flex items-center justify-center" style={{ aspectRatio: '3/2' }}>
-                    <img
-                      loading="lazy"
-                      src="/images/pagesjaunes/Android%20wear/android_wear_thumbnail%2002.webp"
-                      alt="PagesJaunes Android Wear"
-                      className="h-full w-auto object-contain transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
-                    />
-                  </div>
-                </div>
-              </figure>
-            </div>
-          </section>
+              <Block id="actions" title={p.actionsTitle} text={p.actions}>
+                <WatchScreenGroup
+                  groupLabel={p.callGroup}
+                  onZoom={handleImageClick}
+                  screens={[
+                    { src: FILES.call, label: p.call },
+                    { src: FILES.callConfirm, label: p.callPhone },
+                  ]}
+                />
+                <WatchScreenGroup
+                  groupLabel={p.goGroup}
+                  onZoom={handleImageClick}
+                  screens={[
+                    { src: FILES.go, label: p.go },
+                    { src: FILES.route, label: p.goMaps },
+                  ]}
+                />
+                <Media src={FILES.flowsDetailed} name={p.handoffName} onZoom={handleImageClick} />
+              </Block>
 
-          {/* Meta */}
-          <section className="mb-24 md:mb-32">
-            <div className="max-w-[740px] mx-auto px-6">
-              <div className="divide-y divide-gray-100">
-                <div className="flex justify-between py-3">
-                  <span className="text-xs text-gray-500">{t.meta.typeLabel}</span>
-                  <span className="text-sm text-gray-900">{t.meta.type}</span>
-                </div>
-                <div className="flex justify-between py-3">
-                  <span className="text-xs text-gray-500">{t.meta.scopeLabel}</span>
-                  <span className="text-sm text-gray-900">{t.meta.scope}</span>
-                </div>
-                <div className="flex justify-between py-3">
-                  <span className="text-xs text-gray-500">{t.meta.periodLabel}</span>
-                  <span className="text-sm text-gray-900">{t.meta.period}</span>
-                </div>
-                <div className="flex justify-between py-3">
-                  <span className="text-xs text-gray-500">{t.meta.companyLabel}</span>
-                  <span className="text-sm text-gray-900">{t.meta.company}</span>
-                </div>
-              </div>
-            </div>
-          </section>
+              <Block id="ambient" title={p.ambientTitle} text={p.ambient}>
+                <Media src={FILES.ambientDesign} name={p.ambientName} maxWidth="max-w-[760px]" onZoom={handleImageClick} />
+              </Block>
 
-          {/* Testimonial */}
-          <section className="mb-24 md:mb-32">
-            <div className="max-w-[740px] mx-auto px-6">
-              <p className="text-base text-gray-500 leading-relaxed italic max-w-[65ch] mb-4">
-                "{t.testimonial.quote}"
-              </p>
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-xs font-medium text-gray-500">
-                  TF
-                </div>
-                <div>
-                  <a
-                    href="https://www.linkedin.com/in/thibaultfighiera/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sm text-gray-900 hover:text-gray-500 transition-colors"
-                  >
-                    {t.testimonial.author}
-                  </a>
-                  <p className="text-xs text-gray-500">{t.testimonial.role}</p>
-                </div>
-              </div>
-            </div>
-          </section>
+              <Block id="specs" title={p.specsTitle} text={p.specs}>
+                <Media src={FILES.specs1} name={p.specsName1} onZoom={handleImageClick} />
+                <Media src={FILES.specs2} name={p.specsName2} onZoom={handleImageClick} />
+                <Media src={FILES.specs3} name={p.specsName3} onZoom={handleImageClick} />
+              </Block>
 
-          {/* Overview Section */}
-          <section className="mb-24 md:mb-32">
-            <div className="max-w-[740px] mx-auto px-6">
-              <h2 className="text-title-2 text-gray-900 mb-4">
-                {t.overview.title}
-              </h2>
+              <Block id="launch-visuals" title={p.launchVisualsTitle} text={p.launchVisuals}>
+                <Media src={FILES.mail} name={p.launchMail} onZoom={handleImageClick} />
+                <WatchScreenGroup
+                  groupLabel={p.storeGroup}
+                  onZoom={handleImageClick}
+                  screens={[
+                    { src: FILES.insituStore, label: p.storeVisual },
+                    { src: FILES.insituDetail, label: p.storeDetail },
+                  ]}
+                />
+              </Block>
 
-              <div className="space-y-8">
-                <div>
-                  <p className="text-sm font-medium text-gray-900 mb-2">
-                    {t.overview.contextTitle}
-                  </p>
-                  <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">
-                    {t.overview.contextDesc}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-gray-900 mb-2">
-                    {t.overview.challengeTitle}
-                  </p>
-                  <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">
-                    {t.overview.challengeDesc}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-gray-900 mb-2">
-                    {t.overview.roleTitle}
-                  </p>
-                  <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">
-                    {t.overview.roleDesc}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* User Scenario Section */}
-          <section className="mb-24 md:mb-32">
-            <div className="max-w-[740px] mx-auto px-6">
-              <h2 className="text-title-2 text-gray-900 mb-4">
-                {t.persona.title}
-              </h2>
-
-              <p className="text-base text-gray-500 leading-relaxed italic max-w-[65ch] mb-8">
-                "{t.persona.scenario}"
-              </p>
-
+              {/* Gallery access */}
               <div>
-                <p className="text-sm font-medium text-gray-900 mb-1">
-                  {t.persona.name}
-                </p>
-                <p className="text-xs text-gray-500 mb-4">
-                  {t.persona.context}
-                </p>
-                <ul className="text-sm text-gray-500 space-y-2">
-                  {t.persona.needs.map((need, idx) => (
-                    <li key={idx} className="flex items-start gap-2">
-                      <span className="text-gray-300 mt-0.5">{'\u2022'}</span>
-                      <span className="leading-relaxed">{need}</span>
+                <Link
+                  href={`/${lang}/project/androidwear/gallery`}
+                  className={`inline-flex items-center gap-1.5 min-h-11 text-sm font-medium text-gray-900 [@media(hover:hover)]:hover:text-gray-500 active:scale-[0.97] transition-[color,transform] duration-150 ${EASE}`}
+                >
+                  {t.acts.seeAll}
+                  <ArrowRight size={14} aria-hidden="true" />
+                </Link>
+              </div>
+            </div>
+          </section>
+
+          {/* ============================================================== */}
+          {/* 04 RESULT AND WHAT STAYS OPEN, then learnings */}
+          {/* ============================================================== */}
+          <section id="results">
+            <ActRule />
+            <div className="act-wide pt-10 md:pt-14 pb-12 md:pb-16">
+              <ActOpen index="04" title={t.acts.results} />
+
+              <div className="mb-12 md:mb-16 max-w-[62ch] text-base text-gray-600 [&>p+p]:mt-5">
+                <p>{t.result.text}</p>
+                <p>{t.result.open}</p>
+              </div>
+
+              <div id="learnings" className="scroll-mt-28">
+                <h3 className="text-title-3 text-gray-900 mb-4 max-w-[56ch]">{t.learnings.title}</h3>
+                <ul className="max-w-[62ch] space-y-4">
+                  {t.learnings.items.map((item) => (
+                    <li key={item.title} className="text-base text-gray-600">
+                      <span className="font-medium text-gray-900">{item.title}.</span> {item.desc}
                     </li>
                   ))}
                 </ul>
               </div>
             </div>
           </section>
-
-          {/* Approach Section */}
-          <section className="mb-24 md:mb-32">
-            <div className="max-w-[740px] mx-auto px-6">
-              <h2 className="text-title-2 text-gray-900 mb-4">
-                {t.approach.title}
-              </h2>
-
-              <div className="divide-y divide-gray-100">
-                {t.approach.items.map((item, idx) => (
-                  <div key={idx} className="py-4 -mx-3 px-3 rounded-lg transition-colors duration-150 hover:bg-gray-50">
-                    <p className="text-sm font-medium text-gray-900 mb-1">
-                      {item.title}
-                    </p>
-                    <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">
-                      {item.desc}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          {/* Features & Deliverables */}
-          <section className="mb-24 md:mb-32">
-            <div className="max-w-[740px] mx-auto px-6">
-              <div className="space-y-8">
-                <div>
-                  <h2 className="text-title-2 text-gray-900 mb-4">
-                    {t.features.title}
-                  </h2>
-                  <ul className="text-sm text-gray-500 space-y-2">
-                    {t.features.items.map((item, idx) => (
-                      <li key={idx} className="flex items-start gap-2">
-                        <span className="text-gray-300 mt-0.5">{'\u2022'}</span>
-                        <span className="leading-relaxed">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div>
-                  <h2 className="text-title-2 text-gray-900 mb-4">
-                    {t.deliverables.title}
-                  </h2>
-                  <div className="divide-y divide-gray-100">
-                    {t.deliverables.items.map((item, idx) => (
-                      <div key={idx} className="py-4 text-sm text-gray-500">
-                        {item}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* ================================================================== */}
-          {/* PHASE 1: RESEARCH & DISCOVERY */}
-          {/* ================================================================== */}
-          <section id="research" className="mb-24 md:mb-32">
-            <div className="max-w-[740px] mx-auto px-6 mb-8">
-              <span className="text-xs text-gray-500 mb-3 block">
-                {lang === 'fr' ? 'Phase 1' : 'Phase 1'}
-              </span>
-              <h2 className="text-title-2 text-gray-900 mb-4">
-                {lang === 'fr' ? 'Recherche & Exploration' : 'Research & Discovery'}
-              </h2>
-              <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">
-                {lang === 'fr'
-                  ? 'Immersion dans les guidelines Android Wear, \u00e9tude des contraintes mat\u00e9rielles, d\u00e9finition des parcours utilisateur et exploration de dizaines de concepts sur papier.'
-                  : 'Deep dive into Android Wear guidelines, studying hardware constraints, defining user journeys, and exploring dozens of concepts on paper.'}
-              </p>
-            </div>
-
-            {/* Full width - Early Sketches */}
-            <div className="max-w-[960px] mx-auto px-6 mb-12">
-              <figure>
-                <div
-                  onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/early_wireframes.webp')}
-                  className="rounded-xl overflow-hidden cursor-pointer group ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
-                >
-                  <img
-                    loading="lazy"
-                    src="/images/pagesjaunes/Android%20wear/early_wireframes.webp"
-                    alt={t.process.sketches}
-                    className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
-                  />
-                </div>
-                <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
-                  {t.process.sketches}. {t.process.sketchesDesc}
-                </figcaption>
-              </figure>
-            </div>
-
-            {/* Stacked - User Flows & Platform Study */}
-            <div className="max-w-[960px] mx-auto px-6">
-              <div className="space-y-8 mb-12">
-                <figure>
-                  <div
-                    onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/pj%20android%20wear%20flows.webp')}
-                    className="rounded-xl overflow-hidden cursor-pointer group ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
-                  >
-                    <img
-                      loading="lazy"
-                      src="/images/pagesjaunes/Android%20wear/pj%20android%20wear%20flows.webp"
-                      alt={t.process.flows}
-                      className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
-                    />
-                  </div>
-                  <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
-                    {t.process.flows}. {t.process.flowsDesc}
-                  </figcaption>
-                </figure>
-                <figure>
-                  <div
-                    onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/android_wear_ambient_sketches.webp')}
-                    className="rounded-xl overflow-hidden cursor-pointer group ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
-                  >
-                    <img
-                      loading="lazy"
-                      src="/images/pagesjaunes/Android%20wear/android_wear_ambient_sketches.webp"
-                      alt={t.process.ambient}
-                      className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
-                    />
-                  </div>
-                  <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
-                    {t.process.ambient}. {t.process.ambientDesc}
-                  </figcaption>
-                </figure>
-              </div>
-            </div>
-          </section>
-
-          {/* ================================================================== */}
-          {/* PHASE 2: SCREEN DESIGN */}
-          {/* ================================================================== */}
-          <section id="design" className="mb-24 md:mb-32">
-            <div className="max-w-[740px] mx-auto px-6 mb-8">
-              <span className="text-xs text-gray-500 mb-3 block">
-                {lang === 'fr' ? 'Phase 2' : 'Phase 2'}
-              </span>
-              <h2 className="text-title-2 text-gray-900 mb-4">
-                {lang === 'fr' ? 'Design d\'Interface' : 'Screen Design'}
-              </h2>
-              <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">
-                {lang === 'fr'
-                  ? 'Cr\u00e9ation de l\'UI compl\u00e8te pour \u00e9crans circulaires et carr\u00e9s. Chaque \u00e9cran devait communiquer son propos en moins de 2 secondes sur un display de 280dp.'
-                  : 'Creating the complete UI for circular and square displays. Each screen needed to communicate its purpose in under 2 seconds on a 280dp display.'}
-              </p>
-            </div>
-
-            {/* Full width - UI Interactions */}
-            <div className="max-w-[960px] mx-auto px-6 mb-12">
-              <figure>
-                <div
-                  onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/ui_interactions.webp')}
-                  className="rounded-xl overflow-hidden cursor-pointer group ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
-                >
-                  <img
-                    loading="lazy"
-                    src="/images/pagesjaunes/Android%20wear/ui_interactions.webp"
-                    alt={lang === 'fr' ? 'UI et Interactions' : 'UI and Interactions'}
-                    className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
-                  />
-                </div>
-                <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
-                  {lang === 'fr' ? 'UI et Interactions' : 'UI and Interactions'}. {lang === 'fr' ? 'Le mod\u00e8le d\'interaction complet montrant comment les actions montre se transmettent au t\u00e9l\u00e9phone pour les appels et la navigation.' : 'The complete interaction model showing how watch actions hand off to phone for calls and navigation.'}
-                </figcaption>
-              </figure>
-            </div>
-
-            {/* Screen Inventory - Grid */}
-            <div className="max-w-[960px] mx-auto px-6 mb-4">
-              <p className="text-sm text-gray-500 leading-relaxed max-w-[65ch]">
-                {lang === 'fr'
-                  ? 'Le syst\u00e8me compte 8 \u00e9tats distincts. Chaque \u00e9cran devait communiquer son propos en autonomie compl\u00e8te, lisible d\'un coup d\'\u0153il sur 280dp circulaire.'
-                  : 'The system spans 8 distinct states. Each screen communicates its purpose independently, readable at a glance on a 280dp circular display.'}
-              </p>
-            </div>
-            <div className="max-w-[960px] mx-auto px-6 mb-12">
-              <div className="rounded-2xl bg-[#111113] px-8 pt-8 pb-6">
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-8">
-                  {[
-                    {
-                      src: '/images/pagesjaunes/Android%20wear/screens/01%20Time.webp',
-                      captionFr: 'Cadran montre. Point d\'entr\u00e9e et retour rapide.',
-                      captionEn: 'Watch face. Entry point and quick return.',
-                    },
-                    {
-                      src: '/images/pagesjaunes/Android%20wear/screens/00%20Loading.webp',
-                      captionFr: 'Chargement. Feedback imm\u00e9diat au lancement.',
-                      captionEn: 'Loading. Immediate feedback on launch.',
-                    },
-                    {
-                      src: '/images/pagesjaunes/Android%20wear/screens/02%20App%20list.webp',
-                      captionFr: 'Apps. Navigation contextuelle par cat\u00e9gorie.',
-                      captionEn: 'App list. Category-first navigation.',
-                    },
-                    {
-                      src: '/images/pagesjaunes/Android%20wear/screens/03%20Rubriques%20list.webp',
-                      captionFr: 'Rubriques PagesJaunes sur le poignet.',
-                      captionEn: 'PagesJaunes categories on the wrist.',
-                    },
-                    {
-                      src: '/images/pagesjaunes/Android%20wear/screens/04%20LR%2001.webp',
-                      captionFr: 'R\u00e9sultat 1/3. Nom et distance en priorit\u00e9.',
-                      captionEn: 'Result 1/3. Name and distance first.',
-                    },
-                    {
-                      src: '/images/pagesjaunes/Android%20wear/screens/05%20LR%2002.webp',
-                      captionFr: 'R\u00e9sultat 2/3. Swipe pour parcourir.',
-                      captionEn: 'Result 2/3. Swipe to browse.',
-                    },
-                    {
-                      src: '/images/pagesjaunes/Android%20wear/screens/06%20LR%2003.webp',
-                      captionFr: 'R\u00e9sultat 3/3. Fin de liste.',
-                      captionEn: 'Result 3/3. End of list.',
-                    },
-                    {
-                      src: '/images/pagesjaunes/Android%20wear/screens/07%20FD.webp',
-                      captionFr: 'Fiche d\u00e9tail. Appel ou itin\u00e9raire en un tap.',
-                      captionEn: 'Detail card. Call or directions in one tap.',
-                    },
-                  ].map((screen, idx) => (
-                    <div key={idx} className="flex flex-col items-center gap-3">
-                      <div
-                        onClick={() => handleImageClick(screen.src)}
-                        className="w-full max-w-[140px] mx-auto cursor-zoom-in group transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.05] active:scale-[0.97]"
-                      >
-                        <img
-                          loading="lazy"
-                          src={screen.src}
-                          alt={lang === 'fr' ? screen.captionFr.split('.')[0] : screen.captionEn.split('.')[0]}
-                          className="w-full h-auto block"
-                        />
-                      </div>
-                      <p className="text-micro text-gray-400 text-center leading-relaxed">
-                        {lang === 'fr' ? screen.captionFr : screen.captionEn}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-                <p className="mt-6 text-micro text-gray-400 text-center">
-                  {lang === 'fr' ? 'Inventaire des \u00e9crans. 8 \u00e9tats, du chargement \u00e0 la fiche d\u00e9tail.' : 'Screen inventory. 8 states, from loading to detail card.'}
-                </p>
-              </div>
-            </div>
-
-            {/* In-situ ambient — app en situation */}
-            <div className="max-w-[740px] mx-auto px-6 mb-4">
-              <p className="text-sm text-gray-500 leading-relaxed max-w-[65ch]">
-                {lang === 'fr'
-                  ? 'Visualiser les \u00e9crans sur un vrai poignet r\u00e9v\u00e8le les conditions r\u00e9elles : lisibilit\u00e9 en plein soleil, angles de lecture, confort du tap.'
-                  : 'Visualizing screens on an actual wrist reveals real-world conditions: readability in sunlight, viewing angles, tap comfort.'}
-              </p>
-            </div>
-            <div className="max-w-[960px] mx-auto px-6 mb-12">
-              <figure>
-                <div
-                  onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/maquette_insitu_FD_03%20(1).webp')}
-                  className="rounded-2xl overflow-hidden cursor-zoom-in group bg-[#E7E7E7] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] shadow-sm hover:shadow-lg"
-                >
-                  <div className="w-full flex items-center justify-center py-10 px-12">
-                    <img
-                      loading="lazy"
-                      src="/images/pagesjaunes/Android%20wear/maquette_insitu_FD_03%20(1).webp"
-                      alt={lang === 'fr' ? 'Fiche d\u00e9tail sur le poignet' : 'Detail card on the wrist'}
-                      className="max-w-full max-h-[480px] object-contain transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
-                      style={{ transform: 'rotate(-4deg)' }}
-                    />
-                  </div>
-                </div>
-                <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
-                  {lang === 'fr' ? 'App en situation.' : 'App in context.'} {lang === 'fr' ? 'La fiche d\u00e9tail sur un vrai poignet. Le design circulaire tire parti du cadre de la montre.' : 'The detail card on an actual wrist. The circular design works with the watch frame, not against it.'}
-                </figcaption>
-              </figure>
-            </div>
-
-            {/* Stacked - UI Modes & Screen Overview */}
-            <div className="max-w-[960px] mx-auto px-6">
-              <div className="space-y-8">
-                <figure>
-                  <div
-                    onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/pj%20android%20wear%20ui%20modes.webp')}
-                    className="rounded-xl overflow-hidden cursor-pointer group ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
-                  >
-                    <img
-                      loading="lazy"
-                      src="/images/pagesjaunes/Android%20wear/pj%20android%20wear%20ui%20modes.webp"
-                      alt={t.process.uiModes}
-                      className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
-                    />
-                  </div>
-                  <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
-                    {t.process.uiModes}. {t.process.uiModesDesc}
-                  </figcaption>
-                </figure>
-                <figure>
-                  <div
-                    onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/pj%20android%20wear%20ui.webp')}
-                    className="rounded-xl overflow-hidden cursor-pointer group ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
-                  >
-                    <img
-                      loading="lazy"
-                      src="/images/pagesjaunes/Android%20wear/pj%20android%20wear%20ui.webp"
-                      alt={lang === 'fr' ? 'Vue d\'ensemble UI' : 'UI Overview'}
-                      className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
-                    />
-                  </div>
-                  <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
-                    {lang === 'fr' ? 'Vue d\'ensemble UI' : 'UI Overview'}. {lang === 'fr' ? 'Catalogue des \u00e9tats d\'\u00e9cran assurant la coh\u00e9rence \u00e0 travers l\'exp\u00e9rience montre connect\u00e9e.' : 'Systematic catalog of screen states ensuring design consistency across the wearable experience.'}
-                  </figcaption>
-                </figure>
-              </div>
-            </div>
-          </section>
-
-          {/* ================================================================== */}
-          {/* PHASE 3: SPECIFICATIONS */}
-          {/* ================================================================== */}
-          <section id="specs" className="mb-24 md:mb-32">
-            <div className="max-w-[740px] mx-auto px-6 mb-8">
-              <span className="text-xs text-gray-500 mb-3 block">
-                {lang === 'fr' ? 'Phase 3' : 'Phase 3'}
-              </span>
-              <h2 className="text-title-2 text-gray-900 mb-4">
-                {lang === 'fr' ? 'Sp\u00e9cifications & Guidelines' : 'Specifications & Guidelines'}
-              </h2>
-              <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">
-                {lang === 'fr'
-                  ? 'Documentation exhaustive des modes actif et ambiant, biblioth\u00e8que de composants pour les variantes rondes et carr\u00e9es, et sp\u00e9cifications d\'interaction pour la transmission au d\u00e9veloppeur.'
-                  : 'Comprehensive documentation of active and ambient modes, component library for round and square variants, and interaction specs for developer handoff.'}
-              </p>
-            </div>
-
-            {/* Full width - Component Library */}
-            <div className="max-w-[960px] mx-auto px-6 mb-12">
-              <figure>
-                <div
-                  onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/component_library.webp')}
-                  className="rounded-xl overflow-hidden cursor-pointer group ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
-                >
-                  <img
-                    loading="lazy"
-                    src="/images/pagesjaunes/Android%20wear/component_library.webp"
-                    alt={t.process.components}
-                    className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
-                  />
-                </div>
-                <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
-                  {t.process.components}. {t.process.componentsDesc}
-                </figcaption>
-              </figure>
-            </div>
-
-            {/* Full width - Ambient Mode Final Design */}
-            <div className="max-w-[960px] mx-auto px-6">
-              <figure>
-                <div
-                  onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/screens/android%20wear%20design%20ambient%20mode.webp')}
-                  className="rounded-xl overflow-hidden cursor-pointer group ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
-                >
-                  <img
-                    loading="lazy"
-                    src="/images/pagesjaunes/Android%20wear/screens/android%20wear%20design%20ambient%20mode.webp"
-                    alt={lang === 'fr' ? 'Design Mode Ambiant' : 'Ambient Mode Design'}
-                    className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
-                  />
-                </div>
-                <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
-                  {lang === 'fr' ? 'Sp\u00e9cifications Mode Ambiant' : 'Ambient Mode Specifications'}. {lang === 'fr' ? 'Contours blancs sur fond noir pour \u00e9conomiser la batterie. Chaque \u00e9cran actif a son \u00e9quivalent basse consommation, gardant les utilisateurs orient\u00e9s.' : 'White outlines on black background to preserve battery. Each active screen has its low-power equivalent, keeping users oriented.'}
-                </figcaption>
-              </figure>
-            </div>
-          </section>
-
-          {/* ================================================================== */}
-          {/* PHASE 4: IMPLEMENTATION & LAUNCH */}
-          {/* ================================================================== */}
-          <section id="implementation" className="mb-24 md:mb-32">
-            <div className="max-w-[740px] mx-auto px-6 mb-8">
-              <span className="text-xs text-gray-500 mb-3 block">
-                {lang === 'fr' ? 'Phase 4' : 'Phase 4'}
-              </span>
-              <h2 className="text-title-2 text-gray-900 mb-4">
-                {lang === 'fr' ? 'Impl\u00e9mentation & Lancement' : 'Implementation & Launch'}
-              </h2>
-              <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">
-                {lang === 'fr'
-                  ? 'Sessions quotidiennes en bin\u00f4me avec le d\u00e9veloppeur, it\u00e9rations sur des builds r\u00e9els, prototypes vid\u00e9o, et pr\u00e9paration des assets pour la soumission Google Play.'
-                  : 'Daily pair sessions with the developer, iterating on real builds, video prototypes, and preparing assets for Google Play submission.'}
-              </p>
-            </div>
-
-            {/* Full width - Dev Session */}
-            <div className="max-w-[960px] mx-auto px-6 mb-12">
-              <figure>
-                <div
-                  onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/dev_session_1.webp')}
-                  className="rounded-xl overflow-hidden cursor-pointer group ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
-                >
-                  <img
-                    loading="lazy"
-                    src="/images/pagesjaunes/Android%20wear/dev_session_1.webp"
-                    alt={t.implementation.devSession}
-                    className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
-                  />
-                </div>
-                <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
-                  {t.implementation.devSession}. {t.implementation.devSessionDesc}
-                </figcaption>
-              </figure>
-            </div>
-
-            {/* Stacked - Design Work Photos */}
-            <div className="max-w-[960px] mx-auto px-6 mb-12">
-              <div className="space-y-8">
-                <figure>
-                  <div
-                    onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/design_work_keynote.webp')}
-                    className="rounded-xl overflow-hidden cursor-pointer group ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
-                  >
-                    <img
-                      loading="lazy"
-                      src="/images/pagesjaunes/Android%20wear/design_work_keynote.webp"
-                      alt={lang === 'fr' ? 'Session Design' : 'Design Session'}
-                      className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
-                    />
-                  </div>
-                  <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
-                    {lang === 'fr' ? 'Prototypage Keynote' : 'Keynote Prototyping'}. {lang === 'fr' ? 'Keynote servait d\'outil de prototypage rapide. Rapide \u00e0 it\u00e9rer, facile \u00e0 partager, assez pr\u00e9cis pour la transmission au d\u00e9veloppeur.' : 'Keynote served as my rapid prototyping tool. Quick to iterate, easy to share, precise enough for handoff.'}
-                  </figcaption>
-                </figure>
-                <figure>
-                  <div
-                    onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/design_work_detail.webp')}
-                    className="rounded-xl overflow-hidden cursor-pointer group ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
-                  >
-                    <img
-                      loading="lazy"
-                      src="/images/pagesjaunes/Android%20wear/design_work_detail.webp"
-                      alt={lang === 'fr' ? 'V\u00e9rification Device' : 'Device Verification'}
-                      className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
-                    />
-                  </div>
-                  <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
-                    {lang === 'fr' ? 'V\u00e9rification sur Appareil' : 'On-Device Verification'}. {lang === 'fr' ? 'Rien ne remplace le test sur le vrai mat\u00e9riel. Reflets, angles de vue et zones tactiles ne se r\u00e9v\u00e8lent qu\'en contexte.' : 'Nothing replaces testing on real hardware. Reflections, viewing angles and touch targets only reveal themselves in context.'}
-                  </figcaption>
-                </figure>
-              </div>
-            </div>
-
-            {/* Video Prototypes - Stacked */}
-            <div className="max-w-[960px] mx-auto px-6 mb-12">
-              <div className="space-y-8">
-                <figure>
-                  <div
-                    onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/VID_20151202_184124.mp4')}
-                    className="relative rounded-xl overflow-hidden cursor-pointer group ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
-                  >
-                    <VideoPlayer
-                      src="/images/pagesjaunes/Android%20wear/VID_20151202_184124.mp4"
-                      className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
-                    />
-                  </div>
-                  <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
-                    {t.implementation.prototype}. {t.implementation.prototypeDesc}
-                  </figcaption>
-                </figure>
-                <figure>
-                  <div
-                    onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/VID_20151218_100148.mp4')}
-                    className="relative rounded-xl overflow-hidden cursor-pointer group ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
-                  >
-                    <VideoPlayer
-                      src="/images/pagesjaunes/Android%20wear/VID_20151218_100148.mp4"
-                      className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
-                    />
-                  </div>
-                  <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
-                    {lang === 'fr' ? 'D\u00e9mo Navigation' : 'Navigation Demo'}. {lang === 'fr' ? 'Transition fluide de la montre au t\u00e9l\u00e9phone quand l\'utilisateur demande un itin\u00e9raire.' : 'Seamless transition from watch to phone when the user requests directions.'}
-                  </figcaption>
-                </figure>
-              </div>
-            </div>
-
-            {/* Full width - Google Play Store Submission */}
-            <div className="max-w-[960px] mx-auto px-6 mb-12">
-              <figure>
-                <div
-                  onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/screens/android_wear_visuel_mail_comm.webp')}
-                  className="rounded-xl overflow-hidden cursor-pointer group ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
-                >
-                  <img
-                    loading="lazy"
-                    src="/images/pagesjaunes/Android%20wear/screens/android_wear_visuel_mail_comm.webp"
-                    alt={lang === 'fr' ? 'Soumission Play Store' : 'Play Store Submission'}
-                    className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
-                  />
-                </div>
-                <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
-                  {lang === 'fr' ? 'Communication Lancement' : 'Launch Communication'}. {lang === 'fr' ? 'Communication interne pour le lancement. Visuels marketing pr\u00eats pour publication.' : 'Internal communication for app launch. Marketing assets and store listing materials ready for publication.'}
-                </figcaption>
-              </figure>
-            </div>
-
-            {/* Final Mockup - Play Store */}
-            <div className="max-w-[960px] mx-auto px-6">
-              <figure>
-                <div
-                  onClick={() => handleImageClick('/images/pagesjaunes/Android%20wear/android_wear_insitu_store_01.webp')}
-                  className="rounded-xl overflow-hidden cursor-pointer group ring-1 ring-black/[0.04] hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99]"
-                >
-                  <img
-                    loading="lazy"
-                    src="/images/pagesjaunes/Android%20wear/android_wear_insitu_store_01.webp"
-                    alt={lang === 'fr' ? 'Pr\u00e9sence Google Play' : 'Google Play Presence'}
-                    className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
-                  />
-                </div>
-                <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
-                  {lang === 'fr' ? 'Visuel Play Store' : 'Play Store Visual'}. {lang === 'fr' ? 'Le visuel promotionnel pour le listing Google Play. Les premi\u00e8res impressions comptent.' : 'The promotional visual for Google Play listing. First impressions matter.'}
-                </figcaption>
-              </figure>
-            </div>
-          </section>
-
-          {/* Results Section */}
-          <section id="results" className="mb-24 md:mb-32">
-            <div className="max-w-[740px] mx-auto px-6">
-              <h2 className="text-title-2 text-gray-900 mb-8">
-                {t.result.title}
-              </h2>
-
-              <div className="divide-y divide-gray-100">
-                {t.result.items.map((item, idx) => (
-                  <div key={idx} className="flex items-baseline justify-between py-4">
-                    <span className="text-sm text-gray-500">{item.label}</span>
-                    <span className="text-base font-semibold text-gray-900 tabular-nums">{item.value}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          {/* Learnings Section */}
-          <section className="mb-24 md:mb-32">
-            <div className="max-w-[740px] mx-auto px-6">
-              <h2 className="text-title-2 text-gray-900 mb-4">
-                {t.learnings.title}
-              </h2>
-
-              <div className="divide-y divide-gray-100">
-                {t.learnings.items.map((item, idx) => (
-                  <div key={idx} className="py-4 -mx-3 px-3 rounded-lg transition-colors duration-150 hover:bg-gray-50">
-                    <p className="text-sm font-medium text-gray-900 mb-1">
-                      {item.title}
-                    </p>
-                    <p className="text-base text-gray-500 leading-relaxed max-w-[65ch]">
-                      {item.desc}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          {/* CTA Section */}
-          <section className="mb-24 md:mb-32">
-            <div className="max-w-[740px] mx-auto px-6">
-              <h2 className="text-title-2 text-gray-900 mb-4">
-                {t.cta.title}
-              </h2>
-              <button
-                onClick={onContact}
-                className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors"
-              >
-                {t.cta.button}
-                <ArrowRight size={14} />
-              </button>
-            </div>
-          </section>
         </div>
       ) : (
         /* Gallery View */
-        <div className="max-w-[960px] mx-auto px-6 py-12">
-          <div className="columns-1 md:columns-2 lg:columns-3 gap-4">
+        <div className="act-wide py-8 md:py-12">
+          <h1 className="sr-only">{t.hero.title} ({t.gallery})</h1>
+          <div className="columns-1 sm:columns-2 lg:columns-3 gap-4">
             {galleryItems.map((item, index) => (
               <GalleryCard
                 key={item.src}
@@ -1000,8 +541,8 @@ const AndroidWearPage: React.FC<AndroidWearPageProps> = ({
       <EnhancedLightbox
         isOpen={lightboxOpen}
         onClose={closeLightbox}
-        images={allImages}
-        currentIndex={lightboxIndex}
+        images={singleImage ? [singleImage] : allImages}
+        currentIndex={singleImage ? 0 : lightboxIndex}
         onIndexChange={(idx) => setLightboxIndex(idx)}
         lang={lang}
         projectId="androidwear"

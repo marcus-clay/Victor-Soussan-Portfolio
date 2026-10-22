@@ -1336,21 +1336,21 @@ frontend-design, creative-director</code></pre>`,
         content_fr: `<h3>frontend-design</h3>
 <p>Oriente Claude vers des interfaces de qualité production : typographie, espacement, hiérarchie visuelle. Évite les esthétiques génériques des outputs IA par défaut.</p>
 <p><strong>Cas d'usage :</strong> tout projet où le rendu visuel compte, composants UI, landing pages, prototypes présentés à un client.</p>
-<p><a href="https://skillsmp.com/skills/anthropics-claude-code-plugins-frontend-design-skills-frontend-design-skill-md" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;background:#2D5CF3;color:#fff;font-size:13px;font-weight:500;text-decoration:none">Installer depuis le marketplace</a></p>
+<p><a href="https://skillsmp.com/skills/anthropics-claude-code-plugins-frontend-design-skills-frontend-design-skill-md" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;background:#111827;color:#fff;font-size:13px;font-weight:500;text-decoration:none">Installer depuis le marketplace</a></p>
 <hr/>
 <h3>creative-director</h3>
 <p>Apporte un regard éditorial sur les décisions de composition et de direction artistique. Utile quand l'interface doit avoir un caractère visuel fort ou quand on part d'une page blanche sans référence précise.</p>
 <p><strong>Cas d'usage :</strong> exploration de direction visuelle, interfaces de marque, projets avec identité visuelle forte, présentations client.</p>
-<p><a href="https://skills.sh/smixs/creative-director-skill/creative-director" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;background:#2D5CF3;color:#fff;font-size:13px;font-weight:500;text-decoration:none">Installer depuis le marketplace</a></p>`,
+<p><a href="https://skills.sh/smixs/creative-director-skill/creative-director" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;background:#111827;color:#fff;font-size:13px;font-weight:500;text-decoration:none">Installer depuis le marketplace</a></p>`,
         content_en: `<h3>frontend-design</h3>
 <p>Points Claude toward production-quality interfaces: typography, spacing, visual hierarchy. Avoids the generic aesthetics of default AI outputs.</p>
 <p><strong>Use cases:</strong> any project where visual output matters, UI components, landing pages, prototypes presented to a client.</p>
-<p><a href="https://skillsmp.com/skills/anthropics-claude-code-plugins-frontend-design-skills-frontend-design-skill-md" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;background:#2D5CF3;color:#fff;font-size:13px;font-weight:500;text-decoration:none">Install from the marketplace</a></p>
+<p><a href="https://skillsmp.com/skills/anthropics-claude-code-plugins-frontend-design-skills-frontend-design-skill-md" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;background:#111827;color:#fff;font-size:13px;font-weight:500;text-decoration:none">Install from the marketplace</a></p>
 <hr/>
 <h3>creative-director</h3>
 <p>Brings an editorial eye to composition decisions and art direction. Useful when an interface needs a strong visual character, or when you are starting from a blank page with no clear reference.</p>
 <p><strong>Use cases:</strong> visual direction exploration, brand interfaces, projects with a strong visual identity, client presentations.</p>
-<p><a href="https://skills.sh/smixs/creative-director-skill/creative-director" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;background:#2D5CF3;color:#fff;font-size:13px;font-weight:500;text-decoration:none">Install from the marketplace</a></p>`,
+<p><a href="https://skills.sh/smixs/creative-director-skill/creative-director" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;background:#111827;color:#fff;font-size:13px;font-weight:500;text-decoration:none">Install from the marketplace</a></p>`,
       },
       {
         heading_fr: 'Skills design et UX',
@@ -1430,7 +1430,7 @@ frontend-design, creative-director</code></pre>`,
 <pre><code class="language-plain">mkdir -p ~/.claude/skills/ship-to-show
 curl -o ~/.claude/skills/ship-to-show/SKILL.md https://raw.githubusercontent.com/marcus-clay/ship-to-show/main/SKILL.md</code></pre>
 <p><strong>Invocation :</strong> <code>/ship-to-show</code></p>
-<p><a href="/fr/guide/ship-to-show" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;background:#2D5CF3;color:#fff;font-size:13px;font-weight:500;text-decoration:none">Lire le guide complet</a></p>`,
+<p><a href="/fr/guide/ship-to-show" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;background:#111827;color:#fff;font-size:13px;font-weight:500;text-decoration:none">Lire le guide complet</a></p>`,
         content_en: `<h3>ship-to-show</h3>
 <p>A 7-phase framework to turn a prototype into a portfolio case study with animated videos, bilingual narrative, and an integration pack. The full process takes about 2h30, from raw prototype to published page.</p>
 <p><strong>Use cases:</strong> documenting a prototype in a portfolio, producing interface demo videos, creating a complete case study from a code file.</p>
@@ -1438,7 +1438,7 @@ curl -o ~/.claude/skills/ship-to-show/SKILL.md https://raw.githubusercontent.com
 <pre><code class="language-plain">mkdir -p ~/.claude/skills/ship-to-show
 curl -o ~/.claude/skills/ship-to-show/SKILL.md https://raw.githubusercontent.com/marcus-clay/ship-to-show/main/SKILL.md</code></pre>
 <p><strong>Invocation:</strong> <code>/ship-to-show</code></p>
-<p><a href="/en/guide/ship-to-show" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;background:#2D5CF3;color:#fff;font-size:13px;font-weight:500;text-decoration:none">Read the full guide</a></p>`,
+<p><a href="/en/guide/ship-to-show" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;background:#111827;color:#fff;font-size:13px;font-weight:500;text-decoration:none">Read the full guide</a></p>`,
       },
     ],
   },

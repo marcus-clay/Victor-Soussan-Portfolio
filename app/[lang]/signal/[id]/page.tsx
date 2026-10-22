@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import { CATEGORY_LABELS, SIGNALS } from '@/data/signalsData'
 import SignalDetailPageWrapper from '@/components/page-wrappers/SignalDetailPageWrapper'
 import JsonLd from '@/components/JsonLd'
+import { relatedContent } from '@/lib/related'
 import { articleLd, breadcrumbLd, buildMetadata, clip, isoDate, toLang } from '@/lib/seo'
 
 type Props = { params: Promise<{ lang: string; id: string }> }
@@ -21,7 +22,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return buildMetadata({
     lang,
     path: `signal/${id}`,
-    title: lang === 'fr' ? signal.title_fr : signal.title_en,
+    title: (lang === 'fr' ? signal.seoTitle_fr : signal.seoTitle_en) ?? (lang === 'fr' ? signal.title_fr : signal.title_en),
     description: lang === 'fr' ? signal.body_fr : signal.body_en,
     type: 'article',
     publishedTime: isoDate(signal.date),
@@ -62,7 +63,7 @@ export default async function SignalPage({ params }: Props) {
           ]),
         ]}
       />
-      <SignalDetailPageWrapper lang={lang} signalId={id} />
+      <SignalDetailPageWrapper lang={lang} signalId={id} related={relatedContent(lang, id)} />
     </>
   )
 }

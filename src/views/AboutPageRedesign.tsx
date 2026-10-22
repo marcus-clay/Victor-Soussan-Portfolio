@@ -2,7 +2,10 @@
 
 import React, { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useReveal } from '@/lib/motion'
 import { ArrowUpRight, ArrowRight, X, DownloadSimple, Copy, Check } from '@phosphor-icons/react'
+import TestimonialCarousel from '@/components/testimonials/TestimonialCarousel'
+import { ActRule } from '@/components/case-study/ActSection'
 import { aboutEras } from '@/data/profileData'
 
 type Language = 'en' | 'fr'
@@ -112,23 +115,6 @@ const METRICS = {
   ],
 }
 
-// ---------------------------------------------------------------------------
-// Featured quotes (rotating)
-// ---------------------------------------------------------------------------
-
-const FEATURED_QUOTES = {
-  en: [
-    { text: 'Victor combines overflowing creativity with impressive rigor.', author: 'Charlotte Rifflet, CPO UNOWHY' },
-    { text: 'He transformed business requirements into perfectly adapted user journeys, ideal for a startup like ours.', author: 'Pierre-Marie Nigay, Founder of Toolkit' },
-    { text: 'He was a real driver of progress within the design team, fostering a collaborative and stimulating work environment.', author: 'Justine Le Tellier, UX Researcher @UNOWHY' },
-  ],
-  fr: [
-    { text: 'Victor allie une créativité débordante à une rigueur de travail impressionnante.', author: 'Charlotte Rifflet, CPO UNOWHY' },
-    { text: 'Il a transformé les besoins métiers en parcours utilisateurs parfaitement adaptés, idéal pour une startup comme la nôtre.', author: 'Pierre-Marie Nigay, Fondateur de Toolkit' },
-    { text: "Il a été un véritable moteur de progrès au sein de l'équipe de conception.", author: 'Justine Le Tellier, UX Researcher @UNOWHY' },
-  ],
-}
-
 // Shared ease
 const EASE_OUT: [number, number, number, number] = [0.23, 1, 0.32, 1]
 
@@ -196,9 +182,7 @@ export default function AboutPageRedesign({
   const [cvModalOpen, setCvModalOpen] = useState(false)
   const [copied, setCopied] = useState(false)
   const [ctaHovered, setCtaHovered] = useState(false)
-  const [quoteIndex, setQuoteIndex] = useState(0)
-  const quotes = FEATURED_QUOTES[lang]
-  const currentQuote = quotes[quoteIndex]
+  const reveal = useReveal()
 
   const copyEmail = () => {
     navigator.clipboard.writeText('victorsoussan@gmail.com')
@@ -212,172 +196,91 @@ export default function AboutPageRedesign({
       {/* ================================================================ */}
       {/* 1. HEADER + INTRO                                                */}
       {/* ================================================================ */}
-      <section className="py-24 md:py-40">
-        <div className="max-w-[740px] mx-auto px-6">
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08 } } }}
-          >
-            <motion.h1
-              variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
-              transition={{ duration: 0.5, ease: EASE_OUT }}
-              className="text-title-1 text-gray-900"
-            >
-              {t.page_title}
-            </motion.h1>
-            <motion.p
-              variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0 } }}
-              transition={{ duration: 0.4, ease: EASE_OUT }}
-              className="mt-2 text-sm text-gray-500"
-            >
-              {t.role}
-            </motion.p>
-          </motion.div>
+      <header className="wrap pt-10 md:pt-16 pb-12 md:pb-16">
+        <h1 className="text-headline text-gray-900">
+          {t.page_title}
+        </h1>
+        <p className="mt-4 text-lead-lg text-gray-600 max-w-[54ch]">
+          {t.role}
+        </p>
+      </header>
 
-          {/* Photo */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.15, ease: EASE_OUT }}
-            className="mt-10 mb-10"
-          >
-            <div
-              className="group w-full max-w-[280px] aspect-square rounded-2xl overflow-hidden bg-gray-100"
-              style={{ cursor: 'zoom-in' }}
-            >
+      <section className="wrap pb-16 md:pb-24">
+        <div className="grid gap-10 lg:grid-cols-12 lg:gap-x-6 lg:items-start">
+          {/* Photo: the same portrait as the home page */}
+          <div className="lg:col-span-4">
+            <div className="w-full max-w-[360px] lg:max-w-none aspect-[4/5] rounded-2xl overflow-hidden bg-gray-100 ring-1 ring-inset ring-black/[0.05]">
               <img
-                src="/images/photos victor/image-victor-linkedin.webp"
+                src="/images/image-victor-soussan-2027.jpg"
                 alt="Victor Soussan"
-                className="w-full h-full object-cover object-top group-hover:scale-[1.02] transition-transform duration-300 ease-out"
+                className="w-full h-full object-cover object-top"
                 loading="eager"
               />
             </div>
-          </motion.div>
+          </div>
 
-          {/* Intro + Bio */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.25, ease: EASE_OUT }}
-            className="space-y-6"
-          >
-            <p className="text-base leading-relaxed text-gray-500">
+          {/* Intro + bio: same reading size as the case studies and the approach page */}
+          <div className="lg:col-span-7 lg:col-start-6">
+            <p className="text-lead-lg text-gray-900 max-w-[40ch]">
               {t.intro}
             </p>
-            <p className="text-sm leading-relaxed text-gray-500">
-              {t.bio_p1}
-            </p>
-            <p className="text-sm leading-relaxed text-gray-500">
-              {t.bio_p2}
-            </p>
-          </motion.div>
+            <div className="mt-8 space-y-5">
+              <p className="text-base text-gray-600 max-w-[62ch]">
+                {t.bio_p1}
+              </p>
+              <p className="text-base text-gray-600 max-w-[62ch]">
+                {t.bio_p2}
+              </p>
+            </div>
 
-          {/* Availability */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.4, delay: 0.35, ease: EASE_OUT }}
-            className="mt-8 flex items-center gap-2"
-          >
-            <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
-            <span className="text-xs text-gray-500">{t.availability}</span>
-          </motion.div>
+            {/* Availability */}
+            <div className="mt-8 flex items-center gap-2">
+              <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
+              <span className="text-sm text-gray-600">{t.availability}</span>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* ================================================================ */}
       {/* 2. METRICS                                                       */}
       {/* ================================================================ */}
-      <section className="py-24 md:py-40 border-t border-gray-100">
-        <div className="max-w-[740px] mx-auto px-6">
-          <motion.div
-            className="flex flex-wrap gap-x-12 gap-y-8"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-80px' }}
-            variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08 } } }}
-          >
+      <ActRule />
+      <section className="wrap pt-12 md:pt-16 pb-16 md:pb-24">
+        <div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-10">
             {metrics.map((m, idx) => (
-              <motion.div
-                key={idx}
-                variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } }}
-                transition={{ duration: 0.4, ease: EASE_OUT }}
-              >
-                <span className="block text-2xl font-semibold text-gray-900 tracking-[-0.01em]">
+              <motion.div key={idx} {...reveal(idx)}>
+                <span className="block text-subhead text-gray-900 tabular-nums">
                   <CountUp value={m.value} delay={idx * 100} />
                 </span>
-                <span className="text-xs text-gray-500 mt-1 block">{m.label}</span>
+                <span className="text-sm text-gray-600 mt-1 block">{m.label}</span>
               </motion.div>
             ))}
-          </motion.div>
+          </div>
         </div>
       </section>
 
       {/* ================================================================ */}
-      {/* 3. QUOTE                                                         */}
+      {/* 3. TESTIMONIALS                                                  */}
       {/* ================================================================ */}
-      <section className="py-24 md:py-40 border-t border-gray-100">
-        <div className="max-w-[740px] mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-80px' }}
-            transition={{ duration: 0.5, ease: EASE_OUT }}
-          >
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={quoteIndex}
-                initial={{ opacity: 0, filter: 'blur(4px)', y: 4 }}
-                animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
-                exit={{ opacity: 0, filter: 'blur(4px)', y: -4 }}
-                transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
-              >
-                <p className="text-lg italic text-gray-500 leading-relaxed">
-                  &ldquo;{currentQuote.text}&rdquo;
-                </p>
-                <p className="mt-4 text-xs text-gray-500">
-                  {currentQuote.author}
-                </p>
-              </motion.div>
-            </AnimatePresence>
-            <button
-              onClick={() => setQuoteIndex((quoteIndex + 1) % quotes.length)}
-              className="mt-5 flex items-center gap-1.5 text-xs text-gray-500 hover:text-gray-700 transition-colors duration-150 group"
-              aria-label="Next testimonial"
-            >
-              <span>{lang === 'fr' ? 'Voir un autre' : 'Next'}</span>
-              <span className="flex gap-1">
-                {quotes.map((_, i) => (
-                  <span
-                    key={i}
-                    className="block w-1 h-1 rounded-full transition-colors duration-150"
-                    style={{ backgroundColor: i === quoteIndex ? '#374151' : '#D1D5DB' }}
-                  />
-                ))}
-              </span>
-            </button>
-            <a
-              href={`/${lang}/testimonials`}
-              className="group inline-flex items-center gap-1.5 mt-6 text-sm text-gray-500 hover:text-gray-900 transition-colors duration-200"
-            >
-              {t.testimonials_link}
-              <ArrowRight size={13} className="transition-transform duration-200 group-hover:translate-x-0.5" />
-            </a>
-          </motion.div>
-        </div>
+      <ActRule />
+      <section className="pt-12 md:pt-16 pb-16 md:pb-24">
+        <motion.div
+          {...reveal()}
+        >
+          <TestimonialCarousel lang={lang} allLabel={t.testimonials_link} />
+        </motion.div>
       </section>
 
       {/* ================================================================ */}
       {/* 4. CAREER                                                        */}
       {/* ================================================================ */}
-      <section className="py-24 md:py-40 border-t border-gray-100">
-        <div className="max-w-[740px] mx-auto px-6">
+      <ActRule />
+      <section className="wrap pt-12 md:pt-16 pb-16 md:pb-24">
+        <div>
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-80px' }}
-            transition={{ duration: 0.5, ease: EASE_OUT }}
+            {...reveal()}
           >
             <h2 className="text-title-2 text-gray-900 mb-8">
               {t.career_title}
@@ -387,17 +290,19 @@ export default function AboutPageRedesign({
               {t.eras.map((era, idx) => (
                 <div
                   key={idx}
-                  className="group py-6 first:pt-0 last:pb-0 -mx-3 px-3 rounded-lg hover:bg-black/[.02] transition-colors duration-200 cursor-default"
+                  className="py-8 first:pt-0 last:pb-0 md:grid md:grid-cols-12 md:gap-x-6"
                 >
-                  <span className="text-xs text-gray-500 block mb-1 group-hover:text-gray-500 transition-colors duration-200">
+                  <span className="text-xs text-gray-500 block mb-1 md:mb-0 md:col-span-3 lg:col-span-5 md:pt-1 tabular-nums">
                     {era.period}
                   </span>
-                  <span className="text-base font-medium text-gray-900 block mb-2">
-                    {era.title}
-                  </span>
-                  <p className="text-sm leading-relaxed text-gray-500 group-hover:text-gray-600 transition-colors duration-200">
-                    {era.description}
-                  </p>
+                  <div className="min-w-0 md:col-span-9 lg:col-span-7">
+                    <span className="text-title-3 text-gray-900 block mb-3">
+                      {era.title}
+                    </span>
+                    <p className="text-base text-gray-600 max-w-[62ch]">
+                      {era.description}
+                    </p>
+                  </div>
                 </div>
               ))}
             </div>
@@ -405,35 +310,32 @@ export default function AboutPageRedesign({
 
           {/* LinkedIn + CV links */}
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 0.5, ease: EASE_OUT }}
+            {...reveal()}
             className="mt-10 divide-y divide-gray-100"
           >
             <a
               href="https://www.linkedin.com/in/victorsoussan-product-design/"
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex items-center justify-between py-4 -mx-3 px-3 rounded-lg hover:bg-black/[.04] active:bg-black/[.06] transition-colors duration-150"
+              className="group flex items-center justify-between py-4 -mx-3 px-3 rounded-lg [@media(hover:hover)]:hover:bg-gray-100 active:bg-gray-100 transition-colors duration-150"
             >
               <div>
-                <span className="text-sm font-medium text-gray-900 block">LinkedIn</span>
-                <span className="text-sm text-gray-500">{t.linkedin_label}</span>
+                <span className="text-title-3 text-gray-900 block">LinkedIn</span>
+                <span className="text-sm text-gray-600">{t.linkedin_label}</span>
               </div>
-              <ArrowUpRight size={14} className="text-gray-500 group-hover:text-gray-700 transition-colors duration-200 flex-shrink-0" />
+              <ArrowUpRight size={14} aria-hidden="true" className="text-gray-500 [@media(hover:hover)]:group-hover:text-gray-900 transition-colors duration-200 flex-shrink-0" />
             </a>
             <button
               onClick={() => setCvModalOpen(true)}
-              className="group flex items-center justify-between py-4 -mx-3 px-3 rounded-lg hover:bg-black/[.04] active:bg-black/[.06] transition-colors duration-150 w-full text-left cursor-pointer"
+              className="group flex items-center justify-between py-4 -mx-3 px-3 rounded-lg [@media(hover:hover)]:hover:bg-gray-100 active:bg-gray-100 transition-colors duration-150 w-full text-left cursor-pointer"
             >
               <div>
-                <span className="text-sm font-medium text-gray-900 block">
+                <span className="text-title-3 text-gray-900 block">
                   {lang === 'fr' ? 'Curriculum vitae' : 'Resume'}
                 </span>
-                <span className="text-sm text-gray-500">{t.cv_label}</span>
+                <span className="text-sm text-gray-600">{t.cv_label}</span>
               </div>
-              <ArrowRight size={14} className="text-gray-500 group-hover:text-gray-700 transition-colors duration-200 flex-shrink-0" />
+              <ArrowRight size={14} aria-hidden="true" className="text-gray-500 [@media(hover:hover)]:group-hover:text-gray-900 transition-colors duration-200 flex-shrink-0" />
             </button>
           </motion.div>
         </div>
@@ -467,7 +369,7 @@ export default function AboutPageRedesign({
                   <a
                     href={`/cv/CV-Victor-Soussan-2026-${lang.toUpperCase()}.pdf`}
                     download
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 active:scale-[0.97]"
+                    className="inline-flex items-center gap-1.5 min-h-11 px-4 rounded-full text-sm font-medium bg-gray-900 text-white [@media(hover:hover)]:hover:bg-black active:scale-[0.97]"
                     style={{ transition: 'background-color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
                   >
                     <DownloadSimple size={14} />
@@ -475,7 +377,7 @@ export default function AboutPageRedesign({
                   </a>
                   <button
                     onClick={() => setCvModalOpen(false)}
-                    className="p-2 rounded-full hover:bg-gray-100 text-gray-500 hover:text-gray-900 active:scale-[0.95]"
+                    className="inline-flex items-center justify-center min-h-11 min-w-11 rounded-full [@media(hover:hover)]:hover:bg-gray-100 text-gray-500 [@media(hover:hover)]:hover:text-gray-900 active:scale-[0.95]"
                     style={{ transition: 'background-color 150ms ease, color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
                   >
                     <X size={20} />
@@ -498,24 +400,22 @@ export default function AboutPageRedesign({
       {/* ================================================================ */}
       {/* 5. PRACTICE + EDUCATION                                          */}
       {/* ================================================================ */}
-      <section className="py-24 md:py-40 border-t border-gray-100">
-        <div className="max-w-[740px] mx-auto px-6">
+      <ActRule />
+      <section className="wrap pt-12 md:pt-16 pb-16 md:pb-24">
+        <div>
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-80px' }}
-            transition={{ duration: 0.5, ease: EASE_OUT }}
+            {...reveal()}
           >
             <h2 className="text-title-2 text-gray-900 mb-6">
               {t.practice_title}
             </h2>
-            <p className="text-sm leading-relaxed text-gray-500 mb-10">
+            <p className="text-base text-gray-600 max-w-[62ch] mb-10">
               {t.practice_text}
             </p>
 
             {/* Toolkit as animated pills */}
             <div className="mb-10">
-              <h3 className="text-xs font-medium uppercase tracking-wider text-gray-500 mb-2">
+              <h3 className="text-micro uppercase tracking-[0.08em] text-gray-500 mb-3">
                 {t.toolkit_title}
               </h3>
               <motion.div
@@ -523,14 +423,14 @@ export default function AboutPageRedesign({
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, margin: '-40px' }}
-                variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.05 } } }}
+                variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.04 } } }}
               >
                 {t.toolkit_items.split(', ').map((tool, i) => (
                   <motion.span
                     key={i}
-                    variants={{ hidden: { opacity: 0, scale: 0.88, y: 4 }, visible: { opacity: 1, scale: 1, y: 0 } }}
-                    transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }}
-                    className="inline-block text-xs text-gray-500 bg-gray-100 px-2.5 py-1 rounded-full"
+                    variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+                    transition={{ duration: 0.32, ease: EASE_OUT }}
+                    className="inline-block text-sm text-gray-600 bg-gray-100 px-3 py-1.5 rounded-full"
                   >
                     {tool}
                   </motion.span>
@@ -540,11 +440,11 @@ export default function AboutPageRedesign({
 
             {/* Education */}
             <div className="pt-6 border-t border-gray-100">
-              <h3 className="text-xs font-medium uppercase tracking-wider text-gray-500 mb-2">
+              <h3 className="text-micro uppercase tracking-[0.08em] text-gray-500 mb-3">
                 {t.education_title}
               </h3>
-              <p className="text-sm text-gray-500">{t.education_line1}</p>
-              <p className="text-sm text-gray-500 mt-1">{t.education_line2}</p>
+              <p className="text-base text-gray-600 max-w-[62ch]">{t.education_line1}</p>
+              <p className="text-base text-gray-600 max-w-[62ch] mt-1">{t.education_line2}</p>
             </div>
           </motion.div>
         </div>
@@ -554,18 +454,17 @@ export default function AboutPageRedesign({
       {/* 6. TOOLKIT RESOURCES                                             */}
       {/* ================================================================ */}
       {resources.length > 0 && (
-        <section className="py-24 md:py-40 border-t border-gray-100">
-          <div className="max-w-[740px] mx-auto px-6">
+        <>
+        <ActRule />
+        <section className="wrap pt-12 md:pt-16 pb-16 md:pb-24">
+          <div>
             <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-60px' }}
-              transition={{ duration: 0.5, ease: EASE_OUT }}
+              {...reveal()}
             >
               <h2 className="text-title-2 text-gray-900 mb-2">
                 {t.resources_section_title}
               </h2>
-              <p className="text-sm text-gray-500 mb-8">
+              <p className="text-base text-gray-600 max-w-[62ch] mb-8">
                 {t.resources_section_desc}
               </p>
 
@@ -576,14 +475,15 @@ export default function AboutPageRedesign({
                     href={res.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group flex items-center justify-between py-4 -mx-3 px-3 rounded-lg hover:bg-black/[.04] active:bg-black/[.06] transition-colors duration-150"
+                    className="group flex items-center justify-between py-4 -mx-3 px-3 rounded-lg [@media(hover:hover)]:hover:bg-gray-100 active:bg-gray-100 transition-colors duration-150"
                   >
-                    <span className="text-sm text-gray-900 group-hover:text-gray-700 transition-colors duration-200">
+                    <span className="text-base text-gray-900">
                       {res.title}
                     </span>
                     <ArrowUpRight
                       size={14}
-                      className="text-gray-500 group-hover:text-gray-600 transition-colors duration-200 flex-shrink-0 ml-4"
+                      aria-hidden="true"
+                      className="text-gray-500 [@media(hover:hover)]:group-hover:text-gray-900 transition-colors duration-200 flex-shrink-0 ml-4"
                     />
                   </a>
                 ))}
@@ -591,28 +491,27 @@ export default function AboutPageRedesign({
 
               <a
                 href={`/${lang}/ressources`}
-                className="group inline-flex items-center gap-1.5 mt-6 text-sm text-gray-500 hover:text-gray-900 transition-colors duration-200"
+                className="group inline-flex items-center gap-1.5 min-h-11 mt-3 text-sm font-medium text-gray-900 [@media(hover:hover)]:hover:text-gray-500 active:scale-[0.97] transition-[color,transform] duration-150"
               >
                 {t.resources_link}
-                <ArrowRight size={13} className="transition-transform duration-200 group-hover:translate-x-0.5" />
+                <ArrowRight size={13} aria-hidden="true" className="transition-transform duration-200 [@media(hover:hover)]:group-hover:translate-x-0.5" />
               </a>
             </motion.div>
           </div>
         </section>
+        </>
       )}
 
       {/* ================================================================ */}
       {/* 7. CONTACT CTA                                                   */}
       {/* ================================================================ */}
-      <section className="py-24 md:py-40 border-t border-gray-100">
-        <div className="max-w-[740px] mx-auto px-6">
+      <ActRule />
+      <section className="wrap pt-12 md:pt-16 pb-16 md:pb-24">
+        <div>
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-80px' }}
-            transition={{ duration: 0.5, ease: EASE_OUT }}
+            {...reveal()}
           >
-            {/* Progressive disclosure CTA — email appears on hover */}
+            {/* Progressive disclosure CTA: email appears on hover */}
             <div
               onMouseEnter={() => setCtaHovered(true)}
               onMouseLeave={() => setCtaHovered(false)}
@@ -622,9 +521,9 @@ export default function AboutPageRedesign({
                 cursor: 'default',
               }}
             >
-              {/* Title row — shows a hint arrow on hover */}
+              {/* Title row: shows a hint arrow on hover */}
               <div className="flex items-center gap-2 mb-4">
-                <p className="text-base font-semibold tracking-[-0.01em] text-gray-900">
+                <p className="text-lead-lg text-gray-900 max-w-[40ch]">
                   {t.cta_text}
                 </p>
                 <motion.span
@@ -637,7 +536,7 @@ export default function AboutPageRedesign({
                 </motion.span>
               </div>
 
-              {/* Email + copy — revealed on hover */}
+              {/* Email + copy: revealed on hover */}
               <motion.div
                 className="flex items-center gap-3"
                 initial={false}
@@ -649,7 +548,7 @@ export default function AboutPageRedesign({
               >
                 <a
                   href={`mailto:${t.cta_email}`}
-                  className="text-sm text-gray-500 hover:text-gray-900 underline underline-offset-4 decoration-gray-300 hover:decoration-gray-500 transition-colors duration-200"
+                  className="text-base text-gray-900 [@media(hover:hover)]:hover:text-gray-500 underline underline-offset-4 decoration-gray-300 [@media(hover:hover)]:hover:decoration-gray-500 transition-colors duration-200"
                   tabIndex={ctaHovered ? 0 : -1}
                 >
                   {t.cta_email}
@@ -657,7 +556,7 @@ export default function AboutPageRedesign({
                 <button
                   onClick={copyEmail}
                   aria-label={copied ? (lang === 'fr' ? 'Copié' : 'Copied') : (lang === 'fr' ? 'Copier l\u2019adresse' : 'Copy address')}
-                  className="p-1.5 rounded-md text-gray-400 hover:text-gray-700 hover:bg-black/[.04] active:scale-[0.95]"
+                  className="inline-flex items-center justify-center min-h-11 min-w-11 rounded-md text-gray-500 [@media(hover:hover)]:hover:text-gray-900 [@media(hover:hover)]:hover:bg-gray-100 active:scale-[0.95]"
                   style={{ transition: 'color 150ms ease, background-color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
                   tabIndex={ctaHovered ? 0 : -1}
                 >

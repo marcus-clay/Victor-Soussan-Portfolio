@@ -142,7 +142,7 @@ const VisualArchivePage: React.FC<VisualArchivePageProps> = ({ lang }) => {
                     : 'transform 280ms cubic-bezier(0.23, 1, 0.32, 1), opacity 200ms ease 80ms',
                 }}
               >
-                <div className="max-w-[740px] mx-auto px-6 w-full h-10 flex items-center">
+                <div className="wrap w-full h-10 flex items-center">
                   <nav className="flex items-center gap-1.5 text-xs min-w-0 overflow-hidden">
                     <Link
                       href={`/${lang}/projets`}
@@ -185,14 +185,14 @@ const VisualArchivePage: React.FC<VisualArchivePageProps> = ({ lang }) => {
       </div>
 
       {/* Header section */}
-      <div className="pt-32 sm:pt-40 md:pt-48">
-        <div className="max-w-[740px] mx-auto px-6">
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16 md:mb-20">
+      <div>
+        <div className="wrap">
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 pt-10 md:pt-16 pb-10 md:pb-14">
             <div>
-              <h1 className="text-title-1 text-gray-900 mb-3">
+              <h1 className="text-headline text-gray-900 mb-4">
                 {t.title}
               </h1>
-              <p className="text-base text-gray-500 max-w-md">
+              <p className="text-lead-lg text-gray-600 max-w-[56ch]">
                 {t.subtitle}
               </p>
             </div>
@@ -206,7 +206,7 @@ const VisualArchivePage: React.FC<VisualArchivePageProps> = ({ lang }) => {
                 <button
                   key={key}
                   onClick={() => setViewMode(key)}
-                  className={`p-2 rounded-full cursor-pointer active:scale-[0.95] ${
+                  className={`w-11 h-11 inline-flex items-center justify-center rounded-full cursor-pointer active:scale-[0.95] ${
                     viewMode === key
                       ? 'bg-gray-900 text-white'
                       : 'text-gray-500 hover:text-gray-900'
@@ -221,7 +221,7 @@ const VisualArchivePage: React.FC<VisualArchivePageProps> = ({ lang }) => {
         </div>
 
         {/* Gallery content */}
-        <div className="max-w-[960px] mx-auto px-6 pb-24 md:pb-40">
+        <div className="wrap pb-16 md:pb-24">
           {viewMode === 'editorial' ? (
             <EditorialView
               projects={GALLERY_PROJECTS}
@@ -263,7 +263,7 @@ const EditorialView: React.FC<{
   expandedProjects: Set<string>;
   onToggleExpand: (projectId: string) => void;
 }> = ({ projects, lang, onItemClick, expandedProjects, onToggleExpand }) => (
-  <div className="space-y-24 md:space-y-32">
+  <div>
     {projects.map((project) => (
       <ProjectSection
         key={project.id}
@@ -302,15 +302,11 @@ const ProjectSection: React.FC<{
   return (
     <section
       id={`gallery-${project.id}`}
+      className="border-t border-gray-100 pt-12 md:pt-16 pb-12 md:pb-16"
       style={{ scrollMarginTop: 'calc(var(--nav-height, 64px) + 40px + 32px)' }}
     >
-      {/* Project header — aligned with the 740px text column */}
-      {/* clamp(0px, (100vw - 740px) / 2, 110px) matches the centering offset between the
-          max-w-[960px] image container and the max-w-[740px] text containers elsewhere */}
-      <div
-        className="max-w-[740px] mb-6"
-        style={{ marginLeft: 'clamp(0px, calc((100vw - 740px) / 2), 110px)' }}
-      >
+      {/* Project header: aligné sur le bord du conteneur, texte plafonné à 680px */}
+      <div className="max-w-[680px] mb-6">
         <h2 className="text-title-2 text-gray-900 mb-1">
           {project.name}
         </h2>
@@ -322,7 +318,7 @@ const ProjectSection: React.FC<{
       {/* Hero image */}
       {heroItem && (
         <div className="mb-3">
-          <MediaCard item={heroItem} index={0} onClick={() => onItemClick(heroItem)} />
+          <MediaCard item={heroItem} index={0} wide onClick={() => onItemClick(heroItem)} />
         </div>
       )}
 
@@ -358,9 +354,8 @@ const ProjectSection: React.FC<{
 
           <button
             onClick={onToggleExpand}
-            className="mt-4 flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-gray-900 cursor-pointer active:scale-[0.97]"
+            className="mt-4 flex items-center gap-2 min-h-11 text-sm font-medium text-gray-900 hover:text-gray-500 cursor-pointer active:scale-[0.97]"
             style={{
-              marginLeft: 'clamp(0px, calc((100vw - 740px) / 2), 110px)',
               transition: 'color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)',
             }}
           >
@@ -386,7 +381,7 @@ const GridView: React.FC<{
   items: GalleryItem[];
   onItemClick: (item: GalleryItem) => void;
 }> = ({ items, onItemClick }) => (
-  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 border-t border-gray-100 pt-12 md:pt-16">
     {items.map((item, i) => (
       <MediaCard key={item.id} item={item} index={i} onClick={() => onItemClick(item)} />
     ))}
@@ -406,7 +401,7 @@ const CARD_OVERRIDES: Record<string, [number, string]> = {
 const DEFAULT_SCALE = 2;
 const DEFAULT_ORIGIN = 'top left';
 
-const MediaCard: React.FC<{ item: GalleryItem; onClick: () => void; index?: number }> = ({ item, onClick }) => {
+const MediaCard: React.FC<{ item: GalleryItem; onClick: () => void; index?: number; wide?: boolean }> = ({ item, onClick, wide }) => {
   const isVideo = item.type === 'video';
   const [scale, origin] = CARD_OVERRIDES[item.id] || [DEFAULT_SCALE, DEFAULT_ORIGIN];
 
@@ -426,7 +421,7 @@ const MediaCard: React.FC<{ item: GalleryItem; onClick: () => void; index?: numb
           className="w-full h-auto object-cover transition-transform duration-300 ease-out group-hover:scale-[1.02]"
         />
       ) : (
-        <div className="aspect-[3/2] overflow-hidden">
+        <div className={`overflow-hidden ${wide ? 'aspect-[3/2] lg:aspect-[2/1]' : 'aspect-[3/2]'}`}>
           <LazyImage
             src={item.src}
             alt=""

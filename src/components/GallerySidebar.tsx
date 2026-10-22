@@ -113,7 +113,7 @@ const GallerySidebar: React.FC<GallerySidebarProps> = ({
                     onClick={() => onPrototypeClick(pid)}
                     className={`flex items-center gap-2 w-full text-left px-2 py-1 rounded-md text-micro transition-colors ${
                       isActive
-                        ? (isDark ? 'bg-blue-600/20 text-blue-400' : 'bg-blue-50 text-[#2D5CF3]')
+                        ? (isDark ? 'bg-blue-600/20 text-blue-400' : 'bg-blue-50 text-gray-900')
                         : (isDark ? 'text-gray-400 hover:text-gray-200 hover:bg-white/5' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50')
                     }`}
                   >

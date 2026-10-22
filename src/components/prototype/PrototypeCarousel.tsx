@@ -532,8 +532,8 @@ const PrototypeCarousel: React.FC<PrototypeCarouselProps> = ({
             onClick={onSeeAll}
             className={`text-sm font-medium inline-flex items-center gap-1.5 transition-colors ${
               isDark
-                ? 'text-[#2D5CF3] hover:text-[#4B7BF5]'
-                : 'text-[#2D5CF3] hover:text-[#2450d9]'
+                ? 'text-gray-900 hover:text-[#4B7BF5]'
+                : 'text-gray-900 hover:text-gray-500'
             }`}
           >
             {lang === 'fr'

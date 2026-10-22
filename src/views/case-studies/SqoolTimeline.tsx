@@ -1,34 +1,29 @@
 // SqoolTimeline - Interactive timeline and carousel component
 // Apple-style design with clean typography and subtle animations
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CaretLeft as ChevronLeft, CaretRight as ChevronRight, Stack as Layers, Clock } from '@phosphor-icons/react';
 import { SQOOL_TIMELINE_TRANSLATIONS } from '../../data/caseStudyTranslations/sqoolTimelineTranslations';
 
 interface SqoolTimelineProps {
   lang: 'en' | 'fr';
-  isDark: boolean;
-  onImageClick?: (src: string) => void;
 }
 
 const TRANSLATIONS = SQOOL_TIMELINE_TRANSLATIONS;
 
-// Neutral palette — all phases use the same gray tone
-const PHASE_COLORS = [
-  { color: '#6B7280', colorLight: '#9CA3AF' },
-  { color: '#6B7280', colorLight: '#9CA3AF' },
-  { color: '#6B7280', colorLight: '#9CA3AF' },
-  { color: '#6B7280', colorLight: '#9CA3AF' },
-];
-
-export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang, isDark, onImageClick: _onImageClick }) => {
+export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang }) => {
   const [viewMode, setViewMode] = useState<'timeline' | 'carousel'>('timeline');
   const [activePhase, setActivePhase] = useState(0);
+  // Preview card: hover (mouse), focus (keyboard) or selection (touch tap)
   const [hoveredPhase, setHoveredPhase] = useState<number | null>(null);
-  const timelineRef = useRef<HTMLDivElement>(null);
+  const [focusedPhase, setFocusedPhase] = useState<number | null>(null);
+  const [selectedPhase, setSelectedPhase] = useState<number | null>(null);
+  const pointerType = useRef<string>('mouse');
   const t = TRANSLATIONS[lang];
   const phases = t.phases;
+
+  const previewPhase = hoveredPhase ?? focusedPhase ?? selectedPhase;
 
   // Carousel navigation
   const goToPhase = (index: number) => {
@@ -38,39 +33,56 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang, isDark, onIm
   const nextPhase = () => goToPhase(activePhase + 1);
   const prevPhase = () => goToPhase(activePhase - 1);
 
-  // Keyboard navigation for carousel
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (viewMode !== 'carousel') return;
-      if (e.key === 'ArrowLeft') prevPhase();
-      if (e.key === 'ArrowRight') nextPhase();
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [viewMode, activePhase]);
+  const changeView = (mode: 'timeline' | 'carousel') => {
+    // The nodes unmount with the timeline: drop any hover, focus or selection left behind
+    setHoveredPhase(null);
+    setFocusedPhase(null);
+    setSelectedPhase(null);
+    setViewMode(mode);
+  };
+
+  const openPhase = (index: number) => {
+    setActivePhase(index);
+    changeView('carousel');
+  };
+
+  // Keyboard navigation, scoped to the carousel widget
+  const handleCarouselKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      prevPhase();
+    } else if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      nextPhase();
+    }
+  };
+
+  const preview = previewPhase !== null ? phases[previewPhase] : null;
 
   return (
     <div className="w-full text-gray-900">
       {/* View Toggle */}
-      <div className="flex justify-center mb-8">
+      <div className="flex justify-start mb-8">
         <div className="inline-flex p-1 rounded-full bg-gray-100">
           <button
-            onClick={() => setViewMode('timeline')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-[background-color,color,transform] duration-200 ease-out ${
+            onClick={() => changeView('timeline')}
+            aria-pressed={viewMode === 'timeline'}
+            className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium active:scale-[0.97] transition-[background-color,color,transform] duration-200 ease-out ${
               viewMode === 'timeline'
                 ? 'bg-white text-gray-900 shadow-sm'
-                : 'text-gray-500 hover:text-gray-900'
+                : 'text-gray-500 [@media(hover:hover)]:hover:text-gray-900'
             }`}
           >
             <Clock size={16} />
             {t.timeline}
           </button>
           <button
-            onClick={() => setViewMode('carousel')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-[background-color,color,transform] duration-200 ease-out ${
+            onClick={() => changeView('carousel')}
+            aria-pressed={viewMode === 'carousel'}
+            className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium active:scale-[0.97] transition-[background-color,color,transform] duration-200 ease-out ${
               viewMode === 'carousel'
                 ? 'bg-white text-gray-900 shadow-sm'
-                : 'text-gray-500 hover:text-gray-900'
+                : 'text-gray-500 [@media(hover:hover)]:hover:text-gray-900'
             }`}
           >
             <Layers size={16} />
@@ -83,157 +95,150 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang, isDark, onIm
         {viewMode === 'timeline' ? (
           <motion.div
             key="timeline"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
             {/* Timeline View */}
-            <div ref={timelineRef} className="relative">
-              {/* Timeline Line */}
-              <div className="relative px-4 md:px-8">
-                {/* Background line */}
-                <div className="absolute top-[60px] left-0 right-0 h-[2px] bg-gray-200" />
-
-                {/* Progress line */}
-                <motion.div
-                  className="absolute top-[60px] left-0 h-[2px] bg-gray-300"
-                  initial={{ width: '0%' }}
-                  animate={{ width: '100%' }}
-                  transition={{ duration: 1.5, ease: 'easeOut', delay: 0.3 }}
-                />
-
-                {/* Phase Points */}
-                <div className="relative flex justify-between">
-                  {phases.map((phase, index) => (
-                    <motion.div
+            <div className="relative">
+              {/* Phase nodes: the connecting line lives in each node's dot row, so it always meets the dots */}
+              <div className="flex">
+                {phases.map((phase, index) => {
+                  const isPreviewed = previewPhase === index;
+                  return (
+                    <motion.button
                       key={phase.id}
-                      className="flex flex-col items-center cursor-pointer group"
+                      type="button"
+                      aria-expanded={isPreviewed}
+                      className="group flex flex-col items-center cursor-pointer min-w-0 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-900/20"
                       style={{ width: `${100 / phases.length}%` }}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.2 + index * 0.15 }}
-                      onMouseEnter={() => setHoveredPhase(index)}
-                      onMouseLeave={() => setHoveredPhase(null)}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.32, delay: 0.2 + index * 0.07 }}
+                      onPointerDown={(e) => { pointerType.current = e.pointerType; }}
+                      onKeyDown={() => { pointerType.current = 'keyboard'; }}
+                      onPointerEnter={(e) => { if (e.pointerType === 'mouse') setHoveredPhase(index); }}
+                      onPointerLeave={() => setHoveredPhase(null)}
+                      onFocus={(e) => { if (e.currentTarget.matches(':focus-visible')) setFocusedPhase(index); }}
+                      onBlur={() => setFocusedPhase(null)}
                       onClick={() => {
-                        setActivePhase(index);
-                        setViewMode('carousel');
+                        // Touch: a tap selects the phase, the preview offers the jump to the carousel
+                        if (pointerType.current === 'touch' || pointerType.current === 'pen') {
+                          setSelectedPhase(prev => (prev === index ? null : index));
+                        } else {
+                          openPhase(index);
+                        }
                       }}
                     >
-                      {/* Year Label */}
-                      <span className="text-xs text-gray-500 mb-3">
-                        {phase.period}
+                      {/* Phase number: the order matters, the years do not */}
+                      <span className="text-xs tabular-nums text-gray-500 mb-3">
+                        {String(index + 1).padStart(2, '0')}
                       </span>
 
-                      {/* Point */}
-                      <motion.div
-                        className="relative z-10"
-                        whileHover={{ scale: 1.15 }}
-                        transition={{ type: 'spring', stiffness: 400, damping: 17 }}
-                      >
-                        <div
-                          className="w-4 h-4 rounded-full bg-white border-[2px] border-gray-300 transition-[border-color] duration-150 group-hover:border-gray-600"
+                      {/* Dot row with the line segments */}
+                      <span className="relative flex items-center justify-center w-full h-4">
+                        {index > 0 && (
+                          <span aria-hidden="true" className="absolute left-0 right-1/2 top-1/2 h-[2px] -translate-y-1/2 bg-gray-200" />
+                        )}
+                        {index < phases.length - 1 && (
+                          <span aria-hidden="true" className="absolute left-1/2 right-0 top-1/2 h-[2px] -translate-y-1/2 bg-gray-200" />
+                        )}
+                        <span
+                          className={`relative z-10 w-4 h-4 rounded-full bg-white border-[2px] transition-[border-color,transform] duration-150 [@media(hover:hover)]:group-hover:scale-110 ${
+                            isPreviewed ? 'border-gray-600' : 'border-gray-300 [@media(hover:hover)]:group-hover:border-gray-600'
+                          }`}
                         />
-                      </motion.div>
+                      </span>
 
                       {/* Phase Content */}
-                      <div className="mt-5 text-center px-2">
-                        <h3 className="text-xs font-medium text-gray-900 mb-0.5">
+                      <span className="mt-5 block text-center px-2">
+                        <span className="block text-xs font-medium text-gray-900 mb-0.5">
                           {phase.title}
-                        </h3>
-                        <p className="text-xs text-gray-500">
+                        </span>
+                        <span className="block text-xs text-gray-500">
                           {phase.subtitle}
-                        </p>
-                      </div>
-
-                      {/* Expanded Preview on Hover */}
-                      <AnimatePresence>
-                        {hoveredPhase === index && (
-                          <motion.div
-                            initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                            animate={{ opacity: 1, y: 0, scale: 1 }}
-                            exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                            transition={{ duration: 0.2 }}
-                            className="absolute top-full mt-4 w-64 md:w-72 p-4 rounded-xl border border-gray-200 bg-white/95 backdrop-blur-xl z-20"
-                            style={{
-                              left: '50%',
-                              transform: 'translateX(-50%)',
-                              boxShadow: '0 8px 24px rgba(0,0,0,0.08)'
-                            }}
-                          >
-                            <p className="text-base text-gray-600 mb-3">
-                              {phase.description}
-                            </p>
-                            <div className="flex flex-wrap gap-2">
-                              {phase.items.slice(0, 3).map((item, i) => (
-                                <span
-                                  key={i}
-                                  className="text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-600"
-                                >
-                                  {item.title}
-                                </span>
-                              ))}
-                              {phase.items.length > 3 && (
-                                <span className="text-xs px-2 py-1 text-gray-500">
-                                  +{phase.items.length - 3}
-                                </span>
-                              )}
-                            </div>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </motion.div>
-                  ))}
-                </div>
+                        </span>
+                      </span>
+                    </motion.button>
+                  );
+                })}
               </div>
 
-              {/* Click hint */}
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1.5 }}
-                className="text-center mt-12 text-sm text-gray-500"
-              >
-                {lang === 'fr' ? 'Cliquez sur une phase pour voir les détails' : 'Click on a phase to see details'}
-              </motion.p>
+              {/* Preview card (single, below the nodes, so it never overflows on narrow screens) */}
+              <div className="mt-10 min-h-[9.5rem] flex flex-col items-stretch justify-start" aria-live="polite">
+                <AnimatePresence mode="wait">
+                  {preview ? (
+                    <motion.div
+                      key={previewPhase}
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 8 }}
+                      transition={{ duration: 0.2, ease: [0.23, 1, 0.32, 1] }}
+                      className="w-full p-5 md:p-6 rounded-2xl border border-gray-100 bg-white"
+                    >
+                      <p className="text-base text-gray-600 mb-4 max-w-[62ch]">
+                        {preview.description}
+                      </p>
+                      <div className="flex flex-wrap items-center gap-2">
+                        {preview.items.slice(0, 3).map((item, i) => (
+                          <span
+                            key={i}
+                            className="text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-600"
+                          >
+                            {item.title}
+                          </span>
+                        ))}
+                        {preview.items.length > 3 && (
+                          <span className="text-xs px-2 py-1 text-gray-500">
+                            +{preview.items.length - 3}
+                          </span>
+                        )}
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => openPhase(previewPhase as number)}
+                        className="mt-3 inline-flex items-center gap-1.5 min-h-11 text-sm text-gray-500 [@media(hover:hover)]:hover:text-gray-900 active:scale-[0.97] transition-[color,transform] duration-150"
+                      >
+                        {t.openPhase}
+                        <ChevronRight size={14} />
+                      </button>
+                    </motion.div>
+                  ) : (
+                    <motion.p
+                      key="hint"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.15 }}
+                      className="text-sm text-gray-500"
+                    >
+                      {t.hint}
+                    </motion.p>
+                  )}
+                </AnimatePresence>
+              </div>
             </div>
           </motion.div>
         ) : (
           <motion.div
             key="carousel"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
             {/* Carousel View */}
-            <div className="relative">
-              {/* Navigation Arrows */}
-              <button
-                onClick={prevPhase}
-                disabled={activePhase === 0}
-                className={`absolute left-0 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full transition-[background-color,color,transform] duration-200 ease-out ${
-                  activePhase === 0
-                    ? 'opacity-30 cursor-not-allowed'
-                    : 'opacity-100 hover:scale-105'
-                } bg-gray-100 hover:bg-gray-200`}
-              >
-                <ChevronLeft size={24} />
-              </button>
-              <button
-                onClick={nextPhase}
-                disabled={activePhase === phases.length - 1}
-                className={`absolute right-0 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full transition-[background-color,color,transform] duration-200 ease-out ${
-                  activePhase === phases.length - 1
-                    ? 'opacity-30 cursor-not-allowed'
-                    : 'opacity-100 hover:scale-105'
-                } bg-gray-100 hover:bg-gray-200`}
-              >
-                <ChevronRight size={24} />
-              </button>
-
+            <div
+              className="relative"
+              role="group"
+              aria-roledescription="carousel"
+              aria-label={t.carouselLabel}
+              tabIndex={0}
+              onKeyDown={handleCarouselKeyDown}
+            >
               {/* Carousel Content */}
-              <div className="overflow-hidden px-12 md:px-16">
+              <div className="overflow-hidden" aria-live="polite">
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={activePhase}
@@ -254,7 +259,7 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang, isDark, onIm
                             transition={{ delay: 0.1 }}
                             className="flex items-baseline gap-2 mb-4"
                           >
-                            <span className="text-2xl font-semibold tracking-[-0.01em] text-gray-900">
+                            <span className="text-title-2 text-gray-900">
                               {String(activePhase + 1).padStart(2, '0')}
                             </span>
                             <span className="text-sm text-gray-500">
@@ -262,25 +267,15 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang, isDark, onIm
                             </span>
                           </motion.div>
 
-                          {/* Period */}
-                          <motion.p
-                            initial={{ y: 8, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            transition={{ delay: 0.15 }}
-                            className="text-xs text-gray-500 mb-3"
-                          >
-                            {phases[activePhase].period}
-                          </motion.p>
-
                           {/* Title */}
-                          <motion.h2
+                          <motion.h4
                             initial={{ y: 8, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ delay: 0.2 }}
-                            className="text-title-2 text-gray-900 mb-1"
+                            className="text-title-3 text-gray-900 mb-1"
                           >
                             {phases[activePhase].title}
-                          </motion.h2>
+                          </motion.h4>
 
                           {/* Subtitle */}
                           <motion.p
@@ -299,7 +294,7 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang, isDark, onIm
                         initial={{ y: 8, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ delay: 0.3 }}
-                        className="text-base text-gray-500 leading-relaxed mb-8 max-w-[65ch]"
+                        className="text-base text-gray-600 mb-8 max-w-[62ch]"
                       >
                         {phases[activePhase].description}
                       </motion.p>
@@ -319,11 +314,11 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang, isDark, onIm
                             transition={{ delay: 0.4 + index * 0.05 }}
                             className="py-3 border-b border-gray-100 last:border-0"
                           >
-                            <h4 className="text-sm font-medium text-gray-900 mb-0.5">
+                            <h5 className="text-sm font-medium text-gray-900 mb-0.5">
                               {item.title}
-                            </h4>
+                            </h5>
                             {item.description && (
-                              <p className="text-xs text-gray-500 leading-relaxed">
+                              <p className="text-sm text-gray-600 max-w-[62ch]">
                                 {item.description}
                               </p>
                             )}
@@ -335,39 +330,69 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang, isDark, onIm
                 </AnimatePresence>
               </div>
 
-              {/* Dots Navigation */}
-              <div className="flex justify-center gap-2 mt-8">
-                {phases.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => goToPhase(index)}
-                    className={`transition-[background-color,color,transform] duration-200 ease-out rounded-full ${
-                      activePhase === index
-                        ? 'w-8 h-2'
-                        : 'w-2 h-2 hover:scale-125'
-                    }`}
-                    style={{
-                      backgroundColor: activePhase === index
-                        ? '#111827'
-                        : 'rgba(0,0,0,0.15)'
-                    }}
-                  />
-                ))}
+              {/* Controls: previous, dots, next, in one row under the card */}
+              <div className="mt-4 flex items-center justify-between">
+                <button
+                  onClick={prevPhase}
+                  disabled={activePhase === 0}
+                  aria-label={t.previous}
+                  className={`p-3 rounded-full bg-gray-100 transition-[background-color,color,transform] duration-200 ease-out ${
+                    activePhase === 0
+                      ? 'opacity-30 cursor-not-allowed'
+                      : '[@media(hover:hover)]:hover:bg-gray-200 active:scale-[0.97]'
+                  }`}
+                >
+                  <ChevronLeft size={24} />
+                </button>
+
+                {/* Dots Navigation (44px hit area, small visual dot) */}
+                <div className="flex justify-center">
+                  {phases.map((phase, index) => (
+                    <button
+                      key={index}
+                      onClick={() => goToPhase(index)}
+                      aria-label={`${index + 1}. ${phase.title}`}
+                      aria-current={activePhase === index ? 'true' : undefined}
+                      className="group flex items-center justify-center min-h-11 min-w-11"
+                    >
+                      <span
+                        className={`block h-2 rounded-full transition-[width,background-color,transform] duration-200 ease-out ${
+                          activePhase === index
+                            ? 'w-8 bg-gray-900'
+                            : 'w-2 bg-black/15 [@media(hover:hover)]:group-hover:scale-125'
+                        }`}
+                      />
+                    </button>
+                  ))}
+                </div>
+
+                <button
+                  onClick={nextPhase}
+                  disabled={activePhase === phases.length - 1}
+                  aria-label={t.next}
+                  className={`p-3 rounded-full bg-gray-100 transition-[background-color,color,transform] duration-200 ease-out ${
+                    activePhase === phases.length - 1
+                      ? 'opacity-30 cursor-not-allowed'
+                      : '[@media(hover:hover)]:hover:bg-gray-200 active:scale-[0.97]'
+                  }`}
+                >
+                  <ChevronRight size={24} />
+                </button>
               </div>
 
               {/* Phase Labels Below Dots */}
-              <div className="flex justify-center gap-8 mt-4">
+              <div className="flex flex-wrap justify-center gap-x-4 mt-1">
                 {phases.map((phase, index) => (
                   <button
                     key={index}
                     onClick={() => goToPhase(index)}
-                    className={`text-xs font-medium transition-colors duration-150 ${
+                    className={`min-h-11 px-2 text-xs font-medium active:scale-[0.97] transition-[color,transform] duration-150 ${
                       activePhase === index
                         ? 'text-gray-900'
-                        : 'text-gray-500 hover:text-gray-600'
+                        : 'text-gray-500 [@media(hover:hover)]:hover:text-gray-600'
                     }`}
                   >
-                    {phase.period}
+                    {String(index + 1).padStart(2, '0')}
                   </button>
                 ))}
               </div>

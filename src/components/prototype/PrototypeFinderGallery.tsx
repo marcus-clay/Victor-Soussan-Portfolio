@@ -186,7 +186,7 @@ const PrototypeList: React.FC<PrototypeListProps> = ({
               tabIndex={0}
               className={`flex items-center gap-2 w-full text-left px-3 py-[7px] rounded-lg transition-colors ${
                 isSelected
-                  ? 'bg-[#2D5CF3] text-white'
+                  ? 'bg-gray-900 text-white'
                   : isDark
                     ? 'text-gray-300 hover:bg-white/5'
                     : 'text-gray-700 hover:bg-gray-100'
@@ -278,7 +278,7 @@ const PreviewPane: React.FC<{
             whileTap={prefersReduced ? {} : { scale: 0.97 }}
             className={`mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
               detailsOpen
-                ? 'bg-[#2D5CF3] text-white'
+                ? 'bg-gray-900 text-white'
                 : (isDark ? 'bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-500 hover:text-gray-700')
             }`}
           >
@@ -553,7 +553,7 @@ const PrototypeFinderGallery: React.FC<PrototypeFinderGalleryProps> = ({
             whileTap={prefersReduced ? {} : { scale: 0.96 }}
             className={`flex items-center gap-2 flex-shrink-0 px-3 py-2 rounded-lg transition-colors ${
               isActive
-                ? 'bg-[#2D5CF3] text-white'
+                ? 'bg-gray-900 text-white'
                 : isDark
                   ? 'text-gray-300 hover:bg-white/5'
                   : 'text-gray-700 hover:bg-gray-100'
@@ -610,7 +610,7 @@ const PrototypeFinderGallery: React.FC<PrototypeFinderGalleryProps> = ({
                   onMouseDown={(e) => e.preventDefault()}
                   whileTap={prefersReduced ? {} : { scale: 0.97 }}
                   className={`flex items-center gap-2.5 w-full text-left px-3 py-2 rounded-lg transition-colors ${
-                    isActive ? 'bg-[#2D5CF3] text-white' : isDark ? 'text-gray-300 hover:bg-white/5' : 'text-gray-700 hover:bg-gray-100'
+                    isActive ? 'bg-gray-900 text-white' : isDark ? 'text-gray-300 hover:bg-white/5' : 'text-gray-700 hover:bg-gray-100'
                   }`}
                 >
                   <Icon size={15} className={isActive ? 'text-white/80' : (isDark ? colors.text : colors.textLight)} />
