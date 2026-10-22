@@ -92,25 +92,4 @@ export const TESSAN_SHOTS: Record<string, { kind: 'phone' | 'browser'; items: Te
       { src: '/images/tessan/proto/stills/osDesktop-pharmacien-motifs.webp', width: 2160, height: 1350, fr: 'Dashboard pharmacien : motifs', en: 'Pharmacist dashboard: reasons' },
     ],
   },
-  dsDemos: {
-    kind: 'browser',
-    items: [
-      { src: '/images/tessan/proto/stills/dsDemos-demo-catalogue.webp', width: 2160, height: 1350, fr: 'Tessan-UI : le catalogue', en: 'Tessan-UI: the catalog' },
-      { src: '/images/tessan/proto/stills/dsDemos-demo-tokens-rampes.webp', width: 2160, height: 1350, fr: 'Tokens : rampes de couleur', en: 'Tokens: color ramps' },
-      { src: '/images/tessan/proto/stills/dsDemos-demo-tokens-semantiques.webp', width: 2160, height: 1350, fr: 'Tokens : couleurs sémantiques', en: 'Tokens: semantic colors' },
-      { src: '/images/tessan/proto/stills/dsDemos-demo-tokens-typo.webp', width: 2160, height: 1350, fr: 'Tokens : échelle typographique', en: 'Tokens: type scale' },
-      { src: '/images/tessan/proto/stills/dsDemos-demo-tokens-motion.webp', width: 2160, height: 960, fr: 'Tokens : mouvement et cibles tactiles', en: 'Tokens: motion and touch targets' },
-      { src: '/images/tessan/proto/stills/dsDemos-demo-bouton.webp', width: 2160, height: 1350, fr: 'Composant bouton : tailles et états', en: 'Button: sizes and states' },
-      { src: '/images/tessan/proto/stills/dsDemos-demo-mobile-cabine.webp', width: 2160, height: 1350, fr: 'Composants mobile et cabine', en: 'Mobile and booth components' },
-      { src: '/images/tessan/proto/stills/dsDemos-demo-cloud.webp', width: 2160, height: 1350, fr: 'Tessan Cloud : tableau de bord', en: 'Tessan Cloud: dashboard' },
-      { src: '/images/tessan/proto/stills/dsDemos-demo-playground.webp', width: 2160, height: 1350, fr: 'Playground : prise de rendez-vous', en: 'Playground: appointment form' },
-    ],
-  },
-  dsDemosMobile: {
-    kind: 'phone',
-    items: [
-      { src: '/images/tessan/proto/stills/dsDemosMobile-demo-cloud-mobile.webp', width: 780, height: 1688, fr: 'Tessan Cloud sur mobile', en: 'Tessan Cloud on mobile' },
-      { src: '/images/tessan/proto/stills/dsDemosMobile-demo-playground-mobile.webp', width: 780, height: 1688, fr: 'Playground sur mobile', en: 'Playground on mobile' },
-    ],
-  },
 }

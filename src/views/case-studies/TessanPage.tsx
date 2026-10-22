@@ -58,7 +58,25 @@ interface DeviceFigure {
   href?: string
 }
 
-type FigureSource = ImageFigure | DeviceFigure
+/** The seven Tessan OS prototypes: a number, a name, the idea each one tests, a video and a live link. */
+interface ShowcaseItem {
+  n: string
+  name: { fr: string; en: string }
+  line: { fr: string; en: string }
+  kind: DeviceKind
+  screen: DeviceScreenSpec
+  /** Live prototype to try */
+  href: string
+  /** Width of a browser or tablet in its row, as a share of the stage */
+  share?: number
+}
+
+interface ShowcaseFigure {
+  type: 'showcase'
+  items: ShowcaseItem[]
+}
+
+type FigureSource = ImageFigure | DeviceFigure | ShowcaseFigure
 
 const app = (name: string, label: { fr: string; en: string }): DeviceScreenSpec => ({
   src: `/images/tessan/tessan-app-${name}.webp`,
@@ -149,34 +167,13 @@ const FIGURES: Record<string, FigureSource> = {
       proto('tessan-ui-tokens-couleurs-typo-motion-1440', { fr: 'Tessan-UI : tokens, couleurs, typographie, mouvement', en: 'Tessan-UI: tokens, color, type, motion' }, 2880 / 1800),
       proto('tessan-ui-dialog-formulaire-contact-1440', { fr: 'Tessan-UI : une boîte de dialogue', en: 'Tessan-UI: a dialog' }, 2880 / 1800),
       proto('tessan-ui-mobile-cabine-stepper-champs-1440', { fr: 'Tessan-UI : composants mobile et cabine', en: 'Tessan-UI: mobile and booth components' }, 2880 / 1800),
-      proto('tessan-cloud-dashboard-modules-cartes-1440', { fr: 'Tessan Cloud : modules et fiche patient', en: 'Tessan Cloud: modules and patient file' }, 2880 / 1800),
-      proto('tessan-cloud-dashboard-formulaire-patient-1440', { fr: 'Tessan Cloud : nouveau patient', en: 'Tessan Cloud: new patient' }, 2880 / 1800),
-      proto('playground-formulaire-rendez-vous-1440', { fr: 'Playground : prise de rendez-vous', en: 'Playground: appointment booking' }, 2880 / 1800),
     ],
-  },
-  dsVideosMobile: {
-    type: 'devices',
-    kind: 'phone',
-    carousel: true,
-    screens: [
-      proto('tessan-cloud-dashboard-mobile-390', { fr: 'Tessan Cloud sur mobile', en: 'Tessan Cloud on mobile' }),
-      proto('playground-formulaire-rendez-vous-mobile-390', { fr: 'Playground sur mobile', en: 'Playground on mobile' }),
-    ],
-  },
-  dsInteractions: {
-    type: 'devices',
-    kind: 'browser',
-    url: 'tessan-ui',
-    share: 0.86,
-    screens: [proto('tessan-ui-dialog-et-sheet-interactions', { fr: 'Dialog et sheet', en: 'Dialog and sheet' }, 2160 / 1350)],
   },
   wireStills: strip('wireStills'),
   v4Stills: strip('v4Stills'),
   doctorStills: strip('doctorStills'),
   osStills: strip('osStills'),
   osDesktop: strip('osDesktop'),
-  dsDemos: strip('dsDemos'),
-  dsDemosMobile: strip('dsDemosMobile'),
   hubApp: {
     type: 'devices',
     kind: 'phone',
@@ -212,6 +209,57 @@ const FIGURES: Record<string, FigureSource> = {
       { src: '/images/tessan/tessan-hub-horizon-v3.webp', width: 780, height: 1379, aspect: 780 / 1379, label: { fr: 'Ma Santé, version 3', en: 'My Health, version 3' } },
       { src: '/images/tessan/tessan-hub-horizon-source.webp', width: 780, height: 1580, aspect: 780 / 1580, label: { fr: 'Relier une source', en: 'Connecting a source' } },
     ],
+  },
+  dsPalette: { type: 'image', src: '/images/tessan/tessan-figma-palette.webp', width: 2000, height: 1806, maxWidth: 820 },
+  skillsPack: { type: 'image', src: '/images/tessan/tessan-skills-pack.webp', width: 2160, height: 1154 },
+  skillsDiptych: { type: 'image', src: '/images/tessan/tessan-skills-diptyque.webp', width: 2160, height: 1280 },
+  skillsReact: { type: 'image', src: '/images/tessan/tessan-skills-react.webp', width: 2160, height: 1192 },
+  skillsMotion: { type: 'image', src: '/images/tessan/tessan-skills-motion.webp', width: 2160, height: 1149 },
+  figmaCodePalette: { type: 'image', src: '/images/tessan/tessan-figma-code-palette.webp', width: 2160, height: 1000 },
+  figmaCodeBoutons: { type: 'image', src: '/images/tessan/tessan-figma-code-boutons.webp', width: 2160, height: 1000 },
+  auditComposants: { type: 'image', src: '/images/tessan/tessan-audit-composants.webp', width: 2160, height: 1134 },
+  pilotageAgent: { type: 'image', src: '/images/tessan/tessan-pilotage-agent.webp', width: 2160, height: 1236 },
+  deliveryFigma: {
+    type: 'devices',
+    kind: 'browser',
+    carousel: true,
+    url: 'figma',
+    screens: [
+      { src: '/images/tessan/tessan-livraison-01-acces.webp', width: 2400, height: 1225, aspect: 2400 / 1225, label: { fr: 'Accès et inscription', en: 'Access and sign-up' } },
+      { src: '/images/tessan/tessan-livraison-02-consulter.webp', width: 2400, height: 1458, aspect: 2400 / 1458, label: { fr: 'Consulter, depuis l’accueil', en: 'Consulting, from the home screen' } },
+      { src: '/images/tessan/tessan-livraison-03-paiement.webp', width: 2400, height: 923, aspect: 2400 / 923, label: { fr: 'Paiement et prise en charge', en: 'Payment and coverage' } },
+    ],
+  },
+  prototypesSeven: {
+    type: 'showcase',
+    items: [
+      { n: '01', name: { fr: 'Le Pont', en: 'The Bridge' }, line: { fr: 'La cabine émet, l’application reçoit : en fin de consultation, un QR code transfère le contexte vers le mobile.', en: 'The booth sends, the app receives: at the end of a consultation, a QR code moves the context to mobile.' }, kind: 'tablet', share: 0.86, href: 'https://tessan-os-prototypes.vercel.app/bridge', screen: proto('le-pont-cabine-vers-mobile', { fr: 'Le Pont', en: 'The Bridge' }, 2160 / 1500) },
+      { n: '02', name: { fr: 'Première téléconsultation', en: 'First teleconsultation' }, line: { fr: 'De la prise des constantes en cabine à l’appel vidéo avec le médecin.', en: 'From the vitals at the booth to the video call with the doctor.' }, kind: 'browser', share: 0.9, href: 'https://tessan-os-prototypes.vercel.app/bridge-alt', screen: proto('premiere-teleconsultation-appel-video', { fr: 'Première téléconsultation', en: 'First teleconsultation' }, 2240 / 1400) },
+      { n: '03', name: { fr: 'WhatsApp Tessan', en: 'WhatsApp Tessan' }, line: { fr: 'Le suivi directement dans la messagerie : rappels, missions du jour, échanges.', en: 'Follow-up inside the messaging app: reminders, daily missions, exchanges.' }, kind: 'phone', href: 'https://tessan-os-prototypes.vercel.app/whatsapp', screen: proto('whatsapp-chip-mission-du-jour', { fr: 'WhatsApp Tessan', en: 'WhatsApp Tessan' }) },
+      { n: '04', name: { fr: 'Docteur Tessan', en: 'Doctor Tessan' }, line: { fr: 'Un interlocuteur permanent, qui prépare la consultation et oriente vers un médecin.', en: 'A permanent interlocutor that prepares the consultation and points to a doctor.' }, kind: 'phone', href: 'https://tessan-os-prototypes.vercel.app/doctor', screen: proto('doctor-preparer-consultation', { fr: 'Docteur Tessan', en: 'Doctor Tessan' }) },
+      { n: '05', name: { fr: 'Tessan Score', en: 'Tessan Score' }, line: { fr: 'Un signal de santé lisible : la tendance avant la valeur, trois insights actionnables.', en: 'A readable health signal: the trend before the value, three actionable insights.' }, kind: 'phone', href: 'https://tessan-os-prototypes.vercel.app/score', screen: proto('score-bien-etre-interactions', { fr: 'Tessan Score', en: 'Tessan Score' }) },
+      { n: '06', name: { fr: 'Tessan OS', en: 'Tessan OS' }, line: { fr: 'Une couche commune au mobile, à la tablette et au bureau : trois hiérarchies d’information, pas un simple responsive.', en: 'A layer shared across mobile, tablet and desktop: three information hierarchies, not just responsive.' }, kind: 'browser', share: 0.9, href: 'https://tessan-os-prototypes.vercel.app/cross-device', screen: proto('tessan-os-cross-device', { fr: 'Tessan OS', en: 'Tessan OS' }, 2160 / 1350) },
+      { n: '07', name: { fr: 'Prévention Active', en: 'Active Prevention' }, line: { fr: 'La prévention par de petites missions, des séries, et un appui long pour valider.', en: 'Prevention through small missions, streaks, and a long press to confirm.' }, kind: 'phone', href: 'https://tessan-os-prototypes.vercel.app/prevention', screen: proto('prevention-maintenir-pour-valider', { fr: 'Prévention Active', en: 'Active Prevention' }) },
+    ],
+  },
+  wireframes: {
+    type: 'devices',
+    kind: 'phone',
+    carousel: true,
+    screens: [
+      proto('onboarding-wireframes-qualifier-avant-auth', { fr: 'Qualifier avant l’authentification', en: 'Qualify before signing in' }),
+      proto('onboarding-wireframes-post-consultation', { fr: 'Après la consultation', en: 'After the consultation' }),
+      proto('patient-v4-reservation-cabine-sms-mail', { fr: 'Patient v4, réserver en cabine', en: 'Patient v4, booking at a booth' }),
+      proto('patient-v4-creneaux-creux-notification-acces', { fr: 'Patient v4, créneaux creux et accès', en: 'Patient v4, quiet slots and access' }),
+      proto('patient-v4-explorer-le-reseau-carte-reservation', { fr: 'Patient v4, explorer le réseau', en: 'Patient v4, exploring the network' }),
+    ],
+  },
+  osMedaillon: {
+    type: 'devices',
+    kind: 'browser',
+    url: 'tessan-os',
+    share: 0.86,
+    screens: [proto('tessan-os-medaillon-connexion', { fr: 'Connexion', en: 'Sign-in' }, 2160 / 1350)],
   },
   hubScreens: {
     type: 'devices',
@@ -296,6 +344,56 @@ function DeviceStage({
   )
 }
 
+/** The seven prototypes as a numbered list: each one with its idea, a playing demo and a link to try it. */
+function PrototypeShowcase({
+  figure,
+  lang,
+  testLabel,
+  onZoom,
+}: {
+  figure: ShowcaseFigure
+  lang: 'en' | 'fr'
+  testLabel: string
+  onZoom: (key: string) => void
+}) {
+  return (
+    <ol className="m-0 list-none p-0 space-y-10 md:space-y-14">
+      {figure.items.map((item) => (
+        <li key={item.n} className="grid grid-cols-1 gap-5 md:grid-cols-12 md:gap-10 md:items-center">
+          <div className="md:col-span-4">
+            <p className="text-micro uppercase tracking-[0.08em] text-gray-500 tabular-nums">{item.n} / 07</p>
+            <h3 className="mt-1 text-title-3 text-gray-900">{item.name[lang]}</h3>
+            <p className="mt-2 max-w-[38ch] text-base text-gray-600">{item.line[lang]}</p>
+            <a
+              href={item.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 inline-flex min-h-11 items-center gap-1.5 rounded-full border border-gray-200 bg-white px-5 text-sm font-medium text-gray-900 shadow-sm transition-[background-color,box-shadow,transform] duration-150 [@media(hover:hover)]:hover:bg-gray-100 active:scale-[0.97]"
+            >
+              {testLabel}
+              <ArrowUpRight size={14} aria-hidden="true" />
+            </a>
+          </div>
+          <div className="md:col-span-8">
+            <div className={`${STAGE} flex items-center justify-center px-[5%] py-[6%]`}>
+              <div style={{ width: item.kind === 'phone' ? 'min(58%, 250px)' : `${(item.share ?? 0.9) * 100}%` }}>
+                <DeviceMockup
+                  kind={item.kind}
+                  screen={item.screen}
+                  label={`${item.name[lang]}`}
+                  aspect={item.screen.aspect}
+                  url={item.kind === 'browser' ? 'tessan-os' : undefined}
+                  onZoom={() => onZoom(screenKey(item.screen))}
+                />
+              </div>
+            </div>
+          </div>
+        </li>
+      ))}
+    </ol>
+  )
+}
+
 function FigureView({
   figure,
   caption,
@@ -309,6 +407,9 @@ function FigureView({
   prototypeLabel: string
   onZoom: (key: string) => void
 }) {
+  if (figure.type === 'showcase') {
+    return <PrototypeShowcase figure={figure} lang={lang} testLabel={prototypeLabel} onZoom={onZoom} />
+  }
   return (
     <figure>
       {figure.type === 'devices' ? (
@@ -382,7 +483,11 @@ export const TessanChapterPage: React.FC<TessanPageProps & { variant: TessanVari
     for (const key of keys) {
       const figure = FIGURES[key]
       if (!figure) continue
-      if (figure.type === 'devices') {
+      if (figure.type === 'showcase') {
+        for (const item of figure.items) {
+          items.push({ key: screenKey(item.screen), src: item.screen.video ?? item.screen.src, caption: `${item.n} ${item.name[lang]}`, type: item.screen.video ? 'video' : 'image' })
+        }
+      } else if (figure.type === 'devices') {
         for (const screen of figure.screens) {
           items.push({ key: screenKey(screen), src: screen.video ?? screen.src, caption: `${t.captions[key] ?? ''}, ${screen.label[lang]}`, type: screen.video ? 'video' : 'image' })
         }
