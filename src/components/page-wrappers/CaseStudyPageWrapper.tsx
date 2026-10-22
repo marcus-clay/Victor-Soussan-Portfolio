@@ -30,6 +30,7 @@ const FULL_TOC: Record<string, TOCSections> = {
     { id: 'summary', label_en: "Summary", label_fr: "Synthèse" },
     { id: 'app', label_en: "The app", label_fr: "L'application" },
     { id: 'tunnel', label_en: "The funnel", label_fr: "Le tunnel" },
+    { id: 'protos-tunnel', label_en: "Prototypes", label_fr: "Prototypes" },
     { id: 'assistant', label_en: "The assistant", label_fr: "L'assistant" },
     { id: 'design-system', label_en: "Design system", label_fr: "Design system" },
     { id: 'skills', label_en: "Skills", label_fr: "Skills" },
