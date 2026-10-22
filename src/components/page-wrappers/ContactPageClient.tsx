@@ -148,7 +148,7 @@ export default function ContactPageClient({ lang }: { lang: 'en' | 'fr' }) {
           </div>
         </div>
         <div className="mt-1 flex flex-wrap items-center gap-x-6">
-          <a href="https://linkedin.com/in/victorsoussan" target="_blank" rel="noopener noreferrer" className={`${TEXT_LINK_MUTED} gap-1.5`}>
+          <a href="https://linkedin.com/in/victorsoussan-product-design" target="_blank" rel="noopener noreferrer" className={`${TEXT_LINK_MUTED} gap-1.5`}>
             LinkedIn <ArrowUpRight size={12} weight="bold" aria-hidden="true" />
           </a>
           <a href="https://www.condamine.studio/apps" target="_blank" rel="noopener noreferrer" className={`${TEXT_LINK_MUTED} gap-1.5`}>

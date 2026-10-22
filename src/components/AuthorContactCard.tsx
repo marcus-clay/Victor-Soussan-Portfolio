@@ -42,7 +42,7 @@ export default function AuthorContactCard({ lang, message }: AuthorContactCardPr
                 {TRANSLATIONS[lang].nav.contact}
               </Link>
               <a
-                href="https://www.linkedin.com/in/victorsoussan/"
+                href="https://www.linkedin.com/in/victorsoussan-product-design/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex min-h-11 items-center text-sm text-gray-600 transition-colors duration-150 hover:text-gray-500"

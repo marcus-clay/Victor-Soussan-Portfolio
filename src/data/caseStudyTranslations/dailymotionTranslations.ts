@@ -32,8 +32,8 @@ export const DAILYMOTION_TRANSLATIONS = {
       scope: 'Media Management, Design System',
       title: 'Empowering Dailymotion\'s Video Partners to Manage, Publish and Go Live with Confidence',
       subtitle: 'Improved media management tools for video publishers',
-      intro: 'I co-led the redesign of Dailymotion\'s web and mobile partner tools, used by over 30,000 content partners to upload, edit and livestream videos. Upload preparation time dropped by 50%.',
-      description: 'I was responsible for the UX and UI of Dailymotion\'s partner tool ecosystem. These web and mobile tools empowered over 30,000 content partners, including broadcasters and media publishers like France TV, CBS, and beIN Sports, to upload, edit, and livestream videos to their audiences.',
+      intro: 'I co-led the redesign of Dailymotion\'s web and mobile partner tools, used by 8,000+ direct users across 50 to 100 premium publishers to upload, edit and livestream videos. Upload preparation time dropped by 50%.',
+      description: 'I was responsible for the UX and UI of Dailymotion\'s partner tool ecosystem. These web and mobile tools empowered 8,000+ direct users across 50 to 100 premium publishers, including broadcasters and media publishers like France TV, CBS, and beIN Sports, to upload, edit, and livestream videos to their audiences.',
     },
     overview: {
       title: 'Overview',
@@ -115,8 +115,8 @@ export const DAILYMOTION_TRANSLATIONS = {
     impact: {
       title: 'Impact',
       intro: 'The design approach delivered measurable business results. By focusing on core workflows and progressive complexity, we created tools that media partners could adopt quickly.',
-      partners: '30,000+',
-      partnersDesc: 'Content partners served worldwide',
+      partners: '8,000+',
+      partnersDesc: 'Direct users across 50 to 100 premium publishers',
       videos: '10K+',
       videosDesc: 'Videos uploaded daily through the platform',
       reduction: '-50%',
@@ -242,8 +242,8 @@ export const DAILYMOTION_TRANSLATIONS = {
       scope: 'Gestion des médias, design system',
       title: 'Permettre aux partenaires vidéo de Dailymotion de gérer, publier et diffuser en direct en toute confiance',
       subtitle: 'Des outils de gestion des médias améliorés pour les éditeurs vidéo',
-      intro: 'J’ai co-piloté la refonte des outils web et mobiles de Dailymotion, utilisés par plus de 30\u202f000 partenaires de contenu pour téléverser et diffuser des vidéos. Le temps de préparation des téléversements a baissé de 50\u202f%.',
-      description: 'J’étais responsable de l’UX et de l’UI de l’écosystème d’outils partenaires de Dailymotion. Ces outils web et mobiles ont permis à plus de 30\u202f000 partenaires de contenu, dont des diffuseurs et des éditeurs de médias comme France TV, CBS et beIN Sports, de téléverser, d’éditer et de diffuser des vidéos en direct à leurs audiences.',
+      intro: 'J’ai co-piloté la refonte des outils web et mobiles de Dailymotion, utilisés par plus de 8\u202f000 utilisateurs directs, répartis sur 50 à 100 publishers premium, pour téléverser et diffuser des vidéos. Le temps de préparation des téléversements a baissé de 50\u202f%.',
+      description: 'J’étais responsable de l’UX et de l’UI de l’écosystème d’outils partenaires de Dailymotion. Ces outils web et mobiles ont permis à plus de 8\u202f000 utilisateurs directs, répartis sur 50 à 100 publishers premium, dont des diffuseurs et des éditeurs de médias comme France TV, CBS et beIN Sports, de téléverser, d’éditer et de diffuser des vidéos en direct à leurs audiences.',
     },
     overview: {
       title: 'Vue d’ensemble',
@@ -325,8 +325,8 @@ export const DAILYMOTION_TRANSLATIONS = {
     impact: {
       title: 'Impact',
       intro: 'L’approche design a produit des résultats mesurables. En se concentrant sur les flux essentiels et sur une complexité progressive, nous avons créé des outils que les partenaires médias ont pu adopter rapidement.',
-      partners: '30\u202f000+',
-      partnersDesc: 'Partenaires de contenu dans le monde',
+      partners: '8\u202f000+',
+      partnersDesc: 'Utilisateurs directs, 50 à 100 publishers premium',
       videos: '10K+',
       videosDesc: 'Vidéos téléversées chaque jour sur la plateforme',
       reduction: '−50\u00a0%',

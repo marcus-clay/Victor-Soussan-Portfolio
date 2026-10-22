@@ -44,7 +44,7 @@ export const SQOOL_TIMELINE_TRANSLATIONS = {
         description: 'Instead of one big platform, we chose focused apps that do one thing well. A new manifesto guided product direction while the brand system and design system enabled scale.',
         items: [
           { title: 'Product Manifesto', description: 'Simple, Fluid, Magical principles' },
-          { title: 'Brand System', description: 'Visual identity for 7+ apps' },
+          { title: 'Brand System', description: 'Visual identity for 5+ apps' },
           { title: 'Design System', description: 'Figma libraries and ZeroHeight docs' },
           { title: 'Team Scaling', description: '5 designers recruited and managed' },
         ],
@@ -109,7 +109,7 @@ export const SQOOL_TIMELINE_TRANSLATIONS = {
         description: 'Au lieu d’une grande plateforme, nous avons choisi des apps ciblées qui font une seule chose bien. Un nouveau manifeste a guidé la direction produit tandis que le système de marque et le design system ont permis de passer à l’échelle.',
         items: [
           { title: 'Manifeste produit', description: 'Principes simple, fluide, magique' },
-          { title: 'Système de marque', description: 'Identité visuelle pour 7+ apps' },
+          { title: 'Système de marque', description: 'Identité visuelle pour 5+ apps' },
           { title: 'Design System', description: 'Bibliothèques Figma et documentation ZeroHeight' },
           { title: 'Montée en charge de l’équipe', description: '5 designers recrutés et encadrés' },
         ],

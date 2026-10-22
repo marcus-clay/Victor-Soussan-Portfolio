@@ -6,6 +6,7 @@ import { useReveal } from '@/lib/motion'
 import { ArrowUpRight, ArrowRight, X, DownloadSimple, Copy, Check } from '@phosphor-icons/react'
 import TestimonialCarousel from '@/components/testimonials/TestimonialCarousel'
 import { ActRule } from '@/components/case-study/ActSection'
+import { aboutEras } from '@/data/profileData'
 
 type Language = 'en' | 'fr'
 
@@ -33,41 +34,16 @@ const TRANSLATIONS = {
     page_title: 'About',
     role: 'Lead Product Designer \u00b7 Paris',
     intro:
-      "I've been designing digital products for close to twenty years, from advertising agencies through media, EdTech, enterprise software, and public services. The conviction I carry from all of it: good design is built with the team, not handed off to it.",
+      "Lead Product Designer, 15 years of experience in B2B and B2G SaaS and complex business interfaces. I frame with a PM and deliver with a developer, or directly with Claude Code and Figma MCP.",
     bio_p1:
-      "I started in advertising agencies, moved to media and publishing, then spent the last decade building enterprise software, EdTech platforms, and public services. Along the way I've led design teams, worked hand in hand with product managers and engineers, and shipped products used by hundreds of thousands of people.",
+      "My approach starts before Figma: vision workshops with leadership, problem framing with product teams, ideation with stakeholders, field user research. Then design, prototyping, design system and delivery.",
     bio_p2:
-      "What holds all of it together is a bias toward clarity. I think the best work comes from staying close to the problem, compressing the distance between research and delivery, and treating the team as the design surface, not just the output.",
+      "References: the SQOOL suite (7 applications, 500,000 students, a team of 5 designers), Dailymotion's publisher tools (8,000+ users, Paris and New York), France VAE for beta.gouv, the PagesJaunes mobile apps (22 million downloads).",
     quote_text:
       'Victor combines overflowing creativity with impressive rigor.',
     quote_author: 'Charlotte Rifflet, CPO UNOWHY',
     career_title: 'Journey',
-    eras: [
-      {
-        period: '2025 \u2013 Present',
-        title: 'Independent & beta.gouv.fr',
-        description:
-          "Product design and prototyping for B2B, B2G companies and growing startups. Full cycle: framing, user research, design, delivery. Current engagements include redesigning search and conversion for Banque des Territoires' B2G marketplaces, V2 of Toolkit.ac (construction SaaS), and user research for FEPEM's MonEmploiDirect. Earlier in 2025, Lead Product Designer at beta.gouv.fr for France VAE: user interviews, design thinking workshops with field actors, delivery restructured around one-month seasons. In parallel, Condamine Apps: 50+ prototypes shipped with Claude Code and Figma.",
-      },
-      {
-        period: '2018 \u2013 2024',
-        title: 'UNOWHY / SQOOL',
-        description:
-          'Six years transforming SQOOL from a simple Android launcher into a five-application SaaS suite serving 500,000 students across 465 schools. Recruited and managed a team of five designers. Built a unified design system across five brands, reducing design time by 60%. Led two products from zero to one: SQOOL Extend and SQOOL Protect.',
-      },
-      {
-        period: '2014 \u2013 2018',
-        title: 'Dailymotion, Ogury, PagesJaunes',
-        description:
-          "B2B product era. At Dailymotion, designed publisher tools used by 8,000+ users and premium publishers including CBS, ESPN, BBC. At Ogury, analytics dashboards and campaign management during early privacy challenges. At PagesJaunes, redesigned iOS and Android apps (22M downloads, 300K daily users) and built the company's first cross-platform design system.",
-      },
-      {
-        period: '2005 \u2013 2014',
-        title: 'Publicis, Hommell, Louis 21',
-        description:
-          "Creative origins. At Publicis Groupe, campaigns for luxury houses: Herm\u00e8s, Leica, Helena Rubinstein. Then the transition from print to digital: art-directing a monthly magazine with 300,000 copies at Groupe Hommell, freelance creative direction for L'Or\u00e9al, Orange, Galeries Lafayette, and designing EADS's internal social network for 10,000 managers.",
-      },
-    ],
+    eras: aboutEras('en'),
     practice_title: 'Current Practice',
     practice_text:
       "Since early 2025, I integrate AI into every stage of my design process. Claude Code as a daily partner for research, writing, prototyping, and shipping production code. Figma MCP to read design tokens and component specs directly into the development environment. This workflow compresses the distance between an idea and something people can use.",
@@ -90,41 +66,16 @@ const TRANSLATIONS = {
     page_title: '\u00c0 propos',
     role: 'Lead Product Designer \u00b7 Paris',
     intro:
-      "Je con\u00e7ois des produits num\u00e9riques depuis bient\u00f4t vingt ans, des agences de publicit\u00e9 aux m\u00e9dias, \u00e0 l'EdTech, aux logiciels d'entreprise et aux services publics. La conviction que j'en tire : le bon design se construit avec l'\u00e9quipe, pas en silo.",
+      "Lead Product Designer, 15 ans d'expérience en SaaS B2B, B2G et interfaces métier complexes. Je cadre avec un PM, je livre avec un développeur, ou directement avec Claude Code et Figma MCP.",
     bio_p1:
-      "J'ai commenc\u00e9 en agence de publicit\u00e9, \u00e9volu\u00e9 dans les m\u00e9dias et l'\u00e9dition, puis pass\u00e9 la derni\u00e8re d\u00e9cennie \u00e0 construire des logiciels d'entreprise, des plateformes EdTech et des services publics. En chemin, j'ai dirig\u00e9 des \u00e9quipes design, travaill\u00e9 main dans la main avec des product managers et des ing\u00e9nieurs, et livr\u00e9 des produits utilis\u00e9s par des centaines de milliers de personnes.",
+      "Mon approche commence avant Figma : ateliers de vision avec la direction, cadrage du problème avec les équipes produit, idéation avec les parties prenantes, recherche utilisateur terrain. Ensuite : conception, prototypage, design system, livraison.",
     bio_p2:
-      "Ce qui relie tout cela, c'est un biais vers la clart\u00e9. Je crois que le meilleur travail na\u00eet quand on reste proche du probl\u00e8me, qu'on comprime la distance entre la recherche et la livraison, et qu'on traite l'\u00e9quipe comme la surface de conception, pas seulement comme le destinataire.",
+      "Références : la suite SQOOL (7 applications, 500 000 élèves, équipe de 5 designers), les outils publishers de Dailymotion (8 000+ utilisateurs, Paris et New York), France VAE pour beta.gouv, les applications PagesJaunes (22 millions de téléchargements).",
     quote_text:
       'Victor allie une cr\u00e9ativit\u00e9 d\u00e9bordante \u00e0 une rigueur de travail impressionnante.',
     quote_author: 'Charlotte Rifflet, CPO UNOWHY',
     career_title: 'Parcours',
-    eras: [
-      {
-        period: "2025 \u2013 Aujourd'hui",
-        title: 'Ind\u00e9pendant & beta.gouv.fr',
-        description:
-          "Conception produit et prototypage pour des entreprises B2B, B2G et des startups en croissance. Cycle complet : cadrage, recherche utilisateur, conception, livraison. Missions en cours : redesign du moteur de recherche et optimisation de conversion sur les marketplaces B2G de la Banque des Territoires, conception V2 de Toolkit.ac (SaaS construction), recherche utilisateur pour le lancement de MonEmploiDirect (FEPEM). D\u00e9but 2025, Lead Product Designer chez beta.gouv.fr pour France VAE : entretiens utilisateurs, ateliers de design thinking, livraison restructur\u00e9e en saisons d'un mois. En parall\u00e8le, Condamine Apps : 50+ prototypes d\u00e9ploy\u00e9s avec Claude Code et Figma.",
-      },
-      {
-        period: '2018 \u2013 2024',
-        title: 'UNOWHY / SQOOL',
-        description:
-          "Six ann\u00e9es \u00e0 transformer SQOOL d'un simple launcher Android en une suite SaaS de cinq applications servant 500 000 \u00e9l\u00e8ves dans 465 \u00e9tablissements. Recrutement et management d'une \u00e9quipe de cinq designers. Design system unifi\u00e9 sur cinq marques, r\u00e9duction de 60 % du temps de conception. Deux produits de z\u00e9ro \u00e0 un : SQOOL Extend et SQOOL Protect.",
-      },
-      {
-        period: '2014 \u2013 2018',
-        title: 'Dailymotion, Ogury, PagesJaunes',
-        description:
-          "\u00c8re produit B2B. Chez Dailymotion, outils pour \u00e9diteurs utilis\u00e9s par plus de 8 000 personnes et des \u00e9diteurs premium (CBS, ESPN, BBC). Chez Ogury, dashboards d'analytics et gestion de campagnes. Chez PagesJaunes, refonte des applications iOS et Android (22 millions de t\u00e9l\u00e9chargements, 300 000 utilisateurs quotidiens) et premier design system cross-platform de l'entreprise.",
-      },
-      {
-        period: '2005 \u2013 2014',
-        title: 'Publicis, Hommell, Louis 21',
-        description:
-          "Origines cr\u00e9atives. Chez Publicis Groupe, campagnes pour des maisons de luxe : Herm\u00e8s, Leica, Helena Rubinstein. Puis la transition du print vers le digital : direction artistique d'un magazine mensuel \u00e0 300 000 exemplaires chez le Groupe Hommell, direction de cr\u00e9ation freelance pour L'Or\u00e9al, Orange, Galeries Lafayette, et conception du r\u00e9seau social interne d'EADS pour 10 000 managers.",
-      },
-    ],
+    eras: aboutEras('fr'),
     practice_title: 'Pratique actuelle',
     practice_text:
       "Depuis d\u00e9but 2025, j'int\u00e8gre l'IA \u00e0 chaque \u00e9tape de mon processus de conception. Claude Code au quotidien pour la recherche, la r\u00e9daction, le prototypage et le d\u00e9ploiement. Figma MCP pour lire les design tokens et les specs composants directement dans l'environnement de d\u00e9veloppement. Ce workflow r\u00e9duit la distance entre une id\u00e9e et quelque chose d'utilisable.",
@@ -363,7 +314,7 @@ export default function AboutPageRedesign({
             className="mt-10 divide-y divide-gray-100"
           >
             <a
-              href="https://www.linkedin.com/in/victorsoussan/"
+              href="https://www.linkedin.com/in/victorsoussan-product-design/"
               target="_blank"
               rel="noopener noreferrer"
               className="group flex items-center justify-between py-4 -mx-3 px-3 rounded-lg [@media(hover:hover)]:hover:bg-gray-100 active:bg-gray-100 transition-colors duration-150"
@@ -416,7 +367,7 @@ export default function AboutPageRedesign({
                 </h3>
                 <div className="flex items-center gap-2">
                   <a
-                    href="/cv/CV-Victor-Soussan-2026-FR.pdf"
+                    href={`/cv/CV-Victor-Soussan-2026-${lang.toUpperCase()}.pdf`}
                     download
                     className="inline-flex items-center gap-1.5 min-h-11 px-4 rounded-full text-sm font-medium bg-gray-900 text-white [@media(hover:hover)]:hover:bg-black active:scale-[0.97]"
                     style={{ transition: 'background-color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
@@ -436,7 +387,7 @@ export default function AboutPageRedesign({
               {/* PDF viewer */}
               <div className="flex-1 overflow-auto bg-gray-50">
                 <iframe
-                  src="/cv/CV-Victor-Soussan-2026-FR.pdf"
+                  src={`/cv/CV-Victor-Soussan-2026-${lang.toUpperCase()}.pdf`}
                   className="w-full h-full min-h-[70vh]"
                   title="CV Victor Soussan"
                 />

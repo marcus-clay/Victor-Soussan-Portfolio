@@ -31,7 +31,7 @@ export const SQOOL_TRANSLATIONS = {
         { title: 'SQOOL MDM', detail: 'Device fleet management for IT admins: security policies, app deployments, remote troubleshooting.' },
         { title: 'SQOOL Protect', detail: 'Parental controls with QR code pairing, shipped in 3 months.' },
         { title: 'SQOOL Extend', detail: 'Virtual Windows desktops with professional tools on light devices.' },
-        { title: 'Brand and design system', detail: 'Visual system for 7+ apps, Figma libraries and ZeroHeight documentation.' },
+        { title: 'Brand and design system', detail: 'Visual system for 5+ apps, Figma libraries and ZeroHeight documentation.' },
       ],
     },
     timelineSection: { title: 'Transformation journey', subtitle: '6 years of product and design evolution' },
@@ -55,8 +55,8 @@ export const SQOOL_TRANSLATIONS = {
       scope: 'EdTech Ecosystem and Design System',
       title: 'Building an EdTech Ecosystem for 500,000 Students',
       subtitle: 'How we transformed a hardware company into a modern software platform',
-      intro: 'Over six years at UNOWHY, I led the design of a suite of 7+ web applications that replaced a legacy Android launcher. It serves 500,000+ students and teachers in 465 schools across Île-de-France.',
-      description: 'Over six years at UNOWHY, I led the design transformation from a legacy Android launcher to a suite of 7+ web applications serving high school students and teachers across 465 schools in Île-de-France. This is the story of strategic pivots, user-centered design, and building a design system that scales.',
+      intro: 'Over six years at UNOWHY, I led the design of a suite of 7 web applications that replaced a legacy Android launcher. It serves 500,000+ students and teachers in 465 schools across Île-de-France.',
+      description: 'Over six years at UNOWHY, I led the design transformation from a legacy Android launcher to a suite of 7 web applications serving high school students and teachers across 465 schools in Île-de-France. This is the story of strategic pivots, user-centered design, and building a design system that scales.',
     },
     testimonial: {
       quote: 'Victor played a key role in our design transformation. He built the team, established our design system, and brought the rigor we needed to scale from one product to an entire ecosystem. His ability to balance strategic vision with hands-on execution was essential to SQOOL\'s evolution.',
@@ -101,7 +101,7 @@ export const SQOOL_TRANSLATIONS = {
       brand: {
         title: 'Building the SQOOL Brand System',
         p1: 'A suite of apps needs a shared identity. I designed the new SQOOL visual system: logos for each app, a color palette that distinguished them while keeping them part of a family, and interaction patterns that would feel consistent everywhere.',
-        p2: 'We partnered with agency Fllow to refine the brand. The result was a system that could scale to 7+ apps while maintaining recognition.',
+        p2: 'We partnered with agency Fllow to refine the brand. The result was a system that could scale to 7 apps while maintaining recognition.',
       },
       ds: {
         title: 'Design System as Infrastructure',
@@ -179,7 +179,7 @@ export const SQOOL_TRANSLATIONS = {
       usersDesc: 'Students and teachers served daily',
       schools: '465',
       schoolsDesc: 'Schools equipped across Île-de-France',
-      apps: '7+',
+      apps: '7',
       appsDesc: 'Web applications shipped',
       team: '5',
       teamDesc: 'Designers recruited and managed',
@@ -218,7 +218,7 @@ export const SQOOL_TRANSLATIONS = {
       },
       system: {
         title: 'A shared brand and design system',
-        text: 'A suite of apps needs one identity. I designed the visual system, with one color per app inside one family, refined with the agency Fllow for 7+ apps. I structured the Figma libraries and the ZeroHeight documentation, with weekly design syncs and QA reviews.',
+        text: 'A suite of apps needs one identity. I designed the visual system, with one color per app inside one family, refined with the agency Fllow for 7 apps. I structured the Figma libraries and the ZeroHeight documentation, with weekly design syncs and QA reviews.',
       },
       classe: {
         title: 'SQOOL Classe: classroom supervision',
@@ -349,7 +349,7 @@ export const SQOOL_TRANSLATIONS = {
         { title: 'SQOOL MDM', detail: 'Gestion de flotte d’appareils pour les administrateurs IT\u00a0: politiques de sécurité, déploiements, dépannage à distance.' },
         { title: 'SQOOL Protect', detail: 'Contrôle parental avec appairage par QR code, livré en 3 mois.' },
         { title: 'SQOOL Extend', detail: 'Bureaux Windows virtuels avec des outils professionnels sur des appareils légers.' },
-        { title: 'Marque et design system', detail: 'Système visuel pour 7+ apps, bibliothèques Figma et documentation ZeroHeight.' },
+        { title: 'Marque et design system', detail: 'Système visuel pour 5+ apps, bibliothèques Figma et documentation ZeroHeight.' },
       ],
     },
     timelineSection: { title: 'Parcours de transformation', subtitle: '6 ans d’évolution produit et design' },
@@ -372,8 +372,8 @@ export const SQOOL_TRANSLATIONS = {
       scope: 'Écosystème EdTech et design system',
       title: 'Construire un écosystème EdTech pour 500 000 élèves',
       subtitle: 'Comment nous avons transformé un fabricant de matériel en plateforme logicielle moderne',
-      intro: 'Pendant six ans chez UNOWHY, j’ai dirigé le design d’une suite de 7+ applications web qui a remplacé un launcher Android historique. Elle sert 500\u00a0000+ élèves et enseignants dans 465 lycées d’Île-de-France.',
-      description: 'Pendant six ans chez UNOWHY, j’ai dirigé la transformation design d’un launcher Android vers une suite de 7+ applications web utilisées par les lycéens et enseignants de 465 établissements en Île-de-France. C’est l’histoire de pivots stratégiques, de design centré utilisateur, et de la construction d’un design system qui passe à l’échelle.',
+      intro: 'Pendant six ans chez UNOWHY, j’ai dirigé le design d’une suite de 7 applications web qui a remplacé un launcher Android historique. Elle sert 500\u00a0000+ élèves et enseignants dans 465 lycées d’Île-de-France.',
+      description: 'Pendant six ans chez UNOWHY, j’ai dirigé la transformation design d’un launcher Android vers une suite de 7 applications web utilisées par les lycéens et enseignants de 465 établissements en Île-de-France. C’est l’histoire de pivots stratégiques, de design centré utilisateur, et de la construction d’un design system qui passe à l’échelle.',
     },
     testimonial: {
       quote: 'Victor a joué un rôle clé dans notre transformation design. Il a construit l’équipe, établi notre design system, et apporté la rigueur nécessaire pour passer d’un produit à un écosystème entier. Sa capacité à équilibrer vision stratégique et exécution concrète a été essentielle à l’évolution de SQOOL.',
@@ -418,7 +418,7 @@ export const SQOOL_TRANSLATIONS = {
       brand: {
         title: 'Construire le système de marque SQOOL',
         p1: 'Une suite d’apps a besoin d’une identité partagée. J’ai conçu le nouveau système visuel SQOOL\u00a0: logos pour chaque app, une palette de couleurs qui les distingue tout en les gardant dans une même famille, et des modèles d’interaction cohérents partout.',
-        p2: 'Nous avons travaillé avec l’agence Fllow pour affiner la marque. Le résultat\u00a0: un système qui peut passer à l’échelle pour 7+ apps tout en maintenant la reconnaissance.',
+        p2: 'Nous avons travaillé avec l’agence Fllow pour affiner la marque. Le résultat\u00a0: un système qui peut passer à l’échelle pour 7 apps tout en maintenant la reconnaissance.',
       },
       ds: {
         title: 'Le design system comme infrastructure',
@@ -496,7 +496,7 @@ export const SQOOL_TRANSLATIONS = {
       usersDesc: 'Élèves et enseignants servis quotidiennement',
       schools: '465',
       schoolsDesc: 'Lycées équipés en Île-de-France',
-      apps: '7+',
+      apps: '7',
       appsDesc: 'Applications web livrées',
       team: '5',
       teamDesc: 'Designers recrutés et encadrés',
@@ -535,7 +535,7 @@ export const SQOOL_TRANSLATIONS = {
       },
       system: {
         title: 'Une marque et un design system partagés',
-        text: 'Une suite d’apps a besoin d’une seule identité. J’ai conçu le système visuel, une couleur par app au sein d’une même famille, affiné avec l’agence Fllow pour 7+ apps. J’ai structuré les bibliothèques Figma et la documentation ZeroHeight, avec des points design hebdomadaires et des revues qualité.',
+        text: 'Une suite d’apps a besoin d’une seule identité. J’ai conçu le système visuel, une couleur par app au sein d’une même famille, affiné avec l’agence Fllow pour 7 apps. J’ai structuré les bibliothèques Figma et la documentation ZeroHeight, avec des points design hebdomadaires et des revues qualité.',
       },
       classe: {
         title: 'SQOOL Classe\u00a0: supervision de classe',

@@ -134,7 +134,7 @@ export default function TestimonialsPageClient({ lang }: { lang: 'en' | 'fr' }) 
       <ActRule />
       <section className="wrap pt-12 md:pt-16 pb-16 md:pb-24">
         <a
-          href="https://www.linkedin.com/in/victorsoussan/"
+          href="https://www.linkedin.com/in/victorsoussan-product-design/"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex min-h-11 items-center gap-1.5 text-sm font-medium text-gray-900 underline decoration-gray-300 underline-offset-4

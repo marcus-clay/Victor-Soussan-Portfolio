@@ -72,7 +72,7 @@ const TRANSLATIONS = {
       },
       {
         title: "Design Ops",
-        desc: "A design system is only valuable when the whole team uses it without friction. At UNOWHY, I built a unified system across five product brands that cut design production time by 60% and made developer handoff predictable. The work was not just components: it was structure, shared language, and the rituals that keep it alive.",
+        desc: "A design system is only valuable when the whole team uses it without friction. At UNOWHY, I built a unified system across five product brands that sped up delivery across the five SQOOL applications and made developer handoff predictable. The work was not just components: it was structure, shared language, and the rituals that keep it alive.",
         deliverables: [
           "Design systems built across multiple brands and product surfaces",
           "Reusable component libraries with Figma tokens and documentation",
@@ -131,7 +131,7 @@ const TRANSLATIONS = {
       },
       {
         title: "Design Ops",
-        desc: "Un design system n'a de valeur que lorsque toute l'équipe l'utilise sans friction. Chez UNOWHY, j'ai construit un système unifié sur cinq marques produit qui a réduit le temps de production design de 60% et rendu le handoff développeur prévisible. Le travail n'était pas qu'une bibliothèque de composants : c'était une structure, un langage partagé et les rituels qui le font vivre.",
+        desc: "Un design system n'a de valeur que lorsque toute l'équipe l'utilise sans friction. Chez UNOWHY, j'ai construit un système unifié sur cinq marques produit qui a accéléré la livraison sur les cinq applications SQOOL et rendu le handoff développeur prévisible. Le travail n'était pas qu'une bibliothèque de composants : c'était une structure, un langage partagé et les rituels qui le font vivre.",
         deliverables: [
           "Design systems construits sur plusieurs marques et surfaces produit",
           "Bibliothèques de composants réutilisables avec tokens Figma et documentation",

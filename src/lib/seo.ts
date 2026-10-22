@@ -155,7 +155,7 @@ export function buildMetadata(o: MetaOptions): Metadata {
 export const PERSON_ID = `${SITE_URL}/#person`
 export const WEBSITE_ID = `${SITE_URL}/#website`
 
-export const LINKEDIN_URL = 'https://www.linkedin.com/in/victorsoussan'
+export const LINKEDIN_URL = 'https://www.linkedin.com/in/victorsoussan-product-design'
 
 export function personLd(lang: Lang) {
   return {
@@ -184,7 +184,8 @@ export function personLd(lang: Lang) {
       occupationLocation: { '@type': 'Country', name: 'France' },
       skills: 'Product design, design systems, UX research, B2B and B2G interfaces, AI-assisted prototyping',
     },
-    knowsLanguage: ['fr', 'en'],
+    knowsLanguage: ['fr', 'en', 'es'],
+    alumniOf: { '@type': 'EducationalOrganization', name: 'ISCOM Paris' },
   }
 }
 

@@ -7,7 +7,7 @@ import type { Lang } from '@/lib/seo'
  */
 
 export const CASE_STUDY_IDS = ['toolkit', 'dailymotion', 'connect', 'sqool', 'sqool-classe', 'france-vae', 'pagesjaunes', 'androidwear', 'riskos'] as const
-export const SHORT_PROJECT_IDS = ['condamine-apps', 'design-system-figma-claude'] as const
+export const SHORT_PROJECT_IDS = ['condamine-apps', 'design-system-figma-claude', 'telemedicine-patient-app'] as const
 
 export const PROJECT_TITLE: Record<Lang, Record<'caseStudy' | 'short' | 'gallery', (name: string) => string>> = {
   en: {

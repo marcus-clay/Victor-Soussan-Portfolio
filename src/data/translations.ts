@@ -1,5 +1,6 @@
 // Bilingual translations (EN/FR) for the portfolio
 // Extracted from App.tsx for maintainability
+import { resumeExperience } from './profileData';
 
 export type Language = 'en' | 'fr';
 
@@ -170,13 +171,13 @@ export const TRANSLATIONS = {
       journey_p2: "From <strong>2005 to 2014</strong>, I transitioned from print to digital, serving as Art Director for Groupe Hommell Publications (directing a 300,000-copy monthly magazine) and freelancing for clients like L'Or\u00e9al, Orange, and Galeries Lafayette. During my time at <strong>agency Louis 21</strong>, I designed the internal social network for EADS serving 10,000 managers and built mobile applications for major brands, discovering my passion for product design.",
       journey_p3: "In <strong>2014</strong>, I joined <strong>PagesJaunes</strong> as a Product Designer, where I learned to design at scale. I redesigned their iOS and Android apps (<strong>22 million downloads, 300,000 daily users</strong>) and built their first cross-platform design system. I also evolved into a leadership role, <strong>managing a team of 4 UI designers</strong>.",
       journey_p4: "At <strong>Ogury (2016-2017)</strong> and <strong>Dailymotion (2017-2018)</strong>, I specialized in B2B SaaS products. At Dailymotion, I designed tools for publishers serving <strong>8,000+ users and 50-100 premium publishers</strong> (CBS, ESPN, BBC), handling <strong>100,000+ videos per month</strong>. I created their first UI Kit with Storybook, establishing design-development workflows.",
-      journey_p5: "The most transformative chapter began in <strong>2018 at UNOWHY</strong>, where I spent 6 years (until Dec 2024). I started as a Senior Designer and evolved into a Product Lead role, transforming SQOOL from a simple Android launcher into a <strong>5-app SaaS ecosystem serving 500,000+ students across 465 schools</strong> in \u00cele-de-France.",
+      journey_p5: "The most transformative chapter began in <strong>2018 at UNOWHY</strong>, where I spent 6 years (until Dec 2024). I started as a Senior Designer and evolved into a Product Lead role, transforming SQOOL from a simple Android launcher into a <strong>7-app SaaS ecosystem serving 500,000+ students across 465 schools</strong> in \u00cele-de-France.",
       journey_p6: "Key achievements at UNOWHY:",
       journey_bullets: [
         "Led SQOOL Extend (virtual machines for education) from 0-to-1, deploying MVP to 5 schools",
         "Shipped SQOOL Protect (parental control) in 3 months with interactive flows and demo video",
         "<strong>Hired and managed a team of 5 designers</strong>, establishing design operations and processes",
-        "Built unified design system across 5 brands, reducing design time by 60%",
+        "Built a unified design system across 5 brands, speeding up delivery across the five SQOOL apps",
         "Co-designed 2 executive strategy offsites defining the company\u2019s 2027 roadmap"
       ],
       journey_p7: "In parallel, I designed for <strong>Toolkit.ac (2023-2024)</strong>, a construction SaaS startup, as their first product designer, helping shape their V2 product serving 2,000 paying users.",
@@ -221,7 +222,7 @@ export const TRANSLATIONS = {
         ],
         "2018-2019": [
           "Joined <strong>UNOWHY</strong> as Senior UX/UI Designer",
-          "Designing solutions for <strong>465 \u00cele-de-France high schools (300,000 devices)</strong>"
+          "Designing solutions for <strong>465 \u00cele-de-France high schools (500,000 devices)</strong>"
         ],
         "2017-2018": [
           "Senior Product Designer at <strong>Dailymotion</strong> (8K+ users, 50-100 premium publishers)",
@@ -250,107 +251,14 @@ export const TRANSLATIONS = {
       }
     },
     resume: {
-      title: "Victor Soussan \u2013 Lead Product Design",
+      title: "Victor Soussan, Lead Product Designer",
       contact: "victorsoussan@gmail.com \u2022 +33 6 15 98 94 00 \u2022 Paris, France",
-      linkedin: "linkedin.com/in/victorsoussan",
+      linkedin: "linkedin.com/in/victorsoussan-product-design",
       portfolio: "https://victorsoussan-portfolio-2026.vercel.app",
       summary_title: "Professional Summary",
-      summary: "Lead Product Designer with 15 years of tech experience and 10 years of design leadership for enterprise software, education, media, and public services. Expert in 0-to-1 product design, design systems, team building, and AI-assisted prototyping. Track record: products serving 500K+ users and teams of 5+ designers.",
+      summary: "Lead Product Designer, 15 years of experience in B2B and B2G SaaS and complex business interfaces. Framing with a PM, delivery with a developer, or directly with Claude Code and Figma MCP. SQOOL suite: 7 applications, 500,000 students, team of 5 designers. Dailymotion publisher tools: 8,000+ users. France VAE for beta.gouv. PagesJaunes mobile apps: 22 million downloads. Available for freelance engagements and permanent roles (Head of Design, Design Lead).",
       experience_title: "Professional Experience",
-      experience: [
-        {
-          period: "Jul 2025 \u2013 Present",
-          role: "Principal Designer (Freelance)",
-          company: "Independent Practice",
-          achievements: [
-            "Launched Condamine Apps \u2013 50+ functional web apps prototyped and deployed",
-            "Exploring AI-assisted design workflows with custom GPTs and rapid prototyping tools",
-            "Consulting startups on product strategy, UX optimization, and AI integration"
-          ]
-        },
-        {
-          period: "Dec 2024 \u2013 Jul 2025",
-          role: "Product Designer",
-          company: "beta.gouv.fr (France VAE)",
-          achievements: [
-            "Designed the collective VAE MVP for public service innovation",
-            "Conducted 10 user interviews and ran 2-day design thinking workshops",
-            "Restructured product workflow with clear delivery cycles"
-          ]
-        },
-        {
-          period: "Jan 2018 \u2013 Dec 2024",
-          role: "Product Lead & Design Manager",
-          company: "UNOWHY (SQOOL Education Platform)",
-          achievements: [
-            "Transformed SQOOL from Android launcher to 5-app SaaS ecosystem for 500K+ students across 465 schools",
-            "Co-led the product design team with the CPO, member of the Executive Committee for 1 year (authored slides, attended biweekly committees)",
-            "Led SQOOL Extend (virtual machines) from 0-to-1, deployed MVP to 5 schools",
-            "Shipped SQOOL Protect (parental control) in 3 months with interactive flows",
-            "Built and managed a team of 5 designers, established design operations",
-            "Created unified design system across 5 brands, reducing design time by 60%",
-            "Co-designed 2 executive strategy offsites defining the 2027 roadmap"
-          ]
-        },
-        {
-          period: "Feb 2023 \u2013 Dec 2024",
-          role: "Product Designer",
-          company: "Toolkit.ac (Construction SaaS)",
-          achievements: [
-            "First product designer for construction management startup",
-            "Structured V2 product serving 2,000 paying users",
-            "Established design-development workflows"
-          ]
-        },
-        {
-          period: "Sep 2017 \u2013 Jan 2018",
-          role: "Senior Product Designer",
-          company: "Dailymotion",
-          achievements: [
-            "Designed publisher tools for 8,000+ users and 50-100 premium publishers (CBS, ESPN, BBC)",
-            "Handled 100,000+ videos per month",
-            "Created the first UI Kit with Storybook, establishing design-development workflows"
-          ]
-        },
-        {
-          period: "Sep 2016 \u2013 Sep 2017",
-          role: "Product Designer",
-          company: "Ogury (AdTech)",
-          achievements: [
-            "Specialized in B2B SaaS product design",
-            "Designed analytics and campaign management tools"
-          ]
-        },
-        {
-          period: "Jan 2014 \u2013 Sep 2016",
-          role: "Product Designer & Team Lead",
-          company: "PagesJaunes (Solocal Group)",
-          achievements: [
-            "Redesigned iOS and Android apps (22M downloads, 300K daily users)",
-            "Built the first cross-platform design system",
-            "Managed a team of 4 UI designers"
-          ]
-        },
-        {
-          period: "2010 \u2013 2014",
-          role: "Art Director & Freelance Creative Director",
-          company: "Groupe Hommell Publications / Freelance",
-          achievements: [
-            "Art Director for 300K monthly copy magazine",
-            "Freelance Creative Director for L'Or\u00e9al, Orange, Galeries Lafayette",
-            "Designed EADS internal social network at Louis 21 (10K managers)"
-          ]
-        },
-        {
-          period: "2005 \u2013 2010",
-          role: "Art Director",
-          company: "Publicis Groupe",
-          achievements: [
-            "Creative campaigns for Herm\u00e8s, Leica, Helena Rubinstein",
-            "Specialized in visual storytelling and premium design"
-          ]
-        }
-      ],
+      experience: resumeExperience('en'),
       skills_title: "Key Skills",
       skills: [
         "Product Strategy & Vision",
@@ -367,11 +275,11 @@ export const TRANSLATIONS = {
       tools: "Figma, FigJam, Adobe Suite, Sketch, Notion, Slack, Linear, ChatGPT, Claude, Midjourney, Bolt, Lovable, Storybook, HTML/CSS",
       education_title: "Education & Certifications",
       education: [
-        "Master in Communication & Multimedia \u2013 ISCOM Paris (2001-2005)",
-        "UX/UI Design & Prototyping \u2013 UXcel / Udemy (2021)"
+        "Master in Communication & Multimedia, ISCOM Paris (2001-2005)",
+        "UX/UI Design & Prototyping, UXcel / Udemy (2021)"
       ],
       languages_title: "Languages",
-      languages: "French (Native) \u2022 English (Fluent)",
+      languages: "French (native) \u2022 English (full professional) \u2022 Spanish (professional working)",
       download_btn: "Download PDF",
       print_btn: "Print",
       copy_btn: "Copy text",
@@ -386,32 +294,6 @@ export const TRANSLATIONS = {
       deliverables: "What I shipped",
       read_more: "Read the full case study",
       view_all: "View all projects"
-    },
-    lab: {
-      tag: "R&D and Experimentation",
-      title: "Condamine Studio",
-      desc: "My personal space for testing the boundaries of generative AI. I explore how these tools can accelerate product design and development.",
-      apps_title: "Condamine Apps",
-      apps_sub: "50+ Apps Deployed",
-      apps_desc: "A gallery of functional prototypes (React/Web) generated by AI. Proof that you can go from idea to product in a few hours.",
-      apps_cta: "See the Apps",
-      learning_title: "Condamine Learning",
-      learning_sub: "Knowledge Transfer",
-      learning_desc: "Training and resources to help Designers and PMs ride the AI wave instead of being swept away by it.",
-      learning_cta: "Explore Courses",
-      agents_title: "Agents & Prompts",
-      agents_sub: "System Engineering",
-      agents_desc: "My Notion database of prompts and custom GPTs configured to automate repetitive design tasks.",
-      agents_cta: "Access the Database",
-      art_title: "AI Art Gallery",
-      art_sub: "Midjourney V6",
-      art_desc: "Purely visual exploration. Composition, light, and synthetically generated texture.",
-      art_cta: "View the Gallery"
-    },
-    homepage_about: {
-      title: "About",
-      text: "I've been designing digital products for nearly twenty years, from advertising agencies to enterprise software, EdTech platforms, and public services. I've led design teams, worked hand in hand with product managers and engineers, and shipped products used by hundreds of thousands of people.",
-      cta: "Full journey",
     },
     homepage_visual_archive: {
       title: "Gallery",
@@ -747,13 +629,13 @@ export const TRANSLATIONS = {
       journey_p2: "De <strong>2005 \u00e0 2014</strong>, j\u2019ai \u00e9volu\u00e9 de l\u2019imprim\u00e9 au digital, en tant que Directeur Artistique pour le Groupe Hommell Publications (direction d\u2019un magazine \u00e0 300 000 exemplaires mensuels) et en freelance pour des clients comme L\u2019Or\u00e9al, Orange et les Galeries Lafayette. Durant cette p\u00e9riode chez <strong>l\u2019agence Louis 21</strong>, j\u2019ai con\u00e7u le r\u00e9seau social interne d\u2019EADS pour 10 000 managers et cr\u00e9\u00e9 des applications mobiles pour de grandes marques, d\u00e9couvrant ainsi ma passion pour le design produit.",
       journey_p3: "En <strong>2014</strong>, j\u2019ai rejoint <strong>PagesJaunes</strong> en tant que Product Designer, o\u00f9 j\u2019ai appris \u00e0 designer \u00e0 grande \u00e9chelle. J\u2019ai redessin\u00e9 leurs applications iOS et Android (<strong>22 millions de t\u00e9l\u00e9chargements, 300 000 utilisateurs quotidiens</strong>) et construit leur premier design system cross-platform. J\u2019y ai \u00e9galement \u00e9volu\u00e9 vers un r\u00f4le de leadership, <strong>en manageant une \u00e9quipe de 4 UI designers</strong>.",
       journey_p4: "Chez <strong>Ogury (2016-2017)</strong> et <strong>Dailymotion (2017-2018)</strong>, je me suis sp\u00e9cialis\u00e9 dans les produits SaaS B2B. Chez Dailymotion, j\u2019ai con\u00e7u des outils pour \u00e9diteurs servant <strong>8 000+ utilisateurs et 50-100 \u00e9diteurs premium</strong> (CBS, ESPN, BBC), g\u00e9rant <strong>100 000+ vid\u00e9os par mois</strong>. J\u2019ai cr\u00e9\u00e9 leur premier UI Kit avec Storybook, \u00e9tablissant des workflows design-d\u00e9veloppement.",
-      journey_p5: "Le chapitre le plus transformateur a commenc\u00e9 en <strong>2018 chez UNOWHY</strong>, o\u00f9 j\u2019ai pass\u00e9 6 ans (jusqu\u2019en d\u00e9c. 2024). J\u2019ai d\u00e9but\u00e9 comme Senior Designer et ai \u00e9volu\u00e9 vers un r\u00f4le de Product Lead, transformant SQOOL d\u2019un simple launcher Android en un <strong>\u00e9cosyst\u00e8me SaaS de 5 applications servant 500 000+ \u00e9l\u00e8ves dans 465 \u00e9tablissements</strong> en \u00cele-de-France.",
+      journey_p5: "Le chapitre le plus transformateur a commenc\u00e9 en <strong>2018 chez UNOWHY</strong>, o\u00f9 j\u2019ai pass\u00e9 6 ans (jusqu\u2019en d\u00e9c. 2024). J\u2019ai d\u00e9but\u00e9 comme Senior Designer et ai \u00e9volu\u00e9 vers un r\u00f4le de Product Lead, transformant SQOOL d\u2019un simple launcher Android en un <strong>\u00e9cosyst\u00e8me SaaS de 7 applications servant 500 000+ \u00e9l\u00e8ves dans 465 \u00e9tablissements</strong> en \u00cele-de-France.",
       journey_p6: "R\u00e9alisations cl\u00e9s chez UNOWHY :",
       journey_bullets: [
         "Direction de SQOOL Extend (machines virtuelles pour l\u2019\u00e9ducation) de 0 \u00e0 1, d\u00e9ploiement du MVP dans 5 \u00e9coles",
         "Livraison de SQOOL Protect (contr\u00f4le parental) en 3 mois avec flows interactifs et vid\u00e9o de d\u00e9mo",
         "<strong>Recrutement et management d\u2019une \u00e9quipe de 5 designers</strong>, mise en place des op\u00e9rations et processus design",
-        "Cr\u00e9ation d\u2019un design system unifi\u00e9 sur 5 marques, r\u00e9duisant le temps de design de 60%",
+        "Cr\u00e9ation d\u2019un design system unifi\u00e9 sur 5 marques, qui a acc\u00e9l\u00e9r\u00e9 la livraison sur les cinq applications SQOOL",
         "Co-conception de 2 s\u00e9minaires strat\u00e9giques ex\u00e9cutifs d\u00e9finissant la roadmap 2027 de l\u2019entreprise"
       ],
       journey_p7: "En parall\u00e8le, j\u2019ai design\u00e9 pour <strong>Toolkit.ac (2023-2024)</strong>, une startup SaaS de gestion de chantier, en tant que premier product designer, contribuant \u00e0 fa\u00e7onner leur produit V2 servant 2 000 utilisateurs payants.",
@@ -798,7 +680,7 @@ export const TRANSLATIONS = {
         ],
         "2018-2019": [
           "Rejoint <strong>UNOWHY</strong> en tant qu\u2019UX/UI Designer Senior",
-          "Conception de solutions pour <strong>465 lyc\u00e9es Ile-de-France (300 000 \u00e9quipements)</strong>"
+          "Conception de solutions pour <strong>465 lyc\u00e9es Ile-de-France (500 000 \u00e9quipements)</strong>"
         ],
         "2017-2018": [
           "Senior Product Designer chez <strong>Dailymotion</strong> (8K+ utilisateurs, 50-100 \u00e9diteurs premium)",
@@ -827,32 +709,22 @@ export const TRANSLATIONS = {
       }
     },
     resume: {
-      title: "Victor Soussan \u2013 Lead Product Design",
+      title: "Victor Soussan, Lead Product Designer",
       contact: "victorsoussan@gmail.com \u2022 +33 6 15 98 94 00 \u2022 Paris, France",
-      linkedin: "linkedin.com/in/victorsoussan",
+      linkedin: "linkedin.com/in/victorsoussan-product-design",
       portfolio: "https://victorsoussan-portfolio-2026.vercel.app",
       summary_title: "R\u00e9sum\u00e9 Professionnel",
-      summary: "Lead Product Design avec 15 ans d\u2019exp\u00e9rience tech et 10 ans de leadership design pour logiciels d\u2019entreprise, \u00e9ducation, m\u00e9dias et services publics. Expert en design produit 0-to-1, design systems, construction d\u2019\u00e9quipes et prototypage assist\u00e9 par IA. Bilan : produits \u00e0 500K+ utilisateurs et gestion d\u2019\u00e9quipes de 5+ designers.",
+      summary: "Lead Product Designer, 15 ans d’expérience en SaaS B2B, B2G et interfaces métier complexes. Cadrage avec un PM, livraison avec un développeur, ou directement avec Claude Code et Figma MCP. Suite SQOOL : 7 applications, 500 000 élèves, équipe de 5 designers. Outils publishers de Dailymotion : 8 000+ utilisateurs. France VAE pour beta.gouv. Applications mobiles PagesJaunes : 22 millions de téléchargements. Disponible en mission freelance et en CDI (Head of Design, Design Lead).",
       experience_title: "Exp\u00e9rience Professionnelle",
-      experience: [
-        { period: "Juil 2025 \u2013 Pr\u00e9sent", role: "Principal Designer (Freelance)", company: "Pratique Ind\u00e9pendante", achievements: ["Lancement de Condamine Apps \u2013 50+ applications web fonctionnelles prototyp\u00e9es et d\u00e9ploy\u00e9es", "Exploration des workflows de design assist\u00e9s par IA avec GPTs personnalis\u00e9s et outils de prototypage rapide", "Conseil aupr\u00e8s de startups sur strat\u00e9gie produit, optimisation UX et int\u00e9gration IA"] },
-        { period: "D\u00e9c 2024 \u2013 Juil 2025", role: "Product Designer", company: "beta.gouv.fr (France VAE)", achievements: ["Conception du MVP VAE collective pour innovation service public", "R\u00e9alisation de 10 entretiens utilisateurs et animation d\u2019ateliers design thinking de 2 jours", "Restructuration du workflow produit avec cycles de livraison clairs"] },
-        { period: "Jan 2018 \u2013 D\u00e9c 2024", role: "Product Lead & Design Manager", company: "UNOWHY (Plateforme SQOOL \u00c9ducation)", achievements: ["Transformation de SQOOL d\u2019un launcher Android en \u00e9cosyst\u00e8me SaaS de 5 apps pour 500K+ \u00e9l\u00e8ves dans 465 \u00e9coles", "Co-leadership de l\u2019\u00e9quipe design produit avec la CPO, membre du Comit\u00e9 de Direction pendant 1 an (r\u00e9daction des slides, participation aux comit\u00e9s bi-mensuels)", "Direction de SQOOL Extend (machines virtuelles) de 0-to-1, d\u00e9ploiement MVP dans 5 \u00e9coles", "Livraison de SQOOL Protect (contr\u00f4le parental) en 3 mois avec flows interactifs", "Construction et gestion d\u2019une \u00e9quipe de 5 designers, mise en place des op\u00e9rations design", "Cr\u00e9ation d\u2019un design system unifi\u00e9 sur 5 marques, r\u00e9duction du temps de design de 60%", "Co-conception de 2 s\u00e9minaires strat\u00e9giques direction d\u00e9finissant la roadmap 2027"] },
-        { period: "F\u00e9v 2023 \u2013 D\u00e9c 2024", role: "Product Designer", company: "Toolkit.ac (SaaS Construction)", achievements: ["Premier product designer pour startup de gestion de chantiers", "Structuration du produit V2 servant 2 000 utilisateurs payants", "Mise en place des workflows design-d\u00e9veloppement"] },
-        { period: "Sep 2017 \u2013 Jan 2018", role: "Senior Product Designer", company: "Dailymotion", achievements: ["Conception d\u2019outils \u00e9diteurs pour 8 000+ utilisateurs et 50-100 \u00e9diteurs premium (CBS, ESPN, BBC)", "Gestion de 100 000+ vid\u00e9os par mois", "Cr\u00e9ation du premier UI Kit avec Storybook, mise en place des workflows design-d\u00e9veloppement"] },
-        { period: "Sep 2016 \u2013 Sep 2017", role: "Product Designer", company: "Ogury (AdTech)", achievements: ["Sp\u00e9cialisation en design produit B2B SaaS", "Conception d\u2019outils analytics et gestion de campagnes"] },
-        { period: "Jan 2014 \u2013 Sep 2016", role: "Product Designer & Team Lead", company: "PagesJaunes (Groupe Solocal)", achievements: ["Refonte des apps iOS et Android (22M t\u00e9l\u00e9chargements, 300K utilisateurs quotidiens)", "Construction du premier design system cross-plateforme", "Gestion d\u2019une \u00e9quipe de 4 UI designers"] },
-        { period: "2010 \u2013 2014", role: "Directeur Artistique & Directeur de Cr\u00e9ation Freelance", company: "Groupe Hommell Publications / Freelance", achievements: ["Directeur Artistique pour magazine avec 300K ex. mensuels", "Directeur de Cr\u00e9ation Freelance pour L\u2019Or\u00e9al, Orange, Galeries Lafayette", "Conception du r\u00e9seau social interne EADS chez Louis 21 (10K managers)"] },
-        { period: "2005 \u2013 2010", role: "Directeur Artistique", company: "Publicis Groupe", achievements: ["Campagnes cr\u00e9atives pour Herm\u00e8s, Leica, Helena Rubinstein", "Sp\u00e9cialisation storytelling visuel et design premium"] }
-      ],
+      experience: resumeExperience('fr'),
       skills_title: "Comp\u00e9tences Cl\u00e9s",
       skills: ["Strat\u00e9gie & Vision Produit", "Design Produit 0-to-1", "Design Systems & Op\u00e9rations", "Leadership d\u2019\u00c9quipe (jusqu\u2019\u00e0 5 designers)", "Recherche UX & Entretiens Utilisateurs", "Prototypage Hi-Fi (Figma, Bolt, Lovable)", "Workflows Design Assist\u00e9s par IA", "SaaS B2B & Logiciels d\u2019Entreprise", "Collaboration Design-Dev"],
       tools_title: "Outils & Technologies",
       tools: "Figma, FigJam, Adobe Suite, Sketch, Notion, Slack, Linear, ChatGPT, Claude, Midjourney, Bolt, Lovable, Storybook, HTML/CSS",
       education_title: "Formation & Certifications",
-      education: ["Master Communication & Multim\u00e9dia \u2013 ISCOM Paris (2001-2005)", "UX/UI Design & Prototypage \u2013 UXcel / Udemy (2021)"],
+      education: ["Master Communication & Multim\u00e9dia, ISCOM Paris (2001-2005)", "UX/UI Design & Prototypage, UXcel / Udemy (2021)"],
       languages_title: "Langues",
-      languages: "Fran\u00e7ais (Natif) \u2022 Anglais (Courant)",
+      languages: "Fran\u00e7ais (natif) \u2022 Anglais (professionnel complet) \u2022 Espagnol (professionnel)",
       download_btn: "T\u00e9l\u00e9charger PDF",
       print_btn: "Imprimer",
       copy_btn: "Copier le texte",
@@ -867,32 +739,6 @@ export const TRANSLATIONS = {
       deliverables: "Ce que j\u2019ai livr\u00e9",
       read_more: "Lire le case study complet",
       view_all: "Voir tous les projets"
-    },
-    lab: {
-      tag: "R&D et Exp\u00e9rimentation",
-      title: "Studio Condamine",
-      desc: "Mon espace personnel pour tester les limites de l\u2019IA g\u00e9n\u00e9rative. J\u2019y explore comment ces outils peuvent acc\u00e9l\u00e9rer le design et le d\u00e9veloppement de produits.",
-      apps_title: "Condamine Apps",
-      apps_sub: "50+ Apps D\u00e9ploy\u00e9es",
-      apps_desc: "Une galerie de prototypes fonctionnels (React/Web) g\u00e9n\u00e9r\u00e9s par IA. La preuve par l\u2019exemple qu\u2019on peut passer de l\u2019id\u00e9e au produit en quelques heures.",
-      apps_cta: "Voir les Apps",
-      learning_title: "Condamine Learning",
-      learning_sub: "Transmission",
-      learning_desc: "Formations et ressources pour aider les Designers et PMs \u00e0 ne pas subir la vague IA, mais \u00e0 la surfer.",
-      learning_cta: "Explorer les Cours",
-      agents_title: "Agents & Prompts",
-      agents_sub: "Ing\u00e9nierie Syst\u00e8me",
-      agents_desc: "Ma base de donn\u00e9es Notion de prompts et d\u2019agents GPTs que j\u2019ai configur\u00e9s pour automatiser les t\u00e2ches r\u00e9p\u00e9titives du design.",
-      agents_cta: "Acc\u00e9der \u00e0 la Base",
-      art_title: "Galerie d\u2019Art IA",
-      art_sub: "Midjourney V6",
-      art_desc: "Exploration purement visuelle. Composition, lumi\u00e8re et texture g\u00e9n\u00e9r\u00e9es synth\u00e9tiquement.",
-      art_cta: "Voir la Galerie"
-    },
-    homepage_about: {
-      title: "\u00c0 propos",
-      text: "Je con\u00e7ois des produits num\u00e9riques depuis bient\u00f4t vingt ans, de l\u2019agence de publicit\u00e9 aux logiciels d\u2019entreprise, plateformes EdTech et services publics. J\u2019ai dirig\u00e9 des \u00e9quipes design, travaill\u00e9 main dans la main avec des product managers et des ing\u00e9nieurs, et livr\u00e9 des produits utilis\u00e9s par des centaines de milliers de personnes.",
-      cta: "Parcours complet",
     },
     homepage_visual_archive: {
       title: "Galerie",
