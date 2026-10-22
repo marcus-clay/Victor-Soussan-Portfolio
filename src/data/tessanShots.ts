@@ -87,7 +87,7 @@ export const TESSAN_SHOTS: Record<string, { kind: 'phone' | 'browser'; items: Te
       { src: '/images/tessan/proto/stills/osDesktop-os-tablette.webp', width: 2160, height: 1350, fr: 'Tessan OS : tablette', en: 'Tessan OS: tablet' },
       { src: '/images/tessan/proto/stills/osDesktop-os-apres-connexion.webp', width: 2200, height: 1375, fr: 'Tessan OS : après la connexion', en: 'Tessan OS: after sign-in' },
       { src: '/images/tessan/proto/stills/osDesktop-os-medaillon.webp', width: 2200, height: 1375, fr: 'Tessan OS : médaillon de connexion', en: 'Tessan OS: sign-in badge' },
-      { src: '/images/tessan/proto/stills/osDesktop-lab-prototypes.webp', width: 2160, height: 1350, fr: 'Le laboratoire produit', en: 'The product lab' },
+      { src: '/images/tessan/proto/stills/osDesktop-lab-prototypes.webp', width: 2160, height: 1350, fr: 'Le site des sept prototypes', en: 'The seven prototypes site' },
       { src: '/images/tessan/proto/stills/osDesktop-pharmacien-vue.webp', width: 2160, height: 1350, fr: 'Dashboard pharmacien', en: 'Pharmacist dashboard' },
       { src: '/images/tessan/proto/stills/osDesktop-pharmacien-motifs.webp', width: 2160, height: 1350, fr: 'Dashboard pharmacien : motifs', en: 'Pharmacist dashboard: reasons' },
     ],

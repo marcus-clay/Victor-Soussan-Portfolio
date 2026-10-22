@@ -121,11 +121,11 @@ export const getAllProjects = (lang: Language): Project[] => {
         ? "Seven prototypes in a week to make the vision discussable, then a single app: the consultation that funds, prevention programs that retain."
         : "Sept prototypes en une semaine pour rendre la vision discutable, puis une seule application : la consultation qui finance, des programmes de prévention qui retiennent.",
       missions: isEn ? [
-        "Prototyped five concepts and deployed them in a product lab",
+        "Prototyped five concepts and deployed them on a public test site",
         "Framed the Health Hub: programs, pharmacy, connected devices",
         "Presented the vision to the executive committee on June 26",
       ] : [
-        "Prototypage de cinq concepts, déployés dans un laboratoire produit",
+        "Prototypage de cinq concepts, déployés sur un site de test public",
         "Cadrage du Hub Santé : programmes, pharmacie, objets connectés",
         "Présentation de la vision au comité de direction le 26 juin",
       ],

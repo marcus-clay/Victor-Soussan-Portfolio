@@ -143,7 +143,7 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
           role: 'Conception des cinq concepts et des sept prototypes, puis cadrage du Hub Santé présenté au comité de direction le 26 juin.',
           roleItems: [
             { title: 'Concepts', detail: 'un interlocuteur, un signal, un pont, des missions, une couche commune' },
-            { title: 'Prototypes', detail: 'déployés dans un laboratoire produit' },
+            { title: 'Prototypes', detail: 'déployés sur un site de test public' },
             { title: 'Hub Santé', detail: 'programmes, pharmacie, objets connectés' },
           ],
           deliverables: [
@@ -152,7 +152,7 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
             { title: 'Deck de vision', detail: 'dix slides, décisions attendues' },
           ],
           metrics: [
-            { value: '7 prototypes', label: 'en une semaine, déployés dans un laboratoire produit' },
+            { value: '7 prototypes', label: 'en une semaine, déployés sur un site de test public' },
             { value: '1 application', label: 'décision du comité de direction du 26 juin' },
           ],
         },
@@ -251,7 +251,7 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
       {
         id: 'vision',
         title: 'Tessan OS, sept prototypes en une semaine',
-        text: 'En avril, un document de vision ne se discute pas en réunion, un téléphone qu’on fait défiler si. Chaque prototype porte une hypothèse : la confiance dans un interlocuteur permanent, un signal de santé lisible, la continuité entre la cabine et le mobile, la prévention par de petites missions. La revue du 24 avril les retient comme cap. Les sept sont numérotés de 01 à 07 ci-dessous, chacun avec sa démo et un lien pour le tester en ligne. Ensuite, tout ce qui ressemble à un avis médical est retiré : le score devient Score Bien-Être, WhatsApp est écarté, « Docteur » disparaît du nom.',
+        text: 'En avril, un document de vision ne se discute pas en réunion, un téléphone qu’on fait défiler si. Chaque prototype porte une hypothèse : la confiance dans un interlocuteur permanent, un signal de santé lisible, la continuité entre la cabine et le mobile, la prévention par de petites missions. La revue du 24 avril les retient comme cap. Les sept sont déployés sur un site de test public, avec une fiche de briefing par prototype : audience, contexte, user story, objectif de test. Les voici, de 01 à 07, chacun avec sa démo et un lien pour l’essayer en ligne. Ensuite, tout ce qui ressemble à un avis médical est retiré : le score devient Score Bien-Être, WhatsApp est écarté, « Docteur » disparaît du nom.',
         figures: ['prototypesSeven', 'osMedaillon', 'osStills', 'osDesktop'],
       },
       {
@@ -266,7 +266,7 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
         text: 'Aucune métrique d’impact à mon départ : l’application n’était pas publiée et la soumission aux stores, préparée, était suspendue. Je poserais la mesure avant la refonte du tunnel, et la gouvernance du pilotage avant l’outil.',
       },
     ],
-    ui: { prototype: 'Tester le prototype' },
+    ui: { prototype: 'Essayer le prototype' },
     captions: {
       wireStills: 'Wireframes interactifs, écran par écran',
       v4Stills: 'Prototype de réservation en pharmacie',
@@ -287,7 +287,7 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
       skillsMotion: 'La skill de mouvement, et une boîte de dialogue du kit',
       figmaCodePalette: 'La palette dans Figma et les tokens dans le code',
       figmaCodeBoutons: 'Les boutons dans Figma et le composant du kit React',
-      deliveryFigma: 'La page de livraison Figma : les écrans rangés par parcours',
+      deliveryFigma: 'La page de livraison Figma : les 40 écrans rangés par parcours et par epic, avec le lien de chaque user story. Les développeurs et leur agent de code la lisent pour implémenter.',
       skillsDiptych: 'Une règle du pack de skills, et le kit rendu à partir de ces tokens',
       hubHorizon: 'Le Hub Santé à l’horizon : l’assistant et ses agents experts, Ma Santé version après version',
       auditComposants: 'Audit des composants de l’app patient, 25 juin : cinq sous-agents, une cause racine',
@@ -377,7 +377,7 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
           role: 'Design of the five concepts and the seven prototypes, then framing of the Health Hub presented to the executive committee on June 26.',
           roleItems: [
             { title: 'Concepts', detail: 'an interlocutor, a signal, a bridge, missions, a shared layer' },
-            { title: 'Prototypes', detail: 'deployed in a product lab' },
+            { title: 'Prototypes', detail: 'deployed on a public test site' },
             { title: 'Health Hub', detail: 'programs, pharmacy, connected devices' },
           ],
           deliverables: [
@@ -386,7 +386,7 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
             { title: 'Vision deck', detail: 'ten slides, decisions expected' },
           ],
           metrics: [
-            { value: '7 prototypes', label: 'in a week, deployed in a product lab' },
+            { value: '7 prototypes', label: 'in a week, deployed on a public test site' },
             { value: '1 app', label: 'decision of the executive committee on June 26' },
           ],
         },
@@ -485,7 +485,7 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
       {
         id: 'vision',
         title: 'Tessan OS, seven prototypes in a week',
-        text: 'In April, a vision document cannot be discussed in a meeting, a phone you scroll can. Each prototype carries a hypothesis: trust in a permanent interlocutor, a readable health signal, continuity between booth and mobile, prevention through small missions. The April 24 review keeps them as a heading. The seven are numbered 01 to 07 below, each with its demo and a link to try it online. After that, everything that reads like medical advice is removed: the score becomes the Wellbeing Score, WhatsApp is dropped, “Doctor” leaves the name.',
+        text: 'In April, a vision document cannot be discussed in a meeting, a phone you scroll can. Each prototype carries a hypothesis: trust in a permanent interlocutor, a readable health signal, continuity between booth and mobile, prevention through small missions. The April 24 review keeps them as a heading. The seven are deployed on a public test site, with a briefing sheet per prototype: audience, context, user story, test goal. Here they are, 01 to 07, each with its demo and a link to try it online. After that, everything that reads like medical advice is removed: the score becomes the Wellbeing Score, WhatsApp is dropped, “Doctor” leaves the name.',
         figures: ['prototypesSeven', 'osMedaillon', 'osStills', 'osDesktop'],
       },
       {
@@ -521,7 +521,7 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
       skillsMotion: 'The motion skill, and a dialog of the kit',
       figmaCodePalette: 'The palette in Figma and the tokens in code',
       figmaCodeBoutons: 'The buttons in Figma and the component in the React kit',
-      deliveryFigma: 'The Figma delivery page: screens organized by journey',
+      deliveryFigma: 'The Figma delivery page: the 40 screens organized by journey and epic, with the link of each user story. Developers and their coding agent read it to implement.',
       skillsDiptych: 'A rule from the skills pack, and the kit rendered from those tokens',
       hubHorizon: 'The Health Hub on the horizon: the assistant and its expert agents, My Health version after version',
       auditComposants: 'Component audit of the patient app, June 25: five sub-agents, one root cause',
