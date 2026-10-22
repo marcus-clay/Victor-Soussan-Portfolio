@@ -95,7 +95,7 @@ export default function CaseStudyHero({
             loading="eager"
             fetchPriority="high"
             className={`hero-panel-img relative z-[1] w-full h-full ${
-              shell.fit === 'cover' ? 'object-cover' : 'object-contain p-[5%] md:p-[3.5%]'
+              shell.fit === 'cover' || shell.fit === 'bleed' ? 'object-cover' : 'object-contain p-[5%] md:p-[3.5%]'
             }`}
             style={shell.position ? { objectPosition: shell.position } : undefined}
           />

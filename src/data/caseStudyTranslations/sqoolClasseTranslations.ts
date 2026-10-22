@@ -1,127 +1,28 @@
-// SQOOL Classe Case Study: Translations
-// Structure: Hero → Context → Approach → Teacher → Students → Journeys → Impact
+// SQOOL Classe case study: copy for SqoolClassePage.tsx
+// Structure: hero, testimonial, summary, then four acts:
+// stakes and principles, design approach (four decisions), what was delivered, outcome and open points.
 export const SQOOL_CLASSE_TRANSLATIONS = {
   en: {
-    caseStudy: 'Case Study',
-    gallery: 'Prototypes',
-    cta: {
-      title: 'Interested in working together?',
-      button: 'Get in touch',
-    },
-    clickToZoom: 'Click to zoom',
-    clickToExitZoom: 'Click to exit zoom',
-    meta: {
-      type: 'Interaction Design',
-      scope: 'Classroom Management',
-      company: 'UNOWHY / SQOOL',
-    },
+    metaLabels: { role: 'Role', scope: 'Scope', company: 'Company' },
+    meta: { company: 'UNOWHY / SQOOL' },
     hero: {
       role: 'Lead Interaction Designer',
-      scope: 'Real-Time Supervision, Classroom UX',
+      scope: 'Real-time supervision, Classe UX',
       title: 'Giving teachers the composure to teach in a digital classroom',
-      subtitle: 'SQOOL Classe: a supervision tool designed to fade behind the pedagogy',
-      intro: 'SQOOL Classe is the web application I designed to give teachers control of 30 open tablets during a lesson. It became the reference app of the SQOOL suite, and a class connects in 30 seconds on average.',
-      description: 'When the Île-de-France region distributed a tablet to each of 500,000 students and teachers across 465 high schools, it also created a daily challenge in every classroom: 30 screens open, 30 students connected, and no adequate tool to maintain control of the lesson. SQOOL Classe is the web application I designed to solve that problem.',
-    },
-    myRole: {
-      title: 'My role',
-      roleDesc: 'Design Lead within the product squad responsible for building and deploying SQOOL Classe. I worked alongside the CPO, 5 designers, product managers, and developers over nearly two years. My scope covered ideation workshops on supervision, screen projection, and the broader vision of turning a monitoring tool into a collaboration medium between teachers and students. We prototyped extensively, producing multiple versions to embody the usage scenarios of an application whose UX had no direct equivalent in the B2B landscape.',
-      scopeTitle: 'Design scope',
-      scopeItems: ['User research and field observation in schools', 'Strategic framing: supervision, collaboration, product vision', 'Ideation workshops with the product squad', 'Information architecture and interaction design', '42 interactive prototypes (GSAP animations)', 'Design system components for the SQOOL suite', 'Design team coordination (5 designers)'],
-      modulesTitle: 'Product modules delivered',
-      modules: ['Student grid with live status and screen previews', 'One-tap classroom controls (lock, project, share, group)', 'Messaging channel between teacher and students', 'Document, file, and link distribution system', 'Live polling and shared timer', 'Session management (open, close, history)', 'Assignment and exam mode with device restrictions', 'Student-side tablet experience', 'URL filtering and content restriction system'],
-      challengesTitle: 'Product challenges',
-      challenges: ['User engagement: teachers are standing, not sitting at a screen. Every interaction had to work at a glance, from across the room.', 'Simplicity: a significant portion of users had never used digital tools in their teaching. We stripped every pattern down to its simplest form.', 'Reliability: screen projection required stable signal transmission between student devices, middleware, and the teacher\'s computer. Failures mid-lesson were unacceptable.', 'Authentication: if students couldn\'t connect, the teacher couldn\'t supervise. We designed the QR code flow to eliminate login friction entirely.', 'Infrastructure: school Wi-Fi is unpredictable. The application had to degrade gracefully without losing core functionality.', 'Content safety: filtering URLs and restricting access to prevent students from navigating to unauthorized sites during class.'],
-    },
-    context: {
-      title: '500,000 tablets deployed. What happens next?',
-      description: 'The teachers we interviewed described the same reality: the tablet added a layer of complexity that was difficult to absorb. Checking that each student was on the right application, managing distractions, reacting to technical issues, all while maintaining the rhythm of a class of 30 teenagers. Existing tools were either too invasive or too fragile for school Wi-Fi.',
-      problemQuestion: 'How do you give a teacher real-time visibility into 30 screens without turning the classroom into a control room?',
-      fieldObsTitle: 'Observe before designing',
-      fieldObsDesc: 'Collège Jean Vilar. Before drawing anything, we sit in the classroom. We watch how the teacher manages tablets, what takes time, what creates friction.',
-    },
-    approach: {
-      title: 'Three principles that guided every decision',
-      pillar1Title: 'Instant readability',
-      pillar1Desc: 'The teacher should be able to scan the entire class at a glance, between two explanations at the board.',
-      pillar2Title: 'One-tap action',
-      pillar2Desc: 'Lock all tablets, send a document, project content: every critical gesture reachable in a single tap.',
-      pillar3Title: 'Calm interface',
-      pillar3Desc: 'Information density is calibrated to reassure. Visual warnings are reserved for situations that genuinely need attention.',
-    },
-    teacher: {
-      title: 'What does the teacher see when they look at their class?',
-      description: 'SQOOL Classe rests on one component: the student card. Each tile surfaces the student\'s name, active application, battery level, and connection state. The grid works like a dashboard the teacher glances at between two explanations, and it asks for no analysis.',
-      // Rich captions for visuals (200-400 chars)
-      gridCaption: 'Each student occupies a tile that surfaces just enough information: name, active app, battery, connection state. Color codes are restrained on purpose. The goal is a quick scan between two explanations at the board, without a thorough analysis. 32 students displayed simultaneously, still readable.',
-      screenShareCaption: 'The teacher selects a full screen or a specific application window. On the student side, the content appears instantly. A visual indicator confirms that sharing is active and received. This avoids the classic “can everyone see my screen?” moment that breaks the lesson flow.',
-      docSendCaption: 'Documents can be pushed from local storage or Google Drive directly to student tablets. The action takes one gesture, targets the whole class or a specific group, and each student receives a timestamped notification. No more USB sticks or emailed attachments.',
-      actionsCaption: 'Lock, project, group, distribute: the essential actions live in a persistent command panel with touch targets large enough for both tablet and desktop use. The teacher acts without navigating away from the grid view.',
-    },
-    students: {
-      title: 'Present when needed, invisible the rest of the time',
-      description: 'On the student side, SQOOL Classe only appears when there is something to do: join a session, receive a document, respond to a poll. The rest of the time, the tablet remains a regular work tool. This design choice is deliberate: the student works without feeling watched and knows support is there.',
-      // Rich captions for student UI visuals
-      compositionCaption: 'Two views coexist on the student tablet: “My class” shows all classmates, course resources, and teacher messages. “My group” narrows the scope to teammates, with dedicated resources and instructions. The student switches between both with a single tap.',
-      classroomsCaption: 'The student home screen shows all active classrooms as cards: subject, teacher name, number of connected students, session duration. One tap to join. No login, no password, no configuration. The system absorbs the complexity.',
-      interactionsCaption: 'Six ways to communicate with the teacher without disrupting the class: send a document, ask a question, signal comprehension, request a slower pace, indicate completion. Each action is a single tap. The teacher sees the signal immediately on their grid.',
-      groupCaption: 'When the teacher creates sub-groups for differentiated instruction, each group gets its own space with dedicated resources and specific instructions. The student sees only what is relevant to their group, reducing noise and cognitive load.',
-    },
-    journeys: {
-      title: 'Complete sessions, from opening to closing',
-      description: 'These prototypes show full lessons as they unfold in the classroom. They illustrate how the different features work together in real use.',
-    },
-    impact: {
-      title: 'What this work produced',
-      intro: 'SQOOL Classe became the reference application within the SQOOL suite. Pilot teachers reported a concrete gain in classroom composure and a significant reduction in device management time.',
-      stat1: '465',
-      stat1Desc: 'Schools equipped across Île-de-France',
-      stat2: '50+',
-      stat2Desc: 'Interactive prototypes covering every flow',
-      stat3: '30s',
-      stat3Desc: 'Average class setup time with QR code join',
-      stat4: '1',
-      stat4Desc: 'Web app, tablet and desktop, no install',
-    },
-    testimonial: {
-      quote: 'For the first time, I felt I could manage my classroom without raising my voice. SQOOL Classe gave me back my composure.',
-      author: 'Teacher',
-      role: 'Test Pilot',
+      intro:
+        'SQOOL Classe is the web application I designed to give teachers control of 30 open tablets during a lesson. It became the reference app of the SQOOL suite, and a class connects in 30 seconds on average.',
     },
     heroTestimonial: {
-      quote: 'I had the chance to work with Victor for 3 years as a duo, and he is one of the most inspiring designers I have ever worked with. Victor combines boundless creativity with impressive rigor. He knows how to translate complex visions into clear and impactful user experiences. Always listening, curious, he constantly pushes thinking further, whether on substance or form. I particularly valued our ability to co-build: he is not afraid to challenge ideas while remaining kind, focused on product quality and user impact. I recommend him to any team looking for a Lead Designer who is creative, demanding, and deeply human.',
+      quote:
+        'I had the chance to work with Victor for 3 years as a duo, and he is one of the most inspiring designers I have ever worked with. Victor combines boundless creativity with impressive rigor. He knows how to translate complex visions into clear and impactful user experiences. Always listening, curious, he constantly pushes thinking further, whether on substance or form. I particularly valued our ability to co-build: he is not afraid to challenge ideas while remaining kind, focused on product quality and user impact. I recommend him to any team looking for a Lead Designer who is creative, demanding, and deeply human.',
       author: 'Charlotte Rifflet',
       role: 'CPO, UNOWHY',
     },
-    // Lightbox and image captions, in the order of the case study images
-    imageCaptions: {
-      thumb: 'SQOOL Classe',
-      dashboard: 'Teacher dashboard',
-      obs1: 'Field observation: live student screen monitoring, Collège Jean Vilar',
-      obs2: 'Real-world testing: handling connection states',
-      obs3: 'Teacher navigating student view during class',
-      obs4: 'Student side: transparent, non-intrusive supervision notification',
-      grid: 'Teacher grid view: every student visible, every action accessible',
-      groupView: 'Class view and group view on student tablet',
-      shareChoose: 'Choose what to share: full screen or a specific window',
-      shareActive: 'Screen sharing in progress: teacher sees their screen and students simultaneously',
-      sendDoc: 'Send a document directly from Google Drive, in one gesture',
-      studentHome: 'Student home: all classrooms with key info at a glance',
-      studentClass: 'Class view: classmates, course resources, teacher messages',
-      studentGroup: 'Group view: a dedicated space with its own resources and instructions',
-      studentInteractions: 'Six ways to communicate with the teacher, without disrupting the class',
-      linkShare: 'Link sharing to the whole class: every browser opens the same page',
-      inviteCode: 'Invitation code: students join the class in seconds',
-      feedback: 'Built-in feedback collection for continuous product improvement',
-    },
-    acts: {
-      approach: 'From classroom observation to three principles',
-      product: 'What teachers and students see',
-    },
-    productModulesTitle: 'Product modules delivered',
     summary: {
-      context: 'The Île-de-France region gave a tablet to each of 500,000 students and teachers across 465 high schools. In every classroom this meant 30 open screens, 30 connected students and no adequate tool to keep control of the lesson. Existing tools were either too invasive or too fragile for school Wi-Fi.',
-      role: 'Design Lead in the product squad that built and deployed SQOOL Classe, for nearly two years, alongside the CPO, 5 designers, product managers and developers. My scope covered ideation workshops on supervision and screen projection, and the vision of turning a monitoring tool into a collaboration medium between teachers and students.',
+      context:
+        'The Île-de-France region gave a tablet to each of 500,000 students and teachers across 465 high schools. In every classroom this meant 30 open screens, and no adequate tool to keep control of the lesson. Existing tools were either too invasive or too fragile for school Wi-Fi.',
+      role:
+        'Design Lead in the product squad that built and deployed SQOOL Classe, for nearly two years, alongside the CPO, 5 designers, product managers and developers. My scope covered ideation workshops on supervision and screen projection, and the vision of turning a monitoring tool into a collaboration medium between teachers and students.',
       roleItems: [
         { title: 'Design Lead', detail: 'Product squad, nearly 2 years' },
         { title: 'Field research', detail: 'Classroom observation' },
@@ -134,7 +35,7 @@ export const SQOOL_CLASSE_TRANSLATIONS = {
         { title: 'Document distribution', detail: 'Documents from local storage or Google Drive reach the tablets, with a timestamped notification.' },
         { title: 'Student experience', detail: 'A class view and a group view, each with its own resources, messages and instructions.' },
         { title: 'Student interactions', detail: 'Six ways to reach the teacher without disrupting the class.' },
-        { title: 'Joining a class', detail: 'One tap from the student home screen. No login, no password, no configuration.' },
+        { title: 'Joining a class', detail: 'A code or a QR code from the student’s tablet. No login, no password, no setup.' },
       ],
       metrics: [
         { value: '500,000', label: 'Students and teachers given a tablet' },
@@ -142,131 +43,227 @@ export const SQOOL_CLASSE_TRANSLATIONS = {
         { value: '30s', label: 'Average class setup time with QR code join' },
       ],
     },
-    // Curated narration (editorial pass): short blocks, one visual each. The longer texts above stay in the file.
-    curated: {
+    acts: {
+      stakes: 'Thirty open screens and no tool to hold them',
+      approach: 'The student card, the actions at hand, a discreet student',
+      deliverables: 'Nine modules for the whole lesson',
+      outcome: 'A reference app, and a network the design cannot fix',
+    },
+    stakes: {
+      text1:
+        'When the region equipped every student with a tablet, each classroom ended up with thirty open screens. Checking that everyone is on the right app, managing distractions, reacting when a tablet stops responding: all of it came on top of the pace of a lesson with thirty teenagers. Existing tools ranged from invasive surveillance to fragility on school Wi-Fi.',
+      text2:
+        'The starting question was how to give a teacher a view of thirty tablets without turning the classroom into a control room. I set three principles, checked during classroom observations and tests with teachers.',
+      principlesTitle: 'Three principles behind every decision',
       principles: [
-        { title: 'Instant readability', text: 'The teacher reads the whole class in one glance.' },
-        { title: 'One-tap action', text: 'Locking tablets, sending a document or projecting content takes a single tap.' },
-        { title: 'Calm interface', text: 'Visual warnings are reserved for situations that need attention.' },
+        { title: 'Instant readability', text: 'The teacher reads the state of the whole class at a glance, between two explanations at the board.' },
+        { title: 'One-gesture action', text: 'Locking the tablets, sending a document or projecting content takes a single gesture.' },
+        { title: 'A calm interface', text: 'Information density is set to reassure. Visual alerts are kept for situations that call for them.' },
       ],
-      teacher: 'The interface rests on one component, the student card: name, active application, battery and connection state. The grid is read between two explanations at the board, without analysis, and 32 students stay readable at once.',
-      students: 'On the student side, SQOOL Classe only appears when there is something to do: join a session, receive a document, answer a poll. The rest of the time the tablet stays an ordinary work tool, so students work without feeling watched.',
-      joinTitle: 'Joining a class with a code',
-      join: 'Students enter a 4-digit code shown on the teacher’s screen. No account, no password, no prior setup: the teacher generates the code, the students type it, and the class is assembled.',
     },
-    metaLabels: {
-      role: 'Role',
-      type: 'Type',
-      scope: 'Scope',
-      company: 'Company',
+    approach: {
+      card: {
+        title: 'The student card as the unit of reading',
+        text:
+          'Each student gets one tile: name, active application, battery and connection state. Nothing more, so the grid reads between two explanations at the board, with 32 students visible at once. Color is kept for states that call for action, such as a low battery or an off-task student. Device states (off, idle, live, projecting) are explicit, so the teacher never wonders whether the data is current.',
+      },
+      actions: {
+        title: 'Actions that never take the teacher off the grid',
+        text:
+          'Lock, project, group and distribute live in a permanent command panel with large touch targets, usable on a tablet as on a computer. The teacher is standing and looks at the screen between two sentences: acting must never require changing view. When the teacher shares a screen, an indicator confirms students are receiving it, which avoids the “can everyone see my screen?” that breaks the pace of a lesson.',
+      },
+      student: {
+        title: 'A student who shows up only when there is something to do',
+        text:
+          'On the student side, SQOOL Classe appears to join a session, receive a document or answer a poll. The rest of the time the tablet stays an ordinary work tool, and the student works without feeling watched. To join a class, students type a four-digit code shown on the teacher’s screen, or scan a QR code: no account, no password, no setup, because if students cannot connect, the teacher cannot supervise anything.',
+      },
+      scenarios: {
+        title: 'Ten full lessons to check the sequence',
+        text:
+          'Isolated screens do not say whether functions chain together. I prototyped 42 interactive flows with GSAP animations: 25 for the teacher, 7 for the student and 10 full lessons, from opening the class to an exam. These scenarios checked that a real lesson, with its device restrictions and the collection of student work, holds together without a break.',
+      },
     },
-    // Marketing visual captions
-    marketingCaptions: {
-      linkShare: 'The “Share a link” action pushes a URL directly into every student browser. The teacher types or pastes the address, selects the target (whole class or a group), and sends. Every screen opens the same page at the same moment.',
-      inviteCode: 'Students join the session by entering a 4-digit code displayed on the teacher\'s screen. No account, no password, no prior setup. The teacher generates the code, students type it, and the class is assembled in under 30 seconds.',
-      feedback: 'A built-in feedback widget lets teachers report issues or suggestions directly from the interface. Three options: a comment on a specific element, a general comment on the page, or a support request. This loop fed continuous product improvement throughout the pilot program.',
+    deliverables: {
+      text:
+        'SQOOL Classe groups nine modules, designed for the whole lesson rather than supervision alone. The exam and assignment mode answers a request from schools: beyond screen projection, they expected settings and restrictions on device use.',
+      modulesTitle: 'Modules delivered',
+      modules: [
+        'Student grid with live status and screen previews',
+        'One-gesture classroom controls (lock, project, share, group)',
+        'Messaging between teacher and students',
+        'Distribution of documents, files and links',
+        'Live polling and shared timer',
+        'Session management (open, close, history)',
+        'Assignment and exam mode with device restrictions',
+        'Student-side tablet experience',
+        'URL filtering and content restriction',
+      ],
+    },
+    outcome: {
+      text:
+        'SQOOL Classe became the reference app of the suite. A class connects in 30 seconds on average, and its real-time and data visualization patterns served as the base for the apps that followed. Pilot teachers report a gain in composure and less time spent managing tablets.',
+      quote: 'For the first time, I felt I could manage my classroom without raising my voice. SQOOL Classe gave me back my composure.',
+      quoteAuthor: 'Teacher',
+      quoteRole: 'Test pilot',
+      openTitle: 'What stays open',
+      open:
+        'Use depends on the reliability of each school’s network. Screen projection needs a stable signal between the tablets, the middleware and the teacher’s computer. We chose to show the connection state rather than hide it, but the school network stays outside what design can settle.',
+      readSuite: 'Read the SQOOL suite case study',
+    },
+    ui: {
+      prev: 'Previous visual',
+      next: 'Next visual',
+      slide: 'Visual',
+      actionsLabel: 'Sharing and distributing from the teacher view',
+      studentLabel: 'The student side of SQOOL Classe',
+      deliverablesLabel: 'Starting a class, sharing a link and collecting feedback',
+    },
+    imageCaptions: {
+      thumb: 'SQOOL Classe',
+      dashboard: 'Starting a class',
+      obs1: 'Field observation: live student screen monitoring, Collège Jean Vilar',
+      obs2: 'Real-world testing: handling connection states',
+      obs3: 'Teacher navigating student view during class',
+      obs4: 'Student side: a transparent, non-intrusive supervision notification',
+      grid: 'Teacher grid view: every student visible, every action accessible',
+      groupView: 'Class view and group view on the student tablet',
+      shareChoose: 'Choose what to share: full screen or a specific window',
+      shareActive: 'Screen sharing in progress: the teacher sees their screen and the students at once',
+      sendDoc: 'Send a document directly from Google Drive, in one gesture',
+      studentHome: 'Student home: all classrooms with key info at a glance',
+      studentClass: 'Class view: classmates, course resources, teacher messages',
+      studentGroup: 'Group view: a dedicated space with its own resources and instructions',
+      studentInteractions: 'Six ways to communicate with the teacher, without disrupting the class',
+      linkShare: 'Link sharing to the whole class: every browser opens the same page',
+      inviteCode: 'Invitation code: students join the class in seconds',
+      feedback: 'Built-in feedback collection for continuous product improvement',
     },
   },
   fr: {
-    caseStudy: 'Étude de cas',
-    gallery: 'Prototypes',
-    cta: {
-      title: 'Un projet de design produit en tête\u00a0?',
-      button: 'Échangeons',
-    },
-    clickToZoom: 'Cliquer pour agrandir',
-    clickToExitZoom: 'Cliquer pour fermer',
-    meta: {
-      type: 'Design d’interaction',
-      scope: 'Supervision de classe',
-      company: 'UNOWHY / SQOOL',
-    },
+    metaLabels: { role: 'Rôle', scope: 'Périmètre', company: 'Entreprise' },
+    meta: { company: 'UNOWHY / SQOOL' },
     hero: {
       role: 'Lead Interaction Designer',
       scope: 'Supervision temps réel, UX Classe',
       title: 'Donner aux enseignants la sérénité de faire cours dans une classe numérique',
-      subtitle: 'SQOOL Classe\u00a0: l’application de supervision conçue pour s’effacer derrière la pédagogie',
-      intro: 'SQOOL Classe est l’application web que j’ai conçue pour que les enseignants gardent la maîtrise de 30\u00a0tablettes ouvertes pendant un cours. Elle est devenue l’application de référence de la suite SQOOL, et une classe s’y connecte en 30\u00a0secondes en moyenne.',
-      description: 'Quand la Région Île-de-France a distribué une tablette à chacun des 500\u00a0000\u00a0élèves et enseignants de 465\u00a0lycées, elle a aussi créé un défi quotidien dans chaque salle de classe\u00a0: 30\u00a0écrans allumés, 30\u00a0élèves connectés, et aucun outil adapté pour garder la maîtrise de la séance. SQOOL Classe est l’application web que j’ai conçue pour résoudre ce problème.',
-    },
-    myRole: {
-      title: 'Mon rôle',
-      roleDesc: 'Design Lead au sein de l’équipe produit chargée de la réalisation et du déploiement de SQOOL Classe. J’ai travaillé aux côtés de la CPO, de 5\u00a0designers, de chefs de produit et de développeurs pendant près de deux ans. Mon périmètre couvrait les ateliers d’idéation sur la supervision, la projection d’écrans, et la vision plus large\u00a0: transformer un outil de suivi en un médium de collaboration entre enseignants et élèves. Nous avons énormément prototypé, produit de multiples versions pour incarner les parcours d’usage d’une application dont l’expérience n’avait pas d’équivalent direct dans le paysage B2B.',
-      scopeTitle: 'Périmètre design',
-      scopeItems: ['Recherche utilisateur et observation terrain en établissements', 'Cadrage stratégique\u00a0: supervision, collaboration, vision produit', 'Ateliers d’idéation avec l’équipe produit', 'Architecture d’information et design d’interaction', '42\u00a0prototypes interactifs (animations GSAP)', 'Composants design system pour la suite SQOOL', 'Coordination de l’équipe design (5\u00a0designers)'],
-      modulesTitle: 'Modules produit livrés',
-      modules: ['Grille élèves avec statuts temps réel et aperçu des écrans', 'Commandes de classe en un geste (verrouiller, projeter, partager, grouper)', 'Canal de messagerie enseignant-élèves', 'Système de distribution de documents, fichiers et liens', 'Sondage en direct et minuteur partagé', 'Gestion de séances (ouverture, clôture, historique)', 'Mode devoir et examen avec restrictions des appareils', 'Expérience côté tablette élève', 'Filtrage d’URL et restriction de contenu'],
-      challengesTitle: 'Enjeux produit',
-      challenges: ['Engagement des utilisateurs\u00a0: les enseignants sont debout, pas assis devant un écran. Chaque interaction devait fonctionner d’un coup d’œil, depuis l’autre bout de la salle.', 'Simplicité\u00a0: une part significative des utilisateurs n’avait jamais utilisé le numérique dans leur enseignement. Nous avons simplifié chaque interaction au maximum pour favoriser l’adoption.', 'Fiabilité\u00a0: la projection des écrans nécessitait une transmission stable des signaux entre tablettes élèves, middleware et ordinateur enseignant. Une panne en plein cours était inacceptable.', 'Authentification\u00a0: si les élèves ne pouvaient pas se connecter, pas de supervision possible. Nous avons conçu le flux QR code pour éliminer toute friction d’authentification.', 'Infrastructure\u00a0: le Wi-Fi scolaire est imprévisible. L’application devait fonctionner en mode dégradé sans perdre ses fonctionnalités essentielles.', 'Sécurité des contenus\u00a0: filtrage des URL et restriction d’accès pour empêcher les élèves de naviguer sur des sites non autorisés pendant le cours.'],
-    },
-    context: {
-      title: '500\u00a0000\u00a0tablettes déployées, et après\u00a0?',
-      description: 'Les enseignants que nous avons rencontrés lors de nos recherches décrivaient la même réalité\u00a0: la tablette ajoutait une couche de complexité difficile à absorber. Vérifier que chaque élève est sur la bonne application, gérer les distractions, réagir quand une tablette ne répond plus, tout cela en maintenant le rythme d’une classe de 30\u00a0adolescents. Les solutions existantes oscillaient entre surveillance invasive et fragilité technique.',
-      problemQuestion: 'Comment permettre à un enseignant de garder la maîtrise de 30\u00a0tablettes sans transformer sa classe en salle de contrôle\u00a0?',
-      fieldObsTitle: 'Observer avant de concevoir',
-      fieldObsDesc: 'Collège Jean Vilar. Avant de dessiner quoi que ce soit, on s’installe dans la salle de classe. On regarde comment l’enseignant gère les tablettes, ce qui prend du temps, ce qui crée de la friction.',
-    },
-    approach: {
-      title: 'Trois principes qui ont guidé chaque décision',
-      pillar1Title: 'Lisibilité immédiate',
-      pillar1Desc: 'L’enseignant doit pouvoir comprendre l’état de toute sa classe en un seul regard, entre deux explications au tableau.',
-      pillar2Title: 'Action en un geste',
-      pillar2Desc: 'Verrouiller toutes les tablettes, envoyer un document, projeter un contenu\u00a0: chaque action critique accessible en un seul geste.',
-      pillar3Title: 'Interface apaisante',
-      pillar3Desc: 'La densité d’information est calibrée pour rassurer. Les alertes visuelles sont réservées aux situations qui le justifient.',
-    },
-    teacher: {
-      title: 'Ce que l’enseignant voit quand il regarde sa classe',
-      description: 'L’interface de SQOOL Classe repose sur un composant fondamental\u00a0: la carte élève. Chaque tuile condense le nom, l’application en cours, le niveau de batterie et l’état de connexion. La grille fonctionne comme un tableau de bord que l’enseignant consulte d’un coup d’œil entre deux explications, sans demander d’analyse.',
-      gridCaption: 'Chaque élève occupe une tuile qui fait remonter juste ce qu’il faut\u00a0: nom, application active, batterie, état de connexion. Les codes couleur sont volontairement sobres. L’objectif est de permettre une lecture rapide entre deux explications au tableau, sans analyse approfondie. 32\u00a0élèves affichés simultanément, toujours lisibles.',
-      screenShareCaption: 'L’enseignant sélectionne un écran complet ou une fenêtre d’application spécifique. Côté élève, le contenu apparaît instantanément. Un indicateur visuel confirme que le partage est actif et bien reçu. Cela évite le classique «\u202fest-ce que tout le monde voit mon écran\u00a0?\u202f» qui casse le rythme du cours.',
-      docSendCaption: 'Les documents peuvent être envoyés depuis le stockage local ou Google Drive directement vers les tablettes. L’action se fait en un geste, cible toute la classe ou un groupe précis, et chaque élève reçoit une notification horodatée. Fini les clés USB ou les pièces jointes par e-mail.',
-      actionsCaption: 'Verrouiller, projeter, grouper, distribuer\u00a0: les actions essentielles vivent dans un panneau de commandes persistant, avec des zones tactiles suffisamment larges pour fonctionner aussi bien sur tablette que sur ordinateur. L’enseignant agit sans quitter la vue grille.',
-    },
-    students: {
-      title: 'Présente quand il faut, invisible le reste du temps',
-      description: 'Côté élève, SQOOL Classe n’apparaît que lorsqu’il y a quelque chose à faire\u00a0: rejoindre la séance, recevoir un document, répondre à un sondage. Le reste du temps, la tablette reste un outil de travail ordinaire. Ce parti pris est délibéré\u00a0: l’élève doit pouvoir travailler sans sentir qu’il est surveillé, tout en sachant qu’il peut compter sur l’enseignant.',
-      compositionCaption: 'Deux vues coexistent sur la tablette élève\u00a0: «\u202fMa classe\u202f» affiche tous les camarades, les ressources du cours et les messages du professeur. «\u202fMon groupe\u202f» resserre le périmètre aux coéquipiers, avec des ressources et consignes dédiées. L’élève bascule de l’une à l’autre en un geste.',
-      classroomsCaption: 'L’écran d’accueil élève présente toutes les salles de classe actives sous forme de cartes\u00a0: matière, nom de l’enseignant, nombre d’élèves connectés, durée de la séance. Un geste pour rejoindre, sans identifiant, sans mot de passe, sans configuration. Le système absorbe la complexité.',
-      interactionsCaption: 'Six façons de communiquer avec l’enseignant sans déranger la classe\u00a0: envoyer un document, poser une question, signaler sa compréhension, demander de ralentir, indiquer qu’on a terminé. Chaque action tient en un geste. L’enseignant voit le signal immédiatement sur sa grille.',
-      groupCaption: 'Quand l’enseignant constitue des sous-groupes pour différencier le travail, chaque groupe obtient son propre espace avec des ressources dédiées et des consignes spécifiques. L’élève ne voit que ce qui le concerne, réduisant le bruit et la charge cognitive.',
-    },
-    journeys: {
-      title: 'Des séances complètes, du début à la fin',
-      description: 'Ces prototypes montrent des cours entiers tels qu’ils se déroulent en classe, étape par étape. Ils illustrent comment les différentes fonctionnalités s’articulent dans un usage réel.',
-    },
-    impact: {
-      title: 'Ce que ce travail a produit',
-      intro: 'SQOOL Classe est devenu l’application de référence au sein de la suite SQOOL. Les enseignants pilotes ont rapporté un gain concret de sérénité pendant leurs cours et une réduction significative du temps consacré à la gestion des tablettes.',
-      stat1: '465',
-      stat1Desc: 'Établissements équipés en Île-de-France',
-      stat2: '50+',
-      stat2Desc: 'Prototypes interactifs documentant chaque scénario',
-      stat3: '30\u00a0s',
-      stat3Desc: 'Pour ouvrir une séance et connecter toute la classe',
-      stat4: '1',
-      stat4Desc: 'Application web, tablette et ordinateur, sans installation',
-    },
-    testimonial: {
-      quote: 'Pour la première fois, j’ai senti que je pouvais gérer ma classe sans élever la voix. SQOOL Classe m’a redonné de la sérénité.',
-      author: 'Enseignante',
-      role: 'Pilote de test',
+      intro:
+        'SQOOL Classe est l’application web que j’ai conçue pour que les enseignants gardent la maîtrise de 30 tablettes ouvertes pendant un cours. Elle est devenue l’application de référence de la suite SQOOL, et une classe s’y connecte en 30 secondes en moyenne.',
     },
     heroTestimonial: {
-      quote: "J’ai eu la chance de collaborer avec Victor pendant 3 ans en binôme et c’est l’un des designers les plus inspirants avec qui j’ai travaillé. Victor allie une créativité débordante à une rigueur de travail impressionnante. Il sait traduire des visions complexes en expériences utilisateur claires et percutantes. Toujours à l’écoute, curieux, il pousse constamment les réflexions plus loin, que ce soit sur le fond ou sur la forme. J’ai particulièrement apprécié notre capacité à co-construire\u00a0: il n’a pas peur de challenger les idées tout en restant dans une posture bienveillante, tournée vers la qualité du produit et l’impact utilisateur. Je le recommande à toute équipe qui cherche un Lead Design à la fois créatif, exigeant, et profondément humain.",
+      quote:
+        'J’ai eu la chance de collaborer avec Victor pendant 3 ans en binôme et c’est l’un des designers les plus inspirants avec qui j’ai travaillé. Victor allie une créativité débordante à une rigueur de travail impressionnante. Il sait traduire des visions complexes en expériences utilisateur claires et percutantes. Toujours à l’écoute, curieux, il pousse constamment les réflexions plus loin, que ce soit sur le fond ou sur la forme. J’ai particulièrement apprécié notre capacité à co-construire\u00a0: il n’a pas peur de challenger les idées tout en restant dans une posture bienveillante, tournée vers la qualité du produit et l’impact utilisateur. Je le recommande à toute équipe qui cherche un Lead Design à la fois créatif, exigeant, et profondément humain.',
       author: 'Charlotte Rifflet',
       role: 'CPO, UNOWHY',
     },
-    // Légendes des images et de la visionneuse, dans l’ordre des images de l’étude
+    summary: {
+      context:
+        'La Région Île-de-France a distribué une tablette à chacun des 500 000 élèves et enseignants de 465 lycées. Dans chaque classe, cela donnait 30 écrans allumés, et aucun outil adapté pour garder la maîtrise de la séance. Les solutions existantes oscillaient entre surveillance invasive et fragilité technique.',
+      role:
+        'Design Lead dans l’équipe produit chargée de réaliser et de déployer SQOOL Classe, pendant près de deux ans, aux côtés de la CPO, de 5 designers, de chefs de produit et de développeurs. Mon périmètre couvrait les ateliers d’idéation sur la supervision et la projection d’écrans, et la vision d’un outil de suivi devenu médium de collaboration entre enseignants et élèves.',
+      roleItems: [
+        { title: 'Design Lead', detail: 'Équipe produit, près de 2 ans' },
+        { title: 'Recherche terrain', detail: 'Observation en classe' },
+        { title: 'Design system', detail: 'Suite SQOOL' },
+        { title: 'Équipe design', detail: '5 designers' },
+      ],
+      deliverables: [
+        { title: 'Grille enseignant', detail: 'Une tuile par élève\u00a0: nom, application active, batterie, état de connexion. 32 élèves lisibles en même temps.' },
+        { title: 'Partage d’écran', detail: 'L’enseignant partage un écran complet ou une fenêtre, et un indicateur confirme que le partage est actif et bien reçu.' },
+        { title: 'Distribution de documents', detail: 'Les documents du stockage local ou de Google Drive arrivent sur les tablettes, avec une notification horodatée.' },
+        { title: 'Expérience élève', detail: 'Une vue classe et une vue groupe, chacune avec ses ressources, ses messages et ses consignes.' },
+        { title: 'Interactions élève', detail: 'Six façons de joindre l’enseignant sans déranger la classe.' },
+        { title: 'Rejoindre une classe', detail: 'Un code ou un QR code depuis la tablette de l’élève. Sans identifiant, sans mot de passe, sans configuration.' },
+      ],
+      metrics: [
+        { value: '500 000', label: 'Élèves et enseignants dotés d’une tablette' },
+        { value: '465', label: 'Établissements équipés en Île-de-France' },
+        { value: '30 s', label: 'Pour ouvrir une séance et connecter toute la classe' },
+      ],
+    },
+    acts: {
+      stakes: 'Trente écrans allumés, aucun outil pour les tenir',
+      approach: 'La carte élève, des actions à portée de main, un élève discret',
+      deliverables: 'Neuf modules pour toute la séance',
+      outcome: 'Une application de référence, et un réseau que le design ne règle pas',
+    },
+    stakes: {
+      text1:
+        'Quand la Région a équipé chaque élève d’une tablette, chaque salle de classe s’est retrouvée avec trente écrans allumés. Vérifier que chacun est sur la bonne application, gérer les distractions, réagir quand une tablette ne répond plus\u00a0: tout cela s’ajoutait au rythme d’un cours de trente adolescents. Les outils existants oscillaient entre surveillance invasive et fragilité sur le Wi-Fi des établissements.',
+      text2:
+        'La question de départ\u00a0: comment donner à l’enseignant une vue sur trente tablettes sans transformer la classe en salle de contrôle\u00a0? J’ai posé trois principes, vérifiés pendant les observations en classe et les tests avec des enseignants.',
+      principlesTitle: 'Trois principes derrière chaque décision',
+      principles: [
+        { title: 'Lisibilité immédiate', text: 'L’enseignant lit l’état de toute la classe en un regard, entre deux explications au tableau.' },
+        { title: 'Action en un geste', text: 'Verrouiller les tablettes, envoyer un document ou projeter un contenu tient en un seul geste.' },
+        { title: 'Interface apaisante', text: 'La densité d’information est calibrée pour rassurer. Les alertes visuelles sont réservées aux situations qui le justifient.' },
+      ],
+    },
+    approach: {
+      card: {
+        title: 'La carte élève comme unité de lecture',
+        text:
+          'Chaque élève occupe une tuile\u00a0: nom, application active, batterie, état de connexion. Rien de plus, pour que la grille se lise entre deux explications au tableau, avec 32 élèves visibles en même temps. La couleur est réservée aux états qui demandent une action, comme une batterie faible ou un élève hors sujet. Les états de l’appareil (éteint, inactif, en direct, en projection) sont explicites, pour que l’enseignant ne se demande jamais si la donnée est à jour.',
+      },
+      actions: {
+        title: 'Des actions qui ne font jamais quitter la grille',
+        text:
+          'Verrouiller, projeter, grouper et distribuer vivent dans un panneau de commandes permanent, avec de larges zones tactiles, utilisable sur tablette comme sur ordinateur. L’enseignant est debout et regarde l’écran entre deux phrases\u00a0: agir ne doit jamais demander de changer de vue. Quand il partage son écran, un indicateur confirme que les élèves le reçoivent, ce qui évite le «\u202ftout le monde voit mon écran\u00a0?\u202f» qui casse le rythme du cours.',
+      },
+      student: {
+        title: 'Un élève qui n’apparaît que lorsqu’il y a quelque chose à faire',
+        text:
+          'Côté élève, SQOOL Classe se montre pour rejoindre une séance, recevoir un document ou répondre à un sondage. Le reste du temps, la tablette reste un outil de travail ordinaire, et l’élève travaille sans se sentir surveillé. Pour rejoindre une classe, il saisit un code à quatre chiffres affiché sur l’écran de l’enseignant, ou scanne un QR code\u00a0: ni compte, ni mot de passe, ni configuration, car sans connexion des élèves, l’enseignant ne peut rien superviser.',
+      },
+      scenarios: {
+        title: 'Dix séances complètes pour vérifier l’enchaînement',
+        text:
+          'Des écrans isolés ne disent pas si les fonctions s’enchaînent. J’ai donc prototypé 42 flux interactifs en animations GSAP\u00a0: 25 pour l’enseignant, 7 pour l’élève et 10 séances complètes, de l’ouverture de la classe à un examen. Ces scénarios servaient à vérifier qu’une séance réelle, avec ses restrictions d’appareils et la récupération des copies, tient sans rupture.',
+      },
+    },
+    deliverables: {
+      text:
+        'SQOOL Classe regroupe neuf modules, pensés pour toute la séance plutôt que pour la seule supervision. Le mode devoir et examen répond à une demande des établissements\u00a0: au-delà de la projection d’écran, ils attendaient du paramétrage et des restrictions d’usage des appareils.',
+      modulesTitle: 'Modules livrés',
+      modules: [
+        'Grille élèves avec statuts temps réel et aperçu des écrans',
+        'Commandes de classe en un geste (verrouiller, projeter, partager, grouper)',
+        'Messagerie entre l’enseignant et les élèves',
+        'Distribution de documents, de fichiers et de liens',
+        'Sondage en direct et minuteur partagé',
+        'Gestion des séances (ouverture, clôture, historique)',
+        'Mode devoir et examen avec restrictions des appareils',
+        'Expérience côté tablette élève',
+        'Filtrage d’URL et restriction de contenu',
+      ],
+    },
+    outcome: {
+      text:
+        'SQOOL Classe est devenue l’application de référence de la suite. Une classe s’y connecte en 30 secondes en moyenne, et ses schémas de temps réel et de visualisation de données ont servi de base aux applications suivantes. Les enseignants pilotes rapportent un gain de sérénité et moins de temps passé à gérer les tablettes.',
+      quote: 'Pour la première fois, j’ai senti que je pouvais gérer ma classe sans élever la voix. SQOOL Classe m’a redonné de la sérénité.',
+      quoteAuthor: 'Enseignante',
+      quoteRole: 'Pilote de test',
+      openTitle: 'Ce qui reste ouvert',
+      open:
+        'L’usage dépend de la fiabilité du réseau de chaque établissement. La projection d’écran exige un signal stable entre les tablettes, l’intergiciel et l’ordinateur de l’enseignant. Nous avons choisi de montrer l’état de la connexion plutôt que de le masquer, mais le réseau de l’établissement reste hors de ce que le design peut régler.',
+      readSuite: 'Lire l’étude de la suite SQOOL',
+    },
+    ui: {
+      prev: 'Visuel précédent',
+      next: 'Visuel suivant',
+      slide: 'Visuel',
+      actionsLabel: 'Partager et distribuer depuis la vue enseignant',
+      studentLabel: 'Le côté élève de SQOOL Classe',
+      deliverablesLabel: 'Ouvrir une classe, partager un lien et recueillir des retours',
+    },
     imageCaptions: {
       thumb: 'SQOOL Classe',
-      dashboard: 'Tableau de bord enseignant',
-      obs1: 'Observation terrain\u00a0: suivi des écrans élèves en temps réel, Collège Jean Vilar',
+      dashboard: 'Ouvrir une classe',
+      obs1: 'Observation terrain\u00a0: suivi des écrans élèves en temps réel, collège Jean Vilar',
       obs2: 'Test en conditions réelles\u00a0: gestion des connexions et déconnexions',
       obs3: 'L’enseignant navigue dans la vue élèves pendant le cours',
       obs4: 'Côté élève\u00a0: la notification de supervision, transparente et non intrusive',
       grid: 'Vue grille enseignant\u00a0: chaque élève visible, chaque action accessible',
-      groupView: 'Vue classe et vue groupe sur tablette élève',
+      groupView: 'Vue classe et vue groupe sur la tablette élève',
       shareChoose: 'Choisir quoi partager\u00a0: un écran complet ou une fenêtre spécifique',
       shareActive: 'Partage en cours\u00a0: l’enseignant voit son écran et ses élèves simultanément',
       sendDoc: 'Envoyer un document directement depuis Google Drive, en un geste',
@@ -278,56 +275,5 @@ export const SQOOL_CLASSE_TRANSLATIONS = {
       inviteCode: 'Code d’invitation\u00a0: les élèves rejoignent la classe en quelques secondes',
       feedback: 'Recueil de retours intégré pour améliorer le produit en continu',
     },
-    acts: {
-      approach: 'De l’observation en classe à trois principes',
-      product: 'Ce que voient les enseignants et les élèves',
-    },
-    productModulesTitle: 'Modules produit livrés',
-    summary: {
-      context: 'La Région Île-de-France a distribué une tablette à chacun des 500\u00a0000 élèves et enseignants de 465 lycées. Dans chaque classe, cela donnait 30\u00a0écrans allumés, 30\u00a0élèves connectés et aucun outil adapté pour garder la maîtrise de la séance. Les solutions existantes oscillaient entre surveillance invasive et fragilité technique.',
-      role: 'Design Lead dans l’équipe produit chargée de réaliser et de déployer SQOOL Classe, pendant près de deux ans, aux côtés de la CPO, de 5\u00a0designers, de chefs de produit et de développeurs. Mon périmètre couvrait les ateliers d’idéation sur la supervision et la projection d’écrans, et la vision d’un outil de suivi devenu médium de collaboration entre enseignants et élèves.',
-      roleItems: [
-        { title: 'Design Lead', detail: 'Équipe produit, près de 2 ans' },
-        { title: 'Recherche terrain', detail: 'Observation en classe' },
-        { title: 'Design system', detail: 'Suite SQOOL' },
-        { title: 'Équipe design', detail: '5\u00a0designers' },
-      ],
-      deliverables: [
-        { title: 'Grille enseignant', detail: 'Une tuile par élève\u00a0: nom, application active, batterie, état de connexion. 32\u00a0élèves lisibles en même temps.' },
-        { title: 'Partage d’écran', detail: 'L’enseignant partage un écran complet ou une fenêtre, et un indicateur confirme que le partage est actif et bien reçu.' },
-        { title: 'Distribution de documents', detail: 'Les documents du stockage local ou de Google Drive arrivent sur les tablettes, avec une notification horodatée.' },
-        { title: 'Expérience élève', detail: 'Une vue classe et une vue groupe, chacune avec ses ressources, ses messages et ses consignes.' },
-        { title: 'Interactions élève', detail: 'Six façons de joindre l’enseignant sans déranger la classe.' },
-        { title: 'Rejoindre une classe', detail: 'Un geste depuis l’accueil élève. Sans identifiant, sans mot de passe, sans configuration.' },
-      ],
-      metrics: [
-        { value: '500\u00a0000', label: 'Élèves et enseignants dotés d’une tablette' },
-        { value: '465', label: 'Établissements équipés en Île-de-France' },
-        { value: '30\u00a0s', label: 'Pour ouvrir une séance et connecter toute la classe' },
-      ],
-    },
-    // Narration resserrée (passe éditoriale) : blocs courts, un visuel chacun. Les textes longs ci-dessus restent dans le fichier.
-    curated: {
-      principles: [
-        { title: 'Lisibilité immédiate', text: 'L’enseignant lit l’état de toute la classe en un regard.' },
-        { title: 'Action en un geste', text: 'Verrouiller les tablettes, envoyer un document ou projeter un contenu tient en un seul geste.' },
-        { title: 'Interface apaisante', text: 'Les alertes visuelles sont réservées aux situations qui le justifient.' },
-      ],
-      teacher: 'L’interface repose sur un composant, la carte élève\u00a0: nom, application en cours, batterie et état de connexion. La grille se lit entre deux explications au tableau, sans analyse, et 32\u00a0élèves restent lisibles en même temps.',
-      students: 'Côté élève, SQOOL Classe n’apparaît que lorsqu’il y a quelque chose à faire\u00a0: rejoindre la séance, recevoir un document, répondre à un sondage. Le reste du temps, la tablette reste un outil de travail ordinaire\u00a0: l’élève travaille sans se sentir surveillé.',
-      joinTitle: 'Rejoindre une classe avec un code',
-      join: 'Les élèves saisissent un code à 4\u00a0chiffres affiché sur l’écran de l’enseignant. Pas de compte, pas de mot de passe, pas de configuration\u00a0: l’enseignant génère le code, les élèves le tapent, la classe est assemblée.',
-    },
-    metaLabels: {
-      role: 'Rôle',
-      type: 'Type',
-      scope: 'Périmètre',
-      company: 'Entreprise',
-    },
-    marketingCaptions: {
-      linkShare: 'L’action «\u202fPartager un lien\u202f» pousse une URL directement dans le navigateur de chaque élève. L’enseignant tape ou colle l’adresse, choisit la cible (toute la classe ou un groupe), et envoie. Chaque écran ouvre la même page au même moment.',
-      inviteCode: 'Les élèves rejoignent la séance en saisissant un code à 4\u00a0chiffres affiché sur l’écran de l’enseignant. Pas de compte, pas de mot de passe, pas de configuration préalable. L’enseignant génère le code, les élèves le tapent, la classe est assemblée en moins de 30\u00a0secondes.',
-      feedback: 'Un module de retour intégré permet aux enseignants de remonter problèmes ou suggestions directement depuis l’interface. Trois options\u00a0: un commentaire sur un élément précis, un commentaire général, ou une demande de support. Cette boucle a alimenté l’amélioration continue du produit tout au long du pilote.',
-    },
   },
-};
+}

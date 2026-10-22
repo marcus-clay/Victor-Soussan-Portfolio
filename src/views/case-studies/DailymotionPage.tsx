@@ -1,13 +1,15 @@
 // Dailymotion Case Study Page
-// Order: hero, summary, then the narration as numbered acts (approach, product, results)
+// Order: hero, summary, then four acts: the challenge and its objectives, the design approach
+// (upload, live, player, specifications), the design system, the results. Each block is a short
+// title and paragraph followed by its visuals, shown large on the shared grey stage.
 
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { ActRule, ActTitle } from '@/components/case-study/ActSection'
 import CaseStudySummary from '@/components/case-study/CaseStudySummary'
 import CaseStudyHero from '@/components/case-study/CaseStudyHero'
+import { StageCarousel, StageFigure, type StageItem } from '@/components/case-studies/CaseStudyMedia'
 import { imgDims } from '@/utils/imageDimensions'
-import { useStableComponent } from '../../hooks/useStableComponent';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import { ArrowRight } from '@phosphor-icons/react';
@@ -57,6 +59,8 @@ const allImagesData: MediaItem[] = [
   { src: '/images/dailymotion/design_system_-_component_library2x.webp', captionKey: 'uiKitComponents', type: 'image' },
 ];
 
+const HERO_SRC = '/images/thumbnail-dailymotion-web-platform.webp';
+
 interface GalleryCardProps {
   item: GalleryItem;
   index: number;
@@ -88,18 +92,13 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick }) => {
   );
 };
 
-// One idea: h3 and one short paragraph (each caps its own measure), one visual below, all in the act column
+// One idea: an h3, one short paragraph (each caps its own measure), its visuals below, all in the act column
 const Block: React.FC<{ id?: string; title: string; text: string; children: React.ReactNode }> = ({ id, title, text, children }) => (
-  <div id={id} className="mb-12 md:mb-14 last:mb-0 scroll-mt-24">
+  <div id={id} className="mb-14 md:mb-16 last:mb-0 scroll-mt-24">
     <h3 className="text-title-3 text-gray-900 mb-2 max-w-[56ch]">{title}</h3>
     <p className="max-w-[62ch] text-base text-gray-600">{text}</p>
-    <div className="mt-6 md:mt-8">{children}</div>
+    <div className="mt-6 md:mt-8 space-y-6 md:space-y-8">{children}</div>
   </div>
-);
-
-// Several visuals of one idea, stacked in the act column
-const Visuals: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <div className="space-y-6 md:space-y-8">{children}</div>
 );
 
 export const DailymotionPage: React.FC<DailymotionPageProps> = ({
@@ -109,10 +108,9 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
   const t = DAILYMOTION_TRANSLATIONS[lang];
   const galleryItems = getDailymotionGalleryItems(lang);
 
-  // Build allImages with translated captions
   // French needs a no-break space before the colon.
   const captionSeparator = lang === 'fr' ? ' : ' : ': ';
-  const allImages = allImagesData.map(item => {
+  const allImages = useMemo(() => allImagesData.map(item => {
     const title = t.captions[item.captionKey as keyof typeof t.captions];
     const desc = t.captions[`${item.captionKey}Desc` as keyof typeof t.captions];
     return {
@@ -120,7 +118,7 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
       type: item.type,
       caption: desc ? `${title}${captionSeparator}${desc}` : title,
     };
-  });
+  }), [t, captionSeparator]);
 
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
@@ -142,34 +140,33 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
     setLightboxOpen(false);
   };
 
-  // Reusable media figure component
-  // The figcaption describes the media, so the image alt stays empty and the
-  // zoom button takes its accessible name from the caption.
-  const MediaFigure = useStableComponent(({ src, caption, captionDesc, type = 'image', className = '' }: {
-    src: string; caption: string; captionDesc?: string; type?: 'image' | 'video'; className?: string;
-  }) => (
-    <figure className={className}>
-      <div
-        {...zoomable(() => openLightbox(src))}
-        aria-label={caption}
-        className="group rounded-xl overflow-hidden cursor-zoom-in ring-1 ring-black/[0.04] [@media(hover:hover)]:hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)]:hover:scale-[1.01] active:scale-[0.99]"
-      >
-        {type === 'video' ? (
-          <VideoPlayer
-            src={src}
-            className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)]:group-hover:scale-[1.02]"
-          />
-        ) : (
-          <img loading="lazy" src={src} {...imgDims(src)} alt=""
-            className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)]:group-hover:scale-[1.02]"
-          />
-        )}
-      </div>
-      <figcaption className="mt-3 text-left text-xs text-gray-500 leading-relaxed">
-        {caption}{captionDesc && ` · ${captionDesc}`}
-      </figcaption>
-    </figure>
-  ));
+  // A visual of the page: its short name under it, its source and its stage treatment here
+  const cap = (key: string) => t.captions[key as keyof typeof t.captions] as string;
+  const visual = (src: string, key: string, extra: Partial<StageItem> = {}): StageItem => ({ src, caption: cap(key), ...extra });
+  const stripProps = { prevLabel: t.ui.previous, nextLabel: t.ui.next, onZoom: openLightbox };
+
+  const uploadStrip: StageItem[] = [
+    visual('/videos/dailymotion/video_-_cancel_upload.mp4', 'cancelUpload', { type: 'video', size: [1730, 1080] }),
+    visual('/videos/dailymotion/video_2025-11-10_02.26.48.mp4', 'thumbnailUpdate', { type: 'video', size: [1080, 1080] }),
+    visual('/videos/dailymotion/video_add_subtitle.mp4', 'addSubtitles', { type: 'video', size: [1080, 1080] }),
+  ];
+  const liveStrip: StageItem[] = [
+    visual('/images/dailymotion/dailymotion_-_live_-_countdown2x.webp', 'preBroadcast', { onStage: true }),
+    visual('/images/dailymotion/dailymotion_-_livestream2x.webp', 'liveMonitor', { onStage: true }),
+  ];
+  const playerStrip: StageItem[] = [
+    visual('/images/dailymotion/dailymotion_-_create_player2x.webp', 'playerConfigurator', { onStage: true }),
+    visual('/videos/dailymotion/Dailymotion_-_video_manager_-_Embed_code_TOP_v6.mp4', 'embedCode', { type: 'video', size: [2048, 2004], maxWidth: 680 }),
+  ];
+  const specsStrip: StageItem[] = [
+    visual('/images/dailymotion/dailymotion_-_share_expanded2x.webp', 'shareModal', { onStage: true }),
+    visual('/images/dailymotion/Share_-_keyboard_input2x.webp', 'keyboardMapping'),
+    visual('/images/dailymotion/dailymotion_-_add_to_playlist_-_spec2x.webp', 'addToPlaylist', { onStage: true }),
+  ];
+  const designSystemStrip: StageItem[] = [
+    visual('/images/dailymotion/design_system_-_component_library2x.webp', 'uiKitComponents'),
+    visual('/images/dailymotion/design_system_-_Styles2x.webp', 'uiKitStyles'),
+  ];
 
   return (
     <div className="min-h-screen bg-[#FDFDFC]">
@@ -217,21 +214,25 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
         ) : (
           /* Full Case Study View */
           <div key="caseStudy">
-            {/* Hero: same structure for every case study. Its intro is the executive summary. */}
-            <CaseStudyHero
-              lang={lang}
-              projectId="dailymotion"
-              title={t.hero.title}
-              intro={t.hero.intro}
-              meta={[
-                { label: t.metaLabels.role, value: t.hero.role },
-                { label: t.metaLabels.scope, value: t.hero.scope },
-              ]}
-              onZoom={() => openLightbox('/images/thumbnail-dailymotion-web-platform.webp')}
-              visualAlt={t.captions.hero}
-              externalHref="https://www.dailymotion.com/partner"
-              externalLabel={t.visitDailymotion}
-            />
+            <div id="top">
+              {/* Hero: same structure for every case study. Its intro is the executive summary. */}
+              <CaseStudyHero
+                lang={lang}
+                projectId="dailymotion"
+                title={t.hero.title}
+                intro={t.hero.intro}
+                meta={[
+                  { label: t.metaLabels.role, value: t.hero.role },
+                  { label: t.metaLabels.period, value: t.hero.period },
+                  { label: t.metaLabels.team, value: t.hero.team },
+                  { label: t.metaLabels.scope, value: t.hero.scope },
+                ]}
+                onZoom={() => openLightbox(HERO_SRC)}
+                visualAlt={t.captions.hero}
+                externalHref="https://www.dailymotion.com/partner"
+                externalLabel={t.visitDailymotion}
+              />
+            </div>
 
             {/* Summary: context, role, deliverables and the sourced numbers. No client testimonial exists for this study. */}
             <CaseStudySummary
@@ -240,54 +241,47 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
               role={t.summary.role}
               roleItems={t.summary.roleItems}
               deliverables={t.summary.deliverables}
-              metrics={[
-                { value: t.impact.partners, label: t.impact.partnersDesc },
-                { value: t.impact.reduction, label: t.impact.reductionDesc },
-                { value: t.impact.components, label: t.impact.componentsDesc },
-              ]}
+              metrics={t.summary.metrics}
             />
 
-            {/* 01 Workflows: three decisions, one proof visual each */}
+            {/* 01 Challenge and objectives: text only, the visuals start with the approach */}
+            <section id="challenge">
+              <ActRule />
+              <div className="act-wide pt-10 md:pt-14 pb-12 md:pb-16">
+                <ActTitle index="01" title={t.challenge.title} />
+                <p className="max-w-[62ch] text-base text-gray-600">{t.challenge.text}</p>
+                <h3 className="mt-8 text-title-3 text-gray-900">{t.challenge.objectivesTitle}</h3>
+                <ul className="mt-3 max-w-[62ch] list-disc pl-5 space-y-1.5 text-base text-gray-600 marker:text-gray-400">
+                  {t.challenge.objectives.map((objective) => (
+                    <li key={objective}>{objective}</li>
+                  ))}
+                </ul>
+              </div>
+            </section>
+
+            {/* 02 Approach: three workflows, then the specifications that carried them to delivery */}
             <section id="approach">
               <ActRule />
               <div className="act-wide pt-10 md:pt-14 pb-12 md:pb-16">
-                <ActTitle index="01" title={t.brief.workflowsTitle} />
-                <p className="max-w-[62ch] text-base text-gray-600">{t.brief.lead}</p>
+                <ActTitle index="02" title={t.approach.title} />
+                <p className="max-w-[62ch] text-base text-gray-600">{t.approach.lead}</p>
 
                 <div className="mt-10 md:mt-12">
-                  <Block id="upload" title={t.upload.question} text={t.brief.upload}>
-                    <Visuals>
-                      <MediaFigure
-                        src="/images/dailymotion/dailymotion_-_upload2x.webp"
-                        caption={t.captions.batchUpload}
-                      />
-                      <MediaFigure
-                        src="/videos/dailymotion/video_-_cancel_upload.mp4"
-                        type="video"
-                        caption={t.captions.cancelUpload}
-                      />
-                    </Visuals>
+                  <Block id="upload" title={t.approach.upload.title} text={t.approach.upload.text}>
+                    <StageFigure item={visual('/images/dailymotion/dailymotion_-_upload2x.webp', 'batchUpload', { onStage: true, maxWidth: 820 })} onZoom={openLightbox} />
+                    <StageCarousel items={uploadStrip} ariaLabel={t.ui.carouselInteractions} {...stripProps} />
                   </Block>
 
-                  <Block id="live" title={t.live.question} text={t.brief.live}>
-                    <MediaFigure
-                      src="/images/dailymotion/dailymotion_-_livestream2x.webp"
-                      caption={t.captions.liveMonitor}
-                    />
+                  <Block id="live" title={t.approach.live.title} text={t.approach.live.text}>
+                    <StageCarousel items={liveStrip} ariaLabel={t.ui.carouselLive} {...stripProps} />
                   </Block>
 
-                  <Block id="player" title={t.player.question} text={t.brief.player}>
-                    <Visuals>
-                      <MediaFigure
-                        src="/images/dailymotion/dailymotion_-_create_player2x.webp"
-                        caption={t.captions.playerConfigurator}
-                      />
-                      <MediaFigure
-                        src="/videos/dailymotion/Dailymotion_-_video_manager_-_Embed_code_TOP_v6.mp4"
-                        type="video"
-                        caption={t.captions.embedCode}
-                      />
-                    </Visuals>
+                  <Block id="player" title={t.approach.player.title} text={t.approach.player.text}>
+                    <StageCarousel items={playerStrip} ariaLabel={t.ui.carouselPlayer} {...stripProps} />
+                  </Block>
+
+                  <Block id="specs" title={t.approach.specs.title} text={t.approach.specs.text}>
+                    <StageCarousel items={specsStrip} ariaLabel={t.ui.carouselSpecs} {...stripProps} />
                   </Block>
                 </div>
 
@@ -297,48 +291,33 @@ export const DailymotionPage: React.FC<DailymotionPageProps> = ({
                     href={`/${lang}/project/dailymotion/gallery`}
                     className="inline-flex items-center gap-1.5 min-h-11 text-sm font-medium text-gray-900 [@media(hover:hover)]:hover:text-gray-500 active:scale-[0.97] transition-[color,transform] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)]"
                   >
-                    {t.acts.viewAll}
+                    {t.ui.viewAll}
                     <ArrowRight size={14} aria-hidden="true" />
                   </Link>
                 </div>
               </div>
             </section>
 
-            {/* 02 Design system: one visual */}
+            {/* 03 Design system */}
             <section id="design-system">
               <ActRule />
               <div className="act-wide pt-10 md:pt-14 pb-12 md:pb-16">
-                <ActTitle index="02" title={t.designSystem.sectionTitle} />
-                <p className="max-w-[62ch] text-base text-gray-600">{t.brief.designSystemLead}</p>
+                <ActTitle index="03" title={t.designSystem.title} />
+                <p className="max-w-[62ch] text-base text-gray-600">{t.designSystem.text}</p>
                 <div className="mt-8 md:mt-10">
-                  <MediaFigure
-                    src="/images/dailymotion/design_system_-_component_library2x.webp"
-                    caption={t.captions.uiKitComponents}
-                  />
+                  <StageCarousel items={designSystemStrip} ariaLabel={t.ui.carouselDesignSystem} {...stripProps} />
                 </div>
               </div>
             </section>
 
-            {/* 03 Results: outcomes only. The three numbers of the summary are not repeated. */}
+            {/* 04 Results: the numbers are in the summary and are not repeated here */}
             <section id="results">
               <ActRule />
               <div className="act-wide pt-10 md:pt-14 pb-12 md:pb-16">
-                <ActTitle index="03" title={t.acts.results} />
-                <p className="max-w-[62ch] text-base text-gray-600">{t.brief.resultsLead}</p>
-
-                <dl id="impact" className="mt-8 border-y border-gray-100">
-                  <div className="flex items-baseline justify-between gap-6 py-4">
-                    <dt className="text-sm text-gray-500">{t.impact.videosDesc}</dt>
-                    <dd className="text-title-3 text-gray-900 tabular-nums">{t.impact.videos}</dd>
-                  </div>
-                </dl>
-
-                {/* Closing visual: the finished video manager, in colour */}
+                <ActTitle index="04" title={t.results.title} />
+                <p className="max-w-[62ch] text-base text-gray-600">{t.results.text}</p>
                 <div className="mt-8 md:mt-10">
-                  <MediaFigure
-                    src="/images/dailymotion/dailymotion_-_video_manager.svg"
-                    caption={t.captions.videoLibrary}
-                  />
+                  <StageFigure item={visual('/images/dailymotion/dailymotion_-_video_manager.svg', 'videoLibrary', { onStage: true })} onZoom={openLightbox} />
                 </div>
               </div>
             </section>

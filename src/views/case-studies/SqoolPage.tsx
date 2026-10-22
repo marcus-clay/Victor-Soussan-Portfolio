@@ -1,5 +1,7 @@
-// SQOOL Ecosystem Case Study Page - Minimalist aesthetic
-// A trunk case study that synthesizes the SQOOL journey (2018-2024)
+// SQOOL Ecosystem Case Study Page
+// A trunk case study that synthesizes the SQOOL journey (2018-2024) and points to Connect and SQOOL Classe.
+// Order: hero, testimonial, summary, then four numbered acts:
+// stakes and objectives, design approach, one app per problem, outcome and lessons.
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
@@ -8,7 +10,6 @@ import CaseStudyHero from '@/components/case-study/CaseStudyHero'
 import CaseStudySummary from '@/components/case-study/CaseStudySummary'
 import { ActRule, ActTitle } from '@/components/case-study/ActSection'
 import CaseStudyTestimonialBlock from '@/components/case-studies/CaseStudyTestimonialBlock'
-import { useStableComponent } from '../../hooks/useStableComponent';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight } from '@phosphor-icons/react';
 import VideoPlayer from '@/components/VideoPlayer';
@@ -16,6 +17,7 @@ import VideoPlayer from '@/components/VideoPlayer';
 import { GalleryItem, getSqoolGalleryItems } from '../../components/BentoGallery';
 import { SqoolTimeline } from './SqoolTimeline';
 import EnhancedLightbox from '../../components/media/EnhancedLightbox';
+import { MediaCarousel, MediaStage, type SuiteMediaItem } from '../../components/case-studies/SuiteMedia';
 
 import { SQOOL_TRANSLATIONS } from '../../data/caseStudyTranslations/sqoolTranslations';
 import { zoomable } from '@/utils/zoomable'
@@ -32,10 +34,15 @@ interface SqoolPageProps {
   onContact?: () => void;
 }
 
-// Media items for lightbox
+const BRAND = '/images/sqool/systeme de marque';
+const HISQOOL = '/images/sqool/hi sqool';
+
+// Media items for the lightbox, in reading order. Nothing is dropped: what the story does not
+// show stays reachable here and in the gallery.
 type MediaItem = { src: string; captionKey: string; type: 'image' | 'video' };
 type LightboxItem = { src: string; caption: string; type: 'image' | 'video' };
 const allImagesData: MediaItem[] = [
+  { src: '/images/thumbnail-sqool-suite.webp', captionKey: 'hero', type: 'image' },
   { src: '/images/sqool/hero_ecosystem_sqool.webp', captionKey: 'hero', type: 'image' },
   { src: '/images/sqool/image-unowhy-region-iledefrance-distribution-rentree.webp', captionKey: 'distribution', type: 'image' },
   { src: '/images/sqool/image-unowhy-shootingphoto-tablette.webp', captionKey: 'tablette', type: 'image' },
@@ -43,42 +50,39 @@ const allImagesData: MediaItem[] = [
   { src: '/images/sqool/sqool_legacy_launcher_eleve.webp', captionKey: 'legacyLauncher', type: 'image' },
   { src: '/images/sqool/sqool_legacy_manager_teacher.webp', captionKey: 'legacyManager', type: 'image' },
   { src: '/images/sqool/sqool_legacy_mdm.webp', captionKey: 'legacyMdm', type: 'image' },
-  { src: '/images/sqool/hi sqool/004 003-hp-scroll-2x.webp', captionKey: 'hisqool', type: 'image' },
+  { src: `${HISQOOL}/004 003-hp-scroll-2x.webp`, captionKey: 'hisqool', type: 'image' },
+  { src: `${HISQOOL}/021 020b-chat-input-doc-comment-2x.webp`, captionKey: 'hisqoolChat', type: 'image' },
+  { src: `${HISQOOL}/hisqoolcomponents2x.webp`, captionKey: 'hisqoolComponents', type: 'image' },
+  { src: `${HISQOOL}/hisqooltokens2x3.webp`, captionKey: 'hisqoolTokens', type: 'image' },
   { src: '/videos/connect/connect-dashboard-prototype-compressed.mp4', captionKey: 'connect', type: 'video' },
   { src: '/videos/connect/Video-demo-bulle-interactions-compressed.mp4', captionKey: 'bulle', type: 'video' },
   { src: '/images/sqool/thumbnail_suite_sqool_blue.webp', captionKey: 'suiteSqool', type: 'image' },
-  // Brand System Visuals
-  { src: '/images/sqool/systeme de marque/visuels_systeme_de_marque_01_2x.webp', captionKey: 'brandVisual01', type: 'image' },
-  { src: '/images/sqool/systeme de marque/visuels_systeme_de_marque_02_2x.webp', captionKey: 'brandVisual02', type: 'image' },
-  { src: '/images/sqool/systeme de marque/visuels_systeme_de_marque_03_2x.webp', captionKey: 'brandVisual03', type: 'image' },
-  { src: '/images/sqool/systeme de marque/visuels_systeme_de_marque_04_2x.webp', captionKey: 'brandVisual04', type: 'image' },
-  { src: '/images/sqool/systeme de marque/visuels_systeme_de_marque_05_2x.webp', captionKey: 'brandVisual05', type: 'image' },
-  { src: '/images/sqool/systeme de marque/visuels_systeme_de_marque_06_2x.webp', captionKey: 'brandVisual06', type: 'image' },
-  { src: '/images/sqool/systeme de marque/visuels_systeme_de_marque_07_2x.webp', captionKey: 'brandVisual07', type: 'image' },
-  { src: '/images/sqool/systeme de marque/visuels_systeme_de_marque_08_2x.webp', captionKey: 'brandVisual08', type: 'image' },
-  { src: '/images/sqool/systeme de marque/visuels_systeme_de_marque_09_2x.webp', captionKey: 'brandVisual09', type: 'image' },
-  { src: '/images/sqool/systeme de marque/visuels_systeme_de_marque_10_2x.webp', captionKey: 'brandVisual10', type: 'image' },
-  { src: '/images/sqool/systeme de marque/visuels_systeme_de_marque_11_2x.webp', captionKey: 'brandVisual11', type: 'image' },
-  { src: '/images/sqool/systeme de marque/visuels_systeme_de_marque_12_2x.webp', captionKey: 'brandVisual12', type: 'image' },
-  { src: '/images/sqool/systeme de marque/visuels_systeme_de_marque_13_2x.webp', captionKey: 'brandVisual13', type: 'image' },
-  { src: '/images/sqool/systeme de marque/visuels_systeme_de_marque_14_2x.webp', captionKey: 'brandVisual14', type: 'image' },
-  { src: '/images/sqool/systeme de marque/visuel_systeme_de_marque_15.webp', captionKey: 'brandVisual15', type: 'image' },
-  { src: '/images/sqool/hi sqool/hisqoolcomponents2x.webp', captionKey: 'designSystem', type: 'image' },
+  // Brand system visuals
+  { src: `${BRAND}/visuels_systeme_de_marque_01_2x.webp`, captionKey: 'brandVisual01', type: 'image' },
+  { src: `${BRAND}/visuels_systeme_de_marque_02_2x.webp`, captionKey: 'brandVisual02', type: 'image' },
+  { src: `${BRAND}/visuels_systeme_de_marque_03_2x.webp`, captionKey: 'brandVisual03', type: 'image' },
+  { src: `${BRAND}/visuels_systeme_de_marque_04_2x.webp`, captionKey: 'brandVisual04', type: 'image' },
+  { src: `${BRAND}/visuels_systeme_de_marque_05_2x.webp`, captionKey: 'brandVisual05', type: 'image' },
+  { src: `${BRAND}/visuels_systeme_de_marque_06_2x.webp`, captionKey: 'brandVisual06', type: 'image' },
+  { src: `${BRAND}/visuels_systeme_de_marque_07_2x.webp`, captionKey: 'brandVisual07', type: 'image' },
+  { src: `${BRAND}/visuels_systeme_de_marque_08_2x.webp`, captionKey: 'brandVisual08', type: 'image' },
+  { src: `${BRAND}/visuels_systeme_de_marque_09_2x.webp`, captionKey: 'brandVisual09', type: 'image' },
+  { src: `${BRAND}/visuels_systeme_de_marque_10_2x.webp`, captionKey: 'brandVisual10', type: 'image' },
+  { src: `${BRAND}/visuels_systeme_de_marque_11_2x.webp`, captionKey: 'brandVisual11', type: 'image' },
+  { src: `${BRAND}/visuels_systeme_de_marque_12_2x.webp`, captionKey: 'brandVisual12', type: 'image' },
+  { src: `${BRAND}/visuels_systeme_de_marque_13_2x.webp`, captionKey: 'brandVisual13', type: 'image' },
+  { src: `${BRAND}/visuels_systeme_de_marque_14_2x.webp`, captionKey: 'brandVisual14', type: 'image' },
+  { src: `${BRAND}/visuel_systeme_de_marque_15.webp`, captionKey: 'brandVisual15', type: 'image' },
+  { src: `${HISQOOL}/hisqoolcomponents2x.webp`, captionKey: 'designSystem', type: 'image' },
   { src: '/images/sqool/sqool classe/Visuel - Comm - Pilotage - accueil - Focus Classe temporaire@2x.webp', captionKey: 'classe', type: 'image' },
-  { src: '/images/sqool/systeme de marque/visuels_systeme_de_marque_04_2x.webp', captionKey: 'partage', type: 'image' },
-  { src: '/images/sqool/systeme de marque/visuels_systeme_de_marque_09_2x.webp', captionKey: 'applications', type: 'image' },
-  { src: '/images/sqool/systeme de marque/visuels_systeme_de_marque_05_2x.webp', captionKey: 'mdm', type: 'image' },
-  { src: '/images/sqool/systeme de marque/visuels_systeme_de_marque_08_2x.webp', captionKey: 'protect', type: 'image' },
-  { src: '/images/sqool/systeme de marque/visuels_systeme_de_marque_07_2x.webp', captionKey: 'extend', type: 'image' },
 ];
 
 interface GalleryCardProps {
   item: GalleryItem;
-  index: number;
   onClick: () => void;
 }
 
-const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick }) => {
+const GalleryCard: React.FC<GalleryCardProps> = ({ item, onClick }) => {
   const isVideo = item.type === 'video' || item.src.match(/\.(mp4|webm|mov)$/i);
   return (
     <motion.figure
@@ -104,15 +108,18 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick }) => {
   );
 };
 
-// One decision: an h3, one short paragraph, at most one visual below it
-// Lives inside the act column: title and paragraph cap their own measure, the visual takes the full column
-const Block: React.FC<{ title: string; text: string; children?: React.ReactNode }> = ({ title, text, children }) => (
-  <div className="mb-14 md:mb-16 last:mb-0">
+// One decision: an h3, one short paragraph, its visual below. Lives inside the act column:
+// title and paragraph cap their own measure, the visual takes the full column.
+const Block: React.FC<{ id?: string; title: string; text: string; children?: React.ReactNode }> = ({ id, title, text, children }) => (
+  <div id={id} className="mb-14 md:mb-16 last:mb-0 scroll-mt-24">
     <h3 className="text-title-3 text-gray-900 mb-3 max-w-[56ch]">{title}</h3>
     <p className="text-base text-gray-600 max-w-[62ch]">{text}</p>
     {children && <div className="mt-6 md:mt-8">{children}</div>}
   </div>
 );
+
+const QUIET_LINK =
+  'inline-flex items-center gap-1.5 min-h-11 text-sm font-medium text-gray-900 [@media(hover:hover)]:hover:text-gray-500 active:scale-[0.97] transition-[color,transform] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)]';
 
 // Visuals of the long narration that the curated story no longer shows, and that the
 // shared gallery list does not hold: appended to the gallery view so nothing is lost.
@@ -121,22 +128,20 @@ const EXTRA_GALLERY_SRCS: { src: string; captionKey: string; type: 'image' | 'vi
   { src: '/videos/connect/connect-dashboard-prototype-compressed.mp4', captionKey: 'connect', type: 'video' },
   { src: '/videos/connect/Video-demo-bulle-interactions-compressed.mp4', captionKey: 'bulle', type: 'video' },
   { src: '/images/sqool/thumbnail_suite_sqool_blue.webp', captionKey: 'suiteSqool', type: 'image' },
-  { src: '/images/sqool/systeme de marque/visuels_systeme_de_marque_03_2x.webp', captionKey: 'brandVisual03', type: 'image' },
-  { src: '/images/sqool/systeme de marque/visuels_systeme_de_marque_05_2x.webp', captionKey: 'brandVisual05', type: 'image' },
-  { src: '/images/sqool/systeme de marque/visuels_systeme_de_marque_10_2x.webp', captionKey: 'brandVisual10', type: 'image' },
-  { src: '/images/sqool/systeme de marque/visuels_systeme_de_marque_11_2x.webp', captionKey: 'brandVisual11', type: 'image' },
-  { src: '/images/sqool/systeme de marque/visuel_systeme_de_marque_15.webp', captionKey: 'brandVisual15', type: 'image' },
+  { src: `${BRAND}/visuels_systeme_de_marque_03_2x.webp`, captionKey: 'brandVisual03', type: 'image' },
+  { src: `${BRAND}/visuels_systeme_de_marque_05_2x.webp`, captionKey: 'brandVisual05', type: 'image' },
+  { src: `${BRAND}/visuels_systeme_de_marque_10_2x.webp`, captionKey: 'brandVisual10', type: 'image' },
+  { src: `${BRAND}/visuels_systeme_de_marque_11_2x.webp`, captionKey: 'brandVisual11', type: 'image' },
+  { src: `${BRAND}/visuel_systeme_de_marque_15.webp`, captionKey: 'brandVisual15', type: 'image' },
 ];
 
 export const SqoolPage: React.FC<SqoolPageProps> = ({
   onClose,
-  systemTheme,
   viewMode,
-  onViewModeChange,
   lang = 'en',
-  onContact,
 }) => {
   const t = SQOOL_TRANSLATIONS[lang];
+  const captions = t.captions as Record<string, string>;
   const baseGalleryItems = getSqoolGalleryItems(lang);
   const galleryItems: GalleryItem[] = [
     ...baseGalleryItems,
@@ -145,32 +150,25 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
       .map(extra => ({
         src: extra.src,
         type: extra.type,
-        caption: t.captions[extra.captionKey as keyof typeof t.captions] as string,
-        captionDesc: t.captions[`${extra.captionKey}Desc` as keyof typeof t.captions] as string | undefined,
+        caption: captions[extra.captionKey],
+        captionDesc: captions[`${extra.captionKey}Desc`],
       })),
   ];
 
-  const captionWithDesc = (caption: string, desc?: string) => (desc ? `${caption} · ${desc}` : caption);
+  const full = (key: string) => (captions[`${key}Desc`] ? `${captions[key]} · ${captions[`${key}Desc`]}` : captions[key]);
 
-  // Story view: every media of the case study, deduplicated by src (several slides reuse the brand visuals)
+  // Story view: every media of the case study, deduplicated by src
   const storyImages: LightboxItem[] = [];
   allImagesData.forEach(item => {
     if (storyImages.some(img => img.src === item.src)) return;
-    storyImages.push({
-      src: item.src,
-      type: item.type,
-      caption: captionWithDesc(
-        t.captions[item.captionKey as keyof typeof t.captions] || '',
-        t.captions[`${item.captionKey}Desc` as keyof typeof t.captions]
-      ),
-    });
+    storyImages.push({ src: item.src, type: item.type, caption: full(item.captionKey) || '' });
   });
 
   // Gallery view: the lightbox follows the gallery cards
   const galleryLightboxImages: LightboxItem[] = galleryItems.map(item => ({
     src: item.src,
     type: item.type,
-    caption: captionWithDesc(item.caption, item.captionDesc),
+    caption: item.captionDesc ? `${item.caption} · ${item.captionDesc}` : item.caption,
   }));
 
   const allImages = viewMode === 'gallery' ? galleryLightboxImages : storyImages;
@@ -216,31 +214,43 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [lightboxOpen, onClose]);
 
-  // Reusable media figure
-  const MediaFigure = useStableComponent(({ src, alt, caption, captionDesc, type = 'image', className = '', priority = false }: {
-    src: string; alt: string; caption: string; captionDesc?: string; type?: 'image' | 'video'; className?: string; priority?: boolean;
-  }) => (
-    <figure className={className}>
-      <div
-        {...zoomable(() => openLightbox(src))}
-        className="group rounded-xl overflow-hidden cursor-zoom-in ring-1 ring-black/[0.04] [@media(hover:hover)]:hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)]:hover:scale-[1.01] active:scale-[0.99]"
-      >
-        {type === 'video' ? (
-          <VideoPlayer
-            src={src}
-            className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)]:group-hover:scale-[1.02]"
-          />
-        ) : (
-          <img loading={priority ? 'eager' : 'lazy'} fetchPriority={priority ? 'high' : undefined} src={src} {...imgDims(src)} alt={alt}
-            className="w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)]:group-hover:scale-[1.02]"
-          />
-        )}
-      </div>
-      <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
-        {caption}{captionDesc && ` · ${captionDesc}`}
-      </figcaption>
-    </figure>
-  ));
+  // A visual of the story: its source, its caption key, and how it sits on the grey stage
+  const media = (src: string, key: string, extra: Partial<SuiteMediaItem> = {}): SuiteMediaItem => ({
+    src,
+    caption: full(key),
+    type: /\.(mp4|webm|mov)$/i.test(src) ? 'video' : 'image',
+    ...extra,
+  });
+
+  const carouselLabels = { prev: t.ui.prev, next: t.ui.next, slide: t.ui.slide };
+
+  const legacySlides = [
+    media('/images/sqool/image-unowhy-region-iledefrance-distribution-rentree.webp', 'distribution'),
+    media('/images/sqool/sqool_legacy_launcher_eleve.webp', 'legacyLauncher', { inset: true }),
+    media('/images/sqool/sqool_legacy_manager_teacher.webp', 'legacyManager'),
+    media('/images/sqool/sqool_legacy_mdm.webp', 'legacyMdm'),
+  ];
+  const hisqoolSlides = [
+    media(`${HISQOOL}/004 003-hp-scroll-2x.webp`, 'hisqool'),
+    media(`${HISQOOL}/021 020b-chat-input-doc-comment-2x.webp`, 'hisqoolChat'),
+    media(`${HISQOOL}/hisqoolcomponents2x.webp`, 'hisqoolComponents', { inset: true }),
+    media(`${HISQOOL}/hisqooltokens2x3.webp`, 'hisqoolTokens'),
+  ];
+  const systemSlides = [
+    media(`${BRAND}/visuels_systeme_de_marque_13_2x.webp`, 'brandVisual13', { inset: true }),
+    media(`${BRAND}/visuels_systeme_de_marque_02_2x.webp`, 'brandVisual02', { inset: true }),
+    media(`${BRAND}/visuels_systeme_de_marque_01_2x.webp`, 'brandVisual01'),
+    media(`${BRAND}/visuels_systeme_de_marque_14_2x.webp`, 'brandVisual14'),
+    media(`${BRAND}/visuels_systeme_de_marque_12_2x.webp`, 'brandVisual12'),
+    media(`${BRAND}/visuel_systeme_de_marque_15.webp`, 'brandVisual15', { inset: true }),
+  ];
+  const appSlides = [
+    media('/images/sqool/sqool classe/Visuel - Comm - Pilotage - accueil - Focus Classe temporaire@2x.webp', 'classe'),
+    media(`${BRAND}/visuels_systeme_de_marque_04_2x.webp`, 'partage'),
+    media(`${BRAND}/visuels_systeme_de_marque_09_2x.webp`, 'applications'),
+    media(`${BRAND}/visuels_systeme_de_marque_08_2x.webp`, 'protect'),
+    media(`${BRAND}/visuels_systeme_de_marque_07_2x.webp`, 'extend'),
+  ];
 
   return (
     <div ref={containerRef} className="min-h-screen bg-[#FDFDFC]">
@@ -271,11 +281,10 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
             className="wrap py-8 md:py-12"
           >
             <div className="columns-1 sm:columns-2 lg:columns-3 gap-4">
-              {galleryItems.map((item, index) => (
+              {galleryItems.map((item) => (
                 <GalleryCard
-                  key={index}
+                  key={item.src}
                   item={item}
-                  index={index}
                   onClick={() => openLightbox(item.src)}
                 />
               ))}
@@ -296,7 +305,7 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
                 { label: t.metaLabels.company, value: t.meta.company },
               ]}
               onZoom={() => openLightbox('/images/thumbnail-sqool-suite.webp')}
-              visualAlt={t.captions.hero}
+              visualAlt={captions.hero}
             />
 
             {/* Client testimonial, right under the hero, in the act column */}
@@ -320,121 +329,120 @@ export const SqoolPage: React.FC<SqoolPageProps> = ({
               roleItems={t.summary.roleItems}
               deliverables={t.summary.deliverables}
               metrics={[
-                { value: t.impact.users, label: t.impact.usersDesc },
-                { value: t.impact.schools, label: t.impact.schoolsDesc },
-                { value: t.impact.apps, label: t.impact.appsDesc },
+                { value: lang === 'fr' ? '500 000+' : '500,000+', label: lang === 'fr' ? 'Élèves et enseignants' : 'Students and teachers' },
+                { value: '465', label: lang === 'fr' ? 'Établissements équipés en Île-de-France' : 'Schools equipped across Île-de-France' },
+                { value: '7', label: lang === 'fr' ? 'Applications web livrées' : 'Web applications shipped' },
               ]}
             />
 
-            {/* 01 Approach: the challenge, the journey, three decisions. One timeline, one visual per decision. */}
+            {/* 01 Stakes and objectives */}
+            <section id="stakes">
+              <ActRule />
+              <div className="act-wide pt-10 md:pt-14 pb-12 md:pb-16">
+                <ActTitle index="01" title={t.acts.stakes} />
+                <p className="max-w-[62ch] text-base text-gray-600">{t.stakes.text1}</p>
+
+                <div className="mt-8 md:mt-10">
+                  <MediaCarousel items={legacySlides} label={t.ui.legacyLabel} labels={carouselLabels} onOpen={openLightbox} />
+                </div>
+
+                <p className="mt-12 max-w-[62ch] text-base text-gray-600">{t.stakes.text2}</p>
+                <h3 className="text-title-3 text-gray-900 mt-10 mb-3 max-w-[56ch]">{t.stakes.objectivesTitle}</h3>
+                <ul className="max-w-[62ch] divide-y divide-gray-100 border-t border-gray-100">
+                  {t.stakes.objectives.map((o) => (
+                    <li key={o.title} className="py-4">
+                      <span className="block text-base font-medium text-gray-900">{o.title}</span>
+                      <span className="block mt-1 text-base text-gray-600">{o.text}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </section>
+
+            {/* 02 Design approach: the journey at a glance, then four moves */}
             <section id="approach">
               <ActRule />
               <div className="act-wide pt-10 md:pt-14 pb-12 md:pb-16">
-                <ActTitle index="01" title={t.acts.approach} />
-                <p className="text-base text-gray-600 max-w-[62ch]">{t.curated.lead}</p>
+                <ActTitle index="02" title={t.acts.approach} />
 
-                <div className="mt-10 md:mt-12">
+                <div className="mt-6 md:mt-8">
                   <SqoolTimeline lang={lang} />
                 </div>
 
                 <div className="mt-14 md:mt-16">
-                  <div id="phase1">
-                    <Block title={t.curated.hisqool.title} text={t.curated.hisqool.text}>
-                      <MediaFigure
-                        src="/images/sqool/hi sqool/004 003-hp-scroll-2x.webp"
-                        alt={t.captions.hisqool}
-                        caption={t.captions.hisqool}
-                        captionDesc={t.captions.hisqoolDesc}
-                      />
-                    </Block>
+                  <Block id="hisqool" title={t.approach.hisqool.title} text={t.approach.hisqool.text}>
+                    <MediaCarousel items={hisqoolSlides} label={t.ui.hisqoolLabel} labels={carouselLabels} onOpen={openLightbox} />
+                  </Block>
 
-                    <Block title={t.curated.connect.title} text={t.curated.connect.text}>
-                      {/* Two interaction videos: the dashboard prototype and La Bulle */}
-                      <div className="grid gap-x-6 gap-y-8 md:grid-cols-2 items-start">
-                        <MediaFigure
-                          src="/videos/connect/connect-dashboard-prototype-compressed.mp4"
-                          alt={t.captions.connect}
-                          caption={t.captions.connect}
-                          type="video"
-                        />
-                        <MediaFigure
-                          src="/videos/connect/Video-demo-bulle-interactions-compressed.mp4"
-                          alt={t.captions.bulle}
-                          caption={t.captions.bulle}
-                          type="video"
-                        />
-                      </div>
-                    </Block>
-                  </div>
+                  <Block id="connect" title={t.approach.connect.title} text={t.approach.connect.text}>
+                    <MediaStage item={media('/videos/connect/connect-dashboard-prototype-compressed.mp4', 'connect')} onOpen={openLightbox} />
+                    <Link href={`/${lang}/project/connect`} className={`${QUIET_LINK} mt-4`}>
+                      {t.approach.connect.link}
+                      <ArrowRight size={14} aria-hidden="true" />
+                    </Link>
+                  </Block>
 
-                  <div id="phase2" className="mt-14 md:mt-16">
-                    <Block title={t.curated.pivot.title} text={t.curated.pivot.text}>
-                      <MediaFigure
-                        src="/images/sqool/thumbnail_suite_sqool_blue.webp"
-                        alt={t.captions.suiteSqool}
-                        caption={t.captions.suiteSqool}
-                      />
-                    </Block>
-                  </div>
+                  <Block id="pivot" title={t.approach.pivot.title} text={t.approach.pivot.text}>
+                    <MediaStage item={media('/images/sqool/thumbnail_suite_sqool_blue.webp', 'suiteSqool')} onOpen={openLightbox} />
+                  </Block>
+
+                  <Block id="system" title={t.approach.system.title} text={t.approach.system.text}>
+                    <MediaCarousel items={systemSlides} label={t.ui.systemLabel} labels={carouselLabels} onOpen={openLightbox} />
+                  </Block>
                 </div>
               </div>
             </section>
 
-            {/* 02 Product: the system, then the two apps that carry the pivot */}
-            <section id="product">
+            {/* 03 One app per audience and per problem */}
+            <section id="deliverables">
               <ActRule />
               <div className="act-wide pt-10 md:pt-14 pb-12 md:pb-16">
-                <ActTitle index="02" title={t.acts.product} />
+                <ActTitle index="03" title={t.acts.deliverables} />
+                <p className="max-w-[62ch] text-base text-gray-600">{t.apps.text}</p>
 
-                <div id="phase3" className="mt-4 md:mt-6">
-                  <Block title={t.curated.system.title} text={t.curated.system.text}>
-                    <MediaFigure
-                      src="/images/sqool/systeme de marque/visuels_systeme_de_marque_13_2x.webp"
-                      alt={t.captions.brandVisual13}
-                      caption={t.captions.brandVisual13}
-                      captionDesc={t.captions.brandVisual13Desc}
-                    />
-                  </Block>
+                <ul className="mt-8 max-w-[62ch] divide-y divide-gray-100 border-t border-gray-100">
+                  {t.apps.items.map((app) => (
+                    <li key={app.title} className="py-4">
+                      <span className="block text-base font-medium text-gray-900">{app.title}</span>
+                      <span className="block mt-1 text-base text-gray-600">{app.text}</span>
+                      {'link' in app && app.link && (
+                        <Link href={`/${lang}/project/sqool-classe`} className={`${QUIET_LINK} mt-1`}>
+                          {app.link}
+                          <ArrowRight size={14} aria-hidden="true" />
+                        </Link>
+                      )}
+                    </li>
+                  ))}
+                </ul>
 
-                  <Block title={t.curated.classe.title} text={t.curated.classe.text}>
-                    <MediaFigure
-                      src="/images/sqool/sqool classe/Visuel - Comm - Pilotage - accueil - Focus Classe temporaire@2x.webp"
-                      alt={t.captions.classe}
-                      caption={t.captions.classe}
-                      captionDesc={t.captions.classeDesc}
-                    />
-                  </Block>
+                <div className="mt-10 md:mt-12">
+                  <MediaCarousel items={appSlides} label={t.ui.appsLabel} labels={carouselLabels} onOpen={openLightbox} />
+                </div>
+              </div>
+            </section>
 
-                  <Block title={t.curated.partage.title} text={t.curated.partage.text}>
-                    <MediaFigure
-                      src="/images/sqool/systeme de marque/visuels_systeme_de_marque_04_2x.webp"
-                      alt={t.captions.partage}
-                      caption={t.captions.partage}
-                      captionDesc={t.captions.partageDesc}
-                    />
-                  </Block>
+            {/* 04 Outcome and lessons */}
+            <section id="outcome">
+              <ActRule />
+              <div className="act-wide pt-10 md:pt-14 pb-12 md:pb-16">
+                <ActTitle index="04" title={t.acts.outcome} />
+                <p className="max-w-[62ch] text-base text-gray-600">{t.outcome.text}</p>
 
-                  {/* Gallery access */}
-                  <Link
-                    href={`/${lang}/project/sqool/gallery`}
-                    className="inline-flex items-center gap-2 min-h-11 text-sm font-medium text-gray-900 [@media(hover:hover)]:hover:text-gray-500 active:scale-[0.97] transition-[color,transform] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)]"
-                  >
-                    {t.viewAllVisuals}
+                <h3 className="text-title-3 text-gray-900 mt-12 mb-3 max-w-[56ch]">{t.outcome.learningsTitle}</h3>
+                <ul className="max-w-[62ch] divide-y divide-gray-100 border-t border-gray-100">
+                  {t.outcome.learnings.map((l) => (
+                    <li key={l.title} className="py-4">
+                      <span className="block text-base font-medium text-gray-900">{l.title}</span>
+                      <span className="block mt-1 text-base text-gray-600">{l.text}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="mt-10 md:mt-12">
+                  <Link href={`/${lang}/project/sqool/gallery`} className={QUIET_LINK}>
+                    {t.outcome.viewAll}
                     <ArrowRight size={14} aria-hidden="true" />
                   </Link>
-                </div>
-              </div>
-            </section>
-
-            {/* 03 Learnings */}
-            <section id="learnings">
-              <ActRule />
-              <div className="act-wide pt-10 md:pt-14 pb-12 md:pb-16">
-                <ActTitle index="03" title={t.acts.learnings} />
-                <div className="mt-4 md:mt-6">
-                  {t.learnings.items.map((learning, index) => (
-                    <Block key={index} title={learning.title} text={learning.desc} />
-                  ))}
                 </div>
               </div>
             </section>

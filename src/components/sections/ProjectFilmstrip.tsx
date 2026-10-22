@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { ArrowLeft, ArrowRight } from '@phosphor-icons/react'
 import { getProjects } from '@/data/projectsData'
 import { getTestimonials } from '@/data/testimonialsData'
+import { getProjectTags } from '@/data/projectTags'
 import { CASE_STUDY_SHELL } from '@/data/caseStudyShell'
 import { imgDims } from '@/utils/imageDimensions'
 import { useSnapScroller } from '@/hooks/useSnapScroller'
@@ -26,7 +27,7 @@ const COPY = {
     prev: 'Previous case study',
     next: 'Next case study',
     all: 'All projects',
-    facts: 'Role',
+    facts: 'Sector and type',
   },
   fr: {
     label: 'Études de cas',
@@ -34,7 +35,7 @@ const COPY = {
     prev: 'Étude de cas précédente',
     next: 'Étude de cas suivante',
     all: 'Tous les projets',
-    facts: 'Rôle',
+    facts: 'Secteur et type',
   },
 } as const
 
@@ -204,20 +205,20 @@ export default function ProjectFilmstrip({ lang }: ProjectFilmstripProps) {
               aria-labelledby={titleId}
               aria-describedby={summaryId}
               draggable={false}
-              className="hero-panel group block shrink-0 snap-start w-[86vw] md:w-[84vw] min-w-[300px] max-w-[1520px] aspect-[16/10] select-none shadow-sm transition-[transform,box-shadow] duration-300 [@media(hover:hover)]:hover:scale-[1.01] [@media(hover:hover)]:hover:shadow-lg active:scale-[0.99] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gray-900"
+              className="hero-panel group block shrink-0 snap-start w-[86vw] md:w-[84vw] min-w-[300px] max-w-[1215px] aspect-[3/2] select-none shadow-sm transition-[transform,box-shadow] duration-300 [@media(hover:hover)]:hover:scale-[1.01] [@media(hover:hover)]:hover:shadow-lg active:scale-[0.99] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gray-900"
               style={{ backgroundColor: shell.tone, transitionTimingFunction: easing }}
             >
               <img
                 src={shell.visual}
                 srcSet={srcSet}
-                sizes={srcSet ? '(min-width: 1405px) 1180px, 86vw' : undefined}
+                sizes={srcSet ? '(min-width: 1450px) 1215px, 86vw' : undefined}
                 {...imgDims(shell.visual)}
                 alt=""
                 draggable={false}
                 loading={i < 2 ? 'eager' : 'lazy'}
                 fetchPriority={i === 0 ? 'high' : undefined}
                 className={`absolute inset-0 z-[1] w-full h-full transition-transform duration-300 [@media(hover:hover)]:group-hover:scale-[1.02] ${
-                  shell.fit === 'cover' ? 'object-cover' : 'object-contain p-[4%] pb-[12%] md:pb-[14%]'
+                  shell.fit === 'cover' || shell.fit === 'bleed' ? 'object-cover' : 'object-contain p-[4%] pb-[12%] md:pb-[14%]'
                 }`}
                 style={{
                   transitionTimingFunction: easing,
@@ -237,6 +238,15 @@ export default function ProjectFilmstrip({ lang }: ProjectFilmstripProps) {
                 }}
               />
 
+              {/* Hover: a white pill with an arrow, top right, like the case study cards of the reference.
+                  Only where a pointer can hover; the whole card is already the link. */}
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute z-[3] right-8 top-8 hidden h-12 w-12 items-center justify-center rounded-full bg-white text-gray-900 opacity-0 scale-90 transition-[opacity,transform] duration-200 ease-out [@media(hover:hover)]:flex [@media(hover:hover)]:group-hover:opacity-100 [@media(hover:hover)]:group-hover:scale-100"
+              >
+                <ArrowRight size={20} weight="regular" />
+              </span>
+
               {/* Caption: directly on the picture, lower left */}
               <div className="absolute z-[3] left-4 bottom-4 md:left-8 md:bottom-8 xl:left-10 xl:bottom-10 max-w-[calc(100%-2rem)] md:max-w-[34rem]">
                 <h3 id={titleId} className={`text-subhead ${light ? 'text-white' : 'text-gray-900'}`}>
@@ -249,7 +259,7 @@ export default function ProjectFilmstrip({ lang }: ProjectFilmstripProps) {
                   {project.summary}
                 </p>
                 <ul className="hidden sm:flex flex-wrap gap-2 mt-4 md:mt-5" aria-label={t.facts}>
-                  {[project.role].map((fact) => (
+                  {getProjectTags(project.id, lang).map((fact) => (
                     <li
                       key={fact}
                       className={`inline-flex min-h-8 items-center rounded-full border px-3 text-micro uppercase tracking-[0.08em] ${

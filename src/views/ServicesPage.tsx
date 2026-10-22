@@ -259,7 +259,7 @@ function DeliverablesCard({
 function CaseCard({ project, lang }: { project: Project; lang: Language }) {
   const shell = CASE_STUDY_SHELL[project.id]
   const srcSet = srcSetFor(shell.visual)
-  const cover = shell.fit === 'cover'
+  const cover = shell.fit === 'cover' || shell.fit === 'bleed'
 
   return (
     <Link

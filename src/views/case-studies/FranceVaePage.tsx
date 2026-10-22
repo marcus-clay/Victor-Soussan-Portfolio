@@ -91,6 +91,11 @@ const ALL_MEDIA = [
   { src: '/images/francevae/workspace UX 05 - uxr.webp', caption: 'User Research Hub', captionFr: 'Pôle de recherche utilisateur' },
   { src: '/images/francevae/workspace UX 06 - uxr - etudes.webp', caption: 'Research Studies', captionFr: 'Études de recherche' },
   { src: '/images/francevae/workspace UX 07 - uxr - annuaire.webp', caption: 'UXR Participant Directory', captionFr: 'Annuaire des participants de recherche' },
+  // Product screens of the case study that are not shown in the narration: kept reachable here
+  { src: '/images/francevae/VAE Collective/Landing page/Landing âge Entreprises@2x.webp', caption: 'VAE Collective: employer landing page', captionFr: 'VAE Collective\u00a0: page d’accueil dédiée aux entreprises' },
+  { src: '/images/francevae/VAE Collective/img vae collective complete - short.webp', caption: 'VAE Collective: project page on France VAE', captionFr: 'VAE Collective\u00a0: page de lancement d’un projet sur France VAE' },
+  { src: '/images/francevae/UXR - Tableau de bord candidat (Mai - Juillet 25)/UI/Candidature Catalogue.webp', caption: 'Candidate dashboard: application and certification catalog', captionFr: 'Tableau de bord candidat\u00a0: candidature et catalogue de certifications' },
+  { src: '/images/francevae/Design ops/figma workspace 07@2x.webp', caption: 'Figma files organized by user journey', captionFr: 'Fichiers Figma organisés par parcours utilisateur' },
   // Homepage before and after: the two sides of the comparison slider of the case study
   { src: '/images/francevae/france_vae_home_before_2x.webp', caption: 'France VAE homepage before the redesign', captionFr: 'Page d’accueil France VAE avant la refonte' },
   { src: '/images/francevae/france_vae_home_after_2x.webp', caption: 'France VAE homepage after the redesign', captionFr: 'Page d’accueil France VAE après la refonte' },

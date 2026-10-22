@@ -8,17 +8,26 @@
  *   never cropped. `tone` is the panel ground: the shared stage grey (#E8E8E8) for every light project (the visuals are
  *   transparent cut-outs), RiskOS being the one dark exception like its whole page.
  * - `fit: 'cover'` fills the panel instead, for photographs that survive a crop.
+ * - `fit: 'bleed'` fills the panel with a picture composed for it (devices running off the edge)
+ *   on the panel's own tone: it crops like a photograph but keeps the dark-on-light caption.
  */
 export interface CaseStudyShell {
   client: string
   logo?: string
   visual: string
   tone: string
-  fit?: 'contain' | 'cover'
+  fit?: 'contain' | 'cover' | 'bleed'
   position?: string
 }
 
 export const CASE_STUDY_SHELL: Record<string, CaseStudyShell> = {
+  tessan: {
+    client: 'Tessan',
+    logo: '/images/tessan/tessan-logo.svg',
+    visual: '/images/tessan/cover_tessan_front.webp',
+    tone: '#E8E8E8',
+    fit: 'bleed',
+  },
   toolkit: {
     client: 'Toolkit',
     logo: '/images/toolkit/Logo toolkit - light bg - large - horizontal.svg',

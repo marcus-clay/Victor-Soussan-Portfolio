@@ -99,6 +99,8 @@ const nextConfig: NextConfig = {
     { source: '/:lang(en|fr)/interventions', destination: '/:lang/contact#interventions', permanent: true },
     // Old signal routes
     { source: '/signal/:id', destination: '/en/signal/:id', permanent: true },
+    // The Tessan project page used to be a short project under another id
+    { source: '/:lang(en|fr)/project/telemedicine-patient-app/:view*', destination: '/:lang/project/tessan', permanent: true },
     // One canonical URL per project: /summary and /full (single 301 hop, with or without language prefix)
     { source: '/:lang(en|fr)/project/:id/:view(summary|full)', destination: '/:lang/project/:id', permanent: true },
     { source: '/project/:id/:view(summary|full)', destination: '/en/project/:id', permanent: true },

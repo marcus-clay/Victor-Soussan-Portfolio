@@ -10,7 +10,6 @@ import {
   Stethoscope,
 } from '@phosphor-icons/react/ssr';
 import type { Language } from './translations';
-import { TESSAN_BODY } from './tessanCaseStudy';
 
 export type ProjectFormat = 'case-study' | 'short'
 export type ProjectCategory = 'product-design' | 'ai-experiment' | 'prototype' | 'concept'
@@ -48,6 +47,38 @@ export interface Project {
 export const getProjects = (lang: Language): Project[] => {
   const isEn = lang === 'en';
   return [
+    {
+      id: "tessan",
+      format: 'case-study',
+      category: 'product-design',
+      title: "Tessan",
+      navTitle: isEn ? "Tessan, patient app" : "Tessan, application patient",
+      role: isEn ? "First designer, design lead and product owner" : "Premier designer, lead design et product owner",
+      summary: isEn
+        ? "Patient app rebuilt in 30 days, an AI assistant under regulatory constraints, a design system and a product management system an AI can query, in three months."
+        : "Application patient reconstruite en 30 jours, assistant IA sous contrainte réglementaire, design system et gestion produit lisible par une IA, en trois mois.",
+      missions: isEn ? [
+        "Led design and product of the patient app, rebuilt in 30 days with a tech lead and two developers",
+        "Redesigned the consultation funnel from field research and an audit of 25 screens",
+        "Framed an AI assistant that is not allowed to diagnose, as interface rules",
+        "Overhauled the product management system so an AI can query it"
+      ] : [
+        "Pilotage design et produit de l'application patient, reconstruite en 30 jours avec un tech lead et deux développeurs",
+        "Refonte du tunnel de consultation à partir de la recherche terrain et d'un audit de 25 écrans",
+        "Cadrage d'un assistant IA qui n'a pas le droit de diagnostiquer, traduit en règles d'interface",
+        "Refonte du système de gestion produit pour qu'une IA puisse l'interroger"
+      ],
+      system: {
+        title: isEn ? "A design system for three stacks" : "Un design system pour trois stacks",
+        desc: isEn ? "Shared tokens between Angular, React and Figma, a component kit for everything new, and a skills pack that makes Claude Code produce aligned code." : "Des tokens partagés entre Angular, React et Figma, un kit de composants pour tout ce qui est neuf et un pack de skills qui fait produire à Claude Code du code aligné."
+      },
+      deliverables: isEn
+        ? ["Patient app (iOS, Android)", "Consultation funnel", "Health Assistant framework", "Design system and tokens", "Product management system", "Health Hub vision"]
+        : ["Application patient (iOS, Android)", "Tunnel de consultation", "Cadre de l'Assistant Santé", "Design system et tokens", "Système de gestion produit", "Vision Hub Santé"],
+      icon: <Stethoscope size={24} />,
+      color: "blue",
+      coverImage: "/images/tessan/cover_tessan_front.webp"
+    },
     {
       id: "riskos",
       format: 'case-study',
@@ -369,12 +400,12 @@ export const getProjects = (lang: Language): Project[] => {
         "Designed the full interaction model for a 280dp circular display",
         "Defined active and ambient mode screens for battery efficiency",
         "Collaborated daily with developer Thibault Fighiera on device builds",
-        "Shipped on Google Play within 3 months"
+        "Shipped on Google Play within 2 months"
       ] : [
         "Conception du modèle d'interaction pour un écran circulaire de 280dp",
         "Définition des écrans actifs et mode ambiant pour l'autonomie batterie",
         "Collaboration quotidienne avec le développeur Thibault Fighiera",
-        "Mis en ligne sur Google Play en 3 mois"
+        "Mis en ligne sur Google Play en 2 mois"
       ],
       system: {
         title: isEn ? "Wearable Design System" : "Design System Wearables",
@@ -440,30 +471,6 @@ export const getProjects = (lang: Language): Project[] => {
       coverImage: "/articles/Experimentation Claude Code - design system, ui, figma, claude/thumnbnail claude code - figma mcp.webp",
       // videoUrl: the demo file was never committed. Add it under public/articles/... and restore this line.
       status: "shipped"
-    },
-    {
-      id: "telemedicine-patient-app",
-      format: 'short',
-      category: 'product-design',
-      title: isEn ? "Tessan: rebuilding the patient app in 30 days" : "Tessan : reconstruire l'application patient en 30 jours",
-      navTitle: isEn ? "Tessan, patient app" : "Tessan, application patient",
-      role: isEn ? "First designer, design lead and product owner" : "Premier designer, lead design et product owner",
-      summary: isEn
-        ? "Patient app rebuilt in 30 days, an AI assistant under regulatory constraints, a design system and a product management system an AI can query, in three months."
-        : "Application patient reconstruite en 30 jours, assistant IA sous contrainte réglementaire, design system et gestion produit lisible par une IA, en trois mois.",
-      shortDescription: isEn
-        ? "Three month engagement (April to July 2026) at Tessan, a digital health company that equips pharmacies with telemedicine booths. As the company's first designer, I was design lead and product owner of the patient app, rebuilt in 30 days with a tech lead and two developers. In parallel, I laid down a design system, the design framework of an AI assistant that is not allowed to diagnose, and a product management system that an AI can query."
-        : "Mission de trois mois (avril à juillet 2026) chez Tessan, société de santé numérique qui équipe des pharmacies de cabines de téléconsultation. Premier designer de l'entreprise, j'ai été lead design et product owner de l'application patient, reconstruite en 30 jours avec un tech lead et deux développeurs. En parallèle, j'ai posé un design system, le cadre de conception d'un assistant IA qui n'a pas le droit de diagnostiquer, et un système de gestion produit qu'une IA peut interroger.",
-      body: isEn ? TESSAN_BODY.en : TESSAN_BODY.fr,
-      heroInBody: true,
-      missions: [],
-      system: { title: '', desc: '' },
-      deliverables: isEn
-        ? ["Patient app (iOS, Android)", "Design system and tokens", "Design framework of the Health Assistant", "Product management system an AI can query", "Product vision deck", "Store listing art direction"]
-        : ["Application patient (iOS, Android)", "Design system et tokens", "Cadre de conception de l'Assistant Santé", "Système de gestion produit lisible par une IA", "Deck de vision produit", "Direction artistique des fiches stores"],
-      icon: <Stethoscope size={24} />,
-      color: "blue",
-      coverImage: "/images/tessan/cover_tessan_app.webp"
     }
   ];
 };

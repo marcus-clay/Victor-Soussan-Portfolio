@@ -15,7 +15,7 @@ import { TRANSLATIONS } from '@/data/translations'
 import { useScrollDirection } from '@/hooks/useScrollDirection'
 import { scrollToElement } from '@/utils/smoothScroll'
 
-type ProjectId = 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'sqool-classe' | 'france-vae' | 'pagesjaunes' | 'androidwear' | 'riskos'
+type ProjectId = 'tessan' | 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'sqool-classe' | 'france-vae' | 'pagesjaunes' | 'androidwear' | 'riskos'
 
 // Dark theme disabled: all projects render light
 const DARK_PROJECTS: string[] = []
@@ -25,62 +25,81 @@ type TOCSections = { id: string; label_en: string; label_fr: string }[]
 
 // Case study TOC (the canonical page is always the full view)
 const FULL_TOC: Record<string, TOCSections> = {
+  tessan: [
+    { id: 'top', label_en: "Intro", label_fr: "Intro" },
+    { id: 'summary', label_en: "Summary", label_fr: "Synthèse" },
+    { id: 'app', label_en: "The app", label_fr: "L'application" },
+    { id: 'tunnel', label_en: "The funnel", label_fr: "Le tunnel" },
+    { id: 'assistant', label_en: "The assistant", label_fr: "L'assistant" },
+    { id: 'design-system', label_en: "Design system", label_fr: "Design system" },
+    { id: 'gestion-produit', label_en: "Product management", label_fr: "Gestion produit" },
+    { id: 'vision', label_en: "Vision", label_fr: "Vision" },
+    { id: 'limites', label_en: "Limits", label_fr: "Limites" },
+  ],
   toolkit: [
     { id: 'top', label_en: "Intro", label_fr: "Intro" },
     { id: 'summary', label_en: "Summary", label_fr: "Synthèse" },
-    { id: 'context', label_en: "Context and approach", label_fr: "Contexte et approche" },
-    { id: 'phases', label_en: "Three phases", label_fr: "Trois phases" },
+    { id: 'context', label_en: "Challenge and objectives", label_fr: "Enjeu et objectifs" },
+    { id: 'phases', label_en: "Design approach", label_fr: "Approche de conception" },
     { id: 'design-system', label_en: "Design system", label_fr: "Design system" },
-    { id: 'impact', label_en: "Impact", label_fr: "Impact" },
+    { id: 'impact', label_en: "Results", label_fr: "Résultats" },
   ],
   connect: [
     { id: 'top', label_en: "Intro", label_fr: "Intro" },
     { id: 'summary', label_en: "Summary", label_fr: "Synthèse" },
-    { id: 'dashboard', label_en: "The dashboard", label_fr: "Le tableau de bord" },
+    { id: 'stakes', label_en: "Stakes", label_fr: "Enjeu" },
+    { id: 'approach', label_en: "Approach", label_fr: "Démarche" },
     { id: 'bulle', label_en: "La Bulle", label_fr: "La Bulle" },
+    { id: 'deliverables', label_en: "Deliverables", label_fr: "Livrables" },
+    { id: 'outcome', label_en: "Outcome", label_fr: "Résultat" },
   ],
   dailymotion: [
     { id: 'top', label_en: "Intro", label_fr: "Intro" },
     { id: 'summary', label_en: "Summary", label_fr: "Synthèse" },
-    { id: 'approach', label_en: "Three workflows", label_fr: "Trois flux" },
+    { id: 'challenge', label_en: "Challenge", label_fr: "Enjeu" },
+    { id: 'approach', label_en: "Approach", label_fr: "Approche" },
     { id: 'design-system', label_en: "Design system", label_fr: "Design system" },
     { id: 'results', label_en: "Results", label_fr: "Résultats" },
   ],
   sqool: [
     { id: 'top', label_en: "Intro", label_fr: "Intro" },
     { id: 'summary', label_en: "Summary", label_fr: "Synthèse" },
+    { id: 'stakes', label_en: "Stakes", label_fr: "Enjeu" },
     { id: 'approach', label_en: "Approach", label_fr: "Démarche" },
-    { id: 'product', label_en: "Product", label_fr: "Produit" },
-    { id: 'learnings', label_en: "Learnings", label_fr: "Enseignements" },
+    { id: 'deliverables', label_en: "Deliverables", label_fr: "Livrables" },
+    { id: 'outcome', label_en: "Outcome", label_fr: "Résultat" },
   ],
   'sqool-classe': [
     { id: 'top', label_en: "Intro", label_fr: "Intro" },
     { id: 'summary', label_en: "Summary", label_fr: "Synthèse" },
+    { id: 'stakes', label_en: "Stakes", label_fr: "Enjeu" },
     { id: 'approach', label_en: "Approach", label_fr: "Démarche" },
-    { id: 'product', label_en: "Product", label_fr: "Produit" },
-    { id: 'results', label_en: "Results", label_fr: "Résultats" },
+    { id: 'deliverables', label_en: "Deliverables", label_fr: "Livrables" },
+    { id: 'outcome', label_en: "Outcome", label_fr: "Résultat" },
   ],
   'france-vae': [
     { id: 'top', label_en: "Intro", label_fr: "Intro" },
     { id: 'summary', label_en: "Summary", label_fr: "Synthèse" },
-    { id: 'approach', label_en: "Approach", label_fr: "Démarche" },
-    { id: 'product', label_en: "Product", label_fr: "Produit" },
-    { id: 'learnings', label_en: "Learnings", label_fr: "Enseignements" },
+    { id: 'challenge', label_en: "Challenge", label_fr: "Enjeu" },
+    { id: 'approach', label_en: "Approach", label_fr: "Approche" },
+    { id: 'deliverables', label_en: "Deliverables", label_fr: "Livrables" },
+    { id: 'results', label_en: "Results", label_fr: "Résultats" },
   ],
   pagesjaunes: [
     { id: 'top', label_en: "Intro", label_fr: "Intro" },
     { id: 'summary', label_en: "Summary", label_fr: "Synthèse" },
+    { id: 'context', label_en: "Challenge and goals", label_fr: "Enjeu et objectifs" },
     { id: 'approach', label_en: "Approach", label_fr: "Approche" },
-    { id: 'product', label_en: "Product", label_fr: "Produit" },
+    { id: 'product', label_en: "Deliverables", label_fr: "Livrables" },
     { id: 'results', label_en: "Results and learnings", label_fr: "Résultats et apprentissages" },
   ],
   androidwear: [
     { id: 'top', label_en: "Intro", label_fr: "Intro" },
     { id: 'summary', label_en: "Summary", label_fr: "Synthèse" },
-    { id: 'context', label_en: "Context", label_fr: "Contexte" },
+    { id: 'context', label_en: "Challenge and goals", label_fr: "Enjeu et objectifs" },
     { id: 'approach', label_en: "Approach", label_fr: "Approche" },
-    { id: 'product', label_en: "Product", label_fr: "Produit" },
-    { id: 'results', label_en: "Results and learnings", label_fr: "Résultats et apprentissages" },
+    { id: 'product', label_en: "Deliverables", label_fr: "Livrables" },
+    { id: 'results', label_en: "Result and learnings", label_fr: "Résultat et apprentissages" },
   ],
   riskos: [
     { id: 'top', label_en: "Intro", label_fr: "Intro" },
@@ -101,6 +120,7 @@ const loadingSpinner = () => (
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const CASE_STUDY_COMPONENTS: Record<ProjectId, React.ComponentType<any>> = {
+  tessan: dynamic(() => import('@/views/case-studies/TessanPage'), { loading: loadingSpinner }),
   toolkit: dynamic(() => import('@/views/case-studies/ToolkitPage'), { loading: loadingSpinner }),
   dailymotion: dynamic(() => import('@/views/case-studies/DailymotionPage'), { loading: loadingSpinner }),
   connect: dynamic(() => import('@/views/case-studies/ConnectPage'), { loading: loadingSpinner }),

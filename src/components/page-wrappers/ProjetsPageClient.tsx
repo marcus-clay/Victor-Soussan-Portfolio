@@ -4,6 +4,7 @@ import { useState, useRef, useCallback, useEffect } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { getProjects } from '@/data/projectsData'
+import { getProjectTags } from '@/data/projectTags'
 import { PROJETS_GRID_ITEMS, GALLERY_PROJECTS } from '@/data/galleryData'
 import type { Project } from '@/data/projectsData'
 import { useReveal } from '@/lib/motion'
@@ -221,7 +222,7 @@ function ProjectCard({
         />
       </div>
 
-      <p className="mt-4 truncate text-xs text-gray-500">{project.role}</p>
+      <p className="mt-4 truncate text-xs text-gray-500">{getProjectTags(project.id, lang).join(' · ')}</p>
       <h3 className="mt-1 text-title-3 text-gray-900 transition-colors duration-150 [@media(hover:hover)]:group-hover:text-gray-500">
         {project.title}
       </h3>

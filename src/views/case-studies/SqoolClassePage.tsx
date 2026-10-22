@@ -1,15 +1,18 @@
 // SQOOL Classe Case Study Page - Real-Time Classroom Supervision
-// Minimalist rewrite: bg-[#FDFDFC], no dark mode, no cards, no shadows, no blue CTA
+// Order: hero, testimonial, summary, then four numbered acts:
+// stakes and principles, design approach (four decisions), deliverables, outcome and open points.
 
 import React, { useState, useRef, useMemo, useCallback } from 'react';
-import { imgDims } from '@/utils/imageDimensions'
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowRight } from '@phosphor-icons/react';
 import CaseStudyHero from '@/components/case-study/CaseStudyHero'
 import CaseStudySummary from '@/components/case-study/CaseStudySummary'
 import { ActRule, ActTitle } from '@/components/case-study/ActSection'
 import CaseStudyTestimonialBlock from '@/components/case-studies/CaseStudyTestimonialBlock'
 
 import EnhancedLightbox from '../../components/media/EnhancedLightbox';
+import { MediaCarousel, MediaStage, type SuiteMediaItem } from '../../components/case-studies/SuiteMedia';
 
 import PrototypeFinderGallery from '../../components/prototype/PrototypeFinderGallery';
 import { SQOOL_CLASSE_TRANSLATIONS } from '../../data/caseStudyTranslations/sqoolClasseTranslations';
@@ -28,14 +31,21 @@ interface SqoolClassePageProps {
 const TRANSLATIONS = SQOOL_CLASSE_TRANSLATIONS;
 
 const IMG_BASE = '/images/sqool/sqool classe';
+const OBS = `${IMG_BASE}/prototypes - observation - user testing - classe`;
 
 type LightboxItem = { src: string; caption: string; type: 'image' | 'video' };
 
-// Frame shared by every zoomable image of the page
-const MEDIA_BUTTON =
-  'group relative w-full rounded-xl overflow-hidden cursor-zoom-in ring-1 ring-black/[0.04] [@media(hover:hover)]:hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)]:hover:scale-[1.01] active:scale-[0.99]';
-const MEDIA_IMAGE =
-  'w-full transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)]:group-hover:scale-[1.02]';
+// One idea: an h3, one short paragraph, its visual below, all in the act column
+const Block: React.FC<{ id?: string; title: string; text: string; children?: React.ReactNode }> = ({ id, title, text, children }) => (
+  <div id={id} className="mb-14 md:mb-16 last:mb-0 scroll-mt-24">
+    <h3 className="text-title-3 text-gray-900 mb-3 max-w-[56ch]">{title}</h3>
+    <p className="max-w-[62ch] text-base text-gray-600">{text}</p>
+    {children && <div className="mt-6 md:mt-8">{children}</div>}
+  </div>
+);
+
+const QUIET_LINK =
+  'inline-flex items-center gap-1.5 min-h-11 text-sm font-medium text-gray-900 [@media(hover:hover)]:hover:text-gray-500 active:scale-[0.97] transition-[color,transform] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)]';
 
 const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
   onClose: _onClose,
@@ -55,16 +65,17 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
   const t = TRANSLATIONS[lang] || TRANSLATIONS.fr;
   const c = t.imageCaptions;
 
-  // All images for lightbox navigation (the .webp twins when they exist)
+  // Every visual of the case study for the lightbox (the .webp twins). Nothing is dropped:
+  // the field photos and screens the story does not show stay reachable here.
   const caseImages = useMemo<LightboxItem[]>(
     () => [
       { src: '/images/thumbnail_sqool_classe.webp', caption: c.thumb },
       { src: `${IMG_BASE}/Visuel - Comm - Pilotage - accueil - Focus Classe temporaire@2x.webp`, caption: c.dashboard },
       // Field observation photos
-      { src: `${IMG_BASE}/prototypes - observation - user testing - classe PXL_20231010_084158712.webp`, caption: c.obs1 },
-      { src: `${IMG_BASE}/prototypes - observation - user testing - classe PXL_20231010_085423494.jpg`, caption: c.obs2 },
-      { src: `${IMG_BASE}/prototypes - observation - user testing - classe PXL_20231010_085429484.jpg`, caption: c.obs3 },
-      { src: `${IMG_BASE}/prototypes - observation - user testing - classe PXL_20231010_122812837.jpg`, caption: c.obs4 },
+      { src: `${OBS} PXL_20231010_084158712.webp`, caption: c.obs1 },
+      { src: `${OBS} PXL_20231010_085423494.webp`, caption: c.obs2 },
+      { src: `${OBS} PXL_20231010_085429484.webp`, caption: c.obs3 },
+      { src: `${OBS} PXL_20231010_122812837.webp`, caption: c.obs4 },
       // Teacher UI
       { src: `${IMG_BASE}/UI - enseignant_vue_en_classe_grille_1_5x.webp`, caption: c.grid },
       { src: `${IMG_BASE}/UI - enseignant_vue_groupe_classe_vue_groupe_individuel_1_5x.webp`, caption: c.groupView },
@@ -78,8 +89,8 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
       { src: `${IMG_BASE}/UI - eleve_interactions_vers_le_prof_1_5x.webp`, caption: c.studentInteractions },
       // Marketing visuals
       { src: `${IMG_BASE}/Visuel - Comm - En Classe - Partager un lien - Toute la classe V0@2x.webp`, caption: c.linkShare },
-      { src: `${IMG_BASE}/Visuel - Comm - Pilotage - En Classe - code big@2x.png`, caption: c.inviteCode },
-      { src: `${IMG_BASE}/Visuel - Comm - Pilotage - avis@2x.png`, caption: c.feedback },
+      { src: `${IMG_BASE}/Visuel - Comm - Pilotage - En Classe - code big@2x.webp`, caption: c.inviteCode },
+      { src: `${IMG_BASE}/Visuel - Comm - Pilotage - avis@2x.webp`, caption: c.feedback },
     ].map(img => ({ ...img, type: 'image' as const })),
     [c]
   );
@@ -101,7 +112,21 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
   useScrollTopOnChange(viewMode, viewMode !== 'gallery');
 
   // French guillemets with narrow no-break spaces, curly quotes in English
-  const quote = (text: string) => (lang === 'fr' ? `«\u202f${text}\u202f»` : `“${text}”`);
+  const quote = (text: string) => (lang === 'fr' ? `« ${text} »` : `“${text}”`);
+
+  // A visual of the story, by its position in the lightbox list
+  const visual = (index: number, extra: Partial<SuiteMediaItem> = {}): SuiteMediaItem => ({
+    src: caseImages[index].src,
+    caption: caseImages[index].caption,
+    type: 'image',
+    ...extra,
+  });
+
+  const carouselLabels = { prev: t.ui.prev, next: t.ui.next, slide: t.ui.slide };
+
+  const actionSlides = [visual(8), visual(9), visual(10)];
+  const studentSlides = [visual(12), visual(13), visual(11), visual(14), visual(16), visual(5)];
+  const deliverableSlides = [visual(1), visual(15), visual(17)];
 
   return (
     <div ref={containerRef} className="min-h-screen bg-[#FDFDFC]">
@@ -175,108 +200,96 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
               metrics={t.summary.metrics}
             />
 
-            {/* 01 Approach: one observation, three principles */}
+            {/* 01 Stakes and principles */}
+            <section id="stakes">
+              <ActRule />
+              <div className="act-wide pt-10 md:pt-14 pb-12 md:pb-16">
+                <ActTitle index="01" title={t.acts.stakes} />
+                <p className="max-w-[62ch] text-base text-gray-600">{t.stakes.text1}</p>
+                <p className="mt-5 max-w-[62ch] text-base text-gray-600">{t.stakes.text2}</p>
+
+                <div className="mt-8 md:mt-10">
+                  <MediaStage item={visual(2)} onOpen={openImageLightbox} />
+                </div>
+
+                <h3 className="text-title-3 text-gray-900 mt-12 mb-3 max-w-[56ch]">{t.stakes.principlesTitle}</h3>
+                <ul className="max-w-[62ch] divide-y divide-gray-100 border-t border-gray-100">
+                  {t.stakes.principles.map((p) => (
+                    <li key={p.title} className="py-4">
+                      <span className="block text-base font-medium text-gray-900">{p.title}</span>
+                      <span className="block mt-1 text-base text-gray-600">{p.text}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </section>
+
+            {/* 02 Design approach: four decisions */}
             <section id="approach">
               <ActRule />
               <div className="act-wide pt-10 md:pt-14 pb-12 md:pb-16">
-                <ActTitle index="01" title={t.acts.approach} />
+                <ActTitle index="02" title={t.acts.approach} />
 
-                {/* Observation: one field photo */}
-                <div className="mt-4 md:mt-6">
-                <h3 className="text-title-3 text-gray-900 mb-3 max-w-[56ch]">{t.context.fieldObsTitle}</h3>
-                <p className="text-base text-gray-600 max-w-[62ch]">{t.context.fieldObsDesc}</p>
-                <figure className="mt-6 md:mt-8">
-                  <button
-                    onClick={() => openImageLightbox(caseImages[2].src)}
-                    aria-label={caseImages[2].caption}
-                    className={`${MEDIA_BUTTON} block`}
-                  >
-                    <img src={caseImages[2].src} {...imgDims(caseImages[2].src)} alt="" loading="lazy" className={MEDIA_IMAGE} />
-                  </button>
-                  <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">{caseImages[2].caption}</figcaption>
-                </figure>
-                </div>
+                <div className="mt-6 md:mt-8">
+                  <Block id="card" title={t.approach.card.title} text={t.approach.card.text}>
+                    <MediaStage item={visual(6)} onOpen={openImageLightbox} />
+                  </Block>
 
-                {/* Three principles, in one block */}
-                <div className="mt-14 md:mt-16">
-                  <h3 className="text-title-3 text-gray-900 mb-3 max-w-[56ch]">{t.approach.title}</h3>
-                  <ul className="divide-y divide-gray-100 border-t border-gray-100">
-                    {t.curated.principles.map((p, i) => (
-                      <li key={i} className="py-4">
-                        <span className="block text-base font-medium text-gray-900">{p.title}</span>
-                        <span className="block mt-1 text-base text-gray-600 max-w-[62ch]">{p.text}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  <Block id="actions" title={t.approach.actions.title} text={t.approach.actions.text}>
+                    <MediaCarousel items={actionSlides} label={t.ui.actionsLabel} labels={carouselLabels} onOpen={openImageLightbox} />
+                  </Block>
+
+                  <Block id="students" title={t.approach.student.title} text={t.approach.student.text}>
+                    <MediaCarousel items={studentSlides} label={t.ui.studentLabel} labels={carouselLabels} onOpen={openImageLightbox} />
+                  </Block>
+
+                  <Block id="scenarios" title={t.approach.scenarios.title} text={t.approach.scenarios.text} />
                 </div>
               </div>
             </section>
 
-            {/* 02 Product: the teacher grid, the student side, joining a class */}
-            <section id="product">
+            {/* 03 Deliverables: the nine modules */}
+            <section id="deliverables">
               <ActRule />
               <div className="act-wide pt-10 md:pt-14 pb-12 md:pb-16">
-                <ActTitle index="02" title={t.acts.product} />
+                <ActTitle index="03" title={t.acts.deliverables} />
+                <p className="max-w-[62ch] text-base text-gray-600">{t.deliverables.text}</p>
 
-                <div id="teacher" className="mt-4 md:mt-6">
-                <h3 className="text-title-3 text-gray-900 mb-3 max-w-[56ch]">{t.teacher.title}</h3>
-                <p className="text-base text-gray-600 max-w-[62ch]">{t.curated.teacher}</p>
-                <figure className="mt-6 md:mt-8">
-                  <button
-                    onClick={() => openImageLightbox(caseImages[6].src)}
-                    aria-label={caseImages[6].caption}
-                    className={MEDIA_BUTTON}
-                  >
-                    <img src={caseImages[6].src} {...imgDims(caseImages[6].src)} alt="" loading="lazy" className={MEDIA_IMAGE} />
-                  </button>
-                  <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">{caseImages[6].caption}</figcaption>
-                </figure>
-                </div>
+                <h3 className="text-title-3 text-gray-900 mt-10 mb-3 max-w-[56ch]">{t.deliverables.modulesTitle}</h3>
+                <ul className="max-w-[62ch] divide-y divide-gray-100 border-t border-gray-100">
+                  {t.deliverables.modules.map((m) => (
+                    <li key={m} className="py-3 text-base text-gray-600">{m}</li>
+                  ))}
+                </ul>
 
-                <div id="students" className="mt-14 md:mt-16">
-                <h3 className="text-title-3 text-gray-900 mb-3 max-w-[56ch]">{t.students.title}</h3>
-                <p className="text-base text-gray-600 max-w-[62ch]">{t.curated.students}</p>
-                <figure className="mt-6 md:mt-8">
-                  <button
-                    onClick={() => openImageLightbox(caseImages[11].src)}
-                    aria-label={caseImages[11].caption}
-                    className={MEDIA_BUTTON}
-                  >
-                    <img src={caseImages[11].src} {...imgDims(caseImages[11].src)} alt="" loading="lazy" className={MEDIA_IMAGE} />
-                  </button>
-                  <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">{caseImages[11].caption}</figcaption>
-                </figure>
-                </div>
-
-                <div id="join" className="mt-14 md:mt-16">
-                <h3 className="text-title-3 text-gray-900 mb-3 max-w-[56ch]">{t.curated.joinTitle}</h3>
-                <p className="text-base text-gray-600 max-w-[62ch]">{t.curated.join}</p>
-                <figure className="mt-6 md:mt-8">
-                  <button
-                    onClick={() => openImageLightbox(caseImages[16].src)}
-                    aria-label={caseImages[16].caption}
-                    className={MEDIA_BUTTON}
-                  >
-                    <img src={caseImages[16].src} {...imgDims(caseImages[16].src)} alt="" loading="lazy" className={MEDIA_IMAGE} />
-                  </button>
-                  <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">{caseImages[16].caption}</figcaption>
-                </figure>
+                <div className="mt-10 md:mt-12">
+                  <MediaCarousel items={deliverableSlides} label={t.ui.deliverablesLabel} labels={carouselLabels} onOpen={openImageLightbox} />
                 </div>
               </div>
             </section>
 
-            {/* 03 Results: what the work produced, in the words of a pilot teacher */}
-            <section id="results">
+            {/* 04 Outcome: what the work produced, in the words of a pilot teacher, and what stays open */}
+            <section id="outcome">
               <ActRule />
               <div className="act-wide pt-10 md:pt-14 pb-12 md:pb-16">
-                <ActTitle index="03" title={t.impact.title} />
-                <p className="text-base text-gray-600 max-w-[62ch]">{t.impact.intro}</p>
+                <ActTitle index="04" title={t.acts.outcome} />
+                <p className="max-w-[62ch] text-base text-gray-600">{t.outcome.text}</p>
                 <blockquote className="mt-10 max-w-[62ch]">
-                  <p className="text-base text-gray-900">{quote(t.testimonial.quote)}</p>
+                  <p className="text-base text-gray-900">{quote(t.outcome.quote)}</p>
                   <footer className="mt-3 text-xs text-gray-500">
-                    {t.testimonial.author}, {t.testimonial.role}
+                    {t.outcome.quoteAuthor}, {t.outcome.quoteRole}
                   </footer>
                 </blockquote>
+
+                <h3 className="text-title-3 text-gray-900 mt-12 mb-3 max-w-[56ch]">{t.outcome.openTitle}</h3>
+                <p className="max-w-[62ch] text-base text-gray-600">{t.outcome.open}</p>
+
+                <div className="mt-10 md:mt-12">
+                  <Link href={`/${lang}/project/sqool`} className={QUIET_LINK}>
+                    {t.outcome.readSuite}
+                    <ArrowRight size={14} aria-hidden="true" />
+                  </Link>
+                </div>
               </div>
             </section>
           </div>

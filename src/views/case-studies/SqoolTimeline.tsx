@@ -267,16 +267,6 @@ export const SqoolTimeline: React.FC<SqoolTimelineProps> = ({ lang }) => {
                             </span>
                           </motion.div>
 
-                          {/* Phase number */}
-                          <motion.p
-                            initial={{ y: 8, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            transition={{ delay: 0.15 }}
-                            className="text-xs text-gray-500 mb-3"
-                          >
-                            {String(activePhase + 1).padStart(2, '0')}
-                          </motion.p>
-
                           {/* Title */}
                           <motion.h4
                             initial={{ y: 8, opacity: 0 }}
