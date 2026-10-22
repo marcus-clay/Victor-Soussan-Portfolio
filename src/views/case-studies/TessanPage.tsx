@@ -138,6 +138,29 @@ const FIGURES: Record<string, FigureSource> = {
     kind: 'phone',
     screens: [app('assistant', { fr: 'Assistant Santé', en: 'Health Assistant' })],
   },
+  dsVideos: {
+    type: 'devices',
+    kind: 'browser',
+    carousel: true,
+    screens: [
+      proto('tessan-ui-catalogue-navigation-1440', { fr: 'Tessan-UI : parcourir le catalogue', en: 'Tessan-UI: browsing the catalog' }, 2880 / 1800),
+      proto('tessan-ui-tokens-couleurs-typo-motion-1440', { fr: 'Tessan-UI : tokens, couleurs, typographie, mouvement', en: 'Tessan-UI: tokens, color, type, motion' }, 2880 / 1800),
+      proto('tessan-ui-dialog-formulaire-contact-1440', { fr: 'Tessan-UI : une boîte de dialogue', en: 'Tessan-UI: a dialog' }, 2880 / 1800),
+      proto('tessan-ui-mobile-cabine-stepper-champs-1440', { fr: 'Tessan-UI : composants mobile et cabine', en: 'Tessan-UI: mobile and booth components' }, 2880 / 1800),
+      proto('tessan-cloud-dashboard-modules-cartes-1440', { fr: 'Tessan Cloud : modules et fiche patient', en: 'Tessan Cloud: modules and patient file' }, 2880 / 1800),
+      proto('tessan-cloud-dashboard-formulaire-patient-1440', { fr: 'Tessan Cloud : nouveau patient', en: 'Tessan Cloud: new patient' }, 2880 / 1800),
+      proto('playground-formulaire-rendez-vous-1440', { fr: 'Playground : prise de rendez-vous', en: 'Playground: appointment booking' }, 2880 / 1800),
+    ],
+  },
+  dsVideosMobile: {
+    type: 'devices',
+    kind: 'phone',
+    carousel: true,
+    screens: [
+      proto('tessan-cloud-dashboard-mobile-390', { fr: 'Tessan Cloud sur mobile', en: 'Tessan Cloud on mobile' }),
+      proto('playground-formulaire-rendez-vous-mobile-390', { fr: 'Playground sur mobile', en: 'Playground on mobile' }),
+    ],
+  },
   dsInteractions: {
     type: 'devices',
     kind: 'browser',
