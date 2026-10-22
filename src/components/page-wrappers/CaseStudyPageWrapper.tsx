@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { CaretRight } from '@phosphor-icons/react'
-import { getProjects, type Project } from '@/data/projectsData'
+import { getAllProjects, getProjects, type Project } from '@/data/projectsData'
 import ShortProjectView from '@/components/ShortProjectView'
 import AuthorContactCard from '@/components/AuthorContactCard'
 import CaseStudyTOCBar from '@/components/CaseStudyTOCBar'
@@ -15,7 +15,7 @@ import { TRANSLATIONS } from '@/data/translations'
 import { useScrollDirection } from '@/hooks/useScrollDirection'
 import { scrollToElement } from '@/utils/smoothScroll'
 
-type ProjectId = 'tessan' | 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'sqool-classe' | 'france-vae' | 'pagesjaunes' | 'androidwear' | 'riskos'
+type ProjectId = 'tessan' | 'tessan-app' | 'tessan-os' | 'tessan-systeme' | 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'sqool-classe' | 'france-vae' | 'pagesjaunes' | 'androidwear' | 'riskos'
 
 // Dark theme disabled: all projects render light
 const DARK_PROJECTS: string[] = []
@@ -29,16 +29,31 @@ const FULL_TOC: Record<string, TOCSections> = {
     { id: 'top', label_en: "Intro", label_fr: "Intro" },
     { id: 'summary', label_en: "Summary", label_fr: "Synthèse" },
     { id: 'app', label_en: "The app", label_fr: "L'application" },
+    { id: 'os', label_en: "Tessan OS", label_fr: "Tessan OS" },
+    { id: 'systeme', label_en: "Design system", label_fr: "Design system" },
+    { id: 'limites', label_en: "Open points", label_fr: "Points ouverts" },
+  ],
+  'tessan-app': [
+    { id: 'top', label_en: "Intro", label_fr: "Intro" },
+    { id: 'summary', label_en: "Summary", label_fr: "Synthèse" },
+    { id: 'app', label_en: "The app", label_fr: "L'application" },
     { id: 'tunnel', label_en: "The funnel", label_fr: "Le tunnel" },
     { id: 'protos-tunnel', label_en: "Prototypes", label_fr: "Prototypes" },
     { id: 'assistant', label_en: "The assistant", label_fr: "L'assistant" },
+  ],
+  'tessan-os': [
+    { id: 'top', label_en: "Intro", label_fr: "Intro" },
+    { id: 'summary', label_en: "Summary", label_fr: "Synthèse" },
+    { id: 'vision', label_en: "Tessan OS", label_fr: "Tessan OS" },
+    { id: 'hub', label_en: "Health Hub", label_fr: "Hub Santé" },
+  ],
+  'tessan-systeme': [
+    { id: 'top', label_en: "Intro", label_fr: "Intro" },
+    { id: 'summary', label_en: "Summary", label_fr: "Synthèse" },
     { id: 'design-system', label_en: "Design system", label_fr: "Design system" },
     { id: 'skills', label_en: "Skills", label_fr: "Skills" },
     { id: 'figma-code', label_en: "Figma and code", label_fr: "Figma et code" },
     { id: 'gestion-produit', label_en: "Agents", label_fr: "Agents" },
-    { id: 'vision', label_en: "Tessan OS", label_fr: "Tessan OS" },
-    { id: 'hub', label_en: "Health Hub", label_fr: "Hub Santé" },
-    { id: 'limites', label_en: "Open points", label_fr: "Points ouverts" },
   ],
   toolkit: [
     { id: 'top', label_en: "Intro", label_fr: "Intro" },
@@ -125,6 +140,9 @@ const loadingSpinner = () => (
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const CASE_STUDY_COMPONENTS: Record<ProjectId, React.ComponentType<any>> = {
   tessan: dynamic(() => import('@/views/case-studies/TessanPage'), { loading: loadingSpinner }),
+  'tessan-app': dynamic(() => import('@/views/case-studies/TessanAppPage'), { loading: loadingSpinner }),
+  'tessan-os': dynamic(() => import('@/views/case-studies/TessanOsPage'), { loading: loadingSpinner }),
+  'tessan-systeme': dynamic(() => import('@/views/case-studies/TessanSystemePage'), { loading: loadingSpinner }),
   toolkit: dynamic(() => import('@/views/case-studies/ToolkitPage'), { loading: loadingSpinner }),
   dailymotion: dynamic(() => import('@/views/case-studies/DailymotionPage'), { loading: loadingSpinner }),
   connect: dynamic(() => import('@/views/case-studies/ConnectPage'), { loading: loadingSpinner }),
@@ -154,7 +172,9 @@ export default function CaseStudyPageWrapper({
 
   // Check if this is a short-format project
   const allProjects = getProjects(lang)
-  const project = allProjects.find((p) => p.id === projectId)
+  // A deep dive is not in the lists, but its page and breadcrumb still need it
+  const project = getAllProjects(lang).find((p) => p.id === projectId)
+  const parent = project?.parentId ? getAllProjects(lang).find((p) => p.id === project.parentId) : undefined
 
   const isShort = project?.format === 'short'
   const CaseStudyComponent = !isShort ? CASE_STUDY_COMPONENTS[projectId as ProjectId] : null
@@ -253,6 +273,17 @@ export default function CaseStudyPageWrapper({
                   {lang === 'fr' ? 'Projets' : 'Projects'}
                 </Link>
                 <CaretRight size={10} className="flex-shrink-0 text-gray-300" />
+                {parent && !viewLabel && (
+                  <>
+                    <Link
+                      href={`/${lang}/project/${parent.id}`}
+                      className="text-gray-500 hover:text-gray-900 transition-colors hover:underline flex-shrink-0 inline-flex items-center h-10"
+                    >
+                      {parent.title}
+                    </Link>
+                    <CaretRight size={10} className="flex-shrink-0 text-gray-300" />
+                  </>
+                )}
                 {viewLabel ? (
                   <>
                     <Link
@@ -318,7 +349,7 @@ export default function CaseStudyPageWrapper({
       ) : null}
 
       {/* Bottom: related projects, then contact */}
-      <CaseStudyFooter lang={lang} projectId={projectId} allProjects={allProjects} />
+      <CaseStudyFooter lang={lang} projectId={project?.parentId ?? projectId} allProjects={allProjects} />
     </>
   )
 }

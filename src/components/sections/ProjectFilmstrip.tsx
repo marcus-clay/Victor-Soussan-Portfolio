@@ -11,8 +11,8 @@ import { imgDims } from '@/utils/imageDimensions'
 import { useSnapScroller } from '@/hooks/useSnapScroller'
 
 /**
- * The nine case studies as one horizontal strip of large cards. Each card is a single link to
- * the project. Interaction (drag with momentum, rubber band, arrows, keyboard) comes from
+ * Four case studies, drawn at random on every page load, as one horizontal strip of large cards.
+ * Each card is a single link to the project. Interaction (drag with momentum, rubber band, arrows, keyboard) comes from
  * `useSnapScroller`; touch and trackpad scrolling stay native.
  */
 
@@ -58,6 +58,26 @@ function srcSetFor(src: string): string | undefined {
 const useIsoLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect
 
 const MAX_QUOTE = 190
+
+// How many cards the strip shows
+const SHOWN = 4
+
+/**
+ * Card width: 84vw as before, but capped so the whole card and the controls under it fit in the
+ * viewport. 176px = sticky nav (64) + gap under the nav (16) + gap above the controls (40) +
+ * controls (44) + bottom gap (12); 1.5 is the 3:2 ratio of the card.
+ */
+const CARD_WIDTH = 'w-[min(86vw,calc((100svh_-_176px)_*_1.5))] md:w-[min(84vw,calc((100svh_-_176px)_*_1.5))]'
+
+/** Fisher-Yates on a copy. Only called in the browser, after mount. */
+function shuffled<T>(items: T[]): T[] {
+  const out = [...items]
+  for (let i = out.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[out[i], out[j]] = [out[j], out[i]]
+  }
+  return out
+}
 
 const SENTENCE = /.+?[.!?](?=\s|$)/g
 
@@ -111,9 +131,17 @@ function isDarkGround(hex: string): boolean {
 
 export default function ProjectFilmstrip({ lang }: ProjectFilmstripProps) {
   const t = COPY[lang]
-  const projects = getProjects(lang).filter((p) => p.format === 'case-study' && CASE_STUDY_SHELL[p.id])
+  const eligible = getProjects(lang).filter((p) => p.format === 'case-study' && CASE_STUDY_SHELL[p.id])
   const testimonials = getTestimonials(lang)
-  const quotes = pullQuotes(projects, testimonials)
+  // Quotes are chosen over the whole set, so a project keeps the same quote whichever four are drawn
+  const quotes = pullQuotes(eligible, testimonials)
+
+  // The page is static, so the draw happens in the browser. Until then the first four are rendered
+  // (what crawlers and no-JS visitors get) and kept transparent, to avoid showing one set and then swapping it.
+  const [pickedIds, setPickedIds] = useState<string[] | null>(null)
+  const projects = pickedIds
+    ? pickedIds.map((id) => eligible.find((p) => p.id === id)).filter((p): p is (typeof eligible)[number] => !!p)
+    : eligible.slice(0, SHOWN)
   const total = projects.length
 
   const trackRef = useRef<HTMLDivElement>(null)
@@ -141,6 +169,11 @@ export default function ProjectFilmstrip({ lang }: ProjectFilmstripProps) {
 
   const { bind, scrollToIndex, getSnapPoints } = useSnapScroller(trackRef, { onProgress: updateIndex })
 
+  useIsoLayoutEffect(() => {
+    setPickedIds(shuffled(eligible.map((p) => p.id)).slice(0, SHOWN))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lang])
+
   // The strip starts on the page margin (20px, 40px from md, plus the free space of the
   // container on screens wider than --wrap-max). Padding and scroll-padding are set in px so the hook and the
   // browser's own snapping agree on where a card rests.
@@ -158,11 +191,13 @@ export default function ProjectFilmstrip({ lang }: ProjectFilmstripProps) {
       pointsRef.current = getSnapPoints()
       updateIndex(el.scrollLeft)
     }
+    // Moving cards in the DOM (the random draw) can shift a snapping container: start on the first card
+    el.scrollLeft = 0
     apply()
     const ro = new ResizeObserver(apply)
     ro.observe(el)
     return () => ro.disconnect()
-  }, [getSnapPoints, updateIndex])
+  }, [getSnapPoints, updateIndex, pickedIds])
 
   const atStart = index === 0
   const atEnd = index === total - 1
@@ -170,7 +205,13 @@ export default function ProjectFilmstrip({ lang }: ProjectFilmstripProps) {
   const easing = 'cubic-bezier(0.23,1,0.32,1)'
 
   return (
-    <section aria-labelledby="filmstrip-title" className="pb-16 md:pb-28">
+    <section
+      aria-labelledby="filmstrip-title"
+      className={`pb-16 md:pb-28 transition-opacity duration-200 ease-out ${pickedIds ? 'opacity-100' : 'opacity-0 filmstrip-pending'}`}
+    >
+      <noscript>
+        <style>{'.filmstrip-pending{opacity:1!important}'}</style>
+      </noscript>
       <h2 id="filmstrip-title" className="sr-only">
         {t.label}
       </h2>
@@ -205,7 +246,7 @@ export default function ProjectFilmstrip({ lang }: ProjectFilmstripProps) {
               aria-labelledby={titleId}
               aria-describedby={summaryId}
               draggable={false}
-              className="hero-panel group block shrink-0 snap-start w-[86vw] md:w-[84vw] min-w-[300px] max-w-[1215px] aspect-[3/2] select-none shadow-sm transition-[transform,box-shadow] duration-300 [@media(hover:hover)]:hover:scale-[1.01] [@media(hover:hover)]:hover:shadow-lg active:scale-[0.99] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gray-900"
+              className={`hero-panel group block shrink-0 snap-start [container-type:inline-size] ${CARD_WIDTH} min-w-[300px] max-w-[1215px] aspect-[3/2] select-none shadow-sm transition-[transform,box-shadow] duration-300 [@media(hover:hover)]:hover:scale-[1.01] [@media(hover:hover)]:hover:shadow-lg active:scale-[0.99] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gray-900`}
               style={{ backgroundColor: shell.tone, transitionTimingFunction: easing }}
             >
               <img
@@ -272,10 +313,11 @@ export default function ProjectFilmstrip({ lang }: ProjectFilmstripProps) {
                 </ul>
               </div>
 
-              {/* Quote plate: translucent, lower right, wide screens, only for projects with a testimonial */}
+              {/* Quote plate: translucent, lower right, only when the card is wide enough to sit beside the caption
+                  (the card width follows the viewport height), only for projects with a testimonial */}
               {testimonial && quote && (
                 <figure
-                  className={`hidden xl:block absolute z-[3] right-10 bottom-10 w-[24rem] 2xl:w-[28rem] rounded-2xl p-6 backdrop-blur-xl ring-1 ${
+                  className={`hidden [@container(min-width:1010px)]:block absolute z-[3] right-10 bottom-10 w-[24rem] 2xl:w-[28rem] rounded-2xl p-6 backdrop-blur-xl ring-1 ${
                     light
                       ? 'bg-black/35 ring-white/10 text-white'
                       : 'bg-white/70 ring-black/[0.06] text-gray-900'

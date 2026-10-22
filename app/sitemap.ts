@@ -2,7 +2,7 @@ import type { MetadataRoute } from 'next'
 import { GUIDE_CHAPTERS, GUIDE_META } from '@/data/guideClaudeCodeData'
 import { SHIP_TO_SHOW_META } from '@/data/guideShipToShowData'
 import { SIGNALS } from '@/data/signalsData'
-import { getProjects } from '@/data/projectsData'
+import { getAllProjects } from '@/data/projectsData'
 import { LANGS, isoDate, pageUrl } from '@/lib/seo'
 
 /**
@@ -47,7 +47,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }
 
   // Projects: one canonical URL each. /summary and /full redirect to it, galleries are noindex.
-  for (const p of getProjects('en')) {
+  for (const p of getAllProjects('en')) {
     items.push({ path: same(`project/${p.id}`) })
   }
 

@@ -28,6 +28,27 @@ export const CASE_STUDY_SHELL: Record<string, CaseStudyShell> = {
     tone: '#E8E8E8',
     fit: 'bleed',
   },
+  'tessan-app': {
+    client: 'Tessan',
+    logo: '/images/tessan/tessan-logo.svg',
+    visual: '/images/tessan/cover_tessan_app.webp',
+    tone: '#E8E8E8',
+    fit: 'bleed',
+  },
+  'tessan-os': {
+    client: 'Tessan',
+    logo: '/images/tessan/tessan-logo.svg',
+    visual: '/images/tessan/cover_tessan_os.webp',
+    tone: '#E8E8E8',
+    fit: 'bleed',
+  },
+  'tessan-systeme': {
+    client: 'Tessan',
+    logo: '/images/tessan/tessan-logo.svg',
+    visual: '/images/tessan/cover_tessan_systeme.webp',
+    tone: '#E8E8E8',
+    fit: 'bleed',
+  },
   toolkit: {
     client: 'Toolkit',
     logo: '/images/toolkit/Logo toolkit - light bg - large - horizontal.svg',

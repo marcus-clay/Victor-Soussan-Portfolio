@@ -35,6 +35,7 @@ export default async function ProjectPage({ params }: Props) {
   if (!project) notFound()
 
   const kind = project.format === 'case-study' ? 'caseStudy' : 'short'
+  const parent = project.parentId ? findProject(lang, project.parentId) : undefined
 
   return (
     <>
@@ -50,6 +51,7 @@ export default async function ProjectPage({ params }: Props) {
           }),
           breadcrumbLd(lang, [
             { name: lang === 'fr' ? 'Projets' : 'Projects', path: 'projets' },
+            ...(parent ? [{ name: parent.title, path: `project/${parent.id}` }] : []),
             { name: project.title, path: `project/${id}` },
           ]),
         ]}

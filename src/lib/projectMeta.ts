@@ -1,4 +1,4 @@
-import { getProjects } from '@/data/projectsData'
+import { getAllProjects } from '@/data/projectsData'
 import type { Lang } from '@/lib/seo'
 
 /**
@@ -6,7 +6,7 @@ import type { Lang } from '@/lib/seo'
  * Titles stay under the 62 character budget enforced by buildMetadata.
  */
 
-export const CASE_STUDY_IDS = ['tessan', 'toolkit', 'dailymotion', 'connect', 'sqool', 'sqool-classe', 'france-vae', 'pagesjaunes', 'androidwear', 'riskos'] as const
+export const CASE_STUDY_IDS = ['tessan', 'tessan-app', 'tessan-os', 'tessan-systeme', 'toolkit', 'dailymotion', 'connect', 'sqool', 'sqool-classe', 'france-vae', 'pagesjaunes', 'androidwear', 'riskos'] as const
 export const SHORT_PROJECT_IDS = ['condamine-apps', 'design-system-figma-claude'] as const
 
 export const PROJECT_TITLE: Record<Lang, Record<'caseStudy' | 'short' | 'gallery', (name: string) => string>> = {
@@ -36,7 +36,7 @@ export const PROJECT_DESC: Record<Lang, Record<'caseStudy' | 'short' | 'gallery'
 }
 
 export function findProject(lang: Lang, id: string) {
-  return getProjects(lang).find((p) => p.id === id)
+  return getAllProjects(lang).find((p) => p.id === id)
 }
 
 export function ogImageFor(id: string, cover: string | undefined) {

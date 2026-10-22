@@ -42,9 +42,11 @@ export interface Project {
   videoUrl?: string;         // Embedded video URL
   body?: string;             // Extended description (rendered after media)
   heroInBody?: boolean;      // The body opens on its own figure: the cover is not repeated above it
+  parentId?: string;         // A deep dive of another case study: reachable from its parent, kept out of lists and cards
 }
 
-export const getProjects = (lang: Language): Project[] => {
+/** Every project page, deep dives included: routes, sitemap and lookups. */
+export const getAllProjects = (lang: Language): Project[] => {
   const isEn = lang === 'en';
   return [
     {
@@ -78,6 +80,90 @@ export const getProjects = (lang: Language): Project[] => {
       icon: <Stethoscope size={24} />,
       color: "blue",
       coverImage: "/images/tessan/cover_tessan_front.webp"
+    },
+    {
+      id: "tessan-app",
+      parentId: "tessan",
+      format: 'case-study',
+      category: 'product-design',
+      title: isEn ? "Tessan, the patient app" : "Tessan, l'application patient",
+      navTitle: isEn ? "Tessan, the patient app" : "Tessan, l'application patient",
+      role: isEn ? "Design lead and product owner" : "Lead design et product owner",
+      summary: isEn
+        ? "The patient app rebuilt in 30 days: a lighter consultation funnel, an assistant that does not diagnose, three builds in two weeks."
+        : "L'application patient reconstruite en 30 jours : un tunnel de consultation allégé, un assistant qui ne diagnostique pas, trois builds en deux semaines.",
+      missions: isEn ? [
+        "Rebuilt the app natively around the consultation, keeping only the teleconsultation engine encapsulated",
+        "Removed the health insurance entry, which 3% of patients completed, for an advance payment",
+        "Set the limits of the assistant as interface rules",
+      ] : [
+        "Reconstruction de l'application en natif autour de la consultation, avec le seul moteur de téléconsultation encapsulé",
+        "Retrait de la saisie de mutuelle, réussie par 3 % des patients, au profit d'une avance de frais",
+        "Limites de l'assistant traduites en règles d'interface",
+      ],
+      system: { title: '', desc: '' },
+      deliverables: isEn
+        ? ["Patient app (iOS, Android)", "Consultation funnel", "Health Assistant", "Interactive prototypes"]
+        : ["Application patient (iOS, Android)", "Tunnel de consultation", "Assistant Santé", "Prototypes interactifs"],
+      icon: <Smartphone size={24} />,
+      color: "blue",
+      coverImage: "/images/tessan/cover_tessan_app.webp"
+    },
+    {
+      id: "tessan-os",
+      parentId: "tessan",
+      format: 'case-study',
+      category: 'product-design',
+      title: isEn ? "Tessan OS and the Health Hub" : "Tessan OS et le Hub Santé",
+      navTitle: isEn ? "Tessan OS and the Health Hub" : "Tessan OS et le Hub Santé",
+      role: isEn ? "Product design and vision" : "Design produit et vision",
+      summary: isEn
+        ? "Seven prototypes in a week to make the vision discussable, then a single app: the consultation that funds, prevention programs that retain."
+        : "Sept prototypes en une semaine pour rendre la vision discutable, puis une seule application : la consultation qui finance, des programmes de prévention qui retiennent.",
+      missions: isEn ? [
+        "Prototyped five concepts and deployed them in a product lab",
+        "Framed the Health Hub: programs, pharmacy, connected devices",
+        "Presented the vision to the executive committee on June 26",
+      ] : [
+        "Prototypage de cinq concepts, déployés dans un laboratoire produit",
+        "Cadrage du Hub Santé : programmes, pharmacie, objets connectés",
+        "Présentation de la vision au comité de direction le 26 juin",
+      ],
+      system: { title: '', desc: '' },
+      deliverables: isEn
+        ? ["Seven prototypes", "Health Hub framing", "Vision deck"]
+        : ["Sept prototypes", "Cadrage du Hub Santé", "Deck de vision"],
+      icon: <Layers size={24} />,
+      color: "blue",
+      coverImage: "/images/tessan/cover_tessan_os.webp"
+    },
+    {
+      id: "tessan-systeme",
+      parentId: "tessan",
+      format: 'case-study',
+      category: 'ai-experiment',
+      title: isEn ? "Tessan, design system and agents" : "Tessan, design system et agents",
+      navTitle: isEn ? "Tessan, design system and agents" : "Tessan, design system et agents",
+      role: isEn ? "Design system and product management" : "Design system et product management",
+      summary: isEn
+        ? "A React kit aligned with Figma, a skills pack for Claude Code and a Notion index an agent can read: governance through the tool rather than the document."
+        : "Un kit React aligné sur Figma, un pack de skills pour Claude Code et un index Notion lisible par un agent : la gouvernance par l'outil plutôt que par le document.",
+      missions: isEn ? [
+        "Shared the tokens between Angular, React and Figma",
+        "Wrote the design system rules as skills Claude Code reads",
+        "Built a product management model an agent can query",
+      ] : [
+        "Tokens partagés entre Angular, React et Figma",
+        "Règles du design system écrites en skills que Claude Code lit",
+        "Modèle de pilotage produit que peut interroger un agent",
+      ],
+      system: { title: '', desc: '' },
+      deliverables: isEn
+        ? ["React component kit", "Figma design system", "Skills pack", "Notion index for agents"]
+        : ["Kit de composants React", "Design system Figma", "Pack de skills", "Index Notion pour agents"],
+      icon: <Cpu size={24} />,
+      color: "blue",
+      coverImage: "/images/tessan/cover_tessan_systeme.webp"
     },
     {
       id: "riskos",
@@ -474,3 +560,7 @@ export const getProjects = (lang: Language): Project[] => {
     }
   ];
 };
+
+/** The projects shown in lists and cards: deep dives are reached from their parent case study. */
+export const getProjects = (lang: Language): Project[] => getAllProjects(lang).filter((p) => !p.parentId);
+

@@ -3,7 +3,9 @@
 // Each act reads as a lead, three ideas with their visuals, and a folded detail.
 
 import React, { useMemo, useState } from 'react'
-import { ArrowUpRight } from '@phosphor-icons/react'
+import Link from 'next/link'
+import { ArrowRight, ArrowUpRight } from '@phosphor-icons/react'
+import { CASE_STUDY_SHELL } from '@/data/caseStudyShell'
 import { ActRule, ActTitle } from '@/components/case-study/ActSection'
 import CaseStudySummary from '@/components/case-study/CaseStudySummary'
 import CaseStudyHero from '@/components/case-study/CaseStudyHero'
@@ -175,6 +177,42 @@ const FIGURES: Record<string, FigureSource> = {
   osDesktop: strip('osDesktop'),
   dsDemos: strip('dsDemos'),
   dsDemosMobile: strip('dsDemosMobile'),
+  hubApp: {
+    type: 'devices',
+    kind: 'phone',
+    screens: [
+      app('tunnel-motif', { fr: 'Motif', en: 'Reason' }),
+      app('tunnel-avance-frais', { fr: 'Avance de frais', en: 'Advance payment' }),
+      app('tunnel-salle-attente', { fr: 'Salle d’attente', en: 'Waiting room' }),
+    ],
+  },
+  hubOs: {
+    type: 'devices',
+    kind: 'browser',
+    url: 'tessan-os',
+    share: 0.86,
+    screens: [proto('tessan-os-cross-device', { fr: 'Tessan OS', en: 'Tessan OS' }, 2160 / 1350)],
+  },
+  hubSysteme: {
+    type: 'devices',
+    kind: 'browser',
+    url: 'tessan-ui',
+    share: 0.86,
+    screens: [proto('tessan-ui-catalogue-navigation-1440', { fr: 'Tessan-UI', en: 'Tessan-UI' }, 2880 / 1800)],
+  },
+  hubHorizon: {
+    type: 'devices',
+    kind: 'phone',
+    carousel: true,
+    screens: [
+      { src: '/images/tessan/tessan-hub-horizon-assistant.webp', width: 780, height: 1453, aspect: 780 / 1453, label: { fr: 'Assistant Santé, l’horizon', en: 'Health Assistant, the horizon' } },
+      { src: '/images/tessan/tessan-hub-horizon-agent.webp', width: 780, height: 1453, aspect: 780 / 1453, label: { fr: 'Agent obésité', en: 'Weight agent' } },
+      { src: '/images/tessan/tessan-hub-horizon-v1.webp', width: 780, height: 1379, aspect: 780 / 1379, label: { fr: 'Ma Santé, version 1', en: 'My Health, version 1' } },
+      { src: '/images/tessan/tessan-hub-horizon-v2.webp', width: 780, height: 1379, aspect: 780 / 1379, label: { fr: 'Ma Santé, version 2', en: 'My Health, version 2' } },
+      { src: '/images/tessan/tessan-hub-horizon-v3.webp', width: 780, height: 1379, aspect: 780 / 1379, label: { fr: 'Ma Santé, version 3', en: 'My Health, version 3' } },
+      { src: '/images/tessan/tessan-hub-horizon-source.webp', width: 780, height: 1580, aspect: 780 / 1580, label: { fr: 'Relier une source', en: 'Connecting a source' } },
+    ],
+  },
   hubScreens: {
     type: 'devices',
     kind: 'phone',
@@ -187,8 +225,6 @@ const FIGURES: Record<string, FigureSource> = {
     ],
   },
 }
-
-const HERO_COVER = '/images/tessan/cover_tessan_front.webp'
 
 const screenKey = (screen: DeviceScreen) => screen.video ?? screen.src
 
@@ -316,29 +352,47 @@ function FigureView({
   )
 }
 
-export const TessanPage: React.FC<TessanPageProps> = ({ lang = 'fr' }) => {
+export type TessanVariant = 'hub' | 'app' | 'os' | 'systeme'
+
+const PROJECT_ID: Record<TessanVariant, string> = {
+  hub: 'tessan',
+  app: 'tessan-app',
+  os: 'tessan-os',
+  systeme: 'tessan-systeme',
+}
+
+/**
+ * The Tessan case study and its three deep dives share one set of sections, figures and strips.
+ * The hub opens on three short chapters that lead to the deep dives; each deep dive reads its own sections.
+ */
+export const TessanChapterPage: React.FC<TessanPageProps & { variant: TessanVariant }> = ({ lang = 'fr', variant }) => {
   const t = TESSAN_TRANSLATIONS[lang]
+  const projectId = PROJECT_ID[variant]
+  const heroCover = CASE_STUDY_SHELL[projectId].visual
+  const chapter = variant === 'hub' ? null : t.chapters[variant]
+  const hero = chapter ? chapter.hero : t.hero
+  const summary = chapter ? chapter.summary : t.summary
+  const teasers = variant === 'hub' ? t.hub.teasers : []
+  const sections = chapter ? t.sections.filter((s) => chapter.sectionIds.includes(s.id)) : t.sections.filter((s) => s.id === 'limites')
 
   // Every visual of the page, in reading order, so the lightbox walks the page from top to bottom
   const lightboxImages = useMemo(() => {
-    const items: (LightboxImage & { key: string })[] = [{ key: HERO_COVER, src: HERO_COVER, caption: t.captions.parcours, type: 'image' }]
-    for (const section of t.sections) {
-      {
-        for (const key of section.figures ?? []) {
-          const figure = FIGURES[key]
-          if (!figure) continue
-          if (figure.type === 'devices') {
-            for (const screen of figure.screens) {
-              items.push({ key: screenKey(screen), src: screen.video ?? screen.src, caption: `${t.captions[key] ?? ''}, ${screen.label[lang]}`, type: screen.video ? 'video' : 'image' })
-            }
-          } else {
-            items.push({ key: figure.src, src: figure.src, caption: t.captions[key] ?? '', type: 'image' })
-          }
+    const items: (LightboxImage & { key: string })[] = [{ key: heroCover, src: heroCover, caption: hero.title, type: 'image' }]
+    const keys = [...teasers.map((x) => x.figure), ...sections.flatMap((s) => s.figures ?? [])]
+    for (const key of keys) {
+      const figure = FIGURES[key]
+      if (!figure) continue
+      if (figure.type === 'devices') {
+        for (const screen of figure.screens) {
+          items.push({ key: screenKey(screen), src: screen.video ?? screen.src, caption: `${t.captions[key] ?? ''}, ${screen.label[lang]}`, type: screen.video ? 'video' : 'image' })
         }
+      } else {
+        items.push({ key: figure.src, src: figure.src, caption: t.captions[key] ?? '', type: 'image' })
       }
     }
     return items
-  }, [t, lang])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [t, lang, variant])
 
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [lightboxIndex, setLightboxIndex] = useState(0)
@@ -351,6 +405,8 @@ export const TessanPage: React.FC<TessanPageProps> = ({ lang = 'fr' }) => {
     }
   }
 
+  const firstIndex = teasers.length
+
   return (
     <div className="min-h-screen bg-[#FDFDFC]">
       <EnhancedLightbox
@@ -360,40 +416,66 @@ export const TessanPage: React.FC<TessanPageProps> = ({ lang = 'fr' }) => {
         currentIndex={lightboxIndex}
         onIndexChange={setLightboxIndex}
         lang={lang}
-        projectId="tessan"
+        projectId={projectId}
       />
 
       <div id="top">
         <CaseStudyHero
           lang={lang}
-          projectId="tessan"
-          title={t.hero.title}
-          intro={t.hero.intro}
+          projectId={projectId}
+          title={hero.title}
+          intro={hero.intro}
           meta={[
-            { label: t.metaLabels.role, value: t.hero.role },
-            { label: t.metaLabels.period, value: t.hero.period },
-            { label: t.metaLabels.team, value: t.hero.team },
-            { label: t.metaLabels.scope, value: t.hero.scope },
+            { label: t.metaLabels.role, value: hero.role },
+            { label: t.metaLabels.period, value: hero.period },
+            { label: t.metaLabels.team, value: hero.team },
+            { label: t.metaLabels.scope, value: hero.scope },
           ]}
           hideGallery
-          onZoom={() => openLightbox(HERO_COVER)}
-          visualAlt={t.captions.parcours}
+          onZoom={() => openLightbox(heroCover)}
+          visualAlt={hero.title}
         />
 
         <CaseStudySummary
           lang={lang}
-          context={t.summary.context}
-          role={t.summary.role}
-          roleItems={t.summary.roleItems}
-          deliverables={t.summary.deliverables}
-          metrics={t.summary.metrics}
+          context={summary.context}
+          role={summary.role}
+          roleItems={summary.roleItems}
+          deliverables={summary.deliverables}
+          metrics={summary.metrics}
         />
 
-        {t.sections.map((section, index) => (
+        {teasers.map((teaser, index) => (
+          <section key={teaser.id} id={teaser.id}>
+            <ActRule />
+            <div className="act-wide pt-10 md:pt-14 pb-12 md:pb-16">
+              <ActTitle index={String(index + 1).padStart(2, '0')} title={teaser.title} />
+              <p className="max-w-[62ch] text-base text-gray-600">{teaser.text}</p>
+              <div className="mt-8 md:mt-10">
+                <FigureView
+                  figure={FIGURES[teaser.figure]}
+                  caption={t.captions[teaser.figure] ?? teaser.title}
+                  lang={lang}
+                  prototypeLabel={t.ui.prototype}
+                  onZoom={openLightbox}
+                />
+              </div>
+              <Link
+                href={`/${lang}/project/${PROJECT_ID[teaser.id]}`}
+                className="mt-8 inline-flex items-center gap-2 min-h-11 px-5 rounded-full bg-gray-900 hover:bg-black text-white text-sm font-medium shadow-sm hover:shadow-md active:scale-[0.97] transition-[background-color,box-shadow,transform] duration-150"
+              >
+                {t.hub.read}
+                <ArrowRight size={16} aria-hidden="true" />
+              </Link>
+            </div>
+          </section>
+        ))}
+
+        {sections.map((section, index) => (
           <section key={section.id} id={section.id}>
             <ActRule />
             <div className="act-wide pt-10 md:pt-14 pb-12 md:pb-16">
-              <ActTitle index={String(index + 1).padStart(2, '0')} title={section.title} />
+              <ActTitle index={String(firstIndex + index + 1).padStart(2, '0')} title={section.title} />
               <p className="max-w-[62ch] text-base text-gray-600">{section.text}</p>
               {section.figures && (
                 <div className="mt-8 md:mt-10 space-y-6 md:space-y-8">
@@ -418,5 +500,7 @@ export const TessanPage: React.FC<TessanPageProps> = ({ lang = 'fr' }) => {
     </div>
   )
 }
+
+export const TessanPage: React.FC<TessanPageProps> = (props) => <TessanChapterPage {...props} variant="hub" />
 
 export default TessanPage

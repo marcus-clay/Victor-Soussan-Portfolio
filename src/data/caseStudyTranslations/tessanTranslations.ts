@@ -11,7 +11,43 @@ export interface TessanSection {
   figures?: string[]
 }
 
+export interface TessanSummary {
+  context: string
+  role: string
+  roleItems: { title: string; detail?: string }[]
+  deliverables: { title: string; detail?: string }[]
+  metrics: { value: string; label: string }[]
+}
+
+export interface TessanHero {
+  title: string
+  intro: string
+  role: string
+  period: string
+  team: string
+  scope: string
+}
+
+/** One deep dive: its own opening and summary, and the sections it reuses. */
+export interface TessanChapter {
+  hero: TessanHero
+  summary: TessanSummary
+  sectionIds: string[]
+}
+
+export type TessanChapterKey = 'app' | 'os' | 'systeme'
+
+export interface TessanTeaser {
+  id: TessanChapterKey
+  title: string
+  text: string
+  /** Key of the visual in FIGURES */
+  figure: string
+}
+
 export interface TessanTranslation {
+  chapters: Record<TessanChapterKey, TessanChapter>
+  hub: { teasers: TessanTeaser[]; read: string }
   hero: { title: string; intro: string; role: string; period: string; team: string; scope: string }
   metaLabels: { role: string; period: string; team: string; scope: string }
   summary: {
@@ -60,6 +96,109 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
         { value: '3 %', label: 'de saisies de mutuelle réussies : l’écran est retiré' },
       ],
     },
+    chapters: {
+      app: {
+        hero: {
+          title: 'Tessan : l’application patient reconstruite en 30 jours',
+          intro: 'Le 15 juin, nous reconstruisons l’application en natif autour de la consultation. Un tunnel allégé, un assistant qui ne diagnostique pas, trois builds en deux semaines.',
+          role: 'Lead design et product owner',
+          period: 'Juin à juillet 2026',
+          team: 'Un tech lead, deux développeurs, seul designer',
+          scope: 'Application, tunnel, assistant',
+        },
+        summary: {
+          context: 'L’application existante ne servait pas la consultation : session fragmentée, double navigation, tunnel de 8 à 13 écrans. L’objectif : une première version centrée sur la consultation, prête à soumettre aux stores avant le 15 juillet.',
+          role: 'Lead design et product owner de l’application patient, avec un tech lead et deux développeurs.',
+          roleItems: [
+            { title: 'Périmètre', detail: 'ce qui entre et ce qui sort de la V0' },
+            { title: 'Parcours', detail: 'accès, tunnel, documents, proches' },
+            { title: 'Écrans', detail: '40 écrans, sept epics, 25 user stories' },
+            { title: 'Builds', detail: '0.1, 0.2 et 0.3' },
+          ],
+          deliverables: [
+            { title: 'Application patient', detail: 'iOS et Android' },
+            { title: 'Tunnel de consultation', detail: 'audit de 25 écrans, parcours refondu' },
+            { title: 'Assistant Santé', detail: 'quatre parcours, garde-fous' },
+            { title: 'Prototypes interactifs', detail: 'wireframes et réservation' },
+          ],
+          metrics: [
+            { value: '30 jours', label: 'de la décision de reconstruire à la préparation de la soumission' },
+            { value: '3 builds', label: 'en deux semaines, du 26 juin au 9 juillet' },
+            { value: '3 %', label: 'de saisies de mutuelle réussies : l’écran est retiré' },
+          ],
+        },
+        sectionIds: ['app', 'tunnel', 'protos-tunnel', 'assistant'],
+      },
+      os: {
+        hero: {
+          title: 'Tessan OS et le Hub Santé : la vision produit en prototypes',
+          intro: 'En avril, sept prototypes rendent la vision discutable en une semaine. En juin, ils deviennent le Hub Santé : une seule application, la consultation qui finance, des programmes de prévention qui retiennent.',
+          role: 'Design produit et vision',
+          period: 'Avril à juin 2026',
+          team: 'Designer produit, avec la direction produit',
+          scope: 'Concepts, prototypes, Hub Santé',
+        },
+        summary: {
+          context: 'Tessan installe des cabines de téléconsultation, et peu de patients reviennent. La vision devait relier la consultation et le suivi entre deux soins, sans promettre ce que le cadre réglementaire interdit.',
+          role: 'Conception des cinq concepts et des sept prototypes, puis cadrage du Hub Santé présenté au comité de direction le 26 juin.',
+          roleItems: [
+            { title: 'Concepts', detail: 'un interlocuteur, un signal, un pont, des missions, une couche commune' },
+            { title: 'Prototypes', detail: 'déployés dans un laboratoire produit' },
+            { title: 'Hub Santé', detail: 'programmes, pharmacie, objets connectés' },
+          ],
+          deliverables: [
+            { title: 'Sept prototypes', detail: 'mobile, tablette, cabine et bureau' },
+            { title: 'Hub Santé', detail: 'programme obésité et écrans Ma Santé' },
+            { title: 'Deck de vision', detail: 'dix slides, décisions attendues' },
+          ],
+          metrics: [
+            { value: '7 prototypes', label: 'en une semaine, déployés dans un laboratoire produit' },
+            { value: '1 application', label: 'décision du comité de direction du 26 juin' },
+          ],
+        },
+        sectionIds: ['vision', 'hub'],
+      },
+      systeme: {
+        hero: {
+          title: 'Un design system et des agents pour une équipe d’un designer',
+          intro: 'Un kit React aligné sur Figma, un pack de skills pour Claude Code et un index Notion qu’un agent sait lire : la gouvernance par l’outil plutôt que par le document.',
+          role: 'Design system et product management',
+          period: 'Avril à juillet 2026',
+          team: 'Seul designer, avec la direction produit et technique',
+          scope: 'Design system, skills, pilotage produit',
+        },
+        summary: {
+          context: 'Angular en production, React pour le neuf, un seul designer : une règle écrite ne tient pas. Le système devait se lire par les outils que l’équipe utilise déjà, dont Claude Code.',
+          role: 'Conception du design system dans Figma et en React, écriture des skills, refonte du modèle de pilotage produit et de son index pour agents.',
+          roleItems: [
+            { title: 'Design system', detail: 'tokens, composants, démos' },
+            { title: 'Skills', detail: 'règles lues par Claude Code' },
+            { title: 'Figma et code', detail: 'audit et alignement' },
+            { title: 'Pilotage produit', detail: 'chaîne unique, index pour agents' },
+          ],
+          deliverables: [
+            { title: 'Kit de composants React', detail: '89 fichiers, tokens Tailwind v4' },
+            { title: 'Design system Figma', detail: '11 rampes, 13 styles de texte' },
+            { title: 'Pack de skills', detail: '4 publiques, 5 internes' },
+            { title: 'Index Notion pour agents', detail: 'garde-fous écrits' },
+          ],
+          metrics: [
+            { value: '89', label: 'fichiers de composants dans le kit React' },
+            { value: '11 rampes', label: 'de couleur dans le design system Figma' },
+            { value: '15 scénarios', label: 'au crash-test du pilotage produit' },
+          ],
+        },
+        sectionIds: ['design-system', 'skills', 'figma-code', 'gestion-produit'],
+      },
+    },
+    hub: {
+      read: 'Lire l’étude de cas',
+      teasers: [
+        { id: 'app', title: 'L’application patient', text: 'Reconstruite en natif en 30 jours autour de la consultation : un tunnel allégé, un assistant qui ne diagnostique pas, trois builds en deux semaines.', figure: 'hubApp' },
+        { id: 'os', title: 'Tessan OS et le Hub Santé', text: 'Sept prototypes en une semaine pour rendre la vision discutable, puis une seule application : la consultation qui finance, des programmes de prévention qui retiennent.', figure: 'hubOs' },
+        { id: 'systeme', title: 'Design system et agents', text: 'Un kit React aligné sur Figma, un pack de skills pour Claude Code et un index Notion qu’un agent sait lire : la gouvernance par l’outil plutôt que par le document.', figure: 'hubSysteme' },
+      ],
+    },
     sections: [
       {
         id: 'app',
@@ -95,7 +234,7 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
         id: 'skills',
         title: 'Des skills pour que chaque génération respecte le système',
         text: 'Seul designer face à trois stacks, j’ai écrit les règles du design system sous une forme que Claude Code lit à chaque session : tokens, composants, doctrine de mouvement, vocabulaire patient. Le pack compte quatre skills dans le dépôt public et cinq dans la version interne de juin, avec une préséance écrite entre le kit React et le SDK Angular. Les équipes génèrent ainsi des interfaces déjà alignées, sans dépendance de plus. Aucune mesure d’adoption n’a été instrumentée.',
-        figures: ['skillsTree'],
+        figures: ['skillsDiptych', 'skillsTree'],
       },
       {
         id: 'figma-code',
@@ -119,7 +258,7 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
         id: 'hub',
         title: 'Le Hub Santé, une seule application',
         text: 'Le 9 juin, « Ma santé » pose les règles : une navigation stable, un état vide qui invite, des programmes bornés dans le temps, avec un objectif nommé et un suivi en tendance. Le 26 juin, le comité de direction retient une seule application et un ordre : programmes de prévention, écosystème pharmacie, puis objets connectés. La vision reste un cap, conditionnée à la certification des briques concernées, et n’est pas en production.',
-        figures: ['hubScreens'],
+        figures: ['hubScreens', 'hubHorizon'],
       },
       {
         id: 'limites',
@@ -145,6 +284,11 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
       dsVideosMobile: 'Tessan Cloud et le playground sur mobile',
       dsInteractions: 'Le kit en usage : une boîte de dialogue et une feuille',
       dsPalette: 'Les onze rampes de couleur du design system, dans Figma',
+      hubApp: 'Le tunnel de consultation en trois écrans',
+      hubOs: 'Tessan OS sur mobile, tablette et bureau',
+      hubSysteme: 'Tessan-UI, le catalogue de composants',
+      skillsDiptych: 'Une règle du pack de skills, et le kit rendu à partir de ces tokens',
+      hubHorizon: 'Le Hub Santé à l’horizon : l’assistant et ses agents experts, Ma Santé version après version',
       skillsTree: 'Le pack de skills : arborescence réelle des dépôts public (avril) et interne (juin)',
       auditComposants: 'Audit des composants de l’app patient, 25 juin : cinq sous-agents, une cause racine',
       pilotageAgent: 'Le pilotage produit lisible par un agent, et ses garde-fous',
@@ -189,6 +333,109 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
         { value: '3%', label: 'of health insurance entries completed: the screen is removed' },
       ],
     },
+    chapters: {
+      app: {
+        hero: {
+          title: 'Tessan: the patient app rebuilt in 30 days',
+          intro: 'On June 15, we rebuild the app in native around the consultation. A lighter funnel, an assistant that does not diagnose, three builds in two weeks.',
+          role: 'Design lead and product owner',
+          period: 'June to July 2026',
+          team: 'A tech lead, two developers, sole designer',
+          scope: 'App, funnel, assistant',
+        },
+        summary: {
+          context: 'The existing app did not serve the consultation: fragmented session, double navigation, a funnel of 8 to 13 screens. The goal: a first version centered on the consultation, ready to submit to the stores before July 15.',
+          role: 'Design lead and product owner of the patient app, with a tech lead and two developers.',
+          roleItems: [
+            { title: 'Scope', detail: 'what goes into and out of V0' },
+            { title: 'Journeys', detail: 'access, funnel, documents, relatives' },
+            { title: 'Screens', detail: '40 screens, seven epics, 25 user stories' },
+            { title: 'Builds', detail: '0.1, 0.2 and 0.3' },
+          ],
+          deliverables: [
+            { title: 'Patient app', detail: 'iOS and Android' },
+            { title: 'Consultation funnel', detail: 'audit of 25 screens, reworked journey' },
+            { title: 'Health Assistant', detail: 'four journeys, guardrails' },
+            { title: 'Interactive prototypes', detail: 'wireframes and booking' },
+          ],
+          metrics: [
+            { value: '30 days', label: 'from the decision to rebuild to the prepared submission' },
+            { value: '3 builds', label: 'in two weeks, from June 26 to July 9' },
+            { value: '3%', label: 'of health insurance entries completed: the screen is removed' },
+          ],
+        },
+        sectionIds: ['app', 'tunnel', 'protos-tunnel', 'assistant'],
+      },
+      os: {
+        hero: {
+          title: 'Tessan OS and the Health Hub: the product vision in prototypes',
+          intro: 'In April, seven prototypes make the vision discussable in a week. In June they become the Health Hub: a single app, the consultation that funds, prevention programs that retain.',
+          role: 'Product design and vision',
+          period: 'April to June 2026',
+          team: 'Product designer, with product leadership',
+          scope: 'Concepts, prototypes, Health Hub',
+        },
+        summary: {
+          context: 'Tessan installs telemedicine booths, and few patients return. The vision had to link the consultation and the follow-up between two visits, without promising what the regulatory framework forbids.',
+          role: 'Design of the five concepts and the seven prototypes, then framing of the Health Hub presented to the executive committee on June 26.',
+          roleItems: [
+            { title: 'Concepts', detail: 'an interlocutor, a signal, a bridge, missions, a shared layer' },
+            { title: 'Prototypes', detail: 'deployed in a product lab' },
+            { title: 'Health Hub', detail: 'programs, pharmacy, connected devices' },
+          ],
+          deliverables: [
+            { title: 'Seven prototypes', detail: 'mobile, tablet, booth and desktop' },
+            { title: 'Health Hub', detail: 'weight program and My Health screens' },
+            { title: 'Vision deck', detail: 'ten slides, decisions expected' },
+          ],
+          metrics: [
+            { value: '7 prototypes', label: 'in a week, deployed in a product lab' },
+            { value: '1 app', label: 'decision of the executive committee on June 26' },
+          ],
+        },
+        sectionIds: ['vision', 'hub'],
+      },
+      systeme: {
+        hero: {
+          title: 'A design system and agents for a one-designer team',
+          intro: 'A React kit aligned with Figma, a skills pack for Claude Code and a Notion index an agent can read: governance through the tool rather than the document.',
+          role: 'Design system and product management',
+          period: 'April to July 2026',
+          team: 'Sole designer, with product and technical leadership',
+          scope: 'Design system, skills, product management',
+        },
+        summary: {
+          context: 'Angular in production, React for everything new, one designer: a written rule does not hold. The system had to be read by the tools the team already uses, Claude Code included.',
+          role: 'Design of the design system in Figma and React, writing of the skills, overhaul of the product management model and its index for agents.',
+          roleItems: [
+            { title: 'Design system', detail: 'tokens, components, demos' },
+            { title: 'Skills', detail: 'rules read by Claude Code' },
+            { title: 'Figma and code', detail: 'audit and alignment' },
+            { title: 'Product management', detail: 'single chain, index for agents' },
+          ],
+          deliverables: [
+            { title: 'React component kit', detail: '89 files, Tailwind v4 tokens' },
+            { title: 'Figma design system', detail: '11 ramps, 13 text styles' },
+            { title: 'Skills pack', detail: '4 public, 5 internal' },
+            { title: 'Notion index for agents', detail: 'written guardrails' },
+          ],
+          metrics: [
+            { value: '89', label: 'component files in the React kit' },
+            { value: '11 ramps', label: 'of color in the Figma design system' },
+            { value: '15 scenarios', label: 'in the product management stress test' },
+          ],
+        },
+        sectionIds: ['design-system', 'skills', 'figma-code', 'gestion-produit'],
+      },
+    },
+    hub: {
+      read: 'Read the case study',
+      teasers: [
+        { id: 'app', title: 'The patient app', text: 'Rebuilt in native in 30 days around the consultation: a lighter funnel, an assistant that does not diagnose, three builds in two weeks.', figure: 'hubApp' },
+        { id: 'os', title: 'Tessan OS and the Health Hub', text: 'Seven prototypes in a week to make the vision discussable, then a single app: the consultation that funds, prevention programs that retain.', figure: 'hubOs' },
+        { id: 'systeme', title: 'Design system and agents', text: 'A React kit aligned with Figma, a skills pack for Claude Code and a Notion index an agent can read: governance through the tool rather than the document.', figure: 'hubSysteme' },
+      ],
+    },
     sections: [
       {
         id: 'app',
@@ -224,7 +471,7 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
         id: 'skills',
         title: 'Skills so that every generation respects the system',
         text: 'As the only designer facing three stacks, I wrote the design system rules in a form Claude Code reads at every session: tokens, components, motion doctrine, patient vocabulary. The pack holds four skills in the public repository and five in the internal June version, with a written precedence between the React kit and the Angular SDK. Teams generate interfaces that are already aligned, without one more dependency. No adoption metric was instrumented.',
-        figures: ['skillsTree'],
+        figures: ['skillsDiptych', 'skillsTree'],
       },
       {
         id: 'figma-code',
@@ -248,7 +495,7 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
         id: 'hub',
         title: 'The Health Hub, a single app',
         text: 'On June 9, “My health” sets the rules: stable navigation, an empty state that invites, time-bound programs with a named goal and a trend-based follow-up. On June 26, the executive committee keeps a single app and an order: prevention programs, the pharmacy ecosystem, then connected devices. The vision stays a heading, conditional on the certification of the modules involved, and is not in production.',
-        figures: ['hubScreens'],
+        figures: ['hubScreens', 'hubHorizon'],
       },
       {
         id: 'limites',
@@ -274,6 +521,11 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
       dsVideosMobile: 'Tessan Cloud and the playground on mobile',
       dsInteractions: 'The kit in use: a dialog and a sheet',
       dsPalette: 'The design system’s eleven color ramps, in Figma',
+      hubApp: 'The consultation funnel in three screens',
+      hubOs: 'Tessan OS on mobile, tablet and desktop',
+      hubSysteme: 'Tessan-UI, the component catalog',
+      skillsDiptych: 'A rule from the skills pack, and the kit rendered from those tokens',
+      hubHorizon: 'The Health Hub on the horizon: the assistant and its expert agents, My Health version after version',
       skillsTree: 'The skills pack: real tree of the public (April) and internal (June) repositories',
       auditComposants: 'Component audit of the patient app, June 25: five sub-agents, one root cause',
       pilotageAgent: 'Product management an agent can read, and its guardrails',
