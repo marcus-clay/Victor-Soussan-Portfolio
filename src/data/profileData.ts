@@ -1,7 +1,7 @@
 // Source unique du parcours professionnel (EN/FR).
 // Référence : export LinkedIn de fin octobre 2026. En cas d'écart ailleurs sur le site, ce fichier fait foi.
 // Consommateurs : translations.ts (page /resume) et AboutPageRedesign.tsx (section parcours).
-// La société de téléconsultation reste anonymisée : ne jamais la nommer.
+// Tessan peut être nommée (accord de Victor, octobre 2026).
 
 export type ProfileLang = 'en' | 'fr'
 
@@ -38,16 +38,16 @@ export const PROFILE_EXPERIENCE: ProfileExperience[] = [
     },
     bullets: {
       en: [
-        'Telemedicine company (3 months, April to July 2026), first product designer: design lead and product owner of the patient mobile app (iOS, Android), rebuilt in 30 days with a tech lead and two developers',
-        'Same engagement: React design system of nearly 90 components, conversational AI assistant under regulatory constraints, product management moved from Jira to Notion',
+        'Tessan, telemedicine in pharmacies (3 months, April to July 2026), first designer: design lead and product owner of the patient mobile app (iOS, Android), rebuilt in 30 days with a tech lead and two developers',
+        'Same engagement: design system (React, shadcn/ui, nearly 90 components), conversational AI assistant under regulatory constraints, product management rebuilt in Notion and made queryable by Claude',
         'Banque des Territoires: redesign of the search engine and conversion optimization for the B2G marketplaces Aquagir and Numérique360. UX/UI audit, user research, improvement backlog, product recommendations',
         'Toolkit.ac (construction SaaS): V2, site dashboard, planning, multi-device navigation',
         'FEPEM: user research for the launch of MonEmploiDirect, team mentoring, roadmap recommendations',
         'Condamine Apps: 50+ working prototypes deployed with Claude Code, Figma MCP and Vercel',
       ],
       fr: [
-        'Société de téléconsultation médicale (3 mois, avril à juillet 2026), premier product designer : lead design et product owner de l’application mobile patient (iOS, Android), reconstruite en 30 jours avec un tech lead et deux développeurs',
-        'Même mission : design system React de près de 90 composants, assistant conversationnel IA sous contrainte réglementaire, pilotage produit migré de Jira vers Notion',
+        'Tessan, téléconsultation en pharmacie (3 mois, avril à juillet 2026), premier designer : lead design et product owner de l’application mobile patient (iOS, Android), reconstruite en 30 jours avec un tech lead et deux développeurs',
+        'Même mission : design system (React, shadcn/ui, près de 90 composants), assistant conversationnel IA sous contrainte réglementaire, pilotage produit repensé dans Notion et rendu interrogeable par Claude',
         'Banque des Territoires : refonte du moteur de recherche et optimisation de la conversion des marketplaces B2G Aquagir et Numérique360. Audit UX/UI, recherche utilisateur, backlog d’améliorations, recommandations produit',
         'Toolkit.ac (SaaS construction) : V2, dashboard chantier, planning, navigation multi-devices',
         'FEPEM : recherche utilisateur pour le lancement de MonEmploiDirect, mentoring d’équipe, recommandations de roadmap',
@@ -358,8 +358,8 @@ export const PROFILE_ERAS: ProfileEra[] = [
     period: { en: '2025 - Present', fr: '2025 - Aujourd’hui' },
     title: { en: 'Victor Soussan Design', fr: 'Victor Soussan Design' },
     description: {
-      en: 'Product design and prototyping for B2B, B2G and growing startups. Recent engagement: first product designer of a telemedicine company (3 months), with the patient mobile app rebuilt in 30 days, a design system of nearly 90 components and an AI assistant under regulatory constraints. Other engagements: search engine and conversion redesign for Banque des Territoires’ B2G marketplaces, V2 of Toolkit.ac, user research for FEPEM’s MonEmploiDirect. In parallel, Condamine Apps: 50+ prototypes deployed with Claude Code and Figma MCP.',
-      fr: 'Conception produit et prototypage pour des entreprises B2B, B2G et des startups en croissance. Mission récente : premier product designer d’une société de téléconsultation médicale (3 mois), avec l’application mobile patient reconstruite en 30 jours, un design system de près de 90 composants et un assistant IA sous contrainte réglementaire. Autres missions : refonte du moteur de recherche et de la conversion des marketplaces B2G de la Banque des Territoires, V2 de Toolkit.ac, recherche utilisateur pour MonEmploiDirect (FEPEM). En parallèle, Condamine Apps : 50+ prototypes déployés avec Claude Code et Figma MCP.',
+      en: 'Product design and prototyping for B2B, B2G and growing startups. Recent engagement: first designer at Tessan (3 months, April to July 2026), with the patient mobile app rebuilt in 30 days, a design system, an AI assistant under regulatory constraints and a product management system an AI can query. Other engagements: search engine and conversion redesign for Banque des Territoires’ B2G marketplaces, V2 of Toolkit.ac, user research for FEPEM’s MonEmploiDirect. In parallel, Condamine Apps: 50+ prototypes deployed with Claude Code and Figma MCP.',
+      fr: 'Conception produit et prototypage pour des entreprises B2B, B2G et des startups en croissance. Mission récente : premier designer chez Tessan (3 mois, avril à juillet 2026), avec l’application mobile patient reconstruite en 30 jours, un design system, un assistant IA sous contrainte réglementaire et une gestion produit qu’une IA peut interroger. Autres missions : refonte du moteur de recherche et de la conversion des marketplaces B2G de la Banque des Territoires, V2 de Toolkit.ac, recherche utilisateur pour MonEmploiDirect (FEPEM). En parallèle, Condamine Apps : 50+ prototypes déployés avec Claude Code et Figma MCP.',
     },
   },
   {
