@@ -211,7 +211,7 @@ function ProjectCard({
       draggable={false}
     >
       {/* One region per card: the cover. Text sits outside it, tight to the cover's lower edge. */}
-      <div className="relative aspect-[3/2] overflow-hidden rounded-2xl bg-[#F3F3F2] ring-1 ring-inset ring-black/[0.05]">
+      <div className="relative aspect-[3/2] overflow-hidden rounded-2xl bg-[#E8E8E8] ring-1 ring-inset ring-black/[0.05]">
         <img
           src={coverSrc(project)}
           alt=""

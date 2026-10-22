@@ -684,7 +684,7 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
                         <img
                           src={img.src}
                           alt={isCurrent ? img.caption || '' : ''}
-                          className="w-full h-full object-contain rounded-2xl shadow-2xl select-none"
+                          className="w-full h-full object-contain rounded-2xl shadow-2xl select-none bg-[#E8E8E8]"
                           draggable={false}
                           onLoad={(e) => {
                             const { naturalWidth, naturalHeight } = e.currentTarget

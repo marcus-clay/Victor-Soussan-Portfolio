@@ -129,7 +129,7 @@ export function RelatedCard({ item }: { item: RelatedItem }) {
 
 function Cover({ cover }: { cover: NonNullable<RelatedItem['cover']> }) {
   return (
-    <div className="relative aspect-[3/2] shrink-0 overflow-hidden" style={{ backgroundColor: cover.tone ?? '#F3F3F2' }}>
+    <div className="relative aspect-[3/2] shrink-0 overflow-hidden" style={{ backgroundColor: cover.tone ?? '#E8E8E8' }}>
       <img
         src={cover.src}
         {...imgDims(cover.src)}
