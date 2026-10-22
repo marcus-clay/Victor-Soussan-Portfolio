@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useEffect, useRef, useState } from 'react'
+import { Pause, Play } from '@phosphor-icons/react'
 import { zoomable } from '@/utils/zoomable'
 
 export type DeviceKind = 'phone' | 'tablet' | 'browser'
@@ -30,46 +31,77 @@ interface DeviceMockupProps {
 
 const DEFAULT_ASPECT: Record<DeviceKind, number> = { phone: 390 / 844, tablet: 4 / 3, browser: 16 / 10 }
 
-/** Plays a clip only while it is visible, and never when the visitor asks for reduced motion. */
+/**
+ * The clip of a screen plays as soon as a part of it is on screen and pauses when it leaves, like every
+ * video of the site (`VideoPlayer`). A small toggle stays visible so the reader can stop it, and a reader who
+ * stopped it is not restarted by scrolling. Without a clip, the picture stays.
+ */
 function ScreenMedia({ screen, label, eager }: { screen: DeviceScreen; label: string; eager?: boolean }) {
   const videoRef = useRef<HTMLVideoElement>(null)
-  const [reduced, setReduced] = useState(false)
-
-  useEffect(() => {
-    const query = window.matchMedia('(prefers-reduced-motion: reduce)')
-    setReduced(query.matches)
-    const onChange = () => setReduced(query.matches)
-    query.addEventListener('change', onChange)
-    return () => query.removeEventListener('change', onChange)
-  }, [])
+  const pausedByUser = useRef(false)
+  const [playing, setPlaying] = useState(false)
+  const [hovered, setHovered] = useState(false)
 
   useEffect(() => {
     const video = videoRef.current
-    if (!video || reduced) return
+    if (!video) return
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) void video.play().catch(() => {})
-        else video.pause()
+        if (entry.isIntersecting) {
+          if (!pausedByUser.current) void video.play().catch(() => {})
+        } else video.pause()
       },
-      { threshold: 0.35 }
+      { rootMargin: '200px 0px', threshold: 0.01 }
     )
     observer.observe(video)
-    return () => observer.disconnect()
-  }, [reduced, screen.video])
+    const onPlay = () => setPlaying(true)
+    const onPause = () => setPlaying(false)
+    video.addEventListener('play', onPlay)
+    video.addEventListener('pause', onPause)
+    return () => {
+      observer.disconnect()
+      video.removeEventListener('play', onPlay)
+      video.removeEventListener('pause', onPause)
+    }
+  }, [screen.video])
 
-  if (screen.video && !reduced) {
+  if (screen.video) {
+    const toggle = (event: React.MouseEvent | React.KeyboardEvent) => {
+      event.stopPropagation()
+      const video = videoRef.current
+      if (!video) return
+      if (playing) {
+        pausedByUser.current = true
+        video.pause()
+      } else {
+        pausedByUser.current = false
+        void video.play().catch(() => {})
+      }
+    }
     return (
-      <video
-        ref={videoRef}
-        src={screen.video}
-        poster={screen.src}
-        muted
-        loop
-        playsInline
-        preload="none"
-        aria-label={label}
-        className="block w-full h-full object-cover object-top"
-      />
+      <div className="relative h-full w-full" onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
+        <video
+          ref={videoRef}
+          src={screen.video}
+          poster={screen.src}
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          aria-label={label}
+          className="block w-full h-full object-cover object-top"
+        />
+        <button
+          type="button"
+          onClick={toggle}
+          onKeyDown={(e) => e.stopPropagation()}
+          aria-label={playing ? 'Pause' : 'Lecture'}
+          className="absolute bottom-[3cqw] right-[3cqw] z-10 flex h-[clamp(26px,7cqw,34px)] w-[clamp(26px,7cqw,34px)] items-center justify-center rounded-full bg-black/55 text-white transition-opacity duration-200 ease-out before:absolute before:-inset-2 before:content-['']"
+          style={{ opacity: hovered || !playing ? 0.95 : 0.4 }}
+        >
+          {playing ? <Pause size={12} weight="fill" /> : <Play size={12} weight="fill" />}
+        </button>
+      </div>
     )
   }
   return (

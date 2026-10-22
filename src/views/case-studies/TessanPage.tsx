@@ -55,6 +55,8 @@ interface DeviceFigure {
   share?: number
   /** Screens at reading size in a horizontal strip instead of a row on one stage */
   carousel?: boolean
+  /** Show the caption under a strip, when the screens need to be explained (a strip is named screen by screen otherwise) */
+  showCaption?: boolean
   href?: string
 }
 
@@ -224,6 +226,7 @@ const FIGURES: Record<string, FigureSource> = {
     kind: 'browser',
     carousel: true,
     url: 'figma',
+    showCaption: true,
     screens: [
       { src: '/images/tessan/tessan-livraison-01-acces.webp', width: 2400, height: 1225, aspect: 2400 / 1225, label: { fr: 'Accès et inscription', en: 'Access and sign-up' } },
       { src: '/images/tessan/tessan-livraison-02-consulter.webp', width: 2400, height: 1458, aspect: 2400 / 1458, label: { fr: 'Consulter, depuis l’accueil', en: 'Consulting, from the home screen' } },
@@ -432,7 +435,7 @@ function FigureView({
         </div>
       )}
       {/* A strip names each screen under its device; a single visual carries its caption. */}
-      <figcaption className={figure.type === 'devices' && figure.carousel ? 'sr-only' : 'mt-3 text-left text-xs text-gray-500 leading-relaxed'}>
+      <figcaption className={figure.type === 'devices' && figure.carousel && !figure.showCaption ? 'sr-only' : 'mt-3 text-left text-xs text-gray-500 leading-relaxed'}>
         {caption}
         {figure.href && (
           <>
