@@ -80,62 +80,6 @@ export const TRANSLATIONS = {
       ],
       cta_all: "Explore my expertise"
     },
-    services_page: {
-      page_title: "Expertise",
-      page_subtitle: "From ambiguity to shipped product",
-      page_intro: "I work with product teams, startups and public services to reduce risk through design. Whether you need an end-to-end designer, a strategic partner, or someone to structure your design practice, here is what I bring.",
-      pillars: [
-        {
-          title: "Design & Prototyping",
-          desc: "I design interfaces from wireframe to pixel-perfect screens, then prototype them at high fidelity to validate ideas before a single line of code is written. When speed matters, I build functional MVPs using Claude Code and Vercel, and I use Figma MCP to generate production-ready components directly from my design files.",
-          deliverables: [
-            "UX framing, UI design, micro-interactions",
-            "Hi-fi prototyping to validate ideas and sell a vision",
-            "AI-driven prototyping: Figma to deployed prototype via Claude Code and Figma MCP",
-            "Rapid MVP development shipped to Vercel for stakeholder validation",
-            "Mobile native (iOS/Android) and responsive web design",
-            "Concept-to-interface workflows in complex domains"
-          ]
-        },
-        {
-          title: "Product Strategy",
-          desc: "Before designing screens, I help clarify what the product should be. I facilitate workshops, define feature scope, and shape the vision through interaction-first thinking. The goal is always to reduce ambiguity and align the team.",
-          deliverables: [
-            "Feature scoping (0 to 1) and product roadmap input",
-            "Product vision clarification through key user journeys",
-            "Ideation and vision workshops with users and stakeholders",
-            "Accessibility strategy and inclusive UX standards"
-          ]
-        },
-        {
-          title: "Design Ops",
-          desc: "A great design system isn't a component library. It's a shared language between design and engineering. I set up the tools, documentation, and rituals that make collaboration efficient and sustainable.",
-          deliverables: [
-            "Scalable design systems and reusable component libraries",
-            "Technical documentation for developer handoff",
-            "Collaboration rituals between design, product, and engineering"
-          ]
-        },
-        {
-          title: "Leadership & Organization",
-          desc: "I've hired, managed, and mentored design teams of up to 5 people. I align stakeholders, run design workshops, and build the culture and processes that let a design practice thrive within an organization.",
-          deliverables: [
-            "Team leadership, hiring, and designer onboarding",
-            "Design workshops for collaboration and creativity",
-            "Stakeholder alignment (C-Level, PM, Engineering)",
-            "Mentoring and junior designer growth"
-          ]
-        }
-      ],
-      approach_title: "How I Work",
-      approach_steps: [
-        { title: "Frame", desc: "Understand the problem, the users, the constraints. Align the team on what we're solving and why." },
-        { title: "Design", desc: "Explore solutions, prototype fast, test with real users. Iterate until we've validated the direction." },
-        { title: "Ship", desc: "Collaborate with engineering, refine details, deliver production-ready designs. Stay involved until launch." },
-        { title: "Scale", desc: "Document patterns, build the system, establish rituals. Ensure what works today holds at 10x." }
-      ],
-      cta_text: "Let's talk about your project"
-    },
     visual_archive: {
       title: "Gallery",
       subtitle: "Interfaces, design systems and interaction prototypes from my projects.",
@@ -334,9 +278,7 @@ export const TRANSLATIONS = {
       crosslink_approach_title: "How I work",
       crosslink_approach_desc: "My approach to product design: from strategic framing to shipped interfaces.",
       crosslink_projects_title: "Projects",
-      crosslink_projects_desc: "Case studies and delivered products across SaaS, B2B, and public service.",
-      crosslink_expertise_title: "Expertise",
-      crosslink_expertise_desc: "The skills and capabilities I bring to product teams."
+      crosslink_projects_desc: "Case studies and delivered products across SaaS, B2B, and public service."
     },
     contact: {
       title: "Let's work together",
@@ -538,62 +480,6 @@ export const TRANSLATIONS = {
       ],
       cta_all: "Voir toutes les expertises"
     },
-    services_page: {
-      page_title: "Expertises",
-      page_subtitle: "Du flou au produit livr\u00e9",
-      page_intro: "J\u2019accompagne les \u00e9quipes produit, les startups et les services publics pour r\u00e9duire le risque par le design. Que vous cherchiez un designer end-to-end, un partenaire strat\u00e9gique ou quelqu\u2019un pour structurer votre pratique design, voici ce que j\u2019apporte.",
-      pillars: [
-        {
-          title: "Design & Prototypage",
-          desc: "Je con\u00e7ois les interfaces du wireframe \u00e0 l\u2019\u00e9cran pixel-perfect, puis je les prototype en haute fid\u00e9lit\u00e9 pour valider les id\u00e9es avant la moindre ligne de code. Quand la vitesse compte, je construis des MVP fonctionnels avec Claude Code et Vercel, et j\u2019utilise Figma MCP pour g\u00e9n\u00e9rer des composants production-ready directement depuis mes fichiers Figma.",
-          deliverables: [
-            "Cadrage UX, design UI, micro-interactions",
-            "Prototypage haute fid\u00e9lit\u00e9 pour valider et vendre une vision",
-            "Prototypage pilot\u00e9 par IA : de Figma au prototype d\u00e9ploy\u00e9 via Claude Code et Figma MCP",
-            "D\u00e9veloppement MVP rapide d\u00e9ploy\u00e9 sur Vercel pour validation parties prenantes",
-            "Design mobile natif (iOS/Android) et responsive web",
-            "Workflows concept-to-interface dans des domaines complexes"
-          ]
-        },
-        {
-          title: "Strat\u00e9gie Produit",
-          desc: "Avant de dessiner des \u00e9crans, j\u2019aide \u00e0 clarifier ce que le produit doit \u00eatre. J\u2019anime des ateliers, je d\u00e9finis le scope des fonctionnalit\u00e9s et je structure la vision par le design d\u2019interaction. L\u2019objectif : r\u00e9duire l\u2019ambigu\u00eft\u00e9 et aligner l\u2019\u00e9quipe.",
-          deliverables: [
-            "Cadrage de fonctionnalit\u00e9s (0 to 1) et contribution \u00e0 la roadmap",
-            "Clarification de la vision produit par les parcours utilisateurs cl\u00e9s",
-            "Ateliers d\u2019id\u00e9ation et de vision avec utilisateurs et parties prenantes",
-            "Strat\u00e9gie d\u2019accessibilit\u00e9 et standards UX inclusifs"
-          ]
-        },
-        {
-          title: "Design Ops",
-          desc: "Un bon design system n\u2019est pas une biblioth\u00e8que de composants. C\u2019est un langage commun entre le design et l\u2019engineering. Je mets en place les outils, la documentation et les rituels qui rendent la collaboration efficace et durable.",
-          deliverables: [
-            "Design systems scalables et biblioth\u00e8ques de composants r\u00e9utilisables",
-            "Documentation technique pour le handoff d\u00e9veloppeur",
-            "Rituels de collaboration entre design, produit et engineering"
-          ]
-        },
-        {
-          title: "Leadership & Organisation",
-          desc: "J\u2019ai recrut\u00e9, manag\u00e9 et mentor\u00e9 des \u00e9quipes design jusqu\u2019\u00e0 5 personnes. J\u2019aligne les parties prenantes, j\u2019anime des ateliers design et je construis la culture et les process qui permettent \u00e0 une pratique design de s\u2019\u00e9panouir dans une organisation.",
-          deliverables: [
-            "Leadership d\u2019\u00e9quipe, recrutement et onboarding de designers",
-            "Ateliers design pour la collaboration et la cr\u00e9ativit\u00e9",
-            "Alignement des parties prenantes (C-Level, PM, Engineering)",
-            "Mentorat et mont\u00e9e en comp\u00e9tence des juniors"
-          ]
-        }
-      ],
-      approach_title: "Comment je travaille",
-      approach_steps: [
-        { title: "Frame", desc: "Comprendre le probl\u00e8me, les utilisateurs, les contraintes. Aligner l\u2019\u00e9quipe sur ce qu\u2019on r\u00e9sout et pourquoi." },
-        { title: "Design", desc: "Explorer les solutions, prototyper vite, tester avec de vrais utilisateurs. It\u00e9rer jusqu\u2019\u00e0 valider la direction." },
-        { title: "Ship", desc: "Collaborer avec l\u2019engineering, affiner les d\u00e9tails, livrer des designs pr\u00eats pour la production. Rester impliqu\u00e9 jusqu\u2019\u00e0 la mise en ligne." },
-        { title: "Scale", desc: "Documenter les patterns, construire le syst\u00e8me, installer les rituels. S\u2019assurer que ce qui marche aujourd\u2019hui tient \u00e0 10x." }
-      ],
-      cta_text: "Parlons de votre projet"
-    },
     visual_archive: {
       title: "Galerie",
       subtitle: "Interfaces, design systems et prototypes d\u2019interaction issus de mes projets.",
@@ -779,9 +665,7 @@ export const TRANSLATIONS = {
       crosslink_approach_title: "Mon approche",
       crosslink_approach_desc: "Ma méthode de product design : du cadrage stratégique aux interfaces livrées.",
       crosslink_projects_title: "Projets",
-      crosslink_projects_desc: "Études de cas et produits livrés en SaaS, B2B et service public.",
-      crosslink_expertise_title: "Expertise",
-      crosslink_expertise_desc: "Les compétences et savoir-faire que j'apporte aux équipes produit."
+      crosslink_projects_desc: "Études de cas et produits livrés en SaaS, B2B et service public."
     },
     contact: {
       title: "Travaillons ensemble",

@@ -1,7 +1,8 @@
-// Approche page: acts layout
-// Hero statement, contrast block, three acts (Cadrer, Matérialiser, Arbitrer),
-// collaboration, weekly rhythm, closing. All copy comes from the previous version of the page
-// (prose tightened, nothing added). U+00A0 sits before : ; ? ! and %.
+// Approche page: situations by team maturity, working documents, how it is to work together,
+// collaboration by discipline, weekly rhythm, closing. A no-break space (U+00A0) sits before
+// the French colon, semicolon, question and exclamation marks.
+// ACTS and ACTS_INTRO (Cadrer, Matérialiser, Arbitrer) are no longer shown on the Approche page:
+// the homepage Method section still reads them.
 
 export type Language = 'en' | 'fr'
 
@@ -11,66 +12,18 @@ type Bi<T> = { en: T; fr: T }
 // Hero
 // ---------------------------------------------------------------------------
 
-export const HERO: Bi<{ title: string; statement: string; lead: string }> = {
+export const HERO: Bi<{ title: string; statement: string; lead: string; cta: { label: string; href: string } }> = {
   fr: {
     title: 'Approche',
-    statement: 'La plupart des produits B2B qui échouent ont posé la bonne question trop tard.',
-    lead: 'Je conçois des outils métiers denses en données, en binôme avec un responsable produit. EdTech, construction, civic tech, média.',
+    statement: 'Approche',
+    lead: 'Je pose un cadre là où il n’y en a pas, j’organise la collaboration et la recherche autour, puis je monte en fidélité à mesure que la complexité devient lisible.',
+    cta: { label: 'Parler de votre contexte', href: '/contact' },
   },
   en: {
     title: 'Approach',
-    statement: 'Most B2B products that fail asked the right question too late.',
-    lead: 'I design data-dense business tools in partnership with a product lead. EdTech, construction, civic tech, media.',
-  },
-}
-
-// ---------------------------------------------------------------------------
-// Contrast: the usual sequence versus the method
-// ---------------------------------------------------------------------------
-
-export const CONTRAST: Bi<{
-  usual: { title: string; note: string; steps: string[] }
-  mine: { title: string; note: string; steps: string[] }
-}> = {
-  fr: {
-    usual: {
-      title: 'D’habitude',
-      note: 'Le produit est conçu sans avoir posé la bonne question au départ, ou sans avoir vérifié la réponse assez tôt.',
-      steps: [
-        'Les spécifications.',
-        'Les arbitrages budgétaires.',
-        'Le prototype, quand il ne peut plus rien changer.',
-      ],
-    },
-    mine: {
-      title: 'Ma façon',
-      note: 'Ma méthode repose sur un principe simple.',
-      steps: [
-        'Cadrer le problème.',
-        'Matérialiser une réponse testable en une semaine.',
-        'Arbitrer sur la base de ce qu’on observe, plutôt que de ce qu’on suppose.',
-      ],
-    },
-  },
-  en: {
-    usual: {
-      title: 'The usual way',
-      note: 'The product is designed without asking the right question at the start, or without verifying the answer soon enough.',
-      steps: [
-        'The specs.',
-        'The budget decisions.',
-        'The prototype, when it can no longer change anything.',
-      ],
-    },
-    mine: {
-      title: 'My way',
-      note: 'My method rests on a simple principle.',
-      steps: [
-        'Frame the problem.',
-        'Build a testable answer within a week.',
-        'Decide based on what we observe, rather than what we assume.',
-      ],
-    },
+    statement: 'Approach',
+    lead: 'I set a frame where there is none, organise the collaboration and the research around it, then raise the fidelity as the complexity becomes readable.',
+    cta: { label: 'Tell me about your context', href: '/contact' },
   },
 }
 
@@ -295,18 +248,301 @@ export const ACTS: Act[] = [
   },
 ]
 
-export const ACT_LABELS: Bi<{ practice: string; deliverables: string; proof: string; proofLink: string }> = {
-  fr: { practice: 'En pratique', deliverables: 'Livrables', proof: 'Preuve', proofLink: 'Voir' },
-  en: { practice: 'In practice', deliverables: 'Deliverables', proof: 'Proof', proofLink: 'See' },
+// ---------------------------------------------------------------------------
+// Situations: what changes with the maturity of the team
+// ---------------------------------------------------------------------------
+
+export const SITUATIONS_COPY: Bi<{
+  title: string
+  intro: string
+  columns: { situation: string; role: string; outputs: string }
+  proofLink: string
+}> = {
+  fr: {
+    title: 'Ce que je fais change avec la maturité de l’équipe',
+    intro: 'Les équipes que je rejoins n’ont ni la même culture produit ni la même culture design. Ce que je porte et ce que je produis s’adaptent à leur point de départ.',
+    columns: { situation: 'Situation', role: 'Ce que je porte', outputs: 'Ce que je produis' },
+    proofLink: 'Voir',
+  },
+  en: {
+    title: 'What I do depends on the maturity of the team',
+    intro: 'The teams I join do not share the same product culture or design culture. What I take on and what I produce adapt to where they start.',
+    columns: { situation: 'Situation', role: 'What I take on', outputs: 'What I produce' },
+    proofLink: 'See',
+  },
+}
+
+export interface Situation {
+  id: string
+  name: Bi<string>
+  context: Bi<string>
+  role: Bi<string>
+  outputs: Bi<string>
+  proof: { text: Bi<string>; link?: { href: string; label: Bi<string> } }
+}
+
+export const SITUATIONS: Situation[] = [
+  {
+    id: 'no-frame',
+    name: { fr: 'Aucun cadre', en: 'No frame yet' },
+    context: {
+      fr: 'Le sujet est flou, les avis divergent, le problème n’est écrit nulle part.',
+      en: 'The subject is blurry, opinions differ, and the problem is written down nowhere.',
+    },
+    role: {
+      fr: 'J’anime des ateliers de cadrage et je mène la réflexion stratégique : définir le problème, repérer les opportunités, poser un premier cadre de solution.',
+      en: 'I run framing workshops and lead the strategic thinking: define the problem, spot opportunities, set a first solution frame.',
+    },
+    outputs: {
+      fr: 'Un document de cadrage partagé, la cartographie des acteurs et des enjeux, les hypothèses à tester.',
+      en: 'A shared framing document, a map of the people and stakes involved, the hypotheses to test.',
+    },
+    proof: {
+      text: {
+        fr: 'Chez France VAE, dix entretiens terrain ont réordonné les priorités d’un MVP entier.',
+        en: 'At France VAE, ten field interviews reordered the priorities of an entire MVP.',
+      },
+      link: { href: '/project/france-vae#initiative-3', label: { fr: 'France VAE', en: 'France VAE' } },
+    },
+  },
+  {
+    id: 'partial-frame',
+    name: { fr: 'Un cadre partiel', en: 'A partial frame' },
+    context: {
+      fr: 'Une direction existe, mais l’équipe connaît peu ses utilisateurs.',
+      en: 'A direction exists, but the team knows little about its users.',
+    },
+    role: {
+      fr: 'J’organise et j’anime la recherche : entretiens, observation sur site, tests de maquettes. Ce qu’on observe nourrit les pistes de solution.',
+      en: 'I organise and run the research: interviews, on-site observation, mockup tests. What we observe feeds the solution options.',
+    },
+    outputs: {
+      fr: 'Des synthèses de recherche, des priorités, des concepts et des prototypes à mettre devant des utilisateurs.',
+      en: 'Research syntheses, priorities, and concepts and prototypes to put in front of users.',
+    },
+    proof: {
+      text: {
+        fr: 'À la Banque des Territoires, les tests sur Aquagir ont montré un décalage entre le parcours conçu et le moment réel du besoin.',
+        en: 'At Banque des Territoires, the Aquagir tests showed a gap between the journey as designed and the moment the need actually arises.',
+      },
+    },
+  },
+  {
+    id: 'equipped-team',
+    name: { fr: 'Une équipe déjà outillée', en: 'An equipped team' },
+    context: {
+      fr: 'Produit, design et tech travaillent ensemble et ont leurs habitudes.',
+      en: 'Product, design and engineering already work together and have their habits.',
+    },
+    role: {
+      fr: 'Je m’intègre : je conçois, je prototype, je teste les maquettes et je définis les composants avec les développeurs.',
+      en: 'I join the team: I design, prototype, test mockups, and define the components with the developers.',
+    },
+    outputs: {
+      fr: 'Des parcours complets avec leurs états et cas limites, des maquettes annotées, des spécifications, un design system.',
+      en: 'Complete flows with their states and edge cases, annotated mockups, specifications, a design system.',
+    },
+    proof: {
+      text: {
+        fr: 'Chez UNOWHY, le prototype du dashboard Connect a montré que les enseignants avaient besoin d’applications spécialisées. On a changé de direction, ce qui a fait gagner six mois au projet.',
+        en: 'At UNOWHY, the Connect dashboard prototype showed that teachers needed specialised applications. We changed direction, which saved the project six months.',
+      },
+      link: { href: '/project/connect', label: { fr: 'SQOOL Connect', en: 'SQOOL Connect' } },
+    },
+  },
+]
+
+// ---------------------------------------------------------------------------
+// Page structure: table of contents, intermediate titles and leads of each numbered act
+// ---------------------------------------------------------------------------
+
+export const PAGE_STRUCTURE: Bi<{
+  toc: { id: string; label: string }[]
+  situationsDiagram: string
+  situationsTable: string
+  fidelity: string
+  documents: string
+  prototype: string
+  client: string
+  disciplinesLead: string
+  counterparts: string
+  rhythm: string
+  domainsLead: string
+}> = {
+  fr: {
+    toc: [
+      { id: 'situations', label: 'Situations' },
+      { id: 'before-screen', label: 'Avant l’écran' },
+      { id: 'working', label: 'Travailler ensemble' },
+      { id: 'disciplines', label: 'Chaque métier' },
+      { id: 'domains', label: 'Domaines' },
+      { id: 'clients', label: 'Références' },
+      { id: 'contact', label: 'Contact' },
+    ],
+    situationsDiagram: 'Mon rôle se déplace avec la maturité',
+    situationsTable: 'Trois points de départ',
+    fidelity: 'La fidélité monte avec la lisibilité',
+    documents: 'Des documents réels',
+    prototype: 'Un prototype quand la question l’exige',
+    client: 'Dans les mots d’un client',
+    disciplinesLead: 'Ce que je produis et la façon de collaborer changent selon l’interlocuteur.',
+    counterparts: 'Quatre interlocuteurs',
+    rhythm: 'Un rythme de travail',
+    domainsLead: 'Quatre domaines, chacun avec les études de cas qui le montrent.',
+  },
+  en: {
+    toc: [
+      { id: 'situations', label: 'Situations' },
+      { id: 'before-screen', label: 'Before the screen' },
+      { id: 'working', label: 'Working together' },
+      { id: 'disciplines', label: 'Each discipline' },
+      { id: 'domains', label: 'Areas of work' },
+      { id: 'clients', label: 'Clients' },
+      { id: 'contact', label: 'Contact' },
+    ],
+    situationsDiagram: 'My role shifts with maturity',
+    situationsTable: 'Three starting points',
+    fidelity: 'Fidelity rises with readability',
+    documents: 'Real documents',
+    prototype: 'A prototype when the question calls for one',
+    client: 'In a client’s words',
+    disciplinesLead: 'What I produce and how we collaborate change with who is across the table.',
+    counterparts: 'Four counterparts',
+    rhythm: 'A working rhythm',
+    domainsLead: 'Four areas, each with the case studies that show it.',
+  },
 }
 
 // ---------------------------------------------------------------------------
-// Collaboration
+// Diagrams (qualitative, no values): fidelity over readability, and the two tracks of a sprint
+// ---------------------------------------------------------------------------
+
+export const FIDELITY_DIAGRAM: Bi<{ title: string; desc: string; stages: [string, string, string]; curve: string }> = {
+  fr: {
+    title: 'La fidélité monte à mesure que la complexité devient lisible',
+    desc: 'Une courbe qui monte de l’atelier brut aux wireframes, puis aux spécifications.',
+    stages: ['Atelier', 'Wireframes', 'Specs'],
+    curve: 'Fidélité',
+  },
+  en: {
+    title: 'Fidelity rises as the complexity becomes readable',
+    desc: 'A curve that rises from the rough workshop to wireframes, then to specifications.',
+    stages: ['Workshop', 'Wireframes', 'Specs'],
+    curve: 'Fidelity',
+  },
+}
+
+export const TRACKS_DIAGRAM: Bi<{ title: string; desc: string; build: string; evaluate: string }> = {
+  fr: {
+    title: 'Discovery et delivery tournent en parallèle',
+    desc: 'Deux rangées décalées d’un cycle. Pendant que je construis l’artefact suivant, l’équipe évalue le précédent.',
+    build: 'Je construis un artefact testable',
+    evaluate: 'L’équipe évalue le précédent',
+  },
+  en: {
+    title: 'Discovery and delivery run in parallel',
+    desc: 'Two rows offset by one cycle. While I build the next artefact, the team evaluates the previous one.',
+    build: 'I build a testable artefact',
+    evaluate: 'The team evaluates the previous one',
+  },
+}
+
+// ---------------------------------------------------------------------------
+// Diagram: my role by maturity of the team (qualitative, no values)
+// ---------------------------------------------------------------------------
+
+export const MATURITY_DIAGRAM: Bi<{
+  title: string
+  desc: string
+  stages: [string, string, string]
+  upstream: string
+  onScreen: string
+}> = {
+  fr: {
+    title: 'Mon rôle selon la maturité de l’équipe',
+    desc: 'Deux courbes qui se croisent. Sans cadre, je porte surtout le cadrage et la recherche. Plus l’équipe est outillée, plus je porte la conception et les spécifications.',
+    stages: ['Aucun cadre', 'Cadre partiel', 'Équipe outillée'],
+    upstream: 'Cadrage et recherche',
+    onScreen: 'Conception et specs',
+  },
+  en: {
+    title: 'My role by team maturity',
+    desc: 'Two curves that cross. With no frame, I mostly carry framing and research. The more the team is equipped, the more I carry design and specifications.',
+    stages: ['No frame', 'Partial frame', 'Equipped team'],
+    upstream: 'Framing and research',
+    onScreen: 'Design and specs',
+  },
+}
+
+// ---------------------------------------------------------------------------
+// Before the screen: working documents, fidelity rising
+// ---------------------------------------------------------------------------
+
+export const BEFORE_SCREEN: Bi<{
+  /** Section name for assistive technology: the visible heading is the tagline */
+  title: string
+  /** The large statement, revealed word by word as the section scrolls into view */
+  tagline: string
+  caption: string
+  prototype: string
+  prototypeLink: { href: string; label: string }
+}> = {
+  fr: {
+    title: 'Avant l’écran, des documents de travail',
+    tagline: 'Le gros du travail se fait avant l’écran, dans des documents que toute l’équipe peut relire et discuter.',
+    caption: 'Du plus brut au plus abouti : la fidélité monte à mesure que la complexité devient lisible.',
+    prototype: 'Un prototype testable en quelques jours est l’un de mes leviers, parmi d’autres. Chez Toolkit, celui de la V2 a permis au CEO de sécuriser sa deuxième levée de fonds : les investisseurs ont vu le produit plutôt qu’un deck.',
+    prototypeLink: { href: '/project/toolkit', label: 'Voir Toolkit' },
+  },
+  en: {
+    title: 'Before the screen, working documents',
+    tagline: 'Most of the work happens before the screen, in documents the whole team can reread and discuss.',
+    caption: 'From the roughest to the most finished: fidelity goes up as the complexity becomes readable.',
+    prototype: 'A testable prototype within a few days is one of my levers among others. At Toolkit, the V2 prototype helped the CEO secure the second funding round: the investors saw the product instead of a deck.',
+    prototypeLink: { href: '/project/toolkit', label: 'See Toolkit' },
+  },
+}
+
+/** Real artefacts, ordered from the roughest to the most finished */
+export const ARTEFACTS: { src: string; label: Bi<string> }[] = [
+  { src: '/images/francevae/atelier france vae AAP 01.webp', label: { fr: 'Atelier avec le terrain', en: 'Workshop with the field' } },
+  { src: '/images/approche/persona-journey.webp', label: { fr: 'Persona et parcours', en: 'Persona and journey map' } },
+  { src: '/images/approche/design-teardown.webp', label: { fr: 'Pistes explorées en atelier', en: 'Directions explored in a workshop' } },
+  { src: '/images/connect/connect_bulle_ui_wireframes_concept-scaled.webp', label: { fr: 'Wireframes basse fidélité', en: 'Low-fidelity wireframes' } },
+  { src: '/images/connect/connect_dashboard_home_light_full-scaled.webp', label: { fr: 'L’interface en haute fidélité', en: 'The interface, high fidelity' } },
+  { src: '/images/connect/connect_specifications_implem_01-scaled.webp', label: { fr: 'Specs pour les développeurs', en: 'Specs for the developers' } },
+]
+
+// ---------------------------------------------------------------------------
+// What it is like to work with me
+// ---------------------------------------------------------------------------
+
+export const WORKING_WITH_ME: Bi<{ title: string; paragraphs: string[] }> = {
+  fr: {
+    title: 'Ce que c’est de travailler avec moi',
+    paragraphs: [
+      'Mon approche est humaine. J’écoute d’abord l’équipe et son terrain, puis je rends visible ce que chacun sait déjà, pour que la compréhension devienne commune.',
+      'Je travaille en intelligence collective : ateliers, entretiens, revues, et des documents que toute l’équipe peut relire et réutiliser. Chaque arbitrage laisse une trace écrite.',
+      'Je cherche à faire progresser l’équipe en même temps que le produit : qu’elle sache mener un atelier et lire un test utilisateur. Les livrables varient selon le besoin, sans format imposé : cadrage, brief, synthèse de recherche, prototype, spécifications.',
+    ],
+  },
+  en: {
+    title: 'What it is like to work with me',
+    paragraphs: [
+      'My approach is human. I start by listening to the team and its field, then make visible what each person already knows, so the understanding becomes shared.',
+      'I work through collective intelligence: workshops, interviews, reviews, and documents the whole team can reread and reuse. Every tradeoff leaves a written trace.',
+      'I aim for the team to grow along with the product: able to run a workshop and read a user test. Deliverables vary with the need, with no imposed format: framing, brief, research synthesis, prototype, specifications.',
+    ],
+  },
+}
+
+// ---------------------------------------------------------------------------
+// With each discipline
 // ---------------------------------------------------------------------------
 
 export const COLLABORATION = {
   fr: {
-    title: 'Travailler ensemble',
+    title: 'Avec chaque métier',
     blocks: [
       {
         id: 'pm',
@@ -319,6 +555,11 @@ export const COLLABORATION = {
         body: 'J’interviens en amont. Reviews des interactions, des cas limites, des états. Chez UNOWHY comme chez Dailymotion, le design system Storybook a été construit avec les développeurs front, pas livré à eux. Cette co-construction change la qualité des composants et réduit les allers-retours.',
       },
       {
+        id: 'team',
+        label: 'Avec les designers et les freelances',
+        body: 'Je capte les informations et je les partage, je produis les cadrages et les briefs, j’organise les tâches et je mets en place des boards de suivi de production. J’améliore la structure des fichiers Figma et j’apporte des outils : composants, kits et templates, y compris pour animer des ateliers.',
+      },
+      {
         id: 'culture',
         label: 'Culture design',
         body: 'La culture design se construit par des micro-actions répétées : inviter le PM à observer un test utilisateur, animer un atelier d’idéation avec le métier et la tech, montrer concrètement qu’un test de trente minutes évite trois semaines de développement dans la mauvaise direction.',
@@ -326,7 +567,7 @@ export const COLLABORATION = {
     ],
   },
   en: {
-    title: 'Working together',
+    title: 'With each discipline',
     blocks: [
       {
         id: 'pm',
@@ -337,6 +578,11 @@ export const COLLABORATION = {
         id: 'devs',
         label: 'With engineering',
         body: 'I get involved early. Reviews on interactions, edge cases, states. At UNOWHY and at Dailymotion, the Storybook design system was built with front-end developers, not delivered to them. This co-construction changes the quality of components and reduces back and forth.',
+      },
+      {
+        id: 'team',
+        label: 'With designers and freelancers',
+        body: 'I gather the information and share it, produce the framings and briefs, organise the tasks and set up production tracking boards. I improve the structure of the Figma files and bring tools: components, kits and templates, including some for running workshops.',
       },
       {
         id: 'culture',
@@ -356,21 +602,24 @@ export const RHYTHM = {
     label: 'Weekly rhythm',
     modes: ['Discovery', 'Delivery'],
     days4: ['Mon', 'Tue to Wed', 'Thu', 'Fri'],
+    /** What each column is for: align on Monday, deep work midweek, share and decide on Friday */
+    phases: ['Align', 'Deep work', 'Deep work', 'Share and decide'],
     cells4: [
-      ['Frame hypotheses. Who to talk to. Protocol.', 'User interviews. Observations. Data analysis.', 'Map insights. Emerging patterns. Reframe.', 'Restitution. Validate or pivot. Decision.'],
+      ['Frame hypotheses. Who to talk to. Protocol.', 'User interviews. Observations. Data analysis.', 'Map insights. Emerging patterns. Reframe.', 'Restitution. Validate or change course. Decision.'],
       ['Sync PM/Designer. Sprint goal. Review hypotheses.', 'Exploration or iteration. Async exchanges.', 'Pattern coherence. Prep refinement or demo.', 'Prototype presented. Backlog prioritised.'],
     ],
-    footer: 'Monday: align. Midweek: deep work. Friday: share and decide. Rhythm is set together in the first week.',
+    footer: 'Rhythm is set together in the first week.',
   },
   fr: {
     label: 'Rythme hebdomadaire',
     modes: ['Discovery', 'Delivery'],
     days4: ['Lun', 'Mar à Mer', 'Jeu', 'Ven'],
+    phases: ['S’aligner', 'Travail de fond', 'Travail de fond', 'Partager et décider'],
     cells4: [
-      ['Cadrage hypothèses. Qui on va voir. Protocole.', 'Entretiens utilisateurs. Observations. Analyse données.', 'Cartographie insights. Patterns. Reformulation.', 'Restitution. Validation ou pivot. Décision.'],
+      ['Cadrage hypothèses. Qui on va voir. Protocole.', 'Entretiens utilisateurs. Observations. Analyse données.', 'Cartographie insights. Patterns. Reformulation.', 'Restitution. Validation ou changement de cap. Décision.'],
       ['Sync PM/Designer. Objectif sprint. Revue hypothèses.', 'Exploration ou itération. Échanges asynchrones.', 'Cohérence patterns. Préparation refinement ou démo.', 'Prototype présenté. Priorisation backlog.'],
     ],
-    footer: 'Lundi : s’aligner. Milieu de semaine : travail de fond. Vendredi : partager et décider. Le rythme se construit ensemble dès la première semaine.',
+    footer: 'Le rythme se construit ensemble dès la première semaine.',
   },
 }
 

@@ -52,7 +52,6 @@ export default function TestimonialsPageClient({ lang }: { lang: 'en' | 'fr' }) 
   const related: RelatedItem[] = [
     { title: t.crosslink_approach_title, description: t.crosslink_approach_desc, href: `/${lang}/approche` },
     { title: t.crosslink_projects_title, description: t.crosslink_projects_desc, href: `/${lang}/projets` },
-    { title: t.crosslink_expertise_title, description: t.crosslink_expertise_desc, href: `/${lang}/services` },
   ]
 
   const handleFilter = (value: Category) => {
@@ -65,10 +64,10 @@ export default function TestimonialsPageClient({ lang }: { lang: 'en' | 'fr' }) 
     <div className="min-h-screen bg-[#FDFDFC]">
       {/* En-tête : nom de la page et une ligne, pleine largeur, aligné à gauche */}
       <header className="wrap pt-10 md:pt-16 pb-12 md:pb-16">
-        <h1 className="text-headline text-gray-900">
+        <h1 className="text-display text-gray-900">
           {t.title}
         </h1>
-        <p className="mt-4 text-lead-lg text-gray-600 max-w-[54ch]">
+        <p className="mt-6 md:mt-8 text-lead-lg text-gray-600 max-w-[54ch]">
           {t.subtitle}
         </p>
       </header>

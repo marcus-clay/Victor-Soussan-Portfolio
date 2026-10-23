@@ -62,8 +62,8 @@ export default function Footer({ lang }: { lang: Lang }) {
                 </Link>
               </li>
               <li>
-                <Link href={`/${lang}/services`} className="link-draw text-sm text-gray-500 hover:text-gray-900 transition-colors duration-150">
-                  {content.services}
+                <Link href={`/${lang}/approche`} className="link-draw text-sm text-gray-500 hover:text-gray-900 transition-colors duration-150">
+                  {content.approach}
                 </Link>
               </li>
               <li>
