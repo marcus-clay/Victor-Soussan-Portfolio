@@ -127,13 +127,10 @@ export function scanJourneys(lang: Lang): Journey[] {
     build(
       lang,
       'coverage',
-      { fr: 'Prise en charge · Les cas dessinés, de 100 % à 0 %, et le paiement refusé : chacun dit en une phrase ce qui reste à régler.', en: 'Coverage · The designed cases, from 100% to 0%, and the declined payment: each says in one sentence what is left to pay.' },
+      { fr: 'Prise en charge · Quatre cas : 100 % (rien à payer), 70 % (carte Vitale seule), 0 % (sans carte Vitale), et le paiement refusé.', en: 'Coverage · Four cases: 100% (nothing to pay), 70% (health card only), 0% (no health card), and the declined payment.' },
       [
-        { shot: flow('pec-100'), label: { fr: '100 %, carte Vitale et mutuelle', en: '100%, health card and supplementary cover' } },
-        { shot: flow('pec-100-am'), label: { fr: '100 %, Assurance Maladie seule', en: '100%, national health insurance only' } },
-        { shot: flow('pec-100-exo'), label: { fr: '100 %, exonération', en: '100%, exemption' } },
+        { shot: flow('pec-100'), label: { fr: '100 %, rien à payer', en: '100%, nothing to pay' } },
         { shot: flow('pec-70'), label: { fr: '70 %, carte Vitale seule', en: '70%, health card only' } },
-        { shot: flow('pec-90'), label: { fr: '90 %, mutuelle partielle', en: '90%, partial supplementary cover' } },
         { shot: flow('pec-0'), label: { fr: '0 %, sans carte Vitale', en: '0%, no health card' } },
         { shot: flow('paiement-refuse'), label: { fr: 'Paiement refusé', en: 'Payment declined' } },
       ]

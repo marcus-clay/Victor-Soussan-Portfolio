@@ -29,7 +29,8 @@ import {
 } from '@/data/tessanNotifications'
 import DeviceMockup from '@/components/case-study/DeviceMockup'
 import ScaledScreen from '@/components/case-study/ScaledScreen'
-import { PILL, useReducedMotion } from '@/components/case-study/controls'
+import { useReducedMotion } from '@/components/case-study/controls'
+import { PlatformSegmented, StateTabs } from '@/components/case-study/NotificationControls'
 
 const GREEN = '#276e3f'
 const GREEN_ON_DARK = '#63c583'
@@ -665,48 +666,24 @@ export default function NotificationsShowcase({ lang }: { lang: Lang }) {
 
   const pick = useCallback((i: number) => setIndex(i), [])
 
-  const flow = NOTIFICATION_STATES.map((st, i) => ({ st, i })).filter(({ st }) => st.group === 'flow')
-  const edge = NOTIFICATION_STATES.map((st, i) => ({ st, i })).filter(({ st }) => st.group === 'edge')
-
-  const renderPills = (items: { st: NotificationState; i: number }[], numbered: boolean) =>
-    items.map(({ st, i }, n) => {
-      const active = i === index
-      return (
-        <button
-          key={st.id}
-          type="button"
-          aria-pressed={active}
-          onClick={() => pick(i)}
-          className={`${PILL} ${active ? 'bg-gray-900 text-white' : 'bg-white/80 text-gray-700 ring-1 ring-black/[0.06] [@media(hover:hover)]:hover:bg-white'}`}
-        >
-          {numbered && <span className={`text-xs tabular-nums ${active ? 'text-white/70' : 'text-gray-500'}`}>{n + 1}</span>}
-          {st.label[lang]}
-        </button>
-      )
-    })
+  const tabs = NOTIFICATION_STATES.map((st) => ({ id: st.id, label: st.label[lang], group: st.group }))
 
   return (
     <div ref={rootRef} className="bg-[#E8E8E8] rounded-xl overflow-hidden ring-1 ring-black/[0.04] p-4 sm:p-6 lg:p-8">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div role="group" aria-label={copy.controls.platform} className="inline-flex rounded-full bg-white/70 p-1 ring-1 ring-black/[0.06]">
-          {(['ios', 'android'] as const).map((p) => (
-            <button
-              key={p}
-              type="button"
-              aria-pressed={platform === p}
-              onClick={() => setPlatform(p)}
-              className={`${PILL} ${platform === p ? 'bg-gray-900 text-white' : 'text-gray-700 [@media(hover:hover)]:hover:bg-white'}`}
-            >
-              {copy.platforms[p]}
-            </button>
-          ))}
-        </div>
+      <div className="flex justify-center">
+        <PlatformSegmented
+          label={copy.controls.platform}
+          value={platform}
+          options={[
+            { id: 'ios', label: copy.platforms.ios },
+            { id: 'android', label: copy.platforms.android },
+          ]}
+          onChange={setPlatform}
+        />
       </div>
 
-      <div role="group" aria-label={copy.controls.steps} className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-2">
-        {renderPills(flow, true)}
-        <span className="mx-2 hidden h-5 w-px bg-black/10 sm:block" aria-hidden="true" />
-        {renderPills(edge, false)}
+      <div className="mt-5">
+        <StateTabs label={copy.controls.steps} items={tabs} value={index} onChange={pick} />
       </div>
 
       <div className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-10">
