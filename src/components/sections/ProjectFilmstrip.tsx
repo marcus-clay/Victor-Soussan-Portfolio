@@ -238,6 +238,7 @@ export default function ProjectFilmstrip({ lang }: ProjectFilmstripProps) {
           const summaryId = `filmstrip-${project.id}-summary`
           const srcSet = srcSetFor(shell.visual)
           const photo = shell.fit === 'cover'
+          const bleed = shell.fit === 'bleed'
           // Light text on photographs (dark veil) and on dark grounds, dark text on light grounds
           const light = photo || isDarkGround(shell.tone)
           const video = HERO_VIDEOS[project.id]
@@ -279,14 +280,18 @@ export default function ProjectFilmstrip({ lang }: ProjectFilmstripProps) {
               {video && <HeroLoop src={video.src} mediaClassName={mediaClass} mediaStyle={mediaStyle} />}
 
               {/* Ground fade: the image dissolves into its own tone where the text sits (or into a
-                  dark veil for photographs), so the caption reads as part of the picture. */}
+                  dark veil for photographs), so the caption reads as part of the picture. A bleed
+                  picture runs under the whole caption (summary and tags included), so its fade is
+                  taller and stays solid behind the text before it lets the devices through. */}
               <div
                 aria-hidden="true"
-                className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] h-[46%]"
+                className={`pointer-events-none absolute inset-x-0 bottom-0 z-[2] ${bleed ? 'h-[46%] sm:h-[68%]' : 'h-[46%]'}`}
                 style={{
                   background: photo
                     ? 'linear-gradient(to top, rgba(0,0,0,0.62), rgba(0,0,0,0))'
-                    : `linear-gradient(to top, ${shell.tone} 12%, ${shell.tone}00 100%)`,
+                    : bleed
+                      ? `linear-gradient(to top, ${shell.tone} 56%, ${shell.tone}00 100%)`
+                      : `linear-gradient(to top, ${shell.tone} 12%, ${shell.tone}00 100%)`,
                 }}
               />
 
