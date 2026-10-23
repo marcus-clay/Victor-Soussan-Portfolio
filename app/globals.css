@@ -52,7 +52,12 @@
 :root {
   --ease-out-expo: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in-out-strong: cubic-bezier(0.77, 0, 0.175, 1);
-  --nav-height: 64px;
+  /* Header: 80px at the top of the page, 56px once the page has scrolled. The 24px difference is
+     what makes the reduction readable. `--nav-height` is the live value (Nav.tsx switches it);
+     main reserves `--nav-height-top` so the content never moves when the header shrinks. */
+  --nav-height-top: 80px;
+  --nav-height-scrolled: 56px;
+  --nav-height: var(--nav-height-top);
 }
 
 /* Reduced motion, gentle version: nothing is switched off. Hover, lightbox, menu and
@@ -550,6 +555,24 @@ a[class*="hover:text-gray-900"]:active { color: #111827; }
   }
 }
 
+/* Tagline reveal (src/components/ui/TaglineReveal.tsx): a statement whose words go from a muted
+   tone to the full colour, one after the other, as they rise above a trigger line. The muted
+   state only exists once JavaScript has armed the block, so the sentence always reads in full
+   without it. Colour only: nothing moves. */
+.tagline[data-armed] [data-w] {
+  color: rgb(17 24 39 / 0.28);
+  transition: color 700ms cubic-bezier(0.32, 0.72, 0, 1) var(--wd, 0ms);
+}
+.tagline[data-armed] [data-w][data-on] {
+  color: rgb(17 24 39);
+}
+@media (prefers-reduced-motion: reduce), print {
+  .tagline[data-armed] [data-w] {
+    color: rgb(17 24 39) !important;
+    transition: none !important;
+  }
+}
+
 /* Counting figures (src/components/ui/CountUp.tsx): the real text stays in the DOM, hidden
    while the aria-hidden overlay counts. Tabular figures keep the width steady. */
 .count-up {
@@ -640,4 +663,73 @@ a[class*="hover:text-gray-900"]:active { color: #111827; }
 }
 .toc-label-in {
   animation: toc-label-in 200ms var(--ease-out-expo) backwards;
+}
+
+/* Navigation menu (Nav.tsx). Scrim, panel and rows are CSS transitions between two states set by
+   data-state. The resting style is the open one, so a transition never ends on a half-written value.
+   --menu-spring is a damped spring (ratio 0.8, period 0.65s) sampled over 0.9s. It goes past 1 by 1.5%,
+   which is the small bounce when the panel arrives (about 7px on a 488px panel), then settles. */
+:root {
+  --menu-spring: linear(0, 0.0257, 0.09, 0.1776, 0.2768, 0.379, 0.4784, 0.571, 0.6546, 0.7281, 0.7911, 0.8439, 0.8874, 0.9223, 0.9498, 0.9709, 0.9866, 0.9979, 1.0057, 1.0108, 1.0136, 1.015, 1.0151, 1.0145, 1.0134, 1.012, 1.0105, 1.0089, 1.0074, 1.0061, 1.0048, 1.0038, 1.0029, 1.0021, 1.0015, 1.001, 1);
+}
+.menu-scrim {
+  opacity: 0;
+  transition: opacity 160ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.menu-scrim[data-state='open'] {
+  opacity: 1;
+  transition-duration: 200ms;
+}
+/* Closed, and closing: the panel goes back up quickly, no bounce */
+.menu-panel {
+  transform: translateY(-100%);
+  transition: transform 300ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+.menu-panel[data-state='open'] {
+  transform: translateY(0);
+  transition: transform 900ms var(--menu-spring);
+}
+/* Rows leave at once and arrive one after the other once the panel is on its way */
+.menu-row {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 80ms ease-out, transform 80ms ease-out;
+}
+.menu-row[data-state='open'] {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 220ms cubic-bezier(0.23, 1, 0.32, 1) calc(90ms + var(--i, 0) * 24ms),
+    transform 320ms cubic-bezier(0.23, 1, 0.32, 1) calc(90ms + var(--i, 0) * 24ms);
+}
+@media (prefers-reduced-motion: reduce) {
+  .menu-panel,
+  .menu-panel[data-state='open'] {
+    transform: none;
+    transition: opacity 150ms ease;
+  }
+  .menu-panel {
+    opacity: 0;
+  }
+  .menu-panel[data-state='open'] {
+    opacity: 1;
+  }
+  .menu-row,
+  .menu-row[data-state='open'] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* Content of a <details> that has just opened: a short fade and a 4px settle. Reduced motion keeps the fade only. */
+.disclosure-body {
+  animation: disclosure-in 200ms cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+@keyframes disclosure-in {
+  from { opacity: 0; transform: translateY(-4px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .disclosure-body { animation: disclosure-fade 120ms ease-out both; }
+  @keyframes disclosure-fade { from { opacity: 0; } }
 }

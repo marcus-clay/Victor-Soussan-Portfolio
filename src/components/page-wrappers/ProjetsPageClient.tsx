@@ -284,10 +284,10 @@ export default function ProjetsPageClient({ lang }: { lang: 'en' | 'fr' }) {
 
       {/* Page header: top offset matches homepage h1 at every breakpoint */}
       <header className="wrap pt-10 md:pt-16 pb-12 md:pb-16">
-        <h1 className="text-headline text-gray-900">
+        <h1 className="text-display text-gray-900">
           {isEn ? 'Work' : 'Projets'}
         </h1>
-        <p className="mt-4 text-lead-lg text-gray-600 max-w-[54ch]">
+        <p className="mt-6 md:mt-8 text-lead-lg text-gray-600 max-w-[54ch]">
           {isEn
             ? 'Product design, design systems and AI-assisted prototyping.'
             : 'Design produit, design systems et prototypage assisté par IA.'}

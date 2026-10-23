@@ -6,11 +6,13 @@
  */
 
 /**
- * Compute the total sticky offset: nav height (CSS var) + sub-bar (40px) + padding.
+ * Compute the total sticky offset: nav height + sub-bar (40px) + padding.
+ * The header is at its reduced height once the scroll has landed, so that is the height to
+ * compensate for: the live value is the taller one while the page is still at the top.
  */
 function getStickyOffset(): number {
   const navHeight = parseInt(
-    getComputedStyle(document.documentElement).getPropertyValue('--nav-height') || '64',
+    getComputedStyle(document.documentElement).getPropertyValue('--nav-height-scrolled') || '56',
     10
   )
   // 40px for breadcrumb/TOC bar + 24px breathing room

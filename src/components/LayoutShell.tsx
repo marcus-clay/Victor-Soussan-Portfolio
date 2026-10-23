@@ -37,7 +37,7 @@ export default function LayoutShell({
       </a>
       <ImageFadeIn />
       {nav}
-      <main id="main-content" style={{ paddingTop: 64 }}>
+      <main id="main-content" style={{ paddingTop: 'var(--nav-height-top)' }}>
         {children}
       </main>
       {footer}
