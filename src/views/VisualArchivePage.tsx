@@ -11,6 +11,7 @@ import { GridFour as LayoutGrid, Rows as Rows3, CaretDown as ChevronDown, CaretR
 import EnhancedLightbox, { LightboxImage } from '../components/media/EnhancedLightbox';
 import CaseStudyTOCBar from '../components/CaseStudyTOCBar';
 import LazyImage from '../components/media/LazyImage';
+import ThumbVideo from '../components/media/ThumbVideo';
 import { useScrollDirection } from '../hooks/useScrollDirection';
 import { GALLERY_PROJECTS, ALL_GALLERY_ITEMS, GalleryItem, GalleryProject } from '../data/galleryData';
 
@@ -233,6 +234,7 @@ const VisualArchivePage: React.FC<VisualArchivePageProps> = ({ lang }) => {
           ) : (
             <GridView
               items={ALL_GALLERY_ITEMS}
+              lang={lang}
               onItemClick={openLightbox}
             />
           )}
@@ -318,7 +320,7 @@ const ProjectSection: React.FC<{
       {/* Hero image */}
       {heroItem && (
         <div className="mb-3">
-          <MediaCard item={heroItem} index={0} wide onClick={() => onItemClick(heroItem)} />
+          <MediaCard item={heroItem} index={0} wide lang={lang} onClick={() => onItemClick(heroItem)} />
         </div>
       )}
 
@@ -326,7 +328,7 @@ const ProjectSection: React.FC<{
       {visibleRest.length > 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {visibleRest.map((item, i) => (
-            <MediaCard key={item.id} item={item} index={i + 1} onClick={() => onItemClick(item)} />
+            <MediaCard key={item.id} item={item} index={i + 1} lang={lang} onClick={() => onItemClick(item)} />
           ))}
         </div>
       )}
@@ -345,7 +347,7 @@ const ProjectSection: React.FC<{
               >
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
                   {hiddenItems.map((item, i) => (
-                    <MediaCard key={item.id} item={item} index={i + 3} onClick={() => onItemClick(item)} />
+                    <MediaCard key={item.id} item={item} index={i + 3} lang={lang} onClick={() => onItemClick(item)} />
                   ))}
                 </div>
               </motion.div>
@@ -379,11 +381,12 @@ const ProjectSection: React.FC<{
 
 const GridView: React.FC<{
   items: GalleryItem[];
+  lang: Language;
   onItemClick: (item: GalleryItem) => void;
-}> = ({ items, onItemClick }) => (
+}> = ({ items, lang, onItemClick }) => (
   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 border-t border-gray-100 pt-12 md:pt-16">
     {items.map((item, i) => (
-      <MediaCard key={item.id} item={item} index={i} onClick={() => onItemClick(item)} />
+      <MediaCard key={item.id} item={item} index={i} lang={lang} onClick={() => onItemClick(item)} />
     ))}
   </div>
 );
@@ -401,7 +404,7 @@ const CARD_OVERRIDES: Record<string, [number, string]> = {
 const DEFAULT_SCALE = 2;
 const DEFAULT_ORIGIN = 'top left';
 
-const MediaCard: React.FC<{ item: GalleryItem; onClick: () => void; index?: number; wide?: boolean }> = ({ item, onClick, wide }) => {
+const MediaCard: React.FC<{ item: GalleryItem; onClick: () => void; lang: Language; index?: number; wide?: boolean }> = ({ item, onClick, lang, wide }) => {
   const isVideo = item.type === 'video';
   const [scale, origin] = CARD_OVERRIDES[item.id] || [DEFAULT_SCALE, DEFAULT_ORIGIN];
 
@@ -411,13 +414,8 @@ const MediaCard: React.FC<{ item: GalleryItem; onClick: () => void; index?: numb
       onClick={onClick}
     >
       {isVideo ? (
-        <video
+        <ThumbVideo
           src={item.src}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
           className="w-full h-auto object-cover transition-transform duration-300 ease-out group-hover:scale-[1.02]"
         />
       ) : (

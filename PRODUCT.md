@@ -20,7 +20,7 @@ The personal portfolio of Victor Soussan, Lead Product Designer, in French and E
 
 ## Positioning
 
-Dense, data-rich business products (B2B tools, platforms, back offices) designed in pair with a product manager: frame the problem, build a testable answer within a week, decide on what is observed, not on what is assumed. Nine case studies back this: Toolkit, Dailymotion, Connect, SQOOL Suite, SQOOL Classe, France VAE, PagesJaunes, Android Wear, RiskOS.
+Dense, data-rich business products (B2B tools, platforms, back offices). The work starts before the screen: set a frame where none exists, organise the collaboration and the user research, produce the working documents, then raise the fidelity as the complexity becomes readable. A testable prototype is one lever among others, and the teams differ widely in product and design maturity. Nine case studies back this: Toolkit, Dailymotion, Connect, SQOOL Suite, SQOOL Classe, France VAE, PagesJaunes, Android Wear, RiskOS.
 
 ## Capabilities and Constraints
 

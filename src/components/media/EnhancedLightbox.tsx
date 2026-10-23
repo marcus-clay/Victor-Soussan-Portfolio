@@ -30,6 +30,7 @@ import {
   MagnifyingGlassPlus as ZoomIn,
   MagnifyingGlassMinus as ZoomOut,
 } from '@phosphor-icons/react'
+import { setAutoplaySuspended } from './useAutoplayVideo'
 
 export interface LightboxImage {
   src: string
@@ -164,6 +165,7 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
     hintTap: lang === 'fr' ? 'Double-tap pour agrandir' : 'Double-tap to zoom',
     hintBack: lang === 'fr' ? 'Cliquez pour revenir' : 'Click to return',
     goTo: (n: number) => (lang === 'fr' ? `Aller à l’image ${n}` : `Go to image ${n}`),
+    goToVideo: (n: number) => (lang === 'fr' ? `Aller à la vidéo ${n}` : `Go to video ${n}`),
   }
 
   // Lock page scroll while open: the page stays exactly where the tapped media was
@@ -345,12 +347,20 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
     dragY.set(0)
   }, [isOpen, index, viewport.w]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Video start position
+  // Video start position, then play: the current video always plays by itself, in a loop
   useEffect(() => {
-    if (isOpen && current?.type === 'video' && videoRef.current && videoStartTime > 0) {
-      videoRef.current.currentTime = videoStartTime
-    }
+    const video = videoRef.current
+    if (!isOpen || current?.type !== 'video' || !video) return
+    if (videoStartTime > 0) video.currentTime = videoStartTime
+    video.play().catch(() => {})
   }, [isOpen, index, videoStartTime, current])
+
+  // The page behind is covered: its thumbnails stop playing until the viewer closes
+  useEffect(() => {
+    if (!isOpen) return
+    setAutoplaySuspended(true)
+    return () => setAutoplaySuspended(false)
+  }, [isOpen])
 
   // Focus management: move focus into the dialog, give it back on close
   useEffect(() => {
@@ -672,6 +682,8 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
                             controls
                             playsInline
                             autoPlay
+                            loop
+                            muted
                             onLoadedMetadata={(e) => {
                               const { videoWidth, videoHeight } = e.currentTarget
                               setNatural((n) => ({ ...n, [img.src]: [videoWidth, videoHeight] }))
@@ -758,22 +770,25 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
               </p>
               {count > 1 && count <= 20 && (
                 <div className="mt-2 flex items-center justify-center gap-1 pointer-events-auto">
-                  {images.map((_, i) => (
-                    <button
-                      key={i}
-                      type="button"
-                      onClick={() => goTo(i)}
-                      aria-label={t.goTo(i + 1)}
-                      aria-current={i === index}
-                      className="relative flex items-center justify-center w-5 h-5"
-                    >
-                      <span
-                        className={`block h-1.5 rounded-full transition-[width,background-color] duration-200 ${
-                          i === index ? 'w-4 bg-white' : 'w-1.5 bg-white/35'
-                        }`}
-                      />
-                    </button>
-                  ))}
+                  {images.map((dot, i) => {
+                    const isVideoDot = dot.type === 'video'
+                    return (
+                      <button
+                        key={i}
+                        type="button"
+                        onClick={() => goTo(i)}
+                        aria-label={isVideoDot ? t.goToVideo(i + 1) : t.goTo(i + 1)}
+                        aria-current={i === index}
+                        className="relative flex items-center justify-center w-5 h-5"
+                      >
+                        <span
+                          className={`block h-1.5 rounded-full transition-[width,background-color] duration-200 ${
+                            i === index ? 'w-4 bg-white' : 'w-1.5 bg-white/35'
+                          }`}
+                        />
+                      </button>
+                    )
+                  })}
                 </div>
               )}
             </div>

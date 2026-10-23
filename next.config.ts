@@ -85,7 +85,7 @@ const nextConfig: NextConfig = {
     { source: '/', has: [{ type: 'query', key: 'lang', value: 'en' }], destination: '/en', permanent: true },
     // Old SPA routes without lang prefix -> default /en
     ...[
-      'about', 'services', 'visual-archive',
+      'about', 'visual-archive',
       'consulting', 'presentation', 'contact', 'quote', 'resume', 'testimonials',
     ].map((route) => ({
       source: `/${route}`,
@@ -93,6 +93,9 @@ const nextConfig: NextConfig = {
       permanent: true,
     })),
     // Renamed routes go straight to their final URL (one hop instead of two)
+    // /services (Expertise) was merged into /approche; browsers keep the #fragment across the redirect
+    { source: '/services', destination: '/en/approche', permanent: true },
+    { source: '/:lang(en|fr)/services', destination: '/:lang/approche', permanent: true },
     { source: '/work', destination: '/en/projets', permanent: true },
     { source: '/signals', destination: '/en/ressources', permanent: true },
     // /interventions was a client-side redirect page; a real 308 is cleaner for crawlers

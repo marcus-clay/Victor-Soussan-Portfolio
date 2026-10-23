@@ -27,6 +27,13 @@ interface DeviceMockupProps {
   /** Address shown in the browser bar */
   url?: string
   className?: string
+  /**
+   * In a strip of clips, only the focused screen plays: a row of phones all moving at once reads as noise.
+   * Defaults to true, so a lone device behaves as before.
+   */
+  focused?: boolean
+  /** Replaces the screen content (a player that manages its own video), inside the same frame */
+  custom?: React.ReactNode
 }
 
 const DEFAULT_ASPECT: Record<DeviceKind, number> = { phone: 390 / 844, tablet: 4 / 3, browser: 16 / 10 }
@@ -36,19 +43,33 @@ const DEFAULT_ASPECT: Record<DeviceKind, number> = { phone: 390 / 844, tablet: 4
  * video of the site (`VideoPlayer`). A small toggle stays visible so the reader can stop it, and a reader who
  * stopped it is not restarted by scrolling. Without a clip, the picture stays.
  */
-function ScreenMedia({ screen, label, eager }: { screen: DeviceScreen; label: string; eager?: boolean }) {
+function ScreenMedia({ screen, label, eager, focused = true }: { screen: DeviceScreen; label: string; eager?: boolean; focused?: boolean }) {
   const videoRef = useRef<HTMLVideoElement>(null)
   const pausedByUser = useRef(false)
+  const visible = useRef(false)
+  const focusedRef = useRef(focused)
   const [playing, setPlaying] = useState(false)
   const [hovered, setHovered] = useState(false)
+
+  // Gaining or losing focus (the active screen of a strip) starts the clip from its first image or pauses it.
+  useEffect(() => {
+    focusedRef.current = focused
+    const video = videoRef.current
+    if (!video) return
+    if (!focused) {
+      video.pause()
+      video.currentTime = 0
+    } else if (visible.current && !pausedByUser.current) void video.play().catch(() => {})
+  }, [focused])
 
   useEffect(() => {
     const video = videoRef.current
     if (!video) return
     const observer = new IntersectionObserver(
       ([entry]) => {
+        visible.current = entry.isIntersecting
         if (entry.isIntersecting) {
-          if (!pausedByUser.current) void video.play().catch(() => {})
+          if (!pausedByUser.current && focusedRef.current) void video.play().catch(() => {})
         } else video.pause()
       },
       { rootMargin: '200px 0px', threshold: 0.01 }
@@ -122,7 +143,7 @@ function ScreenMedia({ screen, label, eager }: { screen: DeviceScreen; label: st
  * frame never carries a baked shadow. Every length is a share of the device width (`cqw`),
  * so a phone at 200px and a phone at 420px keep the same proportions.
  */
-export default function DeviceMockup({ kind, screen, label, aspect, onZoom, url, className = '' }: DeviceMockupProps) {
+export default function DeviceMockup({ kind, screen, label, aspect, onZoom, url, className = '', focused = true, custom }: DeviceMockupProps) {
   const ratio = aspect ?? DEFAULT_ASPECT[kind]
   const interactive = onZoom ? { ...zoomable(() => onZoom()), 'aria-label': label } : {}
 
@@ -139,7 +160,7 @@ export default function DeviceMockup({ kind, screen, label, aspect, onZoom, url,
           }`}
         >
           <div className="relative overflow-hidden bg-white [border-radius:12.2cqw]" style={{ aspectRatio: ratio }}>
-            <ScreenMedia screen={screen} label={label} />
+            {custom ?? <ScreenMedia screen={screen} label={label} focused={focused} />}
             {/* Dynamic Island */}
             <span
               aria-hidden="true"
@@ -165,7 +186,7 @@ export default function DeviceMockup({ kind, screen, label, aspect, onZoom, url,
           }`}
         >
           <div className="relative overflow-hidden bg-white [border-radius:2.2cqw]" style={{ aspectRatio: ratio }}>
-            <ScreenMedia screen={screen} label={label} />
+            {custom ?? <ScreenMedia screen={screen} label={label} focused={focused} />}
           </div>
         </div>
       </div>
@@ -192,7 +213,7 @@ export default function DeviceMockup({ kind, screen, label, aspect, onZoom, url,
           )}
         </div>
         <div className="relative overflow-hidden bg-white" style={{ aspectRatio: ratio }}>
-          <ScreenMedia screen={screen} label={label} />
+          {custom ?? <ScreenMedia screen={screen} label={label} focused={focused} />}
         </div>
       </div>
     </div>

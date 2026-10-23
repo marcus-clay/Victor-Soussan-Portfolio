@@ -111,7 +111,7 @@ export default function ContactPageClient({ lang }: { lang: 'en' | 'fr' }) {
       {/* Opening, same grammar as the homepage: display title, one paragraph, the actions */}
       <header className="wrap pt-10 md:pt-16 pb-14 md:pb-20">
         <h1 className="text-display text-gray-900">
-          {isEn ? "Let's talk" : 'Discutons'}
+          {isEn ? 'Get in touch' : 'Contact'}
         </h1>
         <p className="mt-8 md:mt-10 max-w-[56ch] text-lead-lg text-gray-600">
           {isEn

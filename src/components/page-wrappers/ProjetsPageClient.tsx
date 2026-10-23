@@ -9,6 +9,9 @@ import { PROJETS_GRID_ITEMS, GALLERY_PROJECTS } from '@/data/galleryData'
 import type { Project } from '@/data/projectsData'
 import { useReveal } from '@/lib/motion'
 import { ActRule } from '@/components/case-study/ActSection'
+import { HERO_VIDEOS } from '@/data/heroVideos'
+import HeroLoop from '@/components/media/HeroLoop'
+import ArrowPill from '@/components/ui/ArrowPill'
 
 // Left edge of the `wrap` container (same as the header): the first thumbnail aligns with the h1.
 // Percentages resolve against the full-width parent, so no scrollbar width is involved.
@@ -203,6 +206,9 @@ function ProjectCard({
   large: boolean
   index: number
 }) {
+  const video = HERO_VIDEOS[project.id]
+  const mediaClass =
+    'h-full w-full object-cover transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-[1.03]'
   return (
     <Link
       href={`/${lang}/project/${project.id}`}
@@ -218,8 +224,11 @@ function ProjectCard({
           alt=""
           loading={index < 2 ? 'eager' : 'lazy'}
           draggable={false}
-          className="h-full w-full object-cover transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-[1.03]"
+          className={mediaClass}
         />
+        {/* Hero loop over the cover, only for projects whose file exists. The cover is its poster and fallback. */}
+        {video && <HeroLoop src={video.src} mediaClassName={mediaClass} />}
+        <ArrowPill size="sm" />
       </div>
 
       <p className="mt-4 truncate text-xs text-gray-500">{getProjectTags(project.id, lang).join(' · ')}</p>
@@ -275,10 +284,10 @@ export default function ProjetsPageClient({ lang }: { lang: 'en' | 'fr' }) {
 
       {/* Page header: top offset matches homepage h1 at every breakpoint */}
       <header className="wrap pt-10 md:pt-16 pb-12 md:pb-16">
-        <h1 className="text-headline text-gray-900">
+        <h1 className="text-display text-gray-900">
           {isEn ? 'Work' : 'Projets'}
         </h1>
-        <p className="mt-4 text-lead-lg text-gray-600 max-w-[54ch]">
+        <p className="mt-6 md:mt-8 text-lead-lg text-gray-600 max-w-[54ch]">
           {isEn
             ? 'Product design, design systems and AI-assisted prototyping.'
             : 'Design produit, design systems et prototypage assisté par IA.'}

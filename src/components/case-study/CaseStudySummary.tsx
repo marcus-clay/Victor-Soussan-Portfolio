@@ -1,4 +1,6 @@
 import type { ReactNode } from 'react'
+import Reveal from '@/components/ui/Reveal'
+import CountUp from '@/components/ui/CountUp'
 
 export interface SummaryItem {
   title: string
@@ -37,10 +39,10 @@ const COPY = {
 /** One row of the fact sheet: the term on the left, its content on the right (proximity, one reading axis). */
 function Row({ term, children }: { term: string; children: ReactNode }) {
   return (
-    <div className="grid grid-cols-1 gap-y-3 py-6 md:grid-cols-[9rem_minmax(0,1fr)] md:gap-x-8 md:py-8">
+    <Reveal className="grid grid-cols-1 gap-y-3 py-6 md:grid-cols-[9rem_minmax(0,1fr)] md:gap-x-8 md:py-8">
       <dt className="border-t border-gray-200 pt-3 text-sm font-medium text-gray-900 md:pt-4">{term}</dt>
       <dd className="m-0 min-w-0">{children}</dd>
-    </div>
+    </Reveal>
   )
 }
 
@@ -58,9 +60,9 @@ export default function CaseStudySummary({ lang, context, role, roleItems, deliv
         <div className="border-t border-gray-100" />
       </div>
       <div className="act-wide pt-9 md:pt-14">
-        <h2 id="summary-title" className="text-subhead text-gray-900 mb-8 md:mb-10">
+        <Reveal as="h2" id="summary-title" className="text-subhead text-gray-900 mb-8 md:mb-10">
           {t.summary}
-        </h2>
+        </Reveal>
 
         <div className="md:max-w-[52rem]">
           <dl className="m-0">
@@ -100,10 +102,12 @@ export default function CaseStudySummary({ lang, context, role, roleItems, deliv
               style={{ gridTemplateColumns: `repeat(${Math.min(metrics.length, 3)}, minmax(0, 1fr))` }}
             >
               {metrics.slice(0, 3).map((m) => (
-                <div key={m.label} className="bg-[#FDFDFC] px-4 py-5 md:px-6 md:py-7">
-                  <dd className="m-0 text-title-1 tabular-nums text-gray-900">{m.value}</dd>
+                <Reveal key={m.label} className="bg-[#FDFDFC] px-4 py-5 md:px-6 md:py-7">
+                  <dd className="m-0 text-title-1 tabular-nums text-gray-900">
+                    <CountUp value={m.value} />
+                  </dd>
                   <dt className="mt-2 max-w-[22ch] text-sm text-gray-500">{m.label}</dt>
-                </div>
+                </Reveal>
               ))}
             </dl>
           )}

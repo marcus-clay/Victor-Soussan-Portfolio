@@ -287,6 +287,8 @@ const TappableMedia = ({
                     controls
                     playsInline
                     autoPlay
+                    loop
+                    muted
                   />
                 ) : (
                   <img loading="lazy"

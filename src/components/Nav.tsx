@@ -14,22 +14,9 @@ type Lang = 'en' | 'fr'
 
 const EASE_OUT: [number, number, number, number] = [0.23, 1, 0.32, 1]
 
-const backdropVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.12 } },
-  exit: { opacity: 0, transition: { duration: 0.14 } },
-}
-
-const panelVariants = {
-  hidden: { opacity: 0, y: -12 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.22, ease: EASE_OUT } },
-  exit: { opacity: 0, y: -4, transition: { duration: 0.14, ease: [0.55, 0, 1, 0.45] as [number, number, number, number] } },
-}
-
 const MENU_ITEMS = [
   { id: 'home', route: '', labelKey: null },
   { id: 'projets', route: 'projets', labelKey: 'projects' as const },
-  { id: 'services', route: 'services', labelKey: 'services' as const },
   { id: 'approche', route: 'approche', labelKey: 'approach' as const },
   { id: 'testimonials', route: 'testimonials', labelKey: 'testimonials' as const },
   { id: 'about', route: 'about', labelKey: 'bio' as const },
@@ -38,13 +25,16 @@ const MENU_ITEMS = [
 ]
 
 // The four entries kept in the bar from md up. Everything else lives in the menu.
-const PRIMARY_IDS = ['projets', 'services', 'approche', 'about'] as const
+const PRIMARY_IDS = ['projets', 'approche', 'about'] as const
 
 export default function Nav({ lang }: { lang: Lang }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   // Stays true while menu is open OR animating out — drives nav background
   // to avoid backdrop-blur clipping the still-visible panel during exit
   const [isMenuMounted, setIsMenuMounted] = useState(false)
+  // True once the menu has been painted closed and may go to open: the CSS transitions need
+  // a painted starting state (see openMenu)
+  const [entered, setEntered] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const [isDarkNav, setIsDarkNav] = useState(false)
   const [pageTitle, setPageTitle] = useState<string | null>(null)
@@ -57,11 +47,35 @@ export default function Nav({ lang }: { lang: Lang }) {
   // through the root `scroll-behavior: smooth` and made every page glide up after it loaded.
   useEffect(() => {
     setIsMobileMenuOpen(false)
-    // isMenuMounted cleared by onExitComplete after panel finishes exiting
+    setEntered(false)
+    // isMenuMounted is cleared when the panel has finished leaving (handlePanelTransitionEnd)
   }, [pathname])
 
-  const openMenu = () => { setIsMenuMounted(true); setIsMobileMenuOpen(true) }
-  const closeMenu = () => { setIsMobileMenuOpen(false) }
+  const openMenu = () => {
+    setIsMobileMenuOpen(true)
+    // Still on screen (reopened while leaving): reverse at once, from where it is. Otherwise mount it
+    // closed and switch to open two frames later, so the browser has a closed state to transition from.
+    if (isMenuMounted) setEntered(true)
+    else setIsMenuMounted(true)
+  }
+  const closeMenu = () => { setIsMobileMenuOpen(false); setEntered(false) }
+
+  useEffect(() => {
+    if (!isMobileMenuOpen || entered) return
+    let id = requestAnimationFrame(() => { id = requestAnimationFrame(() => setEntered(true)) })
+    return () => cancelAnimationFrame(id)
+  }, [isMobileMenuOpen, entered])
+
+  // Unmount when the panel has finished leaving; the timer is the safety net if no event comes
+  const handlePanelTransitionEnd = (e: React.TransitionEvent<HTMLDivElement>) => {
+    if (e.target !== e.currentTarget || isMobileMenuOpen) return
+    if (e.propertyName === 'transform' || e.propertyName === 'opacity') setIsMenuMounted(false)
+  }
+  useEffect(() => {
+    if (isMobileMenuOpen || !isMenuMounted) return
+    const id = setTimeout(() => setIsMenuMounted(false), 600)
+    return () => clearTimeout(id)
+  }, [isMobileMenuOpen, isMenuMounted])
   const toggleMenu = () => { isMobileMenuOpen ? closeMenu() : openMenu() }
 
   // Track scroll for header height transition + update CSS variable.
@@ -72,7 +86,7 @@ export default function Nav({ lang }: { lang: Lang }) {
     let frame = 0
     const apply = (value: boolean) => {
       setIsScrolled(value)
-      document.documentElement.style.setProperty('--nav-height', value ? '56px' : '64px')
+      document.documentElement.style.setProperty('--nav-height', value ? 'var(--nav-height-scrolled)' : 'var(--nav-height-top)')
     }
     const handleScroll = () => {
       if (frame) return
@@ -171,7 +185,8 @@ export default function Nav({ lang }: { lang: Lang }) {
         }`}
         style={{
           height: 'var(--nav-height)',
-          transition: 'height 250ms cubic-bezier(0.23, 1, 0.32, 1), background-color 200ms ease',
+          // Solid at once when the menu opens, so the bar and the panel read as one surface
+          transition: `height 250ms cubic-bezier(0.23, 1, 0.32, 1), background-color ${isMenuMounted ? '0ms' : '200ms'} ease`,
         }}
       >
         <div className="wrap h-full flex items-center justify-between">
@@ -301,34 +316,35 @@ export default function Nav({ lang }: { lang: Lang }) {
         </div>
       </nav>
 
-      {/* Menu overlay — shared for all breakpoints */}
-      <AnimatePresence onExitComplete={() => setIsMenuMounted(false)}>
-        {isMobileMenuOpen && (
-          <>
-            {/* Backdrop */}
-            <motion.div
-              variants={backdropVariants}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-              className="fixed inset-0 z-40 bg-black/20"
-              onClick={closeMenu}
-            />
+      {/* Menu overlay, shared for all breakpoints. Scrim, panel and rows are CSS transitions between
+          two states (.menu-* in globals.css), not Motion animations: the resting style is the open
+          state, so no frame can show a half-written value when a transition ends. */}
+      {isMenuMounted && (
+        <>
+          <div
+            data-state={entered ? 'open' : 'closed'}
+            className="menu-scrim fixed inset-0 z-40 bg-black/20"
+            onClick={closeMenu}
+            aria-hidden="true"
+          />
 
-            {/* Menu panel — drops from header, same content width */}
-            <motion.div
-              variants={panelVariants}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-              className={`fixed left-0 right-0 z-50 ${
+          {/* Window under the bar: it clips the panel while it slides down from behind the bar, and
+              leaves 16px below for the small bounce when the panel arrives */}
+          <div
+            className="fixed inset-x-0 z-50 overflow-hidden pb-4 pointer-events-none"
+            style={{ top: 'var(--nav-height)', transition: 'top 250ms cubic-bezier(0.23, 1, 0.32, 1)' }}
+          >
+            {/* The panel reaches 16px above the window (-mt-4 / pt-4), so the bounce never opens a gap under the bar */}
+            <div
+              data-state={entered ? 'open' : 'closed'}
+              onTransitionEnd={handlePanelTransitionEnd}
+              className={`menu-panel pointer-events-auto -mt-4 pt-4 max-h-[calc(100svh-var(--nav-height)+1rem)] overflow-y-auto overscroll-contain ${
                 isDarkNav
                   ? 'bg-[#1D1D1F]'
                   : 'bg-[#FDFDFC] border-b border-gray-100'
               }`}
-              style={{ top: 'var(--nav-height)', transition: 'top 250ms cubic-bezier(0.23, 1, 0.32, 1)' }}
             >
-              <div className="wrap py-4">
+              <div className="wrap py-5 md:py-6">
                 <div className="flex flex-col">
                   {MENU_ITEMS.map((item, index) => {
                     const active = isActive(item.route)
@@ -337,41 +353,42 @@ export default function Nav({ lang }: { lang: Lang }) {
                       : lang === 'en' ? 'Home' : 'Accueil'
 
                     return (
-                      <motion.div
+                      <div
                         key={item.id}
-                        initial={{ opacity: 0 }}
-                        animate={{
-                          opacity: 1,
-                          transition: {
-                            duration: 0.15,
-                            delay: 0.05 + index * 0.02,
-                          },
-                        }}
-                        exit={{
-                          opacity: 0,
-                          transition: { duration: 0.08 },
-                        }}
+                        data-state={entered ? 'open' : 'closed'}
+                        className="menu-row"
+                        style={{ '--i': index } as React.CSSProperties}
                       >
                         <Link
-                          href={`/${lang}/${item.route}`}
-                          onClick={closeMenu}
-                          className={`-mx-3 px-3 py-2.5 rounded-lg transition-colors duration-150 block ${
-                            active
-                              ? (isDarkNav ? 'text-white font-medium' : 'text-gray-900 font-medium')
-                              : (isDarkNav ? 'text-gray-400 hover:text-white hover:bg-white/[0.08]' : 'text-gray-500 hover:text-gray-900 hover:bg-gray-100')
-                          }`}
-                        >
-                          <span className="text-sm">{label}</span>
-                        </Link>
-                      </motion.div>
+                            href={`/${lang}/${item.route}`}
+                            onClick={closeMenu}
+                            aria-current={active ? 'page' : undefined}
+                            className={`-mx-3 px-3 py-3.5 rounded-xl transition-colors duration-150 flex items-center gap-4 ${
+                              active
+                                ? (isDarkNav ? 'text-white font-semibold bg-white/[0.08] active:bg-white/[0.12]' : 'text-gray-900 font-semibold bg-black/[0.04] active:bg-black/[0.07]')
+                                : (isDarkNav ? 'text-gray-400 font-medium hover:text-white hover:bg-white/[0.08] active:bg-white/[0.12]' : 'text-gray-600 font-medium hover:text-gray-900 hover:bg-gray-100 active:bg-gray-200/70')
+                            }`}
+                          >
+                            {/* Dot like the table of contents: a fixed 8px slot on every row, the dot grows
+                                inside it, so the labels stay aligned whichever row is active */}
+                            <span aria-hidden="true" className="relative flex-shrink-0 w-2 h-2">
+                              <span
+                                className={`absolute inset-0 rounded-full transition-transform duration-200 ease-out ${
+                                  isDarkNav ? 'bg-white' : 'bg-gray-900'
+                                } ${active ? 'scale-100' : 'scale-0'}`}
+                              />
+                            </span>
+                            <span className="text-lg">{label}</span>
+                          </Link>
+                      </div>
                     )
                   })}
                 </div>
               </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+            </div>
+          </div>
+        </>
+      )}
     </>
   )
 }

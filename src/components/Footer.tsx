@@ -32,14 +32,14 @@ export default function Footer({ lang }: { lang: Lang }) {
                 href="https://linkedin.com/in/victorsoussan-product-design"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-500 hover:text-gray-900 transition-colors duration-150"
+                className="text-gray-500 hover:text-gray-900 active:scale-[0.92] transition-[color,transform] duration-150"
                 aria-label="LinkedIn"
               >
                 <LinkedinLogo size={18} />
               </a>
               <a
                 href="mailto:victorsoussan@gmail.com"
-                className="text-gray-500 hover:text-gray-900 transition-colors duration-150"
+                className="text-gray-500 hover:text-gray-900 active:scale-[0.92] transition-[color,transform] duration-150"
                 aria-label="Email"
               >
                 <Mail size={18} />
@@ -52,22 +52,22 @@ export default function Footer({ lang }: { lang: Lang }) {
             <h4 className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-4">Navigation</h4>
             <ul className="space-y-2.5">
               <li>
-                <Link href={`/${lang}/projets`} className="text-sm text-gray-500 hover:text-gray-900 transition-colors duration-150">
+                <Link href={`/${lang}/projets`} className="link-draw text-sm text-gray-500 hover:text-gray-900 transition-colors duration-150">
                   {content.projects}
                 </Link>
               </li>
               <li>
-                <Link href={`/${lang}/about`} className="text-sm text-gray-500 hover:text-gray-900 transition-colors duration-150">
+                <Link href={`/${lang}/about`} className="link-draw text-sm text-gray-500 hover:text-gray-900 transition-colors duration-150">
                   {content.bio}
                 </Link>
               </li>
               <li>
-                <Link href={`/${lang}/services`} className="text-sm text-gray-500 hover:text-gray-900 transition-colors duration-150">
-                  {content.services}
+                <Link href={`/${lang}/approche`} className="link-draw text-sm text-gray-500 hover:text-gray-900 transition-colors duration-150">
+                  {content.approach}
                 </Link>
               </li>
               <li>
-                <Link href={`/${lang}/ressources`} className="text-sm text-gray-500 hover:text-gray-900 transition-colors duration-150">
+                <Link href={`/${lang}/ressources`} className="link-draw text-sm text-gray-500 hover:text-gray-900 transition-colors duration-150">
                   {content.blog}
                 </Link>
               </li>
@@ -79,12 +79,12 @@ export default function Footer({ lang }: { lang: Lang }) {
             <h4 className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-4">Contact</h4>
             <ul className="space-y-2.5">
               <li>
-                <a href="mailto:victorsoussan@gmail.com" className="text-sm text-gray-500 hover:text-gray-900 transition-colors duration-150">
+                <a href="mailto:victorsoussan@gmail.com" className="link-draw text-sm text-gray-500 hover:text-gray-900 transition-colors duration-150">
                   victorsoussan@gmail.com
                 </a>
               </li>
               <li>
-                <a href="tel:+33615989400" className="text-sm text-gray-500 hover:text-gray-900 transition-colors duration-150">
+                <a href="tel:+33615989400" className="link-draw text-sm text-gray-500 hover:text-gray-900 transition-colors duration-150">
                   +33 6 15 98 94 00
                 </a>
               </li>
@@ -114,7 +114,7 @@ export default function Footer({ lang }: { lang: Lang }) {
             <button
               type="button"
               onClick={openConsentSettings}
-              className="text-sm text-gray-600 hover:text-gray-900 transition-colors cursor-pointer"
+              className="link-draw text-sm text-gray-600 hover:text-gray-900 transition-colors cursor-pointer"
             >
               {lang === 'en' ? 'Cookie settings' : 'G\u00e9rer les cookies'}
             </button>
@@ -122,7 +122,7 @@ export default function Footer({ lang }: { lang: Lang }) {
               href={`/${otherLang}`}
               hrefLang={otherLang}
               lang={otherLang}
-              className="text-sm text-gray-600 hover:text-gray-900 transition-colors flex items-center gap-2"
+              className="link-draw text-sm text-gray-600 hover:text-gray-900 transition-colors flex items-center gap-2"
             >
               <Globe size={16} />
               {lang === 'en' ? 'Fran\u00e7ais' : 'English'}

@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { ArrowRight } from '@phosphor-icons/react/ssr'
 import { TRANSLATIONS } from '@/data/translations'
 import { imgDims } from '@/utils/imageDimensions'
+import Reveal from '@/components/ui/Reveal'
 
 interface PositioningSectionProps {
   lang: 'en' | 'fr'
@@ -32,7 +33,7 @@ export default function PositioningSection({ lang }: PositioningSectionProps) {
     <section aria-label={t.caption} className="pb-16 md:pb-28">
       <div className="wrap">
         <div className="grid grid-cols-12 gap-x-6 gap-y-8 border-t border-gray-200 pt-6 md:pt-8">
-          <figure className="col-span-8 col-start-1 sm:col-span-5 md:col-span-3">
+          <Reveal as="figure" className="col-span-8 col-start-1 sm:col-span-5 md:col-span-3">
             <div className="aspect-[4/5] overflow-hidden rounded-2xl bg-gray-100">
               <img
                 src={PORTRAIT}
@@ -46,9 +47,9 @@ export default function PositioningSection({ lang }: PositioningSectionProps) {
               <span className="font-medium text-gray-900">{t.caption}</span>
               <span className="block text-gray-500">{t.role}</span>
             </figcaption>
-          </figure>
+          </Reveal>
 
-          <div className="col-span-12 md:col-span-8 md:col-start-5 lg:col-span-7 lg:col-start-5 flex flex-col justify-between gap-8">
+          <Reveal className="col-span-12 md:col-span-8 md:col-start-5 lg:col-span-7 lg:col-start-5 flex flex-col justify-between gap-8">
             <p className="text-subhead text-gray-900 text-pretty">{statement}</p>
             <Link
               href={`/${lang}/about`}
@@ -61,7 +62,7 @@ export default function PositioningSection({ lang }: PositioningSectionProps) {
                 className="transition-transform duration-300 ease-out group-hover:translate-x-1"
               />
             </Link>
-          </div>
+          </Reveal>
         </div>
       </div>
     </section>
