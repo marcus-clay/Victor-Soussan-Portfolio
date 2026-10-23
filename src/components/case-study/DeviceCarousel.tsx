@@ -73,7 +73,7 @@ export default function DeviceCarousel({ kind, screens, ariaLabel, prevLabel, ne
   const total = screens.length
   const atStart = index === 0
   const atEnd = index >= total - 1
-  const width = kind === 'phone' ? 'w-[min(66vw,260px)]' : 'w-[min(82vw,640px)]'
+  const width = kind === 'phone' || kind === 'poster' ? 'w-[min(66vw,260px)]' : 'w-[min(82vw,640px)]'
 
   return (
     <div className="relative bg-[#E8E8E8] rounded-xl overflow-hidden ring-1 ring-black/[0.04]">

@@ -10,8 +10,11 @@ import { ActRule, ActTitle } from '@/components/case-study/ActSection'
 import CaseStudySummary from '@/components/case-study/CaseStudySummary'
 import CaseStudyHero from '@/components/case-study/CaseStudyHero'
 import DeviceCarousel from '@/components/case-study/DeviceCarousel'
+import StoreBadges, { type StoreLinks } from '@/components/case-study/StoreBadges'
+import NotificationsShowcase from '@/components/case-study/NotificationsShowcase'
+import JourneyPlayer from '@/components/case-study/JourneyPlayer'
+import { prototypeJourneys, scanJourneys, tunnelJourneys } from '@/data/tessanJourneys'
 import DeviceMockup, { type DeviceKind, type DeviceScreen } from '@/components/case-study/DeviceMockup'
-import FlowPlayer from '@/components/case-study/FlowPlayer'
 import EnhancedLightbox, { type LightboxImage } from '@/components/media/EnhancedLightbox'
 import { zoomable } from '@/utils/zoomable'
 import { TESSAN_TRANSLATIONS } from '@/data/caseStudyTranslations/tessanTranslations'
@@ -79,13 +82,18 @@ interface ShowcaseFigure {
   items: ShowcaseItem[]
 }
 
-/** Clips of one kind of screen, played one at a time on a single phone (a row of phones moving together reads as noise). */
-interface FlowFigure {
-  type: 'flows'
-  flows: { name: string; title: { fr: string; en: string }; line: { fr: string; en: string } }[]
+/** The waiting-room notifications, drawn as the operating system shows them. */
+interface NotificationsFigure {
+  type: 'notifications'
 }
 
-type FigureSource = ImageFigure | DeviceFigure | ShowcaseFigure | FlowFigure
+/** One phone that plays a journey, with its steps as the way in. */
+interface JourneyFigure {
+  type: 'journey'
+  kind: 'tunnel' | 'scan' | 'protos'
+}
+
+type FigureSource = ImageFigure | DeviceFigure | ShowcaseFigure | NotificationsFigure | JourneyFigure
 
 const app = (name: string, label: { fr: string; en: string }): DeviceScreenSpec => ({
   src: `/images/tessan/tessan-app-${name}.webp`,
@@ -136,9 +144,10 @@ const FIGURES: Record<string, FigureSource> = {
     kind: 'phone',
     carousel: true,
     screens: [
+      app('demarrer', { fr: 'Démarrer', en: 'Get started' }),
       app('connexion', { fr: 'Saisie unique', en: 'Single entry' }),
       app('code', { fr: 'Code à usage unique', en: 'One-time code' }),
-      app('accueil', { fr: 'Accueil', en: 'Home' }),
+      app('accueil-connecte', { fr: 'Accueil', en: 'Home' }),
       app('consulter', { fr: 'Consultations', en: 'Consultations' }),
       app('documents', { fr: 'Documents', en: 'Documents' }),
       app('proches', { fr: 'Mes proches', en: 'Relatives' }),
@@ -146,22 +155,25 @@ const FIGURES: Record<string, FigureSource> = {
       app('confidentialite', { fr: 'Confidentialité', en: 'Privacy' }),
     ],
   },
-  tunnelScreens: {
+  storeVisuals: {
     type: 'devices',
-    kind: 'phone',
+    kind: 'poster',
     carousel: true,
     screens: [
-      app('tunnel-carte-vitale', { fr: 'Carte vitale', en: 'Health card' }),
-      app('tunnel-motif', { fr: 'Motif', en: 'Reason' }),
-      app('tunnel-consentements', { fr: 'Consentements', en: 'Consents' }),
-      app('tunnel-avance-frais', { fr: 'Avance de frais', en: 'Advance payment' }),
-      app('tunnel-prise-en-charge-100', { fr: 'Prise en charge à 100 %', en: 'Fully covered' }),
-      app('tunnel-prise-en-charge-90', { fr: 'Prise en charge à 90 %', en: '90% covered' }),
-      app('tunnel-prise-en-charge', { fr: 'Prise en charge à 70 %', en: '70% covered' }),
-      app('tunnel-position-file', { fr: 'Position dans la file', en: 'Place in the queue' }),
-      app('tunnel-consultation-prete', { fr: 'Consultation prête', en: 'Consultation ready' }),
+      { src: '/images/tessan/store/play-store-01.webp', width: 720, height: 1280, aspect: 9 / 16, label: { fr: 'Un médecin en ligne, un examen en pharmacie', en: 'An online doctor, an exam at the pharmacy' } },
+      { src: '/images/tessan/store/play-store-02.webp', width: 720, height: 1280, aspect: 9 / 16, label: { fr: 'Ordonnance, arrêt de travail, compte-rendu', en: 'Prescription, sick note, report' } },
+      { src: '/images/tessan/store/play-store-03.webp', width: 720, height: 1280, aspect: 9 / 16, label: { fr: 'Jusqu’à 100 % remboursé', en: 'Up to 100% reimbursed' } },
+      { src: '/images/tessan/store/play-store-04.webp', width: 720, height: 1280, aspect: 9 / 16, label: { fr: 'Plus de 500 médecins', en: 'Over 500 doctors' } },
+      { src: '/images/tessan/store/play-store-05.webp', width: 720, height: 1280, aspect: 9 / 16, label: { fr: 'Sans rendez-vous, 7 jours sur 7', en: 'No appointment, 7 days a week' } },
+      { src: '/images/tessan/store/play-store-06.webp', width: 720, height: 1280, aspect: 9 / 16, label: { fr: '1 600 pharmacies partenaires', en: '1,600 partner pharmacies' } },
+      { src: '/images/tessan/store/play-store-07.webp', width: 720, height: 1280, aspect: 9 / 16, label: { fr: 'Vos enfants aussi', en: 'Your children too' } },
+      { src: '/images/tessan/store/play-store-08.webp', width: 720, height: 1280, aspect: 9 / 16, label: { fr: '2 millions de patients, 4,7 sur 5', en: '2 million patients, 4.7 out of 5' } },
     ],
   },
+  journeyTunnel: { type: 'journey', kind: 'tunnel' },
+  journeyScan: { type: 'journey', kind: 'scan' },
+  journeyProtos: { type: 'journey', kind: 'protos' },
+  notifications: { type: 'notifications' },
   assistantScreen: {
     type: 'devices',
     kind: 'phone',
@@ -178,8 +190,6 @@ const FIGURES: Record<string, FigureSource> = {
       proto('tessan-ui-mobile-cabine-stepper-champs-1440', { fr: 'Tessan-UI : composants mobile et cabine', en: 'Tessan-UI: mobile and booth components' }, 2880 / 1800),
     ],
   },
-  wireStills: strip('wireStills'),
-  v4Stills: strip('v4Stills'),
   doctorStills: strip('doctorStills'),
   osStills: strip('osStills'),
   osDesktop: strip('osDesktop'),
@@ -187,9 +197,8 @@ const FIGURES: Record<string, FigureSource> = {
     type: 'devices',
     kind: 'phone',
     screens: [
-      app('tunnel-motif', { fr: 'Motif', en: 'Reason' }),
-      app('tunnel-avance-frais', { fr: 'Avance de frais', en: 'Advance payment' }),
-      app('tunnel-salle-attente', { fr: 'Salle d’attente', en: 'Waiting room' }),
+      app('demarrer', { fr: 'Démarrer', en: 'Get started' }),
+      app('accueil-connecte', { fr: 'Accueil', en: 'Home' }),
     ],
   },
   hubOs: {
@@ -250,16 +259,6 @@ const FIGURES: Record<string, FigureSource> = {
       { n: '05', name: { fr: 'Tessan Score', en: 'Tessan Score' }, line: { fr: 'Un signal de santé lisible : la tendance avant la valeur, trois insights actionnables.', en: 'A readable health signal: the trend before the value, three actionable insights.' }, kind: 'phone', href: 'https://tessan-os-prototypes.vercel.app/score', screen: proto('score-bien-etre-interactions', { fr: 'Tessan Score', en: 'Tessan Score' }) },
       { n: '06', name: { fr: 'Tessan OS', en: 'Tessan OS' }, line: { fr: 'Une couche commune au mobile, à la tablette et au bureau : trois hiérarchies d’information, pas un simple responsive.', en: 'A layer shared across mobile, tablet and desktop: three information hierarchies, not just responsive.' }, kind: 'browser', share: 0.9, href: 'https://tessan-os-prototypes.vercel.app/cross-device', screen: proto('tessan-os-cross-device', { fr: 'Tessan OS', en: 'Tessan OS' }, 2160 / 1350) },
       { n: '07', name: { fr: 'Prévention Active', en: 'Active Prevention' }, line: { fr: 'La prévention par de petites missions, des séries, et un appui long pour valider.', en: 'Prevention through small missions, streaks, and a long press to confirm.' }, kind: 'phone', href: 'https://tessan-os-prototypes.vercel.app/prevention', screen: proto('prevention-maintenir-pour-valider', { fr: 'Prévention Active', en: 'Active Prevention' }) },
-    ],
-  },
-  wireframes: {
-    type: 'flows',
-    flows: [
-      { name: 'onboarding-wireframes-qualifier-avant-auth', title: { fr: 'Qualifier avant l’authentification', en: 'Qualify before signing in' }, line: { fr: 'Pour qui, où, quel motif : le patient voit une cabine disponible avant de créer son espace personnel.', en: 'Who for, where, which reason: the patient sees an available booth before creating a personal account.' } },
-      { name: 'onboarding-wireframes-post-consultation', title: { fr: 'Après la consultation', en: 'After the consultation' }, line: { fr: 'Récapitulatif immédiat : compte-rendu envoyé, ordonnance disponible, puis suivi proposé en un tap.', en: 'Immediate recap: report sent, prescription available, then a follow-up slot offered in one tap.' } },
-      { name: 'patient-v4-reservation-cabine-sms-mail', title: { fr: 'Patient v4, réserver en cabine', en: 'Patient v4, booking at a booth' }, line: { fr: 'Choisir une pharmacie et un créneau, confirmer son adresse e-mail avec un code, puis recevoir la confirmation du passage.', en: 'Pick a pharmacy and a slot, confirm the e-mail address with a code, then get the booking confirmation.' } },
-      { name: 'patient-v4-creneaux-creux-notification-acces', title: { fr: 'Patient v4, créneaux calmes et accès', en: 'Patient v4, quiet slots and access' }, line: { fr: 'Une notification signale une cabine libre à proximité, l’activité habituelle du lieu aide à choisir, puis l’accès est confirmé.', en: 'A notification flags a free booth nearby, the usual activity of the place helps choose, then access is confirmed.' } },
-      { name: 'patient-v4-explorer-le-reseau-carte-reservation', title: { fr: 'Patient v4, explorer le réseau', en: 'Patient v4, exploring the network' }, line: { fr: 'Partir de la carte des cabines, ouvrir une pharmacie, choisir un créneau, puis confirmer avec le code reçu.', en: 'Start from the booth map, open a pharmacy, choose a slot, then confirm with the code received.' } },
     ],
   },
   osMedaillon: {
@@ -415,22 +414,27 @@ function FigureView({
   prototypeLabel: string
   onZoom: (key: string) => void
 }) {
-  if (figure.type === 'flows') {
+  if (figure.type === 'journey') {
+    const journeys = figure.kind === 'tunnel' ? tunnelJourneys(lang) : figure.kind === 'scan' ? scanJourneys(lang) : prototypeJourneys(lang)
     return (
       <figure>
-        <FlowPlayer
-          items={figure.flows.map((f) => ({
-            id: f.name,
-            title: f.title[lang],
-            line: f.line[lang],
-            poster: `/images/tessan/proto/${f.name}.webp`,
-            video: `/images/tessan/proto/${f.name}.mp4`,
-          }))}
+        <JourneyPlayer
+          journeys={journeys}
           ariaLabel={caption}
-          prevLabel={lang === 'fr' ? 'Parcours précédent' : 'Previous flow'}
-          nextLabel={lang === 'fr' ? 'Parcours suivant' : 'Next flow'}
-          aspect={780 / 1688}
+          labels={
+            lang === 'fr'
+              ? { play: 'Lancer la lecture automatique', pause: 'Mettre la lecture automatique en pause', journeys: 'Parcours', steps: 'Étapes du parcours' }
+              : { play: 'Start automatic playback', pause: 'Pause automatic playback', journeys: 'Journeys', steps: 'Steps of the journey' }
+          }
         />
+        <figcaption className="sr-only">{caption}</figcaption>
+      </figure>
+    )
+  }
+  if (figure.type === 'notifications') {
+    return (
+      <figure>
+        <NotificationsShowcase lang={lang} />
         <figcaption className="sr-only">{caption}</figcaption>
       </figure>
     )
@@ -481,6 +485,14 @@ function FigureView({
   )
 }
 
+/** The patient app, out on both stores since July 15, 2026. */
+const APP_ICON = '/images/tessan/tessan-app-icon.webp'
+
+const STORE_LINKS: StoreLinks = {
+  apple: 'https://apps.apple.com/fr/app/tessan/id6755781046',
+  google: 'https://play.google.com/store/apps/details?id=com.tessan.cloudpatient&hl=fr',
+}
+
 export type TessanVariant = 'hub' | 'app' | 'os' | 'systeme'
 
 const PROJECT_ID: Record<TessanVariant, string> = {
@@ -515,7 +527,7 @@ export const TessanChapterPage: React.FC<TessanPageProps & { variant: TessanVari
         for (const item of figure.items) {
           items.push({ key: screenKey(item.screen), src: item.screen.video ?? item.screen.src, caption: `${item.n} ${item.name[lang]}`, type: item.screen.video ? 'video' : 'image' })
         }
-      } else if (figure.type === 'flows') {
+      } else if (figure.type === 'notifications' || figure.type === 'journey') {
         continue
       } else if (figure.type === 'devices') {
         for (const screen of figure.screens) {
@@ -586,6 +598,18 @@ export const TessanChapterPage: React.FC<TessanPageProps & { variant: TessanVari
             <div className="act-wide pt-10 md:pt-14 pb-12 md:pb-16">
               <ActTitle index={String(index + 1).padStart(2, '0')} title={teaser.title} />
               <p className="max-w-[62ch] text-base text-gray-600">{teaser.text}</p>
+              {teaser.id === 'app' && (
+                <StoreBadges
+                  lang={lang}
+                  stores={STORE_LINKS}
+                  label={t.ui.stores.label}
+                  icon={APP_ICON}
+                  appleLabel={t.ui.stores.apple}
+                  googleLabel={t.ui.stores.google}
+                  source="hub_teaser"
+                  className="mt-6 max-w-[62ch]"
+                />
+              )}
               <div className="mt-8 md:mt-10">
                 <FigureView
                   figure={FIGURES[teaser.figure]}
@@ -612,6 +636,18 @@ export const TessanChapterPage: React.FC<TessanPageProps & { variant: TessanVari
             <div className="act-wide pt-10 md:pt-14 pb-12 md:pb-16">
               <ActTitle index={String(firstIndex + index + 1).padStart(2, '0')} title={section.title} />
               <p className="max-w-[62ch] text-base text-gray-600">{section.text}</p>
+              {section.id === 'app' && (
+                <StoreBadges
+                  lang={lang}
+                  stores={STORE_LINKS}
+                  label={t.ui.stores.label}
+                  icon={APP_ICON}
+                  appleLabel={t.ui.stores.apple}
+                  googleLabel={t.ui.stores.google}
+                  source="app_section"
+                  className="mt-6"
+                />
+              )}
               {section.figures && (
                 <div className="mt-8 md:mt-10 space-y-6 md:space-y-8">
                   {section.figures

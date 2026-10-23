@@ -11,6 +11,13 @@ export interface TessanSection {
   figures?: string[]
 }
 
+/** Line and link names for the store badges. */
+export interface StoreCopy {
+  label: string
+  apple: string
+  google: string
+}
+
 export interface TessanSummary {
   context: string
   role: string
@@ -58,7 +65,7 @@ export interface TessanTranslation {
     metrics: { value: string; label: string }[]
   }
   sections: TessanSection[]
-  ui: { prototype: string }
+  ui: { prototype: string; stores: StoreCopy }
   captions: Record<string, string>
 }
 
@@ -76,7 +83,7 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
     metaLabels: { role: 'Rôle', period: 'Période', team: 'Équipe', scope: 'Périmètre' },
     summary: {
       context:
-        'Tessan équipe des pharmacies de cabines de téléconsultation. L’enjeu : la valeur vient du patient qui revient, et l’application existante n’y contribuait pas, avec une session fragmentée, une double navigation et un tunnel de 8 à 13 écrans. L’objectif : une première version centrée sur la consultation, prête à soumettre aux stores avant le 15 juillet.',
+        'Tessan équipe des pharmacies de cabines de téléconsultation. L’enjeu : la valeur vient du patient qui revient, et l’application existante n’y contribuait pas, avec une session fragmentée, une double navigation et un tunnel de 8 à 13 écrans. L’objectif : une première version centrée sur la consultation, publiée sur l’App Store et Google Play le 15 juillet.',
       role: 'Premier et seul designer de l’entreprise. Lead design et product owner de l’application patient, avec un tech lead et deux développeurs.',
       roleItems: [
         { title: 'Application', detail: 'périmètre, parcours, 40 écrans, builds' },
@@ -91,23 +98,23 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
         { title: 'Vision Hub Santé', detail: 'cinq concepts prototypés' },
       ],
       metrics: [
-        { value: '30 jours', label: 'de la décision de reconstruire à la préparation de la soumission' },
-        { value: '3 builds', label: 'en deux semaines, du 26 juin au 9 juillet' },
-        { value: '3 %', label: 'de saisies de mutuelle réussies : l’écran est retiré' },
+        { value: '30 jours', label: 'entre la décision de reconstruire (15 juin) et la sortie sur les stores (15 juillet)' },
+        { value: '4,5 / 5', label: 'de note moyenne sur les 17 avis écrits de la nouvelle app, contre 3,6 sur les 5 de l’ancienne' },
+        { value: '97 %', label: 'des patients échouaient sur l’écran de mutuelle, retiré du tunnel' },
       ],
     },
     chapters: {
       app: {
         hero: {
           title: 'Tessan : l’application patient reconstruite en 30 jours',
-          intro: 'Le 15 juin, nous reconstruisons l’application en natif autour de la consultation. Un tunnel allégé, un assistant qui ne diagnostique pas, trois builds en deux semaines.',
+          intro: 'Le 15 juin, nous reconstruisons l’application en natif autour de la consultation. Un tunnel allégé, un assistant qui ne diagnostique pas, trois builds en deux semaines, puis la sortie sur l’App Store et Google Play le 15 juillet.',
           role: 'Lead design et product owner',
           period: 'Juin à juillet 2026',
           team: 'Un tech lead, deux développeurs, seul designer',
           scope: 'Application, tunnel, assistant',
         },
         summary: {
-          context: 'L’application existante ne servait pas la consultation : session fragmentée, double navigation, tunnel de 8 à 13 écrans. L’objectif : une première version centrée sur la consultation, prête à soumettre aux stores avant le 15 juillet.',
+          context: 'L’application existante ne servait pas la consultation : session fragmentée, double navigation, tunnel de 8 à 13 écrans. L’objectif : une première version centrée sur la consultation, publiée sur l’App Store et Google Play le 15 juillet.',
           role: 'Lead design et product owner de l’application patient, avec un tech lead et deux développeurs.',
           roleItems: [
             { title: 'Périmètre', detail: 'ce qui entre et ce qui sort de la V0' },
@@ -122,12 +129,12 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
             { title: 'Prototypes interactifs', detail: 'wireframes et réservation' },
           ],
           metrics: [
-            { value: '30 jours', label: 'de la décision de reconstruire à la préparation de la soumission' },
-            { value: '3 builds', label: 'en deux semaines, du 26 juin au 9 juillet' },
-            { value: '3 %', label: 'de saisies de mutuelle réussies : l’écran est retiré' },
+            { value: '30 jours', label: 'entre la décision de reconstruire (15 juin) et la sortie sur les stores (15 juillet)' },
+            { value: '4,5 / 5', label: 'de note moyenne sur les 17 avis écrits de la nouvelle app, contre 3,6 sur les 5 de l’ancienne' },
+            { value: '97 %', label: 'des patients échouaient sur l’écran de mutuelle, retiré du tunnel' },
           ],
         },
-        sectionIds: ['app', 'tunnel', 'protos-tunnel', 'assistant'],
+        sectionIds: ['app', 'tunnel', 'paiement', 'protos-tunnel', 'notifications', 'assistant'],
       },
       os: {
         hero: {
@@ -203,20 +210,32 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
       {
         id: 'app',
         title: 'L’application',
-        text: 'Le 15 juin, deux décisions cadrent la reconstruction. Nous passons au natif, car réaménager l’ancienne coquille aurait conservé la double session : seul le moteur de téléconsultation reste encapsulé. Nous retirons aussi ce qui séduisait le plus. La santé connectée, le score et l’abonnement exposaient le produit à une requalification en dispositif médical, soit 18 à 36 mois de certification face à 30 jours.',
-        figures: ['appScreens'],
+        text: 'Le 15 juin, deux décisions cadrent la reconstruction. Nous passons au natif, car réaménager l’ancienne coquille aurait conservé la double session : seul le moteur de téléconsultation reste encapsulé. Nous retirons aussi ce qui séduisait le plus. La santé connectée, le score et l’abonnement exposaient le produit à une requalification en dispositif médical, soit 18 à 36 mois de certification face à 30 jours. La mise à jour du 14 octobre réintroduit une partie de ce qui avait été écarté : dans Ma santé, le patient note ses mesures, enregistrées dans Apple Santé avec son accord, et l’écran d’attente est repensé pour lire sa position d’un coup d’œil.',
+        figures: ['appScreens', 'storeVisuals'],
       },
       {
         id: 'tunnel',
         title: 'Le tunnel de consultation',
-        text: 'Huit à treize écrans selon un routeur invisible, et 3 % de saisies de mutuelle réussies. La mutuelle sort du tunnel au profit d’une avance de frais, l’arrêt de travail devient une option du motif, et la salle d’attente montre une position plutôt qu’un minuteur qui mentirait.',
-        figures: ['tunnelScreens'],
+        text: 'Huit à treize écrans selon un routeur invisible, dont un écran de mutuelle sur lequel 97 % des patients échouaient. La mutuelle sort du tunnel au profit d’une avance de frais, l’arrêt de travail devient une option du motif, et la salle d’attente montre une position plutôt qu’un minuteur qui mentirait. Le lecteur ci-dessous déroule le parcours écran par écran, pour soi ou pour un proche.',
+        figures: ['journeyTunnel'],
+      },
+      {
+        id: 'paiement',
+        title: 'Payer, et comprendre sa prise en charge',
+        text: 'Le patient voit ce qu’il paie avant de payer. La carte bancaire se scanne avec la caméra au lieu de se saisir, la carte Vitale aussi, et l’analyse reste sur l’appareil. Selon les droits, la prise en charge va de 100 % à 0 % : chaque cas dit en une phrase ce qui reste à régler et propose l’action qui peut le changer.',
+        figures: ['journeyScan'],
       },
       {
         id: 'protos-tunnel',
         title: 'Des prototypes pour trancher l’ordre des écrans',
         text: 'Des wireframes interactifs en noir et blanc, revus avec la direction produit, ont fixé l’ordre des écrans avant les maquettes. Un prototype de réservation a ensuite simulé la prise de créneau en pharmacie, de la carte des cabines à l’accès confirmé, avec les vraies officines autour des cabines.',
-        figures: ['wireframes', 'wireStills', 'v4Stills'],
+        figures: ['journeyProtos'],
+      },
+      {
+        id: 'notifications',
+        title: 'Les notifications de la salle d’attente',
+        text: 'Une fois la consultation lancée, le patient peut quitter l’application : la salle d’attente continue sur l’écran verrouillé, dans la Dynamic Island sur iOS, dans une notification développée ou une puce Live Updates sur Android. Huit états, de la place dans la file à la reprise après une interruption, avec une règle : un état à la fois, et jamais une attente promise.',
+        figures: ['notifications'],
       },
       {
         id: 'assistant',
@@ -257,29 +276,33 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
       {
         id: 'hub',
         title: 'Le Hub Santé, une seule application',
-        text: 'Le 9 juin, « Ma santé » pose les règles : une navigation stable, un état vide qui invite, des programmes bornés dans le temps, avec un objectif nommé et un suivi en tendance. Le 26 juin, le comité de direction retient une seule application et un ordre : programmes de prévention, écosystème pharmacie, puis objets connectés. La vision reste un cap, conditionnée à la certification des briques concernées, et n’est pas en production.',
+        text: 'La vision tient en quatre principes : rester présents entre deux rendez-vous, la consultation finance et la prévention retient, l’Assistant Santé comme fil conducteur, et un réseau de plus de 1 600 pharmacies comme avantage. Le 9 juin, « Ma santé » pose les règles : une navigation stable, un état vide qui invite, des programmes bornés dans le temps, avec un objectif nommé et un suivi en tendance. Le 26 juin, le comité de direction retient une seule application et un ordre : programmes de prévention, écosystème pharmacie, puis objets connectés. La trajectoire suit quatre versions : la V0 fiabilise la consultation (15 juillet), la V1 retient et amorce (notifications, suivi après consultation, rendez-vous, premiers programmes), la V2 ouvre la prévention (Ma santé vivant, données connectées, outils d’analyse), la V3 porte le Hub Santé à l’échelle (programmes multiples, assistant enrichi, écosystème pharmacie). La vision reste un cap, et une première partie est en production depuis la mise à jour du 14 octobre : la saisie de mesures dans Ma santé.',
         figures: ['hubScreens', 'hubHorizon'],
       },
       {
         id: 'limites',
         title: 'Ce qui reste ouvert',
-        text: 'Aucune métrique d’impact à mon départ : l’application n’était pas publiée et la soumission aux stores, préparée, était suspendue. Je poserais la mesure avant la refonte du tunnel, et la gouvernance du pilotage avant l’outil.',
+        text: 'L’application est sortie sur l’App Store et Google Play le 15 juillet, et aucune métrique d’impact n’existait à mon départ. Les avis des stores donnent une première mesure en octobre : la note moyenne des avis écrits passe de 3,6 sur 5 (5 avis, ancienne app) à 4,5 sur 5 (17 avis, nouvelle app), et les notes publiques atteignent 4,7 sur Google Play (105 notes) et 4,8 sur l’App Store (151 notes). L’échantillon est trop petit pour attribuer l’écart à la refonte, d’autant que la mise à jour du 14 octobre a modifié l’application depuis, et aucune complétion par étape n’était suivie. Je poserais la mesure avant la refonte du tunnel, et la gouvernance du pilotage avant l’outil.',
       },
     ],
-    ui: { prototype: 'Essayer le prototype' },
+    ui: {
+      prototype: 'Essayer le prototype',
+      stores: { label: 'Disponible depuis le 15 juillet 2026', apple: 'Télécharger l’application Tessan sur l’App Store', google: 'Disponible sur Google Play : application Tessan' },
+    },
     captions: {
-      wireStills: 'Wireframes interactifs, écran par écran',
-      v4Stills: 'Prototype de réservation en pharmacie',
       doctorStills: 'Le prototype Docteur Tessan, de la conversation à la salle d’attente',
       osStills: 'Prototypes Tessan OS : score, prévention, WhatsApp, espace patient',
       osDesktop: 'Prototypes Tessan OS sur cabine, tablette et bureau',
       appScreens: 'Les écrans de l’application patient',
-      tunnelScreens: 'Le tunnel de consultation, de la carte vitale à la salle d’attente',
-      wireframes: 'Prototypes interactifs : wireframes du tunnel et prototype de réservation en cabine',
+      storeVisuals: 'Les visuels conçus pour la fiche Google Play',
+      journeyTunnel: 'Le parcours de consultation, écran par écran, pour soi et pour un proche',
+      journeyScan: 'Payer et s’identifier avec la caméra : le scan de la carte bancaire et de la carte Vitale, puis les cas de prise en charge',
+      journeyProtos: 'Les prototypes qui ont fixé l’ordre des écrans',
+      notifications: 'Les notifications de la salle d’attente, sur iOS et sur Android',
       assistantScreen: 'L’Assistant Santé, avec son périmètre affiché',
       dsVideos: 'Les démos du design system en usage : catalogue, tokens, dialog et composants mobile et cabine',
       dsPalette: 'Les rampes de couleur du design system, dans Figma',
-      hubApp: 'Le tunnel de consultation en trois écrans',
+      hubApp: 'Les deux écrans d’entrée de l’application : Démarrer et Accueil',
       hubOs: 'Tessan OS sur mobile, tablette et bureau',
       hubSysteme: 'Tessan-UI, le catalogue de composants',
       skillsPack: 'Le pack de skills : les cinq skills de la version interne',
@@ -310,7 +333,7 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
     metaLabels: { role: 'Role', period: 'Period', team: 'Team', scope: 'Scope' },
     summary: {
       context:
-        'Tessan equips pharmacies with telemedicine booths. The stake: value comes from the patient who returns, and the existing app did not contribute, with a fragmented session, double navigation and a funnel of 8 to 13 screens. The goal: a first version centered on the consultation, ready to submit to the stores before July 15.',
+        'Tessan equips pharmacies with telemedicine booths. The stake: value comes from the patient who returns, and the existing app did not contribute, with a fragmented session, double navigation and a funnel of 8 to 13 screens. The goal: a first version centered on the consultation, released on the App Store and Google Play on July 15.',
       role: 'The company’s first and only designer. Design lead and product owner of the patient app, with a tech lead and two developers.',
       roleItems: [
         { title: 'App', detail: 'scope, journeys, 40 screens, builds' },
@@ -325,23 +348,23 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
         { title: 'Health Hub vision', detail: 'five prototyped concepts' },
       ],
       metrics: [
-        { value: '30 days', label: 'from the decision to rebuild to the prepared submission' },
-        { value: '3 builds', label: 'in two weeks, from June 26 to July 9' },
-        { value: '3%', label: 'of health insurance entries completed: the screen is removed' },
+        { value: '30 days', label: 'between the decision to rebuild (June 15) and the store release (July 15)' },
+        { value: '4.5 / 5', label: 'average rating across the 17 written reviews of the new app, against 3.6 for the 5 of the old one' },
+        { value: '97%', label: 'of patients failed on the health insurance screen, removed from the funnel' },
       ],
     },
     chapters: {
       app: {
         hero: {
           title: 'Tessan: the patient app rebuilt in 30 days',
-          intro: 'On June 15, we rebuild the app in native around the consultation. A lighter funnel, an assistant that does not diagnose, three builds in two weeks.',
+          intro: 'On June 15, we rebuild the app in native around the consultation. A lighter funnel, an assistant that does not diagnose, three builds in two weeks, then the release on the App Store and Google Play on July 15.',
           role: 'Design lead and product owner',
           period: 'June to July 2026',
           team: 'A tech lead, two developers, sole designer',
           scope: 'App, funnel, assistant',
         },
         summary: {
-          context: 'The existing app did not serve the consultation: fragmented session, double navigation, a funnel of 8 to 13 screens. The goal: a first version centered on the consultation, ready to submit to the stores before July 15.',
+          context: 'The existing app did not serve the consultation: fragmented session, double navigation, a funnel of 8 to 13 screens. The goal: a first version centered on the consultation, released on the App Store and Google Play on July 15.',
           role: 'Design lead and product owner of the patient app, with a tech lead and two developers.',
           roleItems: [
             { title: 'Scope', detail: 'what goes into and out of V0' },
@@ -356,12 +379,12 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
             { title: 'Interactive prototypes', detail: 'wireframes and booking' },
           ],
           metrics: [
-            { value: '30 days', label: 'from the decision to rebuild to the prepared submission' },
-            { value: '3 builds', label: 'in two weeks, from June 26 to July 9' },
-            { value: '3%', label: 'of health insurance entries completed: the screen is removed' },
+            { value: '30 days', label: 'between the decision to rebuild (June 15) and the store release (July 15)' },
+            { value: '4.5 / 5', label: 'average rating across the 17 written reviews of the new app, against 3.6 for the 5 of the old one' },
+            { value: '97%', label: 'of patients failed on the health insurance screen, removed from the funnel' },
           ],
         },
-        sectionIds: ['app', 'tunnel', 'protos-tunnel', 'assistant'],
+        sectionIds: ['app', 'tunnel', 'paiement', 'protos-tunnel', 'notifications', 'assistant'],
       },
       os: {
         hero: {
@@ -437,20 +460,32 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
       {
         id: 'app',
         title: 'The app',
-        text: 'On June 15, two decisions frame the rebuild. We go native, because reworking the old shell would have kept the double session: only the teleconsultation engine stays encapsulated. We also remove what was most attractive. Connected health, the score and the subscription exposed the product to a medical device requalification, 18 to 36 months of certification against 30 days.',
-        figures: ['appScreens'],
+        text: 'On June 15, two decisions frame the rebuild. We go native, because reworking the old shell would have kept the double session: only the teleconsultation engine stays encapsulated. We also remove what was most attractive. Connected health, the score and the subscription exposed the product to a medical device requalification, 18 to 36 months of certification against 30 days. The October 14 update brings back part of what had been set aside: in My health, patients record their measurements, saved in Apple Health with their consent, and the waiting screen is redesigned so the position reads at a glance.',
+        figures: ['appScreens', 'storeVisuals'],
       },
       {
         id: 'tunnel',
         title: 'The consultation funnel',
-        text: 'Eight to thirteen screens depending on an invisible router, and 3% of health insurance entries completed. The insurance entry leaves the funnel for an advance payment, sick leave becomes an option of the reason for the visit, and the waiting room shows a position rather than a timer that would lie.',
-        figures: ['tunnelScreens'],
+        text: 'Eight to thirteen screens depending on an invisible router, including a health insurance screen on which 97% of patients failed. The insurance entry leaves the funnel for an advance payment, sick leave becomes an option of the reason for the visit, and the waiting room shows a position rather than a timer that would lie. The player below walks the journey screen by screen, for oneself or for a relative.',
+        figures: ['journeyTunnel'],
+      },
+      {
+        id: 'paiement',
+        title: 'Paying, and understanding the coverage',
+        text: 'The patient sees what they pay before paying. The bank card is scanned with the camera instead of typed, and so is the health card, with the analysis staying on the device. Depending on their rights, coverage ranges from 100% to 0%: each case says in one sentence what is left to pay and offers the action that can change it.',
+        figures: ['journeyScan'],
       },
       {
         id: 'protos-tunnel',
         title: 'Prototypes to settle the order of the screens',
         text: 'Interactive black-and-white wireframes, reviewed with product leadership, fixed the order of the screens before the mockups. A booking prototype then simulated slot booking in a pharmacy, from the booth map to the confirmed access, with the real pharmacies around the booths.',
-        figures: ['wireframes', 'wireStills', 'v4Stills'],
+        figures: ['journeyProtos'],
+      },
+      {
+        id: 'notifications',
+        title: 'Waiting room notifications',
+        text: 'Once the consultation is started, the patient can leave the app: the waiting room carries on on the lock screen, in the Dynamic Island on iOS, in an expanded notification or a Live Updates chip on Android. Eight states, from the place in the queue to the resume after an interruption, with one rule: one state at a time, and never a promised wait.',
+        figures: ['notifications'],
       },
       {
         id: 'assistant',
@@ -491,29 +526,33 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
       {
         id: 'hub',
         title: 'The Health Hub, a single app',
-        text: 'On June 9, “My health” sets the rules: stable navigation, an empty state that invites, time-bound programs with a named goal and a trend-based follow-up. On June 26, the executive committee keeps a single app and an order: prevention programs, the pharmacy ecosystem, then connected devices. The vision stays a heading, conditional on the certification of the modules involved, and is not in production.',
+        text: 'The vision rests on four principles: staying present between two appointments, the consultation pays and prevention retains, the Health Assistant as the common thread, and a network of over 1,600 pharmacies as the advantage. On June 9, “My health” sets the rules: stable navigation, an empty state that invites, time-bound programs with a named goal and a trend-based follow-up. On June 26, the executive committee keeps a single app and an order: prevention programs, the pharmacy ecosystem, then connected devices. The trajectory runs through four versions: V0 makes the consultation reliable (July 15), V1 retains and primes (notifications, post-consultation follow-up, appointments, first programs), V2 opens prevention (a living My health, connected data, analysis tools), V3 takes the Health Hub to scale (multiple programs, richer assistant, pharmacy ecosystem). The vision stays a heading, and a first part is in production since the October 14 update: recording measurements in My health.',
         figures: ['hubScreens', 'hubHorizon'],
       },
       {
         id: 'limites',
         title: 'What remains open',
-        text: 'No impact metric exists when I leave: the app was not published and the store submission, prepared, was suspended. I would set up measurement before the funnel redesign, and the governance of the management system before the tool.',
+        text: 'The app went live on the App Store and Google Play on July 15, and no impact metric existed when I left. The store reviews give a first measure in October: the average rating of written reviews goes from 3.6 out of 5 (5 reviews, old app) to 4.5 out of 5 (17 reviews, new app), and the public ratings reach 4.7 on Google Play (105 ratings) and 4.8 on the App Store (151 ratings). The sample is too small to credit the difference to the rebuild, all the more as the October 14 update has changed the app since, and step-by-step completion was not tracked. I would set up measurement before the funnel redesign, and the governance of the management system before the tool.',
       },
     ],
-    ui: { prototype: 'Try the prototype' },
+    ui: {
+      prototype: 'Try the prototype',
+      stores: { label: 'Available since July 15, 2026', apple: 'Download the Tessan app on the App Store', google: 'Get the Tessan app on Google Play' },
+    },
     captions: {
-      wireStills: 'Interactive wireframes, screen by screen',
-      v4Stills: 'Booking prototype in a pharmacy',
       doctorStills: 'The Doctor Tessan prototype, from the conversation to the waiting room',
       osStills: 'Tessan OS prototypes: score, prevention, WhatsApp, patient space',
       osDesktop: 'Tessan OS prototypes on booth, tablet and desktop',
       appScreens: 'The patient app screens',
-      tunnelScreens: 'The consultation funnel, from the health card to the waiting room',
-      wireframes: 'Interactive prototypes: funnel wireframes and booth booking prototype',
+      storeVisuals: 'The visuals designed for the Google Play listing',
+      journeyTunnel: 'The consultation journey, screen by screen, for oneself and for a relative',
+      journeyScan: 'Paying and identifying with the camera: scanning the bank card and the health card, then the coverage cases',
+      journeyProtos: 'The prototypes that settled the order of the screens',
+      notifications: 'The waiting room notifications, on iOS and on Android',
       assistantScreen: 'The Health Assistant, with its scope displayed',
       dsVideos: 'The design system demos in use: catalog, tokens, dialog and mobile and booth components',
       dsPalette: 'The design system’s color ramps, in Figma',
-      hubApp: 'The consultation funnel in three screens',
+      hubApp: 'The two entry screens of the app: Get started and Home',
       hubOs: 'Tessan OS on mobile, tablet and desktop',
       hubSysteme: 'Tessan-UI, the component catalog',
       skillsPack: 'The skills pack: the five skills of the internal version',
