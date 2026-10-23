@@ -7,9 +7,10 @@
 
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import DeviceMockup from '@/components/case-study/DeviceMockup'
+import { ArrowUpRight } from '@phosphor-icons/react'
+import DeviceMockup, { type DeviceKind } from '@/components/case-study/DeviceMockup'
 import ScaledScreen from '@/components/case-study/ScaledScreen'
-import { PlayPauseButton, Segmented, useReducedMotion } from '@/components/case-study/controls'
+import { PILL, PlayPauseButton, Segmented, useReducedMotion } from '@/components/case-study/controls'
 
 export interface JourneyStep {
   /** Picture of the screen, 780 × 1688 */
@@ -30,6 +31,15 @@ export interface Journey {
   label: string
   /** One sentence on what the journey tests or shows, shown under the list */
   line?: string
+  /** Device that holds the screens: a phone unless said otherwise. A tablet or a browser is shown above its steps */
+  kind?: DeviceKind
+  /** Width / height of the screen, for a tablet or a browser */
+  aspect?: number
+  /** Address shown in the bar of a browser */
+  url?: string
+  /** Live prototype behind the journey, with the name of the link */
+  href?: string
+  hrefLabel?: string
   steps: JourneyStep[]
 }
 
@@ -107,11 +117,27 @@ export default function JourneyPlayer({ journeys, ariaLabel, labels }: JourneyPl
   }
 
   const dwell = (step.dwell ?? DEFAULT_DWELL) / 1000
+  const kind = journey.kind ?? 'phone'
+  const stacked = kind !== 'phone'
 
   return (
     <div ref={rootRef} role="group" aria-label={ariaLabel} className="bg-[#E8E8E8] rounded-xl overflow-hidden ring-1 ring-black/[0.04] p-4 sm:p-6 lg:p-8">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        {journeys.length > 1 ? (
+        {journeys.length > 3 ? (
+          <div role="group" aria-label={labels.journeys} className="flex min-w-0 flex-1 flex-wrap items-center gap-2">
+            {journeys.map((j) => (
+              <button
+                key={j.id}
+                type="button"
+                aria-pressed={j.id === journey.id}
+                onClick={() => switchJourney(j.id)}
+                className={`${PILL} ${j.id === journey.id ? 'bg-gray-900 text-white' : 'bg-white/80 text-gray-700 ring-1 ring-black/[0.06] [@media(hover:hover)]:hover:bg-white'}`}
+              >
+                {j.label}
+              </button>
+            ))}
+          </div>
+        ) : journeys.length > 1 ? (
           <Segmented label={labels.journeys} value={journey.id} options={journeys.map((j) => ({ id: j.id, label: j.label }))} onChange={switchJourney} />
         ) : (
           <span />
@@ -119,13 +145,15 @@ export default function JourneyPlayer({ journeys, ariaLabel, labels }: JourneyPl
         {!reduce && <PlayPauseButton playing={playing} onToggle={() => setPlaying((v) => !v)} playLabel={labels.play} pauseLabel={labels.pause} />}
       </div>
 
-      <div className="mt-6 grid items-center gap-8 md:grid-cols-[minmax(220px,290px)_minmax(0,1fr)] md:gap-12 lg:gap-16">
+      <div className={`mt-6 grid items-center gap-8 ${stacked ? '' : 'md:grid-cols-[minmax(220px,290px)_minmax(0,1fr)] md:gap-12 lg:gap-16'}`}>
         <div className="min-w-0">
           <DeviceMockup
-            kind="phone"
+            kind={kind}
             screen={{ src: step.src }}
             label={step.label}
-            className="mx-auto w-[min(66vw,270px)] md:w-full"
+            aspect={journey.aspect}
+            url={journey.url}
+            className={stacked ? 'mx-auto w-full max-w-[760px]' : 'mx-auto w-[min(66vw,270px)] md:w-full'}
             custom={
               <div className="relative h-full w-full overflow-hidden bg-white">
                 <AnimatePresence initial={false} custom={direction}>
@@ -157,7 +185,7 @@ export default function JourneyPlayer({ journeys, ariaLabel, labels }: JourneyPl
 
         <div className="min-w-0">
           {/* Phones: numbered steps in a row, the active one named under them. From md: the list is the table of contents. */}
-          <div className="md:hidden">
+          <div className={stacked ? '' : 'md:hidden'}>
             <ol aria-label={labels.steps} className="flex flex-wrap justify-center gap-2">
               {steps.map((s, i) => (
                 <li key={s.src + i}>
@@ -170,7 +198,7 @@ export default function JourneyPlayer({ journeys, ariaLabel, labels }: JourneyPl
                       i === sIndex ? 'bg-gray-900 text-white' : 'bg-white/80 text-gray-600 ring-1 ring-black/[0.06]'
                     }`}
                   >
-                    {i + 1}
+                    {stacked ? <span className="px-3.5">{`${pad2(i + 1)}  ${s.label}`}</span> : i + 1}
                   </button>
                 </li>
               ))}
@@ -181,7 +209,7 @@ export default function JourneyPlayer({ journeys, ariaLabel, labels }: JourneyPl
             </div>
           </div>
 
-          <ol aria-label={labels.steps} className="hidden md:block -mx-3">
+          <ol aria-label={labels.steps} className={`${stacked ? 'hidden' : 'hidden md:block'} -mx-3`}>
             {steps.map((s, i) => {
               const active = i === sIndex
               return (
@@ -222,7 +250,20 @@ export default function JourneyPlayer({ journeys, ariaLabel, labels }: JourneyPl
             })}
           </ol>
 
-          {journey.line && <p className="mt-5 max-w-[46ch] text-sm text-gray-600">{journey.line}</p>}
+          {journey.line && <p className={`mt-5 max-w-[46ch] text-sm text-gray-600 ${stacked ? 'mx-auto text-center' : ''}`}>{journey.line}</p>}
+          {journey.href && (
+            <p className={`mt-3 text-sm ${stacked ? 'text-center' : ''}`}>
+              <a
+                href={journey.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-11 items-center gap-1 text-gray-900 underline underline-offset-4 decoration-gray-300 [@media(hover:hover)]:hover:text-gray-500"
+              >
+                {journey.hrefLabel}
+                <ArrowUpRight size={14} aria-hidden="true" />
+              </a>
+            </p>
+          )}
           <p className="sr-only" aria-live="polite">{`${pad2(sIndex + 1)} / ${pad2(steps.length)}, ${step.label}`}</p>
         </div>
       </div>

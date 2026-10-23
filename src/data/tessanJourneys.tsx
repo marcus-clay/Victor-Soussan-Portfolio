@@ -91,12 +91,73 @@ export function scanJourneys(lang: Lang): Journey[] {
   ]
 }
 
+const WIRE_CAPTIONS: L[] = [
+  { fr: 'Une seule question pour commencer : moi-même ou un proche (enfant, parent, conjoint).', en: 'One question to begin with: myself or a relative (child, parent, partner).' },
+  { fr: 'Jusqu’à trois motifs en un tap, plus un champ libre : on choisit sans écrire.', en: 'Up to three reasons in one tap, plus a free field: choosing without writing.' },
+  { fr: 'Avant tout compte : une cabine à 2 minutes d’attente, « Consulter maintenant », ou un rendez-vous plus tard.', en: 'Before any account: a booth with a 2 minute wait, “Consulter maintenant”, or an appointment later.' },
+  { fr: 'L’authentification arrive après la disponibilité : identité numérique, Google ou e-mail.', en: 'Sign-in comes after availability: digital identity, Google or e-mail.' },
+  { fr: 'Compte-rendu envoyé au médecin traitant, ordonnance disponible, remboursement en cours, puis des rappels à configurer.', en: 'Report sent to the family doctor, prescription available, reimbursement under way, then reminders to set up.' },
+  { fr: 'L’ordonnance, téléchargeable en PDF, et sa récupération en pharmacie.', en: 'The prescription, downloadable as a PDF, and its pick-up at the pharmacy.' },
+  { fr: 'Le médecin recommande un suivi dans 7 jours : un créneau suggéré, réservable en un tap.', en: 'The doctor recommends a follow-up in 7 days: a suggested slot, bookable in one tap.' },
+  { fr: 'Quel lien avec le proche ? Enfant mineur, parent, conjoint ou autre : le lien conditionne l’autorisation.', en: 'What is the link with the relative? Minor child, parent, partner or other: the link sets the authorization.' },
+  { fr: 'Pour qui, et quel soin : téléconsultation généraliste, ou ophtalmologie sur rendez-vous.', en: 'For whom, and which care: general teleconsultation, or ophthalmology by appointment.' },
+  { fr: 'Le minimum médical : médecin traitant déclaré, numéro de carte Vitale ou scan, et pourquoi on le demande.', en: 'The medical minimum: declared family doctor, health card number or scan, and why it is asked.' },
+]
+
+const BOOKING_CAPTIONS: L[] = [
+  { fr: '59 cabines disponibles à Paris : distance, heure de fermeture et créneaux d’aujourd’hui et de demain pour chaque pharmacie.', en: '59 booths available in Paris: distance, closing time and slots for today and tomorrow for each pharmacy.' },
+  { fr: 'Choisir un créneau ouvre un volet : récapitulatif, adresse e-mail et « Recevoir mon code de confirmation ».', en: 'Choosing a slot opens a sheet: summary, e-mail address and “Recevoir mon code de confirmation”.' },
+  { fr: 'Le code arrive sur l’écran verrouillé, avec « Copier le code » et « Ouvrir Tessan ».', en: 'The code arrives on the lock screen, with “Copier le code” and “Ouvrir Tessan”.' },
+  { fr: 'Le même code par e-mail, à saisir dans l’application.', en: 'The same code by e-mail, to enter in the app.' },
+  { fr: 'Le passage est confirmé : pharmacie, créneau, accès prioritaire, ajout au calendrier.', en: 'The visit is confirmed: pharmacy, slot, priority access, add to calendar.' },
+  { fr: 'Une notification signale une cabine libre à proximité : « Cabine libre, 0 min d’attente ».', en: 'A notification flags a free booth nearby: “Cabine libre, 0 min d’attente”.' },
+  { fr: 'Le moment idéal pour consulter : carte des cabines, activité habituelle du lieu, créneaux disponibles.', en: 'The ideal moment to consult: booth map, usual activity of the place, available slots.' },
+  { fr: 'Accès confirmé, sans attente : aucun patient devant soi.', en: 'Access confirmed, no wait: nobody ahead.' },
+  { fr: 'Partir de la carte : les cabines Tessan autour de soi, 59 autour de Paris.', en: 'Starting from the map: the Tessan booths around you, 59 around Paris.' },
+  { fr: 'Ouvrir une pharmacie affiche ses créneaux d’aujourd’hui et de demain, avec « Voir tous les créneaux ».', en: 'Opening a pharmacy shows its slots for today and tomorrow, with “Voir tous les créneaux”.' },
+]
+
 /** The two prototype families that settled the order of the screens, read as journeys of stills. */
 export function prototypeJourneys(lang: Lang): Journey[] {
-  const fromShots = (group: 'wireStills' | 'v4Stills') =>
-    TESSAN_SHOTS[group].items.map((it) => ({ shot: it.src, label: { fr: it.fr, en: it.en } }))
+  const fromShots = (group: 'wireStills' | 'v4Stills', captions: L[]) =>
+    TESSAN_SHOTS[group].items.map((it, i) => ({ shot: it.src, label: { fr: it.fr, en: it.en } as L, caption: captions[i] }))
   return [
-    build(lang, 'wire', { fr: 'Wireframes', en: 'Wireframes' }, { fr: 'Des wireframes interactifs en noir et blanc, revus avec la direction produit : pour qui, quel motif, quelle cabine, quand demander l’authentification.', en: 'Interactive black and white wireframes, reviewed with product leadership: who for, which reason, which booth, when to ask for sign-in.' }, fromShots('wireStills')),
-    build(lang, 'booking', { fr: 'Réservation en cabine', en: 'Booth booking' }, { fr: 'Un prototype de réservation : de la carte des cabines à l’accès confirmé, avec les vraies officines autour des cabines.', en: 'A booking prototype: from the booth map to confirmed access, with the real pharmacies around the booths.' }, fromShots('v4Stills')),
+    build(lang, 'wire', { fr: 'Wireframes', en: 'Wireframes' }, { fr: 'Des wireframes interactifs en noir et blanc, revus avec la direction produit : pour qui, quel motif, quelle cabine, quand demander l’authentification.', en: 'Interactive black and white wireframes, reviewed with product leadership: who for, which reason, which booth, when to ask for sign-in.' }, fromShots('wireStills', WIRE_CAPTIONS)),
+    build(lang, 'booking', { fr: 'Réservation en cabine', en: 'Booth booking' }, { fr: 'Un prototype de réservation : de la carte des cabines à l’accès confirmé, avec les vraies officines autour des cabines.', en: 'A booking prototype: from the booth map to confirmed access, with the real pharmacies around the booths.' }, fromShots('v4Stills', BOOKING_CAPTIONS)),
+  ]
+}
+
+/** The assistant: the screen of the app, then the prototype that designed it. */
+export function assistantJourneys(lang: Lang): Journey[] {
+  return [
+    build(lang, 'app', { fr: 'Dans l’app', en: 'In the app' }, undefined, [
+      { shot: '/images/tessan/tessan-app-assistant.webp', label: { fr: 'Assistant Santé', en: 'Health Assistant' }, caption: { fr: 'Un bandeau de périmètre permanent rappelle que l’assistant informe et ne donne pas d’avis médical.', en: 'A permanent scope banner reminds that the assistant informs and gives no medical opinion.' } },
+    ]),
+    build(lang, 'prototype', { fr: 'Le prototype', en: 'The prototype' }, { fr: 'Le prototype Docteur Tessan, de la conversation à la salle d’attente.', en: 'The Doctor Tessan prototype, from the conversation to the waiting room.' }, TESSAN_SHOTS.doctorStills.items.map((it) => ({ shot: it.src, label: { fr: it.fr, en: it.en } as L }))),
+  ]
+}
+
+/** The seven Tessan OS prototypes, each with its screens, its device and a link to try it. */
+export function osJourneys(lang: Lang): Journey[] {
+  const shots = (group: 'osStills' | 'osDesktop', names: string[]) =>
+    names.map((n) => {
+      const it = TESSAN_SHOTS[group].items.find((x) => x.src.includes(n))!
+      return { shot: it.src, label: { fr: it.fr, en: it.en } as L }
+    })
+  const base = 'https://tessan-os-prototypes.vercel.app'
+  const tryIt = lang === 'fr' ? 'Essayer le prototype' : 'Try the prototype'
+  const mk = (n: string, name: L, line: L, steps: StepSpec[], extra: Partial<Journey>): Journey => ({
+    ...build(lang, n, { fr: `${n} ${name.fr}`, en: `${n} ${name.en}` }, line, steps),
+    hrefLabel: tryIt,
+    ...extra,
+  })
+  return [
+    mk('01', { fr: 'Le Pont', en: 'The Bridge' }, { fr: 'La cabine émet, l’application reçoit : en fin de consultation, un QR code transfère le contexte vers le mobile.', en: 'The booth sends, the app receives: at the end of a consultation, a QR code moves the context to mobile.' }, shots('osDesktop', ['pont-cabine', 'pont-qr']), { kind: 'tablet', aspect: 2160 / 1500, href: `${base}/bridge` }),
+    mk('02', { fr: 'Première téléconsultation', en: 'First teleconsultation' }, { fr: 'De la prise des constantes en cabine à l’appel vidéo avec le médecin.', en: 'From the vitals at the booth to the video call with the doctor.' }, shots('osDesktop', ['pt-appel', 'pt-resume', 'pt-avis', 'pt-qr']), { kind: 'browser', aspect: 1.6, url: 'tessan-os', href: `${base}/bridge-alt` }),
+    mk('03', { fr: 'WhatsApp Tessan', en: 'WhatsApp Tessan' }, { fr: 'Le suivi directement dans la messagerie : rappels, missions du jour, échanges.', en: 'Follow-up inside the messaging app: reminders, daily missions, exchanges.' }, shots('osStills', ['wa-01', 'wa-02']), { href: `${base}/whatsapp` }),
+    mk('04', { fr: 'Docteur Tessan', en: 'Doctor Tessan' }, { fr: 'Un interlocuteur permanent, qui prépare la consultation et oriente vers un médecin.', en: 'A permanent interlocutor that prepares the consultation and points to a doctor.' }, TESSAN_SHOTS.doctorStills.items.map((it) => ({ shot: it.src, label: { fr: it.fr, en: it.en } as L })), { href: `${base}/doctor` }),
+    mk('05', { fr: 'Tessan Score', en: 'Tessan Score' }, { fr: 'Un signal de santé lisible : la tendance avant la valeur, trois insights actionnables.', en: 'A readable health signal: the trend before the value, three actionable insights.' }, shots('osStills', ['score-01', 'score-02', 'score-03']), { href: `${base}/score` }),
+    mk('06', { fr: 'Tessan OS', en: 'Tessan OS' }, { fr: 'Une couche commune au mobile, à la tablette et au bureau : trois hiérarchies d’information, pas un simple responsive.', en: 'A layer shared across mobile, tablet and desktop: three information hierarchies, not just responsive.' }, shots('osDesktop', ['os-bureau', 'os-tablette', 'os-apres-connexion', 'os-medaillon']), { kind: 'browser', aspect: 1.6, url: 'tessan-os', href: `${base}/cross-device` }),
+    mk('07', { fr: 'Prévention Active', en: 'Active Prevention' }, { fr: 'La prévention par de petites missions, des séries, et un appui long pour valider.', en: 'Prevention through small missions, streaks, and a long press to confirm.' }, shots('osStills', ['prev-01', 'prev-02', 'prev-03', 'defis-01', 'defis-03', 'defis-04']), { href: `${base}/prevention` }),
   ]
 }
