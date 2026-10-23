@@ -79,7 +79,7 @@ export const getAllProjects = (lang: Language): Project[] => {
         : ["Application patient (iOS, Android)", "Tunnel de consultation", "Cadre de l'Assistant Santé", "Design system et tokens", "Système de gestion produit", "Vision Hub Santé"],
       icon: <Stethoscope size={24} />,
       color: "blue",
-      coverImage: "/images/tessan/cover_tessan_hub.webp"
+      coverImage: "/images/tessan/cover_tessan_hub_v2.webp"
     },
     {
       id: "tessan-app",
@@ -107,7 +107,7 @@ export const getAllProjects = (lang: Language): Project[] => {
         : ["Application patient (iOS, Android)", "Tunnel de consultation", "Assistant Santé", "Prototypes interactifs"],
       icon: <Smartphone size={24} />,
       color: "blue",
-      coverImage: "/images/tessan/cover_tessan_app.webp"
+      coverImage: "/images/tessan/cover_tessan_app_v3.webp"
     },
     {
       id: "tessan-os",

@@ -155,6 +155,7 @@ const FIGURES: Record<string, FigureSource> = {
     screens: [
       app('demarrer', { fr: 'Démarrer', en: 'Get started' }),
       app('accueil-connecte', { fr: 'Accueil', en: 'Home' }),
+      app('consultation-terminee', { fr: 'Consultation terminée', en: 'Consultation done' }),
     ],
   },
   hubOs: {
