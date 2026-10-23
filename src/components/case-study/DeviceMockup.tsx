@@ -3,8 +3,10 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Pause, Play } from '@phosphor-icons/react'
 import { zoomable } from '@/utils/zoomable'
+import ScaledScreen from '@/components/case-study/ScaledScreen'
 
-export type DeviceKind = 'phone' | 'tablet' | 'browser'
+/** A poster is a flat picture (a store listing visual), shown with rounded corners and no device around it. */
+export type DeviceKind = 'phone' | 'tablet' | 'browser' | 'poster'
 
 export interface DeviceScreen {
   /** Still picture of the screen, or the poster of a video */
@@ -13,6 +15,8 @@ export interface DeviceScreen {
   video?: string
   width?: number
   height?: number
+  /** Animated moment laid over the screen (390 × 844 space), for a phone */
+  overlay?: React.ReactNode
 }
 
 interface DeviceMockupProps {
@@ -34,9 +38,11 @@ interface DeviceMockupProps {
   focused?: boolean
   /** Replaces the screen content (a player that manages its own video), inside the same frame */
   custom?: React.ReactNode
+  /** Leaves out the painted Dynamic Island, when the custom screen draws its own */
+  hideIsland?: boolean
 }
 
-const DEFAULT_ASPECT: Record<DeviceKind, number> = { phone: 390 / 844, tablet: 4 / 3, browser: 16 / 10 }
+const DEFAULT_ASPECT: Record<DeviceKind, number> = { phone: 390 / 844, tablet: 4 / 3, browser: 16 / 10, poster: 9 / 16 }
 
 /**
  * The clip of a screen plays as soon as a part of it is on screen and pauses when it leaves, like every
@@ -143,7 +149,7 @@ function ScreenMedia({ screen, label, eager, focused = true }: { screen: DeviceS
  * frame never carries a baked shadow. Every length is a share of the device width (`cqw`),
  * so a phone at 200px and a phone at 420px keep the same proportions.
  */
-export default function DeviceMockup({ kind, screen, label, aspect, onZoom, url, className = '', focused = true, custom }: DeviceMockupProps) {
+export default function DeviceMockup({ kind, screen, label, aspect, onZoom, url, className = '', focused = true, custom, hideIsland }: DeviceMockupProps) {
   const ratio = aspect ?? DEFAULT_ASPECT[kind]
   const interactive = onZoom ? { ...zoomable(() => onZoom()), 'aria-label': label } : {}
 
@@ -161,17 +167,40 @@ export default function DeviceMockup({ kind, screen, label, aspect, onZoom, url,
         >
           <div className="relative overflow-hidden bg-white [border-radius:12.2cqw]" style={{ aspectRatio: ratio }}>
             {custom ?? <ScreenMedia screen={screen} label={label} focused={focused} />}
+            {screen.overlay && (
+              <div className="pointer-events-none absolute inset-0">
+                <ScaledScreen>{screen.overlay}</ScaledScreen>
+              </div>
+            )}
             {/* Dynamic Island */}
-            <span
-              aria-hidden="true"
-              className="absolute left-1/2 -translate-x-1/2 bg-[#0E0F11] [top:3cqw] [width:30cqw] [height:8.6cqw] [border-radius:4.3cqw]"
-            />
+            {!hideIsland && (
+              <span
+                aria-hidden="true"
+                className="absolute left-1/2 -translate-x-1/2 bg-[#0E0F11] [top:3cqw] [width:30cqw] [height:8.6cqw] [border-radius:4.3cqw]"
+              />
+            )}
           </div>
         </div>
         {/* Side buttons */}
         <span aria-hidden="true" className="absolute bg-[#1B1C1F] [left:-0.7cqw] [top:24cqw] [width:0.9cqw] [height:7cqw] [border-radius:0.4cqw]" />
         <span aria-hidden="true" className="absolute bg-[#1B1C1F] [left:-0.7cqw] [top:36cqw] [width:0.9cqw] [height:12cqw] [border-radius:0.4cqw]" />
         <span aria-hidden="true" className="absolute bg-[#1B1C1F] [right:-0.7cqw] [top:40cqw] [width:0.9cqw] [height:17cqw] [border-radius:0.4cqw]" />
+      </div>
+    )
+  }
+
+  if (kind === 'poster') {
+    return (
+      <div className={`relative [container-type:inline-size] ${className}`}>
+        <div
+          {...interactive}
+          className={`relative overflow-hidden bg-white [border-radius:6cqw] shadow-[0_0_0_1px_rgba(17,17,17,0.06),0_2.4cqw_6cqw_-3cqw_rgba(17,17,17,0.28)] ${
+            onZoom ? `cursor-zoom-in ${press}` : ''
+          }`}
+          style={{ aspectRatio: ratio }}
+        >
+          {custom ?? <ScreenMedia screen={screen} label={label} focused={focused} />}
+        </div>
       </div>
     )
   }

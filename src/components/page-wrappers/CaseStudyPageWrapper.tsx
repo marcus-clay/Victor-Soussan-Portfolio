@@ -39,7 +39,9 @@ const FULL_TOC: Record<string, TOCSections> = {
     { id: 'summary', label_en: "Summary", label_fr: "Synthèse" },
     { id: 'app', label_en: "The app", label_fr: "L'application" },
     { id: 'tunnel', label_en: "The funnel", label_fr: "Le tunnel" },
+    { id: 'paiement', label_en: "Payment", label_fr: "Paiement" },
     { id: 'protos-tunnel', label_en: "Prototypes", label_fr: "Prototypes" },
+    { id: 'notifications', label_en: "Notifications", label_fr: "Notifications" },
     { id: 'assistant', label_en: "The assistant", label_fr: "L'assistant" },
   ],
   'tessan-os': [

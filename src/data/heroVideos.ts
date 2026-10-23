@@ -8,8 +8,8 @@ export interface HeroVideo {
 }
 
 export const HERO_VIDEOS: Record<string, HeroVideo> = {
-  tessan: { src: '/videos/hero/tessan.mp4' },
-  'tessan-app': { src: '/videos/hero/tessan-app.mp4' },
+  tessan: { src: '/videos/hero/tessan-v6.mp4' },
+  'tessan-app': { src: '/videos/hero/tessan-app-v3.mp4' },
   'tessan-os': { src: '/videos/hero/tessan-os.mp4' },
   'tessan-systeme': { src: '/videos/hero/tessan-systeme.mp4' },
   toolkit: { src: '/videos/hero/toolkit.mp4' },

@@ -10,12 +10,13 @@ import { ActRule, ActTitle } from '@/components/case-study/ActSection'
 import CaseStudySummary from '@/components/case-study/CaseStudySummary'
 import CaseStudyHero from '@/components/case-study/CaseStudyHero'
 import DeviceCarousel from '@/components/case-study/DeviceCarousel'
+import StoreBadges, { type StoreLinks } from '@/components/case-study/StoreBadges'
+import NotificationsShowcase from '@/components/case-study/NotificationsShowcase'
+import { assistantJourneys, osJourneys, prototypeJourneys, scanJourneys, tunnelJourneys, type Journey } from '@/data/tessanJourneys'
 import DeviceMockup, { type DeviceKind, type DeviceScreen } from '@/components/case-study/DeviceMockup'
-import FlowPlayer from '@/components/case-study/FlowPlayer'
 import EnhancedLightbox, { type LightboxImage } from '@/components/media/EnhancedLightbox'
 import { zoomable } from '@/utils/zoomable'
 import { TESSAN_TRANSLATIONS } from '@/data/caseStudyTranslations/tessanTranslations'
-import { TESSAN_SHOTS } from '@/data/tessanShots'
 
 interface TessanPageProps {
   onClose: () => void
@@ -61,31 +62,18 @@ interface DeviceFigure {
   href?: string
 }
 
-/** The seven Tessan OS prototypes: a number, a name, the idea each one tests, a video and a live link. */
-interface ShowcaseItem {
-  n: string
-  name: { fr: string; en: string }
-  line: { fr: string; en: string }
-  kind: DeviceKind
-  screen: DeviceScreenSpec
-  /** Live prototype to try */
-  href: string
-  /** Width of a browser or tablet in its row, as a share of the stage */
-  share?: number
+/** The waiting-room notifications, drawn as the operating system shows them. */
+interface NotificationsFigure {
+  type: 'notifications'
 }
 
-interface ShowcaseFigure {
-  type: 'showcase'
-  items: ShowcaseItem[]
+/** One phone that plays a journey, with its steps as the way in. */
+interface JourneyFigure {
+  type: 'journey'
+  kind: 'tunnel' | 'scan' | 'protos' | 'assistant' | 'os'
 }
 
-/** Clips of one kind of screen, played one at a time on a single phone (a row of phones moving together reads as noise). */
-interface FlowFigure {
-  type: 'flows'
-  flows: { name: string; title: { fr: string; en: string }; line: { fr: string; en: string } }[]
-}
-
-type FigureSource = ImageFigure | DeviceFigure | ShowcaseFigure | FlowFigure
+type FigureSource = ImageFigure | DeviceFigure | NotificationsFigure | JourneyFigure
 
 const app = (name: string, label: { fr: string; en: string }): DeviceScreenSpec => ({
   src: `/images/tessan/tessan-app-${name}.webp`,
@@ -111,24 +99,6 @@ const hub = (name: string, label: { fr: string; en: string }): DeviceScreenSpec 
   label,
 })
 
-/** A strip of captured screens (prototype stills, demo captures), straight from the generated manifest. */
-const strip = (group: string, share?: number): DeviceFigure => {
-  const g = TESSAN_SHOTS[group]
-  return {
-    type: 'devices',
-    kind: g.kind,
-    carousel: true,
-    share,
-    screens: g.items.map((it) => ({
-      src: it.src,
-      width: it.width,
-      height: it.height,
-      aspect: it.width / it.height,
-      label: { fr: it.fr, en: it.en },
-    })),
-  }
-}
-
 /** Visuals of the page, by key. Captions live in the translations under the same key. */
 const FIGURES: Record<string, FigureSource> = {
   appScreens: {
@@ -136,9 +106,10 @@ const FIGURES: Record<string, FigureSource> = {
     kind: 'phone',
     carousel: true,
     screens: [
+      app('demarrer', { fr: 'Démarrer', en: 'Get started' }),
       app('connexion', { fr: 'Saisie unique', en: 'Single entry' }),
       app('code', { fr: 'Code à usage unique', en: 'One-time code' }),
-      app('accueil', { fr: 'Accueil', en: 'Home' }),
+      app('accueil-connecte', { fr: 'Accueil', en: 'Home' }),
       app('consulter', { fr: 'Consultations', en: 'Consultations' }),
       app('documents', { fr: 'Documents', en: 'Documents' }),
       app('proches', { fr: 'Mes proches', en: 'Relatives' }),
@@ -146,27 +117,27 @@ const FIGURES: Record<string, FigureSource> = {
       app('confidentialite', { fr: 'Confidentialité', en: 'Privacy' }),
     ],
   },
-  tunnelScreens: {
+  storeVisuals: {
     type: 'devices',
-    kind: 'phone',
+    kind: 'poster',
     carousel: true,
     screens: [
-      app('tunnel-carte-vitale', { fr: 'Carte vitale', en: 'Health card' }),
-      app('tunnel-motif', { fr: 'Motif', en: 'Reason' }),
-      app('tunnel-consentements', { fr: 'Consentements', en: 'Consents' }),
-      app('tunnel-avance-frais', { fr: 'Avance de frais', en: 'Advance payment' }),
-      app('tunnel-prise-en-charge-100', { fr: 'Prise en charge à 100 %', en: 'Fully covered' }),
-      app('tunnel-prise-en-charge-90', { fr: 'Prise en charge à 90 %', en: '90% covered' }),
-      app('tunnel-prise-en-charge', { fr: 'Prise en charge à 70 %', en: '70% covered' }),
-      app('tunnel-position-file', { fr: 'Position dans la file', en: 'Place in the queue' }),
-      app('tunnel-consultation-prete', { fr: 'Consultation prête', en: 'Consultation ready' }),
+      { src: '/images/tessan/store/play-store-01.webp', width: 720, height: 1280, aspect: 9 / 16, label: { fr: 'Un médecin en ligne, un examen en pharmacie', en: 'An online doctor, an exam at the pharmacy' } },
+      { src: '/images/tessan/store/play-store-02.webp', width: 720, height: 1280, aspect: 9 / 16, label: { fr: 'Ordonnance, arrêt de travail, compte-rendu', en: 'Prescription, sick note, report' } },
+      { src: '/images/tessan/store/play-store-03.webp', width: 720, height: 1280, aspect: 9 / 16, label: { fr: 'Jusqu’à 100 % remboursé', en: 'Up to 100% reimbursed' } },
+      { src: '/images/tessan/store/play-store-04.webp', width: 720, height: 1280, aspect: 9 / 16, label: { fr: 'Plus de 500 médecins', en: 'Over 500 doctors' } },
+      { src: '/images/tessan/store/play-store-05.webp', width: 720, height: 1280, aspect: 9 / 16, label: { fr: 'Sans rendez-vous, 7 jours sur 7', en: 'No appointment, 7 days a week' } },
+      { src: '/images/tessan/store/play-store-06.webp', width: 720, height: 1280, aspect: 9 / 16, label: { fr: '1 600 pharmacies partenaires', en: '1,600 partner pharmacies' } },
+      { src: '/images/tessan/store/play-store-07.webp', width: 720, height: 1280, aspect: 9 / 16, label: { fr: 'Vos enfants aussi', en: 'Your children too' } },
+      { src: '/images/tessan/store/play-store-08.webp', width: 720, height: 1280, aspect: 9 / 16, label: { fr: '2 millions de patients, 4,7 sur 5', en: '2 million patients, 4.7 out of 5' } },
     ],
   },
-  assistantScreen: {
-    type: 'devices',
-    kind: 'phone',
-    screens: [app('assistant', { fr: 'Assistant Santé', en: 'Health Assistant' })],
-  },
+  journeyTunnel: { type: 'journey', kind: 'tunnel' },
+  journeyScan: { type: 'journey', kind: 'scan' },
+  journeyProtos: { type: 'journey', kind: 'protos' },
+  journeyAssistant: { type: 'journey', kind: 'assistant' },
+  journeyOs: { type: 'journey', kind: 'os' },
+  notifications: { type: 'notifications' },
   dsVideos: {
     type: 'devices',
     kind: 'browser',
@@ -178,18 +149,13 @@ const FIGURES: Record<string, FigureSource> = {
       proto('tessan-ui-mobile-cabine-stepper-champs-1440', { fr: 'Tessan-UI : composants mobile et cabine', en: 'Tessan-UI: mobile and booth components' }, 2880 / 1800),
     ],
   },
-  wireStills: strip('wireStills'),
-  v4Stills: strip('v4Stills'),
-  doctorStills: strip('doctorStills'),
-  osStills: strip('osStills'),
-  osDesktop: strip('osDesktop'),
   hubApp: {
     type: 'devices',
     kind: 'phone',
     screens: [
-      app('tunnel-motif', { fr: 'Motif', en: 'Reason' }),
-      app('tunnel-avance-frais', { fr: 'Avance de frais', en: 'Advance payment' }),
-      app('tunnel-salle-attente', { fr: 'Salle d’attente', en: 'Waiting room' }),
+      app('demarrer', { fr: 'Démarrer', en: 'Get started' }),
+      app('accueil-connecte', { fr: 'Accueil', en: 'Home' }),
+      app('consultation-terminee', { fr: 'Consultation terminée', en: 'Consultation done' }),
     ],
   },
   hubOs: {
@@ -239,35 +205,6 @@ const FIGURES: Record<string, FigureSource> = {
       { src: '/images/tessan/tessan-livraison-02-consulter.webp', width: 2400, height: 1458, aspect: 2400 / 1458, label: { fr: 'Consulter, depuis l’accueil', en: 'Consulting, from the home screen' } },
       { src: '/images/tessan/tessan-livraison-03-paiement.webp', width: 2400, height: 923, aspect: 2400 / 923, label: { fr: 'Paiement et prise en charge', en: 'Payment and coverage' } },
     ],
-  },
-  prototypesSeven: {
-    type: 'showcase',
-    items: [
-      { n: '01', name: { fr: 'Le Pont', en: 'The Bridge' }, line: { fr: 'La cabine émet, l’application reçoit : en fin de consultation, un QR code transfère le contexte vers le mobile.', en: 'The booth sends, the app receives: at the end of a consultation, a QR code moves the context to mobile.' }, kind: 'tablet', share: 0.86, href: 'https://tessan-os-prototypes.vercel.app/bridge', screen: proto('le-pont-cabine-vers-mobile', { fr: 'Le Pont', en: 'The Bridge' }, 2160 / 1500) },
-      { n: '02', name: { fr: 'Première téléconsultation', en: 'First teleconsultation' }, line: { fr: 'De la prise des constantes en cabine à l’appel vidéo avec le médecin.', en: 'From the vitals at the booth to the video call with the doctor.' }, kind: 'browser', share: 0.9, href: 'https://tessan-os-prototypes.vercel.app/bridge-alt', screen: proto('premiere-teleconsultation-appel-video', { fr: 'Première téléconsultation', en: 'First teleconsultation' }, 2240 / 1400) },
-      { n: '03', name: { fr: 'WhatsApp Tessan', en: 'WhatsApp Tessan' }, line: { fr: 'Le suivi directement dans la messagerie : rappels, missions du jour, échanges.', en: 'Follow-up inside the messaging app: reminders, daily missions, exchanges.' }, kind: 'phone', href: 'https://tessan-os-prototypes.vercel.app/whatsapp', screen: proto('whatsapp-chip-mission-du-jour', { fr: 'WhatsApp Tessan', en: 'WhatsApp Tessan' }) },
-      { n: '04', name: { fr: 'Docteur Tessan', en: 'Doctor Tessan' }, line: { fr: 'Un interlocuteur permanent, qui prépare la consultation et oriente vers un médecin.', en: 'A permanent interlocutor that prepares the consultation and points to a doctor.' }, kind: 'phone', href: 'https://tessan-os-prototypes.vercel.app/doctor', screen: proto('doctor-preparer-consultation', { fr: 'Docteur Tessan', en: 'Doctor Tessan' }) },
-      { n: '05', name: { fr: 'Tessan Score', en: 'Tessan Score' }, line: { fr: 'Un signal de santé lisible : la tendance avant la valeur, trois insights actionnables.', en: 'A readable health signal: the trend before the value, three actionable insights.' }, kind: 'phone', href: 'https://tessan-os-prototypes.vercel.app/score', screen: proto('score-bien-etre-interactions', { fr: 'Tessan Score', en: 'Tessan Score' }) },
-      { n: '06', name: { fr: 'Tessan OS', en: 'Tessan OS' }, line: { fr: 'Une couche commune au mobile, à la tablette et au bureau : trois hiérarchies d’information, pas un simple responsive.', en: 'A layer shared across mobile, tablet and desktop: three information hierarchies, not just responsive.' }, kind: 'browser', share: 0.9, href: 'https://tessan-os-prototypes.vercel.app/cross-device', screen: proto('tessan-os-cross-device', { fr: 'Tessan OS', en: 'Tessan OS' }, 2160 / 1350) },
-      { n: '07', name: { fr: 'Prévention Active', en: 'Active Prevention' }, line: { fr: 'La prévention par de petites missions, des séries, et un appui long pour valider.', en: 'Prevention through small missions, streaks, and a long press to confirm.' }, kind: 'phone', href: 'https://tessan-os-prototypes.vercel.app/prevention', screen: proto('prevention-maintenir-pour-valider', { fr: 'Prévention Active', en: 'Active Prevention' }) },
-    ],
-  },
-  wireframes: {
-    type: 'flows',
-    flows: [
-      { name: 'onboarding-wireframes-qualifier-avant-auth', title: { fr: 'Qualifier avant l’authentification', en: 'Qualify before signing in' }, line: { fr: 'Pour qui, où, quel motif : le patient voit une cabine disponible avant de créer son espace personnel.', en: 'Who for, where, which reason: the patient sees an available booth before creating a personal account.' } },
-      { name: 'onboarding-wireframes-post-consultation', title: { fr: 'Après la consultation', en: 'After the consultation' }, line: { fr: 'Récapitulatif immédiat : compte-rendu envoyé, ordonnance disponible, puis suivi proposé en un tap.', en: 'Immediate recap: report sent, prescription available, then a follow-up slot offered in one tap.' } },
-      { name: 'patient-v4-reservation-cabine-sms-mail', title: { fr: 'Patient v4, réserver en cabine', en: 'Patient v4, booking at a booth' }, line: { fr: 'Choisir une pharmacie et un créneau, confirmer son adresse e-mail avec un code, puis recevoir la confirmation du passage.', en: 'Pick a pharmacy and a slot, confirm the e-mail address with a code, then get the booking confirmation.' } },
-      { name: 'patient-v4-creneaux-creux-notification-acces', title: { fr: 'Patient v4, créneaux calmes et accès', en: 'Patient v4, quiet slots and access' }, line: { fr: 'Une notification signale une cabine libre à proximité, l’activité habituelle du lieu aide à choisir, puis l’accès est confirmé.', en: 'A notification flags a free booth nearby, the usual activity of the place helps choose, then access is confirmed.' } },
-      { name: 'patient-v4-explorer-le-reseau-carte-reservation', title: { fr: 'Patient v4, explorer le réseau', en: 'Patient v4, exploring the network' }, line: { fr: 'Partir de la carte des cabines, ouvrir une pharmacie, choisir un créneau, puis confirmer avec le code reçu.', en: 'Start from the booth map, open a pharmacy, choose a slot, then confirm with the code received.' } },
-    ],
-  },
-  osMedaillon: {
-    type: 'devices',
-    kind: 'browser',
-    url: 'tessan-os',
-    share: 0.86,
-    screens: [proto('tessan-os-medaillon-connexion', { fr: 'Connexion', en: 'Sign-in' }, 2160 / 1350)],
   },
   hubScreens: {
     type: 'devices',
@@ -353,54 +290,17 @@ function DeviceStage({
 }
 
 /** The seven prototypes as a numbered list: each one with its idea, a playing demo and a link to try it. */
-function PrototypeShowcase({
-  figure,
-  lang,
-  testLabel,
-  onZoom,
-}: {
-  figure: ShowcaseFigure
-  lang: 'en' | 'fr'
-  testLabel: string
-  onZoom: (key: string) => void
-}) {
-  return (
-    <ol className="m-0 list-none p-0 space-y-10 md:space-y-14">
-      {figure.items.map((item) => (
-        <li key={item.n} className="grid grid-cols-1 gap-5 md:grid-cols-12 md:gap-10 md:items-center">
-          <div className="md:col-span-4">
-            <p className="text-micro uppercase tracking-[0.08em] text-gray-500 tabular-nums">{item.n} / 07</p>
-            <h3 className="mt-1 text-title-3 text-gray-900">{item.name[lang]}</h3>
-            <p className="mt-2 max-w-[38ch] text-base text-gray-600">{item.line[lang]}</p>
-            <a
-              href={item.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-4 inline-flex min-h-11 items-center gap-1.5 rounded-full border border-gray-200 bg-white px-5 text-sm font-medium text-gray-900 shadow-sm transition-[background-color,box-shadow,transform] duration-150 [@media(hover:hover)]:hover:bg-gray-100 active:scale-[0.97]"
-            >
-              {testLabel}
-              <ArrowUpRight size={14} aria-hidden="true" />
-            </a>
-          </div>
-          <div className="md:col-span-8">
-            <div className={`${STAGE} flex items-center justify-center px-[5%] py-[6%]`}>
-              <div style={{ width: item.kind === 'phone' ? 'min(58%, 250px)' : `${(item.share ?? 0.9) * 100}%` }}>
-                <DeviceMockup
-                  kind={item.kind}
-                  screen={item.screen}
-                  label={`${item.name[lang]}`}
-                  aspect={item.screen.aspect}
-                  url={item.kind === 'browser' ? 'tessan-os' : undefined}
-                  onZoom={() => onZoom(screenKey(item.screen))}
-                />
-              </div>
-            </div>
-          </div>
-        </li>
-      ))}
-    </ol>
-  )
-}
+const JOURNEY_BUILDERS = { tunnel: tunnelJourneys, scan: scanJourneys, protos: prototypeJourneys, assistant: assistantJourneys, os: osJourneys }
+const journeysOf = (kind: JourneyFigure['kind'], lang: 'en' | 'fr'): Journey[] => JOURNEY_BUILDERS[kind](lang)
+
+/** A journey as a row of screens side by side, each named under its device. */
+const journeyRow = (j: Journey): DeviceFigure => ({
+  type: 'devices',
+  kind: j.kind ?? 'phone',
+  carousel: true,
+  href: j.href,
+  screens: j.steps.map((s) => ({ src: s.src, aspect: j.aspect, overlay: s.overlay, label: { fr: s.label, en: s.label } })),
+})
 
 function FigureView({
   figure,
@@ -415,28 +315,22 @@ function FigureView({
   prototypeLabel: string
   onZoom: (key: string) => void
 }) {
-  if (figure.type === 'flows') {
+  if (figure.type === 'journey') {
     return (
-      <figure>
-        <FlowPlayer
-          items={figure.flows.map((f) => ({
-            id: f.name,
-            title: f.title[lang],
-            line: f.line[lang],
-            poster: `/images/tessan/proto/${f.name}.webp`,
-            video: `/images/tessan/proto/${f.name}.mp4`,
-          }))}
-          ariaLabel={caption}
-          prevLabel={lang === 'fr' ? 'Parcours précédent' : 'Previous flow'}
-          nextLabel={lang === 'fr' ? 'Parcours suivant' : 'Next flow'}
-          aspect={780 / 1688}
-        />
-        <figcaption className="sr-only">{caption}</figcaption>
-      </figure>
+      <div className="space-y-10 md:space-y-12">
+        {journeysOf(figure.kind, lang).map((j) => (
+          <FigureView key={j.id} figure={journeyRow(j)} caption={j.caption} lang={lang} prototypeLabel={prototypeLabel} onZoom={onZoom} />
+        ))}
+      </div>
     )
   }
-  if (figure.type === 'showcase') {
-    return <PrototypeShowcase figure={figure} lang={lang} testLabel={prototypeLabel} onZoom={onZoom} />
+  if (figure.type === 'notifications') {
+    return (
+      <figure>
+        <NotificationsShowcase lang={lang} />
+        <figcaption className="mt-3 text-left text-xs text-gray-500 leading-relaxed">{caption}</figcaption>
+      </figure>
+    )
   }
   return (
     <figure>
@@ -460,7 +354,7 @@ function FigureView({
         </div>
       )}
       {/* A strip names each screen under its device; a single visual carries its caption. */}
-      <figcaption className={figure.type === 'devices' && figure.carousel && !figure.showCaption ? 'sr-only' : 'mt-3 text-left text-xs text-gray-500 leading-relaxed'}>
+      <figcaption className="mt-3 text-left text-xs text-gray-500 leading-relaxed">
         {caption}
         {figure.href && (
           <>
@@ -479,6 +373,14 @@ function FigureView({
       </figcaption>
     </figure>
   )
+}
+
+/** The patient app, out on both stores since July 15, 2026. */
+const APP_ICON = '/images/tessan/tessan-app-icon.webp'
+
+const STORE_LINKS: StoreLinks = {
+  apple: 'https://apps.apple.com/fr/app/tessan/id6755781046',
+  google: 'https://play.google.com/store/apps/details?id=com.tessan.cloudpatient&hl=fr',
 }
 
 export type TessanVariant = 'hub' | 'app' | 'os' | 'systeme'
@@ -511,12 +413,12 @@ export const TessanChapterPage: React.FC<TessanPageProps & { variant: TessanVari
     for (const key of keys) {
       const figure = FIGURES[key]
       if (!figure) continue
-      if (figure.type === 'showcase') {
-        for (const item of figure.items) {
-          items.push({ key: screenKey(item.screen), src: item.screen.video ?? item.screen.src, caption: `${item.n} ${item.name[lang]}`, type: item.screen.video ? 'video' : 'image' })
-        }
-      } else if (figure.type === 'flows') {
+      if (figure.type === 'notifications') {
         continue
+      } else if (figure.type === 'journey') {
+        for (const j of journeysOf(figure.kind, lang)) {
+          for (const s of j.steps) items.push({ key: s.src, src: s.src, caption: `${j.caption} ${s.label}`, type: 'image' })
+        }
       } else if (figure.type === 'devices') {
         for (const screen of figure.screens) {
           items.push({ key: screenKey(screen), src: screen.video ?? screen.src, caption: `${t.captions[key] ?? ''}, ${screen.label[lang]}`, type: screen.video ? 'video' : 'image' })
@@ -586,6 +488,18 @@ export const TessanChapterPage: React.FC<TessanPageProps & { variant: TessanVari
             <div className="act-wide pt-10 md:pt-14 pb-12 md:pb-16">
               <ActTitle index={String(index + 1).padStart(2, '0')} title={teaser.title} />
               <p className="max-w-[62ch] text-base text-gray-600">{teaser.text}</p>
+              {teaser.id === 'app' && (
+                <StoreBadges
+                  lang={lang}
+                  stores={STORE_LINKS}
+                  label={t.ui.stores.label}
+                  icon={APP_ICON}
+                  appleLabel={t.ui.stores.apple}
+                  googleLabel={t.ui.stores.google}
+                  source="hub_teaser"
+                  className="mt-6 max-w-[62ch]"
+                />
+              )}
               <div className="mt-8 md:mt-10">
                 <FigureView
                   figure={FIGURES[teaser.figure]}
@@ -612,6 +526,18 @@ export const TessanChapterPage: React.FC<TessanPageProps & { variant: TessanVari
             <div className="act-wide pt-10 md:pt-14 pb-12 md:pb-16">
               <ActTitle index={String(firstIndex + index + 1).padStart(2, '0')} title={section.title} />
               <p className="max-w-[62ch] text-base text-gray-600">{section.text}</p>
+              {section.id === 'app' && (
+                <StoreBadges
+                  lang={lang}
+                  stores={STORE_LINKS}
+                  label={t.ui.stores.label}
+                  icon={APP_ICON}
+                  appleLabel={t.ui.stores.apple}
+                  googleLabel={t.ui.stores.google}
+                  source="app_section"
+                  className="mt-6"
+                />
+              )}
               {section.figures && (
                 <div className="mt-8 md:mt-10 space-y-6 md:space-y-8">
                   {section.figures
