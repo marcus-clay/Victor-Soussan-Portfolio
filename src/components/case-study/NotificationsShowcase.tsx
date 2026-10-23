@@ -29,7 +29,7 @@ import {
 } from '@/data/tessanNotifications'
 import DeviceMockup from '@/components/case-study/DeviceMockup'
 import ScaledScreen from '@/components/case-study/ScaledScreen'
-import { PILL, PlayPauseButton, Segmented, useReducedMotion } from '@/components/case-study/controls'
+import { PILL, useReducedMotion } from '@/components/case-study/controls'
 
 const GREEN = '#276e3f'
 const GREEN_ON_DARK = '#63c583'
@@ -312,17 +312,13 @@ function StatusBar({ time, android }: { time: string; android?: React.ReactNode 
   )
 }
 
-function IosScreen({ s, clock, banner, copy, island }: { s: NotificationState; clock: string; banner: boolean; copy: (typeof NOTIFICATIONS_COPY)[Lang]; island: boolean }) {
+function IosScreen({ s, clock, banner, copy }: { s: NotificationState; clock: string; banner: boolean; copy: (typeof NOTIFICATIONS_COPY)[Lang] }) {
   const reduce = useReducedMotion()
   const alert = s.ios.alert
   return (
     <div style={{ position: 'absolute', inset: 0, background: WALLPAPER_DARK, fontFamily: IOS_FONT, color: '#fff', overflow: 'hidden' }}>
       <StatusBar time={copy.time} />
-      {island ? (
-        <PhoneIsland s={s} />
-      ) : (
-        <span aria-hidden="true" style={{ position: 'absolute', top: 0, left: '50%', width: 164, height: 30, marginLeft: -82, background: '#000', borderRadius: '0 0 20px 20px' }} />
-      )}
+      <PhoneIsland s={s} />
       <div style={{ position: 'absolute', top: 76, left: 0, right: 0, textAlign: 'center' }}>
         <LockSimple size={18} weight="fill" color="rgba(255,255,255,0.85)" />
         <div style={{ marginTop: 8, fontSize: 21, fontWeight: 500, color: 'rgba(255,255,255,0.88)' }}>{copy.date.ios}</div>
@@ -616,18 +612,16 @@ export default function NotificationsShowcase({ lang }: { lang: Lang }) {
 
   const [platform, setPlatform] = useState<Platform>('ios')
   const [index, setIndex] = useState(0)
-  const [playing, setPlaying] = useState(true)
   const [inView, setInView] = useState(false)
   const [tick, setTick] = useState(0)
   const [banner, setBanner] = useState(false)
   const [islandOpen, setIslandOpen] = useState(false)
-  const [theme, setTheme] = useState<CardTheme>('dark')
-  const [androidTheme, setAndroidTheme] = useState<CardTheme>('light')
-  const [island, setIsland] = useState(true)
+  // One theme per platform: the dark center card on iOS, the light card on Android
+  const theme: CardTheme = 'dark'
+  const androidTheme: CardTheme = 'light'
 
   const s = NOTIFICATION_STATES[index]
   const clock = formatClock(COUNTDOWN_START - (tick % 60))
-  const auto = playing && inView && !reduce
 
   useEffect(() => {
     const el = rootRef.current
@@ -643,13 +637,6 @@ export default function NotificationsShowcase({ lang }: { lang: Lang }) {
     const id = window.setInterval(() => setTick((t) => t + 1), 1000)
     return () => window.clearInterval(id)
   }, [inView, reduce])
-
-  // The walk-through advances by itself until the reader takes over.
-  useEffect(() => {
-    if (!auto) return
-    const id = window.setTimeout(() => setIndex((i) => (i + 1) % NOTIFICATION_STATES.length), AUTO_ADVANCE_MS)
-    return () => window.clearTimeout(id)
-  }, [auto, index])
 
   // A banner and a vibration announce the two moments where the patient must act.
   useEffect(() => {
@@ -676,10 +663,7 @@ export default function NotificationsShowcase({ lang }: { lang: Lang }) {
     return () => window.clearTimeout(id)
   }, [s.id, reduce])
 
-  const pick = useCallback((i: number) => {
-    setIndex(i)
-    setPlaying(false)
-  }, [])
+  const pick = useCallback((i: number) => setIndex(i), [])
 
   const flow = NOTIFICATION_STATES.map((st, i) => ({ st, i })).filter(({ st }) => st.group === 'flow')
   const edge = NOTIFICATION_STATES.map((st, i) => ({ st, i })).filter(({ st }) => st.group === 'edge')
@@ -710,31 +694,13 @@ export default function NotificationsShowcase({ lang }: { lang: Lang }) {
               key={p}
               type="button"
               aria-pressed={platform === p}
-              onClick={() => {
-                setPlatform(p)
-                setPlaying(false)
-              }}
+              onClick={() => setPlatform(p)}
               className={`${PILL} ${platform === p ? 'bg-gray-900 text-white' : 'text-gray-700 [@media(hover:hover)]:hover:bg-white'}`}
             >
               {copy.platforms[p]}
             </button>
           ))}
         </div>
-        {platform === 'ios' && (
-          <Segmented
-            label={copy.controls.device}
-            value={island ? 'island' : 'notch'}
-            options={[
-              { id: 'island', label: copy.controls.withIsland },
-              { id: 'notch', label: copy.controls.withoutIsland },
-            ]}
-            onChange={(next) => {
-              setIsland(next === 'island')
-              setPlaying(false)
-            }}
-          />
-        )}
-        {!reduce && <PlayPauseButton playing={playing} onToggle={() => setPlaying((v) => !v)} playLabel={copy.controls.play} pauseLabel={copy.controls.pause} />}
       </div>
 
       <div role="group" aria-label={copy.controls.steps} className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-2">
@@ -788,7 +754,7 @@ export default function NotificationsShowcase({ lang }: { lang: Lang }) {
                 custom={
                   <ScaledScreen>
                     {platform === 'ios' ? (
-                      <IosScreen s={s} clock={clock} banner={banner} copy={copy} island={island} />
+                      <IosScreen s={s} clock={clock} banner={banner} copy={copy} />
                     ) : (
                       <AndroidScreen s={s} clock={clock} banner={banner} copy={copy} theme={androidTheme} />
                     )}
@@ -800,17 +766,7 @@ export default function NotificationsShowcase({ lang }: { lang: Lang }) {
             <div className="min-w-0 space-y-6">
               {platform === 'ios' ? (
                 <>
-                  {!island && (
-                    <Enter>
-                      <SurfaceLabel>{copy.surfaces.banner}</SurfaceLabel>
-                      <Plate tone="dark">
-                        <FitWidth design={366} height={s.ios.alert ? 98 : 92} maxScale={1.15}>
-                          <IosBanner title={s.ios.alert?.title ?? s.ios.title} body={s.ios.alert?.body ?? s.ios.body} />
-                        </FitWidth>
-                      </Plate>
-                    </Enter>
-                  )}
-                  {island && s.ios.compact && s.ios.expanded && (
+                  {s.ios.compact && s.ios.expanded && (
                     <Enter>
                       <SurfaceLabel>{copy.surfaces.island}</SurfaceLabel>
                       <Plate tone="dark">
@@ -821,23 +777,8 @@ export default function NotificationsShowcase({ lang }: { lang: Lang }) {
                     </Enter>
                   )}
                   <Enter delay={0.05}>
-                    <SurfaceLabel
-                      action={
-                        <Segmented
-                          compact
-                          label={copy.controls.theme}
-                          value={theme}
-                          options={[
-                            { id: 'dark', label: copy.controls.dark },
-                            { id: 'light', label: copy.controls.light },
-                          ]}
-                          onChange={setTheme}
-                        />
-                      }
-                    >
-                      {copy.surfaces.center}
-                    </SurfaceLabel>
-                    <Plate tone={theme === 'dark' ? 'dark' : 'light'}>
+                    <SurfaceLabel>{copy.surfaces.center}</SurfaceLabel>
+                    <Plate tone="dark">
                       <FitWidth design={358} height={s.ios.button ? 258 : s.ios.gauge !== null ? 168 : 150} maxScale={1.15}>
                         <IosCard s={s} theme={theme} clock={clock} />
                       </FitWidth>
@@ -847,22 +788,7 @@ export default function NotificationsShowcase({ lang }: { lang: Lang }) {
               ) : (
                 <>
                   <Enter>
-                    <SurfaceLabel
-                      action={
-                        <Segmented
-                          compact
-                          label={copy.controls.theme}
-                          value={androidTheme}
-                          options={[
-                            { id: 'light', label: copy.controls.light },
-                            { id: 'dark', label: copy.controls.dark },
-                          ]}
-                          onChange={setAndroidTheme}
-                        />
-                      }
-                    >
-                      {copy.surfaces.collapsed}
-                    </SurfaceLabel>
+                    <SurfaceLabel>{copy.surfaces.collapsed}</SurfaceLabel>
                     <Plate tone="android">
                       <FitWidth design={340} height={56} maxScale={1.2}>
                         <AndroidCollapsed s={s} theme={androidTheme} />

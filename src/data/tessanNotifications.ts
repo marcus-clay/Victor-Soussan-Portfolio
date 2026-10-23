@@ -325,18 +325,10 @@ export const NOTIFICATIONS_COPY: Record<
       banner: string
     }
     controls: {
-      play: string
-      pause: string
       expandIsland: string
       collapseIsland: string
       steps: string
       platform: string
-      device: string
-      withIsland: string
-      withoutIsland: string
-      theme: string
-      dark: string
-      light: string
     }
     time: string
     date: Record<'ios' | 'android', string>
@@ -359,18 +351,10 @@ export const NOTIFICATIONS_COPY: Record<
       banner: 'Bannière',
     },
     controls: {
-      play: 'Lancer la lecture automatique',
-      pause: 'Mettre la lecture automatique en pause',
       expandIsland: 'Ouvrir la Dynamic Island',
       collapseIsland: 'Réduire la Dynamic Island',
       steps: 'États de la notification',
       platform: 'Plateforme',
-      device: 'Modèle d’iPhone',
-      withIsland: 'Avec Dynamic Island',
-      withoutIsland: 'Sans Dynamic Island',
-      theme: 'Thème',
-      dark: 'Sombre',
-      light: 'Clair',
     },
     time: '9:41',
     date: { ios: 'Lundi 6 juin', android: 'Mardi 7 juillet' },
@@ -392,18 +376,10 @@ export const NOTIFICATIONS_COPY: Record<
       banner: 'Banner',
     },
     controls: {
-      play: 'Start automatic playback',
-      pause: 'Pause automatic playback',
       expandIsland: 'Expand the Dynamic Island',
       collapseIsland: 'Collapse the Dynamic Island',
       steps: 'Notification states',
       platform: 'Platform',
-      device: 'iPhone model',
-      withIsland: 'With Dynamic Island',
-      withoutIsland: 'Without Dynamic Island',
-      theme: 'Theme',
-      dark: 'Dark',
-      light: 'Light',
     },
     time: '9:41',
     date: { ios: 'Monday, June 6', android: 'Tuesday, July 7' },

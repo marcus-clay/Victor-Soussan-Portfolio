@@ -4,7 +4,7 @@
 // camera, a pulse on an element. Each one plays once when it mounts, so the player mounts it when its step
 // becomes active. With reduced motion they show their final state without moving.
 
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Check } from '@phosphor-icons/react'
 import { useReducedMotion } from '@/components/case-study/controls'
@@ -165,6 +165,38 @@ function ColoredBrackets({ delay, reduce }: { delay: number; reduce: boolean }) 
       <Bracket corner="tr" tone={tone} />
       <Bracket corner="bl" tone={tone} />
       <Bracket corner="br" tone={tone} />
+    </>
+  )
+}
+
+/**
+ * Plays its animation while the screen is on screen, and again every `period` ms, so a phone in a row of
+ * phones shows its moment without any control. Out of view it is removed, so it starts over when it returns.
+ */
+export function LoopOverlay({ children, period = 7000 }: { children: React.ReactNode; period?: number }) {
+  const reduce = useReducedMotion()
+  const ref = useRef<HTMLSpanElement>(null)
+  const [visible, setVisible] = useState(false)
+  const [run, setRun] = useState(0)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const observer = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting), { threshold: 0.5 })
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    if (!visible || reduce) return
+    const id = window.setInterval(() => setRun((r) => r + 1), period)
+    return () => window.clearInterval(id)
+  }, [visible, reduce, period])
+
+  return (
+    <>
+      <span ref={ref} aria-hidden="true" style={{ position: 'absolute', inset: 0 }} />
+      {(visible || reduce) && <React.Fragment key={run}>{children}</React.Fragment>}
     </>
   )
 }

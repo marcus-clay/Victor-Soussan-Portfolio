@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Pause, Play } from '@phosphor-icons/react'
 import { zoomable } from '@/utils/zoomable'
+import ScaledScreen from '@/components/case-study/ScaledScreen'
 
 /** A poster is a flat picture (a store listing visual), shown with rounded corners and no device around it. */
 export type DeviceKind = 'phone' | 'tablet' | 'browser' | 'poster'
@@ -14,6 +15,8 @@ export interface DeviceScreen {
   video?: string
   width?: number
   height?: number
+  /** Animated moment laid over the screen (390 × 844 space), for a phone */
+  overlay?: React.ReactNode
 }
 
 interface DeviceMockupProps {
@@ -164,6 +167,11 @@ export default function DeviceMockup({ kind, screen, label, aspect, onZoom, url,
         >
           <div className="relative overflow-hidden bg-white [border-radius:12.2cqw]" style={{ aspectRatio: ratio }}>
             {custom ?? <ScreenMedia screen={screen} label={label} focused={focused} />}
+            {screen.overlay && (
+              <div className="pointer-events-none absolute inset-0">
+                <ScaledScreen>{screen.overlay}</ScaledScreen>
+              </div>
+            )}
             {/* Dynamic Island */}
             {!hideIsland && (
               <span

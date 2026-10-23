@@ -12,8 +12,7 @@ import CaseStudyHero from '@/components/case-study/CaseStudyHero'
 import DeviceCarousel from '@/components/case-study/DeviceCarousel'
 import StoreBadges, { type StoreLinks } from '@/components/case-study/StoreBadges'
 import NotificationsShowcase from '@/components/case-study/NotificationsShowcase'
-import JourneyPlayer from '@/components/case-study/JourneyPlayer'
-import { assistantJourneys, osJourneys, prototypeJourneys, scanJourneys, tunnelJourneys } from '@/data/tessanJourneys'
+import { assistantJourneys, osJourneys, prototypeJourneys, scanJourneys, tunnelJourneys, type Journey } from '@/data/tessanJourneys'
 import DeviceMockup, { type DeviceKind, type DeviceScreen } from '@/components/case-study/DeviceMockup'
 import EnhancedLightbox, { type LightboxImage } from '@/components/media/EnhancedLightbox'
 import { zoomable } from '@/utils/zoomable'
@@ -290,6 +289,18 @@ function DeviceStage({
 }
 
 /** The seven prototypes as a numbered list: each one with its idea, a playing demo and a link to try it. */
+const JOURNEY_BUILDERS = { tunnel: tunnelJourneys, scan: scanJourneys, protos: prototypeJourneys, assistant: assistantJourneys, os: osJourneys }
+const journeysOf = (kind: JourneyFigure['kind'], lang: 'en' | 'fr'): Journey[] => JOURNEY_BUILDERS[kind](lang)
+
+/** A journey as a row of screens side by side, each named under its device. */
+const journeyRow = (j: Journey): DeviceFigure => ({
+  type: 'devices',
+  kind: j.kind ?? 'phone',
+  carousel: true,
+  href: j.href,
+  screens: j.steps.map((s) => ({ src: s.src, aspect: j.aspect, overlay: s.overlay, label: { fr: s.label, en: s.label } })),
+})
+
 function FigureView({
   figure,
   caption,
@@ -304,28 +315,19 @@ function FigureView({
   onZoom: (key: string) => void
 }) {
   if (figure.type === 'journey') {
-    const journeyBuilders = { tunnel: tunnelJourneys, scan: scanJourneys, protos: prototypeJourneys, assistant: assistantJourneys, os: osJourneys }
-    const journeys = journeyBuilders[figure.kind](lang)
     return (
-      <figure>
-        <JourneyPlayer
-          journeys={journeys}
-          ariaLabel={caption}
-          labels={
-            lang === 'fr'
-              ? { play: 'Lancer la lecture automatique', pause: 'Mettre la lecture automatique en pause', journeys: 'Parcours', steps: 'Étapes du parcours' }
-              : { play: 'Start automatic playback', pause: 'Pause automatic playback', journeys: 'Journeys', steps: 'Steps of the journey' }
-          }
-        />
-        <figcaption className="sr-only">{caption}</figcaption>
-      </figure>
+      <div className="space-y-10 md:space-y-12">
+        {journeysOf(figure.kind, lang).map((j) => (
+          <FigureView key={j.id} figure={journeyRow(j)} caption={j.caption} lang={lang} prototypeLabel={prototypeLabel} onZoom={onZoom} />
+        ))}
+      </div>
     )
   }
   if (figure.type === 'notifications') {
     return (
       <figure>
         <NotificationsShowcase lang={lang} />
-        <figcaption className="sr-only">{caption}</figcaption>
+        <figcaption className="mt-3 text-left text-xs text-gray-500 leading-relaxed">{caption}</figcaption>
       </figure>
     )
   }
@@ -351,7 +353,7 @@ function FigureView({
         </div>
       )}
       {/* A strip names each screen under its device; a single visual carries its caption. */}
-      <figcaption className={figure.type === 'devices' && figure.carousel && !figure.showCaption ? 'sr-only' : 'mt-3 text-left text-xs text-gray-500 leading-relaxed'}>
+      <figcaption className="mt-3 text-left text-xs text-gray-500 leading-relaxed">
         {caption}
         {figure.href && (
           <>
@@ -410,8 +412,12 @@ export const TessanChapterPage: React.FC<TessanPageProps & { variant: TessanVari
     for (const key of keys) {
       const figure = FIGURES[key]
       if (!figure) continue
-      if (figure.type === 'notifications' || figure.type === 'journey') {
+      if (figure.type === 'notifications') {
         continue
+      } else if (figure.type === 'journey') {
+        for (const j of journeysOf(figure.kind, lang)) {
+          for (const s of j.steps) items.push({ key: s.src, src: s.src, caption: `${j.caption} ${s.label}`, type: 'image' })
+        }
       } else if (figure.type === 'devices') {
         for (const screen of figure.screens) {
           items.push({ key: screenKey(screen), src: screen.video ?? screen.src, caption: `${t.captions[key] ?? ''}, ${screen.label[lang]}`, type: screen.video ? 'video' : 'image' })

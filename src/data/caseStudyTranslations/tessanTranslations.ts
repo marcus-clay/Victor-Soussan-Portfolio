@@ -216,7 +216,7 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
       {
         id: 'tunnel',
         title: 'Le tunnel de consultation',
-        text: 'Huit à treize écrans selon un routeur invisible, dont un écran de mutuelle sur lequel 97 % des patients échouaient. La mutuelle sort du tunnel au profit d’une avance de frais, l’arrêt de travail devient une option du motif, et la salle d’attente montre une position plutôt qu’un minuteur qui mentirait. Le lecteur ci-dessous déroule le parcours écran par écran, pour soi ou pour un proche.',
+        text: 'Huit à treize écrans selon un routeur invisible, dont un écran de mutuelle sur lequel 97 % des patients échouaient. La mutuelle sort du tunnel au profit d’une avance de frais, l’arrêt de travail devient une option du motif, et la salle d’attente montre une position plutôt qu’un minuteur qui mentirait. Les écrans ci-dessous suivent deux parcours : pour soi, et pour un proche.',
         figures: ['journeyTunnel'],
       },
       {
@@ -270,7 +270,7 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
       {
         id: 'vision',
         title: 'Tessan OS, sept prototypes en une semaine',
-        text: 'En avril, un document de vision ne se discute pas en réunion, un téléphone qu’on fait défiler si. Chaque prototype porte une hypothèse : la confiance dans un interlocuteur permanent, un signal de santé lisible, la continuité entre la cabine et le mobile, la prévention par de petites missions. La revue du 24 avril les retient comme cap. Les sept sont déployés sur un site de test public, avec une fiche de briefing par prototype : audience, contexte, user story, objectif de test. Les voici, de 01 à 07, chacun avec sa démo et un lien pour l’essayer en ligne. Ensuite, tout ce qui ressemble à un avis médical est retiré : le score devient Score Bien-Être, WhatsApp est écarté, « Docteur » disparaît du nom.',
+        text: 'En avril, un document de vision ne se discute pas en réunion, un téléphone qu’on fait défiler si. Chaque prototype porte une hypothèse : la confiance dans un interlocuteur permanent, un signal de santé lisible, la continuité entre la cabine et le mobile, la prévention par de petites missions. La revue du 24 avril les retient comme cap. Les sept sont déployés sur un site de test public, avec une fiche de briefing par prototype : audience, contexte, user story, objectif de test. Les voici, de 01 à 07, chacun avec ses écrans et un lien pour l’essayer en ligne. Ensuite, tout ce qui ressemble à un avis médical est retiré : le score devient Score Bien-Être, WhatsApp est écarté, « Docteur » disparaît du nom.',
         figures: ['journeyOs'],
       },
       {
@@ -292,11 +292,6 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
     captions: {
       appScreens: 'Les écrans de l’application patient',
       storeVisuals: 'Les visuels conçus pour la fiche Google Play',
-      journeyTunnel: 'Le parcours de consultation, écran par écran, pour soi et pour un proche',
-      journeyScan: 'Payer et s’identifier avec la caméra : le scan de la carte bancaire et de la carte Vitale, puis les cas de prise en charge',
-      journeyProtos: 'Les prototypes qui ont fixé l’ordre des écrans',
-      journeyAssistant: 'L’Assistant Santé, dans l’app puis dans son prototype',
-      journeyOs: 'Les sept prototypes Tessan OS, écran par écran, à essayer en ligne',
       notifications: 'Les notifications de la salle d’attente, sur iOS et sur Android',
       dsVideos: 'Les démos du design system en usage : catalogue, tokens, dialog et composants mobile et cabine',
       dsPalette: 'Les rampes de couleur du design system, dans Figma',
@@ -462,7 +457,7 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
       {
         id: 'tunnel',
         title: 'The consultation funnel',
-        text: 'Eight to thirteen screens depending on an invisible router, including a health insurance screen on which 97% of patients failed. The insurance entry leaves the funnel for an advance payment, sick leave becomes an option of the reason for the visit, and the waiting room shows a position rather than a timer that would lie. The player below walks the journey screen by screen, for oneself or for a relative.',
+        text: 'Eight to thirteen screens depending on an invisible router, including a health insurance screen on which 97% of patients failed. The insurance entry leaves the funnel for an advance payment, sick leave becomes an option of the reason for the visit, and the waiting room shows a position rather than a timer that would lie. The screens below follow two journeys: for oneself, and for a relative.',
         figures: ['journeyTunnel'],
       },
       {
@@ -516,7 +511,7 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
       {
         id: 'vision',
         title: 'Tessan OS, seven prototypes in a week',
-        text: 'In April, a vision document cannot be discussed in a meeting, a phone you scroll can. Each prototype carries a hypothesis: trust in a permanent interlocutor, a readable health signal, continuity between booth and mobile, prevention through small missions. The April 24 review keeps them as a heading. The seven are deployed on a public test site, with a briefing sheet per prototype: audience, context, user story, test goal. Here they are, 01 to 07, each with its demo and a link to try it online. After that, everything that reads like medical advice is removed: the score becomes the Wellbeing Score, WhatsApp is dropped, “Doctor” leaves the name.',
+        text: 'In April, a vision document cannot be discussed in a meeting, a phone you scroll can. Each prototype carries a hypothesis: trust in a permanent interlocutor, a readable health signal, continuity between booth and mobile, prevention through small missions. The April 24 review keeps them as a heading. The seven are deployed on a public test site, with a briefing sheet per prototype: audience, context, user story, test goal. Here they are, 01 to 07, each with its screens and a link to try it online. After that, everything that reads like medical advice is removed: the score becomes the Wellbeing Score, WhatsApp is dropped, “Doctor” leaves the name.',
         figures: ['journeyOs'],
       },
       {
@@ -538,11 +533,6 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
     captions: {
       appScreens: 'The patient app screens',
       storeVisuals: 'The visuals designed for the Google Play listing',
-      journeyTunnel: 'The consultation journey, screen by screen, for oneself and for a relative',
-      journeyScan: 'Paying and identifying with the camera: scanning the bank card and the health card, then the coverage cases',
-      journeyProtos: 'The prototypes that settled the order of the screens',
-      journeyAssistant: 'The Health Assistant, in the app and then in its prototype',
-      journeyOs: 'The seven Tessan OS prototypes, screen by screen, to try online',
       notifications: 'The waiting room notifications, on iOS and on Android',
       dsVideos: 'The design system demos in use: catalog, tokens, dialog and mobile and booth components',
       dsPalette: 'The design system’s color ramps, in Figma',
