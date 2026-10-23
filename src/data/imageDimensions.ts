@@ -500,7 +500,7 @@ export const IMAGE_DIMENSIONS: Record<string, [number, number]> = {
   "/images/stores/google-play-en.webp": [564, 168],
   "/images/stores/google-play-fr.webp": [646, 192],
   "/images/tessan/cover_tessan_app_v3.webp": [2000, 1333],
-  "/images/tessan/cover_tessan_hub_v4.webp": [2000, 1333],
+  "/images/tessan/cover_tessan_hub_v5.webp": [2000, 1333],
   "/images/tessan/cover_tessan_os.webp": [2000, 1333],
   "/images/tessan/cover_tessan_systeme.webp": [2000, 1333],
   "/images/tessan/flows/accueil-hp.webp": [780, 1688],
