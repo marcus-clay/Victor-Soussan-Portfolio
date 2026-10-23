@@ -25,6 +25,8 @@ interface TestimonialCarouselProps {
   lang: 'en' | 'fr'
   /** Label of the link to the full testimonials page */
   allLabel: string
+  /** false when the page already shows the section title (numbered acts) */
+  showTitle?: boolean
 }
 
 const COPY = {
@@ -144,7 +146,7 @@ function Card({
   )
 }
 
-export default function TestimonialCarousel({ lang, allLabel }: TestimonialCarouselProps) {
+export default function TestimonialCarousel({ lang, allLabel, showTitle = true }: TestimonialCarouselProps) {
   const t = COPY[lang]
   const tt = TRANSLATIONS[lang].testimonials
 
@@ -245,9 +247,11 @@ export default function TestimonialCarousel({ lang, allLabel }: TestimonialCarou
 
   return (
     <div>
-      <div className="wrap">
-        <h2 className="text-title-2 text-gray-900 mb-8 md:mb-10">{tt.title}</h2>
-      </div>
+      {showTitle && (
+        <div className="wrap">
+          <h2 className="text-title-2 text-gray-900 mb-8 md:mb-10">{tt.title}</h2>
+        </div>
+      )}
 
       <div
         ref={trackRef}
