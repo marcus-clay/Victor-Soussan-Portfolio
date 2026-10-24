@@ -198,7 +198,7 @@ export default function QuoteGeneratorModal({
               <button
                 onClick={handleClose}
                 aria-label="Close"
-                className={`relative p-3 rounded-full transition-all duration-200 before:absolute before:inset-[-12px] before:content-[''] ${
+                className={`relative p-3 rounded-full transition-[color,background-color,border-color,box-shadow,transform,opacity] duration-200 before:absolute before:inset-[-12px] before:content-[''] ${
                   systemTheme === 'dark'
                     ? 'bg-white/10 hover:bg-white/20 text-white'
                     : 'bg-gray-100 hover:bg-gray-200'
@@ -212,7 +212,7 @@ export default function QuoteGeneratorModal({
             <div className="flex items-center justify-between">
               {[1, 2, 3, 4, 5, 6, 7, 8].map((step) => (
                 <div key={step} className="flex items-center flex-1">
-                  <div className={`w-full h-1.5 rounded-full transition-all duration-300 ${
+                  <div className={`w-full h-1.5 rounded-full transition-[color,background-color,border-color,box-shadow,transform,opacity] duration-300 ${
                     step <= quoteStep ? 'bg-gray-900' : systemTheme === 'dark' ? 'bg-white/20' : 'bg-gray-200'
                   }`} />
                   {step < 8 && <div className="w-2" />}
@@ -226,7 +226,7 @@ export default function QuoteGeneratorModal({
           <div className="absolute top-6 right-2.5 z-20">
             <button
               onClick={() => onClose()}
-              className={`relative p-3 backdrop-blur-xl rounded-full transition-all duration-200 before:absolute before:inset-[-12px] before:content-[''] ${
+              className={`relative p-3 backdrop-blur-xl rounded-full transition-[color,background-color,border-color,box-shadow,transform,opacity] duration-200 before:absolute before:inset-[-12px] before:content-[''] ${
                 systemTheme === 'dark'
                   ? 'bg-white/10 hover:bg-white/20 text-white'
                   : 'bg-gray-100/80 hover:bg-gray-200'
@@ -302,7 +302,7 @@ export default function QuoteGeneratorModal({
                   transition={{ delay: 0.4 }}
                   className="grid md:grid-cols-3 gap-6 mb-12"
                 >
-                  <div className={`p-6 backdrop-blur-xl rounded-2xl border hover:shadow-lg hover:shadow-blue-600/10 transition-all duration-200 ${
+                  <div className={`p-6 backdrop-blur-xl rounded-2xl border hover:shadow-lg hover:shadow-blue-600/10 transition-[color,background-color,border-color,box-shadow,transform,opacity] duration-200 ${
                     systemTheme === 'dark'
                       ? 'bg-blue-900/20 border-blue-600/20'
                       : 'bg-blue-50/50 border-blue-100'
@@ -320,7 +320,7 @@ export default function QuoteGeneratorModal({
                     </p>
                   </div>
 
-                  <div className={`p-6 backdrop-blur-xl rounded-2xl border hover:shadow-lg hover:shadow-blue-600/10 transition-all duration-200 ${
+                  <div className={`p-6 backdrop-blur-xl rounded-2xl border hover:shadow-lg hover:shadow-blue-600/10 transition-[color,background-color,border-color,box-shadow,transform,opacity] duration-200 ${
                     systemTheme === 'dark'
                       ? 'bg-blue-900/20 border-blue-600/20'
                       : 'bg-blue-50/50 border-blue-100'
@@ -338,7 +338,7 @@ export default function QuoteGeneratorModal({
                     </p>
                   </div>
 
-                  <div className={`p-6 backdrop-blur-xl rounded-2xl border hover:shadow-lg hover:shadow-blue-600/10 transition-all duration-200 ${
+                  <div className={`p-6 backdrop-blur-xl rounded-2xl border hover:shadow-lg hover:shadow-blue-600/10 transition-[color,background-color,border-color,box-shadow,transform,opacity] duration-200 ${
                     systemTheme === 'dark'
                       ? 'bg-blue-900/20 border-blue-600/20'
                       : 'bg-blue-50/50 border-blue-100'
@@ -365,7 +365,7 @@ export default function QuoteGeneratorModal({
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => setQuoteStep(1)}
-                  className="inline-flex items-center px-12 py-5 bg-gray-900 hover:bg-black text-white rounded-full font-semibold text-xl shadow-lg shadow-[#2D5CF3]/30 hover:shadow-xl hover:shadow-[#2D5CF3]/50 transition-all duration-200"
+                  className="inline-flex items-center px-12 py-5 bg-gray-900 hover:bg-black text-white rounded-full font-semibold text-xl shadow-lg shadow-[#2D5CF3]/30 hover:shadow-xl hover:shadow-[#2D5CF3]/50 transition-[color,background-color,border-color,box-shadow,transform,opacity] duration-200"
                 >
                   {lang === 'en' ? 'Start Now' : 'Démarrer'}
                   <ArrowRight className="ml-2" size={24} />
@@ -435,7 +435,7 @@ export default function QuoteGeneratorModal({
                       }}
                       whileHover={{ scale: 1.01, x: 4 }}
                       whileTap={{ scale: 0.99 }}
-                      className={`w-full flex items-center space-x-4 p-5 border-2 rounded-2xl text-left transition-all duration-200 ${
+                      className={`w-full flex items-center space-x-4 p-5 border-2 rounded-2xl text-left transition-[color,background-color,border-color,box-shadow,transform,opacity] duration-200 ${
                         quoteData.clientNeed === option.type
                           ? 'border-blue-600 bg-blue-50/70 shadow-lg shadow-blue-600/10'
                           : systemTheme === 'dark'
@@ -513,7 +513,7 @@ export default function QuoteGeneratorModal({
                       }}
                       whileHover={{ scale: 1.01, y: -2 }}
                       whileTap={{ scale: 0.99 }}
-                      className={`p-6 border-2 rounded-2xl text-left transition-all duration-200 ${
+                      className={`p-6 border-2 rounded-2xl text-left transition-[color,background-color,border-color,box-shadow,transform,opacity] duration-200 ${
                         quoteData.projectStatus === option.type
                           ? 'border-blue-600 bg-blue-50/70 shadow-lg shadow-blue-600/10'
                           : 'border-gray-200 bg-white/50 hover:border-blue-300 hover:bg-blue-50/30'
@@ -565,7 +565,7 @@ export default function QuoteGeneratorModal({
 
                 {/* Upload Zone */}
                 <div
-                  className={`relative p-10 rounded-2xl border-2 border-dashed transition-all duration-200 text-center ${
+                  className={`relative p-10 rounded-2xl border-2 border-dashed transition-[color,background-color,border-color,box-shadow,transform,opacity] duration-200 text-center ${
                     isDragging
                       ? 'border-blue-600 bg-blue-50/70'
                       : quoteData.briefFile
@@ -650,7 +650,7 @@ export default function QuoteGeneratorModal({
                         <motion.span
                           whileHover={{ scale: 1.02 }}
                           whileTap={{ scale: 0.98 }}
-                          className="px-5 py-2.5 bg-white border-2 border-gray-900 text-gray-900 rounded-full font-medium text-sm hover:bg-gray-900/5 transition-all cursor-pointer inline-block btn-pill"
+                          className="px-5 py-2.5 bg-white border-2 border-gray-900 text-gray-900 rounded-full font-medium text-sm hover:bg-gray-900/5 transition-[color,background-color,border-color,box-shadow,transform,opacity] cursor-pointer inline-block btn-pill"
                         >
                           {lang === 'en' ? 'Browse Files' : 'Parcourir les fichiers'}
                         </motion.span>
@@ -694,7 +694,7 @@ export default function QuoteGeneratorModal({
                         }}
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
-                        className="px-5 py-2 bg-red-50 text-red-600 rounded-full text-sm font-semibold hover:bg-red-100 transition-all"
+                        className="px-5 py-2 bg-red-50 text-red-600 rounded-full text-sm font-semibold hover:bg-red-100 transition-[color,background-color,border-color,box-shadow,transform,opacity]"
                       >
                         {lang === 'en' ? 'Remove File' : 'Supprimer le fichier'}
                       </motion.button>
@@ -753,7 +753,7 @@ export default function QuoteGeneratorModal({
                       }}
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      className={`flex items-center space-x-4 p-5 border-2 rounded-2xl text-left transition-all duration-200 ${
+                      className={`flex items-center space-x-4 p-5 border-2 rounded-2xl text-left transition-[color,background-color,border-color,box-shadow,transform,opacity] duration-200 ${
                         quoteData.services.includes(service)
                           ? 'border-blue-600 bg-blue-50/70 shadow-lg shadow-blue-600/20 ring-2 ring-blue-600/20'
                           : 'border-gray-200 bg-white/50 hover:border-blue-400 hover:bg-blue-50/30 hover:shadow-lg'
@@ -805,7 +805,7 @@ export default function QuoteGeneratorModal({
                   <textarea
                     value={quoteData.needIdea}
                     onChange={(e) => setQuoteData({ ...quoteData, needIdea: e.target.value })}
-                    className="w-full px-5 py-4 text-base border-2 border-gray-300 rounded-2xl focus:border-blue-600 focus:ring-4 focus:ring-blue-600/20 transition-all duration-200 resize-none bg-white/50 backdrop-blur-xl"
+                    className="w-full px-5 py-4 text-base border-2 border-gray-300 rounded-2xl focus:border-blue-600 focus:ring-4 focus:ring-blue-600/20 transition-[color,background-color,border-color,box-shadow,transform,opacity] duration-200 resize-none bg-white/50 backdrop-blur-xl"
                     rows={4}
                     placeholder={content.contact.quote_step_4_need_placeholder}
                   />
@@ -823,7 +823,7 @@ export default function QuoteGeneratorModal({
                         setQuoteValidationErrors({ ...quoteValidationErrors, projectDescription: '' });
                       }
                     }}
-                    className="w-full px-5 py-4 text-base border-2 border-gray-300 rounded-2xl focus:border-blue-600 focus:ring-4 focus:ring-blue-600/20 transition-all duration-200 resize-none bg-white/50 backdrop-blur-xl"
+                    className="w-full px-5 py-4 text-base border-2 border-gray-300 rounded-2xl focus:border-blue-600 focus:ring-4 focus:ring-blue-600/20 transition-[color,background-color,border-color,box-shadow,transform,opacity] duration-200 resize-none bg-white/50 backdrop-blur-xl"
                     rows={6}
                     placeholder={content.contact.quote_step_4_desc_placeholder}
                   />
@@ -899,7 +899,7 @@ export default function QuoteGeneratorModal({
                         setQuoteValidationErrors({ ...quoteValidationErrors, name: '' });
                         localStorage.setItem('user_name', e.target.value);
                       }}
-                      className="w-full px-5 py-4 text-base border-2 border-gray-300 rounded-2xl focus:border-blue-600 focus:ring-4 focus:ring-blue-600/20 transition-all duration-200 bg-white/50 backdrop-blur-xl"
+                      className="w-full px-5 py-4 text-base border-2 border-gray-300 rounded-2xl focus:border-blue-600 focus:ring-4 focus:ring-blue-600/20 transition-[color,background-color,border-color,box-shadow,transform,opacity] duration-200 bg-white/50 backdrop-blur-xl"
                       placeholder={content.contact.quote_step_6_name_placeholder}
                     />
                     {quoteValidationErrors.name && (
@@ -925,7 +925,7 @@ export default function QuoteGeneratorModal({
                         setQuoteValidationErrors({ ...quoteValidationErrors, email: '' });
                         localStorage.setItem('user_email', e.target.value);
                       }}
-                      className="w-full px-5 py-4 text-base border-2 border-gray-300 rounded-2xl focus:border-blue-600 focus:ring-4 focus:ring-blue-600/20 transition-all duration-200 bg-white/50 backdrop-blur-xl"
+                      className="w-full px-5 py-4 text-base border-2 border-gray-300 rounded-2xl focus:border-blue-600 focus:ring-4 focus:ring-blue-600/20 transition-[color,background-color,border-color,box-shadow,transform,opacity] duration-200 bg-white/50 backdrop-blur-xl"
                       placeholder={content.contact.quote_step_6_email_placeholder}
                     />
                     {quoteValidationErrors.email && (
@@ -949,7 +949,7 @@ export default function QuoteGeneratorModal({
                       type="text"
                       value={quoteData.company}
                       onChange={(e) => setQuoteData({ ...quoteData, company: e.target.value })}
-                      className="w-full px-5 py-4 text-base border-2 border-gray-300 rounded-2xl focus:border-blue-600 focus:ring-4 focus:ring-blue-600/20 transition-all duration-200 bg-white/50 backdrop-blur-xl"
+                      className="w-full px-5 py-4 text-base border-2 border-gray-300 rounded-2xl focus:border-blue-600 focus:ring-4 focus:ring-blue-600/20 transition-[color,background-color,border-color,box-shadow,transform,opacity] duration-200 bg-white/50 backdrop-blur-xl"
                       placeholder={content.contact.quote_step_6_company_placeholder}
                     />
                   </div>
@@ -962,7 +962,7 @@ export default function QuoteGeneratorModal({
                       type="tel"
                       value={quoteData.phone}
                       onChange={(e) => setQuoteData({ ...quoteData, phone: e.target.value })}
-                      className="w-full px-5 py-4 text-base border-2 border-gray-300 rounded-2xl focus:border-blue-600 focus:ring-4 focus:ring-blue-600/20 transition-all duration-200 bg-white/50 backdrop-blur-xl"
+                      className="w-full px-5 py-4 text-base border-2 border-gray-300 rounded-2xl focus:border-blue-600 focus:ring-4 focus:ring-blue-600/20 transition-[color,background-color,border-color,box-shadow,transform,opacity] duration-200 bg-white/50 backdrop-blur-xl"
                       placeholder={content.contact.quote_step_6_phone_placeholder}
                     />
                   </div>
@@ -989,7 +989,7 @@ export default function QuoteGeneratorModal({
 
                 <div className="space-y-3">
                   {/* Client Need */}
-                  <div className="p-5 bg-gradient-to-br from-blue-50/80 to-white rounded-2xl border border-blue-100/50 shadow-sm hover:shadow-md transition-all duration-200">
+                  <div className="p-5 bg-gradient-to-br from-blue-50/80 to-white rounded-2xl border border-blue-100/50 shadow-sm hover:shadow-md transition-[color,background-color,border-color,box-shadow,transform,opacity] duration-200">
                     <div className="flex items-center justify-between mb-2">
                       <h4 className="text-base font-bold text-gray-900">
                         {lang === 'en' ? 'Your Need' : 'Votre Besoin'}
@@ -1018,7 +1018,7 @@ export default function QuoteGeneratorModal({
                   </div>
 
                   {/* Project Status */}
-                  <div className="p-5 bg-gradient-to-br from-purple-50/80 to-white rounded-2xl border border-purple-100/50 shadow-sm hover:shadow-md transition-all duration-200">
+                  <div className="p-5 bg-gradient-to-br from-purple-50/80 to-white rounded-2xl border border-purple-100/50 shadow-sm hover:shadow-md transition-[color,background-color,border-color,box-shadow,transform,opacity] duration-200">
                     <div className="flex items-center justify-between mb-2">
                       <h4 className="text-base font-bold text-gray-900">
                         {lang === 'en' ? 'Project Status' : 'Statut du Projet'}
@@ -1045,7 +1045,7 @@ export default function QuoteGeneratorModal({
 
                   {/* Brief File */}
                   {quoteData.briefFile && (
-                    <div className="p-5 bg-gradient-to-br from-green-50/80 to-white rounded-2xl border border-green-100/50 shadow-sm hover:shadow-md transition-all duration-200">
+                    <div className="p-5 bg-gradient-to-br from-green-50/80 to-white rounded-2xl border border-green-100/50 shadow-sm hover:shadow-md transition-[color,background-color,border-color,box-shadow,transform,opacity] duration-200">
                       <div className="flex items-center justify-between mb-2">
                         <h4 className="text-base font-bold text-gray-900">{content.contact.quote_step_7_brief}</h4>
                         <button
@@ -1063,7 +1063,7 @@ export default function QuoteGeneratorModal({
                   )}
 
                   {/* Services */}
-                  <div className="p-5 bg-gradient-to-br from-amber-50/80 to-white rounded-2xl border border-amber-100/50 shadow-sm hover:shadow-md transition-all duration-200">
+                  <div className="p-5 bg-gradient-to-br from-amber-50/80 to-white rounded-2xl border border-amber-100/50 shadow-sm hover:shadow-md transition-[color,background-color,border-color,box-shadow,transform,opacity] duration-200">
                     <div className="flex items-center justify-between mb-3">
                       <h4 className="text-base font-bold text-gray-900">{content.contact.quote_step_7_services}</h4>
                       <button
@@ -1086,7 +1086,7 @@ export default function QuoteGeneratorModal({
                   </div>
 
                   {/* Project Details */}
-                  <div className="p-5 bg-gradient-to-br from-indigo-50/80 to-white rounded-2xl border border-indigo-100/50 shadow-sm hover:shadow-md transition-all duration-200">
+                  <div className="p-5 bg-gradient-to-br from-indigo-50/80 to-white rounded-2xl border border-indigo-100/50 shadow-sm hover:shadow-md transition-[color,background-color,border-color,box-shadow,transform,opacity] duration-200">
                     <div className="flex items-center justify-between mb-3">
                       <h4 className="text-base font-bold text-gray-900">{content.contact.quote_step_7_project_details}</h4>
                       <button
@@ -1112,7 +1112,7 @@ export default function QuoteGeneratorModal({
 
                   {/* Budget & Timeline */}
                   {(quoteData.budget || quoteData.startDate || quoteData.endDate) && (
-                    <div className="p-5 bg-gradient-to-br from-rose-50/80 to-white rounded-2xl border border-rose-100/50 shadow-sm hover:shadow-md transition-all duration-200">
+                    <div className="p-5 bg-gradient-to-br from-rose-50/80 to-white rounded-2xl border border-rose-100/50 shadow-sm hover:shadow-md transition-[color,background-color,border-color,box-shadow,transform,opacity] duration-200">
                       <div className="flex items-center justify-between mb-3">
                         <h4 className="text-base font-bold text-gray-900">{content.contact.quote_step_7_budget_timeline}</h4>
                         <button
@@ -1146,7 +1146,7 @@ export default function QuoteGeneratorModal({
                   )}
 
                   {/* Contact Info */}
-                  <div className="p-5 bg-gradient-to-br from-teal-50/80 to-white rounded-2xl border border-teal-100/50 shadow-sm hover:shadow-md transition-all duration-200">
+                  <div className="p-5 bg-gradient-to-br from-teal-50/80 to-white rounded-2xl border border-teal-100/50 shadow-sm hover:shadow-md transition-[color,background-color,border-color,box-shadow,transform,opacity] duration-200">
                     <div className="flex items-center justify-between mb-3">
                       <h4 className="text-base font-bold text-gray-900">{content.contact.quote_step_7_contact}</h4>
                       <button
@@ -1351,7 +1351,7 @@ export default function QuoteGeneratorModal({
                     }}
                     whileHover={{ scale: 1.02, y: -2 }}
                     whileTap={{ scale: 0.98 }}
-                    className="flex items-center justify-center space-x-2 px-5 py-2.5 border-2 border-gray-900 text-gray-900 rounded-full font-medium text-sm hover:bg-gray-900/5 transition-all duration-200 btn-pill"
+                    className="flex items-center justify-center space-x-2 px-5 py-2.5 border-2 border-gray-900 text-gray-900 rounded-full font-medium text-sm hover:bg-gray-900/5 transition-[color,background-color,border-color,box-shadow,transform,opacity] duration-200 btn-pill"
                   >
                     <Download size={16} />
                     <span>{content.contact.quote_step_7_download}</span>
@@ -1418,7 +1418,7 @@ export default function QuoteGeneratorModal({
                     disabled={isQuoteSending}
                     whileHover={!isQuoteSending ? { scale: 1.02, y: -2 } : {}}
                     whileTap={!isQuoteSending ? { scale: 0.98 } : {}}
-                    className="flex-1 flex items-center justify-center space-x-2 px-5 py-2.5 accent-blue text-white rounded-full font-medium text-sm btn-pill shadow-lg shadow-blue-600/30 hover:shadow-xl hover:shadow-blue-600/50 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="flex-1 flex items-center justify-center space-x-2 px-5 py-2.5 accent-blue text-white rounded-full font-medium text-sm btn-pill shadow-lg shadow-blue-600/30 hover:shadow-xl hover:shadow-blue-600/50 transition-[color,background-color,border-color,box-shadow,transform,opacity] duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isQuoteSending ? (
                       <>
@@ -1458,7 +1458,7 @@ export default function QuoteGeneratorModal({
                   onClick={resetState}
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.98 }}
-                  className="px-5 py-2.5 accent-blue text-white rounded-full font-medium text-sm btn-pill shadow-lg shadow-blue-600/30 hover:shadow-xl hover:shadow-blue-600/50 transition-all duration-200"
+                  className="px-5 py-2.5 accent-blue text-white rounded-full font-medium text-sm btn-pill shadow-lg shadow-blue-600/30 hover:shadow-xl hover:shadow-blue-600/50 transition-[color,background-color,border-color,box-shadow,transform,opacity] duration-200"
                 >
                   {content.contact.quote_success_new}
                 </motion.button>
@@ -1475,7 +1475,7 @@ export default function QuoteGeneratorModal({
                 onClick={() => setQuoteStep(quoteStep - 1)}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="flex items-center space-x-2 px-5 py-2.5 border-2 border-gray-200 text-gray-900 rounded-full font-medium text-sm btn-pill hover:border-blue-600 hover:bg-blue-50/50 transition-all duration-200"
+                className="flex items-center space-x-2 px-5 py-2.5 border-2 border-gray-200 text-gray-900 rounded-full font-medium text-sm btn-pill hover:border-blue-600 hover:bg-blue-50/50 transition-[color,background-color,border-color,box-shadow,transform,opacity] duration-200"
                 style={{ pointerEvents: 'auto', position: 'relative', zIndex: 20 }}
               >
                 <ChevronRight size={16} className="rotate-180" />
@@ -1539,7 +1539,7 @@ export default function QuoteGeneratorModal({
                   }}
                   whileHover={{ scale: 1.02, y: -2 }}
                   whileTap={{ scale: 0.98 }}
-                  className="flex items-center space-x-2 px-8 py-3.5 bg-gray-900 hover:bg-black text-white rounded-full font-semibold shadow-lg shadow-[#2D5CF3]/25 hover:shadow-xl hover:shadow-[#2D5CF3]/40 transition-all duration-200"
+                  className="flex items-center space-x-2 px-8 py-3.5 bg-gray-900 hover:bg-black text-white rounded-full font-semibold shadow-lg shadow-[#2D5CF3]/25 hover:shadow-xl hover:shadow-[#2D5CF3]/40 transition-[color,background-color,border-color,box-shadow,transform,opacity] duration-200"
                   style={{ pointerEvents: 'auto', position: 'relative', zIndex: 20 }}
                 >
                   <span>{content.contact.quote_next}</span>
