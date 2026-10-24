@@ -129,8 +129,8 @@ export const ACTS: Act[] = [
     id: 'build',
     title: { en: 'Build', fr: 'Matérialiser' },
     description: {
-      en: 'Short cycles. One week, one testable prototype. Something concrete to put in front of a user or a decision-maker.',
-      fr: 'Cycles courts. Une semaine, un prototype testable. Quelque chose de concret à mettre devant un utilisateur ou un décideur.',
+      en: 'A prototype rather than a document, at the fidelity the question requires. Something concrete to put in front of a user or a decision-maker.',
+      fr: 'Un prototype plutôt qu’un document, au niveau de fidélité que la question demande. Quelque chose de concret à mettre devant un utilisateur ou un décideur.',
     },
     detail: {
       en: 'I explore two to three directions, then converge on the one we test. The prototype can be a Figma interactive flow, an HTML page deployed on Vercel, or a coded component, depending on what the question requires. Discovery and delivery run in parallel: while one sprint produces a testable artifact, the previous one is being evaluated. The right level of fidelity depends on the question being asked, whatever the project stage.',

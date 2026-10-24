@@ -59,9 +59,8 @@ const TRANSLATIONS = {
     education_line2: 'UX/UI Design & Prototyping, UXcel/Udemy (2021)',
     toolkit_title: 'Toolkit',
     toolkit_items: 'Figma, Notion, Linear, VS Code, Claude Code, Framer Motion, Google Slides, Midjourney',
-    cta_text: 'Want to work together?',
+    cta_text: 'Want to talk?',
     cta_email: 'victorsoussan@gmail.com',
-    availability: 'Available for new projects',
     linkedin_label: 'Full background and recommendations',
     cv_label: 'View or download resume',
     testimonials_link: 'View all testimonials',
@@ -106,9 +105,8 @@ const TRANSLATIONS = {
     education_line2: 'UX/UI Design & Prototypage, UXcel/Udemy (2021)',
     toolkit_title: 'Boîte à outils',
     toolkit_items: 'Figma, Notion, Linear, VS Code, Claude Code, Framer Motion, Google Slides, Midjourney',
-    cta_text: 'Envie de travailler ensemble ?',
+    cta_text: 'Envie d’échanger ?',
     cta_email: 'victorsoussan@gmail.com',
-    availability: 'Disponible pour de nouveaux projets',
     linkedin_label: 'Parcours complet et recommandations',
     cv_label: 'Lire ou télécharger le CV',
     testimonials_link: 'Voir tous les témoignages',
@@ -245,10 +243,6 @@ export default function AboutPageRedesign({
               </div>
             </Disclosure>
 
-            <div className="mt-8 flex items-center gap-2">
-              <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
-              <span className="text-sm text-gray-600">{t.availability}</span>
-            </div>
           </div>
         </div>
       </section>

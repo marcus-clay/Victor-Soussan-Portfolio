@@ -364,7 +364,7 @@ export const PROFILE_ERAS: ProfileEra[] = [
   },
   {
     id: 'freelance',
-    period: { en: '2025 - Present', fr: '2025 - Aujourd’hui' },
+    period: { en: '2025 - 2026', fr: '2025 - 2026' },
     title: { en: 'Victor Soussan Design', fr: 'Victor Soussan Design' },
     description: {
       en: 'Product design and prototyping for B2B, B2G and growing startups. Recent engagement: first designer at Tessan (3 months, April to July 2026), with the patient mobile app rebuilt in 30 days, a design system, an AI assistant under regulatory constraints and a product management system an AI can query. Other engagements: search engine and conversion redesign for Banque des Territoires’ B2G marketplaces, V2 of Toolkit.ac, user research for FEPEM’s MonEmploiDirect. In parallel, Condamine Apps: 50+ prototypes deployed with Claude Code and Figma MCP.',
