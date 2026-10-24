@@ -22,7 +22,10 @@
  * - The video element is only created once the page has loaded and is idle, and once the card is within
  *   600px of the viewport, so no video request competes with the LCP picture or with far-away cards.
  * - At most two loops play at once on the page; a hidden tab pauses them all.
- * - `prefers-reduced-motion: reduce` and the data saver: no video at all, the picture stays.
+ * - The data saver: no video at all, the picture stays.
+ * - `prefers-reduced-motion: reduce`: nothing starts by itself (no `auto` hero, no centred card on touch),
+ *   the picture stays. A mouse hover or a keyboard focus on a card is a deliberate gesture, so the loop
+ *   still plays then: reduced motion asks for a gentler equivalent, not for the absence of feedback.
  *
  * The parent must be `position: relative` (or absolute) and clip its content. This component renders an
  * `absolute inset-0` wrapper without a z-index, so the video (z-1) takes part in the parent's stacking
@@ -91,7 +94,8 @@ export default function HeroLoop({ src, mediaClassName, mediaStyle, mode = 'prev
   const [visible, setVisible] = useState(false)
   const [hovering, setHovering] = useState(false)
   const [canHover, setCanHover] = useState(true)
-  const [motionOk, setMotionOk] = useState(false)
+  const [dataOk, setDataOk] = useState(false)
+  const [reduced, setReduced] = useState(true)
   const [shown, setShown] = useState(false)
   const [failed, setFailed] = useState(false)
 
@@ -136,13 +140,14 @@ export default function HeroLoop({ src, mediaClassName, mediaStyle, mode = 'prev
     }
   }, [])
 
-  // Reduced motion and the data saver: no video. Hover or touch: how a card is previewed.
+  // The data saver: no video. Reduced motion: no autoplay. Hover or touch: how a card is previewed.
   useEffect(() => {
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)')
     const hover = window.matchMedia('(hover: hover) and (pointer: fine)')
     const conn = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection
     const sync = () => {
-      setMotionOk(!reduce.matches && !conn?.saveData)
+      setDataOk(!conn?.saveData)
+      setReduced(reduce.matches)
       setCanHover(hover.matches)
     }
     sync()
@@ -206,7 +211,10 @@ export default function HeroLoop({ src, mediaClassName, mediaStyle, mode = 'prev
     }
   }, [mode])
 
-  const mounted = idle && near && motionOk && !failed
+  // With reduced motion only a hovered card can play: elsewhere no video is created (nothing to download)
+  const hoverOnly = mode === 'preview' && canHover
+  const canPlay = dataOk && (!reduced || hoverOnly)
+  const mounted = idle && near && canPlay && !failed
 
   const wants = mounted && (mode === 'auto' ? visible : canHover ? hovering : visible)
   wantsRef.current = wants
