@@ -65,10 +65,10 @@ export default function TestimonialsPageClient({ lang }: { lang: 'en' | 'fr' }) 
     <div className="min-h-screen bg-[#FDFDFC]">
       {/* En-tête : nom de la page et une ligne, pleine largeur, aligné à gauche */}
       <header className="wrap pt-10 md:pt-16 pb-12 md:pb-16">
-        <h1 className="text-headline text-gray-900">
+        <h1 className="text-display text-gray-900">
           {t.title}
         </h1>
-        <p className="mt-4 text-lead-lg text-gray-600 max-w-[54ch]">
+        <p className="mt-6 md:mt-8 text-lead-lg text-gray-600 max-w-[54ch]">
           {t.subtitle}
         </p>
       </header>

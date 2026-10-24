@@ -34,9 +34,10 @@
 ::-webkit-scrollbar-thumb {
   background: #D1D5DB;
   border-radius: 10px;
+  transition: background-color 150ms ease;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #9CA3AF;
+  background-color: #9CA3AF;
 }
 
 /* Hide scrollbar completely */
@@ -143,6 +144,7 @@ body {
 #site-nav.nav-dark a:hover,
 #site-nav.nav-dark button:hover {
   color: #ffffff;
+  transition: color var(--duration-quick, 150ms) ease;
 }
 #site-nav.nav-dark a.font-semibold {
   color: #ffffff;
@@ -155,6 +157,7 @@ body {
 #site-nav.nav-dark a.nav-cta:hover {
   background: #e5e7eb;
   color: #111827;
+  transition: background var(--duration-quick, 150ms) ease, color var(--duration-quick, 150ms) ease;
 }
 /* Dark main background to prevent white bleed under Nav blur */
 #main-content.main-dark {
@@ -181,6 +184,7 @@ body {
 /* Link hover */
 #site-footer.footer-dark a:hover {
   color: #e4e4e7;
+  transition: color var(--duration-quick, 150ms) ease;
 }
 /* Secondary text (copyright) */
 #site-footer.footer-dark .text-gray-500 {
@@ -210,13 +214,22 @@ body {
 }
 #site-footer.footer-dark a[href*="calendar"]:hover {
   color: #7da3f7 !important;
+  transition: color var(--duration-quick, 150ms) ease;
 }
 
 /* Global button and interactive styles */
 .btn-pill {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Explicit properties: `all` would also animate layout and fight the press scale below */
+  transition:
+    transform 200ms var(--ease-out-expo),
+    scale 160ms var(--ease-out-expo),
+    box-shadow 200ms var(--ease-out-expo),
+    background-color 150ms ease,
+    border-color 150ms ease,
+    color 150ms ease,
+    opacity 150ms ease;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -228,7 +241,7 @@ body {
 
 .btn-pill:active {
   transform: scale(0.98) translateY(0);
-  transition: all 0.1s ease;
+  transition-duration: 100ms;
 }
 
 /* ── Press feedback ────────────────────────────────────────────────────────

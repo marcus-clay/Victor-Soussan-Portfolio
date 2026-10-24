@@ -47,7 +47,17 @@ const ExpandableSection: React.FC<ExpandableSectionProps> = ({
               key="expanded"
               initial={{ height: `${previewRem}rem`, opacity: 0.8 }}
               animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: `${previewRem}rem`, opacity: 0.8 }}
+              exit={{
+                height: `${previewRem}rem`,
+                opacity: 0.8,
+                // Closing answers faster than opening (about 75% of the enter duration)
+                transition: prefersReduced
+                  ? { duration: 0 }
+                  : {
+                      height: { duration: 0.21, ease: EASE_OUT },
+                      opacity: { duration: 0.15, ease: EASE_OUT },
+                    },
+              }}
               transition={
                 prefersReduced
                   ? { duration: 0 }

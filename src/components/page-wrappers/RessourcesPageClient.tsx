@@ -101,10 +101,10 @@ export default function RessourcesPageClient({ lang }: { lang: 'en' | 'fr' }) {
     <div className="min-h-screen bg-[#FDFDFC]">
       {/* Header: page name and one line, full width, left aligned */}
       <header className="wrap pt-10 md:pt-16 pb-12 md:pb-16">
-        <h1 className="text-headline text-gray-900">
+        <h1 className="text-display text-gray-900">
           {isEn ? 'Resources' : 'Ressources'}
         </h1>
-        <p className="mt-4 text-lead-lg text-gray-600 max-w-[54ch]">
+        <p className="mt-6 md:mt-8 text-lead-lg text-gray-600 max-w-[54ch]">
           {isEn
             ? 'Articles, guides, templates, and insights on product design and AI.'
             : 'Articles, guides, templates et retours d\'expérience sur le design produit et l\'IA.'}
