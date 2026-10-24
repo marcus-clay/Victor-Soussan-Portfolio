@@ -8,10 +8,10 @@ interface HeroSectionProps {
 }
 
 /**
- * Opening of the homepage. The content is the original hero (name, role, one paragraph, the
- * two actions), unchanged; only the scale changes: the name is set as the display size on the
- * page margin, so the filmstrip of case studies starts within the first screen.
- * Stays a single <header> holding the page's only h1 (the site header watches it).
+ * Opening of the homepage: the role as the display title, one short line under it that sums up
+ * the practice and the use of AI, then one paragraph and the two actions. The name lives in the
+ * site header, which stays visible from the first screen. Stays a single <header> holding the
+ * page's only h1 (the site header watches it).
  */
 export default function HeroSection({ lang }: HeroSectionProps) {
   const hero = TRANSLATIONS[lang].hero
@@ -19,13 +19,11 @@ export default function HeroSection({ lang }: HeroSectionProps) {
 
   return (
     <header className="wrap pt-10 md:pt-16 pb-10 md:pb-14">
-      <h1 className="text-display text-gray-900">
-        {hero.tagline}
+      <h1 className="text-gray-900">
+        <span className="block text-display">{hero.title}</span>
+        <span className="sr-only">, </span>
+        <span className="mt-2 block text-subhead font-normal text-gray-500 md:mt-3">{hero.formula}</span>
       </h1>
-
-      <p className="mt-2 md:mt-3 text-subhead font-normal text-gray-500">
-        {hero.title}
-      </p>
 
       <p className="mt-8 md:mt-10 max-w-[56ch] text-lead-lg text-gray-600 md:hidden">
         {hero.descShort}
