@@ -112,7 +112,7 @@ export function ArticleBodyStyles() {
       .article-body li > p { margin-bottom: 0.5rem; }
 
       /* Links: quiet underline */
-      .article-body a { color: #111827; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: #d1d5db; transition: color 0.15s, text-decoration-color 0.15s; }
+      .article-body a { color: #111827; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: #d1d5db; transition: color var(--duration-quick, 150ms), text-decoration-color var(--duration-quick, 150ms); }
       @media (hover: hover) {
         .article-body a:hover { color: #6b7280; text-decoration-color: #9ca3af; }
       }
@@ -120,7 +120,7 @@ export function ArticleBodyStyles() {
 
       /* Images and figures: the full column at most, hairline ring (outline, so it follows the radius), caption below */
       .article-body figure { margin: 2rem 0; }
-      .article-body img { display: block; max-width: 100%; height: auto; border-radius: 12px; margin: 2rem 0; outline: 1px solid rgba(0,0,0,0.06); outline-offset: -1px; cursor: zoom-in; transition: outline-color 0.3s cubic-bezier(0.23, 1, 0.32, 1), transform 0.3s cubic-bezier(0.23, 1, 0.32, 1); }
+      .article-body img { display: block; max-width: 100%; height: auto; border-radius: 12px; margin: 2rem 0; outline: 1px solid rgba(0,0,0,0.06); outline-offset: -1px; cursor: zoom-in; transition: outline-color var(--duration-slow, 400ms) cubic-bezier(0.22, 1, 0.36, 1), transform var(--duration-slow, 400ms) cubic-bezier(0.22, 1, 0.36, 1); }
       .article-body figure img { margin: 0; }
       .article-body figcaption { margin-top: 0.75rem; color: #646b77; text-align: left; }
       @media (hover: hover) and (pointer: fine) {
