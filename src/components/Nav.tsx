@@ -20,10 +20,12 @@ const backdropVariants = {
   exit: { opacity: 0, transition: { duration: 0.14 } },
 }
 
+// `transform` strings rather than the `y` shorthand: the shorthand runs on the main thread and
+// drops frames while the page is busy. Exit is ease-out too (an ease-in start reads as lag).
 const panelVariants = {
-  hidden: { opacity: 0, y: -12 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.22, ease: EASE_OUT } },
-  exit: { opacity: 0, y: -4, transition: { duration: 0.14, ease: [0.55, 0, 1, 0.45] as [number, number, number, number] } },
+  hidden: { opacity: 0, transform: 'translateY(-12px)' },
+  visible: { opacity: 1, transform: 'translateY(0px)', transition: { duration: 0.22, ease: EASE_OUT } },
+  exit: { opacity: 0, transform: 'translateY(-4px)', transition: { duration: 0.14, ease: EASE_OUT } },
 }
 
 const MENU_ITEMS = [
@@ -263,7 +265,7 @@ export default function Nav({ lang }: { lang: Lang }) {
 
             <button
               className="relative p-2 rounded-full hover:bg-black/[0.04] active:scale-[0.95]"
-              style={{ transition: 'background-color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
+              style={{ transition: 'background-color 150ms ease, color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
               onClick={toggleMenu}
               aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
               aria-expanded={isMobileMenuOpen}
@@ -274,9 +276,9 @@ export default function Nav({ lang }: { lang: Lang }) {
                   {isMobileMenuOpen ? (
                     <motion.span
                       key="x"
-                      initial={{ opacity: 0, rotate: -45, scale: 0.8 }}
-                      animate={{ opacity: 1, rotate: 0, scale: 1 }}
-                      exit={{ opacity: 0, rotate: 45, scale: 0.8 }}
+                      initial={{ opacity: 0, rotate: -45, scale: 0.8, filter: 'blur(2px)' }}
+                      animate={{ opacity: 1, rotate: 0, scale: 1, filter: 'blur(0px)' }}
+                      exit={{ opacity: 0, rotate: 45, scale: 0.8, filter: 'blur(2px)' }}
                       transition={{ duration: 0.15, ease: EASE_OUT }}
                       style={{ display: 'flex', position: 'absolute', inset: 0, alignItems: 'center', justifyContent: 'center' }}
                     >
@@ -285,9 +287,9 @@ export default function Nav({ lang }: { lang: Lang }) {
                   ) : (
                     <motion.span
                       key="menu"
-                      initial={{ opacity: 0, rotate: 45, scale: 0.8 }}
-                      animate={{ opacity: 1, rotate: 0, scale: 1 }}
-                      exit={{ opacity: 0, rotate: -45, scale: 0.8 }}
+                      initial={{ opacity: 0, rotate: 45, scale: 0.8, filter: 'blur(2px)' }}
+                      animate={{ opacity: 1, rotate: 0, scale: 1, filter: 'blur(0px)' }}
+                      exit={{ opacity: 0, rotate: -45, scale: 0.8, filter: 'blur(2px)' }}
                       transition={{ duration: 0.15, ease: EASE_OUT }}
                       style={{ display: 'flex', position: 'absolute', inset: 0, alignItems: 'center', justifyContent: 'center' }}
                     >

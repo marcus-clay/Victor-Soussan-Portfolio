@@ -14,12 +14,12 @@ type Bi<T> = { en: T; fr: T }
 export const HERO: Bi<{ title: string; statement: string; lead: string }> = {
   fr: {
     title: 'Approche',
-    statement: 'La plupart des produits B2B qui échouent ont posé la bonne question trop tard.',
+    statement: 'Je cadre le problème, puis je construis une réponse testable en une semaine.',
     lead: 'Je conçois des outils métiers denses en données, en binôme avec un responsable produit. EdTech, construction, civic tech, média.',
   },
   en: {
     title: 'Approach',
-    statement: 'Most B2B products that fail asked the right question too late.',
+    statement: 'I frame the problem, then build a testable answer within a week.',
     lead: 'I design data-dense business tools in partnership with a product lead. EdTech, construction, civic tech, media.',
   },
 }

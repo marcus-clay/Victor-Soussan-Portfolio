@@ -51,7 +51,7 @@ function LightboxB({ items, startIdx, onClose }: { items: MediaItem[]; startIdx:
   const [idx, setIdx] = useState(startIdx);
   const item = items[idx];
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[200] bg-black/90 backdrop-blur-sm flex items-center justify-center" onClick={onClose}>
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, transition: { duration: 0.15, ease: [0.22, 1, 0.36, 1] } }} transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }} className="fixed inset-0 z-[200] bg-black/90 backdrop-blur-sm flex items-center justify-center" onClick={onClose}>
       <div className="absolute top-4 right-4 flex items-center gap-3" onClick={e => e.stopPropagation()}>
         <span className="text-[13px] text-white/40 font-mono">{idx + 1}/{items.length}</span>
         <span className="text-[13px] text-white/60">{item.label}</span>
@@ -60,7 +60,7 @@ function LightboxB({ items, startIdx, onClose }: { items: MediaItem[]; startIdx:
       <div className="flex items-center gap-4 max-w-[95vw]" onClick={e => e.stopPropagation()}>
         <button onClick={() => setIdx(Math.max(0, idx - 1))} className="p-3 text-white/30 hover:text-white"><ArrowLeft size={24} /></button>
         <AnimatePresence mode="wait">
-          <motion.div key={idx} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+          <motion.div key={idx} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, transition: { duration: 0.15, ease: [0.22, 1, 0.36, 1] } }} transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}>
             {item.type === 'video' ? <video src={item.src} autoPlay loop muted playsInline className="max-w-[80vw] max-h-[80vh] rounded-xl" />
               : <img src={item.src} alt="" className="max-w-[80vw] max-h-[80vh] rounded-xl object-contain" />}
           </motion.div>

@@ -586,7 +586,7 @@ export const BentoGallery: React.FC<BentoGalleryProps> = ({
                           setPage([idx, dir]);
                           setLightboxZoomed(false);
                         }}
-                        className={`w-2 h-2 rounded-full transition-all duration-200 ${
+                        className={`w-2 h-2 rounded-full transition-[width,background-color] duration-200 ease-out ${
                           idx === lightboxIndex
                             ? 'bg-white w-4'
                             : 'bg-white/30 hover:bg-white/50'
