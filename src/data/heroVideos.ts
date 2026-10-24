@@ -18,6 +18,7 @@ export const HERO_VIDEOS: Record<string, HeroVideo> = {
   connect: { src: '/videos/hero/connect.mp4' },
   pagesjaunes: { src: '/videos/hero/pagesjaunes.mp4' },
   dailymotion: { src: '/videos/hero/dailymotion.mp4' },
+  riskos: { src: '/videos/hero/riskos.mp4' },
   sqool: { src: '/videos/hero/sqool.mp4' },
   'sqool-classe': { src: '/videos/hero/sqool-classe.mp4' },
 }

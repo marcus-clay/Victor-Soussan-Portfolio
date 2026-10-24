@@ -13,8 +13,9 @@
  * Two modes:
  * - `preview` (cards: home strip, projects grid, related projects): with a mouse, the loop plays while
  *   the pointer is over the card (or a keyboard focus is on it) and, on leaving, fades back to the
- *   picture, then rewinds to the first frame. On touch screens (no hover) it plays while the card is
- *   centred in the viewport (60% visible).
+ *   picture, then rewinds to the first frame. A card flagged `active` (the one a carousel rests on)
+ *   also plays without any hover, so the strip is never still on a desktop. On touch screens (no
+ *   hover) it plays while the card is centred in the viewport (60% visible).
  * - `auto` (the case study hero): plays in a loop while at least a quarter of the panel is visible and
  *   pauses when it leaves.
  *
@@ -73,6 +74,10 @@ function leave(slot: Slot) {
 
 // ---------------------------------------------------------------------------
 
+/** Share of the card in view: enough for the case study hero and for a carousel's resting card, centred on touch */
+const PARTLY = 0.25
+const CENTRED = 0.6
+
 /** How long the video takes to fade in and out over the picture */
 const FADE_MS = 300
 
@@ -83,15 +88,18 @@ interface HeroLoopProps {
   mediaStyle?: CSSProperties
   /** `preview`: card (hover, or centred on touch). `auto`: plays while visible. */
   mode?: 'preview' | 'auto'
+  /** `preview` with a mouse: the card a carousel rests on plays without hover (never under reduced motion) */
+  active?: boolean
 }
 
-export default function HeroLoop({ src, mediaClassName, mediaStyle, mode = 'preview' }: HeroLoopProps) {
+export default function HeroLoop({ src, mediaClassName, mediaStyle, mode = 'preview', active = false }: HeroLoopProps) {
   const wrapRef = useRef<HTMLDivElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
 
   const [idle, setIdle] = useState(false)
   const [near, setNear] = useState(false)
   const [visible, setVisible] = useState(false)
+  const [partly, setPartly] = useState(false)
   const [hovering, setHovering] = useState(false)
   const [canHover, setCanHover] = useState(true)
   const [dataOk, setDataOk] = useState(false)
@@ -173,9 +181,16 @@ export default function HeroLoop({ src, mediaClassName, mediaStyle, mode = 'prev
       },
       { rootMargin: '600px' },
     )
-    const visibleObserver = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting), {
-      threshold: mode === 'auto' ? 0.25 : 0.6,
-    })
+    // Below its lowest threshold the browser reports isIntersecting: false, so the ratio is read instead.
+    // A tall card cut by the fold (about a third visible on a laptop) still counts as partly visible.
+    const visibleObserver = new IntersectionObserver(
+      ([entry]) => {
+        const ratio = entry.isIntersecting ? entry.intersectionRatio : 0
+        setPartly(ratio >= PARTLY - 0.01)
+        setVisible(ratio >= (mode === 'auto' ? PARTLY : CENTRED) - 0.01)
+      },
+      { threshold: [PARTLY, CENTRED] },
+    )
     nearObserver.observe(el)
     visibleObserver.observe(el)
     return () => {
@@ -216,7 +231,8 @@ export default function HeroLoop({ src, mediaClassName, mediaStyle, mode = 'prev
   const canPlay = dataOk && (!reduced || hoverOnly)
   const mounted = idle && near && canPlay && !failed
 
-  const wants = mounted && (mode === 'auto' ? visible : canHover ? hovering : visible)
+  const restingCard = active && partly && !reduced
+  const wants = mounted && (mode === 'auto' ? visible : canHover ? hovering || restingCard : visible)
   wantsRef.current = wants
 
   // Join or leave the playback budget. In preview, the video fades out first, then pauses and rewinds
