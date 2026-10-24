@@ -76,7 +76,7 @@ export default function SkillsPromoBanner({ lang }: { lang: string }) {
             <Lightning size={14} weight="fill" className="text-white" />
           </div>
           <span className="text-xs font-semibold text-gray-900 whitespace-nowrap transition-colors duration-150 group-hover:text-gray-600">
-            {isEn ? 'Claude Code skills' : 'Skills Claude Code'}
+            {isEn ? 'Claude Code skills' : 'Mes skills Claude Code'}
           </span>
           <ArrowRight size={12} className="text-gray-500 flex-shrink-0 transition-[transform,color] duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:translate-x-0.5 group-hover:text-gray-900" />
         </Link>
@@ -85,7 +85,7 @@ export default function SkillsPromoBanner({ lang }: { lang: string }) {
           onClick={dismiss}
           className="flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-gray-400 hover:text-gray-700 hover:bg-black/5 active:scale-[0.9]"
           style={{ transition: 'background-color 150ms ease, color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
-          aria-label="Dismiss"
+          aria-label={isEn ? 'Dismiss' : 'Fermer'}
         >
           <X size={12} weight="bold" />
         </button>

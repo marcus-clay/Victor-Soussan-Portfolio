@@ -280,7 +280,7 @@ export default function Nav({ lang }: { lang: Lang }) {
               className="relative p-2 rounded-full hover:bg-black/[0.04] active:scale-[0.95]"
               style={{ transition: 'background-color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
               onClick={toggleMenu}
-              aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+              aria-label={lang === 'fr' ? (isMobileMenuOpen ? 'Fermer le menu' : 'Ouvrir le menu') : isMobileMenuOpen ? 'Close menu' : 'Open menu'}
               aria-expanded={isMobileMenuOpen}
             >
               {/* Fixed-size container so button never reflows during icon transition */}

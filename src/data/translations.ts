@@ -407,7 +407,7 @@ export const TRANSLATIONS = {
   fr: {
     nav: {
       services: "Expertises",
-      bio: "A propos",
+      bio: "À propos",
       projects: "Projets",
       lab: "Lab",
       testimonials: "T\u00e9moignages",
@@ -654,7 +654,7 @@ export const TRANSLATIONS = {
       count_other: "{n}\u00a0témoignages",
       read_full: "Lire le témoignage complet",
       read_more: "Lire la suite",
-      read_less: "Réduire",
+      read_less: "Voir moins",
       case_study_link: "Lire l’étude de cas {name}",
       linkedin_profile: "{name} sur LinkedIn",
       close: "Fermer",

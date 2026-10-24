@@ -6,7 +6,7 @@ import { buildMetadata, pageLd, toLang } from '@/lib/seo'
 type Props = { params: Promise<{ lang: string }> }
 
 const COPY = {
-  fr: { title: 'Approche', description: 'Poser un cadre là où il n’y en a pas, organiser la collaboration et la recherche utilisateur, produire les documents de travail, puis monter en fidélité.' },
+  fr: { title: 'Approche', description: 'Poser un cadre là où il n’y en a pas, organiser la recherche et le travail en commun, produire les documents de travail, puis affiner les maquettes.' },
   en: { title: 'Approach', description: 'Setting a frame where there is none, organising collaboration and user research, producing working documents, then raising fidelity.' },
 } as const
 
