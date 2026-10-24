@@ -8,20 +8,20 @@
 export default function CareerPhasesDiagram({ lang }: { lang: 'en' | 'fr' }) {
   const c = {
     fr: {
-      title: 'Un parcours qui converge vers les outils métier, puis la pratique design',
-      desc: 'Une frise de 2005 à aujourd’hui : de 2005 à 2016, des agences au grand public ; de 2016 à 2024, les outils métier B2B et B2G ; de 2025 à 2026, indépendant ; depuis septembre 2026, Lead UX, en charge de la pratique design.',
+      title: 'Un parcours qui converge vers les outils métier',
+      desc: 'Une frise de 2005 à aujourd’hui : de 2005 à 2016, des agences au grand public ; de 2016 à 2024, les outils métier B2B et B2G ; de 2025 à 2026, indépendant ; depuis septembre 2026, Lead UX France, en poste.',
       early: ['Agences, grand public', '2005 à 2016'],
       core: ['Outils métier B2B et B2G', '2016 à 2024'],
       solo: 'Indépendant, 2025 à 2026',
-      now: 'Lead UX, pratique design, depuis sept. 2026',
+      now: 'Lead UX France, depuis sept. 2026',
     },
     en: {
-      title: 'A career that converges on business tools, then the design practice',
-      desc: 'A timeline from 2005 to today: from 2005 to 2016, agencies to consumer products; from 2016 to 2024, B2B and B2G business tools; from 2025 to 2026, independent; since September 2026, Lead UX, running the design practice.',
+      title: 'A career that converges on business tools',
+      desc: 'A timeline from 2005 to today: from 2005 to 2016, agencies to consumer products; from 2016 to 2024, B2B and B2G business tools; from 2025 to 2026, independent; since September 2026, Lead UX France, in post.',
       early: ['Agencies, consumer', '2005 to 2016'],
       core: ['B2B and B2G business tools', '2016 to 2024'],
       solo: 'Independent, 2025 to 2026',
-      now: 'Lead UX, design practice, since Sep 2026',
+      now: 'Lead UX France, since Sep 2026',
     },
   }[lang]
 
