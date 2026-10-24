@@ -21,7 +21,7 @@ export const TRANSLATIONS = {
     hero: {
       availability: "Available for collaborations and engagements",
       tagline: "Victor Soussan",
-      title: "Lead Product Designer",
+      title: "Lead Product Designer, AI",
       subtitle: "end-to-end",
       positioning: "Product Builder \u00b7 SaaS B2B & B2G \u00b7 Design Systems \u00b7 AI-driven design & prototyping \u00b7 Claude Code \u00b7 Figma MCP",
       desc: "I design digital products with AI, applied to design, project management and front-end development. I work with product teams from framing to production.",
@@ -420,7 +420,7 @@ export const TRANSLATIONS = {
     hero: {
       availability: "Disponible pour collaborations et interventions",
       tagline: "Victor Soussan",
-      title: "Lead Product Designer",
+      title: "Lead Product Designer, IA",
       subtitle: "end-to-end",
       positioning: "Product Builder \u00b7 SaaS B2B & B2G \u00b7 Design Systems \u00b7 Design et prototypage IA \u00b7 Claude Code \u00b7 Figma MCP",
       desc: "Je con\u00e7ois des produits num\u00e9riques avec l\u2019IA, appliqu\u00e9e au design, \u00e0 la gestion de projet et au d\u00e9veloppement front. Je travaille avec les \u00e9quipes produit du cadrage \u00e0 la production.",
