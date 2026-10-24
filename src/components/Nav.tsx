@@ -245,12 +245,20 @@ export default function Nav({ lang }: { lang: Lang }) {
                     <Link
                       href={`/${lang}/${item.route}`}
                       aria-current={active ? 'page' : undefined}
-                      className={`inline-flex min-h-10 items-center px-3.5 text-sm rounded-full hover:bg-black/[0.04] active:scale-[0.97] ${
+                      className={`relative inline-flex min-h-10 items-center px-3.5 text-sm rounded-full hover:bg-black/[0.04] active:scale-[0.97] ${
                         active ? 'font-semibold text-gray-900' : 'font-medium text-gray-600 hover:text-gray-900'
                       }`}
                       style={{ transition: 'background-color 150ms ease, color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
                     >
                       {item.labelKey ? content[item.labelKey] : ''}
+                      {/* Active indicator: 2px bar under the label, in the text colour so it stays
+                          visible on the dark navigation. Reduced motion keeps the fade, drops the grow. */}
+                      <span
+                        aria-hidden="true"
+                        className={`pointer-events-none absolute inset-x-3.5 bottom-1.5 h-0.5 rounded-full bg-current transition-[transform,opacity] duration-200 ease-out ${
+                          active ? 'scale-x-100 opacity-100' : 'scale-x-0 opacity-0 motion-reduce:scale-x-100'
+                        }`}
+                      />
                     </Link>
                   </li>
                 )
