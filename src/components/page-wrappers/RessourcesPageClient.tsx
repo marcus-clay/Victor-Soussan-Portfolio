@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { EASE_OUT_EXPO as EASE_OUT, useReveal } from '@/lib/motion'
@@ -14,6 +14,14 @@ import type { ContentItem, ContentType } from '@/data/contentData'
 
 type FilterType = 'all' | ContentType
 
+const FILTER_KEYS: FilterType[] = ['all', 'article', 'guide', 'template']
+
+/** `?type=template` opens the list on one type; anything else falls back to the full list. */
+const readFilterFromUrl = (): FilterType => {
+  const type = new URLSearchParams(window.location.search).get('type')
+  return FILTER_KEYS.includes(type as FilterType) ? (type as FilterType) : 'all'
+}
+
 /** Rows shown before "Show all": one screen of choices at a time (Hick), the rest stays in the DOM. */
 const INITIAL_VISIBLE = 8
 
@@ -22,6 +30,20 @@ export default function RessourcesPageClient({ lang }: { lang: 'en' | 'fr' }) {
   const [showAll, setShowAll] = useState(false)
   const isEn = lang === 'en'
   const reveal = useReveal()
+
+  // The page is statically rendered, so a shared link is applied right after mount.
+  useEffect(() => {
+    setActiveFilter(readFilterFromUrl())
+  }, [])
+
+  const selectFilter = (key: FilterType) => {
+    setActiveFilter(key)
+    setShowAll(false)
+    const url = new URL(window.location.href)
+    if (key === 'all') url.searchParams.delete('type')
+    else url.searchParams.set('type', key)
+    window.history.replaceState(window.history.state, '', url)
+  }
 
   const filtered = activeFilter === 'all'
     ? ALL_CONTENT
@@ -117,7 +139,7 @@ export default function RessourcesPageClient({ lang }: { lang: 'en' | 'fr' }) {
           {filters.map((f) => (
             <button
               key={f.key}
-              onClick={() => { setActiveFilter(f.key); setShowAll(false) }}
+              onClick={() => selectFilter(f.key)}
               className={`inline-flex items-center min-h-11 px-4 rounded-full text-sm font-medium transition-[background-color,color,transform] duration-200 ease-out active:scale-[0.97] cursor-pointer ${
                 activeFilter === f.key
                   ? 'bg-gray-900 text-white [@media(hover:hover)]:hover:bg-black'
