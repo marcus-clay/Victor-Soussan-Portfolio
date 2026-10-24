@@ -17,7 +17,8 @@
 - Default height: 64px, reduces to 56px on scroll (transition 250ms ease-out)
 - Logo: "Victor Soussan" at text-base (16px), font-semibold, tracking-[-0.02em]
 - Nav items: text-sm, rounded-full pills with hover bg-black/[0.04]
-- Active indicator: 2px dark underline inside pill
+- Active indicator: 2px black underline (`bg-current`) inside the pill, under the label
+- Menu panel: the active row has a black 8px dot on the left (fixed slot on every row, so labels stay aligned) and a `bg-black/[0.04]` background, like the table of contents
 - Contact button: bg-gray-900 text-white, rounded-full, same height as nav pills
 - Glass effect: bg-white/80 backdrop-blur-xl border-b border-gray-100/80
 - Scrollbar gutter: `scrollbar-gutter: stable` on html to prevent layout shift

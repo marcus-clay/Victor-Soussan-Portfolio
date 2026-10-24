@@ -230,12 +230,20 @@ export default function Nav({ lang }: { lang: Lang }) {
                     <Link
                       href={`/${lang}/${item.route}`}
                       aria-current={active ? 'page' : undefined}
-                      className={`inline-flex min-h-10 items-center px-3.5 text-sm rounded-full hover:bg-black/[0.04] active:scale-[0.97] ${
+                      className={`relative inline-flex min-h-10 items-center px-3.5 text-sm rounded-full hover:bg-black/[0.04] active:scale-[0.97] ${
                         active ? 'font-semibold text-gray-900' : 'font-medium text-gray-600 hover:text-gray-900'
                       }`}
                       style={{ transition: 'background-color 150ms ease, color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
                     >
                       {item.labelKey ? content[item.labelKey] : ''}
+                      {/* Active indicator: 2px bar under the label, in the text colour so it stays
+                          visible on the dark navigation. Reduced motion keeps the fade, drops the grow. */}
+                      <span
+                        aria-hidden="true"
+                        className={`pointer-events-none absolute inset-x-3.5 bottom-1.5 h-0.5 rounded-full bg-current transition-[transform,opacity] duration-200 ease-out ${
+                          active ? 'scale-x-100 opacity-100' : 'scale-x-0 opacity-0 motion-reduce:scale-x-100'
+                        }`}
+                      />
                     </Link>
                   </li>
                 )
@@ -355,12 +363,22 @@ export default function Nav({ lang }: { lang: Lang }) {
                         <Link
                           href={`/${lang}/${item.route}`}
                           onClick={closeMenu}
-                          className={`-mx-3 px-3 py-2.5 rounded-lg transition-colors duration-150 block ${
+                          aria-current={active ? 'page' : undefined}
+                          className={`-mx-3 px-3 py-2.5 rounded-lg transition-colors duration-150 flex items-center gap-3 ${
                             active
-                              ? (isDarkNav ? 'text-white font-medium' : 'text-gray-900 font-medium')
+                              ? (isDarkNav ? 'text-white font-semibold bg-white/[0.08]' : 'text-gray-900 font-semibold bg-black/[0.04]')
                               : (isDarkNav ? 'text-gray-400 hover:text-white hover:bg-white/[0.08]' : 'text-gray-500 hover:text-gray-900 hover:bg-gray-100')
                           }`}
                         >
+                          {/* Dot like the table of contents: a fixed 8px slot on every row, the dot grows
+                              inside it, so the labels stay aligned whichever row is active */}
+                          <span aria-hidden="true" className="relative flex-shrink-0 w-2 h-2">
+                            <span
+                              className={`absolute inset-0 rounded-full transition-transform duration-200 ease-out ${
+                                isDarkNav ? 'bg-white' : 'bg-gray-900'
+                              } ${active ? 'scale-100' : 'scale-0'}`}
+                            />
+                          </span>
                           <span className="text-sm">{label}</span>
                         </Link>
                       </motion.div>

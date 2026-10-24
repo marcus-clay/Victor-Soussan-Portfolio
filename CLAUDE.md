@@ -71,7 +71,7 @@ Data sources:
 - CSS variable `--nav-height`: 72px default, 56px on scroll
 - All sticky elements use `top: var(--nav-height)` with 250ms transition
 - Contextual page title: IntersectionObserver on h1, baseline-aligned with logo
-- Nav items: rounded-full pills, active = font-semibold (no background, no underline)
+- Nav items: rounded-full pills, active = font-semibold + 2px black underline; menu panel: active row = black dot on the left + light gray background (as the TOC)
 - No border-bottom on header or breadcrumbs
 - Dark override: `.nav-dark` class on `#site-nav` for dark case studies
 
