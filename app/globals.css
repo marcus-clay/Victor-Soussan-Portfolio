@@ -154,6 +154,24 @@ body {
 #site-nav.nav-dark a.font-semibold {
   color: #ffffff;
 }
+/* Primary entries on the dark nav: the active one is white and semibold, the others rest in a
+   quieter grey, and the pill hover is visible on the dark surface */
+#site-nav.nav-dark a.nav-pill {
+  color: #9ca3af;
+}
+#site-nav.nav-dark a.nav-pill[aria-current="page"] {
+  color: #ffffff;
+}
+@media (hover: hover) {
+  #site-nav.nav-dark a.nav-pill:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.08);
+  }
+}
+/* The default focus ring is near black: on the dark nav it needs to be light */
+#site-nav.nav-dark :focus-visible {
+  outline-color: #ffffff;
+}
 /* Contact stays the one filled button: inverted on the dark nav */
 #site-nav.nav-dark a.nav-cta {
   background: #ffffff;
