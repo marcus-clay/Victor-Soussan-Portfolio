@@ -106,13 +106,13 @@ const CaseStudyTOCBar: React.FC<CaseStudyTOCBarProps> = ({
   }
 
   const handleSectionClick = (sectionId: string) => {
-    // Brief press flash, then close and scroll
+    // Brief press flash, then close and scroll. Kept short: the wait is latency the visitor feels.
     setPressedSection(sectionId)
     setTimeout(() => {
       setPressedSection(null)
       setIsExpanded(false)
       onSectionClick(sectionId)
-    }, 120)
+    }, 80)
   }
 
   // Keyboard navigation inside dropdown

@@ -117,8 +117,8 @@ export const IframeModal: React.FC<IframeModalProps> = ({
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.3 }}
+      exit={{ opacity: 0, transition: { duration: 0.15, ease: [0.22, 1, 0.36, 1] } }}
+      transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
       role="dialog"
       aria-modal="true"
       aria-labelledby="iframe-modal-title"
@@ -203,7 +203,7 @@ export const IframeModal: React.FC<IframeModalProps> = ({
 
               {/* Icon */}
               <motion.div
-                initial={{ scale: 0.8, opacity: 0 }}
+                initial={{ scale: 0.96, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ delay: 0.1, type: 'spring', stiffness: 200 }}
                 className={`relative mx-auto mb-8 w-24 h-24 rounded-3xl ${colors.iconBg} flex items-center justify-center`}
@@ -215,7 +215,7 @@ export const IframeModal: React.FC<IframeModalProps> = ({
               <motion.h2
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.2 }}
+                transition={{ delay: 0.15, duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
                 className={`text-3xl md:text-4xl font-bold mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}
               >
                 {title}
@@ -226,7 +226,7 @@ export const IframeModal: React.FC<IframeModalProps> = ({
                 <motion.p
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.25 }}
+                  transition={{ delay: 0.2, duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
                   className={`text-lg mb-4 ${colors.icon}`}
                 >
                   {subtitle}
@@ -237,7 +237,7 @@ export const IframeModal: React.FC<IframeModalProps> = ({
               <motion.p
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.3 }}
+                transition={{ delay: 0.25, duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
                 className={`mb-8 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}
               >
                 {description || t.securityNote}
@@ -247,7 +247,7 @@ export const IframeModal: React.FC<IframeModalProps> = ({
               <motion.a
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.4 }}
+                transition={{ delay: 0.3, duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
                 href={url}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -261,7 +261,7 @@ export const IframeModal: React.FC<IframeModalProps> = ({
               <motion.p
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 0.5 }}
+                transition={{ delay: 0.35, duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
                 className={`mt-6 text-xs font-mono truncate max-w-full ${isDark ? 'text-gray-600' : 'text-gray-400'}`}
               >
                 {url}
