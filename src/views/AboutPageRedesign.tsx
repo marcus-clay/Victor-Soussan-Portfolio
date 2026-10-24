@@ -41,7 +41,7 @@ const TRANSLATIONS = {
     page_title: 'About',
     role: 'Lead Product Designer \u00b7 Paris',
     intro:
-      "Lead Product Designer working on B2B and B2G SaaS and complex business interfaces. I frame with a PM and deliver with a developer, or directly with Claude Code and Figma MCP. Depending on the environment, I design or I run a team's design practice.",
+      "Lead Product Designer working on B2B and B2G SaaS and complex business interfaces. I frame with a PM and deliver with a developer, or directly with Claude Code and Figma MCP. I design the journeys and I lead a team's design practice.",
     bio_p1:
       "My approach starts before Figma: vision workshops with leadership, problem framing with product teams, ideation with stakeholders, field user research. Then design, prototyping, design system and delivery.",
     bio_p2:
@@ -87,7 +87,7 @@ const TRANSLATIONS = {
     page_title: 'À propos',
     role: 'Lead Product Designer · Paris',
     intro:
-      "Lead Product Designer, spécialisé dans les SaaS B2B, B2G et les interfaces métier complexes. Je cadre avec un PM, je livre avec un développeur, ou directement avec Claude Code et Figma MCP. Selon l’environnement, je conçois ou je tiens la pratique design d’une équipe.",
+      "Lead Product Designer, spécialisé dans les SaaS B2B, B2G et les interfaces métier complexes. Je cadre avec un PM, je livre avec un développeur, ou directement avec Claude Code et Figma MCP. Je conçois les parcours et je dirige la pratique design d’une équipe.",
     bio_p1:
       "Mon approche commence avant Figma : ateliers de vision avec la direction, cadrage du problème avec les équipes produit, idéation avec les parties prenantes, recherche utilisateur sur le terrain. Ensuite viennent la conception, le prototypage, le design system et la livraison.",
     bio_p2:

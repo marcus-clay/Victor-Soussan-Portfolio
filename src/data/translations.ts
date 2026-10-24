@@ -102,7 +102,7 @@ export const TRANSLATIONS = {
         "Build and coach a design team set up for success"
       ],
       p1: "I've been designing digital products for 15 years. I evolved from agency to product, through major media groups and hardware startups. I don't aim for 'beautiful', I aim for 'functional' and 'viable'.",
-      p2: "Depending on the environment, I design, or I take charge of the product design practice: the team, research, where design sits in delivery, the design system. AI is part of every stage, from framing to quality review.",
+      p2: "I design the journeys and I take charge of the product design practice: the team, research, where design sits in delivery, the design system. AI is part of every stage, from framing to quality review.",
       view_full_bio: "See my Full Journey",
       view_executive: "1-min Presentation",
       modal_title: "Biography and Journey",
@@ -502,7 +502,7 @@ export const TRANSLATIONS = {
         "Construire et accompagner une \u00e9quipe design pr\u00eate pour r\u00e9ussir"
       ],
       p1: "Je con\u00e7ois des produits num\u00e9riques depuis 15 ans. J\u2019ai \u00e9volu\u00e9 de l\u2019agence au produit, en passant par les grands groupes m\u00e9dias et les startups hardware. Je ne cherche pas \u00e0 faire du \u2018beau\u2019, je cherche \u00e0 faire du \u2018fonctionnel\u2019 et du \u2018viable\u2019.",
-      p2: "Selon l\u2019environnement, je con\u00e7ois ou je prends en charge la pratique de product design\u00a0: l\u2019\u00e9quipe, la recherche, la place du design dans la livraison, le design system. L\u2019IA intervient \u00e0 chaque \u00e9tape, du cadrage \u00e0 la recette.",
+      p2: "Je con\u00e7ois les parcours et je prends en charge la pratique de product design\u00a0: l\u2019\u00e9quipe, la recherche, la place du design dans la livraison, le design system. L\u2019IA intervient \u00e0 chaque \u00e9tape, du cadrage \u00e0 la recette.",
       view_full_bio: "Voir mon Parcours Complet",
       view_executive: "Pr\u00e9sentation en 1-min",
       modal_title: "Biographie et Parcours",

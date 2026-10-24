@@ -65,7 +65,7 @@ const TRANSLATIONS = {
       },
       {
         title: "Leadership & Organisation",
-        desc: "In some organisations, I take charge of the product design practice: the team, research, where design sits in the delivery cycle, the design system. I observe first, then introduce one adjustment at a time, only when someone has named the gap. At UNOWHY I hired, managed and mentored five designers over six years, and I now carry that responsibility at a professional information publisher.",
+        desc: "I take charge of the product design practice: the team, research, where design sits in the delivery cycle, the design system. At UNOWHY I hired, managed and mentored five designers over six years, and I now carry that responsibility at a professional information publisher.",
         deliverables: [
           "Team: hiring, workload and allocation of topics, budgets, reviews, pair handovers (one lead, one support)",
           "User research set up with the customer community: framed studies, interview guides, a guide for teams who have never run a study",
@@ -116,7 +116,7 @@ const TRANSLATIONS = {
       },
       {
         title: "Leadership et organisation",
-        desc: "Dans certaines organisations, je prends en charge la pratique de product design : l’équipe, la recherche, la place du design dans le cycle de livraison, le design system. J’observe d’abord, puis j’installe un ajustement à la fois, seulement quand quelqu’un a nommé le manque. Chez UNOWHY, j’ai recruté, managé et fait grandir cinq designers pendant six ans, et j’exerce aujourd’hui cette responsabilité dans un éditeur d’information professionnelle.",
+        desc: "Je prends en charge la pratique de product design : l’équipe, la recherche, la place du design dans le cycle de livraison, le design system. Chez UNOWHY, j’ai recruté, managé et fait grandir cinq designers pendant six ans, et j’exerce aujourd’hui cette responsabilité dans un éditeur d’information professionnelle.",
         deliverables: [
           "Équipe : recrutement, charge et répartition des sujets, budgets, évaluation, passations en binôme (un lead, un appui)",
           "Recherche utilisateur montée avec la communauté de clients : études cadrées, guides d’entretien, guide pour les équipes qui n’ont jamais mené d’étude",
