@@ -354,6 +354,15 @@ export const PROFILE_EXPERIENCE: ProfileExperience[] = [
 // Cartes de la section « Parcours » de la page À propos : une carte par employeur ou groupe d'expériences.
 export const PROFILE_ERAS: ProfileEra[] = [
   {
+    id: 'lead-ux',
+    period: { en: 'Sep 2026 - Present', fr: 'Sept 2026 - Aujourd’hui' },
+    title: { en: 'Lead UX France, professional information publisher', fr: 'Lead UX France, éditeur d’information professionnelle' },
+    description: {
+      en: 'I run the design practice and design on my own the journeys of a digital document library. I lead a team of two product designers (workload, budgets, reviews), set up user research with the customer community and carry design into the company’s quarterly planning. The first two months: observe, then log every decision with its reason.',
+      fr: 'Je tiens la pratique design et je conçois seul les parcours d’une bibliothèque documentaire numérique. J’anime une équipe de deux designers produit (charge, budgets, évaluation), je monte la recherche utilisateur avec la communauté de clients et je porte le design dans la planification trimestrielle de l’entreprise. Les deux premiers mois : observer, puis consigner chaque décision avec sa raison.',
+    },
+  },
+  {
     id: 'freelance',
     period: { en: '2025 - Present', fr: '2025 - Aujourd’hui' },
     title: { en: 'Victor Soussan Design', fr: 'Victor Soussan Design' },

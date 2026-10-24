@@ -65,13 +65,13 @@ const TRANSLATIONS = {
       },
       {
         title: "Leadership & Organisation",
-        desc: "I have built design teams from the ground up. At UNOWHY, I hired, managed, and mentored five designers over six years: annual reviews, mid-year check-ins, design challenges, and a culture built around critique and shared learning. At PagesJaunes, I introduced the weekly design review that became the team's core ritual.",
+        desc: "In some organisations, I take charge of the product design practice: the team, research, where design sits in the delivery cycle, the design system. I observe first, then introduce one adjustment at a time, only when someone has named the gap. At UNOWHY I hired, managed and mentored five designers over six years, and I now carry that responsibility at a professional information publisher.",
         deliverables: [
-          "Team building: hiring, onboarding, and structured performance reviews",
-          "Career development and mentoring for junior and mid-level designers",
-          "Design culture: peer critiques, design challenges, shared learning rituals",
-          "Stakeholder alignment across C-Level, Product, and Engineering",
-          "Cross-functional workshops: design thinking, product ideation, retrospectives"
+          "Team: hiring, workload and allocation of topics, budgets, reviews, pair handovers (one lead, one support)",
+          "User research set up with the customer community: framed studies, interview guides, a guide for teams who have never run a study",
+          "Design in the delivery cycle: quarterly planning, definitions of ready and done, UX quality acceptance",
+          "Platform coherence: a design system plan in batches, audit of specifications, accessibility rules",
+          "Working memory: a decision log with the reasons, workload tracking that does not duplicate the team’s tools"
         ]
       }
     ] as Pillar[],
@@ -116,13 +116,13 @@ const TRANSLATIONS = {
       },
       {
         title: "Leadership et organisation",
-        desc: "J’ai monté des équipes design de zéro. Chez UNOWHY, j’ai recruté, managé et fait grandir cinq designers pendant six ans : entretiens annuels, points de mi-année, défis de design et une culture fondée sur la critique et l’apprentissage partagé. Chez PagesJaunes, j’ai introduit la revue de design hebdomadaire, devenue le rituel central de l’équipe.",
+        desc: "Dans certaines organisations, je prends en charge la pratique de product design : l’équipe, la recherche, la place du design dans le cycle de livraison, le design system. J’observe d’abord, puis j’installe un ajustement à la fois, seulement quand quelqu’un a nommé le manque. Chez UNOWHY, j’ai recruté, managé et fait grandir cinq designers pendant six ans, et j’exerce aujourd’hui cette responsabilité dans un éditeur d’information professionnelle.",
         deliverables: [
-          "Constitution d’équipe : recrutement, intégration, entretiens d’évaluation structurés",
-          "Développement de carrière et mentorat, pour designers juniors et confirmés",
-          "Culture design : critiques entre pairs, défis de design, rituels d’apprentissage",
-          "Alignement des parties prenantes : direction, produit, ingénierie",
-          "Ateliers transverses : design thinking, idéation produit, rétrospectives"
+          "Équipe : recrutement, charge et répartition des sujets, budgets, évaluation, passations en binôme (un lead, un appui)",
+          "Recherche utilisateur montée avec la communauté de clients : études cadrées, guides d’entretien, guide pour les équipes qui n’ont jamais mené d’étude",
+          "Place du design dans la livraison : planification trimestrielle, critères de « prêt » et de « terminé », recette de qualité UX",
+          "Cohérence de plateforme : plan de design system par lots, audit des spécifications, règles d’accessibilité",
+          "Mémoire de travail : registre de décisions avec leur raison, suivi de la charge sans doubler les outils de l’équipe"
         ]
       }
     ] as Pillar[],
