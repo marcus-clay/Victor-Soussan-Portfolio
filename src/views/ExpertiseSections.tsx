@@ -12,6 +12,7 @@ type Language = 'en' | 'fr'
 interface Pillar {
   title: string
   desc: string
+  deliverables: string[]
 }
 
 const PILLAR_IDS = ['design-prototyping', 'product-strategy', 'design-ops', 'leadership']
@@ -31,18 +32,47 @@ const TRANSLATIONS = {
       {
         title: "Design & Prototyping",
         desc: "I design interfaces from first wireframe to production-ready screens, then prototype at high fidelity so decisions get made on real artifacts instead of assumptions. When the timeline is tight, I build functional MVPs directly: auth, database, GenAI integration, shipped to Vercel. At Toolkit.ac, this approach took a product from first concepts to 2,000 paying users.",
+        deliverables: [
+          "UX framing, UI design, micro-interactions, and motion",
+          "High-fidelity prototyping to validate ideas and align stakeholders before engineering commits",
+          "AI-assisted prototyping: Figma to deployed prototype via Claude Code and Figma MCP",
+          "Functional MVP development: auth, database, GenAI integration, shipped to Vercel",
+          "Mobile native (iOS/Android) and responsive web design",
+          "Product design in complex domains: B2B SaaS, EdTech, enterprise software, public services"
+        ]
       },
       {
         title: "Product Strategy",
         desc: "Before a single screen, I help teams agree on what they are building and why. I run workshops to surface assumptions, structure hypotheses, and align stakeholders around a shared direction. At beta.gouv for France VAE, ten user interviews and a two-day design thinking workshop reshaped the scope of the entire MVP before any design was produced.",
+        deliverables: [
+          "Feature scoping from 0 to 1, with roadmap contribution",
+          "Product vision clarification through key user journey mapping",
+          "Ideation and vision workshops with users and stakeholders",
+          "User research: interviews, observation sessions, synthesis into actionable insights",
+          "Accessibility strategy and inclusive UX standards"
+        ]
       },
       {
         title: "Design Ops",
         desc: "A design system is only valuable when the whole team uses it without friction. At UNOWHY, I built a unified system across five product brands that sped up delivery across the five SQOOL applications and made developer handoff predictable. The work was not just components: it was structure, shared language, and the rituals that keep it alive.",
+        deliverables: [
+          "Design systems built across multiple brands and product surfaces",
+          "Reusable component libraries with Figma tokens and documentation",
+          "Structured developer handoff: interaction specs, assets, annotation standards",
+          "Design-engineering rituals: weekly reviews, shared standards, alignment syncs",
+          "Figma workspace organization: templates, libraries, onboarding guides"
+        ]
       },
       {
         title: "Leadership & Organisation",
         desc: "I have built design teams from the ground up. At UNOWHY, I hired, managed, and mentored five designers over six years: annual reviews, mid-year check-ins, design challenges, and a culture built around critique and shared learning. At PagesJaunes, I introduced the weekly design review that became the team's core ritual.",
+        deliverables: [
+          "Team building: hiring, onboarding, and structured performance reviews",
+          "Career development and mentoring for junior and mid-level designers",
+          "Design culture: peer critiques, design challenges, shared learning rituals",
+          "Stakeholder alignment across C-Level, Product, and Engineering",
+          "Cross-functional workshops: design thinking, product ideation, retrospectives"
+        ]
       }
     ] as Pillar[],
     trusted_by: "Trusted by leading companies",
@@ -51,20 +81,49 @@ const TRANSLATIONS = {
     domains_title: "Ce que je peux prendre en charge",
     pillars: [
       {
-        title: "Design & Prototypage",
-        desc: "Je conçois les interfaces du premier wireframe à l'écran prêt pour l'implémentation, puis je les prototype en haute fidélité pour que les décisions s'appuient sur des artefacts concrets plutôt que sur des suppositions. Quand le calendrier est serré, je construis des MVP fonctionnels directement : authentification, base de données, intégration GenAI, déployés sur Vercel. Chez Toolkit.ac, cette approche a conduit un produit du concept à 2 000 utilisateurs payants.",
+        title: "Design et prototypage",
+        desc: "Je conçois les interfaces, du premier wireframe jusqu’à l’écran prêt à développer, puis je les prototype en haute fidélité : les décisions se prennent sur du concret plutôt que sur des suppositions. Quand le calendrier est serré, je construis directement des MVP fonctionnels (authentification, base de données, IA générative), déployés sur Vercel. Chez Toolkit.ac, cette méthode a mené un produit du concept à 2 000 utilisateurs payants.",
+        deliverables: [
+          "Cadrage UX, design UI, micro-interactions et motion",
+          "Prototypage haute fidélité pour valider les idées et aligner les parties prenantes avant que l’ingénierie ne s’engage",
+          "Prototypage assisté par l’IA : de Figma à un prototype déployé, avec Claude Code et Figma MCP",
+          "MVP fonctionnel : authentification, base de données, IA générative, déployé sur Vercel",
+          "Design mobile natif (iOS, Android) et web adaptatif",
+          "Produits complexes : SaaS B2B, EdTech, logiciels métier, services publics"
+        ]
       },
       {
-        title: "Stratégie Produit",
-        desc: "Avant le premier écran, j'aide les équipes à s'aligner sur ce qu'elles construisent et pourquoi. J'anime des ateliers pour faire émerger les hypothèses, structurer le scope et aligner les parties prenantes sur une direction commune. Pour France VAE chez beta.gouv, dix entretiens utilisateurs et un atelier design thinking de deux jours ont reconfiguré le périmètre de l'ensemble du MVP avant la moindre production design.",
+        title: "Stratégie produit",
+        desc: "Avant le premier écran, j’aide les équipes à s’accorder sur ce qu’elles construisent et pourquoi. J’anime des ateliers pour faire émerger les hypothèses, délimiter le périmètre et rassembler les parties prenantes autour d’une même direction. Pour France VAE (beta.gouv), dix entretiens utilisateurs et deux jours d’atelier de design thinking ont redéfini le périmètre de tout le MVP avant la moindre maquette.",
+        deliverables: [
+          "Cadrage du périmètre, du 0 au 1, et contribution à la feuille de route",
+          "Vision produit clarifiée à partir des parcours clés",
+          "Ateliers de vision et d’idéation avec utilisateurs et parties prenantes",
+          "Recherche utilisateur : entretiens, observations, synthèse en enseignements exploitables",
+          "Stratégie d’accessibilité et standards d’UX inclusive"
+        ]
       },
       {
         title: "Design Ops",
-        desc: "Un design system n'a de valeur que lorsque toute l'équipe l'utilise sans friction. Chez UNOWHY, j'ai construit un système unifié sur cinq marques produit qui a accéléré la livraison sur les cinq applications SQOOL et rendu le handoff développeur prévisible. Le travail n'était pas qu'une bibliothèque de composants : c'était une structure, un langage partagé et les rituels qui le font vivre.",
+        desc: "Un design system ne vaut que si toute l’équipe l’utilise sans friction. Chez UNOWHY, j’ai construit un système commun à cinq marques, qui a accéléré la livraison des cinq applications SQOOL et rendu la passation aux développeurs prévisible. Le travail ne se limitait pas à une bibliothèque de composants : il fallait une structure, un langage commun et les rituels qui les font vivre.",
+        deliverables: [
+          "Design systems partagés entre plusieurs marques et produits",
+          "Bibliothèques de composants réutilisables, avec tokens Figma et documentation",
+          "Passation aux développeurs structurée : spécifications d’interaction, ressources, normes d’annotation",
+          "Rituels design et ingénierie : revues hebdomadaires, standards partagés, points d’alignement",
+          "Espace Figma organisé : modèles, bibliothèques, guides d’accueil"
+        ]
       },
       {
-        title: "Leadership & Organisation",
-        desc: "J'ai construit des équipes design de zéro. Chez UNOWHY, j'ai recruté, managé et fait grandir cinq designers sur six ans : entretiens annuels, points mi-année, design challenges et une culture construite autour de la critique et de l'apprentissage partagé. Chez PagesJaunes, j'ai introduit la design review hebdomadaire qui est devenue le rituel central de l'équipe.",
+        title: "Leadership et organisation",
+        desc: "J’ai monté des équipes design de zéro. Chez UNOWHY, j’ai recruté, managé et fait grandir cinq designers pendant six ans : entretiens annuels, points de mi-année, défis de design et une culture fondée sur la critique et l’apprentissage partagé. Chez PagesJaunes, j’ai introduit la revue de design hebdomadaire, devenue le rituel central de l’équipe.",
+        deliverables: [
+          "Constitution d’équipe : recrutement, intégration, entretiens d’évaluation structurés",
+          "Développement de carrière et mentorat, pour designers juniors et confirmés",
+          "Culture design : critiques entre pairs, défis de design, rituels d’apprentissage",
+          "Alignement des parties prenantes : direction, produit, ingénierie",
+          "Ateliers transverses : design thinking, idéation produit, rétrospectives"
+        ]
       }
     ] as Pillar[],
     trusted_by: "Ils me font confiance",
@@ -105,6 +164,7 @@ export interface Domain {
   title: string
   claim: string
   proof: string
+  deliverables: string[]
   projects: { id: string; title: string }[]
 }
 
@@ -118,6 +178,7 @@ export function getDomains(lang: Language): Domain[] {
     id: PILLAR_IDS[i],
     title: pillar.title,
     ...splitLead(pillar.desc),
+    deliverables: pillar.deliverables,
     projects: PILLAR_PROJECTS[i]
       .map((id) => all.find((p) => p.id === id))
       .filter((p): p is NonNullable<typeof p> => Boolean(p))

@@ -41,7 +41,7 @@ const TRANSLATIONS = {
     page_title: 'About',
     role: 'Lead Product Designer \u00b7 Paris',
     intro:
-      "Lead Product Designer, 15 years of experience in B2B and B2G SaaS and complex business interfaces. I frame with a PM and deliver with a developer, or directly with Claude Code and Figma MCP.",
+      "Lead Product Designer working on B2B and B2G SaaS and complex business interfaces. I frame with a PM and deliver with a developer, or directly with Claude Code and Figma MCP.",
     bio_p1:
       "My approach starts before Figma: vision workshops with leadership, problem framing with product teams, ideation with stakeholders, field user research. Then design, prototyping, design system and delivery.",
     bio_p2:
@@ -85,53 +85,54 @@ const TRANSLATIONS = {
     },
   },
   fr: {
-    page_title: '\u00c0 propos',
-    role: 'Lead Product Designer \u00b7 Paris',
+    page_title: 'À propos',
+    role: 'Lead Product Designer · Paris',
     intro:
-      "Lead Product Designer, 15 ans d'expérience en SaaS B2B, B2G et interfaces métier complexes. Je cadre avec un PM, je livre avec un développeur, ou directement avec Claude Code et Figma MCP.",
+      "Lead Product Designer, spécialisé dans les SaaS B2B, B2G et les interfaces métier complexes. Je cadre avec un PM, je livre avec un développeur, ou directement avec Claude Code et Figma MCP.",
     bio_p1:
-      "Mon approche commence avant Figma : ateliers de vision avec la direction, cadrage du problème avec les équipes produit, idéation avec les parties prenantes, recherche utilisateur terrain. Ensuite : conception, prototypage, design system, livraison.",
+      "Mon approche commence avant Figma : ateliers de vision avec la direction, cadrage du problème avec les équipes produit, idéation avec les parties prenantes, recherche utilisateur sur le terrain. Ensuite viennent la conception, le prototypage, le design system et la livraison.",
     bio_p2:
-      "Références : la suite SQOOL (7 applications, 500 000 élèves, équipe de 5 designers), les outils publishers de Dailymotion (8 000+ utilisateurs, Paris et New York), France VAE pour beta.gouv, les applications PagesJaunes (22 millions de téléchargements).",
+      "Références : la suite SQOOL (7 applications, 500 000 élèves, une équipe de 5 designers), les outils pour les éditeurs de Dailymotion (8 000+ utilisateurs, entre Paris et New York), France VAE pour beta.gouv, les applications PagesJaunes (22 millions de téléchargements).",
     quote_text:
-      'Victor allie une cr\u00e9ativit\u00e9 d\u00e9bordante \u00e0 une rigueur de travail impressionnante.',
+      'Victor allie une créativité débordante à une rigueur de travail impressionnante.',
     quote_author: 'Charlotte Rifflet, CPO UNOWHY',
     career_title: 'Parcours',
     eras: aboutEras('fr'),
     practice_title: 'Pratique actuelle',
     practice_text:
-      "Depuis d\u00e9but 2025, j'int\u00e8gre l'IA \u00e0 chaque \u00e9tape de mon processus de conception. Claude Code au quotidien pour la recherche, la r\u00e9daction, le prototypage et le d\u00e9ploiement. Figma MCP pour lire les design tokens et les specs composants directement dans l'environnement de d\u00e9veloppement. Ce workflow r\u00e9duit la distance entre une id\u00e9e et quelque chose d'utilisable.",
+      "Depuis début 2025, j’intègre l’IA à chaque étape de mon processus de conception. Claude Code au quotidien pour la recherche, la rédaction, le prototypage et le déploiement. Figma MCP pour lire les design tokens et les spécifications des composants directement dans l’environnement de développement. Cette façon de travailler réduit la distance entre une idée et quelque chose d’utilisable.",
     education_title: 'Formation',
-    education_line1: 'Master Communication & Multim\u00e9dia, ISCOM Paris (2001 \u00e0 2005)',
+    education_line1: 'Master Communication & Multimédia, ISCOM Paris (2001 à 2005)',
     education_line2: 'UX/UI Design & Prototypage, UXcel/Udemy (2021)',
-    toolkit_title: 'Bo\u00eete \u00e0 outils',
+    toolkit_title: 'Boîte à outils',
     toolkit_items: 'Figma, Notion, Linear, VS Code, Claude Code, Framer Motion, Google Slides, Midjourney',
-    cta_text: 'Envie de travailler ensemble ?',
+    cta_text: 'Envie de travailler ensemble ?',
     cta_email: 'victorsoussan@gmail.com',
     availability: 'Disponible pour de nouveaux projets',
     linkedin_label: 'Parcours complet et recommandations',
-    cv_label: 'Consulter ou t\u00e9l\u00e9charger le CV',
-    testimonials_link: 'Voir tous les t\u00e9moignages',
+    cv_label: 'Lire ou télécharger le CV',
+    testimonials_link: 'Voir tous les témoignages',
     resources_section_title: 'Ressources',
-    resources_section_desc: 'Templates, checklists et documents de processus que j\u2019utilise au quotidien.',
-    resources_link: 'Guides, articles et ressources compl\u00e9mentaires',
+    resources_section_desc: 'Modèles, checklists et documents de méthode que j’utilise au quotidien.',
+    resources_link: 'Tous les guides et articles',
     more: 'Lire la suite',
-    less: 'R\u00e9duire',
-    career_lead: 'Des agences aux produits m\u00e9tier : le fil reste la conception d\u2019outils denses en donn\u00e9es.',
-    career_periods: 'Les grandes p\u00e9riodes',
-    career_steps: '\u00c9tape par \u00e9tape',
-    era_more: 'Voir le d\u00e9tail',
-    era_less: 'R\u00e9duire',
-    practice_flow: 'Un flux de travail assist\u00e9',
+    less: 'Voir moins',
+    career_lead: 'Des agences aux produits métier : le fil reste la conception d’outils denses en données.',
+    career_periods: 'Les grandes périodes',
+    career_steps: 'Étape par étape',
+    era_more: 'Voir le détail',
+    era_less: 'Masquer le détail',
+    practice_flow: 'Un flux de travail assisté',
     contact_email: 'E-mail',
-    contact_copy: 'Copier l\u2019adresse',
-    contact_copied: 'Copi\u00e9',
+    contact_copy: 'Copier l’adresse',
+    contact_copied: 'Copié',
     carousels: {
-      eras: { track: '\u00c9tapes du parcours, de la plus r\u00e9cente \u00e0 la plus ancienne', prev: '\u00c9tape pr\u00e9c\u00e9dente', next: '\u00c9tape suivante' },
-      resources: { track: 'Ressources', prev: 'Ressource pr\u00e9c\u00e9dente', next: 'Ressource suivante' },
+      eras: { track: 'Étapes du parcours, de la plus récente à la plus ancienne', prev: 'Étape précédente', next: 'Étape suivante' },
+      resources: { track: 'Ressources', prev: 'Ressource précédente', next: 'Ressource suivante' },
     },
   },
 }
+
 
 // ---------------------------------------------------------------------------
 // Metrics
@@ -145,10 +146,10 @@ const METRICS = {
     { value: '50+', label: 'apps shipped' },
   ],
   fr: [
-    { value: '15+', label: 'ann\u00e9es' },
-    { value: '500K+', label: 'utilisateurs impact\u00e9s' },
-    { value: '5', label: 'designers manag\u00e9s' },
-    { value: '50+', label: 'apps livr\u00e9es' },
+    { value: '15+', label: 'années' },
+    { value: '500K+', label: 'utilisateurs concernés' },
+    { value: '5', label: 'designers encadrés' },
+    { value: '50+', label: 'applications livrées' },
   ],
 }
 

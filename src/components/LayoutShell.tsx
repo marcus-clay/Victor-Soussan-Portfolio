@@ -33,7 +33,7 @@ export default function LayoutShell({
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:top-4 focus:left-4 focus:bg-white focus:text-black focus:px-4 focus:py-2 focus:rounded"
       >
-        Skip to content
+        {lang === 'fr' ? 'Aller au contenu' : 'Skip to content'}
       </a>
       <ImageFadeIn />
       {nav}

@@ -71,9 +71,9 @@ function ArrowLink({ href, children, draggable }: { href: string; children: Reac
   )
 }
 
-const DISCLOSURE: Record<Language, { more: string; less: string; week: string; weekHide: string }> = {
-  fr: { more: 'Lire la suite', less: 'Réduire', week: 'Voir une semaine type', weekHide: 'Masquer la semaine type' },
-  en: { more: 'Read more', less: 'Show less', week: 'See a typical week', weekHide: 'Hide the typical week' },
+const DISCLOSURE: Record<Language, { more: string; less: string; week: string; weekHide: string; deliverables: string; deliverablesHide: string }> = {
+  fr: { more: 'Lire la suite', less: 'Voir moins', week: 'Voir une semaine type', weekHide: 'Masquer la semaine type', deliverables: 'Voir les livrables', deliverablesHide: 'Masquer les livrables' },
+  en: { more: 'Read more', less: 'Show less', week: 'See a typical week', weekHide: 'Hide the typical week', deliverables: 'See the deliverables', deliverablesHide: 'Hide the deliverables' },
 }
 
 const CAROUSEL_LABELS: Record<'artefacts' | 'domains', Record<Language, { track: string; prev: string; next: string }>> = {
@@ -385,6 +385,18 @@ function Domains({ lang }: { lang: Language }) {
             <h3 className="text-title-3 text-gray-900">{d.title}</h3>
             <p className="mt-3 text-base text-gray-900">{d.claim}</p>
             {d.proof && <p className="mt-3 text-sm text-gray-500">{d.proof}</p>}
+            <Disclosure className="mt-4" open={DISCLOSURE[lang].deliverables} close={DISCLOSURE[lang].deliverablesHide}>
+              <ul className="disclosure-body mt-4 space-y-2">
+                {d.deliverables.map((item) => (
+                  <li
+                    key={item}
+                    className="relative pl-4 text-sm text-gray-600 before:absolute before:left-0 before:top-[9px] before:h-1 before:w-1 before:rounded-full before:bg-gray-300 before:content-['']"
+                  >
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </Disclosure>
             <div className="mt-auto flex flex-wrap gap-x-5 pt-5">
               {d.projects.map((project) => (
                 <ArrowLink key={project.id} href={`/${lang}/project/${project.id}`} draggable={false}>
