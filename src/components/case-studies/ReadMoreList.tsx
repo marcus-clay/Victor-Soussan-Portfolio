@@ -68,10 +68,16 @@ const ReadMoreList: React.FC<ReadMoreListProps> = ({
         transition={
           prefersReduced
             ? { duration: 0 }
-            : {
-                height: { duration: 0.22, ease: EASE_OUT },
-                opacity: { duration: 0.18, ease: EASE_OUT },
-              }
+            : isExpanded
+              ? {
+                  height: { duration: 0.22, ease: EASE_OUT },
+                  opacity: { duration: 0.18, ease: EASE_OUT },
+                }
+              : {
+                  // Closing answers faster than opening (about 75% of the enter duration)
+                  height: { duration: 0.17, ease: EASE_OUT },
+                  opacity: { duration: 0.12, ease: EASE_OUT },
+                }
         }
         style={{ overflow: 'hidden' }}
       >

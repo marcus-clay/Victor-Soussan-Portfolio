@@ -278,7 +278,7 @@ export default function Nav({ lang }: { lang: Lang }) {
 
             <button
               className="relative p-2 rounded-full hover:bg-black/[0.04] active:scale-[0.95]"
-              style={{ transition: 'background-color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
+              style={{ transition: 'background-color 150ms ease, color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
               onClick={toggleMenu}
               aria-label={lang === 'fr' ? (isMobileMenuOpen ? 'Fermer le menu' : 'Ouvrir le menu') : isMobileMenuOpen ? 'Close menu' : 'Open menu'}
               aria-expanded={isMobileMenuOpen}
@@ -289,9 +289,9 @@ export default function Nav({ lang }: { lang: Lang }) {
                   {isMobileMenuOpen ? (
                     <motion.span
                       key="x"
-                      initial={{ opacity: 0, rotate: -45, scale: 0.8 }}
-                      animate={{ opacity: 1, rotate: 0, scale: 1 }}
-                      exit={{ opacity: 0, rotate: 45, scale: 0.8 }}
+                      initial={{ opacity: 0, rotate: -45, scale: 0.8, filter: 'blur(2px)' }}
+                      animate={{ opacity: 1, rotate: 0, scale: 1, filter: 'blur(0px)' }}
+                      exit={{ opacity: 0, rotate: 45, scale: 0.8, filter: 'blur(2px)' }}
                       transition={{ duration: 0.15, ease: EASE_OUT }}
                       style={{ display: 'flex', position: 'absolute', inset: 0, alignItems: 'center', justifyContent: 'center' }}
                     >
@@ -300,9 +300,9 @@ export default function Nav({ lang }: { lang: Lang }) {
                   ) : (
                     <motion.span
                       key="menu"
-                      initial={{ opacity: 0, rotate: 45, scale: 0.8 }}
-                      animate={{ opacity: 1, rotate: 0, scale: 1 }}
-                      exit={{ opacity: 0, rotate: -45, scale: 0.8 }}
+                      initial={{ opacity: 0, rotate: 45, scale: 0.8, filter: 'blur(2px)' }}
+                      animate={{ opacity: 1, rotate: 0, scale: 1, filter: 'blur(0px)' }}
+                      exit={{ opacity: 0, rotate: -45, scale: 0.8, filter: 'blur(2px)' }}
                       transition={{ duration: 0.15, ease: EASE_OUT }}
                       style={{ display: 'flex', position: 'absolute', inset: 0, alignItems: 'center', justifyContent: 'center' }}
                     >
