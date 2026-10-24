@@ -80,6 +80,12 @@ const CENTRED = 0.6
 
 /** How long the video takes to fade in and out over the picture */
 const FADE_MS = 300
+/** Opacity crossfade: symmetric, so neither the video nor the picture pops at either end */
+const CROSSFADE_EASE = 'cubic-bezier(0.45, 0, 0.55, 1)'
+/** Hover zoom when the caller does not pass its own curve (same as the cards' ease-out) */
+const MOVE_EASE = 'cubic-bezier(0.23, 1, 0.32, 1)'
+/** Softening applied while the video dissolves back into the picture */
+const EXIT_BLUR_PX = 2
 
 interface HeroLoopProps {
   src: string
@@ -291,11 +297,22 @@ export default function HeroLoop({ src, mediaClassName, mediaStyle, mode = 'prev
           }}
           onError={() => setFailed(true)}
           className={`absolute inset-0 z-[1] ${mediaClassName} ${shown ? 'opacity-100' : 'opacity-0'}`}
-          // The picture's hover zoom and the fade share one transition, so the video moves like the picture
+          // The picture's hover zoom and the fade share one duration, so the video moves like the picture.
+          // Each property gets its own curve: the opacity crossfade is symmetric (a strong ease-out would
+          // show the video almost at once), the hover zoom keeps the picture's curve. The blur only runs on
+          // the way out, when a mid-loop frame dissolves into the still picture: it lets the eye read one
+          // object changing instead of two overlapping. Coming in the first frame is the picture's own
+          // framing (see HeroVideo), so it needs no mask and the picture stays crisp.
           style={{
             ...mediaStyle,
-            transitionProperty: 'opacity, transform',
+            filter: shown ? 'blur(0px)' : `blur(${EXIT_BLUR_PX}px)`,
+            transitionProperty: shown ? 'opacity, transform' : 'opacity, transform, filter',
             transitionDuration: `${FADE_MS}ms`,
+            transitionTimingFunction: [
+              CROSSFADE_EASE,
+              mediaStyle?.transitionTimingFunction ?? MOVE_EASE,
+              ...(shown ? [] : [CROSSFADE_EASE]),
+            ].join(', '),
           }}
         />
       )}
