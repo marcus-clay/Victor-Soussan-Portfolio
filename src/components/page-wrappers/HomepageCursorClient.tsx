@@ -398,7 +398,7 @@ export default function HomepageCursorClient({ lang }: Props) {
                     letterSpacing: '0.05em',
                     textTransform: 'uppercase',
                   }}>
-                    {project.role} · {project.period}
+                    {project.role}
                   </div>
 
                   <div style={{
