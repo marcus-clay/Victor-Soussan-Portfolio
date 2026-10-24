@@ -19,6 +19,14 @@
 #
 # Only one refresh runs at a time (lock in /tmp), so parallel conversations
 # can all call this same script.
+#
+# The last report (date, status, merged and ignored sources) is also written to
+#   <repo>/.git/preview-report.txt
+# so any conversation can read it without running the script again.
+#
+# PREVIEW_SKIP="name1 name2" leaves worktrees out of this run (for example one
+# whose branch breaks the build), given as the folder name without the
+# "Victor-Soussan-Portfolio-" prefix, e.g. PREVIEW_SKIP="cursor".
 set -euo pipefail
 
 REPO="${REPO:-/Users/condamine/Documents/GitHub/Victor-Soussan-Portfolio}"
@@ -27,6 +35,7 @@ PORT="${PORT:-3002}"
 BRANCH="integration/3002"
 EXCLUDE_NAMES=("$(basename "$INTEG")" "Victor-Soussan-Portfolio-v2")
 LOCK=/tmp/refresh-preview.lock
+REPORT="$REPO/.git/preview-report.txt"
 DRY=0
 [ "${1:-}" = "--dry" ] && DRY=1
 
@@ -75,6 +84,9 @@ snapshot() {
 is_excluded() {
   local n="$1" e
   for e in "${EXCLUDE_NAMES[@]}"; do [ "$n" = "$e" ] && return 0; done
+  for e in ${PREVIEW_SKIP:-}; do
+    { [ "$n" = "$e" ] || [ "$n" = "Victor-Soussan-Portfolio-$e" ]; } && return 0
+  done
   return 1
 }
 
@@ -101,6 +113,17 @@ for wt in "${WTS[@]}"; do
 
   if git merge-base --is-ancestor "$sha" HEAD; then
     NOOP+=("$name [$label]")
+    continue
+  fi
+
+  # A worktree left on an old HEAD whose files were later committed to the base
+  # (same tree as a commit of the base history) has nothing left to contribute.
+  # Merging it against its stale HEAD would only produce add/add conflicts.
+  tree=$(git rev-parse "${sha}^{tree}")
+  # Variable, not a pipe: with pipefail, grep -q closing the pipe makes rev-list fail on SIGPIPE.
+  base_trees=$(git rev-list "$BASE" --format=%T)
+  if grep -qx "$tree" <<<"$base_trees"; then
+    NOOP+=("$name [$label] (deja dans $BASE, arbre identique)")
     continue
   fi
 
@@ -135,9 +158,16 @@ report() {
   return 0
 }
 
+# Print the report and keep a copy for the other conversations.
+finish() {
+  local status="$1"
+  report
+  { echo "preview-report $(date '+%Y-%m-%d %H:%M:%S') statut=$status"; report; } > "$REPORT"
+}
+
 if [ "$DRY" = 1 ]; then
   echo "Mode --dry : aucun build, aucun redemarrage."
-  report
+  finish dry
   exit 0
 fi
 
@@ -154,7 +184,7 @@ if ! npm run build > .preview-build.log 2>&1; then
   tail -40 .preview-build.log
   echo
   echo "BUILD ECHOUE. Le serveur actuel sur $PORT est conserve."
-  report
+  finish build-echoue
   exit 1
 fi
 
@@ -185,6 +215,7 @@ for _ in $(seq 1 30); do
   [ "$code" = 200 ] && break
   sleep 1
 done
-report
+finish "ok-http-$code"
 echo
 echo "http://localhost:$PORT  (HTTP $code)"
+echo "Rapport enregistre dans $REPORT"
