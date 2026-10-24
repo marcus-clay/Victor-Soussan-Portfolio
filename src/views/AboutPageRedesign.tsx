@@ -41,7 +41,7 @@ const TRANSLATIONS = {
     page_title: 'About',
     role: 'Lead Product Designer \u00b7 Paris',
     intro:
-      "Lead Product Designer working on B2B and B2G SaaS and complex business interfaces. I frame with a PM and deliver with a developer, or directly with Claude Code and Figma MCP. I design the journeys and I lead a team's design practice.",
+      "Lead Product Designer working on B2B and B2G SaaS and complex business interfaces. I frame with a PM and deliver with a developer, and I prototype myself when the question calls for it. I design the journeys and I lead a team's design practice.",
     bio_p1:
       "My approach starts before Figma: vision workshops with leadership, problem framing with product teams, ideation with stakeholders, field user research. Then design, prototyping, design system and delivery.",
     bio_p2:
@@ -53,7 +53,7 @@ const TRANSLATIONS = {
     eras: aboutEras('en'),
     practice_title: 'Current Practice',
     practice_text:
-      "Since early 2025, I integrate AI into every stage of my design process. Claude Code as a daily partner for research, writing, prototyping, and shipping production code. Figma MCP to read design tokens and component specs directly into the development environment. This workflow compresses the distance between an idea and something people can use. Where data security requires it, I propose a usage framework with the team: no customer data, human review, every case measured.",
+      "Since early 2025, AI has been part of my toolkit: meeting and interview syntheses, user research reports, decks that follow the brand guidelines, task and project tracking, production in Figma (Figma Console MCP), prototyping (Claude Code). Most of the job happens with people: running research and handing it over to the teams, setting up methods, keeping the follow-up, designing at several levels of fidelity. Where data security requires it, I propose a usage framework: no customer data, human review, every case measured.",
     education_title: 'Education',
     education_line1: 'Master Communication & Multimedia, ISCOM Paris (2001 to 2005)',
     education_line2: 'UX/UI Design & Prototyping, UXcel/Udemy (2021)',
@@ -87,7 +87,7 @@ const TRANSLATIONS = {
     page_title: 'À propos',
     role: 'Lead Product Designer · Paris',
     intro:
-      "Lead Product Designer, spécialisé dans les SaaS B2B, B2G et les interfaces métier complexes. Je cadre avec un PM, je livre avec un développeur, ou directement avec Claude Code et Figma MCP. Je conçois les parcours et je dirige la pratique design d’une équipe.",
+      "Lead Product Designer, spécialisé dans les SaaS B2B, B2G et les interfaces métier complexes. Je cadre avec un PM, je livre avec un développeur, et je prototype moi-même quand la question l’exige. Je conçois les parcours et je dirige la pratique design d’une équipe.",
     bio_p1:
       "Mon approche commence avant Figma : ateliers de vision avec la direction, cadrage du problème avec les équipes produit, idéation avec les parties prenantes, recherche utilisateur sur le terrain. Ensuite viennent la conception, le prototypage, le design system et la livraison.",
     bio_p2:
@@ -99,7 +99,7 @@ const TRANSLATIONS = {
     eras: aboutEras('fr'),
     practice_title: 'Pratique actuelle',
     practice_text:
-      "Depuis début 2025, j’intègre l’IA à chaque étape de mon processus de conception. Claude Code au quotidien pour la recherche, la rédaction, le prototypage et le déploiement. Figma MCP pour lire les design tokens et les spécifications des composants directement dans l’environnement de développement. Cette façon de travailler réduit la distance entre une idée et quelque chose d’utilisable. Là où la sécurité des données l’impose, je propose un cadre d’usage avec l’équipe : aucune donnée client, relecture humaine, chaque cas mesuré.",
+      "Depuis début 2025, l’IA fait partie de mon outillage : synthèses de réunions et d’entretiens, rapports de recherche utilisateur, decks à la charte, suivi des tâches et des projets, production dans Figma (Figma Console MCP), prototypage (Claude Code). L’essentiel du métier se joue avec les gens : animer la recherche et la passer aux équipes, installer les méthodes, tenir le suivi, dessiner à plusieurs niveaux de fidélité. Là où la sécurité des données l’impose, je propose un cadre d’usage : aucune donnée client, relecture humaine, chaque cas mesuré.",
     education_title: 'Formation',
     education_line1: 'Master Communication & Multimédia, ISCOM Paris (2001 à 2005)',
     education_line2: 'UX/UI Design & Prototypage, UXcel/Udemy (2021)',
