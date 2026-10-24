@@ -99,7 +99,6 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
       ],
       metrics: [
         { value: '30 jours', label: 'entre la décision de reconstruire (15 juin) et la sortie sur les stores (15 juillet)' },
-        { value: '4,5 / 5', label: 'de note moyenne sur les 17 avis écrits de la nouvelle app, contre 3,6 sur les 5 de l’ancienne' },
         { value: '97 %', label: 'des patients échouaient sur l’écran de mutuelle, retiré du tunnel' },
       ],
     },
@@ -130,7 +129,6 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
           ],
           metrics: [
             { value: '30 jours', label: 'entre la décision de reconstruire (15 juin) et la sortie sur les stores (15 juillet)' },
-            { value: '4,5 / 5', label: 'de note moyenne sur les 17 avis écrits de la nouvelle app, contre 3,6 sur les 5 de l’ancienne' },
             { value: '97 %', label: 'des patients échouaient sur l’écran de mutuelle, retiré du tunnel' },
           ],
         },
@@ -340,7 +338,6 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
       ],
       metrics: [
         { value: '30 days', label: 'between the decision to rebuild (June 15) and the store release (July 15)' },
-        { value: '4.5 / 5', label: 'average rating across the 17 written reviews of the new app, against 3.6 for the 5 of the old one' },
         { value: '97%', label: 'of patients failed on the health insurance screen, removed from the funnel' },
       ],
     },
@@ -371,7 +368,6 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
           ],
           metrics: [
             { value: '30 days', label: 'between the decision to rebuild (June 15) and the store release (July 15)' },
-            { value: '4.5 / 5', label: 'average rating across the 17 written reviews of the new app, against 3.6 for the 5 of the old one' },
             { value: '97%', label: 'of patients failed on the health insurance screen, removed from the funnel' },
           ],
         },

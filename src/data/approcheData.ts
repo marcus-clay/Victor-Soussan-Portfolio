@@ -16,8 +16,8 @@ export const HERO: Bi<{ title: string; statement: string; lead: string; cta: { l
   fr: {
     title: 'Approche',
     statement: 'Approche',
-    lead: 'Je pose un cadre là où il n’y en a pas, j’organise la collaboration et la recherche autour, puis je monte en fidélité à mesure que la complexité devient lisible.',
-    cta: { label: 'Parler de votre contexte', href: '/contact' },
+    lead: 'Je pose un cadre là où il n’y en a pas, j’organise la recherche et le travail en commun qui l’entourent, puis j’affine les maquettes à mesure que le sujet devient lisible.',
+    cta: { label: 'Parlons de votre contexte', href: '/contact' },
   },
   en: {
     title: 'Approach',
@@ -228,7 +228,7 @@ export const ACTS: Act[] = [
       },
       {
         src: '/images/connect/connect_specifications_implem_01-scaled.webp',
-        label: { en: 'Specs for the developers', fr: 'Specs pour les développeurs' },
+        label: { en: 'Specs for the developers', fr: 'Spécifications pour les développeurs' },
       },
     ],
     proof: {
@@ -260,8 +260,8 @@ export const SITUATIONS_COPY: Bi<{
 }> = {
   fr: {
     title: 'Ce que je fais change avec la maturité de l’équipe',
-    intro: 'Les équipes que je rejoins n’ont ni la même culture produit ni la même culture design. Ce que je porte et ce que je produis s’adaptent à leur point de départ.',
-    columns: { situation: 'Situation', role: 'Ce que je porte', outputs: 'Ce que je produis' },
+    intro: 'Les équipes que je rejoins n’ont ni la même culture produit ni la même culture design. Mon rôle et ce que je produis s’adaptent à leur point de départ.',
+    columns: { situation: 'Situation', role: 'Mon rôle', outputs: 'Ce que je produis' },
     proofLink: 'Voir',
   },
   en: {
@@ -379,9 +379,9 @@ export const PAGE_STRUCTURE: Bi<{
       { id: 'clients', label: 'Références' },
       { id: 'contact', label: 'Contact' },
     ],
-    situationsDiagram: 'Mon rôle se déplace avec la maturité',
+    situationsDiagram: 'Mon rôle selon la maturité de l’équipe',
     situationsTable: 'Trois points de départ',
-    fidelity: 'La fidélité monte avec la lisibilité',
+    fidelity: 'On précise à mesure que le sujet s’éclaircit',
     documents: 'Des documents réels',
     prototype: 'Un prototype quand la question l’exige',
     client: 'Dans les mots d’un client',
@@ -419,7 +419,7 @@ export const PAGE_STRUCTURE: Bi<{
 
 export const FIDELITY_DIAGRAM: Bi<{ title: string; desc: string; stages: [string, string, string]; curve: string }> = {
   fr: {
-    title: 'La fidélité monte à mesure que la complexité devient lisible',
+    title: 'Le niveau de détail monte à mesure que le sujet s’éclaircit',
     desc: 'Une courbe qui monte de l’atelier brut aux wireframes, puis aux spécifications.',
     stages: ['Atelier', 'Wireframes', 'Specs'],
     curve: 'Fidélité',
@@ -434,7 +434,7 @@ export const FIDELITY_DIAGRAM: Bi<{ title: string; desc: string; stages: [string
 
 export const TRACKS_DIAGRAM: Bi<{ title: string; desc: string; build: string; evaluate: string }> = {
   fr: {
-    title: 'Discovery et delivery tournent en parallèle',
+    title: 'Exploration et livraison avancent en parallèle',
     desc: 'Deux rangées décalées d’un cycle. Pendant que je construis l’artefact suivant, l’équipe évalue le précédent.',
     build: 'Je construis un artefact testable',
     evaluate: 'L’équipe évalue le précédent',
@@ -490,9 +490,9 @@ export const BEFORE_SCREEN: Bi<{
   fr: {
     title: 'Avant l’écran, des documents de travail',
     tagline: 'Le gros du travail se fait avant l’écran, dans des documents que toute l’équipe peut relire et discuter.',
-    caption: 'Du plus brut au plus abouti : la fidélité monte à mesure que la complexité devient lisible.',
-    prototype: 'Un prototype testable en quelques jours est l’un de mes leviers, parmi d’autres. Chez Toolkit, celui de la V2 a permis au CEO de sécuriser sa deuxième levée de fonds : les investisseurs ont vu le produit plutôt qu’un deck.',
-    prototypeLink: { href: '/project/toolkit', label: 'Voir Toolkit' },
+    caption: 'Du plus brut au plus abouti : le niveau de détail suit ce que l’équipe comprend.',
+    prototype: 'Un prototype testable en quelques jours est l’un de mes leviers, parmi d’autres. Chez Toolkit, celui de la V2 a permis au CEO de sécuriser sa deuxième levée de fonds : les investisseurs ont vu le produit plutôt qu’une présentation.',
+    prototypeLink: { href: '/project/toolkit', label: 'Voir l’étude de cas Toolkit' },
   },
   en: {
     title: 'Before the screen, working documents',
@@ -510,7 +510,7 @@ export const ARTEFACTS: { src: string; label: Bi<string> }[] = [
   { src: '/images/approche/design-teardown.webp', label: { fr: 'Pistes explorées en atelier', en: 'Directions explored in a workshop' } },
   { src: '/images/connect/connect_bulle_ui_wireframes_concept-scaled.webp', label: { fr: 'Wireframes basse fidélité', en: 'Low-fidelity wireframes' } },
   { src: '/images/connect/connect_dashboard_home_light_full-scaled.webp', label: { fr: 'L’interface en haute fidélité', en: 'The interface, high fidelity' } },
-  { src: '/images/connect/connect_specifications_implem_01-scaled.webp', label: { fr: 'Specs pour les développeurs', en: 'Specs for the developers' } },
+  { src: '/images/connect/connect_specifications_implem_01-scaled.webp', label: { fr: 'Spécifications pour les développeurs', en: 'Specs for the developers' } },
 ]
 
 // ---------------------------------------------------------------------------
@@ -519,7 +519,7 @@ export const ARTEFACTS: { src: string; label: Bi<string> }[] = [
 
 export const WORKING_WITH_ME: Bi<{ title: string; paragraphs: string[] }> = {
   fr: {
-    title: 'Ce que c’est de travailler avec moi',
+    title: 'Travailler avec moi',
     paragraphs: [
       'Mon approche est humaine. J’écoute d’abord l’équipe et son terrain, puis je rends visible ce que chacun sait déjà, pour que la compréhension devienne commune.',
       'Je travaille en intelligence collective : ateliers, entretiens, revues, et des documents que toute l’équipe peut relire et réutiliser. Chaque arbitrage laisse une trace écrite.',
@@ -547,17 +547,17 @@ export const COLLABORATION = {
       {
         id: 'pm',
         label: 'Avec le PM',
-        body: 'Trois principes : chaque atelier a un livrable défini, le PM voit l’avancement en continu, et chaque arbitrage est documenté. Les specs sont la responsabilité du PM. Je produis les maquettes annotées et les parcours documentés qui les alimentent. La conception est visible dès les premières explorations.',
+        body: 'Trois principes : chaque atelier a un livrable défini, le PM voit l’avancement en continu, et chaque arbitrage est documenté. La rédaction des spécifications revient au PM. Je produis les maquettes annotées et les parcours documentés qui les alimentent. La conception est visible dès les premières explorations.',
       },
       {
         id: 'devs',
         label: 'Avec les développeurs',
-        body: 'J’interviens en amont. Reviews des interactions, des cas limites, des états. Chez UNOWHY comme chez Dailymotion, le design system Storybook a été construit avec les développeurs front, pas livré à eux. Cette co-construction change la qualité des composants et réduit les allers-retours.',
+        body: 'J’interviens en amont. Revues des interactions, des cas limites, des états. Chez UNOWHY comme chez Dailymotion, le design system Storybook a été construit avec les développeurs front, pas livré à eux. Cette co-construction change la qualité des composants et réduit les allers-retours.',
       },
       {
         id: 'team',
         label: 'Avec les designers et les freelances',
-        body: 'Je capte les informations et je les partage, je produis les cadrages et les briefs, j’organise les tâches et je mets en place des boards de suivi de production. J’améliore la structure des fichiers Figma et j’apporte des outils : composants, kits et templates, y compris pour animer des ateliers.',
+        body: 'Je capte les informations et je les partage, je produis les cadrages et les briefs, j’organise les tâches et je mets en place des tableaux de suivi de la production. J’améliore la structure des fichiers Figma et j’apporte des outils : composants, kits et modèles, y compris pour animer des ateliers.',
       },
       {
         id: 'culture',
@@ -612,12 +612,12 @@ export const RHYTHM = {
   },
   fr: {
     label: 'Rythme hebdomadaire',
-    modes: ['Discovery', 'Delivery'],
+    modes: ['Exploration', 'Livraison'],
     days4: ['Lun', 'Mar à Mer', 'Jeu', 'Ven'],
     phases: ['S’aligner', 'Travail de fond', 'Travail de fond', 'Partager et décider'],
     cells4: [
-      ['Cadrage hypothèses. Qui on va voir. Protocole.', 'Entretiens utilisateurs. Observations. Analyse données.', 'Cartographie insights. Patterns. Reformulation.', 'Restitution. Validation ou changement de cap. Décision.'],
-      ['Sync PM/Designer. Objectif sprint. Revue hypothèses.', 'Exploration ou itération. Échanges asynchrones.', 'Cohérence patterns. Préparation refinement ou démo.', 'Prototype présenté. Priorisation backlog.'],
+      ['Cadrer les hypothèses. Choisir qui rencontrer. Fixer le protocole.', 'Entretiens utilisateurs. Observations. Analyse des données.', 'Cartographier les enseignements. Repérer les motifs récurrents. Reformuler.', 'Restitution. Valider ou changer de cap. Décision.'],
+      ['Point PM et designer. Objectif du sprint. Revue des hypothèses.', 'Exploration ou itération. Échanges asynchrones.', 'Cohérence des motifs. Préparer l’affinage du backlog ou la démo.', 'Prototype présenté. Backlog priorisé.'],
     ],
     footer: 'Le rythme se construit ensemble dès la première semaine.',
   },
