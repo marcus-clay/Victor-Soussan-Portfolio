@@ -11,6 +11,7 @@ import type { Signal, SignalCategory } from './signalsData'
 import { GUIDE_META } from './guideClaudeCodeData'
 import { SHIP_TO_SHOW_META } from './guideShipToShowData'
 import { TEMPLATE_ENTRIES } from './templatesData'
+import type { ResourceArt } from './templatesData'
 
 // --- Content types ---
 
@@ -33,6 +34,8 @@ export interface ContentItem {
   heroImage?: string
   // For templates (external links)
   link?: string
+  /** Illustration key of a template (`/images/resources/doc-<art>-light.svg`), as on the About cards */
+  art?: ResourceArt
   // For guides
   chapterCount?: number
 }
@@ -93,6 +96,7 @@ const TEMPLATES: ContentItem[] = TEMPLATE_ENTRIES.map((t) => ({
   date: '2024-01',
   category: t.category,
   link: t.link,
+  art: t.art,
 }))
 
 // --- Exports ---
