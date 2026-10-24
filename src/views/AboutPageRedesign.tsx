@@ -9,7 +9,7 @@ import CardCarousel from '@/components/ui/CardCarousel'
 import Reveal from '@/components/ui/Reveal'
 import { BLOCK, Disclosure, SubTitle } from '@/components/ui/ActBlocks'
 import CareerPhasesDiagram from '@/components/about/CareerPhasesDiagram'
-import AiFlowDiagram from '@/components/about/AiFlowDiagram'
+import AiPracticeDiagram from '@/components/about/AiPracticeDiagram'
 import type { ResourceArt } from '@/data/resourcesData'
 import { aboutEras } from '@/data/profileData'
 import { TRANSLATIONS as SITE_TRANSLATIONS } from '@/data/translations'
@@ -53,7 +53,7 @@ const TRANSLATIONS = {
     eras: aboutEras('en'),
     practice_title: 'Current Practice',
     practice_text:
-      "Since early 2025, AI has been part of my toolkit: meeting and interview syntheses, user research reports, decks that follow the brand guidelines, task and project tracking, production in Figma (Figma Console MCP), prototyping (Claude Code). Most of the job happens with people: running research and handing it over to the teams, setting up methods, keeping the follow-up, designing at several levels of fidelity. Where data security requires it, I propose a usage framework: no customer data, human review, every case measured.",
+      "Since early 2025, AI has been part of my toolkit. Most of the job happens with people: running research and handing it over to the teams, setting up methods, keeping the follow-up, designing at several levels of fidelity. Where data security requires it, I propose a usage framework: no customer data, human review, every case measured.",
     education_title: 'Education',
     education_line1: 'Master Communication & Multimedia, ISCOM Paris (2001 to 2005)',
     education_line2: 'UX/UI Design & Prototyping, UXcel/Udemy (2021)',
@@ -74,7 +74,7 @@ const TRANSLATIONS = {
     career_steps: 'Step by step',
     era_more: 'See details',
     era_less: 'Show less',
-    practice_flow: 'An assisted workflow',
+    practice_flow: 'What I lead, what AI equips',
     contact_email: 'Email',
     contact_copy: 'Copy address',
     contact_copied: 'Copied',
@@ -99,7 +99,7 @@ const TRANSLATIONS = {
     eras: aboutEras('fr'),
     practice_title: 'Pratique actuelle',
     practice_text:
-      "Depuis début 2025, l’IA fait partie de mon outillage : synthèses de réunions et d’entretiens, rapports de recherche utilisateur, decks à la charte, suivi des tâches et des projets, production dans Figma (Figma Console MCP), prototypage (Claude Code). L’essentiel du métier se joue avec les gens : animer la recherche et la passer aux équipes, installer les méthodes, tenir le suivi, dessiner à plusieurs niveaux de fidélité. Là où la sécurité des données l’impose, je propose un cadre d’usage : aucune donnée client, relecture humaine, chaque cas mesuré.",
+      "Depuis début 2025, l’IA fait partie de mon outillage. L’essentiel du métier se joue avec les gens : animer la recherche et la passer aux équipes, installer les méthodes, tenir le suivi, dessiner à plusieurs niveaux de fidélité. Là où la sécurité des données l’impose, je propose un cadre d’usage : aucune donnée client, relecture humaine, chaque cas mesuré.",
     education_title: 'Formation',
     education_line1: 'Master Communication & Multimédia, ISCOM Paris (2001 à 2005)',
     education_line2: 'UX/UI Design & Prototypage, UXcel/Udemy (2021)',
@@ -120,7 +120,7 @@ const TRANSLATIONS = {
     career_steps: 'Étape par étape',
     era_more: 'Voir le détail',
     era_less: 'Masquer le détail',
-    practice_flow: 'Un flux de travail assisté',
+    practice_flow: 'Ce que je mène, ce que l’IA outille',
     contact_email: 'E-mail',
     contact_copy: 'Copier l’adresse',
     contact_copied: 'Copié',
@@ -306,8 +306,8 @@ export default function AboutPageRedesign({
 
         <div className="act-wide pb-12 md:pb-20">
           <SubTitle>{t.practice_flow}</SubTitle>
-          <Reveal className="max-w-[26rem]">
-            <AiFlowDiagram lang={lang} />
+          <Reveal>
+            <AiPracticeDiagram lang={lang} />
           </Reveal>
           {practiceRest && <p className="mt-6 max-w-[62ch] text-base text-gray-600">{practiceRest}</p>}
 
