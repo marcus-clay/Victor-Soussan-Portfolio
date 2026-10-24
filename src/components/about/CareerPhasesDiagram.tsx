@@ -9,19 +9,19 @@ export default function CareerPhasesDiagram({ lang }: { lang: 'en' | 'fr' }) {
   const c = {
     fr: {
       title: 'Un parcours qui converge vers les outils métier',
-      desc: 'Une frise de 2005 à aujourd’hui : de 2005 à 2016, des agences au grand public ; de 2016 à 2024, les outils métier B2B et B2G ; de 2025 à 2026, indépendant ; depuis septembre 2026, Lead UX France, en poste.',
+      desc: 'Une frise de 2005 à aujourd’hui : de 2005 à 2016, des agences au grand public ; de 2016 à 2024, les outils métier B2B et B2G ; de 2025 à 2026, indépendant ; aujourd’hui, Lead UX France, dans un éditeur européen d’information professionnelle de 2 500 personnes.',
       early: ['Agences, grand public', '2005 à 2016'],
       core: ['Outils métier B2B et B2G', '2016 à 2024'],
       solo: 'Indépendant, 2025 à 2026',
-      now: 'Lead UX France, depuis sept. 2026',
+      now: ['Lead UX France', 'Éditeur européen, 2 500 personnes, 500 M€ de CA'],
     },
     en: {
       title: 'A career that converges on business tools',
-      desc: 'A timeline from 2005 to today: from 2005 to 2016, agencies to consumer products; from 2016 to 2024, B2B and B2G business tools; from 2025 to 2026, independent; since September 2026, Lead UX France, in post.',
+      desc: 'A timeline from 2005 to today: from 2005 to 2016, agencies to consumer products; from 2016 to 2024, B2B and B2G business tools; from 2025 to 2026, independent; today, Lead UX France, at a European professional information publisher of 2,500 people.',
       early: ['Agencies, consumer', '2005 to 2016'],
       core: ['B2B and B2G business tools', '2016 to 2024'],
       solo: 'Independent, 2025 to 2026',
-      now: 'Lead UX France, since Sep 2026',
+      now: ['Lead UX France', 'European publisher, 2,500 people, €500M revenue'],
     },
   }[lang]
 
@@ -31,7 +31,7 @@ export default function CareerPhasesDiagram({ lang }: { lang: 'en' | 'fr' }) {
   const axisY = 48
 
   return (
-    <svg viewBox="0 0 362 138" role="img" aria-labelledby="career-title career-desc" className="h-auto w-full">
+    <svg viewBox="0 0 362 154" role="img" aria-labelledby="career-title career-desc" className="h-auto w-full">
       <title id="career-title">{c.title}</title>
       <desc id="career-desc">{c.desc}</desc>
 
@@ -52,8 +52,9 @@ export default function CareerPhasesDiagram({ lang }: { lang: 'en' | 'fr' }) {
       {/* The two short periods at the right end: leader lines down to their names */}
       <path d={`M${x(2025.8)} ${axisY + 8} V98`} fill="none" strokeWidth="1" className="stroke-gray-300" />
       <text x={x(2025.8) - 6} y="102" textAnchor="end" fontSize="13" className="fill-gray-600">{c.solo}</text>
-      <path d="M354 56 V126" fill="none" strokeWidth="1" className="stroke-gray-300" />
-      <text x="348" y="130" textAnchor="end" fontSize="13" fontWeight="500" className="fill-gray-900">{c.now}</text>
+      <path d="M354 56 V118" fill="none" strokeWidth="1" className="stroke-gray-300" />
+      <text x="348" y="124" textAnchor="end" fontSize="13" fontWeight="500" className="fill-gray-900">{c.now[0]}</text>
+      <text x="348" y="142" textAnchor="end" fontSize="12" className="fill-gray-500">{c.now[1]}</text>
     </svg>
   )
 }

@@ -356,10 +356,10 @@ export const PROFILE_ERAS: ProfileEra[] = [
   {
     id: 'lead-ux',
     period: { en: 'Sep 2026 - Present', fr: 'Sept 2026 - Aujourd’hui' },
-    title: { en: 'Lead UX France, professional information publisher', fr: 'Lead UX France, éditeur d’information professionnelle' },
+    title: { en: 'Lead UX France, European professional information publisher', fr: 'Lead UX France, éditeur européen d’information professionnelle' },
     description: {
-      en: 'I run the design practice and design on my own the journeys of a digital document library. I lead a team of two designers (workload, budgets, reviews), set up user research with the customer community and carry design into quarterly planning.',
-      fr: 'Je dirige la pratique design et je conçois seul les parcours d’une bibliothèque documentaire numérique. J’anime une équipe de deux designers (charge, budgets, évaluation), je monte la recherche utilisateur avec la communauté de clients et je porte le design dans la planification trimestrielle.',
+      en: 'A European group of 2,500 people and €500M in revenue: I run the design practice and design on my own the journeys of a digital document library. I lead a team of two designers (workload, budgets, reviews), set up user research with the customer community and carry design into quarterly planning.',
+      fr: 'Un groupe européen de 2 500 personnes et 500 M€ de chiffre d’affaires : je dirige la pratique design et je conçois seul les parcours d’une bibliothèque documentaire numérique. J’anime une équipe de deux designers (charge, budgets, évaluation), je monte la recherche utilisateur avec la communauté de clients et je porte le design dans la planification trimestrielle.',
     },
   },
   {
