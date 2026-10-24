@@ -13,8 +13,9 @@
  * Two modes:
  * - `preview` (cards: home strip, projects grid, related projects): with a mouse, the loop plays while
  *   the pointer is over the card (or a keyboard focus is on it) and, on leaving, fades back to the
- *   picture, then rewinds to the first frame. On touch screens (no hover) it plays while the card is
- *   centred in the viewport (60% visible).
+ *   picture, then rewinds to the first frame. A card flagged `active` (the one a carousel rests on)
+ *   also plays without any hover, so the strip is never still on a desktop. On touch screens (no
+ *   hover) it plays while the card is centred in the viewport (60% visible).
  * - `auto` (the case study hero): plays in a loop while at least a quarter of the panel is visible and
  *   pauses when it leaves.
  *
@@ -22,7 +23,10 @@
  * - The video element is only created once the page has loaded and is idle, and once the card is within
  *   600px of the viewport, so no video request competes with the LCP picture or with far-away cards.
  * - At most two loops play at once on the page; a hidden tab pauses them all.
- * - `prefers-reduced-motion: reduce` and the data saver: no video at all, the picture stays.
+ * - The data saver: no video at all, the picture stays.
+ * - `prefers-reduced-motion: reduce`: nothing starts by itself (no `auto` hero, no centred card on touch),
+ *   the picture stays. A mouse hover or a keyboard focus on a card is a deliberate gesture, so the loop
+ *   still plays then: reduced motion asks for a gentler equivalent, not for the absence of feedback.
  *
  * The parent must be `position: relative` (or absolute) and clip its content. This component renders an
  * `absolute inset-0` wrapper without a z-index, so the video (z-1) takes part in the parent's stacking
@@ -70,8 +74,18 @@ function leave(slot: Slot) {
 
 // ---------------------------------------------------------------------------
 
+/** Share of the card in view: enough for the case study hero and for a carousel's resting card, centred on touch */
+const PARTLY = 0.25
+const CENTRED = 0.6
+
 /** How long the video takes to fade in and out over the picture */
 const FADE_MS = 300
+/** Opacity crossfade: symmetric, so neither the video nor the picture pops at either end */
+const CROSSFADE_EASE = 'cubic-bezier(0.45, 0, 0.55, 1)'
+/** Hover zoom when the caller does not pass its own curve (same as the cards' ease-out) */
+const MOVE_EASE = 'cubic-bezier(0.23, 1, 0.32, 1)'
+/** Softening applied while the video dissolves back into the picture */
+const EXIT_BLUR_PX = 2
 
 interface HeroLoopProps {
   src: string
@@ -80,18 +94,22 @@ interface HeroLoopProps {
   mediaStyle?: CSSProperties
   /** `preview`: card (hover, or centred on touch). `auto`: plays while visible. */
   mode?: 'preview' | 'auto'
+  /** `preview` with a mouse: the card a carousel rests on plays without hover (never under reduced motion) */
+  active?: boolean
 }
 
-export default function HeroLoop({ src, mediaClassName, mediaStyle, mode = 'preview' }: HeroLoopProps) {
+export default function HeroLoop({ src, mediaClassName, mediaStyle, mode = 'preview', active = false }: HeroLoopProps) {
   const wrapRef = useRef<HTMLDivElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
 
   const [idle, setIdle] = useState(false)
   const [near, setNear] = useState(false)
   const [visible, setVisible] = useState(false)
+  const [partly, setPartly] = useState(false)
   const [hovering, setHovering] = useState(false)
   const [canHover, setCanHover] = useState(true)
-  const [motionOk, setMotionOk] = useState(false)
+  const [dataOk, setDataOk] = useState(false)
+  const [reduced, setReduced] = useState(true)
   const [shown, setShown] = useState(false)
   const [failed, setFailed] = useState(false)
 
@@ -136,13 +154,14 @@ export default function HeroLoop({ src, mediaClassName, mediaStyle, mode = 'prev
     }
   }, [])
 
-  // Reduced motion and the data saver: no video. Hover or touch: how a card is previewed.
+  // The data saver: no video. Reduced motion: no autoplay. Hover or touch: how a card is previewed.
   useEffect(() => {
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)')
     const hover = window.matchMedia('(hover: hover) and (pointer: fine)')
     const conn = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection
     const sync = () => {
-      setMotionOk(!reduce.matches && !conn?.saveData)
+      setDataOk(!conn?.saveData)
+      setReduced(reduce.matches)
       setCanHover(hover.matches)
     }
     sync()
@@ -168,9 +187,16 @@ export default function HeroLoop({ src, mediaClassName, mediaStyle, mode = 'prev
       },
       { rootMargin: '600px' },
     )
-    const visibleObserver = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting), {
-      threshold: mode === 'auto' ? 0.25 : 0.6,
-    })
+    // Below its lowest threshold the browser reports isIntersecting: false, so the ratio is read instead.
+    // A tall card cut by the fold (about a third visible on a laptop) still counts as partly visible.
+    const visibleObserver = new IntersectionObserver(
+      ([entry]) => {
+        const ratio = entry.isIntersecting ? entry.intersectionRatio : 0
+        setPartly(ratio >= PARTLY - 0.01)
+        setVisible(ratio >= (mode === 'auto' ? PARTLY : CENTRED) - 0.01)
+      },
+      { threshold: [PARTLY, CENTRED] },
+    )
     nearObserver.observe(el)
     visibleObserver.observe(el)
     return () => {
@@ -206,9 +232,13 @@ export default function HeroLoop({ src, mediaClassName, mediaStyle, mode = 'prev
     }
   }, [mode])
 
-  const mounted = idle && near && motionOk && !failed
+  // With reduced motion only a hovered card can play: elsewhere no video is created (nothing to download)
+  const hoverOnly = mode === 'preview' && canHover
+  const canPlay = dataOk && (!reduced || hoverOnly)
+  const mounted = idle && near && canPlay && !failed
 
-  const wants = mounted && (mode === 'auto' ? visible : canHover ? hovering : visible)
+  const restingCard = active && partly && !reduced
+  const wants = mounted && (mode === 'auto' ? visible : canHover ? hovering || restingCard : visible)
   wantsRef.current = wants
 
   // Join or leave the playback budget. In preview, the video fades out first, then pauses and rewinds
@@ -267,11 +297,22 @@ export default function HeroLoop({ src, mediaClassName, mediaStyle, mode = 'prev
           }}
           onError={() => setFailed(true)}
           className={`absolute inset-0 z-[1] ${mediaClassName} ${shown ? 'opacity-100' : 'opacity-0'}`}
-          // The picture's hover zoom and the fade share one transition, so the video moves like the picture
+          // The picture's hover zoom and the fade share one duration, so the video moves like the picture.
+          // Each property gets its own curve: the opacity crossfade is symmetric (a strong ease-out would
+          // show the video almost at once), the hover zoom keeps the picture's curve. The blur only runs on
+          // the way out, when a mid-loop frame dissolves into the still picture: it lets the eye read one
+          // object changing instead of two overlapping. Coming in the first frame is the picture's own
+          // framing (see HeroVideo), so it needs no mask and the picture stays crisp.
           style={{
             ...mediaStyle,
-            transitionProperty: 'opacity, transform',
+            filter: shown ? 'blur(0px)' : `blur(${EXIT_BLUR_PX}px)`,
+            transitionProperty: shown ? 'opacity, transform' : 'opacity, transform, filter',
             transitionDuration: `${FADE_MS}ms`,
+            transitionTimingFunction: [
+              CROSSFADE_EASE,
+              mediaStyle?.transitionTimingFunction ?? MOVE_EASE,
+              ...(shown ? [] : [CROSSFADE_EASE]),
+            ].join(', '),
           }}
         />
       )}

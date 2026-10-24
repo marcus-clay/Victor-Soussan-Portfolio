@@ -17,7 +17,7 @@
 - Default height: 80px (`--nav-height-top`), reduces to 56px on scroll (`--nav-height-scrolled`, transition 250ms ease-out). `main` reserves the 80px so the content never moves when the header shrinks.
 - Logo: "Victor Soussan" at text-base (16px), font-semibold, tracking-[-0.02em]
 - Nav items: text-sm, rounded-full pills with hover bg-black/[0.04]
-- Active item: dark text (`text-gray-900`) and `font-semibold`, no underline and no bar
+- Active indicator: `font-semibold` plus a 2px black underline (`bg-current`) under the label
 - Menu panel: the active row has a black 8px dot on the left (fixed slot on every row, so labels stay aligned) and a `bg-black/[0.04]` background, like the table of contents
 - Contact button: bg-gray-900 text-white, rounded-full, same height as nav pills
 - Glass effect: bg-white/80 backdrop-blur-xl border-b border-gray-100/80

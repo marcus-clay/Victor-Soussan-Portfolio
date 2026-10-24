@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { useReducedMotion } from 'framer-motion'
 
 /**
@@ -22,16 +23,26 @@ export const REVEAL_STEP = 0.06
  * for blocks that are already on screen when the page loads (a lead image, for example).
  */
 export function useReveal(margin = '-60px') {
-  const reduce = useReducedMotion()
-  const travel = reduce ? 0 : REVEAL_TRAVEL
-  return (index = 0, immediate = false) => ({
-    initial: immediate ? (false as const) : { opacity: 0, y: travel },
-    whileInView: { opacity: 1, y: 0 },
-    viewport: { once: true, margin },
-    transition: {
-      duration: REVEAL_DURATION,
-      ease: EASE_OUT_EXPO,
-      delay: Math.min(index, 5) * REVEAL_STEP,
-    },
-  })
+  // The server cannot know the visitor's reduced-motion setting, so the hook only acts on it once
+  // mounted: `initial` is the same on the server and on the first client render (no hydration
+  // mismatch), and reduced motion drops the 8px through the transition instead (the block is
+  // still transparent when it snaps, so the reveal reads as a plain fade).
+  const prefersReduced = useReducedMotion()
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
+  const reduce = mounted && prefersReduced
+  return (index = 0, immediate = false) => {
+    const delay = Math.min(index, 5) * REVEAL_STEP
+    return {
+      initial: immediate ? (false as const) : { opacity: 0, y: REVEAL_TRAVEL },
+      whileInView: { opacity: 1, y: 0 },
+      viewport: { once: true, margin },
+      transition: {
+        duration: REVEAL_DURATION,
+        ease: EASE_OUT_EXPO,
+        delay,
+        ...(reduce ? { y: { duration: 0, delay } } : {}),
+      },
+    }
+  }
 }
