@@ -33,7 +33,7 @@ const nextConfig: NextConfig = {
             "default-src 'self'",
             "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.clarity.ms",
             "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-            "font-src 'self' https://fonts.gstatic.com",
+            "font-src 'self' https://fonts.gstatic.com https://cursor.com",
             "img-src 'self' data: https: blob:",
             "media-src 'self' https:",
             "frame-src 'self' https://www.youtube.com https://player.vimeo.com",
