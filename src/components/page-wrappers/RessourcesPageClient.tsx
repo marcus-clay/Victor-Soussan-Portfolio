@@ -1,13 +1,14 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { EASE_OUT_EXPO as EASE_OUT, useReveal } from '@/lib/motion'
+import { useReveal } from '@/lib/motion'
 import { ActRule } from '@/components/case-study/ActSection'
-import { ArrowUpRight, ArrowRight } from '@phosphor-icons/react'
+import { ArrowUpRight } from '@phosphor-icons/react'
+import { RelatedCard, type RelatedItem } from '@/components/RelatedContent'
 import {
   ALL_CONTENT,
+  CATEGORY_LABELS,
   TYPE_LABELS,
 } from '@/data/contentData'
 import type { ContentItem, ContentType } from '@/data/contentData'
@@ -22,8 +23,15 @@ const readFilterFromUrl = (): FilterType => {
   return FILTER_KEYS.includes(type as FilterType) ? (type as FilterType) : 'all'
 }
 
-/** Rows shown before "Show all": one screen of choices at a time (Hick), the rest stays in the DOM. */
-const INITIAL_VISIBLE = 8
+/** Cards shown before the Show all button: three rows of three (Hick), the rest stays in the DOM. */
+const INITIAL_VISIBLE = 9
+
+/**
+ * Order of the full list: guides, then templates (the only items with an illustration, the same
+ * documents as the About cards), then articles. Inside each group the date order of ALL_CONTENT
+ * is kept. A filtered list is already one group.
+ */
+const GROUP_ORDER: Record<ContentType, number> = { guide: 0, template: 1, article: 2 }
 
 export default function RessourcesPageClient({ lang }: { lang: 'en' | 'fr' }) {
   const [activeFilter, setActiveFilter] = useState<FilterType>('all')
@@ -46,7 +54,7 @@ export default function RessourcesPageClient({ lang }: { lang: 'en' | 'fr' }) {
   }
 
   const filtered = activeFilter === 'all'
-    ? ALL_CONTENT
+    ? [...ALL_CONTENT].sort((a, b) => GROUP_ORDER[a.type] - GROUP_ORDER[b.type])
     : ALL_CONTENT.filter((c) => c.type === activeFilter)
 
   const filters: { key: FilterType; label: string; count: number }[] = [
@@ -67,56 +75,27 @@ export default function RessourcesPageClient({ lang }: { lang: 'en' | 'fr' }) {
 
   const isExternal = (item: ContentItem) => item.type === 'template'
 
-  const renderRow = (item: ContentItem) => {
-    const href = getHref(item)
-    const external = isExternal(item)
-    const typeLabel = TYPE_LABELS[item.type][lang]
-    const title = isEn ? item.title_en : item.title_fr
-
-    const row = (
-      <motion.div
-        initial="rest"
-        whileHover="hover"
-        animate="rest"
-        className="py-5 -mx-3 px-3 rounded-lg [@media(hover:hover)]:hover:bg-gray-100 active:bg-gray-100 transition-colors duration-150 cursor-pointer"
-      >
-        <div className="flex items-start justify-between gap-4">
-          <div className="min-w-0 flex-1">
-            <span className="text-xs text-gray-500">{typeLabel}</span>
-            <h3 className="text-title-3 text-gray-900 mb-1 line-clamp-2">
-              {title}
-            </h3>
-            <p className="text-sm text-gray-600 line-clamp-1">
-              {isEn ? item.excerpt_en : item.excerpt_fr}
-            </p>
-          </div>
-          <motion.span
-            variants={external
-              ? { rest: { x: 0, y: 0, color: '#9CA3AF' }, hover: { x: 2, y: -2, color: '#111827' } }
-              : { rest: { x: 0, color: '#9CA3AF' }, hover: { x: 3, color: '#111827' } }
-            }
-            transition={{ duration: 0.15, ease: EASE_OUT }}
-            className="flex-shrink-0 mt-5"
-          >
-            {external ? <ArrowUpRight size={16} /> : <ArrowRight size={16} />}
-          </motion.span>
-        </div>
-      </motion.div>
-    )
-
-    if (external) {
-      return (
-        <a key={item.id} href={href} target="_blank" rel="noopener noreferrer">
-          {row}
-        </a>
-      )
+  /** Same card as the related content at the end of a page: cover (when there is one), label, title, text. */
+  const toCard = (item: ContentItem): RelatedItem => {
+    const meta =
+      item.type === 'guide' && item.chapterCount
+        ? `${item.chapterCount} ${isEn ? 'chapters' : 'chapitres'}`
+        : item.category
+          ? CATEGORY_LABELS[item.category][lang]
+          : null
+    const cover = item.art
+      ? { src: `/images/resources/doc-${item.art}-light.svg`, tone: '#FAFAF8', fit: 'contain' as const }
+      : item.heroImage
+        ? { src: item.heroImage }
+        : undefined
+    return {
+      href: getHref(item),
+      title: isEn ? item.title_en : item.title_fr,
+      label: [TYPE_LABELS[item.type][lang], meta].filter(Boolean).join(' · '),
+      description: isEn ? item.excerpt_en : item.excerpt_fr,
+      external: isExternal(item),
+      cover,
     }
-
-    return (
-      <Link key={item.id} href={href}>
-        {row}
-      </Link>
-    )
   }
 
   return (
@@ -154,13 +133,14 @@ export default function RessourcesPageClient({ lang }: { lang: 'en' | 'fr' }) {
           ))}
         </div>
 
-        <div className="divide-y divide-gray-100">
+        {/* items-start: a card without a cover keeps its own height instead of stretching beside an illustrated one */}
+        <ul className="grid grid-cols-1 items-start gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-3">
           {filtered.map((item, i) => (
-            <div key={item.id} className={!showAll && i >= INITIAL_VISIBLE ? 'hidden' : undefined}>
-              {renderRow(item)}
-            </div>
+            <li key={item.id} className={`min-w-0${!showAll && i >= INITIAL_VISIBLE ? ' hidden' : ''}`}>
+              <RelatedCard item={toCard(item)} />
+            </li>
           ))}
-        </div>
+        </ul>
 
         {!showAll && filtered.length > INITIAL_VISIBLE && (
           <button
