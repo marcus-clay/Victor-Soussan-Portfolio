@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import Link from 'next/link'
-import { ArrowRight, ArrowUpRight } from '@phosphor-icons/react/dist/ssr'
+import { ArrowRight, ArrowUpRight, Plus } from '@phosphor-icons/react/dist/ssr'
 import { ActHeader, ActRule, ActTitle } from '@/components/case-study/ActSection'
 import RelatedContent, { type RelatedItem } from '@/components/RelatedContent'
 import { TRANSLATIONS } from '@/data/translations'
@@ -105,47 +105,49 @@ function Situations({ lang }: { lang: Language }) {
           <MaturityDiagram lang={lang} />
         </Reveal>
 
-        <SubTitle className={BLOCK}>{ps.situationsTable}</SubTitle>
-        <div>
-          {/* Column labels from md up. On a phone each block carries its own label. */}
-          <div
-            aria-hidden="true"
-            className="hidden border-b border-gray-100 pb-3 text-xs text-gray-500 md:grid md:grid-cols-12 md:gap-x-6"
-          >
-            <span className="md:col-span-3">{copy.columns.situation}</span>
-            <span className="md:col-span-5">{copy.columns.role}</span>
-            <span className="md:col-span-4">{copy.columns.outputs}</span>
-          </div>
+        {/* Summary first: the three starting points, one line each. The reader finds their own
+            situation, and only that row opens onto the role, the output and the proof. */}
+        <ul className={`${BLOCK} border-y border-gray-100`}>
+          {SITUATIONS.map((s, i) => (
+            <Reveal as="li" key={s.id} className="border-b border-gray-100 last:border-b-0">
+              <details name="situations" open={i === 0} className="group">
+                <summary
+                  className="-mx-3 grid min-h-11 cursor-pointer list-none grid-cols-[1fr_auto] items-start gap-x-4 gap-y-1 rounded-xl px-3 py-6 transition-colors duration-150 ease-out active:bg-gray-200/70 md:grid-cols-12 md:gap-x-6 md:py-8 [&::-webkit-details-marker]:hidden [@media(hover:hover)]:hover:bg-gray-100"
+                >
+                  <h4 className="text-title-3 text-gray-900 md:col-span-4">{s.name[lang]}</h4>
+                  <span
+                    aria-hidden="true"
+                    className="row-span-2 mt-0.5 flex size-6 items-center justify-center text-gray-500 transition-[transform,color] duration-200 ease-out group-open:rotate-45 group-open:text-gray-900 motion-reduce:transition-none md:order-last md:col-span-1 md:col-start-12 md:row-span-1 md:justify-self-end"
+                  >
+                    <Plus size={18} weight="bold" />
+                  </span>
+                  <p className="text-base text-gray-600 md:col-span-7 md:col-start-5">{s.context[lang]}</p>
+                </summary>
 
-          <ul className="divide-y divide-gray-100 border-t border-gray-100 md:border-t-0">
-            {SITUATIONS.map((s) => (
-              <Reveal as="li" key={s.id} className="grid grid-cols-1 gap-y-6 py-8 md:grid-cols-12 md:gap-x-6 md:py-10">
-                <div className="md:col-span-3">
-                  <h4 className="text-title-3 text-gray-900">{s.name[lang]}</h4>
-                  <p className="mt-2 text-sm text-gray-500">{s.context[lang]}</p>
+                <div className="disclosure-body grid grid-cols-1 gap-x-6 gap-y-6 pb-8 md:grid-cols-12 md:pb-10">
+                  <div className="md:col-span-4 md:col-start-5">
+                    <p className="text-xs font-medium text-gray-500">{copy.columns.role}</p>
+                    <p className="mt-1.5 max-w-[48ch] text-base text-gray-900">{s.role[lang]}</p>
+                  </div>
+                  <div className="md:col-span-3 md:col-start-9">
+                    <p className="text-xs font-medium text-gray-500">{copy.columns.outputs}</p>
+                    <p className="mt-1.5 text-base text-gray-600">{s.outputs[lang]}</p>
+                  </div>
+                  <div className="md:col-span-7 md:col-start-5">
+                    <p className="max-w-[56ch] text-sm text-gray-600">{s.proof.text[lang]}</p>
+                    {s.proof.link && (
+                      <div className="mt-1">
+                        <ArrowLink href={`/${lang}${s.proof.link.href}`}>
+                          {copy.proofLink} {s.proof.link.label[lang]}
+                        </ArrowLink>
+                      </div>
+                    )}
+                  </div>
                 </div>
-
-                <div className="md:col-span-5">
-                  <p className="text-xs text-gray-500 md:hidden">{copy.columns.role}</p>
-                  <p className="mt-1 max-w-[52ch] text-base text-gray-900 md:mt-0">{s.role[lang]}</p>
-                </div>
-
-                <div className="md:col-span-4">
-                  <p className="text-xs text-gray-500 md:hidden">{copy.columns.outputs}</p>
-                  <p className="mt-1 text-base text-gray-600 md:mt-0">{s.outputs[lang]}</p>
-                  <p className="mt-5 text-sm text-gray-500">{s.proof.text[lang]}</p>
-                  {s.proof.link && (
-                    <div className="mt-1">
-                      <ArrowLink href={`/${lang}${s.proof.link.href}`}>
-                        {copy.proofLink} {s.proof.link.label[lang]}
-                      </ArrowLink>
-                    </div>
-                  )}
-                </div>
-              </Reveal>
-            ))}
-          </ul>
-        </div>
+              </details>
+            </Reveal>
+          ))}
+        </ul>
       </div>
     </section>
   )
