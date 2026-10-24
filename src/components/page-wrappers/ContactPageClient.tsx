@@ -115,8 +115,8 @@ export default function ContactPageClient({ lang }: { lang: 'en' | 'fr' }) {
         </h1>
         <p className="mt-8 md:mt-10 max-w-[56ch] text-lead-lg text-gray-600">
           {isEn
-            ? 'Open to product design missions, team leadership roles, and interesting problems where design makes a measurable difference.'
-            : 'Ouvert aux missions de design produit, aux rôles de leadership, et aux problèmes intéressants où le design fait une différence mesurable.'}
+            ? 'To talk about product design, running a team’s design practice, or problems where design makes a measurable difference.'
+            : 'Pour échanger sur le design produit, la pratique design d’une équipe, ou les problèmes où le design fait une différence mesurable.'}
         </p>
 
         <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">

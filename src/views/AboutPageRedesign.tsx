@@ -9,7 +9,7 @@ import CardCarousel from '@/components/ui/CardCarousel'
 import Reveal from '@/components/ui/Reveal'
 import { BLOCK, Disclosure, SubTitle } from '@/components/ui/ActBlocks'
 import CareerPhasesDiagram from '@/components/about/CareerPhasesDiagram'
-import AiFlowDiagram from '@/components/about/AiFlowDiagram'
+import AiPracticeDiagram from '@/components/about/AiPracticeDiagram'
 import type { ResourceArt } from '@/data/resourcesData'
 import { aboutEras } from '@/data/profileData'
 import { TRANSLATIONS as SITE_TRANSLATIONS } from '@/data/translations'
@@ -41,7 +41,7 @@ const TRANSLATIONS = {
     page_title: 'About',
     role: 'Lead Product Designer \u00b7 Paris',
     intro:
-      "Lead Product Designer working on B2B and B2G SaaS and complex business interfaces. I frame with a PM and deliver with a developer, or directly with Claude Code and Figma MCP.",
+      "Lead Product Designer working on B2B and B2G SaaS and complex business interfaces. I frame with a PM and deliver with a developer, and I prototype myself when the question calls for it. I design the journeys and I lead a team's design practice.",
     bio_p1:
       "My approach starts before Figma: vision workshops with leadership, problem framing with product teams, ideation with stakeholders, field user research. Then design, prototyping, design system and delivery.",
     bio_p2:
@@ -53,15 +53,14 @@ const TRANSLATIONS = {
     eras: aboutEras('en'),
     practice_title: 'Current Practice',
     practice_text:
-      "Since early 2025, I integrate AI into every stage of my design process. Claude Code as a daily partner for research, writing, prototyping, and shipping production code. Figma MCP to read design tokens and component specs directly into the development environment. This workflow compresses the distance between an idea and something people can use.",
+      "Since early 2025, AI has been part of my toolkit. Most of the job happens with people: running research and handing it over to the teams, setting up methods, keeping the follow-up, designing at several levels of fidelity. Where data security requires it, I propose a usage framework: no customer data, human review, every case measured.",
     education_title: 'Education',
     education_line1: 'Master Communication & Multimedia, ISCOM Paris (2001 to 2005)',
     education_line2: 'UX/UI Design & Prototyping, UXcel/Udemy (2021)',
     toolkit_title: 'Toolkit',
     toolkit_items: 'Figma, Notion, Linear, VS Code, Claude Code, Framer Motion, Google Slides, Midjourney',
-    cta_text: 'Want to work together?',
+    cta_text: 'Want to talk?',
     cta_email: 'victorsoussan@gmail.com',
-    availability: 'Available for new projects',
     linkedin_label: 'Full background and recommendations',
     cv_label: 'View or download resume',
     testimonials_link: 'View all testimonials',
@@ -75,7 +74,7 @@ const TRANSLATIONS = {
     career_steps: 'Step by step',
     era_more: 'See details',
     era_less: 'Show less',
-    practice_flow: 'An assisted workflow',
+    practice_flow: 'What I lead, what AI equips',
     contact_email: 'Email',
     contact_copy: 'Copy address',
     contact_copied: 'Copied',
@@ -88,7 +87,7 @@ const TRANSLATIONS = {
     page_title: 'À propos',
     role: 'Lead Product Designer · Paris',
     intro:
-      "Lead Product Designer, spécialisé dans les SaaS B2B, B2G et les interfaces métier complexes. Je cadre avec un PM, je livre avec un développeur, ou directement avec Claude Code et Figma MCP.",
+      "Lead Product Designer, spécialisé dans les SaaS B2B, B2G et les interfaces métier complexes. Je cadre avec un PM, je livre avec un développeur, et je prototype moi-même quand la question l’exige. Je conçois les parcours et je dirige la pratique design d’une équipe.",
     bio_p1:
       "Mon approche commence avant Figma : ateliers de vision avec la direction, cadrage du problème avec les équipes produit, idéation avec les parties prenantes, recherche utilisateur sur le terrain. Ensuite viennent la conception, le prototypage, le design system et la livraison.",
     bio_p2:
@@ -100,15 +99,14 @@ const TRANSLATIONS = {
     eras: aboutEras('fr'),
     practice_title: 'Pratique actuelle',
     practice_text:
-      "Depuis début 2025, j’intègre l’IA à chaque étape de mon processus de conception. Claude Code au quotidien pour la recherche, la rédaction, le prototypage et le déploiement. Figma MCP pour lire les design tokens et les spécifications des composants directement dans l’environnement de développement. Cette façon de travailler réduit la distance entre une idée et quelque chose d’utilisable.",
+      "Depuis début 2025, l’IA fait partie de mon outillage. L’essentiel du métier se joue avec les gens : animer la recherche et la passer aux équipes, installer les méthodes, tenir le suivi, dessiner à plusieurs niveaux de fidélité. Là où la sécurité des données l’impose, je propose un cadre d’usage : aucune donnée client, relecture humaine, chaque cas mesuré.",
     education_title: 'Formation',
     education_line1: 'Master Communication & Multimédia, ISCOM Paris (2001 à 2005)',
     education_line2: 'UX/UI Design & Prototypage, UXcel/Udemy (2021)',
     toolkit_title: 'Boîte à outils',
     toolkit_items: 'Figma, Notion, Linear, VS Code, Claude Code, Framer Motion, Google Slides, Midjourney',
-    cta_text: 'Envie de travailler ensemble ?',
+    cta_text: 'Envie d’échanger ?',
     cta_email: 'victorsoussan@gmail.com',
-    availability: 'Disponible pour de nouveaux projets',
     linkedin_label: 'Parcours complet et recommandations',
     cv_label: 'Lire ou télécharger le CV',
     testimonials_link: 'Voir tous les témoignages',
@@ -122,7 +120,7 @@ const TRANSLATIONS = {
     career_steps: 'Étape par étape',
     era_more: 'Voir le détail',
     era_less: 'Masquer le détail',
-    practice_flow: 'Un flux de travail assisté',
+    practice_flow: 'Ce que je mène, ce que l’IA outille',
     contact_email: 'E-mail',
     contact_copy: 'Copier l’adresse',
     contact_copied: 'Copié',
@@ -245,10 +243,6 @@ export default function AboutPageRedesign({
               </div>
             </Disclosure>
 
-            <div className="mt-8 flex items-center gap-2">
-              <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
-              <span className="text-sm text-gray-600">{t.availability}</span>
-            </div>
           </div>
         </div>
       </section>
@@ -312,8 +306,8 @@ export default function AboutPageRedesign({
 
         <div className="act-wide pb-12 md:pb-20">
           <SubTitle>{t.practice_flow}</SubTitle>
-          <Reveal className="max-w-[26rem]">
-            <AiFlowDiagram lang={lang} />
+          <Reveal>
+            <AiPracticeDiagram lang={lang} />
           </Reveal>
           {practiceRest && <p className="mt-6 max-w-[62ch] text-base text-gray-600">{practiceRest}</p>}
 

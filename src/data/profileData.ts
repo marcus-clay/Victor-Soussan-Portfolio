@@ -354,8 +354,17 @@ export const PROFILE_EXPERIENCE: ProfileExperience[] = [
 // Cartes de la section « Parcours » de la page À propos : une carte par employeur ou groupe d'expériences.
 export const PROFILE_ERAS: ProfileEra[] = [
   {
+    id: 'lead-ux',
+    period: { en: 'Sep 2026 - Present', fr: 'Sept 2026 - Aujourd’hui' },
+    title: { en: 'Lead UX France, European professional information publisher', fr: 'Lead UX France, éditeur européen d’information professionnelle' },
+    description: {
+      en: 'A European group of 2,500 people and €500M in revenue: I run the design practice and design on my own the journeys of a digital document library. I lead a team of two designers (workload, budgets, reviews), set up user research with the customer community and carry design into quarterly planning.',
+      fr: 'Un groupe européen de 2 500 personnes et 500 M€ de chiffre d’affaires : je dirige la pratique design et je conçois seul les parcours d’une bibliothèque documentaire numérique. J’anime une équipe de deux designers (charge, budgets, évaluation), je monte la recherche utilisateur avec la communauté de clients et je porte le design dans la planification trimestrielle.',
+    },
+  },
+  {
     id: 'freelance',
-    period: { en: '2025 - Present', fr: '2025 - Aujourd’hui' },
+    period: { en: '2025 - 2026', fr: '2025 - 2026' },
     title: { en: 'Victor Soussan Design', fr: 'Victor Soussan Design' },
     description: {
       en: 'Product design and prototyping for B2B, B2G and growing startups. Recent engagement: first designer at Tessan (3 months, April to July 2026), with the patient mobile app rebuilt in 30 days, a design system, an AI assistant under regulatory constraints and a product management system an AI can query. Other engagements: search engine and conversion redesign for Banque des Territoires’ B2G marketplaces, V2 of Toolkit.ac, user research for FEPEM’s MonEmploiDirect. In parallel, Condamine Apps: 50+ prototypes deployed with Claude Code and Figma MCP.',

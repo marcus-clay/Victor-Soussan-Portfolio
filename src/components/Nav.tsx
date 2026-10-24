@@ -199,13 +199,7 @@ export default function Nav({ lang }: { lang: Lang }) {
                   <Link
                     href={`/${lang}`}
                     className="relative z-10 font-semibold text-base tracking-[-0.01em] text-gray-900 hover:text-gray-600 active:text-gray-500 whitespace-nowrap flex-shrink-0 py-2 -my-2 pr-0 sm:pr-1"
-                    style={{
-                      opacity: (isHomepage && !showPageTitle && !isMobileMenuOpen) ? 0 : 1,
-                      transform: (isHomepage && !showPageTitle && !isMobileMenuOpen) ? 'translateY(4px)' : 'translateY(0)',
-                      // Colour is listed here because the inline transition replaces any class-level one
-                      transition: 'opacity 250ms ease, transform 350ms cubic-bezier(0.23, 1, 0.32, 1), color 150ms ease',
-                      pointerEvents: (isHomepage && !showPageTitle && !isMobileMenuOpen) ? 'none' : 'auto',
-                    }}
+                    style={{ transition: 'color 150ms ease' }}
                   >
                     Victor Soussan
                   </Link>
@@ -245,20 +239,20 @@ export default function Nav({ lang }: { lang: Lang }) {
                     <Link
                       href={`/${lang}/${item.route}`}
                       aria-current={active ? 'page' : undefined}
-                      className={`relative inline-flex min-h-10 items-center px-3.5 text-sm rounded-full hover:bg-black/[0.04] active:scale-[0.97] ${
-                        active ? 'font-semibold text-gray-900' : 'font-medium text-gray-600 hover:text-gray-900'
+                      className={`nav-pill relative inline-flex min-h-10 items-center px-3.5 text-sm rounded-full active:scale-[0.97] [@media(hover:hover)]:hover:bg-black/[0.04] ${
+                        active ? 'font-semibold text-gray-900' : 'font-medium text-gray-600 [@media(hover:hover)]:hover:text-gray-900'
                       }`}
                       style={{ transition: 'background-color 150ms ease, color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
                     >
-                      {item.labelKey ? content[item.labelKey] : ''}
-                      {/* Active indicator: 2px bar under the label, in the text colour so it stays
-                          visible on the dark navigation. Reduced motion keeps the fade, drops the grow. */}
-                      <span
-                        aria-hidden="true"
-                        className={`pointer-events-none absolute inset-x-3.5 bottom-1.5 h-0.5 rounded-full bg-current transition-[transform,opacity] duration-200 ease-out ${
-                          active ? 'scale-x-100 opacity-100' : 'scale-x-0 opacity-0 motion-reduce:scale-x-100'
-                        }`}
-                      />
+                      {/* The active entry is told by weight and ink, never by a bar: a bar fights the pill
+                          hover. A hidden semibold twin reserves the widest width, so the entries around
+                          never move when the active one changes. */}
+                      <span className="inline-grid">
+                        <span className="col-start-1 row-start-1">{item.labelKey ? content[item.labelKey] : ''}</span>
+                        <span aria-hidden="true" className="invisible col-start-1 row-start-1 font-semibold">
+                          {item.labelKey ? content[item.labelKey] : ''}
+                        </span>
+                      </span>
                     </Link>
                   </li>
                 )
@@ -268,7 +262,7 @@ export default function Nav({ lang }: { lang: Lang }) {
             {/* Lang switcher */}
             <Link
               href={`/${otherLang}${pathname.replace(`/${lang}`, '')}`}
-              className="px-2 sm:px-2.5 py-1.5 text-sm font-medium rounded-full text-gray-500 hover:text-gray-900 hover:bg-black/[0.04] active:scale-[0.96]"
+              className="px-2 sm:px-2.5 py-1.5 text-sm font-medium rounded-full text-gray-500 active:scale-[0.96] [@media(hover:hover)]:hover:text-gray-900 [@media(hover:hover)]:hover:bg-black/[0.04]"
               style={{ transition: 'background-color 150ms ease, color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
             >
               {lang === 'en' ? 'FR' : 'EN'}
@@ -285,7 +279,7 @@ export default function Nav({ lang }: { lang: Lang }) {
             </Link>
 
             <button
-              className="relative p-2 rounded-full hover:bg-black/[0.04] active:scale-[0.95]"
+              className="relative p-2 rounded-full active:scale-[0.95] [@media(hover:hover)]:hover:bg-black/[0.04]"
               style={{ transition: 'background-color 150ms ease, color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
               onClick={toggleMenu}
               aria-label={lang === 'fr' ? (isMobileMenuOpen ? 'Fermer le menu' : 'Ouvrir le menu') : isMobileMenuOpen ? 'Close menu' : 'Open menu'}

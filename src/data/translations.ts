@@ -21,11 +21,12 @@ export const TRANSLATIONS = {
     hero: {
       availability: "Available for collaborations and engagements",
       tagline: "Victor Soussan",
-      title: "Lead Product Designer, AI",
+      title: "Lead Product Designer",
+      formula: "design, research and delivery, equipped with AI",
       subtitle: "end-to-end",
       positioning: "Product Builder \u00b7 SaaS B2B & B2G \u00b7 Design Systems \u00b7 AI-driven design & prototyping \u00b7 Claude Code \u00b7 Figma MCP",
-      desc: "I design digital products with AI, applied to design, project management and front-end development. I work with product teams from framing to production.",
-      descShort: "I design digital products with AI, applied to design, project management and front-end development. I work with product teams from framing to production.",
+      desc: "I design at every level of fidelity and organise what surrounds the screen: research, methods, follow-up. With AI, day to day: syntheses, task tracking, production in Figma, prototyping.",
+      descShort: "I design at every level of fidelity and organise what surrounds the screen: research, methods, follow-up. With AI, day to day: syntheses, task tracking, production in Figma, prototyping.",
       cta_projects: "See the work",
       cta_guide: "Explore the Claude Code guide",
       cta_book: "Book a 30min Call",
@@ -102,7 +103,7 @@ export const TRANSLATIONS = {
         "Build and coach a design team set up for success"
       ],
       p1: "I've been designing digital products for 15 years. I evolved from agency to product, through major media groups and hardware startups. I don't aim for 'beautiful', I aim for 'functional' and 'viable'.",
-      p2: "I can define a roadmap with a CEO, manage a team of designers, prototype with AI, and open Figma to produce dev-ready mockups. I understand technical constraints and speak the language of developers.",
+      p2: "I design the journeys and I take charge of the product design practice: the team, research, methods, where design sits in delivery, the design system.",
       view_full_bio: "See my Full Journey",
       view_executive: "1-min Presentation",
       modal_title: "Biography and Journey",
@@ -281,8 +282,8 @@ export const TRANSLATIONS = {
       crosslink_projects_desc: "Case studies and delivered products across SaaS, B2B, and public service."
     },
     contact: {
-      title: "Let's work together",
-      subtitle: "I'm available for freelance and consulting work. If you have a product to design or a design challenge to work through, get in touch.",
+      title: "Let's talk",
+      subtitle: "To talk about a product to design, a design practice to set up or the use of AI in a team, write to me.",
       email: "Send an email",
       book: "Book a 30min call",
       shoot_note: "Shoot me a note",
@@ -420,11 +421,12 @@ export const TRANSLATIONS = {
     hero: {
       availability: "Disponible pour collaborations et interventions",
       tagline: "Victor Soussan",
-      title: "Lead Product Designer, IA",
+      title: "Lead Product Designer",
+      formula: "conception, recherche et pilotage, outill\u00e9s par l\u2019IA",
       subtitle: "end-to-end",
       positioning: "Product Builder \u00b7 SaaS B2B & B2G \u00b7 Design Systems \u00b7 Design et prototypage IA \u00b7 Claude Code \u00b7 Figma MCP",
-      desc: "Je con\u00e7ois des produits num\u00e9riques avec l\u2019IA, appliqu\u00e9e au design, \u00e0 la gestion de projet et au d\u00e9veloppement front. Je travaille avec les \u00e9quipes produit du cadrage \u00e0 la production.",
-      descShort: "Je con\u00e7ois des produits num\u00e9riques avec l\u2019IA, appliqu\u00e9e au design, \u00e0 la gestion de projet et au d\u00e9veloppement front. Je travaille avec les \u00e9quipes produit du cadrage \u00e0 la production.",
+      desc: "Je con\u00e7ois \u00e0 tous les niveaux de fid\u00e9lit\u00e9 et j\u2019organise ce qui entoure l\u2019\u00e9cran\u00a0: recherche, m\u00e9thodes, suivi. Avec l\u2019IA, au quotidien\u00a0: synth\u00e8ses, suivi des t\u00e2ches, production dans Figma, prototypage.",
+      descShort: "Je con\u00e7ois \u00e0 tous les niveaux de fid\u00e9lit\u00e9 et j\u2019organise ce qui entoure l\u2019\u00e9cran\u00a0: recherche, m\u00e9thodes, suivi. Avec l\u2019IA, au quotidien\u00a0: synth\u00e8ses, suivi des t\u00e2ches, production dans Figma, prototypage.",
       cta_projects: "Voir les projets",
       cta_guide: "Explorer le guide Claude Code",
       cta_book: "Planifier un appel de 30min",
@@ -502,7 +504,7 @@ export const TRANSLATIONS = {
         "Construire et accompagner une \u00e9quipe design pr\u00eate pour r\u00e9ussir"
       ],
       p1: "Je con\u00e7ois des produits num\u00e9riques depuis 15 ans. J\u2019ai \u00e9volu\u00e9 de l\u2019agence au produit, en passant par les grands groupes m\u00e9dias et les startups hardware. Je ne cherche pas \u00e0 faire du \u2018beau\u2019, je cherche \u00e0 faire du \u2018fonctionnel\u2019 et du \u2018viable\u2019.",
-      p2: "Je peux d\u00e9finir une roadmap avec un CEO, manager une \u00e9quipe de designers, prototyper avec l\u2019IA et ouvrir Figma pour produire des maquettes pr\u00eates \u00e0 coder. Je comprends les contraintes techniques et je parle le langage des d\u00e9veloppeurs.",
+      p2: "Je con\u00e7ois les parcours et je prends en charge la pratique de product design\u00a0: l\u2019\u00e9quipe, la recherche, les m\u00e9thodes, la place du design dans la livraison, le design system.",
       view_full_bio: "Voir mon Parcours Complet",
       view_executive: "Pr\u00e9sentation en 1-min",
       modal_title: "Biographie et Parcours",
@@ -668,8 +670,8 @@ export const TRANSLATIONS = {
       crosslink_projects_desc: "Études de cas et produits livrés en SaaS, B2B et service public."
     },
     contact: {
-      title: "Travaillons ensemble",
-      subtitle: "Je suis disponible pour des missions freelance et du conseil. Si vous avez un produit \u00e0 concevoir ou un d\u00e9fi design \u00e0 relever, contactez-moi.",
+      title: "\u00c9changeons",
+      subtitle: "Pour \u00e9changer sur un produit \u00e0 concevoir, une pratique design \u00e0 structurer ou l\u2019usage de l\u2019IA dans une \u00e9quipe, \u00e9crivez-moi.",
       email: "Envoyer un email",
       book: "R\u00e9server un appel de 30min",
       shoot_note: "Envoyer un message",
