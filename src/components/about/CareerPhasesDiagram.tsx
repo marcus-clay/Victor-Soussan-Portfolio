@@ -9,19 +9,19 @@ export default function CareerPhasesDiagram({ lang }: { lang: 'en' | 'fr' }) {
   const c = {
     fr: {
       title: 'Un parcours qui converge vers les outils métier',
-      desc: 'Une frise de 2005 à aujourd’hui : de 2005 à 2016, des agences au grand public ; de 2016 à 2024, les outils métier B2B et B2G ; de 2025 à 2026, indépendant ; aujourd’hui, Lead UX France, dans un éditeur européen d’information professionnelle de 2 500 personnes.',
+      desc: 'Une frise de 2005 à aujourd’hui : de 2005 à 2016, des agences au grand public ; de 2016 à 2024, les outils métier B2B et B2G ; de 2025 à 2026, indépendant ; aujourd’hui, Lead UX France, à la tête de la pratique design d’un éditeur européen d’information professionnelle.',
       early: ['Agences, grand public', '2005 à 2016'],
       core: ['Outils métier B2B et B2G', '2016 à 2024'],
       solo: 'Indépendant, 2025 à 2026',
-      now: ['Lead UX France', 'Éditeur européen, 2 500 personnes, 500 M€ de CA'],
+      now: ['Lead UX France', 'Pratique design, éditeur européen'],
     },
     en: {
       title: 'A career that converges on business tools',
-      desc: 'A timeline from 2005 to today: from 2005 to 2016, agencies to consumer products; from 2016 to 2024, B2B and B2G business tools; from 2025 to 2026, independent; today, Lead UX France, at a European professional information publisher of 2,500 people.',
+      desc: 'A timeline from 2005 to today: from 2005 to 2016, agencies to consumer products; from 2016 to 2024, B2B and B2G business tools; from 2025 to 2026, independent; today, Lead UX France, running the design practice at a European professional information publisher.',
       early: ['Agencies, consumer', '2005 to 2016'],
       core: ['B2B and B2G business tools', '2016 to 2024'],
       solo: 'Independent, 2025 to 2026',
-      now: ['Lead UX France', 'European publisher, 2,500 people, €500M revenue'],
+      now: ['Lead UX France', 'Design practice, European publisher'],
     },
   }[lang]
 
