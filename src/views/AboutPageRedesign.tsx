@@ -60,6 +60,7 @@ const TRANSLATIONS = {
     toolkit_title: 'Toolkit',
     toolkit_items: 'Figma, Figma Console MCP, Notion, Linear, VS Code, Claude Code, Framer Motion, Google Slides, Midjourney',
     cta_text: 'Want to talk?',
+    cta_availability: 'I hold a full-time role and remain available for short consulting and freelance missions.',
     cta_email: 'victorsoussan@gmail.com',
     linkedin_label: 'Full background and recommendations',
     cv_label: 'View or download resume',
@@ -106,6 +107,7 @@ const TRANSLATIONS = {
     toolkit_title: 'Boîte à outils',
     toolkit_items: 'Figma, Figma Console MCP, Notion, Linear, VS Code, Claude Code, Framer Motion, Google Slides, Midjourney',
     cta_text: 'Envie d’échanger ?',
+    cta_availability: 'En poste aujourd’hui, je reste disponible pour des missions courtes de conseil et de freelance.',
     cta_email: 'victorsoussan@gmail.com',
     linkedin_label: 'Parcours complet et recommandations',
     cv_label: 'Lire ou télécharger le CV',
@@ -410,6 +412,7 @@ export default function AboutPageRedesign({
         <ActHeader index={hasResources ? '05' : '04'} title={t.cta_text} />
 
         <div className="act-wide pb-14 md:pb-20">
+          <p className="mb-6 max-w-[40rem] text-base text-gray-600">{t.cta_availability}</p>
           <ul className="max-w-[40rem] divide-y divide-gray-100 border-y border-gray-100">
             <li className="flex items-center gap-2">
               <a
