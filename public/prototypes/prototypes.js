@@ -3231,7 +3231,7 @@
         if (i === idx) s.classList.add('active');
       });
       const activeStep = document.getElementById('proto-step-' + idx);
-      if (activeStep) activeStep.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      if (activeStep && !document.body.classList.contains('embed-mode')) activeStep.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
     }
 
     // Update nav arrows
@@ -4660,16 +4660,18 @@
       item.classList.toggle('active', item.dataset.proto === id);
     });
 
-    // Scroll the proto section into view
-    const protoSection = document.getElementById('proto-section');
-    if (protoSection) {
-      protoSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+    // Scroll the proto section and the active TOC item into view. Never in embed mode: scrollIntoView
+    // also scrolls every ancestor of the iframe, which moved the host page and its carousels.
+    if (!document.body.classList.contains('embed-mode')) {
+      const protoSection = document.getElementById('proto-section');
+      if (protoSection) {
+        protoSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
 
-    // Scroll active TOC item into view
-    const activeItem = document.querySelector('.proto-toc-item.active');
-    if (activeItem) {
-      activeItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      const activeItem = document.querySelector('.proto-toc-item.active');
+      if (activeItem) {
+        activeItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
     }
 
     const fn = protoMap[id];

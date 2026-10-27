@@ -117,6 +117,10 @@ export const SQOOL_CLASSE_TRANSLATIONS = {
       actionsLabel: 'Sharing and distributing from the teacher view',
       studentLabel: 'The student side of SQOOL Classe',
       deliverablesLabel: 'Starting a class, sharing a link and collecting feedback',
+      scenariosLabel: 'Interactive prototypes of full lessons',
+      protoPlay: 'Play the prototype',
+      protoPause: 'Pause',
+      protoReplay: 'Replay',
     },
     imageCaptions: {
       thumb: 'SQOOL Classe',
@@ -254,6 +258,10 @@ export const SQOOL_CLASSE_TRANSLATIONS = {
       actionsLabel: 'Partager et distribuer depuis la vue enseignant',
       studentLabel: 'Le côté élève de SQOOL Classe',
       deliverablesLabel: 'Ouvrir une classe, partager un lien et recueillir des retours',
+      scenariosLabel: 'Prototypes interactifs de séances complètes',
+      protoPlay: 'Lancer le prototype',
+      protoPause: 'Pause',
+      protoReplay: 'Rejouer',
     },
     imageCaptions: {
       thumb: 'SQOOL Classe',
