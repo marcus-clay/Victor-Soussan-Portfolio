@@ -37,8 +37,8 @@ export const viewport: Viewport = {
 }
 
 const DESCRIPTION = {
-  fr: 'Lead Product Designer, 15 ans de conception produit. Design systems, interfaces complexes, prototypage assisté par IA. SaaS B2B, EdTech, services publics.',
-  en: 'Lead Product Designer, 15+ years of product design. Design systems, complex interfaces, AI-assisted prototyping. B2B SaaS, EdTech, public services.',
+  fr: 'Lead Product Designer à Paris. Product design B2B et B2G, design systems, recherche utilisateur, pratique design d’une équipe, avec l’IA au quotidien.',
+  en: 'Lead Product Designer in Paris. B2B and B2G product design, design systems, user research and design practice leadership, with AI built into daily work.',
 } as const
 
 export async function generateMetadata({
