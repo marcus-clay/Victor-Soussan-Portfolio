@@ -216,7 +216,7 @@ const MobileLightbox = ({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: 0.15 }}
             className="fixed inset-0 z-[200] flex items-center justify-center"
             style={{ touchAction: 'none' }}
           >
@@ -225,18 +225,19 @@ const MobileLightbox = ({
               className="absolute inset-0 bg-black"
               style={{ opacity: backgroundOpacity }}
               onClick={!isZoomed ? handleClose : undefined}
+              transition={{ duration: 0.15 }}
             />
 
             {/* Close button - fades when zoomed */}
             <motion.button
-              initial={{ opacity: 0, scale: 0.8 }}
+              initial={{ opacity: 0, scale: 0.96 }}
               animate={{
                 opacity: isZoomed ? 0 : 1,
                 scale: 1,
                 pointerEvents: isZoomed ? 'none' : 'auto'
               }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              transition={{ duration: 0.2 }}
+              exit={{ opacity: 0, scale: 0.96 }}
+              transition={{ duration: 0.15 }}
               onClick={handleClose}
               className="absolute top-4 right-4 z-10 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors before:absolute before:inset-[-12px] before:content-['']"
             >
@@ -256,19 +257,19 @@ const MobileLightbox = ({
               style={{ y: isZoomed ? 0 : dragY }}
             >
               <motion.div
-                initial={{ scale: 0.5, opacity: 0 }}
+                initial={{ scale: 0.96, opacity: 0 }}
                 animate={{
                   scale: scale,
                   opacity: 1,
                   x: position.x,
                   y: position.y
                 }}
-                exit={{ scale: 0.5, opacity: 0 }}
+                exit={{ scale: 0.96, opacity: 0 }}
                 transition={{
                   type: 'spring',
                   stiffness: 300,
                   damping: 30,
-                  opacity: { duration: 0.2 }
+                  opacity: { duration: 0.15 }
                 }}
                 onClick={handleTap}
                 onTouchEnd={handleTap}
@@ -309,7 +310,7 @@ const MobileLightbox = ({
                 pointerEvents: 'none'
               }}
               exit={{ opacity: 0 }}
-              transition={{ delay: 0.5 }}
+              transition={{ duration: 0.25, delay: 0.5 }}
               className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white text-xs flex flex-col items-center gap-2"
             >
               <motion.div
