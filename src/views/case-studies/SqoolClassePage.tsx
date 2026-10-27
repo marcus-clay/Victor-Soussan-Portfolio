@@ -15,6 +15,9 @@ import EnhancedLightbox from '../../components/media/EnhancedLightbox';
 import { MediaCarousel, MediaStage, type SuiteMediaItem } from '../../components/case-studies/SuiteMedia';
 
 import PrototypeFinderGallery from '../../components/prototype/PrototypeFinderGallery';
+import DeviceCarousel, { type CarouselScreen } from '@/components/case-study/DeviceCarousel'
+import PrototypeScreen from '@/components/case-study/PrototypeScreen'
+import { PROTOTYPE_MAP } from '../../data/sqoolPrototypesData';
 import { SQOOL_CLASSE_TRANSLATIONS } from '../../data/caseStudyTranslations/sqoolClasseTranslations';
 import { useScrollTopOnChange } from '@/hooks/useScrollTopOnChange';
 
@@ -32,6 +35,9 @@ const TRANSLATIONS = SQOOL_CLASSE_TRANSLATIONS;
 
 const IMG_BASE = '/images/sqool/sqool classe';
 const OBS = `${IMG_BASE}/prototypes - observation - user testing - classe`;
+
+// The full lessons of the prototype set that the case study plays (see `sqoolPrototypesData`)
+const SCENARIO_PROTOTYPES = ['SC1', 'SC2', 'SC4', 'SC7', 'SC10'] as const
 
 type LightboxItem = { src: string; caption: string; type: 'image' | 'video' };
 
@@ -123,6 +129,28 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
   });
 
   const carouselLabels = { prev: t.ui.prev, next: t.ui.next, slide: t.ui.slide };
+
+  // Interactive prototypes of five full lessons, played on demand inside a tablet frame
+  const scenarioScreens = useMemo<CarouselScreen[]>(
+    () =>
+      SCENARIO_PROTOTYPES.map((id) => {
+        const proto = PROTOTYPE_MAP.get(id)
+        const title = proto ? proto.title[lang] : id
+        return {
+          src: `prototype:${id}`,
+          label: title,
+          custom: (focused: boolean) => (
+            <PrototypeScreen
+              id={id}
+              title={title}
+              focused={focused}
+              labels={{ play: t.ui.protoPlay, pause: t.ui.protoPause, replay: t.ui.protoReplay }}
+            />
+          ),
+        }
+      }),
+    [lang, t]
+  )
 
   const actionSlides = [visual(8), visual(9), visual(10)];
   const studentSlides = [visual(12), visual(13), visual(11), visual(14), visual(16), visual(5)];
@@ -243,7 +271,15 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
                     <MediaCarousel items={studentSlides} label={t.ui.studentLabel} labels={carouselLabels} onOpen={openImageLightbox} />
                   </Block>
 
-                  <Block id="scenarios" title={t.approach.scenarios.title} text={t.approach.scenarios.text} />
+                  <Block id="scenarios" title={t.approach.scenarios.title} text={t.approach.scenarios.text}>
+                    <DeviceCarousel
+                      kind="tablet"
+                      screens={scenarioScreens}
+                      ariaLabel={t.ui.scenariosLabel}
+                      prevLabel={t.ui.prev}
+                      nextLabel={t.ui.next}
+                    />
+                  </Block>
                 </div>
               </div>
             </section>
