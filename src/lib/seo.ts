@@ -168,8 +168,8 @@ export function personLd(lang: Lang) {
     jobTitle: 'Lead Product Designer',
     description:
       lang === 'fr'
-        ? 'Lead Product Designer avec 15 ans d\u2019exp\u00e9rience, sp\u00e9cialiste du product design B2B et B2G en France. Design systems, interfaces m\u00e9tier complexes, prototypage assist\u00e9 par IA.'
-        : 'Lead Product Designer with 15 years of experience, specialist in B2B and B2G product design in France. Design systems, complex business interfaces, AI-assisted prototyping.',
+        ? 'Lead Product Designer \u00e0 Paris, sp\u00e9cialiste du product design B2B et B2G. Design systems, interfaces m\u00e9tier complexes, recherche utilisateur, pratique design d\u2019une \u00e9quipe, IA int\u00e9gr\u00e9e au quotidien.'
+        : 'Lead Product Designer in Paris, specialist in B2B and B2G product design. Design systems, complex business interfaces, user research, design practice leadership, AI built into daily work.',
     url: SITE_URL,
     image: `${SITE_URL}/images/image-victor-soussan-2027.jpg`,
     address: { '@type': 'PostalAddress', addressLocality: 'Paris', addressCountry: 'FR' },
