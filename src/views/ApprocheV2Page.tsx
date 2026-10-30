@@ -13,7 +13,7 @@ import { getTestimonials } from '@/data/testimonialsData'
 import { ClientsStrip } from '@/views/ExpertiseSections'
 import { CTA_SECTION, type Language } from '@/data/approcheData'
 import { V2_HERO, V2_JOB, V2_RESULTS, V2_SHORT_TOC } from '@/data/approcheV2Data'
-import { ArrowLink, CtaButton, TEXT_LINK } from '@/views/ApprochePage'
+import { ArrowLink, CtaButton, TEXT_LINK } from '@/components/approche/ApproachLinks'
 
 /**
  * Approach, second version, for a one-minute read. Three questions in the order a reader asks them: what do
@@ -37,8 +37,8 @@ export default function ApprocheV2Page({ lang, related }: { lang: Language; rela
 
       <header className="wrap pt-10 md:pt-16 pb-10 md:pb-12">
         <h1 className="build-line text-display text-gray-900 text-balance">{hero.title}</h1>
-        <p className="build-rise mt-6 md:mt-8 text-lead-lg text-gray-600 max-w-[54ch]" style={{ ['--d' as string]: '200ms' }}>{hero.lead}</p>
-        <div className="build-rise mt-8 md:mt-10" style={{ ['--d' as string]: '280ms' }}>
+        <p className="build-rise mt-6 md:mt-8 text-lead-lg text-gray-600 max-w-[54ch]" style={{ ['--d' as string]: '120ms' }}>{hero.lead}</p>
+        <div className="build-rise mt-8 md:mt-10" style={{ ['--d' as string]: '200ms' }}>
           <CtaButton lang={lang} />
         </div>
       </header>

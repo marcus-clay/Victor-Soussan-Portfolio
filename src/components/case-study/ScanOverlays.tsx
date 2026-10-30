@@ -2,12 +2,13 @@
 
 // Animated moments laid over a screen of the patient app (390 × 844 space): a tap, a card scanned by the
 // camera, a pulse on an element. Each one plays once when it mounts, so the player mounts it when its step
-// becomes active. With reduced motion they show their final state without moving.
+// becomes active. With reduced motion they show their final state without moving, except inside a film,
+// which plays in full.
 
 import React, { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Check } from '@phosphor-icons/react'
-import { useReducedMotion } from '@/components/case-study/controls'
+import { useGestureReducedMotion } from '@/components/case-study/FilmClock'
 
 const GREEN_ON_DARK = '#63c583'
 const EASE_OUT: [number, number, number, number] = [0.23, 1, 0.32, 1]
@@ -15,7 +16,7 @@ const FONT = 'Inter, system-ui, sans-serif'
 
 /** A finger pressing a control: a soft disc that grows and fades. */
 export function TapOverlay({ x, y, delay = 0.5 }: { x: number; y: number; delay?: number }) {
-  const reduce = useReducedMotion()
+  const reduce = useGestureReducedMotion()
   if (reduce) return null
   return (
     <motion.span
@@ -30,7 +31,7 @@ export function TapOverlay({ x, y, delay = 0.5 }: { x: number; y: number; delay?
 
 /** A soft ring that breathes twice around an element to say "this one changed". */
 export function PulseOverlay({ x, y, width, height, radius = 14, delay = 0.5 }: { x: number; y: number; width: number; height: number; radius?: number; delay?: number }) {
-  const reduce = useReducedMotion()
+  const reduce = useGestureReducedMotion()
   return (
     <motion.span
       aria-hidden="true"
@@ -98,7 +99,7 @@ function Bracket({ corner, tone }: { corner: 'tl' | 'tr' | 'bl' | 'br'; tone: st
  * green and a pill confirms. Positioned over the frame drawn in the screen of the app (320 × 202).
  */
 export function CardScanOverlay({ kind, frame, doneLabel }: { kind: 'bank' | 'vitale'; frame: { x: number; y: number }; doneLabel: string }) {
-  const reduce = useReducedMotion()
+  const reduce = useGestureReducedMotion()
   const W = 320
   const H = 202
   const T0 = 0.45
@@ -174,7 +175,7 @@ function ColoredBrackets({ delay, reduce }: { delay: number; reduce: boolean }) 
  * phones shows its moment without any control. Out of view it is removed, so it starts over when it returns.
  */
 export function LoopOverlay({ children, period = 7000 }: { children: React.ReactNode; period?: number }) {
-  const reduce = useReducedMotion()
+  const reduce = useGestureReducedMotion()
   const ref = useRef<HTMLSpanElement>(null)
   const [visible, setVisible] = useState(false)
   const [run, setRun] = useState(0)

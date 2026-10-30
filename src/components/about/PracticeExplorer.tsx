@@ -133,7 +133,7 @@ export default function PracticeExplorer({ lang }: { lang: Lang }) {
                       <motion.span
                         layoutId={`${uid}-pill`}
                         aria-hidden="true"
-                        transition={reduce ? { duration: 0 } : { type: 'spring', duration: 0.35, bounce: 0 }}
+                        transition={reduce ? { duration: 0 } : { type: 'spring', duration: 0.25, bounce: 0 }}
                         className="absolute inset-0 rounded-full bg-white shadow-sm ring-1 ring-black/[0.06]"
                       />
                     )}

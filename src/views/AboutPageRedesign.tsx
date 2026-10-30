@@ -199,7 +199,7 @@ export default function AboutPageRedesign({
         <h1 className="build-line text-display text-gray-900">
           {t.page_title}
         </h1>
-        <p className="build-rise mt-6 md:mt-8 text-lead-lg text-gray-600 max-w-[54ch]" style={{ ['--d' as string]: '200ms' }}>
+        <p className="build-rise mt-6 md:mt-8 text-lead-lg text-gray-600 max-w-[54ch]" style={{ ['--d' as string]: '120ms' }}>
           {t.role}
         </p>
       </header>
@@ -213,14 +213,14 @@ export default function AboutPageRedesign({
                 src="/images/image-victor-soussan-2027.jpg"
                 alt="Victor Soussan"
                 className="build-media w-full h-full object-cover object-top"
-                style={{ ['--d' as string]: '260ms' }}
+                style={{ ['--d' as string]: '160ms' }}
                 loading="eager"
               />
             </div>
           </div>
 
           <div className="lg:col-span-7 lg:col-start-6">
-            <p className="build-rise text-lead-lg text-gray-900 max-w-[40ch]" style={{ ['--d' as string]: '320ms' }}>
+            <p className="build-rise text-lead-lg text-gray-900 max-w-[40ch]" style={{ ['--d' as string]: '220ms' }}>
               {t.intro}
             </p>
 
