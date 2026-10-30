@@ -1,5 +1,6 @@
-// Approche page: situations by team maturity, working documents, how it is to work together,
-// collaboration by discipline, weekly rhythm, closing. A no-break space (U+00A0) sits before
+// Approche page: three scales of work (a subject, a roadmap, an organisation), structuring a roadmap,
+// situations by team maturity, deliverables from the least defined to the most precise, how it is to work
+// together, collaboration by discipline, a rhythm over several horizons, closing. A no-break space (U+00A0) sits before
 // the French colon, semicolon, question and exclamation marks.
 // ACTS and ACTS_INTRO (Cadrer, Matérialiser, Arbitrer) are no longer shown on the Approche page:
 // the homepage Method section still reads them.
@@ -16,13 +17,13 @@ export const HERO: Bi<{ title: string; statement: string; lead: string; cta: { l
   fr: {
     title: 'Approche',
     statement: 'Approche',
-    lead: 'Je pose un cadre là où il n’y en a pas, j’organise la recherche et le travail en commun qui l’entourent, puis j’affine les maquettes à mesure que le sujet devient lisible.',
+    lead: 'Je rends lisible ce qu’une équipe produit doit concevoir, dans quel ordre et à quel niveau de détail. Je travaille à trois échelles : un sujet, une feuille de route, et l’organisation qui la porte.',
     cta: { label: 'Parlons de votre contexte', href: '/contact' },
   },
   en: {
     title: 'Approach',
     statement: 'Approach',
-    lead: 'I set a frame where there is none, organise the collaboration and the research around it, then raise the fidelity as the complexity becomes readable.',
+    lead: 'I make readable what a product team has to design, in which order and at which level of detail. I work at three scales: a subject, a roadmap, and the organisation that carries it.',
     cta: { label: 'Tell me about your context', href: '/contact' },
   },
 }
@@ -260,13 +261,13 @@ export const SITUATIONS_COPY: Bi<{
 }> = {
   fr: {
     title: 'Ce que je fais change avec la maturité de l’équipe',
-    intro: 'Les équipes que je rejoins n’ont ni la même culture produit ni la même culture design. Mon rôle et ce que je produis s’adaptent à leur point de départ.',
+    intro: 'Chaque équipe que je rejoins a sa propre culture produit et sa propre culture design. Mon rôle et ce que je produis s’adaptent à son point de départ.',
     columns: { situation: 'Situation', role: 'Mon rôle', outputs: 'Ce que je produis' },
     proofLink: 'Voir',
   },
   en: {
     title: 'What I do depends on the maturity of the team',
-    intro: 'The teams I join do not share the same product culture or design culture. What I take on and what I produce adapt to where they start.',
+    intro: 'Every team I join has its own product culture and its own design culture. What I take on and what I produce adapt to where it starts.',
     columns: { situation: 'Situation', role: 'What I take on', outputs: 'What I produce' },
     proofLink: 'See',
   },
@@ -286,12 +287,12 @@ export const SITUATIONS: Situation[] = [
     id: 'no-frame',
     name: { fr: 'Aucun cadre', en: 'No frame yet' },
     context: {
-      fr: 'Le sujet est flou, les avis divergent, le problème n’est écrit nulle part.',
-      en: 'The subject is blurry, opinions differ, and the problem is written down nowhere.',
+      fr: 'Les sujets s’empilent, les avis divergent, le problème reste à écrire.',
+      en: 'Subjects pile up, opinions differ, and the problem is still to be written down.',
     },
     role: {
       fr: 'J’anime des ateliers de cadrage et je mène la réflexion stratégique : définir le problème, repérer les opportunités, poser un premier cadre de solution.',
-      en: 'I run framing workshops and lead the strategic thinking: define the problem, spot opportunities, set a first solution frame.',
+      en: 'I run framing workshops and lead the strategic thinking: define the problem, spot opportunities, structure the roadmap, set a first solution frame.',
     },
     outputs: {
       fr: 'Un document de cadrage partagé, la cartographie des acteurs et des enjeux, les hypothèses à tester.',
@@ -361,6 +362,7 @@ export const PAGE_STRUCTURE: Bi<{
   situationsDiagram: string
   situationsTable: string
   fidelity: string
+  concept: string
   documents: string
   prototype: string
   client: string
@@ -371,6 +373,8 @@ export const PAGE_STRUCTURE: Bi<{
 }> = {
   fr: {
     toc: [
+      { id: 'scales', label: 'Trois échelles' },
+      { id: 'roadmap', label: 'Feuille de route' },
       { id: 'situations', label: 'Situations' },
       { id: 'before-screen', label: 'Avant l’écran' },
       { id: 'working', label: 'Travailler ensemble' },
@@ -381,17 +385,20 @@ export const PAGE_STRUCTURE: Bi<{
     ],
     situationsDiagram: 'Mon rôle selon la maturité de l’équipe',
     situationsTable: 'Trois points de départ',
-    fidelity: 'On précise à mesure que le sujet s’éclaircit',
+    fidelity: 'Du moins défini au plus précis',
+    concept: 'Schématiser pour faire avancer les discussions',
     documents: 'Des documents réels',
     prototype: 'Un prototype quand la question l’exige',
     client: 'Dans les mots d’un client',
     disciplinesLead: 'Ce que je produis et la façon de collaborer changent selon l’interlocuteur.',
     counterparts: 'Quatre interlocuteurs',
-    rhythm: 'Un rythme de travail',
+    rhythm: 'Un rythme sur plusieurs horizons',
     domainsLead: 'Quatre domaines, chacun avec les études de cas qui le montrent.',
   },
   en: {
     toc: [
+      { id: 'scales', label: 'Three scales' },
+      { id: 'roadmap', label: 'Roadmap' },
       { id: 'situations', label: 'Situations' },
       { id: 'before-screen', label: 'Before the screen' },
       { id: 'working', label: 'Working together' },
@@ -402,13 +409,14 @@ export const PAGE_STRUCTURE: Bi<{
     ],
     situationsDiagram: 'My role shifts with maturity',
     situationsTable: 'Three starting points',
-    fidelity: 'Fidelity rises with readability',
+    fidelity: 'From the least defined to the most precise',
+    concept: 'Sketching to move discussions forward',
     documents: 'Real documents',
     prototype: 'A prototype when the question calls for one',
     client: 'In a client’s words',
     disciplinesLead: 'What I produce and how we collaborate change with who is across the table.',
     counterparts: 'Four counterparts',
-    rhythm: 'A working rhythm',
+    rhythm: 'A rhythm over several horizons',
     domainsLead: 'Four areas, each with the case studies that show it.',
   },
 }
@@ -417,33 +425,241 @@ export const PAGE_STRUCTURE: Bi<{
 // Diagrams (qualitative, no values): fidelity over readability, and the two tracks of a sprint
 // ---------------------------------------------------------------------------
 
-export const FIDELITY_DIAGRAM: Bi<{ title: string; desc: string; stages: [string, string, string]; curve: string }> = {
+export const FIDELITY_DIAGRAM: Bi<{ title: string; desc: string; stages: string[]; curve: string; slow: string; fast: string }> = {
   fr: {
-    title: 'Le niveau de détail monte à mesure que le sujet s’éclaircit',
-    desc: 'Une courbe qui monte de l’atelier brut aux wireframes, puis aux spécifications.',
-    stages: ['Atelier', 'Wireframes', 'Specs'],
-    curve: 'Fidélité',
+    title: 'Des livrables du moins défini au plus précis',
+    desc: 'Une courbe qui monte de la note de cadrage aux parcours et zonings, aux wireframes, aux maquettes, puis aux spécifications d’implémentation.',
+    stages: ['Note de cadrage', 'Parcours et zonings', 'Wireframes', 'Maquettes', 'Specs d’implémentation'],
+    curve: 'Précision',
+    slow: 'parfois plusieurs semaines',
+    fast: 'quelques jours',
   },
   en: {
-    title: 'Fidelity rises as the complexity becomes readable',
-    desc: 'A curve that rises from the rough workshop to wireframes, then to specifications.',
-    stages: ['Workshop', 'Wireframes', 'Specs'],
-    curve: 'Fidelity',
+    title: 'Deliverables from the least defined to the most precise',
+    desc: 'A curve that rises from the framing note to journeys and zonings, wireframes, mockups, then implementation specs.',
+    stages: ['Framing note', 'Journeys and zonings', 'Wireframes', 'Mockups', 'Implementation specs'],
+    curve: 'Precision',
+    slow: 'sometimes several weeks',
+    fast: 'a few days',
   },
 }
 
-export const TRACKS_DIAGRAM: Bi<{ title: string; desc: string; build: string; evaluate: string }> = {
+// ---------------------------------------------------------------------------
+// Three scales: a subject, a roadmap, an organisation
+// ---------------------------------------------------------------------------
+
+export interface Scale {
+  id: string
+  name: string
+  does: string
+  produces: string
+}
+
+export const SCALES: Bi<{
+  title: string
+  lead: string
+  columns: { does: string; produces: string }
+  items: Scale[]
+  diagram: { title: string; desc: string; org: string; orgDesc: string; roadmap: string; roadmapDesc: string; subject: string; subjectDesc: string; people: string[] }
+}> = {
   fr: {
-    title: 'Exploration et livraison avancent en parallèle',
-    desc: 'Deux rangées décalées d’un cycle. Pendant que je construis l’artefact suivant, l’équipe évalue le précédent.',
-    build: 'Je construis un artefact testable',
-    evaluate: 'L’équipe évalue le précédent',
+    title: 'Trois échelles, une même façon de faire',
+    lead: 'La méthode reste la même à chaque échelle : rendre visible ce qui est flou, le structurer, puis préciser jusqu’à ce que l’équipe puisse avancer.',
+    columns: { does: 'Ce que je fais', produces: 'Ce que je produis' },
+    items: [
+      {
+        id: 'subject',
+        name: 'Un sujet',
+        does: 'Cadrer le besoin avec le PM, schématiser vite un problème, un flux ou un parcours, explorer des pistes, prototyper quand la question l’exige, spécifier pour les développeurs.',
+        produces: 'Note de cadrage, schémas, parcours, maquettes, prototype, spécifications.',
+      },
+      {
+        id: 'roadmap',
+        name: 'Une feuille de route',
+        does: 'Structurer les niveaux (objectif, initiative, epic, feature), rendre lisibles les titres des initiatives, réunir les sujets de plusieurs PM dans une même feuille de route, y positionner les initiatives de design, et transformer un prototype de vision en lots livrables avec la squad.',
+        produces: 'Feuille de route structurée, prototype de vision, storymap, backlog découpé en lots, calendrier de conception.',
+      },
+      {
+        id: 'organisation',
+        name: 'Une organisation',
+        does: 'Observer comment l’équipe travaille, puis remettre du process là où il manque : des temps d’exploration, un calendrier de recherche utilisateur, des initiatives de discovery qui nourrissent les cycles de livraison.',
+        produces: 'Process de conception, rituels, calendrier de recherche, accompagnement des PM.',
+      },
+    ],
+    diagram: {
+      title: 'Trois échelles de travail, l’une dans l’autre',
+      desc: 'Un sujet tient dans une feuille de route, qui tient dans une organisation. Je travaille à chacune de ces échelles.',
+      org: 'Une organisation',
+      orgDesc: 'Process, rituels, calendrier de recherche',
+      roadmap: 'Une feuille de route',
+      roadmapDesc: 'Objectifs, initiatives, calendrier commun',
+      subject: 'Un sujet',
+      subjectDesc: 'Cadrage, schémas, prototype, specs',
+      people: ['Produit', 'Design', 'Tech'],
+    },
   },
   en: {
-    title: 'Discovery and delivery run in parallel',
-    desc: 'Two rows offset by one cycle. While I build the next artefact, the team evaluates the previous one.',
-    build: 'I build a testable artefact',
-    evaluate: 'The team evaluates the previous one',
+    title: 'Three scales, one way of working',
+    lead: 'The method stays the same at every scale: make what is blurry visible, structure it, then refine until the team can move forward.',
+    columns: { does: 'What I do', produces: 'What I produce' },
+    items: [
+      {
+        id: 'subject',
+        name: 'A subject',
+        does: 'Frame the need with the PM, sketch a problem, a flow or a journey quickly, explore options, prototype when the question calls for it, specify for the developers.',
+        produces: 'Framing note, diagrams, journeys, mockups, prototype, specifications.',
+      },
+      {
+        id: 'roadmap',
+        name: 'A roadmap',
+        does: 'Structure the levels (objective, initiative, epic, feature), make the titles of the initiatives readable, bring the subjects of several PMs into one roadmap, place the design initiatives on it, and turn a vision prototype into deliverable lots with the squad.',
+        produces: 'A structured roadmap, a vision prototype, a story map, a backlog sliced into lots, a design calendar.',
+      },
+      {
+        id: 'organisation',
+        name: 'An organisation',
+        does: 'Observe how the team works, then bring process where it is missing: time to explore, a user research calendar, discovery initiatives that feed the delivery cycles.',
+        produces: 'Design process, rituals, research calendar, support for the PMs.',
+      },
+    ],
+    diagram: {
+      title: 'Three scales of work, one inside the other',
+      desc: 'A subject sits in a roadmap, which sits in an organisation. I work at each of these scales.',
+      org: 'An organisation',
+      orgDesc: 'Process, rituals, research calendar',
+      roadmap: 'A roadmap',
+      roadmapDesc: 'Objectives, initiatives, shared calendar',
+      subject: 'A subject',
+      subjectDesc: 'Framing, diagrams, prototype, specs',
+      people: ['Product', 'Design', 'Tech'],
+    },
+  },
+}
+
+// ---------------------------------------------------------------------------
+// Structuring a roadmap: levels, several PMs, a shared design calendar
+// ---------------------------------------------------------------------------
+
+export const ROADMAP: Bi<{
+  title: string
+  lead: string
+  structureTitle: string
+  structureText: string
+  calendarTitle: string
+  calendarText: string
+  visionTitle: string
+  visionText: string
+  visionDiagram: { title: string; desc: string; prototype: string; prototypeDesc: string; undesign: string; storymap: string; lots: string[]; roadmap: string }
+  structureDiagram: { title: string; desc: string; subjects: string; pms: string[]; levels: string[]; result: string }
+  calendarDiagram: { title: string; desc: string; weeks: string; lanes: string[]; stages: string[]; ready: string; designLane: string; designBar: string }
+}> = {
+  fr: {
+    title: 'Structurer une feuille de route',
+    lead: 'Quand plusieurs PM portent chacun leurs sujets, je les réunis dans une même feuille de route, avec des niveaux de structure clairs et un calendrier commun pour la conception.',
+    structureTitle: 'Des niveaux de structure lisibles',
+    structureText: 'Objectif, initiative, epic, feature : chaque sujet trouve son niveau, et le titre de chaque initiative dit ce qu’elle change pour l’utilisateur. La feuille de route se lit d’un coup d’œil, par l’équipe comme par la direction.',
+    visionTitle: 'D’un prototype de vision à des lots livrables',
+    visionText: 'Je conçois aussi des livrables de vision : un prototype interactif en couleur, avec des micro-interactions fines, qui couvre environ 80 % de l’expérience. Il rejoint ensuite la feuille de route. Avec la squad, on le déconstruit : une storymap, puis un découpage fin en lots prêts pour l’implémentation.',
+    visionDiagram: {
+      title: 'D’un prototype de vision à des lots livrables',
+      desc: 'Un prototype de vision en couleur, déconstruit avec la squad en une storymap, elle-même découpée en trois lots qui rejoignent la feuille de route.',
+      prototype: 'Prototype de vision',
+      prototypeDesc: '80 % de l’expérience, micro-interactions',
+      undesign: 'Déconstruit avec la squad',
+      storymap: 'Storymap',
+      lots: ['Lot 1', 'Lot 2', 'Lot 3'],
+      roadmap: 'Dans la feuille de route',
+    },
+    calendarTitle: 'Un calendrier de conception commun',
+    calendarText: 'Sur un même calendrier, je planifie pour chaque initiative les ateliers de cadrage amont, la définition du besoin, le refinement, le découpage fin et la préparation des sprints. Les initiatives de design y ont leur place, au même titre que les développements.',
+    structureDiagram: {
+      title: 'Plusieurs PM, une feuille de route structurée',
+      desc: 'À gauche, les sujets épars de trois PM. Ils se rangent à droite dans quatre niveaux : objectif, initiatives, epics, features.',
+      subjects: 'Les sujets de chaque PM',
+      pms: ['PM 1', 'PM 2', 'PM 3'],
+      levels: ['Objectif', 'Initiatives', 'Epics', 'Features'],
+      result: 'Une feuille de route lisible',
+    },
+    calendarDiagram: {
+      title: 'Un calendrier de conception commun',
+      desc: 'Quatre initiatives et une initiative de design, sur douze semaines. Chaque initiative passe par le cadrage amont, la définition du besoin, le refinement et le découpage, jusqu’à être prête pour le sprint.',
+      weeks: 'Semaines',
+      lanes: ['Initiative A', 'Initiative B', 'Initiative C', 'Initiative D'],
+      stages: ['Cadrage amont', 'Définition du besoin', 'Refinement', 'Découpage'],
+      ready: 'Prêt pour le sprint',
+      designLane: 'Initiative design',
+      designBar: 'Recherche et concepts',
+    },
+  },
+  en: {
+    title: 'Structuring a roadmap',
+    lead: 'When several PMs each carry their own subjects, I bring them into one roadmap, with clear levels of structure and a shared calendar for design.',
+    structureTitle: 'Readable levels of structure',
+    structureText: 'Objective, initiative, epic, feature: each subject finds its level, and the title of each initiative says what it changes for the user. The roadmap reads at a glance, for the team and for leadership.',
+    visionTitle: 'From a vision prototype to deliverable lots',
+    visionText: 'I also design vision deliverables: an interactive colour prototype with fine micro-interactions, covering about 80% of the experience. It then joins the roadmap. With the squad, we take it apart: a story map, then a fine slicing into lots ready for implementation.',
+    visionDiagram: {
+      title: 'From a vision prototype to deliverable lots',
+      desc: 'A colour vision prototype, taken apart with the squad into a story map, itself sliced into three lots that join the roadmap.',
+      prototype: 'Vision prototype',
+      prototypeDesc: '80% of the experience, micro-interactions',
+      undesign: 'Taken apart with the squad',
+      storymap: 'Story map',
+      lots: ['Lot 1', 'Lot 2', 'Lot 3'],
+      roadmap: 'Into the roadmap',
+    },
+    calendarTitle: 'A shared design calendar',
+    calendarText: 'On one calendar, I plan for each initiative the upstream framing workshops, the definition of the need, refinement, fine slicing and sprint preparation. Design initiatives have their place on it, like development work.',
+    structureDiagram: {
+      title: 'Several PMs, one structured roadmap',
+      desc: 'On the left, the scattered subjects of three PMs. On the right they settle into four levels: objective, initiatives, epics, features.',
+      subjects: 'Each PM’s subjects',
+      pms: ['PM 1', 'PM 2', 'PM 3'],
+      levels: ['Objective', 'Initiatives', 'Epics', 'Features'],
+      result: 'A readable roadmap',
+    },
+    calendarDiagram: {
+      title: 'A shared design calendar',
+      desc: 'Four initiatives and one design initiative over twelve weeks. Each initiative goes through upstream framing, need definition, refinement and slicing, until it is ready for the sprint.',
+      weeks: 'Weeks',
+      lanes: ['Initiative A', 'Initiative B', 'Initiative C', 'Initiative D'],
+      stages: ['Upstream framing', 'Need definition', 'Refinement', 'Slicing'],
+      ready: 'Ready for the sprint',
+      designLane: 'Design initiative',
+      designBar: 'Research and concepts',
+    },
+  },
+}
+
+// ---------------------------------------------------------------------------
+// Sketching to move discussions forward (in phases that stay blurry for a long time)
+// ---------------------------------------------------------------------------
+
+export const CONCEPT: Bi<{
+  text: string
+  diagram: { title: string; desc: string; before: string; after: string; arrow: string; nodes: string[] }
+}> = {
+  fr: {
+    text: 'Certaines phases restent floues longtemps, à l’état de discussion. Je conceptualise vite pour illustrer un problème, un flux, un parcours ou une interaction : un schéma posé sur la table fait avancer l’échange plus sûrement qu’une réunion de plus.',
+    diagram: {
+      title: 'Schématiser pour faire avancer les discussions',
+      desc: 'À gauche, des échanges qui se croisent pendant des semaines. Un schéma les réunit à droite : un problème, un flux, un parcours, une interaction, compris par tous.',
+      before: 'Des semaines de discussion',
+      after: 'Une compréhension commune',
+      arrow: 'Un schéma',
+      nodes: ['Problème', 'Flux', 'Parcours', 'Interaction'],
+    },
+  },
+  en: {
+    text: 'Some phases stay blurry for a long time, at the stage of discussion. I conceptualise quickly to illustrate a problem, a flow, a journey or an interaction: a diagram on the table moves the exchange forward more surely than one more meeting.',
+    diagram: {
+      title: 'Sketching to move discussions forward',
+      desc: 'On the left, exchanges that cross for weeks. A diagram brings them together on the right: a problem, a flow, a journey, an interaction, understood by everyone.',
+      before: 'Weeks of discussion',
+      after: 'A shared understanding',
+      arrow: 'A diagram',
+      nodes: ['Problem', 'Flow', 'Journey', 'Interaction'],
+    },
   },
 }
 
@@ -497,7 +713,7 @@ export const BEFORE_SCREEN: Bi<{
   en: {
     title: 'Before the screen, working documents',
     tagline: 'Most of the work happens before the screen, in documents the whole team can reread and discuss.',
-    caption: 'From the roughest to the most finished: fidelity goes up as the complexity becomes readable.',
+    caption: 'A framing note can take several weeks, a mockup a few days: the level of detail follows what the team understands.',
     prototype: 'A testable prototype within a few days is one of my levers among others. At Toolkit, the V2 prototype helped the CEO secure the second funding round: the investors saw the product instead of a deck.',
     prototypeLink: { href: '/project/toolkit', label: 'See Toolkit' },
   },
@@ -523,7 +739,7 @@ export const WORKING_WITH_ME: Bi<{ title: string; paragraphs: string[] }> = {
     paragraphs: [
       'Mon approche est humaine. J’écoute d’abord l’équipe et son terrain, puis je rends visible ce que chacun sait déjà, pour que la compréhension devienne commune.',
       'Je travaille en intelligence collective : ateliers, entretiens, revues, et des documents que toute l’équipe peut relire et réutiliser. Chaque arbitrage laisse une trace écrite.',
-      'Je cherche à faire progresser l’équipe en même temps que le produit : qu’elle sache mener un atelier et lire un test utilisateur. Les livrables varient selon le besoin, sans format imposé : cadrage, brief, synthèse de recherche, prototype, spécifications.',
+      'Je cherche à faire progresser l’équipe en même temps que le produit : qu’elle sache mener un atelier et lire un test utilisateur. Les livrables prennent le format que le besoin demande : cadrage, brief, synthèse de recherche, prototype, spécifications.',
     ],
   },
   en: {
@@ -531,7 +747,7 @@ export const WORKING_WITH_ME: Bi<{ title: string; paragraphs: string[] }> = {
     paragraphs: [
       'My approach is human. I start by listening to the team and its field, then make visible what each person already knows, so the understanding becomes shared.',
       'I work through collective intelligence: workshops, interviews, reviews, and documents the whole team can reread and reuse. Every tradeoff leaves a written trace.',
-      'I aim for the team to grow along with the product: able to run a workshop and read a user test. Deliverables vary with the need, with no imposed format: framing, brief, research synthesis, prototype, specifications.',
+      'I aim for the team to grow along with the product: able to run a workshop and read a user test. Deliverables take the format the need calls for: framing note, diagram, design calendar, research synthesis, prototype, specifications.',
     ],
   },
 }
@@ -552,7 +768,7 @@ export const COLLABORATION = {
       {
         id: 'devs',
         label: 'Avec les développeurs',
-        body: 'J’interviens en amont. Revues des interactions, des cas limites, des états. Chez UNOWHY comme chez Dailymotion, le design system Storybook a été construit avec les développeurs front, pas livré à eux. Cette co-construction change la qualité des composants et réduit les allers-retours.',
+        body: 'J’interviens en amont. Revues des interactions, des cas limites, des états. Chez UNOWHY comme chez Dailymotion, le design system Storybook a été construit avec les développeurs front, dès les premiers composants. Cette co-construction change la qualité des composants et réduit les allers-retours.',
       },
       {
         id: 'team',
@@ -572,12 +788,12 @@ export const COLLABORATION = {
       {
         id: 'pm',
         label: 'With the PM',
-        body: 'Three principles: every workshop has a defined deliverable, the PM sees progress as it happens, and every tradeoff is documented. Product specs are the PM’s responsibility. I produce annotated mockups and documented flows that feed them. Design is visible from the first explorations.',
+        body: 'I help the PM define the need: workshops, framing notes, slicing of the initiatives. Every workshop has a defined deliverable, the PM sees progress as it happens, and every tradeoff is documented. Product specs are the PM’s responsibility; I produce the annotated mockups and documented flows that feed them.',
       },
       {
         id: 'devs',
         label: 'With engineering',
-        body: 'I get involved early. Reviews on interactions, edge cases, states. At UNOWHY and at Dailymotion, the Storybook design system was built with front-end developers, not delivered to them. This co-construction changes the quality of components and reduces back and forth.',
+        body: 'I get involved early. Reviews on interactions, edge cases, states. At UNOWHY and at Dailymotion, the Storybook design system was built with the front-end developers, from the first components. This co-construction changes the quality of components and reduces back and forth.',
       },
       {
         id: 'team',
@@ -594,32 +810,75 @@ export const COLLABORATION = {
 }
 
 // ---------------------------------------------------------------------------
-// Weekly rhythm (Discovery and Delivery, Monday to Friday)
+// A rhythm over several horizons: framing over weeks, discovery feeding delivery, sprints, every week
 // ---------------------------------------------------------------------------
 
-export const RHYTHM = {
-  en: {
-    label: 'Weekly rhythm',
-    modes: ['Discovery', 'Delivery'],
-    days4: ['Mon', 'Tue to Wed', 'Thu', 'Fri'],
-    /** What each column is for: align on Monday, deep work midweek, share and decide on Friday */
-    phases: ['Align', 'Deep work', 'Deep work', 'Share and decide'],
-    cells4: [
-      ['Frame hypotheses. Who to talk to. Protocol.', 'User interviews. Observations. Data analysis.', 'Map insights. Emerging patterns. Reframe.', 'Restitution. Validate or change course. Decision.'],
-      ['Sync PM/Designer. Sprint goal. Review hypotheses.', 'Exploration or iteration. Async exchanges.', 'Pattern coherence. Prep refinement or demo.', 'Prototype presented. Backlog prioritised.'],
-    ],
-    footer: 'Rhythm is set together in the first week.',
-  },
+export const RHYTHM_DIAGRAM: Bi<{
+  title: string
+  desc: string
+  weeks: string
+  lanes: string[]
+  framingNote: string
+  roadmapUpdate: string
+  research: string
+  discovery: string
+  prototype: string
+  sprint: string
+  refinement: string
+  weekly: string
+  feeds: string
+}> = {
   fr: {
-    label: 'Rythme hebdomadaire',
-    modes: ['Exploration', 'Livraison'],
-    days4: ['Lun', 'Mar à Mer', 'Jeu', 'Ven'],
-    phases: ['S’aligner', 'Travail de fond', 'Travail de fond', 'Partager et décider'],
-    cells4: [
-      ['Cadrer les hypothèses. Choisir qui rencontrer. Fixer le protocole.', 'Entretiens utilisateurs. Observations. Analyse des données.', 'Cartographier les enseignements. Repérer les motifs récurrents. Reformuler.', 'Restitution. Valider ou changer de cap. Décision.'],
-      ['Point PM et designer. Objectif du sprint. Revue des hypothèses.', 'Exploration ou itération. Échanges asynchrones.', 'Cohérence des motifs. Préparer l’affinage du backlog ou la démo.', 'Prototype présenté. Backlog priorisé.'],
+    title: 'Un rythme sur plusieurs horizons',
+    desc: 'Douze semaines sur quatre lignes : le cadrage sur plusieurs semaines, la discovery qui nourrit les sprints, la livraison sprint après sprint, et les rendez-vous de chaque semaine. Le prototype arrive quand la question l’exige.',
+    weeks: 'Semaines',
+    lanes: ['Cadrage', 'Discovery', 'Delivery', 'Chaque semaine'],
+    framingNote: 'Note de cadrage',
+    roadmapUpdate: 'Feuille de route',
+    research: 'Calendrier de recherche',
+    discovery: 'Initiative de discovery',
+    prototype: 'Prototype, si la question l’exige',
+    sprint: 'Sprint',
+    refinement: 'Refinement',
+    weekly: 'Points PM, ateliers, revues',
+    feeds: 'La discovery nourrit le delivery',
+  },
+  en: {
+    title: 'A rhythm over several horizons',
+    desc: 'Twelve weeks on four lines: framing over several weeks, discovery feeding the sprints, delivery sprint after sprint, and the meetings of every week. The prototype comes when the question calls for it.',
+    weeks: 'Weeks',
+    lanes: ['Framing', 'Discovery', 'Delivery', 'Every week'],
+    framingNote: 'Framing note',
+    roadmapUpdate: 'Roadmap',
+    research: 'Research calendar',
+    discovery: 'Discovery initiative',
+    prototype: 'Prototype, if the question calls for it',
+    sprint: 'Sprint',
+    refinement: 'Refinement',
+    weekly: 'PM syncs, workshops, reviews',
+    feeds: 'Discovery feeds delivery',
+  },
+}
+
+/** The rituals behind the rhythm, by horizon */
+export const HORIZONS: Bi<{ label: string; columns: { title: string; items: string[] }[]; footer: string }> = {
+  fr: {
+    label: 'Les rituels, par horizon',
+    columns: [
+      { title: 'Chaque semaine', items: ['Un point avec chaque PM', 'Des ateliers de définition du besoin', 'Des revues de conception avec les développeurs'] },
+      { title: 'Chaque sprint', items: ['Refinement et découpage fin', 'Préparation du sprint suivant', 'Revue de ce qui a été livré'] },
+      { title: 'Sur plusieurs semaines', items: ['Des notes de cadrage', 'Des initiatives de discovery et un calendrier de recherche', 'La feuille de route et le calendrier de conception, mis à jour'] },
     ],
-    footer: 'Le rythme se construit ensemble dès la première semaine.',
+    footer: 'Le rythme se construit avec l’équipe, dès les premières semaines.',
+  },
+  en: {
+    label: 'The rituals, by horizon',
+    columns: [
+      { title: 'Every week', items: ['A sync with each PM', 'Need definition workshops', 'Design reviews with the developers'] },
+      { title: 'Every sprint', items: ['Refinement and fine slicing', 'Preparing the next sprint', 'Review of what was shipped'] },
+      { title: 'Over several weeks', items: ['Framing notes', 'Discovery initiatives and a research calendar', 'The roadmap and the design calendar, kept up to date'] },
+    ],
+    footer: 'The rhythm is built with the team, from the first weeks.',
   },
 }
 

@@ -19,6 +19,8 @@ export interface DeviceScreen {
   height?: number
   /** Animated moment laid over the screen (390 × 844 space), for a phone */
   overlay?: React.ReactNode
+  /** A document shown whole in its frame rather than filling it (a wide board in a 4:3 frame) */
+  fit?: 'cover' | 'contain'
 }
 
 interface DeviceMockupProps {
@@ -142,7 +144,7 @@ function ScreenMedia({ screen, label, eager, focused = true }: { screen: DeviceS
       alt=""
       loading={eager ? 'eager' : 'lazy'}
       draggable={false}
-      className="block w-full h-full object-cover object-top"
+      className={`block w-full h-full object-top ${screen.fit === 'contain' ? 'object-contain p-[3%]' : 'object-cover'}`}
     />
   )
 }
