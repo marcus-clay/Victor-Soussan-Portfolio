@@ -27,7 +27,7 @@ export default function ApprocheV2Page({ lang, related }: { lang: Language; rela
   const res = V2_RESULTS[lang]
   const cta = CTA_SECTION[lang]
   const t = TRANSLATIONS[lang].testimonials
-  const quote = getTestimonials(lang).find((item) => item.id === 'pierre-marie-nigay')
+  const quote = getTestimonials(lang).find((item) => item.id === 'charlotte-rifflet')
 
   return (
     <div className="min-h-screen bg-[#FDFDFC]">
@@ -72,12 +72,12 @@ export default function ApprocheV2Page({ lang, related }: { lang: Language; rela
               <Reveal>
                 <FeaturedQuote
                   item={quote}
-                  caseStudyHref={`/${lang}/project/toolkit`}
+                  caseStudyHref={`/${lang}/project/sqool`}
                   labels={{
                     readFull: t.read_full,
                     readLess: t.read_less,
                     linkedinProfile: t.linkedin_profile,
-                    caseStudyLink: t.case_study_link.replace('{name}', 'Toolkit'),
+                    caseStudyLink: t.case_study_link.replace('{name}', 'SQOOL'),
                   }}
                 />
               </Reveal>
