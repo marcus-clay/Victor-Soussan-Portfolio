@@ -1,6 +1,6 @@
 'use client'
 
-// The motion of the Approach diagrams: each one draws itself as it comes into view, once half of it shows,
+// The motion of the Approach diagrams: each one draws itself as it comes into view, once half of its height shows,
 // and again each time it comes back after leaving the screen entirely.
 // Lines draw from their start (stroke-dashoffset on a path of length 1), blocks rise 8px out of nothing
 // and bars grow from the left, staggered so the eye reads the diagram in its own order. No loop, nothing
@@ -24,11 +24,14 @@ export function useDiagramReveal<T extends Element>() {
     }
     const observer = new IntersectionObserver(
       ([entry]) => {
-        // Drawn once half of it is on screen, reset only once it is entirely gone, so it never flickers at the edge
-        if (entry.intersectionRatio >= 0.5) setShown(true)
+        // Drawn once half of its height is on screen, reset only once it is entirely gone, so it never flickers
+        // at the edge. Height only: on a phone a wide drawing scrolls sideways in its panel, and the part hidden
+        // to the right would otherwise keep it from ever reaching half.
+        const height = entry.boundingClientRect.height
+        if (entry.isIntersecting && height > 0 && entry.intersectionRect.height / height >= 0.5) setShown(true)
         else if (!entry.isIntersecting) setShown(false)
       },
-      { threshold: [0, 0.5] }
+      { threshold: [0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.6, 0.7, 0.8, 0.9, 1] }
     )
     observer.observe(el)
     return () => observer.disconnect()

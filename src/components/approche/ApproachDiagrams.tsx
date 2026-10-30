@@ -23,12 +23,32 @@ const LINE = '#D1D5DB'
 const PALE = '#E5E7EB'
 const GRID = '#ECECE9'
 
-/** The pale panel every diagram sits on; scrolls sideways on narrow screens. */
+/**
+ * The pale panel every diagram sits on; scrolls sideways on narrow screens. While part of the drawing is
+ * hidden to the right, that edge fades out, so a reader on a phone sees there is more to slide to.
+ */
 function Panel({ children, minWidth = 720 }: { children: React.ReactNode; minWidth?: number }) {
+  const scroller = React.useRef<HTMLDivElement>(null)
+  const [more, setMore] = React.useState(false)
+  React.useEffect(() => {
+    const el = scroller.current
+    if (!el) return
+    const check = () => setMore(el.scrollLeft + el.clientWidth < el.scrollWidth - 4)
+    check()
+    el.addEventListener('scroll', check, { passive: true })
+    window.addEventListener('resize', check)
+    return () => {
+      el.removeEventListener('scroll', check)
+      window.removeEventListener('resize', check)
+    }
+  }, [])
+  const fade = more ? 'linear-gradient(to right, #000 calc(100% - 56px), transparent)' : undefined
   return (
-    <div className="no-scrollbar overflow-x-auto rounded-2xl bg-[#F7F7F5] ring-1 ring-inset ring-black/[0.04]">
-      <div className="px-5 py-6 md:px-10 md:py-10" style={{ minWidth }}>
-        {children}
+    <div className="overflow-hidden rounded-2xl bg-[#F7F7F5] ring-1 ring-inset ring-black/[0.04]">
+      <div ref={scroller} className="no-scrollbar overflow-x-auto" style={{ maskImage: fade, WebkitMaskImage: fade }}>
+        <div className="px-5 py-6 md:px-10 md:py-10" style={{ minWidth }}>
+          {children}
+        </div>
       </div>
     </div>
   )

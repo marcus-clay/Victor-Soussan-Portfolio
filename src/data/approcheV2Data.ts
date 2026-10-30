@@ -396,16 +396,16 @@ export const V2_JOB: Bi<{ title: string; lead: string; label: string; groups: { 
   },
 }
 
-export const V2_RESULTS: Bi<{ title: string; lead: string; quoteLabel: string; facts: { figure: string; text: string; link: { href: string; label: string } }[] }> = {
+export const V2_RESULTS: Bi<{ title: string; lead: string; quoteLabel: string; facts: { text: string; link: { href: string; label: string } }[] }> = {
   fr: {
     title: 'Ce que ça a donné',
     lead: 'Quatre projets, quatre résultats, et la parole d’un client.',
     quoteLabel: 'Dans les mots d’un client',
     facts: [
-      { figure: '10', text: 'entretiens terrain ont réordonné les priorités d’un MVP.', link: { href: '/project/france-vae', label: 'France VAE' } },
-      { figure: '7', text: 'prototypes en une semaine ont rendu une vision discutable.', link: { href: '/project/tessan', label: 'Tessan' } },
-      { figure: '42', text: 'flux interactifs ont vérifié qu’une séance de classe tient de bout en bout.', link: { href: '/project/sqool-classe', label: 'SQOOL Classe' } },
-      { figure: 'V2', text: 'un prototype a aidé le CEO à sécuriser sa deuxième levée de fonds.', link: { href: '/project/toolkit', label: 'Toolkit' } },
+      { text: 'Dix entretiens terrain ont réordonné les priorités d’un MVP.', link: { href: '/project/france-vae', label: 'France VAE' } },
+      { text: 'Sept prototypes en une semaine ont rendu une vision discutable.', link: { href: '/project/tessan', label: 'Tessan' } },
+      { text: 'Des flux interactifs ont vérifié qu’une séance de classe tient de bout en bout.', link: { href: '/project/sqool-classe', label: 'SQOOL Classe' } },
+      { text: 'Un prototype a aidé le CEO à sécuriser sa deuxième levée de fonds.', link: { href: '/project/toolkit', label: 'Toolkit' } },
     ],
   },
   en: {
@@ -413,10 +413,10 @@ export const V2_RESULTS: Bi<{ title: string; lead: string; quoteLabel: string; f
     lead: 'Four projects, four results, and a client’s word.',
     quoteLabel: 'In a client’s words',
     facts: [
-      { figure: '10', text: 'field interviews reordered the priorities of an MVP.', link: { href: '/project/france-vae', label: 'France VAE' } },
-      { figure: '7', text: 'prototypes in one week made a vision discussable.', link: { href: '/project/tessan', label: 'Tessan' } },
-      { figure: '42', text: 'interactive flows checked that a class session holds from start to end.', link: { href: '/project/sqool-classe', label: 'SQOOL Classe' } },
-      { figure: 'V2', text: 'a prototype helped the CEO secure the second funding round.', link: { href: '/project/toolkit', label: 'Toolkit' } },
+      { text: 'Ten field interviews reordered the priorities of an MVP.', link: { href: '/project/france-vae', label: 'France VAE' } },
+      { text: 'Seven prototypes in one week made a vision discussable.', link: { href: '/project/tessan', label: 'Tessan' } },
+      { text: 'Interactive flows checked that a class session holds from start to end.', link: { href: '/project/sqool-classe', label: 'SQOOL Classe' } },
+      { text: 'A prototype helped the CEO secure the second funding round.', link: { href: '/project/toolkit', label: 'Toolkit' } },
     ],
   },
 }
