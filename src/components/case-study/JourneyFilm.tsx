@@ -6,7 +6,6 @@ import { Pause } from '@phosphor-icons/react'
 import { CenterPlay, CornerButton, CornerControls } from '@/components/media/PlayerControls'
 import DeviceMockup from '@/components/case-study/DeviceMockup'
 import ScaledScreen from '@/components/case-study/ScaledScreen'
-import { useReducedMotion } from '@/components/case-study/controls'
 import { FilmClockContext, easeOut, phase, useFilmTime, type FilmClock } from '@/components/case-study/FilmClock'
 
 /** How a screen arrives: pushed from the right, raised from the bottom (a camera), cross-faded, or opened from the store like an app. */
@@ -148,9 +147,7 @@ const easeInOut = (p: number) => (p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p 
  * and its shadow is long; on the glass it is darker and its shadow short.
  */
 function Finger({ taps, from }: { taps: FilmTap[]; from: { x: number; y: number } }) {
-  const reduce = useReducedMotion()
   const t = useFilmTime(0.016)
-  if (reduce) return null
 
   let x = from.x
   let y = from.y
@@ -336,11 +333,12 @@ function Camera({ shots, stepKey, reduce, children }: { shots?: FilmShot[]; step
  * A journey of the app played as a film in one large phone on the grey stage, from the first screen to the
  * last: each press leads to the next screen, fields fill in, the camera reads a card, then the film fades out
  * and starts again. It plays on its own while it is on screen, like the videos of the site, and stops when it
- * leaves or when the tab is hidden. One small button pauses it. With reduced motion it waits for the reader
- * and cross-fades between screens.
+ * leaves or when the tab is hidden. One small button pauses it. It plays the same with reduced motion: the
+ * film is the content of the figure.
  */
 export default function JourneyFilm({ steps, label, labels }: JourneyFilmProps) {
-  const reduce = useReducedMotion()
+  // The film plays in full whatever the system motion setting: it is the content (see useGestureReducedMotion)
+  const reduce = false
   const rootRef = useRef<HTMLDivElement>(null)
   const elapsed = useRef(0)
   const pausedByUser = useRef(false)

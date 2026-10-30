@@ -3,13 +3,12 @@
 // The gestures of a journey film, laid over a screen of the patient app (390 × 844 space): a finger that
 // presses, a field that fills, a code typed digit by digit, a part of the screen that appears after a wait.
 // Each one starts `at` seconds into its step and reads the film clock, so a pause freezes it on the frame.
-// With reduced motion they show their final state.
+// They play in full inside a film, whatever the system motion setting (see useGestureReducedMotion).
 
 import React from 'react'
 import { motion } from 'framer-motion'
 import { Camera, LockSimple, Microphone, PhoneDisconnect, Star } from '@phosphor-icons/react'
-import { useReducedMotion } from '@/components/case-study/controls'
-import { easeOut, phase, useFilmTime } from '@/components/case-study/FilmClock'
+import { easeOut, phase, useFilmTime, useGestureReducedMotion } from '@/components/case-study/FilmClock'
 
 const EASE_OUT: [number, number, number, number] = [0.23, 1, 0.32, 1]
 const FONT = 'Inter, system-ui, sans-serif'
@@ -20,7 +19,7 @@ const GREEN = '#27713d'
  * under it darkens for the time of the press, as a real button does.
  */
 export function Touch({ x, y, at, press }: { x: number; y: number; at: number; press?: { w: number; h: number; r: number } }) {
-  const reduce = useReducedMotion()
+  const reduce = useGestureReducedMotion()
   const t = useFilmTime(0.016)
   if (reduce || t < at || t > at + 1.2) return null
   // Lands (0 to 0.16 s), presses (to 0.36 s), lifts (to 0.54 s), then fades; the ring leaves on the lift
@@ -84,7 +83,7 @@ export function TypeField({ x, y, w, h, text, at, focusAt = at, field, pairs, si
   size?: number
   cps?: number
 }) {
-  const reduce = useReducedMotion()
+  const reduce = useGestureReducedMotion()
   const t = useFilmTime(0.016)
   const count = reduce ? text.length : Math.max(0, Math.min(text.length, Math.floor((t - at) * cps) + (t >= at ? 1 : 0)))
   const typed = text.slice(0, count)
@@ -105,7 +104,7 @@ export function TypeField({ x, y, w, h, text, at, focusAt = at, field, pairs, si
 
 /** The six boxes of a one-time code, filled one digit at a time; the next box to fill carries the green outline. */
 export function CodeBoxes({ x, y, digits, at, every = 0.2, gap = 8, box = 48, height = 55 }: { x: number; y: number; digits: string; at: number; every?: number; gap?: number; box?: number; height?: number }) {
-  const reduce = useReducedMotion()
+  const reduce = useGestureReducedMotion()
   const t = useFilmTime()
   const typed = reduce ? digits.length : Math.max(0, Math.min(digits.length, Math.floor((t - at) / every) + (t >= at ? 1 : 0)))
   return (
@@ -148,7 +147,7 @@ function Digit({ value, p }: { value: string; p: number }) {
 
 /** Hides a part of the screen until `until`, then fades out to reveal it: a box that gets checked, a result that arrives. */
 export function Reveal({ x, y, w, h, r = 0, until, color = '#fff', border }: { x: number; y: number; w: number; h: number; r?: number; until: number; color?: string; border?: string }) {
-  const reduce = useReducedMotion()
+  const reduce = useGestureReducedMotion()
   const t = useFilmTime(0.016)
   const gone = phase(t, until, 0.18)
   if (reduce || gone >= 1) return null
@@ -165,7 +164,7 @@ export function Reveal({ x, y, w, h, r = 0, until, color = '#fff', border }: { x
  * out of a 2 px blur while the old one leaves upward (number pop-in).
  */
 export function Countdown({ x, y, w, h, values, at, every, size = 40 }: { x: number; y: number; w: number; h: number; values: number[]; at: number; every: number; size?: number }) {
-  const reduce = useReducedMotion()
+  const reduce = useGestureReducedMotion()
   const t = useFilmTime(0.016)
   const i = reduce ? values.length - 1 : Math.max(0, Math.min(values.length - 1, Math.floor((t - at) / every) + (t >= at ? 1 : 0) - 1))
   const since = reduce || i === 0 ? 1 : easeOut(phase(t, at + (i - 1) * every + every, 0.25))
@@ -195,7 +194,7 @@ export function Countdown({ x, y, w, h, values, at, every, size = 40 }: { x: num
 
 /** A ring that breathes twice around an element that just got selected. */
 export function Selected({ x, y, w, h, r = 19, at }: { x: number; y: number; w: number; h: number; r?: number; at: number }) {
-  const reduce = useReducedMotion()
+  const reduce = useGestureReducedMotion()
   const t = useFilmTime(0.016)
   const p = reduce ? 1 : easeOut(phase(t, at, 0.2))
   return (
@@ -211,7 +210,7 @@ export function Selected({ x, y, w, h, r = 19, at }: { x: number; y: number; w: 
  * that turns into a progress ring, then into "Ouvrir". Not the page of a given store.
  */
 export function StoreScreen({ icon, shots, installAt, openAt }: { icon: string; shots: string[]; installAt: number; openAt: number }) {
-  const reduce = useReducedMotion()
+  const reduce = useGestureReducedMotion()
   const t = useFilmTime()
   const phase = reduce ? 'open' : t < installAt + 0.3 ? 'get' : t < openAt - 0.4 ? 'loading' : 'open'
   const progress = Math.max(0, Math.min(1, (t - installAt - 0.3) / (openAt - installAt - 0.8)))
@@ -266,7 +265,7 @@ export function StoreScreen({ icon, shots, installAt, openAt }: { icon: string; 
 
 /** The first image of the app while it opens: the wordmark on the Tessan green. */
 export function SplashScreen({ logo }: { logo: string }) {
-  const reduce = useReducedMotion()
+  const reduce = useGestureReducedMotion()
   return (
     <div style={{ position: 'absolute', inset: 0, background: GREEN, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <motion.img
@@ -290,7 +289,7 @@ const pad = (n: number) => String(n).padStart(2, '0')
  * follows the voice, the patient's own picture in a corner, and the three controls.
  */
 export function VideoCallScreen({ doctor, initials, specialty, connectFor = 0.9 }: { doctor: string; initials: string; specialty: string; connectFor?: number }) {
-  const reduce = useReducedMotion()
+  const reduce = useGestureReducedMotion()
   const t = useFilmTime(0.1)
   // The call connects, then runs in fast motion: a few seconds of the film cover a few minutes of consultation
   const live = reduce || t >= connectFor
@@ -373,7 +372,7 @@ export function NumPad({ showAt, hideAt, text = '', typeAt = 0, cps = 1, suggest
   /** One-time code offered above the keys, read from the text messages */
   suggestion?: { label: string; pressAt: number }
 }) {
-  const reduce = useReducedMotion()
+  const reduce = useGestureReducedMotion()
   const t = useFilmTime(0.016)
   if (reduce) return null
   const rise = easeOut(phase(t, showAt, 0.3))
@@ -423,7 +422,7 @@ export function NumPad({ showAt, hideAt, text = '', typeAt = 0, cps = 1, suggest
 
 /** A text message banner that drops from the top of the screen, brings the code, and goes back up. */
 export function SmsBanner({ at, until, title, body }: { at: number; until: number; title: string; body: string }) {
-  const reduce = useReducedMotion()
+  const reduce = useGestureReducedMotion()
   const t = useFilmTime(0.016)
   if (reduce) return null
   const drop = easeOut(phase(t, at, 0.4))
@@ -465,7 +464,7 @@ export function SmsBanner({ at, until, title, body }: { at: number; until: numbe
 
 /** A checkbox that gets checked under the finger: the box fills with a small pop, then the check draws itself. */
 export function CheckboxCheck({ x, y, size = 25, at, color = '#1d5c37' }: { x: number; y: number; size?: number; at: number; color?: string }) {
-  const reduce = useReducedMotion()
+  const reduce = useGestureReducedMotion()
   const t = useFilmTime(0.016)
   const fill = reduce ? 1 : easeOut(phase(t, at + 0.04, 0.16))
   const draw = reduce ? 1 : easeOut(phase(t, at + 0.14, 0.22))

@@ -24,8 +24,15 @@ const MENU_ITEMS = [
   { id: 'contact', route: 'contact', labelKey: 'contact' as const },
 ]
 
-// The four entries kept in the bar from md up. Everything else lives in the menu.
+// The entries kept in the bar: three from md up, the five sections from lg up. Everything is also in the menu.
 const PRIMARY_IDS = ['projets', 'approche', 'about'] as const
+const WIDE_IDS = ['testimonials', 'ressources'] as const
+
+// The pages under a section light up its entry: a project lights Work, a guide or an article lights Resources
+const SECTION_PREFIXES: Record<string, string[]> = {
+  projets: ['projets', 'project'],
+  ressources: ['ressources', 'guide', 'signal'],
+}
 
 export default function Nav({ lang }: { lang: Lang }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -169,7 +176,7 @@ export default function Nav({ lang }: { lang: Lang }) {
 
   const isActive = (route: string) => {
     if (route === '') return pathname === `/${lang}`
-    return pathname.startsWith(`/${lang}/${route}`)
+    return (SECTION_PREFIXES[route] ?? [route]).some((prefix) => pathname === `/${lang}/${prefix}` || pathname.startsWith(`/${lang}/${prefix}/`))
   }
 
   return (
@@ -232,10 +239,11 @@ export default function Nav({ lang }: { lang: Lang }) {
           <div className="flex items-center gap-0.5 sm:gap-1.5 flex-shrink-0">
             {/* Main entries, from md up */}
             <ul className="hidden md:flex items-center gap-0.5 mr-2 lg:mr-4">
-              {MENU_ITEMS.filter((item) => (PRIMARY_IDS as readonly string[]).includes(item.id)).map((item) => {
+              {MENU_ITEMS.filter((item) => ([...PRIMARY_IDS, ...WIDE_IDS] as readonly string[]).includes(item.id)).map((item) => {
                 const active = isActive(item.route)
+                const wide = (WIDE_IDS as readonly string[]).includes(item.id)
                 return (
-                  <li key={item.id}>
+                  <li key={item.id} className={wide ? 'hidden lg:block' : undefined}>
                     <Link
                       href={`/${lang}/${item.route}`}
                       aria-current={active ? 'page' : undefined}

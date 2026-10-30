@@ -806,9 +806,10 @@ a[class*="hover:text-gray-900"]:active { color: #111827; }
   }
 }
 
-/* Content of a <details> that has just opened: a short fade and a 4px settle. Reduced motion keeps the fade only. */
+/* Content of a <details> that has just opened: a fade and a 4px settle, on the accordion timing (250ms,
+   smooth-out). Reduced motion keeps the fade only. */
 .disclosure-body {
-  animation: disclosure-in 200ms cubic-bezier(0.23, 1, 0.32, 1) both;
+  animation: disclosure-in 250ms var(--ease-smooth) both;
 }
 @keyframes disclosure-in {
   from { opacity: 0; transform: translateY(-4px); }

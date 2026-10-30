@@ -64,9 +64,13 @@ export default function ConsentBanner({ choice }: { choice: Consent }) {
       aria-live="polite"
       className="fixed z-[70] bottom-4 left-4 right-4 sm:right-auto sm:bottom-5 sm:left-5 sm:w-[380px]"
       style={{
-        transform: shown ? 'translateY(0)' : 'translateY(24px)',
+        // A toast: it rises out of a light blur (400ms), and leaves quicker and shorter than it came (350ms)
+        transform: shown ? 'translateY(0)' : 'translateY(12px)',
         opacity: shown ? 1 : 0,
-        transition: 'transform 500ms cubic-bezier(0.23, 1, 0.32, 1), opacity 350ms ease',
+        filter: shown ? 'blur(0px)' : 'blur(3px)',
+        transition: shown
+          ? 'transform 400ms cubic-bezier(0.22, 1, 0.36, 1), opacity 400ms cubic-bezier(0.22, 1, 0.36, 1), filter 400ms cubic-bezier(0.22, 1, 0.36, 1)'
+          : 'transform 350ms cubic-bezier(0.22, 1, 0.36, 1), opacity 350ms cubic-bezier(0.22, 1, 0.36, 1), filter 350ms cubic-bezier(0.22, 1, 0.36, 1)',
         pointerEvents: shown ? 'auto' : 'none',
       }}
     >

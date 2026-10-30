@@ -14,6 +14,8 @@
  * - Controls are rendered only once the file has answered, and never if it failed to load
  * - prefers-reduced-motion: reduce: nothing starts by itself; the large play button invites the
  *   reader to start it, and it stops again when it leaves the screen.
+ * - A recorded prototype listed in `videoCameras.ts` plays with a camera that pushes in on the action
+ *   (VideoCamera), as the journey films do.
  */
 
 import React, { useRef } from 'react'
@@ -21,6 +23,8 @@ import { Pause } from '@phosphor-icons/react'
 import { CenterPlay, CornerButton, CornerControls } from '@/components/media/PlayerControls'
 import { useAutoplayVideo } from '@/components/media/useAutoplayVideo'
 import { VIDEO_COPY, useVideoLang, type UiLang } from '@/components/media/videoLabels'
+import VideoCamera from '@/components/media/VideoCamera'
+import { VIDEO_CAMERAS } from '@/data/videoCameras'
 
 interface VideoPlayerProps {
   src: string
@@ -59,22 +63,27 @@ export default function VideoPlayer({
   const controls = loaded && !failed
   const invite = controls && !playing
 
+  const shots = VIDEO_CAMERAS[src]
+  const video = (
+    <video
+      ref={videoRef}
+      src={src}
+      poster={poster}
+      loop
+      muted
+      playsInline
+      preload="metadata"
+      className={className}
+      style={{ display: 'block' }}
+    />
+  )
+
   const inner = (
     <div
       className={`relative group ${containerClassName}`}
       style={{ isolation: 'isolate' }}
     >
-      <video
-        ref={videoRef}
-        src={src}
-        poster={poster}
-        loop
-        muted
-        playsInline
-        preload="metadata"
-        className={className}
-        style={{ display: 'block' }}
-      />
+      {shots ? <VideoCamera videoRef={videoRef} shots={shots}>{video}</VideoCamera> : video}
 
       {/* Place holder tint until the first frame (translucent: reads on light and dark pages).
           Not with a poster: the picture itself holds the place. */}

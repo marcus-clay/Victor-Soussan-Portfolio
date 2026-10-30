@@ -80,18 +80,18 @@ export default function CaseStudyHero({
           ) : (
             <p className="build-rise text-title-2 text-gray-900">{shell.client}</p>
           )}
-          <h1 style={{ ['--d' as string]: '60ms' }} className="build-line text-headline text-gray-900 mt-6 md:mt-8 max-w-[18ch] md:max-w-[16ch] lg:max-w-[18ch]">
+          <h1 style={{ ['--d' as string]: '40ms' }} className="build-line text-headline text-gray-900 mt-6 md:mt-8 max-w-[18ch] md:max-w-[16ch] lg:max-w-[18ch]">
             {title}
           </h1>
         </div>
 
-        <p style={{ ['--d' as string]: '200ms' }} className="build-rise order-2 col-span-12 md:col-span-5 md:col-start-8 md:row-start-1 text-lead-lg text-gray-600 max-w-[54ch] md:self-start">
+        <p style={{ ['--d' as string]: '120ms' }} className="build-rise order-2 col-span-12 md:col-span-5 md:col-start-8 md:row-start-1 text-lead-lg text-gray-600 max-w-[54ch] md:self-start">
           {intro}
         </p>
 
         {/* Hero visual: same panel for every project */}
         <figure
-          style={{ backgroundColor: shell.tone, ['--d' as string]: '240ms' }}
+          style={{ backgroundColor: shell.tone, ['--d' as string]: '160ms' }}
           className={`build-media hero-panel hero-panel-flat group order-3 col-span-12 md:order-none md:row-start-3 aspect-[3/2] ${onZoom ? 'cursor-zoom-in' : ''}`}
           {...(onZoom ? zoomable(() => onZoom()) : {})}
           aria-label={onZoom ? visualAlt : undefined}
@@ -115,14 +115,14 @@ export default function CaseStudyHero({
         <div className="order-4 col-span-12 md:col-span-5 md:col-start-8 md:row-start-2 md:self-end flex flex-col gap-7">
           <dl className="grid grid-cols-2 gap-x-6 gap-y-4 border-t border-gray-200 pt-5">
             {meta.map((item, i) => (
-              <div key={item.label} className="build-rise" style={{ ['--i' as string]: i, ['--d' as string]: '320ms' }}>
+              <div key={item.label} className="build-rise" style={{ ['--i' as string]: i, ['--d' as string]: '200ms' }}>
                 <dt className="text-xs text-gray-500">{item.label}</dt>
                 <dd className="text-sm font-medium text-gray-900 mt-0.5 tabular-nums">{item.value}</dd>
               </div>
             ))}
           </dl>
 
-          <div className="build-rise flex flex-wrap items-center gap-x-6 gap-y-3" style={{ ['--d' as string]: '480ms' }}>
+          <div className="build-rise flex flex-wrap items-center gap-x-6 gap-y-3" style={{ ['--d' as string]: '320ms' }}>
             {!hideGallery && (
               <Link
                 href={`/${lang}/project/${projectId}/gallery`}

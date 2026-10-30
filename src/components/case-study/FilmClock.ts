@@ -5,6 +5,7 @@
 // keeps its last frame while it slides out. Outside a film, a gesture runs on its own clock.
 
 import { createContext, useContext, useEffect, useState } from 'react'
+import { useReducedMotion } from '@/components/case-study/controls'
 
 export interface FilmClock {
   /** Seconds since the step started, frozen while the film is paused */
@@ -38,3 +39,14 @@ export const phase = (t: number, start: number, duration: number) => clamp01((t 
 
 /** Strong ease-out, for anything that arrives or answers a press. */
 export const easeOut = (p: number) => 1 - Math.pow(1 - p, 3)
+
+/**
+ * Reduced motion for a gesture. Inside a film it is always off: the films are the content of the page (the
+ * reader watches the app being used), so the finger, the camera and the screens play in full even when the
+ * system asks for reduced motion (decision of 30 October 2026). Outside a film, the system setting applies.
+ */
+export function useGestureReducedMotion() {
+  const inFilm = useContext(FilmClockContext) !== null
+  const reduce = useReducedMotion()
+  return inFilm ? false : reduce
+}

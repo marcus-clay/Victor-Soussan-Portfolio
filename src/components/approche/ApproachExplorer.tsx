@@ -132,7 +132,7 @@ export default function ApproachExplorer({ lang }: { lang: Language }) {
                       <motion.span
                         layoutId={`${uid}-pill`}
                         aria-hidden="true"
-                        transition={reduce ? { duration: 0 } : { type: 'spring', duration: 0.35, bounce: 0 }}
+                        transition={reduce ? { duration: 0 } : { type: 'spring', duration: 0.25, bounce: 0 }}
                         className="absolute inset-0 rounded-full bg-gray-900"
                       />
                     )}
