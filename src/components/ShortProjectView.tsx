@@ -163,13 +163,13 @@ export default function ShortProjectView({
                         setLightboxOpen(true)
                       }}
                       aria-label={lang === 'fr' ? `Agrandir l’image : ${block.caption}` : `Enlarge image: ${block.caption}`}
-                      className="group block w-full overflow-hidden rounded-2xl bg-[#E8E8E8] ring-1 ring-black/[0.04] hover:ring-black/[0.08] cursor-zoom-in transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.01] active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2D5CF3] focus-visible:ring-offset-2"
+                      className="group block w-full overflow-hidden rounded-2xl bg-[#E8E8E8] ring-1 ring-black/[0.04] hover:ring-black/[0.08] cursor-zoom-in transition-[transform,box-shadow] duration-300 ease-media active:duration-150 active:ease-out hover:scale-[1.01] active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2D5CF3] focus-visible:ring-offset-2"
                     >
                       <img
                         src={block.src}
                         alt={block.caption}
                         loading={idx === 0 ? 'eager' : 'lazy'}
-                        className="block w-full h-auto transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02]"
+                        className="block w-full h-auto transition-transform duration-300 ease-media group-hover:scale-[1.02]"
                       />
                     </button>
                     <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed max-w-[680px]">

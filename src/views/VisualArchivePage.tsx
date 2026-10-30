@@ -416,14 +416,14 @@ const MediaCard: React.FC<{ item: GalleryItem; onClick: () => void; lang: Langua
       {isVideo ? (
         <ThumbVideo
           src={item.src}
-          className="w-full h-auto object-cover transition-transform duration-300 ease-out group-hover:scale-[1.02]"
+          className="w-full h-auto object-cover transition-transform duration-300 ease-media group-hover:scale-[1.02]"
         />
       ) : (
         <div className={`overflow-hidden ${wide ? 'aspect-[3/2] lg:aspect-[2/1]' : 'aspect-[3/2]'}`}>
           <LazyImage
             src={item.src}
             alt=""
-            className="w-full h-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.02]"
+            className="w-full h-full object-cover transition-transform duration-300 ease-media group-hover:scale-[1.02]"
             style={{ transform: `scale(${scale})`, transformOrigin: origin }}
           />
         </div>

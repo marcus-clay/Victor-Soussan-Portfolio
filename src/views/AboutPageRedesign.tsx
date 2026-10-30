@@ -361,7 +361,7 @@ export default function AboutPageRedesign({
                 {/* The document, drawn in the Hairline line style: the same sheet, a folded corner, for the whole series */}
                 {res.art && (
                   <div className="m-2 aspect-[13/10] overflow-hidden rounded-xl bg-[#FAFAF8] ring-1 ring-inset ring-black/[0.04]">
-                    <div className="h-full w-full transition-transform duration-300 ease-out [@media(hover:hover)]:group-hover:scale-[1.03]">
+                    <div className="h-full w-full transition-transform duration-300 ease-media [@media(hover:hover)]:group-hover:scale-[1.03]">
                       <img
                         src={`/images/resources/doc-${res.art}-light.svg`}
                         alt=""

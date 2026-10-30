@@ -2,6 +2,7 @@
 
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { ArrowLeft, ArrowRight } from '@phosphor-icons/react'
+import { CornerSlot, StageCorner } from '@/components/media/PlayerControls'
 import DeviceMockup, { type DeviceKind, type DeviceScreen } from '@/components/case-study/DeviceMockup'
 import { useSnapScroller } from '@/hooks/useSnapScroller'
 
@@ -9,6 +10,8 @@ export interface CarouselScreen extends DeviceScreen {
   /** Name of the screen, shown under the device and used as its accessible name */
   label: string
   aspect?: number
+  /** Replaces the screen with a player that manages itself (an interactive prototype); `focused` is true for the active screen */
+  custom?: (focused: boolean) => React.ReactNode
 }
 
 interface DeviceCarouselProps {
@@ -18,8 +21,8 @@ interface DeviceCarouselProps {
   ariaLabel: string
   prevLabel: string
   nextLabel: string
-  /** Opens a screen in the page lightbox */
-  onZoom: (key: string) => void
+  /** Opens a screen in the page lightbox. A screen with a custom player never zooms. */
+  onZoom?: (key: string) => void
 }
 
 const useIsoLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect
@@ -76,6 +79,7 @@ export default function DeviceCarousel({ kind, screens, ariaLabel, prevLabel, ne
   const width = kind === 'phone' || kind === 'poster' ? 'w-[min(66vw,260px)]' : 'w-[min(82vw,640px)]'
 
   return (
+    <StageCorner>
     <div className="relative bg-[#E8E8E8] rounded-xl overflow-hidden ring-1 ring-black/[0.04]">
       <div
         ref={trackRef}
@@ -97,8 +101,9 @@ export default function DeviceCarousel({ kind, screens, ariaLabel, prevLabel, ne
               screen={screen}
               label={screen.label}
               aspect={screen.aspect}
-              onZoom={() => onZoom(screen.video ?? screen.src)}
+              onZoom={!screen.custom && onZoom ? () => onZoom(screen.video ?? screen.src) : undefined}
               focused={i === index}
+              custom={screen.custom?.(i === index)}
               className={screen.video && i !== index ? 'opacity-60 transition-opacity duration-300 ease-out' : 'transition-opacity duration-300 ease-out'}
             />
             <figcaption className="mt-4 text-center text-xs text-gray-500">{screen.label}</figcaption>
@@ -112,6 +117,8 @@ export default function DeviceCarousel({ kind, screens, ariaLabel, prevLabel, ne
             {pad2(index + 1)} / {pad2(total)}
           </p>
           <div className="ml-auto flex items-center gap-2">
+            {/* The pause of the playing screen sits with the arrows, in the bottom right corner */}
+            <CornerSlot className="mr-1" />
             <button
               type="button"
               aria-label={prevLabel}
@@ -133,6 +140,8 @@ export default function DeviceCarousel({ kind, screens, ariaLabel, prevLabel, ne
           </div>
         </div>
       )}
+      {total <= 1 && <CornerSlot />}
     </div>
+    </StageCorner>
   )
 }

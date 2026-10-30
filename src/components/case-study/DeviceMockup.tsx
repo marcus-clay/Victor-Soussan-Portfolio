@@ -1,9 +1,11 @@
 'use client'
 
 import React, { useEffect, useRef, useState } from 'react'
-import { Pause, Play } from '@phosphor-icons/react'
+import { Pause } from '@phosphor-icons/react'
+import { CenterPlay, CornerButton, CornerControls } from '@/components/media/PlayerControls'
 import { zoomable } from '@/utils/zoomable'
 import ScaledScreen from '@/components/case-study/ScaledScreen'
+import { VIDEO_COPY, useVideoLang } from '@/components/media/videoLabels'
 
 /** A poster is a flat picture (a store listing visual), shown with rounded corners and no device around it. */
 export type DeviceKind = 'phone' | 'tablet' | 'browser' | 'poster'
@@ -46,8 +48,9 @@ const DEFAULT_ASPECT: Record<DeviceKind, number> = { phone: 390 / 844, tablet: 4
 
 /**
  * The clip of a screen plays as soon as a part of it is on screen and pauses when it leaves, like every
- * video of the site (`VideoPlayer`). A small toggle stays visible so the reader can stop it, and a reader who
- * stopped it is not restarted by scrolling. Without a clip, the picture stays.
+ * video of the site (`VideoPlayer`). Stopped, a large play button sits in the middle of the screen; playing,
+ * a small pause button sits in the corner. A reader who stopped it is not restarted by scrolling. Without a
+ * clip, the picture stays.
  */
 function ScreenMedia({ screen, label, eager, focused = true }: { screen: DeviceScreen; label: string; eager?: boolean; focused?: boolean }) {
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -55,7 +58,7 @@ function ScreenMedia({ screen, label, eager, focused = true }: { screen: DeviceS
   const visible = useRef(false)
   const focusedRef = useRef(focused)
   const [playing, setPlaying] = useState(false)
-  const [hovered, setHovered] = useState(false)
+  const copy = VIDEO_COPY[useVideoLang()]
 
   // Gaining or losing focus (the active screen of a strip) starts the clip from its first image or pauses it.
   useEffect(() => {
@@ -106,7 +109,7 @@ function ScreenMedia({ screen, label, eager, focused = true }: { screen: DeviceS
       }
     }
     return (
-      <div className="relative h-full w-full" onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
+      <div className="relative h-full w-full">
         <video
           ref={videoRef}
           src={screen.video}
@@ -118,16 +121,16 @@ function ScreenMedia({ screen, label, eager, focused = true }: { screen: DeviceS
           aria-label={label}
           className="block w-full h-full object-cover object-top"
         />
-        <button
-          type="button"
-          onClick={toggle}
-          onKeyDown={(e) => e.stopPropagation()}
-          aria-label={playing ? 'Pause' : 'Lecture'}
-          className="absolute bottom-[3cqw] right-[3cqw] z-10 flex h-[clamp(26px,7cqw,34px)] w-[clamp(26px,7cqw,34px)] items-center justify-center rounded-full bg-black/55 text-white transition-opacity duration-200 ease-out before:absolute before:-inset-2 before:content-['']"
-          style={{ opacity: hovered || !playing ? 0.95 : 0.4 }}
-        >
-          {playing ? <Pause size={12} weight="fill" /> : <Play size={12} weight="fill" />}
-        </button>
+        {/* Same controls as every player of the site: stopped, the large play in the middle of the screen;
+            playing, the small pause in the corner of the grey container that holds the device */}
+        {!playing && focused && <CenterPlay onClick={toggle} label={`${copy.play}: ${label}`} />}
+        {playing && focused && (
+          <CornerControls fallbackClassName="absolute bottom-[3cqw] right-[3cqw] z-10">
+            <CornerButton onClick={toggle} label={copy.pause} dim>
+              <Pause size={11} weight="fill" aria-hidden="true" />
+            </CornerButton>
+          </CornerControls>
+        )}
       </div>
     )
   }

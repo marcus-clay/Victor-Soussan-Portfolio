@@ -3916,3 +3916,10 @@ body.embed-mode.show-card .proto-narration-card {
 body.embed-mode .proto-steps-wrapper {
   display: none !important;
 }
+/* In the case study the device frame is the frame: the screen fills the whole page, with no margin, so the
+   overlays of the prototype (dimmed backgrounds, sheets) cover the device screen edge to edge */
+body.embed-mode .proto-viewport {
+  margin: 0;
+  border-radius: 0;
+  box-shadow: none;
+}

@@ -143,7 +143,7 @@ export function RelatedCard({ item }: { item: RelatedItem }) {
 }
 
 function Cover({ cover, loop }: { cover: NonNullable<RelatedItem['cover']>; loop: ReturnType<typeof heroLoopFor> }) {
-  const mediaClass = `h-full w-full transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-[1.03] ${
+  const mediaClass = `h-full w-full transition-transform duration-300 ease-media [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-[1.03] ${
     cover.fit === 'contain' ? 'object-contain p-[5%]' : 'object-cover'
   }`
   const mediaStyle = cover.position ? { objectPosition: cover.position } : undefined

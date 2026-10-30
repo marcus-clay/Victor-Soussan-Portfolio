@@ -170,9 +170,9 @@ function VideoFigure({ src, name, onZoom }: VideoFigureProps) {
         <div
           {...zoomable(onZoom)}
           aria-label={name}
-          className={`group rounded-2xl overflow-hidden border border-gray-100 [@media(hover:hover)]:hover:border-gray-200 cursor-zoom-in shadow-sm [@media(hover:hover)]:hover:shadow-lg [@media(hover:hover)]:hover:scale-[1.01] active:scale-[0.99] transition-[border-color,box-shadow,transform] duration-300 ${EASE}`}
+          className={`group rounded-2xl overflow-hidden border border-gray-100 [@media(hover:hover)]:hover:border-gray-200 cursor-zoom-in shadow-sm [@media(hover:hover)]:hover:shadow-lg [@media(hover:hover)]:hover:scale-[1.01] active:scale-[0.99] transition-[border-color,box-shadow,transform] duration-300 ease-media active:duration-150 active:ease-out`}
         >
-          <VideoPlayer src={src} className={`w-full h-auto block transition-transform duration-300 ${EASE} [@media(hover:hover)]:group-hover:scale-[1.02]`} />
+          <VideoPlayer src={src} className={`w-full h-auto block transition-transform duration-300 ease-media [@media(hover:hover)]:group-hover:scale-[1.02]`} />
         </div>
         <figcaption className="mt-3 text-xs text-gray-500">{name}</figcaption>
     </motion.figure>

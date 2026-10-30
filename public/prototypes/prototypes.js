@@ -3231,7 +3231,7 @@
         if (i === idx) s.classList.add('active');
       });
       const activeStep = document.getElementById('proto-step-' + idx);
-      if (activeStep) activeStep.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      if (activeStep && !document.body.classList.contains('embed-mode')) activeStep.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
     }
 
     // Update nav arrows
@@ -4660,16 +4660,18 @@
       item.classList.toggle('active', item.dataset.proto === id);
     });
 
-    // Scroll the proto section into view
-    const protoSection = document.getElementById('proto-section');
-    if (protoSection) {
-      protoSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+    // Scroll the proto section and the active TOC item into view. Never in embed mode: scrollIntoView
+    // also scrolls every ancestor of the iframe, which moved the host page and its carousels.
+    if (!document.body.classList.contains('embed-mode')) {
+      const protoSection = document.getElementById('proto-section');
+      if (protoSection) {
+        protoSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
 
-    // Scroll active TOC item into view
-    const activeItem = document.querySelector('.proto-toc-item.active');
-    if (activeItem) {
-      activeItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      const activeItem = document.querySelector('.proto-toc-item.active');
+      if (activeItem) {
+        activeItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
     }
 
     const fn = protoMap[id];
@@ -4736,6 +4738,44 @@
       }
     }
   });
+
+  // Same-origin control for the host page: where the prototype is, and resuming it at that moment in
+  // another frame (the case study lightbox opens the prototype where the inline player was)
+  window.protoControl = {
+    time: () => (currentTL ? currentTL.time() : 0),
+    // Resolves once the prototype stands, paused, at `time`. A jump would skip the tweens the scenario
+    // starts from its callbacks, so the prototype is fast-forwarded instead (restarted first to go back)
+    seek: (time) => new Promise((resolve) => {
+      if (!currentTL) return resolve();
+      if (time < currentTL.time() - 0.05) navigateTo(currentProto);
+      const base = gsap.globalTimeline.timeScale();
+      const done = () => {
+        gsap.globalTimeline.timeScale(base);
+        gsap.globalTimeline.pause();
+        if (currentTL) currentTL.pause();
+        resolve();
+      };
+      gsap.globalTimeline.resume();
+      if (currentTL) currentTL.resume();
+      const step = () => {
+        if (!currentTL || currentTL.progress() >= 1) return done();
+        const remaining = time - currentTL.time();
+        if (remaining <= 0.02) return done();
+        // Fast, then slower as the moment comes, so it never runs past it by more than a frame
+        gsap.globalTimeline.timeScale(Math.max(1, Math.min(80, remaining * 25)));
+        requestAnimationFrame(step);
+      };
+      step();
+    }),
+    play: () => {
+      gsap.globalTimeline.resume();
+      if (currentTL) currentTL.resume();
+    },
+    pause: () => {
+      gsap.globalTimeline.pause();
+      if (currentTL) currentTL.pause();
+    },
+  };
 
   // Read hash on load (e.g. #t3, #sc1)
   function getHashProto() {

@@ -10,8 +10,11 @@ import { ActRule, ActTitle } from '@/components/case-study/ActSection'
 import CaseStudySummary from '@/components/case-study/CaseStudySummary'
 import CaseStudyHero from '@/components/case-study/CaseStudyHero'
 import DeviceCarousel from '@/components/case-study/DeviceCarousel'
+import { CornerSlot, StageCorner } from '@/components/media/PlayerControls'
 import StoreBadges, { type StoreLinks } from '@/components/case-study/StoreBadges'
 import NotificationsShowcase from '@/components/case-study/NotificationsShowcase'
+import JourneyFilm from '@/components/case-study/JourneyFilm'
+import { consultationFilm, startFilm } from '@/data/tessanFilms'
 import { assistantJourneys, osJourneys, prototypeJourneys, scanJourneys, tunnelJourneys, type Journey } from '@/data/tessanJourneys'
 import DeviceMockup, { type DeviceKind, type DeviceScreen } from '@/components/case-study/DeviceMockup'
 import EnhancedLightbox, { type LightboxImage } from '@/components/media/EnhancedLightbox'
@@ -73,7 +76,13 @@ interface JourneyFigure {
   kind: 'tunnel' | 'scan' | 'protos' | 'assistant' | 'os'
 }
 
-type FigureSource = ImageFigure | DeviceFigure | NotificationsFigure | JourneyFigure
+/** A journey played as a film in one large phone, with its steps beside it. */
+interface FilmFigure {
+  type: 'film'
+  kind: 'start' | 'consultation'
+}
+
+type FigureSource = ImageFigure | DeviceFigure | NotificationsFigure | JourneyFigure | FilmFigure
 
 const app = (name: string, label: { fr: string; en: string }): DeviceScreenSpec => ({
   src: `/images/tessan/tessan-app-${name}.webp`,
@@ -138,6 +147,8 @@ const FIGURES: Record<string, FigureSource> = {
   journeyAssistant: { type: 'journey', kind: 'assistant' },
   journeyOs: { type: 'journey', kind: 'os' },
   notifications: { type: 'notifications' },
+  filmStart: { type: 'film', kind: 'start' },
+  filmConsultation: { type: 'film', kind: 'consultation' },
   dsVideos: {
     type: 'devices',
     kind: 'browser',
@@ -253,7 +264,8 @@ function DeviceStage({
     const wide = Math.min(count === 1 ? 24 : 30, 86 / count)
     const narrow = Math.min(count === 1 ? 44 : 30, 86 / Math.min(count, 3))
     return (
-      <div className={`${STAGE} flex items-end justify-center gap-[3.5%] px-[5%] pt-[6%] pb-[6%]`}>
+      <StageCorner>
+      <div className={`${STAGE} relative flex items-end justify-center gap-[3.5%] px-[5%] pt-[6%] pb-[6%]`}>
         {figure.screens.map((screen, i) => (
           <div
             key={screenKey(screen)}
@@ -269,12 +281,15 @@ function DeviceStage({
             />
           </div>
         ))}
+        <CornerSlot />
       </div>
+      </StageCorner>
     )
   }
   const screen = figure.screens[0]
   return (
-    <div className={`${STAGE} flex items-center justify-center px-[5%] py-[5%]`}>
+    <StageCorner>
+    <div className={`${STAGE} relative flex items-center justify-center px-[5%] py-[5%]`}>
       <div style={{ width: `${(figure.share ?? 0.9) * 100}%` }}>
         <DeviceMockup
           kind={figure.kind}
@@ -285,7 +300,9 @@ function DeviceStage({
           onZoom={() => onZoom(screenKey(screen))}
         />
       </div>
+      <CornerSlot />
     </div>
+    </StageCorner>
   )
 }
 
@@ -315,6 +332,14 @@ function FigureView({
   prototypeLabel: string
   onZoom: (key: string) => void
 }) {
+  if (figure.type === 'film') {
+    return (
+      <figure>
+        <JourneyFilm steps={figure.kind === 'start' ? startFilm() : consultationFilm()} label={caption} labels={TESSAN_TRANSLATIONS[lang].ui.film} />
+        <figcaption className="mt-3 text-left text-xs text-gray-500 leading-relaxed">{caption}</figcaption>
+      </figure>
+    )
+  }
   if (figure.type === 'journey') {
     return (
       <div className="space-y-10 md:space-y-12">
@@ -341,7 +366,7 @@ function FigureView({
           {...zoomable(() => onZoom(figure.src))}
           aria-label={caption}
           style={figure.maxWidth ? { maxWidth: figure.maxWidth } : undefined}
-          className={`group ${STAGE} cursor-zoom-in transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)]:hover:ring-black/[0.08] [@media(hover:hover)]:hover:scale-[1.01] active:scale-[0.99]`}
+          className={`group ${STAGE} cursor-zoom-in transition-[transform,box-shadow] duration-300 ease-media active:duration-150 active:ease-out [@media(hover:hover)]:hover:ring-black/[0.08] [@media(hover:hover)]:hover:scale-[1.01] active:scale-[0.99]`}
         >
           <img
             loading="lazy"
@@ -349,7 +374,7 @@ function FigureView({
             width={figure.width}
             height={figure.height}
             alt=""
-            className="w-full h-auto block transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)]:group-hover:scale-[1.02]"
+            className="w-full h-auto block transition-transform duration-300 ease-media [@media(hover:hover)]:group-hover:scale-[1.02]"
           />
         </div>
       )}
@@ -413,7 +438,7 @@ export const TessanChapterPage: React.FC<TessanPageProps & { variant: TessanVari
     for (const key of keys) {
       const figure = FIGURES[key]
       if (!figure) continue
-      if (figure.type === 'notifications') {
+      if (figure.type === 'notifications' || figure.type === 'film') {
         continue
       } else if (figure.type === 'journey') {
         for (const j of journeysOf(figure.kind, lang)) {
