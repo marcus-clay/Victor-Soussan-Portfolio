@@ -18,7 +18,7 @@ import { ArrowLink, CtaButton, TEXT_LINK } from '@/views/ApprochePage'
 /**
  * Approach, second version, for a one-minute read. Three questions in the order a reader asks them: what do
  * you do (the introduction), how do you do it (the two halves of the job as one explorer, one step at a time,
- * each with its drawing), and what did it lead to (four results, then a client's word that closes the proofs).
+ * each with its drawing), and what did it lead to (four results in a sentence each, then a client's word that closes the proofs).
  * The detail lives in the case studies each step links to.
  */
 export default function ApprocheV2Page({ lang, related }: { lang: Language; related: RelatedItem[] }) {
@@ -51,18 +51,17 @@ export default function ApprocheV2Page({ lang, related }: { lang: Language; rela
         </div>
       </section>
 
-      {/* 02 What it led to: four results, then a client's word that closes the proofs */}
+      {/* 02 What it led to: four results in a sentence each, then a client's word that closes the proofs */}
       <section id="results" aria-label={res.title} className="scroll-mt-24">
         <ActHeader index="02" title={res.title} lead={res.lead} />
         <div className="act-wide pb-12 md:pb-20">
-          <ul className="grid list-none grid-cols-1 gap-x-8 gap-y-8 p-0 sm:grid-cols-2 lg:grid-cols-4">
+          <ul className="list-none divide-y divide-gray-100 border-y border-gray-100 p-0">
             {res.facts.map((fact) => (
-              <Reveal as="li" key={fact.link.label} className="border-t border-gray-200 pt-5">
-                <p className="text-display tabular-nums text-gray-900">{fact.figure}</p>
-                <p className="mt-2 text-base text-gray-600">{fact.text}</p>
-                <div className="mt-1">
+              <Reveal as="li" key={fact.link.label} className="grid grid-cols-1 gap-y-1 py-4 md:grid-cols-[14rem_1fr] md:gap-x-6 md:py-5">
+                <div>
                   <ArrowLink href={`/${lang}${fact.link.href}`}>{fact.link.label}</ArrowLink>
                 </div>
+                <p className="max-w-[62ch] text-base text-gray-600 md:pt-2.5">{fact.text}</p>
               </Reveal>
             ))}
           </ul>
