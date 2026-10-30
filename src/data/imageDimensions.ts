@@ -430,6 +430,7 @@ export const IMAGE_DIMENSIONS: Record<string, [number, number]> = {
   "/images/riskos/05-inbox-session.png": [3840, 2160],
   "/images/riskos/ship-to-show-hero.png": [2400, 1254],
   "/images/riskos/thubmnail_riskos_dark.webp": [2200, 1467],
+  "/images/riskos/cover-riskos-ipad.webp": [2200, 1467],
   "/images/screenshot_gemini_website.webp": [1485, 8093],
   "/images/sketches services/01 - image-hand-on execution.webp": [1536, 1024],
   "/images/sketches services/02 - workshop product vision.webp": [1536, 1024],

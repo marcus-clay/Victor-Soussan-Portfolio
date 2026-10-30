@@ -52,6 +52,8 @@
 /* Design engineering easing curves + header height */
 :root {
   --ease-out-expo: cubic-bezier(0.23, 1, 0.32, 1);
+  /* Entrances: blocks, lines and pictures arriving (transitions.dev smooth-out) */
+  --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-in-out-strong: cubic-bezier(0.77, 0, 0.175, 1);
   /* Header: 80px at the top of the page, 56px once the page has scrolled. The 24px difference is
      what makes the reduction readable. `--nav-height` is the live value (Nav.tsx switches it);
@@ -100,7 +102,54 @@
   opacity: 0;
 }
 .img-fade img[loading="lazy"][data-loaded=""] {
-  animation: fade-in 450ms var(--ease-out-expo) backwards;
+  animation: build-media 500ms var(--ease-smooth) backwards;
+}
+/* While its picture loads, a media frame shows a light sheen over its own tone (a skeleton), so
+   an empty frame reads as "coming" rather than broken. Only frames whose picture is a direct child. */
+.img-fade .overflow-hidden[class*="rounded"]:has(> img[loading="lazy"]:not([data-loaded])) {
+  background-image: linear-gradient(100deg, transparent 30%, rgba(255, 255, 255, 0.5) 50%, transparent 70%);
+  background-size: 220% 100%;
+  animation: skel-sheen 1.4s linear infinite;
+}
+@keyframes skel-sheen {
+  from { background-position: 160% 0; }
+  to { background-position: -60% 0; }
+}
+
+/* Page headers build at load, with no JavaScript: the title lines rise out of a light blur one after
+   the other (80ms apart), then the text, the facts and the actions (40ms apart), and the lead picture
+   arrives out of a blur. Set --i (order) and --d (offset) inline. `backwards` fill: nothing is left
+   on the element once it has played, so hover styles keep working. */
+@keyframes build-line {
+  from { opacity: 0; transform: translateY(12px); filter: blur(3px); }
+}
+@keyframes build-rise {
+  from { opacity: 0; transform: translateY(8px); filter: blur(2px); }
+}
+@keyframes build-media {
+  from { opacity: 0; transform: scale(1.02); filter: blur(6px); }
+}
+.build-line {
+  animation: build-line 500ms var(--ease-smooth) backwards;
+  animation-delay: calc(var(--i, 0) * 80ms + var(--d, 0ms));
+}
+.build-rise {
+  animation: build-rise 400ms var(--ease-smooth) backwards;
+  animation-delay: calc(var(--i, 0) * 40ms + var(--d, 0ms));
+}
+.build-media {
+  animation: build-media 600ms var(--ease-smooth) backwards;
+  animation-delay: var(--d, 200ms);
+}
+@media (prefers-reduced-motion: reduce) {
+  .build-line, .build-rise, .build-media, .img-fade img[loading="lazy"][data-loaded=""] {
+    animation: fade-in 200ms ease-out backwards;
+    animation-delay: 0ms;
+  }
+  .img-fade .overflow-hidden[class*="rounded"]:has(> img[loading="lazy"]:not([data-loaded])) {
+    animation: none;
+    background-image: none;
+  }
 }
 
 /* Rounded media frames: a scaled or composited child (video, zoomed image) inside an
@@ -558,12 +607,14 @@ a[class*="hover:text-gray-900"]:active { color: #111827; }
    exists only once JavaScript has armed a block that starts below the fold. */
 [data-rv="pending"] {
   opacity: 0;
-  translate: 0 10px;
+  translate: 0 8px;
+  filter: blur(2px);
 }
 [data-rv="in"] {
   transition:
-    opacity 280ms var(--ease-out-expo) var(--rv-delay, 0ms),
-    translate 280ms var(--ease-out-expo) var(--rv-delay, 0ms);
+    opacity 400ms var(--ease-smooth) var(--rv-delay, 0ms),
+    translate 400ms var(--ease-smooth) var(--rv-delay, 0ms),
+    filter 400ms var(--ease-smooth) var(--rv-delay, 0ms);
 }
 /* Hairline that draws itself from the left (ActRule) */
 [data-rv][data-rv-kind="line"] {
@@ -572,16 +623,18 @@ a[class*="hover:text-gray-900"]:active { color: #111827; }
 [data-rv="pending"][data-rv-kind="line"] {
   opacity: 1;
   translate: none;
+  filter: none;
   scale: 0 1;
 }
 [data-rv="in"][data-rv-kind="line"] {
-  transition: scale 480ms var(--ease-out-expo) var(--rv-delay, 0ms);
+  transition: scale 700ms var(--ease-smooth) var(--rv-delay, 0ms);
 }
 @media (prefers-reduced-motion: reduce), print {
   [data-rv] {
     opacity: 1 !important;
     translate: none !important;
     scale: none !important;
+    filter: none !important;
     transition: none !important;
   }
 }

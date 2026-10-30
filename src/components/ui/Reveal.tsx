@@ -4,8 +4,8 @@ import { createElement, useEffect, useLayoutEffect, useRef } from 'react'
 import type { CSSProperties, HTMLAttributes, ReactNode } from 'react'
 
 /**
- * Scroll reveal for blocks below the first screen: a fade and a short rise (10px, 280ms,
- * ease-out-expo), once per element, siblings that enter together staggered by 50ms.
+ * Scroll reveal for blocks below the first screen: they rise 8px out of a 2px blur (400ms,
+ * smooth-out), once per element, siblings that enter together staggered by 40ms.
  *
  * Why it never hides text by mistake:
  * - The server HTML and the first client render carry no hidden state. Content is visible
@@ -15,15 +15,15 @@ import type { CSSProperties, HTMLAttributes, ReactNode } from 'react'
  *   already scrolled past, is never hidden, so the first screen is not delayed (LCP).
  * - If IntersectionObserver is missing, or the visitor asks for reduced motion, nothing is
  *   hidden at all.
- * - Opacity and `translate` only: no layout shift. Once the transition ends, the attribute
+ * - Opacity, `translate` and a light blur only: no layout shift. Once the transition ends, the attribute
  *   and the inline variable are removed, so hover and state styles are left untouched.
  *
  * `kind="line"` draws a hairline from the left instead (scaleX), used by `ActRule`.
  */
 
-const STEP_MS = 50
+const STEP_MS = 40
 const MAX_STEPS = 5
-const SETTLE_MS = 600
+const SETTLE_MS = 700
 
 const useIsoLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect
 

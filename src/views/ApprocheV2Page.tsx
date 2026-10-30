@@ -36,9 +36,9 @@ export default function ApprocheV2Page({ lang, related }: { lang: Language; rela
       <ApprocheToc sections={V2_SHORT_TOC[lang]} lang={lang} />
 
       <header className="wrap pt-10 md:pt-16 pb-10 md:pb-12">
-        <h1 className="text-display text-gray-900 text-balance">{hero.title}</h1>
-        <p className="mt-6 md:mt-8 text-lead-lg text-gray-600 max-w-[54ch]">{hero.lead}</p>
-        <div className="mt-8 md:mt-10">
+        <h1 className="build-line text-display text-gray-900 text-balance">{hero.title}</h1>
+        <p className="build-rise mt-6 md:mt-8 text-lead-lg text-gray-600 max-w-[54ch]" style={{ ['--d' as string]: '200ms' }}>{hero.lead}</p>
+        <div className="build-rise mt-8 md:mt-10" style={{ ['--d' as string]: '280ms' }}>
           <CtaButton lang={lang} />
         </div>
       </header>

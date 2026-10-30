@@ -196,10 +196,10 @@ export default function AboutPageRedesign({
       {/* HEADER + INTRO: who, in one screen. The detail is one level down. */}
       {/* ================================================================ */}
       <header className="wrap pt-10 md:pt-16 pb-12 md:pb-16">
-        <h1 className="text-display text-gray-900">
+        <h1 className="build-line text-display text-gray-900">
           {t.page_title}
         </h1>
-        <p className="mt-6 md:mt-8 text-lead-lg text-gray-600 max-w-[54ch]">
+        <p className="build-rise mt-6 md:mt-8 text-lead-lg text-gray-600 max-w-[54ch]" style={{ ['--d' as string]: '200ms' }}>
           {t.role}
         </p>
       </header>
@@ -212,14 +212,15 @@ export default function AboutPageRedesign({
               <img
                 src="/images/image-victor-soussan-2027.jpg"
                 alt="Victor Soussan"
-                className="w-full h-full object-cover object-top"
+                className="build-media w-full h-full object-cover object-top"
+                style={{ ['--d' as string]: '260ms' }}
                 loading="eager"
               />
             </div>
           </div>
 
           <div className="lg:col-span-7 lg:col-start-6">
-            <p className="text-lead-lg text-gray-900 max-w-[40ch]">
+            <p className="build-rise text-lead-lg text-gray-900 max-w-[40ch]" style={{ ['--d' as string]: '320ms' }}>
               {t.intro}
             </p>
 

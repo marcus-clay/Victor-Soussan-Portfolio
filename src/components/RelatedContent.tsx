@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { ArrowRight, ArrowUpRight } from '@phosphor-icons/react/dist/ssr'
 import { imgDims } from '@/utils/imageDimensions'
-import { HERO_VIDEOS } from '@/data/heroVideos'
+import { HERO_VIDEOS, type HeroVideo } from '@/data/heroVideos'
 import HeroLoop from '@/components/media/HeroLoop'
 import ArrowPill from '@/components/ui/ArrowPill'
 
@@ -68,11 +68,11 @@ const CARD_CLASS =
 const PROJECT_HREF = /^\/(?:en|fr)\/project\/([^/?#]+)\/?$/
 
 /** The hero loop of the project a card points to, when its file exists in the registry */
-function heroLoopFor(item: RelatedItem): { src: string } | null {
+function heroLoopFor(item: RelatedItem): HeroVideo | null {
   const match = item.external ? null : PROJECT_HREF.exec(item.href)
   if (!match) return null
-  const src = item.cover?.video ?? HERO_VIDEOS[match[1]]?.src
-  return src ? { src } : null
+  if (item.cover?.video) return { src: item.cover.video }
+  return HERO_VIDEOS[match[1]] ?? null
 }
 
 export default function RelatedContent({ heading, items, id, action, bordered = true, inColumn = false }: RelatedContentProps) {
@@ -159,7 +159,7 @@ function Cover({ cover, loop }: { cover: NonNullable<RelatedItem['cover']>; loop
         className={mediaClass}
         style={mediaStyle}
       />
-      {loop && <HeroLoop src={loop.src} mediaClassName={mediaClass} mediaStyle={mediaStyle} />}
+      {loop && <HeroLoop src={loop.src} mediaClassName={mediaClass} mediaStyle={mediaStyle} screen={loop.screen} />}
       <ArrowPill size="sm" />
     </div>
   )

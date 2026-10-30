@@ -36,7 +36,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import type { CSSProperties } from 'react'
-import { HOVER_ZOOM_EASE, HOVER_ZOOM_MS } from '@/data/heroVideos'
+import { HOVER_ZOOM_EASE, HOVER_ZOOM_MS, type HeroVideo } from '@/data/heroVideos'
 
 // ---------------------------------------------------------------------------
 // Playback budget: at most MAX_PLAYING loops decode at once, whatever the page
@@ -99,10 +99,51 @@ interface HeroLoopProps {
   mode?: 'preview' | 'auto'
   /** `preview` with a mouse: the card a carousel rests on plays without hover (never under reduced motion) */
   active?: boolean
+  /** The device screen the loop plays in, for a cover in perspective (see HeroVideo) */
+  screen?: HeroVideo['screen']
 }
 
-export default function HeroLoop({ src, mediaClassName, mediaStyle, mode = 'preview', active = false }: HeroLoopProps) {
+/** Base size of the projected screen; the transform scales it to the corners */
+const SCREEN_W = 1000
+
+/**
+ * matrix3d that maps a w × h box (origin top left) onto four points: the projective transform of a
+ * rectangle onto any quadrilateral, so a flat video sits on a screen seen at an angle.
+ */
+function quadMatrix(w: number, h: number, [p0, p1, p2, p3]: [number, number][]) {
+  const [x0, y0] = p0
+  const [x1, y1] = p1
+  const [x2, y2] = p2
+  const [x3, y3] = p3
+  const dx1 = x1 - x2
+  const dx2 = x3 - x2
+  const dy1 = y1 - y2
+  const dy2 = y3 - y2
+  const sx = x0 - x1 + x2 - x3
+  const sy = y0 - y1 + y2 - y3
+  const den = dx1 * dy2 - dx2 * dy1
+  const g = (sx * dy2 - dx2 * sy) / den
+  const k = (dx1 * sy - sx * dy1) / den
+  const a = x1 - x0 + g * x1
+  const b = x3 - x0 + k * x3
+  const d = y1 - y0 + g * y1
+  const e = y3 - y0 + k * y3
+  return `matrix3d(${[a / w, d / w, 0, g / w, b / h, e / h, 0, k / h, 0, 0, 1, 0, x0, y0, 0, 1].join(',')})`
+}
+
+export default function HeroLoop({ src, mediaClassName, mediaStyle, mode = 'preview', active = false, screen }: HeroLoopProps) {
   const wrapRef = useRef<HTMLDivElement>(null)
+  // Size of the frame, for a loop projected onto a screen in perspective
+  const [box, setBox] = useState<{ w: number; h: number } | null>(null)
+  useEffect(() => {
+    const el = wrapRef.current
+    if (!screen || !el) return
+    const measure = () => setBox({ w: el.clientWidth, h: el.clientHeight })
+    measure()
+    const observer = new ResizeObserver(measure)
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [screen])
   const videoRef = useRef<HTMLVideoElement>(null)
 
   const [idle, setIdle] = useState(false)
@@ -280,48 +321,76 @@ export default function HeroLoop({ src, mediaClassName, mediaStyle, mode = 'prev
   // A file that is missing or cannot be decoded leaves the picture alone: nothing of this component stays in the page
   if (failed) return null
 
+  // The picture's hover zoom and the fade share one duration, so the video moves like the picture.
+  // Each property gets its own curve: the opacity crossfade is symmetric (a strong ease-out would
+  // show the video almost at once), the hover zoom keeps the picture's curve. The blur only runs on
+  // the way out, when a mid-loop frame dissolves into the still picture: it lets the eye read one
+  // object changing instead of two overlapping. Coming in the first frame is the picture's own
+  // framing (see HeroVideo), so it needs no mask and the picture stays crisp.
+  const frameClass = `absolute inset-0 z-[1] ${mediaClassName} ${shown ? 'opacity-100' : 'opacity-0'}`
+  const frameStyle: CSSProperties = {
+    ...mediaStyle,
+    filter: shown ? 'blur(0px)' : `blur(${EXIT_BLUR_PX}px)`,
+    // `scale` carries the hover zoom of the animated visuals (HERO_HOVER_ZOOM), in step with the picture
+    transitionProperty: shown ? 'opacity, transform, scale' : 'opacity, transform, scale, filter',
+    // The hover zoom runs on its own slow curve, the same as the picture's
+    transitionDuration: [`${FADE_MS}ms`, `${HOVER_ZOOM_MS}ms`, `${HOVER_ZOOM_MS}ms`, ...(shown ? [] : [`${FADE_MS}ms`])].join(', '),
+    transitionTimingFunction: [
+      CROSSFADE_EASE,
+      mediaStyle?.transitionTimingFunction ?? MOVE_EASE,
+      HOVER_ZOOM_EASE,
+      ...(shown ? [] : [CROSSFADE_EASE]),
+    ].join(', '),
+  }
+
+  const video = mounted && (
+    <video
+      ref={videoRef}
+      src={src}
+      loop
+      muted
+      playsInline
+      preload="metadata"
+      disablePictureInPicture
+      disableRemotePlayback
+      tabIndex={-1}
+      draggable={false}
+      onDragStart={(e) => e.preventDefault()}
+      onPlaying={() => {
+        if (wantsRef.current) setShown(true)
+      }}
+      onError={() => setFailed(true)}
+      className={screen ? 'block h-full w-full object-cover' : frameClass}
+      style={screen ? undefined : frameStyle}
+    />
+  )
+
   return (
     <div ref={wrapRef} aria-hidden="true" className="pointer-events-none absolute inset-0">
-      {mounted && (
-        <video
-          ref={videoRef}
-          src={src}
-          loop
-          muted
-          playsInline
-          preload="metadata"
-          disablePictureInPicture
-          disableRemotePlayback
-          tabIndex={-1}
-          draggable={false}
-          onDragStart={(e) => e.preventDefault()}
-          onPlaying={() => {
-            if (wantsRef.current) setShown(true)
-          }}
-          onError={() => setFailed(true)}
-          className={`absolute inset-0 z-[1] ${mediaClassName} ${shown ? 'opacity-100' : 'opacity-0'}`}
-          // The picture's hover zoom and the fade share one duration, so the video moves like the picture.
-          // Each property gets its own curve: the opacity crossfade is symmetric (a strong ease-out would
-          // show the video almost at once), the hover zoom keeps the picture's curve. The blur only runs on
-          // the way out, when a mid-loop frame dissolves into the still picture: it lets the eye read one
-          // object changing instead of two overlapping. Coming in the first frame is the picture's own
-          // framing (see HeroVideo), so it needs no mask and the picture stays crisp.
-          style={{
-            ...mediaStyle,
-            filter: shown ? 'blur(0px)' : `blur(${EXIT_BLUR_PX}px)`,
-            // `scale` carries the hover zoom of the animated visuals (HERO_HOVER_ZOOM), in step with the picture
-            transitionProperty: shown ? 'opacity, transform, scale' : 'opacity, transform, scale, filter',
-            // The hover zoom runs on its own slow curve, the same as the picture's
-            transitionDuration: [`${FADE_MS}ms`, `${HOVER_ZOOM_MS}ms`, `${HOVER_ZOOM_MS}ms`, ...(shown ? [] : [`${FADE_MS}ms`])].join(', '),
-            transitionTimingFunction: [
-              CROSSFADE_EASE,
-              mediaStyle?.transitionTimingFunction ?? MOVE_EASE,
-              HOVER_ZOOM_EASE,
-              ...(shown ? [] : [CROSSFADE_EASE]),
-            ].join(', '),
-          }}
-        />
-      )}
+      {screen
+        ? mounted &&
+          box && (
+            // A layer the size of the frame carries the fade and the hover zoom; inside it, the video is laid
+            // onto the screen of the device, at the angle of the picture
+            <div className={frameClass} style={{ ...frameStyle, objectFit: undefined }}>
+              <div
+                className="absolute left-0 top-0 overflow-hidden bg-black"
+                style={{
+                  width: SCREEN_W,
+                  height: SCREEN_W / screen.ratio,
+                  transformOrigin: '0 0',
+                  transform: quadMatrix(
+                    SCREEN_W,
+                    SCREEN_W / screen.ratio,
+                    screen.corners.map(([x, y]) => [x * box.w, y * box.h] as [number, number]),
+                  ),
+                }}
+              >
+                {video}
+              </div>
+            </div>
+          )
+        : video}
     </div>
   )
 }

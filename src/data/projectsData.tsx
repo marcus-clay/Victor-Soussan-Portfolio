@@ -196,7 +196,7 @@ export const getAllProjects = (lang: Language): Project[] => {
         : ["Prototype fonctionnel", "6 flux d'interaction", "Comparatif avant/après", "Schéma de flux de données", "Métriques de session"],
       icon: <ShieldCheck size={24} />,
       color: "blue",
-      coverImage: "/images/riskos/02-case-detail.webp",
+      coverImage: "/images/riskos/cover-riskos-ipad.webp",
       externalLink: "https://riskos.vercel.app",
       status: "experiment",
       cardBg: "#111113"

@@ -75,24 +75,24 @@ export default function CaseStudyHero({
               src={shell.logo}
               {...imgDims(shell.logo)}
               alt={`${shell.client}, ${t.logoSuffix}`}
-              className="h-7 md:h-8 w-auto max-w-[200px] object-contain object-left"
+              className="build-rise h-7 md:h-8 w-auto max-w-[200px] object-contain object-left"
             />
           ) : (
-            <p className="text-title-2 text-gray-900">{shell.client}</p>
+            <p className="build-rise text-title-2 text-gray-900">{shell.client}</p>
           )}
-          <h1 className="text-headline text-gray-900 mt-6 md:mt-8 max-w-[18ch] md:max-w-[16ch] lg:max-w-[18ch]">
+          <h1 style={{ ['--d' as string]: '60ms' }} className="build-line text-headline text-gray-900 mt-6 md:mt-8 max-w-[18ch] md:max-w-[16ch] lg:max-w-[18ch]">
             {title}
           </h1>
         </div>
 
-        <p className="order-2 col-span-12 md:col-span-5 md:col-start-8 md:row-start-1 text-lead-lg text-gray-600 max-w-[54ch] md:self-start">
+        <p style={{ ['--d' as string]: '200ms' }} className="build-rise order-2 col-span-12 md:col-span-5 md:col-start-8 md:row-start-1 text-lead-lg text-gray-600 max-w-[54ch] md:self-start">
           {intro}
         </p>
 
         {/* Hero visual: same panel for every project */}
         <figure
-          className={`hero-panel hero-panel-flat group order-3 col-span-12 md:order-none md:row-start-3 aspect-[3/2] ${onZoom ? 'cursor-zoom-in' : ''}`}
-          style={{ backgroundColor: shell.tone }}
+          style={{ backgroundColor: shell.tone, ['--d' as string]: '240ms' }}
+          className={`build-media hero-panel hero-panel-flat group order-3 col-span-12 md:order-none md:row-start-3 aspect-[3/2] ${onZoom ? 'cursor-zoom-in' : ''}`}
           {...(onZoom ? zoomable(() => onZoom()) : {})}
           aria-label={onZoom ? visualAlt : undefined}
         >
@@ -109,20 +109,20 @@ export default function CaseStudyHero({
               and starts the loop, leaving it fades back to the picture (centred on touch screens). The picture
               stays the poster, the fallback and the lightbox image; the video ignores the pointer, so the click
               still opens the lightbox. */}
-          {video && <HeroLoop src={video.src} mediaClassName={mediaClass} mediaStyle={mediaStyle} mode="preview" />}
+          {video && <HeroLoop src={video.src} mediaClassName={mediaClass} mediaStyle={mediaStyle} mode="preview" screen={video.screen} />}
         </figure>
 
         <div className="order-4 col-span-12 md:col-span-5 md:col-start-8 md:row-start-2 md:self-end flex flex-col gap-7">
           <dl className="grid grid-cols-2 gap-x-6 gap-y-4 border-t border-gray-200 pt-5">
-            {meta.map((item) => (
-              <div key={item.label}>
+            {meta.map((item, i) => (
+              <div key={item.label} className="build-rise" style={{ ['--i' as string]: i, ['--d' as string]: '320ms' }}>
                 <dt className="text-xs text-gray-500">{item.label}</dt>
                 <dd className="text-sm font-medium text-gray-900 mt-0.5 tabular-nums">{item.value}</dd>
               </div>
             ))}
           </dl>
 
-          <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+          <div className="build-rise flex flex-wrap items-center gap-x-6 gap-y-3" style={{ ['--d' as string]: '480ms' }}>
             {!hideGallery && (
               <Link
                 href={`/${lang}/project/${projectId}/gallery`}
