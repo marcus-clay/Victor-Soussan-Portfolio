@@ -3,13 +3,13 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowUpRight, ArrowRight, X, DownloadSimple, Copy, Check } from '@phosphor-icons/react'
-import TestimonialCarousel from '@/components/testimonials/TestimonialCarousel'
+import TestimonialsLink from '@/components/testimonials/TestimonialsLink'
 import { ActHeader } from '@/components/case-study/ActSection'
 import CardCarousel from '@/components/ui/CardCarousel'
 import Reveal from '@/components/ui/Reveal'
 import { BLOCK, Disclosure, SubTitle } from '@/components/ui/ActBlocks'
 import CareerPhasesDiagram from '@/components/about/CareerPhasesDiagram'
-import AiPracticeDiagram from '@/components/about/AiPracticeDiagram'
+import PracticeExplorer from '@/components/about/PracticeExplorer'
 import type { ResourceArt } from '@/data/resourcesData'
 import { aboutEras } from '@/data/profileData'
 import { TRANSLATIONS as SITE_TRANSLATIONS } from '@/data/translations'
@@ -53,12 +53,10 @@ const TRANSLATIONS = {
     eras: aboutEras('en'),
     practice_title: 'Current Practice',
     practice_text:
-      "Since early 2025, AI has been part of my toolkit. Most of the job happens with people: running research and handing it over to the teams, setting up methods, keeping the follow-up, designing at several levels of fidelity. Where data security requires it, I propose a usage framework: no customer data, human review, every case measured.",
+      'Since early 2025, AI has been part of my toolkit. Most of the job stays with people: I lead, AI equips.',
     education_title: 'Education',
     education_line1: 'Master Communication & Multimedia, ISCOM Paris (2001 to 2005)',
     education_line2: 'UX/UI Design & Prototyping, UXcel/Udemy (2021)',
-    toolkit_title: 'Toolkit',
-    toolkit_items: 'Figma, Figma Console MCP, Notion, Linear, VS Code, Claude Code, Framer Motion, Google Slides, Midjourney',
     cta_text: 'Want to talk?',
     cta_availability: 'I hold a full-time role and remain available for short consulting and freelance missions.',
     cta_email: 'victorsoussan@gmail.com',
@@ -100,12 +98,10 @@ const TRANSLATIONS = {
     eras: aboutEras('fr'),
     practice_title: 'Pratique actuelle',
     practice_text:
-      "Depuis début 2025, l’IA fait partie de mon outillage. L’essentiel du métier se joue avec les gens : animer la recherche et la passer aux équipes, installer les méthodes, tenir le suivi, dessiner à plusieurs niveaux de fidélité. Là où la sécurité des données l’impose, je propose un cadre d’usage : aucune donnée client, relecture humaine, chaque cas mesuré.",
+      'Depuis début 2025, l’IA fait partie de mon outillage. L’essentiel du métier reste avec les gens\u00a0: je mène, l’IA outille.',
     education_title: 'Formation',
     education_line1: 'Master Communication & Multimédia, ISCOM Paris (2001 à 2005)',
     education_line2: 'UX/UI Design & Prototypage, UXcel/Udemy (2021)',
-    toolkit_title: 'Boîte à outils',
-    toolkit_items: 'Figma, Figma Console MCP, Notion, Linear, VS Code, Claude Code, Framer Motion, Google Slides, Midjourney',
     cta_text: 'Envie d’échanger ?',
     cta_availability: 'En poste aujourd’hui, je reste disponible pour des missions courtes de conseil et de freelance.',
     cta_email: 'victorsoussan@gmail.com',
@@ -189,7 +185,6 @@ export default function AboutPageRedesign({
     setTimeout(() => setCopied(false), 2000)
   }
 
-  const [practiceLead, practiceRest] = splitFirst(t.practice_text)
   const hasResources = resources.length > 0
   const rowClass =
     'group flex items-center justify-between gap-4 py-4 -mx-3 px-3 rounded-lg [@media(hover:hover)]:hover:bg-gray-100 active:bg-gray-100 transition-colors duration-150'
@@ -257,9 +252,7 @@ export default function AboutPageRedesign({
 
         <div className="act-wide">
           <SubTitle>{t.career_periods}</SubTitle>
-          <Reveal className="max-w-[26rem]">
-            <CareerPhasesDiagram lang={lang} />
-          </Reveal>
+          <CareerPhasesDiagram lang={lang} />
 
           <SubTitle className={`${BLOCK} !mb-6 md:!mb-8`}>{t.career_steps}</SubTitle>
         </div>
@@ -289,49 +282,25 @@ export default function AboutPageRedesign({
       {/* 02 TESTIMONIALS                                                  */}
       {/* ================================================================ */}
       <section id="testimonials" aria-label={SITE_TRANSLATIONS[lang].testimonials.title} className="scroll-mt-24">
-        <ActHeader
-          index="02"
-          title={SITE_TRANSLATIONS[lang].testimonials.title}
-          lead={SITE_TRANSLATIONS[lang].testimonials.subtitle}
-        />
-        <Reveal>
-          <TestimonialCarousel lang={lang} allLabel={t.testimonials_link} showTitle={false} />
-        </Reveal>
-        <div className="pb-12 md:pb-20" />
+        <ActHeader index="02" title={SITE_TRANSLATIONS[lang].testimonials.title} />
+        {/* The testimonials are read on their own page: here, one line and the way there */}
+        <div className="act-wide pb-12 md:pb-20">
+          <TestimonialsLink lang={lang} />
+        </div>
       </section>
 
       {/* ================================================================ */}
       {/* 03 PRACTICE: AI in the process, the tools, the training          */}
       {/* ================================================================ */}
       <section id="practice" aria-label={t.practice_title} className="scroll-mt-24">
-        <ActHeader index="03" title={t.practice_title} lead={practiceLead} />
+        <ActHeader index="03" title={t.practice_title} lead={t.practice_text} />
 
         <div className="act-wide pb-12 md:pb-20">
+          {/* What I lead, what AI equips: the drawing is the way in, the detail opens one area at a time */}
           <SubTitle>{t.practice_flow}</SubTitle>
           <Reveal>
-            <AiPracticeDiagram lang={lang} />
+            <PracticeExplorer lang={lang} />
           </Reveal>
-          {practiceRest && <p className="mt-6 max-w-[62ch] text-base text-gray-600">{practiceRest}</p>}
-
-          <SubTitle className={BLOCK}>{t.toolkit_title}</SubTitle>
-          <motion.div
-            className="flex flex-wrap gap-2"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-40px' }}
-            variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.04 } } }}
-          >
-            {t.toolkit_items.split(', ').map((tool) => (
-              <motion.span
-                key={tool}
-                variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
-                transition={{ duration: 0.32, ease: EASE_OUT }}
-                className="inline-block text-sm text-gray-600 bg-gray-100 px-3 py-1.5 rounded-full"
-              >
-                {tool}
-              </motion.span>
-            ))}
-          </motion.div>
 
           <SubTitle className={BLOCK}>{t.education_title}</SubTitle>
           <ul className="max-w-[62ch] divide-y divide-gray-100 border-y border-gray-100">

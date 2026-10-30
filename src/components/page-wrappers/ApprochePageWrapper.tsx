@@ -1,4 +1,4 @@
-import ApprochePage from '@/views/ApprochePage'
+import ApprocheV2Page from '@/views/ApprocheV2Page'
 import { ALL_CONTENT, TYPE_LABELS } from '@/data/contentData'
 import { RELATED_ARTICLE_IDS } from '@/data/approcheData'
 import type { RelatedItem } from '@/components/RelatedContent'
@@ -16,5 +16,5 @@ export default function ApprochePageWrapper({ lang }: { lang: 'en' | 'fr' }) {
       cover: item.heroImage ? { src: item.heroImage } : undefined,
     }))
 
-  return <ApprochePage lang={lang} related={related} />
+  return <ApprocheV2Page lang={lang} related={related} />
 }

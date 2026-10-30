@@ -23,6 +23,8 @@ interface DeviceCarouselProps {
   nextLabel: string
   /** Opens a screen in the page lightbox. A screen with a custom player never zooms. */
   onZoom?: (key: string) => void
+  /** Width of each item, when the kind's default does not fit (large documents shown flat) */
+  itemWidth?: string
 }
 
 const useIsoLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect
@@ -34,7 +36,7 @@ const pad2 = (n: number) => String(n).padStart(2, '0')
  * with few screens sits centered. Drag, arrows and keys go through `useSnapScroller`, the same
  * spring as every carousel of the site; touch and trackpad scrolling stay native.
  */
-export default function DeviceCarousel({ kind, screens, ariaLabel, prevLabel, nextLabel, onZoom }: DeviceCarouselProps) {
+export default function DeviceCarousel({ kind, screens, ariaLabel, prevLabel, nextLabel, onZoom, itemWidth }: DeviceCarouselProps) {
   const trackRef = useRef<HTMLDivElement>(null)
   const pointsRef = useRef<number[]>([])
   const indexRef = useRef(0)
@@ -76,7 +78,7 @@ export default function DeviceCarousel({ kind, screens, ariaLabel, prevLabel, ne
   const total = screens.length
   const atStart = index === 0
   const atEnd = index >= total - 1
-  const width = kind === 'phone' || kind === 'poster' ? 'w-[min(66vw,260px)]' : 'w-[min(82vw,640px)]'
+  const width = itemWidth ?? (kind === 'phone' || kind === 'poster' ? 'w-[min(66vw,260px)]' : 'w-[min(82vw,640px)]')
 
   return (
     <StageCorner>

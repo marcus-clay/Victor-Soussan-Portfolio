@@ -6,8 +6,8 @@ import { buildMetadata, pageLd, toLang } from '@/lib/seo'
 type Props = { params: Promise<{ lang: string }> }
 
 const COPY = {
-  fr: { title: 'Approche', description: 'Poser un cadre là où il n’y en a pas, organiser la recherche et le travail en commun, produire les documents de travail, puis affiner les maquettes.' },
-  en: { title: 'Approach', description: 'Setting a frame where there is none, organising collaboration and user research, producing working documents, then raising fidelity.' },
+  fr: { title: 'Approche', description: 'Structurer ce qu’une équipe produit doit concevoir, puis concevoir l’expérience jusqu’au détail des interactions et jusqu’aux livrables prêts à implémenter.' },
+  en: { title: 'Approach', description: 'Structuring what a product team has to design, then designing the experience down to the detail of its interactions and to deliverables ready to build.' },
 } as const
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

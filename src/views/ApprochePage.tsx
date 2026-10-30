@@ -10,13 +10,21 @@ import ContentCard from '@/components/ui/ContentCard'
 import CardCarousel from '@/components/ui/CardCarousel'
 import { BLOCK, Disclosure, SubTitle } from '@/components/ui/ActBlocks'
 import Reveal from '@/components/ui/Reveal'
-import MaturityDiagram from '@/components/approche/MaturityDiagram'
-import FidelityDiagram from '@/components/approche/FidelityDiagram'
-import TracksDiagram from '@/components/approche/TracksDiagram'
+import {
+  ConceptDiagram,
+  DesignCalendarDiagram,
+  FidelityDiagram,
+  VisionToLotsDiagram,
+  MaturityDiagram,
+  RhythmDiagram,
+  RoadmapStructureDiagram,
+  ScalesDiagram,
+} from '@/components/approche/ApproachDiagrams'
 import ApprocheToc from '@/components/approche/ApprocheToc'
 import ReadingProgress from '@/components/ui/ReadingProgress'
 import TaglineReveal from '@/components/ui/TaglineReveal'
 import FeaturedQuote from '@/components/testimonials/FeaturedQuote'
+import TestimonialsLink from '@/components/testimonials/TestimonialsLink'
 import { getTestimonials } from '@/data/testimonialsData'
 import { ClientsStrip, getDomains, getDomainsCopy } from '@/views/ExpertiseSections'
 import {
@@ -28,8 +36,11 @@ import {
   ARTEFACTS,
   WORKING_WITH_ME,
   COLLABORATION,
-  RHYTHM,
+  HORIZONS,
   PAGE_STRUCTURE,
+  SCALES,
+  ROADMAP,
+  CONCEPT,
   CTA_SECTION,
 } from '@/data/approcheData'
 
@@ -41,13 +52,13 @@ interface ApprochePageProps {
 const LINK_PRESS =
   'transition-[color,transform] duration-150 ease-out active:scale-[0.97]'
 
-const TEXT_LINK = `group inline-flex min-h-11 items-center gap-1.5 text-sm font-medium text-gray-900 underline decoration-gray-300 underline-offset-4 [@media(hover:hover)]:hover:decoration-gray-900 ${LINK_PRESS}`
+export const TEXT_LINK = `group inline-flex min-h-11 items-center gap-1.5 text-sm font-medium text-gray-900 underline decoration-gray-300 underline-offset-4 [@media(hover:hover)]:hover:decoration-gray-900 ${LINK_PRESS}`
 
 /** The one primary action of the page: the same button at the top and at the bottom */
 const PILL =
   'inline-flex min-h-11 items-center gap-2 rounded-full bg-gray-900 px-5 text-sm font-medium text-white shadow-sm [@media(hover:hover)]:hover:bg-black [@media(hover:hover)]:hover:shadow-md active:scale-[0.97] transition-[background-color,box-shadow,transform] duration-150 ease-out'
 
-function CtaButton({ lang }: { lang: Language }) {
+export function CtaButton({ lang }: { lang: Language }) {
   const { cta } = HERO[lang]
   return (
     <Link href={`/${lang}${cta.href}`} className={PILL}>
@@ -57,7 +68,7 @@ function CtaButton({ lang }: { lang: Language }) {
   )
 }
 
-function ArrowLink({ href, children, draggable }: { href: string; children: ReactNode; draggable?: boolean }) {
+export function ArrowLink({ href, children, draggable }: { href: string; children: ReactNode; draggable?: boolean }) {
   return (
     <Link href={href} className={TEXT_LINK} draggable={draggable}>
       {children}
@@ -71,12 +82,12 @@ function ArrowLink({ href, children, draggable }: { href: string; children: Reac
   )
 }
 
-const DISCLOSURE: Record<Language, { more: string; less: string; week: string; weekHide: string; deliverables: string; deliverablesHide: string }> = {
-  fr: { more: 'Lire la suite', less: 'Voir moins', week: 'Voir une semaine type', weekHide: 'Masquer la semaine type', deliverables: 'Voir les livrables', deliverablesHide: 'Masquer les livrables' },
-  en: { more: 'Read more', less: 'Show less', week: 'See a typical week', weekHide: 'Hide the typical week', deliverables: 'See the deliverables', deliverablesHide: 'Hide the deliverables' },
+const DISCLOSURE: Record<Language, { more: string; less: string; rituals: string; ritualsHide: string; deliverables: string; deliverablesHide: string }> = {
+  fr: { more: 'Lire la suite', less: 'Voir moins', rituals: 'Voir les rituels', ritualsHide: 'Masquer les rituels', deliverables: 'Voir les livrables', deliverablesHide: 'Masquer les livrables' },
+  en: { more: 'Read more', less: 'Show less', rituals: 'See the rituals', ritualsHide: 'Hide the rituals', deliverables: 'See the deliverables', deliverablesHide: 'Hide the deliverables' },
 }
 
-const CAROUSEL_LABELS: Record<'artefacts' | 'domains', Record<Language, { track: string; prev: string; next: string }>> = {
+export const CAROUSEL_LABELS: Record<'artefacts' | 'domains', Record<Language, { track: string; prev: string; next: string }>> = {
   artefacts: {
     fr: { track: 'Documents de travail, du plus brut au plus abouti', prev: 'Document précédent', next: 'Document suivant' },
     en: { track: 'Working documents, from the roughest to the most finished', prev: 'Previous document', next: 'Next document' },
@@ -85,6 +96,66 @@ const CAROUSEL_LABELS: Record<'artefacts' | 'domains', Record<Language, { track:
     fr: { track: 'Domaines d’intervention', prev: 'Domaine précédent', next: 'Domaine suivant' },
     en: { track: 'Areas of work', prev: 'Previous area', next: 'Next area' },
   },
+}
+
+// ---------------------------------------------------------------------------
+// Three scales: a subject, a roadmap, an organisation
+// ---------------------------------------------------------------------------
+
+function Scales({ lang }: { lang: Language }) {
+  const copy = SCALES[lang]
+
+  return (
+    <section id="scales" aria-label={copy.title} className="scroll-mt-24">
+      <ActHeader index="01" title={copy.title} lead={copy.lead} />
+
+      <div className="act-wide pb-12 md:pb-20">
+        <ScalesDiagram lang={lang} />
+
+        {/* One column per scale: what I do there, what it leaves behind */}
+        <ol className={`${BLOCK} grid list-none grid-cols-1 gap-x-8 gap-y-10 p-0 md:grid-cols-3`}>
+          {copy.items.map((item, i) => (
+            <Reveal as="li" key={item.id} className="border-t border-gray-200 pt-5">
+              <p className="text-micro uppercase tracking-[0.08em] tabular-nums text-gray-500">{String(i + 1).padStart(2, '0')}</p>
+              <h3 className="mt-2 text-title-3 text-gray-900">{item.name}</h3>
+              <p className="mt-4 text-xs font-medium text-gray-500">{copy.columns.does}</p>
+              <p className="mt-1.5 text-base text-gray-600">{item.does}</p>
+              <p className="mt-4 text-xs font-medium text-gray-500">{copy.columns.produces}</p>
+              <p className="mt-1.5 text-sm text-gray-900">{item.produces}</p>
+            </Reveal>
+          ))}
+        </ol>
+      </div>
+    </section>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Structuring a roadmap: levels of structure, several PMs, a shared design calendar
+// ---------------------------------------------------------------------------
+
+function Roadmap({ lang }: { lang: Language }) {
+  const copy = ROADMAP[lang]
+
+  return (
+    <section id="roadmap" aria-label={copy.title} className="scroll-mt-24">
+      <ActHeader index="02" title={copy.title} lead={copy.lead} />
+
+      <div className="act-wide pb-12 md:pb-20">
+        <SubTitle>{copy.structureTitle}</SubTitle>
+        <p className="mb-6 max-w-[62ch] text-base text-gray-600 md:mb-8">{copy.structureText}</p>
+        <RoadmapStructureDiagram lang={lang} />
+
+        <SubTitle className={BLOCK}>{copy.visionTitle}</SubTitle>
+        <p className="mb-6 max-w-[62ch] text-base text-gray-600 md:mb-8">{copy.visionText}</p>
+        <VisionToLotsDiagram lang={lang} />
+
+        <SubTitle className={BLOCK}>{copy.calendarTitle}</SubTitle>
+        <p className="mb-6 max-w-[62ch] text-base text-gray-600 md:mb-8">{copy.calendarText}</p>
+        <DesignCalendarDiagram lang={lang} />
+      </div>
+    </section>
+  )
 }
 
 // ---------------------------------------------------------------------------
@@ -97,13 +168,11 @@ function Situations({ lang }: { lang: Language }) {
 
   return (
     <section id="situations" aria-label={copy.title} className="scroll-mt-24">
-      <ActHeader index="01" title={copy.title} lead={copy.intro} />
+      <ActHeader index="03" title={copy.title} lead={copy.intro} />
 
       <div className="act-wide pb-12 md:pb-20">
         <SubTitle>{ps.situationsDiagram}</SubTitle>
-        <Reveal className="max-w-[26rem]">
-          <MaturityDiagram lang={lang} />
-        </Reveal>
+        <MaturityDiagram lang={lang} />
 
         {/* Summary first: the three starting points, one line each. The reader finds their own
             situation, and only that row opens onto the role, the output and the proof. */}
@@ -165,7 +234,7 @@ function BeforeScreen({ lang }: { lang: Language }) {
     <section id="before-screen" aria-label={copy.title} className="scroll-mt-24">
       <ActRule />
       <div className="act-text pt-9 md:pt-14 pb-8 md:pb-12">
-        <ActTitle index="02" title={copy.title} />
+        <ActTitle index="04" title={copy.title} />
         {/* The statement of the act, lit word by word as it rises: the one authored moment of the page */}
         <TaglineReveal text={copy.tagline} className="text-lead-lg text-gray-900 max-w-[40ch]" />
       </div>
@@ -173,9 +242,12 @@ function BeforeScreen({ lang }: { lang: Language }) {
       <div className="act-wide">
         <SubTitle>{ps.fidelity}</SubTitle>
         <p className="mb-6 max-w-[62ch] text-base text-gray-600 md:mb-8">{copy.caption}</p>
-        <Reveal className="max-w-[26rem]">
-          <FidelityDiagram lang={lang} />
-        </Reveal>
+        <FidelityDiagram lang={lang} />
+
+        {/* In the phases that stay blurry for a long time, a diagram moves the exchange forward */}
+        <SubTitle className={BLOCK}>{ps.concept}</SubTitle>
+        <p className="mb-6 max-w-[62ch] text-base text-gray-600 md:mb-8">{CONCEPT[lang].text}</p>
+        <ConceptDiagram lang={lang} />
 
         <SubTitle className={`${BLOCK} !mb-6 md:!mb-8`}>{ps.documents}</SubTitle>
       </div>
@@ -221,13 +293,13 @@ function BeforeScreen({ lang }: { lang: Language }) {
 function WorkingWithMe({ lang }: { lang: Language }) {
   const w = WORKING_WITH_ME[lang]
   const ps = PAGE_STRUCTURE[lang]
+
   const t = TRANSLATIONS[lang].testimonials
-  // A client's own words, next to the claim they support: workshops before the product existed
   const quote = getTestimonials(lang).find((item) => item.id === 'pierre-marie-nigay')
 
   return (
     <section id="working" aria-label={w.title} className="scroll-mt-24">
-      <ActHeader index="03" title={w.title} lead={w.paragraphs[0]} />
+      <ActHeader index="05" title={w.title} lead={w.paragraphs[0]} />
 
       <div className="act-wide pb-12 md:pb-20">
         {/* The lead says it; the rest is one level down */}
@@ -239,6 +311,8 @@ function WorkingWithMe({ lang }: { lang: Language }) {
           </div>
         </Disclosure>
 
+        {/* One client's words, next to the claim they support (workshops before the product existed), then
+            the way to the others: the testimonials are read in full on their own page only */}
         {quote && (
           <>
             <SubTitle className={BLOCK}>{ps.client}</SubTitle>
@@ -256,73 +330,39 @@ function WorkingWithMe({ lang }: { lang: Language }) {
             </Reveal>
           </>
         )}
+        <TestimonialsLink lang={lang} className="mt-8 md:mt-10" />
       </div>
     </section>
   )
 }
 
 // ---------------------------------------------------------------------------
-// Weekly rhythm: a week as a calendar, Discovery and Delivery tracks across four columns
+// The rituals behind the rhythm, by horizon: every week, every sprint, over several weeks
 // ---------------------------------------------------------------------------
 
-/** "Frame hypotheses. Who to talk to. Protocol." becomes three short lines, like entries of a calendar */
-const toLines = (cell: string) => cell.split(/(?<=\.) /).filter(Boolean)
-
-function WeeklyRhythm({ lang }: { lang: Language }) {
-  const r = RHYTHM[lang]
-  const last = r.days4.length - 1
+export function Horizons({ lang }: { lang: Language }) {
+  const h = HORIZONS[lang]
 
   return (
     <div className="mt-6 md:mt-8">
-      {/* From lg: one grid, a rail of track names on the left and four day columns whose rows line up
-          (subgrid). Below lg the days stack and each cell names its own track. */}
-      <div className="overflow-hidden rounded-2xl bg-white ring-1 ring-inset ring-black/[0.06]">
-        <ol
-          aria-label={r.label}
-          className="grid list-none divide-y divide-gray-100 p-0 lg:grid-cols-[7.5rem_repeat(4,minmax(0,1fr))] lg:grid-rows-[auto_1fr_1fr] lg:divide-y-0"
-        >
-          {/* Track names (decorative: each cell is named for assistive technology) */}
-          <li aria-hidden="true" className="hidden bg-[#F7F7F5] lg:row-span-3 lg:grid lg:grid-rows-subgrid">
-            <span />
-            {r.modes.map((mode) => (
-              <span key={mode} className="border-t border-gray-100 px-5 py-5 text-xs font-medium text-gray-500">
-                {mode}
-              </span>
-            ))}
-          </li>
-
-          {r.days4.map((day, dayIdx) => (
-            <li
-              key={day}
-              className="lg:row-span-3 lg:grid lg:grid-rows-subgrid lg:border-l lg:border-gray-100"
-            >
-              <div className="px-5 pb-3 pt-5 lg:pb-4">
-                <p className="text-base font-medium text-gray-900">{day}</p>
-                <p
-                  className={`mt-2 inline-flex rounded-full px-2.5 py-1 text-xs font-medium ${
-                    dayIdx === last ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-600'
-                  }`}
+      <ol aria-label={h.label} className="grid list-none grid-cols-1 gap-px overflow-hidden rounded-2xl bg-gray-100 p-0 ring-1 ring-inset ring-black/[0.06] md:grid-cols-3">
+        {h.columns.map((col) => (
+          <li key={col.title} className="bg-white px-5 py-5 md:px-6 md:py-6">
+            <p className="text-base font-medium text-gray-900">{col.title}</p>
+            <ul className="mt-3 space-y-2">
+              {col.items.map((item) => (
+                <li
+                  key={item}
+                  className="relative pl-4 text-sm text-gray-600 before:absolute before:left-0 before:top-[9px] before:h-1 before:w-1 before:rounded-full before:bg-gray-300 before:content-['']"
                 >
-                  {r.phases[dayIdx]}
-                </p>
-              </div>
-
-              {r.modes.map((mode, modeIdx) => (
-                <div key={mode} className="px-5 pb-5 pt-1 lg:border-t lg:border-gray-100 lg:py-5">
-                  <p className="text-xs font-medium text-gray-500 lg:sr-only">{mode}</p>
-                  <p className="mt-1.5 space-y-0.5 text-sm text-gray-600 lg:mt-0">
-                    {toLines(r.cells4[modeIdx][dayIdx]).map((line) => (
-                      <span key={line} className="block">{line}</span>
-                    ))}
-                  </p>
-                </div>
+                  {item}
+                </li>
               ))}
-            </li>
-          ))}
-        </ol>
-      </div>
-
-      <p className="mt-5 max-w-[62ch] text-sm text-gray-500">{r.footer}</p>
+            </ul>
+          </li>
+        ))}
+      </ol>
+      <p className="mt-5 max-w-[62ch] text-sm text-gray-500">{h.footer}</p>
     </div>
   )
 }
@@ -337,7 +377,7 @@ function Disciplines({ lang }: { lang: Language }) {
 
   return (
     <section id="disciplines" aria-label={collab.title} className="scroll-mt-24">
-      <ActHeader index="04" title={collab.title} lead={ps.disciplinesLead} />
+      <ActHeader index="06" title={collab.title} lead={ps.disciplinesLead} />
 
       <div className="act-wide pb-12 md:pb-20">
         <SubTitle>{ps.counterparts}</SubTitle>
@@ -348,14 +388,12 @@ function Disciplines({ lang }: { lang: Language }) {
         </CardGrid>
 
         <SubTitle className={BLOCK}>{ps.rhythm}</SubTitle>
-        <Reveal className="max-w-[26rem]">
-          <TracksDiagram lang={lang} />
-        </Reveal>
+        <RhythmDiagram lang={lang} />
 
-        {/* The calendar of a week is one level down */}
-        <Disclosure className="mt-8 md:mt-10" open={DISCLOSURE[lang].week} close={DISCLOSURE[lang].weekHide}>
+        {/* The rituals behind it, by horizon, one level down */}
+        <Disclosure className="mt-8 md:mt-10" open={DISCLOSURE[lang].rituals} close={DISCLOSURE[lang].ritualsHide}>
           <div className="disclosure-body">
-            <WeeklyRhythm lang={lang} />
+            <Horizons lang={lang} />
           </div>
         </Disclosure>
       </div>
@@ -368,14 +406,14 @@ function Disciplines({ lang }: { lang: Language }) {
 // apart from the story above it (the band is the separator)
 // ---------------------------------------------------------------------------
 
-function Domains({ lang }: { lang: Language }) {
+export function Domains({ lang }: { lang: Language }) {
   const copy = getDomainsCopy(lang)
   const ps = PAGE_STRUCTURE[lang]
   const domains = getDomains(lang)
 
   return (
     <section id="domains" aria-label={copy.title} className="scroll-mt-24 bg-[#F7F7F5] pb-12 md:pb-20">
-      <ActHeader index="05" title={copy.title} lead={ps.domainsLead} />
+      <ActHeader index="07" title={copy.title} lead={ps.domainsLead} />
 
       <CardCarousel labels={CAROUSEL_LABELS.domains[lang]} itemClassName="w-[82vw] max-w-[24rem] md:w-[24rem]">
         {domains.map((d) => (
@@ -442,17 +480,20 @@ export default function ApprochePage({ lang, related }: ApprochePageProps) {
         </div>
       </header>
 
-      {/* Seven numbered acts, the same grammar as a case study: number in the gutter, title, lead,
-          then intermediate titles. The table of contents above lists them. */}
+      {/* Nine numbered acts, the same grammar as a case study: number in the gutter, title, lead,
+          then intermediate titles. The table of contents above lists them. From the widest scale of the
+          work (a subject, a roadmap, an organisation) down to the deliverables and the rhythm. */}
+      <Scales lang={lang} />
+      <Roadmap lang={lang} />
       <Situations lang={lang} />
       <BeforeScreen lang={lang} />
       <WorkingWithMe lang={lang} />
       <Disciplines lang={lang} />
       <Domains lang={lang} />
-      <ClientsStrip lang={lang} index="06" />
+      <ClientsStrip lang={lang} index="08" />
 
       <section id="contact" aria-label="Contact" className="scroll-mt-24">
-        <ActHeader index="07" title={cta.message} />
+        <ActHeader index="09" title={cta.message} />
         <div className="act-wide pb-14 md:pb-16">
           <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
             <CtaButton lang={lang} />
