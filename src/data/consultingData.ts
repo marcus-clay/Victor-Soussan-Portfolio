@@ -436,7 +436,7 @@ export const REFERENCES: Reference[] = [
   {
     id: 'france-vae',
     client: 'France VAE',
-    logo: '/logos/LOGO BETAGOUV.svg',
+    logo: '/logos/logo-betagouv.webp',
     sector_en: 'Public Service (beta.gouv)',
     sector_fr: 'Service public (beta.gouv)',
     scope_en: 'Lead Product Designer for the national VAE simplification platform. User research, design thinking workshops, product ops restructuring.',

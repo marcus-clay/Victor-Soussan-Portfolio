@@ -29,7 +29,8 @@ export function proxy(request: NextRequest) {
   // Redirect to lang-prefixed path
   const url = request.nextUrl.clone()
   url.pathname = `/${lang}${pathname}`
-  return NextResponse.redirect(url)
+  // Permanent (308): search engines move the signals of the unprefixed address to the prefixed one
+  return NextResponse.redirect(url, 308)
 }
 
 export const config = {

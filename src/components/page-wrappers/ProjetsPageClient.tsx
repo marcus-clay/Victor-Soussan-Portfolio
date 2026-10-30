@@ -11,6 +11,8 @@ import { useReveal } from '@/lib/motion'
 import { ActRule } from '@/components/case-study/ActSection'
 import { HERO_VIDEOS, WORK_CARD_ZOOM } from '@/data/heroVideos'
 import HeroLoop from '@/components/media/HeroLoop'
+import { coverSrcSet } from '@/utils/coverSrcSet'
+import { STRIP_THUMBS } from '@/data/stripThumbs'
 import ArrowPill from '@/components/ui/ArrowPill'
 
 // Left edge of the `wrap` container (same as the header): the first thumbnail aligns with the h1.
@@ -178,7 +180,9 @@ function GalleryGrid({ lang }: { lang: 'en' | 'fr' }) {
             style={{ scrollSnapAlign: 'start' }}
           >
             <img
-              src={item.src}
+              src={STRIP_THUMBS[item.src] ?? item.src}
+              width={THUMB_W}
+              height={THUMB_H}
               alt={`${item.name} (UI)`}
               loading="lazy"
               draggable={false}
@@ -220,6 +224,8 @@ function ProjectCard({
       <div className="relative aspect-[3/2] overflow-hidden rounded-2xl bg-[#E8E8E8] ring-1 ring-inset ring-black/[0.05]">
         <img
           src={coverSrc(project)}
+          srcSet={coverSrcSet(coverSrc(project))}
+          sizes={large ? '(min-width: 1024px) 50vw, (min-width: 768px) 50vw, 92vw' : '(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 92vw'}
           alt=""
           loading={index < 2 ? 'eager' : 'lazy'}
           draggable={false}

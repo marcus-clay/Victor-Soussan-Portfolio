@@ -6,6 +6,7 @@ import { CASE_STUDY_SHELL } from '@/data/caseStudyShell'
 import { imgDims } from '@/utils/imageDimensions'
 import { zoomable } from '@/utils/zoomable'
 import { HERO_VIDEOS, HERO_HOVER_ZOOM } from '@/data/heroVideos'
+import { coverSrcSet } from '@/utils/coverSrcSet'
 import HeroLoop from '@/components/media/HeroLoop'
 
 export interface HeroMeta {
@@ -98,6 +99,8 @@ export default function CaseStudyHero({
         >
           <img
             src={shell.visual}
+            srcSet={coverSrcSet(shell.visual)}
+            sizes="(min-width: 1536px) 1424px, calc(100vw - 40px)"
             {...imgDims(shell.visual)}
             alt={onZoom ? '' : visualAlt}
             loading="eager"

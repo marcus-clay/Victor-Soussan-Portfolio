@@ -350,7 +350,9 @@ export default function HeroLoop({ src, mediaClassName, mediaStyle, mode = 'prev
       loop
       muted
       playsInline
-      preload="metadata"
+      // Nothing is fetched until the loop has to play (hover, or centred on a touch screen): a page full of
+      // cards no longer downloads their videos up front
+      preload="none"
       disablePictureInPicture
       disableRemotePlayback
       tabIndex={-1}

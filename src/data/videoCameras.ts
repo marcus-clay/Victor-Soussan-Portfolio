@@ -14,75 +14,48 @@ export interface VideoShot {
 }
 
 export const VIDEO_CAMERAS: Record<string, VideoShot[]> = {
-  // RiskOS: the interface sits small on a dark canvas, so the camera always frames it (the part of the
-  // picture that is not the canvas) and pushes in further on each action, up to 1.8x, for the text to read
+  // RiskOS: the interface sits small on a dark canvas. One framing per clip, held from start to end (the
+  // interface over the whole clip), and at most one push-in on the main action: legible without the
+  // camera moving all the time
   '/videos/riskos/00-live-prototype-fit.mp4': [
-    { at: 0, x: 0.499, y: 0.499, zoom: 1 },
-    { at: 4.6, x: 0.3, y: 0.313, zoom: 1.67 },
-    { at: 12.85, x: 0.433, y: 0.3, zoom: 1.67 },
-    { at: 13.85, x: 0.367, y: 0.359, zoom: 1.39 },
-    { at: 15.85, x: 0.3, y: 0.313, zoom: 1.67 },
-    { at: 18.4, x: 0.499, y: 0.499, zoom: 1 },
+    { at: 0, x: 0.5, y: 0.5, zoom: 1 },
+    { at: 8.35, x: 0.292, y: 0.311, zoom: 1.8 },
+    { at: 13, x: 0.5, y: 0.5, zoom: 1 },
   ],
   '/videos/riskos/01-hero-triage-fit.mp4': [
-    { at: 0, x: 0.5, y: 0.5, zoom: 1 },
-    { at: 5.85, x: 0.346, y: 0.498, zoom: 1.67 },
-    { at: 7.6, x: 0.489, y: 0.432, zoom: 1.67 },
-    { at: 9.85, x: 0.46, y: 0.486, zoom: 1.67 },
-    { at: 12.35, x: 0.476, y: 0.476, zoom: 1.05 },
-    { at: 14.9, x: 0.5, y: 0.5, zoom: 1 },
+    { at: 0, x: 0.49, y: 0.49, zoom: 1.02 },
+    { at: 8.55, x: 0.519, y: 0.473, zoom: 1.8 },
+    { at: 11.6, x: 0.49, y: 0.49, zoom: 1.02 },
   ],
   '/videos/riskos/02-ai-insight-fit.mp4': [
-    { at: 0, x: 0.5, y: 0.5, zoom: 1 },
-    { at: 0.85, x: 0.484, y: 0.442, zoom: 1.13 },
-    { at: 5.6, x: 0.336, y: 0.39, zoom: 1.67 },
-    { at: 7.85, x: 0.493, y: 0.421, zoom: 1.19 },
-    { at: 10.35, x: 0.498, y: 0.479, zoom: 1.21 },
-    { at: 13.9, x: 0.5, y: 0.5, zoom: 1 },
+    { at: 0, x: 0.484, y: 0.5, zoom: 1.17 },
   ],
   '/videos/riskos/03-decision-ellipses-fit.mp4': [
-    { at: 0, x: 0.278, y: 0.314, zoom: 1.8 },
-    { at: 2.35, x: 0.278, y: 0.48, zoom: 1.8 },
-    { at: 4.6, x: 0.539, y: 0.426, zoom: 1.21 },
-    { at: 6.1, x: 0.673, y: 0.503, zoom: 1.67 },
-    { at: 7.85, x: 0.534, y: 0.426, zoom: 1.26 },
-    { at: 10.6, x: 0.406, y: 0.632, zoom: 1.67 },
-    { at: 12.6, x: 0.495, y: 0.497, zoom: 1.14 },
-    { at: 13.9, x: 0.278, y: 0.314, zoom: 1.8 },
+    { at: 0, x: 0.505, y: 0.497, zoom: 1.14 },
+    { at: 0.55, x: 0.392, y: 0.458, zoom: 1.34 },
+    { at: 3.8, x: 0.505, y: 0.497, zoom: 1.14 },
   ],
   '/videos/riskos/04-queue-cleared-fit.mp4': [
-    { at: 0, x: 0.5, y: 0.5, zoom: 1 },
-    { at: 0.85, x: 0.503, y: 0.336, zoom: 1.49 },
-    { at: 1.85, x: 0.512, y: 0.665, zoom: 1.67 },
-    { at: 2.85, x: 0.506, y: 0.5, zoom: 1.18 },
-    { at: 12.9, x: 0.5, y: 0.5, zoom: 1 },
+    { at: 0, x: 0.503, y: 0.5, zoom: 1.2 },
   ],
   '/videos/riskos/05-false-positive-fit.mp4': [
-    { at: 0, x: 0.5, y: 0.5, zoom: 1 },
-    { at: 1.6, x: 0.398, y: 0.413, zoom: 1.8 },
-    { at: 9.9, x: 0.5, y: 0.5, zoom: 1 },
+    { at: 0, x: 0.529, y: 0.413, zoom: 1.33 },
   ],
   '/videos/riskos/06-before-after-fit.mp4': [
-    { at: 0, x: 0.5, y: 0.5, zoom: 1 },
-    { at: 1.35, x: 0.278, y: 0.446, zoom: 1.8 },
-    { at: 5.35, x: 0.492, y: 0.512, zoom: 1.06 },
-    { at: 10.9, x: 0.5, y: 0.5, zoom: 1 },
+    { at: 0, x: 0.494, y: 0.512, zoom: 1.07 },
   ],
   '/videos/riskos/07-data-flow-fit.mp4': [
-    { at: 0, x: 0.5, y: 0.5, zoom: 1 },
+    { at: 0, x: 0.502, y: 0.55, zoom: 1.11 },
   ],
   '/videos/riskos/08-inbox-filter.mp4': [
-    { at: 0, x: 0.495, y: 0.495, zoom: 1.03 },
-    { at: 1.1, x: 0.636, y: 0.439, zoom: 1.67 },
-    { at: 2.6, x: 0.688, y: 0.337, zoom: 1.67 },
-    { at: 6.35, x: 0.495, y: 0.495, zoom: 1.03 },
+    { at: 0, x: 0.5, y: 0.495, zoom: 1.05 },
+    { at: 3.75, x: 0.676, y: 0.438, zoom: 1.8 },
+    { at: 7.4, x: 0.5, y: 0.495, zoom: 1.05 },
   ],
   '/videos/riskos/09-ask-context.mp4': [
-    { at: 0, x: 0.369, y: 0.3, zoom: 1.67 },
-    { at: 2.6, x: 0.5, y: 0.5, zoom: 1 },
-    { at: 3.85, x: 0.303, y: 0.314, zoom: 1.67 },
-    { at: 6.1, x: 0.5, y: 0.5, zoom: 1 },
-    { at: 10.7, x: 0.369, y: 0.3, zoom: 1.67 },
+    { at: 0, x: 0.5, y: 0.5, zoom: 1 },
+    { at: 5.55, x: 0.385, y: 0.464, zoom: 1.3 },
+    { at: 8.4, x: 0.5, y: 0.5, zoom: 1 },
   ],
   '/videos/toolkit/video_-_batch_edition.mp4': [
     { at: 0, x: 0.5, y: 0.5, zoom: 1 },

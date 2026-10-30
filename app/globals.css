@@ -102,7 +102,10 @@
   opacity: 0;
 }
 .img-fade img[loading="lazy"][data-loaded=""] {
-  animation: build-media 500ms var(--ease-smooth) backwards;
+  animation: media-in 500ms var(--ease-smooth) backwards;
+}
+@keyframes media-in {
+  from { opacity: 0; transform: scale(1.02); filter: blur(6px); }
 }
 /* While its picture loads, a media frame shows a light sheen over its own tone (a skeleton), so
    an empty frame reads as "coming" rather than broken. Only frames whose picture is a direct child. */
@@ -126,8 +129,10 @@
 @keyframes build-rise {
   from { opacity: 0; transform: translateY(8px); filter: blur(2px); }
 }
+/* The lead picture is the page's largest paint: it arrives out of a blur and a slight scale but is never
+   transparent, so the browser counts it as painted from the first frame */
 @keyframes build-media {
-  from { opacity: 0; transform: scale(1.02); filter: blur(6px); }
+  from { transform: scale(1.02); filter: blur(6px); }
 }
 .build-line {
   animation: build-line 500ms var(--ease-smooth) backwards;

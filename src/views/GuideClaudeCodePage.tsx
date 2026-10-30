@@ -8,6 +8,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { scrollToElement } from '../utils/smoothScroll';
 import {
@@ -22,6 +23,13 @@ import { ActRule } from '../components/case-study/ActSection';
 import { ArticleBody, ArticleBodyStyles } from '../components/article/ArticleBody';
 import { TRANSLATIONS } from '../data/translations';
 import { useReveal } from '../lib/motion';
+
+const MotionLink = motion.create(Link);
+
+/** Address of a guide destination: the resources page, the guide index, or a chapter. Real links, so search
+ *  engines follow them and readers can open a chapter in a new tab. */
+const guideHref = (lang: string, target: string) =>
+  target === 'blog' ? `/${lang}/ressources` : target === 'index' ? `/${lang}/guide/claude-code` : `/${lang}/guide/claude-code/${target}`;
 
 interface Props {
   systemTheme: 'light' | 'dark';
@@ -99,11 +107,11 @@ const GuideIndex: React.FC<{ isDark: boolean; lang: string; onNavigate: (t: stri
             const chTitle = lang === 'fr' ? ch.title_fr : ch.title_en;
             const chIntro = lang === 'fr' ? ch.intro_fr : ch.intro_en;
             return (
-            <motion.button
+            <MotionLink
               key={chSlug}
               {...reveal(idx)}
-              onClick={() => onNavigate(chSlug)}
-              className={`group text-left h-full p-5 md:p-6 rounded-2xl border cursor-pointer active:scale-[0.98] ${
+              href={guideHref(lang, chSlug)}
+              className={`group block text-left h-full p-5 md:p-6 rounded-2xl border cursor-pointer active:scale-[0.98] ${
                 isDark
                   ? 'bg-[#1D1D1F] border-white/5 [@media(hover:hover)]:hover:border-white/15'
                   : 'bg-white border-gray-100 [@media(hover:hover)]:hover:border-gray-200'
@@ -122,7 +130,7 @@ const GuideIndex: React.FC<{ isDark: boolean; lang: string; onNavigate: (t: stri
                 </div>
                 <ArrowRight size={16} aria-hidden="true" className={`flex-shrink-0 mt-1 transition-transform duration-200 [@media(hover:hover)]:group-hover:translate-x-1 ${isDark ? 'text-gray-600' : 'text-gray-400'}`} />
               </div>
-            </motion.button>
+            </MotionLink>
             );
           })}
         </div>
@@ -199,9 +207,9 @@ const GuideChapter: React.FC<{
     return (
       <div className="wrap py-16 md:py-24">
         <p className={`text-base mb-4 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{lang === 'en' ? 'Chapter not found' : 'Chapitre introuvable'}</p>
-        <button onClick={() => onNavigate('index')} className="text-gray-500 font-medium [@media(hover:hover)]:hover:text-gray-900 [@media(hover:hover)]:hover:underline">
+        <Link href={guideHref(lang, 'index')} className="text-gray-500 font-medium [@media(hover:hover)]:hover:text-gray-900 [@media(hover:hover)]:hover:underline">
           {lang === 'en' ? 'Back to guide' : 'Retour au guide'}
-        </button>
+        </Link>
       </div>
     );
   }
@@ -286,9 +294,10 @@ const GuideChapter: React.FC<{
             const chSlug = lang === 'fr' ? ch.slug_fr : ch.slug_en;
             return (
             <li key={chSlug}>
-              <button
-                onClick={() => onNavigate(chSlug)}
-                className={`text-left text-xs leading-snug py-1.5 px-2.5 rounded-lg w-full transition-colors cursor-pointer ${
+              <Link
+                href={guideHref(lang, chSlug)}
+                aria-current={chSlug === slug ? 'page' : undefined}
+                className={`block text-left text-xs leading-snug py-1.5 px-2.5 rounded-lg w-full transition-colors cursor-pointer ${
                   chSlug === slug
                     ? isDark ? 'text-white bg-white/5 font-medium' : 'text-gray-900 bg-gray-100 font-medium'
                     : isDark ? 'text-gray-500 [@media(hover:hover)]:hover:text-gray-300 [@media(hover:hover)]:hover:bg-white/[0.08]' : 'text-gray-500 [@media(hover:hover)]:hover:text-gray-900 [@media(hover:hover)]:hover:bg-gray-100'
@@ -296,7 +305,7 @@ const GuideChapter: React.FC<{
               >
                 <span className="inline-block w-4 text-micro opacity-50">{ch.number}.</span>
                 {lang === 'fr' ? ch.title_fr : ch.title_en}
-              </button>
+              </Link>
             </li>
             );
           })}
@@ -322,17 +331,17 @@ const GuideClaudeCodePage: React.FC<Props> = ({ systemTheme, lang, view, onNavig
       <div className={`sticky z-10 backdrop-blur-xl ${isDark ? 'bg-[#0a0a0a]/80 border-white/5' : 'bg-[#FCFCFD]/80 border-gray-200'}`} style={{ top: 'var(--nav-height, 64px)', transition: 'top 250ms cubic-bezier(0.23, 1, 0.32, 1)' }}>
         <div className="wrap h-10 flex items-center justify-between">
           <nav className="flex items-center gap-1.5 text-xs min-w-0 overflow-hidden">
-            <button onClick={() => onNavigate('blog')} className={`transition-colors cursor-pointer flex-shrink-0 [@media(hover:hover)]:hover:underline ${isDark ? 'text-gray-500 [@media(hover:hover)]:hover:text-white' : 'text-gray-500 [@media(hover:hover)]:hover:text-gray-900'}`}>
+            <Link href={guideHref(lang, 'blog')} className={`transition-colors flex-shrink-0 [@media(hover:hover)]:hover:underline ${isDark ? 'text-gray-500 [@media(hover:hover)]:hover:text-white' : 'text-gray-500 [@media(hover:hover)]:hover:text-gray-900'}`}>
               {lang === 'fr' ? 'Ressources' : 'Resources'}
-            </button>
+            </Link>
             <CaretRight size={10} className={`flex-shrink-0 ${isDark ? 'text-gray-600' : 'text-gray-300'}`} />
             {isIndex ? (
               <span className={`truncate font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>{lang === 'fr' ? GUIDE_META.title_fr : GUIDE_META.title_en}</span>
             ) : (
               <>
-                <button onClick={() => onNavigate('index')} className={`transition-colors cursor-pointer flex-shrink-0 [@media(hover:hover)]:hover:underline ${isDark ? 'text-gray-500 [@media(hover:hover)]:hover:text-white' : 'text-gray-500 [@media(hover:hover)]:hover:text-gray-900'}`}>
+                <Link href={guideHref(lang, 'index')} className={`transition-colors flex-shrink-0 [@media(hover:hover)]:hover:underline ${isDark ? 'text-gray-500 [@media(hover:hover)]:hover:text-white' : 'text-gray-500 [@media(hover:hover)]:hover:text-gray-900'}`}>
                   Guide
-                </button>
+                </Link>
                 <CaretRight size={10} className={`flex-shrink-0 ${isDark ? 'text-gray-600' : 'text-gray-300'}`} />
                 <span className={`truncate font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>
                   {chapter ? (lang === 'fr' ? chapter.title_fr : chapter.title_en) : view}
@@ -341,12 +350,13 @@ const GuideClaudeCodePage: React.FC<Props> = ({ systemTheme, lang, view, onNavig
             )}
           </nav>
           {!isIndex && (
-            <button
-              onClick={() => onNavigate('index')}
-              className={`p-1.5 rounded-lg transition-colors cursor-pointer flex-shrink-0 lg:hidden ${isDark ? '[@media(hover:hover)]:hover:bg-white/10' : '[@media(hover:hover)]:hover:bg-gray-100'}`}
+            <Link
+              href={guideHref(lang, 'index')}
+              aria-label={lang === 'fr' ? 'Sommaire du guide' : 'Guide contents'}
+              className={`p-1.5 rounded-lg transition-colors flex-shrink-0 lg:hidden ${isDark ? '[@media(hover:hover)]:hover:bg-white/10' : '[@media(hover:hover)]:hover:bg-gray-100'}`}
             >
-              <List size={16} />
-            </button>
+              <List size={16} aria-hidden="true" />
+            </Link>
           )}
         </div>
       </div>

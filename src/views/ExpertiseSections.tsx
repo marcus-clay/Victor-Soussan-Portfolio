@@ -132,17 +132,17 @@ const TRANSLATIONS = {
 
 const LOGOS = [
   { src: '/logos/LOGO UNOWHY.svg', alt: 'Unowhy' },
-  { src: '/logos/LOGO BETAGOUV.svg', alt: 'Beta.gouv' },
+  { src: '/logos/logo-betagouv.webp', alt: 'Beta.gouv' },
   { src: '/logos/LOGO TOOLKIT.svg', alt: 'Toolkit' },
   { src: '/logos/LOGO KYU.svg', alt: 'Kyu' },
-  { src: '/logos/LOGO AIRBUS.svg', alt: 'Airbus' },
-  { src: '/logos/LOGO ORANGE.svg', alt: 'Orange' },
+  { src: '/logos/logo-airbus.webp', alt: 'Airbus' },
+  { src: '/logos/logo-orange.webp', alt: 'Orange' },
   { src: '/logos/LOGO VINCI.svg', alt: 'Vinci' },
   { src: '/logos/LOGO DAILYMOTION-1.svg', alt: 'Dailymotion' },
   { src: '/logos/LOGO BOUYGUES IMMO.svg', alt: 'Bouygues Immobilier' },
   { src: '/logos/LOGO REGION ILE DE FRANCE.svg', alt: 'Région Île-de-France' },
   { src: '/logos/LOGO OGURY.svg', alt: 'Ogury' },
-  { src: '/logos/LOGO SOLOCAL.svg', alt: 'Solocal' },
+  { src: '/logos/logo-solocal.webp', alt: 'Solocal' },
   { src: '/logos/LOGO CELIO.svg', alt: 'Celio' },
   { src: '/logos/LOGO OPERA COMIQUE.svg', alt: 'Opéra Comique' },
   { src: '/logos/LOGO VERLINDE.svg', alt: 'Verlinde' },
@@ -204,6 +204,9 @@ export function ClientsStrip({ lang, index }: { lang: Language; index: string })
                   <div key={`${setIndex}-${logo.alt}`} className="flex items-center justify-center mx-3 flex-shrink-0">
                     <img
                       src={logo.src}
+                      // Far down the page: never fetched ahead (React would otherwise preload them with the page)
+                      loading="lazy"
+                      decoding="async"
                       alt={setIndex === 1 ? '' : logo.alt}
                       width="80"
                       height="80"

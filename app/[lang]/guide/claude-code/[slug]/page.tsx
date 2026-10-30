@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
-import { notFound } from 'next/navigation'
+import { notFound, permanentRedirect } from 'next/navigation'
 import { GUIDE_CHAPTERS, GUIDE_META } from '@/data/guideClaudeCodeData'
+import { GUIDE_SLUG_PAIRS } from '@/data/guideSlugs'
 import GuideClaudeCodePageWrapper from '@/components/page-wrappers/GuideClaudeCodePageWrapper'
 import JsonLd from '@/components/JsonLd'
 import { guideChapterLead, relatedContent } from '@/lib/related'
@@ -9,6 +10,9 @@ import { articleLd, breadcrumbLd, buildMetadata, clip, toLang } from '@/lib/seo'
 type Props = { params: Promise<{ lang: string; slug: string }> }
 
 export function generateStaticParams() {
+  // The header's language switch reads its own small copy of the slugs: fail the build if it drifts
+  const drift = GUIDE_CHAPTERS.some((ch, i) => GUIDE_SLUG_PAIRS[i]?.[0] !== ch.slug_en || GUIDE_SLUG_PAIRS[i]?.[1] !== ch.slug_fr)
+  if (drift || GUIDE_SLUG_PAIRS.length !== GUIDE_CHAPTERS.length) throw new Error('src/data/guideSlugs.ts no longer matches GUIDE_CHAPTERS')
   const langs = ['en', 'fr']
   return langs.flatMap((lang) =>
     GUIDE_CHAPTERS.map((ch) => ({ lang, slug: lang === 'fr' ? ch.slug_fr : ch.slug_en }))
@@ -50,6 +54,8 @@ export default async function GuideChapterPage({ params }: Props) {
   const guideTitle = lang === 'fr' ? GUIDE_META.title_fr : GUIDE_META.title_en
   const chapterTitle = lang === 'fr' ? chapter.title_fr : chapter.title_en
   const path = `guide/claude-code/${lang === 'fr' ? chapter.slug_fr : chapter.slug_en}`
+  // A chapter reached under the other language's slug moves to its own address (one URL per page)
+  if (slug !== (lang === 'fr' ? chapter.slug_fr : chapter.slug_en)) permanentRedirect(`/${lang}/${path}`)
   const words = chapter.sections
     .map((s) => (lang === 'fr' ? s.content_fr : s.content_en))
     .join(' ')
