@@ -21,8 +21,6 @@ interface WatchScreenGroupProps {
   onZoom: (src: string) => void
 }
 
-const EASE = 'ease-[cubic-bezier(0.23,1,0.32,1)]'
-
 /**
  * Two or three watch screens on one flat grey plate (#E8E8E8, the stage grey of the hero panels).
  * From md the screens sit side by side, never wider than 400px: the exports are 374px wide, so a
@@ -56,7 +54,7 @@ export default function WatchScreenGroup({ screens, groupLabel, onZoom }: WatchS
             <div
               {...zoomable(() => onZoom(screen.src))}
               aria-label={screen.label}
-              className={`group cursor-zoom-in overflow-hidden rounded-2xl ring-1 ring-black/[0.04] shadow-sm transition-[box-shadow,transform] duration-300 ${EASE} [@media(hover:hover)]:hover:shadow-lg [@media(hover:hover)]:hover:scale-[1.01] active:scale-[0.99]`}
+              className={`group cursor-zoom-in overflow-hidden rounded-2xl ring-1 ring-black/[0.04] shadow-sm transition-[box-shadow,transform] duration-300 ease-media active:duration-150 active:ease-out [@media(hover:hover)]:hover:shadow-lg [@media(hover:hover)]:hover:scale-[1.01] active:scale-[0.99]`}
             >
               <img
                 loading="lazy"
@@ -64,7 +62,7 @@ export default function WatchScreenGroup({ screens, groupLabel, onZoom }: WatchS
                 {...imgDims(screen.src)}
                 alt=""
                 draggable={false}
-                className={`block h-auto w-full transition-transform duration-300 ${EASE} [@media(hover:hover)]:group-hover:scale-[1.02]`}
+                className={`block h-auto w-full transition-transform duration-300 ease-media [@media(hover:hover)]:group-hover:scale-[1.02]`}
               />
             </div>
             <figcaption className="mt-3 text-xs text-gray-500">{screen.label}</figcaption>

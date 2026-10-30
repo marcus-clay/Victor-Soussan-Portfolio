@@ -121,6 +121,8 @@ export const SQOOL_CLASSE_TRANSLATIONS = {
       protoPlay: 'Play the prototype',
       protoPause: 'Pause',
       protoReplay: 'Replay',
+      protoExpand: 'Open larger',
+      protoClose: 'Close',
     },
     imageCaptions: {
       thumb: 'SQOOL Classe',
@@ -262,6 +264,8 @@ export const SQOOL_CLASSE_TRANSLATIONS = {
       protoPlay: 'Lancer le prototype',
       protoPause: 'Pause',
       protoReplay: 'Rejouer',
+      protoExpand: 'Agrandir',
+      protoClose: 'Fermer',
     },
     imageCaptions: {
       thumb: 'SQOOL Classe',

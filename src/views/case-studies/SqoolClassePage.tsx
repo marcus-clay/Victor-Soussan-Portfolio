@@ -144,7 +144,7 @@ const SqoolClassePage: React.FC<SqoolClassePageProps> = ({
               id={id}
               title={title}
               focused={focused}
-              labels={{ play: t.ui.protoPlay, pause: t.ui.protoPause, replay: t.ui.protoReplay }}
+              labels={{ play: t.ui.protoPlay, pause: t.ui.protoPause, replay: t.ui.protoReplay, expand: t.ui.protoExpand, close: t.ui.protoClose }}
             />
           ),
         }

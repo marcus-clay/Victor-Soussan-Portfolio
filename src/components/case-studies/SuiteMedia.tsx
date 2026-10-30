@@ -31,9 +31,8 @@ export interface SuiteMediaItem {
   ratio?: number
 }
 
-const EASE = 'ease-[cubic-bezier(0.23,1,0.32,1)]'
-const FRAME = `group relative block w-full overflow-hidden rounded-2xl bg-[#E8E8E8] cursor-zoom-in ring-1 ring-black/[0.04] transition-[transform,box-shadow] duration-300 ${EASE} [@media(hover:hover)]:hover:ring-black/[0.08] [@media(hover:hover)]:hover:scale-[1.01] active:scale-[0.99]`
-const MEDIA = `block w-full h-auto transition-transform duration-300 ${EASE} [@media(hover:hover)]:group-hover:scale-[1.02]`
+const FRAME = `group relative block w-full overflow-hidden rounded-2xl bg-[#E8E8E8] cursor-zoom-in ring-1 ring-black/[0.04] transition-[transform,box-shadow] duration-300 ease-media active:duration-150 active:ease-out [@media(hover:hover)]:hover:ring-black/[0.08] [@media(hover:hover)]:hover:scale-[1.01] active:scale-[0.99]`
+const MEDIA = `block w-full h-auto transition-transform duration-300 ease-media [@media(hover:hover)]:group-hover:scale-[1.02]`
 
 /** `fill`: the frame has a fixed height (carousel, from md), the visual fills it without cropping. */
 function Visual({ item, eager, fill }: { item: SuiteMediaItem; eager?: boolean; fill?: boolean }) {

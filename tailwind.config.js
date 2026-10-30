@@ -6,6 +6,12 @@ export default {
   future: { hoverOnlyWhenSupported: true },
   theme: {
     extend: {
+      // Hover of every image and video of the site (zoom inside its frame): a strong ease-out over
+      // 300 ms (`duration-300 ease-media`), the same for the picture, its loop and the frame that lifts.
+      // It moves from the first frame, so the hover answers at once and settles softly.
+      transitionTimingFunction: {
+        media: 'cubic-bezier(0.23, 1, 0.32, 1)',
+      },
       fontFamily: {
         sans: ['var(--font-public-sans)', 'Public Sans', 'sans-serif'],
       },

@@ -8,6 +8,22 @@
  * so any difference of scale shows as the picture shrinking or growing the moment the loop starts.
  * Rename a file (`-v2`) when it is re-encoded, so browsers and the CDN do not serve the old one.
  */
+/**
+ * Hovering an animated visual brings its mockups closer as the loop starts, 300 ms on a strong
+ * ease-out (`ease-media`, the curve of every image hover of the site), for the picture and its loop alike (HeroLoop reads the same duration and curve).
+ * Individual `scale` property, so it composes with the scroll-linked settle of the hero and with the
+ * transforms of the cards. Needs a `group` on the panel.
+ */
+export const HOVER_ZOOM_MS = 300
+export const HOVER_ZOOM_EASE = 'cubic-bezier(0.23, 1, 0.32, 1)'
+const HOVER_ZOOM_MOTION = 'transition-[transform,scale] duration-300 ease-media'
+
+/** Case study hero and featured projects of the home page: the cover framing at rest, 105% on hover */
+export const HERO_HOVER_ZOOM = `${HOVER_ZOOM_MOTION} [@media(hover:hover)_and_(pointer:fine)]:group-hover:[scale:1.05]`
+
+/** Work page: covers drawn back to 92% so they breathe in their card, back to their full size on hover */
+export const WORK_CARD_ZOOM = `${HOVER_ZOOM_MOTION} [scale:0.92] [@media(hover:hover)_and_(pointer:fine)]:group-hover:[scale:1]`
+
 export interface HeroVideo {
   src: string
 }

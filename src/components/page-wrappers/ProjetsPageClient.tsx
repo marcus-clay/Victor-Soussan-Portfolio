@@ -9,7 +9,7 @@ import { PROJETS_GRID_ITEMS, GALLERY_PROJECTS } from '@/data/galleryData'
 import type { Project } from '@/data/projectsData'
 import { useReveal } from '@/lib/motion'
 import { ActRule } from '@/components/case-study/ActSection'
-import { HERO_VIDEOS } from '@/data/heroVideos'
+import { HERO_VIDEOS, WORK_CARD_ZOOM } from '@/data/heroVideos'
 import HeroLoop from '@/components/media/HeroLoop'
 import ArrowPill from '@/components/ui/ArrowPill'
 
@@ -182,7 +182,7 @@ function GalleryGrid({ lang }: { lang: 'en' | 'fr' }) {
               alt={`${item.name} (UI)`}
               loading="lazy"
               draggable={false}
-              className="w-full h-full object-cover transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.04]"
+              className="w-full h-full object-cover transition-transform duration-300 ease-media group-hover:scale-[1.04]"
             />
           </Link>
         ))}
@@ -207,8 +207,7 @@ function ProjectCard({
   index: number
 }) {
   const video = HERO_VIDEOS[project.id]
-  const mediaClass =
-    'h-full w-full object-cover transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-[1.03]'
+  const mediaClass = `h-full w-full object-cover ${WORK_CARD_ZOOM}`
   return (
     <Link
       href={`/${lang}/project/${project.id}`}

@@ -31,8 +31,6 @@ export interface StageItem {
 
 const STAGE = 'bg-[#E8E8E8] rounded-xl overflow-hidden ring-1 ring-black/[0.04]'
 const CARD = 'rounded-lg overflow-hidden bg-white ring-1 ring-black/[0.06] shadow-sm'
-const EASE = 'ease-[cubic-bezier(0.23,1,0.32,1)]'
-
 const useIsoLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect
 const pad2 = (n: number) => String(n).padStart(2, '0')
 
@@ -45,7 +43,7 @@ function sizeOf(item: StageItem): [number, number] | undefined {
 /** The picture or the video, at the width of its holder, with its box reserved before it loads */
 function Media({ item, priority }: { item: StageItem; priority?: boolean }) {
   const size = sizeOf(item)
-  const zoomFx = `transition-transform duration-300 ${EASE} [@media(hover:hover)]:group-hover:scale-[1.02]`
+  const zoomFx = `transition-transform duration-300 ease-media [@media(hover:hover)]:group-hover:scale-[1.02]`
   if (item.type === 'video') {
     return (
       <div style={size ? { aspectRatio: `${size[0]} / ${size[1]}` } : undefined}>
@@ -93,7 +91,7 @@ export function StageFigure({
       <div
         {...zoomable(() => onZoom(item.src))}
         aria-label={item.caption}
-        className={`group ${STAGE} cursor-zoom-in transition-[box-shadow,transform] duration-300 ${EASE} [@media(hover:hover)]:hover:ring-black/[0.08] [@media(hover:hover)]:hover:scale-[1.01] active:scale-[0.99]`}
+        className={`group ${STAGE} cursor-zoom-in transition-[box-shadow,transform] duration-300 ease-media active:duration-150 active:ease-out [@media(hover:hover)]:hover:ring-black/[0.08] [@media(hover:hover)]:hover:scale-[1.01] active:scale-[0.99]`}
       >
         <Placed item={item} priority={priority} />
       </div>

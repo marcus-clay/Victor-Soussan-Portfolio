@@ -65,7 +65,7 @@ export interface TessanTranslation {
     metrics: { value: string; label: string }[]
   }
   sections: TessanSection[]
-  ui: { prototype: string; stores: StoreCopy }
+  ui: { prototype: string; stores: StoreCopy; film: { play: string; pause: string; replay: string } }
   captions: Record<string, string>
 }
 
@@ -209,13 +209,13 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
         id: 'app',
         title: 'L’application',
         text: 'Le 15 juin, deux décisions cadrent la reconstruction. Nous passons au natif, car réaménager l’ancienne coquille aurait conservé la double session : seul le moteur de téléconsultation reste encapsulé. Nous retirons aussi ce qui séduisait le plus. La santé connectée, le score et l’abonnement exposaient le produit à une requalification en dispositif médical, soit 18 à 36 mois de certification face à 30 jours. La mise à jour du 14 octobre réintroduit une partie de ce qui avait été écarté : dans Ma santé, le patient note ses mesures, enregistrées dans Apple Santé avec son accord, et l’écran d’attente est repensé pour lire sa position d’un coup d’œil.',
-        figures: ['appScreens', 'storeVisuals'],
+        figures: ['filmStart', 'appScreens', 'storeVisuals'],
       },
       {
         id: 'tunnel',
         title: 'Le tunnel de consultation',
         text: 'Huit à treize écrans selon un routeur invisible, dont un écran de mutuelle sur lequel 97 % des patients échouaient. La mutuelle sort du tunnel au profit d’une avance de frais, l’arrêt de travail devient une option du motif, et la salle d’attente montre une position plutôt qu’un minuteur qui mentirait. Les écrans ci-dessous suivent deux parcours : pour soi, et pour un proche.',
-        figures: ['journeyTunnel'],
+        figures: ['filmConsultation', 'journeyTunnel'],
       },
       {
         id: 'paiement',
@@ -285,9 +285,12 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
     ],
     ui: {
       prototype: 'Essayer le prototype',
+      film: { play: 'Lire le parcours', pause: 'Mettre en pause', replay: 'Revoir depuis le début' },
       stores: { label: 'Disponible depuis le 15 juillet 2026', apple: 'Télécharger l’application Tessan sur l’App Store', google: 'Disponible sur Google Play : application Tessan' },
     },
     captions: {
+      filmStart: 'Démarrer : de la fiche du store à l’accueil, un champ unique et un code reçu par SMS, sans mot de passe',
+      filmConsultation: 'Téléconsulter : de l’accueil à la fin de la consultation, avec le scan de la carte Vitale, le scan de la carte bancaire et l’appel vidéo',
       appScreens: 'Les écrans de l’application patient',
       storeVisuals: 'Les visuels conçus pour la fiche Google Play',
       notifications: 'Les notifications de la salle d’attente, sur iOS et sur Android',
@@ -448,13 +451,13 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
         id: 'app',
         title: 'The app',
         text: 'On June 15, two decisions frame the rebuild. We go native, because reworking the old shell would have kept the double session: only the teleconsultation engine stays encapsulated. We also remove what was most attractive. Connected health, the score and the subscription exposed the product to a medical device requalification, 18 to 36 months of certification against 30 days. The October 14 update brings back part of what had been set aside: in My health, patients record their measurements, saved in Apple Health with their consent, and the waiting screen is redesigned so the position reads at a glance.',
-        figures: ['appScreens', 'storeVisuals'],
+        figures: ['filmStart', 'appScreens', 'storeVisuals'],
       },
       {
         id: 'tunnel',
         title: 'The consultation funnel',
         text: 'Eight to thirteen screens depending on an invisible router, including a health insurance screen on which 97% of patients failed. The insurance entry leaves the funnel for an advance payment, sick leave becomes an option of the reason for the visit, and the waiting room shows a position rather than a timer that would lie. The screens below follow two journeys: for oneself, and for a relative.',
-        figures: ['journeyTunnel'],
+        figures: ['filmConsultation', 'journeyTunnel'],
       },
       {
         id: 'paiement',
@@ -524,9 +527,12 @@ export const TESSAN_TRANSLATIONS: Record<'en' | 'fr', TessanTranslation> = {
     ],
     ui: {
       prototype: 'Try the prototype',
+      film: { play: 'Play the journey', pause: 'Pause', replay: 'Watch from the start' },
       stores: { label: 'Available since July 15, 2026', apple: 'Download the Tessan app on the App Store', google: 'Get the Tessan app on Google Play' },
     },
     captions: {
+      filmStart: 'Getting started: from the store listing to the home screen, one single field and a code received by text, no password',
+      filmConsultation: 'Teleconsulting: from the home screen to the end of the consultation, with the health card scan, the bank card scan and the video call',
       appScreens: 'The patient app screens',
       storeVisuals: 'The visuals designed for the Google Play listing',
       notifications: 'The waiting room notifications, on iOS and on Android',

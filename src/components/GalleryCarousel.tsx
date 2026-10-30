@@ -105,14 +105,14 @@ export default function GalleryCarousel({
               {item.type === 'video' ? (
                 <ThumbVideo
                   src={item.src}
-                  className="w-full aspect-[16/10] object-cover transition-transform duration-300 ease-out group-hover:scale-[1.02]"
+                  className="w-full aspect-[16/10] object-cover transition-transform duration-300 ease-media group-hover:scale-[1.02]"
                 />
               ) : (
                 <img
                   src={item.src}
                   alt={item.caption}
                   loading="lazy"
-                  className="w-full aspect-[16/10] object-cover transition-transform duration-300 ease-out group-hover:scale-[1.02]"
+                  className="w-full aspect-[16/10] object-cover transition-transform duration-300 ease-media group-hover:scale-[1.02]"
                 />
               )}
             </button>

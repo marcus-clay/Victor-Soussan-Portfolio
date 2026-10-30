@@ -122,7 +122,7 @@ export function getGalleryCategoryForSection(sectionId: string): string | null {
 // Explicit index.html required: Vite dev server falls back to SPA for directory URLs
 // `v` busts the 7-day cache of the prototype page (and, through it, of prototypes.js): bump it with the script
 export function getIframeSrc(prototypeId: string): string {
-  return `${UI_MOTION_BASE_URL}/index.html?embed=1&speed=0.8&autoplay=0&v=2#${prototypeId.toLowerCase()}`;
+  return `${UI_MOTION_BASE_URL}/index.html?embed=1&speed=0.8&autoplay=0&v=3#${prototypeId.toLowerCase()}`;
 }
 
 // Extended prototype info (interaction, concept, UX strategy, outcome)

@@ -20,7 +20,6 @@ interface MediaCarouselProps {
   onZoom: (src: string) => void
 }
 
-const EASE = 'ease-[cubic-bezier(0.23,1,0.32,1)]'
 const pad2 = (n: number) => String(n).padStart(2, '0')
 
 /**
@@ -95,7 +94,7 @@ export default function MediaCarousel({ items, label, labels, onZoom }: MediaCar
             <div
               {...zoomable(() => onZoom(item.src))}
               aria-label={item.name}
-              className={`group cursor-zoom-in overflow-hidden rounded-2xl border border-gray-100 shadow-sm transition-[border-color,box-shadow,transform] duration-300 ${EASE} [@media(hover:hover)]:hover:border-gray-200 [@media(hover:hover)]:hover:shadow-lg [@media(hover:hover)]:hover:scale-[1.01] active:scale-[0.99]`}
+              className={`group cursor-zoom-in overflow-hidden rounded-2xl border border-gray-100 shadow-sm transition-[border-color,box-shadow,transform] duration-300 ease-media active:duration-150 active:ease-out [@media(hover:hover)]:hover:border-gray-200 [@media(hover:hover)]:hover:shadow-lg [@media(hover:hover)]:hover:scale-[1.01] active:scale-[0.99]`}
             >
               <img
                 loading="lazy"
@@ -103,7 +102,7 @@ export default function MediaCarousel({ items, label, labels, onZoom }: MediaCar
                 {...imgDims(item.src)}
                 alt=""
                 draggable={false}
-                className={`block h-auto w-full transition-transform duration-300 ${EASE} [@media(hover:hover)]:group-hover:scale-[1.02]`}
+                className={`block h-auto w-full transition-transform duration-300 ease-media [@media(hover:hover)]:group-hover:scale-[1.02]`}
               />
             </div>
             <figcaption className="mt-3 text-xs text-gray-500">{item.name}</figcaption>

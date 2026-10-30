@@ -2,6 +2,7 @@
 
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { ArrowLeft, ArrowRight } from '@phosphor-icons/react'
+import { CornerSlot, StageCorner } from '@/components/media/PlayerControls'
 import DeviceMockup, { type DeviceKind, type DeviceScreen } from '@/components/case-study/DeviceMockup'
 import { useSnapScroller } from '@/hooks/useSnapScroller'
 
@@ -78,6 +79,7 @@ export default function DeviceCarousel({ kind, screens, ariaLabel, prevLabel, ne
   const width = kind === 'phone' || kind === 'poster' ? 'w-[min(66vw,260px)]' : 'w-[min(82vw,640px)]'
 
   return (
+    <StageCorner>
     <div className="relative bg-[#E8E8E8] rounded-xl overflow-hidden ring-1 ring-black/[0.04]">
       <div
         ref={trackRef}
@@ -115,6 +117,8 @@ export default function DeviceCarousel({ kind, screens, ariaLabel, prevLabel, ne
             {pad2(index + 1)} / {pad2(total)}
           </p>
           <div className="ml-auto flex items-center gap-2">
+            {/* The pause of the playing screen sits with the arrows, in the bottom right corner */}
+            <CornerSlot className="mr-1" />
             <button
               type="button"
               aria-label={prevLabel}
@@ -136,6 +140,8 @@ export default function DeviceCarousel({ kind, screens, ariaLabel, prevLabel, ne
           </div>
         </div>
       )}
+      {total <= 1 && <CornerSlot />}
     </div>
+    </StageCorner>
   )
 }

@@ -5,7 +5,7 @@ import { ArrowUpRight, Images } from '@phosphor-icons/react'
 import { CASE_STUDY_SHELL } from '@/data/caseStudyShell'
 import { imgDims } from '@/utils/imageDimensions'
 import { zoomable } from '@/utils/zoomable'
-import { HERO_VIDEOS } from '@/data/heroVideos'
+import { HERO_VIDEOS, HERO_HOVER_ZOOM } from '@/data/heroVideos'
 import HeroLoop from '@/components/media/HeroLoop'
 
 export interface HeroMeta {
@@ -59,7 +59,7 @@ export default function CaseStudyHero({
   const t = COPY[lang]
   const video = HERO_VIDEOS[projectId]
   // The picture and the loop share one framing, so the video starts exactly where the picture was
-  const mediaClass = `hero-panel-img w-full h-full ${
+  const mediaClass = `hero-panel-img w-full h-full ${video ? HERO_HOVER_ZOOM : ''} ${
     shell.fit === 'cover' || shell.fit === 'bleed' ? 'object-cover' : 'object-contain p-[5%] md:p-[3.5%]'
   }`
   const mediaStyle = shell.position ? { objectPosition: shell.position } : undefined
@@ -91,7 +91,7 @@ export default function CaseStudyHero({
 
         {/* Hero visual: same panel for every project */}
         <figure
-          className={`hero-panel hero-panel-flat order-3 col-span-12 md:order-none md:row-start-3 aspect-[3/2] ${onZoom ? 'cursor-zoom-in' : ''}`}
+          className={`hero-panel hero-panel-flat group order-3 col-span-12 md:order-none md:row-start-3 aspect-[3/2] ${onZoom ? 'cursor-zoom-in' : ''}`}
           style={{ backgroundColor: shell.tone }}
           {...(onZoom ? zoomable(() => onZoom()) : {})}
           aria-label={onZoom ? visualAlt : undefined}
@@ -105,9 +105,11 @@ export default function CaseStudyHero({
             className={`relative z-[1] ${mediaClass}`}
             style={mediaStyle}
           />
-          {/* Hero loop over the picture, playing while the panel is visible. The picture stays the poster, the
-              fallback and the lightbox image; the video ignores the pointer, so the click still opens the lightbox. */}
-          {video && <HeroLoop src={video.src} mediaClassName={mediaClass} mediaStyle={mediaStyle} mode="auto" />}
+          {/* Hero loop over the picture, as on the covers of the Work page: hovering the panel zooms the picture
+              and starts the loop, leaving it fades back to the picture (centred on touch screens). The picture
+              stays the poster, the fallback and the lightbox image; the video ignores the pointer, so the click
+              still opens the lightbox. */}
+          {video && <HeroLoop src={video.src} mediaClassName={mediaClass} mediaStyle={mediaStyle} mode="preview" />}
         </figure>
 
         <div className="order-4 col-span-12 md:col-span-5 md:col-start-8 md:row-start-2 md:self-end flex flex-col gap-7">

@@ -9,7 +9,7 @@ import { getProjectTags } from '@/data/projectTags'
 import { CASE_STUDY_SHELL } from '@/data/caseStudyShell'
 import { imgDims } from '@/utils/imageDimensions'
 import { useSnapScroller } from '@/hooks/useSnapScroller'
-import { HERO_VIDEOS } from '@/data/heroVideos'
+import { HERO_VIDEOS, HERO_HOVER_ZOOM } from '@/data/heroVideos'
 import HeroLoop from '@/components/media/HeroLoop'
 
 /**
@@ -204,7 +204,8 @@ export default function ProjectFilmstrip({ lang }: ProjectFilmstripProps) {
   const atStart = index === 0
   const atEnd = index === total - 1
 
-  const easing = 'cubic-bezier(0.23,1,0.32,1)'
+  // The curve of every image hover of the site (`ease-media`), for the card and its picture
+  const easing = 'cubic-bezier(0.23, 1, 0.32, 1)'
 
   return (
     <section
@@ -243,7 +244,7 @@ export default function ProjectFilmstrip({ lang }: ProjectFilmstripProps) {
           const light = photo || isDarkGround(shell.tone)
           const video = HERO_VIDEOS[project.id]
           // The picture and the loop share one framing, so the video starts exactly where the picture was
-          const mediaClass = `w-full h-full transition-transform duration-300 [@media(hover:hover)]:group-hover:scale-[1.02] ${
+          const mediaClass = `w-full h-full ${video ? HERO_HOVER_ZOOM : 'transition-transform duration-300 ease-media [@media(hover:hover)]:group-hover:scale-[1.02]'} ${
             shell.fit === 'cover' || shell.fit === 'bleed' ? 'object-cover' : 'object-contain p-[4%] pb-[12%] md:pb-[14%]'
           }`
           const mediaStyle: React.CSSProperties = {
@@ -258,7 +259,7 @@ export default function ProjectFilmstrip({ lang }: ProjectFilmstripProps) {
               aria-labelledby={titleId}
               aria-describedby={summaryId}
               draggable={false}
-              className={`hero-panel group block shrink-0 snap-start [container-type:inline-size] ${CARD_WIDTH} min-w-[300px] max-w-[1215px] aspect-[3/2] select-none shadow-sm transition-[transform,box-shadow] duration-300 [@media(hover:hover)]:hover:scale-[1.01] [@media(hover:hover)]:hover:shadow-lg active:scale-[0.99] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gray-900`}
+              className={`hero-panel group block shrink-0 snap-start [container-type:inline-size] ${CARD_WIDTH} min-w-[300px] max-w-[1215px] aspect-[3/2] select-none shadow-sm transition-[transform,box-shadow] duration-300 ease-media active:duration-150 active:ease-out [@media(hover:hover)]:hover:scale-[1.01] [@media(hover:hover)]:hover:shadow-lg active:scale-[0.99] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gray-900`}
               style={{ backgroundColor: shell.tone, transitionTimingFunction: easing }}
             >
               <img
@@ -277,7 +278,8 @@ export default function ProjectFilmstrip({ lang }: ProjectFilmstripProps) {
               {/* Hero loop: the picture above is its poster and its fallback. The video is framed like the
                   picture (same fit, same hover zoom), sits under the ground fade and the caption, plays while
                   the pointer is on the card or the strip rests on it (centred card on touch), and has no control. */}
-              {video && <HeroLoop src={video.src} mediaClassName={mediaClass} mediaStyle={mediaStyle} active={i === index} />}
+              {/* Plays on hover (centred on touch screens), never on its own as the strip rests */}
+              {video && <HeroLoop src={video.src} mediaClassName={mediaClass} mediaStyle={mediaStyle} />}
 
               {/* Ground fade: the image dissolves into its own tone where the text sits (or into a
                   dark veil for photographs), so the caption reads as part of the picture. A bleed

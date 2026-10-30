@@ -16,8 +16,8 @@
  *   picture, then rewinds to the first frame. A card flagged `active` (the one a carousel rests on)
  *   also plays without any hover, so the strip is never still on a desktop. On touch screens (no
  *   hover) it plays while the card is centred in the viewport (60% visible).
- * - `auto` (the case study hero): plays in a loop while at least a quarter of the panel is visible and
- *   pauses when it leaves.
+ * - `auto`: plays in a loop as soon as a sliver of the panel shows and pauses when it leaves. The case
+ *   study hero no longer uses it: like the covers of the Work page, it plays on hover (`preview`).
  *
  * Common rules:
  * - The video element is only created once the page has loaded and is idle, and once the card is within
@@ -36,6 +36,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import type { CSSProperties } from 'react'
+import { HOVER_ZOOM_EASE, HOVER_ZOOM_MS } from '@/data/heroVideos'
 
 // ---------------------------------------------------------------------------
 // Playback budget: at most MAX_PLAYING loops decode at once, whatever the page
@@ -77,12 +78,14 @@ function leave(slot: Slot) {
 /** Share of the card in view: enough for the case study hero and for a carousel's resting card, centred on touch */
 const PARTLY = 0.25
 const CENTRED = 0.6
+/** The case study hero plays from its first rows in view: under a long title it starts at the fold */
+const HERO_START = 0.08
 
 /** How long the video takes to fade in and out over the picture */
 const FADE_MS = 300
 /** Opacity crossfade: symmetric, so neither the video nor the picture pops at either end */
 const CROSSFADE_EASE = 'cubic-bezier(0.45, 0, 0.55, 1)'
-/** Hover zoom when the caller does not pass its own curve (same as the cards' ease-out) */
+/** Hover zoom when the caller does not pass its own curve: the curve of every image hover of the site */
 const MOVE_EASE = 'cubic-bezier(0.23, 1, 0.32, 1)'
 /** Softening applied while the video dissolves back into the picture */
 const EXIT_BLUR_PX = 2
@@ -193,9 +196,9 @@ export default function HeroLoop({ src, mediaClassName, mediaStyle, mode = 'prev
       ([entry]) => {
         const ratio = entry.isIntersecting ? entry.intersectionRatio : 0
         setPartly(ratio >= PARTLY - 0.01)
-        setVisible(ratio >= (mode === 'auto' ? PARTLY : CENTRED) - 0.01)
+        setVisible(ratio >= (mode === 'auto' ? HERO_START : CENTRED) - 0.01)
       },
-      { threshold: [PARTLY, CENTRED] },
+      { threshold: [HERO_START, PARTLY, CENTRED] },
     )
     nearObserver.observe(el)
     visibleObserver.observe(el)
@@ -306,11 +309,14 @@ export default function HeroLoop({ src, mediaClassName, mediaStyle, mode = 'prev
           style={{
             ...mediaStyle,
             filter: shown ? 'blur(0px)' : `blur(${EXIT_BLUR_PX}px)`,
-            transitionProperty: shown ? 'opacity, transform' : 'opacity, transform, filter',
-            transitionDuration: `${FADE_MS}ms`,
+            // `scale` carries the hover zoom of the animated visuals (HERO_HOVER_ZOOM), in step with the picture
+            transitionProperty: shown ? 'opacity, transform, scale' : 'opacity, transform, scale, filter',
+            // The hover zoom runs on its own slow curve, the same as the picture's
+            transitionDuration: [`${FADE_MS}ms`, `${HOVER_ZOOM_MS}ms`, `${HOVER_ZOOM_MS}ms`, ...(shown ? [] : [`${FADE_MS}ms`])].join(', '),
             transitionTimingFunction: [
               CROSSFADE_EASE,
               mediaStyle?.transitionTimingFunction ?? MOVE_EASE,
+              HOVER_ZOOM_EASE,
               ...(shown ? [] : [CROSSFADE_EASE]),
             ].join(', '),
           }}

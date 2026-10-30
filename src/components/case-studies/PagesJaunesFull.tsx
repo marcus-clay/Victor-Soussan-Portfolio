@@ -81,12 +81,12 @@ const Media: React.FC<MediaProps> = ({ src, name, onZoom, maxWidth = '' }) => {
         <div
           {...zoomable(() => onZoom(src))}
           aria-label={name}
-          className={`group rounded-2xl overflow-hidden border border-gray-100 [@media(hover:hover)]:hover:border-gray-200 cursor-zoom-in shadow-sm [@media(hover:hover)]:hover:shadow-lg [@media(hover:hover)]:hover:scale-[1.01] active:scale-[0.99] transition-[border-color,box-shadow,transform] duration-300 ${EASE}`}
+          className={`group rounded-2xl overflow-hidden border border-gray-100 [@media(hover:hover)]:hover:border-gray-200 cursor-zoom-in shadow-sm [@media(hover:hover)]:hover:shadow-lg [@media(hover:hover)]:hover:scale-[1.01] active:scale-[0.99] transition-[border-color,box-shadow,transform] duration-300 ease-media active:duration-150 active:ease-out`}
         >
           {video ? (
             <VideoPlayer
               src={src}
-              className={`w-full h-auto block transition-transform duration-300 ${EASE} [@media(hover:hover)]:group-hover:scale-[1.02]`}
+              className={`w-full h-auto block transition-transform duration-300 ease-media [@media(hover:hover)]:group-hover:scale-[1.02]`}
             />
           ) : (
             <img
@@ -94,7 +94,7 @@ const Media: React.FC<MediaProps> = ({ src, name, onZoom, maxWidth = '' }) => {
               src={src}
               {...imgDims(src)}
               alt=""
-              className={`w-full h-auto block transition-transform duration-300 ${EASE} [@media(hover:hover)]:group-hover:scale-[1.02]`}
+              className={`w-full h-auto block transition-transform duration-300 ease-media [@media(hover:hover)]:group-hover:scale-[1.02]`}
             />
           )}
         </div>
@@ -273,7 +273,7 @@ const PagesJaunesFull: React.FC<PagesJaunesFullProps> = ({
                   src={F.wearCard}
                   {...imgDims(F.wearCard)}
                   alt=""
-                  className={`w-full h-full object-cover transition-transform duration-300 ${EASE} [@media(hover:hover)]:group-hover:scale-[1.02]`}
+                  className={`w-full h-full object-cover transition-transform duration-300 ease-media [@media(hover:hover)]:group-hover:scale-[1.02]`}
                 />
               </div>
               <span className="flex-1 min-w-0 text-base font-semibold text-gray-900">{p.wearTitle}</span>
