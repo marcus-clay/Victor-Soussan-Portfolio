@@ -21,8 +21,8 @@ const HOVER_ZOOM_MOTION = 'transition-[transform,scale] duration-300 ease-media'
 /** Case study hero and featured projects of the home page: the cover framing at rest, 105% on hover */
 export const HERO_HOVER_ZOOM = `${HOVER_ZOOM_MOTION} [@media(hover:hover)_and_(pointer:fine)]:group-hover:[scale:1.05]`
 
-/** Work page: covers drawn back to 92% so they breathe in their card, back to their full size on hover */
-export const WORK_CARD_ZOOM = `${HOVER_ZOOM_MOTION} [scale:0.92] [@media(hover:hover)_and_(pointer:fine)]:group-hover:[scale:1]`
+/** Work page: covers at their full size at rest, 105% on hover */
+export const WORK_CARD_ZOOM = `${HOVER_ZOOM_MOTION} [@media(hover:hover)_and_(pointer:fine)]:group-hover:[scale:1.05]`
 
 export interface HeroVideo {
   src: string
