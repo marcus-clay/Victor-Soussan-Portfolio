@@ -363,74 +363,46 @@ export function FidelityDiagram({ lang }: { lang: Language }) {
 // Sketching to move discussions forward
 // ---------------------------------------------------------------------------
 
-const BUBBLES = [
-  { x: 40, y: 40, w: 168 },
-  { x: 176, y: 82, w: 150 },
-  { x: 56, y: 128, w: 182 },
-  { x: 196, y: 168, w: 140 },
-  { x: 92, y: 206, w: 160 },
+/** Threads of a discussion that cross for weeks, each starting from a voice, and converge where the diagram starts */
+const THREADS: { d: string; tone: string }[] = [
+  { d: 'M44 120 C110 60 180 210 250 120 S330 150 374 150', tone: '#C7CBD1' },
+  { d: 'M50 200 C120 120 170 60 240 170 S330 150 374 150', tone: '#D5D8DD' },
+  { d: 'M60 80 C150 140 120 220 220 190 S320 150 374 150', tone: '#C7CBD1' },
+  { d: 'M70 160 C140 230 230 50 290 140 S330 150 374 150', tone: '#DDE0E4' },
+  { d: 'M48 150 C130 100 200 140 240 80 S320 150 374 150', tone: '#D5D8DD' },
+  { d: 'M90 226 C150 170 210 230 270 200 S320 150 374 150', tone: '#C7CBD1' },
 ]
 
-const TILES = [
-  { x: 590, y: 40 },
-  { x: 770, y: 40 },
-  { x: 590, y: 152 },
-  { x: 770, y: 152 },
-]
-
-/** The usual drawing of each kind: a problem broken into causes, a flow, a journey with a decision, an interaction */
-function SketchGlyph({ kind, x, y }: { kind: number; x: number; y: number }) {
-  const g = '#6B7280'
-  if (kind === 0)
-    return (
-      <g>
-        {[20, 38, 56].map((dy) => (
-          <g key={dy}>
-            <line x1={x + 50} y1={y + dy} x2={x + 104} y2={y + 38} stroke={g} strokeWidth="1.25" />
-            <circle cx={x + 46} cy={y + dy} r="5" fill={PALE} stroke={g} strokeWidth="1.25" />
-          </g>
-        ))}
-        <circle cx={x + 110} cy={y + 38} r="8" fill={INK} />
-      </g>
-    )
-  if (kind === 1)
-    return (
-      <g>
-        {[18, 64, 110].map((dx) => (
-          <rect key={dx} x={x + dx} y={y + 28} width="34" height="20" rx="5" fill={PALE} stroke={g} strokeWidth="1.25" />
-        ))}
-        {[52, 98].map((dx) => (
-          <g key={dx}>
-            <line x1={x + dx + 1} y1={y + 38} x2={x + dx + 10} y2={y + 38} stroke={g} strokeWidth="1.25" />
-            <path d={`M${x + dx + 7} ${y + 35} L${x + dx + 11} ${y + 38} L${x + dx + 7} ${y + 41}`} fill="none" stroke={g} strokeWidth="1.25" />
-          </g>
-        ))}
-      </g>
-    )
-  if (kind === 2)
-    return (
-      <g>
-        <line x1={x + 20} y1={y + 38} x2={x + 144} y2={y + 38} stroke={g} strokeWidth="1.25" />
-        {[20, 54, 124, 144].map((dx) => (
-          <circle key={dx} cx={x + dx} cy={y + 38} r="4.5" fill={dx === 144 ? INK : PALE} stroke={dx === 144 ? INK : g} strokeWidth="1.25" />
-        ))}
-        <rect x={x + 82} y={y + 31} width="14" height="14" rx="2" fill="#FFFFFF" stroke={INK} strokeWidth="1.25" transform={`rotate(45 ${x + 89} ${y + 38})`} />
-      </g>
-    )
-  return (
-    <g>
-      <rect x={x + 62} y={y + 10} width="40" height="60" rx="7" fill="#FFFFFF" stroke={g} strokeWidth="1.25" />
-      <rect x={x + 70} y={y + 46} width="24" height="9" rx="4.5" fill={INK} />
-      <circle cx={x + 86} cy={y + 52} r="10" fill="none" stroke={INK} strokeOpacity="0.35" strokeWidth="1.5" />
-    </g>
-  )
+/** The diagram the threads resolve into: a start, a step, a decision with its way back, a step, an end */
+const SKETCH = {
+  y: 150,
+  start: 622,
+  step1: { x: 660, w: 72 },
+  decision: 790,
+  step2: { x: 830, w: 64 },
+  end: 916,
 }
+const SKETCH_PATH = `M${SKETCH.start} ${SKETCH.y} L${SKETCH.end} ${SKETCH.y}`
+const LOOP_BACK = `M${SKETCH.decision} ${SKETCH.y + 11} C${SKETCH.decision} 198 ${SKETCH.step1.x + SKETCH.step1.w / 2} 198 ${SKETCH.step1.x + SKETCH.step1.w / 2} ${SKETCH.y + 20}`
+
+/** A label on the drawing: small, quiet, rising out of a light blur as it arrives */
+const annotate = (shown: boolean, delay: number): React.CSSProperties => ({
+  ...rise(shown, delay),
+  filter: shown ? 'blur(0px)' : 'blur(2px)',
+  transition: `${rise(shown, delay).transition}, filter 500ms cubic-bezier(0.22, 1, 0.36, 1) ${delay}ms`,
+})
 
 export function ConceptDiagram({ lang }: { lang: Language }) {
   const c = CONCEPT[lang].diagram
   const { ref, shown } = useDiagramReveal<SVGSVGElement>()
-  // Living part: the discussion becomes a diagram, then each kind of drawing in turn
-  const t = useLoop(shown, 6000)
+  // Living part: the discussion becomes a diagram, then a point walks it and the end answers like a touch
+  const t = useLoop(shown, 6400, 2600)
+  const walk = travel(seg(t, 1000, 2600))
+  const at = SKETCH.start + (SKETCH.end - SKETCH.start) * walk
+  const reached = (x: number) => (t != null && seg(t, 1000, 2600) > 0 && at >= x - 2 ? flash(t, 1000 + ((x - SKETCH.start) / (SKETCH.end - SKETCH.start)) * 2600 * 0.9, 900) : 0)
+  const [problem, flow, journey, interaction] = c.nodes
+  const { y, step1, decision, step2 } = SKETCH
+  const line = '#9CA3AF'
 
   return (
     <Panel>
@@ -438,35 +410,62 @@ export function ConceptDiagram({ lang }: { lang: Language }) {
         <title id="concept-title">{c.title}</title>
         <desc id="concept-desc">{c.desc}</desc>
 
-        {/* Exchanges that cross for weeks */}
-        {BUBBLES.map((b, i) => (
-          <g key={i} style={rise(shown, i * 90)}>
-            <rect x={b.x} y={b.y} width={b.w} height="50" rx="18" fill="#FFFFFF" stroke={LINE} />
-            <path d={`M${b.x + 22} ${b.y + 50} l-6 10 l14 -10`} fill="#FFFFFF" stroke={LINE} strokeLinejoin="round" />
-            <rect x={b.x + 18} y={b.y + 16} width={b.w - 52} height="6" rx="3" fill={PALE} />
-            <rect x={b.x + 18} y={b.y + 30} width={b.w - 80} height="6" rx="3" fill={PALE} />
+        {/* Weeks of discussion: threads that cross, each from a voice */}
+        {THREADS.map((th, i) => (
+          <g key={i}>
+            <path d={th.d} pathLength={1} fill="none" stroke={th.tone} strokeWidth="1.5" strokeLinecap="round" style={draw(shown, i * 90, 1100)} />
+            <circle cx={Number(th.d.split(' ')[0].slice(1))} cy={Number(th.d.split(' ')[1])} r="3.5" fill="#9CA3AF" style={rise(shown, i * 90)} />
           </g>
         ))}
-        <text x="190" y="290" textAnchor="middle" fontSize="13" className="fill-gray-500" style={rise(shown, 500)}>{c.before}</text>
+        <circle cx="376" cy="150" r="3" fill="#9CA3AF" style={rise(shown, 900)} />
+        <text x="200" y="272" textAnchor="middle" fontSize="13" className="fill-gray-500" style={annotate(shown, 700)}>{c.before}</text>
 
-        {/* A diagram brings them together */}
-        <path d="M384 150 C440 104 500 104 562 140" pathLength={1} fill="none" stroke={INK} strokeWidth="2" strokeLinecap="round" style={draw(shown, 650, 700)} />
-        <Arrowhead x={566} y={143} angle={38} style={rise(shown, 1250)} />
-        <text x="470" y="100" textAnchor="middle" fontSize="13" fontWeight="600" fill={INK} style={rise(shown, 750)}>{c.arrow}</text>
+        {/* A diagram */}
+        <path d="M392 150 C440 110 520 110 568 146" pathLength={1} fill="none" stroke={INK} strokeWidth="1.75" strokeLinecap="round" style={draw(shown, 900, 700)} />
+        <Arrowhead x={571} y={148} angle={36} style={rise(shown, 1500)} />
+        <text x="480" y="104" textAnchor="middle" fontSize="13" fontWeight="600" fill={INK} style={annotate(shown, 1000)}>{c.arrow}</text>
+        <Runner d="M392 150 C440 110 520 110 568 146" p={travel(seg(t, 0, 900))} tone={INK} />
 
-        {/* What gets sketched: four kinds of diagram, each drawn the way it usually is */}
-        {TILES.map((t, i) => (
-          <g key={i} style={rise(shown, 1000 + i * 130)}>
-            <rect x={t.x} y={t.y} width="164" height="98" rx="12" fill="#FFFFFF" stroke={LINE} />
-            <SketchGlyph kind={i} x={t.x} y={t.y} />
-            <text x={t.x + 16} y={t.y + 86} fontSize="13" fontWeight="500" fill={INK}>{c.nodes[i]}</text>
-          </g>
+        {/* A shared understanding: one diagram, its parts named quietly */}
+        <path d={SKETCH_PATH} pathLength={1} fill="none" stroke={line} strokeWidth="1.25" style={draw(shown, 1300, 900)} />
+        <path d={LOOP_BACK} fill="none" stroke={line} strokeWidth="1.25" strokeDasharray="3 4" style={rise(shown, 1900)} />
+        <Arrowhead x={step1.x + step1.w / 2} y={y + 18} angle={-90} style={rise(shown, 2000)} />
+
+        <g style={rise(shown, 1300)}>
+          <circle cx={SKETCH.start} cy={y} r="6" fill={INK} />
+        </g>
+        <g style={rise(shown, 1450)}>
+          <rect x={step1.x} y={y - 15} width={step1.w} height="30" rx="8" fill="#FFFFFF" stroke={INK} strokeWidth="1.25" />
+          <rect x={step1.x} y={y - 15} width={step1.w} height="30" rx="8" fill={INK} style={{ opacity: 0.85 * reached(step1.x) }} />
+        </g>
+        <g style={rise(shown, 1600)}>
+          <rect x={decision - 10} y={y - 10} width="20" height="20" rx="3" fill="#FFFFFF" stroke={INK} strokeWidth="1.25" transform={`rotate(45 ${decision} ${y})`} />
+          <rect x={decision - 10} y={y - 10} width="20" height="20" rx="3" fill={INK} transform={`rotate(45 ${decision} ${y})`} style={{ opacity: 0.85 * reached(decision - 10) }} />
+        </g>
+        <g style={rise(shown, 1750)}>
+          <rect x={step2.x} y={y - 15} width={step2.w} height="30" rx="8" fill="#FFFFFF" stroke={INK} strokeWidth="1.25" />
+          <rect x={step2.x} y={y - 15} width={step2.w} height="30" rx="8" fill={INK} style={{ opacity: 0.85 * reached(step2.x) }} />
+        </g>
+        <g style={rise(shown, 1900)}>
+          <circle cx={SKETCH.end} cy={y} r="7" fill="#FFFFFF" stroke={INK} strokeWidth="1.5" />
+          <circle cx={SKETCH.end} cy={y} r="3" fill={INK} />
+        </g>
+        {/* The end answers like a touch */}
+        <circle cx={SKETCH.end} cy={y} r="9" fill="none" stroke={INK} strokeWidth="1.5" style={{ opacity: 0.5 * flash(t, 3600, 1100), transform: `scale(${1 + 1.4 * seg(t, 3600, 1100)})`, transformBox: 'fill-box', transformOrigin: 'center' }} />
+        {t != null && walk > 0 && walk < 1 && <circle cx={at} cy={y} r="4" fill={INK} />}
+
+        {/* The four words, as quiet annotations of the parts */}
+        {[
+          { x: SKETCH.start, yy: y + 34, text: problem, anchor: 'middle' as const, d: 2100 },
+          { x: (step1.x + step1.w + decision) / 2 - 4, yy: y - 26, text: flow, anchor: 'middle' as const, d: 2200 },
+          { x: (decision + step2.x + step2.w) / 2 + 6, yy: y - 26, text: journey, anchor: 'middle' as const, d: 2300 },
+          { x: SKETCH.end, yy: y + 34, text: interaction, anchor: 'middle' as const, d: 2400 },
+        ].map((n) => (
+          <text key={n.text} x={n.x} y={n.yy} textAnchor={n.anchor} fontSize="11" letterSpacing="0.04em" className="fill-gray-500" style={annotate(shown, n.d)}>
+            {n.text.toLowerCase()}
+          </text>
         ))}
-        <Runner d="M384 150 C440 104 500 104 562 140" p={travel(seg(t, 0, 1000))} tone={INK} />
-        {TILES.map((tile, i) => (
-          <rect key={`lit${i}`} x={tile.x} y={tile.y} width="164" height="98" rx="12" fill="none" stroke={INK} strokeWidth="2" style={{ opacity: flash(t, 1100 + i * 650, 1100) }} />
-        ))}
-        <text x="757" y="290" textAnchor="middle" fontSize="13" fontWeight="600" fill={INK} style={rise(shown, 1700)}>{c.after}</text>
+        <text x="770" y="272" textAnchor="middle" fontSize="13" fontWeight="600" fill={INK} style={annotate(shown, 2500)}>{c.after}</text>
       </svg>
     </Panel>
   )
