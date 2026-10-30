@@ -20,19 +20,19 @@ export default function HeroSection({ lang }: HeroSectionProps) {
   return (
     <header className="wrap pt-10 md:pt-16 pb-10 md:pb-14">
       <h1 className="text-gray-900">
-        <span className="block text-display">{hero.title}</span>
+        <span className="build-line block text-display">{hero.title}</span>
         <span className="sr-only">, </span>
-        <span className="mt-2 block text-subhead font-normal text-gray-500 md:mt-3">{hero.formula}</span>
+        <span className="build-line mt-2 block text-subhead font-normal text-gray-500 md:mt-3" style={{ ['--i' as string]: 1 }}>{hero.formula}</span>
       </h1>
 
-      <p className="mt-8 md:mt-10 max-w-[56ch] text-lead-lg text-gray-600 md:hidden">
+      <p className="build-rise mt-8 md:mt-10 max-w-[56ch] text-lead-lg text-gray-600 md:hidden" style={{ ['--d' as string]: '240ms' }}>
         {hero.descShort}
       </p>
-      <p className="hidden md:block mt-10 max-w-[56ch] text-lead-lg text-gray-600">
+      <p className="build-rise hidden md:block mt-10 max-w-[56ch] text-lead-lg text-gray-600" style={{ ['--d' as string]: '240ms' }}>
         {hero.desc}
       </p>
 
-      <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-1">
+      <div className="build-rise mt-6 flex flex-wrap items-center gap-x-6 gap-y-1" style={{ ['--d' as string]: '320ms' }}>
         <Link
           href={`/${lang}/approche`}
           className="group inline-flex min-h-11 items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 active:opacity-60 transition-[color,opacity] duration-150"

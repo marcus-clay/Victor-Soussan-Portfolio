@@ -64,10 +64,10 @@ export default function TestimonialsPageClient({ lang }: { lang: 'en' | 'fr' }) 
     <div className="min-h-screen bg-[#FDFDFC]">
       {/* En-tête : nom de la page et une ligne, pleine largeur, aligné à gauche */}
       <header className="wrap pt-10 md:pt-16 pb-12 md:pb-16">
-        <h1 className="text-display text-gray-900">
+        <h1 className="build-line text-display text-gray-900">
           {t.title}
         </h1>
-        <p className="mt-6 md:mt-8 text-lead-lg text-gray-600 max-w-[54ch]">
+        <p className="build-rise mt-6 md:mt-8 text-lead-lg text-gray-600 max-w-[54ch]" style={{ ['--d' as string]: '200ms' }}>
           {t.subtitle}
         </p>
       </header>

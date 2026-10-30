@@ -6,7 +6,7 @@
  *   name is set as text instead (no logo file in the repository yet).
  * - `visual`: the image shown whole in the 3:2 panel (object-fit: contain), so a screen is
  *   never cropped. `tone` is the panel ground: the shared stage grey (#E8E8E8) for every light project (the visuals are
- *   transparent cut-outs), RiskOS being the one dark exception like its whole page.
+ *   transparent cut-outs).
  * - `fit: 'cover'` fills the panel instead, for photographs that survive a crop.
  * - `fit: 'bleed'` fills the panel with a picture composed for it (devices running off the edge)
  *   on the panel's own tone: it crops like a photograph but keeps the dark-on-light caption.
@@ -98,7 +98,8 @@ export const CASE_STUDY_SHELL: Record<string, CaseStudyShell> = {
   },
   riskos: {
     client: 'RiskOS',
-    visual: '/images/riskos/02-case-detail.webp',
-    tone: '#000000',
+    visual: '/images/riskos/cover-riskos-ipad.webp',
+    tone: '#E8E8E8',
+    fit: 'bleed',
   },
 }

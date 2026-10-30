@@ -226,7 +226,7 @@ function ProjectCard({
           className={mediaClass}
         />
         {/* Hero loop over the cover, only for projects whose file exists. The cover is its poster and fallback. */}
-        {video && <HeroLoop src={video.src} mediaClassName={mediaClass} />}
+        {video && <HeroLoop src={video.src} mediaClassName={mediaClass} screen={video.screen} />}
         <ArrowPill size="sm" />
       </div>
 
@@ -283,10 +283,10 @@ export default function ProjetsPageClient({ lang }: { lang: 'en' | 'fr' }) {
 
       {/* Page header: top offset matches homepage h1 at every breakpoint */}
       <header className="wrap pt-10 md:pt-16 pb-12 md:pb-16">
-        <h1 className="text-display text-gray-900">
+        <h1 className="build-line text-display text-gray-900">
           {isEn ? 'Work' : 'Projets'}
         </h1>
-        <p className="mt-6 md:mt-8 text-lead-lg text-gray-600 max-w-[54ch]">
+        <p className="build-rise mt-6 md:mt-8 text-lead-lg text-gray-600 max-w-[54ch]" style={{ ['--d' as string]: '200ms' }}>
           {isEn
             ? 'Product design, design systems and AI-assisted prototyping.'
             : 'Design produit, design systems et prototypage assisté par IA.'}
