@@ -49,7 +49,7 @@ export default function Footer({ lang }: { lang: Lang }) {
 
           {/* Navigation Column */}
           <div>
-            <h4 className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-4">Navigation</h4>
+            <h2 className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-4">Navigation</h2>
             <ul className="space-y-2.5">
               <li>
                 <Link href={`/${lang}/projets`} className="link-draw text-sm text-gray-500 hover:text-gray-900 transition-colors duration-150">
@@ -76,12 +76,17 @@ export default function Footer({ lang }: { lang: Lang }) {
                   {content.blog}
                 </Link>
               </li>
+              <li>
+                <Link href={`/${lang}/resume`} className="link-draw text-sm text-gray-500 hover:text-gray-900 transition-colors duration-150">
+                  CV
+                </Link>
+              </li>
             </ul>
           </div>
 
           {/* Contact Column */}
           <div>
-            <h4 className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-4">Contact</h4>
+            <h2 className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-4">Contact</h2>
             <ul className="space-y-2.5">
               <li>
                 <a href="mailto:victorsoussan@gmail.com" className="link-draw text-sm text-gray-500 hover:text-gray-900 transition-colors duration-150">

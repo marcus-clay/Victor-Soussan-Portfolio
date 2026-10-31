@@ -6,6 +6,7 @@ import { CASE_STUDY_SHELL } from '@/data/caseStudyShell'
 import { imgDims } from '@/utils/imageDimensions'
 import { zoomable } from '@/utils/zoomable'
 import { HERO_VIDEOS, HERO_HOVER_ZOOM } from '@/data/heroVideos'
+import { coverSrcSet } from '@/utils/coverSrcSet'
 import HeroLoop from '@/components/media/HeroLoop'
 
 export interface HeroMeta {
@@ -98,6 +99,8 @@ export default function CaseStudyHero({
         >
           <img
             src={shell.visual}
+            srcSet={coverSrcSet(shell.visual)}
+            sizes="(min-width: 1536px) 1424px, calc(100vw - 40px)"
             {...imgDims(shell.visual)}
             alt={onZoom ? '' : visualAlt}
             loading="eager"
@@ -109,7 +112,7 @@ export default function CaseStudyHero({
               and starts the loop, leaving it fades back to the picture (centred on touch screens). The picture
               stays the poster, the fallback and the lightbox image; the video ignores the pointer, so the click
               still opens the lightbox. */}
-          {video && <HeroLoop src={video.src} mediaClassName={mediaClass} mediaStyle={mediaStyle} mode="preview" screen={video.screen} />}
+          {video && <HeroLoop src={video.src} mediaClassName={mediaClass} mediaStyle={mediaStyle} mode="preview" screen={video.screen} overlay={video.overlay} />}
         </figure>
 
         <div className="order-4 col-span-12 md:col-span-5 md:col-start-8 md:row-start-2 md:self-end flex flex-col gap-7">
@@ -126,7 +129,7 @@ export default function CaseStudyHero({
             {!hideGallery && (
               <Link
                 href={`/${lang}/project/${projectId}/gallery`}
-                className="inline-flex items-center gap-2 min-h-11 px-5 rounded-full bg-gray-900 hover:bg-black text-white text-sm font-medium shadow-sm hover:shadow-md active:scale-[0.97] transition-[background-color,box-shadow,transform] duration-150"
+                className="btn-dark inline-flex items-center gap-2 min-h-11 px-5 rounded-full bg-gray-900 hover:bg-black text-white text-sm font-medium shadow-sm hover:shadow-md active:scale-[0.97] transition-[background-color,box-shadow,transform] duration-150"
               >
                 <Images size={16} weight="regular" aria-hidden="true" />
                 {t.gallery}

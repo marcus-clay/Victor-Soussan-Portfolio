@@ -40,7 +40,9 @@ export function findProject(lang: Lang, id: string) {
 }
 
 export function ogImageFor(id: string, cover: string | undefined) {
-  if (id === 'riskos') return { url: '/images/riskos/02-case-detail.png', width: 1920, height: 1080 }
+  // Case studies: a 1200 × 630 JPEG of the cover on its own tone (public/images/og), the card every network
+  // renders (WebP is not reliable on LinkedIn)
+  if ((CASE_STUDY_IDS as readonly string[]).includes(id)) return { url: `/images/og/${id}.jpg`, width: 1200, height: 630 }
   // Large PNG covers exceed the 5 MB limit of several social networks: keep the default card for those.
   if (cover && /\.(webp|jpe?g)$/i.test(cover)) return { url: cover }
   return undefined

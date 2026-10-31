@@ -27,7 +27,7 @@ const GRID = '#ECECE9'
  * The pale panel every diagram sits on; scrolls sideways on narrow screens. While part of the drawing is
  * hidden to the right, that edge fades out, so a reader on a phone sees there is more to slide to.
  */
-function Panel({ children, minWidth = 720 }: { children: React.ReactNode; minWidth?: number }) {
+export function Panel({ children, minWidth = 720 }: { children: React.ReactNode; minWidth?: number }) {
   const scroller = React.useRef<HTMLDivElement>(null)
   const [more, setMore] = React.useState(false)
   React.useEffect(() => {

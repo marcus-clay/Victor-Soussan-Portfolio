@@ -7,7 +7,7 @@ import { LANGS, isoDate, pageUrl } from '@/lib/seo'
 
 /**
  * Only indexable, canonical, 200 URLs belong here. Pages marked noindex (consulting, visual-archive,
- * resume, quote, presentation, project galleries) and redirects are deliberately left out: listing them
+ * quote, presentation, project galleries) and redirects (/cursor) are deliberately left out: listing them
  * is what makes Search Console report "Excluded by noindex" and "Page with redirect".
  *
  * lastModified comes from real content dates, never from the build time: a lastmod that changes on
@@ -17,7 +17,7 @@ import { LANGS, isoDate, pageUrl } from '@/lib/seo'
 const INDEXABLE_STATIC = ['', 'about', 'approche', 'projets', 'ressources', 'testimonials', 'resume', 'contact']
 
 // Update when the copy of the main pages changes in a meaningful way.
-const SITE_CONTENT_UPDATED = '2026-10-12'
+const SITE_CONTENT_UPDATED = '2026-10-31'
 
 type Entry = { path: Record<(typeof LANGS)[number], string>; lastModified?: string }
 

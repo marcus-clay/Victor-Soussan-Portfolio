@@ -1,6 +1,7 @@
 'use client'
 
 import { flash, grow, rise, seg, travel, useDiagramReveal, useLoop } from '@/components/approche/diagramMotion'
+import { Panel } from '@/components/approche/ApproachDiagrams'
 
 /**
  * One idea: where the career converges. A time axis from 2005 to today across the full width, drawn to
@@ -40,8 +41,9 @@ export default function CareerPhasesDiagram({ lang }: { lang: 'en' | 'fr' }) {
   const NOW = X1 + 8
 
   return (
-    <div className="no-scrollbar overflow-x-auto rounded-2xl bg-[#F7F7F5] ring-1 ring-inset ring-black/[0.04]">
-      <div className="min-w-[640px] px-5 py-6 md:px-10 md:py-10">
+    // The same pale panel as the Approach diagrams: it scrolls sideways on a phone, its right edge fading while
+    // part of the timeline is hidden
+    <Panel minWidth={640}>
         <svg ref={ref} viewBox="0 0 960 220" role="img" aria-labelledby="career-title career-desc" className="block h-auto w-full">
           <title id="career-title">{c.title}</title>
           <desc id="career-desc">{c.desc}</desc>
@@ -98,7 +100,6 @@ export default function CareerPhasesDiagram({ lang }: { lang: 'en' | 'fr' }) {
             <text x={NOW - 8} y="207" textAnchor="end" fontSize="13" className="fill-gray-500">{c.now[1]}</text>
           </g>
         </svg>
-      </div>
-    </div>
+    </Panel>
   )
 }

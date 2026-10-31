@@ -120,7 +120,8 @@ export function buildMetadata(o: MetaOptions): Metadata {
     title,
     description,
     alternates: { canonical, languages },
-    robots: o.noindex ? { index: false, follow: false } : { index: true, follow: true },
+    // A hidden page still passes its links on (galleries link to their case study)
+    robots: o.noindex ? { index: false, follow: true } : { index: true, follow: true },
     openGraph: {
       type: o.type ?? 'website',
       url: canonical,
@@ -154,6 +155,9 @@ export function buildMetadata(o: MetaOptions): Metadata {
 
 export const PERSON_ID = `${SITE_URL}/#person`
 export const WEBSITE_ID = `${SITE_URL}/#website`
+
+/** The author as Google expects it on an Article or a CreativeWork: a typed Person with a name, not a bare reference */
+const AUTHOR = { '@type': 'Person', '@id': PERSON_ID, name: SITE_NAME, url: SITE_URL }
 
 export const LINKEDIN_URL = 'https://www.linkedin.com/in/victorsoussan-product-design'
 
@@ -282,8 +286,8 @@ export function articleLd(o: ArticleLdOptions) {
     datePublished: o.datePublished,
     dateModified: o.dateModified ?? o.datePublished,
     image: [absoluteUrl(o.image ?? DEFAULT_OG_IMAGE.url)],
-    author: { '@id': PERSON_ID },
-    publisher: { '@id': PERSON_ID },
+    author: AUTHOR,
+    publisher: AUTHOR,
     isPartOf: { '@id': WEBSITE_ID },
     ...(o.section ? { articleSection: o.section } : {}),
     ...(o.wordCount ? { wordCount: o.wordCount } : {}),
@@ -310,8 +314,8 @@ export function creativeWorkLd(o: {
     name: o.name,
     description: o.description,
     inLanguage: o.lang === 'fr' ? 'fr-FR' : 'en',
-    creator: { '@id': PERSON_ID },
-    author: { '@id': PERSON_ID },
+    creator: AUTHOR,
+    author: AUTHOR,
     isPartOf: { '@id': WEBSITE_ID },
     ...(o.image ? { image: absoluteUrl(o.image) } : {}),
     ...(o.datePublished ? { datePublished: o.datePublished } : {}),

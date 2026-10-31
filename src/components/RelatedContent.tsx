@@ -3,6 +3,7 @@ import { ArrowRight, ArrowUpRight } from '@phosphor-icons/react/dist/ssr'
 import { imgDims } from '@/utils/imageDimensions'
 import { HERO_VIDEOS, type HeroVideo } from '@/data/heroVideos'
 import HeroLoop from '@/components/media/HeroLoop'
+import { coverSrcSet } from '@/utils/coverSrcSet'
 import ArrowPill from '@/components/ui/ArrowPill'
 
 /**
@@ -151,6 +152,8 @@ function Cover({ cover, loop }: { cover: NonNullable<RelatedItem['cover']>; loop
     <div className="relative aspect-[3/2] shrink-0 overflow-hidden" style={{ backgroundColor: cover.tone ?? '#E8E8E8' }}>
       <img
         src={cover.src}
+        srcSet={coverSrcSet(cover.src)}
+        sizes="(min-width: 1024px) 30vw, (min-width: 768px) 45vw, 92vw"
         {...imgDims(cover.src)}
         alt=""
         loading="lazy"
@@ -159,7 +162,7 @@ function Cover({ cover, loop }: { cover: NonNullable<RelatedItem['cover']>; loop
         className={mediaClass}
         style={mediaStyle}
       />
-      {loop && <HeroLoop src={loop.src} mediaClassName={mediaClass} mediaStyle={mediaStyle} screen={loop.screen} />}
+      {loop && <HeroLoop src={loop.src} mediaClassName={mediaClass} mediaStyle={mediaStyle} screen={loop.screen} overlay={loop.overlay} />}
       <ArrowPill size="sm" />
     </div>
   )

@@ -10,6 +10,7 @@ import { CASE_STUDY_SHELL } from '@/data/caseStudyShell'
 import { imgDims } from '@/utils/imageDimensions'
 import { useSnapScroller } from '@/hooks/useSnapScroller'
 import { HERO_VIDEOS, HERO_HOVER_ZOOM } from '@/data/heroVideos'
+import { coverSrcSet } from '@/utils/coverSrcSet'
 import HeroLoop from '@/components/media/HeroLoop'
 
 /**
@@ -40,21 +41,6 @@ const COPY = {
     facts: 'Secteur et type',
   },
 } as const
-
-// Thumbnails that ship with 400w / 800w / 1200w variants next to the 1920w original.
-const RESPONSIVE_THUMBS = new Set([
-  '/images/thumbnail-toolkit.webp',
-  '/images/thumbnail-dailymotion-web-platform.webp',
-  '/images/thumbnail-connect.webp',
-  '/images/thumbnail-sqool-suite.webp',
-  '/images/thumbnail-pagesjaunes-multidevices.webp',
-])
-
-function srcSetFor(src: string): string | undefined {
-  if (!RESPONSIVE_THUMBS.has(src)) return undefined
-  const base = src.replace(/\.webp$/, '')
-  return `${base}-400w.webp 400w, ${base}-800w.webp 800w, ${base}-1200w.webp 1200w, ${src} 1920w`
-}
 
 // useLayoutEffect warns during server rendering in React 18
 const useIsoLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect
@@ -237,7 +223,7 @@ export default function ProjectFilmstrip({ lang }: ProjectFilmstripProps) {
           const quote = quotes[project.id] ?? null
           const titleId = `filmstrip-${project.id}-title`
           const summaryId = `filmstrip-${project.id}-summary`
-          const srcSet = srcSetFor(shell.visual)
+          const srcSet = coverSrcSet(shell.visual)
           const photo = shell.fit === 'cover'
           const bleed = shell.fit === 'bleed'
           // Light text on photographs (dark veil) and on dark grounds, dark text on light grounds
@@ -279,7 +265,7 @@ export default function ProjectFilmstrip({ lang }: ProjectFilmstripProps) {
                   picture (same fit, same hover zoom), sits under the ground fade and the caption, plays while
                   the pointer is on the card or the strip rests on it (centred card on touch), and has no control. */}
               {/* Plays on hover (centred on touch screens), never on its own as the strip rests */}
-              {video && <HeroLoop src={video.src} mediaClassName={mediaClass} mediaStyle={mediaStyle} screen={video.screen} />}
+              {video && <HeroLoop src={video.src} mediaClassName={mediaClass} mediaStyle={mediaStyle} screen={video.screen} overlay={video.overlay} />}
 
               {/* Ground fade: the image dissolves into its own tone where the text sits (or into a
                   dark veil for photographs), so the caption reads as part of the picture. A bleed

@@ -39,7 +39,7 @@ const SECTION = 'act-wide pt-12 md:pt-16 pb-12 md:pb-16';
 /** Section title: same role as an act title */
 const H2 = 'text-subhead text-gray-900 max-w-[26ch] mb-5';
 const BUTTON =
-  'inline-flex items-center gap-2 min-h-11 px-5 rounded-full text-sm font-medium bg-gray-900 text-white [@media(hover:hover)]:hover:bg-black active:scale-[0.97]';
+  'btn-dark inline-flex items-center gap-2 min-h-11 px-5 rounded-full text-sm font-medium bg-gray-900 text-white [@media(hover:hover)]:hover:bg-black active:scale-[0.97]';
 const BUTTON_TRANSITION = { transition: 'background-color 200ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' };
 
 const GuideShipToShowPage: React.FC<Props> = ({ lang, onNavigate, related }) => {

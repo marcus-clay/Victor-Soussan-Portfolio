@@ -41,7 +41,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
           </p>
           <button
             onClick={() => window.location.reload()}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-medium text-sm text-white bg-gray-900 hover:bg-gray-800 active:scale-[0.97] transition-[background-color,transform] duration-150"
+            className="btn-dark inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-medium text-sm text-white bg-gray-900 hover:bg-gray-800 active:scale-[0.97] transition-[background-color,transform] duration-150"
           >
             Try again
           </button>

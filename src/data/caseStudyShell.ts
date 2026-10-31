@@ -87,7 +87,7 @@ export const CASE_STUDY_SHELL: Record<string, CaseStudyShell> = {
   },
   pagesjaunes: {
     client: 'PagesJaunes',
-    logo: '/logos/LOGO SOLOCAL.svg',
+    logo: '/logos/logo-solocal.webp',
     visual: '/images/thumbnail-pagesjaunes-multidevices.webp',
     tone: '#E8E8E8',
   },

@@ -59,7 +59,7 @@ export const careerData: CareerItem[] = [
         "Management d'une équipe de 4 UI designers"
       ]
     },
-    logo: "/logos/LOGO SOLOCAL.svg"
+    logo: "/logos/logo-solocal.webp"
   },
   {
     id: 3,
@@ -245,7 +245,7 @@ export const careerData: CareerItem[] = [
         "Création de Victor Soussan Design (Lead Product Designer)"
       ]
     },
-    logo: "/logos/LOGO BETAGOUV.svg"
+    logo: "/logos/logo-betagouv.webp"
   },
   {
     id: 11,

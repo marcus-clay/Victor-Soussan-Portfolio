@@ -18,9 +18,9 @@ export default function TestimonialsLink({ lang, className = '' }: { lang: 'en' 
       <p className="max-w-[62ch] text-base text-gray-600">{copy.text(getTestimonials(lang).length)}</p>
       <Link
         href={`/${lang}/testimonials`}
-        className="group inline-flex min-h-11 items-center gap-1.5 text-sm font-medium text-gray-900 underline decoration-gray-300 underline-offset-4 transition-[color,transform] duration-150 ease-out active:scale-[0.97] [@media(hover:hover)]:hover:decoration-gray-900"
+        className="group inline-flex min-h-11 items-center gap-1.5 text-sm font-medium text-gray-900 transition-[color,transform] duration-150 ease-out active:scale-[0.97]"
       >
-        {copy.link}
+        <span className="link-line">{copy.link}</span>
         <ArrowRight size={12} weight="bold" aria-hidden="true" className="transition-transform duration-200 ease-out [@media(hover:hover)]:group-hover:translate-x-0.5" />
       </Link>
     </div>

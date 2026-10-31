@@ -61,17 +61,17 @@ const HELP = {
   ],
 }
 
-/** Text link: ink with a quiet underline, grey on hover, 44px tall hit area, presses on tap */
+/** Text link (label in a .link-line span): ink, its line drawing on hover, grey on hover, 44px tall hit area, presses on tap */
 const TEXT_LINK =
-  'inline-flex min-h-11 items-center text-sm font-medium text-gray-900 underline decoration-gray-300 underline-offset-4 [@media(hover:hover)]:hover:text-gray-500 active:scale-[0.97] transition-[color,transform] duration-150 ease-out'
+  'inline-flex min-h-11 items-center text-sm font-medium text-gray-900 [@media(hover:hover)]:hover:text-gray-500 active:scale-[0.97] transition-[color,transform] duration-150 ease-out'
 
 /** Same link, quieter: grey at rest, ink on hover (the muted state is a class, not !important, so hover can win) */
 const TEXT_LINK_MUTED =
-  'inline-flex min-h-11 items-center text-sm font-medium text-gray-500 underline decoration-gray-300 underline-offset-4 [@media(hover:hover)]:hover:text-gray-900 active:scale-[0.97] transition-[color,transform] duration-150 ease-out'
+  'inline-flex min-h-11 items-center text-sm font-medium text-gray-500 [@media(hover:hover)]:hover:text-gray-900 active:scale-[0.97] transition-[color,transform] duration-150 ease-out'
 
 /** Black pill, the only primary action of the page (twice: calendar, then speaking enquiries) */
 const PILL =
-  'inline-flex items-center gap-2 min-h-11 px-5 rounded-full bg-gray-900 [@media(hover:hover)]:hover:bg-black text-white text-sm font-medium active:scale-[0.97] transition-[background-color,transform] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)]'
+  'btn-dark inline-flex items-center gap-2 min-h-11 px-5 rounded-full bg-gray-900 [@media(hover:hover)]:hover:bg-black text-white text-sm font-medium active:scale-[0.97] transition-[background-color,transform] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)]'
 
 const ROW_LINK =
   'group -mx-3 px-3 py-5 md:py-6 rounded-lg flex items-start justify-between gap-6 transition-colors duration-150 [@media(hover:hover)]:hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900'
@@ -149,13 +149,13 @@ export default function ContactPageClient({ lang }: { lang: 'en' | 'fr' }) {
         </div>
         <div className="mt-1 flex flex-wrap items-center gap-x-6">
           <a href="https://linkedin.com/in/victorsoussan-product-design" target="_blank" rel="noopener noreferrer" className={`${TEXT_LINK_MUTED} gap-1.5`}>
-            LinkedIn <ArrowUpRight size={12} weight="bold" aria-hidden="true" />
+            <span className="link-line">LinkedIn</span> <ArrowUpRight size={12} weight="bold" aria-hidden="true" />
           </a>
           <a href="https://www.condamine.studio/apps" target="_blank" rel="noopener noreferrer" className={`${TEXT_LINK_MUTED} gap-1.5`}>
-            Condamine Apps <ArrowUpRight size={12} weight="bold" aria-hidden="true" />
+            <span className="link-line">Condamine Apps</span> <ArrowUpRight size={12} weight="bold" aria-hidden="true" />
           </a>
           <a href="tel:+33615989400" className={TEXT_LINK_MUTED}>
-            +33 6 15 98 94 00
+            <span className="link-line">+33 6 15 98 94 00</span>
           </a>
         </div>
       </header>
@@ -226,7 +226,7 @@ export default function ContactPageClient({ lang }: { lang: 'en' | 'fr' }) {
             <ArrowUpRight size={14} weight="bold" aria-hidden="true" />
           </a>
           <a href={CALENDAR_URL} target="_blank" rel="noopener noreferrer" className={TEXT_LINK}>
-            {isEn ? 'Or book a call' : 'Ou réserver un appel'}
+            <span className="link-line">{isEn ? 'Or book a call' : 'Ou réserver un appel'}</span>
           </a>
         </div>
       </HomeBlock>

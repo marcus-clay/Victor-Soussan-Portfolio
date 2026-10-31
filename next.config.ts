@@ -80,6 +80,8 @@ const nextConfig: NextConfig = {
       destination: 'https://www.victorsoussan.fr/:path*',
       permanent: true,
     },
+    // Old homepage variant: one page per address, the home page
+    { source: '/:lang(en|fr)/cursor', destination: '/:lang', permanent: true },
     // Old query param routes -> path prefix
     { source: '/', has: [{ type: 'query', key: 'lang', value: 'fr' }], destination: '/fr', permanent: true },
     { source: '/', has: [{ type: 'query', key: 'lang', value: 'en' }], destination: '/en', permanent: true },

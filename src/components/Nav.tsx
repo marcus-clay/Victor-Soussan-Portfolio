@@ -9,6 +9,7 @@ import {
   X,
 } from '@phosphor-icons/react'
 import { TRANSLATIONS } from '@/data/translations'
+import { otherLangPath } from '@/data/guideSlugs'
 
 type Lang = 'en' | 'fr'
 
@@ -49,6 +50,9 @@ export default function Nav({ lang }: { lang: Lang }) {
   const pathname = usePathname()
   const content = TRANSLATIONS[lang].nav
   const otherLang = lang === 'en' ? 'fr' : 'en'
+  // The same page in the other language, guide chapters with their translated address (one URL per page,
+  // no redirect behind the switch)
+  const otherHref = otherLangPath(pathname, lang, otherLang)
 
   // The router already puts a new page at the top, instantly. Scrolling here as well ran
   // through the root `scroll-behavior: smooth` and made every page glide up after it loaded.
@@ -269,7 +273,7 @@ export default function Nav({ lang }: { lang: Lang }) {
 
             {/* Lang switcher */}
             <Link
-              href={`/${otherLang}${pathname.replace(`/${lang}`, '')}`}
+              href={otherHref}
               className="px-2 sm:px-2.5 py-1.5 text-sm font-medium rounded-full text-gray-500 active:scale-[0.96] [@media(hover:hover)]:hover:text-gray-900 [@media(hover:hover)]:hover:bg-black/[0.04]"
               style={{ transition: 'background-color 150ms ease, color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
             >
@@ -280,7 +284,7 @@ export default function Nav({ lang }: { lang: Lang }) {
             <Link
               href={`/${lang}/contact`}
               onClick={closeMenu}
-              className="nav-cta ml-0.5 sm:ml-1 inline-flex min-h-10 items-center px-3.5 sm:px-4 text-sm font-medium rounded-full bg-gray-900 text-white hover:bg-black active:scale-[0.97] whitespace-nowrap"
+              className="btn-dark nav-cta ml-0.5 sm:ml-1 inline-flex min-h-10 items-center px-3.5 sm:px-4 text-sm font-medium rounded-full bg-gray-900 text-white hover:bg-black active:scale-[0.97] whitespace-nowrap"
               style={{ transition: 'background-color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
             >
               {content.contact}

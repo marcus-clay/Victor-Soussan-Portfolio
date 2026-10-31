@@ -32,6 +32,8 @@ export interface HeroVideo {
    * then plays inside that screen, at the same angle, instead of over the whole picture.
    */
   screen?: { corners: [number, number][]; ratio: number }
+  /** Screens of the cover animated in code over the loop (the devices the video leaves still) */
+  overlay?: 'pagesjaunes'
 }
 
 export const HERO_VIDEOS: Record<string, HeroVideo> = {
@@ -43,7 +45,8 @@ export const HERO_VIDEOS: Record<string, HeroVideo> = {
   androidwear: { src: '/videos/hero/androidwear-v2.mp4' },
   'france-vae': { src: '/videos/hero/france-vae-v2.mp4' },
   connect: { src: '/videos/hero/connect-v2.mp4' },
-  pagesjaunes: { src: '/videos/hero/pagesjaunes-v2.mp4' },
+  // The video animates the phone; the tablet and the laptop are animated in code (PagesJaunesScreens)
+  pagesjaunes: { src: '/videos/hero/pagesjaunes-v2.mp4', overlay: 'pagesjaunes' },
   dailymotion: { src: '/videos/hero/dailymotion-v2.mp4' },
   // iPad Pro 11 in perspective (cover-riskos-ipad.webp, 2200 × 1467): corners measured on the picture
   riskos: {

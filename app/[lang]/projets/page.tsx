@@ -7,9 +7,12 @@ import { buildMetadata, itemListLd, pageLd, pageUrl, toLang } from '@/lib/seo'
 type Props = { params: Promise<{ lang: string }> }
 
 const COPY = {
-  fr: { title: 'Projets', description: 'Études de cas et projets en design produit, design systems et prototypage assisté par IA.' },
-  en: { title: 'Projects', description: 'Case studies and projects in product design, design systems, and AI-assisted prototyping.' },
+  fr: { title: 'Projets de product design B2B et B2G', description: 'Études de cas et projets en design produit, design systems et prototypage assisté par IA.' },
+  en: { title: 'B2B and B2G product design projects', description: 'Case studies and projects in product design, design systems, and AI-assisted prototyping.' },
 } as const
+
+/** The short name of the page in breadcrumbs, as in the navigation */
+const CRUMB = { fr: 'Projets', en: 'Projects' } as const
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const lang = toLang((await params).lang)
@@ -32,7 +35,7 @@ export default async function Page({ params }: Props) {
           type: 'CollectionPage',
           name: COPY[lang].title,
           description: COPY[lang].description,
-          crumbs: [{ name: COPY[lang].title, path: 'projets' }],
+          crumbs: [{ name: CRUMB[lang], path: 'projets' }],
         }),
         itemListLd(
           getProjects(lang).map((pr) => ({

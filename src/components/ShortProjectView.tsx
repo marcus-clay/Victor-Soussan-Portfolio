@@ -237,10 +237,10 @@ export default function ShortProjectView({
             href={project.externalLink}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 min-h-11 px-5 rounded-full text-sm font-medium bg-gray-900 text-white hover:bg-black active:scale-[0.97] transition-[background-color,transform] duration-150"
+            className="btn-dark inline-flex items-center gap-2 min-h-11 px-5 rounded-full text-sm font-medium bg-gray-900 text-white hover:bg-black active:scale-[0.97] transition-[background-color,transform] duration-150"
           >
             {lang === 'fr' ? 'Voir le projet' : 'View project'}
-            <ArrowUpRight size={18} weight="bold" />
+            <ArrowUpRight className="btn-arrow-up" size={18} weight="bold" />
           </a>
         )}
       </div>

@@ -399,8 +399,8 @@ export const V2_JOB: Bi<{ title: string; lead: string; label: string; groups: { 
 export const V2_RESULTS: Bi<{ title: string; lead: string; quoteLabel: string; facts: { text: string; link: { href: string; label: string } }[] }> = {
   fr: {
     title: 'Ce que ça a donné',
-    lead: 'Quatre projets, quatre résultats, et la parole d’un client.',
-    quoteLabel: 'Dans les mots d’un client',
+    lead: 'Dans chaque projet, une pièce concrète a permis de décider : des entretiens, des prototypes, des flux vérifiés.',
+    quoteLabel: 'Dans les mots de celles et ceux avec qui je travaille',
     facts: [
       { text: 'Dix entretiens terrain ont réordonné les priorités d’un MVP.', link: { href: '/project/france-vae', label: 'France VAE' } },
       { text: 'Sept prototypes en une semaine ont rendu une vision discutable.', link: { href: '/project/tessan', label: 'Tessan' } },
@@ -410,8 +410,8 @@ export const V2_RESULTS: Bi<{ title: string; lead: string; quoteLabel: string; f
   },
   en: {
     title: 'What it led to',
-    lead: 'Four projects, four results, and a client’s word.',
-    quoteLabel: 'In a client’s words',
+    lead: 'In each project, something concrete made the decision possible: interviews, prototypes, flows checked end to end.',
+    quoteLabel: 'In the words of the people I work with',
     facts: [
       { text: 'Ten field interviews reordered the priorities of an MVP.', link: { href: '/project/france-vae', label: 'France VAE' } },
       { text: 'Seven prototypes in one week made a vision discussable.', link: { href: '/project/tessan', label: 'Tessan' } },

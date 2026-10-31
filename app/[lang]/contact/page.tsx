@@ -6,9 +6,12 @@ import { buildMetadata, pageLd, toLang } from '@/lib/seo'
 type Props = { params: Promise<{ lang: string }> }
 
 const COPY = {
-  fr: { title: 'Contact', description: 'Contactez Victor Soussan, Lead Product Designer basé à Paris. Missions de product design, audits de design system, ateliers.' },
-  en: { title: 'Contact', description: 'Get in touch with Victor Soussan, Lead Product Designer based in Paris. Product design missions, design system audits, workshops.' },
+  fr: { title: 'Contact, missions de product design', description: 'Contactez Victor Soussan, Lead Product Designer basé à Paris. Missions de product design, audits de design system, ateliers.' },
+  en: { title: 'Contact, product design engagements', description: 'Get in touch with Victor Soussan, Lead Product Designer based in Paris. Product design missions, design system audits, workshops.' },
 } as const
+
+/** The short name of the page in breadcrumbs, as in the navigation */
+const CRUMB = { fr: 'Contact', en: 'Contact' } as const
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const lang = toLang((await params).lang)
@@ -31,7 +34,7 @@ export default async function Page({ params }: Props) {
           type: 'ContactPage',
           name: COPY[lang].title,
           description: COPY[lang].description,
-          crumbs: [{ name: COPY[lang].title, path: 'contact' }],
+          crumbs: [{ name: CRUMB[lang], path: 'contact' }],
         })}
       />
       <ContactPageClient lang={lang} />

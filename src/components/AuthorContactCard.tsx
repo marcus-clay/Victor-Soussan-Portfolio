@@ -36,7 +36,7 @@ export default function AuthorContactCard({ lang, message }: AuthorContactCardPr
             <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2">
               <Link
                 href={`/${lang}/contact`}
-                className="inline-flex min-h-11 items-center rounded-full bg-gray-900 px-5 text-sm font-medium text-white hover:bg-black active:scale-[0.97]"
+                className="btn-dark inline-flex min-h-11 items-center rounded-full bg-gray-900 px-5 text-sm font-medium text-white hover:bg-black active:scale-[0.97]"
                 style={{ transition: 'background-color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
               >
                 {TRANSLATIONS[lang].nav.contact}
