@@ -17,6 +17,10 @@ export interface CaseStudyShell {
   visual: string
   tone: string
   fit?: 'contain' | 'cover' | 'bleed'
+  /** Framing on the home strip when it differs: `contain` keeps the whole device above the caption, without the ground fade */
+  stripFit?: 'contain'
+  /** Picture for the home strip when it differs (a cut-out on a transparent ground, so the card's own ground shows) */
+  stripVisual?: string
   position?: string
 }
 
@@ -98,8 +102,11 @@ export const CASE_STUDY_SHELL: Record<string, CaseStudyShell> = {
   },
   riskos: {
     client: 'RiskOS',
-    visual: '/images/riskos/cover-riskos-ipad.webp',
+    visual: '/images/riskos/cover-riskos-ipad-v2.webp',
     tone: '#E8E8E8',
     fit: 'bleed',
+    // On the home strip the iPad stays whole: framed in the card, no fade over its lower edge
+    stripFit: 'contain',
+    stripVisual: '/images/riskos/cover-riskos-ipad-v2-cutout.webp',
   },
 }

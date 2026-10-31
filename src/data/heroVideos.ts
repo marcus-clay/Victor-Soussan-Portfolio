@@ -48,7 +48,7 @@ export const HERO_VIDEOS: Record<string, HeroVideo> = {
   // The video animates the phone; the tablet and the laptop are animated in code (PagesJaunesScreens)
   pagesjaunes: { src: '/videos/hero/pagesjaunes-v2.mp4', overlay: 'pagesjaunes' },
   dailymotion: { src: '/videos/hero/dailymotion-v2.mp4' },
-  // iPad Pro 11 in perspective (cover-riskos-ipad.webp, 2200 × 1467): corners measured on the picture
+  // iPad Pro 11 in perspective (cover-riskos-ipad-v2.webp, 2200 × 1467): corners measured on the picture
   riskos: {
     src: '/videos/hero/riskos.mp4',
     screen: { corners: [[325 / 2200, 212 / 1467], [1567 / 2200, 257 / 1467], [1865 / 2200, 1320 / 1467], [632 / 2200, 1325 / 1467]], ratio: 1.43 },

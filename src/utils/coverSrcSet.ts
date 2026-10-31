@@ -13,7 +13,7 @@ const RESPONSIVE_COVERS = new Set([
   '/images/francevae/thumbnail_france_vae.webp',
   '/images/pagesjaunes/Android%20wear/android_wear_thumbnail%2002.webp',
   '/images/pagesjaunes/Android%20wear/pj%20android%20wear%20ui%20modes.webp',
-  '/images/riskos/cover-riskos-ipad.webp',
+  '/images/riskos/cover-riskos-ipad-v2.webp',
   '/images/tessan/cover_tessan_app_v3.webp',
   '/images/tessan/cover_tessan_hub_v6.webp',
   '/images/tessan/cover_tessan_os.webp',

@@ -223,15 +223,23 @@ export default function ProjectFilmstrip({ lang }: ProjectFilmstripProps) {
           const quote = quotes[project.id] ?? null
           const titleId = `filmstrip-${project.id}-title`
           const summaryId = `filmstrip-${project.id}-summary`
-          const srcSet = coverSrcSet(shell.visual)
-          const photo = shell.fit === 'cover'
-          const bleed = shell.fit === 'bleed'
+          const srcSet = coverSrcSet((shell.stripVisual ?? shell.visual))
+          const fit = shell.stripFit ?? shell.fit
+          const photo = fit === 'cover'
+          const bleed = fit === 'bleed'
+          // A device framed whole in the card keeps its lower edge: no ground fade over it
+          const fade = !shell.stripFit
           // Light text on photographs (dark veil) and on dark grounds, dark text on light grounds
           const light = photo || isDarkGround(shell.tone)
           const video = HERO_VIDEOS[project.id]
           // The picture and the loop share one framing, so the video starts exactly where the picture was
           const mediaClass = `w-full h-full ${video ? HERO_HOVER_ZOOM : 'transition-transform duration-300 ease-media [@media(hover:hover)]:group-hover:scale-[1.02]'} ${
-            shell.fit === 'cover' || shell.fit === 'bleed' ? 'object-cover' : 'object-contain p-[4%] pb-[12%] md:pb-[14%]'
+            fit === 'cover' || fit === 'bleed'
+              ? 'object-cover'
+              : shell.stripFit
+                ? // a whole device kept clear of the caption: smaller, up and to the right of the card
+                  'object-contain object-[100%_0%] p-[4%] pb-[24%] pl-[32%] md:pb-[22%]'
+                : 'object-contain p-[4%] pb-[12%] md:pb-[14%]'
           }`
           const mediaStyle: React.CSSProperties = {
             transitionTimingFunction: easing,
@@ -249,10 +257,10 @@ export default function ProjectFilmstrip({ lang }: ProjectFilmstripProps) {
               style={{ backgroundColor: shell.tone, transitionTimingFunction: easing }}
             >
               <img
-                src={shell.visual}
+                src={(shell.stripVisual ?? shell.visual)}
                 srcSet={srcSet}
                 sizes={srcSet ? '(min-width: 1450px) 1215px, 86vw' : undefined}
-                {...imgDims(shell.visual)}
+                {...imgDims((shell.stripVisual ?? shell.visual))}
                 alt=""
                 draggable={false}
                 loading={i < 2 ? 'eager' : 'lazy'}
@@ -271,7 +279,7 @@ export default function ProjectFilmstrip({ lang }: ProjectFilmstripProps) {
                   dark veil for photographs), so the caption reads as part of the picture. A bleed
                   picture runs under the whole caption (summary and tags included), so its fade is
                   taller and stays solid behind the text before it lets the devices through. */}
-              <div
+              {fade && <div
                 aria-hidden="true"
                 className={`pointer-events-none absolute inset-x-0 bottom-0 z-[2] ${bleed ? 'h-[46%] sm:h-[68%]' : 'h-[46%]'}`}
                 style={{
@@ -281,7 +289,7 @@ export default function ProjectFilmstrip({ lang }: ProjectFilmstripProps) {
                       ? `linear-gradient(to top, ${shell.tone} 56%, ${shell.tone}00 100%)`
                       : `linear-gradient(to top, ${shell.tone} 12%, ${shell.tone}00 100%)`,
                 }}
-              />
+              />}
 
               {/* Hover: a white pill with an arrow, top right, like the case study cards of the reference.
                   Only where a pointer can hover; the whole card is already the link. */}

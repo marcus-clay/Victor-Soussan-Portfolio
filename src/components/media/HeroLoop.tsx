@@ -113,17 +113,6 @@ const SCREEN_W = 1000
 
 export default function HeroLoop({ src, mediaClassName, mediaStyle, mode = 'preview', active = false, screen, overlay }: HeroLoopProps) {
   const wrapRef = useRef<HTMLDivElement>(null)
-  // Size of the frame, for a loop projected onto a screen in perspective
-  const [box, setBox] = useState<{ w: number; h: number } | null>(null)
-  useEffect(() => {
-    const el = wrapRef.current
-    if (!screen || !el) return
-    const measure = () => setBox({ w: el.clientWidth, h: el.clientHeight })
-    measure()
-    const observer = new ResizeObserver(measure)
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [screen])
 
   // Where the cover picture is drawn inside the frame (its fit and padding), for screens animated in code.
   // Layout values (offset, client size), so the hover zoom does not change the measure.
@@ -131,7 +120,7 @@ export default function HeroLoop({ src, mediaClassName, mediaStyle, mode = 'prev
   useEffect(() => {
     const wrap = wrapRef.current
     const img = wrap?.parentElement?.querySelector<HTMLImageElement>('img')
-    if (!overlay || !wrap || !img) return
+    if ((!overlay && !screen) || !wrap || !img) return
     const measure = () => {
       if (!img.naturalWidth) return
       const cs = getComputedStyle(img)
@@ -139,7 +128,9 @@ export default function HeroLoop({ src, mediaClassName, mediaStyle, mode = 'prev
       const cw = img.clientWidth - pl - pr, ch = img.clientHeight - pt - pb
       const scale = (cs.objectFit === 'cover' ? Math.max : Math.min)(cw / img.naturalWidth, ch / img.naturalHeight)
       const w = img.naturalWidth * scale, h = img.naturalHeight * scale
-      setPicture({ x: img.offsetLeft - wrap.offsetLeft + pl + (cw - w) / 2, y: img.offsetTop - wrap.offsetTop + pt + (ch - h) / 2, w, h })
+      // object-position as shares of the free space (computed style gives percentages; 50% 50% by default)
+      const [px, py] = cs.objectPosition.split(' ').map((v) => (v.endsWith('%') ? parseFloat(v) / 100 : 0.5))
+      setPicture({ x: img.offsetLeft - wrap.offsetLeft + pl + (cw - w) * px, y: img.offsetTop - wrap.offsetTop + pt + (ch - h) * (py ?? px), w, h })
     }
     measure()
     img.addEventListener('load', measure)
@@ -149,7 +140,7 @@ export default function HeroLoop({ src, mediaClassName, mediaStyle, mode = 'prev
       img.removeEventListener('load', measure)
       observer.disconnect()
     }
-  }, [overlay])
+  }, [overlay, screen])
   const videoRef = useRef<HTMLVideoElement>(null)
 
   const [idle, setIdle] = useState(false)
@@ -383,7 +374,7 @@ export default function HeroLoop({ src, mediaClassName, mediaStyle, mode = 'prev
     <div ref={wrapRef} aria-hidden="true" className="pointer-events-none absolute inset-0">
       {screen
         ? mounted &&
-          box && (
+          picture && (
             // A layer the size of the frame carries the fade and the hover zoom; inside it, the video is laid
             // onto the screen of the device, at the angle of the picture
             <div className={frameClass} style={{ ...frameStyle, objectFit: undefined }}>
@@ -396,7 +387,8 @@ export default function HeroLoop({ src, mediaClassName, mediaStyle, mode = 'prev
                   transform: quadMatrix(
                     SCREEN_W,
                     SCREEN_W / screen.ratio,
-                    screen.corners.map(([x, y]) => [x * box.w, y * box.h] as [number, number]),
+                    // corners are shares of the cover picture, wherever the frame draws it (fit, padding)
+                    screen.corners.map(([x, y]) => [picture.x + x * picture.w, picture.y + y * picture.h] as [number, number]),
                   ),
                 }}
               >
