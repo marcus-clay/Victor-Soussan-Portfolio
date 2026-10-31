@@ -269,10 +269,10 @@ const ConsultingPage: React.FC<ConsultingPageProps> = ({ lang, onContact, onProj
 
           <button
             onClick={onContact}
-            className="inline-flex items-center gap-2 min-h-11 px-5 rounded-full bg-gray-900 hover:bg-black text-white text-sm font-medium active:scale-[0.97] transition-[background-color,transform] duration-200 ease-out"
+            className="btn-dark inline-flex items-center gap-2 min-h-11 px-5 rounded-full bg-gray-900 hover:bg-black text-white text-sm font-medium active:scale-[0.97] transition-[background-color,transform] duration-200 ease-out"
           >
             {t.cta_primary}
-            <ArrowRight size={14} />
+            <ArrowRight className="btn-arrow" size={14} />
           </button>
         </div>
 
@@ -492,10 +492,10 @@ const ConsultingPage: React.FC<ConsultingPageProps> = ({ lang, onContact, onProj
           <div className="mt-8">
             <button
               onClick={onContact}
-              className="inline-flex items-center gap-2 min-h-11 px-5 rounded-full bg-gray-900 hover:bg-black text-white text-sm font-medium active:scale-[0.97] transition-[background-color,transform] duration-200 ease-out"
+              className="btn-dark inline-flex items-center gap-2 min-h-11 px-5 rounded-full bg-gray-900 hover:bg-black text-white text-sm font-medium active:scale-[0.97] transition-[background-color,transform] duration-200 ease-out"
             >
               {t.cta_primary}
-              <ArrowRight size={14} />
+              <ArrowRight className="btn-arrow" size={14} />
             </button>
           </div>
         </div>
@@ -597,11 +597,11 @@ const ConsultingPage: React.FC<ConsultingPageProps> = ({ lang, onContact, onProj
 
           <button
             onClick={onContact}
-            className="inline-flex items-center gap-2 min-h-11 px-5 rounded-full bg-gray-900 hover:bg-black text-white text-sm font-medium active:scale-[0.97] transition-[background-color,transform] duration-200 ease-out mb-4"
+            className="btn-dark inline-flex items-center gap-2 min-h-11 px-5 rounded-full bg-gray-900 hover:bg-black text-white text-sm font-medium active:scale-[0.97] transition-[background-color,transform] duration-200 ease-out mb-4"
           >
             <Mail size={14} />
             {t.cta_button}
-            <ArrowRight size={14} />
+            <ArrowRight className="btn-arrow" size={14} />
           </button>
 
           <p className="text-sm text-gray-500">

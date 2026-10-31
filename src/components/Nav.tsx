@@ -284,7 +284,7 @@ export default function Nav({ lang }: { lang: Lang }) {
             <Link
               href={`/${lang}/contact`}
               onClick={closeMenu}
-              className="nav-cta ml-0.5 sm:ml-1 inline-flex min-h-10 items-center px-3.5 sm:px-4 text-sm font-medium rounded-full bg-gray-900 text-white hover:bg-black active:scale-[0.97] whitespace-nowrap"
+              className="btn-dark nav-cta ml-0.5 sm:ml-1 inline-flex min-h-10 items-center px-3.5 sm:px-4 text-sm font-medium rounded-full bg-gray-900 text-white hover:bg-black active:scale-[0.97] whitespace-nowrap"
               style={{ transition: 'background-color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
             >
               {content.contact}

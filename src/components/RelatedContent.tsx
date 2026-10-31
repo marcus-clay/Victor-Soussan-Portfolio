@@ -162,7 +162,7 @@ function Cover({ cover, loop }: { cover: NonNullable<RelatedItem['cover']>; loop
         className={mediaClass}
         style={mediaStyle}
       />
-      {loop && <HeroLoop src={loop.src} mediaClassName={mediaClass} mediaStyle={mediaStyle} screen={loop.screen} />}
+      {loop && <HeroLoop src={loop.src} mediaClassName={mediaClass} mediaStyle={mediaStyle} screen={loop.screen} overlay={loop.overlay} />}
       <ArrowPill size="sm" />
     </div>
   )

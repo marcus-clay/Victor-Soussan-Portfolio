@@ -136,11 +136,11 @@ export default function TestimonialsPageClient({ lang }: { lang: 'en' | 'fr' }) 
           href="https://www.linkedin.com/in/victorsoussan-product-design/"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex min-h-11 items-center gap-1.5 text-sm font-medium text-gray-900 underline decoration-gray-300 underline-offset-4
+          className="inline-flex min-h-11 items-center gap-1.5 text-sm font-medium text-gray-900
             transition-[color,transform] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)]
             [@media(hover:hover)]:hover:text-gray-500 active:scale-[0.97]"
         >
-          {t.linkedin_cta_button}
+          <span className="link-line">{t.linkedin_cta_button}</span>
           <ArrowUpRight size={12} weight="bold" aria-hidden="true" />
         </a>
       </section>

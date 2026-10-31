@@ -55,7 +55,7 @@ const ContactCTASection: React.FC<ContactCTASectionProps> = ({ lang, content }) 
       <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
         <a
           href={`mailto:${EMAIL}`}
-          className="inline-flex min-h-11 items-center rounded-full bg-gray-900 px-6 text-sm font-medium text-white shadow-sm transition-[background-color,box-shadow,transform] duration-150 hover:bg-black hover:shadow-md active:scale-[0.97] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900"
+          className="btn-dark inline-flex min-h-11 items-center rounded-full bg-gray-900 px-6 text-sm font-medium text-white shadow-sm transition-[background-color,box-shadow,transform] duration-150 hover:bg-black hover:shadow-md active:scale-[0.97] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900"
         >
           {content.contact.email}
         </a>

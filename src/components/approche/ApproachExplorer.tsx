@@ -163,9 +163,9 @@ export default function ApproachExplorer({ lang }: { lang: Language }) {
                     {' '}
                     <Link
                       href={`/${lang}${step.proof.link.href}`}
-                      className="group/link inline-flex items-center gap-1 font-medium text-gray-900 underline decoration-gray-300 underline-offset-4 [@media(hover:hover)]:hover:decoration-gray-900"
+                      className="group/link inline-flex items-center gap-1 font-medium text-gray-900"
                     >
-                      {step.proof.link.label}
+                      <span className="link-line">{step.proof.link.label}</span>
                       <ArrowRight size={12} weight="bold" aria-hidden="true" className="transition-transform duration-200 ease-out [@media(hover:hover)]:group-hover/link:translate-x-0.5" />
                     </Link>
                   </>

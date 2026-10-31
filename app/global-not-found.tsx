@@ -33,7 +33,7 @@ export default function GlobalNotFound() {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
               <a
                 href="/en"
-                className="inline-flex items-center gap-2 bg-gray-900 text-white px-6 py-3 rounded-full font-medium hover:bg-black transition-colors shadow-sm hover:shadow-md"
+                className="btn-dark inline-flex items-center gap-2 bg-gray-900 text-white px-6 py-3 rounded-full font-medium hover:bg-black transition-colors shadow-sm hover:shadow-md"
               >
                 Portfolio
               </a>

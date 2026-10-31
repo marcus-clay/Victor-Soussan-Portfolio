@@ -536,10 +536,10 @@ export const TessanChapterPage: React.FC<TessanPageProps & { variant: TessanVari
               </div>
               <Link
                 href={`/${lang}/project/${PROJECT_ID[teaser.id]}`}
-                className="mt-8 inline-flex items-center gap-2 min-h-11 px-5 rounded-full bg-gray-900 hover:bg-black text-white text-sm font-medium shadow-sm hover:shadow-md active:scale-[0.97] transition-[background-color,box-shadow,transform] duration-150"
+                className="btn-dark mt-8 inline-flex items-center gap-2 min-h-11 px-5 rounded-full bg-gray-900 hover:bg-black text-white text-sm font-medium shadow-sm hover:shadow-md active:scale-[0.97] transition-[background-color,box-shadow,transform] duration-150"
               >
                 {t.hub.read}
-                <ArrowRight size={16} aria-hidden="true" />
+                <ArrowRight className="btn-arrow" size={16} aria-hidden="true" />
               </Link>
             </div>
           </section>

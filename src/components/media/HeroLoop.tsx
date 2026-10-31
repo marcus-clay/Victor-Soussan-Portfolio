@@ -37,6 +37,8 @@
 import { useEffect, useRef, useState } from 'react'
 import type { CSSProperties } from 'react'
 import { HOVER_ZOOM_EASE, HOVER_ZOOM_MS, type HeroVideo } from '@/data/heroVideos'
+import { quadMatrix } from '@/utils/quadMatrix'
+import PagesJaunesScreens from '@/components/media/PagesJaunesScreens'
 
 // ---------------------------------------------------------------------------
 // Playback budget: at most MAX_PLAYING loops decode at once, whatever the page
@@ -101,37 +103,15 @@ interface HeroLoopProps {
   active?: boolean
   /** The device screen the loop plays in, for a cover in perspective (see HeroVideo) */
   screen?: HeroVideo['screen']
+  /** Screens of the cover animated in code over the loop (see HeroVideo) */
+  overlay?: HeroVideo['overlay']
 }
 
 /** Base size of the projected screen; the transform scales it to the corners */
 const SCREEN_W = 1000
 
-/**
- * matrix3d that maps a w × h box (origin top left) onto four points: the projective transform of a
- * rectangle onto any quadrilateral, so a flat video sits on a screen seen at an angle.
- */
-function quadMatrix(w: number, h: number, [p0, p1, p2, p3]: [number, number][]) {
-  const [x0, y0] = p0
-  const [x1, y1] = p1
-  const [x2, y2] = p2
-  const [x3, y3] = p3
-  const dx1 = x1 - x2
-  const dx2 = x3 - x2
-  const dy1 = y1 - y2
-  const dy2 = y3 - y2
-  const sx = x0 - x1 + x2 - x3
-  const sy = y0 - y1 + y2 - y3
-  const den = dx1 * dy2 - dx2 * dy1
-  const g = (sx * dy2 - dx2 * sy) / den
-  const k = (dx1 * sy - sx * dy1) / den
-  const a = x1 - x0 + g * x1
-  const b = x3 - x0 + k * x3
-  const d = y1 - y0 + g * y1
-  const e = y3 - y0 + k * y3
-  return `matrix3d(${[a / w, d / w, 0, g / w, b / h, e / h, 0, k / h, 0, 0, 1, 0, x0, y0, 0, 1].join(',')})`
-}
 
-export default function HeroLoop({ src, mediaClassName, mediaStyle, mode = 'preview', active = false, screen }: HeroLoopProps) {
+export default function HeroLoop({ src, mediaClassName, mediaStyle, mode = 'preview', active = false, screen, overlay }: HeroLoopProps) {
   const wrapRef = useRef<HTMLDivElement>(null)
   // Size of the frame, for a loop projected onto a screen in perspective
   const [box, setBox] = useState<{ w: number; h: number } | null>(null)
@@ -144,6 +124,32 @@ export default function HeroLoop({ src, mediaClassName, mediaStyle, mode = 'prev
     observer.observe(el)
     return () => observer.disconnect()
   }, [screen])
+
+  // Where the cover picture is drawn inside the frame (its fit and padding), for screens animated in code.
+  // Layout values (offset, client size), so the hover zoom does not change the measure.
+  const [picture, setPicture] = useState<{ x: number; y: number; w: number; h: number } | null>(null)
+  useEffect(() => {
+    const wrap = wrapRef.current
+    const img = wrap?.parentElement?.querySelector<HTMLImageElement>('img')
+    if (!overlay || !wrap || !img) return
+    const measure = () => {
+      if (!img.naturalWidth) return
+      const cs = getComputedStyle(img)
+      const pl = parseFloat(cs.paddingLeft), pr = parseFloat(cs.paddingRight), pt = parseFloat(cs.paddingTop), pb = parseFloat(cs.paddingBottom)
+      const cw = img.clientWidth - pl - pr, ch = img.clientHeight - pt - pb
+      const scale = (cs.objectFit === 'cover' ? Math.max : Math.min)(cw / img.naturalWidth, ch / img.naturalHeight)
+      const w = img.naturalWidth * scale, h = img.naturalHeight * scale
+      setPicture({ x: img.offsetLeft - wrap.offsetLeft + pl + (cw - w) / 2, y: img.offsetTop - wrap.offsetTop + pt + (ch - h) / 2, w, h })
+    }
+    measure()
+    img.addEventListener('load', measure)
+    const observer = new ResizeObserver(measure)
+    observer.observe(wrap)
+    return () => {
+      img.removeEventListener('load', measure)
+      observer.disconnect()
+    }
+  }, [overlay])
   const videoRef = useRef<HTMLVideoElement>(null)
 
   const [idle, setIdle] = useState(false)
@@ -281,6 +287,12 @@ export default function HeroLoop({ src, mediaClassName, mediaStyle, mode = 'prev
   const canPlay = dataOk && (!reduced || hoverOnly)
   const mounted = idle && near && canPlay && !failed
 
+  // Each time the loop shows, the screens start their cycle from the top
+  const [run, setRun] = useState(0)
+  useEffect(() => {
+    if (shown) setRun((r) => r + 1)
+  }, [shown])
+
   const restingCard = active && partly && !reduced
   const wants = mounted && (mode === 'auto' ? visible : canHover ? hovering || restingCard : visible)
   wantsRef.current = wants
@@ -393,6 +405,12 @@ export default function HeroLoop({ src, mediaClassName, mediaStyle, mode = 'prev
             </div>
           )
         : video}
+      {overlay === 'pagesjaunes' && mounted && picture && (
+        // Same fade and hover zoom as the video, above it
+        <div className={frameClass} style={{ ...frameStyle, objectFit: undefined, zIndex: 2 }}>
+          <PagesJaunesScreens box={picture} run={run} />
+        </div>
+      )}
     </div>
   )
 }

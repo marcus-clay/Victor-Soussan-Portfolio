@@ -232,7 +232,7 @@ function ProjectCard({
           className={mediaClass}
         />
         {/* Hero loop over the cover, only for projects whose file exists. The cover is its poster and fallback. */}
-        {video && <HeroLoop src={video.src} mediaClassName={mediaClass} screen={video.screen} />}
+        {video && <HeroLoop src={video.src} mediaClassName={mediaClass} screen={video.screen} overlay={video.overlay} />}
         <ArrowPill size="sm" />
       </div>
 

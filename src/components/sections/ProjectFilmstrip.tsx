@@ -265,7 +265,7 @@ export default function ProjectFilmstrip({ lang }: ProjectFilmstripProps) {
                   picture (same fit, same hover zoom), sits under the ground fade and the caption, plays while
                   the pointer is on the card or the strip rests on it (centred card on touch), and has no control. */}
               {/* Plays on hover (centred on touch screens), never on its own as the strip rests */}
-              {video && <HeroLoop src={video.src} mediaClassName={mediaClass} mediaStyle={mediaStyle} screen={video.screen} />}
+              {video && <HeroLoop src={video.src} mediaClassName={mediaClass} mediaStyle={mediaStyle} screen={video.screen} overlay={video.overlay} />}
 
               {/* Ground fade: the image dissolves into its own tone where the text sits (or into a
                   dark veil for photographs), so the caption reads as part of the picture. A bleed

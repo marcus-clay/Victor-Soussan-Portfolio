@@ -1,4 +1,5 @@
-import { ArrowUpRight } from '@phosphor-icons/react/dist/ssr'
+import Link from 'next/link'
+import { ArrowRight, ArrowUpRight } from '@phosphor-icons/react/dist/ssr'
 import { ActHeader } from '@/components/case-study/ActSection'
 import RelatedContent, { type RelatedItem } from '@/components/RelatedContent'
 import { TRANSLATIONS } from '@/data/translations'
@@ -13,7 +14,7 @@ import { getTestimonials } from '@/data/testimonialsData'
 import { ClientsStrip } from '@/views/ExpertiseSections'
 import { CTA_SECTION, type Language } from '@/data/approcheData'
 import { V2_HERO, V2_JOB, V2_RESULTS, V2_SHORT_TOC } from '@/data/approcheV2Data'
-import { ArrowLink, CtaButton, TEXT_LINK } from '@/components/approche/ApproachLinks'
+import { CtaButton, TEXT_LINK } from '@/components/approche/ApproachLinks'
 
 /**
  * Approach, second version, for a one-minute read. Three questions in the order a reader asks them: what do
@@ -55,13 +56,23 @@ export default function ApprocheV2Page({ lang, related }: { lang: Language; rela
       <section id="results" aria-label={res.title} className="scroll-mt-24">
         <ActHeader index="02" title={res.title} lead={res.lead} />
         <div className="act-wide pb-12 md:pb-20">
+          {/* Each result is one row and the whole row opens the case study: a grey ground on hover and an
+              arrow that slides in at the right (always shown on touch screens) */}
           <ul className="list-none divide-y divide-gray-100 border-y border-gray-100 p-0">
             {res.facts.map((fact) => (
-              <Reveal as="li" key={fact.link.label} className="grid grid-cols-1 gap-y-1 py-4 md:grid-cols-[14rem_1fr] md:gap-x-6 md:py-5">
-                <div>
-                  <ArrowLink href={`/${lang}${fact.link.href}`}>{fact.link.label}</ArrowLink>
-                </div>
-                <p className="max-w-[62ch] text-base text-gray-600 md:pt-2.5">{fact.text}</p>
+              <Reveal as="li" key={fact.link.label}>
+                <Link
+                  href={`/${lang}${fact.link.href}`}
+                  className="group -mx-3 grid grid-cols-[1fr_auto] items-center gap-x-4 gap-y-1 rounded-lg px-3 py-4 transition-[background-color,transform] duration-150 ease-out active:scale-[0.99] active:bg-gray-100 md:grid-cols-[14rem_1fr_auto] md:gap-x-6 md:py-5 [@media(hover:hover)]:hover:bg-gray-100"
+                >
+                  <span className="text-sm font-medium text-gray-900">{fact.link.label}</span>
+                  <ArrowRight
+                    size={14}
+                    aria-hidden="true"
+                    className="col-start-2 row-start-1 text-gray-500 transition-[opacity,transform] duration-200 ease-out md:col-start-3 [@media(hover:hover)]:-translate-x-1 [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-hover:translate-x-0 [@media(hover:hover)]:group-hover:opacity-100 [@media(hover:hover)]:group-focus-visible:translate-x-0 [@media(hover:hover)]:group-focus-visible:opacity-100"
+                  />
+                  <span className="col-span-2 max-w-[62ch] text-base text-gray-600 md:col-span-1 md:col-start-2 md:row-start-1">{fact.text}</span>
+                </Link>
               </Reveal>
             ))}
           </ul>
@@ -95,7 +106,7 @@ export default function ApprocheV2Page({ lang, related }: { lang: Language; rela
           <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
             <CtaButton lang={lang} />
             <a href="https://www.linkedin.com/in/victorsoussan-product-design/" target="_blank" rel="noopener noreferrer" className={TEXT_LINK}>
-              LinkedIn
+              <span className="link-line">LinkedIn</span>
               <ArrowUpRight
                 size={12}
                 weight="bold"

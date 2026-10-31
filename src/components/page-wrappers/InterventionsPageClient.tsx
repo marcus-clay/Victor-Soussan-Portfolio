@@ -174,10 +174,10 @@ export default function InterventionsPageClient({ lang }: { lang: 'en' | 'fr' })
             <div className="flex flex-col sm:flex-row gap-3">
               <a
                 href={`mailto:${EMAIL}?subject=${encodeURIComponent(isEn ? 'Speaking engagement inquiry' : 'Demande d\u2019intervention')}`}
-                className="group inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gray-900 text-white font-medium text-sm hover:bg-gray-800 ring-1 ring-black shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] active:scale-[0.97] transition-[background-color,transform] duration-200 ease-out"
+                className="btn-dark group inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gray-900 text-white font-medium text-sm hover:bg-gray-800 ring-1 ring-black shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] active:scale-[0.97] transition-[background-color,transform] duration-200 ease-out"
               >
                 {isEn ? 'Send an email' : 'Envoyer un email'}
-                <ArrowUpRight size={15} weight="bold" className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200 ease-out" />
+                <ArrowUpRight size={15} weight="bold" className="btn-arrow-up group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200 ease-out" />
               </a>
               <a
                 href={CALENDAR_URL}

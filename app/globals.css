@@ -710,6 +710,83 @@ a[class*="hover:text-gray-900"]:active { color: #111827; }
   }
 }
 
+/* Black pills (.btn-dark): on hover the pill lifts 1px, its shadow deepens and its arrow moves 2px the way it
+   points (.btn-arrow right, .btn-arrow-up up and right); on press it sinks. `translate` and `scale` are
+   individual properties, so they compose with the Tailwind transform utilities. Doubled selector: wins over
+   the transition utilities on the element. Hover only with a mouse. */
+.btn-dark.btn-dark {
+  transition:
+    background-color 150ms ease,
+    box-shadow 200ms var(--ease-out-expo),
+    translate 200ms var(--ease-out-expo),
+    scale 160ms var(--ease-out-expo),
+    transform 160ms var(--ease-out-expo);
+}
+.btn-arrow,
+.btn-arrow-up {
+  transition: translate 200ms var(--ease-out-expo);
+}
+@media (hover: hover) and (pointer: fine) {
+  .btn-dark.btn-dark:hover {
+    translate: 0 -1px;
+    box-shadow: 0 8px 20px -8px rgba(17, 24, 39, 0.5);
+  }
+  .btn-dark:hover .btn-arrow { translate: 2px 0; }
+  .btn-dark:hover .btn-arrow-up { translate: 2px -2px; }
+}
+.btn-dark.btn-dark:active {
+  translate: 0 0;
+  box-shadow: 0 2px 6px -2px rgba(17, 24, 39, 0.4);
+}
+
+/* Text links (.link-line on the label): a quiet line at rest; on hover an ink line draws over it from the left,
+   and leaves to the right when the pointer goes, as the footer links do. The line follows wrapped text. */
+.link-line {
+  background-image: linear-gradient(currentColor, currentColor), linear-gradient(#d1d5db, #d1d5db);
+  background-size: 0% 1px, 100% 1px;
+  background-position: 100% 100%, 0 100%;
+  background-repeat: no-repeat;
+  padding-bottom: 3px;
+  transition: background-size 250ms var(--ease-out-expo);
+}
+a:focus-visible .link-line {
+  background-size: 100% 1px, 100% 1px;
+  background-position: 0 100%, 0 100%;
+}
+@media (hover: hover) and (pointer: fine) {
+  a:hover .link-line {
+    background-size: 100% 1px, 100% 1px;
+    background-position: 0 100%, 0 100%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .link-line { transition: none; }
+}
+
+/* PagesJaunes cover (PagesJaunesScreens): one 9s cycle. The laptop panel goes walking -> car -> transit
+   (cross-fade with a 2px blur, the walking panel being the picture's own); the tablet types a query (steps,
+   one per letter), presses search, then clears. */
+.pj-mode { opacity: 0; filter: blur(2px); animation: pj-mode 9s cubic-bezier(0.22, 1, 0.36, 1) infinite; animation-delay: calc(var(--n) * 3s - 0.4s); }
+@keyframes pj-mode {
+  0% { opacity: 0; filter: blur(2px); }
+  5%, 33% { opacity: 1; filter: blur(0); }
+  38%, 100% { opacity: 0; filter: blur(2px); }
+}
+.pj-type { display: inline-block; max-width: 0; animation: pj-type 9s steps(var(--chars), end) infinite; }
+@keyframes pj-type {
+  0%, 8% { max-width: 0; }
+  30%, 88% { max-width: 100%; }
+  92%, 100% { max-width: 0; }
+}
+.pj-caret { animation: pj-caret 1s steps(1, end) infinite; }
+@keyframes pj-caret { 50% { opacity: 0; } }
+.pj-press { opacity: 0; animation: pj-press 9s ease-out infinite; }
+@keyframes pj-press {
+  0%, 38% { opacity: 0; }
+  39.5% { opacity: 0.14; }
+  43%, 100% { opacity: 0; }
+}
+
 /* Reading progress (src/components/ui/ReadingProgress.tsx): scroll-driven, no JS. Not shown
    where scroll-driven animations are missing. */
 .reading-progress {

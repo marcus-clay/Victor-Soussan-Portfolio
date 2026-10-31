@@ -488,7 +488,7 @@ export default function AboutPageRedesign({
                   <a
                     href={`/cv/CV-Victor-Soussan-2026-${lang.toUpperCase()}.pdf`}
                     download
-                    className="inline-flex items-center gap-1.5 min-h-11 px-4 rounded-full text-sm font-medium bg-gray-900 text-white [@media(hover:hover)]:hover:bg-black active:scale-[0.97]"
+                    className="btn-dark inline-flex items-center gap-1.5 min-h-11 px-4 rounded-full text-sm font-medium bg-gray-900 text-white [@media(hover:hover)]:hover:bg-black active:scale-[0.97]"
                     style={{ transition: 'background-color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
                   >
                     <DownloadSimple size={14} />

@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import Reveal from '@/components/ui/Reveal'
+import HeadingAnchor from '@/components/ui/HeadingAnchor'
 
 interface ActHeaderProps {
   /** Act number ("01"): the order of a case study carries meaning, so it is shown */
@@ -23,7 +24,10 @@ export function ActHeader({ index, title, lead }: ActHeaderProps) {
         <Reveal as="span" className="block md:absolute md:left-[var(--pad)] md:top-[3.95rem] mb-3 md:mb-0 text-xs font-medium text-gray-500 tabular-nums">
           {index}
         </Reveal>
-        <Reveal as="h2" className="text-subhead text-gray-900 max-w-[26ch]">{title}</Reveal>
+        <Reveal as="h2" className="group/h text-subhead text-gray-900 max-w-[26ch]">
+          {title}
+          <HeadingAnchor />
+        </Reveal>
         {lead && <Reveal as="p" className="mt-5 text-lead-lg text-gray-900 max-w-[40ch]">{lead}</Reveal>}
       </div>
     </>
@@ -50,7 +54,10 @@ export function ActTitle({ index, title }: { index: string; title: string }) {
       <Reveal as="span" className="block md:absolute md:left-[var(--pad)] md:top-[3.95rem] mb-3 md:mb-0 text-xs font-medium text-gray-500 tabular-nums">
         {index}
       </Reveal>
-      <Reveal as="h2" className="text-subhead text-gray-900 max-w-[26ch] mb-5">{title}</Reveal>
+      <Reveal as="h2" className="group/h text-subhead text-gray-900 max-w-[26ch] mb-5">
+        {title}
+        <HeadingAnchor />
+      </Reveal>
     </>
   )
 }
