@@ -115,6 +115,20 @@ const nextConfig: NextConfig = {
     // Route renames: work -> projets, signals -> ressources
     { source: '/:lang/work', destination: '/:lang/projets', permanent: true },
     { source: '/:lang/signals', destination: '/:lang/ressources', permanent: true },
+    // Templates (/ressources/<slug>): a slug reached under the other language moves to its own address.
+    // Keep in step with TEMPLATE_ENTRIES in src/data/templatesData.ts.
+    { source: '/en/ressources/cadrage-de-conception', destination: '/en/ressources/design-scoping', permanent: true },
+    { source: '/en/ressources/synchro-po-design', destination: '/en/ressources/po-design-sync', permanent: true },
+    { source: '/en/ressources/atelier-design-teardown', destination: '/en/ressources/design-teardown-workshop', permanent: true },
+    { source: '/en/ressources/checklist-conception-fonctionnalite', destination: '/en/ressources/feature-design-checklist', permanent: true },
+    { source: '/en/ressources/decouper-une-interface', destination: '/en/ressources/ui-slicing', permanent: true },
+    { source: '/en/ressources/statuts-fichiers-figma', destination: '/en/ressources/figma-file-status', permanent: true },
+    { source: '/fr/ressources/design-scoping', destination: '/fr/ressources/cadrage-de-conception', permanent: true },
+    { source: '/fr/ressources/po-design-sync', destination: '/fr/ressources/synchro-po-design', permanent: true },
+    { source: '/fr/ressources/design-teardown-workshop', destination: '/fr/ressources/atelier-design-teardown', permanent: true },
+    { source: '/fr/ressources/feature-design-checklist', destination: '/fr/ressources/checklist-conception-fonctionnalite', permanent: true },
+    { source: '/fr/ressources/ui-slicing', destination: '/fr/ressources/decouper-une-interface', permanent: true },
+    { source: '/fr/ressources/figma-file-status', destination: '/fr/ressources/statuts-fichiers-figma', permanent: true },
     // Guide: redirect FR slugs on EN path to localized EN slugs
     { source: '/en/guide/claude-code/comprendre', destination: '/en/guide/claude-code/understanding', permanent: true },
     { source: '/en/guide/claude-code/environnement', destination: '/en/guide/claude-code/setup', permanent: true },

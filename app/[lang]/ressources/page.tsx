@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import RessourcesPageClient from '@/components/page-wrappers/RessourcesPageClient'
 import JsonLd from '@/components/JsonLd'
 import { SIGNALS } from '@/data/signalsData'
+import { TEMPLATE_ENTRIES, templatePath } from '@/data/templatesData'
 import { buildMetadata, itemListLd, pageLd, pageUrl, toLang } from '@/lib/seo'
 
 type Props = { params: Promise<{ lang: string }> }
@@ -34,12 +35,13 @@ export default async function Page({ params }: Props) {
           description: COPY[lang].description,
           crumbs: [{ name: COPY[lang].title, path: 'ressources' }],
         }),
-        itemListLd(
-          SIGNALS.map((sig) => ({
+        itemListLd([
+          ...SIGNALS.map((sig) => ({
             name: lang === 'fr' ? sig.title_fr : sig.title_en,
             url: pageUrl(lang, `signal/${sig.id}`),
-          }))
-        )]}
+          })),
+          ...TEMPLATE_ENTRIES.map((t) => ({ name: t.title[lang], url: pageUrl(lang, templatePath(t, lang)) })),
+        ])]}
       />
       <RessourcesPageClient lang={lang} />
     </>

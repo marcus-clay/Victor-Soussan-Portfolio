@@ -8,7 +8,7 @@ import {
   FigmaLogo as Figma,
 } from '@phosphor-icons/react';
 import type { Language } from './translations';
-import { TEMPLATE_ENTRIES } from './templatesData';
+import { TEMPLATE_ENTRIES, templatePath } from './templatesData';
 import type { ResourceArt } from './templatesData';
 
 export type { ResourceArt } from './templatesData';
@@ -36,9 +36,9 @@ const ICON_BY_ART: Record<ResourceArt, React.ReactNode> = {
 export const getResources = (lang: Language): Resource[] =>
   TEMPLATE_ENTRIES.map((t) => ({
     title: t.title[lang],
-    type: "Notion",
+    type: lang === 'fr' ? 'Modèle' : 'Template',
     art: t.art,
     desc: t.desc[lang],
-    link: t.link,
+    link: `/${lang}/${templatePath(t, lang)}`,
     icon: ICON_BY_ART[t.art],
   }));

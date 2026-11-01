@@ -31,8 +31,8 @@ export interface ContentItem {
   body_long_en?: string
   body_long_fr?: string
   heroImage?: string
-  // For templates (external links)
-  link?: string
+  // For templates: the address under /ressources/, one per language
+  slug?: { en: string; fr: string }
   // For guides
   chapterCount?: number
 }
@@ -82,7 +82,7 @@ const GUIDE_SHIP_TO_SHOW_ITEM: ContentItem = {
   category: 'ai',
 }
 
-// Templates: titles, descriptions and links come from templatesData, shared with the About cards.
+// Templates: titles, descriptions and addresses come from templatesData, shared with the About cards.
 const TEMPLATES: ContentItem[] = TEMPLATE_ENTRIES.map((t) => ({
   id: t.id,
   type: 'template' as const,
@@ -92,7 +92,7 @@ const TEMPLATES: ContentItem[] = TEMPLATE_ENTRIES.map((t) => ({
   excerpt_fr: t.desc.fr,
   date: '2024-01',
   category: t.category,
-  link: t.link,
+  slug: t.slug,
 }))
 
 // --- Exports ---

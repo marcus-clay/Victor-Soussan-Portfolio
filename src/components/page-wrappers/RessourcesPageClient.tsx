@@ -57,7 +57,7 @@ export default function RessourcesPageClient({ lang }: { lang: 'en' | 'fr' }) {
   ]
 
   const getHref = (item: ContentItem): string => {
-    if (item.type === 'template' && item.link) return item.link
+    if (item.type === 'template' && item.slug) return `/${lang}/ressources/${item.slug[lang]}`
     if (item.type === 'guide') {
       if (item.id === 'guide-ship-to-show') return `/${lang}/guide/ship-to-show`
       return `/${lang}/guide/claude-code`
@@ -65,7 +65,8 @@ export default function RessourcesPageClient({ lang }: { lang: 'en' | 'fr' }) {
     return `/${lang}/signal/${item.id}`
   }
 
-  const isExternal = (item: ContentItem) => item.type === 'template'
+  // Every item lives on the site now that the templates have their own pages
+  const isExternal = (_item: ContentItem) => false
 
   const renderRow = (item: ContentItem) => {
     const href = getHref(item)

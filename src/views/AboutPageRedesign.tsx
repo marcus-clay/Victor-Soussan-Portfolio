@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
+import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowUpRight, ArrowRight, X, DownloadSimple, Copy, Check } from '@phosphor-icons/react'
 import TestimonialsLink from '@/components/testimonials/TestimonialsLink'
@@ -320,11 +321,9 @@ export default function AboutPageRedesign({
 
           <CardCarousel labels={t.carousels.resources} itemClassName="w-[78vw] max-w-[22rem] md:w-[22rem]">
             {resources.map((res) => (
-              <a
+              <Link
                 key={res.link}
                 href={res.link}
-                target="_blank"
-                rel="noopener noreferrer"
                 draggable={false}
                 className="group flex flex-col overflow-hidden rounded-2xl border border-gray-100 bg-white transition-[border-color,transform] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)]:hover:border-gray-200 active:scale-[0.985] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gray-900"
               >
@@ -348,10 +347,10 @@ export default function AboutPageRedesign({
                 <div className="flex flex-1 flex-col p-5 pt-4 md:p-6 md:pt-5">
                   <div className="flex items-start justify-between gap-3">
                     <p className="text-xs text-gray-500">{res.type}</p>
-                    <ArrowUpRight
+                    <ArrowRight
                       size={16}
                       aria-hidden="true"
-                      className="shrink-0 text-gray-900 transition-transform duration-200 ease-out [@media(hover:hover)]:group-hover:-translate-y-0.5 [@media(hover:hover)]:group-hover:translate-x-0.5"
+                      className="shrink-0 text-gray-900 transition-transform duration-200 ease-out [@media(hover:hover)]:group-hover:translate-x-0.5"
                     />
                   </div>
                   <h3 className="mt-2 text-title-3 text-gray-900 transition-colors duration-150 [@media(hover:hover)]:group-hover:text-gray-500">
@@ -359,7 +358,7 @@ export default function AboutPageRedesign({
                   </h3>
                   <p className="mt-3 text-sm text-gray-600">{res.desc}</p>
                 </div>
-              </a>
+              </Link>
             ))}
           </CardCarousel>
 
