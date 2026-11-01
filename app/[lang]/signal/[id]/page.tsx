@@ -58,7 +58,7 @@ export default async function SignalPage({ params }: Props) {
             keywords: [section, 'Product Design', 'Victor Soussan'],
           }),
           breadcrumbLd(lang, [
-            { name: lang === 'fr' ? 'Ressources' : 'Resources', path: 'ressources' },
+            { name: 'Blog', path: 'blog' },
             { name: title, path: `signal/${id}` },
           ]),
         ]}

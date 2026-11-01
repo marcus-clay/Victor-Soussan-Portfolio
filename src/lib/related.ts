@@ -20,6 +20,7 @@ function toRelatedItem(item: ContentItem, lang: 'en' | 'fr'): RelatedItem {
     label: category ? `${kind} · ${category}` : kind,
     description: lang === 'fr' ? item.excerpt_fr : item.excerpt_en,
     cover: item.heroImage ? { src: item.heroImage } : undefined,
+    thumb: item.type === 'template' ? { template: item.id, lang } : undefined,
   }
 }
 

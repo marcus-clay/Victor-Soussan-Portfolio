@@ -149,7 +149,7 @@ export default function InterventionsPageClient({ lang }: { lang: 'en' | 'fr' })
                   <ArrowRight size={14} />
                 </Link>
                 <Link
-                  href={`/${lang}/ressources`}
+                  href={`/${lang}/blog`}
                   className="text-sm text-gray-500 hover:text-gray-900 transition-colors duration-200 flex items-center gap-1"
                 >
                   {isEn ? 'Articles' : 'Articles'}
@@ -200,10 +200,10 @@ export default function InterventionsPageClient({ lang }: { lang: 'en' | 'fr' })
                 {isEn ? 'On these topics' : 'Sur ces sujets'}
               </h2>
               <Link
-                href={`/${lang}/ressources`}
+                href={`/${lang}/blog`}
                 className="text-sm text-gray-500 hover:text-gray-900 transition-colors duration-200 flex items-center gap-1"
               >
-                {isEn ? 'All articles' : 'Toutes les ressources'}
+                {isEn ? 'All articles' : 'Tous les articles'}
                 <ArrowRight size={14} />
               </Link>
             </div>

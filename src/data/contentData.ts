@@ -35,6 +35,8 @@ export interface ContentItem {
   slug?: { en: string; fr: string }
   // For guides
   chapterCount?: number
+  /** Paper figure of a guide on the Resources grid (`/images/resources/doc-<illustration>-light.svg`) */
+  illustration?: string
 }
 
 // --- Build unified content list ---
@@ -68,6 +70,7 @@ const GUIDE_ITEM: ContentItem = {
   category: 'ai',
   chapterCount: 9,
   heroImage: '/images/guide-claude-code/hero-cover.webp',
+  illustration: 'guide-claude-code',
 }
 
 // Guide Ship to Show as a single content item
@@ -80,6 +83,7 @@ const GUIDE_SHIP_TO_SHOW_ITEM: ContentItem = {
   excerpt_fr: 'Framework en 7 phases pour transformer un prototype en case study portfolio avec vidéos animées, contenu narratif bilingue et pack d\'intégration.',
   date: SHIP_TO_SHOW_META.date,
   category: 'ai',
+  illustration: 'guide-ship-to-show',
 }
 
 // Templates: titles, descriptions and addresses come from templatesData, shared with the About cards.
@@ -123,7 +127,7 @@ export type { SignalCategory, Signal }
 export const TYPE_LABELS: Record<ContentType, { en: string; fr: string }> = {
   article: { en: 'Article', fr: 'Article' },
   guide: { en: 'Guide', fr: 'Guide' },
-  template: { en: 'Template', fr: 'Template' },
+  template: { en: 'Template', fr: 'Modèle' },
 }
 
 export const TYPE_COLORS: Record<ContentType, { bg: string; text: string }> = {

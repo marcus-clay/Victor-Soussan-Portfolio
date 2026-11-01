@@ -29,7 +29,7 @@ export default function TemplateDetailPageWrapper({
         templateId={templateId}
         lang={lang}
         related={related}
-        onBack={() => router.push(`/${lang}/ressources?type=template`)}
+        onBack={() => router.push(`/${lang}/ressources`)}
       />
     </div>
   )

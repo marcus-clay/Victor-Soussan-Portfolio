@@ -14,7 +14,8 @@ export const TRANSLATIONS = {
       testimonials: "Testimonials",
       contact: "Contact",
       archive: "Gallery",
-      blog: "Resources",
+      blog: "Blog",
+      resources: "Resources",
       approach: "Approach",
       interventions: "Interventions"
     },
@@ -414,7 +415,8 @@ export const TRANSLATIONS = {
       testimonials: "T\u00e9moignages",
       contact: "Contact",
       archive: "Galerie",
-      blog: "Ressources",
+      blog: "Blog",
+      resources: "Ressources",
       approach: "Approche",
       interventions: "Interventions"
     },

@@ -72,7 +72,7 @@ const FeaturedSection: React.FC<FeaturedSectionProps> = ({ lang, featuredSignals
       </div>
 
       <Link
-        href={`/${lang}/ressources`}
+        href={`/${lang}/blog`}
         className="group mt-6 inline-flex min-h-11 items-center gap-2 text-sm font-medium text-gray-900 hover:text-gray-500 transition-colors duration-150"
       >
         {isEn ? 'All articles' : 'Tous les articles'}

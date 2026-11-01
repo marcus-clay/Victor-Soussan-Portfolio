@@ -68,7 +68,7 @@ const SignalDetailPage: React.FC<Props> = ({ signalId, systemTheme, lang, onBack
       heroImage={signal.heroImage}
       related={related}
       relatedHeading={TRANSLATIONS[lang].related.keep_reading}
-      backLabel={lang === 'fr' ? 'Ressources' : 'Resources'}
+      backLabel="Blog"
       onBack={onBack}
       isDark={isDark}
     />

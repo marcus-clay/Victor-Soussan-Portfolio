@@ -5,6 +5,7 @@ import { HERO_VIDEOS, type HeroVideo } from '@/data/heroVideos'
 import HeroLoop from '@/components/media/HeroLoop'
 import { coverSrcSet } from '@/utils/coverSrcSet'
 import ArrowPill from '@/components/ui/ArrowPill'
+import { TemplateDiagramThumb } from '@/components/templates/TemplateDiagrams'
 
 /**
  * Follow-up content at the bottom of a page (next project, related articles, next guide).
@@ -35,7 +36,9 @@ export interface RelatedItem {
     /** Looping hero video; found from the href of a project card when left out (see `heroLoopFor`) */
     video?: string
   }
-  /** Opens in a new tab (templates hosted elsewhere) */
+  /** A still of a template's diagram, instead of a cover */
+  thumb?: { template: string; lang: 'en' | 'fr' }
+  /** Opens in a new tab */
   external?: boolean
 }
 
@@ -113,7 +116,8 @@ export function RelatedCard({ item }: { item: RelatedItem }) {
   const body = (
     <>
       {item.cover && <Cover cover={item.cover} loop={heroLoopFor(item)} />}
-      <div className={`flex flex-1 flex-col p-5 md:p-6 ${item.cover ? '' : 'min-h-[8.5rem]'}`}>
+      {!item.cover && item.thumb && <TemplateDiagramThumb id={item.thumb.template} lang={item.thumb.lang} className="m-2" />}
+      <div className={`flex flex-1 flex-col p-5 md:p-6 ${item.cover || item.thumb ? 'pt-4 md:pt-5' : 'min-h-[8.5rem]'}`}>
         {item.label && <p className="text-xs text-gray-500">{item.label}</p>}
         <div className={`${item.label ? 'mt-1' : ''} flex items-start justify-between gap-3`}>
           <h3 className="text-title-3 text-gray-900">{item.title}</h3>

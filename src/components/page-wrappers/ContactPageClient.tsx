@@ -271,10 +271,10 @@ export default function ContactPageClient({ lang }: { lang: 'en' | 'fr' }) {
           ))}
         </ul>
         <Link
-          href={`/${lang}/ressources`}
+          href={`/${lang}/blog`}
           className="group mt-6 inline-flex min-h-11 items-center gap-2 text-sm font-medium text-gray-900 hover:text-gray-500 transition-colors duration-150"
         >
-          {isEn ? 'All articles' : 'Toutes les ressources'}
+          {isEn ? 'All articles' : 'Tous les articles'}
           <ArrowRight size={16} aria-hidden="true" className="transition-transform duration-300 ease-out group-hover:translate-x-1" />
         </Link>
       </HomeBlock>

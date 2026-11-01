@@ -19,20 +19,22 @@ const MENU_ITEMS = [
   { id: 'home', route: '', labelKey: null },
   { id: 'projets', route: 'projets', labelKey: 'projects' as const },
   { id: 'approche', route: 'approche', labelKey: 'approach' as const },
-  { id: 'testimonials', route: 'testimonials', labelKey: 'testimonials' as const },
   { id: 'about', route: 'about', labelKey: 'bio' as const },
-  { id: 'ressources', route: 'ressources', labelKey: 'blog' as const },
+  { id: 'blog', route: 'blog', labelKey: 'blog' as const },
+  { id: 'ressources', route: 'ressources', labelKey: 'resources' as const },
+  { id: 'testimonials', route: 'testimonials', labelKey: 'testimonials' as const },
   { id: 'contact', route: 'contact', labelKey: 'contact' as const },
 ]
 
-// The entries kept in the bar: three from md up, the five sections from lg up. Everything is also in the menu.
+// The entries kept in the bar from md up (with Contact, the one filled button). Everything is also in the menu.
 const PRIMARY_IDS = ['projets', 'approche', 'about'] as const
-const WIDE_IDS = ['testimonials', 'ressources'] as const
 
-// The pages under a section light up its entry: a project lights Work, a guide or an article lights Resources
+// The pages under a section light up its entry: a project lights Work, an article lights Blog, a guide or a
+// template lights Resources
 const SECTION_PREFIXES: Record<string, string[]> = {
   projets: ['projets', 'project'],
-  ressources: ['ressources', 'guide', 'signal'],
+  blog: ['blog', 'signal'],
+  ressources: ['ressources', 'guide'],
 }
 
 export default function Nav({ lang }: { lang: Lang }) {
@@ -243,11 +245,10 @@ export default function Nav({ lang }: { lang: Lang }) {
           <div className="flex items-center gap-0.5 sm:gap-1.5 flex-shrink-0">
             {/* Main entries, from md up */}
             <ul className="hidden md:flex items-center gap-0.5 mr-2 lg:mr-4">
-              {MENU_ITEMS.filter((item) => ([...PRIMARY_IDS, ...WIDE_IDS] as readonly string[]).includes(item.id)).map((item) => {
+              {MENU_ITEMS.filter((item) => (PRIMARY_IDS as readonly string[]).includes(item.id)).map((item) => {
                 const active = isActive(item.route)
-                const wide = (WIDE_IDS as readonly string[]).includes(item.id)
                 return (
-                  <li key={item.id} className={wide ? 'hidden lg:block' : undefined}>
+                  <li key={item.id}>
                     <Link
                       href={`/${lang}/${item.route}`}
                       aria-current={active ? 'page' : undefined}

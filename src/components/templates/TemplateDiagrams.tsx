@@ -21,6 +21,45 @@ import {
 type Lang = 'en' | 'fr'
 const MUTED = '#6B7280'
 
+interface DiagramProps {
+  lang: Lang
+  /** A still, cropped view of the drawing for a card (no panel, no reveal, no accessible name: the card carries the title) */
+  thumb?: boolean
+}
+
+/** The part of each drawing a card shows, in viewBox units, 13:10 like the card's picture */
+type Frame = { x: number; y: number; w: number; h: number }
+const FRAMES: Record<string, Frame> = {
+  scoping: { x: 400, y: -50, w: 520, h: 400 },
+  sync: { x: 220, y: 10, w: 520, h: 400 },
+  teardown: { x: 230, y: -30, w: 520, h: 400 },
+  checklist: { x: 380, y: 10, w: 520, h: 400 },
+  slicing: { x: 10, y: -20, w: 520, h: 400 },
+  status: { x: 230, y: -10, w: 520, h: 400 },
+}
+
+/** The drawing on its panel, or, as a thumb, the bare SVG cropped to its frame */
+function Drawing({ thumb, frame, svgRef, viewBox, minWidth, id, title, desc, children }: {
+  thumb: boolean; frame: Frame; svgRef: React.RefObject<SVGSVGElement>; viewBox: string; minWidth?: number; id: string; title: string; desc: string; children: React.ReactNode
+}) {
+  if (thumb) {
+    return (
+      <svg viewBox={`${frame.x} ${frame.y} ${frame.w} ${frame.h}`} aria-hidden="true" focusable="false" className="block h-full w-full">
+        {children}
+      </svg>
+    )
+  }
+  return (
+    <Panel minWidth={minWidth}>
+      <svg ref={svgRef} viewBox={viewBox} role="img" aria-labelledby={`${id}-title ${id}-desc`} className="block h-auto w-full">
+        <title id={`${id}-title`}>{title}</title>
+        <desc id={`${id}-desc`}>{desc}</desc>
+        {children}
+      </svg>
+    </Panel>
+  )
+}
+
 /** A line that draws itself from its start */
 function Line({ d, shown, delay, tone = INK, width = 1.5, dashed = false, duration }: { d: string; shown: boolean; delay: number; tone?: string; width?: number; dashed?: boolean; duration?: number }) {
   // A dashed line cannot use the dash trick to draw itself: it fades in instead
@@ -48,9 +87,10 @@ function Node({ x, y, w, h = 52, title, sub, tone = LINE, width = 1, fill = '#FF
 // Scoping: three steps in a row, three concepts fan out, one prototype is kept
 // ---------------------------------------------------------------------------
 
-export function ScopingDiagram({ lang }: { lang: Lang }) {
+export function ScopingDiagram({ lang, thumb = false }: DiagramProps) {
   const c = SCOPING_DIAGRAM[lang]
-  const { ref, shown } = useDiagramReveal<SVGSVGElement>()
+  const reveal = useDiagramReveal<SVGSVGElement>()
+  const shown = thumb || reveal.shown
   const Y = 150
   const W = 150
   const stepsX = [30, 220, 410]
@@ -60,10 +100,7 @@ export function ScopingDiagram({ lang }: { lang: Lang }) {
   const keptX = 810
 
   return (
-    <Panel>
-      <svg ref={ref} viewBox="0 0 960 300" role="img" aria-labelledby="tpl-scoping-title tpl-scoping-desc" className="block h-auto w-full">
-        <title id="tpl-scoping-title">{c.title}</title>
-        <desc id="tpl-scoping-desc">{c.desc}</desc>
+    <Drawing thumb={thumb} frame={FRAMES.scoping} svgRef={reveal.ref} viewBox="0 0 960 300" id="tpl-scoping" title={c.title} desc={c.desc}>
 
         {/* The three steps, one after the other */}
         {c.steps.map((label, i) => (
@@ -98,8 +135,7 @@ export function ScopingDiagram({ lang }: { lang: Lang }) {
           <text x={keptX + 6 + (W - 20) / 2} y={Y + 5} textAnchor="middle" fontSize="13" fontWeight="600" fill="#FFFFFF">{c.kept}</text>
         </g>
         <text x={keptX + 6 + (W - 20) / 2} y={Y + 50} textAnchor="middle" fontSize="11" fill={MUTED} style={rise(shown, 1750)}>{c.next}</text>
-      </svg>
-    </Panel>
+    </Drawing>
   )
 }
 
@@ -112,17 +148,15 @@ const SYNC_X0 = 230
 const SYNC_WEEK = 118
 const sx = (week: number) => SYNC_X0 + week * SYNC_WEEK
 
-export function SyncDiagram({ lang }: { lang: Lang }) {
+export function SyncDiagram({ lang, thumb = false }: DiagramProps) {
   const c = SYNC_DIAGRAM[lang]
-  const { ref, shown } = useDiagramReveal<SVGSVGElement>()
+  const reveal = useDiagramReveal<SVGSVGElement>()
+  const shown = thumb || reveal.shown
   const laneY = [120, 210, 290]
   const SPRINT = 2 * SYNC_WEEK
 
   return (
-    <Panel minWidth={760}>
-      <svg ref={ref} viewBox="0 0 960 340" role="img" aria-labelledby="tpl-sync-title tpl-sync-desc" className="block h-auto w-full">
-        <title id="tpl-sync-title">{c.title}</title>
-        <desc id="tpl-sync-desc">{c.desc}</desc>
+    <Drawing thumb={thumb} frame={FRAMES.sync} svgRef={reveal.ref} viewBox="0 0 960 340" minWidth={760} id="tpl-sync" title={c.title} desc={c.desc}>
 
         {/* The weeks */}
         <g style={rise(shown, 0)}>
@@ -171,8 +205,7 @@ export function SyncDiagram({ lang }: { lang: Lang }) {
         <Line d={`M${sx(2) - 20} ${laneY[1] + 15} C${sx(2) + 10} ${laneY[1] + 40} ${sx(2) - 10} ${laneY[2] - 40} ${sx(2) + 18} ${laneY[2] - 18}`} shown={shown} delay={1500} duration={700} />
         <Arrowhead x={sx(2) + 20} y={laneY[2] - 17} angle={45} style={rise(shown, 2050)} />
         <text x={sx(2) + 34} y={laneY[2] - 30} fontSize="11" fontWeight="600" fill={INK} style={rise(shown, 2000)}>{c.ahead}</text>
-      </svg>
-    </Panel>
+    </Drawing>
   )
 }
 
@@ -182,9 +215,10 @@ export function SyncDiagram({ lang }: { lang: Lang }) {
 
 const TEARDOWN_MINUTES = [15, 40, 30, 45, 50]
 
-export function TeardownDiagram({ lang }: { lang: Lang }) {
+export function TeardownDiagram({ lang, thumb = false }: DiagramProps) {
   const c = TEARDOWN_DIAGRAM[lang]
-  const { ref, shown } = useDiagramReveal<SVGSVGElement>()
+  const reveal = useDiagramReveal<SVGSVGElement>()
+  const shown = thumb || reveal.shown
   const X0 = 140
   const X1 = 820
   const perMin = (X1 - X0) / 180
@@ -197,10 +231,7 @@ export function TeardownDiagram({ lang }: { lang: Lang }) {
   const lens = `M${X0} ${lensY} C${X0 + 200} ${lensY} ${peakX - 150} ${lensY - 66} ${peakX} ${lensY - 66} C${peakX + 150} ${lensY - 66} ${X1 - 60} ${lensY - 4} ${X1} ${lensY} C${X1 - 60} ${lensY + 4} ${peakX + 150} ${lensY + 66} ${peakX} ${lensY + 66} C${peakX - 150} ${lensY + 66} ${X0 + 200} ${lensY} ${X0} ${lensY} Z`
 
   return (
-    <Panel>
-      <svg ref={ref} viewBox="0 0 960 310" role="img" aria-labelledby="tpl-teardown-title tpl-teardown-desc" className="block h-auto w-full">
-        <title id="tpl-teardown-title">{c.title}</title>
-        <desc id="tpl-teardown-desc">{c.desc}</desc>
+    <Drawing thumb={thumb} frame={FRAMES.teardown} svgRef={reveal.ref} viewBox="0 0 960 310" id="tpl-teardown" title={c.title} desc={c.desc}>
 
         {/* The ideas: one problem opens into many, then closes into a page of principles */}
         <path d={lens} fill={PALE} style={open(shown, 0)} />
@@ -226,8 +257,7 @@ export function TeardownDiagram({ lang }: { lang: Lang }) {
         })}
         <Line d={`M${X0} ${barY + 54} L${X1} ${barY + 54}`} shown={shown} delay={1800} tone={LINE} width={1} duration={800} />
         <text x={X1} y={barY + 72} textAnchor="end" fontSize="11" fontWeight="600" fill={INK} style={rise(shown, 2300)}>{c.total}</text>
-      </svg>
-    </Panel>
+    </Drawing>
   )
 }
 
@@ -235,9 +265,10 @@ export function TeardownDiagram({ lang }: { lang: Lang }) {
 // Checklist: three questions first, then twenty-five points in five groups, read twice
 // ---------------------------------------------------------------------------
 
-export function ChecklistDiagram({ lang }: { lang: Lang }) {
+export function ChecklistDiagram({ lang, thumb = false }: DiagramProps) {
   const c = CHECKLIST_DIAGRAM[lang]
-  const { ref, shown } = useDiagramReveal<SVGSVGElement>()
+  const reveal = useDiagramReveal<SVGSVGElement>()
+  const shown = thumb || reveal.shown
   const boxX = 30
   const boxY = 60
   const gridX = 560
@@ -246,10 +277,7 @@ export function ChecklistDiagram({ lang }: { lang: Lang }) {
   const GAP = 10
 
   return (
-    <Panel>
-      <svg ref={ref} viewBox="0 0 960 330" role="img" aria-labelledby="tpl-checklist-title tpl-checklist-desc" className="block h-auto w-full">
-        <title id="tpl-checklist-title">{c.title}</title>
-        <desc id="tpl-checklist-desc">{c.desc}</desc>
+    <Drawing thumb={thumb} frame={FRAMES.checklist} svgRef={reveal.ref} viewBox="0 0 960 330" id="tpl-checklist" title={c.title} desc={c.desc}>
 
         {/* The three questions, before anything else */}
         <g style={open(shown, 0)}>
@@ -288,8 +316,7 @@ export function ChecklistDiagram({ lang }: { lang: Lang }) {
         <circle cx={gridX + 5 * (CELL + GAP) - GAP} cy={310} r="3.5" fill={INK} style={rise(shown, 2100)} />
         <text x={gridX - 10} y={314} textAnchor="end" fontSize="11" fill={INK} fontWeight="600" style={rise(shown, 1900)}>{c.atFraming}</text>
         <text x={gridX + 5 * (CELL + GAP)} y={314} fontSize="11" fill={INK} fontWeight="600" style={rise(shown, 2200)}>{c.beforeDev}</text>
-      </svg>
-    </Panel>
+    </Drawing>
   )
 }
 
@@ -297,18 +324,16 @@ export function ChecklistDiagram({ lang }: { lang: Lang }) {
 // Slicing: one interface, four cuts, four boards with their ticket number
 // ---------------------------------------------------------------------------
 
-export function SlicingDiagram({ lang }: { lang: Lang }) {
+export function SlicingDiagram({ lang, thumb = false }: DiagramProps) {
   const c = SLICING_DIAGRAM[lang]
-  const { ref, shown } = useDiagramReveal<SVGSVGElement>()
+  const reveal = useDiagramReveal<SVGSVGElement>()
+  const shown = thumb || reveal.shown
   const F = { x: 40, y: 56, w: 300, h: 236 }
   const cuts = [F.y + 44, F.y + 108, F.y + 172]
   const cards = Array.from({ length: 4 }, (_, k) => ({ x: 430 + k * 128, y: 86, w: 112, h: 150 }))
 
   return (
-    <Panel>
-      <svg ref={ref} viewBox="0 0 960 330" role="img" aria-labelledby="tpl-slicing-title tpl-slicing-desc" className="block h-auto w-full">
-        <title id="tpl-slicing-title">{c.title}</title>
-        <desc id="tpl-slicing-desc">{c.desc}</desc>
+    <Drawing thumb={thumb} frame={FRAMES.slicing} svgRef={reveal.ref} viewBox="0 0 960 330" id="tpl-slicing" title={c.title} desc={c.desc}>
 
         {/* The interface: a header, a sidebar, three rows of content */}
         <g style={open(shown, 0)}>
@@ -355,8 +380,7 @@ export function SlicingDiagram({ lang }: { lang: Lang }) {
           </g>
         ))}
         <text x={cards[0].x} y={cards[0].y + cards[0].h + 26} fontSize="11" fill={MUTED} style={rise(shown, 1950)}>{c.sentence}</text>
-      </svg>
-    </Panel>
+    </Drawing>
   )
 }
 
@@ -364,9 +388,10 @@ export function SlicingDiagram({ lang }: { lang: Lang }) {
 // Figma statuses: Explo, WIP, Ready to dev set in stone; adjustments on a copy, unused screens archived
 // ---------------------------------------------------------------------------
 
-export function StatusDiagram({ lang }: { lang: Lang }) {
+export function StatusDiagram({ lang, thumb = false }: DiagramProps) {
   const c = STATUS_DIAGRAM[lang]
-  const { ref, shown } = useDiagramReveal<SVGSVGElement>()
+  const reveal = useDiagramReveal<SVGSVGElement>()
+  const shown = thumb || reveal.shown
   const Y = 86
   const W = 180
   const H = 58
@@ -374,10 +399,7 @@ export function StatusDiagram({ lang }: { lang: Lang }) {
   const rowTwo = 220
 
   return (
-    <Panel>
-      <svg ref={ref} viewBox="0 0 960 320" role="img" aria-labelledby="tpl-status-title tpl-status-desc" className="block h-auto w-full">
-        <title id="tpl-status-title">{c.title}</title>
-        <desc id="tpl-status-desc">{c.desc}</desc>
+    <Drawing thumb={thumb} frame={FRAMES.status} svgRef={reveal.ref} viewBox="0 0 960 320" id="tpl-status" title={c.title} desc={c.desc}>
 
         {/* Three statuses, from a sketch to something set in stone */}
         <Node x={X.explo} y={Y} w={W} h={H} title={c.explo} sub={c.exploDesc} tone="#9CA3AF" dashed shown={shown} delay={0} />
@@ -414,20 +436,30 @@ export function StatusDiagram({ lang }: { lang: Lang }) {
         <Line d={`M${X.wip + 30} ${Y + H} C${X.wip + 30} ${Y + H + 60} ${X.explo + W + 40} ${rowTwo - 60} ${X.explo + W + 4} ${rowTwo + H / 2}`} shown={shown} delay={1800} tone={MUTED} duration={600} />
         <Arrowhead x={X.explo + W + 2} y={rowTwo + H / 2} angle={180} tone={MUTED} style={rise(shown, 2300)} />
         <text x={X.wip + 42} y={(Y + H + rowTwo) / 2 + 4} fontSize="11" fill={MUTED} style={rise(shown, 2150)}>{c.notKept}</text>
-      </svg>
-    </Panel>
+    </Drawing>
   )
 }
 
-/** The diagram of a template, by its id */
-export function TemplateDiagram({ id, lang }: { id: string; lang: Lang }) {
+/** The diagram of a template, by its id; `thumb` for the still, cropped view of a card */
+export function TemplateDiagram({ id, lang, thumb = false }: { id: string; lang: Lang; thumb?: boolean }) {
   switch (id) {
-    case 'template-design-scoping': return <ScopingDiagram lang={lang} />
-    case 'template-po-design-sync': return <SyncDiagram lang={lang} />
-    case 'template-design-teardown': return <TeardownDiagram lang={lang} />
-    case 'template-feature-checklist': return <ChecklistDiagram lang={lang} />
-    case 'template-ui-slicing': return <SlicingDiagram lang={lang} />
-    case 'template-figma-file-status': return <StatusDiagram lang={lang} />
+    case 'template-design-scoping': return <ScopingDiagram lang={lang} thumb={thumb} />
+    case 'template-po-design-sync': return <SyncDiagram lang={lang} thumb={thumb} />
+    case 'template-design-teardown': return <TeardownDiagram lang={lang} thumb={thumb} />
+    case 'template-feature-checklist': return <ChecklistDiagram lang={lang} thumb={thumb} />
+    case 'template-ui-slicing': return <SlicingDiagram lang={lang} thumb={thumb} />
+    case 'template-figma-file-status': return <StatusDiagram lang={lang} thumb={thumb} />
     default: return null
   }
+}
+
+/** The thumb of a template's diagram on the pale ground of the cards (same ground as the About illustrations) */
+export function TemplateDiagramThumb({ id, lang, className = '' }: { id: string; lang: Lang; className?: string }) {
+  return (
+    <div className={`aspect-[13/10] overflow-hidden rounded-xl bg-[#FAFAF8] ring-1 ring-inset ring-black/[0.04] ${className}`}>
+      <div className="h-full w-full p-3 transition-transform duration-300 ease-media [@media(hover:hover)]:group-hover:scale-[1.03]">
+        <TemplateDiagram id={id} lang={lang} thumb />
+      </div>
+    </div>
+  )
 }

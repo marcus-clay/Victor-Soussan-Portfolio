@@ -99,7 +99,7 @@ const nextConfig: NextConfig = {
     { source: '/services', destination: '/en/approche', permanent: true },
     { source: '/:lang(en|fr)/services', destination: '/:lang/approche', permanent: true },
     { source: '/work', destination: '/en/projets', permanent: true },
-    { source: '/signals', destination: '/en/ressources', permanent: true },
+    { source: '/signals', destination: '/en/blog', permanent: true },
     // /interventions was a client-side redirect page; a real 308 is cleaner for crawlers
     { source: '/:lang(en|fr)/interventions', destination: '/:lang/contact#interventions', permanent: true },
     // Old signal routes
@@ -114,7 +114,9 @@ const nextConfig: NextConfig = {
     { source: '/project/:id', destination: '/en/project/:id', permanent: true },
     // Route renames: work -> projets, signals -> ressources
     { source: '/:lang/work', destination: '/:lang/projets', permanent: true },
-    { source: '/:lang/signals', destination: '/:lang/ressources', permanent: true },
+    { source: '/:lang/signals', destination: '/:lang/blog', permanent: true },
+    // The articles moved from Resources to the Blog
+    { source: '/:lang(en|fr)/ressources', has: [{ type: 'query', key: 'type', value: 'article' }], destination: '/:lang/blog', permanent: true },
     // Templates (/ressources/<slug>): a slug reached under the other language moves to its own address.
     // Keep in step with TEMPLATE_ENTRIES in src/data/templatesData.ts.
     { source: '/en/ressources/cadrage-de-conception', destination: '/en/ressources/design-scoping', permanent: true },
