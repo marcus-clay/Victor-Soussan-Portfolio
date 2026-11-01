@@ -9,6 +9,7 @@ import { TEMPLATE_ENTRIES, templateBody } from '../data/templatesData';
 import { TYPE_LABELS } from '../data/contentData';
 import { TRANSLATIONS } from '../data/translations';
 import ReadingPage, { readingLabelFor } from './ReadingPage';
+import { TemplateDiagram } from '../components/templates/TemplateDiagrams';
 import type { RelatedItem } from '../components/RelatedContent';
 
 interface Props {
@@ -36,6 +37,13 @@ const TemplateDetailPage: React.FC<Props> = ({ templateId, lang, onBack, related
         <span key="reading">{readingLabelFor(html, lang)}</span>,
       ]}
       html={html}
+      aside={
+        // The document, drawn in the Hairline line style, as on the About cards; it arrives with the header
+        <div className="build-media aspect-[13/10] overflow-hidden rounded-2xl bg-[#FAFAF8] ring-1 ring-inset ring-black/[0.04]">
+          <img src={`/images/resources/doc-${entry.art}-light.svg`} alt="" width={400} height={320} decoding="async" draggable={false} className="block h-full w-full object-contain" />
+        </div>
+      }
+      figure={<TemplateDiagram id={entry.id} lang={lang} />}
       related={related}
       relatedHeading={TRANSLATIONS[lang].related.keep_reading}
       backLabel={lang === 'fr' ? 'Ressources' : 'Resources'}
