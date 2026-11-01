@@ -1,4 +1,5 @@
-// Resource documents for the About page: six Hairline-style isometric sheets, one per resource card.
+// Resource documents for the About cards and the Resources grid: Hairline-style isometric sheets, one per guide or template.
+// To illustrate a new resource, add one entry to DOCS below (same vocabulary: boxes, runs, dots, one `hi` accent) and run the script.
 // Static SVG, no interaction. Each sheet is a page with a folded corner; its content says which resource.
 //
 //   node scripts/resource-documents.mjs [out dir] [--dark]
@@ -120,6 +121,31 @@ const DOCS = {
     round(36, -34, 7, "nf dash"),
     round(36, 4, 7), dot(36, 4, 2.2, "dot m"),
     round(36, 42, 7, "nf hi"), dot(36, 42, 3.4),
+  ],
+  // a getting-started guide: a window with the one command lit, then the steps that follow, in order
+  "guide-claude-code": () => [
+    title(),
+    box(-46, -50, 46, -6, 5),
+    line(-46, -41, 46, -41),
+    dot(-40, -45.5, 1.3, "dot off"), dot(-35, -45.5, 1.3, "dot off"), dot(-30, -45.5, 1.3, "dot off"),
+    run(-38, -32, 44), run(-38, -24, 30),
+    dot(-38, -15, 1.8), run(-33, -15, 52, "nf hi"),
+    ...[8, 26, 44].flatMap((v, i) => [
+      round(-40, v, 4.5, i === 0 ? "nf hi" : "nf"),
+      run(-30, v, [60, 44, 52][i]),
+    ]),
+    line(-40, 12.5, -40, 21.5, "nf dash"), line(-40, 30.5, -40, 39.5, "nf dash"),
+  ],
+  // from a prototype to a case study: the screen embedded at the top, the story beside and below it, the phases as a strip
+  "guide-ship-to-show": () => [
+    title(),
+    box(-46, -50, 4, -12, 4, "nf hi"),
+    box(-40, -44, -2, -38, 2), box(-40, -34, -22, -18, 2), box(-18, -34, -2, -18, 2),
+    run(12, -44, 34), run(12, -36, 26), run(12, -28, 32), run(12, -20, 20),
+    run(-46, -2, 86), run(-46, 7, 62), run(-46, 16, 78),
+    ...[-46, -33, -20, -7, 6, 19, 32].map((u, i) => box(u, 30, u + 10, 40, 2, i === 6 ? "nf hi" : "nf")),
+    path([[-41, 46], [37, 46]], "nf dash"),
+    dot(37, 35, 2.2),
   ],
 };
 

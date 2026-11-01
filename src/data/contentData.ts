@@ -25,6 +25,8 @@ export interface ContentItem {
   excerpt_fr: string
   date: string
   category?: SignalCategory
+  /** Tag ids (resourceTags.ts), on guides and templates */
+  tags?: string[]
   // For articles (from signals)
   body_en?: string
   body_fr?: string
@@ -71,6 +73,7 @@ const GUIDE_ITEM: ContentItem = {
   chapterCount: 9,
   heroImage: '/images/guide-claude-code/hero-cover.webp',
   illustration: 'guide-claude-code',
+  tags: ['claude-code', 'prototypage', 'figma'],
 }
 
 // Guide Ship to Show as a single content item
@@ -84,6 +87,7 @@ const GUIDE_SHIP_TO_SHOW_ITEM: ContentItem = {
   date: SHIP_TO_SHOW_META.date,
   category: 'ai',
   illustration: 'guide-ship-to-show',
+  tags: ['claude-code', 'case-study', 'prototypage'],
 }
 
 // Templates: titles, descriptions and addresses come from templatesData, shared with the About cards.
@@ -96,6 +100,7 @@ const TEMPLATES: ContentItem[] = TEMPLATE_ENTRIES.map((t) => ({
   excerpt_fr: t.desc.fr,
   date: '2024-01',
   category: t.category,
+  tags: t.tags,
   slug: t.slug,
 }))
 
@@ -113,6 +118,8 @@ export const ALL_CONTENT: ContentItem[] = [
 export const getArticles = () => ALL_CONTENT.filter((c) => c.type === 'article')
 export const getGuides = () => ALL_CONTENT.filter((c) => c.type === 'guide')
 export const getTemplates = () => ALL_CONTENT.filter((c) => c.type === 'template')
+/** The library: guides and templates, newest first */
+export const getResources = () => ALL_CONTENT.filter((c) => c.type === 'guide' || c.type === 'template')
 
 // Featured content for homepage (guide + top signal)
 export const FEATURED_CONTENT_IDS = ['guide-claude-code', 'claude-code-figma-mcp']

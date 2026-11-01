@@ -15,6 +15,8 @@ export interface TemplateEntry {
   /** Illustration key of the About card (`/images/resources/doc-<art>-light.svg`) */
   art: ResourceArt
   category: SignalCategory
+  /** Two or three tag ids from resourceTags.ts */
+  tags: string[]
   /** Address under /ressources/, one per language */
   slug: { en: string; fr: string }
   title: { en: string; fr: string }
@@ -30,6 +32,7 @@ export const TEMPLATE_ENTRIES: TemplateEntry[] = [
     id: 'template-design-scoping',
     art: 'scoping',
     category: 'methodology',
+    tags: ['cadrage', 'ideation', 'documentation'],
     slug: { en: 'design-scoping', fr: 'cadrage-de-conception' },
     title: { en: "Template: Design Scoping", fr: "Modèle : cadrage de conception" },
     desc: {
@@ -46,6 +49,7 @@ export const TEMPLATE_ENTRIES: TemplateEntry[] = [
     id: 'template-po-design-sync',
     art: 'sync',
     category: 'methodology',
+    tags: ['rituels', 'product-owner'],
     slug: { en: 'po-design-sync', fr: 'synchro-po-design' },
     title: { en: "Process: PO / Design Sync", fr: "Rituel : point PO et design" },
     desc: {
@@ -62,6 +66,7 @@ export const TEMPLATE_ENTRIES: TemplateEntry[] = [
     id: 'template-design-teardown',
     art: 'teardown',
     category: 'craft',
+    tags: ['atelier', 'ideation'],
     slug: { en: 'design-teardown-workshop', fr: 'atelier-design-teardown' },
     title: { en: "Workshop: Design Teardown", fr: "Atelier : Design Teardown" },
     desc: {
@@ -78,6 +83,7 @@ export const TEMPLATE_ENTRIES: TemplateEntry[] = [
     id: 'template-feature-checklist',
     art: 'checklist',
     category: 'craft',
+    tags: ['checklist', 'cadrage', 'accessibilite'],
     slug: { en: 'feature-design-checklist', fr: 'checklist-conception-fonctionnalite' },
     title: { en: "Checklist: Feature Design", fr: "Checklist : concevoir une fonctionnalité" },
     desc: {
@@ -94,6 +100,7 @@ export const TEMPLATE_ENTRIES: TemplateEntry[] = [
     id: 'template-ui-slicing',
     art: 'slicing',
     category: 'craft',
+    tags: ['handoff', 'figma'],
     slug: { en: 'ui-slicing', fr: 'decouper-une-interface' },
     title: { en: "Process: UI Slicing", fr: "Méthode : découper une interface" },
     desc: {
@@ -110,6 +117,7 @@ export const TEMPLATE_ENTRIES: TemplateEntry[] = [
     id: 'template-figma-file-status',
     art: 'status',
     category: 'craft',
+    tags: ['figma', 'documentation'],
     slug: { en: 'figma-file-status', fr: 'statuts-fichiers-figma' },
     title: { en: "Figma: File Status", fr: "Figma : nommage et statuts des fichiers" },
     desc: {
