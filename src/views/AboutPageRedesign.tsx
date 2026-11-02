@@ -11,19 +11,18 @@ import Reveal from '@/components/ui/Reveal'
 import { BLOCK, Disclosure, SubTitle } from '@/components/ui/ActBlocks'
 import CareerPhasesDiagram from '@/components/about/CareerPhasesDiagram'
 import PracticeExplorer from '@/components/about/PracticeExplorer'
-import type { ResourceArt } from '@/data/resourcesData'
+import { ResourcePicture } from '@/components/resources/ResourceScene'
 import { aboutEras } from '@/data/profileData'
 import { TRANSLATIONS as SITE_TRANSLATIONS } from '@/data/translations'
 
 type Language = 'en' | 'fr'
 
 interface Resource {
+  id: string
   title: string
   type: string
   desc: string
   link: string
-  icon: React.ReactNode
-  art?: ResourceArt
 }
 
 interface AboutPageRedesignProps {
@@ -327,23 +326,8 @@ export default function AboutPageRedesign({
                 draggable={false}
                 className="group flex flex-col overflow-hidden rounded-2xl border border-gray-100 bg-white transition-[border-color,transform] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)]:hover:border-gray-200 active:scale-[0.985] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gray-900"
               >
-                {/* The document, drawn in the Hairline line style: the same sheet, a folded corner, for the whole series */}
-                {res.art && (
-                  <div className="m-2 aspect-[13/10] overflow-hidden rounded-xl bg-[#FAFAF8] ring-1 ring-inset ring-black/[0.04]">
-                    <div className="h-full w-full transition-transform duration-300 ease-media [@media(hover:hover)]:group-hover:scale-[1.03]">
-                      <img
-                        src={`/images/resources/doc-${res.art}-light.svg`}
-                        alt=""
-                        width={400}
-                        height={320}
-                        loading="lazy"
-                        decoding="async"
-                        draggable={false}
-                        className="block h-full w-full object-contain"
-                      />
-                    </div>
-                  </div>
-                )}
+                {/* The same picture as on the Resources grid: a flat fragment of the document itself */}
+                <ResourcePicture id={res.id} lang={lang} className="m-2" />
                 <div className="flex flex-1 flex-col p-5 pt-4 md:p-6 md:pt-5">
                   <div className="flex items-start justify-between gap-3">
                     <p className="text-xs text-gray-500">{res.type}</p>

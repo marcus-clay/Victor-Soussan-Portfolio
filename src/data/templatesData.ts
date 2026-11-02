@@ -1,19 +1,15 @@
 /**
  * The six templates, in one place and without any JSX, so server code can read them.
- * The About cards (resourcesData.tsx), the Resources list (contentData.ts) and the template pages
+ * The About carousel (resourcesData.tsx), the Resources grid (contentData.ts) and the template pages
  * (/ressources/[slug]) all build from this list: one title, one description and one address per
- * language. The reading content itself lives in templateBodies.ts.
+ * language. The reading content lives in templateBodies.ts, the card pictures in ResourceScene.tsx.
  */
 
 import type { SignalCategory } from './signalsData'
 import { TEMPLATE_BODIES, type TemplateBody } from './templateBodies'
 
-export type ResourceArt = 'scoping' | 'sync' | 'teardown' | 'checklist' | 'slicing' | 'status'
-
 export interface TemplateEntry {
   id: string
-  /** Illustration key of the About card (`/images/resources/doc-<art>-light.svg`) */
-  art: ResourceArt
   category: SignalCategory
   /** Two or three tag ids from resourceTags.ts */
   tags: string[]
@@ -30,7 +26,6 @@ export interface TemplateEntry {
 export const TEMPLATE_ENTRIES: TemplateEntry[] = [
   {
     id: 'template-design-scoping',
-    art: 'scoping',
     category: 'methodology',
     tags: ['cadrage', 'ideation', 'documentation'],
     slug: { en: 'design-scoping', fr: 'cadrage-de-conception' },
@@ -47,7 +42,6 @@ export const TEMPLATE_ENTRIES: TemplateEntry[] = [
   },
   {
     id: 'template-po-design-sync',
-    art: 'sync',
     category: 'methodology',
     tags: ['rituels', 'product-owner'],
     slug: { en: 'po-design-sync', fr: 'synchro-po-design' },
@@ -64,7 +58,6 @@ export const TEMPLATE_ENTRIES: TemplateEntry[] = [
   },
   {
     id: 'template-design-teardown',
-    art: 'teardown',
     category: 'craft',
     tags: ['atelier', 'ideation'],
     slug: { en: 'design-teardown-workshop', fr: 'atelier-design-teardown' },
@@ -81,7 +74,6 @@ export const TEMPLATE_ENTRIES: TemplateEntry[] = [
   },
   {
     id: 'template-feature-checklist',
-    art: 'checklist',
     category: 'craft',
     tags: ['checklist', 'cadrage', 'accessibilite'],
     slug: { en: 'feature-design-checklist', fr: 'checklist-conception-fonctionnalite' },
@@ -98,7 +90,6 @@ export const TEMPLATE_ENTRIES: TemplateEntry[] = [
   },
   {
     id: 'template-ui-slicing',
-    art: 'slicing',
     category: 'craft',
     tags: ['handoff', 'figma'],
     slug: { en: 'ui-slicing', fr: 'decouper-une-interface' },
@@ -115,7 +106,6 @@ export const TEMPLATE_ENTRIES: TemplateEntry[] = [
   },
   {
     id: 'template-figma-file-status',
-    art: 'status',
     category: 'craft',
     tags: ['figma', 'documentation'],
     slug: { en: 'figma-file-status', fr: 'statuts-fichiers-figma' },
