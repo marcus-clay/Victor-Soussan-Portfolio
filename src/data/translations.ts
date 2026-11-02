@@ -158,7 +158,7 @@ export const TRANSLATIONS = {
           "Promoted to <strong>Product Lead</strong> at UNOWHY"
         ],
         "2022": [
-          "<strong>AI experimentation with ChatGPT</strong>",
+          "<strong><a href=\"/en/signal/experimentation-chatgpt-2022\">AI experimentation with ChatGPT</a></strong>",
           "Launched the <strong>Hi SQOOL</strong> brand with complete identity"
         ],
         "2020-2021": [
@@ -560,7 +560,7 @@ export const TRANSLATIONS = {
           "Promotion <strong>Product Lead</strong> chez UNOWHY"
         ],
         "2022": [
-          "Exp\u00e9rimentation <strong>IA avec ChatGPT</strong>",
+          "Exp\u00e9rimentation <strong><a href=\"/fr/signal/experimentation-chatgpt-2022\">IA avec ChatGPT</a></strong>",
           "Lancement de la marque <strong>Hi SQOOL</strong> avec identit\u00e9 compl\u00e8te"
         ],
         "2020-2021": [
