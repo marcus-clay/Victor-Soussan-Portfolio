@@ -104,6 +104,13 @@
 .img-fade img[loading="lazy"][data-loaded=""] {
   animation: media-in 500ms var(--ease-smooth) backwards;
 }
+/* Article and guide body images appear as they are, with no fade, blur or zoom: in a long text the
+   effect reads as a flicker. */
+.img-fade .article-body img[loading="lazy"]:not([data-loaded]),
+.img-fade .article-body img[loading="lazy"][data-loaded=""] {
+  opacity: 1;
+  animation: none;
+}
 @keyframes media-in {
   from { opacity: 0; transform: scale(1.02); filter: blur(6px); }
 }
