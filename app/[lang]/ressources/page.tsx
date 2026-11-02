@@ -1,14 +1,16 @@
 import type { Metadata } from 'next'
 import RessourcesPageClient from '@/components/page-wrappers/RessourcesPageClient'
 import JsonLd from '@/components/JsonLd'
-import { SIGNALS } from '@/data/signalsData'
+import { getGuides } from '@/data/contentData'
+import { TEMPLATE_ENTRIES, templatePath } from '@/data/templatesData'
+import { DECK_ENTRIES, deckPath } from '@/data/decksData'
 import { buildMetadata, itemListLd, pageLd, pageUrl, toLang } from '@/lib/seo'
 
 type Props = { params: Promise<{ lang: string }> }
 
 const COPY = {
-  fr: { title: 'Ressources product design et IA', description: 'Articles, guides et templates sur le product design B2B et B2G, les design systems et le prototypage assisté par IA, par Victor Soussan, Lead Product Designer.' },
-  en: { title: 'Product design and AI resources', description: 'Articles, guides and templates on B2B and B2G product design, design systems and AI-assisted prototyping, by Victor Soussan, Lead Product Designer.' },
+  fr: { title: 'Guides et modèles pour le product design', description: 'Guides pas à pas et modèles de documents tirés de la pratique de Victor Soussan, Lead Product Designer\u00a0: cadrage, rituels, checklists, Figma, Claude Code.' },
+  en: { title: 'Guides and templates for product design', description: 'Step-by-step guides and document templates from the practice of Victor Soussan, Lead Product Designer: scoping, rituals, checklists, Figma, Claude Code.' },
 } as const
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -34,12 +36,14 @@ export default async function Page({ params }: Props) {
           description: COPY[lang].description,
           crumbs: [{ name: COPY[lang].title, path: 'ressources' }],
         }),
-        itemListLd(
-          SIGNALS.map((sig) => ({
-            name: lang === 'fr' ? sig.title_fr : sig.title_en,
-            url: pageUrl(lang, `signal/${sig.id}`),
-          }))
-        )]}
+        itemListLd([
+          ...getGuides().map((g) => ({
+            name: lang === 'fr' ? g.title_fr : g.title_en,
+            url: pageUrl(lang, g.id === 'guide-ship-to-show' ? 'guide/ship-to-show' : 'guide/claude-code'),
+          })),
+          ...TEMPLATE_ENTRIES.map((t) => ({ name: t.title[lang], url: pageUrl(lang, templatePath(t, lang)) })),
+          ...DECK_ENTRIES.map((d) => ({ name: d.title[lang], url: pageUrl(lang, deckPath(d, lang)) })),
+        ])]}
       />
       <RessourcesPageClient lang={lang} />
     </>

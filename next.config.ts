@@ -99,7 +99,7 @@ const nextConfig: NextConfig = {
     { source: '/services', destination: '/en/approche', permanent: true },
     { source: '/:lang(en|fr)/services', destination: '/:lang/approche', permanent: true },
     { source: '/work', destination: '/en/projets', permanent: true },
-    { source: '/signals', destination: '/en/ressources', permanent: true },
+    { source: '/signals', destination: '/en/blog', permanent: true },
     // /interventions was a client-side redirect page; a real 308 is cleaner for crawlers
     { source: '/:lang(en|fr)/interventions', destination: '/:lang/contact#interventions', permanent: true },
     // Old signal routes
@@ -114,7 +114,27 @@ const nextConfig: NextConfig = {
     { source: '/project/:id', destination: '/en/project/:id', permanent: true },
     // Route renames: work -> projets, signals -> ressources
     { source: '/:lang/work', destination: '/:lang/projets', permanent: true },
-    { source: '/:lang/signals', destination: '/:lang/ressources', permanent: true },
+    { source: '/:lang/signals', destination: '/:lang/blog', permanent: true },
+    // The articles moved from Resources to the Blog
+    { source: '/:lang(en|fr)/ressources', has: [{ type: 'query', key: 'type', value: 'article' }], destination: '/:lang/blog', permanent: true },
+    // Templates (/ressources/<slug>): a slug reached under the other language moves to its own address.
+    // Keep in step with TEMPLATE_ENTRIES in src/data/templatesData.ts.
+    { source: '/en/ressources/cadrage-de-conception', destination: '/en/ressources/design-scoping', permanent: true },
+    { source: '/en/ressources/synchro-po-design', destination: '/en/ressources/po-design-sync', permanent: true },
+    { source: '/en/ressources/atelier-design-teardown', destination: '/en/ressources/design-teardown-workshop', permanent: true },
+    { source: '/en/ressources/checklist-conception-fonctionnalite', destination: '/en/ressources/feature-design-checklist', permanent: true },
+    { source: '/en/ressources/decouper-une-interface', destination: '/en/ressources/ui-slicing', permanent: true },
+    { source: '/en/ressources/statuts-fichiers-figma', destination: '/en/ressources/figma-file-status', permanent: true },
+    { source: '/fr/ressources/design-scoping', destination: '/fr/ressources/cadrage-de-conception', permanent: true },
+    { source: '/fr/ressources/po-design-sync', destination: '/fr/ressources/synchro-po-design', permanent: true },
+    { source: '/fr/ressources/design-teardown-workshop', destination: '/fr/ressources/atelier-design-teardown', permanent: true },
+    { source: '/fr/ressources/feature-design-checklist', destination: '/fr/ressources/checklist-conception-fonctionnalite', permanent: true },
+    { source: '/fr/ressources/ui-slicing', destination: '/fr/ressources/decouper-une-interface', permanent: true },
+    { source: '/fr/ressources/figma-file-status', destination: '/fr/ressources/statuts-fichiers-figma', permanent: true },
+    { source: '/en/ressources/deck-revue-de-concept', destination: '/en/ressources/concept-review-deck', permanent: true },
+    { source: '/en/ressources/deck-etude-de-design', destination: '/en/ressources/design-study-deck', permanent: true },
+    { source: '/fr/ressources/concept-review-deck', destination: '/fr/ressources/deck-revue-de-concept', permanent: true },
+    { source: '/fr/ressources/design-study-deck', destination: '/fr/ressources/deck-etude-de-design', permanent: true },
     // Guide: redirect FR slugs on EN path to localized EN slugs
     { source: '/en/guide/claude-code/comprendre', destination: '/en/guide/claude-code/understanding', permanent: true },
     { source: '/en/guide/claude-code/environnement', destination: '/en/guide/claude-code/setup', permanent: true },

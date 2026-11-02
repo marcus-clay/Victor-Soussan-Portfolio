@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
+import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowUpRight, ArrowRight, X, DownloadSimple, Copy, Check } from '@phosphor-icons/react'
 import TestimonialsLink from '@/components/testimonials/TestimonialsLink'
@@ -10,19 +11,18 @@ import Reveal from '@/components/ui/Reveal'
 import { BLOCK, Disclosure, SubTitle } from '@/components/ui/ActBlocks'
 import CareerPhasesDiagram from '@/components/about/CareerPhasesDiagram'
 import PracticeExplorer from '@/components/about/PracticeExplorer'
-import type { ResourceArt } from '@/data/resourcesData'
+import { ResourcePicture } from '@/components/resources/ResourceScene'
 import { aboutEras } from '@/data/profileData'
 import { TRANSLATIONS as SITE_TRANSLATIONS } from '@/data/translations'
 
 type Language = 'en' | 'fr'
 
 interface Resource {
+  id: string
   title: string
   type: string
   desc: string
   link: string
-  icon: React.ReactNode
-  art?: ResourceArt
 }
 
 interface AboutPageRedesignProps {
@@ -65,7 +65,7 @@ const TRANSLATIONS = {
     testimonials_link: 'View all testimonials',
     resources_section_title: 'Resources',
     resources_section_desc: 'Templates, checklists and process docs I use in my day-to-day practice.',
-    resources_link: 'Guides, articles and complementary resources',
+    resources_link: 'All the guides and templates',
     more: 'Read more',
     less: 'Show less',
     career_lead: 'From agencies to business products: the thread is designing dense, data-rich tools.',
@@ -110,7 +110,7 @@ const TRANSLATIONS = {
     testimonials_link: 'Voir tous les témoignages',
     resources_section_title: 'Ressources',
     resources_section_desc: 'Modèles, checklists et documents de méthode que j’utilise au quotidien.',
-    resources_link: 'Tous les guides et articles',
+    resources_link: 'Tous les guides et modèles',
     more: 'Lire la suite',
     less: 'Voir moins',
     career_lead: 'Des agences aux produits métier : le fil reste la conception d’outils denses en données.',
@@ -320,38 +320,21 @@ export default function AboutPageRedesign({
 
           <CardCarousel labels={t.carousels.resources} itemClassName="w-[78vw] max-w-[22rem] md:w-[22rem]">
             {resources.map((res) => (
-              <a
+              <Link
                 key={res.link}
                 href={res.link}
-                target="_blank"
-                rel="noopener noreferrer"
                 draggable={false}
                 className="group flex flex-col overflow-hidden rounded-2xl border border-gray-100 bg-white transition-[border-color,transform] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)]:hover:border-gray-200 active:scale-[0.985] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gray-900"
               >
-                {/* The document, drawn in the Hairline line style: the same sheet, a folded corner, for the whole series */}
-                {res.art && (
-                  <div className="m-2 aspect-[13/10] overflow-hidden rounded-xl bg-[#FAFAF8] ring-1 ring-inset ring-black/[0.04]">
-                    <div className="h-full w-full transition-transform duration-300 ease-media [@media(hover:hover)]:group-hover:scale-[1.03]">
-                      <img
-                        src={`/images/resources/doc-${res.art}-light.svg`}
-                        alt=""
-                        width={400}
-                        height={320}
-                        loading="lazy"
-                        decoding="async"
-                        draggable={false}
-                        className="block h-full w-full object-contain"
-                      />
-                    </div>
-                  </div>
-                )}
+                {/* The same picture as on the Resources grid: a flat fragment of the document itself */}
+                <ResourcePicture id={res.id} lang={lang} className="m-2" />
                 <div className="flex flex-1 flex-col p-5 pt-4 md:p-6 md:pt-5">
                   <div className="flex items-start justify-between gap-3">
                     <p className="text-xs text-gray-500">{res.type}</p>
-                    <ArrowUpRight
+                    <ArrowRight
                       size={16}
                       aria-hidden="true"
-                      className="shrink-0 text-gray-900 transition-transform duration-200 ease-out [@media(hover:hover)]:group-hover:-translate-y-0.5 [@media(hover:hover)]:group-hover:translate-x-0.5"
+                      className="shrink-0 text-gray-900 transition-transform duration-200 ease-out [@media(hover:hover)]:group-hover:translate-x-0.5"
                     />
                   </div>
                   <h3 className="mt-2 text-title-3 text-gray-900 transition-colors duration-150 [@media(hover:hover)]:group-hover:text-gray-500">
@@ -359,7 +342,7 @@ export default function AboutPageRedesign({
                   </h3>
                   <p className="mt-3 text-sm text-gray-600">{res.desc}</p>
                 </div>
-              </a>
+              </Link>
             ))}
           </CardCarousel>
 

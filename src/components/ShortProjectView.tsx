@@ -77,9 +77,12 @@ export default function ShortProjectView({
 
         {/* Description */}
         <div className="border-t border-gray-100 pt-12 md:pt-16 pb-12 md:pb-16">
-          <p className="text-lg leading-relaxed text-gray-600 max-w-[680px]">
-            {project.shortDescription || project.summary}
-          </p>
+          {/* One paragraph per blank line in the description */}
+          <div className="text-lg leading-relaxed text-gray-600 max-w-[680px] space-y-5">
+            {(project.shortDescription || project.summary).split(/\n\s*\n/).map((paragraph, i) => (
+              <p key={i}>{paragraph}</p>
+            ))}
+          </div>
         </div>
 
         {/* Media grid */}

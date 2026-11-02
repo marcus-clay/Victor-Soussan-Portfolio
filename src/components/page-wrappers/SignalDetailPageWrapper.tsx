@@ -30,7 +30,7 @@ export default function SignalDetailPageWrapper({
         systemTheme="light"
         lang={lang}
         related={related}
-        onBack={() => router.push(`/${lang}/ressources`)}
+        onBack={() => router.push(`/${lang}/blog`)}
       />
     </div>
   )

@@ -15,15 +15,21 @@ export const GUIDE_SLUG_PAIRS: [en: string, fr: string][] = [
   ['skills', 'skills'],
 ]
 
-const GUIDE = '/guide/claude-code/'
+import { TEMPLATE_SLUG_PAIRS } from './templatesData'
+import { DECK_SLUG_PAIRS } from './decksData'
 
-/** The same page in the other language: the prefix swapped, and a guide chapter's slug translated */
+const GUIDE = '/guide/claude-code/'
+const TEMPLATE = '/ressources/'
+
+/** The same page in the other language: the prefix swapped, and a translated slug (guide chapters, templates) swapped */
 export function otherLangPath(pathname: string, lang: 'en' | 'fr', other: 'en' | 'fr') {
   let rest = pathname.replace(new RegExp(`^/${lang}`), '')
-  if (rest.startsWith(GUIDE)) {
-    const slug = rest.slice(GUIDE.length)
-    const pair = GUIDE_SLUG_PAIRS.find(([en, fr]) => (lang === 'en' ? en : fr) === slug)
-    if (pair) rest = GUIDE + (other === 'en' ? pair[0] : pair[1])
+  const translated: [prefix: string, pairs: [string, string][]][] = [[GUIDE, GUIDE_SLUG_PAIRS], [TEMPLATE, [...TEMPLATE_SLUG_PAIRS, ...DECK_SLUG_PAIRS]]]
+  for (const [prefix, pairs] of translated) {
+    if (!rest.startsWith(prefix)) continue
+    const slug = rest.slice(prefix.length)
+    const pair = pairs.find(([en, fr]) => (lang === 'en' ? en : fr) === slug)
+    if (pair) rest = prefix + (other === 'en' ? pair[0] : pair[1])
   }
   return `/${other}${rest}`
 }

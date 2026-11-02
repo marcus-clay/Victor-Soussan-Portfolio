@@ -1,44 +1,29 @@
-import React from 'react';
-import {
-  Target,
-  Users,
-  Scroll as ScrollText,
-  CheckCircle as CheckCircle2,
-  Stack as Layers,
-  FigmaLogo as Figma,
-} from '@phosphor-icons/react';
 import type { Language } from './translations';
-import { TEMPLATE_ENTRIES } from './templatesData';
-import type { ResourceArt } from './templatesData';
+import { getResources as libraryItems, TYPE_LABELS, type ContentItem } from './contentData';
 
-export type { ResourceArt } from './templatesData';
+/**
+ * The cards of the About carousel: the whole library (guides, templates, decks), each with the words of
+ * the Resources grid and the id of its scene (ResourceScene). Newest first, like the grid.
+ */
 
 export interface Resource {
+  id: string;
   title: string;
   type: string;
   desc: string;
   link: string;
-  icon: React.ReactNode;
-  /** Minimalist document illustration shown on the About resource cards */
-  art?: ResourceArt;
 }
 
-const ICON_BY_ART: Record<ResourceArt, React.ReactNode> = {
-  scoping: <Target size={20} className="text-red-600"/>,
-  sync: <Users size={20} className="text-orange-600"/>,
-  teardown: <ScrollText size={20} className="text-purple-600"/>,
-  checklist: <CheckCircle2 size={20} className="text-green-600"/>,
-  slicing: <Layers size={20} className="text-blue-600"/>,
-  status: <Figma size={20} className="text-indigo-600"/>,
-};
+function hrefOf(item: ContentItem, lang: Language): string {
+  if ((item.type === 'template' || item.type === 'deck') && item.slug) return `/${lang}/ressources/${item.slug[lang]}`;
+  return item.id === 'guide-ship-to-show' ? `/${lang}/guide/ship-to-show` : `/${lang}/guide/claude-code`;
+}
 
-// Order = the series order of the About cards (frame, align, analyze, design, handoff, maintain).
 export const getResources = (lang: Language): Resource[] =>
-  TEMPLATE_ENTRIES.map((t) => ({
-    title: t.title[lang],
-    type: "Notion",
-    art: t.art,
-    desc: t.desc[lang],
-    link: t.link,
-    icon: ICON_BY_ART[t.art],
+  libraryItems().map((item) => ({
+    id: item.id,
+    title: lang === 'fr' ? item.title_fr : item.title_en,
+    type: TYPE_LABELS[item.type][lang],
+    desc: lang === 'fr' ? item.excerpt_fr : item.excerpt_en,
+    link: hrefOf(item, lang),
   }));

@@ -14,7 +14,8 @@ export const TRANSLATIONS = {
       testimonials: "Testimonials",
       contact: "Contact",
       archive: "Gallery",
-      blog: "Resources",
+      blog: "Blog",
+      resources: "Resources",
       approach: "Approach",
       interventions: "Interventions"
     },
@@ -157,7 +158,7 @@ export const TRANSLATIONS = {
           "Promoted to <strong>Product Lead</strong> at UNOWHY"
         ],
         "2022": [
-          "<strong><a href=\"https://www.notion.so/victor-soussan/Exp-rimentation-IA-et-ChatGPT-2022-1aaa519b0dea8085afd5e56f8893ba91\" target=\"_blank\" rel=\"noopener noreferrer\" className=\"text-pink-600 hover:underline\">AI experimentation with ChatGPT</a></strong>",
+          "<strong>AI experimentation with ChatGPT</strong>",
           "Launched the <strong>Hi SQOOL</strong> brand with complete identity"
         ],
         "2020-2021": [
@@ -414,7 +415,8 @@ export const TRANSLATIONS = {
       testimonials: "T\u00e9moignages",
       contact: "Contact",
       archive: "Galerie",
-      blog: "Ressources",
+      blog: "Blog",
+      resources: "Ressources",
       approach: "Approche",
       interventions: "Interventions"
     },
@@ -558,7 +560,7 @@ export const TRANSLATIONS = {
           "Promotion <strong>Product Lead</strong> chez UNOWHY"
         ],
         "2022": [
-          "Exp\u00e9rimentation <strong><a href=\"https://www.notion.so/victor-soussan/Exp-rimentation-IA-et-ChatGPT-2022-1aaa519b0dea8085afd5e56f8893ba91\" target=\"_blank\" rel=\"noopener noreferrer\" className=\"text-pink-600 hover:underline\">IA avec ChatGPT</a></strong>",
+          "Exp\u00e9rimentation <strong>IA avec ChatGPT</strong>",
           "Lancement de la marque <strong>Hi SQOOL</strong> avec identit\u00e9 compl\u00e8te"
         ],
         "2020-2021": [

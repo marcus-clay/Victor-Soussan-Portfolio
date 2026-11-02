@@ -23,6 +23,7 @@ import { ActRule } from '../components/case-study/ActSection';
 import { ArticleBody, ArticleBodyStyles } from '../components/article/ArticleBody';
 import { TRANSLATIONS } from '../data/translations';
 import { useReveal } from '../lib/motion';
+import { ResourceBrief } from '../components/resources/ResourceBrief';
 
 const MotionLink = motion.create(Link);
 
@@ -74,6 +75,11 @@ const GuideIndex: React.FC<{ isDark: boolean; lang: string; onNavigate: (t: stri
         </div>
       </div>
     </header>
+
+    {/* The brief: what the guide is for, where it sits in the design cycle */}
+    <div className="act-wide pb-8 md:pb-10">
+      <ResourceBrief id="guide-claude-code" lang={lang === 'fr' ? 'fr' : 'en'} />
+    </div>
 
     {/* Hero figure: the full column */}
     <figure className="act-wide m-0 pb-12 md:pb-16">

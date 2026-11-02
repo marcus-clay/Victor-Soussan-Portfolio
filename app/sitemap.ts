@@ -3,6 +3,8 @@ import { GUIDE_CHAPTERS, GUIDE_META } from '@/data/guideClaudeCodeData'
 import { SHIP_TO_SHOW_META } from '@/data/guideShipToShowData'
 import { SIGNALS } from '@/data/signalsData'
 import { getAllProjects } from '@/data/projectsData'
+import { TEMPLATE_ENTRIES, templatePath } from '@/data/templatesData'
+import { DECK_ENTRIES, deckPath } from '@/data/decksData'
 import { LANGS, isoDate, pageUrl } from '@/lib/seo'
 
 /**
@@ -14,10 +16,12 @@ import { LANGS, isoDate, pageUrl } from '@/lib/seo'
  * every deploy teaches Google to ignore the field.
  */
 
-const INDEXABLE_STATIC = ['', 'about', 'approche', 'projets', 'ressources', 'testimonials', 'resume', 'contact']
+const INDEXABLE_STATIC = ['', 'about', 'approche', 'projets', 'blog', 'ressources', 'testimonials', 'resume', 'contact']
 
 // Update when the copy of the main pages changes in a meaningful way.
 const SITE_CONTENT_UPDATED = '2026-10-31'
+// The day the six templates moved from Notion to the site.
+const TEMPLATES_PUBLISHED = '2026-11-01'
 
 type Entry = { path: Record<(typeof LANGS)[number], string>; lastModified?: string }
 
@@ -54,6 +58,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Articles
   for (const s of SIGNALS) {
     items.push({ path: same(`signal/${s.id}`), lastModified: isoDate(s.date) ?? SITE_CONTENT_UPDATED })
+  }
+
+  // Templates: one address per language
+  for (const t of TEMPLATE_ENTRIES) {
+    items.push({ path: { en: templatePath(t, 'en'), fr: templatePath(t, 'fr') }, lastModified: TEMPLATES_PUBLISHED })
+  }
+
+  for (const d of DECK_ENTRIES) {
+    items.push({ path: { en: deckPath(d, 'en'), fr: deckPath(d, 'fr') }, lastModified: '2026-11-02' })
   }
 
   // Guides

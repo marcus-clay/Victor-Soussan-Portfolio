@@ -5,8 +5,6 @@ import Link from 'next/link'
 import { ArrowUpRight, ArrowRight } from '@phosphor-icons/react'
 import { getArticles } from '@/data/contentData'
 
-const CALENDAR_URL = 'https://calendar.app.google/h22c1RRu7JWuK92J9'
-const EMAIL = 'victorsoussan@gmail.com'
 
 const TOPICS = {
   en: [
@@ -149,7 +147,7 @@ export default function InterventionsPageClient({ lang }: { lang: 'en' | 'fr' })
                   <ArrowRight size={14} />
                 </Link>
                 <Link
-                  href={`/${lang}/ressources`}
+                  href={`/${lang}/blog`}
                   className="text-sm text-gray-500 hover:text-gray-900 transition-colors duration-200 flex items-center gap-1"
                 >
                   {isEn ? 'Articles' : 'Articles'}
@@ -172,22 +170,13 @@ export default function InterventionsPageClient({ lang }: { lang: 'en' | 'fr' })
                 : 'Dites-moi quel format vous int\u00e9resse, le sujet, et le contexte. R\u00e9ponse sous 48h.'}
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
-              <a
-                href={`mailto:${EMAIL}?subject=${encodeURIComponent(isEn ? 'Speaking engagement inquiry' : 'Demande d\u2019intervention')}`}
+              <Link
+                href={`/${lang}/contact`}
                 className="btn-dark group inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gray-900 text-white font-medium text-sm hover:bg-gray-800 ring-1 ring-black shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] active:scale-[0.97] transition-[background-color,transform] duration-200 ease-out"
               >
-                {isEn ? 'Send an email' : 'Envoyer un email'}
+                {isEn ? 'Contact me' : 'Me contacter'}
                 <ArrowUpRight size={15} weight="bold" className="btn-arrow-up group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200 ease-out" />
-              </a>
-              <a
-                href={CALENDAR_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group inline-flex items-center gap-2 px-6 py-3 rounded-full border border-gray-200 text-gray-700 font-medium text-sm hover:bg-gray-50 hover:border-gray-300 active:scale-[0.97] transition-[background-color,border-color,transform] duration-200 ease-out"
-              >
-                {isEn ? 'Book a call' : 'R\u00e9server un appel'}
-                <ArrowUpRight size={15} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200 ease-out" />
-              </a>
+              </Link>
             </div>
           </div>
         </section>
@@ -200,10 +189,10 @@ export default function InterventionsPageClient({ lang }: { lang: 'en' | 'fr' })
                 {isEn ? 'On these topics' : 'Sur ces sujets'}
               </h2>
               <Link
-                href={`/${lang}/ressources`}
+                href={`/${lang}/blog`}
                 className="text-sm text-gray-500 hover:text-gray-900 transition-colors duration-200 flex items-center gap-1"
               >
-                {isEn ? 'All articles' : 'Toutes les ressources'}
+                {isEn ? 'All articles' : 'Tous les articles'}
                 <ArrowRight size={14} />
               </Link>
             </div>
