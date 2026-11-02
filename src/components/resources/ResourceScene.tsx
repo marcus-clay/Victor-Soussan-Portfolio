@@ -15,7 +15,10 @@ const T = {
     why: 'Pourquoi',
     days: ['L', 'M', 'M', 'J', 'V'],
     thirty: '30 min',
-    hours: '3 h',
+    hmw: 'Comment pourrions-nous…\u00a0?',
+    stickies: ['Idée', 'Idée', 'Point fort', 'Point faible'],
+    kept: 'Principe retenu',
+    votes: '3\u00a0votes',
     checks: ['Objectif', 'États vides', 'Erreurs', 'Accessibilité'],
     ticket: 'n° 124',
     statuses: ['Explo', 'WIP', 'Ready to dev'],
@@ -30,7 +33,10 @@ const T = {
     why: 'Why',
     days: ['M', 'T', 'W', 'T', 'F'],
     thirty: '30 min',
-    hours: '3 h',
+    hmw: 'How might we…?',
+    stickies: ['Idea', 'Idea', 'Strength', 'Weakness'],
+    kept: 'Principle kept',
+    votes: '3 votes',
     checks: ['Goal', 'Empty states', 'Errors', 'Accessibility'],
     ticket: 'no. 124',
     statuses: ['Explo', 'WIP', 'Ready to dev'],
@@ -161,34 +167,44 @@ function CellsScene({ lang, cells, filled, label, ends }: { lang: Lang; cells: s
   )
 }
 
-/** The three hours of the workshop, as segments proportional to their minutes */
-function TimeStripScene({ lang }: { lang: Lang }) {
-  const minutes = [15, 40, 30, 45, 50]
+/** The workshop board: sticky notes from several hands, the participants above, the one kept carries the votes */
+function WorkshopScene({ lang }: { lang: Lang }) {
+  const t = T[lang]
+  const notes: { text: string; x: string; y: string; rot: number; kept?: boolean; hmw?: boolean }[] = [
+    { text: t.hmw, x: '10%', y: '24%', rot: -2.5, hmw: true },
+    { text: t.stickies[0], x: '40%', y: '20%', rot: 1.5 },
+    { text: t.stickies[1], x: '68%', y: '26%', rot: -1 },
+    { text: t.stickies[2], x: '14%', y: '60%', rot: 1 },
+    { text: t.kept, x: '41%', y: '56%', rot: -1.5, kept: true },
+    { text: t.stickies[3], x: '70%', y: '62%', rot: 2 },
+  ]
   return (
-    <div className="absolute inset-x-[12%] top-1/2 -translate-y-1/2">
-      <div className="mb-4 flex justify-center">
-        <span className={`${PILL} bg-gray-200 text-gray-700`}>{T[lang].hours}</span>
-      </div>
-      <div className="mb-1.5 flex justify-between px-0.5 text-[10px] text-gray-400"><span>0</span><span>180</span></div>
-      <div className="flex gap-1">
-        {minutes.map((m, i) => (
-          <div
-            key={i}
-            style={{ flexGrow: m }}
-            className={`flex h-9 items-center justify-center rounded-md border text-[10px] font-medium ${
-              i === 3 ? 'border-gray-900 bg-gray-900 text-white' : 'border-gray-200 bg-white text-gray-500'
-            }`}
-          >
-            {m}
-          </div>
+    <>
+      {/* Who is on the board */}
+      <div className="absolute right-[8%] top-[7%] flex items-center">
+        {['A', 'M', 'S', 'V'].map((i, k) => (
+          <span key={i} className={`flex h-6 w-6 items-center justify-center rounded-full border-2 border-[#FAFAF8] text-[9px] font-medium ${k === 3 ? 'bg-gray-900 text-white' : 'bg-gray-200 text-gray-700'} ${k > 0 ? '-ml-1.5' : ''}`}>{i}</span>
         ))}
       </div>
-      <div className="mt-2 flex gap-1">
-        {minutes.map((m, i) => (
-          <div key={i} style={{ flexGrow: m }} className={`h-2 rounded-b-sm border-x border-b ${i === 3 ? 'border-gray-900' : 'border-gray-200'}`} />
-        ))}
-      </div>
-    </div>
+      {/* The notes */}
+      {notes.map((n) => (
+        <div
+          key={n.text + n.x}
+          className={`absolute flex h-[26%] w-[24%] items-start p-2 text-[10px] leading-snug shadow-[0_1px_2px_rgba(0,0,0,0.05),0_6px_16px_-10px_rgba(0,0,0,0.25)] ${
+            n.kept ? 'border border-gray-900 bg-white font-medium text-gray-900' : n.hmw ? 'bg-white text-gray-900 ring-1 ring-inset ring-gray-200' : 'bg-gray-100 text-gray-600'
+          }`}
+          style={{ left: n.x, top: n.y, transform: `rotate(${n.rot}deg)` }}
+        >
+          {n.text}
+          {n.kept && (
+            <span className="absolute bottom-1.5 left-2 flex items-center gap-1">
+              <span className="h-1.5 w-1.5 rounded-full bg-gray-900" /><span className="h-1.5 w-1.5 rounded-full bg-gray-900" /><span className="h-1.5 w-1.5 rounded-full bg-gray-900" />
+              <span className="ml-1 text-[9px] font-normal text-gray-500">{t.votes}</span>
+            </span>
+          )}
+        </div>
+      ))}
+    </>
   )
 }
 
@@ -280,7 +296,7 @@ export function ResourceScene({ id, lang }: { id: string; lang: Lang }) {
     case 'guide-ship-to-show': return <PlayerScene />
     case 'template-design-scoping': return <PageScene lang={lang} />
     case 'template-po-design-sync': return <CellsScene lang={lang} cells={T[lang].days} filled={[0, 2]} label={T[lang].thirty} />
-    case 'template-design-teardown': return <TimeStripScene lang={lang} />
+    case 'template-design-teardown': return <WorkshopScene lang={lang} />
     case 'template-feature-checklist': return <ChecklistScene lang={lang} />
     case 'template-ui-slicing': return <SlicingScene lang={lang} />
     case 'template-figma-file-status': return <StatusScene lang={lang} />
