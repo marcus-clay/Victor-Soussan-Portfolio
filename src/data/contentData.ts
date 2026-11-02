@@ -11,10 +11,11 @@ import type { Signal, SignalCategory } from './signalsData'
 import { GUIDE_META } from './guideClaudeCodeData'
 import { SHIP_TO_SHOW_META } from './guideShipToShowData'
 import { TEMPLATE_ENTRIES } from './templatesData'
+import { DECK_ENTRIES } from './decksData'
 
 // --- Content types ---
 
-export type ContentType = 'article' | 'guide' | 'template'
+export type ContentType = 'article' | 'guide' | 'template' | 'deck'
 
 export interface ContentItem {
   id: string
@@ -33,7 +34,7 @@ export interface ContentItem {
   body_long_en?: string
   body_long_fr?: string
   heroImage?: string
-  // For templates: the address under /ressources/, one per language
+  // For templates and decks: the address under /ressources/, one per language
   slug?: { en: string; fr: string }
   // For guides
   chapterCount?: number
@@ -100,6 +101,20 @@ const TEMPLATES: ContentItem[] = TEMPLATE_ENTRIES.map((t) => ({
   slug: t.slug,
 }))
 
+// Decks: deck templates, from decksData
+const DECKS: ContentItem[] = DECK_ENTRIES.map((d) => ({
+  id: d.id,
+  type: 'deck' as const,
+  title_en: d.title.en,
+  title_fr: d.title.fr,
+  excerpt_en: d.desc.en,
+  excerpt_fr: d.desc.fr,
+  date: '2026-11',
+  category: d.category,
+  tags: d.tags,
+  slug: d.slug,
+}))
+
 // --- Exports ---
 
 // All content items, sorted by date (newest first)
@@ -108,6 +123,7 @@ export const ALL_CONTENT: ContentItem[] = [
   GUIDE_SHIP_TO_SHOW_ITEM,
   ...ARTICLES,
   ...TEMPLATES,
+  ...DECKS,
 ].sort((a, b) => b.date.localeCompare(a.date))
 
 // Filtered getters
@@ -115,7 +131,8 @@ export const getArticles = () => ALL_CONTENT.filter((c) => c.type === 'article')
 export const getGuides = () => ALL_CONTENT.filter((c) => c.type === 'guide')
 export const getTemplates = () => ALL_CONTENT.filter((c) => c.type === 'template')
 /** The library: guides and templates, newest first */
-export const getResources = () => ALL_CONTENT.filter((c) => c.type === 'guide' || c.type === 'template')
+export const getDecks = () => ALL_CONTENT.filter((c) => c.type === 'deck')
+export const getResources = () => ALL_CONTENT.filter((c) => c.type === 'guide' || c.type === 'template' || c.type === 'deck')
 
 // Featured content for homepage (guide + top signal)
 export const FEATURED_CONTENT_IDS = ['guide-claude-code', 'claude-code-figma-mcp']
@@ -131,10 +148,12 @@ export const TYPE_LABELS: Record<ContentType, { en: string; fr: string }> = {
   article: { en: 'Article', fr: 'Article' },
   guide: { en: 'Guide', fr: 'Guide' },
   template: { en: 'Template', fr: 'Modèle' },
+  deck: { en: 'Deck', fr: 'Deck' },
 }
 
 export const TYPE_COLORS: Record<ContentType, { bg: string; text: string }> = {
   article: { bg: 'bg-gray-100', text: 'text-gray-500' },
   guide: { bg: 'bg-gray-100', text: 'text-gray-500' },
   template: { bg: 'bg-gray-100', text: 'text-gray-500' },
+  deck: { bg: 'bg-gray-100', text: 'text-gray-500' },
 }

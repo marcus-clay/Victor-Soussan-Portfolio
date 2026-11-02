@@ -64,6 +64,8 @@ export interface ReadingPageProps {
   figure?: React.ReactNode;
   /** A small piece beside the title in the header (the template's illustration) */
   aside?: React.ReactNode;
+  /** Buttons under the meta line (a download, for example) */
+  actions?: React.ReactNode;
   /** Follow-up cards (computed on the server) */
   related: RelatedItem[];
   relatedHeading: string;
@@ -74,7 +76,7 @@ export interface ReadingPageProps {
 }
 
 const ReadingPage: React.FC<ReadingPageProps> = ({
-  lang, title, meta, html, heroImage, figure, aside, related, relatedHeading, backLabel, onBack, isDark = false,
+  lang, title, meta, html, heroImage, figure, aside, actions, related, relatedHeading, backLabel, onBack, isDark = false,
 }) => {
   const articleRef = useRef<HTMLDivElement>(null);
   const [activeSection, setActiveSection] = useState<string>('');
@@ -157,6 +159,7 @@ const ReadingPage: React.FC<ReadingPageProps> = ({
                   </React.Fragment>
                 ))}
               </p>
+              {actions && <div className="mt-6 md:mt-8">{actions}</div>}
             </div>
           </div>
         </header>

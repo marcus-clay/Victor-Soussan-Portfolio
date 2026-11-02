@@ -18,6 +18,9 @@ export const RESOURCE_TAGS: Record<string, { en: string; fr: string }> = {
   'claude-code': { en: 'Claude Code', fr: 'Claude Code' },
   prototypage: { en: 'Prototyping', fr: 'Prototypage' },
   'case-study': { en: 'Case study', fr: 'Case study' },
+  presentation: { en: 'Presentation', fr: 'Présentation' },
+  decision: { en: 'Decision', fr: 'Décision' },
+  recherche: { en: 'User research', fr: 'Recherche utilisateur' },
 }
 
 export type ResourceTag = keyof typeof RESOURCE_TAGS

@@ -4,6 +4,7 @@ import { SHIP_TO_SHOW_META } from '@/data/guideShipToShowData'
 import { SIGNALS } from '@/data/signalsData'
 import { getAllProjects } from '@/data/projectsData'
 import { TEMPLATE_ENTRIES, templatePath } from '@/data/templatesData'
+import { DECK_ENTRIES, deckPath } from '@/data/decksData'
 import { LANGS, isoDate, pageUrl } from '@/lib/seo'
 
 /**
@@ -62,6 +63,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Templates: one address per language
   for (const t of TEMPLATE_ENTRIES) {
     items.push({ path: { en: templatePath(t, 'en'), fr: templatePath(t, 'fr') }, lastModified: TEMPLATES_PUBLISHED })
+  }
+
+  for (const d of DECK_ENTRIES) {
+    items.push({ path: { en: deckPath(d, 'en'), fr: deckPath(d, 'fr') }, lastModified: '2026-11-02' })
   }
 
   // Guides

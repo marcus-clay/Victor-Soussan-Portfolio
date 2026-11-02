@@ -4,7 +4,7 @@ import type { RelatedItem } from '@/components/RelatedContent'
 
 /** Where a content item lives on the site. */
 function contentHref(item: ContentItem, lang: 'en' | 'fr'): string {
-  if (item.type === 'template' && item.slug) return `/${lang}/ressources/${item.slug[lang]}`
+  if ((item.type === 'template' || item.type === 'deck') && item.slug) return `/${lang}/ressources/${item.slug[lang]}`
   if (item.type === 'guide') {
     return item.id === 'guide-ship-to-show' ? `/${lang}/guide/ship-to-show` : `/${lang}/guide/claude-code`
   }
@@ -21,7 +21,7 @@ function toRelatedItem(item: ContentItem, lang: 'en' | 'fr'): RelatedItem {
     description: lang === 'fr' ? item.excerpt_fr : item.excerpt_en,
     // Guides and templates show their scene; the cover (a hero image) is kept for the articles only
     cover: item.type === 'article' && item.heroImage ? { src: item.heroImage } : undefined,
-    scene: item.type === 'guide' || item.type === 'template' ? { id: item.id, lang } : undefined,
+    scene: item.type === 'guide' || item.type === 'template' || item.type === 'deck' ? { id: item.id, lang } : undefined,
   }
 }
 

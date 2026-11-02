@@ -34,7 +34,7 @@ const TAG_ON = 'border-gray-900 bg-gray-900 text-white'
 const TAG_OFF = 'border-gray-200 text-gray-600 [@media(hover:hover)]:hover:border-gray-300 [@media(hover:hover)]:hover:text-gray-900'
 
 function hrefOf(item: ContentItem, lang: 'en' | 'fr'): string {
-  if (item.type === 'template' && item.slug) return `/${lang}/ressources/${item.slug[lang]}`
+  if ((item.type === 'template' || item.type === 'deck') && item.slug) return `/${lang}/ressources/${item.slug[lang]}`
   return item.id === 'guide-ship-to-show' ? `/${lang}/guide/ship-to-show` : `/${lang}/guide/claude-code`
 }
 

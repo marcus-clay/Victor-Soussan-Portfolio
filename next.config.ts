@@ -131,6 +131,10 @@ const nextConfig: NextConfig = {
     { source: '/fr/ressources/feature-design-checklist', destination: '/fr/ressources/checklist-conception-fonctionnalite', permanent: true },
     { source: '/fr/ressources/ui-slicing', destination: '/fr/ressources/decouper-une-interface', permanent: true },
     { source: '/fr/ressources/figma-file-status', destination: '/fr/ressources/statuts-fichiers-figma', permanent: true },
+    { source: '/en/ressources/deck-revue-de-concept', destination: '/en/ressources/concept-review-deck', permanent: true },
+    { source: '/en/ressources/deck-etude-de-design', destination: '/en/ressources/design-study-deck', permanent: true },
+    { source: '/fr/ressources/concept-review-deck', destination: '/fr/ressources/deck-revue-de-concept', permanent: true },
+    { source: '/fr/ressources/design-study-deck', destination: '/fr/ressources/deck-etude-de-design', permanent: true },
     // Guide: redirect FR slugs on EN path to localized EN slugs
     { source: '/en/guide/claude-code/comprendre', destination: '/en/guide/claude-code/understanding', permanent: true },
     { source: '/en/guide/claude-code/environnement', destination: '/en/guide/claude-code/setup', permanent: true },

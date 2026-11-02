@@ -20,6 +20,10 @@ const T = {
     ticket: 'n° 124',
     statuses: ['Explo', 'WIP', 'Ready to dev'],
     phases: 'Phase',
+    deckSection: 'Section 05',
+    deckConcept: 'Le concept',
+    deckStudy: 'La décision',
+    deckToc: ['Le contexte', 'La recherche', 'Les enseignements', 'Les explorations'],
   },
   en: {
     prompt: 'Build the home screen from the Figma file.',
@@ -31,6 +35,10 @@ const T = {
     ticket: 'no. 124',
     statuses: ['Explo', 'WIP', 'Ready to dev'],
     phases: 'Phase',
+    deckSection: 'Section 05',
+    deckConcept: 'The concept',
+    deckStudy: 'The decision',
+    deckToc: ['The context', 'The research', 'The insights', 'The explorations'],
   },
 }
 
@@ -238,6 +246,33 @@ function StatusScene({ lang }: { lang: Lang }) {
   )
 }
 
+/** A deck: two slides, the section slide in front of the contents slide */
+function DeckScene({ lang, title, toc }: { lang: Lang; title: string; toc?: boolean }) {
+  return (
+    <>
+      <div className={`absolute left-[26%] right-[8%] top-[12%] aspect-[16/9] ${SURFACE} px-4 py-3`} style={FADE}>
+        <div className="flex items-start justify-between">
+          <Bar w="22%" className="bg-gray-300" />
+          <span className="text-[9px] text-gray-400">2</span>
+        </div>
+        {toc && (
+          <div className="mt-4 space-y-2">
+            {T[lang].deckToc.map((t, i) => (
+              <div key={t} className="flex items-center gap-2 text-[9px] text-gray-500"><span className="w-4 text-gray-400">0{i + 1}</span>{t}</div>
+            ))}
+          </div>
+        )}
+      </div>
+      <div className={`absolute left-[8%] right-[26%] top-[30%] aspect-[16/9] ${SURFACE} px-5 py-4`}>
+        <p className="text-[9px] font-medium uppercase tracking-[0.08em] text-gray-500">{T[lang].deckSection}</p>
+        <p className="mt-3 text-[15px] font-semibold leading-tight text-gray-900">{title}</p>
+        <Bar w="60%" className="mt-3" />
+        <div className="absolute bottom-3 left-5 right-5 flex justify-between"><Bar w="20%" className="h-1 bg-gray-100" /><span className="text-[8px] text-gray-400">11</span></div>
+      </div>
+    </>
+  )
+}
+
 /** The scene of a resource, by the id of its content item */
 export function ResourceScene({ id, lang }: { id: string; lang: Lang }) {
   switch (id) {
@@ -249,6 +284,8 @@ export function ResourceScene({ id, lang }: { id: string; lang: Lang }) {
     case 'template-feature-checklist': return <ChecklistScene lang={lang} />
     case 'template-ui-slicing': return <SlicingScene lang={lang} />
     case 'template-figma-file-status': return <StatusScene lang={lang} />
+    case 'deck-concept-review': return <DeckScene lang={lang} title={T[lang].deckConcept} toc />
+    case 'deck-design-study': return <DeckScene lang={lang} title={T[lang].deckStudy} />
     default: return null
   }
 }
@@ -257,6 +294,7 @@ export function ResourceScene({ id, lang }: { id: string; lang: Lang }) {
 export const hasScene = (id: string) => [
   'guide-claude-code', 'guide-ship-to-show', 'template-design-scoping', 'template-po-design-sync',
   'template-design-teardown', 'template-feature-checklist', 'template-ui-slicing', 'template-figma-file-status',
+  'deck-concept-review', 'deck-design-study',
 ].includes(id)
 
 /** The picture of a resource card: its scene on the panel */
