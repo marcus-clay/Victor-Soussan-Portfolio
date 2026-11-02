@@ -1,4 +1,4 @@
-import { ALL_CONTENT, CATEGORY_LABELS, TYPE_LABELS, type ContentItem } from '@/data/contentData'
+import { ALL_CONTENT, CATEGORY_LABELS, TYPE_LABELS, guidePath, type ContentItem } from '@/data/contentData'
 import { GUIDE_CHAPTERS } from '@/data/guideClaudeCodeData'
 import type { RelatedItem } from '@/components/RelatedContent'
 
@@ -6,7 +6,7 @@ import type { RelatedItem } from '@/components/RelatedContent'
 function contentHref(item: ContentItem, lang: 'en' | 'fr'): string {
   if ((item.type === 'template' || item.type === 'deck') && item.slug) return `/${lang}/ressources/${item.slug[lang]}`
   if (item.type === 'guide') {
-    return item.id === 'guide-ship-to-show' ? `/${lang}/guide/ship-to-show` : `/${lang}/guide/claude-code`
+    return `/${lang}/${guidePath(item.id)}`
   }
   return `/${lang}/signal/${item.id}`
 }

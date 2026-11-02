@@ -3,7 +3,7 @@ import Reveal from '@/components/ui/Reveal'
 
 interface HomeBlockProps {
   id?: string
-  title: string
+  title: React.ReactNode
   /** Short line under the title, in the left column */
   note?: string
   children: React.ReactNode

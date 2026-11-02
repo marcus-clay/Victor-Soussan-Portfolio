@@ -1,0 +1,144 @@
+/* transitions-dev: a catalogue of small interface pieces, one tile each, the open menu in focus */
+.sc-transitions-dev-grid {
+  position: absolute;
+  left: -30px;
+  top: -26px;
+  display: grid;
+  grid-template-columns: repeat(4, 112px);
+  grid-auto-rows: 92px;
+  gap: 10px;
+}
+.sc-transitions-dev-tile {
+  position: relative;
+  display: grid;
+  place-items: center;
+  border-radius: 16px;
+  background: var(--ss-surface);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+}
+.sc-transitions-dev-tile[data-focus] {
+  overflow: visible;
+  z-index: 1;
+  box-shadow: var(--ss-shadow-hero);
+}
+.sc-transitions-dev-scrim {
+  background: var(--ss-ink-3);
+  box-shadow: none;
+}
+.sc-transitions-dev-menu {
+  width: 98px;
+  padding: 4px;
+  border-radius: 12px;
+  background: var(--ss-surface);
+  box-shadow: var(--ss-shadow-float);
+}
+.sc-transitions-dev-menu .ss-menu__item {
+  height: 24px;
+  padding: 0 8px;
+  font-size: 13px;
+  border-radius: 8px;
+}
+.sc-transitions-dev-menu .ss-menu__item[data-active] {
+  background: var(--ss-accent-soft);
+  font-weight: 600;
+}
+.sc-transitions-dev-modal {
+  width: 82px;
+  padding: 9px;
+  border-radius: 10px;
+  background: var(--ss-surface);
+  box-shadow: var(--ss-shadow-float);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.sc-transitions-dev-btn {
+  align-self: flex-end;
+  width: 26px;
+  height: 12px;
+  margin-top: 4px;
+  border-radius: 6px;
+  background: var(--ss-text-strong);
+}
+.sc-transitions-dev-bell {
+  position: relative;
+  color: var(--ss-icon);
+}
+.sc-transitions-dev-bell b {
+  position: absolute;
+  right: -7px;
+  top: -5px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 8px;
+  background: var(--ss-text-strong);
+  color: #fff;
+  font-size: 11px;
+  line-height: 16px;
+  text-align: center;
+  font-weight: 600;
+  box-shadow: 0 0 0 2px var(--ss-surface);
+}
+.sc-transitions-dev-toast {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  height: 30px;
+  padding: 0 12px 0 9px;
+  border-radius: 15px;
+  background: var(--ss-surface);
+  box-shadow: var(--ss-shadow-float);
+  color: var(--ss-icon);
+}
+.sc-transitions-dev-acc {
+  width: 92px;
+  display: flex;
+  flex-direction: column;
+}
+.sc-transitions-dev-acc > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 24px;
+  border-bottom: 1px solid var(--ss-line);
+  color: var(--ss-icon);
+}
+.sc-transitions-dev-tip {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+.sc-transitions-dev-tip i {
+  display: block;
+  height: 20px;
+  padding: 0 8px;
+  border-radius: 6px;
+  background: var(--ss-text-strong);
+}
+.sc-transitions-dev-tip i::after {
+  content: '';
+  display: block;
+  width: 26px;
+  height: 5px;
+  margin-top: 7.5px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.7);
+}
+.sc-transitions-dev-search {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  width: 92px;
+  height: 30px;
+  padding: 0 9px;
+  border-radius: 9px;
+  background: var(--ss-canvas);
+  box-shadow: inset 0 0 0 1px var(--ss-line);
+  color: var(--ss-icon);
+}
+
+.sc-transitions-dev-tile .ss-toggle[data-on] { background: var(--ss-text-strong); }

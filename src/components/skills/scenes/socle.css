@@ -1,0 +1,84 @@
+/* socle: a project window, the five steps down its sidebar, the current one open */
+.sc-socle-win {
+  position: absolute;
+  top: 24px;
+  left: 22px;
+  width: 404px;
+  height: 320px;
+  box-shadow: var(--ss-shadow-hero);
+}
+.sc-socle-side {
+  display: flex;
+  flex-direction: column;
+  padding: 36px 12px 0;
+}
+.sc-socle-step {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 36px;
+  padding: 0 8px;
+  border-radius: 8px;
+  font-size: 13.5px;
+  color: var(--ss-text-strong);
+}
+.sc-socle-step[data-state='todo'] { color: var(--ss-text-faint); }
+.sc-socle-step[data-state='now'] { background: var(--ss-accent-soft); font-weight: 600; }
+/* The thread that links the steps, behind the marks */
+.sc-socle-step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 15.5px;
+  top: 29px;
+  height: 14px;
+  width: 1.5px;
+  background: var(--ss-ink-3);
+}
+.sc-socle-mark {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--ss-fill);
+  color: var(--ss-icon);
+  z-index: 1;
+}
+.sc-socle-mark[data-todo] { background: transparent; box-shadow: inset 0 0 0 1.5px var(--ss-ink-4); }
+.sc-socle-now { z-index: 1; color: var(--ss-accent); }
+.sc-socle-now .ss-check__arc { stroke: var(--ss-accent); }
+.sc-socle-now .ss-check__ring { stroke: var(--ss-accent-soft); }
+
+.sc-socle-main {
+  padding: 18px 16px;
+  background: var(--ss-surface);
+  height: 100%;
+}
+.sc-socle-kicker {
+  font-size: 12px;
+  color: var(--ss-text-faint);
+  margin-bottom: 12px;
+}
+.sc-socle-tasks { display: flex; flex-direction: column; gap: 2px; margin: 0 -6px; }
+.sc-socle-win .ss-row {
+  --ss-row-title: 14px;
+  --ss-row-line: 20px;
+  height: 42px;
+}
+.sc-socle-tick {
+  display: grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--ss-fill);
+  color: var(--ss-icon);
+}
+.sc-socle-open {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1.5px var(--ss-ink-4);
+}

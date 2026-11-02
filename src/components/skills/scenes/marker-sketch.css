@@ -1,0 +1,28 @@
+/* marker-sketch: a sheet of dotted paper with a marker diagram, bleeding off the right and bottom */
+.still .sc-ms-paper {
+  position: absolute;
+  left: 28px; top: 28px;
+  width: 400px; height: 300px;
+  border-radius: 14px;
+  background-color: #fffffe;
+  background-image: radial-gradient(circle, rgba(60, 60, 70, 0.26) 1px, transparent 1.3px);
+  background-size: 16px 16px;
+  background-position: 7px 7px;
+  box-shadow: var(--ss-shadow-hero);
+  overflow: hidden;
+}
+.still .sc-ms-svg { position: absolute; left: 0; top: 0; width: 400px; height: 300px; overflow: visible; }
+.still .sc-ms-ink { fill: none; stroke: #232326; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.still .sc-ms-thin { fill: none; stroke: #8b8b92; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.still .sc-ms-acc { fill: none; stroke: var(--ss-accent); stroke-width: 3.4; stroke-linecap: round; stroke-linejoin: round; }
+.still .sc-ms-hl { fill: none; stroke: var(--ss-accent-soft); stroke-width: 26; stroke-linecap: round; }
+.still .sc-ms-word {
+  position: absolute; display: grid; place-items: center;
+  font-family: "Marker Felt", "Bradley Hand", "Segoe Print", "Chalkboard SE", "Comic Sans MS", cursive;
+  font-size: 22px; line-height: 1; color: #232326; -webkit-text-stroke: 0.5px #232326;
+}
+.still .sc-ms-note {
+  position: absolute; left: 222px; top: 164px; width: 104px; height: 92px;
+  background: #f4f3ef; border-radius: 3px; transform: rotate(-3deg);
+  box-shadow: 0 1px 1px rgba(0,0,0,.06), 0 8px 16px -6px rgba(0,0,0,.22);
+}

@@ -1,0 +1,336 @@
+/* The skills page hero (see SkillsHeroStage.tsx). The stage is transparent: the tile is its ground. */
+.ch .ss-stage {
+  overflow: hidden;
+  background: transparent;
+}
+
+/* The hero object: the catalogue in a light window, inset from the top-left, running off the bottom */
+.ch-win {
+  position: absolute;
+  left: 72px;
+  top: 40px;
+  width: 600px;
+  height: 520px;
+  box-shadow: var(--ss-shadow-hero);
+}
+.ch-body {
+  padding: 14px 16px 0;
+  background: var(--ss-surface);
+  height: 100%;
+}
+.ch-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.ch-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 214px;
+  height: 34px;
+  padding: 0 12px;
+  border-radius: 10px;
+  background: #f4f4f2;
+  color: #71717a;
+  font-size: 13px;
+}
+.ch-pills {
+  display: flex;
+  gap: 6px;
+}
+.ch-pill {
+  display: inline-flex;
+  align-items: center;
+  height: 28px;
+  padding: 0 11px;
+  border-radius: 999px;
+  background: #f1f1ef;
+  color: #27272a;
+  font-size: 12px;
+  font-weight: 500;
+}
+.ch-pill[data-on] {
+  background: #111827;
+  color: #fff;
+}
+.ch-heading {
+  margin: 18px 0 10px 2px;
+  color: #18181b;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.ch-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+.ch-card {
+  padding: 8px 8px 12px;
+  border: 1px solid #ececea;
+  border-radius: 12px;
+  background: #fff;
+  transition: box-shadow 200ms cubic-bezier(0.22, 1, 0.36, 1), border-color 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ch-card[data-picked] {
+  border-color: var(--ss-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ss-accent) 22%, transparent);
+}
+.ch-card[data-hover] {
+  border-color: #d4d4d8;
+}
+.ch-thumb {
+  aspect-ratio: 120 / 70;
+  border-radius: 8px;
+  background: #f6f6f4;
+}
+.ch-thumb[data-tone='0'] {
+  background: color-mix(in srgb, var(--ss-accent) 14%, #f6f6f4);
+}
+.ch-thumb__svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.ch-name {
+  margin: 9px 2px 8px;
+  overflow: hidden;
+  color: #18181b;
+  font-family: var(--ss-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+.ch-line {
+  height: 5px;
+  margin: 0 2px 6px;
+  border-radius: 3px;
+  background: #ececea;
+}
+.ch-line--short {
+  width: 62%;
+}
+.ch-line--name {
+  width: 78%;
+  height: 7px;
+  margin: 10px 2px 9px;
+  background: #e1e1df;
+}
+.ch-heading--bar {
+  margin: 22px 0 10px 2px;
+}
+.ch-hbar {
+  display: block;
+  width: 110px;
+  height: 10px;
+  border-radius: 5px;
+  background: #e1e1df;
+}
+.ch-grid--filler .ch-thumb[data-filler='0'] {
+  background: #eef3fb;
+}
+.ch-grid--filler .ch-thumb[data-filler='1'] {
+  background: #fbf0ea;
+}
+.ch-grid--filler .ch-thumb[data-filler='2'] {
+  background: #eaf6f0;
+}
+.ch-grid--filler .ch-thumb[data-filler='3'] {
+  background: #f1eefb;
+}
+
+/* Satellite one: the install card that opens beside the picked skill, straddling the window's right edge */
+.ch-panel {
+  position: absolute;
+  left: 520px;
+  top: 96px;
+  width: 300px;
+  padding: 14px 14px 14px;
+  border-radius: 16px;
+  background: var(--ss-surface);
+  box-shadow: var(--ss-shadow-satellite);
+  opacity: 0;
+  transform: translateY(8px) scale(0.98);
+  transform-origin: 20% 0;
+  transition: opacity 250ms cubic-bezier(0.22, 1, 0.36, 1), transform 250ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ch-panel[data-show='true'] {
+  opacity: 1;
+  transform: none;
+}
+.ch-panel__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.ch-panel__name {
+  color: #18181b;
+  font-family: var(--ss-mono);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+.ch-panel__tag {
+  color: #71717a;
+  font-size: 12px;
+}
+.ch-tabs {
+  display: flex;
+  gap: 6px;
+  margin: 12px 0;
+}
+.ch-tab {
+  display: inline-flex;
+  align-items: center;
+  height: 26px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: #f1f1ef;
+  color: #27272a;
+  font-size: 12px;
+  font-weight: 500;
+}
+.ch-tab[data-on] {
+  background: #111827;
+  color: #fff;
+}
+.ch-cmd {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  height: 42px;
+  padding: 0 5px 0 12px;
+  border: 1px solid #e4e4e2;
+  border-radius: 10px;
+  background: #fff;
+}
+.ch-cmd code {
+  min-width: 0;
+  overflow: hidden;
+  color: #18181b;
+  font-family: var(--ss-mono);
+  font-size: 11px;
+  white-space: nowrap;
+}
+.ch-copy {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 5px;
+  height: 30px;
+  padding: 0 12px;
+  border-radius: 8px;
+  background: #111827;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  transition: background-color 200ms ease-out;
+}
+.ch-copy[data-done] {
+  background: var(--ss-accent);
+}
+.ch-copy[data-hover] {
+  background: #000;
+}
+.ch-copy[data-done][data-hover] {
+  background: var(--ss-accent);
+}
+.ch-copy .ss-check {
+  color: #fff;
+}
+.ch-done {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  color: #18181b;
+  font-size: 13px;
+  font-weight: 500;
+  opacity: 0;
+  transition: opacity 250ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ch-done[data-show='true'] {
+  opacity: 1;
+}
+
+/* Satellite two: the terminal that runs the command, at the lower right, over the window's empty margin */
+.ch-term {
+  position: absolute;
+  left: 568px;
+  top: 326px;
+  width: 352px;
+  height: 130px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 250ms cubic-bezier(0.22, 1, 0.36, 1), transform 250ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ch-term[data-show='true'] {
+  opacity: 1;
+  transform: none;
+}
+.ch-term .ss-term {
+  padding: 6px 16px 14px;
+  font-size: 12px;
+  line-height: 1.7;
+}
+.ch-term .ss-term__line {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ch-term__ok {
+  margin-top: 2px;
+  color: #d4d4d8;
+  opacity: 0;
+  transition: opacity 250ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ch-term__ok[data-show='true'] {
+  opacity: 1;
+}
+
+/* A second design for a phone column: the window and the card, the confirmation inside the card */
+.ch .ss-stage[data-layout='compact'] .ch-win {
+  left: 20px;
+  top: 20px;
+  width: 360px;
+  height: 440px;
+}
+.ch .ss-stage[data-layout='compact'] .ch-heading--bar {
+  margin-top: 14px;
+}
+.ch .ss-stage[data-layout='compact'] .ch-bar {
+  flex-direction: column;
+  align-items: flex-start;
+}
+.ch .ss-stage[data-layout='compact'] .ch-search {
+  width: 100%;
+}
+.ch .ss-stage[data-layout='compact'] .ch-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.ch .ss-stage[data-layout='compact'] .ch-grid:not(.ch-grid--filler) .ch-card:nth-child(n + 3),
+.ch .ss-stage[data-layout='compact'] .ch-grid--filler .ch-card:nth-child(n + 3) {
+  display: none;
+}
+.ch .ss-stage[data-layout='compact'] .ch-pills,
+.ch .ss-stage[data-layout='compact'] .ch-heading:not(.ch-heading--bar),
+.ch .ss-stage[data-layout='compact'] .ch-tabs {
+  display: none;
+}
+.ch .ss-stage[data-layout='compact'] .ch-panel {
+  left: 40px;
+  top: 268px;
+  width: 296px;
+}
+.ch .ss-stage[data-layout='compact'] .ch-panel__head {
+  margin-bottom: 12px;
+}
+.ch .ss-stage[data-layout='compact'] .ch-done {
+  display: flex;
+}
+.ch .ss-stage[data-layout='compact'] .ch-term {
+  display: none;
+}

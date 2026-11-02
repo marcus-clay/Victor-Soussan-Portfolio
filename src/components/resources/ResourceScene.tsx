@@ -10,6 +10,8 @@
 // site's media curve; a few pixels at most, so reduced motion needs no special case.
 
 import React from 'react'
+import PersonalOsScene from '@/components/skills/scenes/personal-os'
+import { ACCENTS } from './accentPalette'
 
 type Lang = 'en' | 'fr'
 
@@ -112,6 +114,15 @@ function PlayerScene() {
       </div>
     </div>
   )
+}
+
+/**
+ * The personal OS guide: the Stageshow picture of the `personal-os` skill (a window with the inbox, the journal and the
+ * board, and the folder card straddling it), so that the guide and its skill show the same thing wherever they are cited
+ * (Resources grid, About carousel, follow-up cards). It is a still: no hover gesture.
+ */
+function OsScene({ lang }: { lang: Lang }) {
+  return <PersonalOsScene lang={lang} a={ACCENTS[7]} note="" />
 }
 
 // ---------------------------------------------------------------------------
@@ -300,6 +311,7 @@ export function ResourceScene({ id, lang }: { id: string; lang: Lang }) {
   switch (id) {
     case 'guide-claude-code': return <PromptScene lang={lang} />
     case 'guide-ship-to-show': return <PlayerScene />
+    case 'guide-personal-os': return <OsScene lang={lang} />
     case 'template-design-scoping': return <PageScene lang={lang} />
     case 'template-po-design-sync': return <CellsScene lang={lang} />
     case 'template-design-teardown': return <WorkshopScene lang={lang} />
@@ -314,7 +326,7 @@ export function ResourceScene({ id, lang }: { id: string; lang: Lang }) {
 
 /** True when a resource has a scene */
 export const hasScene = (id: string) => [
-  'guide-claude-code', 'guide-ship-to-show', 'template-design-scoping', 'template-po-design-sync',
+  'guide-claude-code', 'guide-ship-to-show', 'guide-personal-os', 'template-design-scoping', 'template-po-design-sync',
   'template-design-teardown', 'template-feature-checklist', 'template-ui-slicing', 'template-figma-file-status',
   'deck-concept-review', 'deck-design-study',
 ].includes(id)

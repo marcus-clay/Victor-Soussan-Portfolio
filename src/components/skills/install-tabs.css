@@ -1,0 +1,46 @@
+/* The sliding pill of the install tabs: transform and width only, 250 ms, the smooth ease-out of the motion scale */
+.it-pill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 44px;
+  width: 0;
+  border-radius: 999px;
+  background: #111827;
+  z-index: 5;
+  pointer-events: none;
+  will-change: transform, width;
+  transition: transform 250ms cubic-bezier(0.22, 1, 0.36, 1), width 250ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* The panel of the chosen tool rises in 4px as it fades in (the text swap of the motion scale), played after the first choice only */
+.it-panel {
+  animation: it-in 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes it-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .it-pill {
+    transition: none;
+  }
+  .it-panel {
+    animation: it-fade 120ms linear;
+  }
+  @keyframes it-fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}

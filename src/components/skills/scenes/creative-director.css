@@ -1,0 +1,93 @@
+/* creative-director: an insight on a note, the concept it led to, and how the concept scores against its criteria */
+.still .sc-creative-director-card {
+  position: absolute;
+  top: 66px;
+  left: 44px;
+  width: 302px;
+  padding: 28px 22px 90px;
+  border-radius: 16px;
+  background: var(--ss-surface);
+  box-shadow: var(--ss-shadow-hero);
+  --ss-accent-2: var(--ss-accent);
+  display: grid;
+  gap: 4px;
+}
+
+.still .sc-creative-director-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 20px;
+  color: var(--ss-text);
+  font-size: 12.5px;
+  font-weight: 500;
+}
+
+.still .sc-creative-director-title {
+  display: block;
+  color: var(--ss-text-strong);
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+}
+
+.still .sc-creative-director-sub {
+  display: block;
+  color: var(--ss-text);
+  font-size: 13.5px;
+  line-height: 1.4;
+}
+
+.still .sc-creative-director-criteria {
+  display: grid;
+  gap: 4px;
+  margin-top: 12px;
+  padding-top: 8px;
+  border-top: 1px solid var(--ss-line);
+}
+
+.still .sc-creative-director-crit {
+  display: grid;
+  grid-template-columns: 92px minmax(0, 1fr);
+  align-items: center;
+  column-gap: 12px;
+  height: 28px;
+  color: var(--ss-text-strong);
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* The insight, as a note stuck on the edge of the concept */
+.still .sc-creative-director-note {
+  position: absolute;
+  top: 14px;
+  left: 20px;
+  width: 232px;
+  padding: 11px 14px 12px;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--ss-accent) 16%, #fff);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.04), 0 12px 24px -10px rgba(40, 40, 70, 0.3), 0 2px 4px rgba(0, 0, 0, 0.06);
+  rotate: -2deg;
+  display: grid;
+  gap: 3px;
+}
+
+.still .sc-creative-director-note__label {
+  display: block;
+  color: var(--ss-accent-text);
+  font-size: 11.5px;
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.still .sc-creative-director-note__text {
+  display: block;
+  color: var(--ss-text-strong);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.32;
+  text-wrap: balance;
+}

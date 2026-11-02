@@ -1,0 +1,29 @@
+/* francais-parfait: a sentence set with French typography, the marks lit one by one, a small inspector listing them */
+.still .sc-fp-card {
+  position: absolute; left: -24px; top: 36px; width: 300px; height: 290px;
+  border-radius: 16px; background: var(--ss-surface); box-shadow: var(--ss-shadow-hero);
+}
+.still .sc-fp-text {
+  position: absolute; left: 52px; top: 30px; width: 220px; white-space: nowrap;
+  font-family: "Iowan Old Style", "Palatino", "Georgia", serif;
+  font-size: 21px; line-height: 1.32; letter-spacing: -0.005em; color: var(--ss-text-strong);
+}
+.still .sc-fp-mark { background: var(--ss-accent-soft); border-radius: 3px; box-shadow: 0 1px 0 var(--ss-accent); padding: 0 1px; }
+.still .sc-fp-nb.is-big { width: 11px; height: 9px; vertical-align: 0; }
+.still .sc-fp-nb { display: inline-block; width: 0.4em; height: 0.8em; vertical-align: -0.08em; background: var(--ss-accent-soft); border-bottom: 1.5px solid var(--ss-accent); }
+.still .sc-fp-lines { position: absolute; left: 52px; top: 176px; display: grid; gap: 9px; }
+
+.still .sc-fp-insp {
+  position: absolute; left: 182px; top: 134px; width: 184px; padding: 6px;
+  border-radius: 12px; background: var(--ss-surface); box-shadow: var(--ss-shadow-satellite);
+}
+.still .sc-fp-row { display: flex; align-items: center; gap: 10px; height: 34px; padding: 0 6px; border-radius: 8px; }
+.still .sc-fp-row + .sc-fp-row { margin-top: 2px; }
+.still .sc-fp-row.is-on { background: var(--ss-accent-soft); }
+.still .sc-fp-tile {
+  flex: none; display: grid; place-items: center; width: 24px; height: 24px; border-radius: 6px;
+  background: var(--ss-ink-2); color: var(--ss-text-strong); font-family: "Iowan Old Style", "Palatino", "Georgia", serif;
+  font-size: 15px; line-height: 1;
+}
+.still .sc-fp-row.is-on .sc-fp-tile { background: var(--ss-surface); }
+.still .sc-fp-label { font-size: 13px; line-height: 1.2; color: var(--ss-text-strong); white-space: nowrap; }

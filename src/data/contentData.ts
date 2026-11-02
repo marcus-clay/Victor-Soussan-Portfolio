@@ -10,6 +10,7 @@ import { SIGNALS, CATEGORY_COLORS, CATEGORY_LABELS } from './signalsData'
 import type { Signal, SignalCategory } from './signalsData'
 import { GUIDE_META } from './guideClaudeCodeData'
 import { SHIP_TO_SHOW_META } from './guideShipToShowData'
+import { GUIDE_OS_META, GUIDE_OS_PATH } from './guideOsData'
 import { TEMPLATE_ENTRIES } from './templatesData'
 import { DECK_ENTRIES } from './decksData'
 
@@ -87,6 +88,19 @@ const GUIDE_SHIP_TO_SHOW_ITEM: ContentItem = {
   tags: ['claude-code', 'case-study', 'prototypage'],
 }
 
+// Guide "A personal OS with Claude Code" as a single content item
+const GUIDE_PERSONAL_OS_ITEM: ContentItem = {
+  id: 'guide-personal-os',
+  type: 'guide',
+  title_en: GUIDE_OS_META.title.en,
+  title_fr: GUIDE_OS_META.title.fr,
+  excerpt_en: 'A folder of text files that serves as memory and dashboard for Claude Code: an inbox, ingestion rules, agents and commands, built step by step with a skill.',
+  excerpt_fr: 'Un dossier de fichiers texte qui sert de mémoire et de tableau de bord à Claude Code : une inbox, des règles d\u2019ingestion, des agents et des commandes, construit pas à pas avec une skill.',
+  date: GUIDE_OS_META.date,
+  category: 'ai',
+  tags: ['claude-code', 'documentation', 'decision'],
+}
+
 // Templates: titles, descriptions and addresses come from templatesData, shared with the About cards.
 const TEMPLATES: ContentItem[] = TEMPLATE_ENTRIES.map((t) => ({
   id: t.id,
@@ -121,10 +135,19 @@ const DECKS: ContentItem[] = DECK_ENTRIES.map((d) => ({
 export const ALL_CONTENT: ContentItem[] = [
   GUIDE_ITEM,
   GUIDE_SHIP_TO_SHOW_ITEM,
+  GUIDE_PERSONAL_OS_ITEM,
   ...ARTICLES,
   ...TEMPLATES,
   ...DECKS,
 ].sort((a, b) => b.date.localeCompare(a.date))
+
+/** Where each guide lives under /{lang}/ (the guides have their own routes, outside /ressources/) */
+const GUIDE_PATHS: Record<string, string> = {
+  'guide-claude-code': 'guide/claude-code',
+  'guide-ship-to-show': 'guide/ship-to-show',
+  'guide-personal-os': GUIDE_OS_PATH,
+}
+export const guidePath = (id: string) => GUIDE_PATHS[id] ?? 'guide/claude-code'
 
 // Filtered getters
 export const getArticles = () => ALL_CONTENT.filter((c) => c.type === 'article')

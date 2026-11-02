@@ -1,0 +1,64 @@
+/* transitions-polish: a CSS diff that tightens a transition, and the before and after of its duration */
+.sc-transitions-polish-win {
+  position: absolute;
+  left: 24px;
+  top: 26px;
+  width: 342px;
+  height: 190px;
+  background: var(--ss-surface);
+  box-shadow: var(--ss-shadow-hero);
+  /* one accent: the added lines take it, the removed ones go quiet */
+  --ss-success-soft: var(--ss-accent-soft);
+  --ss-success-text: var(--ss-accent);
+  --ss-danger-soft: var(--ss-ink-1);
+  --ss-danger-text: var(--ss-text-faint);
+}
+.sc-transitions-polish-body {
+  padding: 12px 0 0;
+  background: var(--ss-surface);
+}
+.sc-transitions-polish-win .ss-code {
+  --ss-code-key: var(--ss-text-strong);
+  --ss-code-str: var(--ss-text-strong);
+  --ss-code-num: var(--ss-text-strong);
+  --ss-code-fn: var(--ss-text-strong);
+  font-size: 12.5px;
+  line-height: 24px;
+}
+.sc-transitions-polish-win .ss-code__line { padding-left: 14px; }
+.sc-transitions-polish-win .ss-code__line[data-kind='del'] .ss-code__text { color: var(--ss-text-faint); }
+.sc-transitions-polish-win .ss-code__line[data-kind='add'] .ss-code__text { font-weight: 600; }
+.sc-transitions-polish-card {
+  position: absolute;
+  right: 24px;
+  top: 186px;
+  width: 212px;
+  padding: 12px 16px 14px;
+  border-radius: 14px;
+  background: var(--ss-surface);
+  box-shadow: var(--ss-shadow-satellite);
+}
+.sc-transitions-polish-cap {
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--ss-text);
+  margin-bottom: 8px;
+}
+.sc-transitions-polish-line {
+  display: grid;
+  grid-template-columns: 52px 1fr;
+  align-items: center;
+  column-gap: 10px;
+  height: 22px;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  color: var(--ss-text);
+}
+.sc-transitions-polish-line i {
+  display: block;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--ss-ink-4);
+}
+.sc-transitions-polish-line[data-now] { color: var(--ss-text-strong); font-weight: 600; }
+.sc-transitions-polish-line[data-now] i { width: 60%; background: var(--ss-accent); }

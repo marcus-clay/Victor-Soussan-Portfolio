@@ -1,0 +1,74 @@
+/* spec-ideation: a spec sheet (the documentation phase) and the loose ideas that were sorted for it */
+.sc-si-sheet {
+  position: absolute;
+  top: 22px;
+  left: 124px;
+  width: 244px;
+  height: 330px;
+  padding: 20px 20px 0 26px;
+  border-radius: 12px;
+  background: var(--ss-surface);
+  border: 1px solid var(--ss-line);
+  box-shadow: var(--ss-shadow-hero);
+}
+.sc-si-tag {
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--ss-accent-soft);
+  color: var(--ss-accent-text, var(--ss-accent));
+  font-size: 12px;
+  font-weight: 600;
+}
+.sc-si-title {
+  margin: 14px 0 4px;
+  font-size: 17px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  color: var(--ss-text-strong);
+}
+.sc-si-label {
+  margin: 14px 0 6px;
+  font-size: 12px;
+  color: var(--ss-text-faint);
+}
+.sc-si-row {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  height: 31px;
+  border-bottom: 1px solid var(--ss-line-faint);
+  font-size: 13.5px;
+  color: var(--ss-text-strong);
+}
+.sc-si-row:last-child { border-bottom: 0; }
+.sc-si-dot {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: var(--ss-fill);
+  color: var(--ss-icon);
+}
+.sc-si-row[data-cut] { color: var(--ss-text-faint); }
+
+.sc-si-note {
+  position: absolute;
+  left: 14px;
+  width: 118px;
+  padding: 9px 11px 10px;
+  border-radius: 9px;
+  background: var(--ss-surface);
+  border: 1px solid var(--ss-line);
+  box-shadow: var(--ss-shadow-card, 0 6px 16px rgba(0, 0, 0, 0.1));
+  font-size: 13.5px;
+  line-height: 1.25;
+  font-weight: 500;
+  color: var(--ss-text-strong);
+}
+.sc-si-note[data-cut] { color: var(--ss-text-faint); text-decoration: line-through; text-decoration-color: var(--ss-icon-faint); }
+.sc-si-note[data-i='0'] { top: 62px; transform: rotate(-5deg); }
+.sc-si-note[data-i='1'] { top: 126px; transform: rotate(3deg); left: 20px; }
+.sc-si-note[data-i='2'] { top: 190px; transform: rotate(-2deg); }

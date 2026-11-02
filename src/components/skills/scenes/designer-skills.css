@@ -1,0 +1,130 @@
+/* designer-skills: the paper of a design project, gathered: a persona on top of a journey and a wall of notes */
+.still .sc-designer-skills-pile {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  translate: -50% -50%;
+}
+
+.still .sc-designer-skills-card {
+  grid-area: 1 / 1;
+  width: 252px;
+  height: 198px;
+  border-radius: 14px;
+  background: var(--ss-surface);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 8px 20px -8px rgba(40, 40, 70, 0.22), 0 2px 4px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.still .sc-designer-skills-card--back { translate: -34px 18px; rotate: -6deg; }
+.still .sc-designer-skills-card--mid { translate: 30px -20px; rotate: 4.5deg; }
+.still .sc-designer-skills-card--top {
+  translate: 0 8px;
+  rotate: -1.5deg;
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  padding: 18px 18px 16px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.04), 0 22px 44px -14px rgba(40, 40, 70, 0.34), 0 6px 12px -6px rgba(0, 0, 0, 0.14);
+}
+
+/* Back: sticky notes in a column along the left edge */
+.still .sc-designer-skills-notes {
+  position: absolute;
+  inset: 14px auto auto 14px;
+  display: grid;
+  gap: 10px;
+}
+
+.still .sc-designer-skills-note {
+  width: 54px;
+  height: 54px;
+  border-radius: 6px;
+  background: var(--ss-ink-2);
+}
+
+.still .sc-designer-skills-note[data-hot] { background: color-mix(in srgb, var(--ss-accent) 14%, #fff); }
+
+/* Middle: a journey line with its steps, running along the top */
+.still .sc-designer-skills-journey {
+  position: absolute;
+  inset: 20px 18px auto 18px;
+  height: 36px;
+}
+
+.still .sc-designer-skills-journey__line {
+  position: absolute;
+  inset: 17px 0 auto 0;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--ss-ink-5);
+}
+
+.still .sc-designer-skills-journey__dot {
+  position: absolute;
+  top: 11px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--ss-surface);
+  box-shadow: inset 0 0 0 2px var(--ss-ink-5);
+}
+
+.still .sc-designer-skills-journey__dot[data-hot] {
+  background: var(--ss-accent);
+  box-shadow: 0 0 0 4px var(--ss-accent-soft);
+}
+
+/* Top: the persona */
+.still .sc-designer-skills-who {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.still .sc-designer-skills-name,
+.still .sc-designer-skills-role {
+  display: block;
+}
+
+.still .sc-designer-skills-name {
+  color: var(--ss-text-strong);
+  font-size: 15px;
+  font-weight: 650;
+  line-height: 1.2;
+}
+
+.still .sc-designer-skills-role {
+  color: var(--ss-text);
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+.still .sc-designer-skills-quote {
+  margin: 0;
+  padding-left: 10px;
+  border-left: 2px solid var(--ss-accent);
+  color: var(--ss-text-strong);
+  font-size: 13.5px;
+  line-height: 1.4;
+  text-wrap: balance;
+}
+
+.still .sc-designer-skills-facts {
+  display: grid;
+  gap: 6px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--ss-line);
+  font-size: 12.5px;
+}
+
+.still .sc-designer-skills-fact {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  white-space: nowrap;
+}
+
+.still .sc-designer-skills-fact span:first-child { color: var(--ss-text); }
+.still .sc-designer-skills-fact span:last-child { color: var(--ss-text-strong); font-weight: 500; }

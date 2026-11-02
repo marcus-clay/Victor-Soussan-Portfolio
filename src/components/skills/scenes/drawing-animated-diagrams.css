@@ -1,0 +1,59 @@
+/* drawing-animated-diagrams: an article page, a diagram halfway through drawing itself, the code that does it */
+.sc-drawing-animated-diagrams-win {
+  position: absolute;
+  left: 70px;
+  top: 24px;
+  width: 296px;
+  height: 300px;
+  background: var(--ss-surface);
+  box-shadow: var(--ss-shadow-hero);
+}
+.sc-drawing-animated-diagrams-page {
+  padding: 16px 16px 0;
+  background: var(--ss-surface);
+}
+.sc-drawing-animated-diagrams-title {
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ss-text-strong);
+}
+.sc-drawing-animated-diagrams-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 12px 0 18px;
+}
+.sc-drawing-animated-diagrams-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.sc-drawing-animated-diagrams-svg text {
+  font: 600 12.5px/1 var(--ss-font, system-ui, sans-serif);
+  fill: var(--ss-text-strong);
+  text-anchor: middle;
+}
+.sc-drawing-animated-diagrams-code {
+  position: absolute;
+  left: 20px;
+  bottom: 26px;
+  width: 186px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--ss-surface);
+  box-shadow: var(--ss-shadow-satellite);
+}
+.sc-drawing-animated-diagrams-code .ss-code {
+  font-size: 11.5px;
+  line-height: 20px;
+}
+.sc-drawing-animated-diagrams-code .ss-code__line { padding-right: 0; }
+.sc-drawing-animated-diagrams-code .ss-code {
+  --ss-code-key: var(--ss-text-strong);
+  --ss-code-str: var(--ss-text);
+  --ss-code-num: var(--ss-text-strong);
+  --ss-code-fn: var(--ss-text-strong);
+}

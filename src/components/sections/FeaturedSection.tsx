@@ -2,6 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 import { ArrowRight } from '@phosphor-icons/react/ssr'
 import HomeBlock from './HomeBlock'
+import ClaudeTile from './ClaudeTile'
 
 interface Signal {
   id: string
@@ -20,8 +21,9 @@ interface FeaturedSectionProps {
 }
 
 /**
- * Resources teaser: the Claude Code guide and the featured article, as two rows on the same
- * hairline grammar as the rest of the page. Hover uses the site's list pattern.
+ * Resources teaser: the Claude tile (skills, personal OS guide, a made-up Claude Code window), then the Claude Code
+ * guide and the featured article as two rows on the same hairline grammar as the rest of the page. One block, so
+ * that the page speaks about Claude once. Hover uses the site's list pattern.
  */
 const FeaturedSection: React.FC<FeaturedSectionProps> = ({ lang, featuredSignals, guideChapters }) => {
   const isEn = lang === 'en'
@@ -39,7 +41,9 @@ const FeaturedSection: React.FC<FeaturedSectionProps> = ({ lang, featuredSignals
 
   return (
     <HomeBlock id="resources" title={isEn ? 'Resources' : 'Ressources'}>
-      <div className="divide-y divide-gray-100 border-b border-gray-100">
+      <ClaudeTile lang={lang} />
+
+      <div className="mt-8 divide-y divide-gray-100 border-b border-gray-100">
         <Link href={`/${lang}/guide/claude-code`} className={rowClass}>
           <div className="min-w-0">
             <h3 className="text-title-3 text-gray-900">

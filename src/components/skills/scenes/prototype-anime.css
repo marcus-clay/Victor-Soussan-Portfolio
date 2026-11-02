@@ -1,0 +1,129 @@
+/* prototype-anime: an app screen on a phone, a glass finger about to tap, the film's scrubber under it */
+.sc-prototype-anime-phone {
+  position: absolute;
+  left: 50px;
+  top: 10px;
+  box-shadow: var(--ss-shadow-hero);
+}
+.sc-prototype-anime-screen {
+  position: relative;
+  height: 100%;
+  padding: 8px 20px 0;
+  background: #fff;
+  font-family: var(--ss-font, inherit);
+}
+.sc-prototype-anime-kicker {
+  font-size: 15px;
+  line-height: 20px;
+  color: var(--ss-text);
+}
+.sc-prototype-anime-title {
+  font-size: 34px;
+  line-height: 38px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ss-text-strong);
+}
+.sc-prototype-anime-card {
+  margin-top: 10px;
+  border-radius: 16px;
+  background: var(--ss-canvas);
+  padding: 2px 16px;
+}
+.sc-prototype-anime-field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 44px;
+  font-size: 17px;
+  color: var(--ss-text-strong);
+}
+.sc-prototype-anime-field + .sc-prototype-anime-field {
+  border-top: 1px solid var(--ss-line);
+}
+.sc-prototype-anime-field span:first-child {
+  font-size: 15px;
+  color: var(--ss-text);
+}
+.sc-prototype-anime-cta {
+  position: relative;
+  margin-top: 12px;
+  height: 48px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  font-size: 17px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--ss-accent);
+}
+.sc-prototype-anime-finger {
+  position: absolute;
+  right: 40px;
+  top: 8px;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.55);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.7) inset, 0 6px 18px rgba(0, 0, 0, 0.22), 0 0 0 10px rgba(255, 255, 255, 0.22);
+}
+.sc-prototype-anime-scrub {
+  position: absolute;
+  left: 30px;
+  right: 30px;
+  bottom: 20px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px 0 14px;
+  border-radius: 14px;
+  background: var(--ss-surface);
+  box-shadow: var(--ss-shadow-satellite);
+}
+.sc-prototype-anime-scrub .ss-icon { color: var(--ss-text-strong); flex: none; }
+.sc-prototype-anime-track {
+  position: relative;
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--ss-ink-3);
+}
+.sc-prototype-anime-track i {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 46%;
+  border-radius: 2px;
+  background: var(--ss-text-strong);
+}
+.sc-prototype-anime-track b {
+  position: absolute;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
+  border-radius: 50%;
+  background: var(--ss-surface);
+  box-shadow: 0 0 0 1.5px var(--ss-icon-faint);
+}
+.sc-prototype-anime-track b[data-done] { box-shadow: 0 0 0 1.5px var(--ss-text-strong); }
+.sc-prototype-anime-track em {
+  position: absolute;
+  left: 46%;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  margin: -6px 0 0 -6px;
+  border-radius: 50%;
+  background: var(--ss-text-strong);
+  box-shadow: 0 0 0 3px var(--ss-surface), 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+.sc-prototype-anime-time {
+  flex: none;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ss-text-strong);
+  font-variant-numeric: tabular-nums;
+}

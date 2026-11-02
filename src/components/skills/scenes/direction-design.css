@@ -1,0 +1,82 @@
+/* direction-design: a roadmap sheet in three columns (now, next, later), a meeting pill on its edge */
+.sc-dd-sheet {
+  position: absolute;
+  top: 40px;
+  left: 20px;
+  width: 440px;
+  height: 330px;
+  padding: 16px 14px 0;
+  border-radius: 14px;
+  background: var(--ss-surface);
+  border: 1px solid var(--ss-line);
+  box-shadow: var(--ss-shadow-hero);
+}
+.sc-dd-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ss-text-strong);
+  height: 20px;
+  line-height: 20px;
+}
+.sc-dd-cols {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+.sc-dd-col {
+  flex: 0 0 128px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px;
+  border-radius: 10px;
+  background: var(--ss-canvas);
+  height: 270px;
+}
+.sc-dd-label {
+  display: flex;
+  align-items: center;
+  height: 22px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ss-text-strong);
+}
+.sc-dd-label[data-on] span {
+  padding: 3px 9px;
+  margin-left: -3px;
+  border-radius: 999px;
+  background: var(--ss-accent-soft);
+  color: var(--ss-accent-text, var(--ss-accent));
+}
+.sc-dd-label[data-dim] { color: var(--ss-text); font-weight: 500; }
+.sc-dd-card {
+  padding: 9px 10px 10px;
+  border-radius: 8px;
+  background: var(--ss-surface);
+  box-shadow: 0 0 0 1px var(--ss-line), 0 1px 2px rgba(0, 0, 0, 0.04);
+  font-size: 13px;
+  line-height: 1.3;
+  color: var(--ss-text-strong);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.sc-dd-pill {
+  position: absolute;
+  top: 28px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  height: 28px;
+  padding: 0 12px 0 9px;
+  border-radius: 999px;
+  background: var(--ss-surface);
+  border: 1px solid var(--ss-line);
+  box-shadow: var(--ss-shadow-satellite);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ss-text-strong);
+  white-space: nowrap;
+}
+.sc-dd-pill svg { color: var(--ss-icon); }

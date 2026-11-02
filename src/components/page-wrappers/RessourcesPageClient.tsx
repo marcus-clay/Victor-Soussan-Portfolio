@@ -6,7 +6,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { EASE_SMOOTH, useReveal } from '@/lib/motion'
 import { ActRule } from '@/components/case-study/ActSection'
 import { ArrowUpRight, ArrowRight } from '@phosphor-icons/react'
-import { CATEGORY_LABELS, getResources, TYPE_LABELS, type ContentItem, type SignalCategory } from '@/data/contentData'
+import { CATEGORY_LABELS, getResources, guidePath, TYPE_LABELS, type ContentItem, type SignalCategory } from '@/data/contentData'
 import { RESOURCE_TAGS } from '@/data/resourceTags'
 import { ResourcePicture } from '@/components/resources/ResourceScene'
 
@@ -35,7 +35,7 @@ const TAG_OFF = 'border-gray-200 text-gray-600 [@media(hover:hover)]:hover:borde
 
 function hrefOf(item: ContentItem, lang: 'en' | 'fr'): string {
   if ((item.type === 'template' || item.type === 'deck') && item.slug) return `/${lang}/ressources/${item.slug[lang]}`
-  return item.id === 'guide-ship-to-show' ? `/${lang}/guide/ship-to-show` : `/${lang}/guide/claude-code`
+  return `/${lang}/${guidePath(item.id)}`
 }
 
 /** `?cat=craft&tag=figma` opens the grid on a selection; anything unknown falls back to everything. */
