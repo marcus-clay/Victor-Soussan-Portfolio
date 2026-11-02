@@ -19,8 +19,9 @@ function toRelatedItem(item: ContentItem, lang: 'en' | 'fr'): RelatedItem {
     title: lang === 'fr' ? item.title_fr : item.title_en,
     label: category ? `${kind} · ${category}` : kind,
     description: lang === 'fr' ? item.excerpt_fr : item.excerpt_en,
-    cover: item.heroImage ? { src: item.heroImage } : undefined,
-    thumb: item.type === 'template' ? { template: item.id, lang } : undefined,
+    // Guides and templates show their scene; the cover (a hero image) is kept for the articles only
+    cover: item.type === 'article' && item.heroImage ? { src: item.heroImage } : undefined,
+    scene: item.type === 'guide' || item.type === 'template' ? { id: item.id, lang } : undefined,
   }
 }
 

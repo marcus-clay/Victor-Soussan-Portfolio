@@ -8,7 +8,7 @@ import { ActRule } from '@/components/case-study/ActSection'
 import { ArrowUpRight, ArrowRight } from '@phosphor-icons/react'
 import { CATEGORY_LABELS, getResources, TYPE_LABELS, type ContentItem, type SignalCategory } from '@/data/contentData'
 import { RESOURCE_TAGS } from '@/data/resourceTags'
-import { TemplateDiagramThumb } from '@/components/templates/TemplateDiagrams'
+import { ResourcePicture } from '@/components/resources/ResourceScene'
 
 /**
  * Resources: one library of guides and templates (methods, processes, documents), as a grid of
@@ -50,24 +50,7 @@ function readSelectionFromUrl(categories: SignalCategory[], tags: string[]): { c
 }
 
 function Picture({ item, lang }: { item: ContentItem; lang: 'en' | 'fr' }) {
-  if (item.type === 'template') return <TemplateDiagramThumb id={item.id} lang={lang} className="m-2" />
-  if (!item.illustration) return null
-  return (
-    <div className="m-2 aspect-[13/10] overflow-hidden rounded-xl bg-[#FAFAF8] ring-1 ring-inset ring-black/[0.04]">
-      <div className="h-full w-full transition-transform duration-300 ease-media [@media(hover:hover)]:group-hover:scale-[1.03]">
-        <img
-          src={`/images/resources/doc-${item.illustration}-light.svg`}
-          alt=""
-          width={400}
-          height={320}
-          loading="lazy"
-          decoding="async"
-          draggable={false}
-          className="block h-full w-full object-contain"
-        />
-      </div>
-    </div>
-  )
+  return <ResourcePicture id={item.id} lang={lang} className="m-2" />
 }
 
 function ResourceCard({ item, lang }: { item: ContentItem; lang: 'en' | 'fr' }) {

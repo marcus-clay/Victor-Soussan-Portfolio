@@ -452,14 +452,3 @@ export function TemplateDiagram({ id, lang, thumb = false }: { id: string; lang:
     default: return null
   }
 }
-
-/** The thumb of a template's diagram on the pale ground of the cards (same ground as the About illustrations) */
-export function TemplateDiagramThumb({ id, lang, className = '' }: { id: string; lang: Lang; className?: string }) {
-  return (
-    <div className={`aspect-[13/10] overflow-hidden rounded-xl bg-[#FAFAF8] ring-1 ring-inset ring-black/[0.04] ${className}`}>
-      <div className="h-full w-full p-3 transition-transform duration-300 ease-media [@media(hover:hover)]:group-hover:scale-[1.03]">
-        <TemplateDiagram id={id} lang={lang} thumb />
-      </div>
-    </div>
-  )
-}

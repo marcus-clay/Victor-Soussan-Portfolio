@@ -37,8 +37,6 @@ export interface ContentItem {
   slug?: { en: string; fr: string }
   // For guides
   chapterCount?: number
-  /** Paper figure of a guide on the Resources grid (`/images/resources/doc-<illustration>-light.svg`) */
-  illustration?: string
 }
 
 // --- Build unified content list ---
@@ -72,7 +70,6 @@ const GUIDE_ITEM: ContentItem = {
   category: 'ai',
   chapterCount: 9,
   heroImage: '/images/guide-claude-code/hero-cover.webp',
-  illustration: 'guide-claude-code',
   tags: ['claude-code', 'prototypage', 'figma'],
 }
 
@@ -86,7 +83,6 @@ const GUIDE_SHIP_TO_SHOW_ITEM: ContentItem = {
   excerpt_fr: 'Framework en 7 phases pour transformer un prototype en case study portfolio avec vidéos animées, contenu narratif bilingue et pack d\'intégration.',
   date: SHIP_TO_SHOW_META.date,
   category: 'ai',
-  illustration: 'guide-ship-to-show',
   tags: ['claude-code', 'case-study', 'prototypage'],
 }
 
