@@ -120,11 +120,10 @@ export function ArticleBodyStyles() {
 
       /* Images and figures: the full column at most, hairline ring (outline, so it follows the radius), caption below */
       .article-body figure { margin: 2rem 0; }
-      .article-body img { display: block; max-width: 100%; height: auto; border-radius: 12px; margin: 2rem 0; outline: 1px solid rgba(0,0,0,0.06); outline-offset: -1px; cursor: zoom-in; transition: outline-color var(--duration-slow, 400ms) cubic-bezier(0.22, 1, 0.36, 1), transform var(--duration-slow, 400ms) cubic-bezier(0.22, 1, 0.36, 1); }
+      .article-body img { display: block; max-width: 100%; height: auto; border-radius: 12px; margin: 2rem 0; outline: 1px solid rgba(0,0,0,0.06); outline-offset: -1px; }
       .article-body figure img { margin: 0; }
       .article-body figcaption { margin-top: 0.75rem; color: #646b77; text-align: left; }
       @media (hover: hover) and (pointer: fine) {
-        .article-body img:hover { outline-color: rgba(0,0,0,0.14); transform: scale(1.01); }
       }
 
       /* Code: light surface, hairline, no shadow */
@@ -172,7 +171,6 @@ export function ArticleBodyStyles() {
       .article-body-dark .callout { color: #d4d4d8; border-top-color: rgba(255,255,255,0.15); border-bottom-color: rgba(255,255,255,0.15); }
       .article-body-dark hr { border-top-color: rgba(255,255,255,0.05); }
       @media (hover: hover) and (pointer: fine) {
-        .article-body-dark img:hover { outline-color: rgba(255,255,255,0.22); }
       }
     `}</style>
   );

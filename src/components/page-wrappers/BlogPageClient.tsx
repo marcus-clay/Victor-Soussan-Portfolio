@@ -10,6 +10,9 @@ import { CATEGORY_LABELS, getArticles, type ContentItem } from '@/data/contentDa
 /** Rows shown before "Show all": one screen of choices at a time (Hick), the rest stays in the DOM. */
 const INITIAL_VISIBLE = 10
 
+/** Articles shown first, whatever their date (newest pin first) */
+const PINNED_IDS = ['experimentation-chatgpt-2022']
+
 /**
  * The blog: every article, newest first, as rows on the site's list grammar (the guides and the
  * templates live on the Resources page).
@@ -17,7 +20,8 @@ const INITIAL_VISIBLE = 10
 export default function BlogPageClient({ lang }: { lang: 'en' | 'fr' }) {
   const [showAll, setShowAll] = useState(false)
   const isEn = lang === 'en'
-  const articles = getArticles()
+  const all = getArticles()
+  const articles = [...PINNED_IDS.map((id) => all.find((a) => a.id === id)).filter(Boolean) as ContentItem[], ...all.filter((a) => !PINNED_IDS.includes(a.id))]
 
   const renderRow = (item: ContentItem) => {
     const title = isEn ? item.title_en : item.title_fr
