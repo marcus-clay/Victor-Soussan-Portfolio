@@ -2,7 +2,9 @@
 
 import React, { useState, useCallback, useRef } from 'react';
 import { Copy, Check } from '@phosphor-icons/react';
+import Link from 'next/link';
 import HomeBlock from './HomeBlock';
+import { TRANSLATIONS } from '@/data/translations';
 
 interface ContactCTASectionProps {
   lang: 'en' | 'fr';
@@ -53,12 +55,12 @@ const ContactCTASection: React.FC<ContactCTASectionProps> = ({ lang, content }) 
       <p className="text-lead-lg text-gray-600 max-w-[54ch]">{typo(content.contact.subtitle)}</p>
 
       <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
-        <a
-          href={`mailto:${EMAIL}`}
+        <Link
+          href={`/${lang}/contact`}
           className="btn-dark inline-flex min-h-11 items-center rounded-full bg-gray-900 px-6 text-sm font-medium text-white shadow-sm transition-[background-color,box-shadow,transform] duration-150 hover:bg-black hover:shadow-md active:scale-[0.97] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900"
         >
-          {content.contact.email}
-        </a>
+          {TRANSLATIONS[lang].nav.contact}
+        </Link>
 
         <button
           type="button"

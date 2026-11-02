@@ -60,10 +60,10 @@ export interface ReadingPageProps {
   /** The whole text, h2 sections included. */
   html: string;
   heroImage?: string;
-  /** A drawing on the full column, between the opening and the first section (templates) */
+  /** The brief card, first thing under the header (what the resource is for, where it sits in the cycle) */
+  brief?: React.ReactNode;
+  /** A drawing on the full column, right after the brief: the diagram of a template, the slides of a deck */
   figure?: React.ReactNode;
-  /** A small piece beside the title in the header (the template's illustration) */
-  aside?: React.ReactNode;
   /** Buttons under the meta line (a download, for example) */
   actions?: React.ReactNode;
   /** Follow-up cards (computed on the server) */
@@ -76,7 +76,7 @@ export interface ReadingPageProps {
 }
 
 const ReadingPage: React.FC<ReadingPageProps> = ({
-  lang, title, meta, html, heroImage, figure, aside, actions, related, relatedHeading, backLabel, onBack, isDark = false,
+  lang, title, meta, html, heroImage, brief, figure, actions, related, relatedHeading, backLabel, onBack, isDark = false,
 }) => {
   const articleRef = useRef<HTMLDivElement>(null);
   const [activeSection, setActiveSection] = useState<string>('');
@@ -142,26 +142,20 @@ const ReadingPage: React.FC<ReadingPageProps> = ({
       {/* Header full width (same as Approche), then everything lives in the one content column */}
       <article ref={articleRef}>
         <header className="wrap pt-10 md:pt-16 pb-12 md:pb-16">
-          {/* The title, and beside it (above it on phones) the piece that stands for the document */}
-          <div className="flex flex-col gap-8 md:flex-row md:items-start md:justify-between md:gap-12">
-            {aside && <div className="order-first w-40 shrink-0 md:order-last md:w-60">{aside}</div>}
-            <div className="min-w-0">
-              <h1 className={`text-headline text-balance max-w-[26ch] ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                {title}
-              </h1>
+          <h1 className={`text-headline text-balance max-w-[26ch] ${isDark ? 'text-white' : 'text-gray-900'}`}>
+            {title}
+          </h1>
 
-              {/* One quiet line of metadata */}
-              <p className="mt-6 md:mt-8 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-gray-500">
-                {meta.map((item, i) => (
-                  <React.Fragment key={i}>
-                    {i > 0 && <span className="text-gray-300" aria-hidden="true">·</span>}
-                    {item}
-                  </React.Fragment>
-                ))}
-              </p>
-              {actions && <div className="mt-6 md:mt-8">{actions}</div>}
-            </div>
-          </div>
+          {/* One quiet line of metadata */}
+          <p className="mt-6 md:mt-8 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-gray-500">
+            {meta.map((item, i) => (
+              <React.Fragment key={i}>
+                {i > 0 && <span className="text-gray-300" aria-hidden="true">·</span>}
+                {item}
+              </React.Fragment>
+            ))}
+          </p>
+          {actions && <div className="mt-6 md:mt-8">{actions}</div>}
         </header>
 
         {/* Hero image (if any): the full column */}
@@ -175,17 +169,24 @@ const ReadingPage: React.FC<ReadingPageProps> = ({
           </figure>
         )}
 
-        {/* Introduction: the text before the first h2 */}
-        {intro && (
-          <div className={`act-wide ${sections.length > 0 || figure ? 'pb-12 md:pb-16' : 'pb-16 md:pb-24'}`}>
-            <ArticleBody html={intro} isDark={isDark} lead />
+        {/* The brief first: what the resource is for, where it sits in the design cycle */}
+        {brief && (
+          <div className="act-wide pb-8 md:pb-10">
+            {brief}
           </div>
         )}
 
-        {/* The drawing, after the opening: the idea of the document in one picture */}
+        {/* Then the figure, like a hero image: the diagram of a template, the slides of a deck */}
         {figure && (
           <div className="act-wide pb-12 md:pb-16">
             {figure}
+          </div>
+        )}
+
+        {/* Introduction: the text before the first h2 */}
+        {intro && (
+          <div className={`act-wide ${sections.length > 0 ? 'pb-12 md:pb-16' : 'pb-16 md:pb-24'}`}>
+            <ArticleBody html={intro} isDark={isDark} lead />
           </div>
         )}
 

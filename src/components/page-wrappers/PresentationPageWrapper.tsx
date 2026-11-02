@@ -19,7 +19,7 @@ export default function PresentationPageWrapper({ lang }: { lang: 'en' | 'fr' })
       language={lang}
       systemTheme="light"
       onClose={() => router.push(`/${lang}`)}
-      onBookCall={() => window.open('https://calendar.app.google/Zyp3tRyA2M9QByun6', '_blank')}
+      onBookCall={() => router.push(`/${lang}/contact`)}
       onContact={() => router.push(`/${lang}/contact`)}
       onOpenResume={() => router.push(`/${lang}/resume`)}
     />

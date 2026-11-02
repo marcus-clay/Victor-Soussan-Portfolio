@@ -15,6 +15,7 @@ import { ActRule } from '../components/case-study/ActSection';
 import RelatedContent, { type RelatedItem } from '../components/RelatedContent';
 import { TRANSLATIONS } from '../data/translations';
 import { useReveal } from '../lib/motion';
+import { ResourceBrief } from '../components/resources/ResourceBrief';
 import {
   SHIP_TO_SHOW_META,
   SHIP_TO_SHOW_PHASES,
@@ -99,6 +100,11 @@ const GuideShipToShowPage: React.FC<Props> = ({ lang, onNavigate, related }) => 
             </div>
           </div>
         </header>
+
+        {/* The brief: what the guide is for, where it sits in the design cycle */}
+        <div className="act-wide pb-8 md:pb-10">
+          <ResourceBrief id="guide-ship-to-show" lang={lang} />
+        </div>
 
         {/* ─── The Problem ─── */}
         <section id="problem" className="scroll-mt-28">

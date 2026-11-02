@@ -12,6 +12,7 @@ import { TYPE_LABELS } from '../data/contentData';
 import { TRANSLATIONS } from '../data/translations';
 import CardCarousel from '../components/ui/CardCarousel';
 import ReadingPage, { readingLabelFor } from './ReadingPage';
+import { ResourceBrief } from '../components/resources/ResourceBrief';
 import type { RelatedItem } from '../components/RelatedContent';
 
 interface Props {
@@ -68,6 +69,7 @@ const DeckDetailPage: React.FC<Props> = ({ deckId, lang, onBack, related }) => {
         </div>
       }
       html={html}
+      brief={<ResourceBrief id={deck.id} lang={lang} />}
       figure={
         // The slides, one after the other on the grey panel of the diagrams; swipe, drag or arrows
         <div className="overflow-hidden rounded-2xl bg-[#F7F7F5] ring-1 ring-inset ring-black/[0.04] py-5 md:py-6">
