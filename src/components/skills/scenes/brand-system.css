@@ -1,0 +1,32 @@
+/* brand-system: a brand sheet (accent swatch with gradient, type specimen, neutrals, buttons) and its tokens as code */
+.still .sc-bs-card {
+  position: absolute; left: 28px; top: 28px; width: 300px; height: 290px;
+  border-radius: 16px; background: var(--ss-surface); box-shadow: var(--ss-shadow-hero);
+}
+.still .sc-bs-swatch {
+  position: absolute; left: 16px; top: 16px; width: 146px; height: 92px; border-radius: 12px;
+  background: linear-gradient(135deg, var(--ss-accent) 0%, color-mix(in srgb, var(--ss-accent) 62%, #fff) 100%);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+}
+.still .sc-bs-hex { position: absolute; left: 12px; bottom: 10px; font-family: var(--ss-mono); font-size: 12px; line-height: 1; color: #fff; letter-spacing: 0.01em; }
+.still .sc-bs-type {
+  position: absolute; left: 170px; top: 16px; width: 114px; height: 92px; border-radius: 12px;
+  background: var(--ss-canvas); box-shadow: inset 0 0 0 1px var(--ss-line);
+}
+.still .sc-bs-aa { position: absolute; left: 14px; top: 10px; font-size: 40px; font-weight: 650; letter-spacing: -0.03em; line-height: 1.1; color: var(--ss-text-strong); }
+.still .sc-bs-font { position: absolute; left: 14px; bottom: 12px; font-size: 13px; line-height: 1; color: var(--ss-text); }
+.still .sc-bs-neutrals { position: absolute; left: 16px; top: 118px; display: flex; gap: 6px; }
+.still .sc-bs-neutrals i { width: 33px; height: 30px; border-radius: 8px; display: block; }
+.still .sc-bs-buttons { position: absolute; left: 16px; top: 158px; display: flex; gap: 8px; }
+.still .sc-bs-btn { display: grid; place-items: center; height: 32px; padding: 0 13px; border-radius: 9px; font-size: 13px; font-weight: 550; line-height: 1; white-space: nowrap; }
+.still .sc-bs-btn.is-primary { background: var(--ss-accent); color: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.14); }
+.still .sc-bs-btn.is-ghost { color: var(--ss-text-strong); box-shadow: inset 0 0 0 1px var(--ss-ink-5); }
+.still .sc-bs-lines { position: absolute; left: 16px; top: 214px; display: grid; gap: 9px; }
+
+.still .sc-bs-code {
+  position: absolute; left: 226px; top: 176px; width: 142px; padding: 12px 12px;
+  border-radius: 12px; background: var(--ss-surface); box-shadow: var(--ss-shadow-satellite);
+  font-family: var(--ss-mono); font-size: 11px; line-height: 20px; color: var(--ss-text-strong); white-space: nowrap;
+}
+.still .sc-bs-code b { font-weight: 400; color: var(--ss-text); }
+.still .sc-bs-code u { text-decoration: none; color: var(--ss-accent-text); }

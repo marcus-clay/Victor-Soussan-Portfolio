@@ -1,0 +1,80 @@
+/* signal-research: a feed of signals, one picked, and the angle it becomes */
+.still .sc-signal-research-win {
+  position: absolute;
+  top: 24px;
+  left: 22px;
+  width: 320px;
+  height: 300px;
+  border-radius: 12px;
+  background: var(--ss-surface);
+  box-shadow: var(--ss-shadow-hero);
+}
+
+.still .sc-signal-research-list {
+  display: grid;
+  align-content: start;
+  padding: 6px 8px;
+}
+
+.still .sc-signal-research-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  height: 44px;
+  padding: 0 10px;
+  border-radius: 8px;
+  border-bottom: 1px solid var(--ss-line-faint);
+}
+
+.still .sc-signal-research-row[data-on] {
+  background: color-mix(in srgb, var(--ss-accent) 14%, #fff);
+  border-bottom-color: transparent;
+}
+
+.still .sc-signal-research-row__title {
+  color: var(--ss-text-strong);
+  font-size: 13.5px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.still .sc-signal-research-row .ss-badge { flex: none; font-size: 11.5px; }
+
+.still .sc-signal-research-row[data-bars] { gap: 18px; }
+
+/* The angle: lifted over the filler rows, straddling the window's right edge */
+.still .sc-signal-research-angle {
+  position: absolute;
+  top: 150px;
+  left: 184px;
+  width: 188px;
+  padding: 14px 16px 14px;
+  border-radius: 14px;
+  background: var(--ss-surface);
+  box-shadow: var(--ss-shadow-satellite);
+  display: grid;
+  gap: 6px;
+  justify-items: start;
+}
+
+.still .sc-signal-research-angle__label {
+  display: block;
+  color: var(--ss-accent-text);
+  font-size: 11.5px;
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.still .sc-signal-research-angle__text {
+  display: block;
+  color: var(--ss-text-strong);
+  font-size: 15.5px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  text-wrap: balance;
+}
+
+.still .sc-signal-research-angle .ss-badge { margin-top: 4px; font-size: 11.5px; }

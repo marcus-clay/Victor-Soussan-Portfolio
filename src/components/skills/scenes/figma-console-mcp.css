@@ -1,0 +1,74 @@
+/* figma-console-mcp: the variables of a design file, and the terminal command that just wrote them */
+.sc-figma-console-mcp-win {
+  position: absolute;
+  left: 104px;
+  top: 24px;
+  width: 264px;
+  height: 300px;
+  background: var(--ss-surface);
+  box-shadow: var(--ss-shadow-hero);
+}
+.sc-figma-console-mcp-side {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 50px 12px 0;
+}
+.sc-figma-console-mcp-file {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ss-text-strong);
+}
+.sc-figma-console-mcp-main {
+  padding: 14px 16px 0;
+  background: var(--ss-surface);
+}
+.sc-figma-console-mcp-group {
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--ss-text);
+  padding-bottom: 6px;
+}
+.sc-figma-console-mcp-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 36px;
+  border-top: 1px solid var(--ss-line-faint);
+}
+.sc-figma-console-mcp-sw {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 6px;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1);
+}
+.sc-figma-console-mcp-name {
+  font-size: 14px;
+  line-height: 18px;
+  color: var(--ss-text-strong);
+}
+.sc-figma-console-mcp-row[data-new] .sc-figma-console-mcp-name { font-weight: 600; }
+.sc-figma-console-mcp-term {
+  position: absolute;
+  left: 18px;
+  bottom: 26px;
+  width: 192px;
+  border-radius: 12px;
+  box-shadow: var(--ss-shadow-satellite);
+  --ss-term-ok: var(--ss-accent);
+  --ss-term-sigil: var(--ss-accent);
+}
+.sc-figma-console-mcp-term .ss-window__body,
+.sc-figma-console-mcp-term .ss-window__content {
+  padding: 8px 12px 12px;
+}
+.sc-figma-console-mcp-line {
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.sc-figma-console-mcp-row .ss-bar { margin-left: auto; }

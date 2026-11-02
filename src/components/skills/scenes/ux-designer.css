@@ -1,0 +1,64 @@
+/* ux-designer: a journey map in a window (research, journey, tests), one low point flagged, a persona card on its edge */
+.sc-ud-win {
+  position: absolute;
+  top: 24px;
+  left: 40px;
+  width: 360px;
+  height: 330px;
+  box-shadow: var(--ss-shadow-hero);
+}
+.sc-ud-body { height: 100%; background: var(--ss-surface); padding: 0 16px; }
+.sc-ud-tabs { margin: 0 -16px; padding: 10px 16px 0; border-bottom: 1px solid var(--ss-line); }
+.sc-ud-tabs .ss-tabs { gap: 18px; font-size: 13.5px; }
+.sc-ud-tabs .ss-tabs__tab { font-size: 13.5px; }
+.sc-ud-phases {
+  display: grid;
+  grid-template-columns: repeat(4, 82px);
+  margin-top: 14px;
+  font-size: 13px;
+  text-align: center;
+  color: var(--ss-text);
+}
+.sc-ud-plot { position: relative; margin: 6px 0 0 41px; width: 246px; height: 96px; }
+.sc-ud-grid { position: absolute; inset: 0; margin-left: -41px; width: 328px; pointer-events: none; }
+.sc-ud-grid i { position: absolute; top: 0; bottom: 0; width: 1px; background: var(--ss-line); }
+.sc-ud-pt {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  margin: -4.5px 0 0 -4.5px;
+  border-radius: 50%;
+  background: var(--ss-surface);
+  box-shadow: inset 0 0 0 1.5px var(--ss-icon-faint);
+}
+.sc-ud-pt[data-low] {
+  width: 13px;
+  height: 13px;
+  margin: -6.5px 0 0 -6.5px;
+  background: var(--ss-accent);
+  box-shadow: 0 0 0 4px var(--ss-accent-soft);
+}
+.sc-ud-flag {
+  position: absolute;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ss-text-strong);
+  white-space: nowrap;
+}
+.sc-ud-lane { display: flex; flex-direction: column; gap: 9px; margin-top: 16px; }
+
+.sc-ud-card {
+  position: absolute;
+  left: 10px;
+  top: 236px;
+  width: 198px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: var(--ss-surface);
+  border: 1px solid var(--ss-line);
+  box-shadow: var(--ss-shadow-satellite);
+}
+.sc-ud-who { display: flex; flex-direction: column; gap: 7px; font-size: 13.5px; font-weight: 550; color: var(--ss-text-strong); }

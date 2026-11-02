@@ -1,0 +1,113 @@
+/* layers-skills: the layers of a product, drawn apart: the surface on top, what was observed at the bottom */
+.still .sc-layers-skills-iso {
+  position: absolute;
+  left: 134px;
+  top: 150px;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+  transform: rotateX(58deg) rotateZ(-38deg);
+}
+
+.still .sc-layers-skills-plate {
+  position: absolute;
+  left: -65px;
+  top: -65px;
+  width: 130px;
+  height: 130px;
+  border-radius: 16px;
+  background: var(--sc-plate, #fff);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.07);
+  transform-style: preserve-3d;
+}
+
+/* The thickness of the plate and the shadow it lays on the one below */
+.still .sc-layers-skills-plate::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: #c9c9d0;
+  transform: translateZ(-5px);
+}
+
+.still .sc-layers-skills-plate::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border-radius: 18px;
+  background: rgba(40, 40, 90, 0.3);
+  filter: blur(11px);
+  transform: translateZ(-28px) translate(12px, 12px);
+}
+
+/* A dot grid on the plates that stand for the layers beneath the surface */
+.still .sc-layers-skills-plate[data-dots] {
+  background-image: radial-gradient(rgba(0, 0, 0, 0.16) 1.2px, transparent 1.4px);
+  background-size: 13px 13px;
+  background-position: 6px 6px;
+}
+
+/* The surface: a tiny screen */
+.still .sc-layers-skills-screen {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  padding: 14px;
+}
+
+.still .sc-layers-skills-screen__head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.still .sc-layers-skills-screen__btn {
+  height: 20px;
+  width: 64px;
+  border-radius: 10px;
+  background: var(--ss-accent);
+  margin-top: 4px;
+}
+
+/* Labels, one per layer, each tied to its plate by a hairline ending in a dot */
+.still .sc-layers-skills-label {
+  position: absolute;
+  left: 268px;
+  display: flex;
+  align-items: center;
+  height: 20px;
+  margin-top: -10px;
+  color: var(--ss-text-strong);
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.still .sc-layers-skills-label[data-hot] {
+  color: var(--ss-accent-text);
+  font-weight: 650;
+}
+
+.still .sc-layers-skills-leader {
+  position: absolute;
+  height: 1px;
+  background: var(--ss-ink-5);
+  margin-top: 0;
+}
+
+.still .sc-layers-skills-leader::before {
+  content: '';
+  position: absolute;
+  left: -2.5px;
+  top: -2px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--ss-icon);
+}
+
+.still .sc-layers-skills-leader[data-hot] { background: var(--ss-accent); }
+.still .sc-layers-skills-leader[data-hot]::before { background: var(--ss-accent); }

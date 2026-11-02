@@ -1,0 +1,51 @@
+/* karpathy-guidelines: a diff of two lines in a code window, and the three rules the model follows */
+.sc-kg-win {
+  position: absolute;
+  top: 120px;
+  left: 36px;
+  width: 380px;
+  height: 300px;
+  box-shadow: var(--ss-shadow-hero);
+}
+.sc-kg-code {
+  height: 100%;
+  background: var(--ss-surface);
+  padding: 10px 0 0;
+}
+/* Quiet code: one ink, the change carries the accent */
+.sc-kg-code .ss-code {
+  font-size: 12.5px;
+  line-height: 22px;
+  --ss-code-key: var(--ss-text-strong);
+  --ss-code-str: var(--ss-text-strong);
+  --ss-code-num: var(--ss-text-strong);
+  --ss-code-fn: var(--ss-text-strong);
+}
+.sc-kg-code .ss-code__line[data-kind='add'] { background: var(--ss-accent-soft); }
+.sc-kg-code .ss-code__line[data-kind='add'] .ss-code__mark { color: var(--ss-accent-text, var(--ss-accent)); }
+.sc-kg-code .ss-code__line[data-kind='del'] { background: var(--ss-ink-2); color: var(--ss-text); }
+.sc-kg-code .ss-code__line[data-kind='del'] .ss-code__mark { color: var(--ss-text-faint); }
+.sc-kg-code .ss-code__line[data-kind='del'] .ss-code__text { text-decoration: line-through; text-decoration-color: var(--ss-icon-faint); }
+
+.sc-kg-card {
+  position: absolute;
+  top: 14px;
+  left: 120px;
+  width: 232px;
+  padding: 8px 6px;
+  border-radius: 14px;
+  background: var(--ss-surface);
+  border: 1px solid var(--ss-line);
+  box-shadow: var(--ss-shadow-satellite);
+}
+.sc-kg-rule {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 30px;
+  padding: 0 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ss-text-strong);
+}
+.sc-kg-rule svg { flex-shrink: 0; color: var(--ss-icon); }

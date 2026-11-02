@@ -2,6 +2,7 @@ import type { MetadataRoute } from 'next'
 import { GUIDE_CHAPTERS, GUIDE_META } from '@/data/guideClaudeCodeData'
 import { SHIP_TO_SHOW_META } from '@/data/guideShipToShowData'
 import { SIGNALS } from '@/data/signalsData'
+import { SKILLS } from '@/data/skillsCatalogue'
 import { getAllProjects } from '@/data/projectsData'
 import { TEMPLATE_ENTRIES, templatePath } from '@/data/templatesData'
 import { DECK_ENTRIES, deckPath } from '@/data/decksData'
@@ -69,8 +70,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     items.push({ path: { en: deckPath(d, 'en'), fr: deckPath(d, 'fr') }, lastModified: '2026-11-02' })
   }
 
+  // Claude: the landing page and the skills catalogue
+  items.push({ path: same('claude'), lastModified: SITE_CONTENT_UPDATED })
+  items.push({ path: same('skills'), lastModified: SITE_CONTENT_UPDATED })
+  for (const s of SKILLS) items.push({ path: same(`skills/${s.id}`), lastModified: SITE_CONTENT_UPDATED })
+
   // Guides
   items.push({ path: same('guide/ship-to-show'), lastModified: isoDate(SHIP_TO_SHOW_META.date) ?? SITE_CONTENT_UPDATED })
+  items.push({ path: same('guide/os-personnel'), lastModified: '2026-11-02' })
   items.push({ path: same('guide/claude-code'), lastModified: isoDate(GUIDE_META.date) ?? SITE_CONTENT_UPDATED })
   for (const ch of GUIDE_CHAPTERS) {
     items.push({

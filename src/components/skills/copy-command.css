@@ -1,0 +1,28 @@
+/* The two states of the copy button, stacked in one cell: the box keeps the width of the wider one.
+   Cross-fade with a 2px blur and a small scale, 200 ms, ease-in-out (the icon and text swap of the motion scale). */
+.cc-states {
+  display: grid;
+}
+.cc-state {
+  grid-area: 1 / 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  opacity: 0;
+  filter: blur(2px);
+  transform: scale(0.94);
+  transition: opacity 200ms ease-in-out, filter 200ms ease-in-out, transform 200ms ease-in-out;
+}
+.cc-state[data-on] {
+  opacity: 1;
+  filter: blur(0);
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .cc-state {
+    filter: none;
+    transform: none;
+    transition: opacity 120ms linear;
+  }
+}

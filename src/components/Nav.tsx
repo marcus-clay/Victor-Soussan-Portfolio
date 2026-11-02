@@ -19,6 +19,7 @@ const MENU_ITEMS = [
   { id: 'home', route: '', labelKey: null },
   { id: 'projets', route: 'projets', labelKey: 'projects' as const },
   { id: 'approche', route: 'approche', labelKey: 'approach' as const },
+  { id: 'claude', route: 'claude', labelKey: 'claude' as const },
   { id: 'about', route: 'about', labelKey: 'bio' as const },
   { id: 'blog', route: 'blog', labelKey: 'blog' as const },
   { id: 'ressources', route: 'ressources', labelKey: 'resources' as const },
@@ -27,7 +28,7 @@ const MENU_ITEMS = [
 ]
 
 // The entries kept in the bar from md up (with Contact, the one filled button). Everything is also in the menu.
-const PRIMARY_IDS = ['projets', 'approche', 'about'] as const
+const PRIMARY_IDS = ['projets', 'approche', 'claude', 'about'] as const
 
 // The pages under a section light up its entry: a project lights Work, an article lights Blog, a guide or a
 // template lights Resources
@@ -35,6 +36,7 @@ const SECTION_PREFIXES: Record<string, string[]> = {
   projets: ['projets', 'project'],
   blog: ['blog', 'signal'],
   ressources: ['ressources', 'guide'],
+  claude: ['claude', 'skills'],
 }
 
 export default function Nav({ lang }: { lang: Lang }) {

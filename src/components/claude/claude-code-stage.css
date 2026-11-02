@@ -1,0 +1,135 @@
+/* The Claude tile illustration (see ClaudeCodeStage.tsx). The stage is transparent: the tile is its ground. */
+.cs .ss-stage {
+  overflow: hidden;
+  background: transparent;
+}
+
+/* The hero: a dark terminal, inset from the top-left, running off the right and bottom edges */
+.cs-term {
+  position: absolute;
+  left: 96px;
+  top: 40px;
+  width: 520px;
+  height: 470px;
+}
+.cs-term .ss-term {
+  gap: 4px;
+  padding: 10px 24px 24px;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.cs-line {
+  color: #c9c9d1;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 250ms cubic-bezier(0.22, 1, 0.36, 1), transform 250ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.cs-line[data-show='true'] {
+  opacity: 1;
+  transform: none;
+}
+.cs-line--sub {
+  padding-left: 18px;
+}
+.cs-head {
+  color: #ededf0;
+}
+.cs-head--path {
+  color: #71717a;
+}
+.cs-star {
+  color: #d97757;
+}
+.cs-prompt {
+  margin-top: 12px !important;
+}
+
+/* The prompt box of Claude Code, idle, at the foot of the window; the folder card overlaps its left end */
+.cs-input {
+  position: absolute;
+  left: 24px;
+  width: 400px;
+  top: 316px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 40px;
+  padding: 0 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  color: #63636b;
+  font-size: 12px;
+}
+.cs-input__hint {
+  color: #52525b;
+  font-size: 11px;
+}
+.cs-bullet {
+  color: #d97757;
+}
+
+/* The satellite: the folder Claude builds, straddling the terminal's left edge over its empty margin */
+.cs-tree {
+  position: absolute;
+  left: 24px;
+  top: 262px;
+  width: 228px;
+  padding: 10px 8px 8px;
+  border-radius: 14px;
+  background: var(--ss-surface);
+  box-shadow: var(--ss-shadow-satellite);
+  color: #18181b;
+  font-size: 12.5px;
+}
+.cs-tree__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 8px 8px;
+  color: #71717a;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+.cs-tree__row {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  height: 28px;
+  padding: 0 8px;
+  border-radius: 8px;
+  color: #a1a1aa;
+  font-family: var(--ss-mono);
+  transition: color 250ms cubic-bezier(0.22, 1, 0.36, 1), background-color 150ms ease-out;
+}
+.cs-tree__row[data-done] {
+  color: #18181b;
+}
+.cs-tree__row[data-hover] {
+  background: rgba(0, 0, 0, 0.05);
+}
+.cs-tree__icon {
+  flex: none;
+  color: #a1a1aa;
+}
+.cs-tree__row[data-done] .cs-tree__icon {
+  color: #52525b;
+}
+
+/* A second design for a phone column: same story, the terminal closer and the card smaller */
+.cs .ss-stage[data-layout='compact'] .cs-term {
+  left: 40px;
+  top: 24px;
+  width: 380px;
+  height: 430px;
+}
+.cs .ss-stage[data-layout='compact'] .cs-term .ss-term {
+  padding: 8px 18px 20px;
+  font-size: 12.5px;
+}
+.cs .ss-stage[data-layout='compact'] .cs-tree {
+  left: 12px;
+  top: 232px;
+  width: 204px;
+}

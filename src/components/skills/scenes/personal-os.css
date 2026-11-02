@@ -1,0 +1,99 @@
+/* personal-os: a folder of text files (sidebar of folders, the journal open) and the command that sorted the inbox */
+.sc-pos-win {
+  position: absolute;
+  top: 20px;
+  left: 70px;
+  width: 384px;
+  height: 330px;
+  box-shadow: var(--ss-shadow-hero);
+}
+.sc-pos-side {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 42px 8px 0;
+}
+.sc-pos-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 30px;
+  padding: 0 8px;
+  border-radius: 7px;
+  font-size: 13.5px;
+  color: var(--ss-text-strong);
+}
+.sc-pos-item svg { color: var(--ss-icon); flex-shrink: 0; }
+.sc-pos-item[data-on] { background: var(--ss-ink-3); font-weight: 600; }
+
+.sc-pos-main {
+  height: 100%;
+  background: var(--ss-surface);
+  padding: 16px 16px 0;
+}
+.sc-pos-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 12px;
+  color: var(--ss-text-faint);
+}
+.sc-pos-tag {
+  padding: 2px 6px;
+  border-radius: 5px;
+  background: var(--ss-ink-2);
+  font: 500 11.5px/1.2 var(--ss-mono, ui-monospace, 'SF Mono', Menlo, monospace);
+  color: var(--ss-text);
+}
+.sc-pos-line {
+  display: flex;
+  gap: 10px;
+  padding: 6px 0;
+  font-size: 14px;
+  line-height: 1.3;
+  color: var(--ss-text-strong);
+}
+.sc-pos-sym {
+  width: 14px;
+  flex-shrink: 0;
+  text-align: center;
+  font-weight: 600;
+  color: var(--ss-text-faint);
+}
+.sc-pos-rule {
+  height: 1px;
+  margin: 12px 0 14px;
+  background: var(--ss-line);
+}
+
+.sc-pos-card {
+  position: absolute;
+  left: 8px;
+  top: 196px;
+  width: 168px;
+  padding: 12px;
+  border-radius: 14px;
+  background: var(--ss-surface);
+  box-shadow: var(--ss-shadow-satellite);
+  border: 1px solid var(--ss-line);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.sc-pos-cmd {
+  align-self: flex-start;
+  padding: 4px 9px;
+  border-radius: 8px;
+  background: var(--ss-accent-soft);
+  color: var(--ss-accent-text, var(--ss-accent));
+  font: 600 13.5px/1.2 var(--ss-mono, ui-monospace, 'SF Mono', Menlo, monospace);
+}
+.sc-pos-file {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  color: var(--ss-text);
+}
+.sc-pos-file svg { color: var(--ss-icon); flex-shrink: 0; }

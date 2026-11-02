@@ -1,0 +1,25 @@
+/* sober-writing: a draft in an editor, a superlative struck and the fact written in its place, a chip over the corner */
+.still .sc-sw-win {
+  position: absolute; left: 28px; top: 44px; width: 400px; height: 280px;
+  border-radius: 12px; box-shadow: var(--ss-shadow-hero);
+}
+.still .sc-sw-win .ss-window__body { background: var(--ss-surface); }
+.still .sc-sw-page { padding: 20px 70px 0 26px; }
+.still .sc-sw-h { font-size: 19px; font-weight: 650; letter-spacing: -0.015em; line-height: 1.25; color: var(--ss-text-strong); margin-bottom: 14px; }
+.still .sc-sw-p { font-size: 14px; line-height: 1.5; color: var(--ss-text-strong); }
+.still .sc-sw-del {
+  display: inline; color: var(--ss-text); text-decoration: line-through; text-decoration-thickness: 1.5px;
+  text-decoration-color: var(--ss-accent);
+  background: var(--ss-accent-soft); padding: 2px 4px; border-radius: 4px;
+  -webkit-box-decoration-break: clone; box-decoration-break: clone;
+}
+.still .sc-sw-add { margin-top: 10px; padding-left: 11px; border-left: 2px solid var(--ss-accent); font-weight: 500; }
+.still .sc-sw-lines { margin-top: 16px; display: grid; gap: 9px; }
+.still .sc-sw-chip {
+  position: absolute; right: 24px; top: 28px; z-index: 3;
+  display: flex; align-items: center; gap: 7px; height: 30px; padding: 0 13px 0 10px;
+  border-radius: 999px; background: var(--ss-surface); color: var(--ss-text-strong);
+  font-size: 13px; font-weight: 500; line-height: 1; white-space: nowrap;
+  box-shadow: var(--ss-shadow-satellite);
+}
+.still .sc-sw-chip .ss-icon { color: var(--ss-accent); }

@@ -1,0 +1,70 @@
+/* find-skills: a command palette searching for a skill, and the install command in a small terminal */
+.sc-fs-pal {
+  position: absolute;
+  top: 26px;
+  left: 22px;
+  width: 262px;
+  height: 330px;
+  border-radius: 16px;
+  background: var(--ss-surface);
+  border: 1px solid var(--ss-line);
+  box-shadow: var(--ss-shadow-hero);
+  overflow: hidden;
+}
+.sc-fs-search {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  height: 48px;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--ss-line);
+  font-size: 14.5px;
+  color: var(--ss-text-strong);
+}
+.sc-fs-search svg { color: var(--ss-icon); flex-shrink: 0; }
+.sc-fs-caret {
+  display: inline-block;
+  width: 1.5px;
+  height: 17px;
+  margin-left: 1px;
+  vertical-align: -3px;
+  background: var(--ss-accent);
+}
+.sc-fs-list { display: flex; flex-direction: column; gap: 2px; padding: 8px; }
+.sc-fs-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 42px;
+  padding: 0 8px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ss-text-strong);
+}
+.sc-fs-row[data-on] { background: var(--ss-accent-soft); }
+.sc-fs-tile {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  background: var(--ss-ink-2);
+  color: var(--ss-icon);
+}
+.sc-fs-row[data-on] .sc-fs-tile { background: var(--ss-accent); color: #fff; }
+
+.sc-fs-term {
+  position: absolute;
+  top: 226px;
+  left: 148px;
+  width: 232px;
+  padding: 11px 14px 12px;
+  border-radius: 12px;
+  background: #17171a;
+  box-shadow: var(--ss-shadow-satellite);
+  --ss-term-path: #8e8e93;
+  --ss-term-sigil: var(--ss-accent);
+}
+.sc-fs-term.ss-term { font-size: 12px; padding: 11px 14px 12px; }

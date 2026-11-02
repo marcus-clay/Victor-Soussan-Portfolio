@@ -1322,13 +1322,15 @@ frontend-design, creative-director</code></pre>`,
 3. Crée un nouveau skill, colle le contenu du fichier
 4. Nomme-le et sauvegarde
 5. Mentionne le skill dans ta conversation pour l'activer</code></pre>
-<blockquote>Pour les skills avec un lien externe : tu peux aussi installer directement depuis le lien marketplace sans télécharger le fichier.</blockquote>`,
+<blockquote>Pour les skills avec un lien externe : tu peux aussi installer directement depuis le lien marketplace sans télécharger le fichier.</blockquote>
+<p>Le <a href="/fr/skills">catalogue complet</a>, classé par thème et avec une recherche, réunit toutes les skills de cette page et bien d'autres, avec leurs bénéfices et leur installation.</p>`,
         content_en: `<pre><code class="language-plain">1. Download the skill's .md file below
 2. In Claude, open Settings > Skills
 3. Create a new skill, paste the file content
 4. Name it and save
 5. Mention the skill in your conversation to activate it</code></pre>
-<blockquote>For skills with an external link: you can also install directly from the marketplace link without downloading the file.</blockquote>`,
+<blockquote>For skills with an external link: you can also install directly from the marketplace link without downloading the file.</blockquote>
+<p>The <a href="/en/skills">full catalogue</a>, organised by theme and with a search, gathers all the skills of this page and many more, with their benefits and their installation.</p>`,
       },
       {
         heading_fr: 'Skills visuels et frontend',
@@ -1358,67 +1360,83 @@ frontend-design, creative-director</code></pre>`,
         content_fr: `<h3>ux-designer</h3>
 <p>Assistance experte en recherche utilisateur, wireframing, prototypage et stratégie design. Couvre les user flows, personas, guides de tests d'utilisabilité, architecture d'information.</p>
 <p><strong>Cas d'usage :</strong> cadrage de projet, préparation de tests utilisateurs, documentation UX, définition de parcours.</p>
+<p><a href="https://github.com/marcus-clay/design-skills#index" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;background:#111827;color:#fff;font-size:13px;font-weight:500;text-decoration:none">Voir dans le catalogue</a></p>
 <h3>interactive-prototype</h3>
 <p>Documentation d'interactions pour Figma, Principle, Bolt et Lovable. Génère des spécifications de micro-interactions, timelines d'animation, et specs techniques pour l'implémentation.</p>
 <p><strong>Cas d'usage :</strong> handoff d'interactions vers un développeur, documentation d'animations, spécifications de comportement.</p>
 <h3>spec-ideation</h3>
 <p>Cadre structuré pour générer des solutions en phases d'expansion, contraction et documentation. Utile pour les sessions de cadrage produit et les ateliers d'idéation avec un client.</p>
-<p><strong>Cas d'usage :</strong> cadrage de mission, ateliers avec un client, arbitrages produit, exploration de concepts.</p>`,
+<p><strong>Cas d'usage :</strong> cadrage de mission, ateliers avec un client, arbitrages produit, exploration de concepts.</p>
+<p><a href="https://github.com/marcus-clay/design-skills#index" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;background:#111827;color:#fff;font-size:13px;font-weight:500;text-decoration:none">Voir dans le catalogue</a></p>`,
         content_en: `<h3>ux-designer</h3>
 <p>Expert assistance with user research, wireframing, prototyping, and design strategy. Covers user flows, personas, usability test guides, and information architecture.</p>
 <p><strong>Use cases:</strong> project framing, preparing user tests, UX documentation, defining user journeys.</p>
+<p><a href="https://github.com/marcus-clay/design-skills#index" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;background:#111827;color:#fff;font-size:13px;font-weight:500;text-decoration:none">See in the catalogue</a></p>
 <h3>interactive-prototype</h3>
 <p>Interaction documentation for Figma, Principle, Bolt, and Lovable. Generates micro-interaction specifications, animation timelines, and technical specs for implementation.</p>
 <p><strong>Use cases:</strong> handing off interactions to a developer, animation documentation, behavior specifications.</p>
 <h3>spec-ideation</h3>
 <p>A structured framework for generating solutions through expansion, contraction, and documentation phases. Useful for product framing sessions and ideation workshops with a client.</p>
-<p><strong>Use cases:</strong> project scoping, workshops with a client, product trade-offs, concept exploration.</p>`,
+<p><strong>Use cases:</strong> project scoping, workshops with a client, product trade-offs, concept exploration.</p>
+<p><a href="https://github.com/marcus-clay/design-skills#index" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;background:#111827;color:#fff;font-size:13px;font-weight:500;text-decoration:none">See in the catalogue</a></p>`,
       },
       {
         heading_fr: 'Skills rédactionnels',
         heading_en: 'Writing skills',
-        content_fr: `<h3>victor-voice</h3>
+        content_fr: `<h3>sober-writing</h3>
 <p>Posture rédactionnelle pour tout output narratif : posts LinkedIn, briefs, notes de consulting. Élimine les tics d'écriture LLM, les fausses constructions dramatiques, le ton condescendant.</p>
 <p><strong>Cas d'usage :</strong> posts LinkedIn, propositions commerciales, notes de cadrage, tout texte destiné à être publié ou partagé.</p>
+<p><a href="https://github.com/marcus-clay/design-skills/tree/main/skills/sober-writing" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;background:#111827;color:#fff;font-size:13px;font-weight:500;text-decoration:none">Voir dans le catalogue</a></p>
 <h3>francais-parfait</h3>
 <p>Règles d'écriture en français natif : accentuation des majuscules (É, À), ligatures (œuvre, cœur), guillemets français, zéro emdash. Prioritaire sur tout autre style quand l'output est en français.</p>
-<p><strong>Cas d'usage :</strong> tout output en français destiné à être publié ou partagé.</p>`,
-        content_en: `<h3>victor-voice</h3>
+<p><strong>Cas d'usage :</strong> tout output en français destiné à être publié ou partagé.</p>
+<p><a href="https://github.com/marcus-clay/design-skills/tree/main/skills/francais-parfait" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;background:#111827;color:#fff;font-size:13px;font-weight:500;text-decoration:none">Voir dans le catalogue</a></p>`,
+        content_en: `<h3>sober-writing</h3>
 <p>A writing posture for any narrative output: LinkedIn posts, briefs, consulting notes. Eliminates LLM writing tics, false dramatic constructions, and a condescending tone.</p>
 <p><strong>Use cases:</strong> LinkedIn posts, commercial proposals, framing notes, any text meant to be published or shared.</p>
+<p><a href="https://github.com/marcus-clay/design-skills/tree/main/skills/sober-writing" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;background:#111827;color:#fff;font-size:13px;font-weight:500;text-decoration:none">See in the catalogue</a></p>
 <h3>francais-parfait</h3>
 <p>French native-speaker writing rules: accented capitals (É, À), ligatures (œuvre, cœur), French quotation marks, zero emdash. Takes priority over all other style rules when the output is in French.</p>
-<p><strong>Use cases:</strong> any French-language output intended for publication or sharing.</p>`,
+<p><strong>Use cases:</strong> any French-language output intended for publication or sharing.</p>
+<p><a href="https://github.com/marcus-clay/design-skills/tree/main/skills/francais-parfait" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;background:#111827;color:#fff;font-size:13px;font-weight:500;text-decoration:none">See in the catalogue</a></p>`,
       },
       {
         heading_fr: 'Skills de marque et présentation',
         heading_en: 'Brand and presentation skills',
-        content_fr: `<h3>Brand</h3>
+        content_fr: `<h3>brand-system</h3>
 <p>Système de marque pour des présentations PPT avec style corporate minimaliste : tokens visuels, typographie (Helvetica Neue / Public Sans), palette (#295FEC, #F8F9FB), conventions de mise en page pour les livrables client.</p>
 <p><strong>Cas d'usage :</strong> propositions commerciales, études de cas, livrables client, documents de positionnement.</p>
-<h3>Slides</h3>
+<p><a href="https://github.com/marcus-clay/design-skills/tree/main/skills/brand-system" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;background:#111827;color:#fff;font-size:13px;font-weight:500;text-decoration:none">Voir dans le catalogue</a></p>
+<h3>slides</h3>
 <p>Création de présentations : structure narrative, tokens de design, conventions de mise en page pour les decks client. À combiner avec le skill pptx pour la génération technique.</p>
 <p><strong>Cas d'usage :</strong> decks client, keynotes, supports de formation, restitutions de mission.</p>
+<p><a href="https://github.com/marcus-clay/design-skills/tree/main/skills/slides" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;background:#111827;color:#fff;font-size:13px;font-weight:500;text-decoration:none">Voir dans le catalogue</a></p>
 <h3>pptx</h3>
 <p>Génère des présentations PowerPoint structurées et mises en forme directement depuis Claude. Gère la création de slides, l'organisation du contenu par sections, la typographie, les tableaux, et l'exportation en fichier <code>.pptx</code> téléchargeable.</p>
 <p><strong>Cas d'usage :</strong> restitutions client en format slide, synthèses de mission, decks de présentation à partir de notes ou d'un brief.</p>
+<p><a href="https://github.com/anthropics/skills" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;background:#111827;color:#fff;font-size:13px;font-weight:500;text-decoration:none">Voir la source</a></p>
 <blockquote>À combiner avec la skill <strong>slides</strong> pour appliquer les conventions visuelles au fichier généré.</blockquote>
-<h3>Research</h3>
-<p>Recherche de signaux dans l'espace UI/UX, design produit, IA et workflows assistés, B2B/B2G. Génère des angles de contenu LinkedIn calibrés au positionnement Condamine Studio.</p>
-<p><strong>Cas d'usage :</strong> préparation de posts LinkedIn, veille sectorielle, positionnement sur un sujet avant de rédiger.</p>`,
-        content_en: `<h3>Brand</h3>
+<h3>signal-research</h3>
+<p>Recherche de signaux dans l'espace UI/UX, design produit, IA et workflows assistés, B2B/B2G. Génère des angles de contenu LinkedIn calibrés au positionnement de chacun.</p>
+<p><strong>Cas d'usage :</strong> préparation de posts LinkedIn, veille sectorielle, positionnement sur un sujet avant de rédiger.</p>
+<p><a href="https://github.com/marcus-clay/design-skills/tree/main/skills/signal-research" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;background:#111827;color:#fff;font-size:13px;font-weight:500;text-decoration:none">Voir dans le catalogue</a></p>`,
+        content_en: `<h3>brand-system</h3>
 <p>A brand system for PPT presentations with a minimal corporate style: visual tokens, typography (Helvetica Neue / Public Sans), palette (#295FEC, #F8F9FB), layout conventions for client deliverables.</p>
 <p><strong>Use cases:</strong> commercial proposals, case studies, client deliverables, positioning documents.</p>
-<h3>Slides</h3>
+<p><a href="https://github.com/marcus-clay/design-skills/tree/main/skills/brand-system" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;background:#111827;color:#fff;font-size:13px;font-weight:500;text-decoration:none">See in the catalogue</a></p>
+<h3>slides</h3>
 <p>Presentation creation: narrative structure, design tokens, layout conventions for client decks. Combine with the pptx skill for technical generation.</p>
 <p><strong>Use cases:</strong> client decks, keynotes, training materials, project debriefs.</p>
+<p><a href="https://github.com/marcus-clay/design-skills/tree/main/skills/slides" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;background:#111827;color:#fff;font-size:13px;font-weight:500;text-decoration:none">See in the catalogue</a></p>
 <h3>pptx</h3>
 <p>Generates structured and formatted PowerPoint presentations directly from Claude. Handles slide creation, content organization by section, typography, tables, and export as a downloadable <code>.pptx</code> file.</p>
 <p><strong>Use cases:</strong> client debriefs in slide format, project summaries, presentation decks from notes or a brief.</p>
+<p><a href="https://github.com/anthropics/skills" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;background:#111827;color:#fff;font-size:13px;font-weight:500;text-decoration:none">See the source</a></p>
 <blockquote>Combine with the <strong>slides</strong> skill to apply visual conventions to the generated file.</blockquote>
-<h3>Research</h3>
-<p>Searches for signals in the UI/UX, product design, AI and assisted workflows, B2B/B2G space. Generates LinkedIn content angles calibrated to Condamine Studio's positioning.</p>
-<p><strong>Use cases:</strong> preparing LinkedIn posts, sector monitoring, positioning on a topic before writing.</p>`,
+<h3>signal-research</h3>
+<p>Searches for signals in the UI/UX, product design, AI and assisted workflows, B2B/B2G space. Generates LinkedIn content angles calibrated to your own positioning.</p>
+<p><strong>Use cases:</strong> preparing LinkedIn posts, sector monitoring, positioning on a topic before writing.</p>
+<p><a href="https://github.com/marcus-clay/design-skills/tree/main/skills/signal-research" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;background:#111827;color:#fff;font-size:13px;font-weight:500;text-decoration:none">See in the catalogue</a></p>`,
       },
       {
         heading_fr: 'Skills de workflow et méthodologie',

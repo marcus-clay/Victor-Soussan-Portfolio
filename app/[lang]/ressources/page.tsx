@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import RessourcesPageClient from '@/components/page-wrappers/RessourcesPageClient'
 import JsonLd from '@/components/JsonLd'
-import { getGuides } from '@/data/contentData'
+import { getGuides, guidePath } from '@/data/contentData'
 import { TEMPLATE_ENTRIES, templatePath } from '@/data/templatesData'
 import { DECK_ENTRIES, deckPath } from '@/data/decksData'
 import { buildMetadata, itemListLd, pageLd, pageUrl, toLang } from '@/lib/seo'
@@ -39,7 +39,7 @@ export default async function Page({ params }: Props) {
         itemListLd([
           ...getGuides().map((g) => ({
             name: lang === 'fr' ? g.title_fr : g.title_en,
-            url: pageUrl(lang, g.id === 'guide-ship-to-show' ? 'guide/ship-to-show' : 'guide/claude-code'),
+            url: pageUrl(lang, guidePath(g.id)),
           })),
           ...TEMPLATE_ENTRIES.map((t) => ({ name: t.title[lang], url: pageUrl(lang, templatePath(t, lang)) })),
           ...DECK_ENTRIES.map((d) => ({ name: d.title[lang], url: pageUrl(lang, deckPath(d, lang)) })),

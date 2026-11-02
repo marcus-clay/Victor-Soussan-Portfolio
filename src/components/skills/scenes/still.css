@@ -1,0 +1,5 @@
+/* The ground of every skill picture: a very light, slightly cool-warm gradient, so that windows and cards lift off it */
+.still .ss-stage {
+  overflow: hidden;
+  background: linear-gradient(180deg, #fbfbfa 0%, #f2f2f0 100%);
+}

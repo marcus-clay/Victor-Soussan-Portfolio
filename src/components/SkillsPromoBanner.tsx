@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation'
 import { X, Lightning, ArrowRight } from '@phosphor-icons/react'
 
 const DISMISS_KEY = 'skills-promo-dismissed'
-const HIDDEN_PATHS = ['/guide/claude-code']
+const HIDDEN_PATHS = ['/guide/claude-code', '/claude', '/skills']
 
 export default function SkillsPromoBanner({ lang }: { lang: string }) {
   const [visible, setVisible] = useState(false)
@@ -44,7 +44,8 @@ export default function SkillsPromoBanner({ lang }: { lang: string }) {
   }
 
   if (!mounted || dismissed) return null
-  if (HIDDEN_PATHS.some(p => pathname.includes(p))) return null
+  // The homepage already carries the Claude tile, so the banner stays out of it
+  if (pathname === '/' || pathname === '/en' || pathname === '/fr' || HIDDEN_PATHS.some(p => pathname.includes(p))) return null
 
   const isEn = lang === 'en'
 
@@ -69,14 +70,14 @@ export default function SkillsPromoBanner({ lang }: { lang: string }) {
         }}
       >
         <Link
-          href={`/${lang}/guide/claude-code/skills`}
+          href={`/${lang}/skills`}
           className="group flex items-center gap-2.5 cursor-pointer min-w-0 active:opacity-70 transition-opacity duration-150"
         >
           <div className="w-8 h-8 rounded-full bg-gradient-to-br from-violet-500 to-blue-500 flex items-center justify-center flex-shrink-0 transition-transform duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-110">
             <Lightning size={14} weight="fill" className="text-white" />
           </div>
           <span className="text-xs font-semibold text-gray-900 whitespace-nowrap transition-colors duration-150 group-hover:text-gray-600">
-            {isEn ? 'Claude Code skills' : 'Mes skills Claude Code'}
+            {isEn ? 'Claude skills catalogue' : 'Catalogue de skills Claude'}
           </span>
           <ArrowRight size={12} className="text-gray-500 flex-shrink-0 transition-[transform,color] duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:translate-x-0.5 group-hover:text-gray-900" />
         </Link>

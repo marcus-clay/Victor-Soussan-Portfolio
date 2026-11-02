@@ -1,0 +1,86 @@
+/* ui-skills: a review window with its three passes in the sidebar, and the metadata fix lifted over it */
+.still .sc-ui-skills-win {
+  position: absolute;
+  top: 26px;
+  left: 64px;
+  width: 430px;
+  --ss-success: var(--ss-accent);
+  height: 340px;
+  border-radius: 12px;
+  background: var(--ss-surface);
+  box-shadow: var(--ss-shadow-hero);
+}
+
+.still .sc-ui-skills-win .ss-window__body {
+  display: flex;
+}
+
+.still .sc-ui-skills-side {
+  display: grid;
+  align-content: start;
+  gap: 2px;
+  padding: 12px 8px 0;
+}
+
+.still .sc-ui-skills-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 28px;
+  padding: 0 8px;
+  border-radius: 7px;
+  color: var(--ss-text);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.still .sc-ui-skills-nav[data-on] {
+  background: var(--ss-ink-2);
+  color: var(--ss-text-strong);
+}
+
+.still .sc-ui-skills-nav .ss-icon { color: var(--ss-icon); }
+.still .sc-ui-skills-nav[data-on] .ss-icon { color: var(--ss-text-strong); }
+
+.still .sc-ui-skills-list {
+  display: grid;
+  align-content: start;
+  gap: 4px;
+  padding: 12px 14px;
+}
+
+.still .sc-ui-skills-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  height: 36px;
+  border-bottom: 1px solid var(--ss-line-faint);
+  color: var(--ss-text-strong);
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.still .sc-ui-skills-item:last-child { border-bottom: 0; }
+.still .sc-ui-skills-item .ss-check { flex: none; }
+
+.still .sc-ui-skills-code {
+  position: absolute;
+  left: 12px;
+  bottom: 24px;
+  width: 164px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--ss-surface);
+  box-shadow: var(--ss-shadow-satellite);
+  display: grid;
+  gap: 8px;
+}
+
+.still .sc-ui-skills-code__label {
+  color: var(--ss-text);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.still .sc-ui-skills-code .ss-code { font-size: 12px; line-height: 1.6; }

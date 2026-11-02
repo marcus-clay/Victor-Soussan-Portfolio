@@ -1,5 +1,5 @@
 import type { Language } from './translations';
-import { getResources as libraryItems, TYPE_LABELS, type ContentItem } from './contentData';
+import { getResources as libraryItems, guidePath, TYPE_LABELS, type ContentItem } from './contentData';
 
 /**
  * The cards of the About carousel: the whole library (guides, templates, decks), each with the words of
@@ -16,7 +16,7 @@ export interface Resource {
 
 function hrefOf(item: ContentItem, lang: Language): string {
   if ((item.type === 'template' || item.type === 'deck') && item.slug) return `/${lang}/ressources/${item.slug[lang]}`;
-  return item.id === 'guide-ship-to-show' ? `/${lang}/guide/ship-to-show` : `/${lang}/guide/claude-code`;
+  return `/${lang}/${guidePath(item.id)}`;
 }
 
 export const getResources = (lang: Language): Resource[] =>

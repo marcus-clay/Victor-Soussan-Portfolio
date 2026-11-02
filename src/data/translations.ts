@@ -17,7 +17,8 @@ export const TRANSLATIONS = {
       blog: "Blog",
       resources: "Resources",
       approach: "Approach",
-      interventions: "Interventions"
+      interventions: "Interventions",
+      claude: "Claude"
     },
     hero: {
       availability: "Available for collaborations and engagements",
@@ -418,7 +419,8 @@ export const TRANSLATIONS = {
       blog: "Blog",
       resources: "Ressources",
       approach: "Approche",
-      interventions: "Interventions"
+      interventions: "Interventions",
+      claude: "Claude"
     },
     hero: {
       availability: "Disponible pour collaborations et interventions",
