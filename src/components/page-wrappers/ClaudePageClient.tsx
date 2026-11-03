@@ -37,11 +37,11 @@ const COPY = {
       ['Validate before keeping', 'Each write is proposed first. You read it, then it is kept.'],
     ],
     setupTitle: 'Get started',
-    setupNote: 'Three steps in the guide.',
+    setupNote: 'Three steps to start.',
     steps: [
-      { title: 'Understand Claude Code', text: 'What the tool does and how to talk to it.', slug: 'understanding' },
-      { title: 'Set up your environment', text: 'Install the tool and open a first folder.', slug: 'setup' },
-      { title: 'Add skills', text: 'Plug the skills of the catalogue into your project.', slug: 'skills' },
+      { title: 'Understand Claude Code', text: 'What the tool does and how to talk to it.', path: 'guide/claude-code/understanding' },
+      { title: 'Set up your environment', text: 'Install the tool and open a first folder.', path: 'guide/claude-code/setup' },
+      { title: 'Add skills', text: 'Plug the skills of the catalogue into your project.', path: 'skills' },
     ],
     guideAll: 'Read the whole guide',
     chapters: 'chapters',
@@ -109,11 +109,11 @@ const COPY = {
       ['Valider avant de garder', 'Chaque écriture est d’abord proposée. Vous la relisez, puis elle est conservée.'],
     ],
     setupTitle: 'Démarrer',
-    setupNote: 'Trois étapes dans le guide.',
+    setupNote: 'Trois étapes pour démarrer.',
     steps: [
-      { title: 'Comprendre Claude Code', text: 'Ce que l’outil fait et comment lui parler.', slug: 'comprendre' },
-      { title: 'Préparer son environnement', text: 'Installer l’outil et ouvrir un premier dossier.', slug: 'environnement' },
-      { title: 'Ajouter des skills', text: 'Brancher les skills du catalogue à votre projet.', slug: 'skills' },
+      { title: 'Comprendre Claude Code', text: 'Ce que l’outil fait et comment lui parler.', path: 'guide/claude-code/comprendre' },
+      { title: 'Préparer son environnement', text: 'Installer l’outil et ouvrir un premier dossier.', path: 'guide/claude-code/environnement' },
+      { title: 'Ajouter des skills', text: 'Brancher les skills du catalogue à votre projet.', path: 'skills' },
     ],
     guideAll: 'Lire tout le guide',
     chapters: 'chapitres',
@@ -234,7 +234,7 @@ export default function ClaudePageClient({ lang }: { lang: Lang }) {
       <HomeBlock id="setup" title={c.setupTitle} note={c.setupNote}>
         <div className="divide-y divide-gray-100 border-b border-gray-100">
           {c.steps.map((step) => (
-            <Link key={step.slug} href={`/${lang}/guide/claude-code/${step.slug}`} className={ROW}>
+            <Link key={step.path} href={`/${lang}/${step.path}`} className={ROW}>
               <div className="min-w-0">
                 <h3 className="text-title-3 text-gray-900">{step.title}</h3>
                 <p className="mt-1.5 max-w-[60ch] text-sm text-gray-600">{fr(step.text, lang)}</p>

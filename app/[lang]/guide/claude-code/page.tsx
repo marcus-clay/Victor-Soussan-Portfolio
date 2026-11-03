@@ -8,8 +8,8 @@ import { breadcrumbLd, buildMetadata, itemListLd, pageUrl, toLang, webPageLd } f
 type Props = { params: Promise<{ lang: string }> }
 
 const DESC = {
-  fr: 'Guide gratuit pour les designers : installer Claude Code, prototyper des interfaces, connecter Figma et d\u00e9ployer, en 9 chapitres.',
-  en: 'Free guide for designers: set up Claude Code, prototype interfaces, connect Figma and deploy, in 9 chapters.',
+  fr: 'Guide gratuit pour les designers : installer Claude Code, prototyper des interfaces, connecter Figma et d\u00e9ployer, en 8 chapitres.',
+  en: 'Free guide for designers: set up Claude Code, prototype interfaces, connect Figma and deploy, in 8 chapters.',
 } as const
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

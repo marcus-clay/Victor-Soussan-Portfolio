@@ -1,10 +1,10 @@
 import React from 'react'
 import Link from 'next/link'
-import { ArrowRight, DownloadSimple } from '@phosphor-icons/react/ssr'
+import { ArrowRight, ArrowUpRight, DownloadSimple } from '@phosphor-icons/react/ssr'
 import CopyCommand from './CopyCommand'
 import InstallTabs, { type InstallTab } from './InstallTabs'
 import { SkillPicture, accentOfSkill } from './SkillScene'
-import { RepoLink, ROW, ROW_ARROW, TEXT_LINK } from '@/components/claude/ui'
+import { RepoLink, ROW, ROW_ARROW, TEXT_LINK, TEXT_LINK_MUTED } from '@/components/claude/ui'
 import { archiveUrl, getTheme, installCommand, relatedSkills, type Lang, type SkillEntry } from '@/data/skillsCatalogue'
 
 /**
@@ -34,6 +34,7 @@ const COPY = {
     codexSteps: 'Paste the command in a terminal. Codex reads the skills in ~/.agents/skills.',
     claudeAiSteps: 'Download the archive. In Claude.ai, open Settings, Capabilities, Skills, then upload the file.',
     download: 'Download the archive',
+    demos: 'Live demos',
     fromSource: 'Follow the installation steps on the page of the source.',
     related: 'In the same theme',
     all: 'All the skills',
@@ -60,6 +61,7 @@ const COPY = {
     codexSteps: 'Collez la commande dans un terminal. Codex lit les skills du dossier ~/.agents/skills.',
     claudeAiSteps: 'Téléchargez l’archive. Dans Claude.ai, ouvrez Réglages, Capacités, Skills, puis importez le fichier.',
     download: 'Télécharger l’archive',
+    demos: 'Les démos en direct',
     fromSource: 'Suivez les étapes d’installation sur la page de la source.',
     related: 'Dans le même thème',
     all: 'Toutes les skills',
@@ -176,6 +178,12 @@ export default function SkillDetail({ skill, lang }: { skill: SkillEntry; lang: 
 
             <div className="mt-4 flex flex-wrap items-center gap-x-5">
               <RepoLink href={skill.href} />
+              {skill.demos && (
+                <a href={skill.demos} target="_blank" rel="noopener noreferrer" className={`group ${TEXT_LINK_MUTED}`}>
+                  <span className="link-line">{c.demos}</span>
+                  <ArrowUpRight size={12} weight="bold" aria-hidden="true" className="transition-transform duration-200 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                </a>
+              )}
               <span className="text-sm text-gray-400">{licence}</span>
             </div>
           </div>

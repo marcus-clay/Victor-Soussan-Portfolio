@@ -160,7 +160,9 @@ const nextConfig: NextConfig = {
     { source: '/:lang/guide/claude-code/ch6', destination: '/:lang/guide/claude-code/deployer', permanent: true },
     { source: '/:lang/guide/claude-code/ch7', destination: '/:lang/guide/claude-code/aller-plus-loin', permanent: true },
     { source: '/:lang/guide/claude-code/ch8', destination: '/:lang/guide/claude-code/resultat-visuel', permanent: true },
-    { source: '/:lang/guide/claude-code/ch9', destination: '/:lang/guide/claude-code/skills', permanent: true },
+    { source: '/:lang/guide/claude-code/ch9', destination: '/:lang/skills', permanent: true },
+    // The skills chapter of the guide moved to the catalogue
+    { source: '/:lang/guide/claude-code/skills', destination: '/:lang/skills', permanent: true },
     // Legacy WordPress routes -> redirect to relevant current pages
     { source: '/portfolio/toolkit/:path*', destination: '/fr/project/toolkit', permanent: true },
     { source: '/portfolio/sqool/:path*', destination: '/fr/project/sqool', permanent: true },

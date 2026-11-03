@@ -2,10 +2,9 @@
 
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
-import { ArrowRight, ArrowUpRight, CaretDown, Check, MagnifyingGlass, X } from '@phosphor-icons/react'
+import { ArrowRight, CaretDown, Check, MagnifyingGlass, X } from '@phosphor-icons/react'
 import {
   SKILLS,
-  SKILLS_DEMOS,
   SKILLS_REPO,
   SKILL_THEMES,
   getTheme,
@@ -15,7 +14,7 @@ import {
   type ThemeId,
 } from '@/data/skillsCatalogue'
 import { SkillPicture, accentOfSkill } from '@/components/skills/SkillScene'
-import { RepoLink, TEXT_LINK, TEXT_LINK_MUTED } from '@/components/claude/ui'
+import { RepoLink } from '@/components/claude/ui'
 import SkillsHeroStage from '@/components/claude/SkillsHeroStage'
 
 /**
@@ -45,7 +44,6 @@ const COPY = {
     title: 'Skills',
     lead: 'Skills for Claude and Codex around product, design, prototyping and animation. Mine are free to use; the others credit their author and link to their source.',
     repo: 'The GitHub repository',
-    demos: 'Live demos of prototype-anime',
     search: 'Search a skill, a theme, a need',
     searchLabel: 'Search the skills',
     clear: 'Clear the search',
@@ -66,13 +64,11 @@ const COPY = {
       ['Claude Code', 'Unzip the archive into ~/.claude/skills.'],
       ['Codex', 'Unzip the archive into ~/.agents/skills.'],
     ],
-    guide: 'The step-by-step guide',
   },
   fr: {
     title: 'Skills',
     lead: 'Des skills pour Claude et Codex autour du produit, du design, du prototypage et de l’animation. Les miennes sont en libre accès ; les autres citent leur auteur et renvoient à leur source.',
     repo: 'Le dépôt GitHub',
-    demos: 'Les démos en direct de prototype-anime',
     search: 'Rechercher une skill, un thème, un besoin',
     searchLabel: 'Rechercher parmi les skills',
     clear: 'Effacer la recherche',
@@ -93,7 +89,6 @@ const COPY = {
       ['Claude Code', 'Décompresser l’archive dans ~/.claude/skills.'],
       ['Codex', 'Décompresser l’archive dans ~/.agents/skills.'],
     ],
-    guide: 'Le guide pas à pas',
   },
 } as const
 
@@ -343,12 +338,8 @@ export default function SkillsCataloguePageClient({ lang }: { lang: Lang }) {
       <header className="wrap pt-10 md:pt-16 pb-12 md:pb-16">
         <h1 className="text-display text-gray-900">{c.title}</h1>
         <p className="mt-6 md:mt-8 text-lead-lg text-gray-600 max-w-[54ch]">{c.lead}</p>
-        <div className="mt-6 flex flex-wrap items-center gap-x-6">
+        <div className="mt-6">
           <RepoLink href={SKILLS_REPO} />
-          <a href={SKILLS_DEMOS} target="_blank" rel="noopener noreferrer" className={`group ${TEXT_LINK_MUTED}`}>
-            <span className="link-line">{c.demos}</span>
-            <ArrowUpRight size={12} weight="bold" aria-hidden="true" className="transition-transform duration-200 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-          </a>
         </div>
         {/* The picture of the page: the catalogue and what happens when someone uses it (Stageshow) */}
         <div className="mt-10 overflow-hidden rounded-[28px] bg-[#F4F4F2] ring-1 ring-inset ring-black/[0.04] md:mt-14">
@@ -495,10 +486,6 @@ export default function SkillsCataloguePageClient({ lang }: { lang: Lang }) {
             ))}
           </ol>
         </div>
-        <Link href={`/${lang}/guide/claude-code/skills`} className={`group ${TEXT_LINK} mt-4`}>
-          <span className="link-line">{c.guide}</span>
-          <ArrowRight size={14} weight="bold" aria-hidden="true" className="transition-transform duration-200 ease-out group-hover:translate-x-0.5" />
-        </Link>
       </section>
     </div>
   )

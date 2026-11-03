@@ -12,7 +12,6 @@ export const GUIDE_SLUG_PAIRS: [en: string, fr: string][] = [
   ['deploying', 'deployer'],
   ['going-further', 'aller-plus-loin'],
   ['visual-quality', 'resultat-visuel'],
-  ['skills', 'skills'],
 ]
 
 import { TEMPLATE_SLUG_PAIRS } from './templatesData'

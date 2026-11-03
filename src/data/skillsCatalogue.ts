@@ -82,6 +82,8 @@ export interface SkillEntry {
   license?: string
   /** Where to find it */
   href: string
+  /** Live demos of the skill, when it has some (shown on its own page only) */
+  demos?: string
   /** The install command given by the source of a recommended skill (written skills are installed from their archive) */
   install?: string
   /** Extra words that make the search find it */
@@ -514,6 +516,7 @@ export const SKILLS: SkillEntry[] = [
       fr: 'Un film court pour une étude de cas, une présentation ou une démo.',
     },
     href: 'https://github.com/marcus-clay/prototype-anime-skill',
+    demos: SKILLS_DEMOS,
     keywords: ['démo', 'vidéo', 'motion', 'case study', 'framer motion'],
   },
   {
