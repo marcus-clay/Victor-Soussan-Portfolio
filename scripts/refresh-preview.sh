@@ -174,9 +174,11 @@ fi
 # --- dependencies and build ----------------------------------------------
 cp -f "$REPO/.env.local" .env.local 2>/dev/null || true
 [ -d node_modules ] || cp -cR "$REPO/node_modules" node_modules
-if ! git diff --quiet "$BASE" HEAD -- package-lock.json; then
+# Compare with the lockfile node_modules was installed from, not with the base:
+# a dependency added on origin/main itself would otherwise never be installed.
+if ! cmp -s package-lock.json node_modules/.preview-lock; then
   echo "package-lock.json a change: npm ci"
-  npm ci --no-audit --no-fund >/dev/null 2>&1
+  npm ci --no-audit --no-fund >/dev/null 2>&1 && cp package-lock.json node_modules/.preview-lock
 fi
 
 echo "Build en cours (quelques minutes)..."
