@@ -20,16 +20,16 @@ const FEATURED_PROJECT_IDS = ['riskos', 'toolkit', 'france-vae']
 
 const TOPICS = {
   en: [
-    { title: 'Claude Code for designers', desc: 'How a product designer uses Claude Code daily for research, prototyping, code and documentation. Drawn from my own practice.' },
-    { title: 'Figma MCP: from design token to coded component', desc: 'Syncing Figma and code. Reading tokens, specs and variables directly in the development environment.' },
-    { title: 'AI prototyping: from concept to deployment', desc: 'The full workflow: idea, prompt, prototype, test, deploy. With real cases from 50+ shipped prototypes.' },
-    { title: 'Design Systems and AI', desc: 'Building and maintaining a design system when code generation tools change the workflow. Tokens, components, documentation.' },
+    { scene: 'claude-code', title: 'Claude Code for designers', desc: 'How a product designer uses Claude Code daily for research, prototyping, code and documentation. Drawn from my own practice.' },
+    { scene: 'personal-os', title: 'A personal OS with Claude Code', desc: 'A folder of text files that serves as memory and dashboard: an inbox, rules, agents and commands that keep your decisions. Built step by step, from my own practice.' },
+    { scene: 'ai-prototype', title: 'AI prototyping: from concept to deployment', desc: 'The full workflow: idea, prompt, prototype, test, deploy. With real cases from 50+ shipped prototypes.' },
+    { scene: 'figma-ds', title: 'Design systems and AI: from Figma to code', desc: 'Building and maintaining a design system when code generation changes the workflow. Figma MCP, tokens, components and documentation read directly in the development environment.' },
   ],
   fr: [
-    { title: 'Claude Code pour designers', desc: 'Comment un designer produit utilise Claude Code au quotidien pour la recherche, le prototypage, le code et la documentation. Tir\u00e9 de ma pratique.' },
-    { title: 'Figma MCP\u00a0: du design token au composant cod\u00e9', desc: 'Synchroniser Figma et le code. Tokens, specs et variables lus directement dans l\u2019environnement de dev.' },
-    { title: 'Prototypage IA\u00a0: du concept au d\u00e9ploiement', desc: 'Id\u00e9e, prompt, prototype, test, d\u00e9ploiement. Le workflow complet, avec des cas r\u00e9els (50+ prototypes livr\u00e9s).' },
-    { title: 'Design Systems et IA', desc: 'Construire et maintenir un design system quand les outils de g\u00e9n\u00e9ration de code modifient le workflow. Tokens, composants, documentation.' },
+    { scene: 'claude-code', title: 'Claude Code pour designers', desc: 'Comment un designer produit utilise Claude Code au quotidien pour la recherche, le prototypage, le code et la documentation. Tir\u00e9 de ma pratique.' },
+    { scene: 'personal-os', title: 'Un OS personnel avec Claude Code', desc: 'Un dossier de fichiers texte qui sert de m\u00e9moire et de tableau de bord\u00a0: une inbox, des r\u00e8gles, des agents et des commandes qui gardent vos d\u00e9cisions. Construit pas \u00e0 pas, tir\u00e9 de ma pratique.' },
+    { scene: 'ai-prototype', title: 'Prototypage IA\u00a0: du concept au d\u00e9ploiement', desc: 'Id\u00e9e, prompt, prototype, test, d\u00e9ploiement. Le workflow complet, avec des cas r\u00e9els (50+ prototypes livr\u00e9s).' },
+    { scene: 'figma-ds', title: 'Design systems et IA\u00a0: de Figma au code', desc: 'Construire et maintenir un design system quand les outils de g\u00e9n\u00e9ration de code modifient le workflow. Figma MCP, tokens, composants et documentation lus directement dans l\u2019environnement de dev.' },
   ],
 }
 
@@ -172,7 +172,7 @@ export default function ContactPageClient({ lang }: { lang: 'en' | 'fr' }) {
         </dl>
       </HomeBlock>
 
-      {/* Speaking: the topics as a strip of dark cards, the high-contrast object of the page */}
+      {/* Speaking: the topics as a strip of cards in the style of the Claude block of the home (soft grey tile, light dot grid) */}
       <section id="interventions" aria-labelledby="interventions-title" className="scroll-mt-24 pb-16 md:pb-28">
         <div className="wrap">
           <div className="grid grid-cols-12 gap-x-6 gap-y-6 border-t border-gray-200 pt-6 md:pt-8">
@@ -190,11 +190,12 @@ export default function ContactPageClient({ lang }: { lang: 'en' | 'fr' }) {
         </div>
         <div className="mt-8 md:mt-10">
           <TopicsCarousel
+            lang={lang}
             topics={topics.map((topic) => ({
               ...topic,
-              href: subject(isEn ? `Speaking: ${topic.title}` : `Intervention : ${topic.title}`),
+              href: `/${lang}/contact`,
             }))}
-            cardLabel={isEn ? 'Ask about this topic' : 'Parler de ce sujet'}
+            cardLabel={isEn ? 'Book this session' : 'Réserver cette intervention'}
             labels={{
               track: isEn ? 'Talk topics' : 'Sujets d’intervention',
               prev: isEn ? 'Previous topic' : 'Sujet précédent',

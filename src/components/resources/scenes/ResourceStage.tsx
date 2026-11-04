@@ -32,6 +32,7 @@ export default function ResourceStage<S extends object>({
   clear,
   script,
   speed,
+  height = 300,
   children,
 }: {
   a: SceneProps['a']
@@ -46,6 +47,8 @@ export default function ResourceStage<S extends object>({
   /** Older form: a loop that starts and ends on `initial` */
   script?: Script<S>
   speed?: number
+  /** Design height, 300 by default (13:10); a wider picture passes its own */
+  height?: number
   children: (s: S, rect: (name: string) => Rect, layout: Layout) => React.ReactNode
 }) {
   const tint = useContext(StillTintContext)
@@ -92,7 +95,7 @@ export default function ResourceStage<S extends object>({
   const stage = (
     <Stage<S>
       width={390}
-      height={300}
+      height={height}
       initial={poster}
       poster={poster}
       script={canHover ? hoverScript : undefined}

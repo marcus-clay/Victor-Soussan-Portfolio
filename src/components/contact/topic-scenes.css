@@ -1,0 +1,56 @@
+/* The pictures of the speaking cards (topic-scenes.tsx): real Stageshow chrome, one window per scene, 390 x 240 design
+   points, drawn from the left edge. Calm: neutral surfaces, the topic's hue (--ss-accent) on one element. */
+.tp-root {
+  position: absolute;
+  inset: 6px 0 0 2px;
+  font-family: var(--font-public-sans, 'Public Sans', system-ui, sans-serif);
+}
+.tp-root .tp-win {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 338px;
+  height: 214px;
+}
+
+/* things that come in: opacity and a few points, 320 ms, the smooth ease-out */
+.tp-root .tp-out,
+.tp-root .tp-status > * {
+  opacity: 0;
+  transition: opacity 320ms cubic-bezier(0.22, 1, 0.36, 1), transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.tp-root .tp-out { transform: translateY(5px); }
+.tp-root .tp-out[data-show],
+.tp-root .tp-status > [data-show] { opacity: 1; transform: none; }
+
+/* 1. a Claude Code terminal, its colours softened to the topic's hue; the surface is a charcoal, never black */
+.tp-root .tp-term {
+  --ss-term-bg: #34363c;
+  --ss-term-path: color-mix(in oklab, var(--ss-accent) 55%, #9ca3af);
+  --ss-term-sigil: color-mix(in oklab, var(--ss-accent) 80%, white);
+  --ss-term-ok: color-mix(in oklab, var(--ss-accent) 65%, white);
+}
+
+/* 2. a code window */
+.tp-root .tp-code { padding: 12px 8px; }
+
+/* 3. a prototype in the browser and its status */
+.tp-root .tp-browser .tp-page { padding: 18px 22px; background: var(--ss-surface); height: 100%; }
+.tp-root .tp-page-head { display: block; font-size: 18px; font-weight: 600; color: var(--ss-text-strong); margin-bottom: 14px; }
+.tp-root .tp-plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.tp-root .tp-plan { border-radius: 12px; background: var(--ss-canvas); padding: 12px; display: flex; flex-direction: column; gap: 8px; box-shadow: 0 0 0 1px var(--ss-line); }
+.tp-root .tp-plan[data-i='1'] { box-shadow: 0 0 0 1.5px var(--ss-accent); background: var(--ss-surface); }
+.tp-root .tp-plan-name { font-size: 13px; font-weight: 600; color: var(--ss-text-strong); }
+.tp-root .tp-plan-bar { height: 6px; border-radius: 3px; background: #e5e7eb; }
+.tp-root .tp-plan-bar--short { width: 60%; }
+.tp-root .tp-status { position: absolute; left: 244px; top: 172px; }
+.tp-root .tp-status > * { position: absolute; left: 0; top: 0; white-space: nowrap; box-shadow: 0 0 0 1px rgba(17, 24, 39, 0.06), 0 6px 16px -8px rgba(17, 24, 39, 0.25); }
+
+/* a folder: the sidebar lists its entries, the open file is quietly marked */
+.tp-root .tp-side { display: flex; flex-direction: column; gap: 3px; padding: 44px 8px 8px; }
+.tp-root .tp-side-item { padding: 5px 8px; border-radius: 6px; font-size: 12px; color: var(--ss-text-muted, #6b7280); }
+.tp-root .tp-side-item--on { background: color-mix(in oklab, var(--ss-accent) 16%, transparent); color: var(--ss-text-strong); font-weight: 500; }
+
+@media (prefers-reduced-motion: reduce) {
+  .tp-root .tp-out, .tp-root .tp-status > * { transition: none; }
+}

@@ -326,7 +326,7 @@ export default function Nav({ lang }: { lang: Lang }) {
             >
             <div className="min-w-0 overflow-hidden">
             <div
-              className="flex w-max items-center gap-0.5 pr-0.5 sm:gap-1.5 sm:pr-1.5 motion-reduce:!transition-none"
+              className="flex w-max items-center gap-1 pr-1 sm:gap-1.5 sm:pr-1.5 motion-reduce:!transition-none"
               style={{
                 opacity: isScrolled ? 0 : 1,
                 transition: isScrolled ? 'opacity 90ms ease-out' : 'opacity 200ms ease-out 80ms',
@@ -335,8 +335,10 @@ export default function Nav({ lang }: { lang: Lang }) {
             {/* Lang switcher */}
             <Link
               href={otherHref}
-              className="px-2 sm:px-2.5 py-1.5 text-sm font-medium rounded-full text-gray-500 active:scale-[0.96] [@media(hover:hover)]:hover:text-gray-900 [@media(hover:hover)]:hover:bg-black/[0.04]"
+              className="nav-pill relative inline-flex min-h-10 items-center px-2.5 sm:px-3.5 text-sm font-medium rounded-full text-gray-600 active:scale-[0.97] [@media(hover:hover)]:hover:text-gray-900 [@media(hover:hover)]:hover:bg-black/[0.04]"
               style={{ transition: 'background-color 150ms ease, color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
+              hrefLang={otherLang}
+              aria-label={lang === 'en' ? 'Français' : 'English'}
             >
               {lang === 'en' ? 'FR' : 'EN'}
             </Link>
@@ -345,7 +347,7 @@ export default function Nav({ lang }: { lang: Lang }) {
             <Link
               href={`/${lang}/contact`}
               onClick={closeMenu}
-              className="btn-dark nav-cta ml-0.5 sm:ml-1 inline-flex h-11 items-center px-4 sm:px-5 text-sm font-medium rounded-full bg-gray-900 text-white hover:bg-black active:scale-[0.97] whitespace-nowrap"
+              className="btn-dark nav-cta inline-flex h-10 items-center px-3.5 text-sm font-medium rounded-full bg-gray-900 text-white hover:bg-black active:scale-[0.97] whitespace-nowrap"
               style={{ transition: 'background-color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
             >
               {content.contact}
@@ -355,7 +357,7 @@ export default function Nav({ lang }: { lang: Lang }) {
             </div>
 
             <button
-              className="relative flex h-11 w-11 items-center justify-center rounded-full bg-black/[0.05] active:scale-[0.95] [@media(hover:hover)]:hover:bg-black/[0.09] before:absolute before:-inset-1.5 before:content-['']"
+              className="relative flex h-10 w-10 items-center justify-center rounded-full bg-black/[0.05] active:scale-[0.95] [@media(hover:hover)]:hover:bg-black/[0.09] before:absolute before:-inset-1.5 before:content-['']"
               style={{ transition: 'background-color 150ms ease, color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
               onClick={toggleMenu}
               aria-label={lang === 'fr' ? (isMobileMenuOpen ? 'Fermer le menu' : 'Ouvrir le menu') : isMobileMenuOpen ? 'Close menu' : 'Open menu'}
