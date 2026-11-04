@@ -745,6 +745,25 @@ a[class*="hover:text-gray-900"]:active { color: #111827; }
   translate: 0 0;
   box-shadow: 0 2px 6px -2px rgba(17, 24, 39, 0.4);
 }
+/* The Contact pill of the header does not lift and casts no shadow: the bar is only 56 to 80 px high and a lift
+   bites into its top edge. Its hover is a light change of colour instead: the ink lightens from gray-900 to gray-700
+   (a deeper black would hardly show), back to a darker gray-800 when pressed. The dark nav keeps its own inverted
+   colours (above). */
+@media (hover: hover) and (pointer: fine) {
+  #site-nav a.nav-cta.btn-dark:hover {
+    translate: 0 0;
+    box-shadow: none;
+  }
+  #site-nav:not(.nav-dark) a.nav-cta.btn-dark:hover {
+    background-color: #374151;
+  }
+}
+#site-nav a.nav-cta.btn-dark:active {
+  box-shadow: none;
+}
+#site-nav:not(.nav-dark) a.nav-cta.btn-dark:active {
+  background-color: #1f2937;
+}
 
 /* Text links (.link-line on the label): a quiet line at rest; on hover an ink line draws over it from the left,
    and leaves to the right when the pointer goes, as the footer links do. The line follows wrapped text. */

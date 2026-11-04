@@ -476,7 +476,7 @@ export default function SiteSearch({ lang }: { lang: Lang }) {
         }}
         aria-label={open ? copy.close : copy.open}
         aria-expanded={open}
-        className="relative flex h-11 w-11 items-center justify-center rounded-full text-gray-700 transition-[background-color,color,transform] duration-150 active:scale-[0.95] lg:hidden [@media(hover:hover)]:hover:bg-black/[0.04]"
+        className="relative flex h-10 w-10 items-center justify-center rounded-full text-gray-700 transition-[background-color,color,transform] duration-150 active:scale-[0.95] lg:hidden [@media(hover:hover)]:hover:bg-black/[0.04]"
       >
         {open ? <X size={20} aria-hidden="true" /> : <MagnifyingGlass size={20} aria-hidden="true" />}
       </button>
