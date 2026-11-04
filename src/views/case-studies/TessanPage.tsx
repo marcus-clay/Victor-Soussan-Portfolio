@@ -19,6 +19,7 @@ import { assistantJourneys, osJourneys, prototypeJourneys, scanJourneys, tunnelJ
 import DeviceMockup, { type DeviceKind, type DeviceScreen } from '@/components/case-study/DeviceMockup'
 import EnhancedLightbox, { type LightboxImage } from '@/components/media/EnhancedLightbox'
 import { zoomable } from '@/utils/zoomable'
+import MediaLike from '@/components/likes/MediaLike'
 import { TESSAN_TRANSLATIONS } from '@/data/caseStudyTranslations/tessanTranslations'
 
 interface TessanPageProps {
@@ -368,7 +369,8 @@ function FigureView({
           style={figure.maxWidth ? { maxWidth: figure.maxWidth } : undefined}
           className={`group ${STAGE} cursor-zoom-in transition-[transform,box-shadow] duration-300 ease-media active:duration-150 active:ease-out [@media(hover:hover)]:hover:ring-black/[0.08] [@media(hover:hover)]:hover:scale-[1.01] active:scale-[0.99]`}
         >
-          <img
+          <>
+            <img
             loading="lazy"
             src={figure.src}
             width={figure.width}
@@ -376,6 +378,8 @@ function FigureView({
             alt=""
             className="w-full h-auto block transition-transform duration-300 ease-media [@media(hover:hover)]:group-hover:scale-[1.02]"
           />
+            <MediaLike src={figure.src} />
+          </>
         </div>
       )}
       {/* A strip names each screen under its device; a single visual carries its caption. */}

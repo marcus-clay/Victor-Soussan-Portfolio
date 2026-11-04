@@ -1,0 +1,85 @@
+/* template-feature-checklist: a stand-alone list card in close-up, a filler row off the foot, and its progress pill */
+.sc-res-checklist-root {
+  position: absolute;
+  inset: 0;
+}
+.sc-res-checklist-root .sc-res-checklist-card {
+  position: absolute;
+  left: 48px;
+  top: 30px;
+  width: 294px;
+  height: 330px;
+  padding: 18px 14px 0;
+  border-radius: 22px;
+  background: var(--ss-surface);
+  box-shadow: var(--ss-shadow-hero), 0 0 0 1px var(--ss-line);
+}
+.sc-res-checklist-root .sc-res-checklist-title {
+  display: block;
+  padding: 0 12px;
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ss-text-strong);
+}
+.sc-res-checklist-root .sc-res-checklist-list {
+  display: flex;
+  flex-direction: column;
+  margin-top: 12px;
+}
+.sc-res-checklist-root .sc-res-checklist-row {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  column-gap: 12px;
+}
+.sc-res-checklist-root .sc-res-checklist-item {
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 500;
+  color: var(--ss-text-strong);
+}
+.sc-res-checklist-root .ss-check__fill {
+  fill: var(--ss-accent);
+}
+.sc-res-checklist-root .ss-check__tick {
+  stroke: var(--still-on, #111827);
+}
+
+/* The counter: a small pill on the card's right edge, over the margin of a short row */
+.sc-res-checklist-root .sc-res-checklist-pill {
+  position: absolute;
+  right: 16px;
+  top: 128px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  height: 36px;
+  padding: 0 15px 0 14px;
+  border-radius: 999px;
+  background: var(--ss-surface);
+  border: 1px solid var(--ss-line);
+  box-shadow: var(--ss-shadow-satellite);
+  opacity: 0;
+  transform: translateX(8px);
+  transition: opacity 0.26s cubic-bezier(0.23, 1, 0.32, 1), transform 0.36s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.sc-res-checklist-root .sc-res-checklist-pill[data-show] {
+  opacity: 1;
+  transform: none;
+}
+.sc-res-checklist-root .sc-res-checklist-meter {
+  width: 32px;
+  flex: none;
+}
+.sc-res-checklist-root .ss-meter__fill {
+  background: var(--ss-accent);
+  transition: clip-path 0.45s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.sc-res-checklist-root .sc-res-checklist-count {
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--ss-text-strong);
+}

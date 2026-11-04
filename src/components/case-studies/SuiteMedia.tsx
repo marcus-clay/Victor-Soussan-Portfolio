@@ -15,10 +15,13 @@
  */
 
 import { useCallback, useRef, useState } from 'react'
-import { ArrowLeft, ArrowRight } from '@phosphor-icons/react'
+import { ArrowLeft, ArrowRight, Export } from '@phosphor-icons/react'
 import VideoPlayer from '@/components/VideoPlayer'
 import { imgDims } from '@/utils/imageDimensions'
 import { zoomable } from '@/utils/zoomable'
+import { stripId } from '@/lib/mediaLink'
+import ShareButton from '@/components/share/ShareButton'
+import MediaLike from '@/components/likes/MediaLike'
 import { useSnapScroller } from '@/hooks/useSnapScroller'
 
 export interface SuiteMediaItem {
@@ -54,7 +57,12 @@ function Visual({ item, eager, fill }: { item: SuiteMediaItem; eager?: boolean; 
       className={`${MEDIA} ${fill ? 'md:h-full md:object-contain' : ''} ${item.inset ? 'rounded-lg shadow-sm' : ''}`}
     />
   )
-  return item.inset ? <div className={`p-4 md:p-8 ${fill ? 'md:h-full md:box-border' : ''}`}>{img}</div> : img
+  return (
+    <>
+      {item.inset ? <div className={`p-4 md:p-8 ${fill ? 'md:h-full md:box-border' : ''}`}>{img}</div> : img}
+      <MediaLike src={item.src} />
+    </>
+  )
 }
 
 /** One large visual, full width of the act column, with its caption. */
@@ -138,7 +146,7 @@ export function MediaCarousel({
     'inline-flex h-11 w-11 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-900 transition-[background-color,transform,opacity] duration-150 [@media(hover:hover)]:hover:bg-gray-100 active:scale-[0.96] aria-disabled:opacity-40 aria-disabled:pointer-events-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900'
 
   return (
-    <div className={className}>
+    <div id={items[0] ? stripId(items[0].src) : undefined} className={`scroll-mt-28 ${className}`}>
       <div
         ref={trackRef}
         {...bind}
@@ -182,6 +190,16 @@ export function MediaCarousel({
             {pad2(index + 1)} / {pad2(items.length)}
           </p>
           <div className="flex items-center gap-2">
+            <ShareButton
+              target="section"
+              hash={stripId(items[0].src)}
+              title={label}
+              variant="custom"
+              label={{ fr: 'Partager cette série de visuels', en: 'Share this set of visuals' }}
+              className={button}
+            >
+              <Export size={18} weight="bold" aria-hidden="true" />
+            </ShareButton>
             <button type="button" aria-label={labels.prev} aria-disabled={atStart} onClick={() => step(-1)} className={button}>
               <ArrowLeft size={18} aria-hidden="true" />
             </button>

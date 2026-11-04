@@ -6,6 +6,7 @@ import { useReveal } from '@/lib/motion'
 import { useSnapScroller } from '@/hooks/useSnapScroller'
 import { imgDims } from '@/utils/imageDimensions'
 import { zoomable } from '@/utils/zoomable'
+import MediaLike from '@/components/likes/MediaLike'
 
 export interface WatchScreen {
   src: string
@@ -64,6 +65,7 @@ export default function WatchScreenGroup({ screens, groupLabel, onZoom }: WatchS
                 draggable={false}
                 className={`block h-auto w-full transition-transform duration-300 ease-media [@media(hover:hover)]:group-hover:scale-[1.02]`}
               />
+              <MediaLike src={screen.src} />
             </div>
             <figcaption className="mt-3 text-xs text-gray-500">{screen.label}</figcaption>
           </figure>

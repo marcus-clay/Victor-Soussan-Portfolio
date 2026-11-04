@@ -1,4 +1,8 @@
 /* transitions-polish: a CSS diff that tightens a transition, and the before and after of its duration */
+.sc-transitions-polish-root {
+  position: absolute;
+  inset: 0;
+}
 .sc-transitions-polish-win {
   position: absolute;
   left: 24px;
@@ -62,3 +66,43 @@
 }
 .sc-transitions-polish-line[data-now] { color: var(--ss-text-strong); font-weight: 600; }
 .sc-transitions-polish-line[data-now] i { width: 60%; background: var(--ss-accent); }
+
+/* On hover: the new line is written while the old one goes quiet, then the 150 ms row appears and its bar draws */
+.sc-transitions-polish-win .ss-code__line[data-kind='add'] {
+  transition: opacity 220ms cubic-bezier(0.23, 1, 0.32, 1), transform 220ms cubic-bezier(0.23, 1, 0.32, 1), filter 220ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.sc-transitions-polish-root:not([data-add]) .ss-code__line[data-kind='add'] {
+  opacity: 0;
+  transform: translateY(4px);
+  filter: blur(2px);
+}
+.sc-transitions-polish-root[data-add] .ss-code__line[data-kind='add'] {
+  transition-duration: 380ms;
+}
+.sc-transitions-polish-win .ss-code__line[data-kind='del'] .ss-code__text {
+  transition: color 320ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.sc-transitions-polish-root:not([data-add]) .ss-code__line[data-kind='del'] .ss-code__text {
+  color: var(--ss-text-strong);
+}
+.sc-transitions-polish-line[data-now] {
+  transition: opacity 220ms cubic-bezier(0.23, 1, 0.32, 1), transform 220ms cubic-bezier(0.23, 1, 0.32, 1), filter 220ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.sc-transitions-polish-line[data-now]:not([data-row]) {
+  opacity: 0;
+  transform: translateY(4px);
+  filter: blur(2px);
+}
+.sc-transitions-polish-line[data-now][data-row] {
+  transition-duration: 340ms;
+}
+.sc-transitions-polish-line[data-now] i {
+  transform-origin: left center;
+  transition: transform 220ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.sc-transitions-polish-line[data-now]:not([data-bar]) i {
+  transform: scaleX(0);
+}
+.sc-transitions-polish-line[data-now][data-bar] i {
+  transition-duration: 700ms;
+}

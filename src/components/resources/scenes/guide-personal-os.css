@@ -1,0 +1,167 @@
+/* guide-personal-os: a folder of text files with the journal open, and the command that filed a note */
+.sc-res-os-root {
+  position: absolute;
+  inset: 0;
+}
+.sc-res-os-root .sc-res-os-win {
+  position: absolute;
+  left: 46px;
+  top: 30px;
+  width: 298px;
+  height: 288px;
+  box-shadow: var(--ss-shadow-hero);
+}
+.sc-res-os-root .sc-res-os-side {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 4px 8px 0;
+}
+.sc-res-os-root .sc-res-os-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  height: 28px;
+  padding: 0 8px;
+  border-radius: 7px;
+  font: 500 12.5px/1.3 var(--ss-font);
+  color: var(--ss-text-strong);
+}
+.sc-res-os-root .sc-res-os-item svg {
+  color: var(--ss-icon);
+  flex: none;
+}
+.sc-res-os-root .sc-res-os-item[data-on] {
+  background: var(--ss-ink-3);
+  font-weight: 600;
+}
+
+.sc-res-os-root .sc-res-os-main {
+  height: 100%;
+  padding: 14px 14px 0;
+  background: var(--ss-surface);
+}
+.sc-res-os-root .sc-res-os-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+  font: 500 12px/1.3 var(--ss-font);
+  color: var(--ss-text-faint);
+}
+.sc-res-os-root .sc-res-os-tag {
+  padding: 2px 6px;
+  border-radius: 5px;
+  background: var(--ss-ink-2);
+  font: 500 11px/1.3 ui-monospace, 'SF Mono', Menlo, monospace;
+  color: var(--ss-text);
+}
+.sc-res-os-root .sc-res-os-line {
+  display: flex;
+  gap: 8px;
+  padding: 5px 0;
+  font: 400 13px/1.35 var(--ss-font);
+  color: var(--ss-text-strong);
+  white-space: nowrap;
+  opacity: 0;
+  filter: blur(2px);
+  transform: translateY(6px);
+  transition: opacity 320ms cubic-bezier(0.23, 1, 0.32, 1), transform 360ms cubic-bezier(0.23, 1, 0.32, 1), filter 320ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.sc-res-os-root .sc-res-os-line[data-on] {
+  opacity: 1;
+  filter: none;
+  transform: none;
+}
+.sc-res-os-root .sc-res-os-sym {
+  width: 12px;
+  flex: none;
+  text-align: center;
+  font-weight: 600;
+  color: var(--ss-text-faint);
+}
+.sc-res-os-root .sc-res-os-rule {
+  height: 1px;
+  margin: 10px 0 14px;
+  background: var(--ss-line);
+}
+.sc-res-os-root .sc-res-os-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sc-res-os-root .sc-res-os-card {
+  position: absolute;
+  left: 16px;
+  top: 208px;
+  width: 192px;
+  border-radius: 14px;
+  background: var(--ss-surface);
+  box-shadow: var(--ss-shadow-satellite);
+  overflow: hidden;
+  opacity: 0;
+  filter: blur(2px);
+  transform: translateY(8px);
+  transition: opacity 340ms cubic-bezier(0.23, 1, 0.32, 1), transform 400ms cubic-bezier(0.23, 1, 0.32, 1), filter 340ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.sc-res-os-root .sc-res-os-card[data-on] {
+  opacity: 1;
+  filter: none;
+  transform: none;
+}
+.sc-res-os-root .sc-res-os-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 38px;
+  padding: 0 12px;
+  border-bottom: 1px solid var(--ss-line);
+}
+.sc-res-os-root .sc-res-os-field svg {
+  color: var(--ss-icon);
+  flex: none;
+}
+.sc-res-os-root .sc-res-os-cmd {
+  font: 600 13px/1.3 ui-monospace, 'SF Mono', Menlo, monospace;
+  padding: 2px 7px;
+  border-radius: 6px;
+  background: var(--ss-accent-soft);
+  color: var(--ss-accent-text, var(--ss-accent));
+  white-space: pre;
+}
+.sc-res-os-root .sc-res-os-result {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 36px;
+  padding: 0 12px;
+  background: var(--ss-ink-1);
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 300ms cubic-bezier(0.23, 1, 0.32, 1), transform 340ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.sc-res-os-root .sc-res-os-result[data-on] {
+  opacity: 1;
+  transform: none;
+}
+.sc-res-os-root .sc-res-os-tile {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  flex: none;
+  border-radius: 6px;
+  background: var(--ss-surface);
+  box-shadow: inset 0 0 0 1px var(--ss-line);
+  color: var(--ss-icon);
+}
+.sc-res-os-root .sc-res-os-file {
+  font: 500 12px/1.3 var(--ss-font);
+  color: var(--ss-text-strong);
+  white-space: nowrap;
+}
+
+.sc-res-os-root .sc-res-os-cmd:empty {
+  display: none;
+}

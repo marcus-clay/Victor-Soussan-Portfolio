@@ -4,6 +4,8 @@ import { ArrowRight, ArrowUpRight, DownloadSimple } from '@phosphor-icons/react/
 import CopyCommand from './CopyCommand'
 import InstallTabs, { type InstallTab } from './InstallTabs'
 import { SkillPicture, accentOfSkill } from './SkillScene'
+import VideoPlayer from '@/components/VideoPlayer'
+import ShareButton from '@/components/share/ShareButton'
 import { RepoLink, ROW, ROW_ARROW, TEXT_LINK, TEXT_LINK_MUTED } from '@/components/claude/ui'
 import { archiveUrl, getTheme, installCommand, relatedSkills, type Lang, type SkillEntry } from '@/data/skillsCatalogue'
 
@@ -35,6 +37,12 @@ const COPY = {
     claudeAiSteps: 'Download the archive. In Claude.ai, open Settings, Capabilities, Skills, then upload the file.',
     download: 'Download the archive',
     demos: 'Live demos',
+    quickTitle: 'Install in Claude Code',
+    quickSteps: 'Paste it in a terminal, then type /skills in a new session.',
+    quickSource: 'Install from the source',
+    otherTools: 'Codex, Claude.ai',
+    films: 'The demos',
+    filmsLabel: 'Demo by device',
     fromSource: 'Follow the installation steps on the page of the source.',
     related: 'In the same theme',
     all: 'All the skills',
@@ -62,6 +70,12 @@ const COPY = {
     claudeAiSteps: 'Téléchargez l’archive. Dans Claude.ai, ouvrez Réglages, Capacités, Skills, puis importez le fichier.',
     download: 'Télécharger l’archive',
     demos: 'Les démos en direct',
+    quickTitle: 'Installer dans Claude Code',
+    quickSteps: 'Collez-la dans un terminal, puis tapez /skills dans une nouvelle session.',
+    quickSource: 'Installer depuis la source',
+    otherTools: 'Codex, Claude.ai',
+    films: 'Les démos',
+    filmsLabel: 'Démo selon l’appareil',
     fromSource: 'Suivez les étapes d’installation sur la page de la source.',
     related: 'Dans le même thème',
     all: 'Toutes les skills',
@@ -131,23 +145,73 @@ export default function SkillDetail({ skill, lang }: { skill: SkillEntry; lang: 
     })
   }
 
+  const filmTabs: InstallTab[] = (skill.films ?? []).map((f) => ({
+    id: f.id,
+    label: f.label[lang],
+    panel: (
+      <figure>
+        <div className="aspect-[4/5] overflow-hidden rounded-2xl bg-[#E8E8E8] ring-1 ring-inset ring-black/[0.04] sm:aspect-[16/10]">
+          <VideoPlayer
+            src={f.src}
+            poster={f.poster}
+            lang={lang}
+            containerClassName="h-full w-full"
+            className="h-full w-full object-contain"
+          />
+        </div>
+        <figcaption className="mt-3 text-sm text-gray-500">{nb(f.caption[lang], lang)}</figcaption>
+      </figure>
+    ),
+  }))
+
   return (
     <div className="min-h-screen bg-[#FDFDFC]">
       <header className="wrap pt-10 pb-14 md:pt-16 md:pb-20">
-        <nav aria-label="Breadcrumb" className="mb-8 text-sm text-gray-500">
-          <Link href={`/${lang}/claude`} className="transition-colors duration-150 [@media(hover:hover)]:hover:text-gray-900">{c.claude}</Link>
-          <span className="mx-2" aria-hidden="true">/</span>
-          <Link href={`/${lang}/skills`} className="transition-colors duration-150 [@media(hover:hover)]:hover:text-gray-900">{c.skills}</Link>
-          <span className="mx-2" aria-hidden="true">/</span>
-          <span className="text-gray-900">{skill.name}</span>
-        </nav>
+        <div className="mb-8 flex items-center justify-between gap-4">
+          <nav aria-label="Breadcrumb" className="min-w-0 text-sm text-gray-500">
+            <Link href={`/${lang}/claude`} className="transition-colors duration-150 [@media(hover:hover)]:hover:text-gray-900">{c.claude}</Link>
+            <span className="mx-2" aria-hidden="true">/</span>
+            <Link href={`/${lang}/skills`} className="transition-colors duration-150 [@media(hover:hover)]:hover:text-gray-900">{c.skills}</Link>
+            <span className="mx-2" aria-hidden="true">/</span>
+            <span className="text-gray-900">{skill.name}</span>
+          </nav>
+          <ShareButton target="page" variant="pill" title={skill.name} />
+        </div>
 
-        <div className="grid gap-y-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,440px)] lg:items-start lg:gap-x-16">
+        <div className="grid grid-cols-[minmax(0,1fr)] gap-y-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,440px)] lg:items-start lg:gap-x-16">
           <div className="max-w-[600px]">
             <h1 className="break-words font-mono text-[32px] font-semibold leading-[1.1] tracking-[-0.03em] text-gray-900 md:text-[44px]">{skill.name}</h1>
             <p className="mt-3 text-sm text-gray-500">
               {theme.label[lang]} · {own ? c.own : c.reco}
             </p>
+
+            {/* The practical block: the install in Claude Code, at the top, as the way in. The full section below keeps every tool. */}
+            <div className="mt-8 rounded-2xl bg-[#F4F4F2] p-4 ring-1 ring-inset ring-black/[0.04] md:p-5">
+              <p className="mb-3 text-sm font-medium text-gray-900">{claudeCode ? c.quickTitle : c.quickSource}</p>
+              {claudeCode ? (
+                <>
+                  <CopyCommand command={claudeCode} label={c.copy} copiedLabel={c.copied} />
+                  <p className="mt-3 max-w-[52ch] text-sm text-gray-600">{c.quickSteps}</p>
+                </>
+              ) : (
+                <p className="max-w-[48ch] text-sm text-gray-600">{c.fromSource}</p>
+              )}
+              <div className="mt-2 flex flex-wrap items-center gap-x-5">
+                {zip && (
+                  <a href={zip} className={TEXT_LINK}>
+                    <DownloadSimple size={16} aria-hidden="true" />
+                    <span className="link-line">{c.download}</span>
+                  </a>
+                )}
+                {!claudeCode && <RepoLink href={skill.href} />}
+                {tabs.length > 1 && (
+                  <a href="#skill-install-section" className={TEXT_LINK_MUTED}>
+                    <span className="link-line">{c.otherTools}</span>
+                    <ArrowRight size={14} weight="bold" aria-hidden="true" />
+                  </a>
+                )}
+              </div>
+            </div>
 
             <dl className="mt-8 divide-y divide-gray-100 border-y border-gray-100 text-[15px]">
               <div className="grid gap-x-8 gap-y-1.5 py-4 sm:grid-cols-[6.5rem_minmax(0,1fr)]">
@@ -177,7 +241,7 @@ export default function SkillDetail({ skill, lang }: { skill: SkillEntry; lang: 
             </dl>
 
             <div className="mt-4 flex flex-wrap items-center gap-x-5">
-              <RepoLink href={skill.href} />
+              {claudeCode && <RepoLink href={skill.href} />}
               {skill.demos && (
                 <a href={skill.demos} target="_blank" rel="noopener noreferrer" className={`group ${TEXT_LINK_MUTED}`}>
                   <span className="link-line">{c.demos}</span>
@@ -188,13 +252,24 @@ export default function SkillDetail({ skill, lang }: { skill: SkillEntry; lang: 
             </div>
           </div>
 
-          <div className="rounded-2xl border border-gray-100 bg-white p-2.5 md:p-3">
+          <div data-hover-scope className="rounded-2xl border border-gray-100 bg-white p-2.5 md:p-3">
             <SkillPicture skill={skill} lang={lang} />
           </div>
         </div>
       </header>
 
-      <section className="wrap border-t border-gray-200 pb-10 pt-8 md:pb-14" aria-labelledby="skill-install">
+      {filmTabs.length > 0 && (
+        <section className="wrap border-t border-gray-200 pb-10 pt-8 md:pb-14" aria-labelledby="skill-films">
+          <div className="max-w-[880px]">
+            <h2 id="skill-films" className="text-title-3 text-gray-900">{c.films}</h2>
+            <div className="mt-5">
+              <InstallTabs tabs={filmTabs} label={c.filmsLabel} />
+            </div>
+          </div>
+        </section>
+      )}
+
+      <section id="skill-install-section" className="wrap scroll-mt-24 border-t border-gray-200 pb-10 pt-8 md:pb-14" aria-labelledby="skill-install">
         <div className="max-w-[600px]">
           <h2 id="skill-install" className="text-title-3 text-gray-900">{c.install}</h2>
           <div className="mt-5">

@@ -4,7 +4,7 @@
 .still .sc-sl-thumb { width: 44px; height: 28px; border-radius: 4px; background: var(--ss-surface); box-shadow: 0 0 0 1px var(--ss-ink-4); padding: 5px; display: grid; align-content: start; gap: 3px; }
 .still .sc-sl-thumb.is-on { box-shadow: 0 0 0 2px var(--ss-accent); }
 .still .sc-sl-thumb i { display: block; height: 3px; border-radius: 2px; background: var(--ss-ink-4); }
-.still .sc-sl-thumb i.t { height: 4px; background: var(--ss-text-strong); opacity: 0.7; }
+.still .sc-sl-thumb i.t { height: 4px; background: var(--ss-text-strong); }
 .still .sc-sl-stage { position: relative; height: 100%; background: var(--ss-canvas); }
 .still .sc-sl-slide {
   position: absolute; left: 56px; top: 14px; width: 218px; height: 136px; padding: 16px;
@@ -21,7 +21,29 @@
 }
 .still .sc-sl-pick-h { font-size: 13px; font-weight: 600; line-height: 1.2; color: var(--ss-text-strong); margin-bottom: 8px; white-space: nowrap; }
 .still .sc-sl-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
-.still .sc-sl-lay { height: 21px; border-radius: 4px; background: var(--ss-canvas); box-shadow: inset 0 0 0 1px var(--ss-ink-3); position: relative; }
-.still .sc-sl-lay.is-on { background: var(--ss-accent-soft); box-shadow: inset 0 0 0 1.5px var(--ss-accent); }
-.still .sc-sl-lay i { position: absolute; display: block; border-radius: 1.5px; background: var(--ss-ink-5); }
-.still .sc-sl-lay.is-on i { background: var(--ss-accent); opacity: .7; }
+.still .sc-sl-lay {
+  height: 21px; border-radius: 4px; background: var(--ss-canvas); box-shadow: inset 0 0 0 1px var(--ss-ink-3); position: relative;
+  transition: background-color 0.22s ease, box-shadow 0.22s ease;
+}
+.still .sc-sl-lay[data-on] { background: var(--ss-accent-soft); box-shadow: inset 0 0 0 1.5px var(--ss-accent); }
+.still .sc-sl-lay i { position: absolute; display: block; border-radius: 1.5px; background: var(--ss-ink-5); transition: background-color 0.22s ease, opacity 0.22s ease; }
+.still .sc-sl-lay[data-on] i { background: var(--ss-accent); opacity: .7; }
+.still .sc-sl-lay[data-on], .still .sc-sl-lay[data-on] i { transition-duration: 0.4s; transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1); }
+
+/* The story (hover only): what is told comes in from a few pixels below, softly; exits are quicker than entrances.
+   The poster is the state with every part in. */
+.still .sc-sl-title, .still .sc-sl-cols i, .still .sc-sl-thumb i {
+  opacity: 0; transform: translateY(5px); filter: blur(2px);
+  transition: opacity 0.2s ease, transform 0.2s ease, filter 0.2s ease;
+}
+.still .sc-sl-title[data-show], .still .sc-sl-cols i[data-show], .still .sc-sl-thumb[data-show] i {
+  opacity: 1; transform: none; filter: none;
+  transition-duration: 0.36s; transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+  transition-delay: calc(var(--i, 0) * 90ms);
+}
+.still .sc-sl-title[data-show] { transition-delay: 90ms; }
+/* the kicker draws from the left, a hair before the title */
+.still .sc-sl-kick { transform: scaleX(0); transform-origin: left center; transition: transform 0.2s ease; }
+.still .sc-sl-kick[data-show] { transform: none; transition-duration: 0.4s; transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1); }
+/* the title line of a thumbnail keeps its softer ink once in */
+.still .sc-sl-thumb[data-show] i.t { opacity: 0.7; }

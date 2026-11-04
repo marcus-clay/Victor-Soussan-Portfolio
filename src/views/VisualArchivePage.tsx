@@ -12,6 +12,7 @@ import EnhancedLightbox, { LightboxImage } from '../components/media/EnhancedLig
 import CaseStudyTOCBar from '../components/CaseStudyTOCBar';
 import LazyImage from '../components/media/LazyImage';
 import ThumbVideo from '../components/media/ThumbVideo';
+import MediaLike from '@/components/likes/MediaLike';
 import { useScrollDirection } from '../hooks/useScrollDirection';
 import { GALLERY_PROJECTS, ALL_GALLERY_ITEMS, GalleryItem, GalleryProject } from '../data/galleryData';
 
@@ -428,6 +429,7 @@ const MediaCard: React.FC<{ item: GalleryItem; onClick: () => void; lang: Langua
           />
         </div>
       )}
+      <MediaLike src={item.src} />
     </div>
   );
 };

@@ -80,3 +80,19 @@
   white-space: nowrap;
 }
 .sc-dd-pill svg { color: var(--ss-icon); }
+
+/* Hover story: the cards are placed into columns that are already there, the meeting drops onto the edge */
+.sc-dd-card {
+  opacity: 0;
+  translate: 0 6px;
+  filter: blur(2px);
+  transition: opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1), translate 0.36s cubic-bezier(0.23, 1, 0.32, 1), filter 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.sc-dd-card[data-in] { opacity: 1; translate: none; filter: none; }
+.sc-dd-pill {
+  opacity: 0;
+  translate: 0 -6px;
+  filter: blur(2px);
+  transition: opacity 0.32s cubic-bezier(0.23, 1, 0.32, 1), translate 0.4s cubic-bezier(0.23, 1, 0.32, 1), filter 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.sc-dd-pill[data-in] { opacity: 1; translate: none; filter: none; }

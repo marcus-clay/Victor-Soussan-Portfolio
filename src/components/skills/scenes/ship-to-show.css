@@ -85,6 +85,10 @@
 .sc-ship-to-show-steps i {
   height: 5px;
   border-radius: 3px;
+  background: var(--ss-ink-3);
+  transition: background-color 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.sc-ship-to-show-steps i[data-on] {
   background: var(--ss-accent);
 }
 .sc-ship-to-show-count {
@@ -95,3 +99,19 @@
 }
 
 .sc-ship-to-show-state .ss-icon { color: var(--ss-accent); flex: none; }
+
+/* Story (hover only): the phases fill one after the other, then the state arrives. At rest all seven are filled and the
+   state is shown: the finished frame. */
+.sc-ship-to-show-state,
+.sc-ship-to-show-count {
+  opacity: 0;
+  transform: translateY(5px);
+  filter: blur(2px);
+  transition: opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1), transform 0.3s cubic-bezier(0.23, 1, 0.32, 1), filter 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.sc-ship-to-show-state[data-in],
+.sc-ship-to-show-count[data-in] {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}

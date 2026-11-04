@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { zoomable } from '@/utils/zoomable'
+import MediaLike from '@/components/likes/MediaLike'
 import { imgDims } from '@/utils/imageDimensions'
 import { motion } from 'framer-motion';
 
@@ -29,9 +30,15 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick, lang })
     >
       <div className="rounded-xl overflow-hidden ring-1 ring-black/[0.04] [@media(hover:hover)]:hover:ring-black/[0.08] transition-[transform,box-shadow] duration-300 ease-media active:duration-150 active:ease-out [@media(hover:hover)]:hover:scale-[1.01] active:scale-[0.99]">
         {isVideo ? (
-          <video src={item.src} className="w-full h-auto block transition-transform duration-300 ease-media [@media(hover:hover)]:group-hover:scale-[1.02]" muted playsInline autoPlay loop preload="metadata" />
+          <>
+            <video src={item.src} className="w-full h-auto block transition-transform duration-300 ease-media [@media(hover:hover)]:group-hover:scale-[1.02]" muted playsInline autoPlay loop preload="metadata" />
+            <MediaLike src={item.src} />
+          </>
         ) : (
-          <img loading="lazy" src={item.src} {...imgDims(item.src)} alt={caption} className="w-full h-auto block transition-transform duration-300 ease-media [@media(hover:hover)]:group-hover:scale-[1.02]" />
+          <>
+            <img loading="lazy" src={item.src} {...imgDims(item.src)} alt={caption} className="w-full h-auto block transition-transform duration-300 ease-media [@media(hover:hover)]:group-hover:scale-[1.02]" />
+            <MediaLike src={item.src} />
+          </>
         )}
       </div>
       <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">

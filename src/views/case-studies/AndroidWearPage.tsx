@@ -24,6 +24,7 @@ import EnhancedLightbox, { type LightboxImage } from '../../components/media/Enh
 
 import { ANDROID_WEAR_TRANSLATIONS } from '../../data/caseStudyTranslations/androidWearTranslations';
 import { zoomable } from '@/utils/zoomable'
+import MediaLike from '@/components/likes/MediaLike'
 
 interface AndroidWearPageProps {
   onClose: () => void;
@@ -161,7 +162,10 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick }) => {
             className="w-full h-auto block transition-transform duration-300 ease-media [@media(hover:hover)]:group-hover:scale-[1.02]"
           />
         ) : (
-          <img loading="lazy" src={item.src} {...imgDims(item.src)} alt={item.caption} className="w-full h-auto block transition-transform duration-300 ease-media [@media(hover:hover)]:group-hover:scale-[1.02]" />
+          <>
+            <img loading="lazy" src={item.src} {...imgDims(item.src)} alt={item.caption} className="w-full h-auto block transition-transform duration-300 ease-media [@media(hover:hover)]:group-hover:scale-[1.02]" />
+            <MediaLike src={item.src} />
+          </>
         )}
       </div>
       <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
@@ -202,13 +206,16 @@ const Media: React.FC<MediaProps> = ({ src, name, onZoom, maxWidth = '', plate =
               className={`w-full h-auto block transition-transform duration-300 ease-media [@media(hover:hover)]:group-hover:scale-[1.02]`}
             />
           ) : (
-            <img
+            <>
+              <img
               loading="lazy"
               src={src}
               {...imgDims(src)}
               alt=""
               className={`w-full h-auto block transition-transform duration-300 ease-media [@media(hover:hover)]:group-hover:scale-[1.02]`}
             />
+              <MediaLike src={src} />
+            </>
           )}
         </div>
         <figcaption className="mt-3 text-xs text-gray-500">{name}</figcaption>

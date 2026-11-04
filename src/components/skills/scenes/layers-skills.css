@@ -10,30 +10,52 @@
 }
 
 .still .sc-layers-skills-plate {
+  --sc-ease: cubic-bezier(0.23, 1, 0.32, 1);
   position: absolute;
   left: -65px;
   top: -65px;
   width: 130px;
   height: 130px;
+  transform-style: preserve-3d;
+  /* A plate that is not drawn yet waits a little below its place; its three layers (face, thickness, shadow) are
+     separate boxes so that they can fade without flattening the 3D */
+  transform: translateZ(calc(var(--sc-z) - 14px));
+  transition: transform 0.22s var(--sc-ease);
+}
+
+.still .sc-layers-skills-plate[data-show] {
+  transform: translateZ(var(--sc-z));
+  transition: transform 0.55s var(--sc-ease);
+}
+
+.still .sc-layers-skills-plate > * {
+  position: absolute;
+  opacity: 0;
+  transition: opacity 0.2s ease-out;
+}
+
+.still .sc-layers-skills-plate[data-show] > * {
+  opacity: 1;
+  transition: opacity 0.4s var(--sc-ease);
+}
+
+.still .sc-layers-skills-face {
+  inset: 0;
   border-radius: 16px;
   background: var(--sc-plate, #fff);
   box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.07);
-  transform-style: preserve-3d;
 }
 
-/* The thickness of the plate and the shadow it lays on the one below */
-.still .sc-layers-skills-plate::after {
-  content: '';
-  position: absolute;
+/* The thickness of the plate */
+.still .sc-layers-skills-edge {
   inset: 0;
-  border-radius: inherit;
+  border-radius: 16px;
   background: #c9c9d0;
   transform: translateZ(-5px);
 }
 
-.still .sc-layers-skills-plate::before {
-  content: '';
-  position: absolute;
+/* The shadow the plate lays on the one below */
+.still .sc-layers-skills-shade {
   inset: 4px;
   border-radius: 18px;
   background: rgba(40, 40, 90, 0.3);
@@ -42,7 +64,7 @@
 }
 
 /* A dot grid on the plates that stand for the layers beneath the surface */
-.still .sc-layers-skills-plate[data-dots] {
+.still .sc-layers-skills-face[data-dots] {
   background-image: radial-gradient(rgba(0, 0, 0, 0.16) 1.2px, transparent 1.4px);
   background-size: 13px 13px;
   background-position: 6px 6px;
@@ -57,6 +79,24 @@
   gap: 8px;
   padding: 14px;
 }
+
+/* The screen on the surface fills in, line by line */
+.still .sc-layers-skills-screen > * {
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.2s ease-out, transform 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.still .sc-layers-skills-screen[data-show] > * {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1), transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.still .sc-layers-skills-screen[data-show] > :nth-child(2) { transition-delay: 70ms; }
+.still .sc-layers-skills-screen[data-show] > :nth-child(3) { transition-delay: 140ms; }
+.still .sc-layers-skills-screen[data-show] > :nth-child(4) { transition-delay: 210ms; }
+.still .sc-layers-skills-screen[data-show] > :nth-child(5) { transition-delay: 280ms; }
 
 .still .sc-layers-skills-screen__head {
   display: flex;
@@ -84,6 +124,15 @@
   font-size: 14px;
   font-weight: 500;
   white-space: nowrap;
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity 0.18s ease-out, transform 0.22s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.still .sc-layers-skills-label[data-show] {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.32s cubic-bezier(0.23, 1, 0.32, 1) 0.3s, transform 0.4s cubic-bezier(0.23, 1, 0.32, 1) 0.3s;
 }
 
 .still .sc-layers-skills-label[data-hot] {
@@ -96,6 +145,14 @@
   height: 1px;
   background: var(--ss-ink-5);
   margin-top: 0;
+  /* Drawn from the plate towards its label */
+  clip-path: inset(-4px calc(100% + 4px) -4px -4px);
+  transition: clip-path 0.2s ease-out;
+}
+
+.still .sc-layers-skills-leader[data-show] {
+  clip-path: inset(-4px);
+  transition: clip-path 0.45s cubic-bezier(0.23, 1, 0.32, 1) 0.14s;
 }
 
 .still .sc-layers-skills-leader::before {

@@ -18,6 +18,7 @@ import { GalleryItem, getToolkitGalleryItems } from '../../components/BentoGalle
 import EnhancedLightbox from '../../components/media/EnhancedLightbox';
 import { TOOLKIT_TRANSLATIONS } from '../../data/caseStudyTranslations/toolkitTranslations';
 import { zoomable } from '@/utils/zoomable'
+import MediaLike from '@/components/likes/MediaLike'
 import { useScrollTopOnChange } from '@/hooks/useScrollTopOnChange';
 
 interface ToolkitPageProps {
@@ -94,7 +95,10 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick }) => {
             className="w-full h-auto block transition-transform duration-300 ease-media [@media(hover:hover)]:group-hover:scale-[1.02]"
           />
         ) : (
-          <img loading="lazy" src={item.src} {...imgDims(item.src)} alt={item.caption} className="w-full h-auto block transition-transform duration-300 ease-media [@media(hover:hover)]:group-hover:scale-[1.02]" />
+          <>
+            <img loading="lazy" src={item.src} {...imgDims(item.src)} alt={item.caption} className="w-full h-auto block transition-transform duration-300 ease-media [@media(hover:hover)]:group-hover:scale-[1.02]" />
+            <MediaLike src={item.src} />
+          </>
         )}
       </div>
       <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">
@@ -205,7 +209,8 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
             className="w-full h-auto block transition-transform duration-300 ease-media [@media(hover:hover)]:group-hover:scale-[1.02]"
           />
         ) : (
-          <img
+          <>
+            <img
             src={src}
             alt=""
             width={width ?? imgDims(src).width}
@@ -214,6 +219,8 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
             fetchPriority={priority ? 'high' : undefined}
             className="w-full h-auto transition-transform duration-300 ease-media [@media(hover:hover)]:group-hover:scale-[1.02]"
           />
+            <MediaLike src={src} />
+          </>
         )}
       </div>
       <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">

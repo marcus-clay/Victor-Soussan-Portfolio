@@ -67,3 +67,25 @@
   color: var(--ss-text-strong);
 }
 .sc-ux-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+
+/* The story: the job card arrives, then each pin lands on the screen and its tag appears under the job */
+.sc-ux-pin {
+  opacity: 0;
+  transform: translateY(-6px);
+  filter: blur(2px);
+  transition: opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1), transform 0.34s cubic-bezier(0.23, 1, 0.32, 1), filter 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.sc-ux-pin[data-show] { opacity: 1; transform: none; filter: none; }
+.sc-ux-card {
+  opacity: 0;
+  transform: translateY(8px);
+  filter: blur(2px);
+  transition: opacity 0.38s cubic-bezier(0.23, 1, 0.32, 1), transform 0.38s cubic-bezier(0.23, 1, 0.32, 1), filter 0.38s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.sc-ux-card[data-show] { opacity: 1; transform: none; filter: none; }
+.sc-ux-tag {
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1), transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.sc-ux-tag[data-show] { opacity: 1; transform: none; }

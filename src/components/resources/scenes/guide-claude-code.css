@@ -1,0 +1,84 @@
+/* guide-claude-code: a phone whose home screen is being built, and the prompt card with the two tool lines of the session */
+.sc-res-claude-code-root {
+  position: absolute;
+  inset: 0;
+}
+.sc-res-claude-code-root .sc-res-claude-code-phone {
+  position: absolute;
+  left: 172px;
+  top: 28px;
+}
+.sc-res-claude-code-root .sc-res-claude-code-screen {
+  width: 100%;
+  height: 100%;
+  padding: 84px 40px 0 54px;
+  background: #fff;
+}
+.sc-res-claude-code-root .sc-res-claude-code-screen i { display: block; }
+.sc-res-claude-code-root .sc-res-claude-code-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.sc-res-claude-code-root .sc-res-claude-code-title { width: 150px; height: 24px; border-radius: 8px; background: var(--ss-ink-5); }
+.sc-res-claude-code-root .sc-res-claude-code-avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--ss-ink-3); }
+.sc-res-claude-code-root .sc-res-claude-code-card { width: 100%; height: 124px; margin-top: 22px; border-radius: 20px; background: var(--ss-ink-2); }
+.sc-res-claude-code-root .sc-res-claude-code-blk .ss-row { margin-top: 18px; }
+.sc-res-claude-code-root .sc-res-claude-code-btn { width: 100%; height: 50px; margin-top: 26px; border-radius: 25px; background: var(--ss-accent); }
+
+.sc-res-claude-code-root .sc-res-claude-code-prompt {
+  position: absolute;
+  left: 18px;
+  top: 62px;
+  width: 172px;
+  padding: 12px 12px 10px;
+  border-radius: 14px;
+  background: var(--ss-surface);
+  box-shadow: var(--ss-shadow-satellite);
+}
+.sc-res-claude-code-root .sc-res-claude-code-ask {
+  font-size: 12.5px;
+  line-height: 18px;
+  color: var(--ss-text-strong);
+  transition: opacity 200ms ease;
+}
+.sc-res-claude-code-root .sc-res-claude-code-ask[data-hide] { opacity: 0; }
+.sc-res-claude-code-root .sc-res-claude-code-ghost { color: transparent; }
+.sc-res-claude-code-root .sc-res-claude-code-tools {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid var(--ss-line);
+  font: 11px/18px var(--ss-mono);
+  font-variant-ligatures: none;
+  color: var(--ss-text-strong);
+  white-space: nowrap;
+}
+.sc-res-claude-code-root .sc-res-claude-code-tool {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  height: 18px;
+}
+.sc-res-claude-code-root .sc-res-claude-code-dot {
+  flex: none;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ss-text-strong);
+}
+
+/* The story: what the story adds arrives with a short rise and leaves quickly, on one strong curve */
+.sc-res-claude-code-root .sc-res-claude-code-blk,
+.sc-res-claude-code-root .sc-res-claude-code-tool {
+  opacity: 0;
+  transform: translateY(6px);
+  filter: blur(2px);
+  transition: opacity 180ms ease var(--d-out, 0ms), transform 180ms ease var(--d-out, 0ms), filter 180ms ease var(--d-out, 0ms);
+}
+.sc-res-claude-code-root .sc-res-claude-code-screen[data-on] .sc-res-claude-code-blk,
+.sc-res-claude-code-root .sc-res-claude-code-tool[data-on] {
+  opacity: 1;
+  transform: none;
+  filter: none;
+  transition: opacity 320ms cubic-bezier(0.23, 1, 0.32, 1) var(--d-in, 0ms), transform 320ms cubic-bezier(0.23, 1, 0.32, 1) var(--d-in, 0ms), filter 320ms cubic-bezier(0.23, 1, 0.32, 1) var(--d-in, 0ms);
+}

@@ -28,7 +28,8 @@
   box-shadow: var(--ss-shadow-card), 0 0 0 1px var(--ss-line);
 }
 .still .sc-ci-sheet-title { font-size: 14px; font-weight: 600; color: var(--ss-text-strong); line-height: 1.3; margin-bottom: 10px; }
-.still .sc-ci-item { display: flex; align-items: center; gap: 9px; height: 30px; }
+.still .sc-ci-item { display: flex; align-items: center; height: 30px; }
+.still .sc-ci-item-in { display: flex; align-items: center; gap: 9px; }
 .still .sc-ci-item + .sc-ci-item { border-top: 1px solid var(--ss-line); }
 .still .sc-ci-item-label { font-size: 13px; line-height: 1.3; color: var(--ss-text-strong); white-space: nowrap; }
 .still .sc-ci-item .ss-check__fill { fill: var(--ss-accent); }
@@ -41,3 +42,17 @@
 
 .still .sc-ci-next-thumb { left: 10px; right: 10px; top: 10px; height: 150px; }
 .still .sc-ci-tile { position: absolute; border-radius: 8px; }
+
+/* Hover story: rows, pins, lines and the next card come in from a few points away; the resting look (data-show) is untouched */
+.still .sc-ci-item-in,
+.still .sc-ci-lines,
+.still .sc-ci-pinwrap {
+  transition: opacity 0.26s cubic-bezier(0.23, 1, 0.32, 1), transform 0.34s cubic-bezier(0.23, 1, 0.32, 1), filter 0.26s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.still .sc-ci-item[data-hide] .sc-ci-item-in { opacity: 0; transform: translateY(5px); filter: blur(2px); }
+.still .sc-ci-lines:not([data-show]) { opacity: 0; transform: translateY(4px); filter: blur(2px); }
+.still .sc-ci-pinwrap { position: absolute; left: 0; top: 0; width: 0; height: 0; z-index: 2; }
+.still .sc-ci-pinwrap:not([data-show]) { opacity: 0; transform: translateY(-5px); filter: blur(2px); }
+.still .sc-ci-card.is-next { transition: opacity 0.34s cubic-bezier(0.23, 1, 0.32, 1), transform 0.4s cubic-bezier(0.23, 1, 0.32, 1); }
+.still .sc-ci-card.is-next:not([data-show]) { opacity: 0; transform: translateX(8px); }
+.still .sc-ci-sub > .sc-ci-lines { display: flex; align-items: center; }

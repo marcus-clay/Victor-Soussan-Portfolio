@@ -23,3 +23,20 @@
   box-shadow: var(--ss-shadow-satellite);
 }
 .still .sc-sw-chip .ss-icon { color: var(--ss-accent); }
+
+/* Hover story: the superlative is marked and struck by colour (text, strike, mark), the fact and the chip rise a few points.
+   Their space is always there, so nothing moves around them; the resting look (data-on) is untouched. */
+.still .sc-sw-del {
+  transition: color 0.34s cubic-bezier(0.23, 1, 0.32, 1), background-color 0.34s cubic-bezier(0.23, 1, 0.32, 1), text-decoration-color 0.34s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.still .sc-sw-del:not([data-on]) {
+  color: var(--ss-text-strong);
+  background-color: color-mix(in srgb, var(--ss-accent-soft) 0%, transparent);
+  text-decoration-color: color-mix(in srgb, var(--ss-accent) 0%, transparent);
+}
+.still .sc-sw-add,
+.still .sc-sw-chip {
+  transition: opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1), transform 0.38s cubic-bezier(0.23, 1, 0.32, 1), filter 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.still .sc-sw-add:not([data-on]) { opacity: 0; transform: translateY(6px); filter: blur(2px); }
+.still .sc-sw-chip:not([data-on]) { opacity: 0; transform: translateY(-6px); filter: blur(2px); }

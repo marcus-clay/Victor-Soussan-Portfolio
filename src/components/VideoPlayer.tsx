@@ -14,6 +14,8 @@
  * - Controls are rendered only once the file has answered, and never if it failed to load
  * - prefers-reduced-motion: reduce: nothing starts by itself; the large play button invites the
  *   reader to start it, and it stops again when it leaves the screen.
+ * - The like pill of the site sits at the bottom left, on hover (MediaLike): clear of the central play button
+ *   and of the pause button at the bottom right
  * - A recorded prototype listed in `videoCameras.ts` plays with a camera that pushes in on the action
  *   (VideoCamera), as the journey films do.
  */
@@ -24,6 +26,7 @@ import { CenterPlay, CornerButton, CornerControls } from '@/components/media/Pla
 import { useAutoplayVideo } from '@/components/media/useAutoplayVideo'
 import { VIDEO_COPY, useVideoLang, type UiLang } from '@/components/media/videoLabels'
 import VideoCamera from '@/components/media/VideoCamera'
+import MediaLike from '@/components/likes/MediaLike'
 import { VIDEO_CAMERAS } from '@/data/videoCameras'
 
 interface VideoPlayerProps {
@@ -39,6 +42,8 @@ interface VideoPlayerProps {
   poster?: string
   /** Language of the button labels. Default: the document's. */
   lang?: UiLang
+  /** The like pill of the visual (bottom left, on hover). Default: yes. */
+  likeable?: boolean
 }
 
 export default function VideoPlayer({
@@ -49,6 +54,7 @@ export default function VideoPlayer({
   aspectClassName,
   poster,
   lang,
+  likeable = true,
 }: VideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null)
   const { playing, ready, loaded, failed, toggle } = useAutoplayVideo(videoRef)
@@ -94,6 +100,8 @@ export default function VideoPlayer({
           style={{ opacity: ready || failed ? 0 : 1 }}
         />
       )}
+
+      {likeable && <MediaLike src={src} />}
 
       {invite && <CenterPlay onClick={onToggle} label={copy.play} />}
 

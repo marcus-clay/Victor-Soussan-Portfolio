@@ -6,6 +6,7 @@ import { motion, AnimatePresence, PanInfo, useMotionValue, useTransform, useSpri
 import { X, CaretLeft as ChevronLeft, CaretRight as ChevronRight } from '@phosphor-icons/react';
 import { useScrollLock } from '../hooks/useScrollLock';
 import ThumbVideo from './media/ThumbVideo';
+import MediaLike from '@/components/likes/MediaLike';
 
 // Apple-style spring transition
 const springTransition = {
@@ -162,6 +163,7 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, isVideo, lang, o
             className="w-full h-auto block"
           />
         )}
+        <MediaLike src={item.src} />
       </motion.div>
 
       {/* Caption - Always dark theme */}

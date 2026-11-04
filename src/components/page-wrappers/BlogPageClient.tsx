@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { ArrowRight } from '@phosphor-icons/react'
-import { EASE_OUT_EXPO as EASE_OUT } from '@/lib/motion'
+import { EASE_OUT_EXPO as EASE_OUT, useReveal } from '@/lib/motion'
 import { CATEGORY_LABELS, getArticles, type ContentItem } from '@/data/contentData'
 
 /** Rows shown before "Show all": one screen of choices at a time (Hick), the rest stays in the DOM. */
@@ -19,6 +19,7 @@ const PINNED_IDS = ['experimentation-chatgpt-2022']
  */
 export default function BlogPageClient({ lang }: { lang: 'en' | 'fr' }) {
   const [showAll, setShowAll] = useState(false)
+  const reveal = useReveal()
   const isEn = lang === 'en'
   const all = getArticles()
   const articles = [...PINNED_IDS.map((id) => all.find((a) => a.id === id)).filter(Boolean) as ContentItem[], ...all.filter((a) => !PINNED_IDS.includes(a.id))]
@@ -61,15 +62,15 @@ export default function BlogPageClient({ lang }: { lang: 'en' | 'fr' }) {
     <div className="min-h-screen bg-[#FDFDFC]">
       {/* Header: page name and one line, full width, left aligned */}
       <header className="wrap pt-10 md:pt-16 pb-12 md:pb-16">
-        <h1 className="text-display text-gray-900">Blog</h1>
-        <p className="mt-6 md:mt-8 text-lead-lg text-gray-600 max-w-[54ch]">
+        <h1 className="build-line text-display text-gray-900">Blog</h1>
+        <p className="build-rise mt-6 md:mt-8 text-lead-lg text-gray-600 max-w-[54ch]" style={{ ['--d' as string]: '120ms' }}>
           {isEn
             ? 'Notes from practice on product design, design teams and working with AI.'
             : 'Retours d’expérience sur le design produit, les équipes design et le travail avec l’IA.'}
         </p>
       </header>
 
-      <section className="wrap pb-16 md:pb-24" aria-label="Blog">
+      <motion.section {...reveal()} className="wrap pb-16 md:pb-24" aria-label="Blog">
         <div className="divide-y divide-gray-100">
           {articles.map((item, i) => (
             <div key={item.id} className={!showAll && i >= INITIAL_VISIBLE ? 'hidden' : undefined}>
@@ -87,7 +88,7 @@ export default function BlogPageClient({ lang }: { lang: 'en' | 'fr' }) {
             {isEn ? `Show all ${articles.length}` : `Voir les ${articles.length}`}
           </button>
         )}
-      </section>
+      </motion.section>
     </div>
   )
 }

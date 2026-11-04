@@ -15,6 +15,7 @@ import VideoPlayer from '@/components/VideoPlayer';
 import { motion } from 'framer-motion';
 import { useReveal } from '@/lib/motion'
 import { zoomable } from '@/utils/zoomable'
+import MediaLike from '@/components/likes/MediaLike'
 import { imgDims } from '@/utils/imageDimensions'
 import CaseStudyTestimonialBlock from './CaseStudyTestimonialBlock';
 import CaseStudyHero from '@/components/case-study/CaseStudyHero';
@@ -89,13 +90,16 @@ const Media: React.FC<MediaProps> = ({ src, name, onZoom, maxWidth = '' }) => {
               className={`w-full h-auto block transition-transform duration-300 ease-media [@media(hover:hover)]:group-hover:scale-[1.02]`}
             />
           ) : (
-            <img
+            <>
+              <img
               loading="lazy"
               src={src}
               {...imgDims(src)}
               alt=""
               className={`w-full h-auto block transition-transform duration-300 ease-media [@media(hover:hover)]:group-hover:scale-[1.02]`}
             />
+              <MediaLike src={src} />
+            </>
           )}
         </div>
         <figcaption className="mt-3 text-xs text-gray-500">{name}</figcaption>

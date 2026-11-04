@@ -20,7 +20,9 @@
  * figcaption for future captioned images.
  */
 
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { createPortal } from 'react-dom';
+import HeadingAnchor from '../ui/HeadingAnchor';
 
 /** Above this length the first paragraph stays at body size: a lead has to read in one glance. */
 const LEAD_MAX_CHARS = 280;
@@ -55,7 +57,9 @@ function enhanceHtml(html: string, lead: boolean): string {
   let out = html
     .replace(/<table(?=[\s>])/g, '<div class="table-scroll" tabindex="0"><table')
     .replace(/<\/table>/g, '</table></div>')
-    .replace(/<pre(?=[\s>])/g, '<pre tabindex="0"');
+    .replace(/<pre(?=[\s>])/g, '<pre tabindex="0"')
+    // Each titled section (h2 with an id) gets a place for its share control, filled on the client
+    .replace(/<h2 id="([^"]+)">([\s\S]*?)<\/h2>/g, '<h2 id="$1" class="group/h">$2<span data-anchor-for="$1"></span></h2>');
 
   if (lead) {
     const first = out.match(/^\s*<p>([\s\S]*?)<\/p>/);
@@ -75,11 +79,32 @@ interface ArticleBodyProps {
 
 export function ArticleBody({ html, isDark = false, lead = false }: ArticleBodyProps) {
   const enhanced = useMemo(() => enhanceHtml(html, lead), [html, lead]);
+  // Same object between renders: a new one makes React write the HTML again and wipes what is rendered into it
+  const inner = useMemo(() => ({ __html: enhanced }), [enhanced]);
+  const [root, setRoot] = useState<HTMLDivElement | null>(null);
+  const [hosts, setHosts] = useState<{ id: string; el: HTMLElement }[]>([]);
+  // The share controls of the section titles sit inside the author HTML: they are rendered into its
+  // placeholders. The placeholders are looked up again whenever the HTML is replaced under us.
+  useEffect(() => {
+    if (!root) return;
+    const find = () => {
+      const found = Array.from(root.querySelectorAll<HTMLElement>('[data-anchor-for]')).map((el) => ({ id: el.dataset.anchorFor as string, el }));
+      setHosts((prev) => (prev.length === found.length && prev.every((p, i) => p.el === found[i].el) ? prev : found));
+    };
+    find();
+    const observer = new MutationObserver(find);
+    observer.observe(root, { childList: true, subtree: true });
+    return () => observer.disconnect();
+  }, [root, enhanced]);
   return (
-    <div
-      className={`article-body ${TYPE_AND_MEASURE} ${isDark ? 'article-body-dark' : ''}`}
-      dangerouslySetInnerHTML={{ __html: enhanced }}
-    />
+    <>
+      <div
+        ref={setRoot}
+        className={`article-body ${TYPE_AND_MEASURE} ${isDark ? 'article-body-dark' : ''}`}
+        dangerouslySetInnerHTML={inner}
+      />
+      {hosts.map(({ id, el }) => createPortal(<HeadingAnchor id={id} />, el, id))}
+    </>
   );
 }
 

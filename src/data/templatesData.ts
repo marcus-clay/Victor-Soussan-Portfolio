@@ -63,8 +63,8 @@ export const TEMPLATE_ENTRIES: TemplateEntry[] = [
     slug: { en: 'design-teardown-workshop', fr: 'atelier-design-teardown' },
     title: { en: "Workshop: Design Teardown", fr: "Atelier : Design Teardown" },
     desc: {
-      en: "Workshop template for analyzing and critiquing existing interfaces collectively.",
-      fr: "Un modèle pour auditer une interface existante en équipe et repérer la dette UX.",
+      en: "A collective-intelligence workshop: start from a problem, identify opportunities, sketch concepts and converge on principles and specs.",
+      fr: "Un atelier d’intelligence collective : on part d’une problématique, on identifie des opportunités, on dessine des concepts et on converge vers des principes et des specs.",
     },
     seoTitle: { en: "Design teardown: a three-hour workshop", fr: "Design teardown : un atelier de trois heures" },
     seoDesc: {

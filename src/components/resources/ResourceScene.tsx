@@ -11,7 +11,11 @@
 
 import React from 'react'
 import PersonalOsScene from '@/components/skills/scenes/personal-os'
-import { ACCENTS } from './accentPalette'
+import { RESOURCE_SCENES } from './scenes'
+import { DeckStackScene } from './scenes/deck-stack'
+import { DECK_ENTRIES } from '@/data/decksData'
+import { StillTintContext } from '@/components/skills/scenes/tint'
+import { ACCENTS, accentFor } from './accentPalette'
 
 type Lang = 'en' | 'fr'
 
@@ -49,9 +53,9 @@ const T = {
 }
 
 /** The ground of every scene: the card's picture panel. The hover gesture lives in each scene. */
-export function ScenePanel({ children, className = '' }: { children: React.ReactNode; className?: string }) {
+export function ScenePanel({ children, className = '', radius = 'rounded-xl' }: { children: React.ReactNode; className?: string; radius?: string }) {
   return (
-    <div className={`relative aspect-[13/10] overflow-hidden rounded-xl bg-[#FAFAF8] ring-1 ring-inset ring-black/[0.04] ${className}`}>
+    <div className={`relative aspect-[13/10] overflow-hidden ${radius} bg-[#F4F4F2] ring-1 ring-inset ring-black/[0.04] ${className}`}>
       <div className="absolute inset-0" aria-hidden="true">
         {children}
       </div>
@@ -308,6 +312,26 @@ function DeckScene({ deck }: { deck: { section: string; title: string; toc: stri
 
 /** The scene of a resource, by the id of its content item */
 export function ResourceScene({ id, lang }: { id: string; lang: Lang }) {
+  const made = RESOURCE_SCENES[id]
+  if (made?.READY) {
+    const Made = made.default
+    const accent = accentFor(id)
+    return (
+      <StillTintContext.Provider value={accent}>
+        <Made lang={lang} a={accent} note="" />
+      </StillTintContext.Provider>
+    )
+  }
+  // Every deck of the library shows the stack of slides; one added later has this picture without a scene of its own
+  const deck = id.startsWith('deck-') ? DECK_ENTRIES.find((d) => d.id === id) : undefined
+  if (!made?.READY && deck) {
+    const accent = accentFor(id)
+    return (
+      <StillTintContext.Provider value={accent}>
+        <DeckStackScene lang={lang} a={accent} kicker="Deck" title={deck.title[lang].replace(/^[^:]+:\s*/, '')} />
+      </StillTintContext.Provider>
+    )
+  }
   switch (id) {
     case 'guide-claude-code': return <PromptScene lang={lang} />
     case 'guide-ship-to-show': return <PlayerScene />
@@ -329,14 +353,41 @@ export const hasScene = (id: string) => [
   'guide-claude-code', 'guide-ship-to-show', 'guide-personal-os', 'template-design-scoping', 'template-po-design-sync',
   'template-design-teardown', 'template-feature-checklist', 'template-ui-slicing', 'template-figma-file-status',
   'deck-concept-review', 'deck-design-study',
-].includes(id)
+].includes(id) || id.startsWith('deck-')
 
 /** The picture of a resource card: its scene on the panel */
-export function ResourcePicture({ id, lang, className = '' }: { id: string; lang: Lang; className?: string }) {
+export function ResourcePicture({ id, lang, className = '', radius }: { id: string; lang: Lang; className?: string; radius?: string }) {
   if (!hasScene(id)) return null
   return (
-    <ScenePanel className={className}>
-      <ResourceScene id={id} lang={lang} />
+    <ScenePanel className={className} radius={radius}>
+      <div className="still-bare h-full w-full">
+        <ResourceScene id={id} lang={lang} />
+      </div>
     </ScenePanel>
+  )
+}
+
+/** The picture of a resource on the soft grey of a tile: the scene without a ground of its own, 13:10, anchored to the tile's bottom right. */
+export function ResourceTilePicture({ id, lang, className = '' }: { id: string; lang: Lang; className?: string }) {
+  if (!hasScene(id)) return null
+  return (
+    <div className={`still-bare relative aspect-[13/10] w-full ${className}`} aria-hidden="true">
+      <ResourceScene id={id} lang={lang} />
+    </div>
+  )
+}
+
+/**
+ * The hero of a resource page: the same soft grey tile as the Claude tile of the home, with the picture of the resource
+ * in the middle. Under md the tile is the picture itself.
+ */
+export function ResourceHero({ id, lang }: { id: string; lang: Lang }) {
+  if (!hasScene(id)) return null
+  return (
+    <div data-hover-scope className="flex aspect-[13/10] justify-center overflow-hidden rounded-[28px] bg-[#F4F4F2] ring-1 ring-inset ring-black/[0.04] md:aspect-[2/1]">
+      <div className="still-bare relative h-full aspect-[13/10]" aria-hidden="true">
+        <ResourceScene id={id} lang={lang} />
+      </div>
+    </div>
   )
 }

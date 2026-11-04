@@ -1,0 +1,269 @@
+/*
+ * Like button of the visuals (see LikeButton.tsx).
+ *
+ * The "slot" is placed in the corner of a visual and carries the show / hide; the button inside it
+ * carries the press. Two elements because both move with a transform.
+ *
+ * On a hover screen the slot appears when its visual is hovered or holds keyboard focus. On a touch
+ * screen it is not drawn on the visuals (it lives in the lightbox). A slot inside an element marked
+ * `data-likes-visible` (a lightbox) is always there.
+ */
+
+/* The visual that holds a slot is its positioning frame (zero specificity: an explicit position wins) */
+:where(:has(> .vs-like-slot)) {
+  position: relative;
+}
+
+.vs-like-slot[hidden] {
+  display: none !important;
+}
+
+.vs-like-slot {
+  --vs-like-ease: cubic-bezier(0.23, 1, 0.32, 1);
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  z-index: 15;
+  display: inline-flex;
+}
+
+@media (min-width: 768px) {
+  .vs-like-slot {
+    left: 16px;
+    bottom: 16px;
+  }
+}
+
+/* ---------------------------------------------------------------------------------------------
+ * Appearing on hover (pill on a visual)
+ * ------------------------------------------------------------------------------------------- */
+
+.vs-like-slot[data-autohide] {
+  display: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .vs-like-slot[data-autohide] {
+    display: inline-flex;
+    opacity: 0;
+    transform: translateY(4px);
+    filter: blur(2px);
+    pointer-events: none;
+    /* leaving: quick */
+    transition:
+      opacity 120ms ease-out,
+      transform 120ms ease-out,
+      filter 120ms ease-out;
+  }
+
+  :hover > .vs-like-slot[data-autohide],
+  :has(:focus-visible) > .vs-like-slot[data-autohide],
+  .vs-like-slot[data-autohide]:has(:focus-visible) {
+    opacity: 1;
+    transform: translateY(0);
+    /* \`none\`, not blur(0): any filter on the slot would cut the backdrop-filter of the pill off the visual */
+    filter: none;
+    pointer-events: auto;
+    /* entering: a little slower, strong ease-out */
+    transition:
+      opacity 200ms var(--vs-like-ease),
+      transform 200ms var(--vs-like-ease),
+      filter 200ms var(--vs-like-ease);
+  }
+}
+
+[data-likes-visible] .vs-like-slot[data-autohide] {
+  display: inline-flex;
+  opacity: 1;
+  transform: none;
+  filter: none;
+  pointer-events: auto;
+}
+
+/* ---------------------------------------------------------------------------------------------
+ * The button
+ * ------------------------------------------------------------------------------------------- */
+
+.vs-like {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  height: 30px;
+  min-width: 30px;
+  padding: 0 9px;
+  border: 0;
+  border-radius: 9999px;
+  background: rgba(0, 0, 0, 0.48);
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+  backdrop-filter: blur(12px) saturate(160%);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    transform 160ms var(--vs-like-ease, cubic-bezier(0.23, 1, 0.32, 1)),
+    background-color 160ms ease-out;
+}
+
+/* Hit area of 44px minimum around the visible pill */
+.vs-like::before {
+  content: '';
+  position: absolute;
+  inset: -7px -7px;
+}
+
+.vs-like:active {
+  transform: scale(0.97);
+}
+
+.vs-like:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 0;
+  box-shadow: 0 0 0 4px #111;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .vs-like:hover {
+    background-color: rgba(0, 0, 0, 0.6);
+  }
+}
+
+/* Inline: no background, for the toolbar of a lightbox */
+.vs-like--inline {
+  height: 36px;
+  min-width: 36px;
+  padding: 0 8px;
+  background: transparent;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  box-shadow: none;
+  color: inherit;
+  font-size: 13px;
+}
+
+.vs-like--inline::before {
+  inset: -4px -4px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .vs-like--inline:hover {
+    background-color: rgba(127, 127, 127, 0.18);
+  }
+}
+
+.vs-like--inline:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 1px;
+  box-shadow: none;
+}
+
+/* ---------------------------------------------------------------------------------------------
+ * The heart
+ * ------------------------------------------------------------------------------------------- */
+
+.vs-like__heart {
+  position: relative;
+  display: inline-flex;
+  width: 16px;
+  height: 16px;
+  flex: none;
+  color: currentColor;
+  transition: color 200ms ease-out;
+}
+
+.vs-like__heart svg {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+/* The filled heart fades in over the outline */
+.vs-like__fill {
+  opacity: 0;
+  transition: opacity 200ms ease-out;
+}
+
+.vs-like[aria-pressed='true'] .vs-like__heart {
+  /* Liked: the heart fills with the ink of the pill (white), no colour of its own */
+  color: currentColor;
+}
+
+.vs-like[aria-pressed='true'] .vs-like__fill {
+  opacity: 1;
+}
+
+/* Spark of a new like: a few dots, drawn by script (WAAPI) */
+.vs-like__burst {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.vs-like__dot {
+  position: absolute;
+  left: -1.5px;
+  top: -1.5px;
+  width: 3px;
+  height: 3px;
+  border-radius: 9999px;
+  background: currentColor;
+}
+
+/* ---------------------------------------------------------------------------------------------
+ * The number: it takes room only when there is one (no "0")
+ * ------------------------------------------------------------------------------------------- */
+
+.vs-like__count {
+  display: grid;
+  grid-template-columns: 0fr;
+  align-self: stretch;
+  transition: grid-template-columns 220ms var(--vs-like-ease, cubic-bezier(0.23, 1, 0.32, 1));
+}
+
+.vs-like[data-has-count] .vs-like__count {
+  grid-template-columns: 1fr;
+}
+
+.vs-like__count-clip {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.vs-like__count-text {
+  display: block;
+  padding-left: 6px;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 160ms ease-out;
+}
+
+.vs-like[data-has-count] .vs-like__count-text {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vs-like-slot[data-autohide],
+  :hover > .vs-like-slot[data-autohide],
+  :has(:focus-visible) > .vs-like-slot[data-autohide],
+  .vs-like-slot[data-autohide]:has(:focus-visible) {
+    transform: none;
+    filter: none;
+    transition: opacity 160ms ease-out;
+  }
+
+  .vs-like__count {
+    transition: none;
+  }
+}

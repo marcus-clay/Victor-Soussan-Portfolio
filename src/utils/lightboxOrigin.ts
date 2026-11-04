@@ -38,6 +38,11 @@ export function installLightboxOrigin() {
   )
 }
 
+/** Names the media a viewer should open from when nothing was clicked (an opening from a shared link) */
+export function setLightboxOrigin(el: HTMLElement) {
+  last = { el, at: Date.now() }
+}
+
 /** The media clicked just before the lightbox opened, or null when it was opened another way */
 export function takeLightboxOrigin(): HTMLElement | null {
   const entry = last

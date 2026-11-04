@@ -24,3 +24,24 @@
 .still .sc-ds-arrows { position: absolute; left: 0; top: 0; width: 380px; height: 290px; overflow: visible; }
 .still .sc-ds-line { fill: none; stroke: #2a2a2d; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
 .still .sc-ds-line.is-acc { stroke: var(--ss-accent); stroke-width: 2; }
+
+/* Hover story: a screen and its label rise a few points; the arrows draw on; the accent zone lights up. The resting look is untouched. */
+.still .sc-ds-rise {
+  transition: opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1), transform 0.38s cubic-bezier(0.23, 1, 0.32, 1), filter 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.still .sc-ds-rise:not([data-show]) { opacity: 0; transform: translateY(6px); filter: blur(2px); }
+.still .sc-ds-zone.is-hot { transition: background-color 0.3s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.3s cubic-bezier(0.23, 1, 0.32, 1); }
+.still .sc-ds-zone.is-hot:not([data-on]) { background-color: rgba(0, 0, 0, 0.07); box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--ss-accent) 0%, transparent); }
+
+.still .sc-ds-draw {
+  stroke-dasharray: 1 2;
+  stroke-dashoffset: 1;
+  opacity: 0;
+  transition: stroke-dashoffset 0.26s ease-in, opacity 0.2s linear 0.06s, stroke-dasharray 0.01s linear;
+}
+.still .sc-ds-draw[data-on] {
+  stroke-dasharray: none;
+  stroke-dashoffset: 0;
+  opacity: 1;
+  transition: stroke-dashoffset 0.34s cubic-bezier(0.23, 1, 0.32, 1) var(--d, 0ms), opacity 0.05s linear var(--d, 0ms), stroke-dasharray 0.01s linear calc(var(--d, 0ms) + 0.34s);
+}

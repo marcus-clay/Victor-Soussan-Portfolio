@@ -69,9 +69,20 @@
   border-radius: 6px;
   background: color-mix(in srgb, var(--ss-accent) 16%, #fff);
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.04), 0 12px 24px -10px rgba(40, 40, 70, 0.3), 0 2px 4px rgba(0, 0, 0, 0.06);
-  rotate: -2deg;
   display: grid;
   gap: 3px;
+  /* The note is stuck on the concept: it comes down a few points (the tilt is part of the transform), sharpening */
+  opacity: 0;
+  transform: translateY(-8px) rotate(-2deg);
+  filter: blur(2px);
+  transition: opacity 0.2s ease-out, transform 0.25s cubic-bezier(0.23, 1, 0.32, 1), filter 0.2s ease-out;
+}
+
+.still .sc-creative-director-note[data-show] {
+  opacity: 1;
+  transform: rotate(-2deg);
+  filter: none;
+  transition: opacity 0.32s cubic-bezier(0.23, 1, 0.32, 1), transform 0.45s cubic-bezier(0.23, 1, 0.32, 1), filter 0.3s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 .still .sc-creative-director-note__label {
@@ -90,4 +101,23 @@
   font-weight: 500;
   line-height: 1.32;
   text-wrap: balance;
+}
+
+/* The bars are drawn from the left on a strong curve, and go back faster than they come */
+.still .sc-creative-director-criteria .ss-meter__fill { transition: clip-path 0.7s cubic-bezier(0.23, 1, 0.32, 1); }
+.still .sc-creative-director-criteria[data-quick] .ss-meter__fill { transition-duration: 0.3s; }
+
+/* The badge closes the sequence */
+.still .sc-creative-director-badge {
+  opacity: 0;
+  transform: translateY(4px);
+  filter: blur(2px);
+  transition: opacity 0.2s ease-out, transform 0.25s cubic-bezier(0.23, 1, 0.32, 1), filter 0.2s ease-out;
+}
+
+.still .sc-creative-director-badge[data-show] {
+  opacity: 1;
+  transform: none;
+  filter: none;
+  transition: opacity 0.32s cubic-bezier(0.23, 1, 0.32, 1), transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), filter 0.3s cubic-bezier(0.23, 1, 0.32, 1);
 }

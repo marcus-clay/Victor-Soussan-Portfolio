@@ -63,11 +63,7 @@
   color: var(--ss-text-strong);
   white-space: nowrap;
 }
-.sc-facilitation-ateliers-row[data-goal] {
-  background: var(--ss-accent-soft);
-}
 .sc-facilitation-ateliers-row[data-goal] .sc-facilitation-ateliers-time {
-  color: var(--ss-accent);
   font-weight: 600;
 }
 .sc-facilitation-ateliers-row[data-goal] .sc-facilitation-ateliers-what {
@@ -92,3 +88,50 @@
 .sc-facilitation-ateliers-pill .ss-icon { color: var(--ss-icon); }
 
 .sc-facilitation-ateliers-row[data-goal] .ss-icon { color: var(--ss-accent); }
+
+/* Story (hover only): a step is written in (opacity, a short rise, a 2 px blur); the decision row is lit last. At rest every
+   step is in and the decision is lit: the finished frame. */
+.sc-facilitation-ateliers-row {
+  opacity: 0;
+  transform: translateY(6px);
+  filter: blur(2px);
+  transition: opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1), transform 0.3s cubic-bezier(0.23, 1, 0.32, 1), filter 0.3s cubic-bezier(0.23, 1, 0.32, 1), background-color 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.sc-facilitation-ateliers-row[data-in] {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+.sc-facilitation-ateliers-row[data-lit] {
+  background: var(--ss-accent-soft);
+}
+.sc-facilitation-ateliers-row[data-goal] .sc-facilitation-ateliers-time {
+  transition: color 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.sc-facilitation-ateliers-row[data-goal]:not([data-lit]) .sc-facilitation-ateliers-time {
+  color: var(--ss-text-faint);
+}
+.sc-facilitation-ateliers-row[data-goal][data-lit] .sc-facilitation-ateliers-time {
+  color: var(--ss-accent);
+}
+.sc-facilitation-ateliers-tick {
+  display: grid;
+  opacity: 0;
+  transform: scale(0.85);
+  transition: opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1), transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.sc-facilitation-ateliers-row[data-lit] .sc-facilitation-ateliers-tick {
+  opacity: 1;
+  transform: none;
+}
+.sc-facilitation-ateliers-pill {
+  opacity: 0;
+  transform: translateY(-5px);
+  filter: blur(2px);
+  transition: opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1), transform 0.3s cubic-bezier(0.23, 1, 0.32, 1), filter 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.sc-facilitation-ateliers-pill[data-show] {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}

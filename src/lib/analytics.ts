@@ -56,6 +56,18 @@ export function track(name: string, params: Params = {}) {
   }
 }
 
+export type ShareTarget = 'page' | 'section' | 'media'
+export type ShareMethod = 'native' | 'copy' | 'linkedin' | 'email'
+
+/** A share: what was shared (a page, a section, a media), how, and the path of the page it belongs to. */
+export function trackShare(target: ShareTarget, method: ShareMethod, itemId?: string) {
+  track('share', {
+    method,
+    content_type: target,
+    item_id: itemId ?? (typeof window !== 'undefined' ? window.location.pathname : undefined),
+  })
+}
+
 export interface PageContext {
   content_group: 'home' | 'project' | 'article' | 'guide' | 'page'
   content_id?: string

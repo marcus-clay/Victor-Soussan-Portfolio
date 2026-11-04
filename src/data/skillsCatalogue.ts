@@ -61,6 +61,15 @@ export type SceneKind =
   | 'link'
   | 'stack'
 
+export interface SkillFilm {
+  id: string
+  label: Bi<string>
+  /** One sentence under the player */
+  caption: Bi<string>
+  src: string
+  poster: string
+}
+
 export interface SkillEntry {
   id: string
   /** The first theme is the one the card is coloured with */
@@ -84,6 +93,8 @@ export interface SkillEntry {
   href: string
   /** Live demos of the skill, when it has some (shown on its own page only) */
   demos?: string
+  /** Films of the skill at work, played in one player on its own page */
+  films?: SkillFilm[]
   /** The install command given by the source of a recommended skill (written skills are installed from their archive) */
   install?: string
   /** Extra words that make the search find it */
@@ -517,6 +528,28 @@ export const SKILLS: SkillEntry[] = [
     },
     href: 'https://github.com/marcus-clay/prototype-anime-skill',
     demos: SKILLS_DEMOS,
+    films: [
+      {
+        id: 'mobile',
+        label: { en: 'Mobile', fr: 'Mobile' },
+        caption: {
+          en: 'The finger presses, the keyboard fills in, the camera follows the action.',
+          fr: 'Le doigt appuie, le clavier se remplit, la caméra suit l’action.',
+        },
+        src: '/videos/skills/prototype-anime-mobile.webm',
+        poster: '/videos/skills/prototype-anime-mobile-poster.png',
+      },
+      {
+        id: 'desktop',
+        label: { en: 'Desktop', fr: 'Desktop' },
+        caption: {
+          en: 'The cursor hovers and clicks, a menu opens, a message confirms.',
+          fr: 'Le curseur survole et clique, un menu s’ouvre, un message confirme.',
+        },
+        src: '/videos/skills/prototype-anime-desktop.webm',
+        poster: '/videos/skills/prototype-anime-desktop-poster.png',
+      },
+    ],
     keywords: ['démo', 'vidéo', 'motion', 'case study', 'framer motion'],
   },
   {

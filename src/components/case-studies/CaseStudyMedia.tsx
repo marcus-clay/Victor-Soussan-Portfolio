@@ -1,11 +1,14 @@
 'use client'
 
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
-import { ArrowLeft, ArrowRight } from '@phosphor-icons/react'
+import { ArrowLeft, ArrowRight, Export } from '@phosphor-icons/react'
 import VideoPlayer from '@/components/VideoPlayer'
 import { useSnapScroller } from '@/hooks/useSnapScroller'
 import { imgDims } from '@/utils/imageDimensions'
 import { zoomable } from '@/utils/zoomable'
+import { stripId } from '@/lib/mediaLink'
+import ShareButton from '@/components/share/ShareButton'
+import MediaLike from '@/components/likes/MediaLike'
 
 /**
  * Visuals of the Dailymotion and France VAE case studies, shown large on the shared grey stage
@@ -52,14 +55,17 @@ function Media({ item, priority }: { item: StageItem; priority?: boolean }) {
     )
   }
   return (
-    <img
-      src={item.src}
-      width={size?.[0]}
-      height={size?.[1]}
-      alt=""
-      loading={priority ? 'eager' : 'lazy'}
-      className={`w-full h-auto block ${zoomFx}`}
-    />
+    <>
+      <img
+        src={item.src}
+        width={size?.[0]}
+        height={size?.[1]}
+        alt=""
+        loading={priority ? 'eager' : 'lazy'}
+        className={`w-full h-auto block ${zoomFx}`}
+      />
+      <MediaLike src={item.src} />
+    </>
   )
 }
 
@@ -173,7 +179,7 @@ export function StageCarousel({
     'inline-flex h-10 w-10 items-center justify-center rounded-full bg-white text-gray-900 transition-[background-color,transform,opacity] duration-150 [@media(hover:hover)]:hover:bg-gray-100 active:scale-[0.96] aria-disabled:opacity-40 aria-disabled:pointer-events-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900'
 
   return (
-    <div className={`relative ${STAGE}`}>
+    <div id={items[0] ? stripId(items[0].src) : undefined} className={`relative scroll-mt-28 ${STAGE}`}>
       <div
         ref={trackRef}
         {...bind}
@@ -204,6 +210,16 @@ export function StageCarousel({
             {pad2(index + 1)} / {pad2(total)}
           </p>
           <div className="ml-auto flex items-center gap-2">
+            <ShareButton
+              target="section"
+              hash={stripId(items[0].src)}
+              title={ariaLabel}
+              variant="custom"
+              label={{ fr: 'Partager cette série de visuels', en: 'Share this set of visuals' }}
+              className={button}
+            >
+              <Export size={16} weight="bold" aria-hidden="true" />
+            </ShareButton>
             <button type="button" aria-label={prevLabel} aria-disabled={atStart} onClick={() => !atStart && scrollToIndex(index - 1)} className={button}>
               <ArrowLeft size={16} aria-hidden="true" />
             </button>

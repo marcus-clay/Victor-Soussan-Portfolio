@@ -14,13 +14,29 @@ import { SKILLS, type Lang, type SceneKind, type SkillEntry } from '@/data/skill
 type Accent = { hex: string; soft: string }
 
 /**
- * The accent of a skill. Neighbours in the catalogue take different hues: the position in the list is stepped by 7
- * on the ten-hue palette (7 and 10 share no factor, so every hue is used once per ten skills, warm and cool in turn).
- * Stable between the server and the browser.
+ * The hues of the skills, in the order they are handed out. Cool and warm alternate, so that neighbours in the catalogue
+ * never look alike and no single hue (orange above all) fills a row.
+ */
+const SKILL_HUES = ['bleu', 'emeraude', 'violet', 'turquoise', 'rouge', 'ciel', 'vert', 'fuchsia', 'ambre', 'corail', 'orange'] as const
+
+/** A calmer step of a palette colour: mixed with a neutral grey, so the hue stays recognisable without shouting on a small picture */
+function calm(hex: string, share = 0.3): string {
+  const n = (h: string, i: number) => parseInt(h.slice(1 + i * 2, 3 + i * 2), 16)
+  const grey = [107, 114, 128]
+  const c = [0, 1, 2].map((i) => Math.round(n(hex, i) * (1 - share) + grey[i] * share))
+  return `#${c.map((v) => v.toString(16).padStart(2, '0')).join('')}`
+}
+
+/**
+ * The accent of a skill, from the resource palette but one step calmer, like the resource pictures: the position in the
+ * list is stepped by 7 on the hues (7 and 11 share no factor, so every hue is used once per eleven skills). Stable
+ * between the server and the browser.
  */
 export function accentOfSkill(skill: SkillEntry): Accent {
   const index = Math.max(0, SKILLS.findIndex((s) => s.id === skill.id))
-  return ACCENTS[(index * 7 + 3) % ACCENTS.length]
+  const name = SKILL_HUES[(index * 7 + 3) % SKILL_HUES.length]
+  const base = ACCENTS.find((a) => a.name === name) ?? ACCENTS[0]
+  return { hex: calm(base.hex), soft: base.soft }
 }
 
 const SURFACE = 'rounded-xl border border-gray-200 bg-white shadow-[0_1px_2px_rgba(0,0,0,0.04),0_12px_32px_-16px_rgba(0,0,0,0.12)]'
@@ -526,7 +542,9 @@ export function SkillScene({ skill, lang }: { skill: SkillEntry; lang: Lang }) {
 export function SkillPicture({ skill, lang, className = '' }: { skill: SkillEntry; lang: Lang; className?: string }) {
   return (
     <ScenePanel className={className}>
-      <SkillScene skill={skill} lang={lang} />
+      <div className="still-bare h-full w-full">
+        <SkillScene skill={skill} lang={lang} />
+      </div>
     </ScenePanel>
   )
 }
