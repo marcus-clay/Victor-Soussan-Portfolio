@@ -306,20 +306,21 @@ export default function ProjectFilmstrip({ lang }: ProjectFilmstripProps) {
                 <ProjectTagPills projectId={project.id} lang={lang} light={light} className="hidden sm:flex mt-4 md:mt-5" />
               </div>
 
-              {/* Quote plate: translucent, lower right, only when the card is wide enough to sit beside the caption
-                  (the card width follows the viewport height), only for projects with a testimonial */}
+              {/* Quote plate, only for projects with a testimonial, in glass: a translucent container (20 % black on a
+                  picture or a dark ground, light grey on a light one) over a 40 px blur, 24 px corners, the quote in
+                  white, the name below it, muted. Lower right, beside the caption. The card is as wide as the window is
+                  high (up to 1215 px), so the plate takes the room the caption leaves: from 880 px of card it is drawn,
+                  240 px wide, and grows to 24 rem as the card does. Below that the caption has the card to itself. */}
               {testimonial && quote && (
                 <figure
-                  className={`hidden [@container(min-width:1010px)]:block absolute z-[3] right-10 bottom-10 w-[24rem] 2xl:w-[28rem] rounded-2xl p-6 backdrop-blur-xl ring-1 ${
-                    light
-                      ? 'bg-black/35 ring-white/10 text-white'
-                      : 'bg-white/70 ring-black/[0.06] text-gray-900'
+                  className={`hidden [@container(min-width:880px)]:flex flex-col gap-3 [@container(min-width:1010px)]:gap-4 absolute z-[3] right-8 bottom-8 xl:right-10 xl:bottom-10 w-[min(24rem,calc(100cqw_-_640px))] 2xl:w-[min(28rem,calc(100cqw_-_640px))] rounded-3xl p-4 [@container(min-width:1010px)]:p-5 backdrop-blur-[40px] ${
+                    light ? 'bg-black/20 text-white' : 'bg-[#f0f0f0]/55 text-gray-900 ring-1 ring-inset ring-black/[0.04]'
                   }`}
                 >
-                  <blockquote className="text-base leading-snug">
+                  <blockquote className="text-sm leading-snug [@container(min-width:1010px)]:text-[15px]">
                     {lang === 'fr' ? `« ${quote} »` : `“${quote}”`}
                   </blockquote>
-                  <figcaption className={`mt-3 text-sm ${light ? 'text-white/70' : 'text-gray-600'}`}>
+                  <figcaption className={`text-xs [@container(min-width:1010px)]:text-sm ${light ? 'text-white/60' : 'text-gray-500'}`}>
                     {testimonial.author}, {testimonial.role}
                   </figcaption>
                 </figure>
