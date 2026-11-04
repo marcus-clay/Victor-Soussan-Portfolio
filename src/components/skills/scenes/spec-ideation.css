@@ -68,7 +68,25 @@
   font-weight: 500;
   color: var(--ss-text-strong);
 }
-.sc-si-note[data-cut] { color: var(--ss-text-faint); text-decoration: line-through; text-decoration-color: var(--ss-icon-faint); }
+.sc-si-note { text-decoration: line-through; text-decoration-color: transparent; }
+.sc-si-note[data-cut] { color: var(--ss-text-faint); text-decoration-color: var(--ss-icon-faint); }
 .sc-si-note[data-i='0'] { top: 62px; transform: rotate(-5deg); }
 .sc-si-note[data-i='1'] { top: 126px; transform: rotate(3deg); left: 20px; }
 .sc-si-note[data-i='2'] { top: 190px; transform: rotate(-2deg); }
+
+/* Hover story: ideas land beside the sheet, decisions are written into rows that are already laid out */
+.sc-si-in {
+  opacity: 0;
+  translate: 0 6px;
+  filter: blur(2px);
+  transition: opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1), translate 0.36s cubic-bezier(0.23, 1, 0.32, 1), filter 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.sc-si-in[data-in] { opacity: 1; translate: none; filter: none; }
+.sc-si-note {
+  opacity: 0;
+  translate: -8px 0;
+  filter: blur(2px);
+  transition: opacity 0.32s cubic-bezier(0.23, 1, 0.32, 1), translate 0.4s cubic-bezier(0.23, 1, 0.32, 1), filter 0.3s cubic-bezier(0.23, 1, 0.32, 1),
+    color 0.35s cubic-bezier(0.23, 1, 0.32, 1), text-decoration-color 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.sc-si-note[data-in] { opacity: 1; translate: none; filter: none; }

@@ -97,6 +97,7 @@
   width: 46%;
   border-radius: 2px;
   background: var(--ss-text-strong);
+  transition: width 0.6s cubic-bezier(0.23, 1, 0.32, 1);
 }
 .sc-prototype-anime-track b {
   position: absolute;
@@ -108,6 +109,7 @@
   background: var(--ss-surface);
   box-shadow: 0 0 0 1.5px var(--ss-icon-faint);
 }
+.sc-prototype-anime-track b { transition: box-shadow 0.3s cubic-bezier(0.23, 1, 0.32, 1); }
 .sc-prototype-anime-track b[data-done] { box-shadow: 0 0 0 1.5px var(--ss-text-strong); }
 .sc-prototype-anime-track em {
   position: absolute;
@@ -119,6 +121,7 @@
   border-radius: 50%;
   background: var(--ss-text-strong);
   box-shadow: 0 0 0 3px var(--ss-surface), 0 1px 4px rgba(0, 0, 0, 0.3);
+  transition: left 0.6s cubic-bezier(0.23, 1, 0.32, 1);
 }
 .sc-prototype-anime-time {
   flex: none;
@@ -126,4 +129,33 @@
   font-weight: 500;
   color: var(--ss-text-strong);
   font-variant-numeric: tabular-nums;
+}
+
+/* Story (hover only): the answers are written in the fields, the finger arrives on the button and presses it. At rest the
+   answers are in and the finger is on the button: the finished frame. */
+.sc-prototype-anime-val {
+  opacity: 0;
+  transform: translateY(4px);
+  filter: blur(2px);
+  transition: opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1), transform 0.3s cubic-bezier(0.23, 1, 0.32, 1), filter 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.sc-prototype-anime-val[data-in] {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+.sc-prototype-anime-cta {
+  transition: transform 0.16s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.sc-prototype-anime-cta[data-press] {
+  transform: scale(0.985);
+}
+.sc-prototype-anime-finger {
+  opacity: 0;
+  transform: translate(8px, 6px) scale(0.92);
+  transition: opacity 0.35s cubic-bezier(0.23, 1, 0.32, 1), transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.sc-prototype-anime-finger[data-in] {
+  opacity: 1;
+  transform: none;
 }

@@ -10,6 +10,7 @@ import { TYPE_LABELS } from '../data/contentData';
 import { TRANSLATIONS } from '../data/translations';
 import ReadingPage, { readingLabelFor } from './ReadingPage';
 import { ResourceBrief } from '../components/resources/ResourceBrief';
+import { ResourceHero } from '../components/resources/ResourceScene';
 import { TemplateDiagram } from '../components/templates/TemplateDiagrams';
 import type { RelatedItem } from '../components/RelatedContent';
 
@@ -38,6 +39,7 @@ const TemplateDetailPage: React.FC<Props> = ({ templateId, lang, onBack, related
         <span key="reading">{readingLabelFor(html, lang)}</span>,
       ]}
       html={html}
+      hero={<ResourceHero id={entry.id} lang={lang} />}
       brief={<ResourceBrief id={entry.id} lang={lang} />}
       figure={<TemplateDiagram id={entry.id} lang={lang} />}
       related={related}

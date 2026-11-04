@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { Avatar, Text } from '@/components/stageshow/kit'
-import StillStage from './StillStage'
+import ResourceStage, { type Act } from '@/components/resources/scenes/ResourceStage'
 import type { SceneProps } from './types'
 import './designer-skills.css'
 
@@ -32,23 +32,59 @@ const T = {
 
 const STEPS = [0, 33, 66, 100]
 
+/** Scene state: the wall of notes behind (the card and how many of its notes), the journey card (the card and how many of its four steps). The persona on top stays in place. */
+type S = { back: boolean; notes: number; mid: boolean; dots: number }
+const EMPTY: S = { back: false, notes: 0, mid: false, dots: 0 }
+const DONE: S = { back: true, notes: 3, mid: true, dots: 4 }
+
+/** Out (about 0.6 s): the journey steps, then its card, then the notes and their card leave from the front to the back. */
+async function clear(a: Act<S>) {
+  await a.set({ dots: 0 })
+  await a.wait(80)
+  await a.set({ mid: false })
+  await a.wait(90)
+  await a.set({ back: false, notes: 0 })
+  await a.wait(400)
+}
+
+/** In (about 3.3 s): the wall of notes slides in behind the persona and its notes appear, then the journey card and its four steps, the last one in the accent. */
+async function build(a: Act<S>) {
+  await a.wait(150)
+  await a.set({ back: true })
+  await a.wait(380)
+  await a.set({ notes: 1 })
+  await a.wait(110)
+  await a.set({ notes: 2 })
+  await a.wait(110)
+  await a.set({ notes: 3 })
+  await a.wait(520)
+  await a.set({ mid: true })
+  await a.wait(480)
+  for (let d = 1; d <= 4; d++) {
+    await a.set({ dots: d })
+    await a.wait(d === 3 ? 260 : 130)
+  }
+  await a.wait(300)
+}
+
 export default function Scene({ lang, a }: SceneProps) {
   const t = T[lang]
   return (
-    <StillStage a={a}>
+    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build} clear={clear}>
+      {(s) => (
       <div className="sc-designer-skills-pile">
-        <section className="sc-designer-skills-card sc-designer-skills-card--back" aria-hidden>
+        <section className="sc-designer-skills-card sc-designer-skills-card--back" data-on={s.back || undefined} aria-hidden>
           <div className="sc-designer-skills-notes">
-            <span className="sc-designer-skills-note" />
-            <span className="sc-designer-skills-note" data-hot />
-            <span className="sc-designer-skills-note" />
+            <span className="sc-designer-skills-note" data-show={s.notes > 0 || undefined} />
+            <span className="sc-designer-skills-note" data-hot data-show={s.notes > 1 || undefined} />
+            <span className="sc-designer-skills-note" data-show={s.notes > 2 || undefined} />
           </div>
         </section>
-        <section className="sc-designer-skills-card sc-designer-skills-card--mid" aria-hidden>
+        <section className="sc-designer-skills-card sc-designer-skills-card--mid" data-on={s.mid || undefined} aria-hidden>
           <div className="sc-designer-skills-journey">
-            <span className="sc-designer-skills-journey__line" />
+            <span className="sc-designer-skills-journey__line" data-show={s.mid || undefined} />
             {STEPS.map((x, i) => (
-              <span key={x} className="sc-designer-skills-journey__dot" data-hot={i === 3 || undefined} style={{ left: `calc(${x}% - ${x * 0.14}px)` }} />
+              <span key={x} className="sc-designer-skills-journey__dot" data-hot={i === 3 || undefined} data-show={s.dots > i || undefined} style={{ left: `calc(${x}% - ${x * 0.14}px)` }} />
             ))}
           </div>
         </section>
@@ -71,6 +107,7 @@ export default function Scene({ lang, a }: SceneProps) {
           </div>
         </section>
       </div>
-    </StillStage>
+      )}
+    </ResourceStage>
   )
 }

@@ -1,0 +1,6 @@
+/* The face of a slide (deck-concept-review, deck-design-study): kicker with its accent bar, title, filler lines */
+.sc-res-deck-face .kicker { display: flex; align-items: center; gap: 8px; font-size: var(--face-kicker, 11px); line-height: 14px; font-weight: 600; letter-spacing: 0.08em; color: var(--ss-text-strong); }
+.sc-res-deck-face .kicker i { display: block; flex: none; width: 18px; height: 4px; border-radius: 2px; background: var(--ss-accent); }
+.sc-res-deck-face .title { width: var(--face-title-w, 190px); margin-top: 10px; font-size: var(--face-title, 20px); line-height: 1.17; font-weight: 700; letter-spacing: -0.02em; text-wrap: balance; color: var(--ss-text-strong); }
+.sc-res-deck-face .title.ghost { display: flex; flex-direction: column; gap: 7px; margin-top: 12px; }
+.sc-res-deck-face .lines { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }

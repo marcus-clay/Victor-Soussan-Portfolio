@@ -97,3 +97,20 @@
   color: var(--ss-text);
 }
 .sc-pos-file svg { color: var(--ss-icon); flex-shrink: 0; }
+
+/* Hover story: what the command brings in arrives inside containers that are already laid out */
+.sc-pos-win { --sc-ease: cubic-bezier(0.23, 1, 0.32, 1); }
+.sc-pos-in {
+  opacity: 0;
+  translate: 0 6px;
+  filter: blur(2px);
+  transition: opacity 0.3s var(--sc-ease), translate 0.36s var(--sc-ease), filter 0.3s var(--sc-ease);
+}
+.sc-pos-in[data-in] { opacity: 1; translate: none; filter: none; }
+.sc-pos-card {
+  opacity: 0;
+  translate: -8px 0;
+  filter: blur(2px);
+  transition: opacity 0.34s cubic-bezier(0.23, 1, 0.32, 1), translate 0.4s cubic-bezier(0.23, 1, 0.32, 1), filter 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.sc-pos-card[data-in] { opacity: 1; translate: none; filter: none; }

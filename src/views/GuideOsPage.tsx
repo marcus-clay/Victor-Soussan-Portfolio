@@ -12,6 +12,8 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { ArrowRight, ArrowSquareOut, ArrowUpRight, CaretRight, Calendar, Clock, DownloadSimple } from '@phosphor-icons/react'
 import AuthorContactCard from '../components/AuthorContactCard'
+import ShareButton from '../components/share/ShareButton'
+import HeadingAnchor from '../components/ui/HeadingAnchor'
 import CaseStudyTOCBar from '../components/CaseStudyTOCBar'
 import { ActRule } from '../components/case-study/ActSection'
 import RelatedContent, { type RelatedItem } from '../components/RelatedContent'
@@ -75,7 +77,7 @@ function WhySection({ lang }: { lang: Lang }) {
   const reveal = useReveal()
   return (
     <Section id="why">
-      <h2 className={H2}>{OS_WHY.title[lang]}</h2>
+      <h2 className={`group/h ${H2}`}>{OS_WHY.title[lang]}<HeadingAnchor /></h2>
       <p className={BODY}>{OS_WHY.intro[lang]}</p>
 
       <h3 className={`${OVERLINE} mt-10 mb-4`}>{OS_WHY.partsTitle[lang]}</h3>
@@ -104,7 +106,7 @@ function WhySection({ lang }: { lang: Lang }) {
 function NeedsSection({ lang }: { lang: Lang }) {
   return (
     <Section id="needs">
-      <h2 className={H2}>{OS_NEEDS.title[lang]}</h2>
+      <h2 className={`group/h ${H2}`}>{OS_NEEDS.title[lang]}<HeadingAnchor /></h2>
       <ul className="grid gap-x-12 gap-y-6 md:grid-cols-3">
         {OS_NEEDS.items.map((n, i) => (
           <li key={n.title.en} className="border-t border-gray-100 pt-4">
@@ -128,7 +130,7 @@ function InstallSection({ lang }: { lang: Lang }) {
   const t = (l: L) => l[lang]
   return (
     <Section id="install">
-      <h2 className={H2}>{t(OS_INSTALL.title)}</h2>
+      <h2 className={`group/h ${H2}`}>{t(OS_INSTALL.title)}<HeadingAnchor /></h2>
       <p className={`${BODY} mb-6`}>{t(OS_INSTALL.intro)}</p>
 
       <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
@@ -204,7 +206,7 @@ function StepItem({ step, index, lang }: { step: BuildStep; index: number; lang:
 function BuildSection({ lang }: { lang: Lang }) {
   return (
     <Section id="build">
-      <h2 className={H2}>{OS_SECTIONS[3].label[lang]}</h2>
+      <h2 className={`group/h ${H2}`}>{OS_SECTIONS[3].label[lang]}<HeadingAnchor /></h2>
       <p className={`${BODY} mb-10`}>{OS_STEPS_INTRO[lang]}</p>
       <ol className="space-y-12 md:space-y-14">
         {OS_STEPS.map((step, i) => (
@@ -219,7 +221,7 @@ function DailySection({ lang }: { lang: Lang }) {
   const reveal = useReveal()
   return (
     <Section id="daily">
-      <h2 className={H2}>{OS_DAILY.title[lang]}</h2>
+      <h2 className={`group/h ${H2}`}>{OS_DAILY.title[lang]}<HeadingAnchor /></h2>
       <p className={`${BODY} mb-8`}>{OS_DAILY.intro[lang]}</p>
       <ul className="grid gap-4 md:grid-cols-2">
         {OS_DAILY.routines.map((r, i) => (
@@ -272,7 +274,7 @@ function UseCaseCard({ item, index, lang }: { item: UseCase; index: number; lang
 function UseCasesSection({ lang }: { lang: Lang }) {
   return (
     <Section id="usecases">
-      <h2 className={H2}>{OS_USECASES.title[lang]}</h2>
+      <h2 className={`group/h ${H2}`}>{OS_USECASES.title[lang]}<HeadingAnchor /></h2>
       <p className={`${BODY} mb-8`}>{OS_USECASES.intro[lang]}</p>
       <ol className="grid gap-4 lg:grid-cols-2 lg:items-start">
         {OS_USECASES.items.map((item, i) => (
@@ -300,7 +302,7 @@ function ExampleSection({ lang }: { lang: Lang }) {
   const E = OS_EXAMPLE
   return (
     <Section id="example">
-      <h2 className={H2}>{E.title[lang]}</h2>
+      <h2 className={`group/h ${H2}`}>{E.title[lang]}<HeadingAnchor /></h2>
       <p className={`${BODY} mb-8`}>{E.intro[lang]}</p>
 
       <h3 className="text-title-2 text-gray-900 mb-4">{E.noteTitle[lang]}</h3>
@@ -323,7 +325,7 @@ function ExampleSection({ lang }: { lang: Lang }) {
 function SafetySection({ lang }: { lang: Lang }) {
   return (
     <Section id="safety">
-      <h2 className={H2}>{OS_SAFETY.title[lang]}</h2>
+      <h2 className={`group/h ${H2}`}>{OS_SAFETY.title[lang]}<HeadingAnchor /></h2>
       <p className={`${BODY} mb-8`}>{OS_SAFETY.intro[lang]}</p>
       <ol className="grid gap-x-12 gap-y-0 lg:grid-cols-2">
         {OS_SAFETY.rules.map((r, i) => (
@@ -351,7 +353,7 @@ function SafetySection({ lang }: { lang: Lang }) {
 function MoreSection({ lang }: { lang: Lang }) {
   return (
     <Section id="more" last>
-      <h2 className={H2}>{OS_MORE.title[lang]}</h2>
+      <h2 className={`group/h ${H2}`}>{OS_MORE.title[lang]}<HeadingAnchor /></h2>
       <ul className="grid gap-4 md:grid-cols-3">
         {OS_MORE.links.map((l) => (
           <li key={l.path}>
@@ -416,7 +418,7 @@ export default function GuideOsPage({ lang, related }: Props) {
             lang={lang}
           />
         ) : (
-          <div className="wrap h-10 flex items-center">
+          <div className="wrap h-10 flex items-center justify-between gap-3">
             <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-xs min-w-0 overflow-hidden">
               <Link
                 href={`/${lang}/ressources`}
@@ -427,6 +429,7 @@ export default function GuideOsPage({ lang, related }: Props) {
               <CaretRight size={10} className="flex-shrink-0 text-gray-300" aria-hidden="true" />
               <span className="truncate font-medium text-gray-900">{meta.title[lang]}</span>
             </nav>
+            <ShareButton target="page" variant="bar" title={meta.title[lang]} />
           </div>
         )}
       </div>

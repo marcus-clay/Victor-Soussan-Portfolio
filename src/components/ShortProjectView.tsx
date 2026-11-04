@@ -5,6 +5,7 @@ import { ArrowUpRight } from '@phosphor-icons/react'
 import type { Project } from '@/data/projectsData'
 import EnhancedLightbox from '@/components/media/EnhancedLightbox'
 import VideoPlayer from '@/components/VideoPlayer'
+import MediaLike from '@/components/likes/MediaLike'
 
 const CATEGORY_LABELS: Record<string, { en: string; fr: string }> = {
   'product-design': { en: 'Product Design', fr: 'Design Produit' },
@@ -107,12 +108,15 @@ export default function ShortProjectView({
                   {isVideoSrc(src) ? (
                     <VideoPlayer src={src} lang={lang} className="w-full h-full object-cover" containerClassName="w-full h-full" />
                   ) : (
-                    <img
-                      src={src}
-                      alt={`${project.title} - ${idx + 1}`}
-                      className="w-full h-full object-cover"
-                      loading={idx === 0 ? 'eager' : 'lazy'}
-                    />
+                    <>
+                      <img
+                        src={src}
+                        alt={`${project.title} - ${idx + 1}`}
+                        className="w-full h-full object-cover"
+                        loading={idx === 0 ? 'eager' : 'lazy'}
+                      />
+                      <MediaLike src={src} />
+                    </>
                   )}
                 </div>
               ))}
@@ -129,6 +133,7 @@ export default function ShortProjectView({
                 alt={project.title}
                 className="w-full h-full object-cover"
               />
+              <MediaLike src={project.coverImage.startsWith('/') ? project.coverImage : `/images/${project.coverImage}`} />
             </div>
           </div>
         )}
@@ -159,6 +164,7 @@ export default function ShortProjectView({
               if (block.kind === 'figure') {
                 return (
                   <figure key={idx} className="my-10 first:mt-0">
+                    <div className="relative">
                     <button
                       type="button"
                       onClick={() => {
@@ -175,6 +181,9 @@ export default function ShortProjectView({
                         className="block w-full h-auto transition-transform duration-300 ease-media group-hover:scale-[1.02]"
                       />
                     </button>
+                    {/* Beside the button, not inside it: a button cannot hold a button */}
+                    <MediaLike src={block.src} />
+                    </div>
                     <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed max-w-[680px]">
                       {block.caption}
                     </figcaption>

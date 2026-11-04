@@ -27,6 +27,36 @@
 .sc-kg-code .ss-code__line[data-kind='del'] .ss-code__mark { color: var(--ss-text-faint); }
 .sc-kg-code .ss-code__line[data-kind='del'] .ss-code__text { text-decoration: line-through; text-decoration-color: var(--ss-icon-faint); }
 
+/* The story: the old line is a plain line until it is struck, the new line is written in place (its room is already there) */
+.sc-kg-code .ss-code__line[data-kind='del'] {
+  background: transparent;
+  color: var(--ss-text-strong);
+  transition: background-color 0.4s cubic-bezier(0.23, 1, 0.32, 1), color 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.sc-kg-code .ss-code__line[data-kind='del'] .ss-code__text {
+  text-decoration-color: transparent;
+  transition: text-decoration-color 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.sc-kg-code .ss-code__line[data-kind='del'] .ss-code__mark {
+  opacity: 0;
+  transition: opacity 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.sc-kg-code[data-mark] .ss-code__line[data-kind='del'] { background: var(--ss-ink-2); color: var(--ss-text); }
+.sc-kg-code[data-mark] .ss-code__line[data-kind='del'] .ss-code__text { text-decoration-color: var(--ss-icon-faint); }
+.sc-kg-code[data-mark] .ss-code__line[data-kind='del'] .ss-code__mark { opacity: 1; }
+
+.sc-kg-code .ss-code__line[data-kind='add'] {
+  opacity: 0;
+  transform: translateY(5px);
+  filter: blur(2px);
+  transition: opacity 0.36s cubic-bezier(0.23, 1, 0.32, 1), transform 0.36s cubic-bezier(0.23, 1, 0.32, 1), filter 0.36s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.sc-kg-code[data-add] .ss-code__line[data-kind='add'] {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
 .sc-kg-card {
   position: absolute;
   top: 14px;
@@ -49,3 +79,11 @@
   color: var(--ss-text-strong);
 }
 .sc-kg-rule svg { flex-shrink: 0; color: var(--ss-icon); }
+/* The rules come in their card one after the other */
+.sc-kg-rule {
+  opacity: 0;
+  transform: translateY(6px);
+  filter: blur(2px);
+  transition: opacity 0.32s cubic-bezier(0.23, 1, 0.32, 1), transform 0.32s cubic-bezier(0.23, 1, 0.32, 1), filter 0.32s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.sc-kg-rule[data-show] { opacity: 1; transform: none; filter: none; }

@@ -14,6 +14,7 @@ import RelatedContent, { type RelatedItem } from '../components/RelatedContent';
 import { ActRule } from '../components/case-study/ActSection';
 import { ArticleBody, ArticleBodyStyles } from '../components/article/ArticleBody';
 import { scrollToElement } from '../utils/smoothScroll';
+import ShareButton from '../components/share/ShareButton';
 
 interface TOCItem {
   id: string;
@@ -60,6 +61,8 @@ export interface ReadingPageProps {
   /** The whole text, h2 sections included. */
   html: string;
   heroImage?: string;
+  /** The picture of the resource on its coloured stage, full column, between the header and the brief */
+  hero?: React.ReactNode;
   /** The brief card, first thing under the header (what the resource is for, where it sits in the cycle) */
   brief?: React.ReactNode;
   /** A drawing on the full column, right after the brief: the diagram of a template, the slides of a deck */
@@ -76,7 +79,7 @@ export interface ReadingPageProps {
 }
 
 const ReadingPage: React.FC<ReadingPageProps> = ({
-  lang, title, meta, html, heroImage, brief, figure, actions, related, relatedHeading, backLabel, onBack, isDark = false,
+  lang, title, meta, html, heroImage, hero, brief, figure, actions, related, relatedHeading, backLabel, onBack, isDark = false,
 }) => {
   const articleRef = useRef<HTMLDivElement>(null);
   const [activeSection, setActiveSection] = useState<string>('');
@@ -107,7 +110,7 @@ const ReadingPage: React.FC<ReadingPageProps> = ({
     <div className={`min-h-screen ${isDark ? 'bg-[#0a0a0a]' : 'bg-[#FCFCFD]'}`}>
       {/* Breadcrumb - sticky below Nav */}
       <div className={`sticky z-10 backdrop-blur-xl ${isDark ? 'bg-[#0a0a0a]/80 border-white/5' : 'bg-[#FCFCFD]/80 border-gray-200'}`} style={{ top: 'var(--nav-height, 64px)', transition: 'top 250ms cubic-bezier(0.23, 1, 0.32, 1)' }}>
-        <div className="wrap h-10 flex items-center">
+        <div className="wrap h-10 flex items-center justify-between gap-3">
           <nav className="flex items-center gap-1.5 text-xs min-w-0 overflow-hidden">
             <button
               onClick={onBack}
@@ -120,6 +123,7 @@ const ReadingPage: React.FC<ReadingPageProps> = ({
               {title}
             </span>
           </nav>
+          <ShareButton target="page" variant="bar" title={title} />
         </div>
       </div>
 
@@ -168,6 +172,8 @@ const ReadingPage: React.FC<ReadingPageProps> = ({
             />
           </figure>
         )}
+
+        {hero && <div className="act-wide pb-12 md:pb-16">{hero}</div>}
 
         {/* The brief first: what the resource is for, where it sits in the design cycle */}
         {brief && (

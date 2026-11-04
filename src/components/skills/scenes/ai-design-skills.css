@@ -94,3 +94,19 @@
 
 .still .sc-ai-design-skills-thread .ss-bubble__tail { display: none; }
 .still .sc-ai-design-skills-answer > span:first-child { text-wrap: pretty; }
+
+/* The source and the buttons come in one after the other: they rise a few points, sharpen and fade in */
+.still .sc-ai-design-skills-fx {
+  opacity: 0;
+  transform: translateY(6px);
+  filter: blur(2px);
+  transition: opacity 0.2s ease-out, transform 0.25s cubic-bezier(0.23, 1, 0.32, 1), filter 0.2s ease-out;
+}
+
+.still .sc-ai-design-skills-fx[data-show] {
+  opacity: 1;
+  transform: none;
+  filter: none;
+  transition: opacity 0.32s cubic-bezier(0.23, 1, 0.32, 1), transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), filter 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.still .sc-ai-design-skills-answer .ss-stream { display: block; }

@@ -1,0 +1,113 @@
+/* template-design-scoping: a sheet of paper, « Pourquoi » filled in, and the « Validé » stamp on its edge */
+.sc-res-scoping-root {
+  position: absolute;
+  inset: 0;
+}
+.sc-res-scoping-root .sc-res-scoping-sheet {
+  position: absolute;
+  left: 48px;
+  top: 30px;
+  width: 294px;
+  height: 360px;
+  padding: 20px 24px 0;
+  border-radius: 6px;
+  background: var(--ss-surface);
+  box-shadow: var(--ss-shadow-hero), 0 0 0 1px var(--ss-line);
+}
+.sc-res-scoping-root .sc-res-scoping-title {
+  display: block;
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ss-text-strong);
+}
+.sc-res-scoping-root .sc-res-scoping-rule {
+  height: 1px;
+  margin: 11px 0;
+  background: var(--ss-line);
+}
+.sc-res-scoping-root .sc-res-scoping-why {
+  padding: 8px 12px 9px;
+  border-radius: 8px;
+  background: var(--ss-accent-soft);
+  box-shadow: inset 2px 0 0 var(--ss-accent);
+}
+.sc-res-scoping-root .sc-res-scoping-label {
+  display: block;
+  font-size: 11.5px;
+  line-height: 16px;
+  font-weight: 600;
+  color: var(--ss-text-faint);
+}
+.sc-res-scoping-root .sc-res-scoping-label-on {
+  color: var(--ss-text-strong);
+}
+.sc-res-scoping-root .sc-res-scoping-line {
+  display: block;
+  margin-top: 3px;
+  max-width: 186px;
+  font-size: 12.5px;
+  line-height: 17px;
+  color: var(--ss-text-strong);
+  white-space: normal;
+}
+.sc-res-scoping-root .sc-res-scoping-line + .sc-res-scoping-line {
+  margin-top: 2px;
+}
+.sc-res-scoping-root .sc-res-scoping-sec {
+  padding: 0 12px;
+}
+.sc-res-scoping-root .sc-res-scoping-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 7px;
+}
+
+/* The stamp: on the sheet's right edge, over the margin */
+.sc-res-scoping-root .sc-res-scoping-stamp {
+  position: absolute;
+  right: 16px;
+  top: 116px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 36px;
+  padding: 0 14px 0 12px;
+  border-radius: 999px;
+  background: var(--ss-surface);
+  border: 1px solid var(--ss-line);
+  box-shadow: var(--ss-shadow-satellite);
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--ss-text-strong);
+  opacity: 0;
+  transform: translateX(12px);
+  transition: opacity 0.26s cubic-bezier(0.23, 1, 0.32, 1), transform 0.36s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.sc-res-scoping-root .sc-res-scoping-stamp[data-show] {
+  opacity: 1;
+  transform: none;
+}
+.sc-res-scoping-root .ss-check__fill {
+  fill: var(--ss-accent);
+}
+.sc-res-scoping-root .ss-check__tick {
+  stroke: var(--still-on, #111827);
+}
+
+/* The words come in on the strong curve, a few pixels up and a hair of blur, not the kit's slow fade */
+.sc-res-scoping-root .ss-stream__w {
+  display: inline-block;
+  transform: translateY(4px);
+  filter: blur(2px);
+  transition: opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1), transform 0.3s cubic-bezier(0.23, 1, 0.32, 1), filter 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+/* The kit's own [data-on] rule sits in a layer, so this one must say it again */
+.sc-res-scoping-root .ss-stream__w[data-on] {
+  transform: none;
+  filter: none;
+}

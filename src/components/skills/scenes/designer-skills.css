@@ -128,3 +128,32 @@
 
 .still .sc-designer-skills-fact span:first-child { color: var(--ss-text); }
 .still .sc-designer-skills-fact span:last-child { color: var(--ss-text-strong); font-weight: 500; }
+
+/* The story: the two cards behind slide in toward the pile from their resting place, their marks arrive inside them */
+.still .sc-designer-skills-card--back,
+.still .sc-designer-skills-card--mid {
+  opacity: 0;
+  filter: blur(2px);
+  transition: opacity 0.38s cubic-bezier(0.23, 1, 0.32, 1), transform 0.45s cubic-bezier(0.23, 1, 0.32, 1), filter 0.38s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.still .sc-designer-skills-card--back { transform: translate(8px, -6px); }
+.still .sc-designer-skills-card--mid { transform: translate(-8px, 6px); }
+.still .sc-designer-skills-card--back[data-on],
+.still .sc-designer-skills-card--mid[data-on] { opacity: 1; filter: none; transform: none; }
+
+.still .sc-designer-skills-note,
+.still .sc-designer-skills-journey__dot {
+  opacity: 0;
+  transform: translateY(4px);
+  filter: blur(2px);
+  transition: opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1), transform 0.3s cubic-bezier(0.23, 1, 0.32, 1), filter 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.still .sc-designer-skills-note[data-show],
+.still .sc-designer-skills-journey__dot[data-show] { opacity: 1; transform: none; filter: none; }
+
+.still .sc-designer-skills-journey__line {
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.still .sc-designer-skills-journey__line[data-show] { transform: none; }

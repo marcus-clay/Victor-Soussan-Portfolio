@@ -7,7 +7,9 @@ import HomeBlock from '@/components/sections/HomeBlock'
 import ContactCTASection from '@/components/sections/ContactCTASection'
 import Reveal from '@/components/ui/Reveal'
 import ClaudeHeroStage from '@/components/claude/ClaudeHeroStage'
+import ShareButton from '@/components/share/ShareButton'
 import { SkillPicture } from '@/components/skills/SkillScene'
+import LibraryCard, { LIBRARY_PICTURE } from '@/components/library/LibraryCard'
 import { PILL, RepoLink, ROW, ROW_ARROW, TEXT_LINK } from '@/components/claude/ui'
 import { FEATURED_SKILL_IDS, SKILLS, SKILLS_DEMOS, SKILLS_REPO, SKILL_THEMES, getTheme, type Lang, type SkillEntry } from '@/data/skillsCatalogue'
 import { GUIDE_CHAPTERS } from '@/data/guideClaudeCodeData'
@@ -37,11 +39,11 @@ const COPY = {
       ['Validate before keeping', 'Each write is proposed first. You read it, then it is kept.'],
     ],
     setupTitle: 'Get started',
-    setupNote: 'Three steps in the guide.',
+    setupNote: 'Three steps to start.',
     steps: [
-      { title: 'Understand Claude Code', text: 'What the tool does and how to talk to it.', slug: 'understanding' },
-      { title: 'Set up your environment', text: 'Install the tool and open a first folder.', slug: 'setup' },
-      { title: 'Add skills', text: 'Plug the skills of the catalogue into your project.', slug: 'skills' },
+      { title: 'Understand Claude Code', text: 'What the tool does and how to talk to it.', path: 'guide/claude-code/understanding' },
+      { title: 'Set up your environment', text: 'Install the tool and open a first folder.', path: 'guide/claude-code/setup' },
+      { title: 'Add skills', text: 'Plug the skills of the catalogue into your project.', path: 'skills' },
     ],
     guideAll: 'Read the whole guide',
     chapters: 'chapters',
@@ -109,11 +111,11 @@ const COPY = {
       ['Valider avant de garder', 'Chaque écriture est d’abord proposée. Vous la relisez, puis elle est conservée.'],
     ],
     setupTitle: 'Démarrer',
-    setupNote: 'Trois étapes dans le guide.',
+    setupNote: 'Trois étapes pour démarrer.',
     steps: [
-      { title: 'Comprendre Claude Code', text: 'Ce que l’outil fait et comment lui parler.', slug: 'comprendre' },
-      { title: 'Préparer son environnement', text: 'Installer l’outil et ouvrir un premier dossier.', slug: 'environnement' },
-      { title: 'Ajouter des skills', text: 'Brancher les skills du catalogue à votre projet.', slug: 'skills' },
+      { title: 'Comprendre Claude Code', text: 'Ce que l’outil fait et comment lui parler.', path: 'guide/claude-code/comprendre' },
+      { title: 'Préparer son environnement', text: 'Installer l’outil et ouvrir un premier dossier.', path: 'guide/claude-code/environnement' },
+      { title: 'Ajouter des skills', text: 'Brancher les skills du catalogue à votre projet.', path: 'skills' },
     ],
     guideAll: 'Lire tout le guide',
     chapters: 'chapitres',
@@ -175,17 +177,14 @@ const fr = (s: string, lang: Lang) => (lang === 'fr' ? s.replace(/ ([:;?!»])/g,
 
 function FeaturedSkill({ skill, lang }: { skill: SkillEntry; lang: Lang }) {
   return (
-    <Link
+    <LibraryCard
       href={`/${lang}/skills/${skill.id}`}
-      className="group flex h-full flex-col overflow-hidden rounded-2xl border border-gray-100 bg-white outline-offset-4 transition-[transform,border-color] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] active:scale-[0.985] [@media(hover:hover)]:hover:border-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-gray-900"
-    >
-      <SkillPicture skill={skill} lang={lang} className="m-2.5" />
-      <div className="flex flex-1 flex-col p-6 pt-4">
-        <p className="text-xs text-gray-500">{getTheme(skill.themes[0]).label[lang]}</p>
-        <h3 className="mt-1.5 font-mono text-[16px] font-semibold tracking-[-0.01em] text-gray-900 transition-colors duration-150 [@media(hover:hover)]:group-hover:text-gray-500">{skill.name}</h3>
-        <p className="mt-2 text-sm text-gray-600">{fr(skill.outcome[lang], lang)}</p>
-      </div>
-    </Link>
+      mono
+      picture={<SkillPicture skill={skill} lang={lang} className={LIBRARY_PICTURE} />}
+      eyebrow={getTheme(skill.themes[0]).label[lang]}
+      title={skill.name}
+      summary={fr(skill.outcome[lang], lang)}
+    />
   )
 }
 
@@ -198,9 +197,9 @@ export default function ClaudePageClient({ lang }: { lang: Lang }) {
     <div className="min-h-screen bg-[#FDFDFC]">
       {/* Hero: what this is, and the whole idea in one picture */}
       <header className="wrap pt-10 pb-12 md:pt-16 md:pb-16">
-        <h1 className="text-display text-gray-900">{c.title}</h1>
-        <p className="mt-6 max-w-[54ch] text-lead-lg text-gray-600 md:mt-8">{fr(c.lead, lang)}</p>
-        <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 md:mt-10">
+        <h1 className="build-line text-display text-gray-900">{c.title}</h1>
+        <p className="build-rise mt-6 max-w-[54ch] text-lead-lg text-gray-600 md:mt-8" style={{ ['--d' as string]: '120ms' }}>{fr(c.lead, lang)}</p>
+        <div className="build-rise mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 md:mt-10" style={{ ['--d' as string]: '200ms' }}>
           <Link href={`/${lang}/skills`} className={PILL}>
             {c.ctaSkills}
             <ArrowRight className="btn-arrow" size={16} weight="bold" aria-hidden="true" />
@@ -209,8 +208,9 @@ export default function ClaudePageClient({ lang }: { lang: Lang }) {
             <span className="link-line">{c.ctaGuide}</span>
             <ArrowRight size={14} weight="bold" aria-hidden="true" className="transition-transform duration-200 ease-out group-hover:translate-x-0.5" />
           </Link>
+          <ShareButton target="page" variant="pill" title={c.title} />
         </div>
-        <div className="mt-12 overflow-hidden rounded-[28px] bg-[#F4F4F2] ring-1 ring-inset ring-black/[0.04] md:mt-16">
+        <div className="build-media mt-12 overflow-hidden rounded-[28px] bg-[#F4F4F2] ring-1 ring-inset ring-black/[0.04] md:mt-16" style={{ ['--d' as string]: '280ms' }}>
           <div className="aspect-[358/440] w-full min-[560px]:aspect-[960/520]">
             <ClaudeHeroStage lang={lang} />
           </div>
@@ -234,7 +234,7 @@ export default function ClaudePageClient({ lang }: { lang: Lang }) {
       <HomeBlock id="setup" title={c.setupTitle} note={c.setupNote}>
         <div className="divide-y divide-gray-100 border-b border-gray-100">
           {c.steps.map((step) => (
-            <Link key={step.slug} href={`/${lang}/guide/claude-code/${step.slug}`} className={ROW}>
+            <Link key={step.path} href={`/${lang}/${step.path}`} className={ROW}>
               <div className="min-w-0">
                 <h3 className="text-title-3 text-gray-900">{step.title}</h3>
                 <p className="mt-1.5 max-w-[60ch] text-sm text-gray-600">{fr(step.text, lang)}</p>
@@ -270,7 +270,7 @@ export default function ClaudePageClient({ lang }: { lang: Lang }) {
                 <RepoLink href={SKILLS_REPO} muted />
               </div>
             </div>
-            <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 md:gap-6">
+            <ul className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 md:gap-8">
               {featured.map((s) => (
                 <li key={s.id} className="min-w-0">
                   <FeaturedSkill skill={s} lang={lang} />

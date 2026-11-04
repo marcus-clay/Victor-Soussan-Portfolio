@@ -161,8 +161,8 @@ const SignalsPage: React.FC<SignalsPageProps> = ({ systemTheme, lang, onBack, on
                 </h3>
                 <p className={`text-sm leading-relaxed max-w-xl ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
                   {lang === 'en'
-                    ? 'A complete guide for designers: 9 chapters covering setup, workflows, deployment, visual quality, and skills.'
-                    : 'Guide complet pour les designers : 9 chapitres couvrant installation, workflows, d\u00e9ploiement, qualit\u00e9 visuelle et skills.'}
+                    ? 'A complete guide for designers: 8 chapters covering setup, workflows, deployment and visual quality.'
+                    : 'Guide complet pour les designers : 8 chapitres couvrant installation, workflows, d\u00e9ploiement et qualit\u00e9 visuelle.'}
                 </p>
               </div>
               <div className="flex items-center gap-2 text-gray-900 font-medium text-sm flex-shrink-0">

@@ -16,14 +16,24 @@
  *   fade around it. The source stays hidden while the viewer is open so the picture exists once.
  *   Without a known source (deep link, keyboard from a text button) the viewer fades and settles.
  * - Reduced motion: no travel, the page changes with a short fade.
+ * - Shared links: the address always carries `?m=<key>` of the media on screen (replaceState, no history
+ *   entry), so it can be copied at any moment; closing takes it out. Arriving on a page with a `?m=` of one
+ *   of its media scrolls to that media and opens the viewer on it, whichever page state owns `isOpen`.
+ *   The top bar holds the like (inline) and the share control beside the close button.
  */
 
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { motion, AnimatePresence, animate, useMotionValue, useTransform } from 'framer-motion'
 import { useScrollLock } from '@/hooks/useScrollLock'
 import { imgDims } from '@/utils/imageDimensions'
-import { installLightboxOrigin, takeLightboxOrigin } from '@/utils/lightboxOrigin'
+import { installLightboxOrigin, setLightboxOrigin, takeLightboxOrigin } from '@/utils/lightboxOrigin'
+import { mediaKey } from '@/lib/mediaKey'
+import { findMediaElement } from '@/lib/mediaLink'
+import { isShareMenuOpen, readMediaParam, writeMediaParam } from '@/lib/share'
+import ShareButton from '@/components/share/ShareButton'
+import LikeButton from '@/components/likes/LikeButton'
 import {
+  Export as ShareIcon,
   X,
   CaretLeft as ChevronLeft,
   CaretRight as ChevronRight,
@@ -48,7 +58,7 @@ interface EnhancedLightboxProps {
   videoStartTime?: number
   /** Project ID for URL generation (e.g., 'toolkit', 'dailymotion') */
   projectId?: string
-  /** Whether to update browser URL when navigating images */
+  /** @deprecated The address now always follows the media on screen (`?m=`), whatever this says */
   updateUrl?: boolean
 }
 
@@ -110,18 +120,30 @@ function usePrefersReducedMotion() {
   return reduced
 }
 
+// The media key a lightbox of this page is opening for from the address, so only one of them answers it
+let claimedLink: string | null = null
+
 const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
-  isOpen,
-  onClose,
+  isOpen: isOpenProp,
+  onClose: onCloseProp,
   images,
   currentIndex,
   onIndexChange,
   lang = 'fr',
   videoStartTime = 0,
-  projectId,
-  updateUrl = false,
 }) => {
   const prefersReduced = usePrefersReducedMotion()
+  // Opened by the page (a click) or by the address (a shared link)
+  const [linkedOpen, setLinkedOpen] = useState(false)
+  const isOpen = isOpenProp || linkedOpen
+  const onClose = useCallback(() => {
+    setLinkedOpen(false)
+    onCloseProp()
+  }, [onCloseProp])
+  const imagesRef = useRef(images)
+  imagesRef.current = images
+  const onIndexChangeRef = useRef(onIndexChange)
+  onIndexChangeRef.current = onIndexChange
   const [viewport, setViewport] = useState({ w: 1280, h: 800 })
   const [zoomed, setZoomed] = useState(false)
   const [natural, setNatural] = useState<Record<string, [number, number]>>({})
@@ -147,7 +169,6 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
   const gesture = useRef<Gesture | null>(null)
   const lastTap = useRef(0)
   const openedFrom = useRef<HTMLElement | null>(null)
-  const savedUrl = useRef('')
   const settledOnce = useRef(false)
 
   const count = images.length
@@ -161,6 +182,7 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
     previous: lang === 'fr' ? 'Image précédente' : 'Previous image',
     next: lang === 'fr' ? 'Image suivante' : 'Next image',
     dialog: lang === 'fr' ? 'Visionneuse d’images' : 'Image viewer',
+    share: lang === 'fr' ? 'Partager' : 'Share',
     hintClick: lang === 'fr' ? 'Cliquez pour agrandir' : 'Click to zoom',
     hintTap: lang === 'fr' ? 'Double-tap pour agrandir' : 'Double-tap to zoom',
     hintBack: lang === 'fr' ? 'Cliquez pour revenir' : 'Click to return',
@@ -366,32 +388,80 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
   useEffect(() => {
     if (!isOpen) return
     openedFrom.current = document.activeElement as HTMLElement | null
-    savedUrl.current = window.location.pathname + window.location.search
     dialogRef.current?.focus({ preventScroll: true })
     return () => {
       openedFrom.current?.focus?.({ preventScroll: true })
     }
   }, [isOpen])
 
-  // Reflect the current media in the URL hash (shareable, leaves the route untouched)
+  // The address follows the media on screen: copying it at any moment gives a link to this very media
+  const currentSrc = current?.src
   useEffect(() => {
-    if (!isOpen || !updateUrl || !projectId) return
-    const mediaType = current?.type === 'video' ? 'video' : 'image'
-    window.history.replaceState(
-      window.history.state,
-      '',
-      `${window.location.pathname}${window.location.search}#${mediaType}-${index + 1}`
-    )
-  }, [isOpen, index, projectId, updateUrl, current])
+    if (!isOpen || !currentSrc) return
+    writeMediaParam(mediaKey(currentSrc))
+  }, [isOpen, currentSrc])
+  // ... and closing takes it out
+  useEffect(() => {
+    if (!isOpen) return
+    return () => writeMediaParam(null)
+  }, [isOpen])
+
+  // A shared link: `?m=` names one of this page's media. Scroll to it, then open the viewer from it.
+  // The page may still be loading (dynamic views, lazy pictures), so the element is waited for a few seconds.
+  const imageCount = images.length
+  useEffect(() => {
+    const key = readMediaParam()
+    if (!key || claimedLink) return
+    const list = imagesRef.current
+    const at = list.findIndex((img) => mediaKey(img.src) === key)
+    if (at < 0) return
+    claimedLink = key
+    let opened = false
+    let cancelled = false
+    let timer: number | undefined
+    let tries = 0
+    const open = () => {
+      if (cancelled) return
+      opened = true
+      onIndexChangeRef.current(at)
+      setLinkedOpen(true)
+    }
+    const look = () => {
+      if (cancelled) return
+      const el = findMediaElement(key)
+      if (!el && tries++ < 16) {
+        timer = window.setTimeout(look, 150)
+        return
+      }
+      if (el) {
+        el.scrollIntoView({ block: 'center', inline: 'center', behavior: 'instant' as ScrollBehavior })
+        // Let the page settle (lazy pictures, reveals) before the viewer takes off from the media
+        timer = window.setTimeout(() => {
+          if (cancelled) return
+          setLightboxOrigin(el)
+          open()
+        }, 220)
+      } else {
+        open()
+      }
+    }
+    look()
+    return () => {
+      cancelled = true
+      window.clearTimeout(timer)
+      if (!opened && claimedLink === key) claimedLink = null
+    }
+  }, [imageCount])
+  // The key is free again once the viewer is closed
+  useEffect(() => {
+    if (!isOpen && claimedLink && !readMediaParam()) claimedLink = null
+  }, [isOpen])
 
   // Close. The media flies back onto the picture it came from when that picture is still on
   // screen and the visitor has not moved to another slide; otherwise the viewer fades and settles.
   const handleClose = useCallback(() => {
     if (closing.current) return
     closing.current = true
-    if (updateUrl && savedUrl.current) {
-      window.history.replaceState(window.history.state, '', savedUrl.current)
-    }
     gesture.current = null
     trackX.stop()
     setZoomed(false)
@@ -422,7 +492,7 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
         onClose()
       })
     }
-  }, [onClose, updateUrl, current, index, prefersReduced, frameOf, showSource, zoom, panX, panY, dragY, trackX, backdropIn, chrome, stage, stageScale])
+  }, [onClose, current, index, prefersReduced, frameOf, showSource, zoom, panX, panY, dragY, trackX, backdropIn, chrome, stage, stageScale])
 
   const goTo = useCallback(
     (next: number) => {
@@ -436,6 +506,8 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
   useEffect(() => {
     if (!isOpen) return
     const onKey = (e: KeyboardEvent) => {
+      // An open share menu owns Escape, the arrows and Tab
+      if (isShareMenuOpen()) return
       if (e.key === 'Escape') {
         e.stopImmediatePropagation()
         handleClose()
@@ -630,6 +702,7 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
           role="dialog"
           aria-modal="true"
           aria-label={t.dialog}
+          data-likes-visible
           tabIndex={-1}
           // No fade of the whole dialog: opening and closing are driven by the backdrop, stage and
           // controls values, so the media in flight is never dimmed. This exit only covers a close
@@ -714,14 +787,31 @@ const EnhancedLightbox: React.FC<EnhancedLightboxProps> = ({
           {/* Controls sit above the viewer, outside its gesture area. They fade in a beat after the
               media starts moving and out first when it leaves. */}
           <motion.div className="absolute inset-0 z-20 pointer-events-none" style={{ opacity: chrome }}>
-          <button
-            type="button"
-            onClick={handleClose}
-            aria-label={t.close}
-            className="absolute top-4 right-4 pointer-events-auto z-20 flex items-center justify-center w-11 h-11 rounded-full bg-black/45 backdrop-blur-xl text-white hover:bg-black/60 active:scale-[0.97] transition-[background-color,transform] duration-150"
-          >
-            <X size={22} />
-          </button>
+          <div className="absolute top-4 right-4 z-20 flex items-center gap-2 pointer-events-auto">
+            {/* Like and share: one glass capsule, the close button beside it */}
+            <div className="flex h-11 items-center rounded-full bg-black/45 pl-1.5 pr-0.5 text-white backdrop-blur-xl">
+              <LikeButton mediaKey={mediaKey(current.src)} variant="inline" />
+              <ShareButton
+                target="media"
+                media={mediaKey(current.src)}
+                title={current.caption || undefined}
+                label={current.type === 'video' ? (lang === 'fr' ? 'Partager cette vidéo' : 'Share this video') : lang === 'fr' ? 'Partager cette image' : 'Share this image'}
+                variant="custom"
+                modal
+                className="relative inline-flex size-11 items-center justify-center rounded-full text-white transition-[background-color,transform] duration-150 [@media(hover:hover)]:hover:bg-white/15 active:scale-[0.97] focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
+              >
+                <ShareIcon size={22} weight="bold" aria-hidden="true" />
+              </ShareButton>
+            </div>
+            <button
+              type="button"
+              onClick={handleClose}
+              aria-label={t.close}
+              className="flex items-center justify-center w-11 h-11 rounded-full bg-black/45 backdrop-blur-xl text-white hover:bg-black/60 active:scale-[0.97] transition-[background-color,transform] duration-150"
+            >
+              <X size={22} />
+            </button>
+          </div>
 
           {canZoom && (
             <button

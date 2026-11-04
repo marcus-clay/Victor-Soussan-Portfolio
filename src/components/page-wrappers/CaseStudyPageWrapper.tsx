@@ -15,6 +15,7 @@ import { relatedProjects } from '@/lib/relatedProjects'
 import { TRANSLATIONS } from '@/data/translations'
 import { useScrollDirection } from '@/hooks/useScrollDirection'
 import { scrollToElement } from '@/utils/smoothScroll'
+import ShareButton from '@/components/share/ShareButton'
 
 type ProjectId = 'tessan' | 'tessan-app' | 'tessan-os' | 'tessan-systeme' | 'toolkit' | 'dailymotion' | 'connect' | 'sqool' | 'sqool-classe' | 'france-vae' | 'pagesjaunes' | 'androidwear' | 'riskos'
 
@@ -270,7 +271,7 @@ export default function CaseStudyPageWrapper({
                 : 'transform 280ms cubic-bezier(0.23, 1, 0.32, 1), opacity 200ms ease 80ms',
             }}
           >
-            <div className="wrap h-10 flex items-center">
+            <div className="wrap h-10 flex items-center justify-between gap-3">
               <nav aria-label={lang === 'fr' ? 'Fil d\'Ariane' : 'Breadcrumb'} className="flex items-center gap-1.5 text-xs min-w-0 overflow-hidden h-10">
                 <Link
                   href={`/${lang}/projets`}
@@ -309,6 +310,7 @@ export default function CaseStudyPageWrapper({
                   </span>
                 )}
               </nav>
+              <ShareButton target="page" variant="bar" title={viewLabel ? `${projectName}, ${viewLabel}` : projectName} />
             </div>
           </div>
 

@@ -60,3 +60,20 @@
   font-weight: 600;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 1px 2px rgba(0, 0, 0, 0.12);
 }
+
+/* The story: each terminal line is written in place (it keeps its row), the card arrives into its spot */
+.still .sc-impeccable-ln {
+  opacity: 0;
+  transform: translateY(5px);
+  filter: blur(2px);
+  transition: opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1), transform 0.3s cubic-bezier(0.23, 1, 0.32, 1), filter 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.still .sc-impeccable-ln[data-on] { opacity: 1; transform: none; filter: none; }
+
+.still .sc-impeccable-card {
+  opacity: 0;
+  transform: translateY(8px);
+  filter: blur(2px);
+  transition: opacity 0.36s cubic-bezier(0.23, 1, 0.32, 1), transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), filter 0.36s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.still .sc-impeccable-card[data-on] { opacity: 1; transform: none; filter: none; }

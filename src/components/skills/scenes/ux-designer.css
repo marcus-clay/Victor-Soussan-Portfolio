@@ -30,7 +30,10 @@
   border-radius: 50%;
   background: var(--ss-surface);
   box-shadow: inset 0 0 0 1.5px var(--ss-icon-faint);
+  opacity: 0;
+  transition: opacity 0.28s cubic-bezier(0.23, 1, 0.32, 1), width 0.34s cubic-bezier(0.23, 1, 0.32, 1), height 0.34s cubic-bezier(0.23, 1, 0.32, 1), margin 0.34s cubic-bezier(0.23, 1, 0.32, 1), background-color 0.34s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.34s cubic-bezier(0.23, 1, 0.32, 1);
 }
+.sc-ud-pt[data-show] { opacity: 1; }
 .sc-ud-pt[data-low] {
   width: 13px;
   height: 13px;
@@ -44,7 +47,12 @@
   font-weight: 600;
   color: var(--ss-text-strong);
   white-space: nowrap;
+  opacity: 0;
+  transform: translateX(-5px);
+  filter: blur(2px);
+  transition: opacity 0.32s cubic-bezier(0.23, 1, 0.32, 1), transform 0.32s cubic-bezier(0.23, 1, 0.32, 1), filter 0.32s cubic-bezier(0.23, 1, 0.32, 1);
 }
+.sc-ud-flag[data-show] { opacity: 1; transform: none; filter: none; }
 .sc-ud-lane { display: flex; flex-direction: column; gap: 9px; margin-top: 16px; }
 
 .sc-ud-card {
@@ -60,5 +68,10 @@
   background: var(--ss-surface);
   border: 1px solid var(--ss-line);
   box-shadow: var(--ss-shadow-satellite);
+  opacity: 0;
+  transform: translateY(8px);
+  filter: blur(2px);
+  transition: opacity 0.38s cubic-bezier(0.23, 1, 0.32, 1), transform 0.38s cubic-bezier(0.23, 1, 0.32, 1), filter 0.38s cubic-bezier(0.23, 1, 0.32, 1);
 }
+.sc-ud-card[data-show] { opacity: 1; transform: none; filter: none; }
 .sc-ud-who { display: flex; flex-direction: column; gap: 7px; font-size: 13.5px; font-weight: 550; color: var(--ss-text-strong); }

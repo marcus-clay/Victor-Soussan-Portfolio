@@ -1,0 +1,263 @@
+/* template-design-teardown: a workshop canvas edge to edge; divergence on the left, one card on the right */
+.sc-res-teardown {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: var(--ss-surface);
+}
+/* the canvas: dots on the whole stage */
+.sc-res-teardown::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, var(--ss-ink-5) 1px, transparent 1.3px) 0 0 / 18px 18px;
+}
+/* a wide field on the left that narrows toward the card: the whole story in one shape */
+.sc-res-teardown .sc-res-teardown-funnel {
+  position: absolute;
+  inset: 0;
+  background: var(--ss-ink-1);
+  clip-path: polygon(0 62px, 252px 112px, 252px 210px, 0 100%);
+}
+
+/* the four moments, in a floating pill */
+.sc-res-teardown .sc-res-teardown-steps {
+  position: absolute;
+  left: 50%;
+  top: 18px;
+  translate: -50% 0;
+  display: flex;
+  align-items: center;
+  padding: 6px 8px;
+  border-radius: 999px;
+  background: var(--ss-surface);
+  box-shadow: var(--ss-shadow-satellite);
+  z-index: 3;
+}
+.sc-res-teardown .sc-res-teardown-done {
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  flex: none;
+  border-radius: 50%;
+  color: var(--ss-text-strong);
+}
+.sc-res-teardown .sc-res-teardown-link {
+  display: block;
+  width: 16px;
+  height: 2px;
+  flex: none;
+  background: var(--ss-ink-4);
+}
+.sc-res-teardown .sc-res-teardown-now {
+  margin-left: 2px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font: 600 12px/1.3 var(--ss-font);
+}
+
+/* opportunities: small notes in a cloud */
+.sc-res-teardown .sc-res-teardown-note {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 4px;
+  background: var(--ss-surface);
+  box-shadow: 0 0 0 1px var(--ss-ink-4), 0 6px 12px -4px rgba(17, 24, 39, 0.2);
+}
+.sc-res-teardown .sc-res-teardown-note[data-grey] {
+  background: #ebebe8;
+}
+
+/* concepts: two small sketched frames */
+.sc-res-teardown .sc-res-teardown-concept {
+  position: absolute;
+  left: 150px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  width: 64px;
+  height: 54px;
+  padding: 9px;
+  border-radius: 7px;
+  background: var(--ss-surface);
+  box-shadow: 0 0 0 1px var(--ss-ink-5), 0 8px 14px -6px rgba(17, 24, 39, 0.22);
+}
+.sc-res-teardown .sc-res-teardown-concept i {
+  display: block;
+  flex: 1;
+  border-radius: 3px;
+  background: var(--ss-ink-2);
+}
+
+.sc-res-teardown .sc-res-teardown-lines {
+  position: absolute;
+  inset: 0;
+  width: 390px;
+  height: 300px;
+  fill: none;
+  stroke: #6b7280;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+.sc-res-teardown .sc-res-teardown-lines circle {
+  fill: #6b7280;
+  stroke: #fff;
+  stroke-width: 1.5;
+}
+
+/* the principles: the one object tinted with the accent, ink words */
+.sc-res-teardown .sc-res-teardown-card {
+  position: absolute;
+  left: 252px;
+  top: 78px;
+  width: 112px;
+  height: 164px;
+  display: flex;
+  flex-direction: column;
+  padding: 14px 12px 12px;
+  border-radius: 14px;
+  background: var(--ss-accent-soft);
+  color: #111827;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--ss-accent) 22%, white), var(--ss-shadow-satellite);
+}
+.sc-res-teardown .sc-res-teardown-card-title {
+  font: 700 16px/1.25 var(--ss-font);
+}
+.sc-res-teardown .sc-res-teardown-rules {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 14px;
+}
+.sc-res-teardown .sc-res-teardown-rules i {
+  display: block;
+  height: 6px;
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--ss-accent) 38%, white);
+}
+.sc-res-teardown .sc-res-teardown-rules i:nth-child(2) {
+  width: 78%;
+}
+.sc-res-teardown .sc-res-teardown-rules i:nth-child(3) {
+  width: 56%;
+}
+.sc-res-teardown .sc-res-teardown-specs {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 6px;
+  margin-top: auto;
+  padding: 5px 10px 5px 8px;
+  border-radius: 999px;
+  background: var(--ss-surface);
+  color: #111827;
+  font: 600 12px/1.3 var(--ss-font);
+  box-shadow: var(--ss-shadow-card);
+}
+
+/* ---- the loop: everything the story adds arrives from its own place (a short rise, a fade, a touch of focus) and leaves quicker ---- */
+.sc-res-teardown .sc-res-teardown-note,
+.sc-res-teardown .sc-res-teardown-concept,
+.sc-res-teardown .sc-res-teardown-card,
+.sc-res-teardown .sc-res-teardown-specs {
+  opacity: 0;
+  translate: 0 6px;
+  filter: blur(2px);
+  transition: opacity 220ms ease, translate 220ms ease, filter 220ms ease;
+}
+.sc-res-teardown .sc-res-teardown-note {
+  transform: rotate(var(--r, 0deg));
+}
+.sc-res-teardown .sc-res-teardown-note[data-show],
+.sc-res-teardown .sc-res-teardown-concept[data-show],
+.sc-res-teardown .sc-res-teardown-card[data-show],
+.sc-res-teardown .sc-res-teardown-specs[data-show] {
+  opacity: 1;
+  translate: 0 0;
+  filter: none;
+  transition: opacity 340ms cubic-bezier(0.23, 1, 0.32, 1), translate 340ms cubic-bezier(0.23, 1, 0.32, 1), filter 340ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+/* the specs come once the card is in */
+.sc-res-teardown .sc-res-teardown-specs[data-show] {
+  transition-delay: 0ms;
+}
+
+/* the curves draw toward the card, then the end dot lands */
+.sc-res-teardown .sc-res-teardown-lines {
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+.sc-res-teardown .sc-res-teardown-lines[data-show] {
+  opacity: 1;
+}
+.sc-res-teardown .sc-res-teardown-lines path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 220ms ease;
+}
+.sc-res-teardown .sc-res-teardown-lines[data-show] path {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 520ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.sc-res-teardown .sc-res-teardown-lines circle {
+  opacity: 0;
+  transition: opacity 160ms ease;
+}
+.sc-res-teardown .sc-res-teardown-lines[data-show] circle {
+  opacity: 1;
+  transition: opacity 240ms ease 300ms;
+}
+
+/* the card's lines are written one after the other, left to right */
+.sc-res-teardown .sc-res-teardown-rules i {
+  clip-path: inset(0 100% 0 0 round 3px);
+  transition: clip-path 200ms ease;
+}
+.sc-res-teardown .sc-res-teardown-rules[data-show] i {
+  clip-path: inset(0 0 0 0 round 3px);
+  transition: clip-path 380ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.sc-res-teardown .sc-res-teardown-rules[data-show] i:nth-child(2) {
+  transition-delay: 90ms;
+}
+.sc-res-teardown .sc-res-teardown-rules[data-show] i:nth-child(3) {
+  transition-delay: 180ms;
+}
+
+/* the stepper moves one notch per moment: a dot fills and gets its tick, the last step becomes the active pill */
+.sc-res-teardown .sc-res-teardown-done {
+  background: var(--ss-ink-2);
+  transition: background-color 300ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.sc-res-teardown .sc-res-teardown-done[data-on] {
+  background: var(--ss-ink-4);
+}
+.sc-res-teardown .sc-res-teardown-done .ss-icon {
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+.sc-res-teardown .sc-res-teardown-done[data-on] .ss-icon {
+  opacity: 1;
+  transition: opacity 300ms cubic-bezier(0.23, 1, 0.32, 1) 80ms;
+}
+.sc-res-teardown .sc-res-teardown-now {
+  background: var(--ss-ink-2);
+  color: var(--ss-text-faint);
+  transition: background-color 300ms cubic-bezier(0.23, 1, 0.32, 1), color 300ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.sc-res-teardown .sc-res-teardown-now[data-on] {
+  background: #111827;
+  color: #fff;
+}
+
+/* the thread of the stepper takes the hue as the moments are done */
+.sc-res-teardown .sc-res-teardown-link {
+  transition: background-color 300ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.sc-res-teardown .sc-res-teardown-link[data-on] {
+  background: var(--ss-accent);
+}

@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { ArrowLeft, ArrowRight } from '@phosphor-icons/react'
 import { getProjects } from '@/data/projectsData'
 import { getTestimonials } from '@/data/testimonialsData'
-import { getProjectTags } from '@/data/projectTags'
+import ProjectTagPills from '@/components/ui/ProjectTagPills'
 import { CASE_STUDY_SHELL } from '@/data/caseStudyShell'
 import { imgDims } from '@/utils/imageDimensions'
 import { useSnapScroller } from '@/hooks/useSnapScroller'
@@ -303,18 +303,7 @@ export default function ProjectFilmstrip({ lang }: ProjectFilmstripProps) {
                 >
                   {project.summary}
                 </p>
-                <ul className="hidden sm:flex flex-wrap gap-2 mt-4 md:mt-5" aria-label={t.facts}>
-                  {getProjectTags(project.id, lang).map((fact) => (
-                    <li
-                      key={fact}
-                      className={`inline-flex min-h-8 items-center rounded-full border px-3 text-micro uppercase tracking-[0.08em] ${
-                        light ? 'border-white/40 text-white/90' : 'border-gray-900/20 text-gray-700'
-                      }`}
-                    >
-                      {fact}
-                    </li>
-                  ))}
-                </ul>
+                <ProjectTagPills projectId={project.id} lang={lang} light={light} className="hidden sm:flex mt-4 md:mt-5" />
               </div>
 
               {/* Quote plate: translucent, lower right, only when the card is wide enough to sit beside the caption

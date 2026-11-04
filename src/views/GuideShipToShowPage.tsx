@@ -11,10 +11,13 @@ import {
   GithubLogo, ArrowSquareOut,
 } from '@phosphor-icons/react';
 import AuthorContactCard from '../components/AuthorContactCard';
+import ShareButton from '../components/share/ShareButton'
+import HeadingAnchor from '../components/ui/HeadingAnchor';
 import { ActRule } from '../components/case-study/ActSection';
 import RelatedContent, { type RelatedItem } from '../components/RelatedContent';
 import { TRANSLATIONS } from '../data/translations';
 import { useReveal } from '../lib/motion';
+import { ResourceHero } from '../components/resources/ResourceScene';
 import { ResourceBrief } from '../components/resources/ResourceBrief';
 import {
   SHIP_TO_SHOW_META,
@@ -52,7 +55,7 @@ const GuideShipToShowPage: React.FC<Props> = ({ lang, onNavigate, related }) => 
     <div data-scroll-container className="min-h-screen bg-[#FCFCFD]">
       {/* Breadcrumb bar - sticky below Nav */}
       <div className="sticky z-10 backdrop-blur-xl bg-[#FCFCFD]/80 border-gray-200" style={{ top: 'var(--nav-height, 64px)', transition: 'top 250ms cubic-bezier(0.23, 1, 0.32, 1)' }}>
-        <div className="wrap h-10 flex items-center">
+        <div className="wrap h-10 flex items-center justify-between gap-3">
           <nav className="flex items-center gap-1.5 text-xs min-w-0 overflow-hidden">
             <button
               onClick={() => onNavigate('ressources')}
@@ -65,6 +68,7 @@ const GuideShipToShowPage: React.FC<Props> = ({ lang, onNavigate, related }) => 
               {meta.title_fr}
             </span>
           </nav>
+          <ShareButton target="page" variant="bar" title={meta.title_fr} />
         </div>
       </div>
 
@@ -101,6 +105,11 @@ const GuideShipToShowPage: React.FC<Props> = ({ lang, onNavigate, related }) => 
           </div>
         </header>
 
+        {/* The picture of the guide on its coloured stage */}
+        <div className="act-wide pb-12 md:pb-16">
+          <ResourceHero id="guide-ship-to-show" lang={lang} />
+        </div>
+
         {/* The brief: what the guide is for, where it sits in the design cycle */}
         <div className="act-wide pb-8 md:pb-10">
           <ResourceBrief id="guide-ship-to-show" lang={lang} />
@@ -110,9 +119,9 @@ const GuideShipToShowPage: React.FC<Props> = ({ lang, onNavigate, related }) => 
         <section id="problem" className="scroll-mt-28">
           <ActRule />
           <div className={SECTION}>
-            <h2 className={H2}>
+            <h2 className={`group/h ${H2}`}>
               {lang === 'fr' ? 'Le problème' : 'The problem'}
-            </h2>
+            <HeadingAnchor /></h2>
             <p className="text-base text-gray-600 max-w-[62ch]">
               {lang === 'fr' ? SHIP_TO_SHOW_PROBLEM.fr : SHIP_TO_SHOW_PROBLEM.en}
             </p>
@@ -133,9 +142,9 @@ const GuideShipToShowPage: React.FC<Props> = ({ lang, onNavigate, related }) => 
         <section id="phases" className="scroll-mt-28">
           <ActRule />
           <div className={SECTION}>
-            <h2 className="text-subhead text-gray-900 max-w-[26ch] mb-8 md:mb-10">
+            <h2 className="group/h text-subhead text-gray-900 max-w-[26ch] mb-8 md:mb-10">
               {lang === 'fr' ? 'Les 7 phases' : 'The 7 phases'}
-            </h2>
+            <HeadingAnchor /></h2>
 
             <ol className="grid gap-x-12 gap-y-8 md:gap-y-10 lg:grid-cols-2">
               {SHIP_TO_SHOW_PHASES.map((phase, idx) => (
@@ -190,9 +199,9 @@ const GuideShipToShowPage: React.FC<Props> = ({ lang, onNavigate, related }) => 
         <section id="install" className="scroll-mt-28">
           <ActRule />
           <div className={SECTION}>
-            <h2 className={H2}>
+            <h2 className={`group/h ${H2}`}>
               {lang === 'fr' ? 'Installation comme skill Claude Code' : 'Install as a Claude Code skill'}
-            </h2>
+            <HeadingAnchor /></h2>
             <p className="text-base text-gray-600 mb-5 max-w-[62ch]">
               {lang === 'fr'
                 ? 'Une commande pour installer le skill. Ensuite, taper /ship-to-show dans n\'importe quel projet pour lancer le framework.'
@@ -212,9 +221,9 @@ const GuideShipToShowPage: React.FC<Props> = ({ lang, onNavigate, related }) => 
         <section id="example" className="scroll-mt-28">
           <ActRule />
           <div className={SECTION}>
-            <h2 className={H2}>
+            <h2 className={`group/h ${H2}`}>
               {lang === 'fr' ? 'Exemple : RiskOS' : 'Example: RiskOS'}
-            </h2>
+            <HeadingAnchor /></h2>
             <p className="text-base text-gray-600 mb-5 max-w-[62ch]">
               {lang === 'fr'
                 ? 'Le framework a été conçu et testé sur RiskOS, un prototype de détection de fraude augmentée par IA agentique. Le case study complet a été produit en une session de 2h30, du prototype brut à la page publiée.'
@@ -235,9 +244,9 @@ const GuideShipToShowPage: React.FC<Props> = ({ lang, onNavigate, related }) => 
         <section className="scroll-mt-28">
           <ActRule />
           <div className="act-wide pt-12 md:pt-16 pb-16 md:pb-24">
-            <h2 className={H2}>
+            <h2 className={`group/h ${H2}`}>
               {lang === 'fr' ? 'Code source et documentation' : 'Source code and documentation'}
-            </h2>
+            <HeadingAnchor /></h2>
             <p className="text-base text-gray-600 mb-5 max-w-[62ch]">
               {lang === 'fr'
                 ? 'Le skill complet, les prompts de chaque phase et la documentation sont disponibles sur GitHub.'

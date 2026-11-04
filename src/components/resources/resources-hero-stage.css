@@ -1,0 +1,375 @@
+/* The Resources page hero (see ResourcesHeroStage.tsx). The stage is transparent: the tile is its ground. */
+.rs .ss-stage {
+  overflow: hidden;
+  background: transparent;
+}
+.rs .ss-window__dot {
+  background: #d4d7dd;
+}
+.rs .rs-term .ss-window__dot {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+/* ---- The common thread: a slim search field and three discreet filters ---- */
+.rs-search {
+  position: absolute;
+  left: 72px;
+  top: 36px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 250px;
+  height: 34px;
+  padding: 0 12px;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.04);
+  color: #8a8a90;
+  font-size: 13px;
+}
+.rs-pills {
+  position: absolute;
+  right: 72px;
+  top: 36px;
+  display: flex;
+  gap: 6px;
+}
+.rs-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 34px;
+  padding: 0 14px 0 12px;
+  border-radius: 999px;
+  background: transparent;
+  color: #71717a;
+  font-size: 13px;
+  font-weight: 500;
+  transition: background-color 260ms cubic-bezier(0.23, 1, 0.32, 1), color 260ms cubic-bezier(0.23, 1, 0.32, 1),
+    box-shadow 260ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.rs-pill i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #c8c8c6;
+  transition: background-color 260ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.rs-pill[data-lit] {
+  background: #fff;
+  color: #18181b;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+.rs-pill[data-lit] i {
+  background: var(--hue);
+}
+.rs-pill[data-now] {
+  background: #111827;
+  color: #fff;
+}
+.rs-pill[data-now] i {
+  background: var(--hue);
+}
+
+/* ---- The three documents. Each one comes forward when it is built, then all together. ---- */
+.rs-obj {
+  --sh: var(--ss-shadow-satellite);
+  transform: translateY(10px) scale(0.985);
+  transform-origin: 50% 100%;
+  transition: transform 420ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 420ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.rs-obj[data-fwd] {
+  --sh: var(--ss-shadow-hero);
+  transform: none;
+}
+
+.rs-kind {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #71717a;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+.rs-kind i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--hue);
+}
+
+/* The guide: a terminal where a session writes itself */
+.rs-term {
+  position: absolute;
+  z-index: 1;
+  left: 72px;
+  top: 220px;
+  width: 300px;
+  height: 200px;
+  --ss-term-ok: var(--hue);
+  --ss-term-sigil: var(--hue);
+  --ss-term-path: #6b6b73;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.07), var(--sh);
+}
+.rs-term .ss-term {
+  padding: 8px 18px 16px;
+  font-size: 12px;
+  line-height: 1.7;
+}
+.rs-out {
+  opacity: 0;
+  transform: translateY(5px);
+  transition: opacity 280ms cubic-bezier(0.23, 1, 0.32, 1), transform 280ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.rs-out[data-on] {
+  opacity: 1;
+  transform: none;
+}
+
+/* The template: a sheet of paper whose checklist fills */
+.rs-sheet {
+  position: absolute;
+  z-index: 3;
+  left: 336px;
+  top: 104px;
+  width: 270px;
+  height: 440px;
+  padding: 22px 22px 0;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: var(--sh);
+}
+.rs-sheet__title {
+  margin: 9px 0 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #efefed;
+  color: #18181b;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.012em;
+  text-wrap: balance;
+}
+.rs-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
+}
+.rs-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 18px;
+}
+.rs-box {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid #d4d4d8;
+  border-radius: 6px;
+  background: #fff;
+  color: #fff;
+  transition: background-color 240ms cubic-bezier(0.23, 1, 0.32, 1), border-color 240ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.rs-box svg {
+  opacity: 0;
+  transform: scale(0.5);
+  transition: opacity 200ms cubic-bezier(0.23, 1, 0.32, 1) 60ms, transform 300ms cubic-bezier(0.23, 1, 0.32, 1) 60ms;
+}
+.rs-ln {
+  height: 7px;
+  border-radius: 4px;
+  background: #ececea;
+  transition: background-color 300ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.rs-row[data-done] .rs-box {
+  border-color: var(--hue);
+  background: var(--hue);
+}
+.rs-row[data-done] .rs-box svg {
+  opacity: 1;
+  transform: none;
+}
+.rs-row[data-done] .rs-ln {
+  background: #d9d9d7;
+}
+
+/* The deck: a pile of slides, the top one lands */
+.rs-deck {
+  position: absolute;
+  z-index: 4;
+  left: 572px;
+  top: 214px;
+  width: 316px;
+  height: 206px;
+  --off: 14px;
+  --sl-h: 178px;
+}
+.rs-slide {
+  position: absolute;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: var(--sh);
+}
+.rs-slide--c {
+  top: 0;
+  left: calc(var(--off) * 2);
+  right: calc(var(--off) * 2);
+  height: calc(var(--sl-h) - var(--off) * 2);
+}
+.rs-slide--b {
+  top: var(--off);
+  left: var(--off);
+  right: var(--off);
+  height: calc(var(--sl-h) - var(--off));
+}
+.rs-slide--a {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--sl-h);
+  opacity: 0;
+  transform: translateY(-26px);
+  transition: opacity 280ms cubic-bezier(0.23, 1, 0.32, 1), transform 420ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.rs-slide--a[data-on] {
+  opacity: 1;
+  transform: none;
+}
+.rs-face {
+  display: flex;
+  gap: 14px;
+  padding: 20px 20px 18px 22px;
+}
+.rs-ghost-title {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin: 14px 0 14px;
+}
+.rs-slide__art--ghost {
+  background: #f1f1ef;
+}
+.rs-slide__text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+.rs-slide__title {
+  margin: 12px 0 14px;
+  color: #18181b;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+.rs-slide__lines {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.rs-slide__art {
+  position: relative;
+  flex: none;
+  width: 92px;
+  border-radius: 8px;
+  background: var(--hue-soft);
+}
+.rs-slide__dot {
+  position: absolute;
+  left: 14px;
+  top: 14px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--hue);
+}
+.rs-slide__bar {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 14px;
+  height: 34px;
+  border-radius: 6px;
+  background: #fff;
+}
+
+/* ---- A second design for a phone column: the terminal and the sheet at the top, the deck below ---- */
+.rs .ss-stage[data-layout='compact'] .rs-search {
+  display: none;
+}
+.rs .ss-stage[data-layout='compact'] .rs-pills {
+  left: 20px;
+  right: auto;
+  top: 20px;
+}
+.rs .ss-stage[data-layout='compact'] .rs-pill {
+  height: 30px;
+  padding: 0 11px 0 10px;
+  font-size: 12px;
+}
+.rs .ss-stage[data-layout='compact'] .rs-term {
+  left: 20px;
+  top: 74px;
+  width: 232px;
+  height: 142px;
+}
+.rs .ss-stage[data-layout='compact'] .rs-term .ss-term {
+  padding: 4px 14px 12px;
+  font-size: 10.5px;
+  line-height: 1.6;
+}
+.rs .ss-stage[data-layout='compact'] .rs-sheet {
+  left: 194px;
+  top: 150px;
+  width: 144px;
+  height: 330px;
+  padding: 16px 14px 0;
+}
+.rs .ss-stage[data-layout='compact'] .rs-sheet__title {
+  margin: 8px 0 14px;
+  padding-bottom: 14px;
+  font-size: 13px;
+}
+.rs .ss-stage[data-layout='compact'] .rs-rows {
+  gap: 13px;
+}
+.rs .ss-stage[data-layout='compact'] .rs-ln {
+  width: 70% !important;
+}
+.rs .ss-stage[data-layout='compact'] .rs-deck {
+  left: 20px;
+  top: 266px;
+  width: 176px;
+  height: 128px;
+  --off: 10px;
+  --sl-h: 104px;
+}
+.rs .ss-stage[data-layout='compact'] .rs-face {
+  gap: 10px;
+  padding: 12px 12px 12px 14px;
+}
+.rs .ss-stage[data-layout='compact'] .rs-slide__title {
+  margin: 8px 0 10px;
+  font-size: 14px;
+}
+.rs .ss-stage[data-layout='compact'] .rs-slide__art {
+  width: 46px;
+}
+.rs .ss-stage[data-layout='compact'] .rs-slide__dot {
+  left: 8px;
+  top: 8px;
+  width: 12px;
+  height: 12px;
+}
+.rs .ss-stage[data-layout='compact'] .rs-slide__bar {
+  left: 8px;
+  right: 8px;
+  bottom: 8px;
+  height: 18px;
+}

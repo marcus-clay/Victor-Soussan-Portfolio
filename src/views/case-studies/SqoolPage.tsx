@@ -21,6 +21,7 @@ import { MediaCarousel, MediaStage, type SuiteMediaItem } from '../../components
 
 import { SQOOL_TRANSLATIONS } from '../../data/caseStudyTranslations/sqoolTranslations';
 import { zoomable } from '@/utils/zoomable'
+import MediaLike from '@/components/likes/MediaLike'
 import { useScrollTopOnChange } from '@/hooks/useScrollTopOnChange';
 
 
@@ -97,7 +98,10 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, onClick }) => {
         {isVideo ? (
           <VideoPlayer src={item.src} className="w-full h-auto block transition-transform duration-300 ease-media [@media(hover:hover)]:group-hover:scale-[1.02]" />
         ) : (
-          <img loading="lazy" src={item.src} {...imgDims(item.src)} alt={item.caption} className="w-full h-auto block transition-transform duration-300 ease-media [@media(hover:hover)]:group-hover:scale-[1.02]" />
+          <>
+            <img loading="lazy" src={item.src} {...imgDims(item.src)} alt={item.caption} className="w-full h-auto block transition-transform duration-300 ease-media [@media(hover:hover)]:group-hover:scale-[1.02]" />
+            <MediaLike src={item.src} />
+          </>
         )}
       </div>
       <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">

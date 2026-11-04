@@ -3,3 +3,42 @@
   overflow: hidden;
   background: linear-gradient(180deg, #fbfbfa 0%, #f2f2f0 100%);
 }
+
+/* A card that wants a coloured stage (the Resources): a soft wash of the resource's hue, diagonal, with a lighter corner of
+   the same family at the foot. The hue is mixed with white so the stage stays quiet beside the page; the strong colour
+   is kept for the one element the story is about. One variable (--still-wash) sets how much colour the stage carries. */
+.still-tinted .ss-stage,
+.still-ground {
+  --still-wash: 42%;
+  background: linear-gradient(
+    150deg,
+    color-mix(in oklab, var(--still-g1) var(--still-wash), white) 0%,
+    color-mix(in oklab, var(--still-g2) calc(var(--still-wash) - 8%), white) 60%,
+    color-mix(in oklab, var(--still-g3) calc(var(--still-wash) + 10%), white) 100%
+  );
+}
+
+/* In the hero of a resource page the stage inside the tile is transparent: the one gradient goes on to the sides */
+.still-ground .still-tinted .ss-stage {
+  background: transparent;
+}
+
+/* The traffic lights of a window stay neutral on every picture of the site (skills and resources): the hue belongs to the
+   one element the story is about */
+.still .ss-window__dot:nth-child(n) {
+  background: #d4d7dd;
+}
+
+/* The skill pictures sit on the same soft grey as the resources: the panel provides the ground, the stage has none */
+.still-bare .ss-stage {
+  background: transparent;
+}
+
+/* The scene on the page's own soft grey (the tiles of the Resources, like the Claude tile of the home): no ground of its own,
+   so the window sits straight on the tile and runs off its bottom edge. The hue stays on the one accented element. */
+.still-bare .still-tinted .ss-stage {
+  background: transparent;
+  /* the soft shadows of the windows fall past the edge of the 390 x 300 stage; the tile clips them at its own edges instead,
+     so there is no visible line where the picture column begins */
+  overflow: visible;
+}

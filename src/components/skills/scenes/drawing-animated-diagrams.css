@@ -57,3 +57,45 @@
   --ss-code-num: var(--ss-text-strong);
   --ss-code-fn: var(--ss-text-strong);
 }
+
+/* On hover: the strokes draw themselves (dash offset 1 to 0 on a path of length 1); labels, ghost and pen tip follow */
+.sc-drawing-animated-diagrams-d {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  opacity: 0;
+  transition: stroke-dashoffset 240ms cubic-bezier(0.23, 1, 0.32, 1), opacity 160ms ease 80ms;
+}
+.sc-drawing-animated-diagrams-d[data-on] {
+  stroke-dashoffset: 0;
+  opacity: 1;
+  transition: stroke-dashoffset 700ms cubic-bezier(0.23, 1, 0.32, 1), opacity 100ms ease;
+}
+.sc-drawing-animated-diagrams-head,
+.sc-drawing-animated-diagrams-ghost,
+.sc-drawing-animated-diagrams-label {
+  opacity: 0;
+  transition: opacity 120ms ease;
+}
+.sc-drawing-animated-diagrams-head[data-on] {
+  opacity: 1;
+  transition: opacity 240ms cubic-bezier(0.23, 1, 0.32, 1) 220ms;
+}
+.sc-drawing-animated-diagrams-label[data-on] {
+  opacity: 1;
+  transition: opacity 360ms cubic-bezier(0.23, 1, 0.32, 1) 280ms;
+}
+.sc-drawing-animated-diagrams-ghost[data-on] {
+  opacity: 1;
+  transition: opacity 400ms cubic-bezier(0.23, 1, 0.32, 1) 380ms;
+}
+.sc-drawing-animated-diagrams-tip {
+  opacity: 0;
+  transform: translateX(-13px);
+  transition: opacity 160ms ease, transform 240ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.sc-drawing-animated-diagrams-tip[data-on] {
+  opacity: 1;
+  transform: none;
+  transition: opacity 160ms ease, transform 700ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.sc-drawing-animated-diagrams-code .ss-code__line { transition-duration: 0.32s; }

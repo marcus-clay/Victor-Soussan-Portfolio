@@ -21,8 +21,11 @@ import AuthorContactCard from '../components/AuthorContactCard';
 import RelatedContent, { type RelatedItem } from '../components/RelatedContent';
 import { ActRule } from '../components/case-study/ActSection';
 import { ArticleBody, ArticleBodyStyles } from '../components/article/ArticleBody';
+import ShareButton from '../components/share/ShareButton';
+import HeadingAnchor from '../components/ui/HeadingAnchor';
 import { TRANSLATIONS } from '../data/translations';
 import { useReveal } from '../lib/motion';
+import { ResourceHero } from '../components/resources/ResourceScene';
 import { ResourceBrief } from '../components/resources/ResourceBrief';
 
 const MotionLink = motion.create(Link);
@@ -83,7 +86,7 @@ const GuideIndex: React.FC<{ isDark: boolean; lang: string; onNavigate: (t: stri
 
     {/* Hero figure: the full column */}
     <figure className="act-wide m-0 pb-12 md:pb-16">
-      <img src={GUIDE_META.heroImage} alt={lang === 'fr' ? GUIDE_META.heroAlt_fr : GUIDE_META.heroAlt_en} className="w-full max-h-[70vh] object-cover rounded-2xl ring-1 ring-inset ring-black/[0.05]" />
+      <ResourceHero id="guide-claude-code" lang={lang === 'fr' ? 'fr' : 'en'} />
       <figcaption className="mt-3 text-sm text-gray-500 max-w-[62ch]">
         {lang === 'en'
           ? 'Claude Code gives designers the ability to design, produce, and deploy real, usable deliverables. A link to share with your team, to present to stakeholders, to put in front of users to define scope and refine a solution. With a bit of method and strong design opinions, the cycle between a design decision and something testable shrinks to the essentials.'
@@ -281,8 +284,9 @@ const GuideChapter: React.FC<{
           <section key={sIdx} id={`section-${slug}-${sIdx}`} className="scroll-mt-28">
             <ActRule />
             <div className={`act-wide pt-12 md:pt-16 ${sIdx === chapter.sections.length - 1 ? 'pb-16 md:pb-24' : 'pb-12 md:pb-16'}`}>
-              <h2 className={`text-subhead max-w-[26ch] mb-5 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <h2 className={`group/h text-subhead max-w-[26ch] mb-5 ${isDark ? 'text-white' : 'text-gray-900'}`}>
                 {lang === 'fr' ? section.heading_fr : section.heading_en}
+                <HeadingAnchor />
               </h2>
               <ArticleBody html={lang === 'fr' ? section.content_fr : section.content_en} isDark={isDark} />
             </div>
@@ -355,15 +359,22 @@ const GuideClaudeCodePage: React.FC<Props> = ({ systemTheme, lang, view, onNavig
               </>
             )}
           </nav>
-          {!isIndex && (
-            <Link
-              href={guideHref(lang, 'index')}
-              aria-label={lang === 'fr' ? 'Sommaire du guide' : 'Guide contents'}
-              className={`p-1.5 rounded-lg transition-colors flex-shrink-0 lg:hidden ${isDark ? '[@media(hover:hover)]:hover:bg-white/10' : '[@media(hover:hover)]:hover:bg-gray-100'}`}
-            >
-              <List size={16} aria-hidden="true" />
-            </Link>
-          )}
+          <div className="flex items-center gap-2 flex-shrink-0">
+            {!isIndex && (
+              <Link
+                href={guideHref(lang, 'index')}
+                aria-label={lang === 'fr' ? 'Sommaire du guide' : 'Guide contents'}
+                className={`p-1.5 rounded-lg transition-colors flex-shrink-0 lg:hidden ${isDark ? '[@media(hover:hover)]:hover:bg-white/10' : '[@media(hover:hover)]:hover:bg-gray-100'}`}
+              >
+                <List size={16} aria-hidden="true" />
+              </Link>
+            )}
+            <ShareButton
+              target="page"
+              variant="bar"
+              title={isIndex ? (lang === 'fr' ? GUIDE_META.title_fr : GUIDE_META.title_en) : chapter ? (lang === 'fr' ? chapter.title_fr : chapter.title_en) : undefined}
+            />
+          </div>
         </div>
       </div>
 

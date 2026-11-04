@@ -5,6 +5,7 @@ import type { ReactNode } from 'react'
 import { MotionConfig } from 'framer-motion'
 import SkillsPromoBanner from './SkillsPromoBanner'
 import ImageFadeIn from './ImageFadeIn'
+import HashTarget from './share/HashTarget'
 
 // Routes that use their own full-screen layout (no Nav/Footer)
 const BARE_ROUTES = ['/presentation', '/quote']
@@ -36,6 +37,7 @@ export default function LayoutShell({
         {lang === 'fr' ? 'Aller au contenu' : 'Skip to content'}
       </a>
       <ImageFadeIn />
+      <HashTarget />
       {nav}
       <main id="main-content" style={{ paddingTop: 'var(--nav-height-top)' }}>
         {children}

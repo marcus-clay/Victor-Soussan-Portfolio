@@ -72,3 +72,37 @@
 }
 
 .sc-figma-console-mcp-row .ss-bar { margin-left: auto; }
+
+/* Story (hover only): the command is typed, the tool is called, the variables are written in the table, the terminal confirms.
+   At rest everything is in: the finished frame. */
+.sc-figma-console-mcp-row {
+  opacity: 0;
+  transform: translateY(6px);
+  filter: blur(2px);
+  transition: opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1), transform 0.3s cubic-bezier(0.23, 1, 0.32, 1), filter 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.sc-figma-console-mcp-row[data-in] {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+.sc-figma-console-mcp-cmd {
+  display: inline-block;
+  vertical-align: top;
+  clip-path: inset(-4px 100% -4px -4px);
+  transition: clip-path 0.55s cubic-bezier(0.45, 0, 0.1, 1);
+}
+.sc-figma-console-mcp-cmd[data-in] {
+  clip-path: inset(-4px -4px -4px -4px);
+}
+.sc-figma-console-mcp-step {
+  opacity: 0;
+  transform: translateY(4px);
+  filter: blur(2px);
+  transition: opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1), transform 0.3s cubic-bezier(0.23, 1, 0.32, 1), filter 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.sc-figma-console-mcp-step[data-in] {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}

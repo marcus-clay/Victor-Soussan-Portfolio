@@ -13,6 +13,7 @@ import { TRANSLATIONS } from '../data/translations';
 import CardCarousel from '../components/ui/CardCarousel';
 import ReadingPage, { readingLabelFor } from './ReadingPage';
 import { ResourceBrief } from '../components/resources/ResourceBrief';
+import { ResourceHero } from '../components/resources/ResourceScene';
 import type { RelatedItem } from '../components/RelatedContent';
 
 interface Props {
@@ -69,6 +70,7 @@ const DeckDetailPage: React.FC<Props> = ({ deckId, lang, onBack, related }) => {
         </div>
       }
       html={html}
+      hero={<ResourceHero id={deck.id} lang={lang} />}
       brief={<ResourceBrief id={deck.id} lang={lang} />}
       figure={
         // The slides, one after the other on the grey panel of the diagrams; swipe, drag or arrows

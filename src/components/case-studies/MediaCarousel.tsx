@@ -1,10 +1,13 @@
 'use client'
 
 import { useCallback, useRef, useState } from 'react'
-import { ArrowLeft, ArrowRight } from '@phosphor-icons/react'
+import { ArrowLeft, ArrowRight, Export } from '@phosphor-icons/react'
 import { useSnapScroller } from '@/hooks/useSnapScroller'
 import { imgDims } from '@/utils/imageDimensions'
 import { zoomable } from '@/utils/zoomable'
+import { stripId } from '@/lib/mediaLink'
+import ShareButton from '@/components/share/ShareButton'
+import MediaLike from '@/components/likes/MediaLike'
 
 export interface CarouselItem {
   src: string
@@ -73,7 +76,7 @@ export default function MediaCarousel({ items, label, labels, onZoom }: MediaCar
     'inline-flex h-11 w-11 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-900 transition-[background-color,transform,opacity] duration-150 [@media(hover:hover)]:hover:bg-gray-100 active:scale-[0.96] aria-disabled:opacity-40 aria-disabled:pointer-events-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900'
 
   return (
-    <div>
+    <div id={items[0] ? stripId(items[0].src) : undefined} className="scroll-mt-28">
       <div
         ref={trackRef}
         {...bind}
@@ -104,6 +107,7 @@ export default function MediaCarousel({ items, label, labels, onZoom }: MediaCar
                 draggable={false}
                 className={`block h-auto w-full transition-transform duration-300 ease-media [@media(hover:hover)]:group-hover:scale-[1.02]`}
               />
+              <MediaLike src={item.src} />
             </div>
             <figcaption className="mt-3 text-xs text-gray-500">{item.name}</figcaption>
           </figure>
@@ -115,6 +119,16 @@ export default function MediaCarousel({ items, label, labels, onZoom }: MediaCar
           {pad2(index + 1)} / {pad2(total)}
         </p>
         <div className="flex items-center gap-2">
+          <ShareButton
+            target="section"
+            hash={stripId(items[0].src)}
+            title={label}
+            variant="custom"
+            label={{ fr: 'Partager cette série de visuels', en: 'Share this set of visuals' }}
+            className={buttonClass}
+          >
+            <Export size={18} weight="bold" aria-hidden="true" />
+          </ShareButton>
           <button type="button" aria-label={labels.prev} aria-disabled={atStart} onClick={() => !atStart && step(-1)} className={buttonClass}>
             <ArrowLeft size={18} aria-hidden="true" />
           </button>

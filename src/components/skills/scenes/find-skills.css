@@ -68,3 +68,22 @@
   --ss-term-sigil: var(--ss-accent);
 }
 .sc-fs-term.ss-term { font-size: 12px; padding: 11px 14px 12px; }
+
+/* The story: the query is typed, the matching skills come one after the other (their rows are already there), the first is picked, the command arrives */
+.sc-fs-search > span { transition: opacity 0.26s cubic-bezier(0.23, 1, 0.32, 1); }
+.sc-fs-search[data-off] > span { opacity: 0; }
+.sc-fs-hit {
+  opacity: 0;
+  transform: translateY(6px);
+  filter: blur(2px);
+  transition: opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1), transform 0.3s cubic-bezier(0.23, 1, 0.32, 1), filter 0.3s cubic-bezier(0.23, 1, 0.32, 1), background-color 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.sc-fs-hit[data-show] { opacity: 1; transform: none; filter: none; }
+.sc-fs-tile { transition: background-color 0.3s cubic-bezier(0.23, 1, 0.32, 1), color 0.3s cubic-bezier(0.23, 1, 0.32, 1); }
+.sc-fs-term {
+  opacity: 0;
+  transform: translateY(8px);
+  filter: blur(2px);
+  transition: opacity 0.36s cubic-bezier(0.23, 1, 0.32, 1), transform 0.36s cubic-bezier(0.23, 1, 0.32, 1), filter 0.36s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.sc-fs-term[data-show] { opacity: 1; transform: none; filter: none; }

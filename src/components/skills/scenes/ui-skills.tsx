@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { Check, Code, Icon, Text, Window } from '@/components/stageshow/kit'
-import StillStage from './StillStage'
+import ResourceStage, { type Act } from '@/components/resources/scenes/ResourceStage'
 import type { SceneProps } from './types'
 import './ui-skills.css'
 
@@ -26,10 +26,52 @@ const T = {
 
 const ICONS = ['user', 'file', 'bolt'] as const
 
+/** Scene state: checks ticked, the fourth one pending, the fix card shown and how many of its code lines are written. */
+type S = { n: number; pend: boolean; fix: boolean; lines: number }
+const EMPTY: S = { n: 0, pend: false, fix: false, lines: 0 }
+const DONE: S = { n: 3, pend: true, fix: true, lines: 3 }
+
+/** Out (about 0.6 s): the fix card leaves, the pending ring clears, the ticks go from the last to the first. */
+async function clear(a: Act<S>) {
+  await a.set({ fix: false, pend: false })
+  await a.wait(70)
+  await a.set({ n: 2 })
+  await a.wait(70)
+  await a.set({ n: 1 })
+  await a.wait(70)
+  await a.set({ n: 0 })
+  await a.wait(260)
+  await a.snap({ lines: 0 })
+  await a.wait(60)
+}
+
+/** In (about 3 s): three checks pass one after another, the fourth starts its pass, then the title fix arrives and is written line by line. */
+async function build(a: Act<S>) {
+  await a.wait(150)
+  await a.set({ n: 1 })
+  await a.wait(420)
+  await a.set({ n: 2 })
+  await a.wait(420)
+  await a.set({ n: 3 })
+  await a.wait(420)
+  await a.set({ pend: true })
+  await a.wait(560)
+  await a.set({ fix: true })
+  await a.wait(380)
+  await a.set({ lines: 1 })
+  await a.wait(150)
+  await a.set({ lines: 2 })
+  await a.wait(150)
+  await a.set({ lines: 3 })
+  await a.wait(350)
+}
+
 export default function Scene({ lang, a }: SceneProps) {
   const t = T[lang]
   return (
-    <StillStage a={a}>
+    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build} clear={clear}>
+      {(s) => (
+      <>
       <Window
         title={t.passes[0]}
         sidebar={
@@ -48,16 +90,18 @@ export default function Scene({ lang, a }: SceneProps) {
         <div className="sc-ui-skills-list">
           {t.items.map((item, i) => (
             <div key={item} className="sc-ui-skills-item">
-              <Check on={i < 3} pending={i === 3} size={16} />
+              <Check on={i < s.n} pending={i === 3 && s.pend} size={16} />
               <span>{item}</span>
             </div>
           ))}
         </div>
       </Window>
-      <div className="sc-ui-skills-code">
+      <div className="sc-ui-skills-code" data-on={s.fix || undefined}>
         <Text className="sc-ui-skills-code__label">{t.code}</Text>
-        <Code numbers={false} lines={[...t.lines]} />
+        <Code numbers={false} lines={[...t.lines]} count={s.lines} />
       </div>
-    </StillStage>
+      </>
+      )}
+    </ResourceStage>
   )
 }

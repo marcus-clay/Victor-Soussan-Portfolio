@@ -84,3 +84,12 @@
 }
 
 .still .sc-ui-skills-code .ss-code { font-size: 12px; line-height: 1.6; }
+
+/* The story: the fix card arrives whole into its corner, its lines are written inside it */
+.still .sc-ui-skills-code {
+  opacity: 0;
+  transform: translateY(8px);
+  filter: blur(2px);
+  transition: opacity 0.36s cubic-bezier(0.23, 1, 0.32, 1), transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), filter 0.36s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.still .sc-ui-skills-code[data-on] { opacity: 1; transform: none; filter: none; }

@@ -5,9 +5,11 @@ import { ArrowUpRight, Images } from '@phosphor-icons/react'
 import { CASE_STUDY_SHELL } from '@/data/caseStudyShell'
 import { imgDims } from '@/utils/imageDimensions'
 import { zoomable } from '@/utils/zoomable'
+import MediaLike from '@/components/likes/MediaLike'
 import { HERO_VIDEOS, HERO_HOVER_ZOOM } from '@/data/heroVideos'
 import { coverSrcSet } from '@/utils/coverSrcSet'
 import HeroLoop from '@/components/media/HeroLoop'
+import ProjectTagPills from '@/components/ui/ProjectTagPills'
 
 export interface HeroMeta {
   label: string
@@ -84,6 +86,7 @@ export default function CaseStudyHero({
           <h1 style={{ ['--d' as string]: '40ms' }} className="build-line text-headline text-gray-900 mt-6 md:mt-8 max-w-[18ch] md:max-w-[16ch] lg:max-w-[18ch]">
             {title}
           </h1>
+          <ProjectTagPills projectId={projectId} lang={lang} className="build-rise mt-6 md:mt-8" />
         </div>
 
         <p style={{ ['--d' as string]: '120ms' }} className="build-rise order-2 col-span-12 md:col-span-5 md:col-start-8 md:row-start-1 text-lead-lg text-gray-600 max-w-[54ch] md:self-start">
@@ -113,6 +116,7 @@ export default function CaseStudyHero({
               stays the poster, the fallback and the lightbox image; the video ignores the pointer, so the click
               still opens the lightbox. */}
           {video && <HeroLoop src={video.src} mediaClassName={mediaClass} mediaStyle={mediaStyle} mode="preview" screen={video.screen} overlay={video.overlay} />}
+          <MediaLike src={shell.visual} />
         </figure>
 
         <div className="order-4 col-span-12 md:col-span-5 md:col-start-8 md:row-start-2 md:self-end flex flex-col gap-7">

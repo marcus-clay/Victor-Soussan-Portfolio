@@ -19,6 +19,7 @@ import EnhancedLightbox from '../../components/media/EnhancedLightbox';
 
 import { DAILYMOTION_TRANSLATIONS } from '../../data/caseStudyTranslations/dailymotionTranslations';
 import { zoomable } from '@/utils/zoomable'
+import MediaLike from '@/components/likes/MediaLike'
 import { useScrollTopOnChange } from '@/hooks/useScrollTopOnChange';
 
 interface DailymotionPageProps {
@@ -81,7 +82,10 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ item, index, onClick }) => {
         {isVideo ? (
           <VideoPlayer src={item.src} className="w-full h-auto block transition-transform duration-300 ease-media [@media(hover:hover)]:group-hover:scale-[1.02]" />
         ) : (
-          <img loading="lazy" src={item.src} {...imgDims(item.src)} alt={item.caption} className="w-full h-auto block transition-transform duration-300 ease-media [@media(hover:hover)]:group-hover:scale-[1.02]" />
+          <>
+            <img loading="lazy" src={item.src} {...imgDims(item.src)} alt={item.caption} className="w-full h-auto block transition-transform duration-300 ease-media [@media(hover:hover)]:group-hover:scale-[1.02]" />
+            <MediaLike src={item.src} />
+          </>
         )}
       </div>
       <figcaption className="mt-3 text-xs text-gray-500 leading-relaxed">

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -10,6 +10,7 @@ import {
 } from '@phosphor-icons/react'
 import { TRANSLATIONS } from '@/data/translations'
 import { otherLangPath } from '@/data/guideSlugs'
+import SiteSearch from '@/components/search/SiteSearch'
 
 type Lang = 'en' | 'fr'
 
@@ -52,6 +53,8 @@ export default function Nav({ lang }: { lang: Lang }) {
   const [pageTitle, setPageTitle] = useState<string | null>(null)
   const [showPageTitle, setShowPageTitle] = useState(false)
   const pathname = usePathname()
+  const entriesRef = useRef<HTMLDivElement>(null)
+  const actionsRef = useRef<HTMLDivElement>(null)
   const content = TRANSLATIONS[lang].nav
   const otherLang = lang === 'en' ? 'fr' : 'en'
   // The same page in the other language, guide chapters with their translated address (one URL per page,
@@ -182,6 +185,13 @@ export default function Nav({ lang }: { lang: Lang }) {
     return () => clearTimeout(timer)
   }, [pathname])
 
+  // `inert` is set on the element itself: React 18 does not pass it on as an attribute. The entries, the language and Contact put away in the
+  // burger leave the tab order and the reading order with their opacity.
+  useEffect(() => {
+    entriesRef.current?.toggleAttribute('inert', isScrolled)
+    actionsRef.current?.toggleAttribute('inert', isScrolled)
+  }, [isScrolled])
+
   const isActive = (route: string) => {
     if (route === '') return pathname === `/${lang}`
     return (SECTION_PREFIXES[route] ?? [route]).some((prefix) => pathname === `/${lang}/${prefix}` || pathname.startsWith(`/${lang}/${prefix}/`))
@@ -206,7 +216,7 @@ export default function Nav({ lang }: { lang: Lang }) {
       >
         <div className="wrap h-full flex items-center justify-between">
           {/* Logo + contextual page title */}
-          <div className="flex items-baseline gap-0 min-w-0 flex-1 overflow-hidden">
+          <div className="flex items-baseline gap-0 min-w-0 flex-1 lg:flex-none lg:max-w-[34%] overflow-hidden">
             {(() => {
               const isHomepage = pathname === `/${lang}` || pathname === `/${lang}/` || pathname === `/${lang}/v2` || pathname === `/${lang}/v2/`
               return (
@@ -221,7 +231,7 @@ export default function Nav({ lang }: { lang: Lang }) {
 
                   {/* Subtitle — visible on scroll OR when menu is open */}
                   <div
-                    className="hidden sm:flex items-baseline gap-0 min-w-0 overflow-hidden"
+                    className={`hidden sm:flex items-baseline gap-0 min-w-0 overflow-hidden ${isScrolled ? '' : '[@media(min-width:1024px)_and_(max-width:1535px)]:hidden'}`}
                     style={{
                       opacity: (showPageTitle || isMobileMenuOpen) ? 1 : 0,
                       transform: (showPageTitle || isMobileMenuOpen) ? 'translateY(0)' : 'translateY(4px)',
@@ -243,10 +253,35 @@ export default function Nav({ lang }: { lang: Lang }) {
             })()}
           </div>
 
+          {/* Search of the site: between the logo and the navigation (a field from lg up, a button below) */}
+          <SiteSearch lang={lang} />
+
           {/* Right side */}
-          <div className="flex items-center gap-0.5 sm:gap-1.5 flex-shrink-0">
-            {/* Main entries, from md up */}
-            <ul className="hidden md:flex items-center gap-0.5 mr-2 lg:mr-4">
+          <div className="flex items-center flex-shrink-0">
+            {/* Main entries, from md up. Once the page scrolls they put themselves away in the burger menu (where every
+                entry is anyway), and the page should barely notice: they fade in 90 ms without moving while the room they
+                stood in closes in 150 ms (a close never waits), so the search and the buttons take it in one quick
+                move that the scroll covers. Back at the top the room opens in 250 ms and they come back 80 ms behind it. `inert` (set below) takes them out of the tab
+                order while they are away. */}
+            <div
+              className="hidden md:grid motion-reduce:!transition-none"
+              style={{
+                gridTemplateColumns: isScrolled ? '0fr' : '1fr',
+                transition: isScrolled
+                  ? 'grid-template-columns 150ms cubic-bezier(0.22, 1, 0.36, 1)'
+                  : 'grid-template-columns 250ms cubic-bezier(0.22, 1, 0.36, 1)',
+              }}
+              aria-hidden={isScrolled || undefined}
+              ref={entriesRef}
+            >
+            <div className="min-w-0 overflow-hidden py-1">
+            <ul
+              className="flex w-max items-center gap-0.5 pr-3.5 lg:pr-[22px] motion-reduce:!transition-none"
+              style={{
+                opacity: isScrolled ? 0 : 1,
+                transition: isScrolled ? 'opacity 90ms ease-out' : 'opacity 200ms ease-out 80ms',
+              }}
+            >
               {MENU_ITEMS.filter((item) => (PRIMARY_IDS as readonly string[]).includes(item.id)).map((item) => {
                 const active = isActive(item.route)
                 return (
@@ -273,7 +308,30 @@ export default function Nav({ lang }: { lang: Lang }) {
                 )
               })}
             </ul>
+            </div>
+            </div>
 
+            {/* Language and Contact follow the entries into the burger menu (both are rows of it) when the page scrolls:
+                same quick fade and close, and the same way back. */}
+            <div
+              className="grid motion-reduce:!transition-none"
+              style={{
+                gridTemplateColumns: isScrolled ? '0fr' : '1fr',
+                transition: isScrolled
+                  ? 'grid-template-columns 150ms cubic-bezier(0.22, 1, 0.36, 1)'
+                  : 'grid-template-columns 250ms cubic-bezier(0.22, 1, 0.36, 1)',
+              }}
+              aria-hidden={isScrolled || undefined}
+              ref={actionsRef}
+            >
+            <div className="min-w-0 overflow-hidden">
+            <div
+              className="flex w-max items-center gap-0.5 pr-0.5 sm:gap-1.5 sm:pr-1.5 motion-reduce:!transition-none"
+              style={{
+                opacity: isScrolled ? 0 : 1,
+                transition: isScrolled ? 'opacity 90ms ease-out' : 'opacity 200ms ease-out 80ms',
+              }}
+            >
             {/* Lang switcher */}
             <Link
               href={otherHref}
@@ -287,21 +345,24 @@ export default function Nav({ lang }: { lang: Lang }) {
             <Link
               href={`/${lang}/contact`}
               onClick={closeMenu}
-              className="btn-dark nav-cta ml-0.5 sm:ml-1 inline-flex min-h-10 items-center px-3.5 sm:px-4 text-sm font-medium rounded-full bg-gray-900 text-white hover:bg-black active:scale-[0.97] whitespace-nowrap"
+              className="btn-dark nav-cta ml-0.5 sm:ml-1 inline-flex h-11 items-center px-4 sm:px-5 text-sm font-medium rounded-full bg-gray-900 text-white hover:bg-black active:scale-[0.97] whitespace-nowrap"
               style={{ transition: 'background-color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
             >
               {content.contact}
             </Link>
+            </div>
+            </div>
+            </div>
 
             <button
-              className="relative p-2 rounded-full active:scale-[0.95] [@media(hover:hover)]:hover:bg-black/[0.04]"
+              className="relative flex h-11 w-11 items-center justify-center rounded-full bg-black/[0.05] active:scale-[0.95] [@media(hover:hover)]:hover:bg-black/[0.09] before:absolute before:-inset-1.5 before:content-['']"
               style={{ transition: 'background-color 150ms ease, color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)' }}
               onClick={toggleMenu}
               aria-label={lang === 'fr' ? (isMobileMenuOpen ? 'Fermer le menu' : 'Ouvrir le menu') : isMobileMenuOpen ? 'Close menu' : 'Open menu'}
               aria-expanded={isMobileMenuOpen}
             >
               {/* Fixed-size container so button never reflows during icon transition */}
-              <div style={{ position: 'relative', width: 20, height: 20 }}>
+              <div style={{ position: 'relative', width: 22, height: 22 }}>
                 <AnimatePresence initial={false}>
                   {isMobileMenuOpen ? (
                     <motion.span
@@ -312,7 +373,7 @@ export default function Nav({ lang }: { lang: Lang }) {
                       transition={{ duration: 0.15, ease: EASE_OUT }}
                       style={{ display: 'flex', position: 'absolute', inset: 0, alignItems: 'center', justifyContent: 'center' }}
                     >
-                      <X size={20} />
+                      <X size={22} />
                     </motion.span>
                   ) : (
                     <motion.span
@@ -323,7 +384,7 @@ export default function Nav({ lang }: { lang: Lang }) {
                       transition={{ duration: 0.15, ease: EASE_OUT }}
                       style={{ display: 'flex', position: 'absolute', inset: 0, alignItems: 'center', justifyContent: 'center' }}
                     >
-                      <MenuIcon size={20} />
+                      <MenuIcon size={22} />
                     </motion.span>
                   )}
                 </AnimatePresence>
@@ -346,12 +407,12 @@ export default function Nav({ lang }: { lang: Lang }) {
           />
 
           {/* Window under the bar: it clips the panel while it slides down from behind the bar, and
-              leaves 16px below for the small bounce when the panel arrives */}
+              keeps 16px below it so the panel's edge is never cut by the window */}
           <div
             className="fixed inset-x-0 z-50 overflow-hidden pb-4 pointer-events-none"
             style={{ top: 'var(--nav-height)', transition: 'top 250ms cubic-bezier(0.23, 1, 0.32, 1)' }}
           >
-            {/* The panel reaches 16px above the window (-mt-4 / pt-4), so the bounce never opens a gap under the bar */}
+            {/* The panel reaches 16px above the window (-mt-4 / pt-4), so no gap can open under the bar while it slides */}
             <div
               data-state={entered ? 'open' : 'closed'}
               onTransitionEnd={handlePanelTransitionEnd}
@@ -400,6 +461,26 @@ export default function Nav({ lang }: { lang: Lang }) {
                       </div>
                     )
                   })}
+
+                  {/* The language, which leaves the bar when the page scrolls: one row at the foot of the list */}
+                  <div
+                    data-state={entered ? 'open' : 'closed'}
+                    className="menu-row mt-2 border-t pt-2"
+                    style={{ '--i': MENU_ITEMS.length, borderColor: isDarkNav ? 'rgba(255,255,255,0.1)' : '#f3f4f6' } as React.CSSProperties}
+                  >
+                    <Link
+                      href={otherHref}
+                      onClick={closeMenu}
+                      hrefLang={otherLang}
+                      className={`-mx-3 px-3 py-3.5 rounded-xl transition-colors duration-150 flex items-center gap-4 ${
+                        isDarkNav ? 'text-gray-400 font-medium hover:text-white hover:bg-white/[0.08] active:bg-white/[0.12]' : 'text-gray-600 font-medium hover:text-gray-900 hover:bg-gray-100 active:bg-gray-200/70'
+                      }`}
+                    >
+                      <span aria-hidden="true" className="w-2 flex-shrink-0" />
+                      <span className="text-lg">{lang === 'en' ? 'Français' : 'English'}</span>
+                      <span aria-hidden="true" className="ml-auto text-sm text-gray-400">{otherLang.toUpperCase()}</span>
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
