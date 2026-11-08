@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { Caret, Prompt, Stage, Window, type Act } from '@/components/stageshow/kit'
+import { Caret, Prompt, Stage, Window, dissolveTo, type Act } from '@/components/stageshow/kit'
 import './claude-hero-stage.css'
 
 /**
@@ -91,8 +91,8 @@ export default function ClaudeHeroStage({ lang }: { lang: 'en' | 'fr' }) {
     await a.wait(2800)
     await a.move('rest')
     await a.wait(300)
-    await a.set({ ...initial })
-    await a.wait(600)
+    // Back to the start like a GIF: the frame dissolves into the first one, never undone step by step
+    await dissolveTo(a, { ...initial })
   }
 
   return (

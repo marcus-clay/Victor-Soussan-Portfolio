@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { Caret, Check, Prompt, Stage, Window, type Act } from '@/components/stageshow/kit'
+import { Caret, Check, Prompt, Stage, Window, dissolveTo, type Act } from '@/components/stageshow/kit'
 import './claude-code-stage.css'
 
 /**
@@ -99,11 +99,10 @@ export default function ClaudeCodeStage({ lang }: { lang: 'en' | 'fr' }) {
     // Payoff: the pointer rests on the first folder
     await a.move('row-inbox')
     await a.wait(2600)
-    // Back to the start, with the pointer parked where it began
+    // Back to the start, with the pointer parked where it began: the frame dissolves into the first one, like a GIF
     await a.move('rest')
     await a.wait(300)
-    await a.set({ ...initial })
-    await a.wait(500)
+    await dissolveTo(a, { ...initial })
   }
 
   return (

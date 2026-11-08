@@ -42,3 +42,9 @@
      so there is no visible line where the picture column begins */
   overflow: visible;
 }
+
+/* One curve for every picture story: a soft start and a soft landing, so each step glides in instead of dropping in.
+   The scenes' transitions use it (var(--still-ease)) at story durations (about 350 to 600 ms). */
+.still {
+  --still-ease: cubic-bezier(0.4, 0, 0.2, 1);
+}

@@ -10,7 +10,7 @@
 }
 
 .still .sc-layers-skills-plate {
-  --sc-ease: cubic-bezier(0.23, 1, 0.32, 1);
+  --sc-ease: var(--still-ease);
   position: absolute;
   left: -65px;
   top: -65px;
@@ -20,23 +20,23 @@
   /* A plate that is not drawn yet waits a little below its place; its three layers (face, thickness, shadow) are
      separate boxes so that they can fade without flattening the 3D */
   transform: translateZ(calc(var(--sc-z) - 14px));
-  transition: transform 0.22s var(--sc-ease);
+  transition: transform 350ms var(--sc-ease);
 }
 
 .still .sc-layers-skills-plate[data-show] {
   transform: translateZ(var(--sc-z));
-  transition: transform 0.55s var(--sc-ease);
+  transition: transform 880ms var(--sc-ease);
 }
 
 .still .sc-layers-skills-plate > * {
   position: absolute;
   opacity: 0;
-  transition: opacity 0.2s ease-out;
+  transition: opacity 320ms ease-out;
 }
 
 .still .sc-layers-skills-plate[data-show] > * {
   opacity: 1;
-  transition: opacity 0.4s var(--sc-ease);
+  transition: opacity 640ms var(--sc-ease);
 }
 
 .still .sc-layers-skills-face {
@@ -84,19 +84,19 @@
 .still .sc-layers-skills-screen > * {
   opacity: 0;
   transform: translateY(4px);
-  transition: opacity 0.2s ease-out, transform 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: opacity 320ms ease-out, transform 320ms var(--still-ease);
 }
 
 .still .sc-layers-skills-screen[data-show] > * {
   opacity: 1;
   transform: none;
-  transition: opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1), transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: opacity 480ms var(--still-ease), transform 640ms var(--still-ease);
 }
 
-.still .sc-layers-skills-screen[data-show] > :nth-child(2) { transition-delay: 70ms; }
-.still .sc-layers-skills-screen[data-show] > :nth-child(3) { transition-delay: 140ms; }
-.still .sc-layers-skills-screen[data-show] > :nth-child(4) { transition-delay: 210ms; }
-.still .sc-layers-skills-screen[data-show] > :nth-child(5) { transition-delay: 280ms; }
+.still .sc-layers-skills-screen[data-show] > :nth-child(2) { transition-delay: 110ms; }
+.still .sc-layers-skills-screen[data-show] > :nth-child(3) { transition-delay: 220ms; }
+.still .sc-layers-skills-screen[data-show] > :nth-child(4) { transition-delay: 340ms; }
+.still .sc-layers-skills-screen[data-show] > :nth-child(5) { transition-delay: 450ms; }
 
 .still .sc-layers-skills-screen__head {
   display: flex;
@@ -126,13 +126,13 @@
   white-space: nowrap;
   opacity: 0;
   transform: translateX(-6px);
-  transition: opacity 0.18s ease-out, transform 0.22s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: opacity 290ms ease-out, transform 350ms var(--still-ease);
 }
 
 .still .sc-layers-skills-label[data-show] {
   opacity: 1;
   transform: none;
-  transition: opacity 0.32s cubic-bezier(0.23, 1, 0.32, 1) 0.3s, transform 0.4s cubic-bezier(0.23, 1, 0.32, 1) 0.3s;
+  transition: opacity 510ms var(--still-ease) 480ms, transform 640ms var(--still-ease) 480ms;
 }
 
 .still .sc-layers-skills-label[data-hot] {
@@ -147,12 +147,12 @@
   margin-top: 0;
   /* Drawn from the plate towards its label */
   clip-path: inset(-4px calc(100% + 4px) -4px -4px);
-  transition: clip-path 0.2s ease-out;
+  transition: clip-path 320ms ease-out;
 }
 
 .still .sc-layers-skills-leader[data-show] {
   clip-path: inset(-4px);
-  transition: clip-path 0.45s cubic-bezier(0.23, 1, 0.32, 1) 0.14s;
+  transition: clip-path 720ms var(--still-ease) 220ms;
 }
 
 .still .sc-layers-skills-leader::before {

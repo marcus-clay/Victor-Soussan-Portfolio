@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { Bar, Stage, Window, type Act } from '@/components/stageshow/kit'
+import { Bar, Stage, Window, dissolveTo, type Act } from '@/components/stageshow/kit'
 import './os-hero.css'
 
 /**
@@ -96,8 +96,8 @@ export default function OsHero({ lang }: { lang: 'en' | 'fr' }) {
     }
     await a.move('rest')
     await a.wait(2800)
-    await a.set({ ...initial })
-    await a.wait(600)
+    // Back to the start like a GIF: the frame dissolves into the first one, never undone step by step
+    await dissolveTo(a, { ...initial })
   }
 
   return (

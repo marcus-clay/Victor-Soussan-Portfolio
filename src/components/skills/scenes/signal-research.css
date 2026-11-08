@@ -28,13 +28,13 @@
   /* The lines of the feed come in one after the other; the picked one takes its tint */
   opacity: 0;
   transform: translateY(5px);
-  transition: opacity 0.2s ease-out, transform 0.25s cubic-bezier(0.23, 1, 0.32, 1), background-color 0.3s ease, border-color 0.3s ease;
+  transition: opacity 320ms ease-out, transform 400ms var(--still-ease), background-color 480ms ease, border-color 480ms ease;
 }
 
 .still .sc-signal-research-row[data-show] {
   opacity: 1;
   transform: none;
-  transition: opacity 0.32s cubic-bezier(0.23, 1, 0.32, 1), transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), background-color 0.35s ease, border-color 0.35s ease;
+  transition: opacity 510ms var(--still-ease), transform 640ms var(--still-ease), background-color 560ms ease, border-color 560ms ease;
 }
 
 .still .sc-signal-research-row[data-on] {
@@ -70,14 +70,14 @@
   opacity: 0;
   transform: translateY(8px);
   filter: blur(2px);
-  transition: opacity 0.22s ease-out, transform 0.25s cubic-bezier(0.23, 1, 0.32, 1), filter 0.2s ease-out;
+  transition: opacity 350ms ease-out, transform 400ms var(--still-ease), filter 320ms ease-out;
 }
 
 .still .sc-signal-research-angle[data-show] {
   opacity: 1;
   transform: none;
   filter: none;
-  transition: opacity 0.35s cubic-bezier(0.23, 1, 0.32, 1), transform 0.45s cubic-bezier(0.23, 1, 0.32, 1), filter 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: opacity 560ms var(--still-ease), transform 720ms var(--still-ease), filter 480ms var(--still-ease);
 }
 
 .still .sc-signal-research-angle__label {

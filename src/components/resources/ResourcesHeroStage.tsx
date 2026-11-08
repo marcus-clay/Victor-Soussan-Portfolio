@@ -2,7 +2,7 @@
 
 import React, { type CSSProperties } from 'react'
 import { Check } from 'lucide-react'
-import { Bar, Caret, Prompt, Stage, Window, type Act } from '@/components/stageshow/kit'
+import { Bar, Caret, Prompt, Stage, Window, dissolveTo, type Act } from '@/components/stageshow/kit'
 import { accentFor } from './accentPalette'
 import './resources-hero-stage.css'
 
@@ -80,7 +80,7 @@ export default function ResourcesHeroStage({ lang }: { lang: 'en' | 'fr' }) {
   const c = COPY[lang]
 
   /** About 12.5 s: the guide writes itself, the sheet fills, the slide lands; then the filters light up one after the
-   *  other and the three documents stand together; a rest; then what the story added leaves in a short reverse stagger. */
+   *  other and the three documents stand together; a rest; then the frame dissolves into the first one, like a GIF. */
   async function script(a: Act<S>) {
     await a.wait(900)
     // 1. The guide: a command, three lines
@@ -113,15 +113,8 @@ export default function ResourcesHeroStage({ lang }: { lang: 'en' | 'fr' }) {
       await a.wait(170)
     }
     await a.wait(3400)
-    // Back to the start: what was added leaves, last in first out
-    await a.set({ lit: 0, all: false, focus: -1, slide: false })
-    await a.wait(120)
-    await a.set({ ticks: 0 })
-    await a.wait(120)
-    await a.set({ lines: 0 })
-    await a.wait(240)
-    await a.snap({ typed: '' })
-    await a.wait(700)
+    // Back to the start like a GIF: the frame dissolves into the first one, never undone step by step
+    await dissolveTo(a, { ...initial })
   }
 
   return (

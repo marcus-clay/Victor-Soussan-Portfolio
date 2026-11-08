@@ -35,14 +35,14 @@
    code card. Exits are quicker than entrances. The poster is the state with every block in. */
 .still .sc-bs-swatch, .still .sc-bs-aa, .still .sc-bs-font, .still .sc-bs-neutrals i, .still .sc-bs-btn, .still .sc-bs-tok, .still .sc-bs-code {
   opacity: 0; transform: translateY(6px); filter: blur(2px);
-  transition: opacity 0.2s ease, transform 0.2s ease, filter 0.2s ease;
+  transition: opacity 320ms ease, transform 320ms ease, filter 320ms ease;
 }
 .still .sc-bs-swatch[data-show], .still .sc-bs-aa[data-show], .still .sc-bs-font[data-show], .still .sc-bs-neutrals i[data-show],
 .still .sc-bs-btn[data-show], .still .sc-bs-tok[data-show], .still .sc-bs-code[data-show] {
   opacity: 1; transform: none; filter: none;
-  transition-duration: 0.36s; transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
-  transition-delay: calc(var(--i, 0) * 80ms);
+  transition-duration: 580ms; transition-timing-function: var(--still-ease);
+  transition-delay: calc(var(--i, 0) * 130ms);
 }
 /* the code card arrives with its first token, the token a beat after the card */
-.still .sc-bs-tok[data-show] { transition-delay: 140ms; }
-.still .sc-bs-font[data-show] { transition-delay: 90ms; }
+.still .sc-bs-tok[data-show] { transition-delay: 220ms; }
+.still .sc-bs-font[data-show] { transition-delay: 140ms; }

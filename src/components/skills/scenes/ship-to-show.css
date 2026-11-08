@@ -86,7 +86,7 @@
   height: 5px;
   border-radius: 3px;
   background: var(--ss-ink-3);
-  transition: background-color 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: background-color 480ms var(--still-ease);
 }
 .sc-ship-to-show-steps i[data-on] {
   background: var(--ss-accent);
@@ -107,7 +107,7 @@
   opacity: 0;
   transform: translateY(5px);
   filter: blur(2px);
-  transition: opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1), transform 0.3s cubic-bezier(0.23, 1, 0.32, 1), filter 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: opacity 480ms var(--still-ease), transform 480ms var(--still-ease), filter 480ms var(--still-ease);
 }
 .sc-ship-to-show-state[data-in],
 .sc-ship-to-show-count[data-in] {

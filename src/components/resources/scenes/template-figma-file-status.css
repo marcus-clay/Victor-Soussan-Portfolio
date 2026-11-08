@@ -50,7 +50,7 @@
   line-height: 1;
   font-weight: 500;
   white-space: nowrap;
-  transition: background-color 220ms ease, box-shadow 220ms ease, color 220ms ease, opacity 200ms ease, transform 200ms ease;
+  transition: background-color 350ms ease, box-shadow 350ms ease, color 350ms ease, opacity 320ms ease, transform 320ms ease;
 }
 .sc-res-figma-status-root .sc-res-figma-status-chip[data-hide] { opacity: 0; transform: translateY(4px); }
 .sc-res-figma-status-root .sc-res-figma-status-ck {
@@ -58,7 +58,7 @@
   width: 0;
   opacity: 0;
   overflow: hidden;
-  transition: width 320ms cubic-bezier(0.23, 1, 0.32, 1), opacity 240ms ease;
+  transition: width 510ms var(--still-ease), opacity 380ms ease;
 }
 .sc-res-figma-status-root .sc-res-figma-status-ck svg { flex: none; margin-right: 4px; }
 .sc-res-figma-status-root .sc-res-figma-status-chip[data-status='explo'] {
@@ -105,12 +105,12 @@
   opacity: 0;
   transform: translateY(6px);
   filter: blur(2px);
-  transition: opacity 180ms ease var(--d-out, 0ms), transform 180ms ease var(--d-out, 0ms), filter 180ms ease var(--d-out, 0ms);
+  transition: opacity 290ms ease var(--d-out, 0ms), transform 290ms ease var(--d-out, 0ms), filter 290ms ease var(--d-out, 0ms);
 }
 .sc-res-figma-status-root .sc-res-figma-status-card[data-fill='1'] .sc-res-figma-status-f-field,
 .sc-res-figma-status-root .sc-res-figma-status-card[data-fill='2'] .sc-res-figma-status-blk {
   opacity: 1;
   transform: none;
   filter: none;
-  transition: opacity 320ms cubic-bezier(0.23, 1, 0.32, 1) var(--d-in, 0ms), transform 320ms cubic-bezier(0.23, 1, 0.32, 1) var(--d-in, 0ms), filter 320ms cubic-bezier(0.23, 1, 0.32, 1) var(--d-in, 0ms);
+  transition: opacity 510ms var(--still-ease) var(--d-in, 0ms), transform 510ms var(--still-ease) var(--d-in, 0ms), filter 510ms var(--still-ease) var(--d-in, 0ms);
 }

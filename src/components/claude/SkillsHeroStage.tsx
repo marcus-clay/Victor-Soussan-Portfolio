@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { Caret, Check, Prompt, Stage, Window, type Act } from '@/components/stageshow/kit'
+import { Caret, Check, Prompt, Stage, Window, dissolveTo, type Act } from '@/components/stageshow/kit'
 import './skills-hero-stage.css'
 
 /**
@@ -118,9 +118,8 @@ export default function SkillsHeroStage({ lang }: { lang: 'en' | 'fr' }) {
     await a.set({ term: 2 })
     await a.move('rest')
     await a.wait(2800)
-    // Back to the start
-    await a.set({ ...initial })
-    await a.wait(600)
+    // Back to the start like a GIF: the frame dissolves into the first one, never undone step by step
+    await dissolveTo(a, { ...initial })
   }
 
   return (

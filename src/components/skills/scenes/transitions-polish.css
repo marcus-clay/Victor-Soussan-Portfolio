@@ -69,7 +69,7 @@
 
 /* On hover: the new line is written while the old one goes quiet, then the 150 ms row appears and its bar draws */
 .sc-transitions-polish-win .ss-code__line[data-kind='add'] {
-  transition: opacity 220ms cubic-bezier(0.23, 1, 0.32, 1), transform 220ms cubic-bezier(0.23, 1, 0.32, 1), filter 220ms cubic-bezier(0.23, 1, 0.32, 1);
+  transition: opacity 350ms var(--still-ease), transform 350ms var(--still-ease), filter 350ms var(--still-ease);
 }
 .sc-transitions-polish-root:not([data-add]) .ss-code__line[data-kind='add'] {
   opacity: 0;
@@ -77,16 +77,16 @@
   filter: blur(2px);
 }
 .sc-transitions-polish-root[data-add] .ss-code__line[data-kind='add'] {
-  transition-duration: 380ms;
+  transition-duration: 610ms;
 }
 .sc-transitions-polish-win .ss-code__line[data-kind='del'] .ss-code__text {
-  transition: color 320ms cubic-bezier(0.23, 1, 0.32, 1);
+  transition: color 510ms var(--still-ease);
 }
 .sc-transitions-polish-root:not([data-add]) .ss-code__line[data-kind='del'] .ss-code__text {
   color: var(--ss-text-strong);
 }
 .sc-transitions-polish-line[data-now] {
-  transition: opacity 220ms cubic-bezier(0.23, 1, 0.32, 1), transform 220ms cubic-bezier(0.23, 1, 0.32, 1), filter 220ms cubic-bezier(0.23, 1, 0.32, 1);
+  transition: opacity 350ms var(--still-ease), transform 350ms var(--still-ease), filter 350ms var(--still-ease);
 }
 .sc-transitions-polish-line[data-now]:not([data-row]) {
   opacity: 0;
@@ -94,15 +94,15 @@
   filter: blur(2px);
 }
 .sc-transitions-polish-line[data-now][data-row] {
-  transition-duration: 340ms;
+  transition-duration: 540ms;
 }
 .sc-transitions-polish-line[data-now] i {
   transform-origin: left center;
-  transition: transform 220ms cubic-bezier(0.23, 1, 0.32, 1);
+  transition: transform 350ms var(--still-ease);
 }
 .sc-transitions-polish-line[data-now]:not([data-bar]) i {
   transform: scaleX(0);
 }
 .sc-transitions-polish-line[data-now][data-bar] i {
-  transition-duration: 700ms;
+  transition-duration: 900ms;
 }

@@ -99,6 +99,8 @@ export interface Act<S> {
    */
   enter(to: Target, opts?: { duration?: number }): Promise<void>
   readonly signal: AbortSignal
+  /** The stage element (.ss-stage), for helpers that work on the frame as a whole, such as the loop seam (seam.ts). */
+  readonly root: HTMLDivElement | null
   /** 'wide' or 'compact': which design is showing, so a script can aim or pace per layout. */
   readonly layout: Layout
 }
@@ -275,6 +277,9 @@ export function createAct<S>(signal: AbortSignal, env: ActEnv<S>): Act<S> {
   const a: Act<S> = {
     get signal() {
       return signal
+    },
+    get root() {
+      return rootRef.current
     },
     put(patch) {
       if (!signal.aborted) setState((s) => ({ ...s, ...(typeof patch === 'function' ? patch(s) : patch) }))

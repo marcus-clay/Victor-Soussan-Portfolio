@@ -4,7 +4,7 @@
   grid-area: 1 / 1; width: 304px; height: 171px; padding: 22px 0 0 24px; border-radius: 8px;
   background: var(--ss-surface); box-shadow: var(--ss-shadow-card), 0 0 0 1px var(--ss-line);
   translate: var(--x) var(--y); rotate: var(--r);
-  transition: translate 460ms cubic-bezier(0.23, 1, 0.32, 1), opacity 320ms cubic-bezier(0.23, 1, 0.32, 1), filter 320ms cubic-bezier(0.23, 1, 0.32, 1);
+  transition: translate 740ms var(--still-ease), opacity 510ms var(--still-ease), filter 510ms var(--still-ease);
 }
 /* Small, alternating angles, each about its own center, offset unevenly; the straightest on top */
 .sc-res-deck-pile .slide[data-pos='0'] { --x: 0px; --y: 6px; --r: -1deg; z-index: 3; box-shadow: var(--ss-shadow-satellite), 0 0 0 1px var(--ss-line); }
