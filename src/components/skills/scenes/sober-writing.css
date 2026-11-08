@@ -27,7 +27,7 @@
 /* Hover story: the superlative is marked and struck by colour (text, strike, mark), the fact and the chip rise a few points.
    Their space is always there, so nothing moves around them; the resting look (data-on) is untouched. */
 .still .sc-sw-del {
-  transition: color 0.34s cubic-bezier(0.23, 1, 0.32, 1), background-color 0.34s cubic-bezier(0.23, 1, 0.32, 1), text-decoration-color 0.34s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: color 540ms var(--still-ease), background-color 540ms var(--still-ease), text-decoration-color 540ms var(--still-ease);
 }
 .still .sc-sw-del:not([data-on]) {
   color: var(--ss-text-strong);
@@ -36,7 +36,7 @@
 }
 .still .sc-sw-add,
 .still .sc-sw-chip {
-  transition: opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1), transform 0.38s cubic-bezier(0.23, 1, 0.32, 1), filter 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: opacity 480ms var(--still-ease), transform 610ms var(--still-ease), filter 480ms var(--still-ease);
 }
 .still .sc-sw-add:not([data-on]) { opacity: 0; transform: translateY(6px); filter: blur(2px); }
 .still .sc-sw-chip:not([data-on]) { opacity: 0; transform: translateY(-6px); filter: blur(2px); }

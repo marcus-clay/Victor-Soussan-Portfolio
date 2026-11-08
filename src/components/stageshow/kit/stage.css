@@ -446,3 +446,14 @@
 :where(.ss-stage :is(.ss-fly__lift, .ss-expand__face)) > :is(svg, img):not(html):not(body):not(head) {
   max-width: 100%;
 }
+
+/* The loop seam (seam.ts): a frozen copy of the frame over the stage while it jumps back to its start, then dissolves */
+.ss-ghost {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+}
+.ss-ghost * {
+  transition: none !important;
+}

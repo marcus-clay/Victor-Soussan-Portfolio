@@ -79,14 +79,14 @@
   opacity: 0;
   translate: 0 6px;
   filter: blur(2px);
-  transition: opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1), translate 0.36s cubic-bezier(0.23, 1, 0.32, 1), filter 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: opacity 480ms var(--still-ease), translate 580ms var(--still-ease), filter 480ms var(--still-ease);
 }
 .sc-si-in[data-in] { opacity: 1; translate: none; filter: none; }
 .sc-si-note {
   opacity: 0;
   translate: -8px 0;
   filter: blur(2px);
-  transition: opacity 0.32s cubic-bezier(0.23, 1, 0.32, 1), translate 0.4s cubic-bezier(0.23, 1, 0.32, 1), filter 0.3s cubic-bezier(0.23, 1, 0.32, 1),
-    color 0.35s cubic-bezier(0.23, 1, 0.32, 1), text-decoration-color 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: opacity 510ms var(--still-ease), translate 640ms var(--still-ease), filter 480ms var(--still-ease),
+    color 560ms var(--still-ease), text-decoration-color 560ms var(--still-ease);
 }
 .sc-si-note[data-in] { opacity: 1; translate: none; filter: none; }

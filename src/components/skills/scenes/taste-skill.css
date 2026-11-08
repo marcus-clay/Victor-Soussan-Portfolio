@@ -102,15 +102,15 @@
 }
 
 /* The story: the dials turn on a strong curve, the page writes itself inside its card */
-.still .sc-taste-skill-fill { transition: width 0.7s cubic-bezier(0.23, 1, 0.32, 1); }
-.still .sc-taste-skill-knob { transition: left 0.7s cubic-bezier(0.23, 1, 0.32, 1); }
+.still .sc-taste-skill-fill { transition: width 900ms var(--still-ease); }
+.still .sc-taste-skill-knob { transition: left 900ms var(--still-ease); }
 
 .still .sc-taste-skill-headline,
 .still .sc-taste-skill-cta {
   opacity: 0;
   transform: translateY(6px);
   filter: blur(2px);
-  transition: opacity 0.34s cubic-bezier(0.23, 1, 0.32, 1), transform 0.38s cubic-bezier(0.23, 1, 0.32, 1), filter 0.34s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: opacity 540ms var(--still-ease), transform 610ms var(--still-ease), filter 540ms var(--still-ease);
 }
 .still .sc-taste-skill-headline[data-on],
 .still .sc-taste-skill-cta[data-on] { opacity: 1; transform: none; filter: none; }

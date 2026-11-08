@@ -72,7 +72,7 @@
   border: 1px solid #ececea;
   border-radius: 12px;
   background: #fff;
-  transition: box-shadow 200ms cubic-bezier(0.22, 1, 0.36, 1), border-color 200ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: box-shadow 320ms var(--still-ease, cubic-bezier(0.4, 0, 0.2, 1)), border-color 320ms var(--still-ease, cubic-bezier(0.4, 0, 0.2, 1));
 }
 .ch-card[data-picked] {
   border-color: var(--ss-accent);
@@ -155,7 +155,7 @@
   opacity: 0;
   transform: translateY(8px) scale(0.98);
   transform-origin: 20% 0;
-  transition: opacity 250ms cubic-bezier(0.22, 1, 0.36, 1), transform 250ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: opacity 400ms var(--still-ease, cubic-bezier(0.4, 0, 0.2, 1)), transform 400ms var(--still-ease, cubic-bezier(0.4, 0, 0.2, 1));
 }
 .ch-panel[data-show='true'] {
   opacity: 1;
@@ -228,7 +228,7 @@
   color: #fff;
   font-size: 12px;
   font-weight: 600;
-  transition: background-color 200ms ease-out;
+  transition: background-color 320ms ease-out;
 }
 .ch-copy[data-done] {
   background: var(--ss-accent);
@@ -251,7 +251,7 @@
   font-size: 13px;
   font-weight: 500;
   opacity: 0;
-  transition: opacity 250ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: opacity 400ms var(--still-ease, cubic-bezier(0.4, 0, 0.2, 1));
 }
 .ch-done[data-show='true'] {
   opacity: 1;
@@ -266,7 +266,7 @@
   height: 130px;
   opacity: 0;
   transform: translateY(8px);
-  transition: opacity 250ms cubic-bezier(0.22, 1, 0.36, 1), transform 250ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: opacity 400ms var(--still-ease, cubic-bezier(0.4, 0, 0.2, 1)), transform 400ms var(--still-ease, cubic-bezier(0.4, 0, 0.2, 1));
 }
 .ch-term[data-show='true'] {
   opacity: 1;
@@ -285,7 +285,7 @@
   margin-top: 2px;
   color: #d4d4d8;
   opacity: 0;
-  transition: opacity 250ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: opacity 400ms var(--still-ease, cubic-bezier(0.4, 0, 0.2, 1));
 }
 .ch-term__ok[data-show='true'] {
   opacity: 1;

@@ -33,24 +33,24 @@
   stroke-dasharray: 1 2;
   stroke-dashoffset: 1;
   opacity: 0;
-  transition: stroke-dashoffset 0.28s ease-in, opacity 0.2s linear 0.08s, stroke-dasharray 0.01s linear;
+  transition: stroke-dashoffset 450ms ease-in, opacity 320ms linear 130ms, stroke-dasharray 20ms linear;
 }
 .still .sc-ms-draw[data-on] {
   stroke-dasharray: none;
   stroke-dashoffset: 0;
   opacity: 1;
   /* once drawn the dash is dropped, so the finished stroke is exactly the plain one */
-  transition: stroke-dashoffset 0.5s cubic-bezier(0.23, 1, 0.32, 1) var(--d, 0ms), opacity 0.05s linear var(--d, 0ms), stroke-dasharray 0.01s linear calc(var(--d, 0ms) + 0.5s);
+  transition: stroke-dashoffset 800ms var(--still-ease) var(--d, 0ms), opacity 80ms linear var(--d, 0ms), stroke-dasharray 20ms linear calc(var(--d, 0ms) + 800ms);
 }
 .still .sc-ms-word {
-  transition: opacity 0.2s cubic-bezier(0.23, 1, 0.32, 1), filter 0.2s cubic-bezier(0.23, 1, 0.32, 1), transform 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: opacity 320ms var(--still-ease), filter 320ms var(--still-ease), transform 320ms var(--still-ease);
 }
 .still .sc-ms-word:not([data-on]) { opacity: 0; filter: blur(2px); transform: translateY(4px); }
 .still .sc-ms-word[data-on] {
-  transition-duration: 0.34s;
-  transition-delay: 0.2s;
+  transition-duration: 540ms;
+  transition-delay: 320ms;
 }
 .still .sc-ms-note {
-  transition: opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1), transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), filter 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: opacity 480ms var(--still-ease), transform 640ms var(--still-ease), filter 480ms var(--still-ease);
 }
 .still .sc-ms-note:not([data-on]) { opacity: 0; filter: blur(2px); transform: rotate(-3deg) translateY(6px); }

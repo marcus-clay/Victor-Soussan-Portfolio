@@ -44,6 +44,8 @@ export interface StageProps<S> {
    */
   cursor?: { at: Target | { wide: Target; compact: Target }; kind?: CursorKind; style?: CursorStyle; still?: boolean; ripple?: boolean; idle?: number | false }
   play?: Play
+  /** The visitor asks for the story (a hover), so it plays under reduced motion too; parts still skip their own tweens. */
+  onRequest?: boolean
   /**
    * A second, smaller design for narrow containers. Below `below` px of
    * container width the stage uses this size, the render's `layout` argument
@@ -97,6 +99,7 @@ export function Stage<S extends object>({
   cursor,
   hover,
   play: playProp = 'loop',
+  onRequest = false,
   compact,
   keys: keysAt = 'bottom',
   palette = 'accent',
@@ -132,7 +135,7 @@ export function Stage<S extends object>({
   const rootRef = useRef<HTMLDivElement>(null)
   const cursorRef = useRef<HTMLDivElement>(null)
   const reduced = useReducedMotion()
-  const still = !script || reduced
+  const still = !script || (reduced && !(onRequest && playProp === 'hover'))
 
   const [state, setState] = useState<S>(() => (still && poster ? poster : initial))
   const stateRef = useRef(state)

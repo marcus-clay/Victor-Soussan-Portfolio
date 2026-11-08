@@ -40,7 +40,7 @@
   font-size: 12.5px;
   line-height: 18px;
   color: var(--ss-text-strong);
-  transition: opacity 200ms ease;
+  transition: opacity 320ms ease;
 }
 .sc-res-claude-code-root .sc-res-claude-code-ask[data-hide] { opacity: 0; }
 .sc-res-claude-code-root .sc-res-claude-code-ghost { color: transparent; }
@@ -73,12 +73,12 @@
   opacity: 0;
   transform: translateY(6px);
   filter: blur(2px);
-  transition: opacity 180ms ease var(--d-out, 0ms), transform 180ms ease var(--d-out, 0ms), filter 180ms ease var(--d-out, 0ms);
+  transition: opacity 290ms ease var(--d-out, 0ms), transform 290ms ease var(--d-out, 0ms), filter 290ms ease var(--d-out, 0ms);
 }
 .sc-res-claude-code-root .sc-res-claude-code-screen[data-on] .sc-res-claude-code-blk,
 .sc-res-claude-code-root .sc-res-claude-code-tool[data-on] {
   opacity: 1;
   transform: none;
   filter: none;
-  transition: opacity 320ms cubic-bezier(0.23, 1, 0.32, 1) var(--d-in, 0ms), transform 320ms cubic-bezier(0.23, 1, 0.32, 1) var(--d-in, 0ms), filter 320ms cubic-bezier(0.23, 1, 0.32, 1) var(--d-in, 0ms);
+  transition: opacity 510ms var(--still-ease) var(--d-in, 0ms), transform 510ms var(--still-ease) var(--d-in, 0ms), filter 510ms var(--still-ease) var(--d-in, 0ms);
 }

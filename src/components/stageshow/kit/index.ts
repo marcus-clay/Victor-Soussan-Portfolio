@@ -13,6 +13,7 @@ export type { Point, Rect, Target } from './measure'
 export type { CursorKind, CursorStyle } from './cursor'
 export type { Theme, Palette, Fidelity, Layout } from './looks'
 export type { KeysAt } from './keys'
+export { dissolveTo } from './seam'
 export { clock, installVirtualClock } from './clock'
 export type { ClockControl } from './clock'
 

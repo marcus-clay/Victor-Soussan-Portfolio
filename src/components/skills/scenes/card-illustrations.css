@@ -47,12 +47,12 @@
 .still .sc-ci-item-in,
 .still .sc-ci-lines,
 .still .sc-ci-pinwrap {
-  transition: opacity 0.26s cubic-bezier(0.23, 1, 0.32, 1), transform 0.34s cubic-bezier(0.23, 1, 0.32, 1), filter 0.26s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: opacity 420ms var(--still-ease), transform 540ms var(--still-ease), filter 420ms var(--still-ease);
 }
 .still .sc-ci-item[data-hide] .sc-ci-item-in { opacity: 0; transform: translateY(5px); filter: blur(2px); }
 .still .sc-ci-lines:not([data-show]) { opacity: 0; transform: translateY(4px); filter: blur(2px); }
 .still .sc-ci-pinwrap { position: absolute; left: 0; top: 0; width: 0; height: 0; z-index: 2; }
 .still .sc-ci-pinwrap:not([data-show]) { opacity: 0; transform: translateY(-5px); filter: blur(2px); }
-.still .sc-ci-card.is-next { transition: opacity 0.34s cubic-bezier(0.23, 1, 0.32, 1), transform 0.4s cubic-bezier(0.23, 1, 0.32, 1); }
+.still .sc-ci-card.is-next { transition: opacity 540ms var(--still-ease), transform 640ms var(--still-ease); }
 .still .sc-ci-card.is-next:not([data-show]) { opacity: 0; transform: translateX(8px); }
 .still .sc-ci-sub > .sc-ci-lines { display: flex; align-items: center; }

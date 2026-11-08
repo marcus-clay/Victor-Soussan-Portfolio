@@ -31,15 +31,15 @@
 .sc-kg-code .ss-code__line[data-kind='del'] {
   background: transparent;
   color: var(--ss-text-strong);
-  transition: background-color 0.4s cubic-bezier(0.23, 1, 0.32, 1), color 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: background-color 640ms var(--still-ease), color 640ms var(--still-ease);
 }
 .sc-kg-code .ss-code__line[data-kind='del'] .ss-code__text {
   text-decoration-color: transparent;
-  transition: text-decoration-color 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: text-decoration-color 640ms var(--still-ease);
 }
 .sc-kg-code .ss-code__line[data-kind='del'] .ss-code__mark {
   opacity: 0;
-  transition: opacity 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: opacity 640ms var(--still-ease);
 }
 .sc-kg-code[data-mark] .ss-code__line[data-kind='del'] { background: var(--ss-ink-2); color: var(--ss-text); }
 .sc-kg-code[data-mark] .ss-code__line[data-kind='del'] .ss-code__text { text-decoration-color: var(--ss-icon-faint); }
@@ -49,7 +49,7 @@
   opacity: 0;
   transform: translateY(5px);
   filter: blur(2px);
-  transition: opacity 0.36s cubic-bezier(0.23, 1, 0.32, 1), transform 0.36s cubic-bezier(0.23, 1, 0.32, 1), filter 0.36s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: opacity 580ms var(--still-ease), transform 580ms var(--still-ease), filter 580ms var(--still-ease);
 }
 .sc-kg-code[data-add] .ss-code__line[data-kind='add'] {
   opacity: 1;
@@ -84,6 +84,6 @@
   opacity: 0;
   transform: translateY(6px);
   filter: blur(2px);
-  transition: opacity 0.32s cubic-bezier(0.23, 1, 0.32, 1), transform 0.32s cubic-bezier(0.23, 1, 0.32, 1), filter 0.32s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: opacity 510ms var(--still-ease), transform 510ms var(--still-ease), filter 510ms var(--still-ease);
 }
 .sc-kg-rule[data-show] { opacity: 1; transform: none; filter: none; }

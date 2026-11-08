@@ -17,7 +17,7 @@
 .tp-root .tp-out,
 .tp-root .tp-status > * {
   opacity: 0;
-  transition: opacity 320ms cubic-bezier(0.22, 1, 0.36, 1), transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: opacity 510ms cubic-bezier(0.22, 1, 0.36, 1), transform 510ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 .tp-root .tp-out { transform: translateY(5px); }
 .tp-root .tp-out[data-show],

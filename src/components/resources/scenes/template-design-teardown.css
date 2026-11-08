@@ -167,7 +167,7 @@
   opacity: 0;
   translate: 0 6px;
   filter: blur(2px);
-  transition: opacity 220ms ease, translate 220ms ease, filter 220ms ease;
+  transition: opacity 350ms ease, translate 350ms ease, filter 350ms ease;
 }
 .sc-res-teardown .sc-res-teardown-note {
   transform: rotate(var(--r, 0deg));
@@ -179,7 +179,7 @@
   opacity: 1;
   translate: 0 0;
   filter: none;
-  transition: opacity 340ms cubic-bezier(0.23, 1, 0.32, 1), translate 340ms cubic-bezier(0.23, 1, 0.32, 1), filter 340ms cubic-bezier(0.23, 1, 0.32, 1);
+  transition: opacity 540ms var(--still-ease), translate 540ms var(--still-ease), filter 540ms var(--still-ease);
 }
 /* the specs come once the card is in */
 .sc-res-teardown .sc-res-teardown-specs[data-show] {
@@ -189,7 +189,7 @@
 /* the curves draw toward the card, then the end dot lands */
 .sc-res-teardown .sc-res-teardown-lines {
   opacity: 0;
-  transition: opacity 200ms ease;
+  transition: opacity 320ms ease;
 }
 .sc-res-teardown .sc-res-teardown-lines[data-show] {
   opacity: 1;
@@ -197,57 +197,57 @@
 .sc-res-teardown .sc-res-teardown-lines path {
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
-  transition: stroke-dashoffset 220ms ease;
+  transition: stroke-dashoffset 350ms ease;
 }
 .sc-res-teardown .sc-res-teardown-lines[data-show] path {
   stroke-dashoffset: 0;
-  transition: stroke-dashoffset 520ms cubic-bezier(0.23, 1, 0.32, 1);
+  transition: stroke-dashoffset 830ms var(--still-ease);
 }
 .sc-res-teardown .sc-res-teardown-lines circle {
   opacity: 0;
-  transition: opacity 160ms ease;
+  transition: opacity 260ms ease;
 }
 .sc-res-teardown .sc-res-teardown-lines[data-show] circle {
   opacity: 1;
-  transition: opacity 240ms ease 300ms;
+  transition: opacity 380ms ease 480ms;
 }
 
 /* the card's lines are written one after the other, left to right */
 .sc-res-teardown .sc-res-teardown-rules i {
   clip-path: inset(0 100% 0 0 round 3px);
-  transition: clip-path 200ms ease;
+  transition: clip-path 320ms ease;
 }
 .sc-res-teardown .sc-res-teardown-rules[data-show] i {
   clip-path: inset(0 0 0 0 round 3px);
-  transition: clip-path 380ms cubic-bezier(0.23, 1, 0.32, 1);
+  transition: clip-path 610ms var(--still-ease);
 }
 .sc-res-teardown .sc-res-teardown-rules[data-show] i:nth-child(2) {
-  transition-delay: 90ms;
+  transition-delay: 140ms;
 }
 .sc-res-teardown .sc-res-teardown-rules[data-show] i:nth-child(3) {
-  transition-delay: 180ms;
+  transition-delay: 290ms;
 }
 
 /* the stepper moves one notch per moment: a dot fills and gets its tick, the last step becomes the active pill */
 .sc-res-teardown .sc-res-teardown-done {
   background: var(--ss-ink-2);
-  transition: background-color 300ms cubic-bezier(0.23, 1, 0.32, 1);
+  transition: background-color 480ms var(--still-ease);
 }
 .sc-res-teardown .sc-res-teardown-done[data-on] {
   background: var(--ss-ink-4);
 }
 .sc-res-teardown .sc-res-teardown-done .ss-icon {
   opacity: 0;
-  transition: opacity 200ms ease;
+  transition: opacity 320ms ease;
 }
 .sc-res-teardown .sc-res-teardown-done[data-on] .ss-icon {
   opacity: 1;
-  transition: opacity 300ms cubic-bezier(0.23, 1, 0.32, 1) 80ms;
+  transition: opacity 480ms var(--still-ease) 130ms;
 }
 .sc-res-teardown .sc-res-teardown-now {
   background: var(--ss-ink-2);
   color: var(--ss-text-faint);
-  transition: background-color 300ms cubic-bezier(0.23, 1, 0.32, 1), color 300ms cubic-bezier(0.23, 1, 0.32, 1);
+  transition: background-color 480ms var(--still-ease), color 480ms var(--still-ease);
 }
 .sc-res-teardown .sc-res-teardown-now[data-on] {
   background: #111827;
@@ -256,7 +256,7 @@
 
 /* the thread of the stepper takes the hue as the moments are done */
 .sc-res-teardown .sc-res-teardown-link {
-  transition: background-color 300ms cubic-bezier(0.23, 1, 0.32, 1);
+  transition: background-color 480ms var(--still-ease);
 }
 .sc-res-teardown .sc-res-teardown-link[data-on] {
   background: var(--ss-accent);
