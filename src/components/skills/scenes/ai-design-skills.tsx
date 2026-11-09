@@ -54,17 +54,6 @@ export default function Scene({ lang, a }: SceneProps) {
   const sizes = t.lines.map((l) => l.split(' ').length)
   const starts = sizes.map((_, i) => sizes.slice(0, i).reduce((x, y) => x + y, 0))
   const count = sizes.reduce((x, y) => x + y, 0)
-  const clear = useMemo(
-    () => async (act: Act<S>) => {
-      await act.set({ btn: 0 })
-      await act.wait(70)
-      await act.set({ src: false })
-      await act.wait(70)
-      await act.set({ words: 0 })
-      await act.wait(380)
-    },
-    [],
-  )
   const build = useMemo(
     () => async (act: Act<S>) => {
       await act.wait(350)
@@ -80,7 +69,7 @@ export default function Scene({ lang, a }: SceneProps) {
     [count],
   )
   return (
-    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build} clear={clear}>
+    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build}>
       {(s) => (
         <Phone width={326} className="sc-ai-design-skills-phone">
           <Thread app="chat" className="sc-ai-design-skills-thread">

@@ -24,15 +24,6 @@ type S = { seg: number; curve: boolean; tag: boolean; val: boolean }
 const EMPTY: S = { seg: 0, curve: false, tag: false, val: false }
 const DONE: S = { seg: 1, curve: true, tag: true, val: true }
 
-async function clear(a: Act<S>) {
-  await a.set({ tag: false, val: false })
-  await a.wait(90)
-  await a.set({ curve: false })
-  await a.wait(150)
-  await a.set({ seg: 0 })
-  await a.wait(330)
-}
-
 async function build(a: Act<S>) {
   await a.wait(300)
   await a.set({ seg: 1 })
@@ -48,7 +39,7 @@ async function build(a: Act<S>) {
 export default function Scene({ lang, a }: SceneProps) {
   const t = TEXT[lang]
   return (
-    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build} clear={clear}>
+    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build}>
       {(s) => (
       <Window title={t.title} className="sc-emil-design-eng-win" body={{ className: 'sc-emil-design-eng-body' }}>
         <div className="sc-emil-design-eng-plot">

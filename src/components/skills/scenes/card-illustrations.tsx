@@ -27,22 +27,6 @@ type S = { rows: number; tick: boolean; pins: number; lines: boolean; next: bool
 const EMPTY: S = { rows: 0, tick: false, pins: 0, lines: false, next: false }
 const DONE: S = { rows: 3, tick: true, pins: 2, lines: true, next: true }
 
-// Out: pins, then the next card and the lines, then the rows from the last one up; the tick goes while the rows are hidden
-async function clear(a: Act<S>) {
-  await a.set({ pins: 1 })
-  await a.wait(70)
-  await a.set({ pins: 0, next: false, lines: false })
-  await a.wait(90)
-  await a.set({ rows: 2 })
-  await a.wait(70)
-  await a.set({ rows: 1 })
-  await a.wait(70)
-  await a.set({ rows: 0 })
-  await a.wait(320)
-  await a.snap({ tick: false })
-  await a.wait(60)
-}
-
 // In: the rows of the sheet, the first one ticked, the two pins, the card's lines, then the next card
 async function build(a: Act<S>) {
   await a.wait(150)
@@ -67,7 +51,7 @@ async function build(a: Act<S>) {
 export default function Scene({ lang, a }: SceneProps) {
   const t = TEXT[lang]
   return (
-    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build} clear={clear}>
+    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build}>
       {(s) => (
       <>
       <div className="sc-ci-card is-next" data-show={s.next || undefined}>

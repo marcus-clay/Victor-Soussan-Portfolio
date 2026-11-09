@@ -26,14 +26,6 @@ type S = { step: number }
 const EMPTY: S = { step: 0 }
 const DONE: S = { step: 4 }
 
-// Out: the buttons and the neutrals go first, then the swatch and the specimen
-async function clear(a: Act<S>) {
-  await a.set({ step: 2 })
-  await a.wait(110)
-  await a.set({ step: 0 })
-  await a.wait(330)
-}
-
 // In: swatch with its colour token, specimen with its font token, the four neutrals, the buttons with the radius token
 async function build(a: Act<S>) {
   await a.wait(200)
@@ -50,7 +42,7 @@ async function build(a: Act<S>) {
 export default function Scene({ lang, a }: SceneProps) {
   const t = TEXT[lang]
   return (
-    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build} clear={clear}>
+    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build}>
       {(s) => (
         <>
           <div className="sc-bs-card">

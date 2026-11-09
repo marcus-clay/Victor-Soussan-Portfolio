@@ -35,14 +35,6 @@ type S = { step: number }
 const EMPTY: S = { step: 0 }
 const DONE: S = { step: 4 }
 
-// Out: the thumbnail and the columns go first, then the title and the pick
-async function clear(a: Act<S>) {
-  await a.set({ step: 2 })
-  await a.wait(110)
-  await a.set({ step: 0 })
-  await a.wait(330)
-}
-
 // In: the layout is picked, the title is set, the columns come in one after the other, the thumbnail follows
 async function build(a: Act<S>) {
   await a.wait(200)
@@ -59,7 +51,7 @@ async function build(a: Act<S>) {
 export default function Scene({ lang, a }: SceneProps) {
   const t = TEXT[lang]
   return (
-    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build} clear={clear}>
+    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build}>
       {(s) => (
         <>
           <Window

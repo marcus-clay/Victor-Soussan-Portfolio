@@ -37,17 +37,6 @@ type S = { k: number; pill: boolean }
 const EMPTY: S = { k: 0, pill: false }
 const DONE: S = { k: 8, pill: true }
 
-// Out: the pill goes, then the cards, last first, in a short cascade
-async function clear(a: Act<S>) {
-  await a.set({ pill: false })
-  await a.wait(80)
-  for (const k of [6, 4, 2, 0]) {
-    await a.set({ k })
-    await a.wait(70)
-  }
-  await a.wait(250)
-}
-
 // In: Now, then Next, then Later (a card every 100 ms, a rest between columns), then the meeting
 async function build(a: Act<S>) {
   for (const k of [1, 2, 3]) {
@@ -72,7 +61,7 @@ async function build(a: Act<S>) {
 export default function Scene({ lang, a }: SceneProps) {
   const t = T[lang]
   return (
-    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build} clear={clear}>
+    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build}>
       {(s) => (
       <>
       <div className="sc-dd-sheet">

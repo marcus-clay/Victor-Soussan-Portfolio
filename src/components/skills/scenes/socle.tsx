@@ -35,24 +35,6 @@ type S = { done: number; now: boolean; tasks: number; tick: boolean }
 const EMPTY: S = { done: 0, now: false, tasks: 0, tick: false }
 const DONE: S = { done: NOW, now: true, tasks: 4, tick: true }
 
-// Out: the tick leaves, the tasks fade last first, then the steps go back
-async function clear(a: Act<S>) {
-  await a.set({ tick: false })
-  await a.wait(60)
-  await a.set({ tasks: 3 })
-  await a.wait(60)
-  await a.set({ tasks: 2 })
-  await a.wait(60)
-  await a.set({ tasks: 1 })
-  await a.wait(60)
-  await a.set({ tasks: 0, now: false })
-  await a.wait(100)
-  await a.set({ done: 1 })
-  await a.wait(80)
-  await a.set({ done: 0 })
-  await a.wait(300)
-}
-
 // In: Structurer then Outiller are ticked, Construire opens, its tasks come in, the first is ticked
 async function build(a: Act<S>) {
   await a.set({ done: 1 })
@@ -76,7 +58,7 @@ async function build(a: Act<S>) {
 export default function Scene({ lang, a }: SceneProps) {
   const t = T[lang]
   return (
-    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build} clear={clear}>
+    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build}>
       {(s) => (
       <Window
         title={t.title}

@@ -33,18 +33,13 @@ export function ClaudeCodeScene({ lang, a }: SceneProps) {
   const t = CC[lang]
   const empty: CCS = { n: 0 }
   const done: CCS = { n: 3 }
-  const clear = async (act: Act<CCS>) => {
-    await act.set({ n: 2 }); await act.wait(70)
-    await act.set({ n: 1 }); await act.wait(70)
-    await act.set({ n: 0 }); await act.wait(260)
-  }
   const build = async (act: Act<CCS>) => {
     for (const n of [1, 2, 3]) {
       await act.set({ n }); await act.wait(n === 3 ? 500 : 460)
     }
   }
   return (
-    <ResourceStage<CCS> height={H} a={a} initial={empty} poster={done} build={build} clear={clear}>
+    <ResourceStage<CCS> height={H} a={a} initial={empty} poster={done} build={build}>
       {(s) => (
         <div className="tp-root">
           <Window chrome="terminal" lights="grey" title={t.title} className="tp-win tp-term">
@@ -76,17 +71,13 @@ type FMS = { n: number }
 export function FigmaMcpScene({ a }: SceneProps) {
   const empty: FMS = { n: 2 }
   const done: FMS = { n: 6 }
-  const clear = async (act: Act<FMS>) => {
-    await act.set({ n: 4 }); await act.wait(90)
-    await act.set({ n: 2 }); await act.wait(260)
-  }
   const build = async (act: Act<FMS>) => {
     for (const n of [3, 4, 5, 6]) {
       await act.set({ n }); await act.wait(n === 6 ? 460 : 520)
     }
   }
   return (
-    <ResourceStage<FMS> height={H} a={a} initial={empty} poster={done} build={build} clear={clear}>
+    <ResourceStage<FMS> height={H} a={a} initial={empty} poster={done} build={build}>
       {(s) => (
         <div className="tp-root">
           <Window title="Button.css" className="tp-win tp-code-win">
@@ -111,15 +102,12 @@ export function PrototypeScene({ lang, a }: SceneProps) {
   const t = PR[lang]
   const empty: PRS = { live: false }
   const done: PRS = { live: true }
-  const clear = async (act: Act<PRS>) => {
-    await act.set({ live: false }); await act.wait(360)
-  }
   const build = async (act: Act<PRS>) => {
     await act.wait(900)
     await act.set({ live: true }); await act.wait(520)
   }
   return (
-    <ResourceStage<PRS> height={H} a={a} initial={empty} poster={done} build={build} clear={clear}>
+    <ResourceStage<PRS> height={H} a={a} initial={empty} poster={done} build={build}>
       {(s) => (
         <div className="tp-root">
           <Window url="proto.vercel.app" className="tp-win tp-browser">
@@ -158,17 +146,13 @@ export function PersonalOsScene({ lang, a }: SceneProps) {
   const t = OS[lang]
   const empty: OSS = { n: 1 }
   const done: OSS = { n: 4 }
-  const clear = async (act: Act<OSS>) => {
-    await act.set({ n: 2 }); await act.wait(90)
-    await act.set({ n: 1 }); await act.wait(260)
-  }
   const build = async (act: Act<OSS>) => {
     for (const n of [2, 3, 4]) {
       await act.set({ n }); await act.wait(n === 4 ? 460 : 560)
     }
   }
   return (
-    <ResourceStage<OSS> height={H} a={a} initial={empty} poster={done} build={build} clear={clear}>
+    <ResourceStage<OSS> height={H} a={a} initial={empty} poster={done} build={build}>
       {(s) => (
         <div className="tp-root">
           <Window

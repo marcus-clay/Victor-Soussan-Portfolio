@@ -35,14 +35,6 @@ type S = { v: boolean; m: boolean; page: number }
 const EMPTY: S = { v: false, m: false, page: 0 }
 const DONE: S = { v: true, m: true, page: 2 }
 
-/** Out (about 0.6 s): the button then the headline leave, and both dials go back to the middle. */
-async function clear(a: Act<S>) {
-  await a.set({ page: 1 })
-  await a.wait(80)
-  await a.set({ page: 0, v: false, m: false })
-  await a.wait(520)
-}
-
 /** In (about 3 s): variance is turned up and reads High, motion is turned down and reads Low, then the page they shape writes its headline and button. */
 async function build(a: Act<S>) {
   await a.wait(200)
@@ -59,7 +51,7 @@ async function build(a: Act<S>) {
 export default function Scene({ lang, a }: SceneProps) {
   const t = T[lang]
   return (
-    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build} clear={clear}>
+    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build}>
       {(s) => (
       <>
       <div className="sc-taste-skill-stack">

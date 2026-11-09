@@ -35,16 +35,6 @@ type S = { hero: boolean; marks: number; second: boolean }
 const initial: S = { hero: false, marks: 0, second: false }
 const poster: S = { hero: true, marks: 2, second: true }
 
-/** On hover: the finished frame clears in a short reverse cascade (about 500 ms), then the story builds up again and stays on the finished frame. */
-async function clear(a: Act<S>) {
-  await a.set({ second: false })
-  await a.wait(80)
-  await a.set({ marks: 0 })
-  await a.wait(80)
-  await a.set({ hero: false })
-  await a.wait(150)
-}
-
 /** The card lands, the two days are marked 140 ms apart, the second card comes out from behind: it ends on `poster`. */
 async function build(a: Act<S>) {
   await a.wait(100)
@@ -61,7 +51,7 @@ async function build(a: Act<S>) {
 export default function Scene({ lang, a }: SceneProps) {
   const t = T[lang]
   return (
-    <ResourceStage<S> a={a} initial={initial} poster={poster} build={build} clear={clear}>
+    <ResourceStage<S> a={a} initial={initial} poster={poster} build={build}>
       {(s) => (
         <div className="sc-res-po-sync">
           <div className="sc-res-po-sync-back" data-show={s.second || undefined}>

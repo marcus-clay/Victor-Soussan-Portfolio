@@ -25,18 +25,6 @@ type S = { n: number; cnt: number; count: boolean; done: boolean }
 const EMPTY: S = { n: 0, cnt: 1, count: false, done: false }
 const DONE: S = { n: 7, cnt: 7, count: true, done: true }
 
-// Out: the state and the count fade, the figure goes back to 1 while it is hidden, the segments empty last first
-async function clear(a: Act<S>) {
-  await a.set({ done: false, count: false })
-  await a.wait(260)
-  await a.snap({ cnt: 1 })
-  for (const n of [6, 5, 4, 3, 2, 1, 0]) {
-    await a.set({ n })
-    await a.wait(40)
-  }
-  await a.wait(120)
-}
-
 // In: the count returns, the seven phases fill one after the other while the figure rolls to 7, the state arrives
 async function build(a: Act<S>) {
   await a.wait(250)
@@ -55,7 +43,7 @@ async function build(a: Act<S>) {
 export default function Scene({ lang, a }: SceneProps) {
   const t = TEXT[lang]
   return (
-    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build} clear={clear}>
+    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build}>
       {(s) => (
       <>
       <Window url={t.url} urlShape="pill" className="sc-ship-to-show-win" body={{ className: 'sc-ship-to-show-page' }}>

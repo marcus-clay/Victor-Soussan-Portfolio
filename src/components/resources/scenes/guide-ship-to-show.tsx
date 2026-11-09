@@ -21,16 +21,6 @@ type S = { step: number; done: boolean; pressed: boolean; out: boolean }
 const EMPTY: S = { step: 6, done: false, pressed: false, out: false }
 const REST: S = { step: 7, done: true, pressed: false, out: false }
 
-/** On hover, `clear` takes the finished frame back to phase 6 (about 0.7 s): the card fades out, its state is set back while it is hidden, it fades in again. */
-const clear = async (a: Act<S>) => {
-  await a.set({ out: true })
-  await a.wait(320)
-  await a.snap({ step: 6, done: false })
-  await a.wait(60)
-  await a.set({ out: false })
-  await a.wait(300)
-}
-
 /** then `build` ends on the finished frame: the play button is pressed, the seventh segment fills, the label rolls to Published and the check fills. */
 const build = async (a: Act<S>) => {
   await a.wait(500)
@@ -46,7 +36,7 @@ const build = async (a: Act<S>) => {
 export default function Scene({ lang, a }: SceneProps) {
   const t = T[lang]
   return (
-    <ResourceStage<S> a={a} initial={EMPTY} poster={REST} build={build} clear={clear}>
+    <ResourceStage<S> a={a} initial={EMPTY} poster={REST} build={build}>
       {(s) => (
       <div className="sc-res-sts-root">
         <Window tabs={[t.title, <Bar key="o" w={44} h={6} tone={2} />]} url={t.url} urlShape="pill" className="sc-res-sts-win" body={{ className: 'sc-res-sts-page' }}>

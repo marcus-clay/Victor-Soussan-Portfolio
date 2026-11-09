@@ -22,13 +22,6 @@ type S = { rows: number; pick: boolean; angle: boolean }
 const EMPTY: S = { rows: 1, pick: false, angle: false }
 const DONE: S = { rows: LINES, pick: true, angle: true }
 
-async function clear(a: Act<S>) {
-  await a.set({ angle: false, pick: false })
-  await a.wait(120)
-  await a.stagger(Array.from({ length: LINES - 1 }, (_, i) => LINES - 1 - i), (n) => a.set({ rows: n }), 45)
-  await a.wait(260)
-}
-
 async function build(a: Act<S>) {
   await a.wait(300)
   await a.stagger(Array.from({ length: LINES - 1 }, (_, i) => i + 2), (n) => a.set({ rows: n }), 110)
@@ -65,7 +58,7 @@ const T = {
 export default function Scene({ lang, a }: SceneProps) {
   const t = T[lang]
   return (
-    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build} clear={clear}>
+    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build}>
       {(s) => (
         <>
           <Window title={t.title} className="sc-signal-research-win">

@@ -31,15 +31,6 @@ type S = { add: boolean; row: boolean; bar: boolean }
 const EMPTY: S = { add: false, row: false, bar: false }
 const DONE: S = { add: true, row: true, bar: true }
 
-async function clear(a: Act<S>) {
-  await a.set({ bar: false })
-  await a.wait(100)
-  await a.set({ row: false })
-  await a.wait(90)
-  await a.set({ add: false })
-  await a.wait(330)
-}
-
 async function build(a: Act<S>) {
   await a.wait(300)
   await a.set({ add: true })
@@ -53,7 +44,7 @@ async function build(a: Act<S>) {
 export default function Scene({ lang, a }: SceneProps) {
   const t = TEXT[lang]
   return (
-    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build} clear={clear}>
+    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build}>
       {(s) => (
       <div className="sc-transitions-polish-root" data-add={s.add || undefined}>
       <Window title="menu.css" className="sc-transitions-polish-win" body={{ className: 'sc-transitions-polish-body' }}>

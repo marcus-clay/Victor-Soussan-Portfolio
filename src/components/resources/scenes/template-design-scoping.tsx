@@ -45,15 +45,6 @@ const wordsOf = (line: string) => line.split(' ').length
 
 const sequences = (lang: 'en' | 'fr') => {
   const [n1, n2] = T[lang].whyText.map(wordsOf)
-  // From the finished frame to the empty one: the stamp, then the second line, then the first (a short reverse cascade)
-  const clear = async (a: Act<S>) => {
-    await a.set({ stamp: false, tick: false })
-    await a.wait(110)
-    await a.set({ w2: 0 })
-    await a.wait(90)
-    await a.set({ w1: 0 })
-    await a.wait(250)
-  }
   // From the empty frame to the finished one, where it stays
   const build = async (a: Act<S>) => {
     for (let i = 1; i <= n1; i++) {
@@ -71,7 +62,7 @@ const sequences = (lang: 'en' | 'fr') => {
     await a.set({ tick: true })
     await a.wait(300)
   }
-  return { build, clear }
+  return { build }
 }
 const SEQUENCES = { en: sequences('en'), fr: sequences('fr') }
 
@@ -79,7 +70,7 @@ export default function Scene({ lang, a }: SceneProps) {
   const t = T[lang]
   const full: S = { w1: wordsOf(t.whyText[0]), w2: wordsOf(t.whyText[1]), stamp: true, tick: true }
   return (
-    <ResourceStage<S> a={a} initial={INITIAL} poster={full} build={SEQUENCES[lang].build} clear={SEQUENCES[lang].clear}>
+    <ResourceStage<S> a={a} initial={INITIAL} poster={full} build={SEQUENCES[lang].build}>
       {(s) => (
         <div className="sc-res-scoping-root">
           <div className="sc-res-scoping-sheet">

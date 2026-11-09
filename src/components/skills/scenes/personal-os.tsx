@@ -46,20 +46,6 @@ type S = { card: boolean; head: boolean; lines: number; rest: boolean }
 const EMPTY: S = { card: false, head: false, lines: 0, rest: false }
 const DONE: S = { card: true, head: true, lines: 3, rest: true }
 
-// Out: the rest, the lines (last first) and the date go, the card leaves with them
-async function clear(a: Act<S>) {
-  await a.set({ rest: false })
-  await a.wait(60)
-  await a.set({ lines: 2 })
-  await a.wait(60)
-  await a.set({ lines: 1 })
-  await a.wait(60)
-  await a.set({ lines: 0, card: false })
-  await a.wait(80)
-  await a.set({ head: false })
-  await a.wait(300)
-}
-
 // In: the command card, then the date line, the three lines of the journal and the rest
 async function build(a: Act<S>) {
   await a.set({ card: true })
@@ -79,7 +65,7 @@ async function build(a: Act<S>) {
 export default function Scene({ lang, a }: SceneProps) {
   const t = T[lang]
   return (
-    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build} clear={clear}>
+    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build}>
       {(s) => (
       <>
       <Window

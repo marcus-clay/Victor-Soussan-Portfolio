@@ -20,17 +20,6 @@ type S = { n: number; ui: boolean }
 const EMPTY: S = { n: 1, ui: false }
 const DONE: S = { n: 4, ui: true }
 
-async function clear(a: Act<S>) {
-  await a.set({ ui: false })
-  await a.wait(60)
-  await a.set({ n: 3 })
-  await a.wait(70)
-  await a.set({ n: 2 })
-  await a.wait(70)
-  await a.set({ n: 1 })
-  await a.wait(320)
-}
-
 async function build(a: Act<S>) {
   await a.wait(250)
   await a.set({ n: 2 })
@@ -58,7 +47,7 @@ const sy = (i: number) => ORIGIN.y - 0.848 * (i * GAP - 1.5 * GAP) + 6
 export default function Scene({ lang, a }: SceneProps) {
   const labels = T[lang]
   return (
-    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build} clear={clear}>
+    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build}>
       {(s) => (
         <>
           <div className="sc-layers-skills-iso">

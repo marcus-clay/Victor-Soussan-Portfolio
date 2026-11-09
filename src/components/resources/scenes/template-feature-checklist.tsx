@@ -37,17 +37,6 @@ type S = { n: number; cnt: number; pill: boolean }
 const EMPTY: S = { n: 0, cnt: 0, pill: true }
 const DONE: S = { n: 2, cnt: 2, pill: true }
 
-// Out: the pill leaves while the ticks fade, last line first; the figure goes back while the pill is hidden
-async function clear(a: Act<S>) {
-  await a.set({ pill: false })
-  await a.set({ n: 1 })
-  await a.wait(90)
-  await a.set({ n: 0 })
-  await a.wait(400)
-  await a.snap({ cnt: 0 })
-  await a.wait(80)
-}
-
 // In: the pill returns, then the first and the second line are ticked, the meter fills and the figure rolls 1, 2
 async function build(a: Act<S>) {
   await a.set({ pill: true })
@@ -65,7 +54,7 @@ async function build(a: Act<S>) {
 export default function Scene({ lang, a }: SceneProps) {
   const t = T[lang]
   return (
-    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build} clear={clear}>
+    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build}>
       {(s) => (
         <div className="sc-res-checklist-root">
           <div className="sc-res-checklist-card">

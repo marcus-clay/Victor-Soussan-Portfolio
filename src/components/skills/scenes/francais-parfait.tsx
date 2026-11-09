@@ -28,12 +28,6 @@ type S = { insp: boolean; rows: number; m: number }
 const EMPTY: S = { insp: false, rows: 0, m: 0 }
 const DONE: S = { insp: true, rows: 4, m: 4 }
 
-// Out: the marks go out of the sentence while the rows leave, then the inspector
-async function clear(a: Act<S>) {
-  await a.set({ m: 0, rows: 0, insp: false })
-  await a.wait(480)
-}
-
 // In: the inspector opens and fills its rows, then the families are lit: capital, ligature, spaces, quotation marks
 async function build(a: Act<S>) {
   await a.wait(150)
@@ -54,7 +48,7 @@ async function build(a: Act<S>) {
 export default function Scene({ lang, a }: SceneProps) {
   const l = LABELS[lang]
   return (
-    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build} clear={clear}>
+    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build}>
       {(s) => {
         // Plain functions returning elements (not components), so the marks keep their identity from one state to the next
         const mark = (k: string, at: number, c: string) => (

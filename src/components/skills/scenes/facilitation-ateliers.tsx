@@ -46,17 +46,6 @@ type S = { n: number; goal: boolean; pill: boolean }
 const EMPTY: S = { n: 0, goal: false, pill: false }
 const DONE: S = { n: 5, goal: true, pill: true }
 
-// Out: the decision goes dark, then the lines leave last first while the pill goes
-async function clear(a: Act<S>) {
-  await a.set({ goal: false, pill: false })
-  await a.wait(60)
-  for (const n of [4, 3, 2, 1, 0]) {
-    await a.set({ n })
-    await a.wait(60)
-  }
-  await a.wait(120)
-}
-
 // In: the pill returns, the steps are written one after the other, the decision is lit last
 async function build(a: Act<S>) {
   await a.set({ pill: true })
@@ -72,7 +61,7 @@ async function build(a: Act<S>) {
 export default function Scene({ lang, a }: SceneProps) {
   const t = TEXT[lang]
   return (
-    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build} clear={clear}>
+    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build}>
       {(s) => (
       <>
       <Window title={t.title} className="sc-facilitation-ateliers-win" body={{ className: 'sc-facilitation-ateliers-body' }}>

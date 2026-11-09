@@ -25,14 +25,6 @@ type S = { step: number }
 const EMPTY: S = { step: 0 }
 const DONE: S = { step: 4 }
 
-// Out: the skills and the file go first, then the answer and the request
-async function clear(a: Act<S>) {
-  await a.set({ step: 2 })
-  await a.wait(110)
-  await a.set({ step: 0 })
-  await a.wait(330)
-}
-
 // In: the request, then the answer, then the file, then the two skills one after the other
 async function build(a: Act<S>) {
   await a.wait(250)
@@ -49,7 +41,7 @@ async function build(a: Act<S>) {
 export default function Scene({ lang, a }: SceneProps) {
   const t = TEXT[lang]
   return (
-    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build} clear={clear}>
+    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build}>
       {(s) => (
         <Window title={t.win} className="sc-px-win">
           <div className="sc-px-chat">

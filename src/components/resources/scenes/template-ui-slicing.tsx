@@ -28,16 +28,6 @@ type S = { n: 0 | 1 | 2 | 3 }
 const initial: S = { n: 0 }
 const poster: S = { n: 3 }
 
-/** The outlines leave in reverse order, 90 ms apart (about 0.6 s with the last one settling) */
-async function clear(a: Act<S>) {
-  await a.set({ n: 2 })
-  await a.wait(90)
-  await a.set({ n: 1 })
-  await a.wait(90)
-  await a.set({ n: 0 })
-  await a.wait(360)
-}
-
 /** The outlines are drawn one after the other and the story ends on the finished frame (`poster`) */
 async function build(a: Act<S>) {
   await a.wait(150)
@@ -52,7 +42,7 @@ async function build(a: Act<S>) {
 export default function Scene({ lang, a }: SceneProps) {
   const t = T[lang]
   return (
-    <ResourceStage<S> a={a} initial={initial} build={build} clear={clear} poster={poster}>
+    <ResourceStage<S> a={a} initial={initial} build={build} poster={poster}>
       {(s) => (
         <div className="sc-res-slicing">
           <Window url="acme.co/catalogue" urlShape="pill" className="win" body={{ className: 'page' }}>

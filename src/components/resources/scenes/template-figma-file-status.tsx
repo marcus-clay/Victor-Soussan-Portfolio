@@ -44,14 +44,6 @@ const INITIAL: S = { status: 0, fill: 0, hide: false }
 /** The resting frame: the page is ready to dev and its frame is complete */
 const POSTER: S = { status: 2, fill: 2, hide: false }
 
-/** On hover: `clear` takes the finished frame back to the empty one (the frame empties, the status goes back to Explo while its chip is hidden), `build` goes Explo, WIP (the fields appear), Ready to dev (the button appears) and ends on the finished frame. */
-async function clear(a: Act<S>) {
-  await a.set({ fill: 0, hide: true })
-  await a.wait(500)
-  await a.snap({ status: 0 })
-  await a.set({ hide: false })
-  await a.wait(300)
-}
 async function build(a: Act<S>) {
   await a.wait(300)
   await a.set({ status: 1, fill: 1 })
@@ -66,7 +58,7 @@ const d = (enter: number, exit: number) => ({ '--d-in': `${enter}ms`, '--d-out':
 export default function Scene({ lang, a }: SceneProps) {
   const t = T[lang]
   return (
-    <ResourceStage<S> a={a} initial={INITIAL} poster={POSTER} build={build} clear={clear}>
+    <ResourceStage<S> a={a} initial={INITIAL} poster={POSTER} build={build}>
       {(s) => (
         <div className="sc-res-figma-status-root">
           <div className="sc-res-figma-status-panel">
