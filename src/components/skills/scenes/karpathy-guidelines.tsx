@@ -28,16 +28,6 @@ type S = { rules: number; mark: boolean; add: boolean }
 const EMPTY: S = { rules: 0, mark: false, add: false }
 const DONE: S = { rules: 3, mark: true, add: true }
 
-// Out: the new line goes first, the old line is released, the rules leave last one first
-async function clear(a: Act<S>) {
-  await a.set({ add: false, rules: 2 })
-  await a.wait(80)
-  await a.set({ mark: false, rules: 1 })
-  await a.wait(80)
-  await a.set({ rules: 0 })
-  await a.wait(360)
-}
-
 // In: the three rules one after the other, a rest, the old line is struck, a rest, the new line is written
 async function build(a: Act<S>) {
   await a.wait(250)
@@ -56,7 +46,7 @@ async function build(a: Act<S>) {
 export default function Scene({ lang, a }: SceneProps) {
   const t = T[lang]
   return (
-    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build} clear={clear}>
+    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build}>
       {(s) => (
       <>
       <Window title="total.ts" className="sc-kg-win">

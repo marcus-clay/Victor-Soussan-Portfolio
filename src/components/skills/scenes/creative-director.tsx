@@ -21,15 +21,6 @@ const SCORES: S['m'] = [0.86, 0.94, 0.7]
 const EMPTY: S = { note: false, m: [0, 0, 0], badge: false, quick: true }
 const DONE: S = { note: true, m: SCORES, badge: true, quick: false }
 
-async function clear(a: Act<S>) {
-  await a.set({ badge: false })
-  await a.wait(80)
-  await a.set({ m: [0, 0, 0], quick: true })
-  await a.wait(120)
-  await a.set({ note: false })
-  await a.wait(360)
-}
-
 async function build(a: Act<S>) {
   await a.wait(300)
   await a.set({ note: true })
@@ -74,7 +65,7 @@ const T = {
 export default function Scene({ lang, a }: SceneProps) {
   const t = T[lang]
   return (
-    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build} clear={clear}>
+    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build}>
       {(s) => (
         <>
           <section className="sc-creative-director-card">

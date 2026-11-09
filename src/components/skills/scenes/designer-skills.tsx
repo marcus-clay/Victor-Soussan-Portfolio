@@ -37,16 +37,6 @@ type S = { back: boolean; notes: number; mid: boolean; dots: number }
 const EMPTY: S = { back: false, notes: 0, mid: false, dots: 0 }
 const DONE: S = { back: true, notes: 3, mid: true, dots: 4 }
 
-/** Out (about 0.6 s): the journey steps, then its card, then the notes and their card leave from the front to the back. */
-async function clear(a: Act<S>) {
-  await a.set({ dots: 0 })
-  await a.wait(80)
-  await a.set({ mid: false })
-  await a.wait(90)
-  await a.set({ back: false, notes: 0 })
-  await a.wait(400)
-}
-
 /** In (about 3.3 s): the wall of notes slides in behind the persona and its notes appear, then the journey card and its four steps, the last one in the accent. */
 async function build(a: Act<S>) {
   await a.wait(150)
@@ -70,7 +60,7 @@ async function build(a: Act<S>) {
 export default function Scene({ lang, a }: SceneProps) {
   const t = T[lang]
   return (
-    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build} clear={clear}>
+    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build}>
       {(s) => (
       <div className="sc-designer-skills-pile">
         <section className="sc-designer-skills-card sc-designer-skills-card--back" data-on={s.back || undefined} aria-hidden>

@@ -45,19 +45,6 @@ type S = { query: string; card: boolean; lines: number }
 const EMPTY: S = { query: '', card: false, lines: 0 }
 const REST: S = { query: '/inbox', card: true, lines: 3 }
 
-/** On hover, `clear` takes the finished frame back to the empty one (about 0.7 s): the lines fade out in reverse, then the palette. */
-const clear = async (a: Act<S>) => {
-  await a.set({ lines: 2 })
-  await a.wait(90)
-  await a.set({ lines: 1 })
-  await a.wait(90)
-  await a.set({ lines: 0 })
-  await a.wait(110)
-  await a.set({ card: false })
-  await a.wait(300)
-  await a.snap({ query: '' })
-}
-
 /** then `build` writes it again and ends on the finished frame: the palette arrives and `/inbox` is typed, its result appears, the three lines are written one after the other. */
 const build = async (a: Act<S>) => {
   await a.wait(150)
@@ -76,7 +63,7 @@ export default function Scene({ lang, a }: SceneProps) {
   const t = T[lang]
   const typed = (s: S) => s.query === t.command
   return (
-    <ResourceStage<S> a={a} initial={EMPTY} poster={REST} build={build} clear={clear}>
+    <ResourceStage<S> a={a} initial={EMPTY} poster={REST} build={build}>
       {(s) => (
         <div className="sc-res-os-root">
           <Window

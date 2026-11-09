@@ -28,22 +28,6 @@ type S = { q: number; qOn: boolean; rows: number; pick: boolean; term: boolean }
 const EMPTY: S = { q: 0, qOn: true, rows: 0, pick: false, term: false }
 const DONE: S = { q: 99, qOn: true, rows: 3, pick: true, term: true }
 
-// Out: the terminal first, then the skills last one first, then the query fades and is emptied while hidden
-async function clear(a: Act<S>) {
-  await a.set({ term: false, pick: false })
-  await a.wait(60)
-  await a.set({ rows: 2 })
-  await a.wait(70)
-  await a.set({ rows: 1 })
-  await a.wait(70)
-  await a.set({ rows: 0, qOn: false })
-  await a.wait(300)
-  await a.snap({ q: 0 })
-  await a.wait(40)
-  await a.set({ qOn: true })
-  await a.wait(180)
-}
-
 /** The longest query of the two languages: the typing loop runs this many steps (a shorter query is finished earlier) */
 const QUERY_MAX = Math.max(...Object.values(T).map((x) => Array.from(x.query).length))
 
@@ -70,7 +54,7 @@ async function build(a: Act<S>) {
 export default function Scene({ lang, a }: SceneProps) {
   const t = T[lang]
   return (
-    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build} clear={clear}>
+    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build}>
       {(s) => (
       <>
       <div className="sc-fs-pal">

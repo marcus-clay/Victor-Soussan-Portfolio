@@ -22,8 +22,7 @@ const HOLD = 1400
  * (the nearest ancestor marked `data-hover-scope`, not just the picture); on a touch screen, while the picture is on
  * screen. Each turn: a frozen copy of the finished frame lies on top, the scene is set to `initial` under it and the copy
  * dissolves while `build` builds it up again (a seamless loop, like a GIF: never an empty picture), up to
- * the finished frame, which holds a moment, then the next turn starts. Never backwards: the older `clear` (an exit
- * sequence that undid the scene before building it again, a swing) is no longer played. When the pointer leaves, the
+ * the finished frame, which holds a moment, then the next turn starts. Never backwards. When the pointer leaves, the
  * scene settles back to the finished frame.
  *
  * Reduced motion: a hover is the visitor asking, so the story still plays on hover (the parts skip their own tweens);
@@ -46,8 +45,6 @@ export default function ResourceStage<S extends object>({
   poster: S
   /** The entry sequence, from `initial` to `poster` */
   build?: Script<S>
-  /** No longer played (the story never goes backwards); kept so the scenes that still pass it compile */
-  clear?: Script<S>
   /** Older form: a loop that starts and ends on `initial` */
   script?: Script<S>
   speed?: number

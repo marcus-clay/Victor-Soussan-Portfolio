@@ -25,16 +25,6 @@ type S = { chart: boolean; pts: number; low: boolean; flag: boolean; who: boolea
 const EMPTY: S = { chart: false, pts: 0, low: false, flag: false, who: false }
 const DONE: S = { chart: true, pts: 4, low: true, flag: true, who: true }
 
-// Out: the persona, then the flag and the lit point, then the curve and its points together
-async function clear(a: Act<S>) {
-  await a.set({ who: false })
-  await a.wait(90)
-  await a.set({ flag: false, low: false })
-  await a.wait(90)
-  await a.set({ chart: false, pts: 0 })
-  await a.wait(320)
-}
-
 // In: the curve is drawn (about 1.2 s) and each point appears as the line reaches it, a rest, the low point lights up
 // and is flagged, a rest, the persona arrives
 async function build(a: Act<S>) {
@@ -63,7 +53,7 @@ const PTS = chartPoints({ data: DATA, width: W, height: H, dot: false, max: 10 }
 export default function Scene({ lang, a }: SceneProps) {
   const t = T[lang]
   return (
-    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build} clear={clear}>
+    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build}>
       {(s) => (
       <>
       <Window title={t.title} className="sc-ud-win">

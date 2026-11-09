@@ -34,20 +34,6 @@ type S = { step: number; notes: number; concepts: number; lines: boolean; card: 
 const initial: S = { step: 0, notes: 0, concepts: 0, lines: false, card: false, rules: false, specs: false }
 const poster: S = { step: 3, notes: NOTES.length, concepts: 2, lines: true, card: true, rules: true, specs: true }
 
-/** On hover: the finished board clears in a short reverse cascade (about 600 ms), then the story builds up again and stays on the finished board. */
-async function clear(a: Act<S>) {
-  await a.set({ specs: false })
-  await a.wait(80)
-  await a.set({ card: false, rules: false })
-  await a.wait(80)
-  await a.set({ lines: false })
-  await a.wait(80)
-  await a.set({ concepts: 0 })
-  await a.wait(80)
-  await a.set({ notes: 0, step: 0 })
-  await a.wait(150)
-}
-
 /** Notes one by one (step 1), the two concepts (step 2), the curves, the card, its lines, its specs (step 3): it ends on `poster`. */
 async function build(a: Act<S>) {
   await a.wait(100)
@@ -75,7 +61,7 @@ async function build(a: Act<S>) {
 export default function Scene({ lang, a }: SceneProps) {
   const t = T[lang]
   return (
-    <ResourceStage<S> a={a} initial={initial} poster={poster} build={build} clear={clear}>
+    <ResourceStage<S> a={a} initial={initial} poster={poster} build={build}>
       {(s) => (
         <div className="sc-res-teardown">
           <span className="sc-res-teardown-funnel" aria-hidden />

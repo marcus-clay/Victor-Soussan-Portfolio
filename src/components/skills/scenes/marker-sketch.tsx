@@ -60,20 +60,6 @@ type S = { steps: number; loop: boolean; hl: boolean; wire: number; note: boolea
 const EMPTY: S = { steps: 0, loop: false, hl: false, wire: 0, note: false }
 const DONE: S = { steps: 3, loop: true, hl: true, wire: 3, note: true }
 
-// Out: the note leaves, then the strokes are rubbed out from the lowest up, the words fade with their boxes
-async function clear(a: Act<S>) {
-  await a.set({ note: false, wire: 2 })
-  await a.wait(80)
-  await a.set({ wire: 0, hl: false })
-  await a.wait(100)
-  await a.set({ loop: false, steps: 2 })
-  await a.wait(80)
-  await a.set({ steps: 1 })
-  await a.wait(80)
-  await a.set({ steps: 0 })
-  await a.wait(300)
-}
-
 // In: the three steps and their arrows, the loop back, the highlighter and the accent, the wireframe, the note
 async function build(a: Act<S>) {
   await a.wait(100)
@@ -100,7 +86,7 @@ async function build(a: Act<S>) {
 export default function Scene({ lang, a }: SceneProps) {
   const t = TEXT[lang]
   return (
-    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build} clear={clear}>
+    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build}>
       {(s) => (
         <div className="sc-ms-paper">
           <svg className="sc-ms-svg" viewBox="0 0 400 300" aria-hidden>

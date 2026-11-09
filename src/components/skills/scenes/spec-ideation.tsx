@@ -39,20 +39,6 @@ type S = { notes: number; kept: number; cut: boolean }
 const EMPTY: S = { notes: 0, kept: 0, cut: false }
 const DONE: S = { notes: 3, kept: 2, cut: true }
 
-// Out: the left-out decision and its strike go, then the kept ones, then the ideas, last first
-async function clear(a: Act<S>) {
-  await a.set({ cut: false })
-  await a.wait(80)
-  await a.set({ kept: 1 })
-  await a.wait(70)
-  await a.set({ kept: 0, notes: 2 })
-  await a.wait(80)
-  await a.set({ notes: 1 })
-  await a.wait(70)
-  await a.set({ notes: 0 })
-  await a.wait(300)
-}
-
 // In: the ideas, one by one; the two decisions kept; the third one left out, with its idea struck through
 async function build(a: Act<S>) {
   for (const notes of [1, 2, 3]) {
@@ -71,7 +57,7 @@ async function build(a: Act<S>) {
 export default function Scene({ lang, a }: SceneProps) {
   const t = T[lang]
   return (
-    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build} clear={clear}>
+    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build}>
       {(s) => (
       <>
       <div className="sc-si-sheet">

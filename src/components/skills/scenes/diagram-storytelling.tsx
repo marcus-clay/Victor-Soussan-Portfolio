@@ -44,16 +44,6 @@ type S = { shown: number; a1: boolean; hot: boolean; a2: boolean }
 const EMPTY: S = { shown: 1, a1: false, hot: false, a2: false }
 const DONE: S = { shown: 3, a1: true, hot: true, a2: true }
 
-// Out: the last arrow and screen, the accent, then the first arrow and the middle screen
-async function clear(a: Act<S>) {
-  await a.set({ a2: false, shown: 2 })
-  await a.wait(80)
-  await a.set({ hot: false })
-  await a.wait(90)
-  await a.set({ a1: false, shown: 1 })
-  await a.wait(330)
-}
-
 // In: the first arrow and the Search screen, its accent zone, then the accent arrow and the Result screen
 async function build(a: Act<S>) {
   await a.wait(350)
@@ -72,7 +62,7 @@ async function build(a: Act<S>) {
 export default function Scene({ lang, a }: SceneProps) {
   const t = TEXT[lang]
   return (
-    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build} clear={clear}>
+    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build}>
       {(s) => (
         <div className="sc-ds-slide">
           <div className="sc-ds-title">{t.title}</div>

@@ -27,20 +27,6 @@ type S = { cmd: boolean; tool: boolean; rows: number; ok: boolean }
 const EMPTY: S = { cmd: false, tool: false, rows: 0, ok: false }
 const DONE: S = { cmd: true, tool: true, rows: 4, ok: true }
 
-// Out: the confirmation goes, then the rows leave last first with the tool call and the command
-async function clear(a: Act<S>) {
-  await a.set({ ok: false })
-  await a.wait(70)
-  await a.set({ rows: 3, tool: false })
-  await a.wait(55)
-  await a.set({ rows: 2, cmd: false })
-  await a.wait(55)
-  await a.set({ rows: 1 })
-  await a.wait(55)
-  await a.set({ rows: 0 })
-  await a.wait(260)
-}
-
 // In: the command is typed, the tool is called, the variables appear in the table one after the other, the terminal confirms
 async function build(a: Act<S>) {
   await a.wait(250)
@@ -60,7 +46,7 @@ async function build(a: Act<S>) {
 export default function Scene({ lang, a }: SceneProps) {
   const t = TEXT[lang]
   return (
-    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build} clear={clear}>
+    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build}>
       {(s) => (
       <>
       <Window

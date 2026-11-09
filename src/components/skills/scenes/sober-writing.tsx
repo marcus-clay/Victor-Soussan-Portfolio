@@ -35,16 +35,6 @@ type S = { struck: boolean; fact: boolean; chip: boolean }
 const EMPTY: S = { struck: false, fact: false, chip: false }
 const DONE: S = { struck: true, fact: true, chip: true }
 
-// Out: the chip, then the sentence of fact, then the mark on the superlative
-async function clear(a: Act<S>) {
-  await a.set({ chip: false })
-  await a.wait(90)
-  await a.set({ fact: false })
-  await a.wait(110)
-  await a.set({ struck: false })
-  await a.wait(330)
-}
-
 // In: the superlative is read, marked and struck, the fact is written under it, then the chip says what was done
 async function build(a: Act<S>) {
   await a.wait(650)
@@ -59,7 +49,7 @@ async function build(a: Act<S>) {
 export default function Scene({ lang, a }: SceneProps) {
   const t = TEXT[lang]
   return (
-    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build} clear={clear}>
+    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build}>
       {(s) => (
       <>
       <Window className="sc-sw-win">

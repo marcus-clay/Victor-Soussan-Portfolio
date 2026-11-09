@@ -23,17 +23,6 @@ type S = { tog: boolean; badge: boolean; modal: boolean; toast: boolean; menu: b
 const EMPTY: S = { tog: false, badge: false, modal: false, toast: false, menu: false }
 const DONE: S = { tog: true, badge: true, modal: true, toast: true, menu: true }
 
-async function clear(a: Act<S>) {
-  await a.set({ menu: false })
-  await a.wait(80)
-  await a.set({ toast: false, modal: false })
-  await a.wait(80)
-  await a.set({ badge: false })
-  await a.wait(60)
-  await a.set({ tog: false })
-  await a.wait(320)
-}
-
 async function build(a: Act<S>) {
   await a.wait(300)
   await a.set({ tog: true })
@@ -64,7 +53,7 @@ export default function Scene({ lang, a }: SceneProps) {
       </span>
     ))
   return (
-    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build} clear={clear}>
+    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build}>
       {(s) => {
         const modal = (
           <div className="sc-transitions-dev-modal sc-transitions-dev-in" data-on={s.modal || undefined}>

@@ -23,16 +23,6 @@ type S = { card: boolean; p1: boolean; p2: boolean; t1: boolean; t2: boolean }
 const EMPTY: S = { card: false, p1: false, p2: false, t1: false, t2: false }
 const DONE: S = { card: true, p1: true, p2: true, t1: true, t2: true }
 
-// Out: the second pin and its tag, then the first, then the job card
-async function clear(a: Act<S>) {
-  await a.set({ p2: false, t2: false })
-  await a.wait(90)
-  await a.set({ p1: false, t1: false })
-  await a.wait(90)
-  await a.set({ card: false })
-  await a.wait(340)
-}
-
 // In: the job card, a rest to read it, then pin 1 with its tag, a rest, then pin 2 with its tag
 async function build(a: Act<S>) {
   await a.wait(250)
@@ -68,7 +58,7 @@ const T = {
 export default function Scene({ lang, a }: SceneProps) {
   const t = T[lang]
   return (
-    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build} clear={clear}>
+    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build}>
       {(s) => (
       <>
       <Phone width={272} frame="soft" className="sc-ux-phone">

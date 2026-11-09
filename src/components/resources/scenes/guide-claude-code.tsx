@@ -28,16 +28,6 @@ type S = { typed: string; hide: boolean; read: boolean; write: boolean; screen: 
 /** The empty frame the story builds from: an empty prompt, an empty app */
 const INITIAL: S = { typed: '', hide: false, read: false, write: false, screen: false }
 
-/** On hover: `clear` takes the finished frame back to the empty one (everything leaves together, then the prompt is cleared while hidden), `build` types the prompt, reads the file, writes the screen and builds the phone blocks (the button last), and ends on the finished frame. */
-function makeClear() {
-  return async function clear(a: Act<S>) {
-    await a.set({ hide: true, screen: false, write: false, read: false })
-    await a.wait(450)
-    await a.snap({ typed: '' })
-    await a.set({ hide: false })
-    await a.wait(200)
-  }
-}
 function makeBuild(prompt: string) {
   return async function build(a: Act<S>) {
     await a.type('typed', prompt, { interval: 30 })
@@ -57,7 +47,7 @@ export default function Scene({ lang, a }: SceneProps) {
   /** The finished frame: the resting look, and where `build` ends */
   const poster: S = { typed: t.prompt, hide: false, read: true, write: true, screen: true }
   return (
-    <ResourceStage<S> a={a} initial={INITIAL} poster={poster} build={makeBuild(t.prompt)} clear={makeClear()}>
+    <ResourceStage<S> a={a} initial={INITIAL} poster={poster} build={makeBuild(t.prompt)}>
       {(s) => (
         <div className="sc-res-claude-code-root">
           <Phone width={190} frame="silver" className="sc-res-claude-code-phone">

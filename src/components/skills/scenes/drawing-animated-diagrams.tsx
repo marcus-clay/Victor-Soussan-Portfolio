@@ -28,17 +28,6 @@ type S = { code: number; b1: boolean; a1: boolean; b2: boolean; a2: boolean }
 const EMPTY: S = { code: 0, b1: false, a1: false, b2: false, a2: false }
 const DONE: S = { code: 2, b1: true, a1: true, b2: true, a2: true }
 
-async function clear(a: Act<S>) {
-  await a.set({ a2: false })
-  await a.wait(100)
-  await a.set({ b2: false, a1: false })
-  await a.wait(100)
-  await a.set({ b1: false })
-  await a.wait(120)
-  await a.set({ code: 0 })
-  await a.wait(300)
-}
-
 async function build(a: Act<S>) {
   await a.wait(300)
   await a.set({ code: 1 })
@@ -58,7 +47,7 @@ async function build(a: Act<S>) {
 export default function Scene({ lang, a }: SceneProps) {
   const t = TEXT[lang]
   return (
-    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build} clear={clear}>
+    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build}>
       {(s) => (
       <>
       <Window url={t.url} urlShape="pill" className="sc-drawing-animated-diagrams-win" body={{ className: 'sc-drawing-animated-diagrams-page' }}>

@@ -31,20 +31,6 @@ type S = { n: number; pend: boolean; fix: boolean; lines: number }
 const EMPTY: S = { n: 0, pend: false, fix: false, lines: 0 }
 const DONE: S = { n: 3, pend: true, fix: true, lines: 3 }
 
-/** Out (about 0.6 s): the fix card leaves, the pending ring clears, the ticks go from the last to the first. */
-async function clear(a: Act<S>) {
-  await a.set({ fix: false, pend: false })
-  await a.wait(70)
-  await a.set({ n: 2 })
-  await a.wait(70)
-  await a.set({ n: 1 })
-  await a.wait(70)
-  await a.set({ n: 0 })
-  await a.wait(260)
-  await a.snap({ lines: 0 })
-  await a.wait(60)
-}
-
 /** In (about 3 s): three checks pass one after another, the fourth starts its pass, then the title fix arrives and is written line by line. */
 async function build(a: Act<S>) {
   await a.wait(150)
@@ -69,7 +55,7 @@ async function build(a: Act<S>) {
 export default function Scene({ lang, a }: SceneProps) {
   const t = T[lang]
   return (
-    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build} clear={clear}>
+    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build}>
       {(s) => (
       <>
       <Window

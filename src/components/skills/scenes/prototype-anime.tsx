@@ -27,16 +27,6 @@ const DONE: S = { p: 46, sec: 12, vals: 2, finger: true, press: false }
 
 const clock = (n: number) => String(Math.round(n)).padStart(2, '0')
 
-// Out: the finger and the answers leave, the playhead goes back to the start of the film
-async function clear(a: Act<S>) {
-  await a.set({ finger: false, vals: 1 })
-  await a.wait(70)
-  await a.set({ vals: 0 })
-  await a.wait(90)
-  await a.set({ p: 0, sec: 0 })
-  await a.wait(420)
-}
-
 // In: the playhead moves on, the two fields are answered, the finger arrives and presses
 async function build(a: Act<S>) {
   await a.wait(250)
@@ -55,7 +45,7 @@ async function build(a: Act<S>) {
 export default function Scene({ lang, a }: SceneProps) {
   const t = TEXT[lang]
   return (
-    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build} clear={clear}>
+    <ResourceStage<S> a={a} initial={EMPTY} poster={DONE} build={build}>
       {(s) => (
       <>
       <Phone width={290} className="sc-prototype-anime-phone">
