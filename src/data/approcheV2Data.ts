@@ -442,21 +442,21 @@ export const V2_SHORT_TOC: Bi<{ id: string; label: string }[]> = {
  */
 export const V2_EXAMPLE: Bi<{ label: string; steps: { title: string; text: string }[]; link: string }> = {
   fr: {
-    label: 'Un exemple : France VAE',
+    label: 'Exemple\u00a0: France VAE',
     steps: [
-      { title: 'Le constat', text: 'Les décisions produit se prenaient sans données utilisateurs consolidées. Les retours de terrain restaient dans des notes individuelles.' },
-      { title: 'Ce que j’ai fait', text: 'J’ai centralisé une base de connaissances, puis mené dix entretiens à distance, en deux vagues, sur le tableau de bord candidat.' },
-      { title: 'Ce que ça a changé', text: 'Les retours, classés en gains rapides, bugs, problèmes UX et demandes, ont été présentés en plénière. Les priorités du MVP ont été réordonnées sur cette base.' },
+      { title: 'Constat', text: 'Décisions produit prises sans données utilisateurs consolidées, retours de terrain dispersés dans des notes individuelles.' },
+      { title: 'Démarche', text: 'Base de connaissances centralisée, puis dix entretiens modérés à distance, en deux vagues, sur le tableau de bord candidat.' },
+      { title: 'Résultat', text: 'Retours classés en gains rapides, bugs, problèmes UX et demandes, présentés en plénière. Priorités réordonnées sur cette base.' },
     ],
-    link: 'Lire la démarche complète',
+    link: 'L’étude de cas France VAE',
   },
   en: {
-    label: 'An example: France VAE',
+    label: 'Example: France VAE',
     steps: [
-      { title: 'What I saw', text: 'Product decisions were made without consolidated user data. Field feedback stayed in individual notes.' },
-      { title: 'What I did', text: 'I centralised a knowledge base, then ran ten remote interviews, in two waves, on the candidate dashboard.' },
-      { title: 'What it changed', text: 'The feedback, sorted into quick wins, bugs, UX problems and requests, was presented in plenary. The MVP priorities were reordered on that basis.' },
+      { title: 'Finding', text: 'Product decisions made without consolidated user data, field feedback scattered across individual notes.' },
+      { title: 'Approach', text: 'A central knowledge base, then ten moderated remote interviews, in two waves, on the candidate dashboard.' },
+      { title: 'Outcome', text: 'Feedback sorted into quick wins, bugs, UX problems and requests, presented in plenary. Priorities reordered on that basis.' },
     ],
-    link: 'Read the full approach',
+    link: 'The France VAE case study',
   },
 }
