@@ -60,11 +60,11 @@ export default function ApprocheV2Page({ lang, related }: { lang: Language; rela
                 className="group block aspect-[3/2] overflow-hidden rounded-2xl border border-gray-100 shadow-sm transition-[border-color,box-shadow,transform] duration-300 ease-out active:scale-[0.99] [@media(hover:hover)]:hover:scale-[1.01] [@media(hover:hover)]:hover:border-gray-200 [@media(hover:hover)]:hover:shadow-lg"
               >
                 <img
-                  src={CASE_STUDY_SHELL[example.projectId]?.visual}
-                  {...imgDims(CASE_STUDY_SHELL[example.projectId]?.visual)}
+                  src={example.thumbSrc ?? CASE_STUDY_SHELL[example.projectId]?.visual}
+                  {...imgDims(example.thumbSrc ?? CASE_STUDY_SHELL[example.projectId]?.visual)}
                   alt={example.thumbAlt}
                   loading="lazy"
-                  className="h-full w-full object-cover transition-transform duration-300 ease-out [@media(hover:hover)]:group-hover:scale-[1.02]"
+                  className="h-full w-full object-cover object-top transition-transform duration-300 ease-out [@media(hover:hover)]:group-hover:scale-[1.02]"
                 />
               </Link>
               <ol className="grid list-none gap-6 p-0 md:col-span-3 md:grid-cols-3 md:gap-8">
