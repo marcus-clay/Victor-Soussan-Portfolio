@@ -1,0 +1,29 @@
+name: IndexNow
+
+# After each production deploy, tell Bing and the other IndexNow engines which pages changed.
+# Vercel reports its deployments to GitHub; one project is enough to trigger a single ping.
+on:
+  deployment_status:
+  workflow_dispatch:
+    inputs:
+      all:
+        description: Submit every URL of the sitemap
+        type: boolean
+        default: false
+
+jobs:
+  ping:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.deployment_status.state == 'success' &&
+       github.event.deployment.environment == 'Production – victor-soussan-portfolio')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      # Leave the domain alias a moment to point to the new deployment
+      - run: sleep 60
+        if: github.event_name == 'deployment_status'
+      - run: node scripts/indexnow.mjs ${{ inputs.all && '--all' || '' }}

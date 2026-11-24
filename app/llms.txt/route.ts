@@ -5,7 +5,7 @@ import { DECK_ENTRIES, deckPath } from '@/data/decksData'
 import { SKILLS } from '@/data/skillsCatalogue'
 import { GUIDE_CHAPTERS, GUIDE_META } from '@/data/guideClaudeCodeData'
 import { SHIP_TO_SHOW_META } from '@/data/guideShipToShowData'
-import { LINKEDIN_URL, clip, pageUrl } from '@/lib/seo'
+import { LINKEDIN_URL, SITE_URL, clip, pageUrl } from '@/lib/seo'
 
 /**
  * /llms.txt (llmstxt.org): a plain Markdown map of the site for answer engines (ChatGPT, Claude,
@@ -26,6 +26,8 @@ function build(): string {
     '> Lead Product Designer à Paris, spécialiste du product design B2B et B2G : design systems, interfaces métier complexes, recherche utilisateur, direction d’une pratique design, IA intégrée au quotidien (Claude Code, prototypage). Disponible pour des missions courtes de conseil.',
     '',
     'Le site est bilingue : chaque page existe en français (/fr, langue par défaut) et en anglais (/en), à la même adresse après le préfixe de langue.',
+    '',
+    `Texte intégral des études de cas, articles et guides : ${SITE_URL}/llms-full.txt`,
     '',
     '## Pages principales',
     '',
