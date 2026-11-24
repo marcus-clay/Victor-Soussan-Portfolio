@@ -129,6 +129,8 @@ export const IMAGE_DIMENSIONS: Record<string, [number, number]> = {
   "/images/dailymotion/thubmnail_dailymotion_03.webp": [2200, 1468],
   "/images/dailymotion/thumbnail dailymotion 02.webp": [2048, 1118],
   "/images/dailymotion/thumbnail_dailymotion_-_web_platform2x.webp": [2200, 1650],
+  "/images/francevae/france-vae-dossier-candidat-etapes.webp": [525, 350],
+  "/images/toolkit/toolkit-planning-zones-taches.webp": [900, 600],
   "/images/francevae/animation atelier 00.webp": [2200, 1235],
   "/images/francevae/animation atelier 01.webp": [2200, 1231],
   "/images/francevae/atelier france vae AAP 01.webp": [2200, 1524],

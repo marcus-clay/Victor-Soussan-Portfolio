@@ -347,49 +347,49 @@ export interface V2Step {
 
 export const V2_JOB: Bi<{ title: string; lead: string; label: string; groups: { name: string; steps: V2Step[] }[] }> = {
   fr: {
-    title: 'Deux moitiés d’un même métier',
-    lead: 'Structurer le produit et concevoir l’expérience. Choisissez une étape pour voir comment je la mène.',
-    label: 'Les étapes du métier',
+    title: 'Structurer le produit, concevoir l’expérience',
+    lead: 'Deux volets menés avec l’équipe, de l’organisation du travail à la livraison. Chaque étape se consulte en détail.',
+    label: 'Les étapes de la méthode',
     groups: [
       {
         name: 'Structurer le produit',
         steps: [
-          { id: 'organisation', name: 'L’organisation', text: 'J’observe d’abord comment l’équipe travaille, puis j’entre par ce dont elle a le plus besoin : le cadrage, la recherche ou la conception.', proof: { text: 'Chez France VAE, dix entretiens terrain ont réordonné les priorités d’un MVP entier.', link: { href: '/project/france-vae#initiative-3', label: 'France VAE' } } },
-          { id: 'roadmap', name: 'La feuille de route', text: 'Les sujets de plusieurs PM réunis dans une même feuille de route, à quatre niveaux, avec des titres qui disent ce qu’ils changent pour l’utilisateur.' },
-          { id: 'cycles', name: 'Les cycles', text: 'La conception est prête avant que le développement en ait besoin. La discovery nourrit le delivery, qui lui renvoie ce qu’il apprend.' },
+          { id: 'organisation', name: 'Organiser', text: 'Observer d’abord le fonctionnement de l’équipe, puis commencer par son besoin le plus urgent\u00a0: le cadrage, la recherche utilisateur ou la conception.', proof: { text: 'France VAE\u00a0: dix entretiens de terrain ont revu les priorités de toute une première version du produit.', link: { href: '/project/france-vae#initiative-3', label: 'France VAE' } } },
+          { id: 'roadmap', name: 'Prioriser', text: 'Les sujets de plusieurs chefs de produit réunis dans une seule feuille de route, sur quatre niveaux, avec des titres qui disent ce qui change pour l’utilisateur.' },
+          { id: 'cycles', name: 'Anticiper', text: 'Les maquettes sont prêtes avant que les développeurs en aient besoin. Ce que l’équipe apprend en développant nourrit la conception suivante.' },
         ],
       },
       {
         name: 'Concevoir l’expérience',
         steps: [
-          { id: 'sketch', name: 'Schématiser', text: 'Quand un sujet reste longtemps à l’état de discussion, un schéma en quelques heures rend visible le problème, le flux, le parcours ou l’interaction.' },
-          { id: 'interaction', name: 'L’interaction', text: 'Parcours, états et micro-interactions, jusqu’au détail d’un geste. Ici, le parcours de téléconsultation de l’app Tessan.', proof: { text: 'Chaque écran répond au doigt, les champs se remplissent, la caméra lit les cartes.', link: { href: '/project/tessan-app', label: 'Tessan, l’app patient' } } },
-          { id: 'prototype', name: 'Prototyper', text: 'Un prototype quand la question l’exige : interactif en React ou conçu dans Figma, construit avec Claude Code à partir des règles du design system.', proof: { text: 'Chez Tessan, un kit React aligné sur Figma porte le design system.', link: { href: '/project/tessan-systeme', label: 'Tessan, le système' } } },
-          { id: 'deliver', name: 'Livrer', text: 'Un prototype de vision, déconstruit avec la squad en storymap, puis découpé en lots prêts pour l’implémentation.' },
+          { id: 'sketch', name: 'Schématiser', text: 'Quand un sujet reste longtemps en discussion, un schéma fait en quelques heures rend visibles le problème, le parcours ou l’interaction.' },
+          { id: 'interaction', name: 'Détailler', text: 'Parcours, états des écrans et réactions de l’interface, jusqu’au détail d’un geste. Ici, la consultation à distance dans l’application Tessan.', proof: { text: 'Chaque écran réagit au toucher, les champs se remplissent, la caméra lit les cartes.', link: { href: '/project/tessan-app', label: 'Tessan, l’app patient' } } },
+          { id: 'prototype', name: 'Prototyper', text: 'Un prototype quand la question l’exige\u00a0: interactif en code (React) ou dans Figma, construit avec Claude Code à partir des règles du design system.', proof: { text: 'Tessan\u00a0: une bibliothèque de composants en code, alignée sur Figma, porte le design system.', link: { href: '/project/tessan-systeme', label: 'Tessan, le système' } } },
+          { id: 'deliver', name: 'Livrer', text: 'Un prototype de la cible, décomposé avec l’équipe en étapes du parcours, puis découpé en lots prêts à développer.' },
         ],
       },
     ],
   },
   en: {
-    title: 'Two halves of one job',
-    lead: 'Structuring the product and designing the experience. Pick a step to see how I run it.',
-    label: 'The steps of the job',
+    title: 'Structuring the product, designing the experience',
+    lead: 'Two strands run with the team, from how the work is organised to delivery. Each step can be opened in detail.',
+    label: 'The steps of the method',
     groups: [
       {
         name: 'Structuring the product',
         steps: [
-          { id: 'organisation', name: 'The organisation', text: 'I first observe how the team works, then start with what it needs most: framing, research or design.', proof: { text: 'At France VAE, ten field interviews reordered the priorities of an entire MVP.', link: { href: '/project/france-vae#initiative-3', label: 'France VAE' } } },
-          { id: 'roadmap', name: 'The roadmap', text: 'The subjects of several PMs brought into one roadmap, at four levels, with titles that say what they change for the user.' },
-          { id: 'cycles', name: 'Cycles', text: 'Design is ready before development needs it. Discovery feeds delivery, which sends back what it learns.' },
+          { id: 'organisation', name: 'Organising', text: 'First observing how the team works, then starting with its most pressing need: framing, user research or design.', proof: { text: 'France VAE: ten field interviews revised the priorities of a whole first version of the product.', link: { href: '/project/france-vae#initiative-3', label: 'France VAE' } } },
+          { id: 'roadmap', name: 'Prioritising', text: 'The subjects of several product managers brought into one roadmap, at four levels, with titles that say what changes for the user.' },
+          { id: 'cycles', name: 'Anticipating', text: 'Mock-ups are ready before developers need them. What the team learns while building feeds the next design.' },
         ],
       },
       {
         name: 'Designing the experience',
         steps: [
-          { id: 'sketch', name: 'Sketching', text: 'When a subject stays at the stage of discussion for a long time, a diagram made within a few hours makes the problem, the flow, the journey or the interaction visible.' },
-          { id: 'interaction', name: 'Interaction', text: 'Journeys, states and micro-interactions, down to the detail of a gesture. Here, the teleconsultation journey of the Tessan app.', proof: { text: 'Each screen answers the finger, fields fill in, the camera reads the cards.', link: { href: '/project/tessan-app', label: 'Tessan, the patient app' } } },
-          { id: 'prototype', name: 'Prototyping', text: 'A prototype when the question calls for one: interactive in React or designed in Figma, built with Claude Code from the rules of the design system.', proof: { text: 'At Tessan, a React kit aligned with Figma carries the design system.', link: { href: '/project/tessan-systeme', label: 'Tessan, the system' } } },
-          { id: 'deliver', name: 'Delivering', text: 'A vision prototype, taken apart with the squad into a story map, then sliced into lots ready for implementation.' },
+          { id: 'sketch', name: 'Sketching', text: 'When a subject stays in discussion for a long time, a diagram made within a few hours makes the problem, the journey or the interaction visible.' },
+          { id: 'interaction', name: 'Detailing', text: 'Journeys, screen states and interface responses, down to the detail of a gesture. Here, the remote consultation in the Tessan app.', proof: { text: 'Each screen responds to touch, fields fill in, the camera reads the cards.', link: { href: '/project/tessan-app', label: 'Tessan, the patient app' } } },
+          { id: 'prototype', name: 'Prototyping', text: 'A prototype when the question calls for one: interactive in code (React) or in Figma, built with Claude Code from the rules of the design system.', proof: { text: 'Tessan: a code component library, aligned with Figma, carries the design system.', link: { href: '/project/tessan-systeme', label: 'Tessan, the system' } } },
+          { id: 'deliver', name: 'Delivering', text: 'A prototype of the target, broken down with the team into the steps of the journey, then sliced into batches ready to build.' },
         ],
       },
     ],
@@ -423,13 +423,13 @@ export const V2_RESULTS: Bi<{ title: string; lead: string; quoteLabel: string; f
 
 export const V2_SHORT_TOC: Bi<{ id: string; label: string }[]> = {
   fr: [
-    { id: 'job', label: 'Le métier' },
+    { id: 'job', label: 'La méthode' },
     { id: 'results', label: 'Résultats' },
     { id: 'clients', label: 'Références' },
     { id: 'contact', label: 'Contact' },
   ],
   en: [
-    { id: 'job', label: 'The job' },
+    { id: 'job', label: 'The method' },
     { id: 'results', label: 'Results' },
     { id: 'clients', label: 'Clients' },
     { id: 'contact', label: 'Contact' },
@@ -442,6 +442,12 @@ export const V2_SHORT_TOC: Bi<{ id: string; label: string }[]> = {
  */
 export type ApproachExample = {
   id: string
+  /** Case study whose cover is shown as the thumbnail (CASE_STUDY_SHELL) */
+  projectId: string
+  /** A readable close-up instead of the case study cover (a full cover becomes a postage stamp at this size) */
+  thumbSrc?: string
+  /** What the thumbnail shows, for image search and screen readers */
+  thumbAlt: string
   label: string
   steps: { title: string; text: string }[]
   links: { href: string; label: string; external?: boolean }[]
@@ -456,10 +462,12 @@ export const V2_EXAMPLES: Bi<ApproachExample[]> = {
   fr: [
     {
       id: 'tessan',
+      projectId: 'tessan-app',
+      thumbAlt: 'Application Tessan\u00a0: accueil, demande de consultation et fin de consultation avec l’ordonnance à télécharger',
       label: 'Exemple\u00a0: Tessan',
       steps: [
-        { title: 'Constat', text: 'Application mal adaptée à la consultation\u00a0: parcours morcelé, deux systèmes de navigation, 8 à 13 écrans avant de consulter.' },
-        { title: 'Méthode', text: 'Nouvelle application iOS et Android centrée sur la consultation, construite en 30 jours avec un tech lead et deux développeurs\u00a0: parcours raccourci, assistant qui oriente sans poser de diagnostic, trois versions de test en deux semaines.' },
+        { title: 'Constat', text: 'Application mal adaptée à la consultation\u00a0: parcours morcelé, deux systèmes de navigation, 8 à 13\u00a0écrans avant de consulter.' },
+        { title: 'Méthode', text: 'Nouvelle application iOS et Android centrée sur la consultation, construite en 30\u00a0jours avec un tech lead et deux développeurs\u00a0: parcours raccourci, assistant qui oriente sans poser de diagnostic, trois versions de test en deux semaines.' },
         { title: 'Résultat', text: 'Application publiée sur l’App Store et Google Play le 15 juillet 2026.' },
       ],
       links: [
@@ -469,7 +477,23 @@ export const V2_EXAMPLES: Bi<ApproachExample[]> = {
       ],
     },
     {
+      id: 'toolkit',
+      projectId: 'toolkit',
+      thumbSrc: '/images/toolkit/toolkit-planning-zones-taches.webp',
+      thumbAlt: 'Planning Toolkit\u00a0: les tâches d’un chantier réparties par bâtiment et par zone, jour par jour',
+      label: 'Exemple\u00a0: Toolkit',
+      steps: [
+        { title: 'Constat', text: 'Logiciels de chantier surchargés, alors qu’un planning réel compte 50 à 100\u00a0tâches ou plus, sur plusieurs zones, lu au bureau comme sur le terrain.' },
+        { title: 'Méthode', text: 'Équipe de trois avec le CEO et le développeur principal\u00a0: prototype pour la levée de fonds, puis versions successives vérifiées chaque semaine par cinq à sept appels avec des utilisateurs.' },
+        { title: 'Résultat', text: 'Plus de 50\u00a0tâches lisibles sur un même écran, un groupe de tâches modifié en 20\u00a0secondes. Plus de 2\u00a0000 clients payants dans les 24\u00a0mois suivant le lancement.' },
+      ],
+      links: [{ href: '/project/toolkit', label: 'L’étude de cas Toolkit' }],
+    },
+    {
       id: 'france-vae',
+      projectId: 'france-vae',
+      thumbSrc: '/images/francevae/france-vae-dossier-candidat-etapes.webp',
+      thumbAlt: 'Tableau de bord d’un candidat France VAE\u00a0: les étapes du dossier, chacune avec son statut',
       label: 'Exemple\u00a0: France VAE',
       steps: [
         { title: 'Constat', text: 'Décisions prises sans données sur les utilisateurs, retours du terrain dispersés dans des notes personnelles.' },
@@ -482,6 +506,8 @@ export const V2_EXAMPLES: Bi<ApproachExample[]> = {
   en: [
     {
       id: 'tessan',
+      projectId: 'tessan-app',
+      thumbAlt: 'Tessan app: home, consultation request and end of consultation with the prescription to download',
       label: 'Example: Tessan',
       steps: [
         { title: 'Finding', text: 'An app ill-suited to the consultation: a fragmented journey, two navigation systems, 8 to 13 screens before seeing a doctor.' },
@@ -495,7 +521,23 @@ export const V2_EXAMPLES: Bi<ApproachExample[]> = {
       ],
     },
     {
+      id: 'toolkit',
+      projectId: 'toolkit',
+      thumbSrc: '/images/toolkit/toolkit-planning-zones-taches.webp',
+      thumbAlt: 'Toolkit planning: the tasks of a construction site laid out by building and by zone, day by day',
+      label: 'Example: Toolkit',
+      steps: [
+        { title: 'Finding', text: 'Construction software overloaded with features, while a real schedule holds 50 to 100 tasks or more, across several zones, read at the office and on site.' },
+        { title: 'Method', text: 'A team of three with the CEO and the lead developer: a prototype for the funding round, then successive versions checked every week through five to seven calls with users.' },
+        { title: 'Result', text: 'More than 50 tasks readable on one screen, a group of tasks changed in 20 seconds. More than 2,000 paying customers within 24 months of launch.' },
+      ],
+      links: [{ href: '/project/toolkit', label: 'The Toolkit case study' }],
+    },
+    {
       id: 'france-vae',
+      projectId: 'france-vae',
+      thumbSrc: '/images/francevae/france-vae-dossier-candidat-etapes.webp',
+      thumbAlt: 'France VAE candidate dashboard: the steps of the application, each with its status',
       label: 'Example: France VAE',
       steps: [
         { title: 'Finding', text: 'Decisions made without data on users, field feedback scattered across personal notes.' },
