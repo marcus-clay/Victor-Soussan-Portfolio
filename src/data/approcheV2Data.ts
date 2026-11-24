@@ -347,8 +347,8 @@ export interface V2Step {
 
 export const V2_JOB: Bi<{ title: string; lead: string; label: string; groups: { name: string; steps: V2Step[] }[] }> = {
   fr: {
-    title: 'Deux moitiés d’un même métier',
-    lead: 'Structurer le produit et concevoir l’expérience. Choisissez une étape pour voir comment je la mène.',
+    title: 'Structurer le produit, concevoir l’expérience',
+    lead: 'Deux volets menés avec l’équipe, de l’organisation du travail à la livraison. Chaque étape se consulte en détail.',
     label: 'Les étapes du métier',
     groups: [
       {
@@ -371,8 +371,8 @@ export const V2_JOB: Bi<{ title: string; lead: string; label: string; groups: { 
     ],
   },
   en: {
-    title: 'Two halves of one job',
-    lead: 'Structuring the product and designing the experience. Pick a step to see how I run it.',
+    title: 'Structuring the product, designing the experience',
+    lead: 'Two strands run with the team, from how the work is organised to delivery. Each step can be opened in detail.',
     label: 'The steps of the job',
     groups: [
       {
@@ -423,13 +423,13 @@ export const V2_RESULTS: Bi<{ title: string; lead: string; quoteLabel: string; f
 
 export const V2_SHORT_TOC: Bi<{ id: string; label: string }[]> = {
   fr: [
-    { id: 'job', label: 'Le métier' },
+    { id: 'job', label: 'La méthode' },
     { id: 'results', label: 'Résultats' },
     { id: 'clients', label: 'Références' },
     { id: 'contact', label: 'Contact' },
   ],
   en: [
-    { id: 'job', label: 'The job' },
+    { id: 'job', label: 'The method' },
     { id: 'results', label: 'Results' },
     { id: 'clients', label: 'Clients' },
     { id: 'contact', label: 'Contact' },
@@ -442,6 +442,10 @@ export const V2_SHORT_TOC: Bi<{ id: string; label: string }[]> = {
  */
 export type ApproachExample = {
   id: string
+  /** Case study whose cover is shown as the thumbnail (CASE_STUDY_SHELL) */
+  projectId: string
+  /** What the thumbnail shows, for image search and screen readers */
+  thumbAlt: string
   label: string
   steps: { title: string; text: string }[]
   links: { href: string; label: string; external?: boolean }[]
@@ -456,6 +460,8 @@ export const V2_EXAMPLES: Bi<ApproachExample[]> = {
   fr: [
     {
       id: 'tessan',
+      projectId: 'tessan-app',
+      thumbAlt: 'Application Tessan\u00a0: accueil, demande de consultation et fin de consultation avec l’ordonnance à télécharger',
       label: 'Exemple\u00a0: Tessan',
       steps: [
         { title: 'Constat', text: 'Application mal adaptée à la consultation\u00a0: parcours morcelé, deux systèmes de navigation, 8 à 13 écrans avant de consulter.' },
@@ -470,6 +476,8 @@ export const V2_EXAMPLES: Bi<ApproachExample[]> = {
     },
     {
       id: 'france-vae',
+      projectId: 'france-vae',
+      thumbAlt: 'Page d’accueil du portail France VAE, le service public de la validation des acquis de l’expérience',
       label: 'Exemple\u00a0: France VAE',
       steps: [
         { title: 'Constat', text: 'Décisions prises sans données sur les utilisateurs, retours du terrain dispersés dans des notes personnelles.' },
@@ -482,6 +490,8 @@ export const V2_EXAMPLES: Bi<ApproachExample[]> = {
   en: [
     {
       id: 'tessan',
+      projectId: 'tessan-app',
+      thumbAlt: 'Tessan app: home, consultation request and end of consultation with the prescription to download',
       label: 'Example: Tessan',
       steps: [
         { title: 'Finding', text: 'An app ill-suited to the consultation: a fragmented journey, two navigation systems, 8 to 13 screens before seeing a doctor.' },
@@ -496,6 +506,8 @@ export const V2_EXAMPLES: Bi<ApproachExample[]> = {
     },
     {
       id: 'france-vae',
+      projectId: 'france-vae',
+      thumbAlt: 'Home page of the France VAE portal, the public service for the accreditation of prior experience',
       label: 'Example: France VAE',
       steps: [
         { title: 'Finding', text: 'Decisions made without data on users, field feedback scattered across personal notes.' },

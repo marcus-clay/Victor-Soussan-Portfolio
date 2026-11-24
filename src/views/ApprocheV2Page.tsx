@@ -15,6 +15,8 @@ import { ClientsStrip } from '@/views/ExpertiseSections'
 import { CTA_SECTION, type Language } from '@/data/approcheData'
 import { V2_EXAMPLES, V2_HERO, V2_JOB, V2_RESULTS, V2_SHORT_TOC } from '@/data/approcheV2Data'
 import { CtaButton, TEXT_LINK } from '@/components/approche/ApproachLinks'
+import { CASE_STUDY_SHELL } from '@/data/caseStudyShell'
+import { imgDims } from '@/utils/imageDimensions'
 
 /**
  * Approach, second version, for a one-minute read. Three questions in the order a reader asks them: what do
@@ -50,14 +52,30 @@ export default function ApprocheV2Page({ lang, related }: { lang: Language; rela
         {examples.map((example) => (
           <aside key={example.id} aria-labelledby={`example-${example.id}`}>
             <h2 id={`example-${example.id}`} className="text-micro uppercase tracking-[0.08em] text-gray-500">{example.label}</h2>
-            <ol className="mt-5 grid list-none gap-6 p-0 md:grid-cols-3 md:gap-8">
-              {example.steps.map((step) => (
-                <li key={step.title} className="border-t border-gray-200 pt-4">
-                  <h3 className="text-title-3 text-gray-900">{step.title}</h3>
-                  <p className="mt-2 text-base text-gray-600">{step.text}</p>
-                </li>
-              ))}
-            </ol>
+            <div className="mt-5 grid gap-6 md:grid-cols-4 md:gap-8">
+              {/* The project's cover, linked to its case study, with the site's media hover */}
+              <Link
+                href={`/${lang}${example.links[0].href}`}
+                style={{ backgroundColor: CASE_STUDY_SHELL[example.projectId]?.tone }}
+                className="group block aspect-[3/2] overflow-hidden rounded-2xl border border-gray-100 shadow-sm transition-[border-color,box-shadow,transform] duration-300 ease-out active:scale-[0.99] [@media(hover:hover)]:hover:scale-[1.01] [@media(hover:hover)]:hover:border-gray-200 [@media(hover:hover)]:hover:shadow-lg"
+              >
+                <img
+                  src={CASE_STUDY_SHELL[example.projectId]?.visual}
+                  {...imgDims(CASE_STUDY_SHELL[example.projectId]?.visual)}
+                  alt={example.thumbAlt}
+                  loading="lazy"
+                  className="h-full w-full object-cover transition-transform duration-300 ease-out [@media(hover:hover)]:group-hover:scale-[1.02]"
+                />
+              </Link>
+              <ol className="grid list-none gap-6 p-0 md:col-span-3 md:grid-cols-3 md:gap-8">
+                {example.steps.map((step) => (
+                  <li key={step.title} className="border-t border-gray-200 pt-4">
+                    <h3 className="text-title-3 text-gray-900">{step.title}</h3>
+                    <p className="mt-2 text-base text-gray-600">{step.text}</p>
+                  </li>
+                ))}
+              </ol>
+            </div>
             <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-1">
               {example.links.map((link) =>
                 link.external ? (
