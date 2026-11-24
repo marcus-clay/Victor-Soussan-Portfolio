@@ -17,11 +17,11 @@ export interface Proof {
 export const V2_HERO: Bi<{ title: string; lead: string }> = {
   fr: {
     title: 'Approche',
-    lead: 'Je structure ce qu’une équipe produit doit concevoir, puis je conçois l’expérience jusqu’au détail des interactions et jusqu’aux livrables prêts à implémenter.',
+    lead: 'Avec les équipes produit\u00a0: définir ce qu’il faut concevoir, puis le concevoir écran par écran, jusqu’aux maquettes prêtes à développer.',
   },
   en: {
     title: 'Approach',
-    lead: 'I structure what a product team has to design, then design the experience down to the detail of its interactions and to deliverables ready to build.',
+    lead: 'With product teams: defining what needs to be designed, then designing it screen by screen, down to mock-ups ready to build.',
   },
 }
 
@@ -433,5 +433,76 @@ export const V2_SHORT_TOC: Bi<{ id: string; label: string }[]> = {
     { id: 'results', label: 'Results' },
     { id: 'clients', label: 'Clients' },
     { id: 'contact', label: 'Contact' },
+  ],
+}
+
+/**
+ * Worked examples under the introduction, before the method: finding, approach, outcome. Nominal, self-standing
+ * sentences in no first person: the work is a team's. Every fact restates the linked case study.
+ */
+export type ApproachExample = {
+  id: string
+  label: string
+  steps: { title: string; text: string }[]
+  links: { href: string; label: string; external?: boolean }[]
+}
+
+const TESSAN_STORES = {
+  apple: 'https://apps.apple.com/fr/app/tessan/id6755781046',
+  google: 'https://play.google.com/store/apps/details?id=com.tessan.cloudpatient&hl=fr',
+}
+
+export const V2_EXAMPLES: Bi<ApproachExample[]> = {
+  fr: [
+    {
+      id: 'tessan',
+      label: 'Exemple\u00a0: Tessan',
+      steps: [
+        { title: 'Constat', text: 'Application mal adaptée à la consultation\u00a0: parcours morcelé, deux systèmes de navigation, 8 à 13 écrans avant de consulter.' },
+        { title: 'Méthode', text: 'Nouvelle application iOS et Android centrée sur la consultation, construite en 30 jours avec un tech lead et deux développeurs\u00a0: parcours raccourci, assistant qui oriente sans poser de diagnostic, trois versions de test en deux semaines.' },
+        { title: 'Résultat', text: 'Application publiée sur l’App Store et Google Play le 15 juillet 2026.' },
+      ],
+      links: [
+        { href: '/project/tessan-app', label: 'L’étude de cas Tessan' },
+        { href: TESSAN_STORES.apple, label: 'App Store', external: true },
+        { href: TESSAN_STORES.google, label: 'Google Play', external: true },
+      ],
+    },
+    {
+      id: 'france-vae',
+      label: 'Exemple\u00a0: France VAE',
+      steps: [
+        { title: 'Constat', text: 'Décisions prises sans données sur les utilisateurs, retours du terrain dispersés dans des notes personnelles.' },
+        { title: 'Méthode', text: 'Base de connaissances commune, puis dix entretiens à distance, en deux vagues, sur le tableau de bord des candidats.' },
+        { title: 'Résultat', text: 'Retours triés (corrections rapides, bugs, difficultés d’usage, demandes) et présentés à toute l’équipe. Priorités revues sur cette base.' },
+      ],
+      links: [{ href: '/project/france-vae#approach', label: 'L’étude de cas France VAE' }],
+    },
+  ],
+  en: [
+    {
+      id: 'tessan',
+      label: 'Example: Tessan',
+      steps: [
+        { title: 'Finding', text: 'An app ill-suited to the consultation: a fragmented journey, two navigation systems, 8 to 13 screens before seeing a doctor.' },
+        { title: 'Method', text: 'A new iOS and Android app centred on the consultation, built in 30 days with a tech lead and two developers: a shorter journey, an assistant that guides without diagnosing, three test versions in two weeks.' },
+        { title: 'Result', text: 'App released on the App Store and Google Play on July 15, 2026.' },
+      ],
+      links: [
+        { href: '/project/tessan-app', label: 'The Tessan case study' },
+        { href: TESSAN_STORES.apple, label: 'App Store', external: true },
+        { href: TESSAN_STORES.google, label: 'Google Play', external: true },
+      ],
+    },
+    {
+      id: 'france-vae',
+      label: 'Example: France VAE',
+      steps: [
+        { title: 'Finding', text: 'Decisions made without data on users, field feedback scattered across personal notes.' },
+        { title: 'Method', text: 'A shared knowledge base, then ten remote interviews, in two waves, on the candidates’ dashboard.' },
+        { title: 'Result', text: 'Feedback sorted (quick fixes, bugs, usability issues, requests) and presented to the whole team. Priorities revised on that basis.' },
+      ],
+      links: [{ href: '/project/france-vae#approach', label: 'The France VAE case study' }],
+    },
   ],
 }

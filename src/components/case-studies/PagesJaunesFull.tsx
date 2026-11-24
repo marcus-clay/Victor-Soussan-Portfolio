@@ -95,7 +95,7 @@ const Media: React.FC<MediaProps> = ({ src, name, onZoom, maxWidth = '' }) => {
               loading="lazy"
               src={src}
               {...imgDims(src)}
-              alt=""
+              alt={name}
               className={`w-full h-auto block transition-transform duration-300 ease-media [@media(hover:hover)]:group-hover:scale-[1.02]`}
             />
               <MediaLike src={src} />
