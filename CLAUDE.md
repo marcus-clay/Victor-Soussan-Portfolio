@@ -20,7 +20,7 @@ Data sources:
 - `src/data/contentData.ts`: unified content (articles + guide + templates)
 - `src/data/signalsData.ts`: article bodies (imported by contentData)
 - `src/data/guideClaudeCodeData.ts`: guide chapters
-- `src/data/translations.ts`: all UI translations (EN/FR), includes `descShort` for mobile hero
+- `src/data/translations.ts`: all UI translations (EN/FR)
 
 ## File Structure
 - `app/` : Next.js App Router pages and layouts

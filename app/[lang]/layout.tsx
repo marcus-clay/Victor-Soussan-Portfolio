@@ -85,7 +85,7 @@ export async function generateMetadata({
       icon: [{ url: '/favicon-32.png', sizes: '32x32', type: 'image/png' }],
       apple: [{ url: '/favicon-180.png', sizes: '180x180' }],
     },
-    robots: { index: true, follow: true },
+    robots: { index: true, follow: true, 'max-image-preview': 'large' },
     ...(googleVerification ? { verification: { google: googleVerification } } : {}),
   }
 }

@@ -141,7 +141,8 @@ function ScreenMedia({ screen, label, eager, focused = true }: { screen: DeviceS
       src={screen.src}
       width={screen.width}
       height={screen.height}
-      alt=""
+      // The wrapper button carries the same name; the alt is what image search and a page without it read
+      alt={label}
       loading={eager ? 'eager' : 'lazy'}
       draggable={false}
       className={`block w-full h-full object-top ${screen.fit === 'contain' ? 'object-contain p-[3%]' : 'object-cover'}`}

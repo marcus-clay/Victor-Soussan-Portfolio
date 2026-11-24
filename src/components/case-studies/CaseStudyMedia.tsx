@@ -60,7 +60,7 @@ function Media({ item, priority }: { item: StageItem; priority?: boolean }) {
         src={item.src}
         width={size?.[0]}
         height={size?.[1]}
-        alt=""
+        alt={item.caption}
         loading={priority ? 'eager' : 'lazy'}
         className={`w-full h-auto block ${zoomFx}`}
       />
