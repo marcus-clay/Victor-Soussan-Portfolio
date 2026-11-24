@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import CaseStudyPageWrapper from '@/components/page-wrappers/CaseStudyPageWrapper'
 import JsonLd from '@/components/JsonLd'
-import { CASE_STUDY_IDS, PROJECT_DESC, PROJECT_TITLE, SHORT_PROJECT_IDS, findProject, ogImageFor } from '@/lib/projectMeta'
+import { CASE_STUDY_IDS, PROJECT_DESC, PROJECT_SEO_TITLE, PROJECT_TITLE, SHORT_PROJECT_IDS, findProject, ogImageFor } from '@/lib/projectMeta'
 import { breadcrumbLd, buildMetadata, creativeWorkLd, toLang } from '@/lib/seo'
 
 type Props = { params: Promise<{ lang: string; id: string }> }
@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return buildMetadata({
     lang,
     path: `project/${id}`,
-    title: PROJECT_TITLE[lang][kind](project.title),
+    title: PROJECT_SEO_TITLE[lang][id] ?? PROJECT_TITLE[lang][kind](project.title),
     description: PROJECT_DESC[lang][kind](project.title, project.shortDescription || project.summary),
     image: ogImageFor(id, project.coverImage),
   })

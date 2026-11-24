@@ -103,7 +103,7 @@ export default function MediaCarousel({ items, label, labels, onZoom }: MediaCar
                 loading="lazy"
                 src={item.src}
                 {...imgDims(item.src)}
-                alt=""
+                alt={item.name}
                 draggable={false}
                 className={`block h-auto w-full transition-transform duration-300 ease-media [@media(hover:hover)]:group-hover:scale-[1.02]`}
               />

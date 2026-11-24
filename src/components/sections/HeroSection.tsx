@@ -25,10 +25,8 @@ export default function HeroSection({ lang }: HeroSectionProps) {
         <span className="build-line mt-2 block text-subhead font-normal text-gray-500 md:mt-3" style={{ ['--i' as string]: 1 }}>{hero.formula}</span>
       </h1>
 
-      <p className="build-rise mt-8 md:mt-10 max-w-[56ch] text-lead-lg text-gray-600 md:hidden" style={{ ['--d' as string]: '160ms' }}>
-        {hero.descShort}
-      </p>
-      <p className="build-rise hidden md:block mt-10 max-w-[56ch] text-lead-lg text-gray-600" style={{ ['--d' as string]: '160ms' }}>
+      {/* One paragraph for every width: two copies (one hidden per breakpoint) were read twice by crawlers and screen readers */}
+      <p className="build-rise mt-8 md:mt-10 max-w-[56ch] text-lead-lg text-gray-600" style={{ ['--d' as string]: '160ms' }}>
         {hero.desc}
       </p>
 

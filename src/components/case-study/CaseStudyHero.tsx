@@ -105,7 +105,7 @@ export default function CaseStudyHero({
             srcSet={coverSrcSet(shell.visual)}
             sizes="(min-width: 1536px) 1424px, calc(100vw - 40px)"
             {...imgDims(shell.visual)}
-            alt={onZoom ? '' : visualAlt}
+            alt={visualAlt}
             loading="eager"
             fetchPriority="high"
             className={`relative z-[1] ${mediaClass}`}

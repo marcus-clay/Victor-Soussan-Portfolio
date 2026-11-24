@@ -375,7 +375,7 @@ function FigureView({
             src={figure.src}
             width={figure.width}
             height={figure.height}
-            alt=""
+            alt={caption}
             className="w-full h-auto block transition-transform duration-300 ease-media [@media(hover:hover)]:group-hover:scale-[1.02]"
           />
             <MediaLike src={figure.src} />
@@ -586,6 +586,36 @@ export const TessanChapterPage: React.FC<TessanPageProps & { variant: TessanVari
             </div>
           </section>
         ))}
+
+        {/* A deep dive is often the first page a visitor opens: it leads to the two other chapters, not only back to the hub */}
+        {variant !== 'hub' && (
+          <nav aria-labelledby="tessan-chapters">
+            <ActRule />
+            <div className="act-wide pt-10 md:pt-14 pb-12 md:pb-16">
+              <h2 id="tessan-chapters" className="text-title-2 text-gray-900">
+                {lang === 'fr' ? 'Les autres chapitres de Tessan' : 'The other Tessan chapters'}
+              </h2>
+              <ul className="mt-6 max-w-[62ch]">
+                {t.hub.teasers
+                  .filter((teaser) => teaser.id !== variant)
+                  .map((teaser) => (
+                    <li key={teaser.id}>
+                      <Link
+                        href={`/${lang}/project/${PROJECT_ID[teaser.id]}`}
+                        className="group -mx-3 flex items-start justify-between gap-4 rounded-lg px-3 py-4 transition-colors duration-150 [@media(hover:hover)]:hover:bg-gray-100"
+                      >
+                        <span>
+                          <span className="block text-title-3 text-gray-900">{teaser.title}</span>
+                          <span className="mt-1 block text-sm text-gray-600">{teaser.text}</span>
+                        </span>
+                        <ArrowRight size={16} aria-hidden="true" className="mt-1 shrink-0 text-gray-500 transition-transform duration-200 ease-out group-hover:translate-x-0.5" />
+                      </Link>
+                    </li>
+                  ))}
+              </ul>
+            </div>
+          </nav>
+        )}
       </div>
     </div>
   )

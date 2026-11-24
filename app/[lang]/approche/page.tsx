@@ -6,8 +6,8 @@ import { buildMetadata, pageLd, toLang } from '@/lib/seo'
 type Props = { params: Promise<{ lang: string }> }
 
 const COPY = {
-  fr: { title: 'Approche du product design', description: 'Structurer ce qu’une équipe produit doit concevoir, puis concevoir l’expérience jusqu’au détail des interactions et jusqu’aux livrables prêts à implémenter.' },
-  en: { title: 'Product design approach', description: 'Structuring what a product team has to design, then designing the experience down to the detail of its interactions and to deliverables ready to build.' },
+  fr: { title: 'Approche du product design, de la recherche au prototype', description: 'Structurer ce qu’une équipe produit doit concevoir, puis concevoir l’expérience jusqu’au détail des interactions et jusqu’aux livrables prêts à implémenter.' },
+  en: { title: 'Product design approach, from research to prototype', description: 'Structuring what a product team has to design, then designing the experience down to the detail of its interactions and to deliverables ready to build.' },
 } as const
 
 /** The short name of the page in breadcrumbs, as in the navigation */

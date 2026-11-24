@@ -121,7 +121,8 @@ export function buildMetadata(o: MetaOptions): Metadata {
     description,
     alternates: { canonical, languages },
     // A hidden page still passes its links on (galleries link to their case study)
-    robots: o.noindex ? { index: false, follow: true } : { index: true, follow: true },
+    // Large previews let Google Images and Discover show the case study screens at a readable size
+    robots: o.noindex ? { index: false, follow: true } : { index: true, follow: true, 'max-image-preview': 'large' },
     openGraph: {
       type: o.type ?? 'website',
       url: canonical,

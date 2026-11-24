@@ -52,7 +52,7 @@ function Visual({ item, eager, fill }: { item: SuiteMediaItem; eager?: boolean; 
     <img
       src={item.src}
       {...imgDims(item.src)}
-      alt=""
+      alt={item.caption}
       loading={eager ? 'eager' : 'lazy'}
       className={`${MEDIA} ${fill ? 'md:h-full md:object-contain' : ''} ${item.inset ? 'rounded-lg shadow-sm' : ''}`}
     />

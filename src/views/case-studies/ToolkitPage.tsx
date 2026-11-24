@@ -212,7 +212,7 @@ export const ToolkitPage: React.FC<ToolkitPageProps> = ({
           <>
             <img
             src={src}
-            alt=""
+            alt={caption}
             width={width ?? imgDims(src).width}
             height={height ?? imgDims(src).height}
             loading={priority ? 'eager' : 'lazy'}

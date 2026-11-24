@@ -22,6 +22,27 @@ export const PROJECT_TITLE: Record<Lang, Record<'caseStudy' | 'short' | 'gallery
   },
 }
 
+/**
+ * Titles written for what a reader searches, on the pages that answer a precise intent.
+ * Every claim is one the page itself makes. Other projects keep the generic pattern above.
+ */
+export const PROJECT_SEO_TITLE: Record<Lang, Partial<Record<string, string>>> = {
+  fr: {
+    tessan: 'Tessan : application patient, IA et design system',
+    'tessan-app': 'Tessan : l’application patient reconstruite en 30 jours',
+    'tessan-systeme': 'Tessan : design system Figma et React avec Claude Code',
+    'france-vae': 'France VAE : design produit d’un service public national',
+    toolkit: 'Toolkit : concevoir un SaaS de gestion de chantier',
+  },
+  en: {
+    tessan: 'Tessan: patient app, AI and design system',
+    'tessan-app': 'Tessan: the patient app rebuilt in 30 days',
+    'tessan-systeme': 'Tessan: a Figma and React design system with Claude Code',
+    'france-vae': 'France VAE: product design for a national public service',
+    toolkit: 'Toolkit: designing a construction site management SaaS',
+  },
+}
+
 export const PROJECT_DESC: Record<Lang, Record<'caseStudy' | 'short' | 'gallery', (name: string, summary: string) => string>> = {
   en: {
     caseStudy: (n, s) => `Full case study of ${n}. ${s}`,
