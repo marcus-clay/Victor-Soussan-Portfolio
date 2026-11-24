@@ -13,7 +13,7 @@ import TestimonialsLink from '@/components/testimonials/TestimonialsLink'
 import { getTestimonials } from '@/data/testimonialsData'
 import { ClientsStrip } from '@/views/ExpertiseSections'
 import { CTA_SECTION, type Language } from '@/data/approcheData'
-import { V2_HERO, V2_JOB, V2_RESULTS, V2_SHORT_TOC } from '@/data/approcheV2Data'
+import { V2_EXAMPLE, V2_HERO, V2_JOB, V2_RESULTS, V2_SHORT_TOC } from '@/data/approcheV2Data'
 import { CtaButton, TEXT_LINK } from '@/components/approche/ApproachLinks'
 
 /**
@@ -26,6 +26,7 @@ export default function ApprocheV2Page({ lang, related }: { lang: Language; rela
   const hero = V2_HERO[lang]
   const job = V2_JOB[lang]
   const res = V2_RESULTS[lang]
+  const example = V2_EXAMPLE[lang]
   const cta = CTA_SECTION[lang]
   const t = TRANSLATIONS[lang].testimonials
   const quote = getTestimonials(lang).find((item) => item.id === 'charlotte-rifflet')
@@ -43,6 +44,23 @@ export default function ApprocheV2Page({ lang, related }: { lang: Language; rela
           <CtaButton lang={lang} />
         </div>
       </header>
+
+      {/* A real case before the method: what was seen, what was done, what it changed */}
+      <aside aria-labelledby="approach-example" className="act-wide pb-12 md:pb-16">
+        <h2 id="approach-example" className="text-micro uppercase tracking-[0.08em] text-gray-500">{example.label}</h2>
+        <ol className="mt-5 grid list-none gap-6 p-0 md:grid-cols-3 md:gap-8">
+          {example.steps.map((step) => (
+            <li key={step.title} className="border-t border-gray-200 pt-4">
+              <h3 className="text-title-3 text-gray-900">{step.title}</h3>
+              <p className="mt-2 text-base text-gray-600">{step.text}</p>
+            </li>
+          ))}
+        </ol>
+        <Link href={`/${lang}/project/france-vae#approach`} className={`${TEXT_LINK} mt-6`}>
+          <span className="link-line">{example.link}</span>
+          <ArrowRight size={12} weight="bold" aria-hidden="true" className="transition-transform duration-200 ease-out [@media(hover:hover)]:group-hover:translate-x-0.5" />
+        </Link>
+      </aside>
 
       {/* 01 How: the two halves of the job, one step at a time */}
       <section id="job" aria-label={job.title} className="scroll-mt-24">

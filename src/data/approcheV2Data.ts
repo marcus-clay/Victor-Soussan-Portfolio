@@ -435,3 +435,28 @@ export const V2_SHORT_TOC: Bi<{ id: string; label: string }[]> = {
     { id: 'contact', label: 'Contact' },
   ],
 }
+
+/**
+ * One worked example under the introduction, before the method: what was seen, what was done, what it changed.
+ * Every sentence restates the France VAE case study (#approach) and the result already listed below.
+ */
+export const V2_EXAMPLE: Bi<{ label: string; steps: { title: string; text: string }[]; link: string }> = {
+  fr: {
+    label: 'Un exemple : France VAE',
+    steps: [
+      { title: 'Le constat', text: 'Les décisions produit se prenaient sans données utilisateurs consolidées. Les retours de terrain restaient dans des notes individuelles.' },
+      { title: 'Ce que j’ai fait', text: 'J’ai centralisé une base de connaissances, puis mené dix entretiens à distance, en deux vagues, sur le tableau de bord candidat.' },
+      { title: 'Ce que ça a changé', text: 'Les retours, classés en gains rapides, bugs, problèmes UX et demandes, ont été présentés en plénière. Les priorités du MVP ont été réordonnées sur cette base.' },
+    ],
+    link: 'Lire la démarche complète',
+  },
+  en: {
+    label: 'An example: France VAE',
+    steps: [
+      { title: 'What I saw', text: 'Product decisions were made without consolidated user data. Field feedback stayed in individual notes.' },
+      { title: 'What I did', text: 'I centralised a knowledge base, then ran ten remote interviews, in two waves, on the candidate dashboard.' },
+      { title: 'What it changed', text: 'The feedback, sorted into quick wins, bugs, UX problems and requests, was presented in plenary. The MVP priorities were reordered on that basis.' },
+    ],
+    link: 'Read the full approach',
+  },
+}

@@ -61,7 +61,7 @@ export default function WatchScreenGroup({ screens, groupLabel, onZoom }: WatchS
                 loading="lazy"
                 src={screen.src}
                 {...imgDims(screen.src)}
-                alt=""
+                alt={screen.label}
                 draggable={false}
                 className={`block h-auto w-full transition-transform duration-300 ease-media [@media(hover:hover)]:group-hover:scale-[1.02]`}
               />

@@ -47,8 +47,8 @@ const useIsoLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : use
 
 const MAX_QUOTE = 190
 
-// How many cards the strip shows
-const SHOWN = 4
+// The four case studies the homepage opens on, in this order (chosen by the owner, 2026-11-24)
+const FEATURED_IDS = ['tessan', 'toolkit', 'androidwear', 'france-vae']
 
 /**
  * Card width: 84vw as before, but capped so the whole card and the controls under it fit in the
@@ -56,16 +56,6 @@ const SHOWN = 4
  * controls (44) + bottom gap (12); 1.5 is the 3:2 ratio of the card.
  */
 const CARD_WIDTH = 'w-[min(86vw,calc((100svh_-_176px)_*_1.5))] md:w-[min(84vw,calc((100svh_-_176px)_*_1.5))]'
-
-/** Fisher-Yates on a copy. Only called in the browser, after mount. */
-function shuffled<T>(items: T[]): T[] {
-  const out = [...items]
-  for (let i = out.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
-    ;[out[i], out[j]] = [out[j], out[i]]
-  }
-  return out
-}
 
 const SENTENCE = /.+?[.!?](?=\s|$)/g
 
@@ -121,15 +111,11 @@ export default function ProjectFilmstrip({ lang }: ProjectFilmstripProps) {
   const t = COPY[lang]
   const eligible = getProjects(lang).filter((p) => p.format === 'case-study' && CASE_STUDY_SHELL[p.id])
   const testimonials = getTestimonials(lang)
-  // Quotes are chosen over the whole set, so a project keeps the same quote whichever four are drawn
+  // Quotes are chosen over the whole set, so a project keeps the same quote wherever it appears
   const quotes = pullQuotes(eligible, testimonials)
 
-  // The page is static, so the draw happens in the browser. Until then the first four are rendered
-  // (what crawlers and no-JS visitors get) and kept transparent, to avoid showing one set and then swapping it.
-  const [pickedIds, setPickedIds] = useState<string[] | null>(null)
-  const projects = pickedIds
-    ? pickedIds.map((id) => eligible.find((p) => p.id === id)).filter((p): p is (typeof eligible)[number] => !!p)
-    : eligible.slice(0, SHOWN)
+  // A fixed selection: the server renders the real cards, so crawlers, no-JS visitors and the first paint all get them
+  const projects = FEATURED_IDS.map((id) => eligible.find((p) => p.id === id)).filter((p): p is (typeof eligible)[number] => !!p)
   const total = projects.length
 
   const trackRef = useRef<HTMLDivElement>(null)
@@ -157,11 +143,6 @@ export default function ProjectFilmstrip({ lang }: ProjectFilmstripProps) {
 
   const { bind, scrollToIndex, getSnapPoints } = useSnapScroller(trackRef, { onProgress: updateIndex })
 
-  useIsoLayoutEffect(() => {
-    setPickedIds(shuffled(eligible.map((p) => p.id)).slice(0, SHOWN))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lang])
-
   // The strip starts on the page margin (20px, 40px from md, plus the free space of the
   // container on screens wider than --wrap-max). Padding and scroll-padding are set in px so the hook and the
   // browser's own snapping agree on where a card rests.
@@ -185,7 +166,7 @@ export default function ProjectFilmstrip({ lang }: ProjectFilmstripProps) {
     const ro = new ResizeObserver(apply)
     ro.observe(el)
     return () => ro.disconnect()
-  }, [getSnapPoints, updateIndex, pickedIds])
+  }, [getSnapPoints, updateIndex])
 
   const atStart = index === 0
   const atEnd = index === total - 1
@@ -196,11 +177,8 @@ export default function ProjectFilmstrip({ lang }: ProjectFilmstripProps) {
   return (
     <section
       aria-labelledby="filmstrip-title"
-      className={`pb-16 md:pb-28 transition-opacity duration-200 ease-out ${pickedIds ? 'opacity-100' : 'opacity-0 filmstrip-pending'}`}
+      className="pb-16 md:pb-28"
     >
-      <noscript>
-        <style>{'.filmstrip-pending{opacity:1!important}'}</style>
-      </noscript>
       <h2 id="filmstrip-title" className="sr-only">
         {t.label}
       </h2>
