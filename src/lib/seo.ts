@@ -17,7 +17,7 @@ export const DEFAULT_OG_IMAGE = {
 
 export type Lang = 'en' | 'fr'
 export const LANGS: readonly Lang[] = ['en', 'fr']
-export const toLang = (value: string | undefined): Lang => (value === 'fr' ? 'fr' : 'en')
+export const toLang = (value: string | undefined): Lang => (value === 'en' ? 'en' : 'fr')
 
 export const OG_LOCALE: Record<Lang, string> = { en: 'en_US', fr: 'fr_FR' }
 export const HTML_LANG: Record<Lang, string> = { en: 'en', fr: 'fr' }
@@ -104,7 +104,7 @@ export function buildMetadata(o: MetaOptions): Metadata {
   const languages: Record<string, string> = {
     en: pageUrl('en', pathFor('en')),
     fr: pageUrl('fr', pathFor('fr')),
-    'x-default': pageUrl('en', pathFor('en')),
+    'x-default': pageUrl('fr', pathFor('fr')),
   }
 
   // Keep titles inside the ~60 character budget Google shows: drop the brand suffix when it would overflow.

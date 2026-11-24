@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 const SUPPORTED_LANGS = ['en', 'fr']
-const DEFAULT_LANG = 'en'
+const DEFAULT_LANG = 'fr'
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
@@ -22,7 +22,7 @@ export function proxy(request: NextRequest) {
     return NextResponse.next()
   }
 
-  // English is the default language for everyone. French is reached through /fr or the
+  // French is the default language for everyone. English is reached through /en or the
   // language switch, never guessed from the browser.
   const lang = DEFAULT_LANG
 
