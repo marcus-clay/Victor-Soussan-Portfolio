@@ -35,7 +35,7 @@ function toEntries(items: Entry[]): MetadataRoute.Sitemap {
         languages: {
           en: pageUrl('en', item.path.en),
           fr: pageUrl('fr', item.path.fr),
-          'x-default': pageUrl('en', item.path.en),
+          'x-default': pageUrl('fr', item.path.fr),
         },
       },
     }))

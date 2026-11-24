@@ -85,33 +85,33 @@ const nextConfig: NextConfig = {
     // Old query param routes -> path prefix
     { source: '/', has: [{ type: 'query', key: 'lang', value: 'fr' }], destination: '/fr', permanent: true },
     { source: '/', has: [{ type: 'query', key: 'lang', value: 'en' }], destination: '/en', permanent: true },
-    // Old SPA routes without lang prefix -> default /en
+    // Old SPA routes without lang prefix -> default /fr
     ...[
       'about', 'visual-archive',
       'consulting', 'presentation', 'contact', 'quote', 'resume', 'testimonials',
     ].map((route) => ({
       source: `/${route}`,
-      destination: `/en/${route}`,
+      destination: `/fr/${route}`,
       permanent: true,
     })),
     // Renamed routes go straight to their final URL (one hop instead of two)
     // /services (Expertise) was merged into /approche; browsers keep the #fragment across the redirect
-    { source: '/services', destination: '/en/approche', permanent: true },
+    { source: '/services', destination: '/fr/approche', permanent: true },
     { source: '/:lang(en|fr)/services', destination: '/:lang/approche', permanent: true },
-    { source: '/work', destination: '/en/projets', permanent: true },
-    { source: '/signals', destination: '/en/blog', permanent: true },
+    { source: '/work', destination: '/fr/projets', permanent: true },
+    { source: '/signals', destination: '/fr/blog', permanent: true },
     // /interventions was a client-side redirect page; a real 308 is cleaner for crawlers
     { source: '/:lang(en|fr)/interventions', destination: '/:lang/contact#interventions', permanent: true },
     // Old signal routes
-    { source: '/signal/:id', destination: '/en/signal/:id', permanent: true },
+    { source: '/signal/:id', destination: '/fr/signal/:id', permanent: true },
     // The Tessan project page used to be a short project under another id
     { source: '/:lang(en|fr)/project/telemedicine-patient-app/:view*', destination: '/:lang/project/tessan', permanent: true },
     // One canonical URL per project: /summary and /full (single 301 hop, with or without language prefix)
     { source: '/:lang(en|fr)/project/:id/:view(summary|full)', destination: '/:lang/project/:id', permanent: true },
-    { source: '/project/:id/:view(summary|full)', destination: '/en/project/:id', permanent: true },
+    { source: '/project/:id/:view(summary|full)', destination: '/fr/project/:id', permanent: true },
     // Old project routes
-    { source: '/project/:id/:view', destination: '/en/project/:id/:view', permanent: true },
-    { source: '/project/:id', destination: '/en/project/:id', permanent: true },
+    { source: '/project/:id/:view', destination: '/fr/project/:id/:view', permanent: true },
+    { source: '/project/:id', destination: '/fr/project/:id', permanent: true },
     // Route renames: work -> projets, signals -> ressources
     { source: '/:lang/work', destination: '/:lang/projets', permanent: true },
     { source: '/:lang/signals', destination: '/:lang/blog', permanent: true },
